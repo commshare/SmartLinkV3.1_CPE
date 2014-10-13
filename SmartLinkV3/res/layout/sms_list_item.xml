@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/sms_item_number_row_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="5dip" >
+
+        <ImageView
+            android:id="@+id/sms_item_read_image"
+            android:layout_width="10dip"
+            android:layout_height="10dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/ic_launcher"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/sms_item_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sms_item_read_image"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textStyle="bold" 
+            android:text="13472479059"
+            android:textSize="16sp"
+            android:textColor="@color/color_black"/>
+        <FrameLayout 
+            android:id="@+id/sms_item_count_layout"
+		    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dip"
+	       	android:layout_toRightOf="@id/sms_item_number"
+	        android:layout_alignBottom="@id/sms_item_number" >
+	        <TextView
+	            android:id="@+id/sms_item_count"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:minWidth="60dip"
+	            android:singleLine="true"
+	            android:textSize="12sp"
+	            android:layout_gravity="bottom"
+	            android:text="56"    
+	            android:textColor="@color/color_black" />
+	        <ImageView
+	            android:id="@+id/sms_item_send_failed"
+	            android:layout_width="20dip"
+	            android:layout_height="20dip"
+	            android:background="@drawable/ic_launcher"
+	            android:layout_gravity="bottom"
+	            android:contentDescription="@null" />
+        </FrameLayout>
+        <ImageView
+            android:id="@+id/sms_item_arrow"
+            android:layout_width="15dip"
+            android:layout_height="15dip"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_launcher"
+            android:layout_marginRight="10dip"
+            android:layout_alignBottom="@id/sms_item_number"
+            android:contentDescription="@null" />
+        <TextView
+            android:id="@+id/sms_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_alignBottom="@id/sms_item_number"
+            android:layout_toRightOf="@+id/sms_item_count_layout"
+            android:layout_toLeftOf="@+id/sms_item_arrow"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="2014-8-12 12:15"
+            android:gravity="right"
+            android:textSize="12sp"
+            android:textColor="@color/color_grey"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sms_item_content_row_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginBottom="5dip" >
+	    <TextView
+	        android:id="@+id/sms_item_content"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="10dip"
+	        android:layout_alignParentLeft="true"
+	        android:ellipsize="end"
+	        android:singleLine="true"
+	        android:textSize="14sp"
+	        android:text="Dddddddddddddddddddddddddddddddddddd43247324723472304723"
+	        android:textColor="@color/color_grey"/>
+	    <View android:layout_width="fill_parent"
+	        android:layout_height="1dip"
+	        android:layout_marginTop="5dip"
+	        android:layout_below="@id/sms_item_content"
+	        android:background="@color/color_grey"/>
+    </RelativeLayout>
+
+</LinearLayout>

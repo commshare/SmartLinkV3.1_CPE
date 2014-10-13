@@ -3,18 +3,29 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-	
+	<FrameLayout 
+	    android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+	    <ListView android:id="@+id/ID_SMS_LIST_VIEW"
+			    android:divider="@null"
+			    android:drawSelectorOnTop="false"
+			    android:choiceMode="singleChoice"
+			    android:cacheColorHint="#00000000"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:overScrollMode="never" />"
 	    <TextView
-            android:id="@+id/sms"
+            android:id="@+id/no_sms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
+            android:drawableTop="@drawable/ic_launcher"
             android:drawablePadding="10dip"
             android:textColor="@color/color_white"
-            android:text="sms"
             android:gravity="center"
-            android:textSize="16sp" />
-
+            android:textSize="16sp"
+            android:text="@string/sms_empty"  />
+	 </FrameLayout>
 </LinearLayout>

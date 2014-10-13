@@ -8,5 +8,10 @@
     <string name="main_usage">Usage</string>
    	<string name="main_sms">SMS</string>
     <string name="main_setting">Setting</string>
+    
+    <!--sms start -->
+    <string name="sms_empty">No SMS</string>
+    <string name="sms_list_view_draft">%1$d,draft</string>
+    <!-- sms end -->
 
 </resources>
