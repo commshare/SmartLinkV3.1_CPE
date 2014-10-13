@@ -38,8 +38,4 @@
     <!-- call log start -->
     <color name="call_log_item_selected">#ff4a4a4a</color>
     <!-- call log end -->
-    <!-- custom spinner start -->
-    <color name="custom_spinner_divider_line">#ff545454</color>
-    <color name="custom_spinner_bg">#ffc8c8c8</color>
-    <!-- custom spinner end -->
 </resources>

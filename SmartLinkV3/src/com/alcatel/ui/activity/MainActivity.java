@@ -2,13 +2,13 @@ package com.alcatel.ui.activity;
 
 
 import com.alcatel.R;
+import com.alcatel.ui.dialog.AddPopWindow;
+import com.alcatel.ui.dialog.MorePopWindow;
 import com.alcatel.ui.view.ViewUsage;
 import com.alcatel.ui.view.ViewHome;
 import com.alcatel.ui.view.ViewIndex;
 import com.alcatel.ui.view.ViewSetting;
 import com.alcatel.ui.view.ViewSms;
-import com.alcatel.ui.view.AddPopWindow;
-import com.alcatel.ui.view.MorePopWindow;
 
 import android.os.Bundle;
 import android.app.Activity;

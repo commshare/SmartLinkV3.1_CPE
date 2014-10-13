@@ -37,11 +37,6 @@ public final class R {
         public static final int color_transparent=0x7f050000;
         public static final int color_white=0x7f050005;
         public static final int color_yellow=0x7f050006;
-        public static final int custom_spinner_bg=0x7f05001d;
-        /**  call log end 
- custom spinner start 
-         */
-        public static final int custom_spinner_divider_line=0x7f05001c;
         public static final int data_color=0x7f050019;
         /**  home color end
  PIN color start
@@ -69,48 +64,34 @@ public final class R {
     }
     public static final class drawable {
         public static final int actionbar_add_icon=0x7f020000;
-        public static final int actionbar_camera_icon=0x7f020001;
-        public static final int actionbar_more_icon=0x7f020002;
-        public static final int defalt_head=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int main_home_active=0x7f020005;
-        public static final int main_home_grey=0x7f020006;
-        public static final int main_setting_active=0x7f020007;
-        public static final int main_setting_grey=0x7f020008;
-        public static final int main_sms_active=0x7f020009;
-        public static final int main_sms_grey=0x7f02000a;
-        public static final int main_usage_active=0x7f02000b;
-        public static final int main_usage_grey=0x7f02000c;
-        public static final int network_roam=0x7f02000d;
-        public static final int network_type_2g=0x7f02000e;
-        public static final int network_type_3g=0x7f02000f;
-        public static final int network_type_3g_plus=0x7f020010;
-        public static final int network_type_4g=0x7f020011;
-        public static final int network_type_h=0x7f020012;
-        public static final int network_type_h_plus=0x7f020013;
-        public static final int ofm_add_icon=0x7f020014;
-        public static final int ofm_blacklist_icon=0x7f020015;
-        public static final int ofm_card_icon=0x7f020016;
-        public static final int ofm_collect_icon=0x7f020017;
-        public static final int ofm_mail_icon=0x7f020018;
-        public static final int ofm_photo_icon=0x7f020019;
-        public static final int ofm_profile_icon=0x7f02001a;
-        public static final int ofm_qrcode_icon=0x7f02001b;
-        public static final int ofm_setting_icon=0x7f02001c;
-        public static final int ofm_video_icon=0x7f02001d;
-        public static final int signal_0=0x7f02001e;
-        public static final int signal_1=0x7f02001f;
-        public static final int signal_2=0x7f020020;
-        public static final int signal_3=0x7f020021;
-        public static final int signal_4=0x7f020022;
-        public static final int signal_5=0x7f020023;
-        public static final int title_splitter=0x7f020024;
+        public static final int actionbar_more_icon=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int main_home_active=0x7f020003;
+        public static final int main_home_grey=0x7f020004;
+        public static final int main_setting_active=0x7f020005;
+        public static final int main_setting_grey=0x7f020006;
+        public static final int main_sms_active=0x7f020007;
+        public static final int main_sms_grey=0x7f020008;
+        public static final int main_usage_active=0x7f020009;
+        public static final int main_usage_grey=0x7f02000a;
+        public static final int network_roam=0x7f02000b;
+        public static final int network_type_2g=0x7f02000c;
+        public static final int network_type_3g=0x7f02000d;
+        public static final int network_type_3g_plus=0x7f02000e;
+        public static final int network_type_4g=0x7f02000f;
+        public static final int network_type_h=0x7f020010;
+        public static final int network_type_h_plus=0x7f020011;
+        public static final int signal_0=0x7f020012;
+        public static final int signal_1=0x7f020013;
+        public static final int signal_2=0x7f020014;
+        public static final int signal_3=0x7f020015;
+        public static final int signal_4=0x7f020016;
+        public static final int signal_5=0x7f020017;
+        public static final int title_splitter=0x7f020018;
     }
     public static final class id {
         public static final int add_task_layout=0x7f08000c;
         public static final int btnAdd=0x7f080004;
-        public static final int btn_cancel=0x7f08000e;
-        public static final int layout=0x7f080010;
         public static final int layout_bottom=0x7f080005;
         public static final int layout_main=0x7f080000;
         public static final int layout_top_content=0x7f080002;
@@ -120,26 +101,21 @@ public final class R {
         public static final int main_sms=0x7f080008;
         public static final int main_title=0x7f080003;
         public static final int main_usage=0x7f080007;
-        public static final int no_sms=0x7f080014;
-        public static final int pop_layout=0x7f08000f;
+        public static final int no_sms=0x7f08000f;
+        public static final int pop_layout=0x7f08000e;
         public static final int pop_layout2=0x7f08000b;
-        public static final int sms=0x7f080015;
+        public static final int sms=0x7f080010;
         public static final int team_member_layout=0x7f08000d;
-        public static final int txtDay=0x7f080012;
-        public static final int txtMonth=0x7f080011;
-        public static final int txtWeekDay=0x7f080013;
         public static final int viewFlipper=0x7f08000a;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int add_popup_dialog=0x7f030001;
         public static final int more_popup_dialog=0x7f030002;
-        public static final int myappwidetprovider=0x7f030003;
-        public static final int myappwidget=0x7f030004;
-        public static final int view_home=0x7f030005;
-        public static final int view_setting=0x7f030006;
-        public static final int view_sms=0x7f030007;
-        public static final int view_usage=0x7f030008;
+        public static final int view_home=0x7f030003;
+        public static final int view_setting=0x7f030004;
+        public static final int view_sms=0x7f030005;
+        public static final int view_usage=0x7f030006;
     }
     public static final class string {
         public static final int app_name=0x7f060000;
@@ -151,7 +127,6 @@ public final class R {
         public static final int main_usage=0x7f060002;
     }
     public static final class style {
-        public static final int AnimationPreview=0x7f070002;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
