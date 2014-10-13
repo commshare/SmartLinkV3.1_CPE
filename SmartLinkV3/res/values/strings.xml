@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmartLinkV3</string>  
+
+    <!-- main fram start -->
+    <string name="main_home">Home</string>
+    <string name="main_usage">Usage</string>
+   	<string name="main_sms">SMS</string>
+    <string name="main_setting">Setting</string>
+
+</resources>
