@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alcatel.R;
+import com.alcatel.ui.activity.ActivitySMSDelete;
 import com.alcatel.ui.activity.MainActivity;
 
 import android.app.AlertDialog;
@@ -29,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,7 +38,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClickListener {
+public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClickListener,OnItemLongClickListener {
 
 	private ListView m_smsSummaryList = null;
 	private Button m_btnNewSms = null;
@@ -64,6 +66,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		//SMS list
 		m_smsSummaryList = (ListView)m_view.findViewById(R.id.sms_list_view);
 		m_smsSummaryList.setOnItemClickListener(this);
+		m_smsSummaryList.setOnItemLongClickListener(this);
 		SmsAdapter smsAdapter = new SmsAdapter(this.m_context);
 		m_smsSummaryList.setAdapter(smsAdapter);
 		m_noSmsTv = (TextView)m_view.findViewById(R.id.no_sms);
@@ -371,4 +374,24 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		
 		
 	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent();
+		intent.setClass(m_context, ActivitySMSDelete.class);	
+		this.m_context.startActivity(intent);
+		return false;
+	}
+	
+	public static class SMSSummaryItem {
+		public String strNumber = new String();
+		public int nUnreadNumber = 0;
+		public int nCount = 0;
+		public String strSummaryContent = new String();
+		public String strSummaryTime = new String();
+		public boolean bSelected = false;
+	}
+
+	
 }

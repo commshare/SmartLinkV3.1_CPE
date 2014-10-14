@@ -25,6 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.alcatel.ui.activity.ActivitySMSDelete"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
     </application>
 
 </manifest>
