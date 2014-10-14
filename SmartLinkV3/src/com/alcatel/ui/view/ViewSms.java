@@ -45,7 +45,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	private TextView m_noSmsTv = null;
 	
 	private SmsBroadcastReceiver m_receiver;
-	private ArrayList<Map<String, Object>> m_smsSummaryLstData = new ArrayList<Map<String, Object>>();
+	private ArrayList<SMSSummaryItem> m_smsSummaryLstData = new ArrayList<SMSSummaryItem>();
 	
 	public final static int SMS_MATCH_NUM = 7;
 	
@@ -149,10 +149,10 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	
 	private class SortSummaryListByTime implements Comparator {
 		public int compare(Object o1, Object o2) {
-			Map<String, Object> c1 = (Map<String, Object>) o1;
-			Map<String, Object> c2 = (Map<String, Object>) o2;
-			String time1 = (String) c1.get("time");
-			String time2 = (String) c2.get("time");
+			SMSSummaryItem c1 = (SMSSummaryItem) o1;
+			SMSSummaryItem c2 = (SMSSummaryItem) o2;
+			String time1 = (String) c1.strSummaryTime;
+			String time2 = (String) c2.strSummaryTime;
 			/*SMSTag tag1 = (SMSTag) c1.get("type");
 			SMSTag tag2 = (SMSTag) c2.get("type");
 			if(tag1 == SMSTag.NotRead && tag2 == SMSTag.NotRead) {
@@ -238,21 +238,21 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		}*/
 		
 		//test start
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("number","13472479059");
-		map.put("unread_count", 1);
-		map.put("count", 1);
-		map.put("content", "This is super man telephone.heiehehehehehehehehehehehehehehehe");
-		map.put("time", "2014-08-19 19:23:42");
-		m_smsSummaryLstData.add(map);
+		SMSSummaryItem item = new SMSSummaryItem();
+		item.strNumber = "13472479059";
+		item.nUnreadNumber = 1;
+		item.nCount = 1;
+		item.strSummaryContent = "This is super man telephone.heiehehehehehehehehehehehehehehehe";
+		item.strSummaryTime = "2014-08-19 19:23:42";
+		m_smsSummaryLstData.add(item);
 		
-		Map<String, Object> map2 = new HashMap<String, Object>();
-		map2.put("number","13472479058");
-		map2.put("unread_count", 0);
-		map2.put("count", 1);
-		map2.put("content", "This is super man telephone 2.heiehehehehehehehehehehehehehehehe");
-		map2.put("time", "2014-08-19 19:22:42");
-		m_smsSummaryLstData.add(map2);
+		SMSSummaryItem item2 = new SMSSummaryItem();
+		item2.strNumber = "13472479058";
+		item2.nUnreadNumber = 0;
+		item2.nCount = 1;
+		item2.strSummaryContent = "This is super man telephone 2.heiehehehehehehehehehehehehehehehe";
+		item2.strSummaryTime = "2014-08-19 19:22:42";
+		m_smsSummaryLstData.add(item2);
 		//test end
 		
 		Collections.sort(m_smsSummaryLstData, new SortSummaryListByTime());
@@ -313,11 +313,11 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				holder = (ViewHolder)convertView.getTag();
 			}
 			
-			holder.number.setText((String)m_smsSummaryLstData.get(position).get("number"));
-			holder.content.setText((String)m_smsSummaryLstData.get(position).get("content"));
-			int nCount = (Integer)m_smsSummaryLstData.get(position).get("count");
+			holder.number.setText((String)m_smsSummaryLstData.get(position).strNumber);
+			holder.content.setText((String)m_smsSummaryLstData.get(position).strSummaryContent);
+			int nCount = (Integer)m_smsSummaryLstData.get(position).nCount;
 					
-			int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).get("unread_count");
+			int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).nUnreadNumber;
 			if(nUnreadNum == 0) {
 				holder.unreadImage.setVisibility(View.INVISIBLE);
 			}else{
@@ -326,7 +326,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			
 			holder.count.setText(String.valueOf(nCount));
 			
-			String strTime = (String) m_smsSummaryLstData.get(position).get("time");
+			String strTime = (String) m_smsSummaryLstData.get(position).strSummaryTime;
 			SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date summaryDate = null;
 			try {
