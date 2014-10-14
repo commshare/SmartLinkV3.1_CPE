@@ -1,17 +1,308 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-	<TextView
-            android:id="@+id/no_sms"
-            android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:overScrollMode="never" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:drawablePadding="10dip"
-            android:textColor="@color/color_white"
-            android:text="usage"
-            android:gravity="center"
-            android:textSize="16sp" />
-</RelativeLayout>
+            android:orientation="vertical" >
+            
+	        <LinearLayout
+	            android:id="@+id/frame_home"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" > 
+	            <RelativeLayout
+	                android:id="@+id/home_panel"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:paddingBottom="12dip"
+	                android:paddingLeft="10dip"
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip" >
+	                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="Home"
+                        android:textColor="@color/light_blue"
+                        android:layout_centerVertical="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+	                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="1.6 of 10 GB"
+                        android:textColor="@color/light_blue"
+                        android:layout_alignParentRight="true"
+	                    android:layout_centerVertical="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+	            </RelativeLayout> 
+	            <RelativeLayout
+	                android:id="@+id/data_progress_panel"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:paddingBottom="12dip"
+	                android:paddingLeft="10dip"
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip" >
+	                <ProgressBar
+	                    android:id="@+id/data_status_progress"
+	                    style="?android:attr/progressBarStyleHorizontal"
+	                    android:layout_width="200dip"
+	                    android:layout_height="15dip"
+	                    android:layout_alignParentLeft="true"
+	                    android:layout_below="@+id/tv_sstorage"
+	                    android:background="@drawable/data_status_progress_bg"
+	                    android:max="100"
+	                    android:progressDrawable="@drawable/data_progress_data" />
+	            </RelativeLayout>   
+	            <RelativeLayout
+	                android:id="@+id/data_panel"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:paddingBottom="12dip"
+	                android:paddingLeft="10dip"
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip" >
+            		<LinearLayout
+		                android:id="@+id/data_down_panel"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:orientation="horizontal">
+		                <ImageView
+	                        android:id="@+id/usage_data_down"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginTop="3dip"
+	                        android:contentDescription="@null"
+	                        android:visibility="visible"
+	                        android:background="@drawable/usage_data" />
+	                    <TextView
+	                        android:id="@+id/data_down_status"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:ellipsize="end"
+	                        android:singleLine="true"
+	                        android:text="24MB"
+	                        android:textColor="@color/light_blue"
+	                        android:textSize="16sp"
+	                        android:textStyle="bold" />
+		            </LinearLayout>
+		            <LinearLayout
+		                android:id="@+id/data_up_panel"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_alignParentRight="true"
+		                android:orientation="horizontal">
+	                    <ImageView
+	                        android:id="@+id/usage_data_up"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginTop="3dip"
+	                        android:contentDescription="@null"
+	                        android:visibility="visible"
+	                        android:background="@drawable/usage_data" />
+	                    <TextView
+	                        android:id="@+id/data_up_status"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:ellipsize="end"
+	                        android:singleLine="true"
+	                        android:text="32MB"
+	                        android:textColor="@color/light_blue"
+	                        android:textSize="16sp"
+	                        android:textStyle="bold" />
+		            </LinearLayout>
+	            </RelativeLayout>
+	        </LinearLayout>
+	        
+	        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:background="@drawable/home_divider" />
+            
+           	<LinearLayout
+	            android:id="@+id/frame_roaming"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+	            <RelativeLayout
+	                android:id="@+id/home_panel"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:paddingBottom="12dip"
+	                android:paddingLeft="10dip"
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip" >
+	                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="Roaming"
+                        android:textColor="@color/light_blue"
+                        android:layout_centerVertical="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+	                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="30MB"
+                        android:textColor="@color/light_blue"
+                        android:layout_alignParentRight="true"
+	                    android:layout_centerVertical="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+	            </RelativeLayout>  
+	            <RelativeLayout
+	                android:id="@+id/data_panel"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:paddingBottom="12dip"
+	                android:paddingLeft="10dip"
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip" >
+            		<LinearLayout
+		                android:id="@+id/data_down_panel"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:orientation="horizontal">
+		                <ImageView
+	                        android:id="@+id/usage_data_down"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginTop="3dip"
+	                        android:contentDescription="@null"
+	                        android:visibility="visible"
+	                        android:background="@drawable/usage_data" />
+	                    <TextView
+	                        android:id="@+id/data_down_status"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:ellipsize="end"
+	                        android:singleLine="true"
+	                        android:text="18MB"
+	                        android:textColor="@color/light_blue"
+	                        android:textSize="16sp"
+	                        android:textStyle="bold" />
+		            </LinearLayout>
+		            <LinearLayout
+		                android:id="@+id/data_up_panel"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_alignParentRight="true"
+		                android:orientation="horizontal">
+	                    <ImageView
+	                        android:id="@+id/usage_data_up"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginTop="3dip"
+	                        android:contentDescription="@null"
+	                        android:visibility="visible"
+	                        android:background="@drawable/usage_data" />
+	                    <TextView
+	                        android:id="@+id/data_up_status"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:ellipsize="end"
+	                        android:singleLine="true"
+	                        android:text="12MB"
+	                        android:textColor="@color/light_blue"
+	                        android:textSize="16sp"
+	                        android:textStyle="bold" />
+		            </LinearLayout>      
+	            </RelativeLayout>
+	        </LinearLayout>
+	        
+	        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:background="@drawable/home_divider" />
+		        
+          	<LinearLayout
+	            android:id="@+id/frame_duration"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+	            <RelativeLayout
+	                android:id="@+id/home_panel"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:paddingBottom="12dip"
+	                android:paddingLeft="10dip"
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip" >
+	                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="Duration"
+                        android:textColor="@color/light_blue"
+                        android:layout_centerVertical="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+	                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="85Hrs 15Min"
+                        android:textColor="@color/light_blue"
+                        android:layout_alignParentRight="true"
+	                    android:layout_centerVertical="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+	            </RelativeLayout>    
+	            <RelativeLayout
+	                android:id="@+id/data_panel"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:paddingBottom="12dip"
+	                android:paddingLeft="10dip"
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip" >
+            		<LinearLayout
+		                android:id="@+id/data_down_panel"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:orientation="horizontal">
+		                <ImageView
+	                        android:id="@+id/usage_data_down"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginTop="3dip"
+	                        android:contentDescription="@null"
+	                        android:visibility="visible"
+	                        android:background="@drawable/usage_data" />
+	                    <TextView
+	                        android:id="@+id/data_down_status"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:ellipsize="end"
+	                        android:singleLine="true"
+	                        android:text="36Hrs 15Min"
+	                        android:textColor="@color/light_blue"
+	                        android:textSize="16sp"
+	                        android:textStyle="bold" />
+		            </LinearLayout>
+	            </RelativeLayout>
+		  </LinearLayout>
+      </LinearLayout>
+</ScrollView>

@@ -138,8 +138,8 @@ public class MainActivity extends Activity implements OnClickListener,OnGestureL
 				addBtnClick();
 			}else if(this.pageIndex == ViewIndex.VIEW_USAGE){
 				setBtnClick();
-			}else{
-				;
+			}else if(this.pageIndex == ViewIndex.VIEW_SMS){
+				editBtnClick();
 			}		
 			break;
 		}
@@ -234,7 +234,8 @@ public class MainActivity extends Activity implements OnClickListener,OnGestureL
 		}
 		if (viewIndex == ViewIndex.VIEW_SMS) {
 			m_titleTextView.setText(R.string.main_sms);
-			m_BtnAdd.setVisibility(View.GONE);
+			m_BtnAdd.setVisibility(View.VISIBLE);
+			m_BtnAdd.setBackgroundResource(R.drawable.actionbar_add_icon);
 			setMainBtnStatus(R.id.main_sms);
 		}
 		if (viewIndex == ViewIndex.VIEW_SETTINGE) {
@@ -285,17 +286,17 @@ public class MainActivity extends Activity implements OnClickListener,OnGestureL
 	}
 
 
-	private void newBtnClick() {
-		if (pageIndex == ViewIndex.VIEW_HOME) {
-			
-		}
-		if (pageIndex == ViewIndex.VIEW_USAGE) {
-			
-		}
-		if (pageIndex == ViewIndex.VIEW_SMS) {
-			
-		}
-	}
+//	private void newBtnClick() {
+//		if (pageIndex == ViewIndex.VIEW_HOME) {
+//			
+//		}
+//		if (pageIndex == ViewIndex.VIEW_USAGE) {
+//			
+//		}
+//		if (pageIndex == ViewIndex.VIEW_SMS) {
+//			
+//		}
+//	}
 	
 	private void addBtnClick(){
 		AddPopWindow addPopWindow = new AddPopWindow(MainActivity.this);
@@ -309,6 +310,13 @@ public class MainActivity extends Activity implements OnClickListener,OnGestureL
 		morePopWindow.showPopupWindow(m_BtnAdd);
 		
 	}
+	
+	private void editBtnClick(){
+		
+
+		
+	}
+	
 
 
 	@Override
