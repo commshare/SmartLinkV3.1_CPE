@@ -64,7 +64,7 @@
             android:layout_width="15dip"
             android:layout_height="15dip"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_launcher"
+            android:background="@drawable/ic_launcher"
             android:layout_marginRight="10dip"
             android:layout_alignBottom="@id/sms_item_number"
             android:contentDescription="@null" />
@@ -73,8 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 			android:layout_alignBottom="@id/sms_item_number"
-            android:layout_toRightOf="@+id/sms_item_count_layout"
-            android:layout_toLeftOf="@+id/sms_item_arrow"
+            android:layout_toRightOf="@id/sms_item_count_layout"
+            android:layout_toLeftOf="@id/sms_item_arrow"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="2014-8-12 12:15"
@@ -87,8 +87,7 @@
         android:id="@+id/sms_item_content_row_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dip"
-        android:layout_marginBottom="5dip" >
+        android:layout_marginLeft="20dip" >
 	    <TextView
 	        android:id="@+id/sms_item_content"
 	        android:layout_width="wrap_content"
