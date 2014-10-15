@@ -505,7 +505,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 		SMSDetailItem item2 = new SMSDetailItem();
 		item2.bIsDateItem = false;
 		item2.bSendFailed = false;
-		item2.strContent = "zhoudeqaun is super man2!!!!!!!!come onfdsklfjsdjfsdfjdskfdsfdsjfsdjfahehvhflsdhf";
+		item2.strContent = "zhoudeqaun is ";
 		item2.strTime = "2014-12-33 33:33";
 		item2.nType = 1;
 		m_smsListData.add(item2);
@@ -637,18 +637,22 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 					break;
 				}*/
 				int type = m_smsListData.get(position).nType;
+				int nContentLayoutBg = R.drawable.selector_sms_detail_receive;
 				switch(type)
 				{
 				case 0:
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,R.id.sms_detail_content_layout);
-					holder.smsContentLayout.setBackgroundResource(R.drawable.selector_sms_detail_receive);
+					nContentLayoutBg = R.drawable.selector_sms_detail_receive;
+					contentLayout.setMargins(30, 10, 200, 10);
 					break;
 				default:
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,R.id.sms_detail_content_layout);
-					holder.smsContentLayout.setBackgroundResource(R.drawable.selector_sms_detail_out);
+					nContentLayoutBg = R.drawable.selector_sms_detail_out;
+					contentLayout.setMargins(200, 10, 30, 10);
 					break;
 				}
 				holder.smsContentLayout.setLayoutParams(contentLayout);
+				holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
 				
 				if(m_smsListData.get(position).bSendFailed == true) {
 					holder.sentFail.setVisibility(View.VISIBLE);
