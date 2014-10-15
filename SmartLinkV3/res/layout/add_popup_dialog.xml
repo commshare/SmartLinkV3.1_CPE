@@ -16,7 +16,7 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/add_task_layout"
+            android:id="@+id/sd_sharing_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -38,7 +38,7 @@
             android:background="@color/color_grey" />
 
         <LinearLayout
-            android:id="@+id/team_member_layout"
+            android:id="@+id/wps_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -60,7 +60,7 @@
             android:background="@color/color_grey" />
 
         <LinearLayout
-            android:id="@+id/team_member_layout"
+            android:id="@+id/logout_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

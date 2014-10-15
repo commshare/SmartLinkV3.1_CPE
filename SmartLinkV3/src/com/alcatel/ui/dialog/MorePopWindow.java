@@ -1,17 +1,25 @@
 package com.alcatel.ui.dialog;
 
 import com.alcatel.R;
+import com.alcatel.ui.activity.StorageMainActivity;
+import com.alcatel.ui.activity.UsageSettingActivity;
+import com.alcatel.ui.activity.WpsMainActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-public class MorePopWindow extends PopupWindow {
+public class MorePopWindow extends PopupWindow implements OnClickListener{
 	private View conentView;
+	LinearLayout m_usage_setting;
+	LinearLayout m_clear_history;
 
 	public MorePopWindow(final Activity context) {
 		LayoutInflater inflater = (LayoutInflater) context
@@ -28,8 +36,35 @@ public class MorePopWindow extends PopupWindow {
 		ColorDrawable dw = new ColorDrawable(0000000000);
 		this.setBackgroundDrawable(dw);
 		//this.setAnimationStyle(R.style.AnimationPreview);
-
+		
+		m_usage_setting = (LinearLayout) conentView
+				.findViewById(R.id.usage_setting_layout);
+		m_usage_setting.setOnClickListener(this);
+		
+		m_clear_history = (LinearLayout) conentView
+				.findViewById(R.id.clear_history_layout);
+		m_clear_history.setOnClickListener(this);
 	}
+
+	
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(); 
+		switch (v.getId()) {
+		case R.id.usage_setting_layout:
+            intent.setClass(v.getContext(), UsageSettingActivity.class);  
+            v.getContext().startActivity(intent);
+            this.dismiss();
+			break;
+		case R.id.logout_layout:
+			this.dismiss();
+			break;
+		}
+	}
+
+
 
 	public void showPopupWindow(View parent) {
 		if (!this.isShowing()) {

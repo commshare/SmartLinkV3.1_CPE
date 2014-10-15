@@ -2,6 +2,7 @@ package com.alcatel.ui.activity;
 
 
 import com.alcatel.R;
+import com.alcatel.ui.activity.BaseActivity;
 import com.alcatel.ui.dialog.AddPopWindow;
 import com.alcatel.ui.dialog.MorePopWindow;
 import com.alcatel.ui.view.ViewUsage;
@@ -25,7 +26,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.view.MotionEvent;
 
-public class MainActivity extends Activity implements OnClickListener,OnGestureListener{
+public class MainActivity extends BaseActivity implements OnClickListener,OnGestureListener{
 	private int m_preButton = 0;
 
 	private ViewFlipper m_viewFlipper;

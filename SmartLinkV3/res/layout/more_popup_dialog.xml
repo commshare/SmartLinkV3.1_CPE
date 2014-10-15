@@ -16,6 +16,7 @@
         android:orientation="vertical" >
 
         <LinearLayout
+            android:id="@+id/usage_setting_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -37,6 +38,7 @@
             android:background="@color/color_grey" />
 
         <LinearLayout
+            android:id="@+id/clear_history_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

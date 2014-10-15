@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/usage_time_limit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:paddingBottom="6dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="10dip" >
+
+    <LinearLayout
+        android:id="@+id/pbc_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dip"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:paddingTop="6dip" >
+
+        <ImageView
+            android:id="@+id/pbc_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dip"
+            android:contentDescription="@null"
+            android:visibility="visible"
+            android:background="@drawable/pbc_button" />
+
+        <TextView
+            android:id="@+id/pbc_button_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:text="Push Button Configuration"
+            android:textColor="@color/color_white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dip" >
+
+            <TextView
+                android:id="@+id/pbc_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:padding="10dip"
+                android:textColor="@color/color_black"
+                android:textSize="12sp"
+                android:text="1.Press WPS..."
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/pbc_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:padding="10dip"
+                android:textColor="@color/color_black"
+                android:text="2.On the..."
+                android:textSize="12sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/pbc_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:padding="10dip"
+                android:textColor="@color/color_black"
+                android:text="3.Click..."
+                android:textSize="12sp"
+                android:textStyle="bold" />
+       </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

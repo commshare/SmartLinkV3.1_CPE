@@ -1,0 +1,168 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+	    <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:background="@color/color_blue" >
+		    	<ImageButton 
+		         android:id="@+id/btn_back"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:layout_alignParentLeft="true"
+		         android:layout_centerVertical="true"
+		         android:layout_marginLeft="5dip"
+		         android:padding="8dip"
+		         android:src="@drawable/back"
+				 android:background="@null"/>
+			     <TextView
+			         android:id="@+id/Back"
+			         android:layout_width="fill_parent"
+			         android:layout_height="wrap_content"
+			         android:layout_centerVertical="true"
+			         android:layout_toRightOf="@id/btn_back"
+			         android:text="Back"
+			         android:textColor="@color/color_white"
+			         android:textSize="15sp" /> 
+			    <TextView
+			        android:id="@+id/title"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_centerInParent="true"
+			        android:gravity="center"
+			        android:singleLine="true"
+			        android:text="Usage Settings"
+			        android:textColor="@color/color_white"
+			        android:textSize="20sp"
+			        android:textStyle="bold" />
+	    </RelativeLayout>  
+	</LinearLayout>
+	
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+       	android:layout_below="@id/title_layout"
+       	android:background="@color/color_white" 
+        android:overScrollMode="never" >
+    
+        <LinearLayout
+            android:id="@+id/frame_roaming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+	    <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/setting_usage" />
+	        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="@drawable/home_divider" />
+           
+       	<include
+       		android:layout_width="match_parent"
+       		android:layout_height="wrap_content"
+       		layout="@layout/setting_time_limit" />
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="@drawable/home_divider" />
+	        
+        <LinearLayout
+            android:id="@+id/frame_roaming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:paddingBottom="6dip"
+            android:paddingTop="6dip" >
+            <Button
+                android:id="@+id/enable_roaming_btn"
+                android:layout_width="85dip"
+				android:layout_height="35dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/switch_off"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enable_roaming_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/enable_roaming_btn"
+                android:layout_centerVertical="true"
+                android:singleLine="false"
+                android:text="Roaming"
+                android:textSize="16sp" 
+                android:textColor="@color/color_black"/>
+			</RelativeLayout>
+			
+            <TextView
+                android:id="@+id/enable_roaming_descrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:singleLine="false"
+                android:text="Automatically connect even when in roaming."
+                android:textSize="16sp" 
+                android:textColor="@color/color_black"/>
+	  	</LinearLayout>
+		  
+	   	<View
+	         android:layout_width="match_parent"
+	         android:layout_height="2dip"
+	         android:background="@drawable/home_divider" />
+	        
+        <LinearLayout
+            android:id="@+id/frame_auto_disconnected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:paddingBottom="6dip"
+            android:paddingTop="6dip" >
+            <Button
+                android:id="@+id/enable_auto_disconnected_btn"
+                android:layout_width="85dip"
+				android:layout_height="35dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/switch_off"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enable_auto_disconnected_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/enable_auto_disconnected_btn"
+                android:layout_centerVertical="true"
+                android:singleLine="false"
+                android:text="Auto Disconnected"
+                android:textSize="16sp" 
+                android:textColor="@color/color_black"/>
+		</RelativeLayout>   
+	  </LinearLayout>
+	  </LinearLayout>
+   </ScrollView>
+</RelativeLayout>

@@ -1,20 +1,27 @@
 package com.alcatel.ui.dialog;
 
 import com.alcatel.R;
+import com.alcatel.ui.activity.StorageMainActivity;
+import com.alcatel.ui.activity.WpsMainActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 
-public class AddPopWindow extends PopupWindow {
+public class AddPopWindow extends PopupWindow implements OnClickListener{
 	private View conentView;
+	LinearLayout m_sd_sharing;
+	LinearLayout m_wps;
+	LinearLayout m_logout;
 
 	public AddPopWindow(final Activity context) {
 		LayoutInflater inflater = (LayoutInflater) context
@@ -32,25 +39,41 @@ public class AddPopWindow extends PopupWindow {
 		this.setBackgroundDrawable(dw);
 
 		//this.setAnimationStyle(R.style.AnimationPreview);
-		LinearLayout addTaskLayout = (LinearLayout) conentView
-				.findViewById(R.id.add_task_layout);
-		LinearLayout teamMemberLayout = (LinearLayout) conentView
-				.findViewById(R.id.team_member_layout);
-		addTaskLayout.setOnClickListener(new OnClickListener() {
+		m_sd_sharing = (LinearLayout) conentView
+				.findViewById(R.id.sd_sharing_layout);
+		m_sd_sharing.setOnClickListener(this);
+		
+		m_wps = (LinearLayout) conentView
+				.findViewById(R.id.wps_layout);
+		m_wps.setOnClickListener(this);
+		
+		m_logout = (LinearLayout) conentView
+				.findViewById(R.id.logout_layout);
+		m_logout.setOnClickListener(this);
+		
+	}
 
-			@Override
-			public void onClick(View arg0) {
-				AddPopWindow.this.dismiss();
-			}
-		});
 
-		teamMemberLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				AddPopWindow.this.dismiss();
-			}
-		});
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(); 
+		switch (v.getId()) {
+		case R.id.sd_sharing_layout:
+            intent.setClass(v.getContext(), StorageMainActivity.class);  
+            v.getContext().startActivity(intent);
+            this.dismiss();
+			break;
+		case R.id.wps_layout:
+			intent.setClass(v.getContext(), WpsMainActivity.class);  
+            v.getContext().startActivity(intent);
+            this.dismiss();
+			break;
+		case R.id.logout_layout:
+			this.dismiss();
+			break;
+		}
+		
 	}
 
 
