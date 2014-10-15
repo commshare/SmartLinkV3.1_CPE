@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:background="@drawable/ic_launcher"
+        android:layout_margin="10dip"
+        android:layout_centerVertical="true"
+        android:contentDescription="@null" />
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@id/icon"
+	    android:layout_marginRight="10dip"
+	    android:orientation="vertical" >
+	    <RelativeLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+	        <EditText
+		        android:id="@+id/device_description"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:inputType="none"
+		        android:text="super man"
+				android:singleLine="true"
+		        android:textSize="16sp" />
+	        <ImageView
+		        android:id="@+id/edit_image"
+		        android:layout_width="10dip"
+		        android:layout_height="10dip"
+		        android:background="@drawable/ic_launcher"
+		        android:layout_marginLeft="10dip"
+		        android:layout_toRightOf="@id/device_description"
+		        android:layout_centerVertical="true"
+		        android:contentDescription="@null" />
+	        <Button
+		        android:id="@+id/block_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="35dip"
+		        android:layout_alignParentRight="true"
+		        android:layout_centerVertical="true"
+		        android:layout_marginRight="10dip"
+		        android:text="@string/device_manage_block_btn"
+		        android:paddingLeft="15dip"
+                android:paddingRight="15dip"/>
+	    </RelativeLayout>
+	    <TextView
+	        android:id="@+id/ip"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:textSize="14sp"
+	        android:text="ip:127.0.0.1"
+	        android:textColor="@color/color_grey"/>
+	    <TextView
+	        android:id="@+id/mac"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:textSize="14sp"
+	        android:text="MAC:11:FF:FF:FF:FF"
+	        android:textColor="@color/color_grey"/>
+	</LinearLayout>
+</RelativeLayout>
