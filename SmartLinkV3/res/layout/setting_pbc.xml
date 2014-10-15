@@ -16,13 +16,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dip"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         android:paddingTop="6dip" >
 
         <ImageView
             android:id="@+id/pbc_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginTop="3dip"
             android:contentDescription="@null"
             android:visibility="visible"
@@ -32,17 +34,19 @@
             android:id="@+id/pbc_button_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:paddingBottom="10dip"
             android:paddingTop="10dip"
             android:text="Push Button Configuration"
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_black"
             android:textSize="12sp"
             android:textStyle="bold" />
         
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingTop="10dip" >
 
             <TextView

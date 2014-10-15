@@ -37,66 +37,67 @@
 		        android:textSize="16sp"
 		        android:textColor="@color/color_black" />
 
-			    <EditText
-			        android:id="@+id/wps_pin_value"
-			        android:layout_width="wrap_content"
-			        android:layout_height="30dip"
-			        android:layout_marginRight="6dip"
-			        android:layout_toRightOf="@id/wps_pin_tag"
-			        android:background="@drawable/selector_edit_right_angled_bg"
-			        android:inputType="number"
-			        android:text="1234"
-			        android:maxLength="6"
-			        android:imeOptions="actionDone"
-			        android:width="85dip" />
-			</RelativeLayout>
+		    <EditText
+		        android:id="@+id/wps_pin_value"
+		        android:layout_width="wrap_content"
+		        android:layout_height="30dip"
+		        android:layout_marginRight="6dip"
+		        android:layout_toRightOf="@id/wps_pin_tag"
+		        android:background="@drawable/selector_edit_right_angled_bg"
+		        android:inputType="number"
+		        android:text="1234"
+		        android:maxLength="6"
+		        android:imeOptions="actionDone"
+		        android:width="85dip" />
+		</RelativeLayout>
 
-	         <Button
-	             android:id="@+id/wps_save_button"
-	             android:layout_width="180dip"
-	             android:layout_height="30dip"
-	             android:background="@drawable/selector_common_button"
-	             android:gravity="center"
-	             android:text="Save"
-	             android:textColor="@drawable/common_button_text"
-	             android:textSize="14dip" />
+         <Button
+             android:id="@+id/wps_save_button"
+             android:layout_width="wrap_content"
+             android:layout_height="30dip"
+             android:background="@drawable/selector_common_button"
+             android:layout_gravity="center"
+             android:gravity="center"
+             android:text="Save"
+             android:textColor="@drawable/common_button_text"
+             android:textSize="14dip" />
 
-	         <LinearLayout
-	             android:layout_width="match_parent"
-	             android:layout_height="wrap_content"
-	             android:paddingTop="10dip"
-	             android:orientation="vertical" >
-	
-	             <TextView
-	                 android:id="@+id/wps_pin_1"
-	                 android:layout_width="wrap_content"
-	                 android:layout_height="wrap_content"
-	                 android:layout_alignParentLeft="true"
-	                 android:padding="10dip"
-	                 android:textColor="@color/color_black"
-	                 android:textSize="12sp"
-	                 android:text="1.Press WPS..."
-	                 android:textStyle="bold" />
-	             <TextView
-	                 android:id="@+id/wps_pin_2"
-	                 android:layout_width="wrap_content"
-	                 android:layout_height="wrap_content"
-	                 android:layout_alignParentLeft="true"
-	                 android:padding="10dip"
-	                 android:textColor="@color/color_black"
-	                 android:text="2.On the..."
-	                 android:textSize="12sp"
-	                 android:textStyle="bold" />
-	             <TextView
-	                 android:id="@+id/wps_pin_3"
-	                 android:layout_width="wrap_content"
-	                 android:layout_height="wrap_content"
-	                 android:layout_alignParentLeft="true"
-	                 android:textColor="@color/color_black"
-	                 android:padding="10dip"
-	                 android:text="3.Enable..."
-	                 android:textSize="12sp"
-	                 android:textStyle="bold" />
-	         </LinearLayout>
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:paddingTop="10dip"
+             android:orientation="vertical" >
+
+             <TextView
+                 android:id="@+id/wps_pin_1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:padding="10dip"
+                 android:textColor="@color/color_black"
+                 android:textSize="12sp"
+                 android:text="1.Press WPS..."
+                 android:textStyle="bold" />
+             <TextView
+                 android:id="@+id/wps_pin_2"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:padding="10dip"
+                 android:textColor="@color/color_black"
+                 android:text="2.On the..."
+                 android:textSize="12sp"
+                 android:textStyle="bold" />
+             <TextView
+                 android:id="@+id/wps_pin_3"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:textColor="@color/color_black"
+                 android:padding="10dip"
+                 android:text="3.Enable..."
+                 android:textSize="12sp"
+                 android:textStyle="bold" />
+         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
