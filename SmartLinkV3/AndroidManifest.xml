@@ -57,6 +57,35 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+        
+        <activity 
+            android:name="com.alcatel.ui.activity.SettingWifiActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        <activity 
+            android:name="com.alcatel.ui.activity.SettingPowerSavingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        <receiver android:name="com.alcatel.appwidget.SmartLinkWidget" >  
+           <intent-filter >  
+               <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />  
+               <action android:name="cn.com.karl.widget.click" >  
+               </action>  
+           </intent-filter>  
+  
+           <meta-data  
+               android:name="android.appwidget.provider"  
+               android:resource="@xml/smart_link_widget_provider" />  
+       </receiver>
+       
     </application>
 
 </manifest>

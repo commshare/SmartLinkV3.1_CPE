@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout android:id="@+id/rl_power_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+        
+        <ImageView android:id="@+id/iv_power_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/battery_full"
+            android:contentDescription="@string/setting_power"/>
+        
+        <TextView android:id="@+id/tv_power_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_power_display"
+            android:layout_centerHorizontal="true"
+            android:textSize="12sp"
+            android:text="100%"/>
+    </RelativeLayout>    
+    
+    <ImageView android:id="@+id/iv_seperator_3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:contentDescription="@string/setting_power"
+        android:background="@android:color/darker_gray"/>
+    
+    <RelativeLayout android:id="@+id/rl_power_smart_control"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_margin="10dp">
+        
+        <TextView android:id="@+id/tx_power_smart"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:text="@string/setting_power_smart" />
+        <Button android:id="@+id/btn_power_smart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/switch_off"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    
+    <ImageView android:id="@+id/iv_seperator_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:contentDescription="@string/setting_power"
+        android:background="@android:color/darker_gray"/>
+    
+    <RelativeLayout android:id="@+id/rl_power_wifi_control"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_margin="10dp">
+        
+        <TextView android:id="@+id/tx_power_wifi"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:text="@string/setting_power_wifi" />
+        <Button android:id="@+id/btn_power_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/switch_off"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    
+    <ImageView android:id="@+id/iv_seperator_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:contentDescription="@string/setting_power"
+        android:background="@android:color/darker_gray"/>
+    <TextView android:id="@+id/tv_wifi_description"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_margin="10dp"
+        android:lines="2"
+        android:text="@string/setting_power_wifi_description"
+        android:textSize="10sp"/>
+    
+    
+    
+
+    
+</LinearLayout>
