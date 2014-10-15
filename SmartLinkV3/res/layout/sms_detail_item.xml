@@ -24,7 +24,6 @@
 	    android:layout_below="@id/sms_detail_date_layout"
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content"
-	    android:layout_marginRight="30dip"
 	    android:paddingTop="8dip"
 	    android:paddingBottom="8dip"
 	    android:paddingLeft="10dip"
