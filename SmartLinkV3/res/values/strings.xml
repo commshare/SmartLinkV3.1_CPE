@@ -19,6 +19,12 @@
     <string name="sms_send_fail">Fail</string>
     <!-- sms end -->
     
+    <!--connect device start -->
+    <string name="device_manage_title">Connected Devices</string>
+    <string name="device_manage_connected">Connected Devices(%1$s)</string>
+    <string name="device_manage_block">Block Devices(%1$s)</string>
+    <!--connect device end -->
+    
     <!-- setting start -->
     <string name="setting_wifi">WiFi Setting</string>
     <string name="setting_power">Power Saving</string>
