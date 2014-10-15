@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.alcatel.R;
 import com.alcatel.ui.activity.ActivitySMSDelete;
+import com.alcatel.ui.activity.ActivitySmsDetail;
 import com.alcatel.ui.activity.MainActivity;
 
 import android.app.AlertDialog;
@@ -372,7 +373,10 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		
 		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount - nUnreadNum);*/
 		
-		
+		Intent intent = new Intent();
+		intent.setClass(m_context, ActivitySmsDetail.class);
+		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, (String)m_smsSummaryLstData.get(position).strNumber);		
+		this.m_context.startActivity(intent);
 	}
 	
 	@Override

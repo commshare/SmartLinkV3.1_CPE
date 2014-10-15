@@ -32,6 +32,13 @@
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+        <activity
+            android:name="com.alcatel.ui.activity.ActivitySmsDetail"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
     </application>
 
 </manifest>

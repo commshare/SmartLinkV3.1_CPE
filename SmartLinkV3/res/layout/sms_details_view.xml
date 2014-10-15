@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_white" >
+    
+    <RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+        <RelativeLayout
+            android:id="@+id/ID_SMS_DETAIL_TOP_LAYOUT"
+	        android:background="@color/color_blue"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/ID_SMS_DETAIL_BUTTON_BACK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                android:text="@string/back"
+                android:textColor="@color/color_white"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/ID_SMS_DETAIL_BUTTON_DELETE_LAYOUT"
+                android:layout_width="70dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" >
+
+                <Button
+                    android:id="@+id/ID_SMS_DETAIL_BUTTON_DELETE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip"
+                    android:textColor="@color/color_white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ID_SMS_DETAIL_TITLE"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="8dip"
+                android:layout_toLeftOf="@id/ID_SMS_DETAIL_BUTTON_DELETE_LAYOUT"
+                android:layout_toRightOf="@id/ID_SMS_DETAIL_BUTTON_BACK"
+                android:gravity="center"
+                android:text="10086"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+		
+	    <LinearLayout
+	        android:id="@+id/ID_SMS_DETAIL_REPLY_LAYOUT"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:orientation="vertical" 
+	        android:background="@color/color_white">
+            <View android:layout_width="fill_parent"
+		        android:layout_height="1dip"
+		        android:background="@color/color_grey"/>
+	        <TextView
+	            android:id="@+id/sms_cnt"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="right"
+	            android:layout_marginRight="25dip"
+	            android:layout_marginTop="10dip"
+	            android:text="67/1"
+	            android:textColor="@color/color_black" />
+			<RelativeLayout
+			    android:layout_width="fill_parent"
+			    android:layout_height="50dip" >
+			
+			    <Button
+			        android:id="@+id/ID_SMS_DETAIL_BUTTON_SEND"
+			        android:layout_width="wrap_content"
+			        android:layout_height="35dip"
+			        android:layout_alignParentRight="true"
+			        android:layout_centerVertical="true"
+			        android:layout_marginRight="10dip"
+			        android:paddingLeft="15dip"
+	                android:paddingRight="15dip"
+			        android:enabled="false" />
+			
+			    <EditText
+			        android:id="@+id/ID_SMS_DETAIL_EDIT_CONTENT"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_centerVertical="true"
+			        android:layout_marginLeft="10dip"
+			        android:layout_marginRight="10dip"
+			        android:layout_toLeftOf="@id/ID_SMS_DETAIL_BUTTON_SEND"
+			        android:inputType="none"
+			        android:maxLength="670"
+			        android:scrollbarStyle="outsideOverlay"
+			        android:scrollbars="vertical"
+			        android:textSize="20sp" />
+			</RelativeLayout>
+		</LinearLayout>
+	
+		<ListView android:id="@+id/sms_detail_list_view"
+		    android:divider="@null"
+		   	android:listSelector="@android:color/transparent"
+		    android:cacheColorHint="#00000000"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:transcriptMode="alwaysScroll"
+		    android:stackFromBottom="false"
+		    android:layout_above="@id/ID_SMS_DETAIL_REPLY_LAYOUT"
+		    android:layout_below="@id/ID_SMS_DETAIL_TOP_LAYOUT"
+		    android:overScrollMode="never"/>
+	</RelativeLayout>
+	<RelativeLayout 
+	    android:id="@+id/sms_waiting_layout"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	    <ProgressBar
+             android:id="@+id/sms_waiting_progress"
+             android:layout_width="40dip"
+             android:layout_height="40dip"
+             android:layout_centerInParent="true"
+             
+             android:visibility="gone" />
+	    <!--  android:indeterminateDrawable="@drawable/progerss_connect"-->
+	</RelativeLayout>
+</FrameLayout>

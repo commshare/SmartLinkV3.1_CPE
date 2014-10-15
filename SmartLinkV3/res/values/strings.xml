@@ -16,6 +16,7 @@
     <!--sms start -->
     <string name="sms_empty">No SMS</string>
     <string name="sms_list_view_draft">%1$d,draft</string>
+    <string name="sms_send_fail">Fail</string>
     <!-- sms end -->
 
 </resources>
