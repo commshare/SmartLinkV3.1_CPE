@@ -87,6 +87,40 @@
             
         </activity>
         
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+        </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.StorageMainActivity"
             android:screenOrientation="portrait"

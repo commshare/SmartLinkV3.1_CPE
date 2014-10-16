@@ -53,6 +53,31 @@
     <string name="setting_power_smart">Smart</string>
     <string name="setting_power_wifi">Wi-Fi</string>
     <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for a long time</string>
+    <string name="setting_backup_description">Backup the configuration.</string>
+    <string name="setting_backup_btn_backup">Backup</string>
+    <string name="setting_restore_description">Restore the configuration.</string>
+    <string name="setting_restore_btn_restore">Restore</string>
+    <string name="setting_about_version">Version0.5</string>
+    <string name="setting_about_official_website">Official website</string>
+    <string name="setting_about_management_page">Management page</string>
+    <string name="setting_about_copyright">Copyright 2014–2016 TCL Communication Ltd.\r\nAll right reserved.</string>
+    <string name="setting_upgrade_device_version">Device: Current Version vxxxx</string>
+    <string name="setting_upgrade_btn_check">Check</string>
+    <string name="setting_upgrade_current_app_version">Mobile phone apps: Current Version v0.5</string>
+    <string name="setting_upgrade_new_app_version">Find a new version v0.6</string>
+    <string name="setting_upgrade_btn_upgrade">Upgrade</string>
+    <string name="setting_device_title">System Information</string>
+    <string name="setting_device_software_version">Software Version:</string>
+    <string name="setting_device_hadrware_version">Hardware Version:</string>
+    <string name="setting_device_device_name">Device name:</string>
+    <string name="setting_device_imei">IMEI:</string>
+    <string name="setting_device_mac_address">MAC Address:</string>
+    <string name="setting_device_ip">IP Address:</string>
+    <string name="setting_device_subnet">Subnet Mask:</string>
+    <string name="setting_device_btn_power_off">Power off</string>
+    <string name="setting_device_btn_reboot">Reboot</string>
+    <string name="setting_device_btn_reset">Reset</string>
+    <string name="setting_about_app_name">ALCATEONETOUCH</string>
     <!-- setting end -->
 
 	<!-- common start -->

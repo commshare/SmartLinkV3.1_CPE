@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity;
 
 
@@ -35,7 +38,6 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	private final int ITEM_UPGRADE_SETTING = 3;
 	private final int ITEM_DEVICE_SETTING = 4;
 	private final int ITEM_ABOUT_SETTING = 5;
-	private TextView m_tvVersion = null;
 	private ListView m_lvSettingListView = null;
 	
 
@@ -167,17 +169,25 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	
 	private void goToBackupSettingPage(){
 		Toast.makeText(m_context, "goToBackupSettingPage", 10).show();
+		Intent intent = new Intent(m_context, SettingPowerSavingActivity.class);
+		m_context.startActivity(intent);
 	}
 	
 	private void goToUpgradeSettingPage(){
 		Toast.makeText(m_context, "goToUpgradeSettingPage", 10).show();
+		Intent intent = new Intent(m_context, SettingUpgradeActivity.class);
+		m_context.startActivity(intent);
 	}
 	
 	private void goToDeviceSettingPage(){
 		Toast.makeText(m_context, "goToDeviceSettingPage", 10).show();
+		Intent intent = new Intent(m_context, SettingDeviceActivity.class);
+		m_context.startActivity(intent);
 	}
 	
 	private void goToAboutSettingPage(){
 		Toast.makeText(m_context, "goToAboutSettingPage", 10).show();
+		Intent intent = new Intent(m_context, SettingAboutActivity.class);
+		m_context.startActivity(intent);
 	}
 }
