@@ -23,7 +23,6 @@ import android.os.Handler;
 public class SystemManager extends BaseManager {
 	private Features m_features = new Features();
 	private SystemInfo m_systemInfo = new SystemInfo();
-	//private MM100SystemInfo m_mm100SystemInfo = new MM100SystemInfo();
 	private StorageList m_storageList = new StorageList();
 
 	private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
@@ -39,9 +38,6 @@ public class SystemManager extends BaseManager {
 	private GetFeaturesTask m_getFeaturesTask = null;
 	private GetExternalStorageDeviceTask m_getExternalStorageDeviceTask = null;
 
-	private Timer m_getMM100SystemInfoTimer = new Timer();
-	//private GetMM100SystemInfoTask m_getMM100SystemInfoTask = null;/*pchong*/
-
 	public Features getFeatures() {
 		return m_features;
 	}
@@ -49,11 +45,7 @@ public class SystemManager extends BaseManager {
 	public SystemInfo getSystemInfoModel() {
 		return m_systemInfo;
 	}
-/*
-	public MM100SystemInfo getMM100SystemInfoModel() {
-		return m_mm100SystemInfo;
-	}
-*//*pchong*/
+
 	public StorageList getStorageList() {
 		return m_storageList;
 	}
@@ -66,7 +58,6 @@ public class SystemManager extends BaseManager {
 	protected void clearData() {	
 		m_features.clear();
 		m_systemInfo.clear();
-		//m_mm100SystemInfo.clear();/*pchong*/
 		m_storageList.clear();
 	}
 
@@ -81,10 +72,6 @@ public class SystemManager extends BaseManager {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
-//				if (FeatureVersionManager.getInstance().isSupportDevice(
-//						FeatureVersionManager.VERSION_DEVICE_M100) == true)
-//					startGetMM100SystemInfoTask();
-//				else/*pchong*/
 					getSystemInfo(null);
 
 				if (FeatureVersionManager.getInstance().isSupportApi("System",
@@ -238,67 +225,6 @@ public class SystemManager extends BaseManager {
 		}
 	}
 
-	// Get MM100 System info
-	// //////////////////////////////////////////////////////////////////////////////////////////
-/*
-	private void startGetMM100SystemInfoTask() {
-		if (m_getMM100SystemInfoTask == null) {
-			m_getMM100SystemInfoTask = new GetMM100SystemInfoTask();
-			m_getMM100SystemInfoTimer.scheduleAtFixedRate(
-					m_getMM100SystemInfoTask, 0, 20000);
-		}
-	}
-
-	class GetMM100SystemInfoTask extends TimerTask {
-		@Override
-		public void run() {
-			getMM100SystemInfo(null);
-		}
-	}
-
-	public void getMM100SystemInfo(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("System",
-				"GetSystemInfo") != true)
-			return;
-
-		boolean bCPEWifiConnected = DataConnectManager.getInstance()
-				.getCPEWifiConnected();
-		if (bCPEWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
-					new MM100HttpSystem.GetSystemInfo("1.2",
-							new IHttpFinishListener() {
-								@Override
-								public void onHttpRequestFinish(
-										BaseResponse response) {
-									int ret = response.getResultCode();
-									String strErrcode = response.getErrorCode();
-									if (ret == BaseResponse.RESPONSE_OK
-											&& strErrcode.length() == 0) {
-										m_mm100SystemInfo = response
-												.getModelResult();
-									} else {
-										new Handler().postDelayed(
-												new Runnable() {
-													@Override
-													public void run() {
-														getSystemInfo(null);
-													}
-												}, 1000);
-									}
-
-									Intent megIntent = new Intent(
-											MessageUti.SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_RESULT, ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
-								}
-							}));
-		}
-	}
-*//*pchong*/
 	// GetExternalStorageDevice
 	// //////////////////////////////////////////////////////////////////////////////////////////
 

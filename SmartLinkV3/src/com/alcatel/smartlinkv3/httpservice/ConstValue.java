@@ -3,7 +3,7 @@ package com.alcatel.smartlinkv3.httpservice;
 public class ConstValue {
 	//public static String HTTP_SERVER_ADDRESS = "http://%1$s/jrd/webapi";	//only h850
 	public static String HTTP_SERVER_ADDRESS = "http://%1$s/cgi-bin/rpc";//mm100 or h850
-	public static String LOG_FILE_NAME = "/CPELog.txt";
+	public static String LOG_FILE_NAME = "/SmartLinkV3Log.txt";
 	
 	public static String JSON_RPC_VERSION = "2.0";
 	

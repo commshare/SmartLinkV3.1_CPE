@@ -26,26 +26,17 @@ public class WlanManager extends BaseManager {
 	private int m_nHostNum = 0;
 	private String m_strSsid = new String();
 	private String m_strWifiPwd = new String();
-	private String m_strMM100Ssid = new String();
 
 	private WlanSettingResult m_settings = new WlanSettingResult();
-	//private MM100WlanSettingResult m_mm100Settings = new MM100WlanSettingResult();
-	//private MM100AccessPointsList m_mm100AccessPointsList = new MM100AccessPointsList();/*pchong*/
-	//private MM100RemoteAPModel m_remoteAP = new MM100RemoteAPModel();
 
 	private Timer m_rollTimer = new Timer();
 	GetHostNumTask m_getHostNumTask = null;
-	//GetMM100APListTask m_getMM100APList = null;
-	//GetMM100RemoteAPTask m_getMM100RemoteAPTask = null;*//*pchong*/
 	
 
 	@Override
 	protected void clearData() {
 		m_nHostNum = 0;
 		m_settings.clear();
-		//m_mm100Settings.clear();
-		//m_mm100AccessPointsList.clear();/*pchong*/
-		//m_remoteAP.clear();
 	}
 
 	@Override
@@ -58,25 +49,6 @@ public class WlanManager extends BaseManager {
 			m_getHostNumTask = null;
 		}		
 	}
-	/*
-	public void requestAPInfo()
-	{
-		startGetMM100APListTask();
-		startGetMM100RemoteAPTask();	
-	}
-	
-	public void removeAPInfo()
-	{
-		if(m_getMM100APList != null) {
-			m_getMM100APList.cancel();
-			m_getMM100APList = null;
-		}
-		
-		if(m_getMM100RemoteAPTask != null) {
-			m_getMM100RemoteAPTask.cancel();
-			m_getMM100RemoteAPTask = null;
-		}	
-	}*/
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
@@ -84,12 +56,7 @@ public class WlanManager extends BaseManager {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
-				if(FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == true) {
-					//startGetMM100APListTask();
-					//startGetMM100RemoteAPTask();
-				}else{
 					startGetHostNumTask();
-				}
 			}
 		}
 	}
@@ -107,38 +74,7 @@ public class WlanManager extends BaseManager {
 	public String getSsid() {
 		return m_strSsid;
 	}
-	
-	/*
-	public MM100RemoteAPModel getMM100RemoteAP() {
-		return m_remoteAP;
-	}
-	
-	public MM100AccessPointsList getMM100AccessPoints() {
-		return m_mm100AccessPointsList;
-	}
-	
-	public String getMM100MacAddress() {
-		return m_mm100Settings.MacAddress;
-	}
 
-	public String getMM100Ssid() {
-
-		WlanFrequency wf = WlanFrequency.build(m_mm100Settings.WlanFrequency);
-		switch (wf) {
-		case Frequency_24GHZ:
-			m_strMM100Ssid = m_mm100Settings.Ssid;
-			break;
-		case Frequency_5GHZ:
-			m_strMM100Ssid = m_mm100Settings.Ssid5G;
-			break;
-
-		default:
-			m_strMM100Ssid = "";
-			break;
-		}
-		return m_strMM100Ssid;
-	}
-*//*pchong*/
 	public String getWifiPwd() {
 		return m_strWifiPwd;
 	}
@@ -347,213 +283,4 @@ public class WlanManager extends BaseManager {
 							}
 						}));
 	}
-
-	// get MM100 wlan setting
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	/*
-	public void getMM100WlanSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
-				"GetWlanSettings") != true)
-			return;
-
-		HttpRequestManager.GetInstance().sendPostRequest(
-				new MM100HttpWlanSetting.GetWlanSetting("2.1",
-						new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
-
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
-										m_mm100Settings = response
-												.getModelResult();
-
-									} else {
-
-									}
-								} else {
-									// Log
-								}
-
-								Intent megIntent = new Intent(
-										MessageUti.WLAN_GET_MM100_WLAN_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
-							}
-						}));
-	}
-
-	// get MM100 Access point list
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	private void startGetMM100APListTask() {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan","GetAccessPointsList") != true)
-			return;
-		if(m_getMM100APList == null) {
-			m_getMM100APList = new GetMM100APListTask();
-			m_rollTimer.scheduleAtFixedRate(m_getMM100APList, 0, 20 * 1000);
-		}
-	}
-
-	class GetMM100APListTask extends TimerTask {
-		@Override
-		public void run() {
-			Intent intent = new Intent(MessageUti.CPE_GET_MM100_ACCESS_POINTS_LIST_START);
-			m_context.sendBroadcast(intent);
-			
-			HttpRequestManager.GetInstance().sendPostRequest(new MM100HttpWlanSetting.GetAccessPointsList("2.2",new IHttpFinishListener() {
-				@Override
-				public void onHttpRequestFinish(BaseResponse response) {
-					String strErrcode = new String();
-					int ret = response.getResultCode();
-					if (ret == BaseResponse.RESPONSE_OK) {
-						strErrcode = response.getErrorCode();
-						if (strErrcode.length() == 0) {
-							m_mm100AccessPointsList = response.getModelResult();
-						} else {
-
-						}
-					} else {
-						// Log
-					}
-
-					Intent megIntent = new Intent(MessageUti.WLAN_GET_MM100_ACCESS_POINTS_LIST_REQUSET);
-					megIntent.putExtra(MessageUti.RESPONSE_RESULT,ret);
-					megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,strErrcode);
-					m_context.sendBroadcast(megIntent);
-				}
-			}));
-		}
-	}
-	
-	// get MM100 remote ap
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	private void startGetMM100RemoteAPTask() {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan","GetWlanRemoteAP") != true)
-			return;
-		if(m_getMM100RemoteAPTask == null) {
-			m_getMM100RemoteAPTask = new GetMM100RemoteAPTask();
-			m_rollTimer.scheduleAtFixedRate(m_getMM100RemoteAPTask, 0, 16 * 1000);
-		}
-	}
-
-	private void getMM100RemoteAP(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan","GetWlanRemoteAP") != true)
-			return;
-		
-		GetMM100RemoteAPTask task = new GetMM100RemoteAPTask();
-		m_rollTimer.schedule(task, 0);
-	}
-	
-	class GetMM100RemoteAPTask extends TimerTask {
-		@Override
-		public void run() {
-			HttpRequestManager.GetInstance().sendPostRequest(new MM100HttpWlanSetting.GetWlanRemoteAP("2.4",new IHttpFinishListener() {
-				@Override
-				public void onHttpRequestFinish(BaseResponse response) {
-					String strErrcode = new String();
-					int ret = response.getResultCode();
-					if (ret == BaseResponse.RESPONSE_OK) {
-						strErrcode = response.getErrorCode();
-						if (strErrcode.length() == 0) {
-							MM100RemoteAPResult remoteAP = response.getModelResult();
-							m_remoteAP.setValue(remoteAP);
-						} else {
-
-						}
-					} else {
-						// Log
-					}
-
-					Intent megIntent = new Intent(MessageUti.WLAN_GET_MM100_REMOTE_AP_REQUSET);
-					megIntent.putExtra(MessageUti.RESPONSE_RESULT,ret);
-					megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,strErrcode);
-					m_context.sendBroadcast(megIntent);
-				}
-			}));
-		}
-	}
-		
-	// Select Access Point
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void selectMM100AccessPoint(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
-				"SelectAccessPoint") != true)
-			return;
-		
-		int nId = (Integer) data.getParamByKey("id");
-		String  password = (String) data.getParamByKey("password");
-		
-		String  strSsid = (String) data.getParamByKey("ssid");
-		String  strEncrypt = (String) data.getParamByKey("encrypt");
-		String  strTkipAes = (String) data.getParamByKey("tkip_aes");
-		String  strChannel = (String) data.getParamByKey("channel");
-		
-		HttpRequestManager.GetInstance().sendPostRequest(
-				new MM100HttpWlanSetting.SelectAccessPoint("2.3", nId, password,strSsid,strEncrypt,strTkipAes,strChannel,
-						new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
-
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
-										getMM100RemoteAP(null);
-									} else {
-
-									}
-								} else {
-									// Log
-								}
-
-								Intent megIntent = new Intent(
-										MessageUti.WLAN_SELECT_MM100_ACCESS_POINT_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
-							}
-						}));
-	}
-	
-	// Disconnect client Point
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void disconnectClientAP(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan","DisconnectClientAP") != true)
-			return;
-
-		HttpRequestManager.GetInstance().sendPostRequest(new MM100HttpWlanSetting.DisconnectClientAP("2.5",new IHttpFinishListener() {
-			@Override
-			public void onHttpRequestFinish(BaseResponse response) {
-				String strErrcode = new String();
-				int ret = response.getResultCode();
-				if (ret == BaseResponse.RESPONSE_OK) {
-					strErrcode = response.getErrorCode();
-					if (strErrcode.length() == 0) {
-						getMM100RemoteAP(null);
-					} else {
-
-					}
-				} else {
-					// Log
-				}
-
-				Intent megIntent = new Intent(MessageUti.WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET);
-				megIntent.putExtra(MessageUti.RESPONSE_RESULT,ret);
-				megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,strErrcode);
-				m_context.sendBroadcast(megIntent);
-			}
-		}));
-	}*//*pchong*/
 }

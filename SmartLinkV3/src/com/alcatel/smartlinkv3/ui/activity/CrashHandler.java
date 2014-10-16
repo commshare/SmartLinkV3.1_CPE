@@ -19,7 +19,7 @@ import android.util.Log;
 
 public class CrashHandler implements UncaughtExceptionHandler {
 
-	public static final String TAG = "CPECrashHandler";
+	public static final String TAG = "SmartLinkV3CrashHandler";
 	private Thread.UncaughtExceptionHandler mDefaultHandler;
 	private static CrashHandler INSTANCE = new CrashHandler();
 	private Context mContext;
@@ -116,10 +116,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		String result = writer.toString();
 		sb.append(result);
 		try {			
-			String fileName = "CPECrash.txt";
+			String fileName = "SmartLinkV3Crash.txt";
 			if (Environment.getExternalStorageState().equals(
 					Environment.MEDIA_MOUNTED)) {
-				String path =  Environment.getExternalStorageDirectory().getPath()+"/CPE/";
+				String path =  Environment.getExternalStorageDirectory().getPath()+"/SmartLinkV3/";
 				File dir = new File(path);
 				if (!dir.exists()) {
 					dir.mkdirs();

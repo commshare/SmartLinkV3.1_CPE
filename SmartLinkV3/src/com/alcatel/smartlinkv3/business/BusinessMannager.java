@@ -198,10 +198,6 @@ public class BusinessMannager {
     public SystemInfo getSystemInfo() {
 		return m_systemManager.getSystemInfoModel();
 	}
-    /*
-    public MM100SystemInfo getMM100SystemInfo() {
-		return m_systemManager.getMM100SystemInfoModel();
-	}*//*pchong*/
     
 	public StorageList getStorageList()
 	{
@@ -293,14 +289,6 @@ public class BusinessMannager {
     public String getSsid() {
   		return m_wlanManager.getSsid();
   	} 
-    /*
-    public String getMM100MacAddress() {
-    	return m_wlanManager.getMM100MacAddress();
-    }
-    
-    public String getMM100Ssid() {
-  		return m_wlanManager.getMM100Ssid();
-  	} *//*pchong*/
        
     public String getWifiPwd() {
   		return m_wlanManager.getWifiPwd();
@@ -325,25 +313,7 @@ public class BusinessMannager {
 	public WlanFrequency getWlanFrequency() {
 		return m_wlanManager.getWlanFrequency();
 	}
-	/*
-	public MM100AccessPointsList getMM100AccessPoints() {
-		return m_wlanManager.getMM100AccessPoints();
-	}
 	
-	public MM100RemoteAPModel getMM100RemoteAP() {
-		return m_wlanManager.getMM100RemoteAP();
-	}*//*pchong*/
-	
-	/*
-	public void requestAPInfo()
-	{
-		m_wlanManager.requestAPInfo();	
-	}
-	
-	public void removeAPInfo()
-	{
-		m_wlanManager.removeAPInfo();		
-	}*//*pchong*/
     /********************wlan manager method end************************/      
 
     
