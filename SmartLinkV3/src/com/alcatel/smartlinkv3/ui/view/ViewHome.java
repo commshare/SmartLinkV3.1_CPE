@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
+import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,13 +21,17 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private static final String TAG = ViewHome.class.getSimpleName();
+	
+	private RelativeLayout m_accessDeviceLayout;
 	
 	public ViewHome(Context context) {
 		super(context);
@@ -35,7 +41,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	@Override
 	protected void init() {
 		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_home,null);
-		
+		m_accessDeviceLayout = (RelativeLayout)m_view.findViewById(R.id.access_num_layout);
+		m_accessDeviceLayout.setOnClickListener(this);
 	}
 
 	@Override
@@ -48,6 +55,19 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	public void onDestroy() {}
 
 	@Override
-	public void onClick(View v) {}
-
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.access_num_layout:
+			accessDeviceLayoutClick();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void accessDeviceLayoutClick() {
+		Intent intent = new Intent();
+		intent.setClass(m_context, ActivityDeviceManager.class);	
+		this.m_context.startActivity(intent);
+	}
 }

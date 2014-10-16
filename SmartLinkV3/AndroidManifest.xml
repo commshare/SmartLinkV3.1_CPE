@@ -129,6 +129,13 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        
         
         
         <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >  

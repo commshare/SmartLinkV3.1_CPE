@@ -254,6 +254,7 @@
                  <RelativeLayout
                     android:id="@+id/access_num_layout"
                     android:layout_width="120dip"
+                    android:clickable="true"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dip"
