@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 public class SmartLinkWidget extends AppWidgetProvider {
 
-	private String[] months={"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"};  
-    private String[] days={"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};
+	private String[] months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aut","Sep","Oct","Nov","Dec"};  
+    private String[] days={"Sun","Mon","Tue","Wen","Thu","Fri","Sat"};
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		// TODO Auto-generated method stub
@@ -38,7 +38,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 		// TODO Auto-generated method stub
 		super.onReceive(context, intent);
 		if(intent.getAction().equals("cn.com.karl.widget.click")){  
-            Toast.makeText(context, "点击了widget日历", 1).show();  
+			 Toast.makeText(context, "click widget calendar", 1).show(); 
         }
 	}
 

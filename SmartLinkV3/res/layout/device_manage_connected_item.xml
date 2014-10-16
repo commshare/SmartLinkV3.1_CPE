@@ -44,9 +44,7 @@
 		        android:layout_alignParentRight="true"
 		        android:layout_centerVertical="true"
 		        android:layout_marginRight="10dip"
-		        android:text="@string/device_manage_block_btn"
-		        android:paddingLeft="15dip"
-                android:paddingRight="15dip"/>
+		        android:text="@string/device_manage_block_btn" />
 	    </RelativeLayout>
 	    <TextView
 	        android:id="@+id/ip"
