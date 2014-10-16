@@ -2,10 +2,6 @@
 <resources>
 
     <string name="app_name">SmartLinkV3</string>  
-    <string name="back">Back</string>
-    <string name="ok">Ok</string>
-    <string name="cancel">Cancel</string>
-    <string name="delete">Delete</string>
 
     <!-- main fram start -->
     <string name="main_home">Home</string>
@@ -13,10 +9,19 @@
    	<string name="main_sms">SMS</string>
     <string name="main_setting">Setting</string>
     
+    <!-- Home view start -->
+    <string name="home_GB">GB</string>
+    <string name="home_KB">KB</string>
+    <string name="home_MB">MB</string>
+    <string name="home_B">B</string>
+    <!-- Home view end -->
+    
     <!--sms start -->
     <string name="sms_empty">No SMS</string>
     <string name="sms_list_view_draft">%1$d,draft</string>
     <string name="sms_send_fail">Fail</string>
+    <string name="sms_report_message">Message delivered!</string>
+    <string name="IDS_SMS_BUTTON_BACK">Back</string>
     <!-- sms end -->
     
     <!--connect device start -->
@@ -50,4 +55,139 @@
     <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for a long time</string>
     <!-- setting end -->
 
+	<!-- common start -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="done">Done</string>
+    <string name="back">Back</string>   
+    <string name="delete">Delete</string>
+    <string name="upload">Upload</string>
+    <string name="deleting">Deleting</string>
+    <string name="yes">Yes</string>
+    <string name="sending">Sending</string>
+    <!-- common end -->
+    
+    <!-- notification start -->
+    <string name="usage_limit_notification_title">Data usage warning</string>  
+    <string name="usage_limit_notification_content">%1$s traffic has been used.</string>
+    <string name="time_limit_notification_title">Time limit warning</string>
+    <string name="time_limit_notification_content">The time limit is approaching. The network will be disconnected.</string>
+    <string name="overflow_notification_title">Usage limit warning</string>
+    <string name="overflow_notification_content">Monthly data plan has been used up.</string>    
+    <!-- notification end --> 
+    
+    <!-- samba errors-->
+  	<string name="list_samba_files_failed">List samba files failed!</string>
+    <string name="search_samba_files_failed">Search samba files failed!</string>  
+    <string name="smb_move_files_failed">Move file(s) failed.</string>
+    <string name="smb_open_file_error_no_app">No application to open the file.</string> 
+    <string name="smb_upload_file_failed">\"%1$s\" failed to upload.</string> 
+    <string name="smb_download_file_failed">\"%1$s\" failed to download.</string> 
+    <string name="smb_error_disk_full">The disk is full.</string> 
+    <string name="smb_error_logon_failure">Logon failure: unknown user name or bad password.</string> 
+    <string name="smb_error_open_unknown_file">This file can not be displayed via samba, you can download it and open it with another app.</string>   
+    <!-- samba errors-->
+
+	<!-- Dialog start -->
+    <string name="dialog_delete_title">Confirm Deletion</string>
+    <string name="dialog_delete_content">Confirm deletion of this chat\'s history</string>
+    <string name="dialog_delete_content_description">If you want to delete one SMS, long press it then choose delete.</string>
+    <string name="dialog_delete_button">Delete Chat History</string>
+    <string name="dialog_delete_single_sms_content">Delete this message?</string>
+    <!-- Dialog end -->
+    
+	<!-- new folder dialog start-->
+  	<string name="new_folder_dialog_title">Build a new folder</string>
+  	<string name="new_folder_prompt">Folder Name</string>
+  	<string name="directory_is_exist">The folder already exists.</string>
+  	<string name="new_folder_failed">New folder failed!</string>
+  	<!-- new folder dialog end-->
+  	
+  	<!-- rename folder dialog start-->
+  	<string name="rename_dialog_title">Rename</string>
+  	<string name="rename_prompt">New Name:</string>
+  	<string name="rename_is_exist">The name already exists.</string>
+  	<string name="rename_failed">Rename failed!</string>
+  	<string name="file_name_error">You have input invalide character</string>
+    <string name="file_name_start_with_space">File or folder name can not start with a space</string>
+  	<!-- rename folder dialog end-->
+  	
+  	<!-- replace folder dialog start-->
+  	<string name="confirm_folder_replace">confirm replace</string>
+	<string name="confirm_folder_content">There is already a file with the same name in this location.</string>
+	<string name="confirm_folder_yes">continue</string>
+	<string name="confirm_folder_cancel">cancel</string>
+	<!-- replace folder dialog end-->
+  	
+  	<!-- storage delete dialog start -->
+    <string name="delete_file_title">Delete item(s)?</string>
+    <string name="delete_file_content">Are you sure you want to delete the file(s) or folder(s)?</string>
+    <string name="delete_file_fail1">Delete failed!</string>
+    <string name="delete_file_fail2">Delete %1$d successed, %2$d failed!</string>
+    <!-- storage delete dialog end -->
+    
+  	<!-- storage search activity start-->
+  	<string name="search_number">%1$d Result(s) for \"%2$s\"</string>
+  	<!-- storage search activity end-->
+  	
+  	<!-- storage edit activity start-->
+	<string name="toolbar_download">Download</string>
+	<string name="toolbar_move">Move</string>
+	<string name="toolbar_rename">Rename</string>
+	<string name="toolbar_delete">Delete</string>
+	<string name="toolbar_select_all">All</string>
+  	<!-- storage edit activity end-->
+  	
+  	<!-- storage move to activity start-->
+  	<string name="move_to_title">Move To</string>
+  	<string name="move_to_to_here">To Here</string>
+  	<string name="move_to_is_subfolder_fail">The destination folder(%1$s) is a subfolder of the source folder(%2$s).</string>
+  	<string name="move_to_file_move_fail">Move %1$s failed.</string>
+  	<string name="move_to_file_already_exist_fail">%1$s already existed.</string>
+  	<!-- storage move to activity end-->
+  	
+  	<!-- storage download activity start-->
+  	<string name="download_files_tip">Your selection is downloading now, you can check it in Local Storage.</string>
+  	<!-- storage download activity end-->
+  	
+  	<!-- storage upload activity start-->
+  	<string name="upload_title">Upload</string>
+  	<string name="check_off_prompt">Former selection has been unchecked!</string>
+  	<!-- storage upload activity end-->
+  	
+  	<!-- set default local storage start-->
+    <string name="set_default_storage_title">Set Default Folder</string>
+    <string name="set_default_storage_select_btn">Select</string>
+    <!-- set default local storage end-->
+    
+  	<!-- PIN start-->
+  	<string name="button_apply">Apply</string>
+  	<string name="image_view_close_button">close button</string>
+  	<!-- PIN end-->
+  	
+  	<!-- m100 app start -->
+  	<string name="m100_edit">Edit</string>
+  	<string name="m100_new_folder">New Folder</string>
+    <string name="m100_search">Search</string>
+    <string name="m100_no_file">No File</string>
+    <string name="m100_storage_main_title">Storage</string>
+    <string name="m100_storage_main_media_box">Mobile Media Box</string>
+    <string name="m100_storage_main_hard_disc">Hard Disk</string>
+    <string name="m100_storage_main_no_external_storage">No external storage</string>
+    <string name="m100_storage_main_local_storage">Local Storage</string>
+    <string name="m100_storage_main_samba_service">Samba Service</string>
+    <string name="m100_storage_main_samba_service_disabled">Samba service is disabled</string>
+    <string name="m100_storage_main_samba_service_disabled_description">To access hard disk connected to HOME H850, or access HOME MM100 storage, you need to switch on Samba Service below. Then, if you after want to switch off this service, you should go to "My Device > Settings > Advanced > Samba".</string>
+  	<string name="m100_loading_pecent">%1$d%%</string>
+    <string name="m100_downloading_prompt">\"%1$s\" is downloading...</string>
+    <string name="m100_uploading_prompt">\"%1$s\" is uploading...</string>
+  	<!-- m100 app end -->
+  	
+  	<string name="title_cancel_uploading">Stop the Upload?</string>
+    <string name="content_cancel_uploading">Do you want to stop uploading \"%1$s\"?</string>
+	<string name="btn_cancel_uploading">Yes, stop the upload</string>
+	
+	<string name="title_cancel_downloading">Stop the Download?</string>
+    <string name="content_cancel_downloading">Do you want to stop downloading \"%1$s\"?</string>
+	<string name="btn_cancel_downloading">Yes, stop the downloading</string>
 </resources>

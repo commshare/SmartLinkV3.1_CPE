@@ -1,0 +1,350 @@
+package com.alcatel.smartlinkv3.business;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.alcatel.smartlinkv3.business.system.Features;
+import com.alcatel.smartlinkv3.business.system.HttpSystem;
+import com.alcatel.smartlinkv3.business.system.StorageList;
+import com.alcatel.smartlinkv3.business.system.SystemInfo;
+import com.alcatel.smartlinkv3.common.Const;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
+import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+
+public class SystemManager extends BaseManager {
+	private Features m_features = new Features();
+	private SystemInfo m_systemInfo = new SystemInfo();
+	//private MM100SystemInfo m_mm100SystemInfo = new MM100SystemInfo();
+	private StorageList m_storageList = new StorageList();
+
+	private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
+															// this device
+
+	private Timer m_getFeaturesTimer = new Timer();// this time not to cancel
+													// when cpe wifi
+													// disconnected,beacause
+													// used to test the wifi
+													// connect state
+	private Timer m_getStorageTimer = new Timer();
+
+	private GetFeaturesTask m_getFeaturesTask = null;
+	private GetExternalStorageDeviceTask m_getExternalStorageDeviceTask = null;
+
+	private Timer m_getMM100SystemInfoTimer = new Timer();
+	//private GetMM100SystemInfoTask m_getMM100SystemInfoTask = null;/*pchong*/
+
+	public Features getFeatures() {
+		return m_features;
+	}
+
+	public SystemInfo getSystemInfoModel() {
+		return m_systemInfo;
+	}
+/*
+	public MM100SystemInfo getMM100SystemInfoModel() {
+		return m_mm100SystemInfo;
+	}
+*//*pchong*/
+	public StorageList getStorageList() {
+		return m_storageList;
+	}
+
+	public boolean getAlreadyRecongniseDeviceFlag() {
+		return m_bAlreadyRecogniseCPEDevice;
+	}
+
+	@Override
+	protected void clearData() {	
+		m_features.clear();
+		m_systemInfo.clear();
+		//m_mm100SystemInfo.clear();/*pchong*/
+		m_storageList.clear();
+	}
+
+	@Override
+	protected void onBroadcastReceive(Context context, Intent intent) {
+		if (intent.getAction().equals(MessageUti.CPE_BUSINESS_STATUS_CHANGE)) {
+			m_bStopBusiness = intent.getBooleanExtra("stop", false);
+			stwichBusiness();
+		}
+
+		if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+			boolean bCPEWifiConnected = DataConnectManager.getInstance()
+					.getCPEWifiConnected();
+			if (bCPEWifiConnected == true) {
+//				if (FeatureVersionManager.getInstance().isSupportDevice(
+//						FeatureVersionManager.VERSION_DEVICE_M100) == true)
+//					startGetMM100SystemInfoTask();
+//				else/*pchong*/
+					getSystemInfo(null);
+
+				if (FeatureVersionManager.getInstance().isSupportApi("System",
+						"GetExternalStorageDevice")) {
+					startGetStorageTask();
+				}
+			} else {
+				stopRollTimer();
+				m_storageList.clear();
+			}
+		}
+	}
+
+	public SystemManager(Context context) {
+		super(context);
+		// CPE_BUSINESS_STATUS_CHANGE and CPE_WIFI_CONNECT_CHANGE already
+		// register in basemanager
+		// m_context.registerReceiver(m_msgReceiver, new
+		// IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
+	}
+
+	@Override
+	protected void stopRollTimer() {
+		/*
+		 * m_getStorageTimer.cancel(); m_getStorageTimer.purge();
+		 * m_getStorageTimer = new Timer();
+		 */
+		if (null != m_getExternalStorageDeviceTask) {
+			m_getExternalStorageDeviceTask.cancel();
+			m_getExternalStorageDeviceTask = null;
+		}
+	}
+
+	public void stwichBusiness() {
+		if (m_bStopBusiness) {
+			m_bAlreadyRecogniseCPEDevice = false;
+			if (m_getFeaturesTask != null) {
+				m_getFeaturesTask.cancel();
+				m_getFeaturesTask = null;
+			}
+			// m_getFeaturesTimer.cancel();
+			// m_getFeaturesTimer.purge();
+			// m_getFeaturesTimer = new Timer();
+		} else {
+			// GetFeaturesTask getFeaturesTask = new GetFeaturesTask();
+			// m_getFeaturesTimer.scheduleAtFixedRate(getFeaturesTask, 0, 5000);
+			if (m_getFeaturesTask == null) {
+				m_getFeaturesTask = new GetFeaturesTask();
+				m_getFeaturesTimer.scheduleAtFixedRate(m_getFeaturesTask, 0,
+						5000);
+			}
+		}
+	}
+
+	// Get feature list
+	// //////////////////////////////////////////////////////////////////////////////////////////
+	class GetFeaturesTask extends TimerTask {
+		@Override
+		public void run() {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.GetFeature("2.6", new IHttpFinishListener() {
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							String strErrcode = new String();
+							int ret = response.getResultCode();
+							if (ret == BaseResponse.RESPONSE_OK) {
+								strErrcode = response.getErrorCode();
+								if (strErrcode.length() == 0) {
+									m_features = response.getModelResult();
+								} else {
+
+								}
+							} else {
+								// Log
+							}
+
+							m_bAlreadyRecogniseCPEDevice = true;
+
+							// change billing month,because to next billing
+							// month
+							SimpleDateFormat startTemp = new SimpleDateFormat(
+									Const.DATE_FORMATE);
+							Calendar caNow = Calendar.getInstance();
+							String strNow = startTemp.format(caNow.getTime());
+							if (!(BusinessMannager.getInstance()
+									.getUsageSettings().m_strStartBillDate
+									.compareTo(strNow) <= 0 && BusinessMannager
+									.getInstance().getUsageSettings().m_strEndBillDate
+									.compareTo(strNow) >= 0)) {
+								BusinessMannager.getInstance()
+										.getUsageSettings()
+										.calStartAndEndCalendar();
+								Intent megIntent = new Intent(
+										MessageUti.CPE_CHANGED_BILLING_MONTH);
+								m_context.sendBroadcast(megIntent);
+							}
+
+							Intent megIntent = new Intent(
+									MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
+							megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+							megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,
+									strErrcode);
+							m_context.sendBroadcast(megIntent);
+						}
+					}));
+		}
+	}
+
+	// Get System info
+	// //////////////////////////////////////////////////////////////////////////////////////////
+	public void getSystemInfo(DataValue data) {
+		if (FeatureVersionManager.getInstance().isSupportApi("System",
+				"GetSystemInfo") != true)
+			return;
+
+		boolean bCPEWifiConnected = DataConnectManager.getInstance()
+				.getCPEWifiConnected();
+		if (bCPEWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.GetSystemInfo("2.1",
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									int ret = response.getResultCode();
+									String strErrcode = response.getErrorCode();
+									if (ret == BaseResponse.RESPONSE_OK
+											&& strErrcode.length() == 0) {
+										m_systemInfo = response
+												.getModelResult();
+									} else {
+										new Handler().postDelayed(
+												new Runnable() {
+													@Override
+													public void run() {
+														getSystemInfo(null);
+													}
+												}, 1000);
+									}
+
+									Intent megIntent = new Intent(
+											MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_RESULT, ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
+	}
+
+	// Get MM100 System info
+	// //////////////////////////////////////////////////////////////////////////////////////////
+/*
+	private void startGetMM100SystemInfoTask() {
+		if (m_getMM100SystemInfoTask == null) {
+			m_getMM100SystemInfoTask = new GetMM100SystemInfoTask();
+			m_getMM100SystemInfoTimer.scheduleAtFixedRate(
+					m_getMM100SystemInfoTask, 0, 20000);
+		}
+	}
+
+	class GetMM100SystemInfoTask extends TimerTask {
+		@Override
+		public void run() {
+			getMM100SystemInfo(null);
+		}
+	}
+
+	public void getMM100SystemInfo(DataValue data) {
+		if (FeatureVersionManager.getInstance().isSupportApi("System",
+				"GetSystemInfo") != true)
+			return;
+
+		boolean bCPEWifiConnected = DataConnectManager.getInstance()
+				.getCPEWifiConnected();
+		if (bCPEWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new MM100HttpSystem.GetSystemInfo("1.2",
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									int ret = response.getResultCode();
+									String strErrcode = response.getErrorCode();
+									if (ret == BaseResponse.RESPONSE_OK
+											&& strErrcode.length() == 0) {
+										m_mm100SystemInfo = response
+												.getModelResult();
+									} else {
+										new Handler().postDelayed(
+												new Runnable() {
+													@Override
+													public void run() {
+														getSystemInfo(null);
+													}
+												}, 1000);
+									}
+
+									Intent megIntent = new Intent(
+											MessageUti.SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_RESULT, ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
+	}
+*//*pchong*/
+	// GetExternalStorageDevice
+	// //////////////////////////////////////////////////////////////////////////////////////////
+
+	private void startGetStorageTask() {
+		if (m_getExternalStorageDeviceTask == null) {
+			m_getExternalStorageDeviceTask = new GetExternalStorageDeviceTask();
+			m_getStorageTimer.scheduleAtFixedRate(
+					m_getExternalStorageDeviceTask, 0, 10000);
+		}
+	}
+
+	class GetExternalStorageDeviceTask extends TimerTask {
+		@Override
+		public void run() {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.GetExternalStorageDevice("2.7",
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									String strErrcode = new String();
+									int ret = response.getResultCode();
+									if (ret == BaseResponse.RESPONSE_OK) {
+										strErrcode = response.getErrorCode();
+										if (strErrcode.length() == 0) {
+											m_storageList = response
+													.getModelResult();
+
+										} else {
+											m_storageList.clear();
+										}
+									} else {
+										m_storageList.clear();
+									}
+
+									Intent megIntent = new Intent(
+											MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_RESULT, ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+
+								}
+							}));
+		}
+	}
+}

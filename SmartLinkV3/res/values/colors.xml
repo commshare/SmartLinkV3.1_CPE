@@ -17,5 +17,15 @@
     <color name="grey_disable">#ff848484</color>
     <color name="color_deep_grey">#ff303030</color>
     <color name="light_blue">#ff64d2ff</color>
+    
+    <!-- call log start -->
+    <color name="call_log_item_selected">#ff4a4a4a</color>
+    <!-- call log end -->
+    
+    <!-- custom view start -->
+    <color name="mask_color">#00ffffff</color>
+    <color name="data_color">#ff64d2ff</color>
+    <color name="mask_color_test">#ff64d2ff</color>
+    <!-- custom view end -->
 
 </resources>

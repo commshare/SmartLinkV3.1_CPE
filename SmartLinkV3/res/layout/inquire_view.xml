@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inquire_dialog"
+    android:layout_width="263dip"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg" >
+
+    <LinearLayout
+        android:id="@+id/inquire_top_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/close_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/image_view_close_button"
+                android:src="@drawable/selector_close_btn" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/dialog_delete_title"
+                android:textSize="14sp"
+                android:textStyle="bold" 
+                android:textColor="@color/color_white"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/light_blue" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/inquire_content_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inquire_top_layout" >
+
+        <TextView
+            android:id="@+id/inquire_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:text="@string/dialog_delete_content"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/color_white" />
+
+        <TextView
+            android:id="@+id/inquire_content_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/inquire_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:text="@string/dialog_delete_content_description"
+            android:textColor="@color/color_grey" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ID_PIN_BOTTOM_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:layout_below="@id/inquire_content_layout" >
+
+        <Button
+            android:id="@+id/inquire_btn"
+            android:layout_width="200dip"
+            android:layout_height="30dip"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_red_button"
+            android:text="@string/button_apply"
+            android:textColor="@drawable/common_button_text" />
+    </RelativeLayout>
+
+</RelativeLayout>
