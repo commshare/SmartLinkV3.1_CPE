@@ -14,7 +14,7 @@ public class SettingWifiActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.setting_wifi);
+		setContentView(R.layout.activity_setting_wifi);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 	}
 

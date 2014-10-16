@@ -5,9 +5,11 @@ import com.alcatel.smartlinkv3.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.TextView;
 
 public class SettingPowerSavingActivity extends Activity {
 
+	private TextView m_tv_title = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -16,6 +18,19 @@ public class SettingPowerSavingActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_setting_power);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
+		//control title bar
+		controlTitlebar();
+		//create controls
+		createControls();
+	}
+	
+	private void controlTitlebar(){
+		m_tv_title = (TextView)findViewById(R.id.tv_title_title);
+		m_tv_title.setText(R.string.setting_power);
+	}
+	
+	private void createControls(){
+		
 	}
 
 }

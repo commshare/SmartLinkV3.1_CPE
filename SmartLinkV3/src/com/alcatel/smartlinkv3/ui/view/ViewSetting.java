@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
@@ -169,7 +170,7 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	
 	private void goToBackupSettingPage(){
 		Toast.makeText(m_context, "goToBackupSettingPage", 10).show();
-		Intent intent = new Intent(m_context, SettingPowerSavingActivity.class);
+		Intent intent = new Intent(m_context, SettingBackupRestoreActivity.class);
 		m_context.startActivity(intent);
 	}
 	
