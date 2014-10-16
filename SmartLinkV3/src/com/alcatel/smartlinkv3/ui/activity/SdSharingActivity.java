@@ -4,7 +4,9 @@ package com.alcatel.smartlinkv3.ui.activity;
 import com.alcatel.smartlinkv3.ui.activity.StorageMainActivity;
 import com.alcatel.smartlinkv3.R;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +30,10 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener{
 		
 	}
 
-	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
 
 	@Override
 	public void onResume() {

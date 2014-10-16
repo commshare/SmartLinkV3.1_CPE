@@ -67,6 +67,7 @@
             android:name=".ui.activity.WpsMainActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         

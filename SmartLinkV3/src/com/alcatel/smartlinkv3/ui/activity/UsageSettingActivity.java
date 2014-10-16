@@ -3,6 +3,9 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +22,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		setContentView(R.layout.usage_setting_view);
 	}
 
-	
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
 
 	@Override
 	public void onResume() {
