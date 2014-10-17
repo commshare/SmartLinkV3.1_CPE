@@ -5,5 +5,73 @@
     android:orientation="vertical"
     android:background="@color/color_white" >
     
+    <RelativeLayout android:id="@+id/rl_about_version"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+        
+        <ImageView android:id="@+id/iv_about_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/setting_about"
+            android:src="@drawable/about_app"/>
+        
+        <TextView android:id="@+id/tv_about_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/iv_about_app"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:text="@string/setting_about_app_name"/>
+        
+        <TextView android:id="@+id/tv_about_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_about_app_name"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:text="@string/setting_about_version"/>
+    </RelativeLayout>
 
+    <RelativeLayout android:id="@+id/rl_about_copyright"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
+        
+        <TextView android:id="@+id/tv_about_copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:textSize="12sp"
+            android:text="@string/setting_about_copyright"/>
+        
+        <LinearLayout android:id="@+id/ll_about_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+            
+            <TextView android:id="@+id/tx_link_official"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:text="@string/setting_about_official_website"/>
+            
+            <TextView android:id="@+id/tx_link_management_page"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:text="@string/setting_about_management_page"/>
+            
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
