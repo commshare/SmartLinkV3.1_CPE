@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 
 
 	private TextView m_titleTextView = null;
-	private Button m_BtnAdd = null;
+	private Button m_Btnbar = null;
 
 	private ViewHome m_homeView = null;
 	private ViewUsage m_usageView = null;
@@ -72,8 +72,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 
 		m_titleTextView = (TextView) this.findViewById(R.id.main_title);
 		
-		m_BtnAdd = (Button) this.findViewById(R.id.btnAdd);
-		m_BtnAdd.setOnClickListener(this);;
+		m_Btnbar = (Button) this.findViewById(R.id.btnbar);
+		m_Btnbar.setOnClickListener(this);;
 
 		addView();
 		setMainBtnStatus(R.id.main_home);
@@ -133,12 +133,12 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 		case R.id.main_setting:
 			settingBtnClick();
 			break;
-		case R.id.btnAdd:
+		case R.id.btnbar:
 			if(this.pageIndex == ViewIndex.VIEW_HOME)
 			{
 				addBtnClick();
 			}else if(this.pageIndex == ViewIndex.VIEW_USAGE){
-				setBtnClick();
+				moreBtnClick();
 			}else if(this.pageIndex == ViewIndex.VIEW_SMS){
 				editBtnClick();
 			}		
@@ -223,25 +223,25 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 	public void updateTitleUI(int viewIndex) {
 		if (viewIndex == ViewIndex.VIEW_HOME) {
 			m_titleTextView.setText(R.string.main_home);
-			m_BtnAdd.setVisibility(View.VISIBLE);
-			m_BtnAdd.setBackgroundResource(R.drawable.actionbar_add_icon);
+			m_Btnbar.setVisibility(View.VISIBLE);
+			m_Btnbar.setBackgroundResource(R.drawable.actionbar_plus_icon);
 			setMainBtnStatus(R.id.main_home);
 		}
 		if (viewIndex == ViewIndex.VIEW_USAGE) {
 			m_titleTextView.setText(R.string.main_usage);
-			m_BtnAdd.setVisibility(View.VISIBLE);
-			m_BtnAdd.setBackgroundResource(R.drawable.actionbar_more_icon);
+			m_Btnbar.setVisibility(View.VISIBLE);
+			m_Btnbar.setBackgroundResource(R.drawable.actionbar_more_icon);
 			setMainBtnStatus(R.id.main_usage);
 		}
 		if (viewIndex == ViewIndex.VIEW_SMS) {
 			m_titleTextView.setText(R.string.main_sms);
-			m_BtnAdd.setVisibility(View.VISIBLE);
-			m_BtnAdd.setBackgroundResource(R.drawable.actionbar_add_icon);
+			m_Btnbar.setVisibility(View.VISIBLE);
+			m_Btnbar.setBackgroundResource(R.drawable.actionbar_edit_icon);
 			setMainBtnStatus(R.id.main_sms);
 		}
 		if (viewIndex == ViewIndex.VIEW_SETTINGE) {
 			m_titleTextView.setText(R.string.main_setting);
-			m_BtnAdd.setVisibility(View.GONE);
+			m_Btnbar.setVisibility(View.GONE);
 			setMainBtnStatus(R.id.main_setting);
 		}
 	}
@@ -253,7 +253,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 		Drawable d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_homeBtn.setCompoundDrawables(null, d, null, null);
-		int nTextColor = nDrawable = nActiveBtnId == R.id.main_home ? R.color.color_white
+		int nTextColor = nDrawable = nActiveBtnId == R.id.main_home ? R.color.color_blue
 				: R.color.color_grey;
 		m_homeBtn.setTextColor(this.getResources().getColor(nTextColor));
 
@@ -263,7 +263,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 		d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_usageBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_usage ? R.color.color_white
+		nTextColor = nDrawable = nActiveBtnId == R.id.main_usage ? R.color.color_blue
 				: R.color.color_grey;
 		m_usageBtn.setTextColor(this.getResources().getColor(nTextColor));
 
@@ -272,7 +272,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 		d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_smsBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_sms ? R.color.color_white
+		nTextColor = nDrawable = nActiveBtnId == R.id.main_sms ? R.color.color_blue
 				: R.color.color_grey;
 		m_smsBtn.setTextColor(this.getResources().getColor(nTextColor));
 
@@ -281,7 +281,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 		d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_settingBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_setting ? R.color.color_white
+		nTextColor = nDrawable = nActiveBtnId == R.id.main_setting ? R.color.color_blue
 				: R.color.color_grey;
 		m_settingBtn.setTextColor(this.getResources().getColor(nTextColor));
 	}
@@ -289,12 +289,12 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 	
 	private void addBtnClick(){
 		AddPopWindow addPopWindow = new AddPopWindow(MainActivity.this);
-		addPopWindow.showPopupWindow(m_BtnAdd);
+		addPopWindow.showPopupWindow(m_Btnbar);
 	}
 	
-	private void setBtnClick(){
+	private void moreBtnClick(){
 		MorePopWindow morePopWindow = new MorePopWindow(MainActivity.this);
-		morePopWindow.showPopupWindow(m_BtnAdd);
+		morePopWindow.showPopupWindow(m_Btnbar);
 	}
 	
 	private void editBtnClick(){

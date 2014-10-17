@@ -27,7 +27,6 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener{
 		
 		m_layoutStorage = (RelativeLayout)findViewById(R.id.layout_storage);
 		m_layoutStorage.setOnClickListener(this);
-		
 	}
 
 	@Override
