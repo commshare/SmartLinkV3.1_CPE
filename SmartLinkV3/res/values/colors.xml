@@ -22,7 +22,7 @@
     
     <color name="main_title_background">#ff0089cf</color>
     <color name="main_top_divider">#ff2ba8e7</color>
-    <color name="main_bottom_divider">#ffdbddbd</color>
+    <color name="main_bottom_divider">#ffdbdbdb</color>
     <color name="main_tabbar_background">#fff9f9f9</color>
     <color name="color_blue">#ff0089cf</color>
     <color name="color_grey">#ffa8a8a8</color>
