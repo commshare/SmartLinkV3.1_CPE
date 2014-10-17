@@ -64,7 +64,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dip"
-            android:background="@drawable/home_divider" />
+            android:background="@color/color_divider" />
            
        	<include
        		android:layout_width="match_parent"
@@ -74,7 +74,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dip"
-            android:background="@drawable/home_divider" />
+            android:background="@color/color_divider" />
 	        
         <LinearLayout
             android:id="@+id/frame_roaming"
@@ -126,7 +126,7 @@
 	   	<View
 	         android:layout_width="match_parent"
 	         android:layout_height="2dip"
-	         android:background="@drawable/home_divider" />
+	         android:background="@color/color_divider" />
 	        
         <LinearLayout
             android:id="@+id/frame_auto_disconnected"

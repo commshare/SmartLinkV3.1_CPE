@@ -40,7 +40,7 @@
                         android:layout_marginTop="3dip"
                         android:contentDescription="@null"
                         android:visibility="gone"
-                        android:background="@drawable/home_alarm" />
+                        android:background="@drawable/home_time" />
 	                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
 	        <View
                 android:layout_width="match_parent"
                 android:layout_height="2dip"
-                android:background="@drawable/home_divider" />
+                android:background="@color/color_divider" />
             
            	<LinearLayout
 	            android:id="@+id/frame_roaming"
@@ -171,7 +171,7 @@
                         android:layout_marginTop="3dip"
                         android:contentDescription="@null"
                         android:visibility="gone"
-                        android:background="@drawable/home_alarm" />
+                        android:background="@drawable/home_time" />
 	                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -248,7 +248,7 @@
 	        <View
                 android:layout_width="match_parent"
                 android:layout_height="2dip"
-                android:background="@drawable/home_divider" />
+                android:background="@color/color_divider" />
 		        
           	<LinearLayout
 	            android:id="@+id/frame_duration"
@@ -282,7 +282,7 @@
                         android:layout_marginTop="3dip"
                         android:contentDescription="@null"
                         android:visibility="gone"
-                        android:background="@drawable/home_alarm" />
+                        android:background="@drawable/home_time" />
 	                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

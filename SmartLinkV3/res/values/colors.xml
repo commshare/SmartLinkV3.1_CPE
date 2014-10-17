@@ -31,7 +31,6 @@
     
     <!-- home start -->
     <color name="home_connect_background_blue">#ff0089cf</color>
-    <color name="home_divider">#ffcccccc</color>
     <color name="home_connect_status">#ff80c4e7</color>
     <!-- home end -->
     

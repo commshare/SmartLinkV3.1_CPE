@@ -222,13 +222,13 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		if (simStatus != SIMState.Accessable) {
 			m_networkTypeTextView.setVisibility(View.INVISIBLE);
 			m_networkRoamImageView.setVisibility(View.INVISIBLE);
-			m_signalImageView.setBackgroundResource(R.drawable.signal_0);
+			m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 		}else{
 			NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
 			if(curNetwork.m_NetworkType == NetworkType.No_service) {
 				m_networkTypeTextView.setVisibility(View.INVISIBLE);
 				m_networkRoamImageView.setVisibility(View.INVISIBLE);
-				m_signalImageView.setBackgroundResource(R.drawable.signal_0);
+				m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 				
 				return;
 			}
@@ -239,17 +239,17 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_networkRoamImageView.setVisibility(View.INVISIBLE);
 			//show signal strength
 			if(curNetwork.m_signalStrength == SignalStrength.Level_0)
-				m_signalImageView.setBackgroundResource(R.drawable.signal_0);
+				m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_1)
-				m_signalImageView.setBackgroundResource(R.drawable.signal_1);
+				m_signalImageView.setBackgroundResource(R.drawable.home_signal_1);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_2)
-				m_signalImageView.setBackgroundResource(R.drawable.signal_2);
+				m_signalImageView.setBackgroundResource(R.drawable.home_signal_2);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_3)
-				m_signalImageView.setBackgroundResource(R.drawable.signal_3);
+				m_signalImageView.setBackgroundResource(R.drawable.home_signal_3);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_4)
-				m_signalImageView.setBackgroundResource(R.drawable.signal_4);
-			if (curNetwork.m_signalStrength == SignalStrength.Level_5)
-				m_signalImageView.setBackgroundResource(R.drawable.signal_5);
+				m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
+			//if (curNetwork.m_signalStrength == SignalStrength.Level_5)
+			//	m_signalImageView.setBackgroundResource(R.drawable.home_signal_5);
 			//show network type
 			if (curNetwork.m_NetworkType == NetworkType.UNKNOWN)
 				m_networkTypeTextView.setVisibility(View.INVISIBLE);

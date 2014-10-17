@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="0.2dp"
-            android:background="@color/color_grey" />
+            android:background="@color/color_divider" />
 
         <LinearLayout
             android:id="@+id/clear_history_layout"
