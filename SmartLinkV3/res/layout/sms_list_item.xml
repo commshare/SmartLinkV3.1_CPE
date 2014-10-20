@@ -106,7 +106,7 @@
 	        android:layout_height="1dip"
 	        android:layout_marginTop="5dip"
 	        android:layout_below="@id/sms_item_content"
-	        android:background="@color/color_grey"/>
+	        android:background="@color/color_divider"/>
     </RelativeLayout>
 
 </LinearLayout>

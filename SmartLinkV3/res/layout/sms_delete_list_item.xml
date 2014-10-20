@@ -5,13 +5,13 @@
     android:orientation="vertical" >
     <CheckBox
         android:id="@+id/select"
-        android:layout_width="20dip"
-        android:layout_height="20dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:button="@null"
         android:layout_marginRight="10dip"
-        android:paddingBottom="10dip"
+        android:layout_marginLeft="5dip"
         android:background="@drawable/selector_checkbox" />
 	<LinearLayout 
 	    android:id="@+id/content"
@@ -38,7 +38,7 @@
 	            android:singleLine="true"
 	            android:textStyle="bold" 
 	            android:text="13472479059"
-	            android:textSize="16sp"
+	            android:textSize="18sp"
 	            android:textColor="@color/color_black"/>
 	        <FrameLayout 
 	            android:id="@+id/sms_item_count_layout"
@@ -51,18 +51,18 @@
 		            android:id="@+id/sms_item_count"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:minWidth="60dip"
 		            android:singleLine="true"
-		            android:textSize="14sp"
+		            android:textSize="16sp"
 		            android:layout_gravity="bottom"
 		            android:text="56"    
 		            android:textColor="@color/color_black" />
 		        <ImageView
 		            android:id="@+id/sms_item_send_failed"
-		            android:layout_width="20dip"
-		            android:layout_height="20dip"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
 		            android:visibility="gone"
-		            android:background="@drawable/ic_launcher"
+		            android:layout_marginBottom="3dip"
+	            	android:background="@drawable/warning_blue_bg"
 		            android:layout_gravity="bottom"
 		            android:contentDescription="@null" />
 	        </FrameLayout>
@@ -77,7 +77,7 @@
 	            android:singleLine="true"
 	            android:text="2014-8-12 12:15"
 	            android:gravity="right"
-	            android:textSize="14sp"
+	            android:textSize="16sp"
 	            android:textColor="@color/color_grey"/>
 	    </RelativeLayout>
 	
@@ -93,7 +93,7 @@
 		        android:layout_alignParentLeft="true"
 		        android:ellipsize="end"
 		        android:singleLine="true"
-		        android:textSize="14sp"
+		        android:textSize="16sp"
 		        android:text="Dddddddddddddddddddddddddddddddddddd43247324723472304723"
 		        android:textColor="@color/color_grey"/>
 		    
@@ -105,5 +105,5 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_below="@id/content"
-        android:background="@color/color_grey"/>
+        android:background="@color/color_divider"/>
 </RelativeLayout>

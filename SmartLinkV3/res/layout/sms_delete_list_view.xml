@@ -11,18 +11,36 @@
             android:id="@+id/top_layout"
             android:background="@color/color_blue"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip" >
 
-            <Button
-                android:id="@+id/back_button"
+            <LinearLayout android:id="@+id/back_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dip"
-                android:text="@string/back"
-                android:textColor="@color/color_white"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dip" >
+	            <ImageView
+	                android:id="@+id/back_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@drawable/back"
+	                android:layout_gravity="center_vertical"
+	                android:contentDescription="@null" />
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:gravity="center"
+	                android:text="@string/back"
+	                android:singleLine="true"
+	                android:layout_marginLeft="5dip"
+	                android:textColor="@color/color_white"
+	                android:textSize="20sp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/delete_button"
@@ -31,10 +49,7 @@
                 android:layout_marginRight="10dip"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/color_white"
-                android:text="delete"
-                android:textSize="16sp"
-                android:visibility="visible" />
+                android:background="@drawable/btn_delete" />
 
             <TextView
                 android:id="@+id/title"
@@ -45,7 +60,7 @@
                 android:text="@string/delete"
                 android:singleLine="true"
                 android:textColor="@color/color_white"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
