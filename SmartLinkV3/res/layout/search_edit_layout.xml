@@ -8,7 +8,7 @@
         android:layout_height="40dip"  
         android:paddingLeft="35dip"
         android:paddingRight="35dip"
-        android:background="@drawable/selector_edit_right_angled_bg"
+        android:background="@drawable/selector_edit_bg"
         android:imeOptions="actionSearch"
         android:layout_gravity="center_vertical"  
         android:singleLine="true" />

@@ -17,8 +17,7 @@
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentLeft="true"
 		         android:layout_centerVertical="true"
-		         android:layout_marginLeft="5dip"
-		         android:padding="8dip"
+		         android:padding="3dip"
 		         android:src="@drawable/back"
 				 android:background="@null"/>
 			     <TextView
@@ -29,7 +28,7 @@
 			         android:layout_toRightOf="@id/btn_back"
 			         android:text="Back"
 			         android:textColor="@color/color_white"
-			         android:textSize="20sp" /> 
+			         android:textSize="16sp" /> 
 			    <TextView
 			        android:id="@+id/title"
 			        android:layout_width="fill_parent"
@@ -80,6 +79,7 @@
             android:id="@+id/frame_roaming"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="6dip"
             android:orientation="vertical" >
             <RelativeLayout
             android:layout_width="match_parent"
@@ -105,9 +105,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/enable_roaming_btn"
                 android:layout_centerVertical="true"
-                android:singleLine="false"
+                android:singleLine="true"
                 android:text="Roaming"
-                android:textSize="16sp" 
+                android:textSize="20sp" 
                 android:textStyle="bold"
                 android:textColor="@color/color_black"/>
 			</RelativeLayout>
@@ -116,12 +116,13 @@
                 android:id="@+id/enable_roaming_descrition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:singleLine="false"
+                android:layout_marginLeft="10dip"
+                android:paddingBottom="12dip"
+            	android:paddingTop="6dip"
+                android:singleLine="true"
                 android:text="Automatically connect even when in roaming."
                 android:textSize="16sp" 
-                android:textColor="@color/color_black"/>
+                android:textColor="@color/color_grey"/>
 	  	</LinearLayout>
 		  
 	   	<View
@@ -133,6 +134,7 @@
             android:id="@+id/frame_auto_disconnected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="6dip"
             android:orientation="vertical" >
             <RelativeLayout
             android:layout_width="match_parent"
@@ -140,7 +142,7 @@
             android:orientation="horizontal"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:paddingBottom="6dip"
+            android:paddingBottom="12dip"
             android:paddingTop="6dip" >
             <Button
                 android:id="@+id/enable_auto_disconnected_btn"
@@ -158,9 +160,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/enable_auto_disconnected_btn"
                 android:layout_centerVertical="true"
-                android:singleLine="false"
+                android:singleLine="true"
                 android:text="Auto Disconnected"
-                android:textSize="16sp" 
+                android:textSize="20sp" 
                 android:textStyle="bold"
                 android:textColor="@color/color_black"/>
 		</RelativeLayout>   

@@ -35,7 +35,7 @@
 		        android:layout_height="30dip"
 		        android:layout_marginRight="6dip"
 		        android:layout_toRightOf="@id/wps_pin_tag"
-		        android:background="@drawable/selector_edit_right_angled_bg"
+		        android:background="@drawable/selector_edit_bg"
 		        android:inputType="number"
 		        android:text="1234"
 		        android:maxLength="6"
