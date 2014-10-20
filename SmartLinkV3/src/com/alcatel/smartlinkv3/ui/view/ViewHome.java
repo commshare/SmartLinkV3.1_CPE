@@ -367,8 +367,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_connectToLabel.setText(R.string.home_connecting_to);
 			}
 		}
-	
-		
 	}
 	
 	private void showConnctBtnView() {}

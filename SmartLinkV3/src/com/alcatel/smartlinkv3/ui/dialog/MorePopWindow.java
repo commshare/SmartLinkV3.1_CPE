@@ -68,7 +68,7 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 
 	public void showPopupWindow(View parent) {
 		if (!this.isShowing()) {
-			this.showAsDropDown(parent, parent.getLayoutParams().width / 2, 18);
+			this.showAsDropDown(parent, parent.getLayoutParams().width / 2, -16);
 		} else {
 			this.dismiss();
 		}

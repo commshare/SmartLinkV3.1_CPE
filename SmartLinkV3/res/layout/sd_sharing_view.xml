@@ -85,7 +85,7 @@
 				</RelativeLayout>   
 		        <View
 		            android:layout_width="match_parent"
-		            android:layout_height="2dip"
+		            android:layout_height="1dip"
 		            android:background="@color/color_divider" />
            
 	            <RelativeLayout
@@ -112,7 +112,7 @@
         
 	        <View
 	            android:layout_width="match_parent"
-	            android:layout_height="2dip"
+	            android:layout_height="1dip"
 	            android:background="@color/color_divider" />
         
             <RelativeLayout
@@ -147,7 +147,7 @@
 	  
 		  <View
 	            android:layout_width="match_parent"
-	            android:layout_height="2dip"
+	            android:layout_height="1dip"
 	            android:background="@color/color_divider" />
 	  
             <LinearLayout
@@ -182,7 +182,7 @@
 	        
 	        <View
 	            android:layout_width="match_parent"
-	            android:layout_height="2dip"
+	            android:layout_height="1dip"
 	            android:background="@color/color_divider" />
         
 	         <RelativeLayout
