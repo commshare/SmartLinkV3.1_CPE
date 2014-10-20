@@ -80,7 +80,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentBottom="true"
 	        android:orientation="vertical" 
-	        android:background="@color/color_white">
+	        android:background="@color/main_tabbar_background">
             <View android:layout_width="fill_parent"
 		        android:layout_height="1dip"
 		        android:background="@color/main_bottom_divider"/>
