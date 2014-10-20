@@ -17,6 +17,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,7 +41,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 	
 	private TextView m_tvTitle = null;
 	private Button m_btnSend = null;
-	private Button m_btnBack = null;
+	private LinearLayout m_btnBack = null;
 	private EditText m_etContent = null;
 	
 	private ListView m_smsListView = null;
@@ -80,7 +81,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 		// Button
 		m_btnSend = (Button) this.findViewById(R.id.ID_SMS_DETAIL_BUTTON_SEND);
 		m_btnSend.setOnClickListener(this);
-		m_btnBack = (Button) this.findViewById(R.id.ID_SMS_DETAIL_BUTTON_BACK);
+		m_btnBack = (LinearLayout) this.findViewById(R.id.back_layout);
 		m_btnBack.setOnClickListener(this);
 		//
 		//m_progressWaiting = (ProgressBar) this.findViewById(R.id.sms_waiting_progress);
@@ -301,7 +302,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 
 	public void onClick(View v) {		
 		switch (v.getId()) {
-		case R.id.ID_SMS_DETAIL_BUTTON_BACK:
+		case R.id.back_layout:
 			OnBtnBack();
 			break;
 
@@ -496,7 +497,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 		
 		SMSDetailItem item = new SMSDetailItem();
 		item.bIsDateItem = false;
-		item.bSendFailed = true;
+		item.bSendFailed = false;
 		item.strContent = "zhoudeqaun is super man!!!!!!!!come onfdsklfjsdjfsdfjdskfdsfdsjfsdjfahehvhflsdhf";
 		item.strTime = "2014-12-33 33:33";
 		item.nType = 0;
@@ -504,7 +505,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 		
 		SMSDetailItem item2 = new SMSDetailItem();
 		item2.bIsDateItem = false;
-		item2.bSendFailed = false;
+		item2.bSendFailed = true;
 		item2.strContent = "zhoudeqaun is ";
 		item2.strTime = "2014-12-33 33:33";
 		item2.nType = 1;
@@ -535,7 +536,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 		}
 		
 		public final class ViewHolder{
-			public LinearLayout dateLayout;
+			public FrameLayout dateLayout;
 			public TextView date;
 			public RelativeLayout smsContentLayout;
 			public TextView smsContent;	
@@ -549,7 +550,7 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 			if (convertView == null) {	
 				holder=new ViewHolder();
 				convertView = LayoutInflater.from(ActivitySmsDetail.this).inflate(R.layout.sms_detail_item,null);	
-				holder.dateLayout = (LinearLayout)convertView.findViewById(R.id.sms_detail_date_layout);
+				holder.dateLayout = (FrameLayout)convertView.findViewById(R.id.sms_detail_date_layout);
 				holder.date = (TextView)convertView.findViewById(R.id.sms_detail_date_textview);
 				holder.smsContentLayout = (RelativeLayout)convertView.findViewById(R.id.sms_detail_content_layout);
 				holder.smsDate = (TextView)convertView.findViewById(R.id.sms_detail_date);
@@ -644,11 +645,19 @@ public class ActivitySmsDetail extends Activity implements OnClickListener,OnScr
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,R.id.sms_detail_content_layout);
 					nContentLayoutBg = R.drawable.selector_sms_detail_receive;
 					contentLayout.setMargins(30, 10, 200, 10);
+					holder.smsContent.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_black));
+					holder.smsDate.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_grey));
+					holder.sendFailText.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_grey));
+					holder.sentFail.setImageResource(R.drawable.warning_blue_bg);
 					break;
 				default:
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,R.id.sms_detail_content_layout);
 					nContentLayoutBg = R.drawable.selector_sms_detail_out;
 					contentLayout.setMargins(200, 10, 30, 10);
+					holder.smsContent.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_white));
+					holder.smsDate.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_sms_detail_send_grey));
+					holder.sendFailText.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_sms_detail_send_grey));
+					holder.sentFail.setImageResource(R.drawable.sms_failed_white_bg);
 					break;
 				}
 				holder.smsContentLayout.setLayoutParams(contentLayout);

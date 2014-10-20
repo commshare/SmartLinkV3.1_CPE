@@ -38,6 +38,7 @@
     <!-- usage end -->
     
     <!-- sms start -->
+    <color name="color_sms_detail_send_grey">#ff8dd3f7</color>
     <!-- sms end -->
     
     <!-- setting start -->

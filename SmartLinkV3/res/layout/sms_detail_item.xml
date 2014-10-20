@@ -2,22 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content">
-    <LinearLayout android:id="@+id/sms_detail_date_layout"
+    <FrameLayout android:id="@+id/sms_detail_date_layout"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="5dip"
         android:layout_width="fill_parent"
-        android:layout_height="45dip" >
+        android:layout_height="wrap_content" >
+        <View android:layout_width="fill_parent"
+	          android:layout_height="1dip"
+	          android:layout_gravity="center_vertical"
+	          android:background="@color/color_divider" />
 	    <TextView
 	           android:id="@+id/sms_detail_date_textview"
-	           android:layout_width="fill_parent"
+	           android:layout_width="wrap_content"
 	           android:layout_height="wrap_content"
+	           android:background="@color/color_white"
+	           android:paddingLeft="10dip"
+	           android:paddingRight="10dip"
 	           android:layout_gravity="center"
-	           android:layout_marginTop="12dip"
 	           android:gravity="center"
 	           android:text="10 July 2014"
 	           android:textSize="16sp"
 	           android:textColor="@color/color_grey"/>
-    </LinearLayout>
+    </FrameLayout>
 	<RelativeLayout	
 	    android:id="@+id/sms_detail_content_layout"
 	    android:clickable="true"
@@ -35,11 +43,11 @@
             android:singleLine="false"
             android:gravity="left"
             android:text="zhoudequan is super man!!!!!!!!!!!!!!!! is super man!!!!!hafdjfjslfjsdfjsdkljks"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/color_black"/>
-	    <LinearLayout
-	        android:orientation="horizontal"
+	    <RelativeLayout
 	        android:layout_below="@id/sms_detail_content"
+	        android:layout_marginTop="10dip"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" >
 		    <TextView 
@@ -48,16 +56,16 @@
 	            android:layout_height="wrap_content"
 	            android:singleLine="false"
 	            android:gravity="left"
-	            android:layout_gravity="bottom"
 	            android:text="2014-10-15 12:22"
-	            android:textSize="14sp"
+	            android:textSize="16sp"
 	            android:textColor="@color/color_grey"/>
 		    <ImageView android:id="@+id/sms_sent_fail_image"
 		        android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_gravity="bottom"
-	            android:layout_marginRight="8dip"
-	            android:background="@drawable/sms_send_failed"
+	            android:layout_marginRight="5dip"
+	            android:layout_toRightOf="@id/sms_detail_date"
+	            android:layout_alignBottom="@id/sms_detail_date"
+	            android:src="@drawable/sms_failed_white_bg"
 	            android:contentDescription="@null"/>
 		    <TextView 
 	            android:id="@+id/sms_sent_fail_text"
@@ -65,10 +73,11 @@
 	            android:layout_height="wrap_content"
 	            android:singleLine="false"
 	            android:gravity="left"
-	            android:layout_gravity="bottom"
+	            android:layout_toRightOf="@id/sms_sent_fail_image"
+	            android:layout_alignBottom="@id/sms_detail_date"
 	            android:text="@string/sms_send_fail"
-	            android:textSize="14sp"
+	            android:textSize="16sp"
 	            android:textColor="@color/color_grey"/>
-	    </LinearLayout>
+	    </RelativeLayout>
 	</RelativeLayout>
 </RelativeLayout>
