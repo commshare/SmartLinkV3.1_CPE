@@ -38,6 +38,11 @@
     <string name="sms_send_fail">Fail</string>
     <string name="sms_report_message">Message delivered!</string>
     <string name="IDS_SMS_BUTTON_BACK">Back</string>
+    <string name="sms_to">To:</string>
+    <string name="sms_new_title">New Message</string>
+    <string name="IDS_SMS_ERROR_SEND_ERROR">Send SMS error!</string>
+    <string name="IDS_SMS_ERROR_SEND_SUCCESS">Send SMS success.</string>
+    <string name="IDS_SMS_ERRORMESSAGE_FULLERROR">The storage of SMS is full!</string>
     <!-- sms end -->
     
     <!--connect device start -->

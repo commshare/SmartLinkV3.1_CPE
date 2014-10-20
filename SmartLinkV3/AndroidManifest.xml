@@ -45,6 +45,13 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.ActivityNewSms"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"

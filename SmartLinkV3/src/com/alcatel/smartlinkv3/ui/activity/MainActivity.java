@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -298,7 +299,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 	}
 	
 	private void editBtnClick(){
-
+		Intent intent = new Intent();
+		intent.setClass(this, ActivityNewSms.class);	
+		this.startActivity(intent);
 	}
 	
 

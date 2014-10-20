@@ -106,7 +106,7 @@
 			        android:background="@drawable/sms_send_btn"
 			        android:layout_alignParentRight="true"
 			        android:layout_centerVertical="true"
-			        android:layout_marginRight="10dip"
+			        android:layout_marginRight="20dip"
 			        android:paddingLeft="15dip"
 	                android:paddingRight="15dip"
 			        android:enabled="false" />
@@ -117,7 +117,7 @@
 			        android:layout_height="wrap_content"
 			        android:background="@drawable/selector_edit_bg"
 			        android:layout_centerVertical="true"
-			        android:layout_marginLeft="10dip"
+			        android:layout_marginLeft="20dip"
 			        android:layout_marginRight="10dip"
 			        android:layout_toLeftOf="@id/ID_SMS_DETAIL_BUTTON_SEND"
 			        android:inputType="none"
