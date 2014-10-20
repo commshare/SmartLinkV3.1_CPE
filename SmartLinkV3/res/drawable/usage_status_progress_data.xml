@@ -3,7 +3,7 @@
 	<item android:id="@android:id/progress"  > 
 	    <clip android:clipOrientation="horizontal"
 	        android:gravity="left"
-	        android:drawable="@drawable/data_status_progress_data"
+	        android:drawable="@drawable/usage_status_data_progress_data"
 	        > 
 	    </clip> 
 	</item> 

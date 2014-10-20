@@ -10,7 +10,7 @@
 	        android:layout_width="fill_parent" 
 	        android:layout_height="50dip"
 	    	android:orientation="vertical"
-	    	android:background="@color/color_blue" >
+	    	android:background="@color/main_title_background" >
 		    	<ImageButton 
 		         android:id="@+id/btn_back"
 		         android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
 			         android:layout_toRightOf="@id/btn_back"
 			         android:text="Back"
 			         android:textColor="@color/color_white"
-			         android:textSize="15sp" /> 
+			         android:textSize="20sp" /> 
 			    <TextView
 			        android:id="@+id/title"
 			        android:layout_width="fill_parent"
@@ -54,7 +54,7 @@
         <LinearLayout
             android:id="@+id/frame_roaming"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical" >
 	    <include
             android:layout_width="match_parent"
@@ -108,6 +108,7 @@
                 android:singleLine="false"
                 android:text="Roaming"
                 android:textSize="16sp" 
+                android:textStyle="bold"
                 android:textColor="@color/color_black"/>
 			</RelativeLayout>
 			
@@ -160,6 +161,7 @@
                 android:singleLine="false"
                 android:text="Auto Disconnected"
                 android:textSize="16sp" 
+                android:textStyle="bold"
                 android:textColor="@color/color_black"/>
 		</RelativeLayout>   
 	  </LinearLayout>
