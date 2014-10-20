@@ -13,12 +13,12 @@
 
         <ImageView
             android:id="@+id/sms_item_unread_image"
-            android:layout_width="10dip"
-            android:layout_height="10dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dip"
-            android:background="@drawable/ic_launcher"
+            android:background="@drawable/sms_new"
             android:contentDescription="@null" />
 
         <TextView
@@ -27,11 +27,12 @@
             android:layout_height="wrap_content"
 			android:layout_centerVertical="true"
             android:layout_toRightOf="@id/sms_item_unread_image"
+            android:layout_marginLeft="5dip"
             android:ellipsize="end"
             android:singleLine="true"
             android:textStyle="bold" 
             android:text="13472479059"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textColor="@color/color_black"/>
         <FrameLayout 
             android:id="@+id/sms_item_count_layout"
@@ -44,28 +45,30 @@
 	            android:id="@+id/sms_item_count"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:minWidth="60dip"
 	            android:singleLine="true"
-	            android:textSize="14sp"
+	            android:textSize="16sp"
 	            android:layout_gravity="bottom"
 	            android:text="56"    
+	            android:visibility="gone"
 	            android:textColor="@color/color_black" />
 	        <ImageView
 	            android:id="@+id/sms_item_send_failed"
-	            android:layout_width="20dip"
-	            android:layout_height="20dip"
-	            android:visibility="gone"
-	            android:background="@drawable/ic_launcher"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="3dip"
+	            android:background="@drawable/warning_blue_bg"
 	            android:layout_gravity="bottom"
 	            android:contentDescription="@null" />
         </FrameLayout>
         <ImageView
             android:id="@+id/sms_item_arrow"
-            android:layout_width="15dip"
-            android:layout_height="15dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_launcher"
+            android:background="@drawable/right_arrow_small"
             android:layout_marginRight="10dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginBottom="3dip"
             android:layout_alignBottom="@id/sms_item_number"
             android:contentDescription="@null" />
         <TextView
@@ -79,7 +82,7 @@
             android:singleLine="true"
             android:text="2014-8-12 12:15"
             android:gravity="right"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/color_grey"/>
     </RelativeLayout>
 
@@ -87,7 +90,7 @@
         android:id="@+id/sms_item_content_row_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dip" >
+        android:layout_marginLeft="30dip" >
 	    <TextView
 	        android:id="@+id/sms_item_content"
 	        android:layout_width="wrap_content"
