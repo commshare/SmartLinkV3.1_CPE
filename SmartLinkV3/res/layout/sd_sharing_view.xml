@@ -17,8 +17,7 @@
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentLeft="true"
 		         android:layout_centerVertical="true"
-		         android:layout_marginLeft="5dip"
-		         android:padding="8dip"
+		         android:padding="3dip"
 		         android:src="@drawable/back"
 				 android:background="@null"/>
 			     <TextView
@@ -29,7 +28,7 @@
 			         android:layout_toRightOf="@id/btn_back"
 			         android:text="Back"
 			         android:textColor="@color/color_white"
-			         android:textSize="20sp" /> 
+			         android:textSize="16sp" /> 
 			    <TextView
 			        android:id="@+id/title"
 			        android:layout_width="fill_parent"
@@ -80,110 +79,112 @@
 	                android:layout_centerVertical="true"
 	                android:singleLine="false"
 	                android:text="DLNA"
-	                android:textSize="16sp" 
+	                android:textSize="20sp" 
+	                android:textStyle="bold"
 	                android:textColor="@color/color_black"/>
-				</RelativeLayout>   
+				</RelativeLayout>  
+				 
 		        <View
 		            android:layout_width="match_parent"
 		            android:layout_height="1dip"
 		            android:background="@color/color_divider" />
            
 	            <RelativeLayout
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:layout_marginLeft="10dip"
-	            android:layout_marginRight="10dip"
-	            android:paddingBottom="6dip"
-	            android:paddingTop="6dip" >
-	            <TextView
-	                android:id="@+id/enable_service_name_tag"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:layout_alignParentLeft="true"
-	                android:layout_toLeftOf="@id/enable_dlna_btn"
-	                android:layout_centerVertical="true"
-	                android:singleLine="false"
-	                android:text="service_name"
-	                android:textSize="16sp" 
-	                android:textColor="@color/color_black"/>
-			</RelativeLayout>   
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:layout_marginLeft="10dip"
+		            android:layout_marginRight="10dip"
+		            android:paddingBottom="6dip"
+		            android:paddingTop="6dip" >
+		            <TextView
+		                android:id="@+id/enable_service_name_tag"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_alignParentLeft="true"
+		                android:layout_toLeftOf="@id/enable_dlna_btn"
+		                android:layout_centerVertical="true"
+		                android:singleLine="false"
+		                android:text="@string/service_name_description"
+		                android:textSize="16sp" 
+		                android:textColor="@color/color_grey"/>
+				</RelativeLayout>   
 
         
-	        <View
-	            android:layout_width="match_parent"
-	            android:layout_height="1dip"
-	            android:background="@color/color_divider" />
+		        <View
+		            android:layout_width="match_parent"
+		            android:layout_height="1dip"
+		            android:background="@color/color_divider" />
         
-            <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:paddingBottom="6dip"
-            android:paddingTop="6dip" >
-            <Button
-                android:id="@+id/enable_sharing_btn"
-                android:layout_width="85dip"
-				android:layout_height="35dip"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/switch_off"
-                android:clickable="true" />
-
-            <TextView
-                android:id="@+id/enable_sharing_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/enable_dlna_btn"
-                android:layout_centerVertical="true"
-                android:singleLine="false"
-                android:text="SD Card Sharing"
-                android:textSize="16sp" 
-                android:textColor="@color/color_black"/>
-			</RelativeLayout>   
+	            <RelativeLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:layout_marginLeft="10dip"
+		            android:layout_marginRight="10dip"
+		            android:paddingBottom="6dip"
+		            android:paddingTop="6dip" >
+		            <Button
+		                android:id="@+id/enable_sharing_btn"
+		                android:layout_width="85dip"
+						android:layout_height="35dip"
+		                android:layout_alignParentRight="true"
+		                android:layout_centerVertical="true"
+		                android:background="@drawable/switch_off"
+		                android:clickable="true" />
+		
+		            <TextView
+		                android:id="@+id/enable_sharing_tag"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_alignParentLeft="true"
+		                android:layout_toLeftOf="@id/enable_dlna_btn"
+		                android:layout_centerVertical="true"
+		                android:singleLine="false"
+		                android:text="SD Card Sharing"
+		                android:textSize="20sp" 
+		                android:textStyle="bold"
+		                android:textColor="@color/color_black"/>
+				</RelativeLayout>   
 	  
-		  <View
-	            android:layout_width="match_parent"
-	            android:layout_height="1dip"
-	            android:background="@color/color_divider" />
+				 <View
+			           android:layout_width="match_parent"
+			           android:layout_height="1dip"
+			           android:background="@color/color_divider" />
 	  
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:paddingBottom="6dip"
-            android:paddingTop="6dip" >
-            <ProgressBar
-                android:id="@+id/data_status_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="15dip"
-                android:layout_alignParentLeft="true"
-                android:background="@drawable/usage_status_data_progress_bg"
-                android:max="100"
-                android:progressDrawable="@drawable/usage_status_progress_data" />
-
-            <TextView
-                android:id="@+id/data_status_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:singleLine="false"
-                android:text="20GB of 30GB used"
-                android:textSize="16sp" 
-                android:textColor="@color/color_black"/>
-			</LinearLayout>   
+	            <LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical"
+		            android:layout_marginLeft="10dip"
+		            android:layout_marginRight="10dip"
+		            android:paddingBottom="6dip"
+		            android:paddingTop="6dip" >
+		            <ProgressBar
+		                android:id="@+id/data_status_progress"
+		                style="?android:attr/progressBarStyleHorizontal"
+		                android:layout_width="match_parent"
+		                android:layout_height="15dip"
+		                android:paddingBottom="6dip"
+		            	android:paddingTop="6dip"
+		                android:background="@drawable/usage_status_data_progress_bg"
+		                android:max="100"
+		                android:progressDrawable="@drawable/usage_status_progress_data" />
+		
+		            <TextView
+		                android:id="@+id/data_status_tag"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:singleLine="false"
+		                android:text="20GB of 30GB used"
+		                android:textSize="16sp" 
+		                android:textColor="@color/color_grey"/>
+				</LinearLayout>   
 	        
-	        <View
-	            android:layout_width="match_parent"
-	            android:layout_height="1dip"
-	            android:background="@color/color_divider" />
+		        <View
+		            android:layout_width="match_parent"
+		            android:layout_height="1dip"
+		            android:background="@color/color_divider" />
         
 	         <RelativeLayout
 	            android:id="@+id/layout_storage"
@@ -191,7 +192,8 @@
 	            android:layout_height="wrap_content"
 	            android:layout_marginLeft="10dip"
 	            android:layout_marginRight="10dip"
-	            android:layout_marginTop="20dip"
+	            android:layout_marginTop="6dip"
+	            android:paddingBottom="6dip"
 	            android:orientation="horizontal" >
 	
 	            <TextView
@@ -199,10 +201,11 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_centerVertical="true"
-	                android:layout_marginLeft="10dip"
-	                android:text="storage"
-	                android:textColor="@color/color_black"
-	                android:textSize="16sp" />
+	                android:singleLine="true"
+	                android:text="Storage"
+	                android:textSize="20sp"
+	                android:textStyle="bold"
+	                android:textColor="@color/color_black" />
 	
 	            <ImageView
 	                android:id="@+id/storage_enter"
@@ -210,7 +213,7 @@
 	                android:layout_height="wrap_content"
 	                android:layout_alignParentRight="true"
 	                android:layout_centerVertical="true"
-	                android:layout_marginRight="10dip"
+	                android:contentDescription="@null"
 	                android:src="@drawable/enter_arrow" />
 	        </RelativeLayout>
         </LinearLayout>

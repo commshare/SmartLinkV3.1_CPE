@@ -236,4 +236,18 @@
 	<string name="title_cancel_downloading">Stop the Download?</string>
     <string name="content_cancel_downloading">Do you want to stop downloading \"%1$s\"?</string>
 	<string name="btn_cancel_downloading">Yes, stop the downloading</string>
+	
+	<!-- sd sharing start -->
+	<string name="service_name_description">Server Name: Y900 Media Server Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
+	<!-- sd sharing end -->
+	
+	<!-- wps start -->
+	<string name="wps_pin_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
+	<string name="wps_pin_text2">2. On the Client(eg PC), open the Wi-Fi access utility and select the PIN method, then a 8 digits PIN code will be generated;</string>
+	<string name="wps_pin_text3">3. Enable PIN and entered the 8 digits PIN code;</string>
+	
+	<string name="pbc_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
+	<string name="pbc_text2">2. On the Client(eg PC), open the Wi-Fi access utility and select the PBC;</string>
+	<string name="pbc_text3">3. Click the icon on the top;</string>
+	<!-- wps end -->
 </resources>
