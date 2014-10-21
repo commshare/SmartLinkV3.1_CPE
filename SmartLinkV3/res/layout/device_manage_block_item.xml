@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip" >
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:background="@drawable/ic_launcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/connected_device"
         android:layout_margin="10dip"
         android:layout_centerVertical="true"
         android:contentDescription="@null" />
@@ -22,13 +24,16 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:inputType="none"
+	        android:layout_marginLeft="10dip"
 	        android:text="super man"
 			android:singleLine="true"
+			android:textColor="@color/color_black"
 	        android:textSize="16sp" />
 	    <TextView
 	        android:id="@+id/mac"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dip"
 	        android:singleLine="true"
 	        android:textSize="14sp"
 	        android:text="MAC:11:FF:FF:FF:FF"
@@ -36,10 +41,15 @@
 	</LinearLayout>
 	<Button
         android:id="@+id/unblock_button"
-        android:layout_width="wrap_content"
+        android:layout_width="90dip"
         android:layout_height="35dip"
+        android:background="@drawable/selector_common_button"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dip"
-        android:text="@string/device_manage_unblock_btn"/>
+        android:layout_marginRight="20dip"
+        android:text="@string/device_manage_unblock_btn"
+        android:textSize="16sp"
+        android:textColor="@color/color_white" />
 </RelativeLayout>

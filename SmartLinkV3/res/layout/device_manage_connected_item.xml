@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content" 
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip">
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:background="@drawable/ic_launcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/connected_device"
         android:layout_margin="10dip"
         android:layout_centerVertical="true"
         android:contentDescription="@null" />
@@ -22,37 +24,47 @@
 	        <EditText
 		        android:id="@+id/device_description"
 		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
+		        android:layout_height="30dip"
+		        android:paddingLeft="5dip"
+		        android:paddingRight="15dip"
+		        android:layout_marginLeft="5dip"
 		        android:layout_centerVertical="true"
+		        android:background="@drawable/selector_edit_bg"
 		        android:inputType="none"
 		        android:text="super man"
 				android:singleLine="true"
 		        android:textSize="16sp" />
 	        <ImageView
 		        android:id="@+id/edit_image"
-		        android:layout_width="10dip"
-		        android:layout_height="10dip"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
 		        android:clickable="true"
-		        android:background="@drawable/ic_launcher"
+		        android:background="@drawable/connected_edit"
 		        android:layout_marginLeft="10dip"
 		        android:layout_toRightOf="@id/device_description"
 		        android:layout_centerVertical="true"
 		        android:contentDescription="@null" />
 	        <Button
 		        android:id="@+id/block_button"
-		        android:layout_width="wrap_content"
+		        android:layout_width="90dip"
 		        android:layout_height="35dip"
+		        android:background="@drawable/selector_common_button"
+		        android:paddingLeft="15dip"
+		        android:paddingRight="15dip"
 		        android:layout_alignParentRight="true"
 		        android:layout_centerVertical="true"
 		        android:layout_marginRight="10dip"
-		        android:text="@string/device_manage_block_btn" />
+		        android:text="@string/device_manage_block_btn"
+		        android:textSize="16sp"
+		        android:textColor="@color/color_white" />
 	    </RelativeLayout>
 	    <TextView
 	        android:id="@+id/ip"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dip"
 	        android:singleLine="true"
-	        android:textSize="14sp"
+	        android:textSize="16sp"
 	        android:text="ip:127.0.0.1"
 	        android:textColor="@color/color_grey"/>
 	    <TextView
@@ -60,7 +72,8 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:singleLine="true"
-	        android:textSize="14sp"
+	        android:layout_marginLeft="10dip"
+	        android:textSize="16sp"
 	        android:text="MAC:11:FF:FF:FF:FF"
 	        android:textColor="@color/color_grey"/>
 	</LinearLayout>

@@ -41,6 +41,10 @@
     <color name="color_sms_detail_send_grey">#ff8dd3f7</color>
     <!-- sms end -->
     
+    <!-- connected view start -->
+    <color name="color_connected_view_refresh_bg">#fff8f8f8</color>
+    <!-- connected view end -->
+    
     <!-- setting start -->
     <!-- setting end -->
     
