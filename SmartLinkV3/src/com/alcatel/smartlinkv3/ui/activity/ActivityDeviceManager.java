@@ -1,12 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 import com.alcatel.smartlinkv3.R;
 
@@ -15,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -30,9 +23,10 @@ import android.content.Context;
 import android.content.res.Configuration;
 
 
-public class ActivityDeviceManager extends Activity{
+public class ActivityDeviceManager extends Activity implements OnClickListener{
 	private ListView m_connecedDeviceList = null;
 	private ListView m_blockedDeviceList = null;
+	private LinearLayout m_back = null;
 
 	private ArrayList<DeviceItem> m_connecedDeviceLstData = new ArrayList<DeviceItem>();
 	private ArrayList<DeviceItem> m_blockedDeviceLstData = new ArrayList<DeviceItem>();
@@ -41,6 +35,8 @@ public class ActivityDeviceManager extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.device_manage_view);
+		m_back = (LinearLayout)this.findViewById(R.id.back_layout);
+		m_back.setOnClickListener(this);
 		
 		m_connecedDeviceList = (ListView)this.findViewById(R.id.connected_devices);
 		ConnectedDevAdapter connectedDevAdapter = new ConnectedDevAdapter(this);
@@ -72,6 +68,22 @@ public class ActivityDeviceManager extends Activity{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+	}
+	
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		switch (arg0.getId()) {
+		case R.id.back_layout:
+			OnBtnBack();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	//
+	private void OnBtnBack() {
+		this.finish();
 	}
 
 	/*private class SortSummaryListByTime implements Comparator {
