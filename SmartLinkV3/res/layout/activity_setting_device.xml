@@ -2,210 +2,281 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color_white" >
-    
-    <LinearLayout android:id="@+id/ll_system_info"
+    android:background="@color/color_white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_system_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
-        
-        <TextView android:layout_width="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:textSize="17sp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical|left"
-            android:text="@string/setting_device_title"/>
+            android:text="@string/setting_device_title"
+            android:textColor="@color/color_black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
         <!-- Software Version -->
-        <LinearLayout android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_software_version"/>
-            
-            <TextView android:id="@+id/tv_sw_version_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="ROOS.00"/>
+                android:text="@string/setting_device_software_version"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_sw_version_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="ROOS.00"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
         </LinearLayout>
         <!-- Hardware Version -->
-        <LinearLayout android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_hadrware_version"/>
-            
-            <TextView android:id="@+id/tv_hw_version_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="S.1.8"/>
+                android:text="@string/setting_device_hadrware_version"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_hw_version_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="S.1.8"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
         </LinearLayout>
         <!-- Device Name -->
-        <LinearLayout android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_device_name"/>
-            
-            <TextView android:id="@+id/tv_device_name_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="Y858-XXXX"/>
+                android:text="@string/setting_device_device_name"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_device_name_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="Y858-XXXX"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
         </LinearLayout>
         <!-- IMEI -->
-        <LinearLayout android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_imei"/>
-            
-            <TextView android:id="@+id/tv_imei_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="832469872324567"/>
+                android:text="@string/setting_device_imei"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_imei_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="832469872324567"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
         </LinearLayout>
         <!-- MAC Address -->
-        <LinearLayout android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_mac_address"/>
-            
-            <TextView android:id="@+id/tv_mac_address_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="00-de-ad-be-ed-00"/>
+                android:text="@string/setting_device_mac_address"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_mac_address_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="00-de-ad-be-ed-00"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
         </LinearLayout>
         <!-- IP Address -->
-        <LinearLayout android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_ip"/>
-            
-            <TextView android:id="@+id/tv_ip_address_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="192.168.1.1"/>
+                android:text="@string/setting_device_ip"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_ip_address_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="192.168.1.1"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
         </LinearLayout>
         <!-- Subnet Mask -->
-        <LinearLayout android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_subnet"/>
-            
-            <TextView android:id="@+id/tv_subnet_mask_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="255.255.255.0"/>
+                android:text="@string/setting_device_subnet"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_subnet_mask_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="255.255.255.0"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>
-    
-    <RelativeLayout android:id="@+id/rl_device_control"
+
+    <!-- seperator -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/main_bottom_divider"
+        android:contentDescription="@string/setting_device" />
+
+    <RelativeLayout
+        android:id="@+id/rl_device_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">        
-        
-        <!-- seperator -->
-        <ImageView android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="10dp"
-                android:layout_alignParentTop="true"
-                android:contentDescription="@string/setting_device"
-                android:background="@android:color/black"/>
-        
-        <Button android:id="@+id/btn_reboot"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_reboot"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="15sp"
             android:gravity="center"
-            android:text="@string/setting_device_btn_reboot"/>
-        
-        <Button android:id="@+id/btn_power_off"
+            android:text="@string/setting_device_btn_reboot"
+            android:textSize="15sp"
+            android:background="@drawable/selector_common_button"
+            android:textColor="@drawable/common_button_text" />
+
+        <Button
+            android:id="@+id/btn_power_off"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_above="@id/btn_reboot"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:textSize="15sp"
             android:gravity="center"
-            android:text="@string/setting_device_btn_power_off"/>
-        
-        <Button android:id="@+id/btn_reset"
+            android:text="@string/setting_device_btn_power_off"
+            android:textSize="15sp"
+            android:background="@drawable/selector_common_button"
+            android:textColor="@drawable/common_button_text" />
+
+        <Button
+            android:id="@+id/btn_reset"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/btn_reboot"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:textSize="15sp"
             android:gravity="center"
-            android:text="@string/setting_device_btn_reset"/>
+            android:text="@string/setting_device_btn_reset"
+            android:textSize="15sp"
+            android:background="@drawable/selector_common_button"
+            android:textColor="@drawable/common_button_text" />
     </RelativeLayout>
 
 </LinearLayout>

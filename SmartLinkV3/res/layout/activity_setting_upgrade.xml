@@ -2,67 +2,103 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color_white" >
-    
-    <RelativeLayout android:id="@+id/rl_check_firmware"
+    android:background="@color/color_white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_check_firmware"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-        
-        <TextView android:id="@+id/tv_check_firmware"
+        android:layout_weight="1" >
+
+        <!-- center position -->
+
+        <ImageView
+            android:id="@+id/iv_upgrade_center_position_up"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/setting_upgrade" />
+
+        <TextView
+            android:id="@+id/tv_check_firmware"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textSize="17sp"
-            android:text="@string/setting_upgrade_device_version"/>
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/iv_upgrade_center_position_up"
+            android:layout_marginBottom="20dp"
+            android:text="@string/setting_upgrade_device_version"
+            android:textColor="@color/color_black"
+            android:textSize="17sp" />
 
-        <Button android:id="@+id/btn_check_firmware"
+        <Button
+            android:id="@+id/btn_check_firmware"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
+            android:layout_below="@id/iv_upgrade_center_position_up"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/setting_upgrade_btn_check"
-            android:layout_below="@id/tv_check_firmware"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"/>
-        <ImageView android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:background="@android:color/black"
-            android:contentDescription="@string/setting_upgrade" />
+            android:background="@drawable/selector_common_button"
+            android:textColor="@drawable/common_button_text"
+            android:textSize="17sp" />
     </RelativeLayout>
-    
-    <RelativeLayout android:id="@+id/rl_upgrade_app"
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/main_bottom_divider"
+        android:contentDescription="@string/setting_upgrade" />
+
+    <RelativeLayout
+        android:id="@+id/rl_upgrade_app"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-        
-        <TextView android:id="@+id/tv_current_app_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textSize="17sp"
-            android:text="@string/setting_upgrade_current_app_version"/>
-        
-        <TextView android:id="@+id/tv_new_app_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_current_app_version"
-            android:layout_centerHorizontal="true"
-            android:textSize="17sp"
-            android:text="@string/setting_upgrade_new_app_version"/>
+        android:layout_weight="1" >
 
-        <Button android:id="@+id/btn_firmware_check"
+        <!-- center position -->
+
+        <ImageView
+            android:id="@+id/iv_upgrade_center_position_down"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/setting_upgrade" />
+        
+        <TextView
+            android:id="@+id/tv_new_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/iv_upgrade_center_position_down"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:text="@string/setting_upgrade_new_app_version"
+            android:textSize="17sp"
+            android:textColor="@color/color_black" />
+                <TextView
+            android:id="@+id/tv_current_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/tv_new_app_version"
+            android:text="@string/setting_upgrade_current_app_version"
+            android:textSize="17sp"
+            android:textColor="@color/color_black" />
+
+        <Button
+            android:id="@+id/btn_firmware_check"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
+            android:layout_below="@id/iv_upgrade_center_position_down"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/setting_upgrade_btn_upgrade"
-            android:layout_below="@id/tv_new_app_version"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"/>
+            android:textSize="17sp"
+            android:background="@drawable/selector_common_button"
+            android:textColor="@drawable/common_button_text" />
     </RelativeLayout>
 
 </LinearLayout>
