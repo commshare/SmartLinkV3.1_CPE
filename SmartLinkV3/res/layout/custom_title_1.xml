@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="61dp" >
+    android:layout_height="match_parent" >
     
     <ImageButton android:id="@+id/ib_title_back"
         android:layout_width="wrap_content"
@@ -10,7 +10,8 @@
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:contentDescription="@string/setting_text_back"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/back"
+        android:background="@color/color_transparent"/>
     
     <TextView android:id="@+id/tv_title_back"
         android:layout_width="wrap_content"
@@ -19,7 +20,8 @@
         android:layout_toRightOf="@id/ib_title_back"
         android:layout_marginLeft="5dp"
         android:gravity="center"
-        android:textSize="12sp"
+        android:textSize="20sp"
+        android:textColor="@color/color_white"
         android:text="@string/setting_text_back"/>
     
     <TextView android:id="@+id/tv_title_title"
@@ -27,7 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:textSize="17sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_white"
         android:text="@string/setting_wifi"/>
 
 </RelativeLayout>

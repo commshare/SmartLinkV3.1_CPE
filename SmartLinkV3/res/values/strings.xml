@@ -56,7 +56,7 @@
     <!-- setting start -->
     <string name="setting_wifi">WiFi Setting</string>
     <string name="setting_power">Power Saving</string>
-    <string name="setting_upgrade">Updrade</string>
+    <string name="setting_upgrade">Upgrade</string>
     <string name="setting_device">Device</string>
     <string name="setting_about">About</string>
     <string name="setting_backup">Backup&amp;Restore</string>

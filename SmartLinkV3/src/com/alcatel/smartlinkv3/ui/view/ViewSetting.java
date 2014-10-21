@@ -3,9 +3,7 @@ package com.alcatel.smartlinkv3.ui.view;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
@@ -21,11 +19,12 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +39,8 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	private final int ITEM_DEVICE_SETTING = 4;
 	private final int ITEM_ABOUT_SETTING = 5;
 	private ListView m_lvSettingListView = null;
+	private UprgadeAdapter adapter;
+	private List<SettingItem>list;
 	
 
 	private void registerReceiver() {}
@@ -57,9 +58,9 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_setting,
 				null);
 		m_lvSettingListView = (ListView)m_view.findViewById(R.id.settingList);
-		SimpleAdapter adapter = new SimpleAdapter(m_context, getData(m_context), R.layout.setting_item,
-				new String[]{"title"},
-				new int[]{R.id.settingItemText});
+		list = getData(m_context);
+		adapter = new UprgadeAdapter(m_context, list);
+		
 		m_lvSettingListView.setAdapter(adapter);
 		m_lvSettingListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -81,6 +82,7 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 					break;
 				case ITEM_UPGRADE_SETTING:
 					goToUpgradeSettingPage();
+					changeUpgradeFlag(ITEM_UPGRADE_SETTING, false);
 					break;
 				case ITEM_DEVICE_SETTING:
 					goToDeviceSettingPage();
@@ -127,32 +129,26 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	private void launchPrivateCloudApp()
 	{}
 	
-	private List<Map<String, Object>> getData(Context context){
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+	private List<SettingItem> getData(Context context){
+		List<SettingItem> list = new ArrayList<SettingItem>();
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", context.getString(R.string.setting_wifi));
-		list.add(map);
+		SettingItem item = new SettingItem(context.getString(R.string.setting_wifi), false);
+		list.add(item);
 		
-		map = new HashMap<String, Object>();
-		map.put("title", context.getString(R.string.setting_power));
-		list.add(map);
+		item = new SettingItem(context.getString(R.string.setting_power), false);
+		list.add(item);
 		
-		map = new HashMap<String, Object>();
-		map.put("title", context.getString(R.string.setting_backup));
-		list.add(map);
+		item = new SettingItem(context.getString(R.string.setting_backup), false);
+		list.add(item);
 		
-		map = new HashMap<String, Object>();
-		map.put("title", context.getString(R.string.setting_upgrade));
-		list.add(map);
+		item = new SettingItem(context.getString(R.string.setting_upgrade), true);
+		list.add(item);
 		
-		map = new HashMap<String, Object>();
-		map.put("title", context.getString(R.string.setting_device));
-		list.add(map);
+		item = new SettingItem(context.getString(R.string.setting_device), false);
+		list.add(item);
 		
-		map = new HashMap<String, Object>();
-		map.put("title", context.getString(R.string.setting_about));
-		list.add(map);
+		item = new SettingItem(context.getString(R.string.setting_about), false);
+		list.add(item);
 		return list;
 	}
 	
@@ -190,5 +186,88 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 		Toast.makeText(m_context, "goToAboutSettingPage", 10).show();
 		Intent intent = new Intent(m_context, SettingAboutActivity.class);
 		m_context.startActivity(intent);
+	}
+	
+	public class UprgadeAdapter extends BaseAdapter{
+
+		private Context context;
+		private List<SettingItem> listSettingItmes;
+		
+		public UprgadeAdapter(Context context, List<SettingItem>list){
+			this.context =context;
+			this.listSettingItmes = list;
+		}
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return listSettingItmes.size();
+		}
+
+		@Override
+		public Object getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return listSettingItmes.get(arg0);
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			// TODO Auto-generated method stub
+			return arg0;
+		}
+
+		@Override
+		public View getView(int arg0, View arg1, ViewGroup arg2) {
+			// TODO Auto-generated method stub
+			View itemView = LayoutInflater.from(m_context).inflate(R.layout.setting_item,
+					null);
+			//
+			SettingItem item = listSettingItmes.get(arg0);
+			TextView tvItemNameTextView = (TextView)itemView.findViewById(R.id.settingItemText);
+			ImageView ivUpgrade = (ImageView)itemView.findViewById(R.id.flagUpgrade);
+			tvItemNameTextView.setText(item.getItemName());
+			Boolean blUpgrade = item.getUpgradeFlag();
+			if(blUpgrade){
+				ivUpgrade.setVisibility(View.VISIBLE);				
+			}else{
+				ivUpgrade.setVisibility(View.GONE);
+			}
+			return itemView;
+		}
+		
+	}
+	
+	public class SettingItem{
+		//Item name
+		private String m_strItem;
+		private Boolean m_blHasUpgrade;
+		
+		public SettingItem(String strItem, Boolean blHasUpgrade){
+			super();
+			this.m_strItem = strItem;
+			this.m_blHasUpgrade = blHasUpgrade;
+		}
+		
+		public Boolean getUpgradeFlag(){
+			return m_blHasUpgrade;
+		}
+		
+		public void setUpgradeFlag(Boolean blHasUpgrade){
+			m_blHasUpgrade = blHasUpgrade;
+		}
+		
+		public String getItemName(){
+			return m_strItem;
+		}
+	}
+	
+	private void changeUpgradeFlag(int itemIndex, Boolean blUpgrade){
+		if(itemIndex >= ITEM_WIFI_SETTING && itemIndex <= ITEM_ABOUT_SETTING){
+			SettingItem item = list.get(itemIndex);
+			Boolean blOldUpgrade = item.getUpgradeFlag();
+			if(blOldUpgrade != blUpgrade){
+				item.setUpgradeFlag(blUpgrade);
+				adapter.notifyDataSetChanged();
+			}
+		}
 	}
 }
