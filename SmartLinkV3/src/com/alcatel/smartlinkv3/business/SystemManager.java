@@ -18,6 +18,9 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Handler;
 
 public class SystemManager extends BaseManager {
@@ -34,6 +37,8 @@ public class SystemManager extends BaseManager {
 													// used to test the wifi
 													// connect state
 	private Timer m_getStorageTimer = new Timer();
+	
+	private String m_strAppVersion = "";
 
 	private GetFeaturesTask m_getFeaturesTask = null;
 	private GetExternalStorageDeviceTask m_getExternalStorageDeviceTask = null;
@@ -52,6 +57,10 @@ public class SystemManager extends BaseManager {
 
 	public boolean getAlreadyRecongniseDeviceFlag() {
 		return m_bAlreadyRecogniseCPEDevice;
+	}
+	
+	public String getAppVersion() {
+		return m_strAppVersion;
 	}
 
 	@Override
@@ -91,8 +100,23 @@ public class SystemManager extends BaseManager {
 		// register in basemanager
 		// m_context.registerReceiver(m_msgReceiver, new
 		// IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
+		
+		//app version
+		FetchAppVersion();
 	}
 
+	private void FetchAppVersion(){
+		PackageManager manager;
+		PackageInfo info = null;
+		manager = m_context.getPackageManager();
+		try {
+			info = manager.getPackageInfo(m_context.getPackageName(), 0);
+			m_strAppVersion = info.versionName;
+		} catch (NameNotFoundException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
 	@Override
 	protected void stopRollTimer() {
 		/*

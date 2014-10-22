@@ -198,6 +198,10 @@ public class BusinessMannager {
 	public boolean getAlreadyRecongniseDeviceFlag() {
 		return m_systemManager.getAlreadyRecongniseDeviceFlag();
 	}
+	
+	public String getAppVersion(){
+		return m_systemManager.getAppVersion();
+	}
     /********************System method end************************/
     
     /********************User manager Data start**********************/

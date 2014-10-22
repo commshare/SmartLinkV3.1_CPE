@@ -7,7 +7,7 @@
     android:orientation="horizontal" >
     
     <!-- signal -->
-    <LinearLayout android:id="@+id/ll_widget_signal"
+    <RelativeLayout android:id="@+id/ll_widget_signal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -15,10 +15,10 @@
     <ImageButton android:id="@+id/ib_widget_signal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
-        android:background="@drawable/home_signal_3"/>
-    </LinearLayout>
+        android:background="@drawable/widget_signal_3"/>
+    </RelativeLayout>
     
     <ImageView android:layout_width="1dp"
         android:layout_height="match_parent"
@@ -90,7 +90,7 @@
         android:contentDescription="@string/app_name"/>
     
     <!-- SMS status -->
-    <LinearLayout android:id="@+id/ll_widget_sms"
+    <RelativeLayout android:id="@+id/rl_widget_sms"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -98,10 +98,10 @@
     <ImageButton android:id="@+id/ib_widget_sms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
         android:background="@drawable/widget_sms_no_new_active"/>
-    </LinearLayout>
+    </RelativeLayout>
     
     <ImageView android:layout_width="1dp"
         android:layout_height="match_parent"
@@ -111,7 +111,7 @@
         android:contentDescription="@string/app_name"/>
     
     <!-- battery status -->
-    <LinearLayout android:id="@+id/ll_widget_battery"
+    <RelativeLayout android:id="@+id/rl_widget_battery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -119,8 +119,8 @@
     <ImageButton android:id="@+id/ib_widget_battery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
         android:background="@drawable/widget_battery_full"/>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

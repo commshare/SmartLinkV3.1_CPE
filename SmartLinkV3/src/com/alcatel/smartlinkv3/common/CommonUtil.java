@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import com.alcatel.smartlinkv3.R;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.DhcpInfo;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
@@ -64,4 +66,9 @@ public class CommonUtil {
         return Formatter.formatIpAddress(dhcpInfo.ipAddress);  
     } 
 	
+	public static void openWebPage(Context context, String strWeb){
+		Uri uri = Uri.parse(strWeb);
+		Intent it = new Intent(Intent.ACTION_VIEW,uri);
+		context.startActivity(it);
+	}
 }

@@ -78,7 +78,7 @@
     <string name="setting_backup_btn_backup">Backup</string>
     <string name="setting_restore_description">Restore the configuration.</string>
     <string name="setting_restore_btn_restore">Restore</string>
-    <string name="setting_about_version">Version0.5</string>
+    <string name="setting_about_version">Version</string>
     <string name="setting_about_official_website">Official website</string>
     <string name="setting_about_management_page">Management page</string>
     <string name="setting_about_copyright">Copyright 2014–2016 TCL Communication Ltd.\r\nAll right reserved.</string>
