@@ -38,8 +38,8 @@ public abstract class BaseActivity extends Activity{
        	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));  
     	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)); 
 
-    	showActivity(this);
-    	back2MainActivity(this);
+    	//showActivity(this);
+    	//back2MainActivity(this);
 	}
 	
 	@Override
@@ -52,16 +52,16 @@ public abstract class BaseActivity extends Activity{
     		e.printStackTrace();
     	}
     }
-	
+
 	protected void onBroadcastReceive(Context context, Intent intent)
 	{
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-    		showActivity(context);
+    		//showActivity(context);
     	}else if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				back2MainActivity(context);
+				//back2MainActivity(context);
 			}
 		}
 	}
@@ -110,7 +110,7 @@ public abstract class BaseActivity extends Activity{
 			finish();
 		}	
 	}
-	
+
 /*	private void checkLogin()
 	{
     	PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);  

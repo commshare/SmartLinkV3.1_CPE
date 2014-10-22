@@ -267,14 +267,13 @@
 	            android:paddingRight="10dip"
 	            android:paddingTop="12dip"
                 android:orientation="horizontal">
-
                 <ProgressBar
                     android:id="@+id/battery_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="68dip"
+                    android:layout_height="35dip"
                     android:layout_centerVertical="true"
                     android:max="100"
-                    android:progress="50"
+                    android:progress="75"
                     android:layout_marginLeft="20dip"
                     android:background="@drawable/battery_progress_bg"
                     android:progressDrawable="@drawable/battery_progress_status"
