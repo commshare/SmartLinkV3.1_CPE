@@ -32,7 +32,7 @@
 	           	android:gravity="center"
 	           	android:text="zhoudq"
 	           	android:textSize="@dimen/dimen_textsize_12sp"
-	           	android:textColor="@color/color_white"/>
+	           	android:textColor="@color/color_black"/>
 		    <TextView
 	           	android:id="@+id/directory"
 	           	android:layout_width="wrap_content"

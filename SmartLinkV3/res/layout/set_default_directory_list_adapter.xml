@@ -50,7 +50,7 @@
 	           	android:gravity="left"
 	           	android:text="zhoudq"
 	           	android:textSize="14sp"
-	           	android:textColor="@color/color_white"/>
+	           	android:textColor="@color/color_black"/>
 	    </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

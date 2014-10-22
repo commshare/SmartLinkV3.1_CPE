@@ -3,18 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/repeat_bg" >
+    android:background="@color/color_white" >
 
     <LinearLayout
-        android:id="@+id/head_layout"
+        android:id="@+id/title_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
+	    <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:background="@color/main_title_background" >
             <Button
                 android:id="@+id/cancel_btn"
                 android:layout_width="wrap_content"
@@ -46,21 +45,15 @@
                 android:textSize="@dimen/dimen_textsize_16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:background="@drawable/title_splitter" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/directory_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/head_layout"
+        android:layout_below="@id/title_layout"
         android:layout_marginTop="1dip"
-        android:background="@drawable/m100_directory_layout_bg"
+        android:background="@color/color_white"
         android:orientation="horizontal" >
 
         <ImageView
@@ -87,7 +80,7 @@
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:singleLine="true"           
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_black"
             android:textSize="18sp" />
 
         <ImageView
@@ -110,7 +103,7 @@
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:singleLine="true"           
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_black"
             android:textSize="18sp" />
 
         <ImageView
@@ -120,6 +113,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/m100_directory_arrow"
             android:contentDescription="@null" />
+        
+        <View
+	                android:layout_width="match_parent"
+	                android:layout_height="1dip"
+	                android:background="@color/color_divider" />
     </LinearLayout>
 
     <RelativeLayout
@@ -180,8 +178,8 @@
             android:layout_height="match_parent"
             android:cacheColorHint="#00000000"
             android:choiceMode="singleChoice"
-            android:divider="@drawable/home_divider"
-            android:dividerHeight="2dip"
+            android:divider="@color/color_divider"
+            android:dividerHeight="1dip"
             android:drawSelectorOnTop="false"
             android:listSelector="@drawable/selector_local_storage_item"
             android:overScrollMode="never" />

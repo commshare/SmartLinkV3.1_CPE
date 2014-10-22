@@ -3,7 +3,7 @@
     android:id="@+id/layout_main"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/repeat_bg" >
+    android:background="@color/color_white" >
 
     <RelativeLayout 
         android:id="@+id/layout_top"
@@ -52,8 +52,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/search_number" >
 		<ListView android:id="@+id/list_view"
-		   	android:dividerHeight="2dip"
-		    android:divider="@drawable/home_divider"
+		   	android:dividerHeight="1dip"
+		    android:divider="@color/color_divider"
 		    android:drawSelectorOnTop="false"
 		    android:choiceMode="singleChoice"
 		    android:listSelector="@drawable/selector_local_storage_item"

@@ -28,6 +28,6 @@
            	android:gravity="left"
            	android:text="zhoudq"
            	android:textSize="@dimen/dimen_textsize_12sp"
-           	android:textColor="@color/color_white"/>
+           	android:textColor="@color/color_black"/>
     </RelativeLayout>
 </LinearLayout>

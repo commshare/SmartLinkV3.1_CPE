@@ -2,20 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/repeat_bg" >
+    android:background="@color/color_white" >
 
     <LinearLayout
-        android:id="@+id/m100_storage_main_top_layout"
+        android:id="@+id/title_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
+        android:layout_height="wrap_content">
+	    <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:background="@color/main_title_background" >
+		    <Button
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="38dip"
@@ -40,20 +38,14 @@
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/dimen_textsize_16sp"
                 android:textStyle="bold" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:background="@drawable/title_splitter" />
-    </LinearLayout>
+	    </RelativeLayout>  
+	</LinearLayout>
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/m100_storage_main_top_layout"
-        android:background="@color/mask_color"
+        android:layout_below="@id/title_layout"
+        android:background="@color/color_white"
         android:overScrollMode="never" >
 
         <FrameLayout
@@ -95,7 +87,7 @@
                         android:layout_toRightOf="@id/image_media_box"
                         android:singleLine="true"
                         android:text="@string/m100_storage_main_media_box"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/color_black"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -138,7 +130,7 @@
                         android:layout_toRightOf="@id/image_hard_disc"
                         android:singleLine="true"
                         android:text="@string/m100_storage_main_hard_disc"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/color_black"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -181,7 +173,7 @@
                         android:layout_toRightOf="@+id/image_no_storage"
                         android:singleLine="true"
                         android:text="@string/m100_storage_main_no_external_storage"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/color_black"
                         android:textSize="16sp" />
                 </RelativeLayout>
 
@@ -219,7 +211,7 @@
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="@string/m100_storage_main_samba_service_disabled_description"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/color_black"
                         android:textSize="@dimen/dimen_textsize_16sp" />
 
                     <RelativeLayout
@@ -251,7 +243,7 @@
                             android:layout_toRightOf="@id/item_samba_image"
                             android:singleLine="true"
                             android:text="@string/m100_storage_main_samba_service"
-                            android:textColor="@color/color_white"
+                            android:textColor="@color/color_black"
                             android:textSize="16sp" />
 
                         <Button
@@ -295,7 +287,7 @@
                         android:layout_toRightOf="@id/device_info_setting_image"
                         android:singleLine="true"
                         android:text="@string/m100_storage_main_local_storage"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/color_black"
                         android:textSize="16sp" />
 
                     <ImageView
