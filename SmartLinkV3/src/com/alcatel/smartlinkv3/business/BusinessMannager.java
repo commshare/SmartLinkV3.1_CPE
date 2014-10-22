@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.business.SMSManager.GetSMSListTask;
-import com.alcatel.smartlinkv3.business.model.CallLogModel;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -51,7 +50,6 @@ public class BusinessMannager {
 	private SMSManager m_smsManager = null;
 	private WanManager m_wanManager = null;
 	private WlanManager m_wlanManager = null;
-	private CallLogManager m_callLogManager = null;
 	private ServiceManager m_serviceManager = null;
 	
 	private String m_strServerAddress = "192.168.1.1";
@@ -85,7 +83,6 @@ public class BusinessMannager {
     	m_smsManager = new SMSManager(m_context);
     	m_wanManager = new WanManager(m_context);
     	m_wlanManager = new WlanManager(m_context);
-    	m_callLogManager = new CallLogManager(m_context);
     	m_serviceManager = new ServiceManager(m_context);
     	
     	m_wifiNetworkReceiver = new WifiNetworkReceiver();
@@ -160,12 +157,6 @@ public class BusinessMannager {
     			if(WlanManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
     				Method method = m_wlanManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
     				method.invoke(m_wlanManager, data);
-    			}
-    			
-    			//Call Log Manager
-    			if(CallLogManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
-    				Method method = m_callLogManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
-    				method.invoke(m_callLogManager, data);
     			}
     			
     			//Service Manager
@@ -315,29 +306,6 @@ public class BusinessMannager {
 	}
 	
     /********************wlan manager method end************************/      
-
-    
-    /********************call log manager Data start**********************/
-    public ArrayList<CallLogModel> getCallLogList() {
-		return (ArrayList<CallLogModel>) m_callLogManager.getCallLogList().clone();
-	}   
-    
-    public void refreshCallLogListAtOnce() {
-    	m_callLogManager.refreshCallLogListAtOnce();
-    }
-    
-    public CallLogModel getCallLogById(int nId) {
-    	return m_callLogManager.getCallLogById(nId);
-    }  
-    
-    public void startGetCallLogTask() {
-    	m_callLogManager.startGetCallLogTask();
-    }
-    
-    public void stopGetCallLogTask() {
-    	m_callLogManager.stopGetCallLogTask();
-    }
-    /********************call log manager method end************************/
     
     
     /********************service manager Data start**********************/

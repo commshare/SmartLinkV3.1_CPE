@@ -3,7 +3,6 @@ package com.alcatel.smartlinkv3.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.alcatel.smartlinkv3.business.CallLogManager;
 import com.alcatel.smartlinkv3.business.SMSManager;
 import com.alcatel.smartlinkv3.business.ServiceManager;
 import com.alcatel.smartlinkv3.business.SimManager;
@@ -89,13 +88,6 @@ public class MessageUti {
 	public static String WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET = "com.alcatel.cpe.business.wlan.dissconnectmm100clientpoint";
 	/**************************Wlan message end*********************************************************************************/
 	
-	
-	/**************************Call Log message start*********************************************************************************/
-	public static String CALLLOG_GET_CALLLOG_LIST_ROLL_REQUSET = "com.alcatel.cpe.business.calllog.getcallloglist";	
-	public static String CALLLOG_DELETE_CALLLOG_REQUSET = "com.alcatel.cpe.business.calllog.deletecalllog";
-	public static String CALLLOG_CLEAR_CALLLOG_REQUSET = "com.alcatel.cpe.business.calllog.clearcalllog";
-	/**************************Call Log message end*********************************************************************************/
-	
 	/**************************Service message start*********************************************************************************/
 	public static String SERVICE_SET_SERVICE_STATE_REQUSET = "com.alcatel.cpe.business.service.setservicestate";
 	public static String SERVICE_GET_SERVICE_STATE_REQUSET = "com.alcatel.cpe.business.service.getservicestate";
@@ -146,18 +138,12 @@ public class MessageUti {
 		httpMethods.put(SMS_SEND_SMS_REQUSET, new HttpMethodUti(SMSManager.class, "sendSms"));
 		httpMethods.put(SMS_GET_SEND_STATUS_REQUSET, new HttpMethodUti(SMSManager.class, "getSmsSendResult"));
 		httpMethods.put(SMS_MODIFY_SMS_READ_STATUS_REQUSET, new HttpMethodUti(SMSManager.class, "modifySMSReadStatus"));
-		
 		/********************SMS method end**********************/
 		
 		/********************WAN method start**********************/
 		httpMethods.put(WAN_CONNECT_REQUSET, new HttpMethodUti(WanManager.class, "connect"));
 		httpMethods.put(WAN_DISCONNECT_REQUSET, new HttpMethodUti(WanManager.class, "disconnect"));		
 		/********************WAN method end**********************/
-		
-		/********************call log method start**********************/	
-		httpMethods.put(CALLLOG_DELETE_CALLLOG_REQUSET, new HttpMethodUti(CallLogManager.class, "deleteCallLog"));
-		httpMethods.put(CALLLOG_CLEAR_CALLLOG_REQUSET, new HttpMethodUti(CallLogManager.class, "clearCallLog"));		
-		/********************call log method end**********************/
 		
 		/********************service method start**********************/	
 		httpMethods.put(SERVICE_SET_SERVICE_STATE_REQUSET, new HttpMethodUti(ServiceManager.class, "setServiceState"));	

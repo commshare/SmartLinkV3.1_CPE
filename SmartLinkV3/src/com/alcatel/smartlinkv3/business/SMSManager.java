@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.CallLogManager.GetCallLogListTask;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsMessageModel;
 import com.alcatel.smartlinkv3.business.sms.HttpGetSmsList;
