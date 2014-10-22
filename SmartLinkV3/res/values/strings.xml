@@ -7,7 +7,7 @@
     <string name="main_home">Home</string>
     <string name="main_usage">Usage</string>
    	<string name="main_sms">SMS</string>
-    <string name="main_setting">Setting</string>
+    <string name="main_setting">Settings</string>
     
     <!-- Home view start -->
     <string name="home_GB">GB</string>
@@ -54,7 +54,7 @@
     <!--connect device end -->
     
     <!-- setting start -->
-    <string name="setting_wifi">WiFi Setting</string>
+    <string name="setting_wifi">WiFi Settings</string>
     <string name="setting_power">Power Saving</string>
     <string name="setting_upgrade">Upgrade</string>
     <string name="setting_device">Device</string>
@@ -205,11 +205,6 @@
     <string name="set_default_storage_title">Set Default Folder</string>
     <string name="set_default_storage_select_btn">Select</string>
     <!-- set default local storage end-->
-    
-  	<!-- PIN start-->
-  	<string name="button_apply">Apply</string>
-  	<string name="image_view_close_button">close button</string>
-  	<!-- PIN end-->
   	
   	<!-- m100 app start -->
   	<string name="m100_edit">Edit</string>
@@ -250,4 +245,54 @@
 	<string name="pbc_text2">2. On the Client(eg PC), open the Wi-Fi access utility and select the PBC;</string>
 	<string name="pbc_text3">3. Click the icon on the top;</string>
 	<!-- wps end -->
+	
+	<!-- PIN start-->
+    <string name="puk_prompt_str">The comfirmed PIN code should be the same as new PIN code.</string>
+    <string name="pin_title">Please input the PIN code!</string>
+    <string name="pin_code_label">PIN Code:</string>
+    <string name="button_apply">Apply</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="pin_remain_three_times">Remain: 3 times</string>
+    <string name="pin_error_waring_title">Sorry, the PIN code is wrong!</string>
+    <string name="image_view_close_button">close button</string>
+    <string name="puk_title">Please input the PUK code!</string>
+    <string name="puk_code_label">PUK Code:</string>
+    <string name="puk_remain_three_times">Remain: 3 times</string>
+    <string name="puk_new_pin_label">New PIN:</string>
+    <string name="puk_confirm_pin_label">Confirmed PIN:</string>
+    <string name="puk_format_wrong_msg">PUK code should be 8 digits.</string>
+    <string name="puk_error_waring_title">Sorry, the PUK code is wrong!</string>
+    <string name="error_info">Error</string>
+    <string name="btn_reply">Retry</string>
+    <string name="IDS_PIN_LOCKED">PIN Locked</string>
+    <string name="IDS_PUK_LOCKED">PUK Locked</string>
+    <string name="IDS_PIN_CHECK_PIN_PROGRESS">Checking PIN</string>
+    <string name="IDS_PIN_CHECK_PUK_PROGRESS">Checking PUK</string>
+    <string name="remain_times">Remain: %1$d time(s)</string>     
+    <!-- PIN end-->
+    
+    <!-- Login view start-->
+    <string name="login_title">Please Input Admin Password!</string>
+    <string name="login_btn_apply">Apply</string>
+    <string name="login_btn_cancel">Cancel</string>
+    <string name="login_prompt_str">Your password is wrong!</string>
+    <string name="login_user_name">admin</string>
+    <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
+    <string name="login_check_dialog_title">Login</string>
+    <string name="login_check_dialog_content">Login</string>
+    <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
+    <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!</string>   
+    <string name="login_warning">Login warning</string>   
+    <!-- Login view end  -->
+    
+    <!-- Refresh WIFI start -->
+    <string name="refresh_wifi_title">No Wi-Fi or data connection</string>
+    <string name="refresh_wifi_tip">Please connect to a Wi-Fi Hotspot, or get a mobile data connection!</string>
+    <string name="refresh">Wi-Fi Refresh</string>
+    <string name="go_to_private_cloud">Go to Home Cloud</string>
+    <string name="inexact_wifi_title">Inexact Wi-Fi connection</string>
+    <string name="inexact_wifi_tip">Please connect to home station HOME H850 or to Mobile Media Box HOME MM100 WiFi network, otherwise you can only manage your Home Cloud via mobile data (will incur mobile chargers).</string>
+    <string name="data_connect_title">Mobile data connected</string>
+    <string name="data_connect_tip">Please connect to home station HOME H850 or to Mobile Media Box HOME MM100 WiFi network, otherwise you can only manage your Home Cloud via mobile data (will incur mobile chargers).</string>
+    <!-- Refresh WIFI end -->
 </resources>

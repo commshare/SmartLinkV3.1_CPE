@@ -34,6 +34,11 @@
     <color name="home_connect_status">#ff80c4e7</color>
     <!-- home end -->
     
+    <!-- PIN color start-->
+    <color name="error_font_color">#ffff0000</color>
+    <color name="font_color">#ffffffff</color>
+    <!-- PIN color end-->
+    
     <!-- usage start -->
     <!-- usage end -->
     

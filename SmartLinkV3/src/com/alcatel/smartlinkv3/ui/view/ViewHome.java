@@ -157,8 +157,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);
 		m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);
 		
-		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
-		m_batteryImageView = (ImageView) m_view.findViewById(R.id.battery_status);
+//		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
+//		m_batteryImageView = (ImageView) m_view.findViewById(R.id.battery_status);
 		
 		m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
 		m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
