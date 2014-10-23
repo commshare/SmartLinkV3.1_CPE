@@ -21,6 +21,8 @@ public class WlanSettingResult extends BaseResult{
 	public int Bandwidth = 0; //0: disable	1: enable
 	public int WMode = 0; //0: auto	1: 802.11a	2: 802.11b	3: 802.11g	4: 802.11a+n	5: 802.11g+n
 	public String MacAddress = new String();
+	public int NumOfHosts = 0; 
+	public int MaxNumOfHosts = 0;
 	
 	
 	public void clone(WlanSettingResult src) {	
@@ -42,7 +44,9 @@ public class WlanSettingResult extends BaseResult{
 		ApIsolation = src.ApIsolation;
 		Bandwidth = src.Bandwidth;
 		WMode = src.WMode;
-		MacAddress = src.MacAddress;		
+		MacAddress = src.MacAddress;
+		NumOfHosts = src.NumOfHosts;
+		MaxNumOfHosts = src.MaxNumOfHosts;
 	}
 	
 	@Override
@@ -64,6 +68,8 @@ public class WlanSettingResult extends BaseResult{
 		Bandwidth = 0;
 		WMode = 0;
 		MacAddress = "";
+		NumOfHosts = 0; 
+		MaxNumOfHosts = 0;
 	}
 
 }

@@ -25,7 +25,7 @@ public class HttpWlanSetting {
 				m_requestParamJson.put(ConstValue.JSON_RPC,
 						ConstValue.JSON_RPC_VERSION);
 				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"Wlan.GetWlanSettings");
+						"GetWlanSettings");
 
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, null);
@@ -98,7 +98,9 @@ public class HttpWlanSetting {
 				settings.put("ApIsolation5G", m_result.ApIsolation5G);
 				settings.put("ApIsolation", m_result.ApIsolation);
 				settings.put("Bandwidth", m_result.Bandwidth);
-				settings.put("WMode", m_result.WMode);	
+				settings.put("WMode", m_result.WMode);
+				settings.put("NumOfHosts", m_result.NumOfHosts);
+				settings.put("MaxNumOfHosts", m_result.MaxNumOfHosts);
 				
 				
 				m_requestParamJson

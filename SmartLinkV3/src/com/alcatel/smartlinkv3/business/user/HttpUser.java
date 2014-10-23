@@ -32,7 +32,7 @@ public class HttpUser {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "User.Login");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Login");
 	        	
 	        	JSONObject userInfo = new JSONObject();
 	        	userInfo.put("Username", m_strUserName);
@@ -90,7 +90,7 @@ public class HttpUser {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "User.Logout");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Logout");
 
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
@@ -144,7 +144,7 @@ public class HttpUser {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "User.GetLoginState");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetLoginState");
 
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
@@ -185,7 +185,8 @@ public class HttpUser {
         }
     }
 	
-	/******************** UpdateLoginTime  **************************************************************************************/	
+	/******************** UpdateLoginTime  not  defined**************************************************************************************/	
+	
 	public static class UpdateLoginTime extends BaseRequest
     {	
 		String m_sysauth = new String();		

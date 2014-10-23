@@ -3,8 +3,7 @@ package com.alcatel.smartlinkv3.business;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.alcatel.smartlinkv3.business.wlan.HostNumberResult;
-import com.alcatel.smartlinkv3.business.wlan.HttpHostInfo;
+
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -148,7 +147,7 @@ public class WlanManager extends BaseManager {
 		@Override
 		public void run() {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpHostInfo.GetNumOfHosts("5.6",
+					new HttpWlanSetting.GetWlanSetting("5.3",
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -158,7 +157,7 @@ public class WlanManager extends BaseManager {
 									if (ret == BaseResponse.RESPONSE_OK) {
 										strErrcode = response.getErrorCode();
 										if (strErrcode.length() == 0) {
-											HostNumberResult hostNumberResult = response
+											WlanSettingResult hostNumberResult = response
 													.getModelResult();
 											int preHostNum = m_nHostNum;
 											m_nHostNum = hostNumberResult.NumOfHosts;
