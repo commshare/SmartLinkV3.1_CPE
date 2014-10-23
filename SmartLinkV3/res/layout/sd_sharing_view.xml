@@ -214,7 +214,7 @@
 	                android:layout_alignParentRight="true"
 	                android:layout_centerVertical="true"
 	                android:contentDescription="@null"
-	                android:src="@drawable/enter_arrow" />
+	                android:src="@drawable/right_arrow_big" />
 	        </RelativeLayout>
         </LinearLayout>
    </ScrollView>

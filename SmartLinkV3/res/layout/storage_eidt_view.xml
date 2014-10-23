@@ -70,7 +70,6 @@
                 android:textSize="@dimen/dimen_textsize_20sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -78,7 +77,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_layout"
-        android:layout_marginTop="1dip"
         android:background="@color/color_light_gray"
         android:orientation="horizontal" >
 
@@ -161,7 +159,6 @@
             android:drawablePadding="5dip"
             android:drawableTop="@drawable/storage_selector_download_button"
             android:gravity="center"
-            android:paddingTop="5dip"
             android:singleLine="true"
             android:text="@string/toolbar_download"
             android:textColor="@color/color_grey"
@@ -177,7 +174,6 @@
             android:drawablePadding="5dip"
             android:drawableTop="@drawable/storage_selector_move_button"
             android:gravity="center"
-            android:paddingTop="5dip"
             android:text="@string/toolbar_move"
             android:textColor="@color/color_grey" />
 
@@ -191,7 +187,6 @@
             android:drawablePadding="5dip"
             android:drawableTop="@drawable/storage_selector_rename_button"
             android:gravity="center"
-            android:paddingTop="5dip"
             android:text="@string/toolbar_rename"
             android:textColor="@color/color_grey" />
 
@@ -205,14 +200,14 @@
             android:drawablePadding="5dip"
             android:drawableTop="@drawable/storage_selector_delete_button"
             android:gravity="center"
-            android:paddingTop="5dip"
+
             android:text="@string/toolbar_delete"
             android:textColor="@color/color_grey" />
 
         <View
             android:layout_width="1dip"
             android:layout_height="wrap_content"
-            android:background="@color/color_light_gray" />
+            android:background="@color/color_divider" />
 
         <CheckBox
             android:id="@+id/select_all"
@@ -245,7 +240,7 @@
             android:cacheColorHint="#00000000"
             android:choiceMode="singleChoice"
             android:divider="@color/color_divider"
-            android:dividerHeight="2dip"
+            android:dividerHeight="1dip"
             android:drawSelectorOnTop="false"
             android:listSelector="@drawable/selector_local_storage_item"
             android:overScrollMode="never" />
