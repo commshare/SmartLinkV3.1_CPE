@@ -31,7 +31,7 @@
                 android:layout_toRightOf="@+id/login_close_btn"
                 android:paddingLeft="8dip"
                 android:text="@string/login_title"
-                android:textColor="@color/color_white"
+                android:textColor="@color/color_black"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 

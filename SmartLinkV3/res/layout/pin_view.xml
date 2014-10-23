@@ -32,7 +32,7 @@
                 android:text="@string/pin_title"
                 android:textSize="13sp"
                 android:textStyle="bold" 
-                android:textColor="@color/color_white"/>
+                android:textColor="@color/color_black"/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -55,7 +55,7 @@
             android:layout_marginTop="@dimen/dimen_20dip"
             android:text="@string/pin_code_label"
             android:textStyle="bold"
-            android:textColor="@color/color_white" />
+            android:textColor="@color/color_black" />
 
         <!-- android 2.3 need set password true -->
 
