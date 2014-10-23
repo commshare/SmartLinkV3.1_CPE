@@ -15,4 +15,11 @@ public class ConstValue {
 	public static String JSON_ERROR_CODE = "code";
 	public static String JSON_ERROR_MESSAGE = "message";
 	public static String JSON_ID = "id";
+	public static int CHARGE_STATE_CHARGING = 0;
+	public static int CHARGE_STATE_COMPLETED = 1;
+	public static int CHARGE_STATE_REMOVED = 2;
+	public static int CHARGE_STATE_ABORT = 3;
+	public static int DISABLE = 0;
+	public static int ENABLE = 1;
+	
 }
