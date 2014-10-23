@@ -5,6 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_FLOW_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
@@ -18,6 +25,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
 import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -36,6 +44,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 
 public class ViewHome extends BaseViewImpl implements OnClickListener {
@@ -64,7 +73,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	/*battery_panel  start*/
 	private TextView m_batteryscaleTextView;
-	private ImageView m_batteryImageView;
+	private ProgressBar m_batteryProgress = null;
 	/*battery_panel  end*/
 	
 	/*access_panel  start*/
@@ -73,6 +82,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private RelativeLayout m_accessDeviceLayout;
 	/*access_panel  end*/
 	
+	private LoginDialog m_loginDialog = null;
 	
 	
 	private ViewConnetBroadcastReceiver m_viewConnetMsgReceiver;
@@ -153,16 +163,23 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_connectBtn.setOnClickListener(this);
 		m_connectToNetworkTextView = (TextView) m_view.findViewById(R.id.connect_network);
 		m_connectToLabel = (TextView) m_view.findViewById(R.id.connect_label);
+		m_connectToLayout = (LinearLayout) m_view.findViewById(R.id.connect_to_layout);
+		
+		m_unlockSimBtn = (Button) m_view.findViewById(R.id.unlock_sim_button);
+		m_simOrServiceTextView = (TextView) m_view.findViewById(R.id.connect_label);
+		m_simOrServiceStateLayout = (LinearLayout) m_view.findViewById(R.id.sim_or_service_layout);
+		
+		m_connectWaiting = (ProgressBar) m_view.findViewById(R.id.waiting_progress);
+		
 		
 		m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);
 		m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);
 		
-//		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
-//		m_batteryImageView = (ImageView) m_view.findViewById(R.id.battery_status);
+		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
+		m_batteryProgress = (ProgressBar) m_view.findViewById(R.id.battery_progress);
 		
 		m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
 		m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
-		
 		m_accessDeviceLayout = (RelativeLayout)m_view.findViewById(R.id.access_num_layout);
 		m_accessDeviceLayout.setOnClickListener(this);
 	}
@@ -170,17 +187,47 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	@Override
 	public void onResume() {
 		m_viewConnetMsgReceiver = new ViewConnetBroadcastReceiver();
+		
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET));
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_CONNECT_REQUSET));
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_DISCONNECT_REQUSET));
+		
+		showConnctBtnView();
+		showNetworkState();
+		showSignalAndNetworkType();
+		
+		showBatteryState();
+		showAccessDeviceState();
 	}
 
 	@Override
-	public void onPause() {}
+	public void onPause() {
+		try {
+			m_context.unregisterReceiver(m_viewConnetMsgReceiver);
+		} catch (Exception e) {
+
+		}
+		
+		m_bConnectPressd = false;
+		m_bConnectReturn = false;
+		showConnctBtnView();
+
+	}
 
 	@Override
-	public void onDestroy() {}
+	public void onDestroy() {
+		m_loginDialog.destroyDialog();
+	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.connect_button:
+			connectBtnClick();
+			break;
 		case R.id.access_num_layout:
 			accessDeviceLayoutClick();
 			break;
@@ -369,5 +416,132 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		}
 	}
 	
-	private void showConnctBtnView() {}
+	private void showConnctBtnView() {
+
+		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
+		if (simStatus != SIMState.Accessable) {
+			m_connectWaiting.setVisibility(View.GONE);
+			m_connectBtn.setVisibility(View.INVISIBLE);
+			return;
+		}
+		
+		NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
+		if(curNetwork.m_NetworkType == NetworkType.No_service || curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
+			m_connectWaiting.setVisibility(View.GONE);
+			m_connectBtn.setVisibility(View.INVISIBLE);
+			return;
+		}
+		m_connectBtn.setVisibility(View.VISIBLE);
+		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		if (m_bConnectPressd == false) {
+			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
+				m_connectBtn.setBackgroundResource(R.drawable.switch_on);
+				m_connectBtn.setEnabled(true);
+				m_connectWaiting.setVisibility(View.GONE);
+			}
+			
+			if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+				m_connectBtn.setBackgroundResource(R.drawable.switch_off);
+				m_connectBtn.setEnabled(false);
+				m_connectWaiting.setVisibility(View.VISIBLE);
+			}
+			
+			if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
+				m_connectBtn.setBackgroundResource(R.drawable.switch_off);
+				m_connectBtn.setEnabled(true);				
+				m_connectWaiting.setVisibility(View.GONE);
+			}
+			
+			if (internetConnState.m_connectionStatus == ConnectionStatus.Connecting) {
+				m_connectBtn.setBackgroundResource(R.drawable.switch_on);
+				m_connectBtn.setEnabled(false);
+				m_connectWaiting.setVisibility(View.VISIBLE);
+			}
+		} else {
+			m_connectWaiting.setVisibility(View.VISIBLE);
+			m_connectBtn.setEnabled(false);
+			m_connectBtn.setVisibility(View.VISIBLE);
+		}
+	
+	}
+	
+		private void connectBtnClick() {	
+			
+			if (LoginDialog.isLoginSwitchOff()) {
+				connect();	
+			} else {
+				UserLoginStatus status = BusinessMannager.getInstance()
+						.getLoginStatus();
+	
+				if (status == UserLoginStatus.OthersLogined) {
+					PromptUserLogined();
+				} else if (status == UserLoginStatus.selfLogined) {
+					connect();	
+				} else {
+					m_loginDialog.showDialog(new OnLoginFinishedListener() {
+						@Override
+						public void onLoginFinished() {
+							connect();	
+						}
+					});
+				}
+			}	
+		}
+
+		private void connect()
+		{
+			UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
+			if (settings.m_overflowState == OVER_FLOW_STATE.Enable && settings.m_lTotalValue > 0) {
+				long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
+				if (lTotalUsedUsage >= settings.m_lTotalValue) {
+					//show warning dialog
+					//m_connectWarningDialog.showDialog();
+					String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
+					Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
+					return;
+				}
+			}
+		
+			if (m_bConnectPressd == false)
+				m_bConnectPressd = true;
+			else
+				return;
+		
+			m_bConnectReturn = false;
+			showNetworkState();
+			showConnctBtnView();
+			ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
+					|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+				BusinessMannager.getInstance().sendRequestMessage(
+						MessageUti.WAN_DISCONNECT_REQUSET,null);
+			} else {
+				BusinessMannager.getInstance().sendRequestMessage(
+								MessageUti.WAN_CONNECT_REQUSET,null);
+			}	
+		}
+		private void PromptUserLogined() {
+			final InquireDialog inquireDlg = new InquireDialog(m_context);
+			inquireDlg.m_titleTextView.setText(R.string.login_check_dialog_title);
+			inquireDlg.m_contentTextView
+					.setText(R.string.login_other_user_logined_error_msg);
+			inquireDlg.m_contentDescriptionTextView.setText("");
+			inquireDlg.m_confirmBtn
+					.setBackgroundResource(R.drawable.selector_common_button);
+			inquireDlg.m_confirmBtn.setText(R.string.ok);
+			inquireDlg.showDialog(new OnInquireApply() {
+				@Override
+				public void onInquireApply() {
+					inquireDlg.closeDialog();
+				}
+			});
+		}
+		
+		private void showBatteryState(){
+			
+		}
+		
+		private void showAccessDeviceState(){
+			
+		}
 }

@@ -96,8 +96,7 @@ public class MessageUti {
 	public static String SERVICE_SET_DLNA_SETTING_REQUSET = "com.alcatel.cpe.business.service.setdlnasetting";
 	public static String SERVICE_GET_DLNA_SETTING_REQUSET = "com.alcatel.cpe.business.service.getdlnasetting";	
 	public static String SERVICE_SET_FTP_SETTING_REQUSET = "com.alcatel.cpe.business.service.setftpsetting";
-	public static String SERVICE_GET_FTP_SETTING_REQUSET = "com.alcatel.cpe.business.service.getftpsetting";	
-	public static String SERVICE_GET_MM100_SAMBA_SETTING_REQUSET = "com.alcatel.cpe.business.service.getmm100sambasetting";
+	public static String SERVICE_GET_FTP_SETTING_REQUSET = "com.alcatel.cpe.business.service.getftpsetting";
 	/**************************Service message end*********************************************************************************/
 	
 	
@@ -153,8 +152,7 @@ public class MessageUti {
 		httpMethods.put(SERVICE_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "setDlnaSetting"));	
 		httpMethods.put(SERVICE_GET_DLNA_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "getDlnaSetting"));	
 		httpMethods.put(SERVICE_SET_FTP_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "setFtpSetting"));	
-		httpMethods.put(SERVICE_GET_FTP_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "getFtpSetting"));	
-		httpMethods.put(SERVICE_GET_MM100_SAMBA_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "getMM100SambaSetting"));		
+		httpMethods.put(SERVICE_GET_FTP_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "getFtpSetting"));		
 		/********************service method end**********************/			
 		
 		/********************WLAN method start**********************/

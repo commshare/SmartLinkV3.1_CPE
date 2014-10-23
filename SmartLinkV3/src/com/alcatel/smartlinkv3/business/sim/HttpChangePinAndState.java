@@ -29,7 +29,7 @@ public class HttpChangePinAndState {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SIM.ChangePin");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ChangePinCode");
 
 	        	JSONObject pinInfo = new JSONObject();
 	        	pinInfo.put("NewPin", m_strNewPin);
@@ -91,7 +91,7 @@ public class HttpChangePinAndState {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SIM.ChangePinState");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ChangePinState");
 
 	        	JSONObject changeState = new JSONObject();
 	        	changeState.put("Pin", m_strPin);

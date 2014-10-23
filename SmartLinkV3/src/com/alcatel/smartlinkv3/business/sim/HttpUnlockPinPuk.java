@@ -27,7 +27,7 @@ public class HttpUnlockPinPuk {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SIM.UnlockPin");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "UnlockPin");
 
 	        	JSONObject pin = new JSONObject();
 	        	pin.put("Pin", m_strPin);
@@ -88,7 +88,7 @@ public class HttpUnlockPinPuk {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SIM.UnlockPuk");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "UnlockPuk");
 
 	        	JSONObject pinPuk = new JSONObject();
 	        	pinPuk.put("Puk", m_strPuk);

@@ -25,7 +25,7 @@ public class HttpAutoEnterPinState {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SIM.GetAutoEnterPinState");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetAutoValidatePinState");
 
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
@@ -84,7 +84,7 @@ public class HttpAutoEnterPinState {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SIM.ChangePinState");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ChangePinState");
 
 	        	JSONObject setState = new JSONObject();
 	        	setState.put("State", m_nState);

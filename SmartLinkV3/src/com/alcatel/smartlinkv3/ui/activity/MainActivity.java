@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.view.MotionEvent;
 
-public class MainActivity extends BaseActivity implements OnClickListener,OnGestureListener{
+public class MainActivity extends BaseActivity implements OnClickListener{
 	private int m_preButton = 0;
 
 	private ViewFlipper m_viewFlipper;
@@ -68,8 +68,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 		m_settingBtn.setOnClickListener(this);
 
 		m_viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
-		gestureDetector = new GestureDetector(this);
-
 
 		m_titleTextView = (TextView) this.findViewById(R.id.main_title);
 		
@@ -303,83 +301,5 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnGest
 		intent.setClass(this, ActivityNewSms.class);	
 		this.startActivity(intent);
 	}
-	
 
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		// TODO Auto-generated method stub
-		if (e1.getX() - e2.getX() > 120) {
-			if (pageIndex < 3) {
-				pageIndex++;
-				m_viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
-						R.anim.animation_right_in));
-				m_viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-						R.anim.animation_left_out));
-				m_viewFlipper.showNext();
-				updateTitleUI(pageIndex);
-			}
-			return true;
-		} 
-		else if (e1.getX() - e2.getX() < -120) {
-			if (pageIndex > 0) {
-				pageIndex--;
-				m_viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
-						R.anim.animation_left_in));
-				m_viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-						R.anim.animation_right_out));
-				m_viewFlipper.showPrevious();
-				updateTitleUI(pageIndex);
-			}
-			return true;
-		}
-		return false;
-	}
-
-/*
-	private View.OnTouchListener onTouchListener = new View.OnTouchListener() {  
-		   
-        public boolean onTouch(View v, MotionEvent event) {  
-            // TODO Auto-generated method stub  
-            return gestureDetector.onTouchEvent(event);  
-        }  
-	};
-	*/
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		return gestureDetector.onTouchEvent(event);
-	}
-
-	@Override
-	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-			float distanceY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-		
-	} 
 }

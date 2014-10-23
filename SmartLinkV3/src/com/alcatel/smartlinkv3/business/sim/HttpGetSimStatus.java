@@ -24,7 +24,7 @@ public class HttpGetSimStatus {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SIM.GetSimStatus");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSimStatus");
 
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);

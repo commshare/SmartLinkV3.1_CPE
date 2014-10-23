@@ -3,7 +3,6 @@ package com.alcatel.smartlinkv3.business;
 import com.alcatel.smartlinkv3.business.service.DlnaSettings;
 import com.alcatel.smartlinkv3.business.service.FtpSettings;
 import com.alcatel.smartlinkv3.business.service.HttpService;
-import com.alcatel.smartlinkv3.business.service.MM100HttpService;
 import com.alcatel.smartlinkv3.business.service.SambaSettings;
 import com.alcatel.smartlinkv3.business.service.ServiceStateResult;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -426,43 +425,5 @@ public class ServiceManager extends BaseManager {
 							}
 						}));
 	}
-	
-	// Get MM100 Samba Setting
-		// //////////////////////////////////////////////////////////////////////////////////////////
-		public void getMM100SambaSetting(DataValue data) {
-			if (FeatureVersionManager.getInstance().isSupportApi("Services",
-					"Samba.GetSettings") != true)
-				return;
-
-			HttpRequestManager.GetInstance().sendPostRequest(
-					new MM100HttpService.GetSambaSetting("3.1",
-							new IHttpFinishListener() {
-								@Override
-								public void onHttpRequestFinish(
-										BaseResponse response) {
-									String strErrcode = new String();
-									int ret = response.getResultCode();
-									if (ret == BaseResponse.RESPONSE_OK) {
-										strErrcode = response.getErrorCode();
-										if (strErrcode.length() == 0) {
-											m_sambaSettings = response
-													.getModelResult();
-										} else {
-											m_sambaSettings.clear();
-										}
-									} else {
-										m_sambaSettings.clear();
-									}
-									Intent megIntent = new Intent(
-											MessageUti.SERVICE_GET_MM100_SAMBA_SETTING_REQUSET);
-									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-											ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
-								}
-							}));
-		}
 
 }

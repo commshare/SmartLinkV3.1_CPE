@@ -25,7 +25,7 @@ public class HttpConnectOperation {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "WanConnection.GetConnectionState");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetConnectionState");
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
