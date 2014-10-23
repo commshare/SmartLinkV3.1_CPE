@@ -3,43 +3,35 @@ package com.alcatel.smartlinkv3.business.system;
 import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class SystemInfo extends BaseResult{
-	private String Manufacturer = new String();
 	private String DeviceName = new String();
-	private String Model = new String();
 	private String IMEI = new String();
 	private String HwVersion = new String();
 	private String SwVersion = new String();
 	private String HttpApiVersion = new String();
 	private String WebUiVersion = new String();
+	private String MacAddress = new String();
 	
 	@Override
 	public void clear(){
-		Manufacturer = "";
+		MacAddress = "";
 		DeviceName = "";
-		Model = "";
 		IMEI = "";
 		HwVersion = "";
 		SwVersion = "";
 		HttpApiVersion = "";
 		WebUiVersion = "";
 	}
-	public String getManufacturer() {
-		return Manufacturer;
+	public String getMacAddress() {
+		return MacAddress;
 	}
-	public void setManufacturer(String manufacturer) {
-		Manufacturer = manufacturer;
+	public void setMacAddress(String strMacAddress) {
+		MacAddress = strMacAddress;
 	}
 	public String getDeviceName() {
 		return DeviceName;
 	}
 	public void setDeviceName(String deviceName) {
 		DeviceName = deviceName;
-	}
-	public String getModel() {
-		return Model;
-	}
-	public void setModel(String model) {
-		Model = model;
 	}
 	public String getIMEI() {
 		return IMEI;

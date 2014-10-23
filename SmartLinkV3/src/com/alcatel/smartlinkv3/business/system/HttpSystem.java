@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.business.system;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -58,7 +59,8 @@ public class HttpSystem {
         	m_features = gson.fromJson(strJsonResult, Features.class);
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public Features getModelResult() 
         {
         	//tset
@@ -116,7 +118,8 @@ public class HttpSystem {
         	m_systemInfo = gson.fromJson(strJsonResult, SystemInfo.class);
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public SystemInfo getModelResult() 
         {
              return m_systemInfo;
@@ -178,4 +181,227 @@ public class HttpSystem {
              return m_result;
         }
     }
+	
+	/*device reboot*/
+	public static class deviceRebootRequest extends BaseRequest{
+
+		public deviceRebootRequest(String strId,IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceReboot");
+
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new deviceRebootResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class deviceRebootResponse extends BaseResponse{
+
+		private Boolean m_blResult=false;
+		public deviceRebootResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			m_blResult = true;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Boolean getModelResult() {
+			// TODO Auto-generated method stub
+			return m_blResult;
+		}
+		
+	}
+	/*Device reset*/
+	public static class deviceResetRequest extends BaseRequest{
+
+		public deviceResetRequest(String strId,IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceReset");
+
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new deviceResetResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class deviceResetResponse extends BaseResponse{
+
+		private Boolean m_blRes= false;
+		public deviceResetResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			m_blRes = true;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Boolean getModelResult() {
+			// TODO Auto-generated method stub
+			return m_blRes;
+		}
+		
+	}
+	
+	/*Device backup*/
+	public static class deviceBackupRequest extends BaseRequest{
+
+		public deviceBackupRequest(String strId,IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceBackup");
+
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new deviceBackupResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class deviceBackupResponse extends BaseResponse{
+
+		private Boolean m_blRes= false;
+		public deviceBackupResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			m_blRes = true;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Boolean getModelResult() {
+			// TODO Auto-generated method stub
+			return m_blRes;
+		}
+		
+	}
+	
+	/*Device backup*/
+	public static class deviceRestoreRequest extends BaseRequest{
+
+		private String m_strFileName="";
+		public deviceRestoreRequest(String strId, String strFileName,IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+			m_strFileName = strFileName;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceRestore");
+
+	        	JSONObject jFile = new JSONObject();
+	        	jFile.put("filename", m_strFileName);
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, jFile);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new deviceRestoreResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class deviceRestoreResponse extends BaseResponse{
+
+		private Boolean m_blRes= false;
+		public deviceRestoreResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			m_blRes = true;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Boolean getModelResult() {
+			// TODO Auto-generated method stub
+			return m_blRes;
+		}
+		
+	}
 }
