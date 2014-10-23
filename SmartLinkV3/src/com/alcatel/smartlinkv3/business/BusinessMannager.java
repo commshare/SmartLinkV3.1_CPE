@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-import com.alcatel.smartlinkv3.business.SMSManager.GetSMSListTask;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -249,25 +248,9 @@ public class BusinessMannager {
     /********************network manager method end************************/
     
     /********************sms manager Data start**********************/
-    public ArrayList<SmsMessageModel> getSMSList() {
-		return (ArrayList<SmsMessageModel>) m_smsManager.getSMSList().clone();
-	}
-    
     public int getNewSmsNumber() {    	
     	return m_smsManager.GetUnreadSmsNumber();    	
     }
-    
-    public void refreshSmsListAtOnce() {
-    	m_smsManager.refreshSmsListAtOnce();
-    }
-    
-    public void startGetSmsListTask() {
-    	m_smsManager.startGetSmsListTask();
-	}
-	
-	public void stopGetSmsListTask() {
-		m_smsManager.stopGetSmsListTask();
-	}
     /********************sms manager method end************************/
     
     /********************wan manager Data start**********************/

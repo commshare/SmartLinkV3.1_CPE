@@ -6,15 +6,24 @@ import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
+import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
 import com.alcatel.smartlinkv3.business.model.SmsMessageModel;
 import com.alcatel.smartlinkv3.business.sms.HttpGetSmsList;
+import com.alcatel.smartlinkv3.business.sms.HttpSms;
 import com.alcatel.smartlinkv3.business.sms.HttpSmsOperation;
+import com.alcatel.smartlinkv3.business.sms.SMSContactItem;
 import com.alcatel.smartlinkv3.business.sms.SendSmsResult;
 import com.alcatel.smartlinkv3.business.sms.SendStatusResult;
+import com.alcatel.smartlinkv3.business.sms.SmsContactListResult;
+import com.alcatel.smartlinkv3.business.sms.SmsContentListResult;
+import com.alcatel.smartlinkv3.business.sms.SmsInitResult;
 import com.alcatel.smartlinkv3.business.sms.SmsListResult;
 import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
+import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
+import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SMSStoreIn;
 import com.alcatel.smartlinkv3.common.ENUM.SMSTag;
@@ -29,22 +38,24 @@ import android.content.IntentFilter;
 import android.os.Handler;
 
 public class SMSManager extends BaseManager {
-	private ArrayList<SmsMessageModel> m_messageList = new ArrayList<SmsMessageModel>();
+	private SMSInit m_smsInit = SMSInit.Initing;
+	private SmsContactMessagesModel m_contactMessages = new SmsContactMessagesModel();
+	
 	private Timer m_getSmsRollTimer = new Timer();
-	GetSMSListTask m_getSmsListTask = null;
+	GetSMSInitTask m_getSmsInitTask = null;
+	GetContactMessagesTask m_getContactMessagesTask = null;
 	
 	@Override
 	protected void clearData() {
 		// TODO Auto-generated method stub
-		m_messageList.clear();
+		m_smsInit = SMSInit.Initing;
+		m_contactMessages.clear();
 	} 
 	
 	@Override
 	protected void stopRollTimer() {
-		/*m_getSmsRollTimer.cancel();
-		m_getSmsRollTimer.purge();
-		m_getSmsRollTimer = new Timer();*/
-		stopGetSmsListTask();
+		stopGetSmsInitTask();
+		stopGetContactMessagesTask();
 	}
 	
 	@Override
@@ -57,16 +68,29 @@ public class SMSManager extends BaseManager {
 			}
     	}
 		
+		if(intent.getAction().equals(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				if(m_smsInit == SMSInit.Complete) {
+					stopGetSmsInitTask();
+					startGetContactMessagesTask();
+				}
+			}
+    	}
+		
 		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
-					//startGetSmsListTask();
+					startGetSmsInitTask();
 				}else{
+					m_smsInit = SMSInit.Initing;
+					
 					stopRollTimer();
-					m_messageList.clear();
+					m_contactMessages.clear();
 				}
 			}
     	}
@@ -75,62 +99,59 @@ public class SMSManager extends BaseManager {
 	public SMSManager(Context context) {
 		super(context);
 		//CPE_BUSINESS_STATUS_CHANGE and CPE_WIFI_CONNECT_CHANGE already register in basemanager
+		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET));
+		
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
     }
 	
-	public ArrayList<SmsMessageModel> getSMSList() {
-		return m_messageList;
+	
+	public SMSInit getSMSInit() {
+		return m_smsInit;
+	}
+	
+	public SmsContactMessagesModel getContactMessages() {
+		return m_contactMessages.clone();
 	}	
 	
 	public int GetUnreadSmsNumber(){
 		int nUnreadCount = 0;
-		if(null != m_messageList){
-			for(int nIndex = 0; nIndex < m_messageList.size(); nIndex++)
+		ArrayList<SMSContactItem> lst = (ArrayList<SMSContactItem>) m_contactMessages.SMSContactList.clone();
+		if(null != lst){
+			for(int nIndex = 0; nIndex < lst.size(); nIndex++)
 			{
-				SmsMessageModel sms = m_messageList.get(nIndex);
-				if(sms.m_nTag == SMSTag.NotRead) {			
-	    			nUnreadCount += 1;
-	    		}
+				SMSContactItem sms = lst.get(nIndex);
+				nUnreadCount += sms.UnreadCount; 
 			}		
 		}
 		
     	return nUnreadCount;	    	
 	} 
-	
-	//GetSmsList ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void startGetSmsListTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSmsList") != true)
+	//GetSMSInitStatus ////////////////////////////////////////////////////////////////////////////////////////// 
+	private void startGetSmsInitTask() {
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSInitStatus") != true)
 			return;
 		
 		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState != ENUM.SIMState.Accessable) 
 			return;
 		
-		if(m_getSmsListTask == null) {
-			m_getSmsListTask = new GetSMSListTask();
-			m_getSmsRollTimer.scheduleAtFixedRate(m_getSmsListTask, 0, 120 * 1000);
+		if(m_getSmsInitTask == null) {
+			m_getSmsInitTask = new GetSMSInitTask();
+			m_getSmsRollTimer.scheduleAtFixedRate(m_getSmsInitTask, 0, 10 * 1000);
 		}
 	}
 	
-	public void stopGetSmsListTask() {
-		if(m_getSmsListTask != null) {
-			m_getSmsListTask.cancel();
-			m_getSmsListTask = null;
-		}
-	}
-	
-	public void refreshSmsListAtOnce(){
-		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
-		if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
-			GetSMSListTask getNetworkInfoTask = new GetSMSListTask();
-			m_getSmsRollTimer.schedule(getNetworkInfoTask, 0);
+	private void stopGetSmsInitTask() {
+		if(m_getSmsInitTask != null) {
+			m_getSmsInitTask.cancel();
+			m_getSmsInitTask = null;
 		}
 	}
     
-	class GetSMSListTask extends TimerTask{ 
+	class GetSMSInitTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetSmsList.GetSmsList("6.1",0,5, new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSInitStatus("6.1", new IHttpFinishListener() {           
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -139,15 +160,8 @@ public class SMSManager extends BaseManager {
                     if(ret == BaseResponse.RESPONSE_OK) {
                     	strErrcode = response.getErrorCode();
                     	if(strErrcode.length() == 0) {
-                    		SmsListResult smsListResult = response.getModelResult();
-                    		m_messageList.clear();
-                    		for(int i = 0;i < smsListResult.SmsList.size();i++) {
-                    			SmsMessageModel sms = new SmsMessageModel();
-                    			sms.setValue(smsListResult.SmsList.get(i));
-                    			if(sms.m_nTag == SMSTag.Report) 
-                    				sms.m_strContent = m_context.getResources().getString(R.string.sms_report_message);
-                    			m_messageList.add(sms);
-                    		}
+                    		SmsInitResult result = response.getModelResult();
+                    		m_smsInit = SMSInit.build(result.Status);
                     	}else{
                     		
                     	}
@@ -155,7 +169,65 @@ public class SMSManager extends BaseManager {
                     	//Log
                     }
                     
-                    Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET);
+                    Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
+                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+        			m_context.sendBroadcast(megIntent);
+                }
+            }));
+        } 
+	}
+	//GetSMSContactList ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void startGetContactMessagesTask() {
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSContactList") != true)
+			return;
+		
+		if(m_smsInit == SMSInit.Initing)
+			return;
+		
+		if(m_getContactMessagesTask == null) {
+			m_getContactMessagesTask = new GetContactMessagesTask();
+			m_getSmsRollTimer.scheduleAtFixedRate(m_getContactMessagesTask, 0, 120 * 1000);
+		}
+	}
+	
+	public void stopGetContactMessagesTask() {
+		if(m_getContactMessagesTask != null) {
+			m_getContactMessagesTask.cancel();
+			m_getContactMessagesTask = null;
+		}
+	}
+	
+	public void getContactMessagesAtOnce(){
+		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+		if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
+			GetContactMessagesTask task = new GetContactMessagesTask();
+			m_getSmsRollTimer.schedule(task, 0);
+		}
+	}
+    
+	class GetContactMessagesTask extends TimerTask{ 
+        @Override
+		public void run() { 
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContactList("6.2",0, new IHttpFinishListener() {           
+                @Override
+				public void onHttpRequestFinish(BaseResponse response) 
+                {               	
+                	String strErrcode = new String();
+                    int ret = response.getResultCode();
+                    if(ret == BaseResponse.RESPONSE_OK) {
+                    	strErrcode = response.getErrorCode();
+                    	if(strErrcode.length() == 0) {
+                    		SmsContactListResult result = response.getModelResult();
+                    		m_contactMessages.bulidFromResult(result);
+                    	}else{
+                    		
+                    	}
+                    }else{
+                    	//Log
+                    }
+                    
+                    Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET);
                     megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                     megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
         			m_context.sendBroadcast(megIntent);
@@ -164,15 +236,59 @@ public class SMSManager extends BaseManager {
         } 
 	}
 	
-	//DeleteSms ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void deleteSms(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "DeleteSms") != true)
+	//GetSMSContentList ////////////////////////////////////////////////////////////////////////////////////////// 
+	public static String SMS_CONTENT_LIST_EXTRA = "com.alcatel.smartlinkv3.business.smscontentlistextra";
+	public void getSMSContentListRequest(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSContentList") != true)
 			return;
 		
-		int nId = (Integer) data.getParamByKey("id");
-		SMSStoreIn storeIn = (SMSStoreIn) data.getParamByKey("store_in");
+		int nContactId = (Integer) data.getParamByKey("ContactId");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSmsOperation.DeleteSms("6.2",nId,SMSStoreIn.antiBuild(storeIn), new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContentList("6.3",0,nContactId, new IHttpFinishListener() {           
+            @Override
+			public void onHttpRequestFinish(BaseResponse response) 
+            {   
+            	SmsContentMessagesModel model = new SmsContentMessagesModel();
+            	String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) {
+                		SmsContentListResult result = response.getModelResult();
+                		model.buildFromResult(result);
+                	}else{
+                		
+                	}
+                }else{
+                	//Log
+                }
+ 
+                Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(SMS_CONTENT_LIST_EXTRA, model);
+    			m_context.sendBroadcast(megIntent);
+            }
+        }));
+    } 
+	
+	//DeleteSMS ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void deleteSms(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "DeleteSMS") != true)
+			return;
+		
+		EnumSMSDelFlag delFlag = (EnumSMSDelFlag) data.getParamByKey("delete_falg");
+		Integer temp =  (Integer)data.getParamByKey("contact_id");
+		int nContactId = 0;
+		if(temp != null)
+			nContactId = temp;
+		
+		temp =  (Integer)data.getParamByKey("sms_id");
+		int nSMSId = 0;
+		if(temp != null)
+			nSMSId = temp;
+    	
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.DeleteSMS("6.5",EnumSMSDelFlag.antiBuild(delFlag),nContactId,nSMSId, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -197,7 +313,7 @@ public class SMSManager extends BaseManager {
         }));
     } 
 	
-	//SendSms ////////////////////////////////////////////////////////////////////////////////////////// 
+	/*//SendSms ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void sendSms(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "SendSms") != true)
 			return;
@@ -325,5 +441,5 @@ public class SMSManager extends BaseManager {
     			m_context.sendBroadcast(megIntent);
             }
         }));
-    }
+    }*/
 }

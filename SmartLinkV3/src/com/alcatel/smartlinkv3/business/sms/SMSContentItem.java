@@ -2,6 +2,9 @@ package com.alcatel.smartlinkv3.business.sms;
 
 import java.util.ArrayList;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 
 public class SMSContentItem{
 	public int SMSId = 0;

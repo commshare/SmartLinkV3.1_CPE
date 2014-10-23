@@ -160,6 +160,103 @@ public class ENUM {
 			}
 		}
 	}
+	
+	//sms enum start
+	public static enum SMSInit {
+		Complete, 
+		Initing;
+
+		public static SMSInit build(int nState) {
+			if (nState == 0) {
+				return Complete;
+			} else {
+				return Initing;
+			}
+		}
+
+		public static int antiBuild(SMSInit storeIn) {
+			if (storeIn == Complete) {
+				return 0;
+			} else {
+				return 2;
+			}
+		}
+	}
+	
+	/*
+	 * 0 : read 1 : unread 2 : sent 3 : sent failed 4 : report 5 : flash 6: draft
+	 */
+	public static enum EnumSMSType {
+		Read, Unread, Sent, SentFailed, Report, Flash,Draft;
+
+		public static EnumSMSType build(int nState) {
+			if (nState == 0) {
+				return Read;
+			} else if (nState == 1) {
+				return Unread;
+			} else if (nState == 2) {
+				return Sent;
+			} else if (nState == 3) {
+				return SentFailed;
+			} else if (nState == 4) {
+				return Report;
+			} else if (nState == 5) {
+				return Flash;
+			}else {
+				return Draft;
+			}
+		}
+		
+		public static int antiBuild(EnumSMSType type) {
+			if(type == Read) {
+				return 0;
+			} else if(type == Unread) {
+				return 1;
+			}else if(type == Sent) {
+				return 2;
+			}else if(type == SentFailed) {
+				return 3;
+			}else if(type == Report) {
+				return 4;
+			}else if(type == Flash) {
+				return 5;
+			}else{
+				return 6;
+			}
+		}
+	}
+	
+	/*
+	 * //This flag means the SMS that want to delete.
+	 * 0: delete all SMS
+	 * 1: delete one record in Contact SMS list 
+	 * 2:delete one message in Content  SMS list
+	 */
+	public static enum EnumSMSDelFlag {
+		Delete_all, Delete_contact_messages, Delete_message;
+
+		public static EnumSMSDelFlag build(int nState) {
+			if (nState == 0) {
+				return Delete_all;
+			} else if (nState == 1) {
+				return Delete_contact_messages; 
+			}else {
+				return Delete_message;
+			}
+		}
+		
+		public static int antiBuild(EnumSMSDelFlag type) {
+			if(type == Delete_all) {
+				return 0;
+			} else if(type == Delete_contact_messages) {
+				return 1;
+			}else{
+				return 2;
+			}
+		}
+	}
+	
+	//sms enum end
 
 	/*
 	 * 0 : ME //M850 1 : SIM 2 : Device //H850
