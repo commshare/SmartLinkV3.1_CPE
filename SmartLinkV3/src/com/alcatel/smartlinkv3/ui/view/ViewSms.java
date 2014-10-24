@@ -6,21 +6,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete;
 import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -106,17 +100,10 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		//BusinessMannager.getInstance().stopGetSmsListTask();
 	}
 
 	public void onClick(View v) {	
-		/*if(v.getId() == R.id.new_sms_button){
-			Intent intent = new Intent();
-			intent.setClass(m_context, NewSmsActivity.class);
-			Bundle bundle = new Bundle();
-			intent.putExtras(bundle);
-			m_context.startActivity(intent);
-		}*/
+		
 	}
 	
 	private class SmsBroadcastReceiver extends BroadcastReceiver{
@@ -183,6 +170,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			item.nCount = sms.TSMSCount;
 			item.strSummaryContent = sms.SMSContent;
 			item.strSummaryTime = sms.SMSTime;
+			item.nContactid = sms.ContactId;
 			m_smsContactMessagesLstData.add(item);
 		}
 		
@@ -330,7 +318,8 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		// TODO Auto-generated method stub	
 		Intent intent = new Intent();
 		intent.setClass(m_context, ActivitySmsDetail.class);
-		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, (String)m_smsContactMessagesLstData.get(position).strNumber);		
+		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, (String)m_smsContactMessagesLstData.get(position).strNumber);
+		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_CONTACT_ID, m_smsContactMessagesLstData.get(position).nContactid);
 		this.m_context.startActivity(intent);
 	}
 	
@@ -345,6 +334,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	
 	public static class SMSSummaryItem {
 		public String strNumber = new String();
+		public int nContactid = 0;
 		public int nUnreadNumber = 0;
 		public int nCount = 0;
 		public String strSummaryContent = new String();

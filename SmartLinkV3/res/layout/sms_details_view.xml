@@ -48,13 +48,12 @@
                 android:layout_centerVertical="true" >
 
                 <Button
-                    android:id="@+id/ID_SMS_DETAIL_BUTTON_DELETE"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dip"
-                    android:textColor="@color/color_white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+	                android:id="@+id/delete_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center"
+	                android:layout_marginLeft="10dip"
+	                android:background="@drawable/btn_delete" />
             </LinearLayout>
 
             <TextView
