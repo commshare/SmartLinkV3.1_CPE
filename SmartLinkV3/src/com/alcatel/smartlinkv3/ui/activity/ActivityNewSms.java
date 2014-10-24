@@ -143,7 +143,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onBroadcastReceive(context, intent);
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET)){				
+		/*if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET)){				
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -158,7 +158,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	    			}
 				}
 			}
-		}
+		}*/
 		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_SEND_SMS_REQUSET)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
@@ -240,7 +240,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		super.onResume();
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));		
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
-		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET));
+		//this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET));
 	}
 
 	@Override

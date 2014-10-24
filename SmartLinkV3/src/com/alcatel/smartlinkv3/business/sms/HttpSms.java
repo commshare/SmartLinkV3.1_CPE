@@ -376,4 +376,58 @@ public class HttpSms {
              return null;
         }
     }
+	
+/******************** GetSendSMSResult  **************************************************************************************/	
+	public static class GetSendSMSResult extends BaseRequest
+    {	
+        public GetSendSMSResult(String strId,IHttpFinishListener callback) 
+        {
+        	super(callback);  
+        	m_strId = strId;
+        }
+
+        @Override
+        protected void buildHttpParamJson() 
+        {
+        	try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSendSMSResult");
+	        	
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+        	} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
+        @Override
+        public BaseResponse createResponseObject() 
+        {            
+            return new GetSendSMSResultResponse(m_finsishCallback);
+        }
+        
+    }
+	
+	public static class GetSendSMSResultResponse extends BaseResponse
+    {
+		private SendStatusResult result;
+
+        public GetSendSMSResultResponse(IHttpFinishListener callback) 
+        {
+            super(callback);            
+        }
+
+        @Override
+        protected void parseContent(String strJsonResult) {
+        	Gson gson = new Gson();
+        	result = gson.fromJson(strJsonResult, SendStatusResult.class);
+        }
+
+        @Override
+        public SendStatusResult getModelResult() 
+        {
+             return result;
+        }
+    }
 }

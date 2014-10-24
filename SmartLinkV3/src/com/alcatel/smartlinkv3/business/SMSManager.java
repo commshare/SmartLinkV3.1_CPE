@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
 import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
@@ -21,8 +20,6 @@ import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.SMSStoreIn;
-import com.alcatel.smartlinkv3.common.ENUM.SMSTag;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
@@ -309,15 +306,15 @@ public class SMSManager extends BaseManager {
         }));
     } 
 	
-	/*//SendSms ////////////////////////////////////////////////////////////////////////////////////////// 
+	//SendSMS ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void sendSms(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "SendSms") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "SendSMS") != true)
 			return;
 		
 		String strContent = (String) data.getParamByKey("content");
-		String strPhoneNumber = (String) data.getParamByKey("phone_number");
+		ArrayList<String> phoneNumberLst = (ArrayList<String>) data.getParamByKey("phone_number");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSmsOperation.SendSms("6.3",strContent,strPhoneNumber, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SendSMS("6.6",-1,strContent,phoneNumberLst, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -350,18 +347,17 @@ public class SMSManager extends BaseManager {
         }));
     } 
 	
-	//GetSmsSendResult ////////////////////////////////////////////////////////////////////////////////////////// 
+//GetSendSMSResult ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void getSmsSendResult(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSendSmsResult") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSendSMSResult") != true)
 			return;
 		
-		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
-		if(simStatus.m_SIMState != ENUM.SIMState.Accessable)
+		if(m_smsInit == SMSInit.Initing)
 			return;
 		
-		final int nSmsSendId = (Integer) data.getParamByKey("sms_send_id");
+		//final int nSmsSendId = (Integer) data.getParamByKey("sms_send_id");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSmsOperation.GetSmsSendResult("6.5",nSmsSendId, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSendSMSResult("6.7", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -385,7 +381,6 @@ public class SMSManager extends BaseManager {
         						public void run() {
         							// TODO Auto-generated method stub
         							DataValue dataValue = new DataValue();
-        							dataValue.addParam("sms_send_id", nSmsSendId);
         							getSmsSendResult(dataValue);
         						}
         					}, 1000);
@@ -406,7 +401,7 @@ public class SMSManager extends BaseManager {
         }));
     } 
 	
-	//ModifySMSReadStatus ////////////////////////////////////////////////////////////////////////////////////////// 
+	/*	//ModifySMSReadStatus ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void modifySMSReadStatus(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "ModifySmsReadStatus") != true)
 			return;

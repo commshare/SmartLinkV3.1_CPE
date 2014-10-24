@@ -64,16 +64,12 @@ public class MessageUti {
 	/**************************Network message end*********************************************************************************/
 	
 	/**************************SMS message start*********************************************************************************/
-	public static String SMS_GET_SMS_LIST_ROLL_REQUSET = "com.alcatel.cpe.business.sms.getsmslist";
-	public static String SMS_SEND_SMS_REQUSET = "com.alcatel.cpe.business.sms.sendsms";
-	public static String SMS_GET_SEND_STATUS_REQUSET = "com.alcatel.cpe.business.sms.getsendstatus";
-	public static String SMS_MODIFY_SMS_READ_STATUS_REQUSET = "com.alcatel.cpe.business.sms.modifysmsreadstatus";
-	//sms v3 start
 	public static String SMS_GET_SMS_INIT_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.sms.getsmsinit";
 	public static String SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.sms.getcontactlist";
 	public static String SMS_GET_SMS_CONTENT_LIST_REQUSET = "com.alcatel.smartlinkv3.business.sms.getSMSContentListRequest";
 	public static String SMS_DELETE_SMS_REQUSET = "com.alcatel.smartlinkv3.business.sms.deletesms";
-	//sms v3 end
+	public static String SMS_SEND_SMS_REQUSET = "com.alcatel.cpe.business.sms.sendsms";
+	public static String SMS_GET_SEND_STATUS_REQUSET = "com.alcatel.cpe.business.sms.getsendstatus";
 	/**************************SMS message end*********************************************************************************/
 	
 	/**************************Wan message start*********************************************************************************/
@@ -139,12 +135,9 @@ public class MessageUti {
 		
 		/********************SMS method start**********************/
 		httpMethods.put(SMS_SEND_SMS_REQUSET, new HttpMethodUti(SMSManager.class, "sendSms"));
-		httpMethods.put(SMS_GET_SEND_STATUS_REQUSET, new HttpMethodUti(SMSManager.class, "getSmsSendResult"));
-		httpMethods.put(SMS_MODIFY_SMS_READ_STATUS_REQUSET, new HttpMethodUti(SMSManager.class, "modifySMSReadStatus"));
-		//SMS V3 START
 		httpMethods.put(SMS_DELETE_SMS_REQUSET, new HttpMethodUti(SMSManager.class, "deleteSms"));
 		httpMethods.put(SMS_GET_SMS_CONTENT_LIST_REQUSET, new HttpMethodUti(SMSManager.class, "getSMSContentListRequest"));
-		//SMS V3 END
+		httpMethods.put(SMS_GET_SEND_STATUS_REQUSET, new HttpMethodUti(SMSManager.class, "getSmsSendResult"));
 		/********************SMS method end**********************/
 		
 		/********************WAN method start**********************/

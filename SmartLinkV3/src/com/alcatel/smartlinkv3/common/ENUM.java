@@ -161,7 +161,6 @@ public class ENUM {
 		}
 	}
 	
-	//sms enum start
 	public static enum SMSInit {
 		Complete, 
 		Initing;
@@ -256,58 +255,6 @@ public class ENUM {
 		}
 	}
 	
-	//sms enum end
-
-	/*
-	 * 0 : ME //M850 1 : SIM 2 : Device //H850
-	 */
-	public static enum SMSStoreIn {
-		ME, SIM, Device;
-
-		public static SMSStoreIn build(int nState) {
-			if (nState == 0) {
-				return ME;
-			} else if (nState == 1) {
-				return SIM;
-			} else {
-				return Device;
-			}
-		}
-
-		public static int antiBuild(SMSStoreIn storeIn) {
-			if (storeIn == ME) {
-				return 0;
-			} else if (storeIn == SIM) {
-				return 1;
-			} else {
-				return 2;
-			}
-		}
-	}
-
-	/*
-	 * 0 : read 1 : not read 2 : sent 3 : not sent 4 : report 5 : flash
-	 */
-	public static enum SMSTag {
-		Read, NotRead, Sent, NotSent, Report, Flash;
-
-		public static SMSTag build(int nState) {
-			if (nState == 0) {
-				return Read;
-			} else if (nState == 1) {
-				return NotRead;
-			} else if (nState == 2) {
-				return Sent;
-			} else if (nState == 3) {
-				return NotSent;
-			} else if (nState == 4) {
-				return Report;
-			} else {
-				return Flash;
-			}
-		}
-	}
-
 	/*
 	 * 0 : none 1 : sending 2 : success 3 : fail still sending last message 4 :
 	 * fail with Memory full 5 : fail
@@ -331,7 +278,7 @@ public class ENUM {
 			}
 		}
 	}
-
+	
 	/*
 	 * 0: disconnected 1: connecting 2: connected 3: disconnecting
 	 */

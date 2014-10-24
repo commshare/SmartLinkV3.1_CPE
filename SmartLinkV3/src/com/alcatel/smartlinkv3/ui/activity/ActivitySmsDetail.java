@@ -91,6 +91,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 	private boolean m_bDeleteEnd = false;
 	private boolean m_bNeedFinish = false;
 	private boolean m_bSendEnd = false;
+	
+	private boolean m_bFristGet = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -176,6 +178,10 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				SmsContentMessagesModel smsContent = intent.getParcelableExtra(SMSManager.SMS_CONTENT_LIST_EXTRA);
 				getSmsListData(smsContent);
+				if(m_bFristGet == true) {
+					m_bFristGet = false;
+					m_progressWaiting.setVisibility(View.GONE);
+				}
 			}
 		}
 		
