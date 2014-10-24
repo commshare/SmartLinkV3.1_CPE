@@ -268,7 +268,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
 		if (simStatus != SIMState.Accessable) {
 			m_networkTypeTextView.setVisibility(View.INVISIBLE);
-			m_networkRoamImageView.setVisibility(View.INVISIBLE);
+			//m_networkRoamImageView.setVisibility(View.INVISIBLE);
 			m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 		}else{
 			NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();

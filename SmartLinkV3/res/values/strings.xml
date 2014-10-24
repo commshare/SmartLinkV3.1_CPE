@@ -66,7 +66,9 @@
     <string name="setting_text_5G_wifi">5G WiFi</string>
     <string name="setting_text_ssid">SSID:</string>
     <string name="setting_text_passwrod">Password:</string>
-    <string name="setting_text_back">Back</string>
+    <string name="setting_titlebar_text_back">Back</string>
+    <string name="setting_titlebar_text_edit">Edit</string>
+    <string name="setting_titlebar_text_done">Done</string>
     <string name="setting_title_wifi">WiFi Settings</string>
     <string name="setting_title_power">Power Saving</string>
     <string name="setting_title_backup">Backup&amp;Restore</string>
