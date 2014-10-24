@@ -327,18 +327,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		// TODO Auto-generated method stub
-		/*Intent intent = new Intent();
-		intent.setClass(m_context, ViewSmsItemActivity.class);
-		intent.putExtra("sms_number", (String)m_smsSummaryLstData.get(position).get("number"));		
-		this.m_context.startActivity(intent);
-		
-		
-		int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).get("unread_count");		
-		int nNewSmsCount = BusinessMannager.getInstance().getNewSmsNumber();
-		
-		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount - nUnreadNum);*/
-		
+		// TODO Auto-generated method stub	
 		Intent intent = new Intent();
 		intent.setClass(m_context, ActivitySmsDetail.class);
 		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, (String)m_smsContactMessagesLstData.get(position).strNumber);		
@@ -348,9 +337,9 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 		// TODO Auto-generated method stub
-		Intent intent = new Intent();
+		/*Intent intent = new Intent();
 		intent.setClass(m_context, ActivitySMSDelete.class);	
-		this.m_context.startActivity(intent);
+		this.m_context.startActivity(intent);*/
 		return false;
 	}
 	
