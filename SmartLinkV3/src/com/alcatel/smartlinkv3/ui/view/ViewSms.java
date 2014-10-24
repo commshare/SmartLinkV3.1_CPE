@@ -10,6 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete;
 import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
@@ -21,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -41,12 +50,12 @@ import android.widget.Toast;
 
 public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClickListener,OnItemLongClickListener {
 
-	private ListView m_smsSummaryList = null;
+	private ListView m_smsContactMessagesList = null;
 	private Button m_btnNewSms = null;
 	private TextView m_noSmsTv = null;
 	
 	private SmsBroadcastReceiver m_receiver;
-	private ArrayList<SMSSummaryItem> m_smsSummaryLstData = new ArrayList<SMSSummaryItem>();
+	private ArrayList<SMSSummaryItem> m_smsContactMessagesLstData = new ArrayList<SMSSummaryItem>();
 	
 	public final static int SMS_MATCH_NUM = 7;
 	
@@ -61,15 +70,11 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
     protected void init()
     {
 		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_sms, null);
-		//Button New SMS
-		//m_btnNewSms = (Button) ((MainActivity)m_context).findViewById(R.id.new_sms_button);
-		//m_btnNewSms.setOnClickListener(this);
-		//SMS list
-		m_smsSummaryList = (ListView)m_view.findViewById(R.id.sms_list_view);
-		m_smsSummaryList.setOnItemClickListener(this);
-		m_smsSummaryList.setOnItemLongClickListener(this);
+		m_smsContactMessagesList = (ListView)m_view.findViewById(R.id.sms_list_view);
+		m_smsContactMessagesList.setOnItemClickListener(this);
+		m_smsContactMessagesList.setOnItemLongClickListener(this);
 		SmsAdapter smsAdapter = new SmsAdapter(this.m_context);
-		m_smsSummaryList.setAdapter(smsAdapter);
+		m_smsContactMessagesList.setAdapter(smsAdapter);
 		m_noSmsTv = (TextView)m_view.findViewById(R.id.no_sms);
 		
 		m_receiver = new SmsBroadcastReceiver();
@@ -78,14 +83,15 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	@Override
 	public void onResume() { 
 	
-		//BusinessMannager.getInstance().refreshSmsListAtOnce();		
+		if(BusinessMannager.getInstance().getSMSInit() == SMSInit.Complete)
+			BusinessMannager.getInstance().getContactMessagesAtOnceRequest();		
 		
-		//m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET));		
-		//m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
+		m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET));		
+		m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET));
 		
-		//BusinessMannager.getInstance().startGetSmsListTask();
 		RefreshNewSmsNumber();
 		getListSmsSummaryData();
+		displayUI();
     }
 	
 	@Override
@@ -118,25 +124,22 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub	
-			/*if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET)){				
+			if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)){				
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+					displayUI();
+				}
+			}
+			if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)){				
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+					displayUI();
 					RefreshNewSmsNumber();
 					getListSmsSummaryData();
 				}
-			}	
-			
-			if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-					SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
-					if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
-						BusinessMannager.getInstance().startGetSmsListTask();
-					}
-				}
-	    	}*/
+			}				
 		}
 		
 	}
@@ -154,21 +157,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			SMSSummaryItem c2 = (SMSSummaryItem) o2;
 			String time1 = (String) c1.strSummaryTime;
 			String time2 = (String) c2.strSummaryTime;
-			/*SMSTag tag1 = (SMSTag) c1.get("type");
-			SMSTag tag2 = (SMSTag) c2.get("type");
-			if(tag1 == SMSTag.NotRead && tag2 == SMSTag.NotRead) {
-				if(time1.compareToIgnoreCase(time2) > 0)
-					return -1;
-				if(time1.compareToIgnoreCase(time2) == 0)
-					return 0;
-				return 1;
-			}
-			
-			if(tag1 == SMSTag.NotRead)
-				return -1;
-			if(tag2 == SMSTag.NotRead)
-				return 1;*/
-			
+
 			if(time1.compareToIgnoreCase(time2) > 0)
 				return -1;
 			if(time1.compareToIgnoreCase(time2) == 0)
@@ -179,73 +168,32 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	
 	private void getListSmsSummaryData() {
 		
-		m_smsSummaryLstData.clear();
-		/*ArrayList<SmsMessageModel> smsList = BusinessMannager.getInstance().getSMSList();
-		for(int i = 0;i < smsList.size();i++) {
-			SmsMessageModel sms = smsList.get(i);
-			boolean bExist = false;
-			for(int j = 0;j < m_smsSummaryLstData.size();j++) {
-				Map<String, Object> summary = m_smsSummaryLstData.get(j);
-				String strNumber = (String) summary.get("number");
-				if(strNumber.length() > SMS_MATCH_NUM) 
-					strNumber = strNumber.substring(strNumber.length() - SMS_MATCH_NUM);
-				String strNumber2 = sms.m_strNumber;
-				if(strNumber2.length() > SMS_MATCH_NUM) 
-					strNumber2 = strNumber2.substring(strNumber2.length() - SMS_MATCH_NUM);
-				if(strNumber.equalsIgnoreCase(strNumber2)) {
-					bExist = true;
-					boolean bHaveUnread = false;
-					SMSTag tag = (SMSTag) summary.get("type");
-					if(sms.m_nTag == SMSTag.NotRead || tag == SMSTag.NotRead)
-						bHaveUnread = true;
-					
-					int nUnreadNum = (Integer) summary.get("unread_count");
-					if(sms.m_nTag == SMSTag.NotRead) {
-						nUnreadNum++;
-						summary.put("unread_count", nUnreadNum);
-					}
-					
-					int nCount = (Integer) summary.get("count");
-					summary.put("count", nCount + 1);
-					
-					String strTime = (String) summary.get("time");
-					if(strTime.compareToIgnoreCase(sms.m_strTime) <= 0) {
-						if(bHaveUnread == true)
-							summary.put("type", SMSTag.NotRead);
-						else
-							summary.put("type", sms.m_nTag);
-						summary.put("number", sms.m_strNumber);
-						summary.put("content", sms.m_strContent);
-						summary.put("time", sms.m_strTime);
-					}
-					break;
-				}
+		m_smsContactMessagesLstData.clear();
+		SmsContactMessagesModel messages = BusinessMannager.getInstance().getContactMessages();
+		for(int i = 0;i < messages.SMSContactList.size();i++) {
+			SMSContactItemModel sms = messages.SMSContactList.get(i);
+			SMSSummaryItem item = new SMSSummaryItem();
+			for(int j = 0;j < sms.PhoneNumber.size();j++) {
+				if(j == sms.PhoneNumber.size() - 1) 
+					item.strNumber = sms.PhoneNumber.get(j);
+				else
+					item.strNumber = sms.PhoneNumber.get(j) + ";";
 			}
-			
-			if(bExist == false) {
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("number",sms.m_strNumber);
-				map.put("type", sms.m_nTag);
-				int nUnreadCount = 0;
-				if(sms.m_nTag == SMSTag.NotRead) {
-					nUnreadCount++;
-				}
-				map.put("unread_count", nUnreadCount);
-				map.put("count", 1);
-				map.put("content", sms.m_strContent);
-				map.put("time", sms.m_strTime);
-				m_smsSummaryLstData.add(map);
-			}
-		}*/
+			item.nUnreadNumber = sms.UnreadCount;
+			item.nCount = sms.TSMSCount;
+			item.strSummaryContent = sms.SMSContent;
+			item.strSummaryTime = sms.SMSTime;
+			m_smsContactMessagesLstData.add(item);
+		}
 		
 		//test start
-		SMSSummaryItem item = new SMSSummaryItem();
+		/*SMSSummaryItem item = new SMSSummaryItem();
 		item.strNumber = "13472479059";
 		item.nUnreadNumber = 1;
 		item.nCount = 1;
 		item.strSummaryContent = "This is super man telephone.heiehehehehehehehehehehehehehehehe";
 		item.strSummaryTime = "2014-08-19 19:23:42";
-		m_smsSummaryLstData.add(item);
+		m_smsContactMessagesLstData.add(item);
 		
 		SMSSummaryItem item2 = new SMSSummaryItem();
 		item2.strNumber = "13472479058";
@@ -253,18 +201,36 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		item2.nCount = 1;
 		item2.strSummaryContent = "This is super man telephone 2.heiehehehehehehehehehehehehehehehe";
 		item2.strSummaryTime = "2014-08-19 19:22:42";
-		m_smsSummaryLstData.add(item2);
+		m_smsContactMessagesLstData.add(item2);*/
 		//test end
 		
-		Collections.sort(m_smsSummaryLstData, new SortSummaryListByTime());
+		Collections.sort(m_smsContactMessagesLstData, new SortSummaryListByTime());
 	
-		if(m_smsSummaryLstData.size() == 0) {
+		displayUI();
+		((SmsAdapter)m_smsContactMessagesList.getAdapter()).notifyDataSetChanged();
+	}
+	
+	private void displayUI() {
+		if(BusinessMannager.getInstance().getSMSInit() == SMSInit.Initing) {
+			m_noSmsTv.setText(R.string.sms_init);
+			Drawable d = m_context.getResources().getDrawable(R.drawable.sms_init);
+			d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+			m_noSmsTv.setCompoundDrawables(null, d, null, null);
 			m_noSmsTv.setVisibility(View.VISIBLE);
-			m_smsSummaryList.setVisibility(View.GONE);
+			m_smsContactMessagesList.setVisibility(View.GONE);
 		}else{
-			m_noSmsTv.setVisibility(View.GONE);
-			m_smsSummaryList.setVisibility(View.VISIBLE);
-			((SmsAdapter)m_smsSummaryList.getAdapter()).notifyDataSetChanged();
+			SmsContactMessagesModel messages = BusinessMannager.getInstance().getContactMessages();
+			if(messages.SMSContactList.size() == 0) {
+				m_noSmsTv.setText(R.string.sms_empty);
+				Drawable d = m_context.getResources().getDrawable(R.drawable.sms_empty);
+				d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+				m_noSmsTv.setCompoundDrawables(null, d, null, null);
+				m_noSmsTv.setVisibility(View.VISIBLE);
+				m_smsContactMessagesList.setVisibility(View.GONE);
+			}else{
+				m_noSmsTv.setVisibility(View.GONE);
+				m_smsContactMessagesList.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 	
@@ -278,7 +244,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return m_smsSummaryLstData.size();
+			return m_smsContactMessagesLstData.size();
 		}
 
 		public Object getItem(int position) {
@@ -314,11 +280,11 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				holder = (ViewHolder)convertView.getTag();
 			}
 			
-			holder.number.setText((String)m_smsSummaryLstData.get(position).strNumber);
-			holder.content.setText((String)m_smsSummaryLstData.get(position).strSummaryContent);
-			int nCount = (Integer)m_smsSummaryLstData.get(position).nCount;
+			holder.number.setText((String)m_smsContactMessagesLstData.get(position).strNumber);
+			holder.content.setText((String)m_smsContactMessagesLstData.get(position).strSummaryContent);
+			int nCount = (Integer)m_smsContactMessagesLstData.get(position).nCount;
 					
-			int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).nUnreadNumber;
+			int nUnreadNum = (Integer)m_smsContactMessagesLstData.get(position).nUnreadNumber;
 			if(nUnreadNum == 0) {
 				holder.unreadImage.setVisibility(View.INVISIBLE);
 			}else{
@@ -327,7 +293,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			
 			holder.count.setText(String.valueOf(nCount));
 			
-			String strTime = (String) m_smsSummaryLstData.get(position).strSummaryTime;
+			String strTime = (String) m_smsContactMessagesLstData.get(position).strSummaryTime;
 			SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date summaryDate = null;
 			try {
@@ -375,7 +341,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		
 		Intent intent = new Intent();
 		intent.setClass(m_context, ActivitySmsDetail.class);
-		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, (String)m_smsSummaryLstData.get(position).strNumber);		
+		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, (String)m_smsContactMessagesLstData.get(position).strNumber);		
 		this.m_context.startActivity(intent);
 	}
 	

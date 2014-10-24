@@ -22,9 +22,9 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:drawableTop="@drawable/ic_launcher"
+            android:drawableTop="@drawable/sms_empty"
             android:drawablePadding="10dip"
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_grey"
             android:gravity="center"
             android:textSize="16sp"
             android:text="@string/sms_empty"  />

@@ -194,7 +194,7 @@ public class SMSManager extends BaseManager {
 		}
 	}
 	
-	public void getContactMessagesAtOnce(){
+	public void getContactMessagesAtOnceRequest(){
 		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 			GetContactMessagesTask task = new GetContactMessagesTask();

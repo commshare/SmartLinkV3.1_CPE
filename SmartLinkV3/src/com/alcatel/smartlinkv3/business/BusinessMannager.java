@@ -8,6 +8,7 @@ import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
 import com.alcatel.smartlinkv3.business.model.UsageHistoryItemModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.service.DlnaSettings;
@@ -21,6 +22,7 @@ import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.HttpMethodUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
+import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.ServiceState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
@@ -247,9 +249,21 @@ public class BusinessMannager {
     /********************network manager method end************************/
     
     /********************sms manager Data start**********************/
+    public SMSInit getSMSInit() {
+		return m_smsManager.getSMSInit();
+	}
+    
     public int getNewSmsNumber() {    	
     	return m_smsManager.GetUnreadSmsNumber();    	
     }
+    
+    public void getContactMessagesAtOnceRequest() {
+    	m_smsManager.getContactMessagesAtOnceRequest();
+    }
+    
+    public SmsContactMessagesModel getContactMessages() {
+		return m_smsManager.getContactMessages();
+	}
     /********************sms manager method end************************/
     
     /********************wan manager Data start**********************/
