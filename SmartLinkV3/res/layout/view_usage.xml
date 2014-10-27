@@ -41,8 +41,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dip"
                         android:contentDescription="@null"
+                        android:visibility="gone"
                         android:background="@drawable/usage_warning" />
 	                <TextView
+	                    android:id="@+id/home_data"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -171,6 +173,7 @@
                         android:contentDescription="@null"
                         android:background="@drawable/usage_roaming" />
 	                <TextView
+	                    android:id="@+id/roaming_data"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -277,8 +280,10 @@
                         android:layout_toRightOf="@id/duration_title"
                         android:layout_marginLeft="10dip"
                         android:contentDescription="@null"
+                        android:visibility="gone"
                         android:background="@drawable/usage_warning" />
 	                <TextView
+	                    android:id="@+id/duration_total_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -312,7 +317,7 @@
                         android:visibility="visible"
                         android:background="@drawable/usage_timing" />
                     <TextView
-                        android:id="@+id/duration_data_down_status"
+                        android:id="@+id/duration_time_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/duration_data_down"

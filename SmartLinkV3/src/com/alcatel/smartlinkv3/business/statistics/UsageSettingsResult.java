@@ -2,17 +2,18 @@ package com.alcatel.smartlinkv3.business.statistics;
 
 import java.util.ArrayList;
 
+import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class UsageSettingsResult extends BaseResult{
 	
-	public long HBillingDay = 0;//Billing day (Min:1, Max:31),
-	public long HMonthlyPlan = 0;//The max data that on month could use..
-	public long HUsedData = 0;//The used data in month.
-	public long HTimeLimitFlag = 0;//The time limit function flage,0: disable 1:enable
-	public long HTimeLimitTimes = 0;//The time limit function open, must set the limit time.
-	public long HUsedTimes = 0;//The used time that after open time limit function.
-	public long HAutoDisconnFlag = 0;//This flage control the disconnection when the usage settings get conditions.0:disable, not auto disconnect 1:enable, auto disconnect
+	public int HBillingDay = 0;//Billing day (Min:1, Max:31),
+	public int HMonthlyPlan = 0;//The max data that on month could use..
+	public int HUsedData = 0;//The used data in month.
+	public int HTimeLimitFlag = 0;//The time limit function flage,0: disable 1:enable
+	public int HTimeLimitTimes = 0;//The time limit function open, must set the limit time.
+	public int HUsedTimes = 0;//The used time that after open time limit function.
+	public int HAutoDisconnFlag = 0;//This flage control the disconnection when the usage settings get conditions.0:disable, not auto disconnect 1:enable, auto disconnect
 
 	
 	@Override

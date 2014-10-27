@@ -1,5 +1,7 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.SdSharingActivity;
 import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
@@ -58,6 +60,12 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
             v.getContext().startActivity(intent);
             this.dismiss();
 			break;
+		case R.id.clear_history_layout:
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET, null);
+			this.dismiss();
+			break;	
+			
 		case R.id.logout_layout:
 			this.dismiss();
 			break;

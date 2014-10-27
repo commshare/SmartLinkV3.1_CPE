@@ -40,13 +40,14 @@ public class MessageUti {
 	/**************************Statistics message start*********************************************************************************/
 	public static String STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET = "com.alcatel.cpe.business.statistics.getusagesettings";
 	public static String STATISTICS_SET_BILLING_DAY_REQUSET = "com.alcatel.cpe.business.statistics.setbillingday";
-	public static String STATISTICS_SET_LIMIT_VALUE_REQUSET = "com.alcatel.cpe.business.statistics.setlimitvalue";
-	public static String STATISTICS_SET_TOTAL_VALUE_REQUSET = "com.alcatel.cpe.business.statistics.settotalvalue";
-	public static String STATISTICS_SET_DISCONNECT_OVER_TIME_REQUSET = "com.alcatel.cpe.business.statistics.setdisconnectovertime";
-	public static String STATISTICS_SET_DISCONNECT_OVER_TIME_STATUS_REQUSET = "com.alcatel.cpe.business.statistics.setdisconnectovertimestatus";
-	public static String STATISTICS_SET_DISCONNECT_OVER_FLOW_STATUS_REQUSET = "com.alcatel.cpe.business.statistics.setdisconnectoverflowstatus";
+	public static String STATISTICS_SET_MONTHLY_PLAN_REQUSET = "com.alcatel.cpe.business.statistics.setmonthlyplan";
+	public static String STATISTICS_SET_USED_DATA_REQUSET = "com.alcatel.cpe.business.statistics.setuseddata";
+	public static String STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET = "com.alcatel.cpe.business.statistics.settimelimitflag";
+	public static String STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET = "com.alcatel.cpe.business.statistics.settimelimittimes";
+	public static String STATISTICS_SET_USED_TIMES_REQUSET = "com.alcatel.cpe.business.statistics.setusedtimes";
+	public static String STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET = "com.alcatel.cpe.business.statistics.setautodisconnflag";
 	public static String STATISTICS_CLEAR_ALL_RECORDS_REQUSET = "com.alcatel.cpe.business.statistics.clearallrecords";
-	public static String STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET = "com.alcatel.cpe.business.statistics.getusagehistory";
+	public static String STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET = "com.alcatel.cpe.business.statistics.getUsageRecord";
 	/**************************Statistics message end*********************************************************************************/
 	
 	/**************************Sim message start*********************************************************************************/
@@ -116,11 +117,12 @@ public class MessageUti {
 		
 		/********************Statistics method start**********************/
 		httpMethods.put(STATISTICS_SET_BILLING_DAY_REQUSET, new HttpMethodUti(StatisticsManager.class, "setBillingDay"));
-		httpMethods.put(STATISTICS_SET_LIMIT_VALUE_REQUSET, new HttpMethodUti(StatisticsManager.class, "setLimitValue"));
-		httpMethods.put(STATISTICS_SET_TOTAL_VALUE_REQUSET, new HttpMethodUti(StatisticsManager.class, "setTotalValue"));
-		httpMethods.put(STATISTICS_SET_DISCONNECT_OVER_TIME_REQUSET, new HttpMethodUti(StatisticsManager.class, "setDisconnectOvertime"));
-		httpMethods.put(STATISTICS_SET_DISCONNECT_OVER_TIME_STATUS_REQUSET, new HttpMethodUti(StatisticsManager.class, "setDisconnectOvertimeState"));
-		httpMethods.put(STATISTICS_SET_DISCONNECT_OVER_FLOW_STATUS_REQUSET, new HttpMethodUti(StatisticsManager.class, "setDisconnectOverflowState"));
+		httpMethods.put(STATISTICS_SET_MONTHLY_PLAN_REQUSET, new HttpMethodUti(StatisticsManager.class, "setMonthlyPlan"));
+		httpMethods.put(STATISTICS_SET_USED_DATA_REQUSET, new HttpMethodUti(StatisticsManager.class, "setUsedData"));
+		httpMethods.put(STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET, new HttpMethodUti(StatisticsManager.class, "setTimeLimitFlag"));
+		httpMethods.put(STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET, new HttpMethodUti(StatisticsManager.class, "setTimeLimitTimes"));
+		httpMethods.put(STATISTICS_SET_USED_TIMES_REQUSET, new HttpMethodUti(StatisticsManager.class, "setUsedTimes"));
+		httpMethods.put(STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET, new HttpMethodUti(StatisticsManager.class, "setAutoDisconnFlag"));	
 		httpMethods.put(STATISTICS_CLEAR_ALL_RECORDS_REQUSET, new HttpMethodUti(StatisticsManager.class, "clearAllRecords"));		
 		/********************Statistics method end**********************/
 		

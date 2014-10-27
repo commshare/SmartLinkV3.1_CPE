@@ -266,8 +266,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long nBillingDay = (Integer) data.getParamByKey("billing_day");
-		final long nPreBillingDay = m_usageSettings.HBillingDay;
+		final int nBillingDay = (Integer) data.getParamByKey("billing_day");
+		final int nPreBillingDay = m_usageSettings.HBillingDay;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HBillingDay = nBillingDay;
@@ -303,8 +303,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long nMonthlyPlan = (Integer) data.getParamByKey("monthly_plan");
-		final long nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
+		final int nMonthlyPlan = (Integer) data.getParamByKey("monthly_plan");
+		final int nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HMonthlyPlan = nPreMonthlyPlan;
@@ -326,7 +326,7 @@ public class StatisticsManager extends BaseManager {
 
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
                 megIntent.putExtra(IS_CHANGED, nPreMonthlyPlan != m_usageSettings.HMonthlyPlan);
@@ -340,8 +340,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long nUsedData = (Integer) data.getParamByKey("used_data");
-		final long nPreUsedData = m_usageSettings.HUsedData;
+		final int nUsedData = (Integer) data.getParamByKey("used_data");
+		final int nPreUsedData = m_usageSettings.HUsedData;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HUsedData = nPreUsedData;
@@ -363,7 +363,7 @@ public class StatisticsManager extends BaseManager {
 
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_USED_DATA_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
                 megIntent.putExtra(IS_CHANGED, nPreUsedData != m_usageSettings.HUsedData);
@@ -377,8 +377,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long nTimeLimitFlag = (Integer) data.getParamByKey("time_limit_flag");
-		final long nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
+		final int nTimeLimitFlag = (Integer) data.getParamByKey("time_limit_flag");
+		final int nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HTimeLimitFlag = nTimeLimitFlag;
@@ -400,7 +400,7 @@ public class StatisticsManager extends BaseManager {
 
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
                 megIntent.putExtra(IS_CHANGED, nPreTimeLimitFlag != m_usageSettings.HTimeLimitFlag);
@@ -414,8 +414,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long nTimeLimitTimes = (Integer) data.getParamByKey("time_limit_flag");
-		final long nPreTimeLimitTimes = m_usageSettings.HTimeLimitTimes;
+		final int nTimeLimitTimes = (Integer) data.getParamByKey("time_limit_flag");
+		final int nPreTimeLimitTimes = m_usageSettings.HTimeLimitTimes;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HTimeLimitTimes = nTimeLimitTimes;
@@ -437,7 +437,7 @@ public class StatisticsManager extends BaseManager {
 
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
                 megIntent.putExtra(IS_CHANGED, nPreTimeLimitTimes != m_usageSettings.HTimeLimitTimes);
@@ -451,8 +451,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long nUsedTimes = (Integer) data.getParamByKey("time_limit_flag");
-		final long nPreUsedTimes = m_usageSettings.HUsedTimes;
+		final int nUsedTimes = (Integer) data.getParamByKey("used_times");
+		final int nPreUsedTimes = m_usageSettings.HUsedTimes;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HUsedTimes = nUsedTimes;
@@ -474,7 +474,7 @@ public class StatisticsManager extends BaseManager {
 
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_USED_TIMES_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
                 megIntent.putExtra(IS_CHANGED, nPreUsedTimes != m_usageSettings.HUsedTimes);
@@ -484,12 +484,12 @@ public class StatisticsManager extends BaseManager {
     } 
 	
 	//AutoDisconnFlag  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void AutoDisconnFlag(DataValue data) {
+	public void setAutoDisconnFlag(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long nAutoDisconnFlag = (Integer) data.getParamByKey("time_limit_flag");
-		final long nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
+		final int nAutoDisconnFlag = (Integer) data.getParamByKey("auto_disconn_flag");
+		final int nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HAutoDisconnFlag = nAutoDisconnFlag;
@@ -511,7 +511,7 @@ public class StatisticsManager extends BaseManager {
 
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
                 megIntent.putExtra(IS_CHANGED, nPreAutoDisconnFlag != m_usageSettings.HAutoDisconnFlag);

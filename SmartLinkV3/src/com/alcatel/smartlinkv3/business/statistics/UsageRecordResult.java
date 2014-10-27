@@ -2,19 +2,21 @@ package com.alcatel.smartlinkv3.business.statistics;
 
 import java.util.ArrayList;
 
+import android.R.integer;
+
 import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class UsageRecordResult extends BaseResult{
 	
-	public long HUseData = 0;//The total used data in home network.
-	public long HCurrUseUL = 0;//Current use upload data in home network.
-	public long HCurrUseDL = 0;//Current use download data in home network.
-	public long RoamUseData = 0;//The total used data in roaming network.
-	public long RCurrUseUL = 0;//Current use upload data in roaming network.
-	public long RCurrUseDL = 0;//Current use download data in roaming network.
-	public long TConnTimes = 0;//The total connected Internet times.
-	public long CurrConnTimes = 0;//Current connected Internet times.
-	public long MaxUsageData = 0;//The Max usage date that the device should use, when the real usage is more than this data, the connection must disconnect.
+	public int HUseData = 0;//The total used data in home network.
+	public int HCurrUseUL = 0;//Current use upload data in home network.
+	public int HCurrUseDL = 0;//Current use download data in home network.
+	public int RoamUseData = 0;//The total used data in roaming network.
+	public int RCurrUseUL = 0;//Current use upload data in roaming network.
+	public int RCurrUseDL = 0;//Current use download data in roaming network.
+	public int TConnTimes = 0;//The total connected Internet times.
+	public int CurrConnTimes = 0;//Current connected Internet times.
+	public int MaxUsageData = 0;//The Max usage date that the device should use, when the real usage is more than this data, the connection must disconnect.
 	
 	@Override
 	public void clear() {

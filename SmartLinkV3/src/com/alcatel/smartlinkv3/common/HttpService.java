@@ -85,7 +85,7 @@ public class HttpService extends Service {
 				}
 				
 				if (intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET) || 
-						intent.getAction().equals(MessageUti.STATISTICS_SET_LIMIT_VALUE_REQUSET)) {
+						intent.getAction().equals(MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET)) {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -104,8 +104,8 @@ public class HttpService extends Service {
 				
 				
 				if (intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET) || 
-						intent.getAction().equals(MessageUti.STATISTICS_SET_TOTAL_VALUE_REQUSET) || 
-						intent.getAction().equals(MessageUti.STATISTICS_SET_DISCONNECT_OVER_FLOW_STATUS_REQUSET)) {
+						intent.getAction().equals(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET) || 
+						intent.getAction().equals(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET)) {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -176,15 +176,17 @@ public class HttpService extends Service {
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
-				MessageUti.STATISTICS_SET_LIMIT_VALUE_REQUSET));
+				MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
-				MessageUti.STATISTICS_SET_TOTAL_VALUE_REQUSET));
+				MessageUti.STATISTICS_SET_USED_DATA_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
-				MessageUti.STATISTICS_SET_DISCONNECT_OVER_TIME_REQUSET));
+				MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
-				MessageUti.STATISTICS_SET_DISCONNECT_OVER_TIME_STATUS_REQUSET));
+				MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
-				MessageUti.STATISTICS_SET_DISCONNECT_OVER_FLOW_STATUS_REQUSET));
+				MessageUti.STATISTICS_SET_USED_TIMES_REQUSET));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
