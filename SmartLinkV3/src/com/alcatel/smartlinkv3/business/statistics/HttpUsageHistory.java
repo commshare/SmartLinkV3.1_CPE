@@ -12,16 +12,12 @@ import com.google.gson.Gson;
 public class HttpUsageHistory {
 	
 /******************** GetUsageHistory  **************************************************************************************/	
-	public static class GetUsageHistory extends BaseRequest
+	public static class GetUsageRecord extends BaseRequest
     {			
-		private String m_strStartDay;
-		private String m_strEndDay;
-        public GetUsageHistory(String strId,String strStartDay,String strEndDay,IHttpFinishListener callback) 
+        public GetUsageRecord(String strId,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strId = strId;
-        	m_strStartDay = strStartDay;
-        	m_strEndDay = strEndDay;
         }
 
         @Override
@@ -29,11 +25,9 @@ public class HttpUsageHistory {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Statistics.GetUsageHistory");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetUsageRecord");
 
 	        	JSONObject usageHistory = new JSONObject();
-	        	usageHistory.put("StartDay", m_strStartDay);
-	        	usageHistory.put("EndDay", m_strEndDay);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, usageHistory);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
@@ -46,16 +40,16 @@ public class HttpUsageHistory {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetUsageHistoryResponse(m_finsishCallback);
+            return new GetUsageRecordResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class GetUsageHistoryResponse extends BaseResponse
+	public static class GetUsageRecordResponse extends BaseResponse
     {
-		private UsageHistoryResult m_usageHistory;
+		private UsageRecordResult m_usageRecord;
         
-        public GetUsageHistoryResponse(IHttpFinishListener callback) 
+        public GetUsageRecordResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }
@@ -64,13 +58,13 @@ public class HttpUsageHistory {
         protected void parseContent(String strJsonResult) 
         {
         	Gson gson = new Gson();
-        	m_usageHistory = gson.fromJson(strJsonResult, UsageHistoryResult.class);
+        	m_usageRecord = gson.fromJson(strJsonResult, UsageRecordResult.class);
         }
 
         @Override
-        public UsageHistoryResult getModelResult() 
+        public UsageRecordResult getModelResult() 
         {
-             return m_usageHistory;
+             return m_usageRecord;
         }
     }
 	
@@ -88,7 +82,7 @@ public class HttpUsageHistory {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Statistics.ClearAllRecords");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetUsageRecordClear");
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);

@@ -1,0 +1,58 @@
+package com.alcatel.smartlinkv3.business.statistics;
+
+import java.util.ArrayList;
+
+import com.alcatel.smartlinkv3.business.BaseResult;
+
+public class UsageRecordResult extends BaseResult{
+	
+	public long HUseData = 0;//The total used data in home network.
+	public long HCurrUseUL = 0;//Current use upload data in home network.
+	public long HCurrUseDL = 0;//Current use download data in home network.
+	public long RoamUseData = 0;//The total used data in roaming network.
+	public long RCurrUseUL = 0;//Current use upload data in roaming network.
+	public long RCurrUseDL = 0;//Current use download data in roaming network.
+	public long TConnTimes = 0;//The total connected Internet times.
+	public long CurrConnTimes = 0;//Current connected Internet times.
+	public long MaxUsageData = 0;//The Max usage date that the device should use, when the real usage is more than this data, the connection must disconnect.
+	
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		HUseData = 0;
+		HCurrUseUL = 0;
+		HCurrUseDL = 0;
+		RoamUseData = 0;
+		RCurrUseUL = 0;
+		RCurrUseDL = 0;
+		TConnTimes = 0;
+		CurrConnTimes = 0;
+		MaxUsageData = 0;
+	}
+	
+	public void clone(UsageRecordResult src) {	
+		if(src == null)
+			return ;
+		HUseData = src.HUseData; 
+		HCurrUseUL = src.HCurrUseUL;
+		HCurrUseDL = src.HCurrUseDL;
+		RoamUseData = src.RoamUseData;
+		RCurrUseUL = src.RCurrUseUL;
+		RCurrUseDL = src.RCurrUseDL;
+		TConnTimes = src.TConnTimes;
+		CurrConnTimes = src.CurrConnTimes;
+		MaxUsageData = src.MaxUsageData;
+	}
+	
+	public void setValue(UsageRecordResult result) {	
+		HUseData = result.HUseData; 
+		HCurrUseUL = result.HCurrUseUL;
+		HCurrUseDL = result.HCurrUseDL;
+		RoamUseData = result.RoamUseData;
+		RCurrUseUL = result.RCurrUseUL;
+		RCurrUseDL = result.RCurrUseDL;
+		TConnTimes = result.TConnTimes;
+		CurrConnTimes = result.CurrConnTimes;
+		MaxUsageData = result.MaxUsageData;
+	}
+}

@@ -7,12 +7,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.model.UsageHistoryItemModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
 import com.alcatel.smartlinkv3.business.statistics.HttpUsageHistory;
 import com.alcatel.smartlinkv3.business.statistics.HttpUsageSettings;
-import com.alcatel.smartlinkv3.business.statistics.UsageHistoryResult;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.Const;
@@ -28,8 +26,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 public class StatisticsManager extends BaseManager {
-	private UsageSettingModel m_usageSettings = new UsageSettingModel();
-	private ArrayList<UsageHistoryItemModel> m_usageHistory = new ArrayList<UsageHistoryItemModel>();
+	private UsageSettingsResult m_usageSettings = new UsageSettingsResult();
+	private UsageRecordResult m_usageRecord = new UsageRecordResult();
 	private Timer m_rollTimer = new Timer();
 	private Timer m_getUsageHistoryRollTimer = new Timer();
 	
@@ -42,7 +40,7 @@ public class StatisticsManager extends BaseManager {
 	protected void clearData() {
 		// TODO Auto-generated method stub
 		m_usageSettings.clear();
-		m_usageHistory.clear();
+		m_usageRecord.clear();
 	} 
 	@Override
 	protected void stopRollTimer() {
@@ -93,7 +91,7 @@ public class StatisticsManager extends BaseManager {
 					startGetUsageHistoryTask();
 				}else{
 					stopRollTimer();
-					m_usageHistory.clear();
+					m_usageRecord.clear();
 					m_usageSettings.clear();
 				}
 			}
@@ -146,44 +144,20 @@ public class StatisticsManager extends BaseManager {
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
     }
 	
-	public UsageSettingModel getUsageSettings() {
+	public UsageSettingsResult getUsageSettings() {
 		return m_usageSettings;
 	}
 	
-	public ArrayList<UsageHistoryItemModel> getUsageHistory() {
-		return m_usageHistory;
+	public UsageRecordResult getUsageRecord() {
+		return m_usageRecord;
 	}
 	
-    public long GetTodayUsage() {
-    	Calendar caNow = Calendar.getInstance();
-		SimpleDateFormat format = new SimpleDateFormat(Const.DATE_FORMATE);
-		String strDay = format.format(caNow.getTime());
-    	ArrayList<UsageHistoryItemModel> usageList = new ArrayList<UsageHistoryItemModel>();   	
-    	usageList = (ArrayList<UsageHistoryItemModel>) m_usageHistory.clone();
-    	long total = 0;
-    	for(int i = 0;i < usageList.size();i++){
-    		UsageHistoryItemModel dayUsage = usageList.get(i);
-    		if(strDay.equalsIgnoreCase(dayUsage.m_strDate)) {
-    			total += dayUsage.m_lDownloadBytes;
-    			total += dayUsage.m_lUploadBytes;
-    			break;
-    		}
-    	}
-    	return total;
-    }
     
     public long GetBillingMonthTotalUsage() {
-    	ArrayList<UsageHistoryItemModel> usageList = new ArrayList<UsageHistoryItemModel>();
-    	usageList = (ArrayList<UsageHistoryItemModel>) m_usageHistory.clone();
+    	UsageRecordResult usageList = new UsageRecordResult();
+    	usageList.clone(m_usageRecord);
     	long total = 0;
-    	for(int i = 0;i < usageList.size();i++){
-    		UsageHistoryItemModel dayUsage = usageList.get(i);
-    		if(m_usageSettings.m_strStartBillDate.compareTo(dayUsage.m_strDate) <= 0 &&
-    				m_usageSettings.m_strEndBillDate.compareTo(dayUsage.m_strDate) >= 0) {
-    			total += dayUsage.m_lDownloadBytes;
-    			total += dayUsage.m_lUploadBytes;
-    		}
-    	}
+    	total = usageList.MaxUsageData;
     	//total += m_staSetting.getCalibrationValue();
     	return total;
     }
@@ -202,12 +176,12 @@ public class StatisticsManager extends BaseManager {
 	}
 	
 	public static String USAGE_SETTING_BILLING_DAY_CHANGE = "com.alcatel.cpe.business.statistics.billingdaychange";
-    public static String USAGE_SETTING_CALIBRATION_CHANGE = "com.alcatel.cpe.business.statistics.calibrationchange";
-    public static String USAGE_SETTING_LIMIT_CHANGE = "com.alcatel.cpe.business.statistics.limitchange";
-    public static String USAGE_SETTING_TOTAL_CHANGE = "com.alcatel.cpe.business.statistics.totalchange";
-    public static String USAGE_SETTING_OVERTIME_VALUE_CHANGE = "com.alcatel.cpe.business.statistics.overtimechange";
-    public static String USAGE_SETTING_OVERTIME_STATE_CHANGE = "com.alcatel.cpe.business.statistics.overtimestatechange";
-    public static String USAGE_SETTING_OVERFLOW_STATE_CHANGE = "com.alcatel.cpe.business.statistics.overflowstatechange";
+    public static String USAGE_SETTING_MONTHLY_PLAN_CHANGE = "com.alcatel.cpe.business.statistics.monthlyplanchange";
+    public static String USAGE_SETTING_USED_DATA_CHANGE = "com.alcatel.cpe.business.statistics.useddatachange";
+    public static String USAGE_SETTING_TIME_LIMIT_FLAG_CHANGE = "com.alcatel.cpe.business.statistics.timelimitflagchange";
+    public static String USAGE_SETTING_TIME_LIMIT_TIMES_CHANGE = "com.alcatel.cpe.business.statistics.timelimittimeschange";
+    public static String USAGE_SETTING_USED_TIMES_CHANGE = "com.alcatel.cpe.business.statistics.usedtimeschange";
+    public static String USAGE_SETTING_AUTO_DISCONN_FLAG_CHANGE = "com.alcatel.cpe.business.statistics.autodisconnflagchange";
     
 	class GetUsageSettingsTask extends TimerTask{ 
         @Override
@@ -222,12 +196,12 @@ public class StatisticsManager extends BaseManager {
         			}
         			
         			boolean bBillingDayChange = false;
-	            	boolean bCalibrationValueChange = false;
-	            	boolean bLimitValueChange = false;
-	            	boolean bTotalValueChange = false;
-	            	boolean bOverTimeValueChange = false;
-	            	boolean bOverTimeStateChange = false;
-	            	boolean bOverFlowStateChange = false;
+	            	boolean bHMonthlyPlanChange = false;
+	            	boolean bHUsedDataChange = false;
+	            	boolean bHTimeLimitFlagChange = false;
+	            	boolean bHTimeLimitTimesChange = false;
+	            	boolean bHUsedTimesChange = false;
+	            	boolean bHAutoDisconnFlagChange = false;
 	            	
                 	String strErrcode = new String();
                     int ret = response.getResultCode();
@@ -235,29 +209,29 @@ public class StatisticsManager extends BaseManager {
                     	strErrcode = response.getErrorCode();
                     	if(strErrcode.length() == 0) {
                     		UsageSettingsResult usageSettingResult = response.getModelResult();
-                    		UsageSettingModel pre = new UsageSettingModel();
+                    		UsageSettingsResult pre = new UsageSettingsResult();
                     		pre.clone(m_usageSettings);
                     		m_usageSettings.setValue(usageSettingResult);
-                    		if(pre.m_nBillingDay != m_usageSettings.m_nBillingDay)
+                    		if(pre.HBillingDay != m_usageSettings.HBillingDay)
                     			bBillingDayChange = true;
                     		
-                    		if(pre.m_lCalibrationValue != m_usageSettings.m_lCalibrationValue)
-                    			bCalibrationValueChange = true;
+                    		if(pre.HMonthlyPlan != m_usageSettings.HMonthlyPlan)
+                    			bHMonthlyPlanChange = true;
                     		
-                    		if(pre.m_lLimitValue != m_usageSettings.m_lLimitValue)
-                    			bLimitValueChange = true;
+                    		if(pre.HUsedData != m_usageSettings.HUsedData)
+                    			bHUsedDataChange = true;
                     		
-                    		if(pre.m_lTotalValue != m_usageSettings.m_lTotalValue)
-                    			bTotalValueChange = true;
+                    		if(pre.HTimeLimitFlag != m_usageSettings.HTimeLimitFlag)
+                    			bHTimeLimitFlagChange = true;
                     		
-                    		if(pre.m_lOvertime != m_usageSettings.m_lOvertime)
-                    			bOverTimeValueChange = true;
+                    		if(pre.HTimeLimitTimes != m_usageSettings.HTimeLimitTimes)
+                    			bHTimeLimitTimesChange = true;
                     		
-                    		if(pre.m_overtimeState != m_usageSettings.m_overtimeState)
-                    			bOverTimeStateChange = true;
+                    		if(pre.HUsedTimes != m_usageSettings.HUsedTimes)
+                    			bHUsedTimesChange = true;
                     		
-                    		if(pre.m_overflowState != m_usageSettings.m_overflowState)
-                    			bOverFlowStateChange = true;
+                    		if(pre.HAutoDisconnFlag != m_usageSettings.HAutoDisconnFlag)
+                    			bHAutoDisconnFlagChange = true;
                     		
                     	}else{
                     		
@@ -266,20 +240,20 @@ public class StatisticsManager extends BaseManager {
                     	//Log
                     }
                     
-                    if(bBillingDayChange || bCalibrationValueChange || 
-	            			bLimitValueChange || bTotalValueChange || 
-	            			bOverTimeValueChange || bOverTimeStateChange || 
-	            			bOverFlowStateChange) {
+                    if(bBillingDayChange || bHMonthlyPlanChange || 
+                    		bHUsedDataChange || bHTimeLimitFlagChange || 
+                    		bHTimeLimitTimesChange || bHUsedTimesChange || 
+                    		bHAutoDisconnFlagChange) {
 	                    Intent megIntent= new Intent(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET);
 	                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
 	                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
 	                    megIntent.putExtra(USAGE_SETTING_BILLING_DAY_CHANGE, bBillingDayChange);
-		                megIntent.putExtra(USAGE_SETTING_CALIBRATION_CHANGE, bCalibrationValueChange);
-		                megIntent.putExtra(USAGE_SETTING_LIMIT_CHANGE, bLimitValueChange);
-		                megIntent.putExtra(USAGE_SETTING_TOTAL_CHANGE, bTotalValueChange);
-		                megIntent.putExtra(USAGE_SETTING_OVERTIME_VALUE_CHANGE, bOverTimeValueChange);
-		                megIntent.putExtra(USAGE_SETTING_OVERTIME_STATE_CHANGE, bOverTimeStateChange);
-		                megIntent.putExtra(USAGE_SETTING_OVERFLOW_STATE_CHANGE, bOverFlowStateChange);
+		                megIntent.putExtra(USAGE_SETTING_MONTHLY_PLAN_CHANGE, bHMonthlyPlanChange);
+		                megIntent.putExtra(USAGE_SETTING_USED_DATA_CHANGE, bHUsedDataChange);
+		                megIntent.putExtra(USAGE_SETTING_TIME_LIMIT_FLAG_CHANGE, bHTimeLimitFlagChange);
+		                megIntent.putExtra(USAGE_SETTING_TIME_LIMIT_TIMES_CHANGE, bHTimeLimitTimesChange);
+		                megIntent.putExtra(USAGE_SETTING_USED_TIMES_CHANGE, bHUsedTimesChange);
+		                megIntent.putExtra(USAGE_SETTING_AUTO_DISCONN_FLAG_CHANGE, bHAutoDisconnFlagChange);
 	        			m_context.sendBroadcast(megIntent);
                     }
                 }
@@ -289,14 +263,16 @@ public class StatisticsManager extends BaseManager {
 	
 	//SetBillingDay  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setBillingDay(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetBillingDay") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final int nBillingDay = (Integer) data.getParamByKey("billing_day");
-		final int nPreBillingDay = m_usageSettings.m_nBillingDay;
-		m_usageSettings.setBillingDay(nBillingDay);
+		final long nBillingDay = (Integer) data.getParamByKey("billing_day");
+		final long nPreBillingDay = m_usageSettings.HBillingDay;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.HBillingDay = nBillingDay;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetBillingDay("7.3",nBillingDay, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -305,34 +281,35 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		if(m_usageSettings.m_nBillingDay != nBillingDay)
-                			m_usageSettings.setBillingDay(nBillingDay);
+                		m_usageSettings.clone(nUsageSettings);
                 	}else{
-                		m_usageSettings.setBillingDay(nPreBillingDay);
+
                 	}
                 }else{
-                	m_usageSettings.setBillingDay(nPreBillingDay);
+
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                megIntent.putExtra(IS_CHANGED, nPreBillingDay != m_usageSettings.m_nBillingDay);
+                megIntent.putExtra(IS_CHANGED, nPreBillingDay != m_usageSettings.HBillingDay);
     			m_context.sendBroadcast(megIntent);
             }
         }));
     } 
 	
-	//SetLimitValue  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void setLimitValue(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetLimitValue") != true)
+	//setMonthlyPlan  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void setMonthlyPlan(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long lLimitValue = (Long) data.getParamByKey("limit_value");
-		final long lPreLimitValue = m_usageSettings.m_lLimitValue;
-		m_usageSettings.m_lLimitValue = lLimitValue;
+		final long nMonthlyPlan = (Integer) data.getParamByKey("monthly_plan");
+		final long nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.HMonthlyPlan = nPreMonthlyPlan;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetLimitValue("7.7",lLimitValue, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -341,34 +318,35 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		if(m_usageSettings.m_lLimitValue != lLimitValue)
-                			m_usageSettings.m_lLimitValue = lLimitValue;
+                		m_usageSettings.clone(nUsageSettings);
                 	}else{
-                		m_usageSettings.m_lLimitValue = lPreLimitValue;
+
                 	}
                 }else{
-                	m_usageSettings.m_lLimitValue = lPreLimitValue;
+
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_LIMIT_VALUE_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                megIntent.putExtra(IS_CHANGED, lPreLimitValue != m_usageSettings.m_lLimitValue);
+                megIntent.putExtra(IS_CHANGED, nPreMonthlyPlan != m_usageSettings.HMonthlyPlan);
     			m_context.sendBroadcast(megIntent);
             }
         }));
     } 
 	
-	//SetTotalValue  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void setTotalValue(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetTotalValue") != true)
+	//setUsedData  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void setUsedData(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final long lTotalValue = (Long) data.getParamByKey("total_value");
-		final long lPreTotalValue = m_usageSettings.m_lTotalValue;
-		m_usageSettings.m_lTotalValue = lTotalValue;
+		final long nUsedData = (Integer) data.getParamByKey("used_data");
+		final long nPreUsedData = m_usageSettings.HUsedData;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.HUsedData = nPreUsedData;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetTotalValue("7.9",lTotalValue, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -377,36 +355,35 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		if(m_usageSettings.m_lTotalValue != lTotalValue)
-                			m_usageSettings.m_lTotalValue = lTotalValue;
-                		if(m_usageSettings.m_lTotalValue <= 0)//close usage alert 
-                			CPEConfig.getInstance().setNotificationSwitch(false);
+                		m_usageSettings.clone(nUsageSettings);
                 	}else{
-                		m_usageSettings.m_lTotalValue = lPreTotalValue;
+
                 	}
                 }else{
-                	m_usageSettings.m_lTotalValue = lPreTotalValue;
+
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_TOTAL_VALUE_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                megIntent.putExtra(IS_CHANGED, lPreTotalValue != m_usageSettings.m_lTotalValue);
+                megIntent.putExtra(IS_CHANGED, nPreUsedData != m_usageSettings.HUsedData);
     			m_context.sendBroadcast(megIntent);
             }
         }));
     } 
 	
-	//SetDisconnectOvertime  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void setDisconnectOvertime(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetDisconnectOvertime") != true)
+	//setTimeLimitFlag  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void setTimeLimitFlag(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final int nOverTime = (Integer) data.getParamByKey("over_time");
-		final long lPreOverTime = m_usageSettings.m_lOvertime;
-		m_usageSettings.m_lOvertime = nOverTime;
+		final long nTimeLimitFlag = (Integer) data.getParamByKey("time_limit_flag");
+		final long nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.HTimeLimitFlag = nTimeLimitFlag;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetDisconnectOvertime("7.15",nOverTime, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -415,34 +392,35 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		if(m_usageSettings.m_lOvertime != nOverTime)
-                			m_usageSettings.m_lOvertime = nOverTime;
+                		m_usageSettings.clone(nUsageSettings);
                 	}else{
-                		m_usageSettings.m_lOvertime = lPreOverTime;
+
                 	}
                 }else{
-                	m_usageSettings.m_lOvertime = lPreOverTime;
+
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_DISCONNECT_OVER_TIME_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                megIntent.putExtra(IS_CHANGED, lPreOverTime != m_usageSettings.m_lOvertime);
+                megIntent.putExtra(IS_CHANGED, nPreTimeLimitFlag != m_usageSettings.HTimeLimitFlag);
     			m_context.sendBroadcast(megIntent);
             }
         }));
     } 
 	
-	//SetDisconnectOvertimeState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void setDisconnectOvertimeState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetDisconnectOvertimeState") != true)
+	//setTimeLimitTimes  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void setTimeLimitTimes(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final ENUM.OVER_TIME_STATE overTimeStatus = (ENUM.OVER_TIME_STATE) data.getParamByKey("over_time_status");
-		final ENUM.OVER_TIME_STATE preOverTimeStatus = m_usageSettings.m_overtimeState;
-		m_usageSettings.m_overtimeState = overTimeStatus;
+		final long nTimeLimitTimes = (Integer) data.getParamByKey("time_limit_flag");
+		final long nPreTimeLimitTimes = m_usageSettings.HTimeLimitTimes;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.HTimeLimitTimes = nTimeLimitTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetDisconnectOvertimeState("7.16",overTimeStatus == ENUM.OVER_TIME_STATE.Enable?true:false, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -451,34 +429,35 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		if(m_usageSettings.m_overtimeState != overTimeStatus)
-                			m_usageSettings.m_overtimeState = overTimeStatus;
+                		m_usageSettings.clone(nUsageSettings);
                 	}else{
-                		m_usageSettings.m_overtimeState = preOverTimeStatus;
+
                 	}
                 }else{
-                	m_usageSettings.m_overtimeState = preOverTimeStatus;
+
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_DISCONNECT_OVER_TIME_STATUS_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                megIntent.putExtra(IS_CHANGED, preOverTimeStatus != m_usageSettings.m_overtimeState);
+                megIntent.putExtra(IS_CHANGED, nPreTimeLimitTimes != m_usageSettings.HTimeLimitTimes);
     			m_context.sendBroadcast(megIntent);
             }
         }));
     } 
 	
-	//SetDisconnectOverflowState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void setDisconnectOverflowState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetDisconnectOverflowState") != true)
+	//setUsedTimes  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void setUsedTimes(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final ENUM.OVER_FLOW_STATE overFlowStatus = (ENUM.OVER_FLOW_STATE) data.getParamByKey("over_flow_status");
-		final ENUM.OVER_FLOW_STATE preOverFlowStatus = m_usageSettings.m_overflowState;
-		m_usageSettings.m_overflowState = overFlowStatus;
+		final long nUsedTimes = (Integer) data.getParamByKey("time_limit_flag");
+		final long nPreUsedTimes = m_usageSettings.HUsedTimes;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.HUsedTimes = nUsedTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetDisconnectOverflowState("7.17",overFlowStatus == ENUM.OVER_FLOW_STATE.Enable?true:false, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -487,19 +466,55 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		if(m_usageSettings.m_overflowState != overFlowStatus)
-                			m_usageSettings.m_overflowState = overFlowStatus;
+                		m_usageSettings.clone(nUsageSettings);
                 	}else{
-                		m_usageSettings.m_overflowState = preOverFlowStatus;
+
                 	}
                 }else{
-                	m_usageSettings.m_overflowState = preOverFlowStatus;
+
                 }
  
-                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_DISCONNECT_OVER_FLOW_STATUS_REQUSET);
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                megIntent.putExtra(IS_CHANGED, preOverFlowStatus != m_usageSettings.m_overflowState);
+                megIntent.putExtra(IS_CHANGED, nPreUsedTimes != m_usageSettings.HUsedTimes);
+    			m_context.sendBroadcast(megIntent);
+            }
+        }));
+    } 
+	
+	//AutoDisconnFlag  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void AutoDisconnFlag(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
+			return;
+		
+		final long nAutoDisconnFlag = (Integer) data.getParamByKey("time_limit_flag");
+		final long nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.HAutoDisconnFlag = nAutoDisconnFlag;
+    	
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+            @Override
+			public void onHttpRequestFinish(BaseResponse response) 
+            {   
+            	String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) {
+                		m_usageSettings.clone(nUsageSettings);
+                	}else{
+
+                	}
+                }else{
+
+                }
+ 
+                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(IS_CHANGED, nPreAutoDisconnFlag != m_usageSettings.HAutoDisconnFlag);
     			m_context.sendBroadcast(megIntent);
             }
         }));
@@ -557,8 +572,7 @@ public class StatisticsManager extends BaseManager {
 		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState != ENUM.SIMState.Accessable) 
 			return;
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.GetUsageHistory("7.1",m_usageSettings.m_strStartBillDate,
-				m_usageSettings.m_strEndBillDate, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.GetUsageRecord("7.1", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -567,20 +581,13 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		UsageHistoryResult usageHistoryResult = response.getModelResult();
-                		m_usageHistory.clear();
-                		for(int i = 0;i < usageHistoryResult.UsageHistoryList.size();i++) {
-                			UsageHistoryItemModel usageItem = new UsageHistoryItemModel();
-                			usageItem.setValue(usageHistoryResult.UsageHistoryList.get(i));
-                			m_usageHistory.add(usageItem);
-                		}
-                	}else{
+                		m_usageRecord = response.getModelResult();
+					}else{
                 		
                 	}
                 }else{
                 	//Log
                 }
-                
                 
                 Intent megIntent= new Intent(MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);

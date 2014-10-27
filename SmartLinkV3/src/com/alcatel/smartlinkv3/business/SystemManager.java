@@ -176,22 +176,22 @@ public class SystemManager extends BaseManager {
 
 							// change billing month,because to next billing
 							// month
-							SimpleDateFormat startTemp = new SimpleDateFormat(
-									Const.DATE_FORMATE);
-							Calendar caNow = Calendar.getInstance();
-							String strNow = startTemp.format(caNow.getTime());
-							if (!(BusinessMannager.getInstance()
-									.getUsageSettings().m_strStartBillDate
-									.compareTo(strNow) <= 0 && BusinessMannager
-									.getInstance().getUsageSettings().m_strEndBillDate
-									.compareTo(strNow) >= 0)) {
-								BusinessMannager.getInstance()
-										.getUsageSettings()
-										.calStartAndEndCalendar();
-								Intent megIntent = new Intent(
-										MessageUti.CPE_CHANGED_BILLING_MONTH);
-								m_context.sendBroadcast(megIntent);
-							}
+//							SimpleDateFormat startTemp = new SimpleDateFormat(
+//									Const.DATE_FORMATE);
+//							Calendar caNow = Calendar.getInstance();
+//							String strNow = startTemp.format(caNow.getTime());
+//							if (!(BusinessMannager.getInstance()
+//									.getUsageSettings().m_strStartBillDate
+//									.compareTo(strNow) <= 0 && BusinessMannager
+//									.getInstance().getUsageSettings().m_strEndBillDate
+//									.compareTo(strNow) >= 0)) {
+//								BusinessMannager.getInstance()
+//										.getUsageSettings()
+//										.calStartAndEndCalendar();
+//								Intent megIntent = new Intent(
+//										MessageUti.CPE_CHANGED_BILLING_MONTH);
+//								m_context.sendBroadcast(megIntent);
+//							}
 
 							Intent megIntent = new Intent(
 									MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);

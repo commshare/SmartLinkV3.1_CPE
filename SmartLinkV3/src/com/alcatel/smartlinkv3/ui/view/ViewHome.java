@@ -7,7 +7,6 @@ import java.util.Date;
 
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_FLOW_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -18,6 +17,7 @@ import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -174,6 +174,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);
 		m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);
+		m_networkRoamImageView = (ImageView) m_view.findViewById(R.id.connect_roam);
 		
 		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
 		m_batteryProgress = (ProgressBar) m_view.findViewById(R.id.battery_progress);
@@ -268,7 +269,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
 		if (simStatus != SIMState.Accessable) {
 			m_networkTypeTextView.setVisibility(View.INVISIBLE);
-			//m_networkRoamImageView.setVisibility(View.INVISIBLE);
+			m_networkRoamImageView.setVisibility(View.INVISIBLE);
 			m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 		}else{
 			NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
@@ -490,17 +491,17 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 		private void connect()
 		{
-			UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
-			if (settings.m_overflowState == OVER_FLOW_STATE.Enable && settings.m_lTotalValue > 0) {
-				long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
-				if (lTotalUsedUsage >= settings.m_lTotalValue) {
-					//show warning dialog
-					//m_connectWarningDialog.showDialog();
-					String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
-					Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
-					return;
-				}
-			}
+//			UsageSettingsResult settings = BusinessMannager.getInstance().getUsageSettings();
+//			if (settings.m_overflowState == OVER_FLOW_STATE.Enable && settings.m_lTotalValue > 0) {
+//				long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
+//				if (lTotalUsedUsage >= settings.m_lTotalValue) {
+//					//show warning dialog
+//					//m_connectWarningDialog.showDialog();
+//					String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
+//					Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
+//					return;
+//				}
+//panchong			}
 		
 			if (m_bConnectPressd == false)
 				m_bConnectPressd = true;

@@ -1,26 +1,51 @@
 package com.alcatel.smartlinkv3.business.statistics;
 
+import java.util.ArrayList;
+
 import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class UsageSettingsResult extends BaseResult{
-    
-	public int BillingDay = 1;//(Min:1, Max:31)
-	public long CalibrationValue = 0;//Unit is byte�� Min: -100*1024*1024*1024, Max: 100��1024��1024��1024
-	public long LimitValue = 0;//Unit is byte, Min:1, Max:100*1024��1024��1024, default 0 if not set
-	public long TotalValue = 0;//Unit is byte, Min:1, Max:100*1024��1024��1024, default 0 if not set
-	public long Overtime = 5;//Unit is byte, Min:1, Max:100*1024��1024��1024, default 0 if not set
-	public int OvertimeState = 0;//Enable auto disconnect by overtime: 1, Disable auto disconnect by overtime:0, Default:0
-	public int OverflowState = 0;//Enable auto disconnect by total flow: 1, Disable auto disconnect by total flow:0, Default:0
-	@Override
-	protected void clear() {
-		// TODO Auto-generated method stub
-		BillingDay = 1;
-		CalibrationValue = 0;
-		LimitValue = 0;
-		TotalValue = 0;
-		Overtime = 5;
-		OvertimeState = 0;
-		OverflowState = 0;
-	}
+	
+	public long HBillingDay = 0;//Billing day (Min:1, Max:31),
+	public long HMonthlyPlan = 0;//The max data that on month could use..
+	public long HUsedData = 0;//The used data in month.
+	public long HTimeLimitFlag = 0;//The time limit function flage,0: disable 1:enable
+	public long HTimeLimitTimes = 0;//The time limit function open, must set the limit time.
+	public long HUsedTimes = 0;//The used time that after open time limit function.
+	public long HAutoDisconnFlag = 0;//This flage control the disconnection when the usage settings get conditions.0:disable, not auto disconnect 1:enable, auto disconnect
 
+	
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		HBillingDay = 0;
+		HMonthlyPlan = 0;
+		HUsedData = 0;
+		HTimeLimitFlag = 0;
+		HTimeLimitTimes = 0;
+		HUsedTimes = 0;
+		HAutoDisconnFlag = 0;
+	}
+	
+	public void clone(UsageSettingsResult src) {	
+		if(src == null)
+			return ;
+		HBillingDay = src.HBillingDay;
+		HMonthlyPlan = src.HMonthlyPlan;
+		HUsedData = src.HUsedData;
+		HTimeLimitFlag = src.HTimeLimitFlag;
+		HTimeLimitTimes = src.HTimeLimitTimes;
+		HUsedTimes = src.HUsedTimes;
+		HAutoDisconnFlag = src.HAutoDisconnFlag;
+	}
+	
+	public void setValue(UsageSettingsResult result) {	
+		HBillingDay = result.HBillingDay;
+		HMonthlyPlan = result.HMonthlyPlan;
+		HUsedData = result.HUsedData;
+		HTimeLimitFlag = result.HTimeLimitFlag;
+		HTimeLimitTimes = result.HTimeLimitTimes;
+		HUsedTimes = result.HUsedTimes;
+		HAutoDisconnFlag = result.HAutoDisconnFlag;
+	}
 }

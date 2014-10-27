@@ -8,7 +8,7 @@ import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.StatisticsManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_FLOW_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
@@ -54,12 +54,12 @@ public class HttpService extends Service {
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 						boolean bBillingDayChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_BILLING_DAY_CHANGE,false);
-						boolean bCalibrationValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_CALIBRATION_CHANGE,false);
-						boolean bLimitValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_LIMIT_CHANGE,false);
-						boolean bTotalValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_TOTAL_CHANGE,false);
-						boolean bOverTimeValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_OVERTIME_VALUE_CHANGE,false);
-						boolean bOverTimeStateChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_OVERTIME_STATE_CHANGE,false);
-						boolean bOverFlowStateChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_OVERFLOW_STATE_CHANGE,false);
+						boolean bCalibrationValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_MONTHLY_PLAN_CHANGE,false);
+						boolean bLimitValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_USED_DATA_CHANGE,false);
+						boolean bTotalValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_TIME_LIMIT_FLAG_CHANGE,false);
+						boolean bOverTimeValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_TIME_LIMIT_TIMES_CHANGE,false);
+						boolean bOverTimeStateChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_USED_TIMES_CHANGE,false);
+						boolean bOverFlowStateChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_AUTO_DISCONN_FLAG_CHANGE,false);
 
 						if (bBillingDayChange || bCalibrationValueChange
 								|| bLimitValueChange || bTotalValueChange
@@ -255,7 +255,7 @@ public class HttpService extends Service {
 
 	private void alert() {
 
-		UsageSettingModel settings = BusinessMannager.getInstance()
+		UsageSettingsResult settings = BusinessMannager.getInstance()
 				.getUsageSettings();
 		long lTotalUsedUsage = BusinessMannager.getInstance()
 				.GetBillingMonthTotalUsage();
@@ -263,9 +263,9 @@ public class HttpService extends Service {
 		if (simState.m_SIMState != SIMState.Accessable) 
 			return;
 
-		if (settings.m_lLimitValue > 0
-				&& settings.m_lTotalValue > settings.m_lLimitValue
-				&& lTotalUsedUsage >= settings.m_lLimitValue
+		if (settings.HMonthlyPlan > 0
+				&& settings.HUsedData > settings.HMonthlyPlan
+				&& lTotalUsedUsage >= settings.HMonthlyPlan
 				&& m_isNeedToAlertUsageLimit == true && 
 				CPEConfig.getInstance().getNotificationSwitch() == true) {
 			// usage alert
@@ -273,8 +273,8 @@ public class HttpService extends Service {
 			showNotification(ALERT_TYPE.UsageLimit, lTotalUsedUsage);
 			m_isNeedToAlertUsageLimit = false;
 			
-		} else if (lTotalUsedUsage >= settings.m_lTotalValue
-				&& settings.m_lTotalValue > 0
+		}/* else if (lTotalUsedUsage >= settings.HMonthlyPlan
+				&& settings.HMonthlyPlan > 0
 				&& m_isNeedToAlertOverflow == true && 
 				settings.m_overflowState == OVER_FLOW_STATE.Enable) {
 			// overflow alert
@@ -282,14 +282,14 @@ public class HttpService extends Service {
 			showNotification(ALERT_TYPE.Overflow, lTotalUsedUsage);
 			m_isNeedToAlertOverflow = false;
 
-		} else if (isOverTime(settings.m_lOvertime)
+		} else if (isOverTime(settings.HTimeLimitTimes)
 				&& settings.m_overtimeState == OVER_TIME_STATE.Enable
 				&& m_isNeedToAlertTimeLimit == true) {
 			// overtime alert
 			Log.e("alert", "overtime alert");
 			showNotification(ALERT_TYPE.TimeLimit, lTotalUsedUsage);
 			m_isNeedToAlertTimeLimit = false;
-		}
+		}*/
 
 	}
 

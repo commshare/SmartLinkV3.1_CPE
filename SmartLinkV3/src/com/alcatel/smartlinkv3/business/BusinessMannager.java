@@ -9,20 +9,20 @@ import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
-import com.alcatel.smartlinkv3.business.model.UsageHistoryItemModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.service.DlnaSettings;
 import com.alcatel.smartlinkv3.business.service.FtpSettings;
 import com.alcatel.smartlinkv3.business.service.SambaSettings;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
+import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
+import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.HttpMethodUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
-import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.ServiceState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
@@ -215,17 +215,13 @@ public class BusinessMannager {
     /********************User manager Data end************************/
     
     /********************Statistics manager Data start**********************/
-    public UsageSettingModel getUsageSettings() {
+    public UsageSettingsResult getUsageSettings() {
 		return m_statisticsManager.getUsageSettings();
 	}
     
-    public ArrayList<UsageHistoryItemModel> getUsageHistory() {
-		return (ArrayList<UsageHistoryItemModel>) m_statisticsManager.getUsageHistory().clone();
+    public UsageRecordResult getUsageRecord() {
+		return m_statisticsManager.getUsageRecord();
 	}
-    
-    public long GetTodayUsage() {
-    	return m_statisticsManager.GetTodayUsage();
-    }
     
     public long GetBillingMonthTotalUsage() {
     	return m_statisticsManager.GetBillingMonthTotalUsage();
