@@ -190,9 +190,10 @@ public class HttpUpdate {
 	/*stop updating device*/
 	public static class setDeviceUpdateStopRequest extends BaseRequest{
 
-		public setDeviceUpdateStopRequest(IHttpFinishListener callback) {
+		public setDeviceUpdateStopRequest(String strId, IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
+			m_strId = strId;
 		}
 
 		@Override

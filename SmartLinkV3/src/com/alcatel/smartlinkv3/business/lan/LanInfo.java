@@ -12,7 +12,7 @@ public class LanInfo extends BaseResult{
 	private int DHCPLeaseTime=1;//DHCP Lease Time (hours):1,6,12,24
 	private String MacAddress= "";//The LAN MAC Address
 	@Override
-	protected void clear() {
+	public void clear() {
 		// TODO Auto-generated method stub
 		IPv4IPAddress = "";
 		SubnetMask="";

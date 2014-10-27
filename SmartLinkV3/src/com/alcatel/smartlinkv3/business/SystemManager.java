@@ -29,15 +29,15 @@ public class SystemManager extends BaseManager {
 	private StorageList m_storageList = new StorageList();
 
 	private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
-															// this device
+	// this device
 
 	private Timer m_getFeaturesTimer = new Timer();// this time not to cancel
-													// when cpe wifi
-													// disconnected,beacause
-													// used to test the wifi
-													// connect state
+	// when cpe wifi
+	// disconnected,beacause
+	// used to test the wifi
+	// connect state
 	private Timer m_getStorageTimer = new Timer();
-	
+
 	private String m_strAppVersion = "";
 
 	private GetFeaturesTask m_getFeaturesTask = null;
@@ -58,7 +58,7 @@ public class SystemManager extends BaseManager {
 	public boolean getAlreadyRecongniseDeviceFlag() {
 		return m_bAlreadyRecogniseCPEDevice;
 	}
-	
+
 	public String getAppVersion() {
 		return m_strAppVersion;
 	}
@@ -81,7 +81,7 @@ public class SystemManager extends BaseManager {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
-					getSystemInfo(null);
+				getSystemInfo(null);
 
 				if (FeatureVersionManager.getInstance().isSupportApi("System",
 						"GetExternalStorageDevice")) {
@@ -90,6 +90,8 @@ public class SystemManager extends BaseManager {
 			} else {
 				stopRollTimer();
 				m_storageList.clear();
+				m_systemInfo.clear();
+				BusinessMannager.getInstance().getSystemInfoModel().clear();
 			}
 		}
 	}
@@ -100,7 +102,7 @@ public class SystemManager extends BaseManager {
 		// register in basemanager
 		// m_context.registerReceiver(m_msgReceiver, new
 		// IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
-		
+
 		//app version
 		FetchAppVersion();
 	}
@@ -156,7 +158,7 @@ public class SystemManager extends BaseManager {
 		@Override
 		public void run() {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.GetFeature("2.6", new IHttpFinishListener() {
+					new HttpSystem.GetFeature("16.1", new IHttpFinishListener() {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							String strErrcode = new String();
@@ -217,35 +219,43 @@ public class SystemManager extends BaseManager {
 			HttpRequestManager.GetInstance().sendPostRequest(
 					new HttpSystem.GetSystemInfo("2.1",
 							new IHttpFinishListener() {
-								@Override
-								public void onHttpRequestFinish(
-										BaseResponse response) {
-									int ret = response.getResultCode();
-									String strErrcode = response.getErrorCode();
-									if (ret == BaseResponse.RESPONSE_OK
-											&& strErrcode.length() == 0) {
-										m_systemInfo = response
-												.getModelResult();
-									} else {
-										new Handler().postDelayed(
-												new Runnable() {
-													@Override
-													public void run() {
-														getSystemInfo(null);
-													}
-												}, 1000);
-									}
+						@Override
+						public void onHttpRequestFinish(
+								BaseResponse response) {
+							int ret = response.getResultCode();
+							String strErrcode = response.getErrorCode();
+							if (ret == BaseResponse.RESPONSE_OK
+									&& strErrcode.length() == 0) {
+								m_systemInfo = response
+										.getModelResult();
+								BusinessMannager.getInstance().getSystemInfoModel().
+								setDeviceName(m_systemInfo.getDeviceName());
+								BusinessMannager.getInstance().getSystemInfoModel().
+								setHwVersion(m_systemInfo.getHwVersion());
+								BusinessMannager.getInstance().getSystemInfoModel().
+								setSwVersion(m_systemInfo.getSwVersion());
+								BusinessMannager.getInstance().getSystemInfoModel().
+								setIMEI(m_systemInfo.getIMEI());
+							} else {
+								new Handler().postDelayed(
+										new Runnable() {
+											@Override
+											public void run() {
+												getSystemInfo(null);
+											}
+										}, 1000);
+							}
 
-									Intent megIntent = new Intent(
-											MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_RESULT, ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
-								}
-							}));
+							Intent megIntent = new Intent(
+									MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
+							megIntent.putExtra(
+									MessageUti.RESPONSE_RESULT, ret);
+							megIntent.putExtra(
+									MessageUti.RESPONSE_ERROR_CODE,
+									strErrcode);
+							m_context.sendBroadcast(megIntent);
+						}
+					}));
 		}
 	}
 
@@ -266,35 +276,156 @@ public class SystemManager extends BaseManager {
 			HttpRequestManager.GetInstance().sendPostRequest(
 					new HttpSystem.GetExternalStorageDevice("2.7",
 							new IHttpFinishListener() {
-								@Override
-								public void onHttpRequestFinish(
-										BaseResponse response) {
-									String strErrcode = new String();
-									int ret = response.getResultCode();
-									if (ret == BaseResponse.RESPONSE_OK) {
-										strErrcode = response.getErrorCode();
-										if (strErrcode.length() == 0) {
-											m_storageList = response
-													.getModelResult();
+						@Override
+						public void onHttpRequestFinish(
+								BaseResponse response) {
+							String strErrcode = new String();
+							int ret = response.getResultCode();
+							if (ret == BaseResponse.RESPONSE_OK) {
+								strErrcode = response.getErrorCode();
+								if (strErrcode.length() == 0) {
+									m_storageList = response
+											.getModelResult();
 
-										} else {
-											m_storageList.clear();
-										}
-									} else {
-										m_storageList.clear();
-									}
-
-									Intent megIntent = new Intent(
-											MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_RESULT, ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
-
+								} else {
+									m_storageList.clear();
 								}
-							}));
+							} else {
+								m_storageList.clear();
+							}
+
+							Intent megIntent = new Intent(
+									MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET);
+							megIntent.putExtra(
+									MessageUti.RESPONSE_RESULT, ret);
+							megIntent.putExtra(
+									MessageUti.RESPONSE_ERROR_CODE,
+									strErrcode);
+							m_context.sendBroadcast(megIntent);
+
+						}
+					}));
+		}
+	}
+
+	//device reboot
+	public void rebootDevice(DataValue data){
+		if (!FeatureVersionManager.getInstance().
+				isSupportApi("system", "SetDeviceReboot")) {
+			return;
+		}
+
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.deviceRebootRequest("13.5", 
+							new IHttpFinishListener() {
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							Boolean blRes = false;
+							int nRet = response.getResultCode();
+							String strError = response.getErrorCode();
+							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
+								blRes = true;
+							}
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_REBOOT);
+							intent.putExtra("Result", blRes);
+							m_context.sendBroadcast(intent);
+						}
+					}));
+		}
+	}
+
+	//reset device
+	public void resetDevice(DataValue data){
+		if (!FeatureVersionManager.getInstance().
+				isSupportApi("system", "SetDeviceReset")) {
+			return;
+		}
+
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.deviceResetRequest("13.6", 
+							new IHttpFinishListener() {
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							Boolean blRes = false;
+							int nRet = response.getResultCode();
+							String strError = response.getErrorCode();
+							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
+								blRes = true;
+							}
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESET);
+							intent.putExtra("Result", blRes);
+							m_context.sendBroadcast(intent);
+						}
+					}));
+		}
+	}
+
+	//device backup
+	public void backupDevice(DataValue data){
+		if (!FeatureVersionManager.getInstance().
+				isSupportApi("system", "SetDeviceBackup")) {
+			return;
+		}
+
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.deviceBackupRequest("13.7", 
+							new IHttpFinishListener() {
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							Boolean blRes = false;
+							int nRet = response.getResultCode();
+							String strError = response.getErrorCode();
+							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
+								blRes = true;
+							}
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_BACKUP);
+							intent.putExtra("Result", blRes);
+							m_context.sendBroadcast(intent);
+						}
+					}));
+		}
+	}
+
+	//device restore
+	public void restoreDevice(DataValue data){
+		if (!FeatureVersionManager.getInstance().
+				isSupportApi("system", "SetDeviceRestore")) {
+			return;
+		}
+
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blWifiConnected) {
+			String strFile = data.getParamByKey("FileName").toString();
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.deviceRestoreRequest("13.8", strFile,
+							new IHttpFinishListener() {
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							Boolean blRes = false;
+							int nRet = response.getResultCode();
+							String strError = response.getErrorCode();
+							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
+								blRes = true;
+							}
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
+							intent.putExtra("Result", blRes);
+							m_context.sendBroadcast(intent);
+						}
+					}));
 		}
 	}
 }

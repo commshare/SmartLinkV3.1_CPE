@@ -7,7 +7,7 @@ public class DeviceNewVersionInfo extends BaseResult {
 	private int State=2;//0:checking;	1: New version;	2: no new version
 	private String Version = "";
 	@Override
-	protected void clear() {
+	public void clear() {
 		// TODO Auto-generated method stub
 		State = 2;
 		Version = "";

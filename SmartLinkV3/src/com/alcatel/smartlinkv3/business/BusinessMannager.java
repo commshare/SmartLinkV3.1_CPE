@@ -4,11 +4,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import jcifs.dcerpc.msrpc.netdfs;
+
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
+import com.alcatel.smartlinkv3.business.model.SystemInfoModel;
+import com.alcatel.smartlinkv3.business.power.BatteryInfo;
+import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.business.service.DlnaSettings;
 import com.alcatel.smartlinkv3.business.service.FtpSettings;
 import com.alcatel.smartlinkv3.business.service.SambaSettings;
@@ -51,10 +56,14 @@ public class BusinessMannager {
 	private WanManager m_wanManager = null;
 	private WlanManager m_wlanManager = null;
 	private ServiceManager m_serviceManager = null;
+	private PowerManager m_powerManager=null;
+	private LanManager m_lanManager=null;
+	private UpdateManager m_updateManager=null;
 	
 	private String m_strServerAddress = "192.168.1.1";
 	
 	public WifiNetworkReceiver m_wifiNetworkReceiver = null;
+	private SystemInfoModel m_systemInfoModel=null;
 	
 	private static BusinessMannager m_instance;
     public static synchronized   BusinessMannager getInstance()
@@ -85,6 +94,11 @@ public class BusinessMannager {
     	m_wlanManager = new WlanManager(m_context);
     	m_serviceManager = new ServiceManager(m_context);
     	
+    	m_updateManager = new UpdateManager(m_context);
+    	m_lanManager = new LanManager(m_context);
+    	m_powerManager = new PowerManager(m_context);
+    	
+    	m_systemInfoModel = new SystemInfoModel();
     	m_wifiNetworkReceiver = new WifiNetworkReceiver();
     	m_context.registerReceiver(m_wifiNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
@@ -201,6 +215,10 @@ public class BusinessMannager {
 	
 	public String getAppVersion(){
 		return m_systemManager.getAppVersion();
+	}
+	
+	public SystemInfoModel getSystemInfoModel(){
+		return m_systemInfoModel;
 	}
     /********************System method end************************/
     
@@ -328,5 +346,14 @@ public class BusinessMannager {
 	public FtpSettings getFtpSettings() {
 		return m_serviceManager.getFtpSettings();
 	}
-    /********************service manager method end************************/      
+    /********************service manager method end************************/   
+	/*Power manager start*/
+	public BatteryInfo getBatteryInfo(){
+		return m_powerManager.getBatteryInfo();
+	}
+	
+	public PowerSavingModeInfo getPowerSavingModeInfo(){
+		return m_powerManager.getPowerSavingModeInfo();
+	}
+	/*Power manager end***/
 }

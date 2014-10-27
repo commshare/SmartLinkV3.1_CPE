@@ -3,11 +3,14 @@ package com.alcatel.smartlinkv3.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alcatel.smartlinkv3.business.PowerManager;
+import com.alcatel.smartlinkv3.business.LanManager;
 import com.alcatel.smartlinkv3.business.SMSManager;
 import com.alcatel.smartlinkv3.business.ServiceManager;
 import com.alcatel.smartlinkv3.business.SimManager;
 import com.alcatel.smartlinkv3.business.StatisticsManager;
 import com.alcatel.smartlinkv3.business.SystemManager;
+import com.alcatel.smartlinkv3.business.UpdateManager;
 import com.alcatel.smartlinkv3.business.UserManager;
 import com.alcatel.smartlinkv3.business.WanManager;
 import com.alcatel.smartlinkv3.business.WlanManager;
@@ -31,10 +34,23 @@ public class MessageUti {
 	/**************************User message end*********************************************************************************/
 	
 	/**************************System message start*********************************************************************************/
-	public static String SYSTEM_GET_FEATURES_ROLL_REQUSET = "com.alcatel.cpe.business.system.getFeatures";
-	public static String SYSTEM_GET_SYSTEM_INFO_REQUSET = "com.alcatel.cpe.business.system.getsysteminfo";
-	public static String SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET = "com.alcatel.cpe.business.system.getmm100systeminfo";
-	public static String SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET = "com.alcatel.cpe.business.system.getexternalstoragedevice";
+	public static String SYSTEM_GET_FEATURES_ROLL_REQUSET = 
+			"com.alcatel.smartlinkv3.business.system.getFeatures";
+	public static String SYSTEM_GET_SYSTEM_INFO_REQUSET =
+			"com.alcatel.smartlinkv3.business.system.getsysteminfo";
+	public static String SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET =
+			"com.alcatel.cpe.business.system.getmm100systeminfo";
+	public static String SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET = 
+			"com.alcatel.smartlinkv3.business.system.getexternalstoragedevice";
+	
+	public static String SYSTEM_SET_DEVICE_REBOOT=
+			"com.alcatel.smartlinkv3.business.system.setDeviceReboot";
+	public static String SYSTEM_SET_DEVICE_RESET=
+			"com.alcatel.smartlinkv3.business.system.setDeviceReset";
+	public static String SYSTEM_SET_DEVICE_BACKUP=
+			"com.alcatel.smartlinkv3.business.system.setDeviceBackup";
+	public static String SYSTEM_SET_DEVICE_RESTORE=
+			"com.alcatel.smartlinkv3.business.setDeviceRestore";
 	/**************************System message end*********************************************************************************/
 	
 	/**************************Statistics message start*********************************************************************************/
@@ -101,6 +117,32 @@ public class MessageUti {
 	public static String SERVICE_GET_FTP_SETTING_REQUSET = "com.alcatel.cpe.business.service.getftpsetting";
 	/**************************Service message end*********************************************************************************/
 	
+	/**************************LAN message start*******************************************************************************/
+	public static String LAN_GET_LAN_SETTINGS=
+			"com.alcatel.smartlinkv3.business.lan.getLanSettings";
+	public static String LAN_SET_LAN_SETTINGS=
+			"com.alcatel.smartlinkv3.business.lan.setLanSettings";
+	/**************************LAN message end*********************************************************************************/
+	
+	/**************************power message start*******************************************************************************/
+	public static String POWER_GET_BATTERY_STATE=
+			"com.alcatel.smartlinkv3.business.power.getBatteryState";
+	public static String POWER_GET_POWER_SAVING_MODE=
+			"com.alcatel.smartlinkv3.business.power.getPowerSavingMode";
+	public static String POWER_SET_POWER_SAVING_MODE=
+			"com.alcatel.smartlinkv3.business.power.setPowerSavingMode";
+	/**************************power message end*********************************************************************************/
+	
+	/**************************update message start*******************************************************************************/
+	public static String UPDATE_GET_DEVICE_NEW_VERSION=
+			"com.alcatel.smartlinkv3.business.update.getDeviceNewVersion";
+	public static String UPDATE_SET_DEVICE_START_UPDATE=
+			"com.alcatel.smartlinkv3.business.update.setDeviceStartUpdate";
+	public static String UPDATE_GET_DEVICE_UPGRADE_STATE=
+			"com.alcatel.smartlinkv3.business.update.getDeviceUpgradeState";
+	public static String UPDATE_SET_DEVICE_STOP_UPDATE=
+			"com.alcatel.smartlinkv3.business.update_setDeviceStopUpdate";
+	/**************************update message end*********************************************************************************/
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static Map<String, HttpMethodUti> httpMethods = new HashMap<String, HttpMethodUti>();
@@ -108,6 +150,14 @@ public class MessageUti {
 		/********************System method start**********************/
 		httpMethods.put(SYSTEM_GET_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemInfo"));
 		httpMethods.put(SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getMM100SystemInfo"));
+		httpMethods.put(SYSTEM_SET_DEVICE_REBOOT, 
+				new HttpMethodUti(SystemManager.class, "rebootDevice"));
+		httpMethods.put(SYSTEM_SET_DEVICE_RESET, 
+				new HttpMethodUti(SystemManager.class, "resetDevice"));
+		httpMethods.put(SYSTEM_SET_DEVICE_BACKUP, 
+				new HttpMethodUti(SystemManager.class, "backupDevice"));
+		httpMethods.put(SYSTEM_SET_DEVICE_RESTORE, 
+				new HttpMethodUti(SystemManager.class, "restoreDevice"));
 		/********************System method end**********************/
 		
 		/********************User method start**********************/
@@ -168,5 +218,31 @@ public class MessageUti {
 		
 		/********************WLAN method end**********************/
 
+		/**************************LAN message start*******************************************************************************/
+		httpMethods.put(LAN_GET_LAN_SETTINGS,
+				new HttpMethodUti(LanManager.class, "getLanSettingsRequest"));
+		httpMethods.put(LAN_SET_LAN_SETTINGS,
+				new HttpMethodUti(LanManager.class, "setLanSettinsRequest"));
+		/**************************LAN message end*********************************************************************************/
+		
+		/**************************power message start*******************************************************************************/
+		httpMethods.put(POWER_GET_BATTERY_STATE,
+				new HttpMethodUti(PowerManager.class, "getBatteryStateRequest"));
+		httpMethods.put(POWER_GET_POWER_SAVING_MODE,
+				new HttpMethodUti(PowerManager.class, "getPowerSavingModeRequest"));
+		httpMethods.put(POWER_SET_POWER_SAVING_MODE,
+				new HttpMethodUti(PowerManager.class, "setPowerSavingModeRequest"));
+		/**************************power message end*********************************************************************************/
+		
+		/**************************update message start*******************************************************************************/
+		httpMethods.put(UPDATE_GET_DEVICE_NEW_VERSION,
+				new HttpMethodUti(UpdateManager.class, "getDeviceNewVersion"));
+		httpMethods.put(UPDATE_SET_DEVICE_START_UPDATE,
+				new HttpMethodUti(UpdateManager.class, "startUpdate"));
+		httpMethods.put(UPDATE_GET_DEVICE_UPGRADE_STATE,
+				new HttpMethodUti(UpdateManager.class, "getUpgradeState"));
+		httpMethods.put(UPDATE_SET_DEVICE_STOP_UPDATE,
+				new HttpMethodUti(UpdateManager.class, "stopUpdate"));
+		/**************************update message end*********************************************************************************/
 	}
 }

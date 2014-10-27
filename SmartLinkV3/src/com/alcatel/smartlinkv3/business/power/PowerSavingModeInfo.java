@@ -8,7 +8,7 @@ public class PowerSavingModeInfo extends BaseResult {
 	private int SmartMode = ConstValue.DISABLE;//0:disable; 1:enable
 	private int WiFiMode= ConstValue.DISABLE;//0:disable; 1:enable
 	@Override
-	protected void clear() {
+	public void clear() {
 		// TODO Auto-generated method stub
 
 		SmartMode = ConstValue.DISABLE;

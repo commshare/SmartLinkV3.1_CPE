@@ -88,7 +88,7 @@
             android:textColor="@color/color_black" />
 
         <Button
-            android:id="@+id/btn_firmware_check"
+            android:id="@+id/btn_app_upgrade"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_upgrade_center_position_down"

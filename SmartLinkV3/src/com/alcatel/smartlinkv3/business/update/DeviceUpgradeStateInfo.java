@@ -14,7 +14,7 @@ public class DeviceUpgradeStateInfo extends BaseResult {
 	 */
 	private int Process=1;
 	@Override
-	protected void clear() {
+	public void clear() {
 		// TODO Auto-generated method stub
 		Status=0;
 		Process=1;

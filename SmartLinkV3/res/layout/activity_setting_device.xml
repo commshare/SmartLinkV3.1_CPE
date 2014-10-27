@@ -46,7 +46,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
-                    android:text="ROOS.00"
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -75,7 +74,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
-                    android:text="S.1.8"
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -104,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
-                    android:text="Y858-XXXX"
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -133,7 +130,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
-                    android:text="832469872324567"
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -162,7 +158,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
-                    android:text="00-de-ad-be-ed-00"
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -191,7 +186,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
-                    android:text="192.168.1.1"
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -219,7 +213,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
-                    android:text="255.255.255.0"
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>

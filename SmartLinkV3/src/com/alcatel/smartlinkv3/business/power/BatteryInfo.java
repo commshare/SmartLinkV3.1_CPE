@@ -14,7 +14,7 @@ public class BatteryInfo extends BaseResult {
 	private int ChargeState = ConstValue.CHARGE_STATE_REMOVED;
 	private int BatteryLevel= 0;//BatteryLevel  (Min: 1 Max:100)
 	@Override
-	protected void clear() {
+	public void clear() {
 		// TODO Auto-generated method stub
 		ChargeState = ConstValue.CHARGE_STATE_REMOVED;
 		BatteryLevel = 0;
