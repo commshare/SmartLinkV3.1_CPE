@@ -49,7 +49,7 @@ public class LanManager extends BaseManager {
 
 	//get Lan information
 	public void getLaninfo(DataValue dataValue){
-		if(!FeatureVersionManager.getInstance().isSupportApi("Lan", "GetLanSettings")){
+		if(!FeatureVersionManager.getInstance().isSupportApi("LAN", "GetLanSettings")){
 			return;
 		}
 

@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
@@ -29,14 +30,17 @@ public class WlanManager extends BaseManager {
 
 	private Timer m_rollTimer = new Timer();
 	GetHostNumTask m_getHostNumTask = null;
-	
+
 	private String m_strWpsPin = new String();
-	
+
+	private WlanSupportMode m_wlanSupportMode=WlanSupportMode.Mode2Point4G;
+
 
 	@Override
 	protected void clearData() {
 		m_nHostNum = 0;
 		m_settings.clear();
+		m_wlanSupportMode=WlanSupportMode.Mode2Point4G;
 	}
 
 	@Override
@@ -56,7 +60,8 @@ public class WlanManager extends BaseManager {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
-					startGetHostNumTask();
+				startGetHostNumTask();
+				getWlanSupportMode(null);
 			}
 		}
 	}
@@ -75,35 +80,38 @@ public class WlanManager extends BaseManager {
 	public String getWifiPwd() {
 		return m_strWifiPwd;
 	}
-	
+
+	public WlanSupportMode getCurSupportWlanMode(){
+		return m_wlanSupportMode;
+	}
 	public SecurityMode getSecurityMode() {
 		return SecurityMode.build(m_settings.SecurityMode);
 	}
-	
+
 	public WPAEncryption getWPAEncryption() {
 		return WPAEncryption.build(m_settings.WpaType);
 	}
-	
+
 	public WEPEncryption getWEPEncryption() {
 		return WEPEncryption.build(m_settings.WepType);
 	}
-	
+
 	public WModeEnum getWMode() {
 		return WModeEnum.build(m_settings.WMode);
 	}
-	
+
 	public WlanFrequency getWlanFrequency() {
-		return WlanFrequency.build(m_settings.WlanFrequency);
+		return WlanFrequency.build(m_settings.WlanAPMode);
 	}
 
 	private void getInfoByWansetting() {
-		WlanFrequency wf = WlanFrequency.build(m_settings.WlanFrequency);
+		WlanFrequency wf = WlanFrequency.build(m_settings.WlanAPMode);
 		switch (wf) {
 		case Frequency_24GHZ:
 			m_strSsid = m_settings.Ssid;
 			break;
 		case Frequency_5GHZ:
-			m_strSsid = m_settings.Ssid5G;
+			m_strSsid = m_settings.Ssid_5G;
 			break;
 
 		default:
@@ -156,36 +164,36 @@ public class WlanManager extends BaseManager {
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpWlanSetting.GetWlanSetting("5.4",
 						new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
+					@Override
+					public void onHttpRequestFinish(
+							BaseResponse response) {
 
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
-										m_settings = response.getModelResult();
+						String strErrcode = new String();
+						int ret = response.getResultCode();
+						if (ret == BaseResponse.RESPONSE_OK) {
+							strErrcode = response.getErrorCode();
+							if (strErrcode.length() == 0) {
+								m_settings = response.getModelResult();
 
-										getInfoByWansetting();
+								getInfoByWansetting();
 
-									} else {
+							} else {
 
-									}
-								} else {
-									// Log
-								}
-
-								Intent megIntent = new Intent(
-										MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
 							}
-						}));
+						} else {
+							// Log
+						}
+
+						Intent megIntent = new Intent(
+								MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
+						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+								ret);
+						megIntent.putExtra(
+								MessageUti.RESPONSE_ERROR_CODE,
+								strErrcode);
+						m_context.sendBroadcast(megIntent);
+					}
+				}));
 	}
 
 	// set wlan setting
@@ -213,79 +221,79 @@ public class WlanManager extends BaseManager {
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpWlanSetting.SetWlanSetting("5.5", settings,
 						new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
+					@Override
+					public void onHttpRequestFinish(
+							BaseResponse response) {
 
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
-										m_settings.clone(settings);
-										getInfoByWansetting();
-									} else {
+						String strErrcode = new String();
+						int ret = response.getResultCode();
+						if (ret == BaseResponse.RESPONSE_OK) {
+							strErrcode = response.getErrorCode();
+							if (strErrcode.length() == 0) {
+								m_settings.clone(settings);
+								getInfoByWansetting();
+							} else {
 
-									}
-								} else {
-									// Log
-								}
-
-								Intent megIntent = new Intent(
-										MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
 							}
-						}));
+						} else {
+							// Log
+						}
+
+						Intent megIntent = new Intent(
+								MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
+						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+								ret);
+						megIntent.putExtra(
+								MessageUti.RESPONSE_ERROR_CODE,
+								strErrcode);
+						m_context.sendBroadcast(megIntent);
+					}
+				}));
 	}
-	
-	
+
+
 	// Set WPS Pin
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void SetWPSPin(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
 				"SetWPSPin") != true)
 			return;
-		
+
 		String m_strPin = (String) data.getParamByKey("WpsPin");
 
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpWlanSetting.SetWPSPin("5.6",m_strPin,
 						new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
+					@Override
+					public void onHttpRequestFinish(
+							BaseResponse response) {
 
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
-										m_strWpsPin = response.getModelResult();
+						String strErrcode = new String();
+						int ret = response.getResultCode();
+						if (ret == BaseResponse.RESPONSE_OK) {
+							strErrcode = response.getErrorCode();
+							if (strErrcode.length() == 0) {
+								m_strWpsPin = response.getModelResult();
 
-									} else {
+							} else {
 
-									}
-								} else {
-									// Log
-								}
-
-								Intent megIntent = new Intent(
-										MessageUti.WLAN_SET_WPS_PIN_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
 							}
-						}));
+						} else {
+							// Log
+						}
+
+						Intent megIntent = new Intent(
+								MessageUti.WLAN_SET_WPS_PIN_REQUSET);
+						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+								ret);
+						megIntent.putExtra(
+								MessageUti.RESPONSE_ERROR_CODE,
+								strErrcode);
+						m_context.sendBroadcast(megIntent);
+					}
+				}));
 	}
-	
+
 	// Set WPS Pbc
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void SetWPSPbc(DataValue data) {
@@ -296,32 +304,59 @@ public class WlanManager extends BaseManager {
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpWlanSetting.SetWPSPbc("5.7",
 						new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
+					@Override
+					public void onHttpRequestFinish(
+							BaseResponse response) {
 
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
+						String strErrcode = new String();
+						int ret = response.getResultCode();
+						if (ret == BaseResponse.RESPONSE_OK) {
+							strErrcode = response.getErrorCode();
+							if (strErrcode.length() == 0) {
 
-									} else {
+							} else {
 
-									}
-								} else {
-									// Log
-								}
-
-								Intent megIntent = new Intent(
-										MessageUti.WLAN_SET_WPS_PBC_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
 							}
-						}));
+						} else {
+							// Log
+						}
+
+						Intent megIntent = new Intent(
+								MessageUti.WLAN_SET_WPS_PBC_REQUSET);
+						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+								ret);
+						megIntent.putExtra(
+								MessageUti.RESPONSE_ERROR_CODE,
+								strErrcode);
+						m_context.sendBroadcast(megIntent);
+					}
+				}));
+	}
+
+	//get wlan support mode
+	public void getWlanSupportMode(DataValue data){
+		if (!FeatureVersionManager.getInstance().
+				isSupportApi("Wlan", "GetWlanSupportMode")) {
+			return;
+		}
+
+		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blCPEWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpWlanSetting.getWlanSupportModeRequest("5.8", 
+							new IHttpFinishListener() {
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							int nRes = response.getResultCode();
+							String strErr = response.getErrorMessage();
+							if (BaseResponse.RESPONSE_OK == nRes &&
+									0 == strErr.length()) {
+								m_wlanSupportMode = response.getModelResult();
+							}
+						}
+					}));
+		}
 	}
 }

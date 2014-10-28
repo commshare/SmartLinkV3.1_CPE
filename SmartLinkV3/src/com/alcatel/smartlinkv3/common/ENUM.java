@@ -396,15 +396,15 @@ public class ENUM {
 	 * WlanFrequency, 0:Disable; 1:2.4GHz; 2: 5GHz
 	 */
 	public static enum WlanFrequency {
-		Disable, Frequency_24GHZ, Frequency_5GHZ;
+		Frequency_24GHZ, Frequency_5GHZ, Frequency_2point4Gand5GHZ;
 
 		public static WlanFrequency build(int nType) {
 			if (nType == 1) {
-				return Frequency_24GHZ;
-			} else if (nType == 2) {
 				return Frequency_5GHZ;
+			} else if (nType == 2) {
+				return Frequency_2point4Gand5GHZ;
 			} else
-				return Disable;
+				return Frequency_24GHZ;
 		}
 	}
 
@@ -562,6 +562,25 @@ public class ENUM {
 				return 2;
 			} else
 				return 0;
+		}
+	}
+	
+	public static enum WlanSupportMode{
+		Mode2Point4G, Mode5G, Mode2Point4GAnd5G;
+		
+		public static WlanSupportMode build(int nMode){
+			switch (nMode) {
+			case 0:
+				return Mode2Point4G;
+			case 1:
+				return Mode5G;
+			case 2:
+				return Mode2Point4GAnd5G;
+
+			default:
+				return Mode2Point4G;
+			}
+			
 		}
 	}
 }

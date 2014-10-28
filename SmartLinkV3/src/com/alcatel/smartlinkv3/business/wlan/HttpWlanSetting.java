@@ -1,5 +1,7 @@
 package com.alcatel.smartlinkv3.business.wlan;
 
+import java.lang.reflect.Type;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +9,7 @@ import android.R.string;
 
 import com.alcatel.smartlinkv3.business.lan.LanInfo;
 import com.alcatel.smartlinkv3.business.lan.HttpLan.getLanSettingsResponse;
+import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -84,28 +87,34 @@ public class HttpWlanSetting {
 				m_requestParamJson.put(ConstValue.JSON_RPC,
 						ConstValue.JSON_RPC_VERSION);
 				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"Wlan.SetWlanSettings");
+						"SetWlanSettings");
 				
 				JSONObject settings = new JSONObject();
-				settings.put("WlanFrequency", m_result.WlanFrequency);
-				settings.put("Ssid5G", m_result.SsidHidden5G);
-				settings.put("Ssid", m_result.Ssid);
-				settings.put("SsidHidden5G", m_result.SsidHidden5G);
-				settings.put("SsidHidden", m_result.SsidHidden);
+				settings.put("WlanAPMode", m_result.WlanAPMode);
 				settings.put("CountryCode", m_result.CountryCode);
+				settings.put("Ssid", m_result.Ssid);
+				settings.put("SsidHidden", m_result.SsidHidden);
 				settings.put("SecurityMode", m_result.SecurityMode);
 				settings.put("WpaType", m_result.WpaType);				
 				settings.put("WpaKey", m_result.WpaKey);
 				settings.put("WepType", m_result.WepType);
 				settings.put("WepKey", m_result.WepKey);
 				settings.put("Channel", m_result.Channel);
-				settings.put("ApIsolation5G", m_result.ApIsolation5G);
 				settings.put("ApIsolation", m_result.ApIsolation);
-				settings.put("Bandwidth", m_result.Bandwidth);
 				settings.put("WMode", m_result.WMode);
-				settings.put("NumOfHosts", m_result.NumOfHosts);
-				settings.put("MaxNumOfHosts", m_result.MaxNumOfHosts);
+				settings.put("max_numsta", m_result.max_numsta);
 				
+				settings.put("Ssid_5G", m_result.Ssid_5G);
+				settings.put("SsidHidden_5G", m_result.SsidHidden_5G);
+				settings.put("SecurityMode_5G", m_result.SecurityMode_5G);
+				settings.put("WpaType_5G", m_result.WpaType_5G);				
+				settings.put("WpaKey_5G", m_result.WpaKey_5G);
+				settings.put("WepType_5G", m_result.WepType_5G);
+				settings.put("WepKey_5G", m_result.WepKey_5G);
+				settings.put("Channel_5G", m_result.Channel_5G);
+				settings.put("ApIsolation_5G", m_result.ApIsolation_5G);
+				settings.put("WMode_5G", m_result.WMode_5G);
+				settings.put("max_numsta_5G", m_result.max_numsta_5G);
 				
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
@@ -258,4 +267,65 @@ public class HttpWlanSetting {
              return null;
         }
     }
+	
+	/*get Wlan support mode start*/
+	public static class getWlanSupportModeRequest extends BaseRequest{
+
+		public getWlanSupportModeRequest(String strID, IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strID;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"GetWlanSupportMode");
+
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, null);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new getWlanSupportModeResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class getWlanSupportModeResponse extends BaseResponse{
+
+		private WlanSupportMode mode=WlanSupportMode.Mode2Point4G;
+		public getWlanSupportModeResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			Gson gson= new Gson();
+			int nMode = gson.fromJson(strJsonResult, Integer.class);
+			mode = WlanSupportMode.build(nMode);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public WlanSupportMode getModelResult() {
+			// TODO Auto-generated method stub
+			return mode;
+		}
+		
+	}
+	/*get Wlan support mode end***/
 }
