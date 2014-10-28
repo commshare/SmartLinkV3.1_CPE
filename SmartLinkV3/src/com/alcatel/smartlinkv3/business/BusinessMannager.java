@@ -22,6 +22,7 @@ import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
+import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
@@ -220,13 +221,13 @@ public class BusinessMannager {
 	public SystemInfoModel getSystemInfoModel(){
 		return m_systemInfoModel;
 	}
+	
+	public SystemStatus getSystemStatus(){
+		return m_systemManager.getSystemStatus();
+	}
     /********************System method end************************/
     
     /********************User manager Data start**********************/
-    public String getLoginString(){
-    	return m_userManager.getLoginString();
-    }
-    
 	public UserLoginStatus getLoginStatus() {
 		return m_userManager.getLoginStatus();
 	}	

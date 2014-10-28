@@ -10,13 +10,13 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 
 public class HttpChangePinAndState {
 	
-/******************** ChangePin  **************************************************************************************/	
-	public static class ChangePin extends BaseRequest
+/******************** ChangePinCode  **************************************************************************************/	
+	public static class ChangePinCode extends BaseRequest
     {	
 		private String m_strNewPin = new String();
 		private String m_strCurrentPin = new String();
 		
-        public ChangePin(String strId,String strNewPin,String strCurrentPin,IHttpFinishListener callback) 
+        public ChangePinCode(String strId,String strNewPin,String strCurrentPin,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strId = strId;
@@ -46,15 +46,15 @@ public class HttpChangePinAndState {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new ChangePinResponse(m_finsishCallback);
+            return new ChangePinCodeResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class ChangePinResponse extends BaseResponse
+	public static class ChangePinCodeResponse extends BaseResponse
     {
         
-        public ChangePinResponse(IHttpFinishListener callback) 
+        public ChangePinCodeResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }

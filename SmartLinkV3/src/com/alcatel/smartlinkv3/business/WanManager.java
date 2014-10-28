@@ -91,7 +91,7 @@ public class WanManager extends BaseManager {
 	class GetConnectStatusTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState("8.1", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState("3.1", new IHttpFinishListener() {           
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -123,7 +123,7 @@ public class WanManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("WanConnection", "Connect") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.Connect("8.2", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.Connect("3.2", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -153,7 +153,7 @@ public class WanManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("WanConnection", "DisConnect") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.DisConnect("8.3", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.DisConnect("3.3", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   

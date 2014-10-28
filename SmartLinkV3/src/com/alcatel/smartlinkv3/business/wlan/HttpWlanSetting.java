@@ -3,6 +3,10 @@ package com.alcatel.smartlinkv3.business.wlan;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.string;
+
+import com.alcatel.smartlinkv3.business.lan.LanInfo;
+import com.alcatel.smartlinkv3.business.lan.HttpLan.getLanSettingsResponse;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -137,4 +141,119 @@ public class HttpWlanSetting {
 			return null;
 		}	
 	}	
+	
+	
+	
+	/*Set WPS Pin*/
+	public static class SetWPSPin extends BaseRequest{
+
+		public SetWPSPin(String strId, IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"SetWPSPin");
+
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, null);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new SetWPSPinResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class SetWPSPinResponse extends BaseResponse{
+
+		private string WpsPinString =null;
+		public SetWPSPinResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			Gson gson = new Gson();
+			WpsPinString = gson.fromJson(strJsonResult, string.class);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public string getModelResult() {
+			// TODO Auto-generated method stub
+			return WpsPinString;
+		}
+		
+	}
+	
+	/*Setb WPS Pbc*/
+	public static class SetWPSPbc extends BaseRequest{
+
+		public SetWPSPbc(String strId, IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"SetWPSPbc");
+
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, null);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new SetWPSPbcResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class SetWPSPbcResponse extends BaseResponse
+    {   
+        public SetWPSPbcResponse(IHttpFinishListener callback) 
+        {
+            super(callback);            
+        }
+
+        @Override
+        protected void parseContent(String strJsonResult) {
+        	
+        }
+
+        @Override
+        public <T> T getModelResult() 
+        {
+             return null;
+        }
+    }
 }

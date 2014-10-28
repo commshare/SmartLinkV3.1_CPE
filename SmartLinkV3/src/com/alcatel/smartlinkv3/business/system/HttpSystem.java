@@ -84,7 +84,7 @@ public class HttpSystem {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "System.GetSystemInfo");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSystemInfo");
 
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
@@ -107,6 +107,62 @@ public class HttpSystem {
 		private SystemInfo m_systemInfo;
         
         public GetSystemInfoResponse(IHttpFinishListener callback) 
+        {
+            super(callback);            
+        }
+
+        @Override
+        protected void parseContent(String strJsonResult) 
+        {
+        	Gson gson = new Gson();
+        	m_systemInfo = gson.fromJson(strJsonResult, SystemInfo.class);
+        }
+
+        @SuppressWarnings("unchecked")
+		@Override
+        public SystemInfo getModelResult() 
+        {
+             return m_systemInfo;
+        }
+    }
+	
+	/******************** GetSystemStatus  **************************************************************************************/
+	public static class GetSystemStatus extends BaseRequest
+    {	
+        public GetSystemStatus(String strId,IHttpFinishListener callback) 
+        {
+        	super(callback);  
+        	m_strId = strId;
+        }
+
+        @Override
+        protected void buildHttpParamJson() 
+        {
+        	try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSystemStatus");
+
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+        	} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
+        @Override
+        public BaseResponse createResponseObject() 
+        {            
+            return new GetSystemStatusResponse(m_finsishCallback);
+        }
+        
+    }
+	
+	public static class GetSystemStatusResponse extends BaseResponse
+    {
+		private SystemInfo m_systemInfo;
+        
+        public GetSystemStatusResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }

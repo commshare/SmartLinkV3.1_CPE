@@ -68,10 +68,10 @@ public class HttpUsageHistory {
         }
     }
 	
-	/******************** ClearAllRecords  **************************************************************************************/	
-	public static class ClearAllRecords extends BaseRequest
+	/******************** SetUsageRecordClear  **************************************************************************************/	
+	public static class SetUsageRecordClear extends BaseRequest
     {	
-        public ClearAllRecords(String strId,IHttpFinishListener callback) 
+        public SetUsageRecordClear(String strId,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strId = strId;
@@ -95,14 +95,14 @@ public class HttpUsageHistory {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new ClearAllRecordsResponse(m_finsishCallback);
+            return new SetUsageRecordClearResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class ClearAllRecordsResponse extends BaseResponse
+	public static class SetUsageRecordClearResponse extends BaseResponse
     {   
-        public ClearAllRecordsResponse(IHttpFinishListener callback) 
+        public SetUsageRecordClearResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }

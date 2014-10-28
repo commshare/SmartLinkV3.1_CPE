@@ -11,10 +11,10 @@ import com.google.gson.Gson;
 
 public class HttpAutoEnterPinState {
 	
-/******************** GetAutoEnterPinState  **************************************************************************************/	
-	public static class GetAutoEnterPinState extends BaseRequest
+/******************** GetAutoValidatePinState  **************************************************************************************/	
+	public static class GetAutoValidatePinState extends BaseRequest
     {	
-        public GetAutoEnterPinState(String strId,IHttpFinishListener callback) 
+        public GetAutoValidatePinState(String strId,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strId = strId;
@@ -38,16 +38,16 @@ public class HttpAutoEnterPinState {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetAutoEnterPinStateResponse(m_finsishCallback);
+            return new GetAutoValidatePinStateResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class GetAutoEnterPinStateResponse extends BaseResponse
+	public static class GetAutoValidatePinStateResponse extends BaseResponse
     {
 		AutoEnterPinStateResult m_autoEnterPinState;
         
-        public GetAutoEnterPinStateResponse(IHttpFinishListener callback) 
+        public GetAutoValidatePinStateResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }
@@ -65,13 +65,13 @@ public class HttpAutoEnterPinState {
         }
     }
 	
-	/******************** SetAutoEnterPinState  **************************************************************************************/	
-	public static class SetAutoEnterPinState extends BaseRequest
+	/******************** ChangePinState  **************************************************************************************/	
+	public static class ChangePinState extends BaseRequest
     {		
 		private String m_strPin = new String();
 		private int m_nState = 0;
 		
-        public SetAutoEnterPinState(String strId,int nState,String strPin,IHttpFinishListener callback) 
+        public ChangePinState(String strId,int nState,String strPin,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strId = strId;
@@ -101,15 +101,15 @@ public class HttpAutoEnterPinState {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new SetAutoEnterPinStateResponse(m_finsishCallback);
+            return new ChangePinStateResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class SetAutoEnterPinStateResponse extends BaseResponse
+	public static class ChangePinStateResponse extends BaseResponse
     {
         
-        public SetAutoEnterPinStateResponse(IHttpFinishListener callback) 
+        public ChangePinStateResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }

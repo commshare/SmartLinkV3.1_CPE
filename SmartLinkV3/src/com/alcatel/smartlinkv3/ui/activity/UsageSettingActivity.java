@@ -77,7 +77,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 
 				if (nResult == 0 && strErrorCode.length() == 0) {
+					updateUI();
 				}else{
+					
 				}
 			}else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)
 					|| intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)
@@ -121,6 +123,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
+					m_bIsTimeLimitEdit = false;
 					updateUI();
 				}
 			}
@@ -197,7 +200,6 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		
 		m_usageAutoDisconnectBtn = (Button) this.findViewById(R.id.enable_auto_disconnected_btn);
 		m_usageAutoDisconnectBtn.setOnClickListener(this);
-		
 		
 	}
 

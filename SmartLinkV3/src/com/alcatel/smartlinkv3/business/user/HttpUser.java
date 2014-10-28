@@ -56,7 +56,6 @@ public class HttpUser {
 	
 	public static class UserLoginResponse extends BaseResponse
     {
-		private LoginTokens m_loginTokens;
         
         public UserLoginResponse(IHttpFinishListener callback) 
         {
@@ -64,17 +63,13 @@ public class HttpUser {
         }
 
         @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_loginTokens = gson.fromJson(strJsonResult, LoginTokens.class);
-        }
+		protected void parseContent(String strJsonResult) {			
+		}
 
-        @Override
-        public LoginTokens getModelResult() 
-        {
-             return m_loginTokens;
-        }
+		@Override
+		public <T> T getModelResult() {		
+			return null;
+		}
     }
 /********************  Logout  **************************************************************************************/	
 	public static class UserLogout extends BaseRequest
@@ -110,7 +105,6 @@ public class HttpUser {
 	
 	public static class UserLogoutResponse extends BaseResponse
     {
-		private LogoutResult m_logoutResult;
         
         public UserLogoutResponse(IHttpFinishListener callback) 
         {
@@ -118,17 +112,13 @@ public class HttpUser {
         }
 
         @Override
-        protected void parseContent(String strJsonResult)  
-        {
-        	Gson gson = new Gson();
-        	m_logoutResult = gson.fromJson(strJsonResult, LogoutResult.class);
-        }
+		protected void parseContent(String strJsonResult) {			
+		}
 
-        @Override
-        public LogoutResult getModelResult() 
-        {
-             return m_logoutResult;
-        }
+		@Override
+		public <T> T getModelResult() {		
+			return null;
+		} 
     }
 /********************  GetLoginState  **************************************************************************************/
 	public static class GetLoginState extends BaseRequest
@@ -187,14 +177,12 @@ public class HttpUser {
 	
 	/******************** UpdateLoginTime  not  defined**************************************************************************************/	
 	
-	public static class UpdateLoginTime extends BaseRequest
-    {	
-		String m_sysauth = new String();		
+	public static class HeartBeat extends BaseRequest
+    {			
 		
-        public UpdateLoginTime(String sysauth, String strId, IHttpFinishListener callback) 
+        public HeartBeat(String strId, IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_sysauth = sysauth;      
+        	super(callback);      
         	m_strId = strId;
         }
 
@@ -203,12 +191,10 @@ public class HttpUser {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "User.UpdateLoginTime");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "HeartBeat");
+    
 	        	
-	        	JSONObject userInfo = new JSONObject();
-	        	userInfo.put("sysauth", m_sysauth);      
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
         	} catch (JSONException e) {			
 				e.printStackTrace();
@@ -218,15 +204,15 @@ public class HttpUser {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new UpdateLoginTimeResponse(m_finsishCallback);
+            return new HeartBeatResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class UpdateLoginTimeResponse extends BaseResponse
+	public static class HeartBeatResponse extends BaseResponse
     {	
         
-        public UpdateLoginTimeResponse(IHttpFinishListener callback) 
+        public HeartBeatResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }

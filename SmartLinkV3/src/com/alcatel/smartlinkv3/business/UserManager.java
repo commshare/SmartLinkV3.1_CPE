@@ -6,7 +6,6 @@ import java.util.TimerTask;
 import com.alcatel.smartlinkv3.business.user.HttpUser;
 import com.alcatel.smartlinkv3.business.user.LoginStateResult;
 import com.alcatel.smartlinkv3.business.user.LoginTokens;
-import com.alcatel.smartlinkv3.business.user.LogoutResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
@@ -70,13 +69,6 @@ public class UserManager extends BaseManager {
 		super(context);	
     }
 	
-	public String getUserName() {
-		return m_strUserName;
-	}
-	
-	public String getLoginString() {
-		return m_strLogin;
-	}
 		
 	public UserLoginStatus getLoginStatus() {
 		return m_loginStatus;
@@ -99,9 +91,7 @@ public class UserManager extends BaseManager {
                 int ret = response.getResultCode();
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		LoginTokens loginTokens = response.getModelResult();
-                		m_strLogin = loginTokens.getLogin();   
+                	if(strErrcode.length() == 0) { 
                 		startUpdateLoginTimeTask();
                 		m_loginStatus = UserLoginStatus.selfLogined;
                 		
@@ -131,7 +121,7 @@ public class UserManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "Logout") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.UserLogout("1.3", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.UserLogout("1.2", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {              	
@@ -144,9 +134,6 @@ public class UserManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		LogoutResult logoutResult = response.getModelResult();
-                		m_strLogin = "";
-                		m_strUserName = logoutResult.getUserName();
                 		m_loginStatus = UserLoginStatus.Logout;
                 	
                 	}else{
@@ -186,7 +173,7 @@ public class UserManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "GetLoginState") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.GetLoginState("1.2", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.GetLoginState("1.3", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -211,9 +198,7 @@ public class UserManager extends BaseManager {
 	class UpdateLoginTimeTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	if(m_strLogin != null && m_strLogin.length() > 0)
-        	{
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.UpdateLoginTime(m_strLogin, "1.5", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.HeartBeat("1.5", new IHttpFinishListener() {           
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 { 
@@ -232,8 +217,7 @@ public class UserManager extends BaseManager {
                     
                 }               	
             }));
-        	}
-        }         
+        	}        
 	}	
 	
 	private void startUpdateLoginTimeTask()

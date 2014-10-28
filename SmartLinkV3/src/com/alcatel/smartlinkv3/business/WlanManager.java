@@ -30,6 +30,8 @@ public class WlanManager extends BaseManager {
 	private Timer m_rollTimer = new Timer();
 	GetHostNumTask m_getHostNumTask = null;
 	
+	private String m_strWpsPin = new String();
+	
 
 	@Override
 	protected void clearData() {
@@ -146,7 +148,7 @@ public class WlanManager extends BaseManager {
 		@Override
 		public void run() {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpWlanSetting.GetWlanSetting("5.3",
+					new HttpWlanSetting.GetWlanSetting("5.4",
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -193,7 +195,7 @@ public class WlanManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.GetWlanSetting("5.3",
+				new HttpWlanSetting.GetWlanSetting("5.4",
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -250,7 +252,7 @@ public class WlanManager extends BaseManager {
 			}
 		}
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.SetWlanSetting("5.4", settings,
+				new HttpWlanSetting.SetWlanSetting("5.5", settings,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -272,6 +274,86 @@ public class WlanManager extends BaseManager {
 
 								Intent megIntent = new Intent(
 										MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
+								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+										ret);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_ERROR_CODE,
+										strErrcode);
+								m_context.sendBroadcast(megIntent);
+							}
+						}));
+	}
+	
+	
+	// Set WPS Pin
+	// //////////////////////////////////////////////////////////////////////////////////////////
+	public void SetWPSPin(DataValue data) {
+		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
+				"SetWPSPin") != true)
+			return;
+
+		HttpRequestManager.GetInstance().sendPostRequest(
+				new HttpWlanSetting.SetWPSPin("5.6",
+						new IHttpFinishListener() {
+							@Override
+							public void onHttpRequestFinish(
+									BaseResponse response) {
+
+								String strErrcode = new String();
+								int ret = response.getResultCode();
+								if (ret == BaseResponse.RESPONSE_OK) {
+									strErrcode = response.getErrorCode();
+									if (strErrcode.length() == 0) {
+										m_strWpsPin = response.getModelResult();
+
+									} else {
+
+									}
+								} else {
+									// Log
+								}
+
+								Intent megIntent = new Intent(
+										MessageUti.WLAN_SET_WPS_PIN_REQUSET);
+								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+										ret);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_ERROR_CODE,
+										strErrcode);
+								m_context.sendBroadcast(megIntent);
+							}
+						}));
+	}
+	
+	// Set WPS Pbc
+	// //////////////////////////////////////////////////////////////////////////////////////////
+	public void SetWPSPbc(DataValue data) {
+		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
+				"SetWPSPbc") != true)
+			return;
+
+		HttpRequestManager.GetInstance().sendPostRequest(
+				new HttpWlanSetting.SetWPSPbc("5.6",
+						new IHttpFinishListener() {
+							@Override
+							public void onHttpRequestFinish(
+									BaseResponse response) {
+
+								String strErrcode = new String();
+								int ret = response.getResultCode();
+								if (ret == BaseResponse.RESPONSE_OK) {
+									strErrcode = response.getErrorCode();
+									if (strErrcode.length() == 0) {
+
+									} else {
+
+									}
+								} else {
+									// Log
+								}
+
+								Intent megIntent = new Intent(
+										MessageUti.WLAN_SET_WPS_PBC_REQUSET);
 								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
 										ret);
 								megIntent.putExtra(

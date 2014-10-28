@@ -9,6 +9,7 @@ import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
 import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
+import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -27,6 +28,7 @@ public class SystemManager extends BaseManager {
 	private Features m_features = new Features();
 	private SystemInfo m_systemInfo = new SystemInfo();
 	private StorageList m_storageList = new StorageList();
+	private SystemStatus m_systemStatus = new SystemStatus();
 
 	private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
 	// this device
@@ -50,6 +52,10 @@ public class SystemManager extends BaseManager {
 	public SystemInfo getSystemInfoModel() {
 		return m_systemInfo;
 	}
+	
+	public SystemStatus getSystemStatus() {
+		return m_systemStatus;
+	}
 
 	public StorageList getStorageList() {
 		return m_storageList;
@@ -67,6 +73,7 @@ public class SystemManager extends BaseManager {
 	protected void clearData() {	
 		m_features.clear();
 		m_systemInfo.clear();
+		m_systemInfo.clear();
 		m_storageList.clear();
 	}
 
@@ -82,6 +89,7 @@ public class SystemManager extends BaseManager {
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
 				getSystemInfo(null);
+				getSystemStatus(null);
 
 				if (FeatureVersionManager.getInstance().isSupportApi("System",
 						"GetExternalStorageDevice")) {
@@ -91,6 +99,7 @@ public class SystemManager extends BaseManager {
 				stopRollTimer();
 				m_storageList.clear();
 				m_systemInfo.clear();
+				m_systemStatus.clear();
 				BusinessMannager.getInstance().getSystemInfoModel().clear();
 			}
 		}
@@ -217,7 +226,7 @@ public class SystemManager extends BaseManager {
 				.getCPEWifiConnected();
 		if (bCPEWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.GetSystemInfo("2.1",
+					new HttpSystem.GetSystemInfo("13.1",
 							new IHttpFinishListener() {
 						@Override
 						public void onHttpRequestFinish(
@@ -258,6 +267,51 @@ public class SystemManager extends BaseManager {
 					}));
 		}
 	}
+	
+	// Get System Status
+		// //////////////////////////////////////////////////////////////////////////////////////////
+		public void getSystemStatus(DataValue data) {
+			if (FeatureVersionManager.getInstance().isSupportApi("System",
+					"GetSystemStatus") != true)
+				return;
+
+			boolean bCPEWifiConnected = DataConnectManager.getInstance()
+					.getCPEWifiConnected();
+			if (bCPEWifiConnected) {
+				HttpRequestManager.GetInstance().sendPostRequest(
+						new HttpSystem.GetSystemStatus("13.4",
+								new IHttpFinishListener() {
+							@Override
+							public void onHttpRequestFinish(
+									BaseResponse response) {
+								int ret = response.getResultCode();
+								String strErrcode = response.getErrorCode();
+								if (ret == BaseResponse.RESPONSE_OK
+										&& strErrcode.length() == 0) {
+									m_systemStatus = response
+											.getModelResult();
+								} else {
+									new Handler().postDelayed(
+											new Runnable() {
+												@Override
+												public void run() {
+													getSystemInfo(null);
+												}
+											}, 1000);
+								}
+
+								Intent megIntent = new Intent(
+										MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_RESULT, ret);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_ERROR_CODE,
+										strErrcode);
+								m_context.sendBroadcast(megIntent);
+							}
+						}));
+			}
+		}
 
 	// GetExternalStorageDevice
 	// //////////////////////////////////////////////////////////////////////////////////////////

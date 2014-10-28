@@ -38,6 +38,8 @@ public class MessageUti {
 			"com.alcatel.smartlinkv3.business.system.getFeatures";
 	public static String SYSTEM_GET_SYSTEM_INFO_REQUSET =
 			"com.alcatel.smartlinkv3.business.system.getsysteminfo";
+	public static String SYSTEM_GET_SYSTEM_STATUS_REQUSET =
+			"com.alcatel.smartlinkv3.business.system.getsystemstatus";
 	public static String SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET =
 			"com.alcatel.cpe.business.system.getmm100systeminfo";
 	public static String SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET = 
@@ -104,6 +106,9 @@ public class MessageUti {
 	public static String WLAN_GET_MM100_REMOTE_AP_REQUSET = "com.alcatel.cpe.business.wlan.getmm100remoteap";
 	public static String WLAN_SELECT_MM100_ACCESS_POINT_REQUSET = "com.alcatel.cpe.business.wlan.selectmm100accesspoint";
 	public static String WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET = "com.alcatel.cpe.business.wlan.dissconnectmm100clientpoint";
+	
+	public static String WLAN_SET_WPS_PIN_REQUSET = "com.alcatel.cpe.business.wlan.SetWPSPin";
+	public static String WLAN_SET_WPS_PBC_REQUSET = "com.alcatel.cpe.business.wlan.SetWPSPbc";
 	/**************************Wlan message end*********************************************************************************/
 	
 	/**************************Service message start*********************************************************************************/
@@ -149,6 +154,7 @@ public class MessageUti {
 	public static void intHttpMethods() {
 		/********************System method start**********************/
 		httpMethods.put(SYSTEM_GET_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemInfo"));
+		httpMethods.put(SYSTEM_GET_SYSTEM_STATUS_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemStatus"));
 		httpMethods.put(SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getMM100SystemInfo"));
 		httpMethods.put(SYSTEM_SET_DEVICE_REBOOT, 
 				new HttpMethodUti(SystemManager.class, "rebootDevice"));

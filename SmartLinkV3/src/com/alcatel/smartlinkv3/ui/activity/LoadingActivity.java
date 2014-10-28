@@ -74,8 +74,7 @@ public class LoadingActivity extends Activity {
 	}
 
 	private boolean checkConnectState() {
-		return DataConnectManager.getInstance().getCPEWifiConnected() && 
-				FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false;
+		return DataConnectManager.getInstance().getCPEWifiConnected();
 	}
 
 }

@@ -73,7 +73,7 @@ public class SimManager extends BaseManager {
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.SetAutoEnterPinState("3.7",nState,strPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState("2.5",nState,strPin, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -103,7 +103,7 @@ public class SimManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetAutoEnterPinState") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoEnterPinState("3.6",new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState("2.6",new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -137,7 +137,7 @@ public class SimManager extends BaseManager {
 		String strNewPin = (String) data.getParamByKey("new_pin");
 		String strCurrentPin = (String) data.getParamByKey("current_pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpChangePinAndState.ChangePin("3.4",strNewPin,strCurrentPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpChangePinAndState.ChangePinCode("2.4",strNewPin,strCurrentPin, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -170,7 +170,7 @@ public class SimManager extends BaseManager {
 		String strPuk = (String) data.getParamByKey("puk");
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk("3.3",strPuk,strPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk("2.3",strPuk,strPin, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -202,7 +202,7 @@ public class SimManager extends BaseManager {
 		
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin("3.2",strPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin("2.2",strPin, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -258,7 +258,7 @@ public class SimManager extends BaseManager {
 	class GetSimStatusTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetSimStatus.GetSimStatus("3.1", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetSimStatus.GetSimStatus("2.1", new IHttpFinishListener() {           
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {                 	

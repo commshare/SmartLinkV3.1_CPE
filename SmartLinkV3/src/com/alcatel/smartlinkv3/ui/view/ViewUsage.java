@@ -129,7 +129,7 @@ public class ViewUsage extends BaseViewImpl {
 		
 		m_homedowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseDL));
 		m_homeupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseUL));
-		m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HUseData)+"of"
+		m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HUseData)+" of "
 					+ CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.MaxUsageData));
 		if(m_UsageRecordResult.HUseData > m_UsageRecordResult.MaxUsageData)
 		{

@@ -95,8 +95,7 @@ public abstract class BaseActivity extends Activity{
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();		
 		
 		if(bCPEWifiConnected == true && 
-				this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName()) &&
-				FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false	)
+				this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())	)
 			{
 			dismissAllDialog();	
 			Intent intent = new Intent(context, MainActivity.class);		

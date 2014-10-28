@@ -186,7 +186,7 @@ public class StatisticsManager extends BaseManager {
 	class GetUsageSettingsTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.GetUsageSettings("7.10", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.GetUsageSettings("7.3", new IHttpFinishListener() {           
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {   
@@ -272,7 +272,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HBillingDay = nBillingDay;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -309,7 +309,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HMonthlyPlan = nPreMonthlyPlan;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -346,7 +346,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HUsedData = nPreUsedData;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -383,7 +383,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HTimeLimitFlag = nTimeLimitFlag;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -420,7 +420,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HTimeLimitTimes = nTimeLimitTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -457,7 +457,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HUsedTimes = nUsedTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -494,7 +494,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HAutoDisconnFlag = nAutoDisconnFlag;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.3",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -525,7 +525,7 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "ClearAllRecords") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.ClearAllRecords("7.14", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear("7.2", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   

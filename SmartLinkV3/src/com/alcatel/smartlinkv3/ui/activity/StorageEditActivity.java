@@ -824,8 +824,7 @@ public class StorageEditActivity extends BaseActivity implements OnClickListener
 			m_curDirectory = strRoot;
 		}		
 		
-		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
-			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
+		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled)	
 		{
 			Intent it = new Intent(this, SdSharingActivity.class);
 			this.startActivity(it);

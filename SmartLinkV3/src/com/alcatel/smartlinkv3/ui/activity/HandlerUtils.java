@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -63,8 +64,8 @@ public class HandlerUtils {
 	};
 	
 	public static void userLogout() {
-		String tokens = BusinessMannager.getInstance().getLoginString();
-		if (tokens != null && tokens.length() > 0) {
+		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		if (m_loginStatus != null && m_loginStatus!=UserLoginStatus.Logout) {
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
 		}

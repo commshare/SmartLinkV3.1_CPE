@@ -80,7 +80,7 @@ public class HttpConnectOperation {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "WanConnection.Connect");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Connect");
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
@@ -131,7 +131,7 @@ public class HttpConnectOperation {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "WanConnection.DisConnect");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "DisConnect");
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
