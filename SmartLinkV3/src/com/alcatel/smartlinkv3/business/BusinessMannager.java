@@ -288,9 +288,6 @@ public class BusinessMannager {
     /********************wan manager method end************************/
     
     /********************wlan manager Data start**********************/
-    public int getHostNum() {
-		return m_wlanManager.getHostNum();
-	}
     
     public String getSsid() {
   		return m_wlanManager.getSsid();

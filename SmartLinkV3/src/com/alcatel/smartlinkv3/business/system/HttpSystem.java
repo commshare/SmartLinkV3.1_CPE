@@ -239,9 +239,9 @@ public class HttpSystem {
     }
 	
 	/*device reboot*/
-	public static class deviceRebootRequest extends BaseRequest{
+	public static class SetDeviceReboot extends BaseRequest{
 
-		public deviceRebootRequest(String strId,IHttpFinishListener callback) {
+		public SetDeviceReboot(String strId,IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 			m_strId = strId;
@@ -265,15 +265,15 @@ public class HttpSystem {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new deviceRebootResponse(m_finsishCallback);
+			return new SetDeviceRebootResponse(m_finsishCallback);
 		}
 		
 	}
 	
-	public static class deviceRebootResponse extends BaseResponse{
+	public static class SetDeviceRebootResponse extends BaseResponse{
 
 		private Boolean m_blResult=false;
-		public deviceRebootResponse(IHttpFinishListener callback) {
+		public SetDeviceRebootResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 		}
@@ -293,9 +293,9 @@ public class HttpSystem {
 		
 	}
 	/*Device reset*/
-	public static class deviceResetRequest extends BaseRequest{
+	public static class SetDeviceReset extends BaseRequest{
 
-		public deviceResetRequest(String strId,IHttpFinishListener callback) {
+		public SetDeviceReset(String strId,IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 			m_strId = strId;
@@ -319,15 +319,15 @@ public class HttpSystem {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new deviceResetResponse(m_finsishCallback);
+			return new SetDeviceResetResponse(m_finsishCallback);
 		}
 		
 	}
 	
-	public static class deviceResetResponse extends BaseResponse{
+	public static class SetDeviceResetResponse extends BaseResponse{
 
 		private Boolean m_blRes= false;
-		public deviceResetResponse(IHttpFinishListener callback) {
+		public SetDeviceResetResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 		}
@@ -348,9 +348,9 @@ public class HttpSystem {
 	}
 	
 	/*Device backup*/
-	public static class deviceBackupRequest extends BaseRequest{
+	public static class SetDeviceBackup extends BaseRequest{
 
-		public deviceBackupRequest(String strId,IHttpFinishListener callback) {
+		public SetDeviceBackup(String strId,IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 			m_strId = strId;
@@ -374,15 +374,15 @@ public class HttpSystem {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new deviceBackupResponse(m_finsishCallback);
+			return new SetDeviceBackupResponse(m_finsishCallback);
 		}
 		
 	}
 	
-	public static class deviceBackupResponse extends BaseResponse{
+	public static class SetDeviceBackupResponse extends BaseResponse{
 
 		private Boolean m_blRes= false;
-		public deviceBackupResponse(IHttpFinishListener callback) {
+		public SetDeviceBackupResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 		}
@@ -403,10 +403,10 @@ public class HttpSystem {
 	}
 	
 	/*Device backup*/
-	public static class deviceRestoreRequest extends BaseRequest{
+	public static class SetDeviceRestore extends BaseRequest{
 
 		private String m_strFileName="";
-		public deviceRestoreRequest(String strId, String strFileName,IHttpFinishListener callback) {
+		public SetDeviceRestore(String strId, String strFileName,IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 			m_strId = strId;
@@ -433,15 +433,15 @@ public class HttpSystem {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new deviceRestoreResponse(m_finsishCallback);
+			return new SetDeviceRestoreResponse(m_finsishCallback);
 		}
 		
 	}
 	
-	public static class deviceRestoreResponse extends BaseResponse{
+	public static class SetDeviceRestoreResponse extends BaseResponse{
 
 		private Boolean m_blRes= false;
-		public deviceRestoreResponse(IHttpFinishListener callback) {
+		public SetDeviceRestoreResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 		}

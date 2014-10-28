@@ -67,9 +67,6 @@ public class WlanManager extends BaseManager {
 		// register in basemanager
 	}
 
-	public int getHostNum() {
-		return m_nHostNum;
-	}
 
 	public String getSsid() {
 		return m_strSsid;
@@ -146,45 +143,7 @@ public class WlanManager extends BaseManager {
 
 	class GetHostNumTask extends TimerTask {
 		@Override
-		public void run() {
-			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpWlanSetting.GetWlanSetting("5.4",
-							new IHttpFinishListener() {
-								@Override
-								public void onHttpRequestFinish(
-										BaseResponse response) {
-									String strErrcode = new String();
-									int ret = response.getResultCode();
-									if (ret == BaseResponse.RESPONSE_OK) {
-										strErrcode = response.getErrorCode();
-										if (strErrcode.length() == 0) {
-											WlanSettingResult hostNumberResult = response
-													.getModelResult();
-											int preHostNum = m_nHostNum;
-											m_nHostNum = hostNumberResult.NumOfHosts;
-											if (preHostNum != m_nHostNum) {
-												Intent megIntent = new Intent(
-														MessageUti.WLAN_GET_NUMBER_OF_HOST_ROLL_REQUSET);
-												megIntent
-														.putExtra(
-																MessageUti.RESPONSE_RESULT,
-																ret);
-												megIntent
-														.putExtra(
-																MessageUti.RESPONSE_ERROR_CODE,
-																strErrcode);
-												m_context
-														.sendBroadcast(megIntent);
-											}
-										} else {
-
-										}
-									} else {
-										// Log
-									}
-								}
-							}));
-		}
+		public void run() {}
 	}
 
 	// get wlan setting
@@ -335,7 +294,7 @@ public class WlanManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.SetWPSPbc("5.6",
+				new HttpWlanSetting.SetWPSPbc("5.7",
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(

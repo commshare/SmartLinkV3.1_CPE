@@ -14,12 +14,12 @@ import com.google.gson.Gson;
 public class HttpUser {
 	
 /********************  Login  **************************************************************************************/	
-	public static class UserLogin extends BaseRequest
+	public static class Login extends BaseRequest
     {	
 		String m_strUserName = new String();
 		String m_strPsw = new String();
 		
-        public UserLogin(String strUserName,String strPsw,String strId,IHttpFinishListener callback) 
+        public Login(String strUserName,String strPsw,String strId,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strUserName = strUserName;
@@ -49,15 +49,15 @@ public class HttpUser {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new UserLoginResponse(m_finsishCallback);
+            return new LoginResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class UserLoginResponse extends BaseResponse
+	public static class LoginResponse extends BaseResponse
     {
         
-        public UserLoginResponse(IHttpFinishListener callback) 
+        public LoginResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }
@@ -72,9 +72,9 @@ public class HttpUser {
 		}
     }
 /********************  Logout  **************************************************************************************/	
-	public static class UserLogout extends BaseRequest
+	public static class Logout extends BaseRequest
     {	
-        public UserLogout(String strId,IHttpFinishListener callback) 
+        public Logout(String strId,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strId = strId;
@@ -98,15 +98,15 @@ public class HttpUser {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new UserLogoutResponse(m_finsishCallback);
+            return new LogoutResponse(m_finsishCallback);
         }
         
     }
 	
-	public static class UserLogoutResponse extends BaseResponse
+	public static class LogoutResponse extends BaseResponse
     {
         
-        public UserLogoutResponse(IHttpFinishListener callback) 
+        public LogoutResponse(IHttpFinishListener callback) 
         {
             super(callback);            
         }

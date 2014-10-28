@@ -220,7 +220,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 	@Override
 	public void onDestroy() {
-		m_loginDialog.destroyDialog();
+		//m_loginDialog.destroyDialog();
 	}
 
 	@Override

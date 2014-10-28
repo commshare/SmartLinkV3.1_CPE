@@ -46,7 +46,7 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 	
 	private ImageButton m_bnpbc;
 	
-	private WpsSettingReceiver m_usettingreceiver = new WpsSettingReceiver();
+	private WpsSettingReceiver m_wpsreceiver = new WpsSettingReceiver();
 	
 	private class WpsSettingReceiver extends BroadcastReceiver {
 		@Override
@@ -73,10 +73,10 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 	
 	private void registerReceiver() {
 		// advanced
-		this.registerReceiver(m_usettingreceiver, new IntentFilter(
-				MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET));
-		this.registerReceiver(m_usettingreceiver, new IntentFilter(
-				MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET));
+		this.registerReceiver(m_wpsreceiver, new IntentFilter(
+				MessageUti.WLAN_SET_WPS_PBC_REQUSET));
+		this.registerReceiver(m_wpsreceiver, new IntentFilter(
+				MessageUti.WLAN_SET_WPS_PIN_REQUSET));
 	}
 
 	@Override
@@ -102,11 +102,16 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
         mWpsPin=(LinearLayout)findViewById(R.id.include_pin_view);
         mPbc=(LinearLayout)findViewById(R.id.include_pbc_view);
         
+        bnBack = (ImageButton) findViewById(R.id.btn_back); 
+        bnBack.setOnClickListener(this);
+        
         m_wpspinValue = (EditText) this.findViewById(R.id.wps_pin_value);
 		m_wpspinValue.setText("");
         m_wpspinBtn = (Button) findViewById(R.id.wps_save_button); 
+        m_wpspinBtn.setOnClickListener(this);
         
         m_bnpbc = (ImageButton) findViewById(R.id.pbc_button); 
+        m_bnpbc.setOnClickListener(this);
         
 
 	}
@@ -121,7 +126,7 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 	public void onPause() {
 		super.onPause();
 		try {
-    		this.unregisterReceiver(m_usettingreceiver);
+    		this.unregisterReceiver(m_wpsreceiver);
     	}catch(Exception e) {
     		
     	}

@@ -372,7 +372,7 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.deviceRebootRequest("13.5", 
+					new HttpSystem.SetDeviceReboot("13.5", 
 							new IHttpFinishListener() {
 
 						@Override
@@ -402,7 +402,7 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.deviceResetRequest("13.6", 
+					new HttpSystem.SetDeviceReset("13.6", 
 							new IHttpFinishListener() {
 
 						@Override
@@ -432,7 +432,7 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.deviceBackupRequest("13.7", 
+					new HttpSystem.SetDeviceBackup("13.7", 
 							new IHttpFinishListener() {
 
 						@Override
@@ -463,7 +463,7 @@ public class SystemManager extends BaseManager {
 		if (blWifiConnected) {
 			String strFile = data.getParamByKey("FileName").toString();
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.deviceRestoreRequest("13.8", strFile,
+					new HttpSystem.SetDeviceRestore("13.8", strFile,
 							new IHttpFinishListener() {
 
 						@Override

@@ -42,22 +42,28 @@ public class ENUM {
 	 * Accessable (Network unlocked);//ready 4 - InvalidSim 5 - Unknown
 	 */
 	public static enum SIMState {
-		NoSim, PinRequired, PukRequired, Accessable, InvalidSim, Unknown;
+		NoSim, SimCardDetected, PinRequired, PukRequired, SimLockRequired, PukTimesUsedOut, InvalidSim, Accessable, SimCardIsIniting, Unknown;
 
 		public static SIMState build(int nState) {
 			if (nState == 0) {
 				return NoSim;
 			} else if (nState == 1) {
-				return PinRequired;
+				return SimCardDetected;
 			} else if (nState == 2) {
-				return PukRequired;
+				return PinRequired;
 			} else if (nState == 3) {
-				return Accessable;
+				return PukRequired;
 			} else if (nState == 4) {
-				return InvalidSim;
+				return SimLockRequired;
 			} else if (nState == 5) {
-				return Unknown;
-			} else {
+				return PukTimesUsedOut;
+			} else if (nState == 6) {
+				return InvalidSim;
+			} else if (nState == 7) {
+				return Accessable;
+			} else if (nState == 8) {
+				return SimCardIsIniting;
+			}  else {
 				return Unknown;
 			}
 		}
@@ -67,17 +73,21 @@ public class ENUM {
 	 * 0: Not available 1: PIN disable 2: PIN enable 3: Require PUK
 	 */
 	public static enum PinState {
-		NotAvailable, Disable, Enable, RequirePUK;
+		NotAvailable, EnableButNotVerified, PinEnableVerified, Disable, RequirePUK, PukTimesUsedOut;
 
 		public static PinState build(int nState) {
 			if (nState == 0) {
 				return NotAvailable;
 			} else if (nState == 1) {
-				return Disable;
+				return EnableButNotVerified;
 			} else if (nState == 2) {
-				return Enable;
+				return PinEnableVerified;
 			} else if (nState == 3) {
+				return Disable;
+			} else if (nState == 4) {
 				return RequirePUK;
+			} else if (nState == 5) {
+				return PukTimesUsedOut;
 			} else {
 				return NotAvailable;
 			}

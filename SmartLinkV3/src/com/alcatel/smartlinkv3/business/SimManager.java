@@ -67,7 +67,7 @@ public class SimManager extends BaseManager {
 	
 	//SetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setAutoEnterPinState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "SetAutoEnterPinState") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePinState") != true)
 			return;
 		
 		int nState = (Integer) data.getParamByKey("state");
@@ -100,7 +100,7 @@ public class SimManager extends BaseManager {
 	
 	//GetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void getAutoPinState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetAutoEnterPinState") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetAutoValidatePinState") != true)
 			return;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState("2.6",new IHttpFinishListener() {           
@@ -131,7 +131,7 @@ public class SimManager extends BaseManager {
 	
 	//change pin  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void changePin(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePin") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePinCode") != true)
 			return;
 		
 		String strNewPin = (String) data.getParamByKey("new_pin");

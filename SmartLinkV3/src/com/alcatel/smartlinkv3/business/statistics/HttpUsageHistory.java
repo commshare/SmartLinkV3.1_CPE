@@ -26,10 +26,8 @@ public class HttpUsageHistory {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
 	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetUsageRecord");
-
-	        	JSONObject usageHistory = new JSONObject();
 	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, usageHistory);
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
         	} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -61,7 +59,8 @@ public class HttpUsageHistory {
         	m_usageRecord = gson.fromJson(strJsonResult, UsageRecordResult.class);
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public UsageRecordResult getModelResult() 
         {
              return m_usageRecord;

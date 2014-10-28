@@ -66,7 +66,9 @@ public class ViewUsage extends BaseViewImpl {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-				}else{}
+				}else{
+					
+				}
 			}
 		}
 	}
@@ -103,8 +105,7 @@ public class ViewUsage extends BaseViewImpl {
 		m_viewUsageMsgReceiver = new ViewUsageBroadcastReceiver();
 		m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET));
 		m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
-		
-		
+
 		updateUI();
 	}
 

@@ -83,7 +83,7 @@ public class UserManager extends BaseManager {
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.UserLogin(strUserName,strPsw,"1.1", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Login(strUserName,strPsw,"1.1", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -121,7 +121,7 @@ public class UserManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "Logout") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.UserLogout("1.2", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Logout("1.2", new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {              	
@@ -198,6 +198,7 @@ public class UserManager extends BaseManager {
 	class UpdateLoginTimeTask extends TimerTask{ 
         @Override
 		public void run() { 
+        	
         	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.HeartBeat("1.5", new IHttpFinishListener() {           
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
@@ -222,6 +223,8 @@ public class UserManager extends BaseManager {
 	
 	private void startUpdateLoginTimeTask()
 	{
+		if(FeatureVersionManager.getInstance().isSupportApi("User", "HeartBeat") != true)
+			return;
 		if(m_updateLoginTimeTask == null) {
 			m_updateLoginTimeTask = new UpdateLoginTimeTask();
 			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 30000);

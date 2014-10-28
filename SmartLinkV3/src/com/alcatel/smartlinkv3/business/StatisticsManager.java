@@ -522,7 +522,7 @@ public class StatisticsManager extends BaseManager {
 	
 	//ClearAllRecords  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void clearAllRecords(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "ClearAllRecords") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageRecordClear") != true)
 			return;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear("7.2", new IHttpFinishListener() {           
@@ -552,7 +552,7 @@ public class StatisticsManager extends BaseManager {
 	
 	//GetUsageHistory ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetUsageHistoryTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "GetUsageHistory") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "GetUsageRecord") != true)
 			return;
 		
 		if(m_getUsageHistoryTask == null) {
