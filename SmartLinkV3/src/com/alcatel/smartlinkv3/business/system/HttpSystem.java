@@ -160,7 +160,7 @@ public class HttpSystem {
 	
 	public static class GetSystemStatusResponse extends BaseResponse
     {
-		private SystemInfo m_systemInfo;
+		private SystemStatus m_systemStatus;
         
         public GetSystemStatusResponse(IHttpFinishListener callback) 
         {
@@ -171,14 +171,14 @@ public class HttpSystem {
         protected void parseContent(String strJsonResult) 
         {
         	Gson gson = new Gson();
-        	m_systemInfo = gson.fromJson(strJsonResult, SystemInfo.class);
+        	m_systemStatus = gson.fromJson(strJsonResult, SystemStatus.class);
         }
 
         @SuppressWarnings("unchecked")
 		@Override
-        public SystemInfo getModelResult() 
+        public SystemStatus getModelResult() 
         {
-             return m_systemInfo;
+             return m_systemStatus;
         }
     }
 	

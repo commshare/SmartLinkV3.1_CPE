@@ -146,11 +146,13 @@ public class HttpWlanSetting {
 	
 	/*Set WPS Pin*/
 	public static class SetWPSPin extends BaseRequest{
+		public String m_strPin = new String();
 
-		public SetWPSPin(String strId, IHttpFinishListener callback) {
+		public SetWPSPin(String strId, String strPin,IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 			m_strId = strId;
+			m_strPin = strPin;
 		}
 
 		@Override
@@ -162,8 +164,11 @@ public class HttpWlanSetting {
 				m_requestParamJson.put(ConstValue.JSON_METHOD,
 						"SetWPSPin");
 
+				JSONObject settings = new JSONObject();
+				settings.put("WpsPin", m_strPin);
+				
 				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
+						.put(ConstValue.JSON_PARAMS, settings);
 				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
 			} catch (JSONException e) {
 				// TODO: handle exception
@@ -188,18 +193,15 @@ public class HttpWlanSetting {
 		}
 
 		@Override
-		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
-			Gson gson = new Gson();
-			WpsPinString = gson.fromJson(strJsonResult, string.class);
-		}
+        protected void parseContent(String strJsonResult) {
+        	
+        }
 
-		@SuppressWarnings("unchecked")
-		@Override
-		public string getModelResult() {
-			// TODO Auto-generated method stub
-			return WpsPinString;
-		}
+        @Override
+        public <T> T getModelResult() 
+        {
+             return null;
+        }
 		
 	}
 	

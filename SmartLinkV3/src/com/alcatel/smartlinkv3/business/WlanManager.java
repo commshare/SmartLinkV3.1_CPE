@@ -291,9 +291,11 @@ public class WlanManager extends BaseManager {
 		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
 				"SetWPSPin") != true)
 			return;
+		
+		String m_strPin = (String) data.getParamByKey("WpsPin");
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.SetWPSPin("5.6",
+				new HttpWlanSetting.SetWPSPin("5.6",m_strPin,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(

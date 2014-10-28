@@ -1,27 +1,83 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 
 
 public class WpsMainActivity extends BaseActivity implements OnClickListener{
 
+	private ImageButton bnBack;
+	
 	private RadioGroup mRadioGroup;  
 	private RadioButton mRadio0,mRadio1;
 	private LinearLayout mWpsPin; 
 	private LinearLayout mPbc;
+	
+	private EditText m_wpspinValue;
+	private Button m_wpspinBtn;
+	
+	private ImageButton m_bnpbc;
+	
+	private WpsSettingReceiver m_usettingreceiver = new WpsSettingReceiver();
+	
+	private class WpsSettingReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction().equals(MessageUti.WLAN_SET_WPS_PBC_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					//updateUI();
+				}
+			} else if (intent.getAction().equals(MessageUti.WLAN_SET_WPS_PIN_REQUSET)) {
+
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					//updateUI();
+				}else{
+					
+				}
+			}
+		}
+	}
+	
+	private void registerReceiver() {
+		// advanced
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET));
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +101,55 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
         
         mWpsPin=(LinearLayout)findViewById(R.id.include_pin_view);
         mPbc=(LinearLayout)findViewById(R.id.include_pbc_view);
-        UpdateUI();
+        
+        m_wpspinValue = (EditText) this.findViewById(R.id.wps_pin_value);
+		m_wpspinValue.setText("");
+        m_wpspinBtn = (Button) findViewById(R.id.wps_save_button); 
+        
+        m_bnpbc = (ImageButton) findViewById(R.id.pbc_button); 
+        
 
 	}
 	@Override
 	public void onResume() {
 		super.onResume();
+		registerReceiver();
+		initWpsPinEdit();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
+		try {
+    		this.unregisterReceiver(m_usettingreceiver);
+    	}catch(Exception e) {
+    		
+    	}
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+	}
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.btn_back:
+			this.finish();
+			break;
+			
+		case R.id.wps_save_button:
+			onBtnWpsPinSaveClick();
+			break;
+			
+		case R.id.pbc_button:
+			onBtnPbcClick();
+			break;
+
+		}
+		
 	}
 	
 	private class RadioButtonOnCheckedChangeListenerImpl implements OnCheckedChangeListener {  
@@ -81,13 +170,23 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
      } 
 
 	
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
+	private void initWpsPinEdit() {
+		m_wpspinValue = (EditText) this.findViewById(R.id.wps_pin_value);
+		m_wpspinValue.setText("");
+	}
+	
+	public void onBtnWpsPinSaveClick() {
+
+		String strwpsPin = m_wpspinValue.getText().toString();
+		DataValue data = new DataValue();
+		data.addParam("Security", strwpsPin);
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_SET_WPS_PIN_REQUSET, data);
 		
 	}
-	public void UpdateUI() {
-		
+	
+	public void onBtnPbcClick() {
+		DataValue data = new DataValue();
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_SET_WPS_PBC_REQUSET, data);
 	}
 
 }

@@ -221,7 +221,8 @@ public class MessageUti {
 		httpMethods.put(WLAN_GET_MM100_ACCESS_POINTS_LIST_REQUSET, new HttpMethodUti(WlanManager.class, "getMM100AccessPointsList"));
 		httpMethods.put(WLAN_SELECT_MM100_ACCESS_POINT_REQUSET, new HttpMethodUti(WlanManager.class, "selectMM100AccessPoint"));
 		httpMethods.put(WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET, new HttpMethodUti(WlanManager.class, "disconnectClientAP"));
-		
+		httpMethods.put(WLAN_SET_WPS_PIN_REQUSET, new HttpMethodUti(WlanManager.class, "SetWPSPin"));
+		httpMethods.put(WLAN_SET_WPS_PBC_REQUSET, new HttpMethodUti(WlanManager.class, "SetWPSPbc"));
 		/********************WLAN method end**********************/
 
 		/**************************LAN message start*******************************************************************************/

@@ -295,13 +295,13 @@ public class SystemManager extends BaseManager {
 											new Runnable() {
 												@Override
 												public void run() {
-													getSystemInfo(null);
+													getSystemStatus(null);
 												}
 											}, 1000);
 								}
 
 								Intent megIntent = new Intent(
-										MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
+										MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
 								megIntent.putExtra(
 										MessageUti.RESPONSE_RESULT, ret);
 								megIntent.putExtra(
