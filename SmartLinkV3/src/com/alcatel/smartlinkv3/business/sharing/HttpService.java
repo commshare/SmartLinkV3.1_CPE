@@ -1,4 +1,4 @@
-package com.alcatel.smartlinkv3.business.service;
+package com.alcatel.smartlinkv3.business.sharing;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.alcatel.smartlinkv3.business.service;
+package com.alcatel.smartlinkv3.business.sharing;
 
 import com.alcatel.smartlinkv3.business.BaseResult;
 
