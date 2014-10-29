@@ -14,7 +14,7 @@ public class ENUM {
 	}
 
 	public static enum OVER_TIME_STATE {
-		Enable, Disable;
+		Disable, Enable;
 
 		public static OVER_TIME_STATE build(int nState) {
 			if (nState == 1) {
@@ -23,16 +23,32 @@ public class ENUM {
 				return Disable;
 			}
 		}
+		
+		public static int antiBuild(OVER_TIME_STATE storeIn) {
+			if (storeIn == Disable) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
 	}
 
-	public static enum OVER_FLOW_STATE {
-		Enable, Disable;
+	public static enum OVER_DISCONNECT_STATE {
+		Disable, Enable;
 
-		public static OVER_FLOW_STATE build(int nState) {
+		public static OVER_DISCONNECT_STATE build(int nState) {
 			if (nState == 1) {
 				return Enable;
 			} else {
 				return Disable;
+			}
+		}
+		
+		public static int antiBuild(OVER_DISCONNECT_STATE storeIn) {
+			if (storeIn == Enable) {
+				return 1;
+			} else {
+				return 0;
 			}
 		}
 	}
@@ -114,33 +130,17 @@ public class ENUM {
 	 * HSUPA 7: DC-HSPA+ 8: LTE 9: GSM 10: HSPA+ 11: UNKNOWN
 	 */
 	public static enum NetworkType {
-		No_service, GPRS, EDGE, UMTS, HSDPA, HSPA, HSUPA, DC_HSPA_PLUS, LTE, GSM, HSPA_PLUS, UNKNOWN;
+		No_service, Net_2G, Net_3G, Net_4G, UNKNOWN;
 
 		public static NetworkType build(int nState) {
 			if (nState == 0) {
 				return No_service;
 			} else if (nState == 1) {
-				return GPRS;
+				return Net_2G;
 			} else if (nState == 2) {
-				return EDGE;
+				return Net_3G;
 			} else if (nState == 3) {
-				return UMTS;
-			} else if (nState == 4) {
-				return HSDPA;
-			} else if (nState == 5) {
-				return HSPA;
-			} else if (nState == 6) {
-				return HSUPA;
-			} else if (nState == 7) {
-				return DC_HSPA_PLUS;
-			} else if (nState == 8) {
-				return LTE;
-			} else if (nState == 9) {
-				return GSM;
-			} else if (nState == 10) {
-				return HSPA_PLUS;
-			} else if (nState == 11) {
-				return UNKNOWN;
+				return Net_4G;
 			} else {
 				return UNKNOWN;
 			}

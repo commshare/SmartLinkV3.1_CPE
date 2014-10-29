@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
 import com.alcatel.smartlinkv3.business.statistics.HttpUsageHistory;
 import com.alcatel.smartlinkv3.business.statistics.HttpUsageSettings;
@@ -26,7 +27,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 public class StatisticsManager extends BaseManager {
-	private UsageSettingsResult m_usageSettings = new UsageSettingsResult();
+	private UsageSettingModel m_usageSettings = new UsageSettingModel();
 	private UsageRecordResult m_usageRecord = new UsageRecordResult();
 	private Timer m_rollTimer = new Timer();
 	private Timer m_getUsageHistoryRollTimer = new Timer();
@@ -144,7 +145,7 @@ public class StatisticsManager extends BaseManager {
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
     }
 	
-	public UsageSettingsResult getUsageSettings() {
+	public UsageSettingModel getUsageSettings() {
 		return m_usageSettings;
 	}
 	
@@ -154,12 +155,14 @@ public class StatisticsManager extends BaseManager {
 	
     
     public long GetBillingMonthTotalUsage() {
-    	UsageRecordResult usageList = new UsageRecordResult();
-    	usageList.clone(m_usageRecord);
-    	long total = 0;
-    	total = usageList.MaxUsageData;
-    	//total += m_staSetting.getCalibrationValue();
-    	return total;
+    	return m_usageSettings.HUsedData;
+    	
+//    	UsageRecordResult usageList = new UsageRecordResult();
+//    	usageList.clone(m_usageRecord);
+//    	long total = 0;
+//    	total = usageList.MaxUsageData;
+//    	//total += m_staSetting.getCalibrationValue();
+//    	return total;
     }
 	
 	//GetUsageSetting ////////////////////////////////////////////////////////////////////////////////////////// 
@@ -209,7 +212,7 @@ public class StatisticsManager extends BaseManager {
                     	strErrcode = response.getErrorCode();
                     	if(strErrcode.length() == 0) {
                     		UsageSettingsResult usageSettingResult = response.getModelResult();
-                    		UsageSettingsResult pre = new UsageSettingsResult();
+                    		UsageSettingModel pre = new UsageSettingModel();
                     		pre.clone(m_usageSettings);
                     		m_usageSettings.setValue(usageSettingResult);
                     		if(pre.HBillingDay != m_usageSettings.HBillingDay)
@@ -281,7 +284,7 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		m_usageSettings.clone(nUsageSettings);
+                		m_usageSettings.setValue(nUsageSettings);
                 	}else{
 
                 	}
@@ -318,7 +321,7 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		m_usageSettings.clone(nUsageSettings);
+                		m_usageSettings.setValue(nUsageSettings);
                 	}else{
 
                 	}
@@ -355,7 +358,7 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		m_usageSettings.clone(nUsageSettings);
+                		m_usageSettings.setValue(nUsageSettings);
                 	}else{
 
                 	}
@@ -378,10 +381,10 @@ public class StatisticsManager extends BaseManager {
 			return;
 		
 		final int nTimeLimitFlag = (Integer) data.getParamByKey("time_limit_flag");
-		final int nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
+		final ENUM.OVER_TIME_STATE nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HTimeLimitFlag = nTimeLimitFlag;
+		nUsageSettings.HTimeLimitFlag = nTimeLimitFlag;//ENUM.OVER_TIME_STATE.build(nTimeLimitFlag);
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -392,7 +395,7 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		m_usageSettings.clone(nUsageSettings);
+                		m_usageSettings.setValue(nUsageSettings);
                 	}else{
 
                 	}
@@ -429,7 +432,7 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		m_usageSettings.clone(nUsageSettings);
+                		m_usageSettings.setValue(nUsageSettings);
                 	}else{
 
                 	}
@@ -466,7 +469,7 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		m_usageSettings.clone(nUsageSettings);
+                		m_usageSettings.setValue(nUsageSettings);
                 	}else{
 
                 	}
@@ -489,7 +492,7 @@ public class StatisticsManager extends BaseManager {
 			return;
 		
 		final int nAutoDisconnFlag = (Integer) data.getParamByKey("auto_disconn_flag");
-		final int nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
+		final ENUM.OVER_DISCONNECT_STATE nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.HAutoDisconnFlag = nAutoDisconnFlag;
@@ -503,7 +506,7 @@ public class StatisticsManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		m_usageSettings.clone(nUsageSettings);
+                		m_usageSettings.setValue(nUsageSettings);
                 	}else{
 
                 	}

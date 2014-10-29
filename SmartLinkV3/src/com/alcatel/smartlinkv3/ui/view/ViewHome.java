@@ -7,18 +7,19 @@ import java.util.Date;
 
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_FLOW_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -296,42 +297,23 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_signalImageView.setBackgroundResource(R.drawable.home_signal_3);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_4)
 				m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
-			//if (curNetwork.m_signalStrength == SignalStrength.Level_5)
-			//	m_signalImageView.setBackgroundResource(R.drawable.home_signal_5);
 			//show network type
 			if (curNetwork.m_NetworkType == NetworkType.UNKNOWN)
 				m_networkTypeTextView.setVisibility(View.INVISIBLE);
 			
 			//2G
-			if (curNetwork.m_NetworkType == NetworkType.EDGE
-					|| curNetwork.m_NetworkType == NetworkType.GSM 
-					|| curNetwork.m_NetworkType == NetworkType.GPRS) {
+			if (curNetwork.m_NetworkType == NetworkType.Net_2G) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setText(R.string.home_network_type_2g);
 			}
 			
 			//3G
-			if (curNetwork.m_NetworkType == NetworkType.UMTS) {
+			if (curNetwork.m_NetworkType == NetworkType.Net_3G) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setText(R.string.home_network_type_3g);
 			}
-			//H			
-			if (curNetwork.m_NetworkType == NetworkType.HSPA					
-					|| curNetwork.m_NetworkType == NetworkType.HSDPA					
-					|| curNetwork.m_NetworkType == NetworkType.HSUPA) {
-				m_networkTypeTextView.setVisibility(View.VISIBLE);
-				m_networkTypeTextView.setText(R.string.home_network_type_h);
-			}
-			
-			//H+
-			if (curNetwork.m_NetworkType == NetworkType.DC_HSPA_PLUS					
-					|| curNetwork.m_NetworkType == NetworkType.HSPA_PLUS) {
-				m_networkTypeTextView.setVisibility(View.VISIBLE);
-				m_networkTypeTextView.setText(R.string.home_network_type_h_plus);
-			}		
-		
 			//4G			
-			if (curNetwork.m_NetworkType == NetworkType.LTE) {
+			if (curNetwork.m_NetworkType == NetworkType.Net_4G) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setText(R.string.home_network_type_4g);
 			}
@@ -349,6 +331,18 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			} else if (SIMState.NoSim == simStatus) {
 				nStatusId = R.string.Home_no_sim;
 				m_unlockSimBtn.setVisibility(View.GONE);
+			} else if (SIMState.SimCardDetected == simStatus) {
+				nStatusId = R.string.Home_SimCard_Detected;
+				m_unlockSimBtn.setVisibility(View.GONE);
+			} else if (SIMState.SimLockRequired == simStatus) {
+				nStatusId = R.string.Home_SimLock_Required;
+				m_unlockSimBtn.setVisibility(View.GONE);
+			} else if (SIMState.PukTimesUsedOut == simStatus) {
+				nStatusId = R.string.Home_PukTimes_UsedOut;
+				m_unlockSimBtn.setVisibility(View.GONE);
+			} else if (SIMState.SimCardIsIniting == simStatus) {
+				nStatusId = R.string.Home_SimCard_IsIniting;
+				m_unlockSimBtn.setVisibility(View.GONE);
 			} else if (SIMState.PinRequired == simStatus) {
 				nStatusId = R.string.Home_pin_locked;
 				m_unlockSimBtn.setVisibility(View.VISIBLE);
@@ -356,7 +350,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				nStatusId = R.string.Home_puk_locked;
 				m_unlockSimBtn.setVisibility(View.VISIBLE);
 			} else {
-				nStatusId = R.string.home_initializing;
+				nStatusId = R.string.Home_unknown;
 				m_unlockSimBtn.setVisibility(View.GONE);
 			}
 
@@ -491,17 +485,17 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 		private void connect()
 		{
-//			UsageSettingsResult settings = BusinessMannager.getInstance().getUsageSettings();
-//			if (settings.m_overflowState == OVER_FLOW_STATE.Enable && settings.m_lTotalValue > 0) {
-//				long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
-//				if (lTotalUsedUsage >= settings.m_lTotalValue) {
-//					//show warning dialog
-//					//m_connectWarningDialog.showDialog();
-//					String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
-//					Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
-//					return;
-//				}
-//panchong			}
+			UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
+			if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && settings.HMonthlyPlan > 0) {
+				long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
+				if (settings.HUsedData >= settings.HMonthlyPlan) {
+					//show warning dialog
+					//m_connectWarningDialog.showDialog();
+					String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
+					Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
+					return;
+				}
+			}
 		
 			if (m_bConnectPressd == false)
 				m_bConnectPressd = true;

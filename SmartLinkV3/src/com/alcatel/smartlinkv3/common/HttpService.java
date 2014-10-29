@@ -8,9 +8,9 @@ import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.StatisticsManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_FLOW_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -257,7 +257,7 @@ public class HttpService extends Service {
 
 	private void alert() {
 
-		UsageSettingsResult settings = BusinessMannager.getInstance()
+		UsageSettingModel settings = BusinessMannager.getInstance()
 				.getUsageSettings();
 		long lTotalUsedUsage = BusinessMannager.getInstance()
 				.GetBillingMonthTotalUsage();

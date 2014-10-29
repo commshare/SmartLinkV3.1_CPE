@@ -12,6 +12,7 @@ import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
 import com.alcatel.smartlinkv3.business.model.SystemInfoModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.business.service.DlnaSettings;
@@ -235,7 +236,7 @@ public class BusinessMannager {
     /********************User manager Data end************************/
     
     /********************Statistics manager Data start**********************/
-    public UsageSettingsResult getUsageSettings() {
+    public UsageSettingModel getUsageSettings() {
 		return m_statisticsManager.getUsageSettings();
 	}
     

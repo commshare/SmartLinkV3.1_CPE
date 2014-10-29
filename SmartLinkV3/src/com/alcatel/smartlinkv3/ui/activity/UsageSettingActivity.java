@@ -2,6 +2,8 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -252,6 +254,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			this.finish();
 			break;
 			
+		case R.id.enable_roaming_btn:
+			//onBtnUsageAutoDisconnectClick();
+			break;
+			
 		case R.id.enable_auto_disconnected_btn:
 			onBtnUsageAutoDisconnectClick();
 			break;
@@ -259,7 +265,8 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		case R.id.enable_time_limit_btn:
 			onBtnTimeLimitDisconnectClick();
 			break;
-
+		default:
+			break;
 		}
 		
 	}
@@ -320,7 +327,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private void showSettingBilling() {
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		if (simState.m_SIMState == SIMState.Accessable) {
-			UsageSettingsResult statistic = BusinessMannager.getInstance()
+			UsageSettingModel statistic = BusinessMannager.getInstance()
 					.getUsageSettings();
 
 			m_billingValue.setEnabled(true);
@@ -350,7 +357,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			if (usage > BILLING_MAX_VALUE) {
 				usage = BILLING_MAX_VALUE;
 			}
-			UsageSettingsResult staticSetting = BusinessMannager.getInstance().getUsageSettings();
+			UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
 			if(usage == staticSetting.HBillingDay)
 				return;
 			
@@ -415,7 +422,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private void showSettingMonthly() {
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		if (simState.m_SIMState == SIMState.Accessable) {
-			UsageSettingsResult statistic = BusinessMannager.getInstance()
+			UsageSettingModel statistic = BusinessMannager.getInstance()
 					.getUsageSettings();
 
 			m_monthlyValue.setEnabled(true);
@@ -446,7 +453,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			if (usage > MONTHLY_MAX_VALUE) {
 				usage = MONTHLY_MAX_VALUE;
 			}
-			UsageSettingsResult staticSetting = BusinessMannager.getInstance().getUsageSettings();
+			UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
 			if(usage == staticSetting.HMonthlyPlan)
 				return;
 			
@@ -472,7 +479,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	
 	
 	private void showTimeLimitInfo() {
-		UsageSettingsResult setting = BusinessMannager.getInstance()
+		UsageSettingModel setting = BusinessMannager.getInstance()
 				.getUsageSettings();
 		if (!(m_timeLimit.isInputMethodTarget() == true || this.m_bIsTimeLimitEdit == true)) {
 			if (setting.HTimeLimitTimes > 0) {
@@ -488,7 +495,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			if(m_bIsTimeLimitStatusEdit == false) {
 				if (setting.HTimeLimitTimes > 0) {
 					m_timeLimitDisconnectBtn.setEnabled(true);
-					if (setting.HTimeLimitFlag == 1) {
+					if (setting.HTimeLimitFlag == OVER_TIME_STATE.Enable) {
 						// off
 						m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
 					} else {
@@ -565,7 +572,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			lTime = MAX_DISCONNECT_TIME_VALUE;
 		}
 		
-		UsageSettingsResult staticSetting = BusinessMannager.getInstance().getUsageSettings();
+		UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
 		if(lTime == staticSetting.HTimeLimitTimes)
 			return;
 
@@ -580,11 +587,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		if (simState.m_SIMState == SIMState.Accessable) {
-			UsageSettingsResult usageSetting = BusinessMannager.getInstance().getUsageSettings();
+			UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
 			if(m_bIsAutoDisconnectedEdit == false) {
 				if (usageSetting.HMonthlyPlan > 0) {
 					m_usageAutoDisconnectBtn.setEnabled(true);
-					if (usageSetting.HAutoDisconnFlag == 1) {
+					if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable) {
 						// off
 						m_usageAutoDisconnectBtn
 								.setBackgroundResource(R.drawable.switch_off);
@@ -609,10 +616,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	
 	private void onBtnUsageAutoDisconnectClick() {
 		m_bIsAutoDisconnectedEdit = true;
-		UsageSettingsResult usageSetting = BusinessMannager.getInstance()
+		UsageSettingModel usageSetting = BusinessMannager.getInstance()
 				.getUsageSettings();
 		DataValue data = new DataValue();
-		if (usageSetting.HAutoDisconnFlag == 1) {
+		if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable) {
 			m_usageAutoDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_on);
 			data.addParam("auto_disconn_flag", 0);
@@ -629,10 +636,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	
 	private void onBtnTimeLimitDisconnectClick() {
 		m_bIsTimeLimitStatusEdit = true;
-		UsageSettingsResult usageSetting = BusinessMannager.getInstance()
+		UsageSettingModel usageSetting = BusinessMannager.getInstance()
 				.getUsageSettings();
 		DataValue data = new DataValue();
-		if (usageSetting.HTimeLimitFlag == 1) {
+		if (usageSetting.HTimeLimitFlag == OVER_TIME_STATE.Enable) {
 			m_timeLimitDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_on);
 			data.addParam("over_time_status", OVER_TIME_STATE.Enable);
