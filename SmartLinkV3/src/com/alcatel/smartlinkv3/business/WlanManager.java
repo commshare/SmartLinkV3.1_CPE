@@ -62,6 +62,7 @@ public class WlanManager extends BaseManager {
 			if (bCPEWifiConnected == true) {
 				startGetHostNumTask();
 				getWlanSupportMode(null);
+				getWlanSetting(null);
 			}
 		}
 	}
@@ -104,6 +105,9 @@ public class WlanManager extends BaseManager {
 		return WlanFrequency.build(m_settings.WlanAPMode);
 	}
 
+	public WlanSettingResult getWlanSettingResult(){
+		return m_settings;
+	}
 	private void getInfoByWansetting() {
 		WlanFrequency wf = WlanFrequency.build(m_settings.WlanAPMode);
 		switch (wf) {

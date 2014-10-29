@@ -24,6 +24,7 @@ import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
+import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
@@ -321,6 +322,10 @@ public class BusinessMannager {
 	
 	public WlanSupportMode getWlanSupportMode(){
 		return m_wlanManager.getCurSupportWlanMode();
+	}
+	
+	public WlanSettingResult getWlanSettingResult(){
+		return m_wlanManager.getWlanSettingResult();
 	}
     /********************wlan manager method end************************/      
     

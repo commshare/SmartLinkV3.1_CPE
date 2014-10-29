@@ -1,6 +1,9 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
+import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -87,6 +90,10 @@ public class SettingWifiActivity extends Activity implements OnClickListener{
 		}else {
 			m_rg_wifi_mode.setVisibility(View.GONE);
 		}
+		
+		if (WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
+			m_rg_wifi_mode.setVisibility(View.GONE);
+		}
 
 	}
 
@@ -147,5 +154,9 @@ public class SettingWifiActivity extends Activity implements OnClickListener{
 			m_rb_2point4G_wifi.setEnabled(false);
 			m_rb_5G_wifi.setEnabled(false);
 		}
+	}
+	
+	private void setWlanSettingItems(){
+		WlanSettingResult result = BusinessMannager.getInstance().getWlanSettingResult();
 	}
 }
