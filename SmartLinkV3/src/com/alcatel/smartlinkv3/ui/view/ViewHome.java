@@ -1,9 +1,5 @@
 package com.alcatel.smartlinkv3.ui.view;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
@@ -17,7 +13,6 @@ import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
-import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
@@ -25,22 +20,18 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
-import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,15 +43,22 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private static final String TAG = ViewHome.class.getSimpleName();
 	
 	/*frame_connect  start*/
-	private Button m_connectBtn = null;
-	private Button m_unlockSimBtn = null;
+	
+	
 	private ProgressBar m_connectWaiting = null;
 	
+	private FrameLayout m_connectLayout = null;
 	private TextView m_connectToNetworkTextView;
 	private TextView m_connectToLabel;
+	private Button m_connectBtn = null;
+	
+	private LinearLayout m_simcardlockedLayout = null;
+	private TextView m_simcardlockedTextView;
+	private Button m_unlockSimBtn = null;
+	
+	private LinearLayout m_nosimcardLayout = null;
 	private TextView m_simOrServiceTextView = null;
-	private LinearLayout m_simOrServiceStateLayout = null;
-	private LinearLayout m_connectToLayout = null;
+	
 	
 	private boolean m_bConnectPressd = false;
 	private boolean m_bConnectReturn = false;
@@ -160,15 +158,19 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	protected void init() {
 		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_home,null);
 		
-		m_connectBtn = (Button) m_view.findViewById(R.id.connect_button);
-		m_connectBtn.setOnClickListener(this);
+		m_connectLayout = (FrameLayout) m_view.findViewById(R.id.connect_layout);
 		m_connectToNetworkTextView = (TextView) m_view.findViewById(R.id.connect_network);
 		m_connectToLabel = (TextView) m_view.findViewById(R.id.connect_label);
-		m_connectToLayout = (LinearLayout) m_view.findViewById(R.id.connect_to_layout);
+		m_connectBtn = (Button) m_view.findViewById(R.id.connect_button);
+		m_connectBtn.setOnClickListener(this);
 		
+		m_simcardlockedLayout = (LinearLayout) m_view.findViewById(R.id.sim_card_locked_layout);
+		m_simcardlockedTextView = (TextView) m_view.findViewById(R.id.sim_card_locked_state);
 		m_unlockSimBtn = (Button) m_view.findViewById(R.id.unlock_sim_button);
-		m_simOrServiceTextView = (TextView) m_view.findViewById(R.id.connect_label);
-		m_simOrServiceStateLayout = (LinearLayout) m_view.findViewById(R.id.sim_or_service_layout);
+		m_unlockSimBtn.setOnClickListener(this);
+		
+		m_nosimcardLayout = (LinearLayout) m_view.findViewById(R.id.no_sim_card_layout);
+		m_simOrServiceTextView = (TextView) m_view.findViewById(R.id.no_sim_card_state);
 		
 		m_connectWaiting = (ProgressBar) m_view.findViewById(R.id.waiting_progress);
 		
@@ -353,10 +355,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				nStatusId = R.string.Home_unknown;
 				m_unlockSimBtn.setVisibility(View.GONE);
 			}
-
 			m_simOrServiceTextView.setText(nStatusId);
-			m_simOrServiceStateLayout.setVisibility(View.VISIBLE);
-			m_connectToLayout.setVisibility(View.GONE);
+			m_nosimcardLayout.setVisibility(View.VISIBLE);
+			m_connectLayout.setVisibility(View.GONE);
 			return;
 		}
 
@@ -366,21 +367,21 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		if(curNetwork.m_NetworkType == NetworkType.No_service) {
 			m_connectWaiting.setVisibility(View.GONE);
 			m_simOrServiceTextView.setText(R.string.home_no_service);
-			m_simOrServiceStateLayout.setVisibility(View.VISIBLE);
-			m_connectToLayout.setVisibility(View.GONE);
+			m_nosimcardLayout.setVisibility(View.VISIBLE);
+			m_connectLayout.setVisibility(View.GONE);
 			return;
 		}
 		
 		if(curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
 			m_connectWaiting.setVisibility(View.GONE);
 			m_simOrServiceTextView.setText(R.string.home_initializing);
-			m_simOrServiceStateLayout.setVisibility(View.VISIBLE);
-			m_connectToLayout.setVisibility(View.GONE);
+			m_nosimcardLayout.setVisibility(View.VISIBLE);
+			m_connectLayout.setVisibility(View.GONE);
 			return;
 		}
 
-		m_simOrServiceStateLayout.setVisibility(View.GONE);
-		m_connectToLayout.setVisibility(View.VISIBLE);
+		m_nosimcardLayout.setVisibility(View.GONE);
+		m_connectLayout.setVisibility(View.VISIBLE);
 		m_connectToNetworkTextView.setText(curNetwork.m_strNetworkName);
 		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
 		if (m_bConnectPressd == false) {
