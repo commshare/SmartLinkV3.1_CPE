@@ -19,12 +19,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/ib_title_back"
         android:gravity="center"
         android:text="@string/setting_titlebar_text_back"
         android:textColor="@color/color_white"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tv_title_title"
@@ -34,7 +34,7 @@
         android:gravity="center"
         android:text="@string/setting_wifi"
         android:textColor="@color/color_white"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <FrameLayout
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:text="@string/setting_titlebar_text_edit"
             android:textColor="@color/color_white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
         
         <TextView
             android:id="@+id/tv_titlebar_done"
@@ -62,7 +62,7 @@
             android:gravity="center"
             android:text="@string/setting_titlebar_text_done"
             android:textColor="@color/color_white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:visibility="gone" />
     </FrameLayout>
 
