@@ -23,6 +23,7 @@ public class SharingManager extends BaseManager {
 	private ServiceState m_ftpState = ServiceState.Disabled;
 
 	private DlnaSettings m_dlnaSettings = new DlnaSettings();
+	
 	private SambaSettings m_sambaSettings = new SambaSettings();
 	private FtpSettings m_ftpSettings = new FtpSettings();
 
@@ -89,7 +90,7 @@ public class SharingManager extends BaseManager {
 
 	// Set service state
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void setServiceState(DataValue data) {
+/*	public void setServiceState(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Services",
 				"SetServiceState") != true)
 			return;
@@ -130,11 +131,11 @@ public class SharingManager extends BaseManager {
 								m_context.sendBroadcast(megIntent);
 							}
 						}));
-	}
+	}*/
 
 	// get service state
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void getServiceState(DataValue data) {
+/*	public void getServiceState(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Services",
 				"GetServiceState") != true)
 			return;
@@ -180,11 +181,11 @@ public class SharingManager extends BaseManager {
 								m_context.sendBroadcast(megIntent);
 							}
 						}));
-	}
+	}*/
 
 	// SetSambaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void setSambaSetting(DataValue data) {
+/*	public void setSambaSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Services",
 				"Samba.SetSettings") != true)
 			return;
@@ -225,11 +226,11 @@ public class SharingManager extends BaseManager {
 								m_context.sendBroadcast(megIntent);
 							}
 						}));
-	}
+	}*/
 
 	// GetSambaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void getSambaSetting(DataValue data) {
+/*	public void getSambaSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Services",
 				"Samba.GetSettings") != true)
 			return;
@@ -263,19 +264,19 @@ public class SharingManager extends BaseManager {
 								m_context.sendBroadcast(megIntent);
 							}
 						}));
-	}
+	}*/
 
 	// SetDlnaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setDlnaSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Services",
-				"DLNA.SetSettings") != true)
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"SetDLNASettings") != true)
 			return;
 
-		int nDevType = (Integer) data.getParamByKey("DevType");
-
+		int status = (Integer) data.getParamByKey("DlnaStatus");
+		String name = (String) data.getParamByKey("DlnaName");
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpService.SetDlnaSetting("10.8", nDevType,
+				new HttpService.SetDlnaSetting("14.2", status, name,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -294,7 +295,7 @@ public class SharingManager extends BaseManager {
 								}
 
 								Intent megIntent = new Intent(
-										MessageUti.SERVICE_SET_DLNA_SETTING_REQUSET);
+										MessageUti.SHARING_SET_DLNA_SETTING_REQUSET);
 								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
 										ret);
 								megIntent.putExtra(
@@ -308,12 +309,12 @@ public class SharingManager extends BaseManager {
 	// GetDlnaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void getDlnaSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Services",
-				"DLNA.GetSettings") != true)
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") != true)
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpService.GetDlnaSetting("10.7",
+				new HttpService.GetDlnaSetting("14.1",
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -332,7 +333,7 @@ public class SharingManager extends BaseManager {
 									m_dlnaSettings.clear();
 								}
 								Intent megIntent = new Intent(
-										MessageUti.SERVICE_GET_DLNA_SETTING_REQUSET);
+										MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
 								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
 										ret);
 								megIntent.putExtra(
@@ -345,7 +346,7 @@ public class SharingManager extends BaseManager {
 
 	// SetFtpSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void setFtpSetting(DataValue data) {
+/*	public void setFtpSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Services",
 				"FTP.SetSettings") != true)
 			return;
@@ -386,11 +387,11 @@ public class SharingManager extends BaseManager {
 								m_context.sendBroadcast(megIntent);
 							}
 						}));
-	}
+	}*/
 
 	// GetFtpSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void getFtpSetting(DataValue data) {
+/*	public void getFtpSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Services",
 				"FTP.GetSettings") != true)
 			return;
@@ -425,5 +426,5 @@ public class SharingManager extends BaseManager {
 							}
 						}));
 	}
-
+*/
 }

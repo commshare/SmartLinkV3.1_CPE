@@ -254,13 +254,14 @@ public class HttpService {
 	/******************** set DLNA setting **************************************************************************************/
 	public static class SetDlnaSetting extends BaseRequest {
 
-		private int m_nDevType = 0;		
+		private int m_status = 0;
+		private String m_name;
 
-		public SetDlnaSetting(String strId, int nDevType, IHttpFinishListener callback) {
+		public SetDlnaSetting(String strId, int status, String name, IHttpFinishListener callback) {
 			super(callback);
 			m_strId = strId;
-			m_nDevType = nDevType;			
-
+			m_status = status;
+			m_name = name;	
 		}
 
 		@Override
@@ -269,11 +270,11 @@ public class HttpService {
 				m_requestParamJson.put(ConstValue.JSON_RPC,
 						ConstValue.JSON_RPC_VERSION);
 				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"Services.DLNA.SetSettings");
+						"SetDLNASettings");
 
 				JSONObject settings = new JSONObject();
-				settings.put("DevType", m_nDevType);
-				
+				settings.put("DlnaStatus", m_status);
+				settings.put("DlnaName", m_name);
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
@@ -322,7 +323,7 @@ public class HttpService {
 				m_requestParamJson.put(ConstValue.JSON_RPC,
 						ConstValue.JSON_RPC_VERSION);
 				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"Services.DLNA.GetSettings");			
+						"GetDLNASettings");			
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, null);
 				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);

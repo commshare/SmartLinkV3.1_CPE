@@ -112,14 +112,8 @@ public class MessageUti {
 	/**************************Wlan message end*********************************************************************************/
 	
 	/**************************Sharing message start*********************************************************************************/
-	public static String SERVICE_SET_SERVICE_STATE_REQUSET = "com.alcatel.smartlinkv3.business.service.setservicestate";
-	public static String SERVICE_GET_SERVICE_STATE_REQUSET = "com.alcatel.smartlinkv3.business.service.getservicestate";
-	public static String SERVICE_SET_SAMBA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.setsambasetting";
-	public static String SERVICE_GET_SAMBA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.getsambasetting";	
-	public static String SERVICE_SET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.setdlnasetting";
-	public static String SERVICE_GET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.getdlnasetting";	
-	public static String SERVICE_SET_FTP_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.setftpsetting";
-	public static String SERVICE_GET_FTP_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.getftpsetting";
+	public static String SHARING_GET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getdlnasetting";	
+	public static String SHARING_SET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setdlnasetting";	
 	/**************************Sharing message end*********************************************************************************/
 	
 	/**************************LAN message start*******************************************************************************/
@@ -203,15 +197,9 @@ public class MessageUti {
 		httpMethods.put(WAN_DISCONNECT_REQUSET, new HttpMethodUti(WanManager.class, "disconnect"));		
 		/********************WAN method end**********************/
 		
-		/********************Sharing method start**********************/	
-		httpMethods.put(SERVICE_SET_SERVICE_STATE_REQUSET, new HttpMethodUti(SharingManager.class, "setServiceState"));	
-		httpMethods.put(SERVICE_GET_SERVICE_STATE_REQUSET, new HttpMethodUti(SharingManager.class, "getServiceState"));	
-		httpMethods.put(SERVICE_SET_SAMBA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setSambaSetting"));	
-		httpMethods.put(SERVICE_GET_SAMBA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getSambaSetting"));	
-		httpMethods.put(SERVICE_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setDlnaSetting"));	
-		httpMethods.put(SERVICE_GET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getDlnaSetting"));	
-		httpMethods.put(SERVICE_SET_FTP_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setFtpSetting"));	
-		httpMethods.put(SERVICE_GET_FTP_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getFtpSetting"));		
+		/********************Sharing method start**********************/		
+		httpMethods.put(SHARING_GET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getDlnaSetting"));	
+		httpMethods.put(SHARING_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setDlnaSetting"));		
 		/********************Sharing method end**********************/			
 		
 		/********************WLAN method start**********************/

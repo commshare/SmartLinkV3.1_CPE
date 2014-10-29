@@ -19,7 +19,7 @@ public class StorageMonitor {
 	private static class StorageReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-
+/*
 		    if (intent.getAction().equals(
 					MessageUti.SERVICE_GET_SERVICE_STATE_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
@@ -47,17 +47,17 @@ public class StorageMonitor {
 						backToMainStorageActivity(context);
 					}										
 				}			
-			}
+			}*/
 		}
 	}
 	
 	public static void registerReceiver(Context context)
 	{	
-		context.registerReceiver(m_receiver, new IntentFilter(
+	/*	context.registerReceiver(m_receiver, new IntentFilter(
 				MessageUti.SERVICE_GET_SERVICE_STATE_REQUSET));
 	
 		context.registerReceiver(m_receiver, new IntentFilter(
-				MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET));
+				MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET));*/
 	}	
 	
 	public static void unregisterReceiver(Context context)
@@ -66,10 +66,10 @@ public class StorageMonitor {
 	}	
 	
 	public static void getSambaState() {	
-		DataValue samba = new DataValue();
+	/*	DataValue samba = new DataValue();
 		samba.addParam("ServiceType", ServiceType.Samba.ordinal());
 		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.SERVICE_GET_SERVICE_STATE_REQUSET, samba);
+				MessageUti.SERVICE_GET_SERVICE_STATE_REQUSET, samba);*/
 	}
 	
 	public static void backToMainStorageActivity(Context context)

@@ -4,14 +4,13 @@ import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class DlnaSettings extends BaseResult{
 
-	public String FriendlyName = new String();
-	public String MediaDirectories = new String();	
-	public int DevType = 0;
+	
+	public int DlnaStatus = 0; // 0: disable; 1: enable
+	public String DlnaName = new String();
 	
 	@Override
 	public void clear() {
-		FriendlyName = "";
-		MediaDirectories = "";		
-		DevType = 0;		
+		DlnaStatus = 0;
+		DlnaName = "";		
 	}
 }

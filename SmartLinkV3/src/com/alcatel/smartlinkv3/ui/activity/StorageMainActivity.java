@@ -85,7 +85,7 @@ public class StorageMainActivity extends BaseActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			if (intent.getAction().equals(
+/*			if (intent.getAction().equals(
 					MessageUti.SERVICE_SET_SERVICE_STATE_REQUSET)) {
 
 				m_progressWaiting.setVisibility(View.GONE);
@@ -123,13 +123,13 @@ public class StorageMainActivity extends BaseActivity implements
 					getSambaSettings();
 				}
 				updateUI();
-			}
+			}*/
 		}
 	}
 
 	private void registerReceiver() {
 		// advanced
-		this.registerReceiver(m_receiver, new IntentFilter(
+	/*	this.registerReceiver(m_receiver, new IntentFilter(
 				MessageUti.SERVICE_SET_SERVICE_STATE_REQUSET));
 
 		this.registerReceiver(m_receiver, new IntentFilter(
@@ -139,7 +139,7 @@ public class StorageMainActivity extends BaseActivity implements
 				MessageUti.SERVICE_GET_SAMBA_SETTING_REQUSET));
 
 		this.registerReceiver(m_receiver, new IntentFilter(
-				MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET));
+				MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET));*/
 	}
 
 	@Override
@@ -311,24 +311,24 @@ public class StorageMainActivity extends BaseActivity implements
 	}
 
 	private void enableSamba() {
-		m_progressWaiting.setVisibility(View.VISIBLE);
+	/*	m_progressWaiting.setVisibility(View.VISIBLE);
 		DataValue data = new DataValue();
 		data.addParam("ServiceType", ServiceType.Samba.ordinal());
 		data.addParam("State", ServiceState.Enabled.ordinal());
 		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.SERVICE_SET_SERVICE_STATE_REQUSET, data);
+				MessageUti.SERVICE_SET_SERVICE_STATE_REQUSET, data);*/
 	}
 
 	private void getSambaState() {
-		DataValue samba = new DataValue();
+	/*	DataValue samba = new DataValue();
 		samba.addParam("ServiceType", ServiceType.Samba.ordinal());
 		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.SERVICE_GET_SERVICE_STATE_REQUSET, samba);
+				MessageUti.SERVICE_GET_SERVICE_STATE_REQUSET, samba);*/
 
 	}
 
 	private void getSambaSettings() {
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.SERVICE_GET_SAMBA_SETTING_REQUSET, null);
+		/*BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.SERVICE_GET_SAMBA_SETTING_REQUSET, null);*/
 	}
 }
