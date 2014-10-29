@@ -16,7 +16,7 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 import android.content.Context;
 import android.content.Intent;
 
-public class ServiceManager extends BaseManager {
+public class SharingManager extends BaseManager {
 
 	private ServiceState m_dlnaState = ServiceState.Disabled;
 	private ServiceState m_sambaState = ServiceState.Disabled;
@@ -31,7 +31,7 @@ public class ServiceManager extends BaseManager {
 
 	}
 
-	public ServiceManager(Context context) {
+	public SharingManager(Context context) {
 		super(context);
 	}
 

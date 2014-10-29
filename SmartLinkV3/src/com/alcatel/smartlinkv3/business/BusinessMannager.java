@@ -59,7 +59,7 @@ public class BusinessMannager {
 	private SMSManager m_smsManager = null;
 	private WanManager m_wanManager = null;
 	private WlanManager m_wlanManager = null;
-	private ServiceManager m_serviceManager = null;
+	private SharingManager m_serviceManager = null;
 	private PowerManager m_powerManager=null;
 	private LanManager m_lanManager=null;
 	private UpdateManager m_updateManager=null;
@@ -96,7 +96,7 @@ public class BusinessMannager {
     	m_smsManager = new SMSManager(m_context);
     	m_wanManager = new WanManager(m_context);
     	m_wlanManager = new WlanManager(m_context);
-    	m_serviceManager = new ServiceManager(m_context);
+    	m_serviceManager = new SharingManager(m_context);
     	
     	m_updateManager = new UpdateManager(m_context);
     	m_lanManager = new LanManager(m_context);
@@ -178,7 +178,7 @@ public class BusinessMannager {
     			}
     			
     			//Service Manager
-    			if(ServiceManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
+    			if(SharingManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
     				Method method = m_serviceManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
     				method.invoke(m_serviceManager, data);
     			}

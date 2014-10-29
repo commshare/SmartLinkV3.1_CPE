@@ -6,7 +6,7 @@ import java.util.Map;
 import com.alcatel.smartlinkv3.business.PowerManager;
 import com.alcatel.smartlinkv3.business.LanManager;
 import com.alcatel.smartlinkv3.business.SMSManager;
-import com.alcatel.smartlinkv3.business.ServiceManager;
+import com.alcatel.smartlinkv3.business.SharingManager;
 import com.alcatel.smartlinkv3.business.SimManager;
 import com.alcatel.smartlinkv3.business.StatisticsManager;
 import com.alcatel.smartlinkv3.business.SystemManager;
@@ -17,20 +17,20 @@ import com.alcatel.smartlinkv3.business.WlanManager;
 
 public class MessageUti {
 	//response result
-	public static String RESPONSE_RESULT = "com.alcatel.cpe.business.response_result";
-	public static String RESPONSE_ERROR_CODE = "com.alcatel.cpe.business.response_error_code";
-	public static String RESPONSE_ERROR_MESSAGE = "com.alcatel.cpe.business.response_error_message";
+	public static String RESPONSE_RESULT = "com.alcatel.smartlinkv3.business.response_result";
+	public static String RESPONSE_ERROR_CODE = "com.alcatel.smartlinkv3.business.response_error_code";
+	public static String RESPONSE_ERROR_MESSAGE = "com.alcatel.smartlinkv3.business.response_error_message";
 	/*************************************Pushed to the application layer message. start***********************************************************/
-	public static String CPE_WIFI_CONNECT_CHANGE = "com.alcatel.cpe.business.cpewificonnectchange";
-	public static String CPE_BUSINESS_STATUS_CHANGE = "com.alcatel.cpe.business.cpebusinessstatuschange";
-	public static String CPE_NETWORK_CONNECT_CHANGE = "com.alcatel.cpe.business.cpenetworkconnectchange";
-	public static String CPE_CHANGED_BILLING_MONTH = "com.alcatel.cpe.business.cpebillingmonthchanged";
-	public static String CPE_CHANGED_ALERT_SWITCH = "com.alcatel.cpe.business.cpealertswitchchanged";
-	public static String CPE_GET_MM100_ACCESS_POINTS_LIST_START = "com.alcatel.cpe.business.wlan.getmm100accesspointsliststart";
+	public static String CPE_WIFI_CONNECT_CHANGE = "com.alcatel.smartlinkv3.business.cpewificonnectchange";
+	public static String CPE_BUSINESS_STATUS_CHANGE = "com.alcatel.smartlinkv3.business.cpebusinessstatuschange";
+	public static String CPE_NETWORK_CONNECT_CHANGE = "com.alcatel.smartlinkv3.business.cpenetworkconnectchange";
+	public static String CPE_CHANGED_BILLING_MONTH = "com.alcatel.smartlinkv3.business.cpebillingmonthchanged";
+	public static String CPE_CHANGED_ALERT_SWITCH = "com.alcatel.smartlinkv3.business.cpealertswitchchanged";
+	public static String CPE_GET_MM100_ACCESS_POINTS_LIST_START = "com.alcatel.smartlinkv3.business.wlan.getmm100accesspointsliststart";
 	
 	/**************************User message start*********************************************************************************/
-	public static String USER_LOGIN_REQUEST = "com.alcatel.cpe.business.user.login";
-	public static String USER_LOGOUT_REQUEST = "com.alcatel.cpe.business.user.logout";
+	public static String USER_LOGIN_REQUEST = "com.alcatel.smartlinkv3.business.user.login";
+	public static String USER_LOGOUT_REQUEST = "com.alcatel.smartlinkv3.business.user.logout";
 	/**************************User message end*********************************************************************************/
 	
 	/**************************System message start*********************************************************************************/
@@ -41,7 +41,7 @@ public class MessageUti {
 	public static String SYSTEM_GET_SYSTEM_STATUS_REQUSET =
 			"com.alcatel.smartlinkv3.business.system.getsystemstatus";
 	public static String SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET =
-			"com.alcatel.cpe.business.system.getmm100systeminfo";
+			"com.alcatel.smartlinkv3.business.system.getmm100systeminfo";
 	public static String SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET = 
 			"com.alcatel.smartlinkv3.business.system.getexternalstoragedevice";
 	
@@ -56,30 +56,30 @@ public class MessageUti {
 	/**************************System message end*********************************************************************************/
 	
 	/**************************Statistics message start*********************************************************************************/
-	public static String STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET = "com.alcatel.cpe.business.statistics.getusagesettings";
-	public static String STATISTICS_SET_BILLING_DAY_REQUSET = "com.alcatel.cpe.business.statistics.setbillingday";
-	public static String STATISTICS_SET_MONTHLY_PLAN_REQUSET = "com.alcatel.cpe.business.statistics.setmonthlyplan";
-	public static String STATISTICS_SET_USED_DATA_REQUSET = "com.alcatel.cpe.business.statistics.setuseddata";
-	public static String STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET = "com.alcatel.cpe.business.statistics.settimelimitflag";
-	public static String STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET = "com.alcatel.cpe.business.statistics.settimelimittimes";
-	public static String STATISTICS_SET_USED_TIMES_REQUSET = "com.alcatel.cpe.business.statistics.setusedtimes";
-	public static String STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET = "com.alcatel.cpe.business.statistics.setautodisconnflag";
-	public static String STATISTICS_CLEAR_ALL_RECORDS_REQUSET = "com.alcatel.cpe.business.statistics.clearallrecords";
-	public static String STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET = "com.alcatel.cpe.business.statistics.getUsageRecord";
+	public static String STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.statistics.getusagesettings";
+	public static String STATISTICS_SET_BILLING_DAY_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setbillingday";
+	public static String STATISTICS_SET_MONTHLY_PLAN_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setmonthlyplan";
+	public static String STATISTICS_SET_USED_DATA_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setuseddata";
+	public static String STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET = "com.alcatel.smartlinkv3.business.statistics.settimelimitflag";
+	public static String STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET = "com.alcatel.smartlinkv3.business.statistics.settimelimittimes";
+	public static String STATISTICS_SET_USED_TIMES_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setusedtimes";
+	public static String STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setautodisconnflag";
+	public static String STATISTICS_CLEAR_ALL_RECORDS_REQUSET = "com.alcatel.smartlinkv3.business.statistics.clearallrecords";
+	public static String STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.statistics.getUsageRecord";
 	/**************************Statistics message end*********************************************************************************/
 	
 	/**************************Sim message start*********************************************************************************/
-	public static String SIM_GET_SIM_STATUS_ROLL_REQUSET = "com.alcatel.cpe.business.sim.getsimstatus";
-	public static String SIM_UNLOCK_PIN_REQUEST = "com.alcatel.cpe.business.sim.unlockpin";
-	public static String SIM_UNLOCK_PUK_REQUEST = "com.alcatel.cpe.business.sim.unlockpuk";
-	public static String SIM_CHANGE_PIN_REQUEST = "com.alcatel.cpe.business.sim.changepin";
-	public static String SIM_CHANGE_PIN_STATE_REQUEST = "com.alcatel.cpe.business.sim.changepinstate";
-	public static String SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST = "com.alcatel.cpe.business.sim.getautopinstate";
-	public static String SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST = "com.alcatel.cpe.business.sim.setautopinstate";
+	public static String SIM_GET_SIM_STATUS_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.sim.getsimstatus";
+	public static String SIM_UNLOCK_PIN_REQUEST = "com.alcatel.smartlinkv3.business.sim.unlockpin";
+	public static String SIM_UNLOCK_PUK_REQUEST = "com.alcatel.smartlinkv3.business.sim.unlockpuk";
+	public static String SIM_CHANGE_PIN_REQUEST = "com.alcatel.smartlinkv3.business.sim.changepin";
+	public static String SIM_CHANGE_PIN_STATE_REQUEST = "com.alcatel.smartlinkv3.business.sim.changepinstate";
+	public static String SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST = "com.alcatel.smartlinkv3.business.sim.getautopinstate";
+	public static String SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST = "com.alcatel.smartlinkv3.business.sim.setautopinstate";
 	/**************************Sim message end*********************************************************************************/
 	
 	/**************************Network message start*********************************************************************************/
-	public static String NETWORK_GET_NETWORK_INFO_ROLL_REQUSET = "com.alcatel.cpe.business.network.getnetworkinfo";
+	public static String NETWORK_GET_NETWORK_INFO_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.network.getnetworkinfo";
 	/**************************Network message end*********************************************************************************/
 	
 	/**************************SMS message start*********************************************************************************/
@@ -87,40 +87,40 @@ public class MessageUti {
 	public static String SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.sms.getcontactlist";
 	public static String SMS_GET_SMS_CONTENT_LIST_REQUSET = "com.alcatel.smartlinkv3.business.sms.getSMSContentListRequest";
 	public static String SMS_DELETE_SMS_REQUSET = "com.alcatel.smartlinkv3.business.sms.deletesms";
-	public static String SMS_SEND_SMS_REQUSET = "com.alcatel.cpe.business.sms.sendsms";
-	public static String SMS_GET_SEND_STATUS_REQUSET = "com.alcatel.cpe.business.sms.getsendstatus";
+	public static String SMS_SEND_SMS_REQUSET = "com.alcatel.smartlinkv3.business.sms.sendsms";
+	public static String SMS_GET_SEND_STATUS_REQUSET = "com.alcatel.smartlinkv3.business.sms.getsendstatus";
 	/**************************SMS message end*********************************************************************************/
 	
 	/**************************Wan message start*********************************************************************************/
-	public static String WAN_GET_CONNECT_STATUS_ROLL_REQUSET = "com.alcatel.cpe.business.wan.getconnectstatus";
-	public static String WAN_CONNECT_REQUSET = "com.alcatel.cpe.business.wan.connect";
-	public static String WAN_DISCONNECT_REQUSET = "com.alcatel.cpe.business.wan.disconnect";
+	public static String WAN_GET_CONNECT_STATUS_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.wan.getconnectstatus";
+	public static String WAN_CONNECT_REQUSET = "com.alcatel.smartlinkv3.business.wan.connect";
+	public static String WAN_DISCONNECT_REQUSET = "com.alcatel.smartlinkv3.business.wan.disconnect";
 	/**************************Wan message end*********************************************************************************/
 	
 	/**************************Wlan message start*********************************************************************************/
-	public static String WLAN_GET_NUMBER_OF_HOST_ROLL_REQUSET = "com.alcatel.cpe.business.wlan.gethostnum";
-	public static String WLAN_GET_WLAN_SETTING_REQUSET = "com.alcatel.cpe.business.wlan.getwalnsetting";
-	public static String WLAN_SET_WLAN_SETTING_REQUSET = "com.alcatel.cpe.business.wlan.setwalnsetting";
-	public static String WLAN_GET_MM100_WLAN_SETTING_REQUSET = "com.alcatel.cpe.business.wlan.getmm100walnsetting";
-	public static String WLAN_GET_MM100_ACCESS_POINTS_LIST_REQUSET = "com.alcatel.cpe.business.wlan.getmm100accesspointslist";
-	public static String WLAN_GET_MM100_REMOTE_AP_REQUSET = "com.alcatel.cpe.business.wlan.getmm100remoteap";
-	public static String WLAN_SELECT_MM100_ACCESS_POINT_REQUSET = "com.alcatel.cpe.business.wlan.selectmm100accesspoint";
-	public static String WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET = "com.alcatel.cpe.business.wlan.dissconnectmm100clientpoint";
+	public static String WLAN_GET_NUMBER_OF_HOST_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.wlan.gethostnum";
+	public static String WLAN_GET_WLAN_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getwalnsetting";
+	public static String WLAN_SET_WLAN_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.wlan.setwalnsetting";
+	public static String WLAN_GET_MM100_WLAN_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getmm100walnsetting";
+	public static String WLAN_GET_MM100_ACCESS_POINTS_LIST_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getmm100accesspointslist";
+	public static String WLAN_GET_MM100_REMOTE_AP_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getmm100remoteap";
+	public static String WLAN_SELECT_MM100_ACCESS_POINT_REQUSET = "com.alcatel.smartlinkv3.business.wlan.selectmm100accesspoint";
+	public static String WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET = "com.alcatel.smartlinkv3.business.wlan.dissconnectmm100clientpoint";
 	
-	public static String WLAN_SET_WPS_PIN_REQUSET = "com.alcatel.cpe.business.wlan.SetWPSPin";
-	public static String WLAN_SET_WPS_PBC_REQUSET = "com.alcatel.cpe.business.wlan.SetWPSPbc";
+	public static String WLAN_SET_WPS_PIN_REQUSET = "com.alcatel.smartlinkv3.business.wlan.SetWPSPin";
+	public static String WLAN_SET_WPS_PBC_REQUSET = "com.alcatel.smartlinkv3.business.wlan.SetWPSPbc";
 	/**************************Wlan message end*********************************************************************************/
 	
-	/**************************Service message start*********************************************************************************/
-	public static String SERVICE_SET_SERVICE_STATE_REQUSET = "com.alcatel.cpe.business.service.setservicestate";
-	public static String SERVICE_GET_SERVICE_STATE_REQUSET = "com.alcatel.cpe.business.service.getservicestate";
-	public static String SERVICE_SET_SAMBA_SETTING_REQUSET = "com.alcatel.cpe.business.service.setsambasetting";
-	public static String SERVICE_GET_SAMBA_SETTING_REQUSET = "com.alcatel.cpe.business.service.getsambasetting";	
-	public static String SERVICE_SET_DLNA_SETTING_REQUSET = "com.alcatel.cpe.business.service.setdlnasetting";
-	public static String SERVICE_GET_DLNA_SETTING_REQUSET = "com.alcatel.cpe.business.service.getdlnasetting";	
-	public static String SERVICE_SET_FTP_SETTING_REQUSET = "com.alcatel.cpe.business.service.setftpsetting";
-	public static String SERVICE_GET_FTP_SETTING_REQUSET = "com.alcatel.cpe.business.service.getftpsetting";
-	/**************************Service message end*********************************************************************************/
+	/**************************Sharing message start*********************************************************************************/
+	public static String SERVICE_SET_SERVICE_STATE_REQUSET = "com.alcatel.smartlinkv3.business.service.setservicestate";
+	public static String SERVICE_GET_SERVICE_STATE_REQUSET = "com.alcatel.smartlinkv3.business.service.getservicestate";
+	public static String SERVICE_SET_SAMBA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.setsambasetting";
+	public static String SERVICE_GET_SAMBA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.getsambasetting";	
+	public static String SERVICE_SET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.setdlnasetting";
+	public static String SERVICE_GET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.getdlnasetting";	
+	public static String SERVICE_SET_FTP_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.setftpsetting";
+	public static String SERVICE_GET_FTP_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.service.getftpsetting";
+	/**************************Sharing message end*********************************************************************************/
 	
 	/**************************LAN message start*******************************************************************************/
 	public static String LAN_GET_LAN_SETTINGS=
@@ -203,16 +203,16 @@ public class MessageUti {
 		httpMethods.put(WAN_DISCONNECT_REQUSET, new HttpMethodUti(WanManager.class, "disconnect"));		
 		/********************WAN method end**********************/
 		
-		/********************service method start**********************/	
-		httpMethods.put(SERVICE_SET_SERVICE_STATE_REQUSET, new HttpMethodUti(ServiceManager.class, "setServiceState"));	
-		httpMethods.put(SERVICE_GET_SERVICE_STATE_REQUSET, new HttpMethodUti(ServiceManager.class, "getServiceState"));	
-		httpMethods.put(SERVICE_SET_SAMBA_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "setSambaSetting"));	
-		httpMethods.put(SERVICE_GET_SAMBA_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "getSambaSetting"));	
-		httpMethods.put(SERVICE_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "setDlnaSetting"));	
-		httpMethods.put(SERVICE_GET_DLNA_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "getDlnaSetting"));	
-		httpMethods.put(SERVICE_SET_FTP_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "setFtpSetting"));	
-		httpMethods.put(SERVICE_GET_FTP_SETTING_REQUSET, new HttpMethodUti(ServiceManager.class, "getFtpSetting"));		
-		/********************service method end**********************/			
+		/********************Sharing method start**********************/	
+		httpMethods.put(SERVICE_SET_SERVICE_STATE_REQUSET, new HttpMethodUti(SharingManager.class, "setServiceState"));	
+		httpMethods.put(SERVICE_GET_SERVICE_STATE_REQUSET, new HttpMethodUti(SharingManager.class, "getServiceState"));	
+		httpMethods.put(SERVICE_SET_SAMBA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setSambaSetting"));	
+		httpMethods.put(SERVICE_GET_SAMBA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getSambaSetting"));	
+		httpMethods.put(SERVICE_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setDlnaSetting"));	
+		httpMethods.put(SERVICE_GET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getDlnaSetting"));	
+		httpMethods.put(SERVICE_SET_FTP_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setFtpSetting"));	
+		httpMethods.put(SERVICE_GET_FTP_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getFtpSetting"));		
+		/********************Sharing method end**********************/			
 		
 		/********************WLAN method start**********************/
 		httpMethods.put(WLAN_GET_WLAN_SETTING_REQUSET, new HttpMethodUti(WlanManager.class, "getWlanSetting"));	
