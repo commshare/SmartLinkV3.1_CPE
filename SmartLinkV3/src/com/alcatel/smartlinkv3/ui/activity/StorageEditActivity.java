@@ -772,7 +772,7 @@ public class StorageEditActivity extends BaseActivity implements OnClickListener
 	}
 	
 	private void showSambaDirectoryLayout() {
-		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
+		String strRoot = "";//BusinessMannager.getInstance().getSambaSettings().AccessPath;
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
 		m_parentSmabaDirectory = FileUtils.addLastFileSeparator(m_parentSmabaDirectory);
@@ -811,7 +811,7 @@ public class StorageEditActivity extends BaseActivity implements OnClickListener
 	private void getSambaEditStorageListData() {
 		
 		HttpAccessLog.getInstance().writeLogToFile("StorageEditActivity getSambaStorageListData path: "+ m_curDirectory);	
-		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
+		String strRoot = "";//BusinessMannager.getInstance().getSambaSettings().AccessPath;
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
 		

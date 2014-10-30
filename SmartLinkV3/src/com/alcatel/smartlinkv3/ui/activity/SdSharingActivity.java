@@ -4,7 +4,6 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.ServiceType;
 import com.alcatel.smartlinkv3.ui.activity.StorageMainActivity;
 import com.alcatel.smartlinkv3.R;
 
@@ -48,6 +47,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		super.onResume();
 		registerReceiver();
 		getDlnaSettings();
+		getSDCardSpace();
 	}
 
 	@Override
@@ -63,12 +63,10 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-
-		Intent intent = null;
+	
 		switch (v.getId()) {
-
 		case R.id.layout_storage:
-			intent = new Intent(this, StorageMainActivity.class);
+			Intent intent = new Intent(this, StorageMainActivity.class);
 			startActivity(intent);
 			break;
 
@@ -116,6 +114,12 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 			m_btnDlna.setBackgroundResource(R.drawable.switch_on);
 		}
 	}
+	
+	private void getSDCardSpace()
+	{
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET, null);	
+	}
 
 	private void registerReceiver() {
 		m_sdSharingReceiver = new SdSharingReceiver();
@@ -125,6 +129,9 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
 				MessageUti.SHARING_SET_DLNA_SETTING_REQUSET));
+		
+		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
+				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET));		
 
 	}
 

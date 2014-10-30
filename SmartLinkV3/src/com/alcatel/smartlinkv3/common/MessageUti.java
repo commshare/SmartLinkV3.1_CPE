@@ -112,8 +112,11 @@ public class MessageUti {
 	/**************************Wlan message end*********************************************************************************/
 	
 	/**************************Sharing message start*********************************************************************************/
+	public static String SHARING_GET_SAMBA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getsambasetting";	
+	public static String SHARING_SET_SAMBA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setsambasetting";	
 	public static String SHARING_GET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getdlnasetting";	
 	public static String SHARING_SET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setdlnasetting";	
+	public static String SHARING_GET_SDCARD_SPACE_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getsdcardspace";	
 	/**************************Sharing message end*********************************************************************************/
 	
 	/**************************LAN message start*******************************************************************************/
@@ -197,9 +200,12 @@ public class MessageUti {
 		httpMethods.put(WAN_DISCONNECT_REQUSET, new HttpMethodUti(WanManager.class, "disconnect"));		
 		/********************WAN method end**********************/
 		
-		/********************Sharing method start**********************/		
+		/********************Sharing method start**********************/			
+		httpMethods.put(SHARING_GET_SAMBA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getSambaSetting"));	
+		httpMethods.put(SHARING_SET_SAMBA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setSambaSetting"));	
 		httpMethods.put(SHARING_GET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getDlnaSetting"));	
-		httpMethods.put(SHARING_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setDlnaSetting"));		
+		httpMethods.put(SHARING_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setDlnaSetting"));	
+		httpMethods.put(SHARING_GET_SDCARD_SPACE_REQUSET, new HttpMethodUti(SharingManager.class, "GetSDCardSpace"));
 		/********************Sharing method end**********************/			
 		
 		/********************WLAN method start**********************/

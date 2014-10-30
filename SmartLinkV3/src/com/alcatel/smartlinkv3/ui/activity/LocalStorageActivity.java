@@ -479,9 +479,9 @@ public class LocalStorageActivity extends BaseActivity implements
 			break;
 		case R.id.single_directorys:
 			if (m_flag.equalsIgnoreCase(FLAG_SAMBA)) {
-				m_curSambaDirectory = BusinessMannager.getInstance()
+/*				m_curSambaDirectory = BusinessMannager.getInstance()
 						.getSambaSettings().AccessPath;
-
+*/
 				m_curSambaDirectory = FileUtils
 						.addLastFileSeparator(m_curSambaDirectory);
 				getSambaStorageListData();
@@ -712,8 +712,8 @@ public class LocalStorageActivity extends BaseActivity implements
 	}
 
 	private void showSambaDirectoryLayout() {
-		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
-		strRoot = FileUtils.addLastFileSeparator(strRoot);
+		String strRoot = "";//BusinessMannager.getInstance().getSambaSettings().AccessPath;
+		//String strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curSambaDirectory = FileUtils.addLastFileSeparator(m_curSambaDirectory);
 		m_parentSmabaDirectory = FileUtils.addLastFileSeparator(m_parentSmabaDirectory);
 		boolean bIsRoot = false;
@@ -764,8 +764,8 @@ public class LocalStorageActivity extends BaseActivity implements
 
 	private void getSambaStorageListData() {	
 		HttpAccessLog.getInstance().writeLogToFile("LocalStorageActivity getSambaStorageListData path: "+ m_curSambaDirectory);	
-		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
-		strRoot = FileUtils.addLastFileSeparator(strRoot);
+		String strRoot = "";//BusinessMannager.getInstance().getSambaSettings().AccessPath;
+	//	strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curSambaDirectory = FileUtils.addLastFileSeparator(m_curSambaDirectory);
 		
 		if(m_curSambaDirectory.indexOf(strRoot) >= 0)

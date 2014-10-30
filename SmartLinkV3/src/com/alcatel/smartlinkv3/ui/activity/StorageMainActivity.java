@@ -59,10 +59,10 @@ public class StorageMainActivity extends BaseActivity implements
 				it.putExtra(LocalStorageActivity.FLAG_CURRENT_LOCATION,
 						LocalStorageActivity.FLAG_SAMBA);
 				
-				String strRoot = FileUtils.addLastFileSeparator(BusinessMannager.getInstance().getSambaSettings().AccessPath);
+	/*			String strRoot = FileUtils.addLastFileSeparator(BusinessMannager.getInstance().getSambaSettings().AccessPath);
 				it.putExtra(
 						LocalStorageActivity.CURRENT_DIRECTORY, strRoot);
-				StorageMainActivity.this.startActivity(it);
+				StorageMainActivity.this.startActivity(it);*/
 				
 				m_progressWaiting.setVisibility(View.GONE);				
 			    m_isSmabaLogining = false;	
@@ -242,11 +242,11 @@ public class StorageMainActivity extends BaseActivity implements
 			m_progressWaiting.setVisibility(View.VISIBLE);
 			if (FeatureVersionManager.getInstance().isSupportDevice(
 					FeatureVersionManager.VERSION_DEVICE_M100) == true) {	
-				
+			/*	
 				String name = BusinessMannager.getInstance().getSambaSettings().UserName;
 				String password = BusinessMannager.getInstance().getSambaSettings().Password;
 				SmbLoginTask task = new SmbLoginTask(name, password, m_smbLoginTaskHandler);
-				task.start();			
+				task.start();			*/
 			}
 			else
 			{

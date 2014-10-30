@@ -4,12 +4,12 @@ import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class SDCardSpace extends BaseResult{
 	
-	public long TotalSpace = 0;
-	public long UsedSpace = 0;
+	public String TotalSpace = new String();
+	public String UsedSpace = new String();
 	
 	@Override
 	public void clear() {
-		TotalSpace = 0;
-		UsedSpace = 0;		
+		TotalSpace = "";
+		UsedSpace = "";		
 	}
 }

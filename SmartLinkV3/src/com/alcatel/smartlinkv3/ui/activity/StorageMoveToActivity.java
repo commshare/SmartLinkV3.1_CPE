@@ -164,8 +164,8 @@ public class StorageMoveToActivity extends BaseActivity implements
 			m_curDirectory = Environment.getExternalStorageDirectory()
 					.getPath();
 		} else {
-			m_curDirectory = BusinessMannager.getInstance().getSambaSettings().AccessPath;
-			m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
+		/*	m_curDirectory = BusinessMannager.getInstance().getSambaSettings().AccessPath;
+			m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);*/
 		}
 		m_selectedFile = this.getIntent().getStringArrayListExtra(
 				StorageEditActivity.EDIT_SELECT_FILES);
@@ -261,8 +261,8 @@ public class StorageMoveToActivity extends BaseActivity implements
 			}
 			else
 			{			
-				m_curDirectory = BusinessMannager.getInstance()
-							.getSambaSettings().AccessPath;
+			/*	m_curDirectory = BusinessMannager.getInstance()
+							.getSambaSettings().AccessPath;*/
 				m_curDirectory = FileUtils
 							.addLastFileSeparator(m_curDirectory);
 					getSambaStorageListData();
@@ -612,7 +612,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 
 	private void getSambaStorageListData() {
 		
-		HttpAccessLog.getInstance().writeLogToFile("StorageMoveToActivity getSambaStorageListData path: "+ m_curDirectory);	
+		/*HttpAccessLog.getInstance().writeLogToFile("StorageMoveToActivity getSambaStorageListData path: "+ m_curDirectory);	
 		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
@@ -625,7 +625,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 		{
 			m_curDirectory = strRoot;
 		}		
-		
+		*/
 //		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
 //			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
 //		{
@@ -644,7 +644,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 	}
 
 	private void showSambaDirectoryLayout() {
-		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
+		String strRoot = "";// BusinessMannager.getInstance().getSambaSettings().AccessPath;
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
 		m_parentSmabaDirectory = FileUtils.addLastFileSeparator(m_parentSmabaDirectory);

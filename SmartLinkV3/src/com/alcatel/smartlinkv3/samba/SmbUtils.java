@@ -96,14 +96,14 @@ public class SmbUtils {
 		}
 	}
 
-	public static String trimSambaUrl(String path) {
+/*	public static String trimSambaUrl(String path) {
 		String strRes = path;
 		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
 		if (path.indexOf(strRoot) == 0) {
 			strRes = path.substring(strRoot.length() - 1);
 		}
 		return strRes;
-	}
+	}*/
 
 	public static boolean createDir(String path) {
 		boolean bRes = false;
