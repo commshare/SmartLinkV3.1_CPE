@@ -72,6 +72,16 @@
     <string name="setting_text_5G_wifi">5G WiFi</string>
     <string name="setting_text_ssid">SSID:</string>
     <string name="setting_text_passwrod">Password:</string>
+    <string name="setting_text_no_passwrod">No Password</string>
+    <string name="setting_wifi_password_security_tip">Security:</string>
+  	<string name="setting_wifi_password_wpa_encryption_tip">WPA encryption:</string>
+  	<string name="setting_wifi_password_wpa_psw_tip">WPA-PSK:</string>
+  	<string name="setting_wifi_password_wep_encryption_tip">WEP encryption:</string>
+  	<string name="setting_wifi_password_wep_psw_tip">WEP-Key:</string>
+  	<string name="setting_wep_password_error_prompt">Wep Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
+  	<string name="setting_wpa_password_error_prompt">The WPA Pre&#8211;Shared Key (PSK) should be 8&#8211;63 ASCII characters and WPA PSK should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
+  	<string name="setting_password_error_prompt">Change Wifi Password Error, please retry after a moment!</string>
+  	<string name="setting_disable_password_error_prompt">Disable Wifi Password failed!</string>
     <string name="setting_titlebar_text_back">Back</string>
     <string name="setting_titlebar_text_edit">Edit</string>
     <string name="setting_titlebar_text_done">Done</string>
