@@ -200,7 +200,8 @@
                     android:layout_marginRight="10dp"
                     android:background="@color/color_transparent"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/password_show" />
+                    android:src="@drawable/password_show"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/ib_hide_password"
@@ -211,7 +212,7 @@
                     android:background="@color/color_transparent"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/password_hide"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </FrameLayout>
         </LinearLayout>
 

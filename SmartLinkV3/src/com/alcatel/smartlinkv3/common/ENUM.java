@@ -406,6 +406,15 @@ public class ENUM {
 			} else
 				return Frequency_24GHZ;
 		}
+		
+		public static int antiBuild(WlanFrequency frequency) {
+			if (Frequency_24GHZ == frequency) {
+				return 0;
+			} else if (Frequency_5GHZ == frequency) {
+				return 1;
+			} else
+				return 2;
+		}
 	}
 
 	/**

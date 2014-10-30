@@ -2,13 +2,15 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import java.util.ArrayList;
 
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
+import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.ui.view.CustomSpinner;
 import com.alcatel.smartlinkv3.ui.view.CustomSpinner.OnSpinnerItemSelectedListener;
@@ -98,14 +100,13 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 
 		m_blSupportMultiWifiMode= true;
+		synchValues();
 		//control title bar
 		controlTitlebar();
 		//create controls
 		createControls();
 		//init controls state
 		onBtnDone();
-		//
-		initValues();
 	}
 
 	private void controlTitlebar(){
@@ -210,6 +211,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			break;
 		case R.id.tv_titlebar_done:
 			onBtnDone();
+			if (isSettingsChanged()) {
+				setWlanSettingItems();
+			}
 			break;
 
 		case R.id.btn_psd_switch:
@@ -292,10 +296,42 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_ll_encryption.setVisibility(View.GONE);
 		m_ll_security.setVisibility(View.GONE);
 		m_tv_psd_type_title.setVisibility(View.GONE);
+		//
+		synchValues();
 	}
 
+	private boolean isSettingsChanged(){
+		boolean blChanged = false;
+		m_nWlanAPMode = 0;
+		if (!m_rb_2point4G_wifi.isChecked()) {
+			m_nWlanAPMode = 1;
+		}
+
+		m_strSsid = m_et_ssid.getText().toString();
+
+		m_nSecurityMode = m_securitySpinner.getSelectedItemPosition();
+
+		m_nType = m_encryptionSpinner.getSelectedItemPosition();
+
+		m_strKey = m_et_password.getText().toString();
+		if (m_nPreWlanAPMode != m_nWlanAPMode
+				|| m_strSsid != m_strPreSsid
+				|| m_nSecurityMode != m_nPreSecurityMode
+				|| m_nType != m_nPreType
+				|| m_strKey != m_strPreKey) {
+			blChanged = true;
+		}
+		return blChanged;
+	}
 	private void setWlanSettingItems(){
-		WlanSettingResult result = BusinessMannager.getInstance().getWlanSettingResult();
+		DataValue data = new DataValue();
+		data.addParam("WlanAPMode", m_nWlanAPMode);
+		data.addParam("Ssid", m_strSsid);
+		data.addParam("Password", m_strKey);
+		data.addParam("Security", m_nSecurityMode);
+		data.addParam("Encryption", m_nType);
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
 	}
 
 	private void initSpinnerListString() {
@@ -319,6 +355,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		SecurityMode securityMode = BusinessMannager.getInstance().getSecurityMode();
 		ArrayAdapter<String> securityAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_simple_item,R.id.spinner_sample_lable, m_securityOptions);
 		m_securitySpinner.setAdapter(securityAdapter,m_securityOptions);
+		m_et_ssid.setText(BusinessMannager.getInstance().getSsid());
 		if(securityMode == SecurityMode.Disable) {
 			m_securitySpinner.setSelection(0);
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
@@ -410,8 +447,29 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			break;
 		}
 	}
-	
-	private void initValues(){
-		//m_nPreSecurityMode = BusinessMannager.getInstance().getWlanFrequency();
+
+	private void synchValues(){
+		m_nPreWlanAPMode = WlanFrequency.antiBuild(
+				BusinessMannager.getInstance().getWlanFrequency());
+		m_nWlanAPMode = m_nPreSecurityMode;
+
+		m_strPreSsid = BusinessMannager.getInstance().getSsid();
+		m_strSsid = m_strPreKey;
+
+		SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
+		m_nPreSecurityMode = SecurityMode.antiBuild(mode);
+		m_nSecurityMode = m_nPreSecurityMode;
+
+		if (SecurityMode.WEP == mode) {
+			m_nPreType = WEPEncryption.antiBuild(
+					BusinessMannager.getInstance().getWEPEncryption());
+		}else {
+			m_nPreType = WPAEncryption.antiBuild(
+					BusinessMannager.getInstance().getWPAEncryption());
+		}
+		m_nType = m_nPreType;
+
+		m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+		m_strKey = m_strPreKey;
 	}
 }

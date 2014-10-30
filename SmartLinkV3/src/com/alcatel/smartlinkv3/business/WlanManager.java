@@ -207,6 +207,8 @@ public class WlanManager extends BaseManager {
 				"SetWlanSettings") != true)
 			return;
 
+		int nWlanAPMode = (Integer)data.getParamByKey("WlanAPMode");
+		String strSsid = data.getParamByKey("Ssid").toString();
 		String strPassword = (String) data.getParamByKey("Password");
 		Integer nSecurity = (Integer)data.getParamByKey("Security");
 		Integer nEncryption = (Integer)data.getParamByKey("Encryption");
@@ -221,6 +223,16 @@ public class WlanManager extends BaseManager {
 				settings.WpaType = nEncryption;
 				settings.WpaKey = strPassword;
 			}
+		}
+		settings.WlanAPMode = nWlanAPMode;
+		WlanFrequency frequencyMode = WlanFrequency.build(nWlanAPMode);
+		if (WlanFrequency.Frequency_24GHZ == frequencyMode) {
+			settings.Ssid = strSsid;
+		}else if (WlanFrequency.Frequency_5GHZ == frequencyMode) {
+			settings.Ssid_5G = strSsid;
+		}else{
+			settings.Ssid = strSsid;
+			settings.Ssid_5G = strSsid;
 		}
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpWlanSetting.SetWlanSetting("5.5", settings,
