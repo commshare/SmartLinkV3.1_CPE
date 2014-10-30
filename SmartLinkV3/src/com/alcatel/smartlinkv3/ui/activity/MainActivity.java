@@ -1,6 +1,8 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
@@ -27,7 +29,9 @@ import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -118,13 +122,17 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	@Override
 	public void onResume() {
 		super.onResume();
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.SIM_UNLOCK_PIN_REQUEST));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.SIM_UNLOCK_PUK_REQUEST));
 
 		m_homeView.onResume();
 		m_usageView.onResume();
 		m_smsView.onResume();
 		m_settingView.onResume();
 		
-		//toPageHomeWhenPinSimNoOk();
+		toPageHomeWhenPinSimNoOk();
 	}
 
 	@Override
@@ -148,6 +156,184 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_usageView.onDestroy();
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
+	}
+	
+	@Override
+	protected void onBroadcastReceive(Context context, Intent intent) {
+		super.onBroadcastReceive(context, intent);
+
+		if (intent.getAction().equalsIgnoreCase(
+				MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+					BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent
+					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult
+					&& strErrorCode.length() == 0) {
+				simRollRequest();
+				SimStatusModel sim = BusinessMannager.getInstance()
+						.getSimStatus();
+				if (sim.m_SIMState != SIMState.Accessable)
+					updateNewSmsUI(-1);
+			}
+		} else if (intent.getAction().equalsIgnoreCase(
+				MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+					BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent
+					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult
+					&& strErrorCode.length() == 0) {
+				m_dlgPin.onEnterPinResponse(true);
+			} else {
+				m_dlgPin.onEnterPinResponse(false);
+			}
+		} else if (intent.getAction().equalsIgnoreCase(
+				MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+					BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent
+					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult
+					&& strErrorCode.length() == 0) {
+				m_dlgPuk.onEnterPukResponse(true);
+			} else {
+				m_dlgPuk.onEnterPukResponse(false);
+			}
+		}
+	}
+	
+	private void simRollRequest() {
+		updateBtnState();
+		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		toPageHomeWhenPinSimNoOk();
+
+		if (sim.m_SIMState == SIMState.PinRequired) {
+			// close PUK dialog
+			if (null != m_dlgPuk && PukDialog.m_isShow)
+				m_dlgPuk.closeDialog();
+			// set the remain times
+			if (null != m_dlgPin)
+				m_dlgPin.updateRemainTimes(sim.m_nPinRemainingTimes);
+
+			if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
+				if (!PinDialog.m_isShow) {
+					m_dlgPin.showDialog(sim.m_nPinRemainingTimes,
+							new OnPINError() {
+								@Override
+								public void onPinError() {
+									String strMsg = getString(R.string.pin_error_waring_title);
+									m_dlgError.showDialog(strMsg,
+											new OnClickBtnRetry() {
+												@Override
+												public void onRetry() {
+													m_dlgPin.showDialog();
+												}
+											});
+								}
+							});
+				} else {
+					m_dlgPin.onSimStatusReady(sim);
+				}
+			}
+		} else if (sim.m_SIMState == SIMState.PukRequired) {// puk
+			// close PIN dialog
+			if (null != m_dlgPin && PinDialog.m_isShow)
+				m_dlgPin.closeDialog();
+
+			// set the remain times
+			if (null != m_dlgPuk)
+				m_dlgPuk.updateRemainTimes(sim.m_nPukRemainingTimes);
+
+			if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
+				if (!PukDialog.m_isShow) {
+					m_dlgPuk.showDialog(sim.m_nPukRemainingTimes,
+							new OnPUKError() {
+
+								@Override
+								public void onPukError() {
+									String strMsg = getString(R.string.puk_error_waring_title);
+									m_dlgError.showDialog(strMsg,
+											new OnClickBtnRetry() {
+
+												@Override
+												public void onRetry() {
+													m_dlgPuk.showDialog();
+												}
+											});
+								}
+							});
+				} else {
+					m_dlgPuk.onSimStatusReady(sim);
+				}
+			}
+		} else {
+			closePinAndPukDialog();
+		}
+	}
+	
+	public void updateNewSmsUI(int nNewSmsCount) {
+//		m_nNewCount = nNewSmsCount;
+//		int nActiveBtnId = m_preButton;
+//		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_placeholder
+//				: R.drawable.main_sms_placeholder;
+//		Drawable d = getResources().getDrawable(nDrawable);
+//		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+//		m_smsTextView.setCompoundDrawables(null, d, null, null);
+//
+//		if (nNewSmsCount <= 0) {
+//			m_newSmsTextView.setVisibility(View.GONE);
+//			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_no_new_active
+//					: R.drawable.main_sms_no_new_grey;
+//			d = getResources().getDrawable(nDrawable);
+//			d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+//			m_smsTextView.setCompoundDrawables(null, d, null, null);
+//		} else if (nNewSmsCount < 10) {
+//			m_newSmsTextView.setVisibility(View.VISIBLE);
+//			m_newSmsTextView.setText(String.valueOf(nNewSmsCount));
+//			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_active
+//					: R.drawable.main_new_sms_tab_grey;
+//			m_newSmsTextView.setBackgroundResource(nDrawable);
+//		} else {
+//			m_newSmsTextView.setVisibility(View.VISIBLE);
+//			m_newSmsTextView.setText("");
+//			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_9_plus_active
+//					: R.drawable.main_new_sms_tab_9_plus_grey;
+//			m_newSmsTextView.setBackgroundResource(nDrawable);
+//		}
+	}
+	
+	private void updateBtnState() {
+		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		if (simState.m_SIMState == SIMState.Accessable) {
+			m_smsBtn.setEnabled(true);
+		} else {
+			m_smsBtn.setEnabled(false);
+		}
+	}
+
+	private void toPageHomeWhenPinSimNoOk() {
+		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		if (simState.m_SIMState != SIMState.Accessable) {
+//			if (m_preButton == R.id.tab_sms_layout) {
+//				setMainBtnStatus(R.id.main_home);
+//				showView(ViewIndex.VIEW_HOME);
+//				showTitleUI(ViewIndex.VIEW_HOME);
+//			}
+
+			unlockSimBtnClick(false);
+		}
+	}
+
+	private void closePinAndPukDialog() {
+		if (m_dlgPin != null)
+			m_dlgPin.closeDialog();
+
+		if (m_dlgPuk != null)
+			m_dlgPuk.closeDialog();
+
+		if (m_dlgError != null)
+			m_dlgError.closeDialog();
 	}
 
 

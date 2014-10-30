@@ -296,11 +296,10 @@
     <!-- Login view end  -->
     
     <!-- Refresh WIFI start -->
-    <string name="refresh_wifi_title">No Wi-Fi or data connection</string>
-    <string name="refresh_wifi_tip">Please connect to a Wi-Fi Hotspot, or get a mobile data connection!</string>
-    <string name="refresh">Wi-Fi Refresh</string>
-    <string name="go_to_private_cloud">Go to Home Cloud</string>
-    <string name="inexact_wifi_title">Inexact Wi-Fi connection</string>
+    <string name="refresh_wifi_title">No Wi-Fi Connected</string>
+    <string name="refresh_wifi_tip">Please connect the mobile hotspot first!</string>
+    <string name="refresh">Refresh</string>
+    <string name="inexact_wifi_title">Inexact Wi-Fi Connected</string>
     <string name="inexact_wifi_tip">Please connect to home station HOME H850 or to Mobile Media Box HOME MM100 WiFi network, otherwise you can only manage your Home Cloud via mobile data (will incur mobile chargers).</string>
     <string name="data_connect_title">Mobile data connected</string>
     <string name="data_connect_tip">Please connect to home station HOME H850 or to Mobile Media Box HOME MM100 WiFi network, otherwise you can only manage your Home Cloud via mobile data (will incur mobile chargers).</string>

@@ -61,38 +61,9 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 			wifiSetting();
 		}else if(isInexactWifi() == true) {
 			wifiSetting();
-		}else if(isM100()) {
-			m100GoToStorage();
 		}
 	}
 	
-	private void clickBtn2() {
-		if(isOnlyData() == true){
-			goToPrivateCloud();
-		}else if(isInexactWifi() == true) {
-			goToPrivateCloud();
-		}else if(isM100()) {
-			m100Settings();
-		}
-	}
-	
-	private void m100Settings() {
-		//todo
-		//Toast.makeText(this, "Baby,this function is unavailable.:)", Toast.LENGTH_SHORT).show();
-		//Intent it = new Intent(this, MM100SettingsMainActivity.class);
-		//this.startActivity(it);
-	}
-	
-	private void m100GoToStorage() {
-		//todo
-		//Toast.makeText(this, "Baby,this function is unavailable.:)", Toast.LENGTH_SHORT).show();
-		Intent it = new Intent(this, StorageMainActivity.class);
-		this.startActivity(it);
-	}
-	
-	private void goToPrivateCloud() {
-		launchPrivateCloudApp();
-	}
 	
 	private class MsgBroadcastReceiver extends BroadcastReceiver
 	{
@@ -145,40 +116,26 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		return false;
 	}
 	
-	public boolean isM100() {
-		if( DataConnectManager.getInstance().getCPEWifiConnected() == true && 
-				FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == true) {
-			return true;
-		}
-		
-		return false;
-	}
-	
 	private void showUI() {
 		if(isNoAnyConnection() == true) {
 			m_connectImage.setBackgroundResource(R.drawable.no_connection);
 			m_connectTitle.setText(R.string.refresh_wifi_title);
 			m_connectTip.setText(R.string.refresh_wifi_tip);
 			m_connectBtn1.setText(R.string.refresh);
-			//m_connectBtn2.setVisibility(View.GONE);
 		}
 		
-		if( isOnlyData() == true) {
-			//m_connectImage.setBackgroundResource(R.drawable.status_data_connected);
-			m_connectTitle.setText(R.string.data_connect_title);
-			m_connectTip.setText(R.string.data_connect_tip);
-			m_connectBtn1.setText(R.string.refresh);
-			//m_connectBtn2.setText(R.string.go_to_private_cloud);
-			//m_connectBtn2.setVisibility(View.VISIBLE);
-		}
+//		if( isOnlyData() == true) {
+//			m_connectImage.setBackgroundResource(R.drawable.status_data_connected);
+//			m_connectTitle.setText(R.string.data_connect_title);
+//			m_connectTip.setText(R.string.data_connect_tip);
+//			m_connectBtn1.setText(R.string.refresh);
+//		}
 		
 		if(isInexactWifi() == true) {
-			//m_connectImage.setBackgroundResource(R.drawable.status_inexact_wifi);
+			m_connectImage.setBackgroundResource(R.drawable.status_inexact_wifi);
 			m_connectTitle.setText(R.string.inexact_wifi_title);
 			m_connectTip.setText(R.string.inexact_wifi_tip);
 			m_connectBtn1.setText(R.string.refresh);
-			//m_connectBtn2.setText(R.string.go_to_private_cloud);
-			//m_connectBtn2.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -186,7 +143,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		
-		if(bCPEWifiConnected == true && isM100() == false) {	
+		if(bCPEWifiConnected == true) {	
 			startMainActivity();	
 			Log.d("refreshsd", "startMainActivity");
 		}
@@ -239,22 +196,6 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		Intent it = new Intent(this, MainActivity.class);
 		this.startActivity(it);
 		this.finish();
-	}
-	
-	private void launchPrivateCloudApp()
-	{	
-		try {			
-			Intent launcherIntent = new Intent(Intent.ACTION_VIEW);
-			ComponentName cn = new ComponentName("com.tcl.tcloudclientmobile",
-					"com.tcl.tcloudclient.UI.MainActivity");
-			launcherIntent.setComponent(cn);
-			this.startActivity(launcherIntent);	
-		}		
-		catch(ActivityNotFoundException e)
-		{
-			PackageUtils utils = new PackageUtils(this);
-			utils.checkPrivateCloudApp();
-		}
 	}
 	
 }
