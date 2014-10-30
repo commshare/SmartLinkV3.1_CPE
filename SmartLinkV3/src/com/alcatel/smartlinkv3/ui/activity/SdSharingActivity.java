@@ -48,6 +48,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		registerReceiver();
 		getDlnaSettings();
 		getSDCardSpace();
+		getSambaSettings();
 	}
 
 	@Override
@@ -120,6 +121,13 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET, null);	
 	}
+	
+	private void getSambaSettings()
+	{
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET, null);	
+	}
+	
 
 	private void registerReceiver() {
 		m_sdSharingReceiver = new SdSharingReceiver();
@@ -131,7 +139,10 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 				MessageUti.SHARING_SET_DLNA_SETTING_REQUSET));
 		
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
-				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET));		
+				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET));	
+		
+		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
+				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET));			
 
 	}
 
@@ -144,6 +155,9 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 					|| intent.getAction().equals(
 							MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)) {
 				showDlnaSettings();
+			} else if (intent.getAction().equals(
+					MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET)) {
+				//TODO				
 			}
 
 		}

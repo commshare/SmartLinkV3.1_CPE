@@ -2,7 +2,6 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.ServiceState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.ServiceType;
 

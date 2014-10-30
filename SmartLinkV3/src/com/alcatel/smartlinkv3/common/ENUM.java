@@ -329,12 +329,12 @@ public class ENUM {
 	}
 
 	/**
-	 * service State, Disabled = 0; Enabled = 1
+	 * service Status, Disabled = 0; Enabled = 1
 	 */
-	public static enum ServiceState {
+	public static enum Status {
 		Disabled, Enabled;
 
-		public static ServiceState build(int nState) {
+		public static Status build(int nState) {
 			if (nState == 0) {
 				return Disabled;
 			} else if (nState == 1) {

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.common.ENUM.ServiceState;
 import com.alcatel.smartlinkv3.common.file.FileItem;
 import com.alcatel.smartlinkv3.common.file.FileSortUtils;
 import com.alcatel.smartlinkv3.common.file.FileSortUtils.SortMethod;

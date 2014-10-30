@@ -33,7 +33,6 @@ import com.alcatel.smartlinkv3.common.HttpMethodUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
-import com.alcatel.smartlinkv3.common.ENUM.ServiceState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;

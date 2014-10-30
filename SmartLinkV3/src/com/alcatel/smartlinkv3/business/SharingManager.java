@@ -94,7 +94,7 @@ public class SharingManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.GetSambaSetting("10.5",
+				new HttpSharing.GetSambaSetting("14.3",
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
