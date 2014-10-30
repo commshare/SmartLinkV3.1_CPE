@@ -49,8 +49,6 @@ public class SharingManager extends BaseManager {
 		return m_sdcardSpace;
 	}
 	
-	
-
 	// SetSambaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setSambaSetting(DataValue data) {
@@ -209,7 +207,7 @@ public class SharingManager extends BaseManager {
 
 	// GetSDCardSpace
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void GetSDCardSpace(DataValue data) {
+	public void getSDCardSpace(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
 				"GetSDCardSpace") != true)
 			return;

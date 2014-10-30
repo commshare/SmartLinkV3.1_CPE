@@ -57,6 +57,7 @@ public class BusinessMannager {
 	private PowerManager m_powerManager=null;
 	private LanManager m_lanManager=null;
 	private UpdateManager m_updateManager=null;
+	private DeviceManager m_deviceManager = null;
 	
 	private String m_strServerAddress = "192.168.1.1";
 	
@@ -95,6 +96,8 @@ public class BusinessMannager {
     	m_updateManager = new UpdateManager(m_context);
     	m_lanManager = new LanManager(m_context);
     	m_powerManager = new PowerManager(m_context);
+    	
+    	m_deviceManager = new DeviceManager(m_context);
     	
     	m_systemInfoModel = new SystemInfoModel();
     	m_wifiNetworkReceiver = new WifiNetworkReceiver();
@@ -175,6 +178,12 @@ public class BusinessMannager {
     			if(SharingManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
     				Method method = m_sharingManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
     				method.invoke(m_sharingManager, data);
+    			}
+    			
+    			//Device Manager
+    			if(DeviceManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
+    				Method method = m_deviceManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
+    				method.invoke(m_deviceManager, data);
     			}
     			
     			//to add manager

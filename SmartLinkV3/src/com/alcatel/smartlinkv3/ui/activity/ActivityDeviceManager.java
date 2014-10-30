@@ -3,6 +3,8 @@ package com.alcatel.smartlinkv3.ui.activity;
 import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.MessageUti;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -101,11 +103,20 @@ public class ActivityDeviceManager extends Activity implements OnClickListener{
 		}
 	}*/
 	
+	
+	private void getConnectedDeviceList()	
+	{
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST, null);	
+	}
+			
+	
 	private void getListData() {
 		
 		m_connecedDeviceLstData.clear();
 		m_blockedDeviceLstData.clear();
 		
+		getConnectedDeviceList();
 		//test start
 		DeviceItem item = new DeviceItem();
 		item.bBlocked = false;

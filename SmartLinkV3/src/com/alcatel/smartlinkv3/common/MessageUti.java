@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alcatel.smartlinkv3.business.DeviceManager;
 import com.alcatel.smartlinkv3.business.PowerManager;
 import com.alcatel.smartlinkv3.business.LanManager;
 import com.alcatel.smartlinkv3.business.SMSManager;
@@ -146,6 +147,11 @@ public class MessageUti {
 			"com.alcatel.smartlinkv3.business.update_setDeviceStopUpdate";
 	/**************************update message end*********************************************************************************/
 	
+	/**************************device message start*******************************************************************************/
+	public static String DEVICE_GET_CONNECTED_DEVICE_LIST=
+			"com.alcatel.smartlinkv3.business.update.getconneceteddevicelist";
+	/**************************device message end*********************************************************************************/
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static Map<String, HttpMethodUti> httpMethods = new HashMap<String, HttpMethodUti>();
 	public static void intHttpMethods() {
@@ -245,5 +251,11 @@ public class MessageUti {
 		httpMethods.put(UPDATE_SET_DEVICE_STOP_UPDATE,
 				new HttpMethodUti(UpdateManager.class, "stopUpdate"));
 		/**************************update message end*********************************************************************************/
+		
+		
+		/********************Sharing method start**********************/			
+		httpMethods.put(DEVICE_GET_CONNECTED_DEVICE_LIST, new HttpMethodUti(DeviceManager.class, "getConnectedDeviceList"));	
+		/********************Sharing method end**********************/			
+	
 	}
 }
