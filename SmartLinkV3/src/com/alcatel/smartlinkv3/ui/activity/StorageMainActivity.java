@@ -2,15 +2,10 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.Status;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.ServiceType;
 import com.alcatel.smartlinkv3.common.file.FileUtils;
-import com.alcatel.smartlinkv3.samba.SmbLoginTask;
-import com.alcatel.smartlinkv3.samba.SmbUtils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,16 +13,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class StorageMainActivity extends BaseActivity implements
 		OnClickListener {
@@ -176,6 +167,10 @@ public class StorageMainActivity extends BaseActivity implements
 		
 		Intent it = new Intent(StorageMainActivity.this,
 				LocalStorageActivity.class);
+		String strRoot = FileUtils.addLastFileSeparator(BusinessMannager.getInstance().getSambaPath());
+		it.putExtra(
+				LocalStorageActivity.CURRENT_DIRECTORY, strRoot);
+		
 		it.putExtra(LocalStorageActivity.FLAG_CURRENT_LOCATION,
 				LocalStorageActivity.FLAG_SAMBA);	
 		 this.startActivity(it);	

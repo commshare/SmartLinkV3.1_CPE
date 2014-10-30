@@ -67,7 +67,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 	private ArrayList<FileItem> m_moveTostorageListData = new ArrayList<FileItem>();
 
 	private static final int REQUESTCODE = 100;
-	public static final String SEARCH_RESULT = "com.alcatel.cpe.ui.activity.returnsearch";
+	public static final String SEARCH_RESULT = "com.alcatel.smartlink.ui.activity.returnsearch";
 
 	private static final int MSG_LOGCL_STOREAGE_TO_HERE = 0;
 
@@ -163,8 +163,8 @@ public class StorageMoveToActivity extends BaseActivity implements
 			m_curDirectory = Environment.getExternalStorageDirectory()
 					.getPath();
 		} else {
-		/*	m_curDirectory = BusinessMannager.getInstance().getSambaSettings().AccessPath;
-			m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);*/
+			m_curDirectory = BusinessMannager.getInstance().getSambaPath();
+			m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
 		}
 		m_selectedFile = this.getIntent().getStringArrayListExtra(
 				StorageEditActivity.EDIT_SELECT_FILES);
@@ -260,8 +260,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 			}
 			else
 			{			
-			/*	m_curDirectory = BusinessMannager.getInstance()
-							.getSambaSettings().AccessPath;*/
+				m_curDirectory = BusinessMannager.getInstance().getSambaPath();							
 				m_curDirectory = FileUtils
 							.addLastFileSeparator(m_curDirectory);
 					getSambaStorageListData();
@@ -611,11 +610,10 @@ public class StorageMoveToActivity extends BaseActivity implements
 
 	private void getSambaStorageListData() {
 		
-		/*HttpAccessLog.getInstance().writeLogToFile("StorageMoveToActivity getSambaStorageListData path: "+ m_curDirectory);	
-		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
+		HttpAccessLog.getInstance().writeLogToFile("StorageMoveToActivity getSambaStorageListData path: "+ m_curDirectory);	
+		String strRoot = BusinessMannager.getInstance().getSambaPath();
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
-		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
-		
+		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);		
 		if(m_curDirectory.indexOf(strRoot) >= 0)
 		{
 			
@@ -623,27 +621,19 @@ public class StorageMoveToActivity extends BaseActivity implements
 		else
 		{
 			m_curDirectory = strRoot;
-		}		
-		*/
-//		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
-//			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
-//		{
-//			Intent it = new Intent(this, SdSharingActivity.class);
-//			this.startActivjlvity(it);
-//		}
-//		else{
-//			
-//			m_moveTostorageListData.clear();
-//			m_progressWaiting.setVisibility(View.VISIBLE);
-//			SmbListFilesTask task = new SmbListFilesTask(m_curDirectory,
-//					m_moveTostorageListData,  LIST_FILE_MODEL.DIR_ONLY, m_smbListFilesTaskHandler);
-//			task.start();	
-//		}
+		}			
+
+
+			m_moveTostorageListData.clear();
+			m_progressWaiting.setVisibility(View.VISIBLE);
+			SmbListFilesTask task = new SmbListFilesTask(m_curDirectory,
+					m_moveTostorageListData,  LIST_FILE_MODEL.DIR_ONLY, m_smbListFilesTaskHandler);
+			task.start();	
 	
 	}
 
 	private void showSambaDirectoryLayout() {
-		String strRoot = "";// BusinessMannager.getInstance().getSambaSettings().AccessPath;
+		String strRoot = BusinessMannager.getInstance().getSambaPath();
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
 		m_parentSmabaDirectory = FileUtils.addLastFileSeparator(m_parentSmabaDirectory);

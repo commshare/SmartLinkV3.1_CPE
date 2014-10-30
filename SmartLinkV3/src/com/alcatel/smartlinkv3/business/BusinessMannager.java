@@ -2,10 +2,6 @@ package com.alcatel.smartlinkv3.business;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-
-import jcifs.dcerpc.msrpc.netdfs;
-
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
@@ -16,17 +12,15 @@ import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
-import com.alcatel.smartlinkv3.business.sharing.FtpSettings;
+import com.alcatel.smartlinkv3.business.sharing.SDCardSpace;
 import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
-import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.common.HttpMethodUti;
@@ -38,6 +32,7 @@ import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
+import com.alcatel.smartlinkv3.httpservice.ConstValue;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -58,7 +53,7 @@ public class BusinessMannager {
 	private SMSManager m_smsManager = null;
 	private WanManager m_wanManager = null;
 	private WlanManager m_wlanManager = null;
-	private SharingManager m_serviceManager = null;
+	private SharingManager m_sharingManager = null;
 	private PowerManager m_powerManager=null;
 	private LanManager m_lanManager=null;
 	private UpdateManager m_updateManager=null;
@@ -95,7 +90,7 @@ public class BusinessMannager {
     	m_smsManager = new SMSManager(m_context);
     	m_wanManager = new WanManager(m_context);
     	m_wlanManager = new WlanManager(m_context);
-    	m_serviceManager = new SharingManager(m_context);
+    	m_sharingManager = new SharingManager(m_context);
     	
     	m_updateManager = new UpdateManager(m_context);
     	m_lanManager = new LanManager(m_context);
@@ -178,8 +173,8 @@ public class BusinessMannager {
     			
     			//Service Manager
     			if(SharingManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
-    				Method method = m_serviceManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
-    				method.invoke(m_serviceManager, data);
+    				Method method = m_sharingManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
+    				method.invoke(m_sharingManager, data);
     			}
     			
     			//to add manager
@@ -329,31 +324,25 @@ public class BusinessMannager {
     /********************wlan manager method end************************/      
     
     
-    /********************service manager Data start**********************/
-//    public ServiceState getDlnaServiceState() {
-//		return m_serviceManager.getDlnaServiceState();
-//	}
-//    
-//    public ServiceState getSambaServiceState() {
-//    	return m_serviceManager.getSambaServiceState();
-//	}
-//    
-//    public ServiceState getFtpServiceState() {
-//    	return m_serviceManager.getFtpServiceState();
-//	}  
-    
+    /********************sharing manager Data start**********************/
 	public DlnaSettings getDlnaSettings() {
-		return m_serviceManager.getDlnaSettings();
+		return m_sharingManager.getDlnaSettings();
 	}
 	
 	public SambaSettings getSambaSettings() {
-		return m_serviceManager.getSambaSettings();
+		return m_sharingManager.getSambaSettings();
+	}	
+	
+	public SDCardSpace getSDCardSpace()
+	{
+		return m_sharingManager.getSDCardSpace();
 	}
 	
-//	public FtpSettings getFtpSettings() {
-//		return m_serviceManager.getFtpSettings();
-//	}
-    /********************service manager method end************************/   
+	public String getSambaPath()
+	{
+		return String.format(ConstValue.SMB_SERVER_ADDRESS, m_strServerAddress);
+	}
+    /********************sharing manager method end************************/   
 	/*Power manager start*/
 	public BatteryInfo getBatteryInfo(){
 		return m_powerManager.getBatteryInfo();

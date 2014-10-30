@@ -36,7 +36,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,11 +69,11 @@ public class LocalStorageActivity extends BaseActivity implements
 
 	private ListView m_localStorageListView = null;
 	private ArrayList<FileItem> m_storageListData = new ArrayList<FileItem>();
-	public static String FLAG_CURRENT_LOCATION = "com.alcatel.cpe.ui.activity.flagcurrentlocation";// value:local
+	public static String FLAG_CURRENT_LOCATION = "com.alcatel.smartlink.ui.activity.flagcurrentlocation";// value:local
 																									// samba
 	public static String FLAG_LOCAL = "local";
 	public static String FLAG_SAMBA = "samba";
-	public static String CURRENT_DIRECTORY = "com.alcatel.cpe.ui.activity.currentdirectory";
+	public static String CURRENT_DIRECTORY = "com.alcatel.smartlink.ui.activity.currentdirectory";
 
 	private String m_flag = FLAG_LOCAL;
 	public static String m_curSambaDirectory;
@@ -98,8 +97,7 @@ public class LocalStorageActivity extends BaseActivity implements
 			
 				ListFilesResult res = (ListFilesResult) msg.obj;
 				m_progressWaiting.setVisibility(View.GONE);
-				m_parentSmabaDirectory = res.mParentPath;
-			//	m_storageListData.clear();
+				m_parentSmabaDirectory = res.mParentPath;		
 				m_storageListData = (ArrayList<FileItem>) res.mFiles.clone();	
 				m_localStorageListView.setEnabled(true);
 				showSambaDirectoryLayout();
@@ -113,12 +111,6 @@ public class LocalStorageActivity extends BaseActivity implements
 				String strErr =  (String) msg.obj;			
 				Toast.makeText(LocalStorageActivity.this, strErr,
 						Toast.LENGTH_LONG).show();
-				
-			/*	String strErr = LocalStorageActivity.this
-						.getString(R.string.list_samba_files_failed);				
-				Toast.makeText(LocalStorageActivity.this, strErr,
-						Toast.LENGTH_LONG).show();
-						*/
 				break;
 
 			}
@@ -386,20 +378,11 @@ public class LocalStorageActivity extends BaseActivity implements
 
 	private void initTitleBar() {
 		if (m_flag.equalsIgnoreCase(FLAG_SAMBA)) {
-			String strTitle = "";
-			int iamgeId = 0;
-			if (FeatureVersionManager.getInstance().isSupportDevice(
-					FeatureVersionManager.VERSION_DEVICE_M100) == true) {
-				strTitle = this.getResources().getString(
-						R.string.m100_storage_main_media_box);
-				iamgeId = R.drawable.m100_media_box_white;
-			} else {
-				strTitle = this.getResources().getString(
-						R.string.m100_storage_main_hard_disc);
-				iamgeId = R.drawable.m100_hard_disc_white;
-			}
+			String strTitle = "";			
+			strTitle = this.getResources().getString(
+						R.string.m100_storage_main_hard_disc);		
 			m_title.setText(strTitle);
-			m_rootDirImage.setImageResource(iamgeId);
+			m_rootDirImage.setImageResource(R.drawable.m100_hard_disc_white);
 		}
 	}
 
@@ -466,7 +449,6 @@ public class LocalStorageActivity extends BaseActivity implements
 				SmbUtils.SMB_MSG_DOWNLOAD_FILES_UPDATE));
 
 		// refresh
-
 		this.registerReceiver(m_fileReceiver, new IntentFilter(
 				SmbUtils.SMB_MSG_REFRESH_FILES));
 	}
@@ -478,9 +460,7 @@ public class LocalStorageActivity extends BaseActivity implements
 			break;
 		case R.id.single_directorys:
 			if (m_flag.equalsIgnoreCase(FLAG_SAMBA)) {
-/*				m_curSambaDirectory = BusinessMannager.getInstance()
-						.getSambaSettings().AccessPath;
-*/
+				m_curSambaDirectory = BusinessMannager.getInstance().getSambaPath();
 				m_curSambaDirectory = FileUtils
 						.addLastFileSeparator(m_curSambaDirectory);
 				getSambaStorageListData();
@@ -650,22 +630,6 @@ public class LocalStorageActivity extends BaseActivity implements
 		dlg.closeDialog();
 	}
 
-	/*
-	 * private class SortList implements Comparator { public int compare(Object
-	 * o1, Object o2) { File c1 = (File) o1; File c2 = (File) o2;
-	 * if(c1.isDirectory() == true && c2.isDirectory() == true) { return
-	 * c1.getName().compareToIgnoreCase(c2.getName()); }
-	 * 
-	 * if(c1.isDirectory() == true && c2.isDirectory() == false) { return -1; }
-	 * 
-	 * if(c1.isDirectory() == false && c2.isDirectory() == true) { return 1; }
-	 * 
-	 * if(c1.isDirectory() == false && c2.isDirectory() == false) { return
-	 * c1.getName().compareToIgnoreCase(c2.getName()); }
-	 * 
-	 * return -1; } }
-	 */
-
 	private void showDirectoryLayout() {
 		String strRoot = Environment.getExternalStorageDirectory().getPath();
 		boolean bIsRoot = false;
@@ -699,8 +663,7 @@ public class LocalStorageActivity extends BaseActivity implements
 		}
 	}
 
-	private void getLocalStorageListData() {
-		//m_storageListData.clear();
+	private void getLocalStorageListData() {	
 		if (m_curDirectory == null || m_curDirectory.exists() == false) {
 			m_curDirectory = Environment.getExternalStorageDirectory();
 		}
@@ -711,8 +674,8 @@ public class LocalStorageActivity extends BaseActivity implements
 	}
 
 	private void showSambaDirectoryLayout() {
-		String strRoot = "";//BusinessMannager.getInstance().getSambaSettings().AccessPath;
-		//String strRoot = FileUtils.addLastFileSeparator(strRoot);
+		String strRoot = BusinessMannager.getInstance().getSambaPath();
+		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curSambaDirectory = FileUtils.addLastFileSeparator(m_curSambaDirectory);
 		m_parentSmabaDirectory = FileUtils.addLastFileSeparator(m_parentSmabaDirectory);
 		boolean bIsRoot = false;
@@ -763,8 +726,8 @@ public class LocalStorageActivity extends BaseActivity implements
 
 	private void getSambaStorageListData() {	
 		HttpAccessLog.getInstance().writeLogToFile("LocalStorageActivity getSambaStorageListData path: "+ m_curSambaDirectory);	
-		String strRoot = "";//BusinessMannager.getInstance().getSambaSettings().AccessPath;
-	//	strRoot = FileUtils.addLastFileSeparator(strRoot);
+		String strRoot = BusinessMannager.getInstance().getSambaPath();
+		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curSambaDirectory = FileUtils.addLastFileSeparator(m_curSambaDirectory);
 		
 		if(m_curSambaDirectory.indexOf(strRoot) >= 0)
@@ -775,23 +738,13 @@ public class LocalStorageActivity extends BaseActivity implements
 		{
 			m_curSambaDirectory = strRoot;
 		}
-		
-//		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
-//			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
-//		{
-//			Intent it = new Intent(this, StorageMainActivity.class);
-//			this.startActivity(it);
-//		}
-//		else{
-//			
-//			m_progressWaiting.setVisibility(View.VISIBLE);
-//			SmbListFilesTask task = new SmbListFilesTask(m_curSambaDirectory,
-//					m_storageListData, LIST_FILE_MODEL.ALL_FILE,
-//					m_smbListFilesTaskHandler);
-//			task.start();				
-//			m_localStorageListView.setEnabled(false);	
-//			
-//		}
+	
+		m_progressWaiting.setVisibility(View.VISIBLE);
+		SmbListFilesTask task = new SmbListFilesTask(m_curSambaDirectory,
+					m_storageListData, LIST_FILE_MODEL.ALL_FILE,
+					m_smbListFilesTaskHandler);
+		task.start();				
+		m_localStorageListView.setEnabled(false);
 		
 	}
 

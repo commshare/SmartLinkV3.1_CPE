@@ -108,7 +108,7 @@ public class SmbSearchFilesTask extends Thread {
 			}
 			String parentDir = FileUtils
 					.trimLastFileSeparator(file.getParent());
-		//	item.parentDir = SmbUtils.trimSambaUrl(parentDir);		
+			item.parentDir = SmbUtils.trimSambaUrl(parentDir);		
 		
 			switch(mListModel)
 			{

@@ -29,13 +29,12 @@ public class SharingManager extends BaseManager {
 
 	@Override
 	protected void clearData() {
-		// TODO Auto-generated method stub
+		
 	}
-
+	
 	@Override
-	protected void stopRollTimer() {
-		// TODO Auto-generated method stub
-
+	protected void stopRollTimer() {	
+		
 	}
 
 	public DlnaSettings getDlnaSettings() {
@@ -45,6 +44,12 @@ public class SharingManager extends BaseManager {
 	public SambaSettings getSambaSettings() {
 		return m_sambaSettings;
 	}
+	
+	public SDCardSpace getSDCardSpace()	{
+		return m_sdcardSpace;
+	}
+	
+	
 
 	// SetSambaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////

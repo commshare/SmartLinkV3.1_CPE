@@ -43,9 +43,9 @@ public class StorageSearchActivity extends BaseActivity implements
 	public static final int MSG_LOGCL_STOREAGE_SEARCH_END = 0;
 	public static final int MSG_LOGCL_STOREAGE_SEARCH_RESULT = 1;
 
-	public static String ACTIVITY_FROM = "com.alcatel.cpe.ui.activity.searchfrom";
-	public static String ACTIVITY_MOVE_TO = "com.alcatel.cpe.ui.activity.searchfrommoveto";
-	public static String ACTIVITY_MAIN = "com.alcatel.cpe.ui.activity.searchfrommain";
+	public static String ACTIVITY_FROM = "com.alcatel.smartlink.ui.activity.searchfrom";
+	public static String ACTIVITY_MOVE_TO = "com.alcatel.smartlink.ui.activity.searchfrommoveto";
+	public static String ACTIVITY_MAIN = "com.alcatel.smartlink.ui.activity.searchfrommain";
 
 	private SearchEditText m_searchEditText;
 	private Button m_cancelBtn;

@@ -36,19 +36,19 @@ public class SmbUtils {
 	public static final int SMB_MSG_TASK_UPDATE = 3;	
 	
 	//options
-	public static final String SMB_OPT_FILES_PATH = "com.alcatel.cpe.samba.smbutils.files.path";
-	public static final String SMB_OPT_FILES_PROGRESS = "com.alcatel.cpe.samba.smbutils.files.progress";
+	public static final String SMB_OPT_FILES_PATH = "com.alcatel.smartlink.samba.smbutils.files.path";
+	public static final String SMB_OPT_FILES_PROGRESS = "com.alcatel.smartlink.samba.smbutils.files.progress";
 	
 	//msg
-	public static final String SMB_MSG_UPLOAD_FILES_FINISH = "com.alcatel.cpe.samba.smbutils.uploadfiles.finish";
-	public static final String SMB_MSG_UPLOAD_FILES_ERROR = "com.alcatel.cpe.samba.smbutils.uploadfiles.error";
-	public static final String SMB_MSG_UPLOAD_FILES_UPDATE = "com.alcatel.cpe.samba.smbutils.uploadfiles.update";
+	public static final String SMB_MSG_UPLOAD_FILES_FINISH = "com.alcatel.smartlink.samba.smbutils.uploadfiles.finish";
+	public static final String SMB_MSG_UPLOAD_FILES_ERROR = "com.alcatel.smartlink.samba.smbutils.uploadfiles.error";
+	public static final String SMB_MSG_UPLOAD_FILES_UPDATE = "com.alcatel.smartlink.samba.smbutils.uploadfiles.update";
 	
-	public static final String SMB_MSG_DOWNLOAD_FILES_FINISH = "com.alcatel.cpe.samba.smbutils.downloadfiles.finish";
-	public static final String SMB_MSG_DOWNLOAD_FILES_ERROR = "com.alcatel.cpe.samba.smbutils.downloadfiles.error";
-	public static final String SMB_MSG_DOWNLOAD_FILES_UPDATE = "com.alcatel.cpe.samba.smbutils.downloadfiles.update";
+	public static final String SMB_MSG_DOWNLOAD_FILES_FINISH = "com.alcatel.smartlink.samba.smbutils.downloadfiles.finish";
+	public static final String SMB_MSG_DOWNLOAD_FILES_ERROR = "com.alcatel.smartlink.samba.smbutils.downloadfiles.error";
+	public static final String SMB_MSG_DOWNLOAD_FILES_UPDATE = "com.alcatel.smartlink.samba.smbutils.downloadfiles.update";
 	
-	public static final String SMB_MSG_REFRESH_FILES = "com.alcatel.cpe.samba.smbutils.refreshfiles";
+	public static final String SMB_MSG_REFRESH_FILES = "com.alcatel.smartlink.samba.smbutils.refreshfiles";
 
 	public static enum LIST_FILE_MODEL {
 		ALL_FILE, DIR_ONLY, FILE_ONLY
@@ -96,14 +96,14 @@ public class SmbUtils {
 		}
 	}
 
-/*	public static String trimSambaUrl(String path) {
+	public static String trimSambaUrl(String path) {
 		String strRes = path;
-		String strRoot = BusinessMannager.getInstance().getSambaSettings().AccessPath;
+		String strRoot = BusinessMannager.getInstance().getSambaPath();
 		if (path.indexOf(strRoot) == 0) {
 			strRes = path.substring(strRoot.length() - 1);
 		}
 		return strRes;
-	}*/
+	}
 
 	public static boolean createDir(String path) {
 		boolean bRes = false;

@@ -59,7 +59,7 @@ public class StorageUploadActivity extends BaseActivity implements OnClickListen
 	private ProgressBar m_progressWaiting = null;
 	private String m_uploadDir = "";
 	
-	public static String UPLOAD_DIRECTORY = "com.alcatel.cpe.ui.activity.uploaddirectory";
+	public static String UPLOAD_DIRECTORY = "com.alcatel.smartlink.ui.activity.uploaddirectory";
 	
 	boolean IsDialog = false;
 	int DialogNum = 0;
