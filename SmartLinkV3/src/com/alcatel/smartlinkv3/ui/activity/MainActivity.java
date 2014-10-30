@@ -167,24 +167,24 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			settingBtnClick();
 			break;
 		case R.id.btnbar:
-			if (LoginDialog.isLoginSwitchOff()) {		
+//			if (LoginDialog.isLoginSwitchOff()) {		
 				go2Click();	
-			} else {		
-				UserLoginStatus status = BusinessMannager.getInstance()				
-						.getLoginStatus();	
-				if (status == UserLoginStatus.OthersLogined) {			
-					PromptUserLogined();		
-				} else if (status == UserLoginStatus.selfLogined) {			
-					go2Click();		
-				} else {			
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-						@Override				
-						public void onLoginFinished() {					
-							go2Click();				
-						}			
-					});		
-				}	
-			}
+//			} else {		
+//				UserLoginStatus status = BusinessMannager.getInstance()				
+//						.getLoginStatus();	
+//				if (status == UserLoginStatus.OthersLogined) {			
+//					PromptUserLogined();		
+//				} else if (status == UserLoginStatus.selfLogined) {			
+//					go2Click();		
+//				} else {			
+//					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+//						@Override				
+//						public void onLoginFinished() {					
+//							go2Click();				
+//						}			
+//					});		
+//				}	
+//			}
 					
 			break;
 		case R.id.unlock_sim_button:
@@ -266,25 +266,25 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			return;
 		}		
 	
-		if (LoginDialog.isLoginSwitchOff()) {
+//		if (LoginDialog.isLoginSwitchOff()) {
 			go2SmsView();
-		} else {
-			UserLoginStatus status = BusinessMannager.getInstance()
-					.getLoginStatus();
-
-			if (status == UserLoginStatus.OthersLogined) {
-				PromptUserLogined();
-			} else if (status == UserLoginStatus.selfLogined) {
-				go2SmsView();
-			} else {
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {
-					@Override
-					public void onLoginFinished() {
-						go2SmsView();
-					}
-				});
-			}
-		}	
+//		} else {
+//			UserLoginStatus status = BusinessMannager.getInstance()
+//					.getLoginStatus();
+//
+//			if (status == UserLoginStatus.OthersLogined) {
+//				PromptUserLogined();
+//			} else if (status == UserLoginStatus.selfLogined) {
+//				go2SmsView();
+//			} else {
+//				m_loginDlg.showDialog(new OnLoginFinishedListener() {
+//					@Override
+//					public void onLoginFinished() {
+//						go2SmsView();
+//					}
+//				});
+//			}
+//		}	
 	}
 
 	private void go2SmsView() {
@@ -298,24 +298,24 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		if (m_preButton == R.id.main_setting) {		
 			return;	
 		}	
-		if (LoginDialog.isLoginSwitchOff()) {		
+//		if (LoginDialog.isLoginSwitchOff()) {		
 			go2SettingView();	
-		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.OthersLogined) {			
-				PromptUserLogined();		
-			} else if (status == UserLoginStatus.selfLogined) {			
-				go2SettingView();		
-			} else {			
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-					@Override				
-					public void onLoginFinished() {					
-						go2SettingView();				
-					}			
-				});		
-			}	
-		}	
+//		} else {		
+//			UserLoginStatus status = BusinessMannager.getInstance()				
+//					.getLoginStatus();	
+//			if (status == UserLoginStatus.OthersLogined) {			
+//				PromptUserLogined();		
+//			} else if (status == UserLoginStatus.selfLogined) {			
+//				go2SettingView();		
+//			} else {			
+//				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+//					@Override				
+//					public void onLoginFinished() {					
+//						go2SettingView();				
+//					}			
+//				});		
+//			}	
+//		}	
 	}
 
 	private void go2SettingView() {
