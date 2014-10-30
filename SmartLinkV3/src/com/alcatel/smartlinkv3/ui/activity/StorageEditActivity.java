@@ -824,18 +824,18 @@ public class StorageEditActivity extends BaseActivity implements OnClickListener
 			m_curDirectory = strRoot;
 		}		
 		
-		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled)	
-		{
-			Intent it = new Intent(this, SdSharingActivity.class);
-			this.startActivity(it);
-		}
-		else{
-			
-			m_editStorageListData.clear();
-			m_progressWaiting.setVisibility(View.VISIBLE);
-			SmbListFilesTask task = new SmbListFilesTask(m_curDirectory, m_editStorageListData,  LIST_FILE_MODEL.ALL_FILE, m_smbListFilesTaskHandler);
-			task.start();			
-		}
+//		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled)	
+//		{
+//			Intent it = new Intent(this, SdSharingActivity.class);
+//			this.startActivity(it);
+//		}
+//		else{
+//			
+//			m_editStorageListData.clear();
+//			m_progressWaiting.setVisibility(View.VISIBLE);
+//			SmbListFilesTask task = new SmbListFilesTask(m_curDirectory, m_editStorageListData,  LIST_FILE_MODEL.ALL_FILE, m_smbListFilesTaskHandler);
+//			task.start();			
+//		}
 		
 	}	
 	

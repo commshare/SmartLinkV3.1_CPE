@@ -268,11 +268,11 @@ public class StorageMainActivity extends BaseActivity implements
 				showCurrentView(LAYOUT_TYPE.layout_no_storage);
 			} else {
 
-				if (BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Enabled) {
-					showCurrentView(LAYOUT_TYPE.layout_hard_disc);
-				} else {
-					showCurrentView(LAYOUT_TYPE.layout_samba_disable);
-				}
+//				if (BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Enabled) {
+//					showCurrentView(LAYOUT_TYPE.layout_hard_disc);
+//				} else {
+//					showCurrentView(LAYOUT_TYPE.layout_samba_disable);
+//				}
 			}
 		}
 	}

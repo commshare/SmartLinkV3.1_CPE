@@ -777,22 +777,22 @@ public class LocalStorageActivity extends BaseActivity implements
 			m_curSambaDirectory = strRoot;
 		}
 		
-		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
-			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
-		{
-			Intent it = new Intent(this, StorageMainActivity.class);
-			this.startActivity(it);
-		}
-		else{
-			
-			m_progressWaiting.setVisibility(View.VISIBLE);
-			SmbListFilesTask task = new SmbListFilesTask(m_curSambaDirectory,
-					m_storageListData, LIST_FILE_MODEL.ALL_FILE,
-					m_smbListFilesTaskHandler);
-			task.start();				
-			m_localStorageListView.setEnabled(false);	
-			
-		}
+//		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
+//			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
+//		{
+//			Intent it = new Intent(this, StorageMainActivity.class);
+//			this.startActivity(it);
+//		}
+//		else{
+//			
+//			m_progressWaiting.setVisibility(View.VISIBLE);
+//			SmbListFilesTask task = new SmbListFilesTask(m_curSambaDirectory,
+//					m_storageListData, LIST_FILE_MODEL.ALL_FILE,
+//					m_smbListFilesTaskHandler);
+//			task.start();				
+//			m_localStorageListView.setEnabled(false);	
+//			
+//		}
 		
 	}
 

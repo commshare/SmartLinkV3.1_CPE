@@ -626,20 +626,20 @@ public class StorageMoveToActivity extends BaseActivity implements
 			m_curDirectory = strRoot;
 		}		
 		
-		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
-			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
-		{
-			Intent it = new Intent(this, SdSharingActivity.class);
-			this.startActivity(it);
-		}
-		else{
-			
-			m_moveTostorageListData.clear();
-			m_progressWaiting.setVisibility(View.VISIBLE);
-			SmbListFilesTask task = new SmbListFilesTask(m_curDirectory,
-					m_moveTostorageListData,  LIST_FILE_MODEL.DIR_ONLY, m_smbListFilesTaskHandler);
-			task.start();	
-		}
+//		if(BusinessMannager.getInstance().getSambaServiceState() == ServiceState.Disabled && 
+//			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
+//		{
+//			Intent it = new Intent(this, SdSharingActivity.class);
+//			this.startActivity(it);
+//		}
+//		else{
+//			
+//			m_moveTostorageListData.clear();
+//			m_progressWaiting.setVisibility(View.VISIBLE);
+//			SmbListFilesTask task = new SmbListFilesTask(m_curDirectory,
+//					m_moveTostorageListData,  LIST_FILE_MODEL.DIR_ONLY, m_smbListFilesTaskHandler);
+//			task.start();	
+//		}
 	
 	}
 

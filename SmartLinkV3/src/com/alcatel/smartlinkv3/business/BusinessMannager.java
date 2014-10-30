@@ -331,17 +331,17 @@ public class BusinessMannager {
     
     
     /********************service manager Data start**********************/
-    public ServiceState getDlnaServiceState() {
-		return m_serviceManager.getDlnaServiceState();
-	}
-    
-    public ServiceState getSambaServiceState() {
-    	return m_serviceManager.getSambaServiceState();
-	}
-    
-    public ServiceState getFtpServiceState() {
-    	return m_serviceManager.getFtpServiceState();
-	}  
+//    public ServiceState getDlnaServiceState() {
+//		return m_serviceManager.getDlnaServiceState();
+//	}
+//    
+//    public ServiceState getSambaServiceState() {
+//    	return m_serviceManager.getSambaServiceState();
+//	}
+//    
+//    public ServiceState getFtpServiceState() {
+//    	return m_serviceManager.getFtpServiceState();
+//	}  
     
 	public DlnaSettings getDlnaSettings() {
 		return m_serviceManager.getDlnaSettings();
@@ -351,9 +351,9 @@ public class BusinessMannager {
 		return m_serviceManager.getSambaSettings();
 	}
 	
-	public FtpSettings getFtpSettings() {
-		return m_serviceManager.getFtpSettings();
-	}
+//	public FtpSettings getFtpSettings() {
+//		return m_serviceManager.getFtpSettings();
+//	}
     /********************service manager method end************************/   
 	/*Power manager start*/
 	public BatteryInfo getBatteryInfo(){
