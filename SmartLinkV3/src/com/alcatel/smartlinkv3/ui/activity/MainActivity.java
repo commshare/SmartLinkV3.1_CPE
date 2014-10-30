@@ -1,6 +1,20 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
+import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
+import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 import com.alcatel.smartlinkv3.ui.dialog.AddPopWindow;
@@ -23,6 +37,7 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.view.MotionEvent;
@@ -48,8 +63,15 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
 	public static DisplayMetrics m_displayMetrics = new DisplayMetrics();
 	
-	private GestureDetector gestureDetector;
+	private PinDialog m_dlgPin = null;
+	private PukDialog m_dlgPuk = null;
+	private ErrorDialog m_dlgError = null;
+	private LoginDialog m_loginDlg = null;
+
+	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
+	
+	private RelativeLayout m_accessDeviceLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,12 +95,24 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		
 		m_Btnbar = (Button) this.findViewById(R.id.btnbar);
 		m_Btnbar.setOnClickListener(this);;
+		
 
 		addView();
 		setMainBtnStatus(R.id.main_home);
 		showView(ViewIndex.VIEW_HOME);
 		updateTitleUI(ViewIndex.VIEW_HOME);
 		pageIndex = ViewIndex.VIEW_HOME;
+		
+		m_dlgPin = PinDialog.getInstance(this);
+		m_dlgPuk = PukDialog.getInstance(this);
+		m_dlgError = ErrorDialog.getInstance(this);
+		m_loginDlg = new LoginDialog(this);
+		m_unlockSimBtn = (Button) m_homeView.getView().findViewById(
+				R.id.unlock_sim_button);
+		m_unlockSimBtn.setOnClickListener(this);
+		
+		m_accessDeviceLayout = (RelativeLayout)m_homeView.getView().findViewById(R.id.access_num_layout);
+		m_accessDeviceLayout.setOnClickListener(this);
 	}
 
 	@Override
@@ -133,16 +167,74 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			settingBtnClick();
 			break;
 		case R.id.btnbar:
-			if(this.pageIndex == ViewIndex.VIEW_HOME)
-			{
-				addBtnClick();
-			}else if(this.pageIndex == ViewIndex.VIEW_USAGE){
-				moreBtnClick();
-			}else if(this.pageIndex == ViewIndex.VIEW_SMS){
-				editBtnClick();
-			}		
+			if (LoginDialog.isLoginSwitchOff()) {		
+				go2Click();	
+			} else {		
+				UserLoginStatus status = BusinessMannager.getInstance()				
+						.getLoginStatus();	
+				if (status == UserLoginStatus.OthersLogined) {			
+					PromptUserLogined();		
+				} else if (status == UserLoginStatus.selfLogined) {			
+					go2Click();		
+				} else {			
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+						@Override				
+						public void onLoginFinished() {					
+							go2Click();				
+						}			
+					});		
+				}	
+			}
+					
 			break;
+		case R.id.unlock_sim_button:
+			unlockSimBtnClick(true);
+			break;	
+		case R.id.access_num_layout:
+			accessDeviceLayoutClick();
+			break;	
 		}
+	}
+	
+	private void go2Click()
+	{
+		if(this.pageIndex == ViewIndex.VIEW_HOME)
+		{
+			addBtnClick();
+		}else if(this.pageIndex == ViewIndex.VIEW_USAGE){
+			moreBtnClick();
+		}else if(this.pageIndex == ViewIndex.VIEW_SMS){
+			editBtnClick();
+		}
+	}
+	
+	private void accessDeviceLayoutClick() {
+		if (LoginDialog.isLoginSwitchOff()) {		
+			startDeviceManagerActivity();	
+		} else {		
+			UserLoginStatus status = BusinessMannager.getInstance()				
+					.getLoginStatus();	
+			if (status == UserLoginStatus.OthersLogined) {			
+				PromptUserLogined();		
+			} else if (status == UserLoginStatus.selfLogined) {			
+				startDeviceManagerActivity();		
+			} else {			
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+					@Override				
+					public void onLoginFinished() {					
+						startDeviceManagerActivity();				
+					}			
+				});		
+			}	
+		}
+		
+	}
+	
+	private void startDeviceManagerActivity()
+	{
+		Intent intent = new Intent();
+		intent.setClass(this, ActivityDeviceManager.class);	
+		this.startActivity(intent);
 	}
 
 	private void homeBtnClick() {
@@ -173,7 +265,26 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		if (m_preButton == R.id.main_sms) {
 			return;
 		}		
-		go2SmsView();
+	
+		if (LoginDialog.isLoginSwitchOff()) {
+			go2SmsView();
+		} else {
+			UserLoginStatus status = BusinessMannager.getInstance()
+					.getLoginStatus();
+
+			if (status == UserLoginStatus.OthersLogined) {
+				PromptUserLogined();
+			} else if (status == UserLoginStatus.selfLogined) {
+				go2SmsView();
+			} else {
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {
+					@Override
+					public void onLoginFinished() {
+						go2SmsView();
+					}
+				});
+			}
+		}	
 	}
 
 	private void go2SmsView() {
@@ -184,10 +295,27 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	}
 
 	private void settingBtnClick() {
-		if (m_preButton == R.id.main_setting) {
-			return;
-		}
-		go2SettingView();
+		if (m_preButton == R.id.main_setting) {		
+			return;	
+		}	
+		if (LoginDialog.isLoginSwitchOff()) {		
+			go2SettingView();	
+		} else {		
+			UserLoginStatus status = BusinessMannager.getInstance()				
+					.getLoginStatus();	
+			if (status == UserLoginStatus.OthersLogined) {			
+				PromptUserLogined();		
+			} else if (status == UserLoginStatus.selfLogined) {			
+				go2SettingView();		
+			} else {			
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+					@Override				
+					public void onLoginFinished() {					
+						go2SettingView();				
+					}			
+				});		
+			}	
+		}	
 	}
 
 	private void go2SettingView() {
@@ -300,6 +428,110 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		Intent intent = new Intent();
 		intent.setClass(this, ActivityNewSms.class);	
 		this.startActivity(intent);
+	}
+	
+	private void unlockSimBtnClick(boolean blCancelUserClose) {
+		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		if (SIMState.PinRequired == sim.m_SIMState) {
+			if (blCancelUserClose) {
+				m_dlgPin.cancelUserClose();
+				m_dlgPuk.cancelUserClose();
+			}
+			ShowPinDialog();
+		} else if (SIMState.PukRequired == sim.m_SIMState) {
+			if (blCancelUserClose) {
+				m_dlgPin.cancelUserClose();
+				m_dlgPuk.cancelUserClose();
+			}
+			ShowPukDialog();
+		}
+	}
+	
+	private void ShowPinDialog() {
+		// close PUK dialog
+		if (null != m_dlgPuk && PukDialog.m_isShow) {
+			m_dlgPuk.closeDialog();
+		}
+
+		SimStatusModel simStatus = BusinessMannager.getInstance()
+				.getSimStatus();
+		// set the remain times
+		if (null != m_dlgPin) {
+			m_dlgPin.updateRemainTimes(simStatus.m_nPinRemainingTimes);
+		}
+		if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
+			if (!PinDialog.m_isShow) {
+				m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes,
+						new OnPINError() {
+
+							@Override
+							public void onPinError() {
+								String strMsg = getString(R.string.pin_error_waring_title);
+								m_dlgError.showDialog(strMsg,
+										new OnClickBtnRetry() {
+
+											@Override
+											public void onRetry() {
+												m_dlgPin.showDialog();
+											}
+										});
+							}
+						});
+			}
+		}
+	}
+
+	//
+	private void ShowPukDialog() {
+		// close PIN dialog
+		if (null != m_dlgPin && PinDialog.m_isShow) {
+			m_dlgPin.closeDialog();
+		}
+
+		SimStatusModel simStatus = BusinessMannager.getInstance()
+				.getSimStatus();
+		// set the remain times
+		if (null != m_dlgPuk) {
+			m_dlgPuk.updateRemainTimes(simStatus.m_nPukRemainingTimes);
+		}
+		if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
+			if (!PukDialog.m_isShow) {
+				m_dlgPuk.showDialog(simStatus.m_nPukRemainingTimes,
+						new OnPUKError() {
+
+							@Override
+							public void onPukError() {
+								String strMsg = getString(R.string.puk_error_waring_title);
+								m_dlgError.showDialog(strMsg,
+										new OnClickBtnRetry() {
+
+											@Override
+											public void onRetry() {
+												m_dlgPuk.showDialog();
+											}
+										});
+
+							}
+						});
+			}
+		}
+	}
+	
+	private void PromptUserLogined() {
+		final InquireDialog inquireDlg = new InquireDialog(this);
+		inquireDlg.m_titleTextView.setText(R.string.login_check_dialog_title);
+		inquireDlg.m_contentTextView
+				.setText(R.string.login_other_user_logined_error_msg);
+		inquireDlg.m_contentDescriptionTextView.setText("");
+		inquireDlg.m_confirmBtn
+				.setBackgroundResource(R.drawable.selector_common_button);
+		inquireDlg.m_confirmBtn.setText(R.string.ok);
+		inquireDlg.showDialog(new OnInquireApply() {
+			@Override
+			public void onInquireApply() {
+				inquireDlg.closeDialog();
+			}
+		});
 	}
 
 }

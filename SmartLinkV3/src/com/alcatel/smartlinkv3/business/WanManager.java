@@ -80,7 +80,7 @@ public class WanManager extends BaseManager {
 	
 	//GetConnectionState ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetConnectStatusTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("WanConnection", "GetConnectionState") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "GetConnectionState") != true)
 			return;
 		if(m_getConnetStatusTask == null) {
 			m_getConnetStatusTask = new GetConnectStatusTask();
@@ -120,7 +120,7 @@ public class WanManager extends BaseManager {
 	
 	//Connect  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void connect(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("WanConnection", "Connect") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "Connect") != true)
 			return;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.Connect("3.2", new IHttpFinishListener() {           
@@ -150,7 +150,7 @@ public class WanManager extends BaseManager {
 	
 	//DisConnect  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void disconnect(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("WanConnection", "DisConnect") != true)
+		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "DisConnect") != true)
 			return;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.DisConnect("3.3", new IHttpFinishListener() {           

@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 public class HandlerUtils {
 	
@@ -68,6 +69,7 @@ public class HandlerUtils {
 		if (m_loginStatus != null && m_loginStatus!=UserLoginStatus.Logout) {
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
+			Log.v("login logout", "pccccc userLogout m_loginStatus="+m_loginStatus);
 		}
 	}
 }

@@ -24,6 +24,8 @@
     <string name="Home_SimLock_Required">SIM Lock required</string>
     <string name="Home_SimCard_Detected">SIM Card detected</string>
     <string name="Home_unknown">unknown</string>
+    <string name="Home_zero_time">0 Min</string>
+    <string name="Home_zero_data">0 MB</string>
     
     <string name="home_no_service">No Service</string>
     <string name="home_initializing">Initializing</string>

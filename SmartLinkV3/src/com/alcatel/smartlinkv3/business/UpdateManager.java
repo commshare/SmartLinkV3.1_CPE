@@ -45,7 +45,7 @@ public class UpdateManager extends BaseManager {
 	//get firmware new version
 	public void getDeviceNewVersion(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("update", "GetDeviceNewVersion")) {
+				isSupportApi("Update", "GetDeviceNewVersion")) {
 			return;
 		}
 
@@ -72,7 +72,7 @@ public class UpdateManager extends BaseManager {
 	//start update firmware
 	public void startUpdate(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("update", "SetDeviceStartUpdate")) {
+				isSupportApi("Update", "SetDeviceStartUpdate")) {
 			return;
 		}
 
@@ -105,7 +105,7 @@ public class UpdateManager extends BaseManager {
 	//stop update firmware
 	public void stopUpdate(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("update", "SetDeviceUpdateStop")) {
+				isSupportApi("Update", "SetDeviceUpdateStop")) {
 			return;
 		}
 
@@ -138,7 +138,7 @@ public class UpdateManager extends BaseManager {
 	//get update state
 	public void getUpgradeState(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("update", "GetDeviceUpgradeState")) {
+				isSupportApi("Update", "GetDeviceUpgradeState")) {
 			return;
 		}
 

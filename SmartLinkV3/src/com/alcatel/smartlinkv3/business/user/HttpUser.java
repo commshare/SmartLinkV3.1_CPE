@@ -19,7 +19,7 @@ public class HttpUser {
 		String m_strUserName = new String();
 		String m_strPsw = new String();
 		
-        public Login(String strUserName,String strPsw,String strId,IHttpFinishListener callback) 
+        public Login(String strId,String strUserName,String strPsw,IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strUserName = strUserName;
@@ -35,7 +35,7 @@ public class HttpUser {
 	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Login");
 	        	
 	        	JSONObject userInfo = new JSONObject();
-	        	userInfo.put("Username", m_strUserName);
+	        	userInfo.put("UserName", m_strUserName);
 	        	userInfo.put("Password", m_strPsw);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
@@ -168,7 +168,8 @@ public class HttpUser {
         	m_loginStateResult = gson.fromJson(strJsonResult, LoginStateResult.class);
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public LoginStateResult getModelResult() 
         {
              return m_loginStateResult;

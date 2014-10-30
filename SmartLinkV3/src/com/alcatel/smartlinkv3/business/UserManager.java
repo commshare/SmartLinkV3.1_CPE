@@ -83,7 +83,7 @@ public class UserManager extends BaseManager {
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Login(strUserName,strPsw,"1.1", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Login("1.1",strUserName, strPsw, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -135,6 +135,7 @@ public class UserManager extends BaseManager {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
                 		m_loginStatus = UserLoginStatus.Logout;
+                		Log.v("login logout", "pccccc logout m_loginStatus"+m_loginStatus);
                 	
                 	}else{
                 		
@@ -185,11 +186,14 @@ public class UserManager extends BaseManager {
                 	if(strErrcode.length() == 0) {
                 		loginStateResult = response.getModelResult();
                 		m_loginStatus = UserLoginStatus.build(loginStateResult.getState());
+                		Log.v("login logout", "pccccc getLoginState1 m_loginStatus="+m_loginStatus);
                 	}else{
                 		m_loginStatus = UserLoginStatus.Logout;
+                		Log.v("login logout", "pccccc getLoginState2 m_loginStatus="+m_loginStatus);
                 	}
                 }else{
                 	m_loginStatus = UserLoginStatus.Logout;
+                	Log.v("login logout", "pccccc getLoginState3 m_loginStatus="+m_loginStatus);
                 }             
             }
         }));

@@ -26,14 +26,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="12dip"
-	                android:paddingLeft="30dip"
+	                android:paddingLeft="40dip"
 	                android:paddingRight="30dip"
 	                android:paddingTop="12dip"
-	                android:layout_centerVertical="true">
+	                android:layout_centerInParent="true">
                     <RelativeLayout
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:paddingLeft="5dip"
 	                    android:orientation="horizontal" >"
 	                    <Button
 	                        android:id="@+id/connect_button"
@@ -124,15 +123,17 @@
                            android:textColor="@color/color_white"
                            android:textSize="18sp" />
               </LinearLayout>
+
               <ProgressBar
-                   android:id="@+id/waiting_progress"
-                   android:layout_width="30dip"
-                   android:layout_height="30dip"
-                   android:layout_centerVertical="true"
-                   android:layout_marginRight="6dip"
-                   android:layout_toLeftOf="@id/connect_layout"
-                   android:indeterminateDrawable="@drawable/progerss_connect"
-                   android:visibility="gone" />
+                  android:id="@+id/waiting_progress"
+                  android:layout_width="30dip"
+                  android:layout_height="30dip"
+                  android:layout_alignParentLeft="true"
+                  android:layout_centerVertical="true"
+                  android:layout_marginLeft="10dp"
+                  android:visibility="gone"
+                  android:indeterminateDrawable="@drawable/progerss_connect" />
+              
             </RelativeLayout>
             
             <RelativeLayout
@@ -160,7 +161,7 @@
                         android:visibility="visible"
                         android:background="@drawable/home_time" />
                     <TextView
-                        android:id="@+id/alarm_status"
+                        android:id="@+id/time_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
