@@ -630,7 +630,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 //			FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == false)	
 //		{
 //			Intent it = new Intent(this, SdSharingActivity.class);
-//			this.startActivity(it);
+//			this.startActivjlvity(it);
 //		}
 //		else{
 //			
