@@ -64,6 +64,7 @@
 	        android:paddingBottom="3dip"
 	        android:background="@color/color_connected_view_refresh_bg">
 	        <TextView
+	            android:id="@+id/tx_connected_cnt"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_centerVertical="true"
@@ -95,6 +96,7 @@
 		        android:layout_height="1dip"
 		        android:background="@color/color_divider"/>
         <TextView
+            android:id="@+id/tx_block_cnt"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/device_manage_block"

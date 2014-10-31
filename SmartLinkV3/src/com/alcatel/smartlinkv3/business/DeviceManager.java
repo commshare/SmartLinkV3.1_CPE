@@ -163,9 +163,9 @@ public class DeviceManager extends BaseManager {
 
 	// SetDeviceUnblock
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void setDeviceUnblock(DataValue data) {
+	public void setDeviceUnlock(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi(
-				"ConnectionDevices", "SetDeviceUnblock") != true)
+				"ConnectionDevices", "SetDeviceUnlock") != true)
 			return;
 
 		String name = (String) data.getParamByKey("DeviceName");

@@ -1,16 +1,21 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
+import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
+import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,10 +34,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private ListView m_connecedDeviceList = null;
 	private ListView m_blockedDeviceList = null;
 	private LinearLayout m_back = null;
+	private TextView m_txConnectedCnt;
+	private TextView m_txBlockCnt;
+	private ImageView m_refresh;
 
-	private ArrayList<DeviceItem> m_connecedDeviceLstData = new ArrayList<DeviceItem>();
-	private ArrayList<DeviceItem> m_blockedDeviceLstData = new ArrayList<DeviceItem>();
-
+	private ConnectedDeviceList m_connecedDeviceLstData = new ConnectedDeviceList();
+	private BlockDeviceList m_blockedDeviceLstData = new BlockDeviceList();
 	private DeviceReceiver m_deviceReceiver = null;
 
 	private class DeviceReceiver extends BroadcastReceiver {
@@ -41,12 +48,59 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 
 			if (intent.getAction().equals(
 					MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
-				
-				
-				
-
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK
+						&& strErrorCode.length() == 0) {					
+					updateConnectedDeviceUI();				
+				}
+			} else if (intent.getAction().equals(
+					MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK
+						&& strErrorCode.length() == 0) {
+					
+					updateBlockDeviceUI();					
+				}				
+			} else if (intent.getAction().equals(
+					MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK
+						&& strErrorCode.length() == 0) {				
+					getListData();					
+				}				
+			} else if (intent.getAction().equals(
+					MessageUti.DEVICE_SET_DEVICE_UNLOCK)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK
+						&& strErrorCode.length() == 0) {				
+					getListData();					
+				}				
 			}
-
+			
+			else if (intent.getAction().equals(
+					MessageUti.DEVICE_SET_DEVICE_NAME)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK
+						&& strErrorCode.length() == 0) {				
+					getListData();					
+				}				
+			}
+			
 		}
 	}
 
@@ -67,7 +121,6 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 
 		this.registerReceiver(m_deviceReceiver, new IntentFilter(
 				MessageUti.DEVICE_SET_DEVICE_NAME));
-
 	}
 
 	@Override
@@ -85,7 +138,20 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		m_blockedDeviceList = (ListView) this.findViewById(R.id.block_devices);
 		BlockedDevAdapter blockedDevAdapter = new BlockedDevAdapter(this);
 		m_blockedDeviceList.setAdapter(blockedDevAdapter);
-
+		
+		m_txConnectedCnt = (TextView) this.findViewById(R.id.tx_connected_cnt);
+		m_txBlockCnt =  (TextView) this.findViewById(R.id.tx_block_cnt);		
+		String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);		
+		strConnectedCnt = String.format(strConnectedCnt, 1);
+		m_txConnectedCnt.setText(strConnectedCnt);
+		
+		String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);		
+		strBlockdCnt = String.format(strBlockdCnt, 0);
+		m_txBlockCnt.setText(strBlockdCnt);		
+		
+		m_refresh = (ImageView) this.findViewById(R.id.refresh);
+		m_refresh.setOnClickListener(this);
+		
 	}
 
 	@Override
@@ -98,7 +164,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	@Override
 	public void onPause() {
 		super.onPause();
-		this.unregisterReceiver(m_deviceReceiver);		
+		this.unregisterReceiver(m_deviceReceiver);
 	}
 
 	@Override
@@ -112,17 +178,18 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
 		case R.id.back_layout:
 			OnBtnBack();
 			break;
+			
+		case R.id.refresh:
+			getListData();			
 		default:
 			break;
 		}
 	}
 
-	//
 	private void OnBtnBack() {
 		this.finish();
 	}
@@ -136,90 +203,78 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST, null);
 	}
+	
+	private void setConnectedDeviceBlock(String strDeviceName, String strMac )
+	{
+		DataValue data = new DataValue();
+		data.addParam("DeviceName", strDeviceName);
+		data.addParam("MacAddress", strMac);
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);	
+	}
+	
+	private void setDeviceUnlock(String strDeviceName, String strMac )
+	{
+		DataValue data = new DataValue();
+		data.addParam("DeviceName", strDeviceName);
+		data.addParam("MacAddress", strMac);
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);	
+	}
+	
+	private void setDeviceName(String strDeviceName, String strMac, int nDeviceType)
+	{
+		DataValue data = new DataValue();
+		data.addParam("DeviceName", strDeviceName);
+		data.addParam("MacAddress", strMac);
+		data.addParam("DeviceType", nDeviceType);
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.DEVICE_SET_DEVICE_NAME, data);	
+	}	
 
 	private void getListData() {
 
 		m_connecedDeviceLstData.clear();
 		m_blockedDeviceLstData.clear();
-
 		getConnectedDeviceList();
 		getBlockDeviceList();
-
-		// test start
-		DeviceItem item = new DeviceItem();
-		item.bBlocked = false;
-		item.nDevType = 0;
-		item.strDevName = "super man";
-		item.strDevAlias = "zhoudequan";
-		item.strIP = "192.168.0.1";
-		item.strMac = "ff:ff:ff:ff:ff";
-		m_connecedDeviceLstData.add(item);
-
-		DeviceItem item2 = new DeviceItem();
-		item2.bBlocked = false;
-		item2.nDevType = 1;
-		item2.strDevName = "super man 2";
-		item2.strDevAlias = "zhoudequan2";
-		item2.strIP = "192.168.0.2";
-		item2.strMac = "ff:ff:ff:ff:ff";
-		m_connecedDeviceLstData.add(item2);
-
-		DeviceItem item3 = new DeviceItem();
-		item3.bBlocked = false;
-		item3.nDevType = 0;
-		item3.strDevName = "super man3";
-		item3.strDevAlias = "zhoudequan3";
-		item3.strIP = "192.168.0.3";
-		item3.strMac = "ff:ff:ff:ff:ff";
-		m_connecedDeviceLstData.add(item3);
-
-		DeviceItem item4 = new DeviceItem();
-		item4.bBlocked = false;
-		item4.nDevType = 0;
-		item4.strDevName = "super man4";
-		item4.strDevAlias = "zhoudequan4";
-		item4.strIP = "192.168.0.4";
-		item4.strMac = "ff:ff:ff:ff:ff";
-		m_connecedDeviceLstData.add(item4);
-
-		DeviceItem bitem4 = new DeviceItem();
-		bitem4.bBlocked = true;
-		bitem4.nDevType = 2;
-		bitem4.strDevName = "super manb1";
-		bitem4.strDevAlias = "zhoudequanb1";
-		bitem4.strIP = "192.168.0.5";
-		bitem4.strMac = "ff:ff:ff:ff:ff";
-		m_blockedDeviceLstData.add(bitem4);
-
-		DeviceItem bitem5 = new DeviceItem();
-		bitem5.bBlocked = true;
-		bitem5.nDevType = 2;
-		bitem5.strDevName = "super manb2";
-		bitem5.strDevAlias = "zhoudequanb2";
-		bitem5.strIP = "192.168.0.6";
-		bitem5.strMac = "ff:ff:ff:ff:ff";
-		m_blockedDeviceLstData.add(bitem5);
-
+	}
+	
+	private void updateConnectedDeviceUI()
+	{
+		m_connecedDeviceLstData = BusinessMannager.getInstance()
+				.getConnectedDeviceList();
 		((ConnectedDevAdapter) m_connecedDeviceList.getAdapter())
 				.notifyDataSetChanged();
+		
+		String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);		
+		strConnectedCnt = String.format(strConnectedCnt, m_connecedDeviceLstData.ConnectedList.size());
+		m_txConnectedCnt.setText(strConnectedCnt);
+		
+	}
+	
+	private void updateBlockDeviceUI()
+	{
+		m_blockedDeviceLstData = BusinessMannager.getInstance()
+				.getBlockDeviceList();
 		((BlockedDevAdapter) m_blockedDeviceList.getAdapter())
 				.notifyDataSetChanged();
+		
+		String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);		
+		strBlockdCnt = String.format(strBlockdCnt, m_blockedDeviceLstData.BlockList.size());
+		m_txBlockCnt.setText(strBlockdCnt);		
 	}
 
 	public class ConnectedDevAdapter extends BaseAdapter {
-		private LayoutInflater mInflater;
 
 		public ConnectedDevAdapter(Context context) {
-			this.mInflater = LayoutInflater.from(context);
 		}
 
 		public int getCount() {
-			// TODO Auto-generated method stub
-			return m_connecedDeviceLstData.size();
+			return m_connecedDeviceLstData.ConnectedList.size();
 		}
 
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -238,7 +293,6 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
-			// TODO Auto-generated method stub
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
@@ -258,16 +312,40 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			String displayName = m_connecedDeviceLstData.get(position).strDevAlias;
-			if (displayName.length() == 0) {
-				displayName = m_connecedDeviceLstData.get(position).strDevName;
-			}
-			holder.deviceName.setText(displayName);
+			final String displayName = m_connecedDeviceLstData.ConnectedList.get(position).DeviceName;
+			holder.deviceName.setText(displayName);			
+			holder.ip.setText("IP:"+ m_connecedDeviceLstData.ConnectedList.get(position).IPAddress);
+			final String mac = m_connecedDeviceLstData.ConnectedList.get(position).MacAddress;
+			holder.mac.setText("MAC:"+ mac);
+			final int type = m_connecedDeviceLstData.ConnectedList.get(position).DeviceType;
+			
+			holder.blockBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {				
+					setConnectedDeviceBlock(displayName, mac);
+				}
+			
+			});
+			
+			
+			holder.deviceName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-			holder.ip.setText("IP:"
-					+ m_connecedDeviceLstData.get(position).strIP);
-			holder.mac.setText("MAC:"
-					+ m_connecedDeviceLstData.get(position).strMac);
+				public boolean onEditorAction(TextView v, int actionId,	KeyEvent event) {
+				
+					if (actionId == EditorInfo.IME_ACTION_DONE
+							|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+						String strName = v.getText().toString();
+						
+						if(!strName.equals(displayName))
+						{
+							setDeviceName(strName, mac, type);
+						}											
+					}
+
+					return false;
+				}
+
+			});
 
 			return convertView;
 		}
@@ -275,19 +353,16 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	}
 
 	public class BlockedDevAdapter extends BaseAdapter {
-		private LayoutInflater mInflater;
 
 		public BlockedDevAdapter(Context context) {
-			this.mInflater = LayoutInflater.from(context);
+
 		}
 
 		public int getCount() {
-			// TODO Auto-generated method stub
-			return m_blockedDeviceLstData.size();
+			return m_blockedDeviceLstData.BlockList.size();
 		}
 
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -304,7 +379,6 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
-			// TODO Auto-generated method stub
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
@@ -319,28 +393,23 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
-			}
-
-			String displayName = m_blockedDeviceLstData.get(position).strDevAlias;
-			if (displayName.length() == 0) {
-				displayName = m_blockedDeviceLstData.get(position).strDevName;
-			}
+			}			
+			
+			final String displayName = m_blockedDeviceLstData.BlockList.get(position).DeviceName;
 			holder.deviceName.setText(displayName);
-
-			holder.mac.setText("MAC:"
-					+ m_blockedDeviceLstData.get(position).strMac);
-
+			final String mac = m_blockedDeviceLstData.BlockList.get(position).MacAddress;			
+			holder.mac.setText("MAC:" + mac);
+			
+			holder.unblockBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {				
+					setDeviceUnlock(displayName, mac);
+				}			
+			});			
+			
 			return convertView;
 		}
 
 	}
 
-	public static class DeviceItem {
-		public int nDevType = 0;
-		public String strDevName = new String();
-		public String strDevAlias = new String();
-		public String strIP = new String();
-		public String strMac = new String();
-		public boolean bBlocked = false;
-	}
 }
