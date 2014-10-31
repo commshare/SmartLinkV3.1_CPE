@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
 import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
 import com.alcatel.smartlinkv3.business.sms.HttpSms;
-import com.alcatel.smartlinkv3.business.sms.SMSContactItem;
-import com.alcatel.smartlinkv3.business.sms.SendSmsResult;
 import com.alcatel.smartlinkv3.business.sms.SendStatusResult;
 import com.alcatel.smartlinkv3.business.sms.SmsContactListResult;
 import com.alcatel.smartlinkv3.business.sms.SmsContentListResult;
@@ -103,16 +102,16 @@ public class SMSManager extends BaseManager {
 	}
 	
 	public SmsContactMessagesModel getContactMessages() {
-		return m_contactMessages.clone();
+		return m_contactMessages;
 	}	
 	
 	public int GetUnreadSmsNumber(){
 		int nUnreadCount = 0;
-		ArrayList<SMSContactItem> lst = (ArrayList<SMSContactItem>) m_contactMessages.SMSContactList.clone();
+		ArrayList<SMSContactItemModel> lst = m_contactMessages.SMSContactList;
 		if(null != lst){
 			for(int nIndex = 0; nIndex < lst.size(); nIndex++)
 			{
-				SMSContactItem sms = lst.get(nIndex);
+				SMSContactItemModel sms = lst.get(nIndex);
 				nUnreadCount += sms.UnreadCount; 
 			}		
 		}
@@ -312,25 +311,30 @@ public class SMSManager extends BaseManager {
 			return;
 		
 		String strContent = (String) data.getParamByKey("content");
-		ArrayList<String> phoneNumberLst = (ArrayList<String>) data.getParamByKey("phone_number");
+		String strNumbers = (String)data.getParamByKey("phone_number");
+		String[] listNumbers = strNumbers.split(";");
+		ArrayList<String> phoneNumberLst = new ArrayList<String>();
+		for (int i = 0; i < listNumbers.length; i++) {
+			phoneNumberLst.add(listNumbers[i]);
+		}
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SendSMS("6.6",-1,strContent,phoneNumberLst, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
-            	int nSendId = 0;
+//            	int nSendId = 0;
             	String strErrcode = new String();
                 int ret = response.getResultCode();
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
-                		SendSmsResult sendSmsResult = response.getModelResult();
-                		nSendId = sendSmsResult.SmsSendId;
-                		
-                		//get send status
-                		DataValue dataValue = new DataValue();
-						dataValue.addParam("sms_send_id", nSendId);
-						getSmsSendResult(dataValue);
+//                		SendSmsResult sendSmsResult = response.getModelResult();
+//                		nSendId = sendSmsResult.SmsSendId;
+//                		
+//                		//get send status
+//                		DataValue dataValue = new DataValue();
+//						dataValue.addParam("sms_send_id", nSendId);
+						getSmsSendResult(null);
                 	}else{
                 		
                 	}
@@ -341,7 +345,7 @@ public class SMSManager extends BaseManager {
                 Intent megIntent= new Intent(MessageUti.SMS_SEND_SMS_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                megIntent.putExtra(Const.SMS_SNED_ID, nSendId);
+                //megIntent.putExtra(Const.SMS_SNED_ID, nSendId);
     			m_context.sendBroadcast(megIntent);
             }
         }));

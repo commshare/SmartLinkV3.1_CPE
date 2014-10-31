@@ -15,6 +15,7 @@ import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
+import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -45,7 +46,7 @@ import android.widget.Toast;
 public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClickListener,OnItemLongClickListener {
 
 	private ListView m_smsContactMessagesList = null;
-	private Button m_btnNewSms = null;
+//	private Button m_btnNewSms = null;
 	private TextView m_noSmsTv = null;
 	
 	private SmsBroadcastReceiver m_receiver;
@@ -133,9 +134,9 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	
 	//
 	private void RefreshNewSmsNumber(){
-		/*int nNewSmsCount = 0;
+		int nNewSmsCount = 0;
 		nNewSmsCount = BusinessMannager.getInstance().getNewSmsNumber();
-		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount);*/
+		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount);
 	}
 	
 	private class SortSummaryListByTime implements Comparator {

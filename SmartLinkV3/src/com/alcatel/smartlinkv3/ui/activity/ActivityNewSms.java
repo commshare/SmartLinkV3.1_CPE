@@ -213,13 +213,13 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 					m_bSendEnd = true;
 					//BusinessMannager.getInstance().refreshSmsListAtOnce();
 					
-					/*m_progressWaiting.setVisibility(View.GONE);
+					m_progressWaiting.setVisibility(View.GONE);
 					m_btnSend.setEnabled(true);
 	    			m_etNumber.setEnabled(true);
 	    			m_etContent.setEnabled(true);
 	    			if(sendStatus == SendStatus.Success) {
 	    				this.finish();
-	    			}*/
+	    			}
 				}
 			}else{
 				m_progressWaiting.setVisibility(View.GONE);

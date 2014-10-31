@@ -19,7 +19,7 @@ public class SmsContactMessagesModel extends BaseResult{
 	
 	public SmsContactMessagesModel clone() {
 		SmsContactMessagesModel cloneObj = new SmsContactMessagesModel();
-		cloneObj.SMSContactList = (ArrayList<SMSContactItemModel>) this.SMSContactList.clone();
+		cloneObj.SMSContactList = SMSContactList;
 		cloneObj.Page = this.Page;
 		cloneObj.TotalPageCount = this.TotalPageCount;
 		return cloneObj;
@@ -32,6 +32,7 @@ public class SmsContactMessagesModel extends BaseResult{
 		for(int i = 0;i < result.SMSContactList.size();i++) {
 			SMSContactItemModel model = new SMSContactItemModel();
 			model.buildFromResult(result.SMSContactList.get(i));
+			SMSContactList.add(model);
 		}
 		Page = result.Page;
 		TotalPageCount = result.TotalPageCount;
