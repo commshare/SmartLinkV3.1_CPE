@@ -6,10 +6,10 @@ import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.R;
 
 import android.content.BroadcastReceiver;
@@ -334,7 +334,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_billingVal = statistic.HBillingDay;
 			if (m_billingVal > 0) {
 				if (!(m_billingValue.isFocused() == true || m_bIsBillingValueEdit == true))
-					m_billingValue.setText("" + byte2megabyte(m_billingVal));
+					m_billingValue.setText("" + m_billingVal);
 			} else {
 				if (!(m_billingValue.isFocused() == true || m_bIsBillingValueEdit == true))
 					m_billingValue.setText("");
@@ -363,12 +363,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			
 			m_bIsBillingValueEdit = true;
 			DataValue usageData = new DataValue();
-			usageData.addParam("billing_day", megabyte2byte(usage));
-			m_billingVal = megabyte2byte(usage);
+			usageData.addParam("billing_day", usage);
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET, usageData);
 		} else {
-			m_billingValue.setText("" + byte2megabyte(m_billingVal));
+			m_billingValue.setText("" + m_billingVal);
 		}
 
 	}
@@ -424,12 +423,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (simState.m_SIMState == SIMState.Accessable) {
 			UsageSettingModel statistic = BusinessMannager.getInstance()
 					.getUsageSettings();
+			
+			m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, (long)statistic.HUsedData));
 
 			m_monthlyValue.setEnabled(true);
 			m_monthlyVal = statistic.HMonthlyPlan;
 			if (m_monthlyVal > 0) {
 				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
-					m_monthlyValue.setText("" + byte2megabyte(m_monthlyVal));
+					m_monthlyValue.setText("" + CommonUtil.ConvertTrafficToStringFromMB(this, (long)m_monthlyVal));
 			} else {
 				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
 					m_monthlyValue.setText("");
@@ -495,7 +496,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			if(m_bIsTimeLimitStatusEdit == false) {
 				if (setting.HTimeLimitTimes > 0) {
 					m_timeLimitDisconnectBtn.setEnabled(true);
-					if (setting.HTimeLimitFlag == OVER_TIME_STATE.Enable) {
+					if (setting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
 						// off
 						m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
 					} else {
@@ -591,7 +592,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			if(m_bIsAutoDisconnectedEdit == false) {
 				if (usageSetting.HMonthlyPlan > 0) {
 					m_usageAutoDisconnectBtn.setEnabled(true);
-					if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable) {
+					if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
 						// off
 						m_usageAutoDisconnectBtn
 								.setBackgroundResource(R.drawable.switch_off);
@@ -619,14 +620,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		UsageSettingModel usageSetting = BusinessMannager.getInstance()
 				.getUsageSettings();
 		DataValue data = new DataValue();
-		if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable) {
+		if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
 			m_usageAutoDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_on);
-			data.addParam("auto_disconn_flag", 0);
+			data.addParam("over_flow_status", OVER_DISCONNECT_STATE.Enable);
 		} else {
 			m_usageAutoDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_off);
-			data.addParam("auto_disconn_flag", 1);
+			data.addParam("over_flow_status", OVER_DISCONNECT_STATE.Disable);
 		}
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
@@ -639,7 +640,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		UsageSettingModel usageSetting = BusinessMannager.getInstance()
 				.getUsageSettings();
 		DataValue data = new DataValue();
-		if (usageSetting.HTimeLimitFlag == OVER_TIME_STATE.Enable) {
+		if (usageSetting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
 			m_timeLimitDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_on);
 			data.addParam("over_time_status", OVER_TIME_STATE.Enable);

@@ -42,12 +42,12 @@ public class UsageSettingModel extends BaseResult{
 	}
 	
 	public void setValue(UsageSettingsResult result) {	
-		HBillingDay = result.HBillingDay;
-		HMonthlyPlan = result.HMonthlyPlan;
-		HUsedData = result.HUsedData;
-		HTimeLimitFlag = ENUM.OVER_TIME_STATE.build(result.HTimeLimitFlag);
-		HTimeLimitTimes = result.HTimeLimitTimes;
-		HUsedTimes = result.HUsedTimes;
-		HAutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.build(result.HAutoDisconnFlag);
+		HBillingDay = result.BillingDay;
+		HMonthlyPlan = result.MonthlyPlan;
+		HUsedData = result.UsedData;
+		HTimeLimitFlag = ENUM.OVER_TIME_STATE.build(result.TimeLimitFlag);
+		HTimeLimitTimes = result.TimeLimitTimes;
+		HUsedTimes = result.UsedTimes;
+		HAutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.build(result.AutoDisconnFlag);
 	}
 }

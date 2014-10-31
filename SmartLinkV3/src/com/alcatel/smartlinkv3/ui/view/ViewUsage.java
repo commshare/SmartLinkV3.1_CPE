@@ -6,6 +6,7 @@ import java.util.Map;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
@@ -128,11 +129,12 @@ public class ViewUsage extends BaseViewImpl {
 	private void updateUI(){
 		int nProgress =0;
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
+		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
 		
 		m_homedowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseDL));
 		m_homeupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseUL));
 		m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HUseData)+" of "
-					+ CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.MaxUsageData));
+					+ CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)statistic.HMonthlyPlan));
 		if(m_UsageRecordResult.HUseData > m_UsageRecordResult.MaxUsageData)
 		{
 			m_homewarn.setVisibility(View.VISIBLE);
@@ -158,9 +160,9 @@ public class ViewUsage extends BaseViewImpl {
 		
 	    String durationformat = this.getView().getResources().getString(R.string.usage_duration);
 	    Log.v("time", "pccccc CurrConnTimes="+m_UsageRecordResult.CurrConnTimes+"TConnTimes="+m_UsageRecordResult.TConnTimes);
-		String strCurrDuration = String.format(durationformat, m_UsageRecordResult.CurrConnTimes / 60, m_UsageRecordResult.CurrConnTimes % 60);
+		String strCurrDuration = String.format(durationformat, m_UsageRecordResult.CurrConnTimes / 360, m_UsageRecordResult.CurrConnTimes % 360);
 		m_durationtime.setText(strCurrDuration);
-		String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes / 60, m_UsageRecordResult.TConnTimes % 60);
+		String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes / 360, m_UsageRecordResult.TConnTimes % 360);
 		m_durationtotaltime.setText(strTotalDuration);
 		
 		if(m_UsageRecordResult.HUseData > m_UsageRecordResult.MaxUsageData)

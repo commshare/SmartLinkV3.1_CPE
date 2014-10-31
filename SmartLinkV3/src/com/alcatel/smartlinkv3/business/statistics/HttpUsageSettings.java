@@ -90,13 +90,13 @@ public class HttpUsageSettings {
 						"Wlan.SetWlanSettings");
 				
 				JSONObject settings = new JSONObject();
-				settings.put("BillingDay", m_result.HBillingDay);
-				settings.put("MonthlyPlan", m_result.HMonthlyPlan);
-				settings.put("UsedData", m_result.HUsedData);
-				settings.put("TimeLimitFlag", m_result.HTimeLimitFlag);
-				settings.put("TimeLimitTimes", m_result.HTimeLimitTimes);
-				settings.put("UsedTimes", m_result.HUsedTimes);
-				settings.put("AutoDisconnFlag", m_result.HAutoDisconnFlag);
+				settings.put("BillingDay", m_result.BillingDay);
+				settings.put("MonthlyPlan", m_result.MonthlyPlan);
+				settings.put("UsedData", m_result.UsedData);
+				settings.put("TimeLimitFlag", m_result.TimeLimitFlag);
+				settings.put("TimeLimitTimes", m_result.TimeLimitTimes);
+				settings.put("UsedTimes", m_result.UsedTimes);
+				settings.put("AutoDisconnFlag", m_result.AutoDisconnFlag);
 				
 				
 				m_requestParamJson

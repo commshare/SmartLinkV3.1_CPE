@@ -49,7 +49,7 @@ public class ConnectStatusModel extends BaseModel{
 		m_lDlBytes = result.DlBytes;
 		m_strIPv4Adrress = result.IPv4Adrress;
 		m_strIPv6Adrress = result.IPv6Adrress;
-		m_lConnectionTime = result.ConnectionTime;
+		m_lConnectionTime = result.UsedTimes;
 	}
 
 }

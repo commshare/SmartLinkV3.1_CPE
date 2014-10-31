@@ -391,7 +391,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			}
 		}
 		
-		String strConnDuration = String.format(home_connected_duration, statictime / 60, statictime % 60);
+		String strConnDuration = String.format(home_connected_duration, statictime / 360, statictime % 360);
 		m_timestatusTextView.setText(strConnDuration);
 		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));
 	
@@ -450,7 +450,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_connectBtn.setVisibility(View.VISIBLE);
 		}
 		
-		String strConnDuration = String.format(home_connected_duration, statictime / 60, statictime % 60);
+		String strConnDuration = String.format(home_connected_duration, statictime / 360, statictime % 360);
 		Log.v("time", "pccccc home_connected_duration="+statictime);
 		m_timestatusTextView.setText(strConnDuration);
 		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));

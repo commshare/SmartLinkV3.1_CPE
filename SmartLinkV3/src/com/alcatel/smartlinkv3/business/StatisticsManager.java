@@ -273,7 +273,7 @@ public class StatisticsManager extends BaseManager {
 		final int nPreBillingDay = m_usageSettings.HBillingDay;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HBillingDay = nBillingDay;
+		nUsageSettings.BillingDay = nBillingDay;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -310,7 +310,7 @@ public class StatisticsManager extends BaseManager {
 		final int nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HMonthlyPlan = nPreMonthlyPlan;
+		nUsageSettings.MonthlyPlan = nPreMonthlyPlan;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -347,7 +347,7 @@ public class StatisticsManager extends BaseManager {
 		final int nPreUsedData = m_usageSettings.HUsedData;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HUsedData = nPreUsedData;
+		nUsageSettings.UsedData = nPreUsedData;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -384,7 +384,7 @@ public class StatisticsManager extends BaseManager {
 		final ENUM.OVER_TIME_STATE nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HTimeLimitFlag = nTimeLimitFlag;//ENUM.OVER_TIME_STATE.build(nTimeLimitFlag);
+		nUsageSettings.TimeLimitFlag = nTimeLimitFlag;//ENUM.OVER_TIME_STATE.build(nTimeLimitFlag);
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -421,7 +421,7 @@ public class StatisticsManager extends BaseManager {
 		final int nPreTimeLimitTimes = m_usageSettings.HTimeLimitTimes;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HTimeLimitTimes = nTimeLimitTimes;
+		nUsageSettings.TimeLimitTimes = nTimeLimitTimes;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -458,7 +458,7 @@ public class StatisticsManager extends BaseManager {
 		final int nPreUsedTimes = m_usageSettings.HUsedTimes;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HUsedTimes = nUsedTimes;
+		nUsageSettings.UsedTimes = nUsedTimes;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -495,7 +495,7 @@ public class StatisticsManager extends BaseManager {
 		final ENUM.OVER_DISCONNECT_STATE nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.HAutoDisconnFlag = nAutoDisconnFlag;
+		nUsageSettings.AutoDisconnFlag = nAutoDisconnFlag;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override

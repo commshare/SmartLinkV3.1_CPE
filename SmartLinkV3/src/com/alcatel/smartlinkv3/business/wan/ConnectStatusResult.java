@@ -12,7 +12,7 @@ public class ConnectStatusResult extends BaseResult{
 	public long DlBytes = 0;//Download bytes
 	public String IPv4Adrress = new String();
 	public String IPv6Adrress = new String();
-	public long ConnectionTime = 0;
+	public long UsedTimes  = 0;
 	@Override
 	protected void clear() {
 		// TODO Auto-generated method stub
@@ -24,7 +24,7 @@ public class ConnectStatusResult extends BaseResult{
 		DlBytes = 0;
 		IPv4Adrress = "";
 		IPv6Adrress = "";
-		ConnectionTime = 0;
+		UsedTimes = 0;
 	}
 
 }
