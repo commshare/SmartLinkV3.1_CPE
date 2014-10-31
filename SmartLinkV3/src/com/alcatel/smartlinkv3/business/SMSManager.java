@@ -269,13 +269,13 @@ public class SMSManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "DeleteSMS") != true)
 			return;
 		
-		EnumSMSDelFlag delFlag = (EnumSMSDelFlag) data.getParamByKey("delete_falg");
-		Integer temp =  (Integer)data.getParamByKey("contact_id");
+		EnumSMSDelFlag delFlag = (EnumSMSDelFlag) data.getParamByKey("DelFlag");
+		Integer temp =  (Integer)data.getParamByKey("ContactId");
 		int nContactId = 0;
 		if(temp != null)
 			nContactId = temp;
 		
-		temp =  (Integer)data.getParamByKey("sms_id");
+		temp =  (Integer)data.getParamByKey("SMSId");
 		int nSMSId = 0;
 		if(temp != null)
 			nSMSId = temp;

@@ -48,6 +48,7 @@ public class SmsContentMessagesModel extends BaseResult implements Parcelable {
 		for(int i = 0;i < result.SMSContentList.size();i++) {
 			SMSContentItemModel model = new SMSContentItemModel();
 			model.buildFromResult(result.SMSContentList.get(i));
+			SMSContentList.add(model);
 		}
 		Page = result.Page;
 		ContactId = result.ContactId;
