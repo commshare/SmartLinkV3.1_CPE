@@ -67,7 +67,7 @@ public class ViewUsage extends BaseViewImpl {
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
 				}else{
-					
+					updateUI();
 				}
 			}
 		}
