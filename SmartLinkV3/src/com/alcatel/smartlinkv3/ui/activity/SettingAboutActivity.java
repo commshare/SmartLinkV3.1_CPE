@@ -81,7 +81,7 @@ public class SettingAboutActivity extends Activity implements OnClickListener{
 			CommonUtil.openWebPage(this, "http://www.alcatelonetouch.com");
 			break;
 		case R.id.tv_link_management_page:
-			CommonUtil.openWebPage(this, "http://www.baidu.com");
+			CommonUtil.openWebPage(this, "http://192.168.1.1");
 			break;
 		default:
 			break;

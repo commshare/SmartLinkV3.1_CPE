@@ -1,5 +1,8 @@
 package com.alcatel.smartlinkv3.business;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.alcatel.smartlinkv3.business.power.HttpPower;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 
@@ -17,6 +20,9 @@ public class PowerManager extends BaseManager {
 
 	private PowerSavingModeInfo m_powerSavingMode=null;
 	private BatteryInfo m_battery=null;
+	private getBatteryStateTask m_getBatteryStateTask=null;
+	private Timer m_getBatteryRollTimer = new Timer();
+	
 	public PowerManager(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -32,10 +38,11 @@ public class PowerManager extends BaseManager {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
-				getBatteryState(null);
+				startGetBatteryStatusTask();
 				getPowerSavingModeInfo(null);
 			} else {
 				clearData();
+				stopBatteryStatusTask();
 			}
 		}
 	}
@@ -62,6 +69,28 @@ public class PowerManager extends BaseManager {
 		return m_powerSavingMode;
 	}
 
+	private void startGetBatteryStatusTask() {
+		if(m_getBatteryStateTask == null) {
+			m_getBatteryStateTask = new getBatteryStateTask();
+			m_getBatteryRollTimer.scheduleAtFixedRate(m_getBatteryStateTask, 0, 20 * 1000);
+		}
+	}
+	
+	private void stopBatteryStatusTask() {
+		if(m_getBatteryStateTask != null) {
+			m_getBatteryStateTask.cancel();
+			m_getBatteryStateTask = null;
+		}
+	}
+	class getBatteryStateTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			getBatteryState(null);
+		}
+		
+	}
 	//get battery state
 	public void getBatteryState(DataValue data){
 		if (!FeatureVersionManager.getInstance().
@@ -84,6 +113,11 @@ public class PowerManager extends BaseManager {
 									0 == strErr.length()) {
 								m_battery = response.getModelResult();
 							}
+							
+							Intent megIntent= new Intent(MessageUti.POWER_GET_BATTERY_STATE);
+		                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+		                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErr);
+		        			m_context.sendBroadcast(megIntent);
 						}
 					}));
 		}
@@ -110,7 +144,14 @@ public class PowerManager extends BaseManager {
 							if (BaseResponse.RESPONSE_OK == nRes &&
 									0 == strErr.length()) {
 								m_powerSavingMode = response.getModelResult();
+							}else {
+								getPowerSavingModeInfo(null);
 							}
+							
+							Intent megIntent= new Intent(MessageUti.POWER_GET_POWER_SAVING_MODE);
+		                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+		                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErr);
+		        			m_context.sendBroadcast(megIntent);
 						}
 					}));
 		}
@@ -135,10 +176,11 @@ public class PowerManager extends BaseManager {
 							// TODO Auto-generated method stub
 							int nRes = response.getResultCode();
 							String strErr = response.getErrorMessage();
-							if (BaseResponse.RESPONSE_OK == nRes &&
-									0 == strErr.length()){
-								m_powerSavingMode = response.getModelResult();
-							}
+							
+							Intent megIntent= new Intent(MessageUti.POWER_SET_POWER_SAVING_MODE);
+		                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+		                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErr);
+		        			m_context.sendBroadcast(megIntent);
 						}
 					}));
 		}

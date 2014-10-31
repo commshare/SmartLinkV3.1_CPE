@@ -128,6 +128,8 @@
     <string name="setting_device_btn_reboot">Reboot</string>
     <string name="setting_device_btn_reset">Reset</string>
     <string name="setting_about_app_name">ALCATEONETOUCH</string>
+    <string name="setting_success">Success</string>
+    <string name="setting_failed">Failed</string>
     <!-- setting end -->
 
 	<!-- common start -->

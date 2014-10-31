@@ -6,9 +6,12 @@ import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -18,8 +21,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class SettingPowerSavingActivity extends Activity implements OnClickListener{
+public class SettingPowerSavingActivity extends BaseActivity implements OnClickListener{
 
 	private TextView m_tv_title = null;
 	private ImageButton m_ib_back=null;
@@ -29,7 +33,7 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 	private TextView m_tv_battery_status=null;
 	private ProgressBar m_pb_battery_status=null;
 	private ImageView m_iv_battery_charge=null;
-	
+
 	private boolean m_blSmartModeSwitchOn=true;
 	private boolean m_blWifiModeSwitchOn=true;
 	@Override
@@ -62,13 +66,13 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 	}
 
 	private void createControls(){
-		
+
 		m_btn_smart_mode_switch=(Button)findViewById(R.id.btn_power_smart);
 		m_btn_wifi_mode_switch=(Button)findViewById(R.id.btn_power_wifi);
 		m_tv_battery_status=(TextView)findViewById(R.id.tv_power_status);
 		m_pb_battery_status=(ProgressBar)findViewById(R.id.pb_power_saving);
 		m_iv_battery_charge=(ImageView)findViewById(R.id.iv_power_display);
-		
+
 		m_btn_smart_mode_switch.setOnClickListener(this);
 		m_btn_wifi_mode_switch.setOnClickListener(this);
 	}
@@ -83,11 +87,11 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 		case R.id.tv_title_back:
 			SettingPowerSavingActivity.this.finish();
 			break;
-			
+
 		case R.id.btn_power_smart:
 			onBtnSmartModeSwitch();
 			break;
-			
+
 		case R.id.btn_power_wifi:
 			onBtnWifiModeSwitch();
 			break;
@@ -108,7 +112,7 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 			m_blSmartModeSwitchOn = true;
 			m_btn_smart_mode_switch.setBackgroundResource(R.drawable.switch_on);
 		}
-		
+
 		if (!m_blWifiModeSwitchOn) {
 			nWifiMode=ConstValue.DISABLE;
 		}
@@ -120,7 +124,7 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.POWER_SET_POWER_SAVING_MODE, data);
 	}
-	
+
 	private void onBtnWifiModeSwitch(){
 		int nSmartMode=ConstValue.ENABLE;
 		int nWifiMode= ConstValue.ENABLE;
@@ -132,7 +136,7 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 			m_blWifiModeSwitchOn = true;
 			m_btn_wifi_mode_switch.setBackgroundResource(R.drawable.switch_on);
 		}
-		
+
 		if (!m_blSmartModeSwitchOn) {
 			nSmartMode=ConstValue.DISABLE;
 		}
@@ -144,13 +148,14 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.POWER_SET_POWER_SAVING_MODE, data);
 	}
-	
+
 	private void showBatterystatus(){
 		BatteryInfo info = BusinessMannager.getInstance().getBatteryInfo();
 		int nChargeState = info.getChargeState();
 		if (ConstValue.CHARGE_STATE_CHARGING != nChargeState) {
 			m_pb_battery_status.setVisibility(View.VISIBLE);
 			m_iv_battery_charge.setVisibility(View.GONE);
+			m_pb_battery_status.setProgress(info.getBatterLevel());
 		}else {
 			m_iv_battery_charge.setVisibility(View.VISIBLE);
 			m_pb_battery_status.setVisibility(View.GONE);
@@ -158,7 +163,7 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 		String strLevel = info.getBatterLevel() + "%";
 		m_tv_battery_status.setText(strLevel);
 	}
-	
+
 	private void initSwitchsState(){
 		PowerSavingModeInfo info = BusinessMannager.getInstance().getPowerSavingModeInfo();
 		if (ConstValue.ENABLE == info.getSmartMode()) {
@@ -168,13 +173,65 @@ public class SettingPowerSavingActivity extends Activity implements OnClickListe
 			m_btn_smart_mode_switch.setBackgroundResource(R.drawable.switch_off);
 			m_blSmartModeSwitchOn = false;
 		}
-		
+
 		if (ConstValue.ENABLE == info.getWiFiMode()) {
 			m_btn_wifi_mode_switch.setBackgroundResource(R.drawable.switch_on);
 			m_blWifiModeSwitchOn = true;
 		}else {
 			m_btn_wifi_mode_switch.setBackgroundResource(R.drawable.switch_off);
 			m_blWifiModeSwitchOn = false;
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		unregisterReceiver(m_msgReceiver);
+	}
+
+	@Override
+	protected void onBroadcastReceive(Context context, Intent intent) {
+		// TODO Auto-generated method stub
+		super.onBroadcastReceive(context, intent);
+
+		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_POWER_SAVING_MODE)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				showBatterystatus();
+			}
+		}
+
+		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_SET_POWER_SAVING_MODE)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				initSwitchsState();
+			}
+		}
+
+		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_BATTERY_STATE)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_failed);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_success);
+			}
+			
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
 	}
 }
