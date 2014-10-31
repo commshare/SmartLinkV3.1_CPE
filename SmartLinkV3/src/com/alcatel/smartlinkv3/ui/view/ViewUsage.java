@@ -16,6 +16,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -155,8 +156,13 @@ public class ViewUsage extends BaseViewImpl {
 	    m_roamingdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.RoamUseData));
 
 		
-	    m_durationtime.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.CurrConnTimes));
-		m_durationtotaltime.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.TConnTimes));
+	    String durationformat = this.getView().getResources().getString(R.string.usage_duration);
+	    Log.v("time", "pccccc CurrConnTimes="+m_UsageRecordResult.CurrConnTimes+"TConnTimes="+m_UsageRecordResult.TConnTimes);
+		String strCurrDuration = String.format(durationformat, m_UsageRecordResult.CurrConnTimes / 60, m_UsageRecordResult.CurrConnTimes % 60);
+		m_durationtime.setText(strCurrDuration);
+		String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes / 60, m_UsageRecordResult.TConnTimes % 60);
+		m_durationtotaltime.setText(strTotalDuration);
+		
 		if(m_UsageRecordResult.HUseData > m_UsageRecordResult.MaxUsageData)
 		{
 			m_durationwarn.setVisibility(View.VISIBLE);

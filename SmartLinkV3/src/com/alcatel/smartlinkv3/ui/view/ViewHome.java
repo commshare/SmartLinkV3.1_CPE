@@ -27,6 +27,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -88,6 +89,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	/*access_panel  end*/
 	
 	private LoginDialog m_loginDialog = null;
+	
+	private String home_connected_duration = null;
+
+	
 	
 	
 	private ViewConnetBroadcastReceiver m_viewConnetMsgReceiver;
@@ -199,6 +204,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		m_loginDialog = new LoginDialog(this.m_context);
 		
+		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
 	}
 
 	@Override
@@ -384,7 +390,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_connectToLabel.setText(R.string.home_connecting_to);
 			}
 		}
-		m_timestatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, statictime));
+		
+		String strConnDuration = String.format(home_connected_duration, statictime / 60, statictime % 60);
+		m_timestatusTextView.setText(strConnDuration);
 		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));
 	
 	}
@@ -441,7 +449,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_connectBtn.setEnabled(false);
 			m_connectBtn.setVisibility(View.VISIBLE);
 		}
-		m_timestatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, statictime));
+		
+		String strConnDuration = String.format(home_connected_duration, statictime / 60, statictime % 60);
+		Log.v("time", "pccccc home_connected_duration="+statictime);
+		m_timestatusTextView.setText(strConnDuration);
 		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));
 	
 	}
