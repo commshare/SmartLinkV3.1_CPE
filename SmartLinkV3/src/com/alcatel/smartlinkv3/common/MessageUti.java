@@ -150,6 +150,14 @@ public class MessageUti {
 	/**************************device message start*******************************************************************************/
 	public static String DEVICE_GET_CONNECTED_DEVICE_LIST=
 			"com.alcatel.smartlinkv3.business.update.getconneceteddevicelist";
+	public static String DEVICE_GET_BLOCK_DEVICE_LIST=
+			"com.alcatel.smartlinkv3.business.update.getblockdevicelist";
+	public static String DEVICE_SET_CONNECTED_DEVICE_BLOCK=
+			"com.alcatel.smartlinkv3.business.update.setconneceteddeviceblock";
+	public static String DEVICE_SET_DEVICE_UNLOCK=
+			"com.alcatel.smartlinkv3.business.update.setdeviceunlock";
+	public static String DEVICE_SET_DEVICE_NAME=
+			"com.alcatel.smartlinkv3.business.update.setdevicename";
 	/**************************device message end*********************************************************************************/
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,6 +263,10 @@ public class MessageUti {
 		
 		/********************Sharing method start**********************/			
 		httpMethods.put(DEVICE_GET_CONNECTED_DEVICE_LIST, new HttpMethodUti(DeviceManager.class, "getConnectedDeviceList"));	
+		httpMethods.put(DEVICE_GET_BLOCK_DEVICE_LIST, new HttpMethodUti(DeviceManager.class, "getBlockDeviceList"));	
+		httpMethods.put(DEVICE_SET_CONNECTED_DEVICE_BLOCK, new HttpMethodUti(DeviceManager.class, "setConnectedDeviceBlock"));	
+		httpMethods.put(DEVICE_SET_DEVICE_UNLOCK, new HttpMethodUti(DeviceManager.class, "setDeviceUnlock"));	
+		httpMethods.put(DEVICE_SET_DEVICE_NAME, new HttpMethodUti(DeviceManager.class, "setDeviceName"));		
 		/********************Sharing method end**********************/			
 	
 	}

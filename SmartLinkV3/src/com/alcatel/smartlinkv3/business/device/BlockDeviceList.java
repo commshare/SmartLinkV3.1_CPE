@@ -6,10 +6,10 @@ import com.alcatel.smartlinkv3.business.BaseResult;
 
 
 public class BlockDeviceList extends BaseResult{
-	public ArrayList<DeviceInfo> DeviceList = new ArrayList<DeviceInfo>();
+	public ArrayList<DeviceInfo> BlockList = new ArrayList<DeviceInfo>();
 	
 	@Override
 	public void clear(){
-		DeviceList.clear();	
+		BlockList.clear();	
 	}
 }

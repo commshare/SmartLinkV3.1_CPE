@@ -6,10 +6,10 @@ import com.alcatel.smartlinkv3.business.BaseResult;
 
 
 public class ConnectedDeviceList extends BaseResult{
-	public ArrayList<DeviceInfo> DeviceList = new ArrayList<DeviceInfo>();
+	public ArrayList<DeviceInfo> ConnectedList = new ArrayList<DeviceInfo>();
 	
 	@Override
 	public void clear(){
-		DeviceList.clear();	
+		ConnectedList.clear();	
 	}
 }

@@ -3,6 +3,8 @@ package com.alcatel.smartlinkv3.business;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
+import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -333,7 +335,7 @@ public class BusinessMannager {
     /********************wlan manager method end************************/      
     
     
-    /********************sharing manager Data start**********************/
+    /********************sharing manager method start**********************/
 	public DlnaSettings getDlnaSettings() {
 		return m_sharingManager.getDlnaSettings();
 	}
@@ -361,4 +363,19 @@ public class BusinessMannager {
 		return m_powerManager.getPowerSavingModeInfo();
 	}
 	/*Power manager end***/
+	
+	
+	  
+    /********************Device manager method start**********************/
+	public ConnectedDeviceList getConnectedDeviceList()
+	{
+		return m_deviceManager.getConnectedDeviceList();
+	}
+	
+	public BlockDeviceList getBlockDeviceList()
+	{
+		return m_deviceManager.getBlockDeviceList();
+	}
+    /********************Device manager method end************************/   
+
 }
