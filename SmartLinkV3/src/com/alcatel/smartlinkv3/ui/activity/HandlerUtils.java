@@ -50,7 +50,7 @@ public class HandlerUtils {
 			case 119:
 		    	ActivityManager am = (ActivityManager)SmartLinkV3App.getInstance().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);    	
 		    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-		    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe")) {
+		    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.smartlinkv3")) {
 		    		userLogout();
 		    	}				
 				break;

@@ -65,10 +65,6 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 					MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET, null);
 			this.dismiss();
 			break;	
-			
-		case R.id.logout_layout:
-			this.dismiss();
-			break;
 		}
 	}
 

@@ -1,6 +1,9 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.activity.SdSharingActivity;
 import com.alcatel.smartlinkv3.ui.activity.WpsMainActivity;
 
@@ -8,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,17 +66,16 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 		case R.id.sd_sharing_layout:
             intent.setClass(v.getContext(), SdSharingActivity.class);  
             v.getContext().startActivity(intent);
-            this.dismiss();
 			break;
 		case R.id.wps_layout:
 			intent.setClass(v.getContext(), WpsMainActivity.class);  
             v.getContext().startActivity(intent);
-            this.dismiss();
 			break;
 		case R.id.logout_layout:
-			this.dismiss();
+			userLogout();
 			break;
 		}
+		this.dismiss();
 		
 	}
 
@@ -82,6 +85,14 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 			this.showAsDropDown(parent, parent.getLayoutParams().width / 2, -16);
 		} else {
 			this.dismiss();
+		}
+	}
+	
+	public void userLogout() {
+		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.selfLogined) {
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.USER_LOGOUT_REQUEST, null);
 		}
 	}
 }

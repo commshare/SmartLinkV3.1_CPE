@@ -41,6 +41,7 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -48,13 +49,17 @@ import android.view.MotionEvent;
 
 public class MainActivity extends BaseActivity implements OnClickListener{
 	private int m_preButton = 0;
+	private int m_nNewCount = 0;
 
 	private ViewFlipper m_viewFlipper;
 	
 	private TextView m_homeBtn;
 	private TextView m_usageBtn;
-	private TextView m_smsBtn;
+	private FrameLayout m_smsBtn;
 	private TextView m_settingBtn;
+	
+	private TextView m_smsTextView;
+	private TextView m_newSmsTextView;
 
 
 	private TextView m_titleTextView = null;
@@ -63,6 +68,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	private ViewHome m_homeView = null;
 	private ViewUsage m_usageView = null;
 	private ViewSms m_smsView = null;
+	
 	private ViewSetting m_settingView = null;
 
 	public static DisplayMetrics m_displayMetrics = new DisplayMetrics();
@@ -88,13 +94,16 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_homeBtn.setOnClickListener(this);
 		m_usageBtn = (TextView) this.findViewById(R.id.main_usage);
 		m_usageBtn.setOnClickListener(this);
-		m_smsBtn = (TextView) this.findViewById(R.id.main_sms);
+		m_smsBtn = (FrameLayout) this.findViewById(R.id.tab_sms_layout);
 		m_smsBtn.setOnClickListener(this);
 		m_settingBtn = (TextView) this.findViewById(R.id.main_setting);
 		m_settingBtn.setOnClickListener(this);
 
 		m_viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
+		m_smsTextView = (TextView) this.findViewById(R.id.main_sms);
+		m_newSmsTextView = (TextView) this.findViewById(R.id.new_sms_count);
+		
 		m_titleTextView = (TextView) this.findViewById(R.id.main_title);
 		
 		m_Btnbar = (Button) this.findViewById(R.id.btnbar);
@@ -132,6 +141,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_smsView.onResume();
 		m_settingView.onResume();
 		
+		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
 	}
 
@@ -273,34 +283,34 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	}
 	
 	public void updateNewSmsUI(int nNewSmsCount) {
-//		m_nNewCount = nNewSmsCount;
-//		int nActiveBtnId = m_preButton;
-//		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_placeholder
-//				: R.drawable.main_sms_placeholder;
-//		Drawable d = getResources().getDrawable(nDrawable);
-//		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
-//		m_smsTextView.setCompoundDrawables(null, d, null, null);
-//
-//		if (nNewSmsCount <= 0) {
-//			m_newSmsTextView.setVisibility(View.GONE);
-//			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_no_new_active
-//					: R.drawable.main_sms_no_new_grey;
-//			d = getResources().getDrawable(nDrawable);
-//			d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
-//			m_smsTextView.setCompoundDrawables(null, d, null, null);
-//		} else if (nNewSmsCount < 10) {
-//			m_newSmsTextView.setVisibility(View.VISIBLE);
-//			m_newSmsTextView.setText(String.valueOf(nNewSmsCount));
-//			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_active
-//					: R.drawable.main_new_sms_tab_grey;
-//			m_newSmsTextView.setBackgroundResource(nDrawable);
-//		} else {
-//			m_newSmsTextView.setVisibility(View.VISIBLE);
-//			m_newSmsTextView.setText("");
-//			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_9_plus_active
-//					: R.drawable.main_new_sms_tab_9_plus_grey;
-//			m_newSmsTextView.setBackgroundResource(nDrawable);
-//		}
+		m_nNewCount = nNewSmsCount;
+		int nActiveBtnId = m_preButton;
+		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_placeholder
+				: R.drawable.main_sms_placeholder;
+		Drawable d = getResources().getDrawable(nDrawable);
+		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+		m_smsTextView.setCompoundDrawables(null, d, null, null);
+
+		if (nNewSmsCount <= 0) {
+			m_newSmsTextView.setVisibility(View.GONE);
+			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_no_new_active
+					: R.drawable.main_sms_no_new_grey;
+			d = getResources().getDrawable(nDrawable);
+			d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+			m_smsTextView.setCompoundDrawables(null, d, null, null);
+		} else if (nNewSmsCount < 10) {
+			m_newSmsTextView.setVisibility(View.VISIBLE);
+			m_newSmsTextView.setText(String.valueOf(nNewSmsCount));
+			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_active
+					: R.drawable.main_new_sms_tab_grey;
+			m_newSmsTextView.setBackgroundResource(nDrawable);
+		} else {
+			m_newSmsTextView.setVisibility(View.VISIBLE);
+			m_newSmsTextView.setText("");
+			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_9_plus_active
+					: R.drawable.main_new_sms_tab_9_plus_grey;
+			m_newSmsTextView.setBackgroundResource(nDrawable);
+		}
 	}
 	
 	private void updateBtnState() {
@@ -315,11 +325,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	private void toPageHomeWhenPinSimNoOk() {
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		if (simState.m_SIMState != SIMState.Accessable) {
-//			if (m_preButton == R.id.tab_sms_layout) {
-//				setMainBtnStatus(R.id.main_home);
-//				showView(ViewIndex.VIEW_HOME);
-//				showTitleUI(ViewIndex.VIEW_HOME);
-//			}
+			if (m_preButton == R.id.tab_sms_layout) {
+				setMainBtnStatus(R.id.main_home);
+				showView(ViewIndex.VIEW_HOME);
+				updateTitleUI(ViewIndex.VIEW_HOME);
+			}
 
 			unlockSimBtnClick(false);
 		}
@@ -346,31 +356,31 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		case R.id.main_usage:
 			usageBtnClick();
 			break;
-		case R.id.main_sms:
+		case R.id.tab_sms_layout:
 			smsBtnClick();
 			break;
 		case R.id.main_setting:
 			settingBtnClick();
 			break;
 		case R.id.btnbar:
-//			if (LoginDialog.isLoginSwitchOff()) {		
+			if (LoginDialog.isLoginSwitchOff()) {		
 				go2Click();	
-//			} else {		
-//				UserLoginStatus status = BusinessMannager.getInstance()				
-//						.getLoginStatus();	
-//				if (status == UserLoginStatus.OthersLogined) {			
-//					PromptUserLogined();		
-//				} else if (status == UserLoginStatus.selfLogined) {			
-//					go2Click();		
-//				} else {			
-//					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-//						@Override				
-//						public void onLoginFinished() {					
-//							go2Click();				
-//						}			
-//					});		
-//				}	
-//			}
+			} else {		
+				UserLoginStatus status = BusinessMannager.getInstance()				
+						.getLoginStatus();	
+				if (status == UserLoginStatus.OthersLogined) {			
+					PromptUserLogined();		
+				} else if (status == UserLoginStatus.selfLogined) {			
+					go2Click();		
+				} else {			
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+						@Override				
+						public void onLoginFinished() {					
+							go2Click();				
+						}			
+					});		
+				}	
+			}
 					
 			break;
 		case R.id.unlock_sim_button:
@@ -448,33 +458,33 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	}
 	
 	private void smsBtnClick() {
-		if (m_preButton == R.id.main_sms) {
+		if (m_preButton == R.id.tab_sms_layout) {
 			return;
 		}		
 	
-//		if (LoginDialog.isLoginSwitchOff()) {
+		if (LoginDialog.isLoginSwitchOff()) {
 			go2SmsView();
-//		} else {
-//			UserLoginStatus status = BusinessMannager.getInstance()
-//					.getLoginStatus();
-//
-//			if (status == UserLoginStatus.OthersLogined) {
-//				PromptUserLogined();
-//			} else if (status == UserLoginStatus.selfLogined) {
-//				go2SmsView();
-//			} else {
-//				m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//					@Override
-//					public void onLoginFinished() {
-//						go2SmsView();
-//					}
-//				});
-//			}
-//		}	
+		} else {
+			UserLoginStatus status = BusinessMannager.getInstance()
+					.getLoginStatus();
+
+			if (status == UserLoginStatus.OthersLogined) {
+				PromptUserLogined();
+			} else if (status == UserLoginStatus.selfLogined) {
+				go2SmsView();
+			} else {
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {
+					@Override
+					public void onLoginFinished() {
+						go2SmsView();
+					}
+				});
+			}
+		}	
 	}
 
 	private void go2SmsView() {
-		setMainBtnStatus(R.id.main_sms);
+		setMainBtnStatus(R.id.tab_sms_layout);
 		showView(ViewIndex.VIEW_SMS);
 		updateTitleUI(ViewIndex.VIEW_SMS);
 		pageIndex = ViewIndex.VIEW_SMS;
@@ -484,24 +494,24 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		if (m_preButton == R.id.main_setting) {		
 			return;	
 		}	
-//		if (LoginDialog.isLoginSwitchOff()) {		
+		if (LoginDialog.isLoginSwitchOff()) {		
 			go2SettingView();	
-//		} else {		
-//			UserLoginStatus status = BusinessMannager.getInstance()				
-//					.getLoginStatus();	
-//			if (status == UserLoginStatus.OthersLogined) {			
-//				PromptUserLogined();		
-//			} else if (status == UserLoginStatus.selfLogined) {			
-//				go2SettingView();		
-//			} else {			
-//				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-//					@Override				
-//					public void onLoginFinished() {					
-//						go2SettingView();				
-//					}			
-//				});		
-//			}	
-//		}	
+		} else {		
+			UserLoginStatus status = BusinessMannager.getInstance()				
+					.getLoginStatus();	
+			if (status == UserLoginStatus.OthersLogined) {			
+				PromptUserLogined();		
+			} else if (status == UserLoginStatus.selfLogined) {			
+				go2SettingView();		
+			} else {			
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+					@Override				
+					public void onLoginFinished() {					
+						go2SettingView();				
+					}			
+				});		
+			}	
+		}	
 	}
 
 	private void go2SettingView() {
@@ -550,7 +560,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			m_titleTextView.setText(R.string.main_sms);
 			m_Btnbar.setVisibility(View.VISIBLE);
 			m_Btnbar.setBackgroundResource(R.drawable.actionbar_edit_icon);
-			setMainBtnStatus(R.id.main_sms);
+			setMainBtnStatus(R.id.tab_sms_layout);
 		}
 		if (viewIndex == ViewIndex.VIEW_SETTINGE) {
 			m_titleTextView.setText(R.string.main_setting);
@@ -570,7 +580,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				: R.color.color_grey;
 		m_homeBtn.setTextColor(this.getResources().getColor(nTextColor));
 
-		//updateNewSmsUI(m_nNewCount);
+
 		nDrawable = nActiveBtnId == R.id.main_usage ? R.drawable.main_usage_active
 				: R.drawable.main_usage_grey;
 		d = getResources().getDrawable(nDrawable);
@@ -580,14 +590,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				: R.color.color_grey;
 		m_usageBtn.setTextColor(this.getResources().getColor(nTextColor));
 
-		nDrawable = nActiveBtnId == R.id.main_sms ? R.drawable.main_sms_active
-				: R.drawable.main_sms_grey;
-		d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
-		m_smsBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_sms ? R.color.color_blue
-				: R.color.color_grey;
-		m_smsBtn.setTextColor(this.getResources().getColor(nTextColor));
+		updateNewSmsUI(m_nNewCount);
 
 		nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.main_setting_active
 				: R.drawable.main_setting_grey;

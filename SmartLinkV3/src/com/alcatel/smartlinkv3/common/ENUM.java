@@ -549,16 +549,16 @@ public class ENUM {
 	}
 
 	/*
-	 * Login status 0: logout 1: some body login 2:logined
+	 * Login status 0: logout 1: logined 2:some body login
 	 */
 	public static enum UserLoginStatus {
-		Logout, OthersLogined, selfLogined;
+		Logout, selfLogined, OthersLogined;
 
 		public static UserLoginStatus build(int status) {
 			if (status == 1) {
-				return OthersLogined;
-			} else if (status == 2) {
 				return selfLogined;
+			} else if (status == 2) {
+				return OthersLogined;
 			} else {
 				return Logout;
 			}
@@ -566,9 +566,9 @@ public class ENUM {
 
 		public static int antiBuild(UserLoginStatus status) {
 			if (status == OthersLogined) {
-				return 1;
-			} else if (status == selfLogined) {
 				return 2;
+			} else if (status == selfLogined) {
+				return 1;
 			} else
 				return 0;
 		}

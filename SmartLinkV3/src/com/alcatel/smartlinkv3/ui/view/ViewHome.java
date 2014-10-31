@@ -446,28 +446,27 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	}
 	
-	private void connectBtnClick() {	
-		connect();
+	private void connectBtnClick() {
 		
-//		if (LoginDialog.isLoginSwitchOff()) {
-//			connect();	
-//		} else {
-//			UserLoginStatus status = BusinessMannager.getInstance()
-//					.getLoginStatus();
-//
-//			if (status == UserLoginStatus.OthersLogined) {
-//				PromptUserLogined();
-//			} else if (status == UserLoginStatus.selfLogined) {
-//				connect();	
-//			} else {
-//				m_loginDialog.showDialog(new OnLoginFinishedListener() {
-//					@Override
-//					public void onLoginFinished() {
-//						connect();	
-//					}
-//				});
-//			}
-//		}	
+		if (LoginDialog.isLoginSwitchOff()) {
+			connect();	
+		} else {
+			UserLoginStatus status = BusinessMannager.getInstance()
+					.getLoginStatus();
+
+			if (status == UserLoginStatus.OthersLogined) {
+				PromptUserLogined();
+			} else if (status == UserLoginStatus.selfLogined) {
+				connect();	
+			} else {
+				m_loginDialog.showDialog(new OnLoginFinishedListener() {
+					@Override
+					public void onLoginFinished() {
+						connect();	
+					}
+				});
+			}
+		}	
 	}
 
 	private void connect()
