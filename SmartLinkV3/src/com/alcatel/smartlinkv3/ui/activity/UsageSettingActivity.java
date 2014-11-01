@@ -20,6 +20,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,11 +29,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 
@@ -40,15 +37,15 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 	private UsageSettingReceiver m_usettingreceiver = new UsageSettingReceiver();
 	
-	private final static long MONTHLY_MAX_VALUE = 102400; // megabyte
-	private final static long BILLING_MAX_VALUE = 31; // megabyte
+	private final static int MONTHLY_MAX_VALUE = 102400; // megabyte
+	private final static int BILLING_MAX_VALUE = 31; // megabyte
 	private final static int MAX_DISCONNECT_TIME_VALUE = 24 * 60 * 31;
 	
 	private ImageButton bnBack;
 	private EditText m_billingValue;
 	private EditText m_monthlyValue;
-	private long m_monthlyVal = 0;
-	private long m_billingVal = 0;
+	private int m_monthlyVal = 0;
+	private int m_billingVal = 0;
 	private TextView m_consumptionValue;
 	private boolean m_bIsMonthlyValueEdit = false;
 	private boolean m_bIsBillingValueEdit = false;
@@ -161,9 +158,16 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			}
 		}
 	}
-
 	private void registerReceiver() {
 		// advanced
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.WAN_CONNECT_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.WAN_DISCONNECT_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
@@ -178,6 +182,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				MessageUti.STATISTICS_SET_USED_TIMES_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET));
+
 	}
 	
 	@Override
@@ -307,6 +312,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			public boolean onEditorAction(TextView v, int actionId,
 					KeyEvent event) {
 
+				Log.v("test", "pchong  onEditorAction");
 				// EditorInfo.IME_ACTION_UNSPECIFIED use for 3-rd input
 				if (actionId == EditorInfo.IME_ACTION_DONE
 						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
@@ -348,10 +354,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void setSettingBilling() {
-		long usage = 0;
+		int usage = 0;
 
 		if (m_billingValue.getText().toString().length() > 0) {
-			usage = Long.parseLong(m_billingValue.getText().toString());
+			usage = (int) Long.parseLong(m_billingValue.getText().toString());
 		}
 		if (usage != m_billingVal) {
 			if (usage > BILLING_MAX_VALUE) {
@@ -430,7 +436,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_monthlyVal = statistic.HMonthlyPlan;
 			if (m_monthlyVal > 0) {
 				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
-					m_monthlyValue.setText("" + CommonUtil.ConvertTrafficToStringFromMB(this, (long)m_monthlyVal));
+					m_monthlyValue.setText("" + byte2megabyte(m_monthlyVal));
 			} else {
 				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
 					m_monthlyValue.setText("");
@@ -445,10 +451,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void setSettingMonthly() {
-		long usage = 0;
+		int usage = 0;
 
 		if (m_monthlyValue.getText().toString().length() > 0) {
-			usage = Long.parseLong(m_monthlyValue.getText().toString());
+			usage = (int) Long.parseLong(m_monthlyValue.getText().toString());
 		}
 		if (usage != this.byte2megabyte(m_monthlyVal)) {
 			if (usage > MONTHLY_MAX_VALUE) {
@@ -470,11 +476,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 	}
 	
-	private long megabyte2byte(long megabyte) {
+	private int megabyte2byte(int megabyte) {
 		return megabyte * 1024 * 1024;
 	}
 
-	private long byte2megabyte(long byteV) {
+	private int byte2megabyte(int byteV) {
 		return byteV / (1024 * 1024);
 	}
 	
@@ -579,7 +585,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 		m_bIsTimeLimitEdit = true;
 		DataValue data = new DataValue();
-		data.addParam("over_time", lTime);
+		data.addParam("time_limit_times", lTime);
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET, data);
 	}
@@ -623,11 +629,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
 			m_usageAutoDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_on);
-			data.addParam("over_flow_status", OVER_DISCONNECT_STATE.Enable);
+			data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Enable);
 		} else {
 			m_usageAutoDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_off);
-			data.addParam("over_flow_status", OVER_DISCONNECT_STATE.Disable);
+			data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
 		}
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
@@ -643,12 +649,12 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (usageSetting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
 			m_timeLimitDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_on);
-			data.addParam("over_time_status", OVER_TIME_STATE.Enable);
+			data.addParam("time_limit_flag", OVER_TIME_STATE.Enable);
 		} else {
 			// on
 			m_timeLimitDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_off);
-			data.addParam("over_time_status", OVER_TIME_STATE.Disable);
+			data.addParam("time_limit_flag", OVER_TIME_STATE.Disable);
 		}
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET,

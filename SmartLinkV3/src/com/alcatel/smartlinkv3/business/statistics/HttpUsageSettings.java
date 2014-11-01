@@ -78,7 +78,7 @@ public class HttpUsageSettings {
 		public SetUsageSettings(String strId,	UsageSettingsResult result, IHttpFinishListener callback) {
 			super(callback);
 			m_strId = strId;
-			m_result = result;
+			m_result.setValue(result);
 		}
 
 		@Override
@@ -87,7 +87,7 @@ public class HttpUsageSettings {
 				m_requestParamJson.put(ConstValue.JSON_RPC,
 						ConstValue.JSON_RPC_VERSION);
 				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"Wlan.SetWlanSettings");
+						"SetUsageSettings");
 				
 				JSONObject settings = new JSONObject();
 				settings.put("BillingDay", m_result.BillingDay);

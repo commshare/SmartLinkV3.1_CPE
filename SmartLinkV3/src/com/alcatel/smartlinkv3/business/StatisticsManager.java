@@ -310,7 +310,7 @@ public class StatisticsManager extends BaseManager {
 		final int nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.MonthlyPlan = nPreMonthlyPlan;
+		nUsageSettings.MonthlyPlan = nMonthlyPlan;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -347,7 +347,7 @@ public class StatisticsManager extends BaseManager {
 		final int nPreUsedData = m_usageSettings.HUsedData;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.UsedData = nPreUsedData;
+		nUsageSettings.UsedData = nUsedData;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -417,7 +417,7 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final int nTimeLimitTimes = (Integer) data.getParamByKey("time_limit_flag");
+		final int nTimeLimitTimes = (Integer) data.getParamByKey("time_limit_times");
 		final int nPreTimeLimitTimes = m_usageSettings.HTimeLimitTimes;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
