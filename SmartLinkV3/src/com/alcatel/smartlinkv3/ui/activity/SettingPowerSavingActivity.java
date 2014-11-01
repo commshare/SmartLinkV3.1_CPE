@@ -8,6 +8,7 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
+import com.alcatel.smartlinkv3.ui.view.ViewIndex;
 
 import android.content.Context;
 import android.content.Intent;
@@ -211,6 +212,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
+		registerReceiver(m_msgReceiver, new IntentFilter("openPage"));
 	}
 
 	@Override
@@ -254,6 +256,12 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			}
 			
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+		}
+		
+		if (intent.getAction().equalsIgnoreCase("openPage")) {
+			int nPage = intent.getIntExtra("Page", 100);
+			String strTemp= "" + nPage;
+			Toast.makeText(this, strTemp, Toast.LENGTH_SHORT).show();
 		}
 	}
 }
