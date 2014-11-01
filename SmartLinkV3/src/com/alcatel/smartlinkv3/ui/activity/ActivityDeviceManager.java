@@ -8,8 +8,9 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private ConnectedDeviceList m_connecedDeviceLstData = new ConnectedDeviceList();
 	private BlockDeviceList m_blockedDeviceLstData = new BlockDeviceList();
 	private DeviceReceiver m_deviceReceiver = null;
+	private String m_strLocalMac = new String();
 
 	private class DeviceReceiver extends BroadcastReceiver {
 		@Override
@@ -156,7 +158,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 
 	@Override
 	public void onResume() {
-		super.onResume();
+		super.onResume();	
+		getLocalMacAddress();
 		registerReceiver();
 		getListData();
 	}
@@ -265,6 +268,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		m_txBlockCnt.setText(strBlockdCnt);		
 	}
 
+	private void getLocalMacAddress() {
+		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = wifi.getConnectionInfo();
+		m_strLocalMac = info.getMacAddress();
+	}
+	
 	public class ConnectedDevAdapter extends BaseAdapter {
 
 		public ConnectedDevAdapter(Context context) {
@@ -318,6 +327,15 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			final String mac = m_connecedDeviceLstData.ConnectedList.get(position).MacAddress;
 			holder.mac.setText("MAC:"+ mac);
 			final int type = m_connecedDeviceLstData.ConnectedList.get(position).DeviceType;
+			
+			if(mac.equalsIgnoreCase(m_strLocalMac))
+			{
+				holder.blockBtn.setVisibility(View.GONE);
+			}
+			else
+			{
+				holder.blockBtn.setVisibility(View.VISIBLE);
+			}
 			
 			holder.blockBtn.setOnClickListener(new OnClickListener() {
 				@Override
