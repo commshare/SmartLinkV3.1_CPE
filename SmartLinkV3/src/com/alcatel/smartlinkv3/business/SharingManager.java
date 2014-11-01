@@ -1,8 +1,12 @@
 package com.alcatel.smartlinkv3.business;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.business.sharing.HttpSharing;
 import com.alcatel.smartlinkv3.business.sharing.SDCardSpace;
+import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
 import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -18,9 +22,23 @@ public class SharingManager extends BaseManager {
 	private DlnaSettings m_dlnaSettings = new DlnaSettings();
 	private SambaSettings m_sambaSettings = new SambaSettings();
 	private SDCardSpace m_sdcardSpace = new SDCardSpace();
+	private SDcardStatus m_sdcardStatus = new SDcardStatus();
+	
+	private Timer m_getSDCardTimer = new Timer();
+	private GetSDcardStatusTask m_getSDCardTask = null;
+	
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
+		if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+			boolean bCPEWifiConnected = DataConnectManager.getInstance()
+					.getCPEWifiConnected();
+			if (bCPEWifiConnected == true) {
+				startGetSDCardStatusTask();				
+			} else {
+				stopRollTimer();				
+			}
+		}
 	}
 
 	public SharingManager(Context context) {
@@ -33,8 +51,11 @@ public class SharingManager extends BaseManager {
 	}
 	
 	@Override
-	protected void stopRollTimer() {	
-		
+	protected void stopRollTimer() {
+		if (null != m_getSDCardTask) {
+			m_getSDCardTask.cancel();
+			m_getSDCardTask = null;
+		}		
 	}
 
 	public DlnaSettings getDlnaSettings() {
@@ -48,6 +69,11 @@ public class SharingManager extends BaseManager {
 	public SDCardSpace getSDCardSpace()	{
 		return m_sdcardSpace;
 	}
+	
+	public SDcardStatus getSDCardStatus()	{
+		return m_sdcardStatus;
+	}
+	
 	
 	// SetSambaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
@@ -233,6 +259,60 @@ public class SharingManager extends BaseManager {
 								}
 								Intent megIntent = new Intent(
 										MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET);
+								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+										ret);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_ERROR_CODE,
+										strErrcode);
+								m_context.sendBroadcast(megIntent);
+							}
+						}));
+	}
+	
+	// GetSDcardStatus
+	// //////////////////////////////////////////////////////////////////////////////////////////	
+	
+	private void startGetSDCardStatusTask() {
+		if (m_getSDCardTask == null) {
+			m_getSDCardTask = new GetSDcardStatusTask();
+			m_getSDCardTimer.scheduleAtFixedRate(
+					m_getSDCardTask, 0, 10000);
+		}
+	}
+	
+	class GetSDcardStatusTask extends TimerTask {		
+		@Override
+		public void run() {
+			getSDcardStatus(null);
+		}
+	}
+	
+	public void getSDcardStatus(DataValue data) {
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetSDcardStatus") != true)
+			return;
+
+		HttpRequestManager.GetInstance().sendPostRequest(
+				new HttpSharing.GetSDCardSpace("14.9",
+						new IHttpFinishListener() {
+							@Override
+							public void onHttpRequestFinish(
+									BaseResponse response) {
+								String strErrcode = new String();
+								int ret = response.getResultCode();
+								if (ret == BaseResponse.RESPONSE_OK) {
+									strErrcode = response.getErrorCode();
+									if (strErrcode.length() == 0) {
+										m_sdcardStatus = response
+												.getModelResult();
+									} else {
+										m_sdcardStatus.clear();
+									}
+								} else {
+									m_sdcardStatus.clear();
+								}
+								Intent megIntent = new Intent(
+										MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET);
 								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
 										ret);
 								megIntent.putExtra(

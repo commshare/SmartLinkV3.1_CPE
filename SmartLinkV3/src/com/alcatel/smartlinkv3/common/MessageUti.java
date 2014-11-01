@@ -118,6 +118,7 @@ public class MessageUti {
 	public static String SHARING_GET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getdlnasetting";	
 	public static String SHARING_SET_DLNA_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setdlnasetting";	
 	public static String SHARING_GET_SDCARD_SPACE_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getsdcardspace";	
+	public static String SHARING_GET_SDCARD_STATUS_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getsdcardstatus";		
 	/**************************Sharing message end*********************************************************************************/
 	
 	/**************************LAN message start*******************************************************************************/
@@ -266,7 +267,7 @@ public class MessageUti {
 		httpMethods.put(DEVICE_GET_BLOCK_DEVICE_LIST, new HttpMethodUti(DeviceManager.class, "getBlockDeviceList"));	
 		httpMethods.put(DEVICE_SET_CONNECTED_DEVICE_BLOCK, new HttpMethodUti(DeviceManager.class, "setConnectedDeviceBlock"));	
 		httpMethods.put(DEVICE_SET_DEVICE_UNLOCK, new HttpMethodUti(DeviceManager.class, "setDeviceUnlock"));	
-		httpMethods.put(DEVICE_SET_DEVICE_NAME, new HttpMethodUti(DeviceManager.class, "setDeviceName"));		
+		httpMethods.put(DEVICE_SET_DEVICE_NAME, new HttpMethodUti(DeviceManager.class, "setDeviceName"));	
 		/********************Sharing method end**********************/			
 	
 	}

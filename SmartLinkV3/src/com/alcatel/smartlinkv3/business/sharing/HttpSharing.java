@@ -277,5 +277,56 @@ public class HttpSharing {
 		}
 	}
 	
+	/******************** GetSDCardStatus **************************************************************************************/
+	public static class GetSDcardStatus extends BaseRequest {	
+
+		public GetSDcardStatus(String strId, IHttpFinishListener callback) {
+			super(callback);
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"GetSDcardStatus");			
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, null);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			return new GetSDcardStatusResponse(m_finsishCallback);
+		}
+
+	}
+
+	public static class GetSDcardStatusResponse extends BaseResponse {
+
+		private SDcardStatus m_result = new SDcardStatus();
+		public GetSDcardStatusResponse(IHttpFinishListener callback) {
+			super(callback);
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			Gson gson = new Gson();
+			m_result = gson.fromJson(strJsonResult, SDcardStatus.class);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public SDcardStatus getModelResult() {
+			return m_result;
+		}
+	}
+	
 	
 }

@@ -15,6 +15,7 @@ import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.business.sharing.SDCardSpace;
+import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
 import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.system.Features;
@@ -349,10 +350,15 @@ public class BusinessMannager {
 		return m_sharingManager.getSDCardSpace();
 	}
 	
+	public SDcardStatus getSDCardStatus()
+	{
+		return m_sharingManager.getSDCardStatus();
+	}
+	
 	public String getSambaPath()
 	{
 		return String.format(ConstValue.SMB_SERVER_ADDRESS, m_strServerAddress);
-	}
+	}	
     /********************sharing manager method end************************/   
 	/*Power manager start*/
 	public BatteryInfo getBatteryInfo(){

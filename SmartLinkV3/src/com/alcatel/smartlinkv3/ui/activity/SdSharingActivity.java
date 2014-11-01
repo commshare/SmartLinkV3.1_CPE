@@ -26,7 +26,6 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sd_sharing_view);
 
@@ -139,10 +138,16 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 				MessageUti.SHARING_SET_DLNA_SETTING_REQUSET));
 		
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
+				MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET));		
+		
+		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
 				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET));	
 		
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
-				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET));			
+				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET));	
+		
+		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
+				MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET));	
 
 	}
 
