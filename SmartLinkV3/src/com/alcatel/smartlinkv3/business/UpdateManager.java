@@ -41,6 +41,10 @@ public class UpdateManager extends BaseManager {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public DeviceNewVersionInfo getCheckNewVersionInfo(){
+		return m_newFirmwareVersionInfo;
+	}
 
 	//get firmware new version
 	public void getDeviceNewVersion(DataValue data){
@@ -64,6 +68,11 @@ public class UpdateManager extends BaseManager {
 									strError.length() == 0){
 								m_newFirmwareVersionInfo = response.getModelResult();
 							}
+							
+							Intent intent = new Intent(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION);
+							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRes);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							m_context.sendBroadcast(intent);
 						}
 					}));
 		}

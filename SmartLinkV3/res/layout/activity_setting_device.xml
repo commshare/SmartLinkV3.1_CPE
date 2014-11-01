@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:background="@color/color_white" >
 
+    <FrameLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -270,5 +274,19 @@
                 android:textSize="15sp" />
         </RelativeLayout>
     </LinearLayout>
+    
+    <RelativeLayout
+        android:id="@+id/rl_device_waiting"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
+        <ProgressBar
+            android:id="@+id/pb_device_waiting_progress"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+        <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
+    </RelativeLayout>
+</FrameLayout>
 </ScrollView>

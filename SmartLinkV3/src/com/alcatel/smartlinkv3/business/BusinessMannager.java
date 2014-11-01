@@ -22,6 +22,7 @@ import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
+import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
@@ -367,6 +368,10 @@ public class BusinessMannager {
 	
 	public PowerSavingModeInfo getPowerSavingModeInfo(){
 		return m_powerManager.getPowerSavingModeInfo();
+	}
+	
+	public DeviceNewVersionInfo getNewFirmwareInfo(){
+		return m_updateManager.getCheckNewVersionInfo();
 	}
 	/*Power manager end***/
 	

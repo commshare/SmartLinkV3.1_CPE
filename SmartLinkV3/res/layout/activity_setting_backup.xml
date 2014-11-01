@@ -1,89 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@+id/rl_backup"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" >
+        android:background="@color/color_white"
+        android:orientation="vertical" >
 
-        <!-- center position -->
-        <ImageView android:id="@+id/iv_center_position_up"
+        <RelativeLayout
+            android:id="@+id/rl_backup"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/setting_backup"/>
-        <TextView
-            android:id="@+id/tv_backup_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@id/iv_center_position_up"
-            android:layout_marginBottom="20dp"
-            android:text="@string/setting_backup_description"
-            android:textColor="@color/color_black"
-            android:textSize="17sp" />
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
-        <Button
-            android:id="@+id/btn_backup"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_center_position_up"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/setting_backup_btn_backup"
-            android:textSize="17sp"
-            android:textColor="@drawable/common_button_text"
-            android:background="@drawable/selector_common_button" />
-    </RelativeLayout>
+            <!-- center position -->
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="20dp"
-        android:background="@color/main_bottom_divider"
-        android:contentDescription="@string/setting_backup_description" />
+            <ImageView
+                android:id="@+id/iv_center_position_up"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/setting_backup" />
+
+            <TextView
+                android:id="@+id/tv_backup_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/iv_center_position_up"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:text="@string/setting_backup_description"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <Button
+                android:id="@+id/btn_backup"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_center_position_up"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/selector_common_button"
+                android:gravity="center"
+                android:text="@string/setting_backup_btn_backup"
+                android:textColor="@drawable/common_button_text"
+                android:textSize="17sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_backup_description" />
+
+        <RelativeLayout
+            android:id="@+id/rl_restore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <!-- center position -->
+
+            <ImageView
+                android:id="@+id/iv_center_position_down"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/setting_backup" />
+
+            <TextView
+                android:id="@+id/tv_restore_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/iv_center_position_down"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:text="@string/setting_restore_description"
+                android:textColor="@color/color_black"
+                android:textSize="17sp" />
+
+            <Button
+                android:id="@+id/btn_restore"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_center_position_down"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/selector_common_button"
+                android:gravity="center"
+                android:text="@string/setting_restore_btn_restore"
+                android:textColor="@drawable/common_button_text"
+                android:textSize="17sp" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_restore"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" >
+        android:id="@+id/rl_backup_waiting"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-        <!-- center position -->
-        <ImageView android:id="@+id/iv_center_position_down"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <ProgressBar
+            android:id="@+id/pb_backup_waiting_progress"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
             android:layout_centerInParent="true"
-            android:contentDescription="@string/setting_backup"/>
-        <TextView
-            android:id="@+id/tv_restore_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@id/iv_center_position_down"
-            android:layout_marginBottom="20dp"
-            android:text="@string/setting_restore_description"
-            android:textColor="@color/color_black"
-            android:textSize="17sp" />
-
-        <Button
-            android:id="@+id/btn_restore"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_center_position_down"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/setting_restore_btn_restore"
-            android:textSize="17sp"
-            android:textColor="@drawable/common_button_text"
-            android:background="@drawable/selector_common_button" />
+            android:visibility="gone" />
+        <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
     </RelativeLayout>
 
-</LinearLayout>
+</FrameLayout>

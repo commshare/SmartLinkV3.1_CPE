@@ -33,6 +33,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	private TextView m_tv_battery_status=null;
 	private ProgressBar m_pb_battery_status=null;
 	private ImageView m_iv_battery_charge=null;
+	private ProgressBar m_pb_waiting=null;
 
 	private boolean m_blSmartModeSwitchOn=true;
 	private boolean m_blWifiModeSwitchOn=true;
@@ -48,6 +49,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		controlTitlebar();
 		//create controls
 		createControls();
+		ShowWaiting(false);
 		//showBatterystatus
 		showBatterystatus();
 		//
@@ -75,8 +77,22 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 
 		m_btn_smart_mode_switch.setOnClickListener(this);
 		m_btn_wifi_mode_switch.setOnClickListener(this);
+		//
+		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_power_waiting_progress);
 	}
 
+	private void ShowWaiting(boolean blShow){
+		if (blShow) {
+			m_pb_waiting.setVisibility(View.VISIBLE);
+		}else {
+			m_pb_waiting.setVisibility(View.GONE);
+		}
+		m_btn_smart_mode_switch.setEnabled(!blShow);
+		m_btn_wifi_mode_switch.setEnabled(!blShow);
+		m_ib_back.setEnabled(!blShow);
+		m_tv_back.setEnabled(!blShow);
+	}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -90,10 +106,12 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 
 		case R.id.btn_power_smart:
 			onBtnSmartModeSwitch();
+			ShowWaiting(true);
 			break;
 
 		case R.id.btn_power_wifi:
 			onBtnWifiModeSwitch();
+			ShowWaiting(true);
 			break;
 
 		default:
@@ -218,9 +236,13 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_SET_POWER_SAVING_MODE)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_success);
 				initSwitchsState();
 			}
+			ShowWaiting(false);
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_BATTERY_STATE)){

@@ -12,10 +12,13 @@ import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.view.CustomSpinner;
 import com.alcatel.smartlinkv3.ui.view.CustomSpinner.OnSpinnerItemSelectedListener;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View.OnClickListener;
@@ -30,8 +33,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class SettingWifiActivity extends Activity 
+public class SettingWifiActivity extends BaseActivity 
 implements OnClickListener,OnSpinnerItemSelectedListener{
 
 	private String STRING_WEP = "WEP";
@@ -471,5 +475,46 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
 		m_strKey = m_strPreKey;
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
+		
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		unregisterReceiver(m_msgReceiver);
+	}
+
+	@Override
+	protected void onBroadcastReceive(Context context, Intent intent) {
+		// TODO Auto-generated method stub
+		super.onBroadcastReceive(context, intent);
+		if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			}
+		}
+
+		if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_failed);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_success);
+			}
+			
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+		}
 	}
 }

@@ -4,23 +4,29 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class SettingBackupRestoreActivity extends Activity implements OnClickListener{
+public class SettingBackupRestoreActivity extends BaseActivity implements OnClickListener{
 
 	private TextView m_tv_titleTextView = null;
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
 	private Button m_btn_backup=null;
 	private Button m_btn_restore=null;
+	private ProgressBar m_pbWaitingBar=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -31,7 +37,7 @@ public class SettingBackupRestoreActivity extends Activity implements OnClickLis
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		prepareTitlebar();
 		createControls();
-		
+		ShowWaiting(false);
 	}
 
 	private void prepareTitlebar(){
@@ -49,8 +55,20 @@ public class SettingBackupRestoreActivity extends Activity implements OnClickLis
 		m_btn_restore = (Button)findViewById(R.id.btn_restore);
 		m_btn_backup.setOnClickListener(this);
 		m_btn_restore.setOnClickListener(this);
+		m_pbWaitingBar=(ProgressBar)findViewById(R.id.pb_backup_waiting_progress);
 	}
 
+	private void ShowWaiting(boolean blShow){
+		if (blShow) {
+			m_pbWaitingBar.setVisibility(View.VISIBLE);
+		}else {
+			m_pbWaitingBar.setVisibility(View.GONE);
+		}
+		m_btn_backup.setEnabled(!blShow);
+		m_btn_restore.setEnabled(!blShow);
+		m_ib_back.setEnabled(!blShow);
+		m_tv_back.setEnabled(!blShow);
+	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -63,10 +81,12 @@ public class SettingBackupRestoreActivity extends Activity implements OnClickLis
 
 		case R.id.btn_backup:
 			onBtnBackup();
+			ShowWaiting(true);
 			break;
 			
 		case R.id.btn_restore:
 			onBtnRestore();
+			ShowWaiting(true);
 			break;
 		default:
 			break;
@@ -84,5 +104,51 @@ public class SettingBackupRestoreActivity extends Activity implements OnClickLis
 		data.addParam("FileName", strFile);
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESTORE, data);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_BACKUP));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_RESTORE));
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		unregisterReceiver(m_msgReceiver);
+	}
+
+	@Override
+	protected void onBroadcastReceive(Context context, Intent intent) {
+		// TODO Auto-generated method stub
+		super.onBroadcastReceive(context, intent);
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_BACKUP)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_failed);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_success);
+			}
+			
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+			ShowWaiting(false);
+		}
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESTORE)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_failed);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_success);
+			}
+			
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+			ShowWaiting(false);
+		}
 	}
 }

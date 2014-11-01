@@ -1,7 +1,5 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,7 +8,6 @@ import com.alcatel.smartlinkv3.business.system.HttpSystem;
 import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
-import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -378,14 +375,11 @@ public class SystemManager extends BaseManager {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
-							Boolean blRes = false;
 							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
-								blRes = true;
-							}
+							String strError = response.getErrorMessage();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_REBOOT);
-							intent.putExtra("Result", blRes);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -408,14 +402,11 @@ public class SystemManager extends BaseManager {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
-							Boolean blRes = false;
 							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
-								blRes = true;
-							}
+							String strError = response.getErrorMessage();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESET);
-							intent.putExtra("Result", blRes);
+							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -438,14 +429,11 @@ public class SystemManager extends BaseManager {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
-							Boolean blRes = false;
 							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
-								blRes = true;
-							}
+							String strError = response.getErrorMessage();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_BACKUP);
-							intent.putExtra("Result", blRes);
+							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -469,17 +457,40 @@ public class SystemManager extends BaseManager {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
-							Boolean blRes = false;
 							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							if (BaseResponse.RESPONSE_OK == nRet && 0 != strError.length()) {
-								blRes = true;
-							}
+							String strError = response.getErrorMessage();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
-							intent.putExtra("Result", blRes);
+							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
+		}
+	}
+	
+	public void setDevicePowerOff(DataValue data){
+		if (!FeatureVersionManager.getInstance().
+				isSupportApi("system", "SetDeviceRestore")) {
+			return;
+		}
+
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.setDevicePowerOffRequest("13.9", 
+							new IHttpFinishListener() {
+								
+								@Override
+								public void onHttpRequestFinish(BaseResponse response) {
+									// TODO Auto-generated method stub
+									int nRet = response.getResultCode();
+									String strError = response.getErrorMessage();
+									Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
+									intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+									intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+									m_context.sendBroadcast(intent);
+								}
+							}));
 		}
 	}
 }
