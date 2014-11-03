@@ -202,13 +202,11 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	}
 
 	private void getConnectedDeviceList() {
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST, null);
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST, null);
 	}
 
 	private void getBlockDeviceList() {
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST, null);
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST, null);
 	}
 	
 	private void setConnectedDeviceBlock(String strDeviceName, String strMac )
@@ -216,8 +214,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		DataValue data = new DataValue();
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);	
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);	
 	}
 	
 	private void setDeviceUnlock(String strDeviceName, String strMac )
@@ -225,8 +222,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		DataValue data = new DataValue();
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);	
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);	
 	}
 	
 	private void setDeviceName(String strDeviceName, String strMac, EnumDeviceType nDeviceType)
@@ -235,8 +231,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
 		data.addParam("DeviceType", nDeviceType);
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.DEVICE_SET_DEVICE_NAME, data);	
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_NAME, data);	
 	}	
 
 	private void getListData() {
@@ -250,8 +245,16 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private void updateConnectedDeviceUI()
 	{
 		m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
-		((ConnectedDevAdapter) m_connecedDeviceList.getAdapter())
-				.notifyDataSetChanged();
+		for(int i = 0;i <m_connecedDeviceLstData.size();i++) {
+			ConnectedDeviceItemModel item = m_connecedDeviceLstData.get(i);
+			if(item.MacAddress.equalsIgnoreCase(m_strLocalMac))
+			{
+				m_connecedDeviceLstData.remove(i);
+				m_connecedDeviceLstData.add(0, item);
+				break;
+			}
+		}
+		((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
 		
 		String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);		
 		strConnectedCnt = String.format(strConnectedCnt, m_connecedDeviceLstData.size());
