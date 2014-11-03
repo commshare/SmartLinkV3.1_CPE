@@ -49,7 +49,7 @@ public class SystemManager extends BaseManager {
 	public SystemInfo getSystemInfoModel() {
 		return m_systemInfo;
 	}
-	
+
 	public SystemStatus getSystemStatus() {
 		return m_systemStatus;
 	}
@@ -184,22 +184,22 @@ public class SystemManager extends BaseManager {
 
 							// change billing month,because to next billing
 							// month
-//							SimpleDateFormat startTemp = new SimpleDateFormat(
-//									Const.DATE_FORMATE);
-//							Calendar caNow = Calendar.getInstance();
-//							String strNow = startTemp.format(caNow.getTime());
-//							if (!(BusinessMannager.getInstance()
-//									.getUsageSettings().m_strStartBillDate
-//									.compareTo(strNow) <= 0 && BusinessMannager
-//									.getInstance().getUsageSettings().m_strEndBillDate
-//									.compareTo(strNow) >= 0)) {
-//								BusinessMannager.getInstance()
-//										.getUsageSettings()
-//										.calStartAndEndCalendar();
-//								Intent megIntent = new Intent(
-//										MessageUti.CPE_CHANGED_BILLING_MONTH);
-//								m_context.sendBroadcast(megIntent);
-//							}
+							//							SimpleDateFormat startTemp = new SimpleDateFormat(
+							//									Const.DATE_FORMATE);
+							//							Calendar caNow = Calendar.getInstance();
+							//							String strNow = startTemp.format(caNow.getTime());
+							//							if (!(BusinessMannager.getInstance()
+							//									.getUsageSettings().m_strStartBillDate
+							//									.compareTo(strNow) <= 0 && BusinessMannager
+							//									.getInstance().getUsageSettings().m_strEndBillDate
+							//									.compareTo(strNow) >= 0)) {
+							//								BusinessMannager.getInstance()
+							//										.getUsageSettings()
+							//										.calStartAndEndCalendar();
+							//								Intent megIntent = new Intent(
+							//										MessageUti.CPE_CHANGED_BILLING_MONTH);
+							//								m_context.sendBroadcast(megIntent);
+							//							}
 
 							Intent megIntent = new Intent(
 									MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
@@ -264,51 +264,51 @@ public class SystemManager extends BaseManager {
 					}));
 		}
 	}
-	
+
 	// Get System Status
-		// //////////////////////////////////////////////////////////////////////////////////////////
-		public void getSystemStatus(DataValue data) {
-			if (FeatureVersionManager.getInstance().isSupportApi("System",
-					"GetSystemStatus") != true)
-				return;
+	// //////////////////////////////////////////////////////////////////////////////////////////
+	public void getSystemStatus(DataValue data) {
+		if (FeatureVersionManager.getInstance().isSupportApi("System",
+				"GetSystemStatus") != true)
+			return;
 
-			boolean bCPEWifiConnected = DataConnectManager.getInstance()
-					.getCPEWifiConnected();
-			if (bCPEWifiConnected) {
-				HttpRequestManager.GetInstance().sendPostRequest(
-						new HttpSystem.GetSystemStatus("13.4",
-								new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
-								int ret = response.getResultCode();
-								String strErrcode = response.getErrorCode();
-								if (ret == BaseResponse.RESPONSE_OK
-										&& strErrcode.length() == 0) {
-									m_systemStatus = response
-											.getModelResult();
-								} else {
-									new Handler().postDelayed(
-											new Runnable() {
-												@Override
-												public void run() {
-													getSystemStatus(null);
-												}
-											}, 1000);
-								}
-
-								Intent megIntent = new Intent(
-										MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_RESULT, ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+		boolean bCPEWifiConnected = DataConnectManager.getInstance()
+				.getCPEWifiConnected();
+		if (bCPEWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.GetSystemStatus("13.4",
+							new IHttpFinishListener() {
+						@Override
+						public void onHttpRequestFinish(
+								BaseResponse response) {
+							int ret = response.getResultCode();
+							String strErrcode = response.getErrorCode();
+							if (ret == BaseResponse.RESPONSE_OK
+									&& strErrcode.length() == 0) {
+								m_systemStatus = response
+										.getModelResult();
+							} else {
+								new Handler().postDelayed(
+										new Runnable() {
+											@Override
+											public void run() {
+												getSystemStatus(null);
+											}
+										}, 1000);
 							}
-						}));
-			}
+
+							Intent megIntent = new Intent(
+									MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
+							megIntent.putExtra(
+									MessageUti.RESPONSE_RESULT, ret);
+							megIntent.putExtra(
+									MessageUti.RESPONSE_ERROR_CODE,
+									strErrcode);
+							m_context.sendBroadcast(megIntent);
+						}
+					}));
 		}
+	}
 
 	// GetExternalStorageDevice
 	// //////////////////////////////////////////////////////////////////////////////////////////
@@ -362,7 +362,7 @@ public class SystemManager extends BaseManager {
 	//device reboot
 	public void rebootDevice(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("system", "SetDeviceReboot")) {
+				isSupportApi("System", "SetDeviceReboot")) {
 			return;
 		}
 
@@ -389,7 +389,7 @@ public class SystemManager extends BaseManager {
 	//reset device
 	public void resetDevice(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("system", "SetDeviceReset")) {
+				isSupportApi("System", "SetDeviceReset")) {
 			return;
 		}
 
@@ -416,7 +416,7 @@ public class SystemManager extends BaseManager {
 	//device backup
 	public void backupDevice(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("system", "SetDeviceBackup")) {
+				isSupportApi("System", "SetDeviceBackup")) {
 			return;
 		}
 
@@ -443,7 +443,7 @@ public class SystemManager extends BaseManager {
 	//device restore
 	public void restoreDevice(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("system", "SetDeviceRestore")) {
+				isSupportApi("System", "SetDeviceRestore")) {
 			return;
 		}
 
@@ -467,10 +467,10 @@ public class SystemManager extends BaseManager {
 					}));
 		}
 	}
-	
+
 	public void setDevicePowerOff(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("system", "SetDeviceRestore")) {
+				isSupportApi("System", "SetDeviceRestore")) {
 			return;
 		}
 
@@ -479,18 +479,18 @@ public class SystemManager extends BaseManager {
 			HttpRequestManager.GetInstance().sendPostRequest(
 					new HttpSystem.setDevicePowerOffRequest("13.9", 
 							new IHttpFinishListener() {
-								
-								@Override
-								public void onHttpRequestFinish(BaseResponse response) {
-									// TODO Auto-generated method stub
-									int nRet = response.getResultCode();
-									String strError = response.getErrorMessage();
-									Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
-									intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
-									intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
-									m_context.sendBroadcast(intent);
-								}
-							}));
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							int nRet = response.getResultCode();
+							String strError = response.getErrorMessage();
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
+							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							m_context.sendBroadcast(intent);
+						}
+					}));
 		}
 	}
 }

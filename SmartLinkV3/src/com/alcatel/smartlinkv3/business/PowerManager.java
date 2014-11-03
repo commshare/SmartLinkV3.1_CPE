@@ -94,7 +94,7 @@ public class PowerManager extends BaseManager {
 	//get battery state
 	public void getBatteryState(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Power", "GetBatteryState")) {
+				isSupportApi("PowerManagement", "GetBatteryState")) {
 			return;
 		}
 
@@ -126,7 +126,7 @@ public class PowerManager extends BaseManager {
 	//get power saving mode
 	public void getPowerSavingModeInfo(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Power", "GetPowerSavingMode")) {
+				isSupportApi("PowerManagement", "GetPowerSavingMode")) {
 			return;
 		}
 
@@ -160,7 +160,7 @@ public class PowerManager extends BaseManager {
 	//set power saving mode
 	public void setPowerSavingModeInfo(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Power", "SetPowerSavingMode")) {
+				isSupportApi("PowerManagement", "SetPowerSavingMode")) {
 			return;
 		}
 
