@@ -98,6 +98,9 @@ public class MessageUti {
 	public static String WAN_GET_CONNECT_STATUS_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.wan.getconnectstatus";
 	public static String WAN_CONNECT_REQUSET = "com.alcatel.smartlinkv3.business.wan.connect";
 	public static String WAN_DISCONNECT_REQUSET = "com.alcatel.smartlinkv3.business.wan.disconnect";
+	public static String WAN_SET_ROAMING_CONNECT_FLAG_REQUSET = "com.alcatel.smartlinkv3.business.wan.setroamingconnectflag";
+	public static String WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.wan.getconnectionsettings";
+	
 	/**************************Wan message end*********************************************************************************/
 	
 	/**************************Wlan message start*********************************************************************************/
@@ -216,7 +219,9 @@ public class MessageUti {
 		
 		/********************WAN method start**********************/
 		httpMethods.put(WAN_CONNECT_REQUSET, new HttpMethodUti(WanManager.class, "connect"));
-		httpMethods.put(WAN_DISCONNECT_REQUSET, new HttpMethodUti(WanManager.class, "disconnect"));		
+		httpMethods.put(WAN_DISCONNECT_REQUSET, new HttpMethodUti(WanManager.class, "disconnect"));	
+		httpMethods.put(WAN_SET_ROAMING_CONNECT_FLAG_REQUSET, new HttpMethodUti(WanManager.class, "setRoamingConnectFlag"));	
+		
 		/********************WAN method end**********************/
 		
 		/********************Sharing method start**********************/			

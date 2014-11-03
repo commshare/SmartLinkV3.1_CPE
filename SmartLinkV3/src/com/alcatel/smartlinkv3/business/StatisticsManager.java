@@ -306,8 +306,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final int nMonthlyPlan = (Integer) data.getParamByKey("monthly_plan");
-		final int nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
+		final long nMonthlyPlan = (Long)data.getParamByKey("monthly_plan");
+		final long nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.MonthlyPlan = nMonthlyPlan;
@@ -343,8 +343,8 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final int nUsedData = (Integer) data.getParamByKey("used_data");
-		final int nPreUsedData = m_usageSettings.HUsedData;
+		final long nUsedData = (Integer) data.getParamByKey("used_data");
+		final long nPreUsedData = m_usageSettings.HUsedData;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.UsedData = nUsedData;

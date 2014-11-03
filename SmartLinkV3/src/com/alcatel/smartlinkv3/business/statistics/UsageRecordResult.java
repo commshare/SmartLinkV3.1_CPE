@@ -8,7 +8,7 @@ import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class UsageRecordResult extends BaseResult{
 	
-	public int HUseData = 0;//The total used data in home network.
+	public long HUseData = 0;//The total used data in home network.
 	public int HCurrUseUL = 0;//Current use upload data in home network.
 	public int HCurrUseDL = 0;//Current use download data in home network.
 	public int RoamUseData = 0;//The total used data in roaming network.

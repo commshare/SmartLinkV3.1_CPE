@@ -40,6 +40,7 @@ import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
+import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -297,6 +298,10 @@ public class BusinessMannager {
     /********************wan manager Data start**********************/
     public ConnectStatusModel getConnectStatus() {
 		return m_wanManager.getConnectStatus();
+	}
+    
+    public ConnectionSettingsModel getConnectSettings() {
+		return m_wanManager.getConnectSettings();
 	}
     /********************wan manager method end************************/
     

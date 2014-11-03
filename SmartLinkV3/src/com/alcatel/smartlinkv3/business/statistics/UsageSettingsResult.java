@@ -9,8 +9,8 @@ import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 public class UsageSettingsResult extends BaseResult{
 	
 	public int BillingDay = 0;//Billing day (Min:1, Max:31),
-	public int MonthlyPlan = 0;//The max data that on month could use..
-	public int UsedData = 0;//The used data in month.
+	public long MonthlyPlan = 0;//The max data that on month could use..
+	public long UsedData = 0;//The used data in month.
 	public int TimeLimitFlag = 0;//The time limit function flage,0: disable 1:enable
 	public int TimeLimitTimes = 0;//The time limit function open, must set the limit time.
 	public int UsedTimes = 0;//The used time that after open time limit function.

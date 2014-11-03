@@ -1,9 +1,11 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_ROAMING_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.CommonUtil;
@@ -44,7 +46,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private ImageButton bnBack;
 	private EditText m_billingValue;
 	private EditText m_monthlyValue;
-	private int m_monthlyVal = 0;
+	private long m_monthlyVal = 0;
 	private int m_billingVal = 0;
 	private TextView m_consumptionValue;
 	private boolean m_bIsMonthlyValueEdit = false;
@@ -57,6 +59,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	
 	
 	private Button m_roamingDisconnectBtn;
+	private boolean m_bIsRoamingDisconnectedEdit = false;
 	private Button m_usageAutoDisconnectBtn;
 	private boolean m_bIsAutoDisconnectedEdit = false;
 	
@@ -164,12 +167,37 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 					
 				}
 			}
+			
+			else if (intent.getAction().equals(
+					MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
+				m_bIsRoamingDisconnectedEdit = false;
+				showRoamingAutoDisconnectBtn();
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					
+				}
+			}
+			
+			else if (intent.getAction().equals(
+					MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					showRoamingAutoDisconnectBtn();
+				}
+			}
 		}
 	}
 	private void registerReceiver() {
 		// advanced
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET));
+		
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
@@ -190,6 +218,8 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				MessageUti.STATISTICS_SET_USED_TIMES_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET));
 
 	}
 	
@@ -236,6 +266,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		showSettingBilling();
 		showSettingMonthly();
 		showTimeLimitInfo();
+		showRoamingAutoDisconnectBtn();
 		
 	}
 
@@ -253,6 +284,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		m_bIsTimeLimitEdit = false;
 		m_bIsTimeLimitStatusEdit = false;
 		m_bIsAutoDisconnectedEdit = false;
+		m_bIsRoamingDisconnectedEdit = false;
 
 	}
 
@@ -270,7 +302,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			break;
 			
 		case R.id.enable_roaming_btn:
-			//onBtnUsageAutoDisconnectClick();
+			onBtnRoamingAutoDisconnectClick();
 			break;
 			
 		case R.id.enable_auto_disconnected_btn:
@@ -290,7 +322,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		showSettingBilling();
 		showSettingMonthly();
 		showTimeLimitInfo();
-		showUsageAutoDisconnectBtn();
+		showRoamingAutoDisconnectBtn();
 	}
 	
 	private void initBillingEdit() {
@@ -461,7 +493,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void setSettingMonthly() {
-		int usage = 0;
+		long usage = 0;
 
 		if (m_monthlyValue.getText().toString().length() > 0) {
 			usage = (int) Long.parseLong(m_monthlyValue.getText().toString());
@@ -486,11 +518,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 	}
 	
-	private int megabyte2byte(int megabyte) {
+	private long megabyte2byte(long megabyte) {
 		return megabyte * 1024 * 1024;
 	}
 
-	private int byte2megabyte(int byteV) {
+	private long byte2megabyte(long byteV) {
 		return byteV / (1024 * 1024);
 	}
 	
@@ -669,5 +701,55 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET,
 				data);
 	}
+	
+	private void showRoamingAutoDisconnectBtn() {
 
+		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		//if (simState.m_SIMState == SIMState.Accessable) {
+		UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
+		ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
+			if(m_bIsRoamingDisconnectedEdit == false) {
+				if (usageSetting.HMonthlyPlan > 0) {
+					m_roamingDisconnectBtn.setEnabled(true);
+					if (connectionSetting.HRoamingConnect == OVER_ROAMING_STATE.Disable) {
+						// off
+						m_roamingDisconnectBtn
+								.setBackgroundResource(R.drawable.switch_off);
+					} else {
+						// on
+						m_roamingDisconnectBtn
+								.setBackgroundResource(R.drawable.switch_on);
+					}
+				} else {
+					m_roamingDisconnectBtn.setEnabled(false);
+					m_roamingDisconnectBtn
+							.setBackgroundResource(R.drawable.switch_off);
+				}
+			}
+//		} else {
+//			m_usageAutoDisconnectBtn.setEnabled(false);
+//			// set disable pic
+//			m_usageAutoDisconnectBtn
+//					.setBackgroundResource(R.drawable.switch_off);
+//		}
+	}
+	
+	private void onBtnRoamingAutoDisconnectClick() {
+		m_bIsRoamingDisconnectedEdit = true;
+		ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
+		DataValue data = new DataValue();
+		if (connectionSetting.HRoamingConnect == OVER_ROAMING_STATE.Disable) {
+			m_roamingDisconnectBtn
+					.setBackgroundResource(R.drawable.switch_on);
+			data.addParam("roaming_connect_flag", OVER_ROAMING_STATE.Enable);
+		} else {
+			m_roamingDisconnectBtn
+					.setBackgroundResource(R.drawable.switch_off);
+			data.addParam("roaming_connect_flag", OVER_ROAMING_STATE.Disable);
+		}
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET,
+				data);
+
+	}
 }

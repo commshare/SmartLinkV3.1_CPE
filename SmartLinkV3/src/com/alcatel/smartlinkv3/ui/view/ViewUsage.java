@@ -142,9 +142,10 @@ public class ViewUsage extends BaseViewImpl {
 		{
 			m_homewarn.setVisibility(View.GONE);
 		}
-	    if(m_UsageRecordResult.MaxUsageData!=0)
+	    if(statistic.HMonthlyPlan!=0)
 	    {
-	    	nProgress = (int) (m_UsageRecordResult.HUseData*m_homedataprogress.getMax() / statistic.HMonthlyPlan);
+	    	nProgress = (int)(m_UsageRecordResult.HUseData*m_homedataprogress.getMax()/statistic.HMonthlyPlan);
+	    	Log.v("text", "p11111   nProgress="+nProgress);
 	    	if (nProgress > m_homedataprogress.getMax())
 				nProgress = m_homedataprogress.getMax();
 	    	m_homedataprogress.setProgress(nProgress);

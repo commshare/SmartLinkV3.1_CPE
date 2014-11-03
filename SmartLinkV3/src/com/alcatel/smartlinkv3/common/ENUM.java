@@ -52,6 +52,65 @@ public class ENUM {
 			}
 		}
 	}
+	
+	public static enum OVER_ROAMING_STATE {
+		Disable, Enable;
+
+		public static OVER_ROAMING_STATE build(int nState) {
+			if (nState == 1) {
+				return Enable;
+			} else {
+				return Disable;
+			}
+		}
+		
+		public static int antiBuild(OVER_ROAMING_STATE storeIn) {
+			if (storeIn == Enable) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+	}
+	
+	/*
+	 * PDP connection type: 
+	 * PDP_TYPE_IPv4 = 0, 
+	 * PDP_TYPE_PPP = 1, 
+	 * PDP_TYPE_IPv6 = 2, 
+	 * PDP_TYPE_IPv4v6 =3
+	 */
+	public static enum PdpType {
+		PDP_TYPE_IPv4, PDP_TYPE_PPP, PDP_TYPE_IPv6, PDP_TYPE_IPv4v6, UNKNOWN;
+
+		public static PdpType build(int nState) {
+			if (nState == 0) {
+				return PDP_TYPE_IPv4;
+			} else if (nState == 1) {
+				return PDP_TYPE_PPP;
+			} else if (nState == 2) {
+				return PDP_TYPE_IPv6;
+			} else if (nState == 3) {
+				return PDP_TYPE_IPv4v6;
+			} else {
+				return UNKNOWN;
+			}
+		}
+		
+		public static int antiBuild(PdpType storeIn) {
+			if (storeIn == PDP_TYPE_IPv4) {
+				return 0;
+			} else if (storeIn == PDP_TYPE_PPP) {
+				return 1;
+			} else if (storeIn == PDP_TYPE_IPv6) {
+				return 2;
+			} else if (storeIn == PDP_TYPE_IPv4v6) {
+				return 3;
+			} else {
+				return 4;
+			}
+		}
+	}
 
 	/*
 	 * Possible values: 0 - NoSim; 1 - PinRequired; 2 - PukRequired; 3 -
