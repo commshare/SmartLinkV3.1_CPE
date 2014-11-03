@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/main_sms"
+            android:text="@string/sms_title"
             android:textColor="@color/color_white"
             android:textSize="20sp"
             android:textStyle="bold" />

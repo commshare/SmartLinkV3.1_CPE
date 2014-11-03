@@ -550,7 +550,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			setMainBtnStatus(R.id.main_usage);
 		}
 		if (viewIndex == ViewIndex.VIEW_SMS) {
-			m_titleTextView.setText(R.string.main_sms);
+			m_titleTextView.setText(R.string.sms_title);
 			m_Btnbar.setVisibility(View.VISIBLE);
 			m_Btnbar.setBackgroundResource(R.drawable.actionbar_edit_icon);
 			setMainBtnStatus(R.id.tab_sms_layout);

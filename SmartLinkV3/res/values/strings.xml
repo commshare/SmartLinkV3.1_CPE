@@ -45,6 +45,7 @@
     <!-- Usage view end -->
     
     <!--sms start -->
+    <string name="sms_title">Message</string>
     <string name="sms_empty">No SMS</string>
     <string name="sms_init">SMS Unavailable</string>
     <string name="sms_list_view_draft">%1$d,draft</string>
