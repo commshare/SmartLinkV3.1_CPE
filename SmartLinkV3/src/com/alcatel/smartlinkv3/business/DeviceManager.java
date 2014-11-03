@@ -67,6 +67,7 @@ public class DeviceManager extends BaseManager {
 								if (ret == BaseResponse.RESPONSE_OK) {
 									strErrcode = response.getErrorCode();
 									if (strErrcode.length() == 0) {
+										m_connectedDeviceList.clear();
 										ConnectedDeviceList result = response.getModelResult();
 										for(int i = 0;i < result.ConnectedList.size();i++) {
 											ConnectedDeviceItemModel item = new ConnectedDeviceItemModel();
@@ -105,6 +106,7 @@ public class DeviceManager extends BaseManager {
 								if (ret == BaseResponse.RESPONSE_OK) {
 									strErrcode = response.getErrorCode();
 									if (strErrcode.length() == 0) {
+										m_blockDeviceList.clear();
 										BlockDeviceList result = response.getModelResult();
 										for(int i = 0;i < result.BlockList.size();i++) {
 											ConnectedDeviceItemModel item = new ConnectedDeviceItemModel();
