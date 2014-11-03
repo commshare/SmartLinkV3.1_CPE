@@ -403,10 +403,10 @@ public class SystemManager extends BaseManager {
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
 							int nRet = response.getResultCode();
-							String strError = response.getErrorMessage();
+							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESET);
 							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -430,10 +430,10 @@ public class SystemManager extends BaseManager {
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
 							int nRet = response.getResultCode();
-							String strError = response.getErrorMessage();
+							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_BACKUP);
 							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -458,10 +458,10 @@ public class SystemManager extends BaseManager {
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
 							int nRet = response.getResultCode();
-							String strError = response.getErrorMessage();
+							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
 							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -484,10 +484,10 @@ public class SystemManager extends BaseManager {
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
 							int nRet = response.getResultCode();
-							String strError = response.getErrorMessage();
+							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
 							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
