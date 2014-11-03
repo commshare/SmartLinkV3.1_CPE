@@ -592,4 +592,51 @@ public class ENUM {
 			
 		}
 	}
+	
+	/*
+	 * 0: use the web UI and login device;
+	   1: just connected to device but not login.
+
+	 */
+	public static enum EnumDeviceType{
+		USE_WEB_LOGIN, CONNECTED_DEVICE_NOT_LOGIN;
+		
+		public static EnumDeviceType build(int nMode){
+			switch (nMode) {
+			case 0:
+				return USE_WEB_LOGIN;
+			default:
+				return CONNECTED_DEVICE_NOT_LOGIN;
+			}
+			
+		}
+		
+		public static int antiBuild(EnumDeviceType type) {
+			switch (type) {
+			case USE_WEB_LOGIN:
+				return 0;
+			default:
+				return 1;
+			}
+		}
+	}
+	
+	/*
+	 * 0:USB connect
+		1:WIFI connect
+
+	 */
+	public static enum EnumConnectMode{
+		USB_CONNECT, WIFI_CONNECT;
+		
+		public static EnumConnectMode build(int nMode){
+			switch (nMode) {
+			case 0:
+				return USB_CONNECT;
+			default:
+				return WIFI_CONNECT;
+			}
+			
+		}
+	}
 }
