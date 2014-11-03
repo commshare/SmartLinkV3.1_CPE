@@ -68,7 +68,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					showSettingBilling();
+					showSettingMonthly();
+					showTimeLimitInfo();
 				}
 			} else if (intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
 
@@ -93,16 +95,18 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					m_bIsBillingValueEdit= false;
+					showSettingBilling();
 				}
 				
 			} else if (intent.getAction().equals(
 					MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET)) {
+				m_bIsMonthlyValueEdit = false;
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					showSettingMonthly();
 				}
 			}
 
@@ -112,18 +116,19 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					//updateUI();
 				}
 			}
 
 			else if (intent.getAction().equals(
 					MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET)) {
+				m_bIsTimeLimitStatusEdit = false;
+				showTimeLimitInfo();
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					m_bIsTimeLimitEdit = false;
-					updateUI();
+					
 				}
 			}
 			
@@ -133,7 +138,8 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					m_bIsTimeLimitEdit = false;
+					showTimeLimitInfo();
 				}
 			}
 			
@@ -143,17 +149,19 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					//updateUI();
 				}
 			}
 			
 			else if (intent.getAction().equals(
 					MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET)) {
+				m_bIsAutoDisconnectedEdit = false;
+				showUsageAutoDisconnectBtn();
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					
 				}
 			}
 		}
@@ -225,7 +233,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	public void onResume() {
 		super.onResume();
 		registerReceiver();
-		updateUI();
+		showSettingBilling();
+		showSettingMonthly();
+		showTimeLimitInfo();
 		
 	}
 
@@ -497,7 +507,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		}
 
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-		if (simState.m_SIMState == SIMState.Accessable) {
+		//if (simState.m_SIMState == SIMState.Accessable) {
 			m_timeLimit.setEnabled(true);
 			if(m_bIsTimeLimitStatusEdit == false) {
 				if (setting.HTimeLimitTimes > 0) {
@@ -514,13 +524,12 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 					m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
 				}
 			}
-		} else {
-			m_timeLimit.setEnabled(false);
-			m_timeLimitDisconnectBtn.setEnabled(false);
-			m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
-		}
+//		} else {
+//			m_timeLimit.setEnabled(false);
+//			m_timeLimitDisconnectBtn.setEnabled(false);
+//			m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
+//		}
 
-		showUsageAutoDisconnectBtn();
 	}
 
 	private void intTimeLimitEdit() {
@@ -593,7 +602,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private void showUsageAutoDisconnectBtn() {
 
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-		if (simState.m_SIMState == SIMState.Accessable) {
+		//if (simState.m_SIMState == SIMState.Accessable) {
 			UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
 			if(m_bIsAutoDisconnectedEdit == false) {
 				if (usageSetting.HMonthlyPlan > 0) {
@@ -613,12 +622,12 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 							.setBackgroundResource(R.drawable.switch_off);
 				}
 			}
-		} else {
-			m_usageAutoDisconnectBtn.setEnabled(false);
-			// set disable pic
-			m_usageAutoDisconnectBtn
-					.setBackgroundResource(R.drawable.switch_off);
-		}
+//		} else {
+//			m_usageAutoDisconnectBtn.setEnabled(false);
+//			// set disable pic
+//			m_usageAutoDisconnectBtn
+//					.setBackgroundResource(R.drawable.switch_off);
+//		}
 	}
 	
 	private void onBtnUsageAutoDisconnectClick() {

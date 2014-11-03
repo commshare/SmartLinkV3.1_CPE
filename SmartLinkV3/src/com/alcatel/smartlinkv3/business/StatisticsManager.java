@@ -380,11 +380,11 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final int nTimeLimitFlag = (Integer) data.getParamByKey("time_limit_flag");
+		final ENUM.OVER_TIME_STATE nTimeLimitFlag = (ENUM.OVER_TIME_STATE) data.getParamByKey("time_limit_flag");
 		final ENUM.OVER_TIME_STATE nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.TimeLimitFlag = nTimeLimitFlag;//ENUM.OVER_TIME_STATE.build(nTimeLimitFlag);
+		nUsageSettings.TimeLimitFlag = ENUM.OVER_TIME_STATE.antiBuild(nTimeLimitFlag);
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override
@@ -491,11 +491,11 @@ public class StatisticsManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
 			return;
 		
-		final int nAutoDisconnFlag = (Integer) data.getParamByKey("auto_disconn_flag");
+		final ENUM.OVER_DISCONNECT_STATE nAutoDisconnFlag = (ENUM.OVER_DISCONNECT_STATE) data.getParamByKey("auto_disconn_flag");
 		final ENUM.OVER_DISCONNECT_STATE nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
-		nUsageSettings.AutoDisconnFlag = nAutoDisconnFlag;
+		nUsageSettings.AutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.antiBuild(nAutoDisconnFlag);
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
             @Override

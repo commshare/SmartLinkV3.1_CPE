@@ -135,7 +135,7 @@ public class ViewUsage extends BaseViewImpl {
 		m_homeupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseUL));
 		m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HUseData)+" of "
 					+ CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)statistic.HMonthlyPlan));
-		if(m_UsageRecordResult.HUseData > m_UsageRecordResult.MaxUsageData)
+		if(m_UsageRecordResult.HUseData > statistic.HMonthlyPlan)
 		{
 			m_homewarn.setVisibility(View.VISIBLE);
 		}else
@@ -144,7 +144,7 @@ public class ViewUsage extends BaseViewImpl {
 		}
 	    if(m_UsageRecordResult.MaxUsageData!=0)
 	    {
-	    	nProgress = (int) (m_UsageRecordResult.HUseData*m_homedataprogress.getMax() / m_UsageRecordResult.MaxUsageData);
+	    	nProgress = (int) (m_UsageRecordResult.HUseData*m_homedataprogress.getMax() / statistic.HMonthlyPlan);
 	    	if (nProgress > m_homedataprogress.getMax())
 				nProgress = m_homedataprogress.getMax();
 	    	m_homedataprogress.setProgress(nProgress);
@@ -165,7 +165,7 @@ public class ViewUsage extends BaseViewImpl {
 		String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes / 360, m_UsageRecordResult.TConnTimes % 360);
 		m_durationtotaltime.setText(strTotalDuration);
 		
-		if(m_UsageRecordResult.HUseData > m_UsageRecordResult.MaxUsageData)
+		if(m_UsageRecordResult.CurrConnTimes > statistic.HTimeLimitTimes)
 		{
 			m_durationwarn.setVisibility(View.VISIBLE);
 		}else
