@@ -27,7 +27,6 @@ public class StorageMainActivity extends BaseActivity implements
 
 	private RelativeLayout m_noExtStorage = null;
 	private LinearLayout m_sambaDisable = null;
-	private RelativeLayout m_mediaStorage = null;
 	private RelativeLayout m_hardDisc = null;
 
 	private RelativeLayout m_sambaSwitch = null;
@@ -195,22 +194,19 @@ public class StorageMainActivity extends BaseActivity implements
 		switch (type) {
 		case layout_no_storage:
 			m_noExtStorage.setVisibility(View.VISIBLE);
-			m_sambaDisable.setVisibility(View.GONE);
-			m_mediaStorage.setVisibility(View.GONE);
+			m_sambaDisable.setVisibility(View.GONE);		
 			m_hardDisc.setVisibility(View.GONE);
 			break;
 
 		case layout_samba_disable:
 			m_noExtStorage.setVisibility(View.GONE);
-			m_sambaDisable.setVisibility(View.VISIBLE);
-			m_mediaStorage.setVisibility(View.GONE);
+			m_sambaDisable.setVisibility(View.VISIBLE);		
 			m_hardDisc.setVisibility(View.GONE);
 			break;
 
 		case layout_hard_disc:
 			m_noExtStorage.setVisibility(View.GONE);
-			m_sambaDisable.setVisibility(View.GONE);
-			m_mediaStorage.setVisibility(View.GONE);
+			m_sambaDisable.setVisibility(View.GONE);			
 			m_hardDisc.setVisibility(View.VISIBLE);
 			break;
 
