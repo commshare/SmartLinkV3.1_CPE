@@ -79,8 +79,7 @@ public class SMSManager extends BaseManager {
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetSmsInitTask();
 				}else{
-					m_smsInit = SMSInit.Initing;
-					
+					sentSMSInitChangedMessage(SMSInit.Initing);
 					stopRollTimer();
 					m_contactMessages.clear();
 				}
@@ -168,6 +167,16 @@ public class SMSManager extends BaseManager {
                 }
             }));
         } 
+	}
+	
+	private void sentSMSInitChangedMessage(SMSInit cur) {
+		if(m_smsInit != cur) {
+			m_smsInit = cur;
+			Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
+            megIntent.putExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+            megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, new String());
+			m_context.sendBroadcast(megIntent);
+		}
 	}
 	//GetSMSContactList ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void startGetContactMessagesTask() {

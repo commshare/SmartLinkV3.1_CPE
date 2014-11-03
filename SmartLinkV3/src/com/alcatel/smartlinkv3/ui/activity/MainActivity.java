@@ -174,17 +174,10 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
 		if (intent.getAction().equalsIgnoreCase(
 				MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult
-					&& strErrorCode.length() == 0) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
 				simRollRequest();
-				SimStatusModel sim = BusinessMannager.getInstance()
-						.getSimStatus();
-				if (sim.m_SIMState != SIMState.Accessable)
-					updateNewSmsUI(-1);
 			}
 		} else if (intent.getAction().equalsIgnoreCase(
 				MessageUti.SIM_UNLOCK_PIN_REQUEST)) {

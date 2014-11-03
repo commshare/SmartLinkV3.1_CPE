@@ -117,6 +117,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 					displayUI();
+					RefreshNewSmsNumber();
 				}
 			}
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)){				
@@ -134,9 +135,13 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	
 	//
 	private void RefreshNewSmsNumber(){
-		int nNewSmsCount = 0;
-		nNewSmsCount = BusinessMannager.getInstance().getNewSmsNumber();
-		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount);
+		if(BusinessMannager.getInstance().getSMSInit() == SMSInit.Initing) {
+			((MainActivity)m_context).updateNewSmsUI(-1);
+		}else{
+			int nNewSmsCount = 0;
+			nNewSmsCount = BusinessMannager.getInstance().getNewSmsNumber();
+			((MainActivity)m_context).updateNewSmsUI(nNewSmsCount);
+		}
 	}
 	
 	private class SortSummaryListByTime implements Comparator {
