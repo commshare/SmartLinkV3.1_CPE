@@ -334,10 +334,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			if(mac.equalsIgnoreCase(m_strLocalMac))
 			{
 				holder.blockBtn.setVisibility(View.GONE);
+				holder.icon.setBackgroundResource(R.drawable.connected_profile);
 			}
 			else
 			{
 				holder.blockBtn.setVisibility(View.VISIBLE);
+				holder.icon.setBackgroundResource(R.drawable.connected_device);
 			}
 			
 			holder.blockBtn.setOnClickListener(new OnClickListener() {
