@@ -28,6 +28,7 @@ import com.alcatel.smartlinkv3.ui.view.ViewSms;
 import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 
 import android.os.Bundle;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +45,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.view.MotionEvent;
 
@@ -143,6 +145,17 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
+		
+		Intent it=getIntent();
+		int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
+		int nPage1 = it.getIntExtra("com.alcatel.smartlinkv3.business.setting", 100);
+		String strTemp = "nPage = " + nPage+", nPage1 = " + nPage1;
+		Toast.makeText(this, strTemp, Toast.LENGTH_LONG).show();
+		if (nPage == 1) {
+			go2SmsView();
+		}else if (nPage == 2) {
+			go2SettingView();
+		}
 	}
 
 	@Override

@@ -196,8 +196,11 @@
         <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >  
            <intent-filter >  
                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />  
-               <action android:name="cn.com.karl.widget.click" >  
-               </action>  
+               <action android:name="com.alcatel.smartlinkv3.business.cpewificonnectchange" >  
+               </action>
+               <action android:name="com.alcatel.smartlinkv3.business.network.getnetworkinfo"/>
+               <action android:name="com.alcatel.smartlinkv3.business.power.getBatteryState"/>
+               <action android:name="com.alcatel.smartlinkv3.business.sms.getcontactlist"/>
            </intent-filter>  
   
            <meta-data  

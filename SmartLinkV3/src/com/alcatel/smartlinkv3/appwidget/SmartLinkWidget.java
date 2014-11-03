@@ -3,9 +3,8 @@ package com.alcatel.smartlinkv3.appwidget;
 import com.alcatel.smartlinkv3.R;
 
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
-import com.alcatel.smartlinkv3.ui.view.ViewIndex;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -44,38 +43,52 @@ public class SmartLinkWidget extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		super.onReceive(context, intent);
-		//		if(intent.getAction().equals("cn.com.karl.widget.click")){  
-		//			 Toast.makeText(context, "click widget calendar", 1).show(); 
-		//        }
+				if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)){ 
+					 updateUIs(context);
+		        }
+				
+				if (intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_BATTERY_STATE)) {
+					updateUIs(context);
+				}
+				
+				if (intent.getAction().equalsIgnoreCase(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET)) {
+					updateUIs(context);
+				}
+				
+				if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)) {
+					updateUIs(context);
+				}
 	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 		// TODO Auto-generated method stub
-		for(int i = 0; i < appWidgetIds.length; i++){
+		//for(int i = 0; i < appWidgetIds.length; i++){
 			//create remote view
 			RemoteViews remoteViews = 
 					new RemoteViews(context.getPackageName(),R.layout.smart_link_app_widget);
 			updateUI(remoteViews);
-			if (m_blDeviceConnected) {
+			//if (m_blDeviceConnected) {
 
 				//power intent
-				Intent intent = new Intent(context, SettingPowerSavingActivity.class);
+				Intent intent = new Intent(context, MainActivity.class);
+				intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
 				//create a pending intent
 				PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_battery, pendingIntent);
 				//SMS intent
 				Intent smsIntent = new Intent(context,MainActivity.class);
+				smsIntent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
 				PendingIntent smsPendingIntent = 
-						PendingIntent.getActivity(context, 0, smsIntent, 0);
+						PendingIntent.getActivity(context, 1, smsIntent, 0);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, smsPendingIntent);
 				//signal intent
 				Intent signalIntent = new Intent(context,MainActivity.class);
 				PendingIntent signalPendingIntent = 
-						PendingIntent.getActivity(context, 0, signalIntent, 0);
+						PendingIntent.getActivity(context, 2, signalIntent, 0);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, signalPendingIntent);
-			}
+			//}
 			//wifi control
 			Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
 			if (android.os.Build.VERSION.SDK_INT > 10) {
@@ -91,8 +104,9 @@ public class SmartLinkWidget extends AppWidgetProvider {
 					PendingIntent.getActivity(context, 0, wifiIntent, 0);
 			remoteViews.setOnClickPendingIntent(R.id.ib_widget_wifi, wifiPendingIntent);
 			//
-			appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
-		}
+			//appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+			appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+		//}
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
@@ -148,6 +162,21 @@ public class SmartLinkWidget extends AppWidgetProvider {
 			remoteViews.setImageViewResource(R.id.ib_widget_battery, R.drawable.widget_battery_full);
 		}else {
 			remoteViews.setImageViewResource(R.id.ib_widget_battery, R.drawable.widget_battery_empty);
+		}
+	}
+	
+	private void updateUIs(Context context){
+		AppWidgetManager am = AppWidgetManager.getInstance(context);
+		ComponentName com = new ComponentName(context.getPackageName(),
+				"com.alcatel.smartlinkv3.appwidget.SmartLinkWidget");
+		int[] nIds = am.getAppWidgetIds(com);
+		for(int i = 0; i < nIds.length; i++){
+			//create remote view
+			RemoteViews remoteViews = 
+					new RemoteViews(context.getPackageName(),R.layout.smart_link_app_widget);
+			updateUI(remoteViews);
+			//
+			am.updateAppWidget(nIds[i], remoteViews);
 		}
 	}
 }
