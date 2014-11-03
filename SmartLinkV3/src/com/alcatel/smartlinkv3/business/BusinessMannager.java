@@ -194,6 +194,24 @@ public class BusinessMannager {
     				method.invoke(m_deviceManager, data);
     			}
     			
+    			//power Manager
+    			if(PowerManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
+    				Method method = m_powerManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
+    				method.invoke(m_powerManager, data);
+    			}
+    			
+    			//Lan Manager
+    			if(LanManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
+    				Method method = m_lanManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
+    				method.invoke(m_lanManager, data);
+    			}
+    			
+    			//update Manager
+    			if(UpdateManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
+    				Method method = m_updateManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
+    				method.invoke(m_updateManager, data);
+    			}
+    			
     			//to add manager
     		}
 		} catch (NoSuchMethodException e) {

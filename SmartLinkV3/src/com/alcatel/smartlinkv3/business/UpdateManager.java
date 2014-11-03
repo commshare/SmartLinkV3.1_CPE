@@ -63,15 +63,15 @@ public class UpdateManager extends BaseManager {
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
 							int nRes = response.getResultCode();
-							String strError=response.getErrorMessage();
+							String strError=response.getErrorCode();
 							if(BaseResponse.RESPONSE_OK == nRes &&
 									strError.length() == 0){
 								m_newFirmwareVersionInfo = response.getModelResult();
 							}
 							
 							Intent intent = new Intent(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION);
-							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRes);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -96,7 +96,7 @@ public class UpdateManager extends BaseManager {
 							// TODO Auto-generated method stub
 							boolean blStartRes = false;
 							int nRes = response.getResultCode();
-							String strError=response.getErrorMessage();
+							String strError=response.getErrorCode();
 							if(BaseResponse.RESPONSE_OK == nRes &&
 									strError.length() == 0){
 								blStartRes = true;
@@ -129,7 +129,7 @@ public class UpdateManager extends BaseManager {
 							// TODO Auto-generated method stub
 							boolean blStopRes = false;
 							int nRes = response.getResultCode();
-							String strError=response.getErrorMessage();
+							String strError=response.getErrorCode();
 							if(BaseResponse.RESPONSE_OK == nRes &&
 									strError.length() == 0){
 								blStopRes = true;
@@ -161,7 +161,7 @@ public class UpdateManager extends BaseManager {
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
 							int nRes = response.getResultCode();
-							String strError=response.getErrorMessage();
+							String strError=response.getErrorCode();
 							if(BaseResponse.RESPONSE_OK == nRes &&
 									strError.length() == 0){
 								m_upgradeFirmwareStateInfo = response.getModelResult();

@@ -241,7 +241,8 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			String strTost = getString(R.string.setting_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				strTost = getString(R.string.setting_success);
-				initSwitchsState();
+				BusinessMannager.getInstance().sendRequestMessage(MessageUti.POWER_GET_POWER_SAVING_MODE, null);
+				//initSwitchsState();
 			}
 			ShowWaiting(false);
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();

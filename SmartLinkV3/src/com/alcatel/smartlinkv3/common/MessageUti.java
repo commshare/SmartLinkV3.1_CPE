@@ -245,18 +245,18 @@ public class MessageUti {
 
 		/**************************LAN message start*******************************************************************************/
 		httpMethods.put(LAN_GET_LAN_SETTINGS,
-				new HttpMethodUti(LanManager.class, "getLanSettingsRequest"));
+				new HttpMethodUti(LanManager.class, "getLaninfo"));
 		httpMethods.put(LAN_SET_LAN_SETTINGS,
-				new HttpMethodUti(LanManager.class, "setLanSettinsRequest"));
+				new HttpMethodUti(LanManager.class, ""));
 		/**************************LAN message end*********************************************************************************/
 		
 		/**************************power message start*******************************************************************************/
 		httpMethods.put(POWER_GET_BATTERY_STATE,
-				new HttpMethodUti(PowerManager.class, "getBatteryStateRequest"));
+				new HttpMethodUti(PowerManager.class, "getBatteryState"));
 		httpMethods.put(POWER_GET_POWER_SAVING_MODE,
-				new HttpMethodUti(PowerManager.class, "getPowerSavingModeRequest"));
+				new HttpMethodUti(PowerManager.class, "getPowerSavingModeInfo"));
 		httpMethods.put(POWER_SET_POWER_SAVING_MODE,
-				new HttpMethodUti(PowerManager.class, "setPowerSavingModeRequest"));
+				new HttpMethodUti(PowerManager.class, "setPowerSavingModeInfo"));
 		/**************************power message end*********************************************************************************/
 		
 		/**************************update message start*******************************************************************************/

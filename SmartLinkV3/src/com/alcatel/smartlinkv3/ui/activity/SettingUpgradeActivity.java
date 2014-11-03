@@ -150,6 +150,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 					strTost = "no new version";
 					Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 					ShowWaiting(false);
+				}else {
+					onBtnFirmwareCheck();
 				}
 			}else {				
 				Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
