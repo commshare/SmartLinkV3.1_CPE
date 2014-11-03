@@ -1,9 +1,13 @@
 package com.alcatel.smartlinkv3.business;
 
+import java.util.ArrayList;
+
 import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
 import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
 import com.alcatel.smartlinkv3.business.device.HttpDevice;
+import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceType;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
@@ -14,7 +18,7 @@ import android.content.Intent;
 
 public class DeviceManager extends BaseManager {
 
-	private ConnectedDeviceList m_connectedDeviceList = new ConnectedDeviceList();
+	private ArrayList<ConnectedDeviceItemModel> m_connectedDeviceList = new ArrayList<ConnectedDeviceItemModel>();
 	private BlockDeviceList m_blockDeviceList = new BlockDeviceList();
 
 	@Override
@@ -35,9 +39,9 @@ public class DeviceManager extends BaseManager {
 
 	}	
 	
-	public ConnectedDeviceList getConnectedDeviceList()
+	public ArrayList<ConnectedDeviceItemModel> getConnectedDeviceList()
 	{
-		return m_connectedDeviceList;
+		return (ArrayList<ConnectedDeviceItemModel>) m_connectedDeviceList.clone();
 	}
 	
 	public BlockDeviceList getBlockDeviceList()
@@ -63,21 +67,21 @@ public class DeviceManager extends BaseManager {
 								if (ret == BaseResponse.RESPONSE_OK) {
 									strErrcode = response.getErrorCode();
 									if (strErrcode.length() == 0) {
-										m_connectedDeviceList = response
-												.getModelResult();
+										ConnectedDeviceList result = response.getModelResult();
+										for(int i = 0;i < result.ConnectedList.size();i++) {
+											ConnectedDeviceItemModel item = new ConnectedDeviceItemModel();
+											item.buildFromResult(result.ConnectedList.get(i));
+											m_connectedDeviceList.add(item);
+										}
 									} else {
 										m_connectedDeviceList.clear();
 									}
 								} else {
 									m_connectedDeviceList.clear();
 								}
-								Intent megIntent = new Intent(
-										MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
+								Intent megIntent = new Intent(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST);
+								megIntent.putExtra(MessageUti.RESPONSE_RESULT,ret);
+								megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,strErrcode);
 								m_context.sendBroadcast(megIntent);
 							}
 						}));
@@ -210,9 +214,9 @@ public class DeviceManager extends BaseManager {
 
 		String name = (String) data.getParamByKey("DeviceName");
 		String mac = (String) data.getParamByKey("MacAddress");
-		int type = (Integer) data.getParamByKey("DeviceType");
+		EnumDeviceType type = (EnumDeviceType) data.getParamByKey("DeviceType");
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpDevice.SetDeviceName("12.5", name, mac, type,
+				new HttpDevice.SetDeviceName("12.5", name, mac, EnumDeviceType.antiBuild(type),
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(

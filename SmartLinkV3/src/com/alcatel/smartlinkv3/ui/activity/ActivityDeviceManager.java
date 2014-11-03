@@ -1,10 +1,14 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import java.util.ArrayList;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
 import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
+import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceType;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
@@ -39,7 +43,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private TextView m_txBlockCnt;
 	private ImageView m_refresh;
 
-	private ConnectedDeviceList m_connecedDeviceLstData = new ConnectedDeviceList();
+	private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
 	private BlockDeviceList m_blockedDeviceLstData = new BlockDeviceList();
 	private DeviceReceiver m_deviceReceiver = null;
 	private String m_strLocalMac = new String();
@@ -225,7 +229,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);	
 	}
 	
-	private void setDeviceName(String strDeviceName, String strMac, int nDeviceType)
+	private void setDeviceName(String strDeviceName, String strMac, EnumDeviceType nDeviceType)
 	{
 		DataValue data = new DataValue();
 		data.addParam("DeviceName", strDeviceName);
@@ -245,13 +249,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	
 	private void updateConnectedDeviceUI()
 	{
-		m_connecedDeviceLstData = BusinessMannager.getInstance()
-				.getConnectedDeviceList();
+		m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
 		((ConnectedDevAdapter) m_connecedDeviceList.getAdapter())
 				.notifyDataSetChanged();
 		
 		String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);		
-		strConnectedCnt = String.format(strConnectedCnt, m_connecedDeviceLstData.ConnectedList.size());
+		strConnectedCnt = String.format(strConnectedCnt, m_connecedDeviceLstData.size());
 		m_txConnectedCnt.setText(strConnectedCnt);
 		
 	}
@@ -280,7 +283,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		}
 
 		public int getCount() {
-			return m_connecedDeviceLstData.ConnectedList.size();
+			return m_connecedDeviceLstData.size();
 		}
 
 		public Object getItem(int position) {
@@ -321,12 +324,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			final String displayName = m_connecedDeviceLstData.ConnectedList.get(position).DeviceName;
+			final String displayName = m_connecedDeviceLstData.get(position).DeviceName;
 			holder.deviceName.setText(displayName);			
-			holder.ip.setText("IP:"+ m_connecedDeviceLstData.ConnectedList.get(position).IPAddress);
-			final String mac = m_connecedDeviceLstData.ConnectedList.get(position).MacAddress;
+			holder.ip.setText("IP:"+ m_connecedDeviceLstData.get(position).IPAddress);
+			final String mac = m_connecedDeviceLstData.get(position).MacAddress;
 			holder.mac.setText("MAC:"+ mac);
-			final int type = m_connecedDeviceLstData.ConnectedList.get(position).DeviceType;
+			final EnumDeviceType type = m_connecedDeviceLstData.get(position).DeviceType;
 			
 			if(mac.equalsIgnoreCase(m_strLocalMac))
 			{

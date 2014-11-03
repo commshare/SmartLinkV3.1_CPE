@@ -2,10 +2,13 @@ package com.alcatel.smartlinkv3.business;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
 import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
@@ -378,7 +381,7 @@ public class BusinessMannager {
 	
 	  
     /********************Device manager method start**********************/
-	public ConnectedDeviceList getConnectedDeviceList()
+	public ArrayList<ConnectedDeviceItemModel> getConnectedDeviceList()
 	{
 		return m_deviceManager.getConnectedDeviceList();
 	}
