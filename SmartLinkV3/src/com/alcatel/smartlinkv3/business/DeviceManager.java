@@ -19,7 +19,7 @@ import android.content.Intent;
 public class DeviceManager extends BaseManager {
 
 	private ArrayList<ConnectedDeviceItemModel> m_connectedDeviceList = new ArrayList<ConnectedDeviceItemModel>();
-	private BlockDeviceList m_blockDeviceList = new BlockDeviceList();
+	private ArrayList<ConnectedDeviceItemModel> m_blockDeviceList = new ArrayList<ConnectedDeviceItemModel>();
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
@@ -44,9 +44,9 @@ public class DeviceManager extends BaseManager {
 		return (ArrayList<ConnectedDeviceItemModel>) m_connectedDeviceList.clone();
 	}
 	
-	public BlockDeviceList getBlockDeviceList()
+	public ArrayList<ConnectedDeviceItemModel> getBlockDeviceList()
 	{
-		return m_blockDeviceList;
+		return (ArrayList<ConnectedDeviceItemModel>) m_blockDeviceList.clone();
 	}
 
 	// GetConnectedDeviceList
@@ -105,8 +105,12 @@ public class DeviceManager extends BaseManager {
 								if (ret == BaseResponse.RESPONSE_OK) {
 									strErrcode = response.getErrorCode();
 									if (strErrcode.length() == 0) {
-										m_blockDeviceList = response
-												.getModelResult();
+										BlockDeviceList result = response.getModelResult();
+										for(int i = 0;i < result.BlockList.size();i++) {
+											ConnectedDeviceItemModel item = new ConnectedDeviceItemModel();
+											item.buildFromResult(result.BlockList.get(i));
+											m_blockDeviceList.add(item);
+										}
 									} else {
 										m_blockDeviceList.clear();
 									}

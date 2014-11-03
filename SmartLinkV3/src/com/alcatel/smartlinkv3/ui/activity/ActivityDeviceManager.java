@@ -44,7 +44,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private ImageView m_refresh;
 
 	private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
-	private BlockDeviceList m_blockedDeviceLstData = new BlockDeviceList();
+	private ArrayList<ConnectedDeviceItemModel> m_blockedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
 	private DeviceReceiver m_deviceReceiver = null;
 	private String m_strLocalMac = new String();
 
@@ -267,7 +267,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				.notifyDataSetChanged();
 		
 		String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);		
-		strBlockdCnt = String.format(strBlockdCnt, m_blockedDeviceLstData.BlockList.size());
+		strBlockdCnt = String.format(strBlockdCnt, m_blockedDeviceLstData.size());
 		m_txBlockCnt.setText(strBlockdCnt);		
 	}
 
@@ -380,7 +380,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		}
 
 		public int getCount() {
-			return m_blockedDeviceLstData.BlockList.size();
+			return m_blockedDeviceLstData.size();
 		}
 
 		public Object getItem(int position) {
@@ -416,9 +416,9 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				holder = (ViewHolder) convertView.getTag();
 			}			
 			
-			final String displayName = m_blockedDeviceLstData.BlockList.get(position).DeviceName;
+			final String displayName = m_blockedDeviceLstData.get(position).DeviceName;
 			holder.deviceName.setText(displayName);
-			final String mac = m_blockedDeviceLstData.BlockList.get(position).MacAddress;			
+			final String mac = m_blockedDeviceLstData.get(position).MacAddress;			
 			holder.mac.setText("MAC:" + mac);
 			
 			holder.unblockBtn.setOnClickListener(new OnClickListener() {

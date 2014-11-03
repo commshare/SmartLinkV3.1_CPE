@@ -386,7 +386,7 @@ public class BusinessMannager {
 		return m_deviceManager.getConnectedDeviceList();
 	}
 	
-	public BlockDeviceList getBlockDeviceList()
+	public ArrayList<ConnectedDeviceItemModel> getBlockDeviceList()
 	{
 		return m_deviceManager.getBlockDeviceList();
 	}
