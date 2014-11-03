@@ -82,7 +82,7 @@
             android:layout_width="200dip"
             android:layout_height="30dip"
             android:layout_centerInParent="true"
-            android:background="@drawable/selector_red_button"
+            android:background="@drawable/selector_common_button"
             android:text="@string/button_apply"
             android:textColor="@drawable/common_button_text" />
     </RelativeLayout>
