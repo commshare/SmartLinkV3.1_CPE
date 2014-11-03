@@ -233,9 +233,29 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		if(m_blPasswordOpened){
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
+			m_strKey="";
+			m_et_password.setText(m_strKey);
+			m_ib_hide_password.setVisibility(View.GONE);
+			m_ib_show_password.setVisibility(View.GONE);
+			m_ll_security.setVisibility(View.GONE);
+			m_ll_encryption.setVisibility(View.GONE);
+			m_tv_psd_type_title.setVisibility(View.GONE);
 		}else {
 			m_blPasswordOpened = true;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
+			m_strKey=m_strPreKey;
+			m_et_password.setText(m_strKey);
+			m_ib_hide_password.setVisibility(View.VISIBLE);
+			m_ib_show_password.setVisibility(View.GONE);
+			m_ll_security.setVisibility(View.VISIBLE);
+			m_ll_encryption.setVisibility(View.VISIBLE);
+			m_tv_psd_type_title.setVisibility(View.VISIBLE);
+		}
+		//
+		if(!m_ib_show_password.isShown()){
+			m_et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		}else {
+			m_et_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 		}
 	}
 	private void onBtnEdit(){
@@ -291,11 +311,19 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		if (SecurityMode.Disable == securityMode) {
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
-			m_tv_no_password.setVisibility(View.GONE);
+			m_btn_psd_switch.setVisibility(View.GONE);
+			m_tv_no_password.setVisibility(View.VISIBLE);
 			m_et_password.setText("");
+			m_ib_hide_password.setVisibility(View.GONE);
+			m_ib_show_password.setVisibility(View.GONE);
 
 		}else {
 			m_blPasswordOpened = true;
+			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
+			m_btn_psd_switch.setVisibility(View.VISIBLE);
+			m_tv_no_password.setVisibility(View.GONE);
+			m_ib_hide_password.setVisibility(View.VISIBLE);
+			m_ib_show_password.setVisibility(View.GONE);
 		}
 		m_ll_encryption.setVisibility(View.GONE);
 		m_ll_security.setVisibility(View.GONE);

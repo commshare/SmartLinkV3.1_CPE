@@ -141,7 +141,7 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 		item = new SettingItem(context.getString(R.string.setting_backup), false);
 		list.add(item);
 		
-		item = new SettingItem(context.getString(R.string.setting_upgrade), true);
+		item = new SettingItem(context.getString(R.string.setting_upgrade), false);
 		list.add(item);
 		
 		item = new SettingItem(context.getString(R.string.setting_device), false);
@@ -153,37 +153,31 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	}
 	
 	private void goToWifiSettingPage(){
-		Toast.makeText(m_context, "Wifi setting", 1).show();
 		Intent intent = new Intent(m_context, SettingWifiActivity.class);
 		m_context.startActivity(intent);
 	}
 	
 	private void goToPowerSettingPage(){
-		Toast.makeText(m_context, "goToPowerSettingPage", 10).show();
 		Intent intent = new Intent(m_context, SettingPowerSavingActivity.class);
 		m_context.startActivity(intent);
 	}
 	
 	private void goToBackupSettingPage(){
-		Toast.makeText(m_context, "goToBackupSettingPage", 10).show();
 		Intent intent = new Intent(m_context, SettingBackupRestoreActivity.class);
 		m_context.startActivity(intent);
 	}
 	
 	private void goToUpgradeSettingPage(){
-		Toast.makeText(m_context, "goToUpgradeSettingPage", 10).show();
 		Intent intent = new Intent(m_context, SettingUpgradeActivity.class);
 		m_context.startActivity(intent);
 	}
 	
 	private void goToDeviceSettingPage(){
-		Toast.makeText(m_context, "goToDeviceSettingPage", 10).show();
 		Intent intent = new Intent(m_context, SettingDeviceActivity.class);
 		m_context.startActivity(intent);
 	}
 	
 	private void goToAboutSettingPage(){
-		Toast.makeText(m_context, "goToAboutSettingPage", 10).show();
 		Intent intent = new Intent(m_context, SettingAboutActivity.class);
 		m_context.startActivity(intent);
 	}
@@ -218,7 +212,7 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 		@Override
 		public View getView(int arg0, View arg1, ViewGroup arg2) {
 			// TODO Auto-generated method stub
-			View itemView = LayoutInflater.from(m_context).inflate(R.layout.setting_item,
+			View itemView = LayoutInflater.from(this.context).inflate(R.layout.setting_item,
 					null);
 			//
 			SettingItem item = listSettingItmes.get(arg0);
