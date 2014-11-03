@@ -200,8 +200,7 @@ public class SMSManager extends BaseManager {
 	}
 	
 	public void getContactMessagesAtOnceRequest(){
-		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
-		if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
+		if(m_smsInit == SMSInit.Complete) {
 			GetContactMessagesTask task = new GetContactMessagesTask();
 			m_getSmsRollTimer.schedule(task, 0);
 		}

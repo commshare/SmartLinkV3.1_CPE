@@ -11,6 +11,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
+import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -174,6 +175,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			}
 			item.nUnreadNumber = sms.UnreadCount;
 			item.nCount = sms.TSMSCount;
+			item.enumSmsType = sms.SMSType;
 			item.strSummaryContent = sms.SMSContent;
 			item.strSummaryTime = sms.SMSTime;
 			item.nContactid = sms.ContactId;
@@ -253,6 +255,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		public final class ViewHolder{
 			public ImageView unreadImage;
 			public TextView number;
+			public ImageView sentFailedImage;
 			public TextView count;
 			public TextView content;
 			public TextView time;
@@ -266,6 +269,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				convertView = LayoutInflater.from(m_context).inflate(R.layout.sms_list_item,null);	
 				holder.unreadImage = (ImageView)convertView.findViewById(R.id.sms_item_unread_image);
 				holder.number = (TextView)convertView.findViewById(R.id.sms_item_number);
+				holder.sentFailedImage = (ImageView)convertView.findViewById(R.id.sms_item_send_failed);
 				holder.count = (TextView)convertView.findViewById(R.id.sms_item_count);
 				holder.content = (TextView)convertView.findViewById(R.id.sms_item_content);
 				holder.time = (TextView)convertView.findViewById(R.id.sms_item_time);
@@ -274,20 +278,19 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				holder = (ViewHolder)convertView.getTag();
 			}
 			
-			holder.number.setText((String)m_smsContactMessagesLstData.get(position).strNumber);
-			holder.content.setText((String)m_smsContactMessagesLstData.get(position).strSummaryContent);
-			int nCount = (Integer)m_smsContactMessagesLstData.get(position).nCount;
+			
+			SMSSummaryItem smsItem = m_smsContactMessagesLstData.get(position);
+			holder.number.setText(smsItem.strNumber);
+			holder.content.setText(smsItem.strSummaryContent);
 					
-			int nUnreadNum = (Integer)m_smsContactMessagesLstData.get(position).nUnreadNumber;
+			int nUnreadNum = smsItem.nUnreadNumber;
 			if(nUnreadNum == 0) {
 				holder.unreadImage.setVisibility(View.INVISIBLE);
 			}else{
 				holder.unreadImage.setVisibility(View.VISIBLE);
 			}
 			
-			holder.count.setText(String.valueOf(nCount));
-			
-			String strTime = (String) m_smsContactMessagesLstData.get(position).strSummaryTime;
+			String strTime = (String) smsItem.strSummaryTime;
 			SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date summaryDate = null;
 			try {
@@ -308,11 +311,36 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 					SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 					strTimeText = format.format(summaryDate);
 				}else{
-					SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm");
 					strTimeText = format.format(summaryDate);
 				}
 			}
 			holder.time.setText(strTimeText);
+			
+			//Read, Unread, Sent, SentFailed, Report, Flash,Draft;
+			switch(smsItem.enumSmsType)
+			{
+			case SentFailed:
+				holder.count.setVisibility(View.INVISIBLE);
+				holder.sentFailedImage.setVisibility(View.VISIBLE);
+				break;
+			case Draft:
+				holder.count.setVisibility(View.VISIBLE);
+				holder.sentFailedImage.setVisibility(View.INVISIBLE);
+				holder.count.setTextColor(m_context.getResources().getColor(R.color.color_grey));
+				holder.count.setText(String.format(m_context.getString(R.string.sms_list_view_draft),  smsItem.nCount));
+				break;
+			default:
+				holder.sentFailedImage.setVisibility(View.INVISIBLE);
+				holder.count.setVisibility(View.VISIBLE);
+				if(nUnreadNum == 0) {
+					holder.count.setTextColor(m_context.getResources().getColor(R.color.color_grey));
+				}else{
+					holder.count.setTextColor(m_context.getResources().getColor(R.color.color_black));
+				}
+				holder.count.setText(String.valueOf(smsItem.nCount));
+				break;
+			}
 			
 			return convertView;
 		}
@@ -342,6 +370,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		public String strNumber = new String();
 		public int nContactid = 0;
 		public int nUnreadNumber = 0;
+		public EnumSMSType enumSmsType = EnumSMSType.Read;
 		public int nCount = 0;
 		public String strSummaryContent = new String();
 		public String strSummaryTime = new String();
