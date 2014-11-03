@@ -148,9 +148,6 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		
 		Intent it=getIntent();
 		int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-		int nPage1 = it.getIntExtra("com.alcatel.smartlinkv3.business.setting", 100);
-		String strTemp = "nPage = " + nPage+", nPage1 = " + nPage1;
-		Toast.makeText(this, strTemp, Toast.LENGTH_LONG).show();
 		if (nPage == 1) {
 			go2SmsView();
 		}else if (nPage == 2) {

@@ -2,10 +2,13 @@ package com.alcatel.smartlinkv3.appwidget;
 
 import com.alcatel.smartlinkv3.R;
 
+import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 
+import android.R.integer;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -76,7 +79,8 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
 				//create a pending intent
 				PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-				remoteViews.setOnClickPendingIntent(R.id.ib_widget_battery, pendingIntent);
+				remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
+				remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, pendingIntent);
 				//SMS intent
 				Intent smsIntent = new Intent(context,MainActivity.class);
 				smsIntent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
@@ -123,7 +127,20 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
 	private void updateSignal(RemoteViews remoteViews){
 		if (m_blDeviceConnected) {
-			remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_3);
+			SignalStrength eSignal = BusinessMannager.getInstance().getNetworkInfo().m_signalStrength;
+			if (SignalStrength.Level_0 == eSignal) {
+				remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_0);
+			}else if (SignalStrength.Level_1 == eSignal) {
+				remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_1);				
+			}else if (SignalStrength.Level_2 == eSignal) {
+				remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_2);				
+			}else if (SignalStrength.Level_3 == eSignal) {
+				remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_3);				
+			}else if (SignalStrength.Level_4 == eSignal) {
+				remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_4);				
+			}else {
+				remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_0);
+			}
 		}else {
 			remoteViews.setImageViewResource(R.id.ib_widget_signal, R.drawable.widget_signal_0);
 		}
@@ -152,16 +169,41 @@ public class SmartLinkWidget extends AppWidgetProvider {
 	private void updateSms(RemoteViews remoteViews){
 		if (m_blDeviceConnected) {
 			remoteViews.setImageViewResource(R.id.ib_widget_sms, R.drawable.widget_sms_no_new_active);
+			int nUnreadNumber = BusinessMannager.getInstance().getNewSmsNumber();
+			String strNumberString = "";
+			if(nUnreadNumber > 0 && 10 > nUnreadNumber){
+				strNumberString += nUnreadNumber;
+			}else if (10 <= nUnreadNumber) {
+				strNumberString = "9+";
+			}
+			remoteViews.setTextViewText(R.id.tv_widget_new_sms_number, strNumberString);
+			if (0 < nUnreadNumber) {
+				remoteViews.setViewVisibility(R.id.tv_widget_new_sms_number, View.VISIBLE);
+			}else {
+				remoteViews.setViewVisibility(R.id.tv_widget_new_sms_number, View.GONE);
+			}
 		}else {
 			remoteViews.setImageViewResource(R.id.ib_widget_sms, R.drawable.widget_sms_no_new_grey);
+			remoteViews.setViewVisibility(R.id.tv_widget_new_sms_number, View.GONE);
 		}
 	}
 
 	private void updateBattery(RemoteViews remoteViews){
 		if (m_blDeviceConnected) {
-			remoteViews.setImageViewResource(R.id.ib_widget_battery, R.drawable.widget_battery_full);
+			int nProgress = BusinessMannager.getInstance().getBatteryInfo().getBatterLevel();
+			int nState = BusinessMannager.getInstance().getBatteryInfo().getChargeState();
+			if (0 != nState) {
+				remoteViews.setProgressBar(R.id.pb_widget_battery, 100, nProgress, false);
+				remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
+				remoteViews.setViewVisibility(R.id.ib_widget_charge, View.GONE);
+			}else {
+				remoteViews.setProgressBar(R.id.pb_widget_battery, 100, nProgress, false);
+				remoteViews.setViewVisibility(R.id.pb_widget_battery, View.GONE);
+				remoteViews.setViewVisibility(R.id.ib_widget_charge, View.VISIBLE);
+			}
 		}else {
-			remoteViews.setImageViewResource(R.id.ib_widget_battery, R.drawable.widget_battery_empty);
+			remoteViews.setProgressBar(R.id.pb_widget_battery, 100, 0, false);remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.ib_widget_charge, View.GONE);
 		}
 	}
 	
