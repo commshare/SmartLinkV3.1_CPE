@@ -555,7 +555,9 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			SMSDetailItem item = new SMSDetailItem();
 			item.bIsDateItem = false;
 			item.strContent = sms.SMSContent;
-			item.strTime = sms.SMSTime;
+			SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+			item.strTime = format.format(smsDate);
+			//item.strTime = sms.SMSTime;
 			item.eSMSType = sms.SMSType;
 			item.nContactID = m_nContactID;
 			item.nSMSID = sms.SMSId;
