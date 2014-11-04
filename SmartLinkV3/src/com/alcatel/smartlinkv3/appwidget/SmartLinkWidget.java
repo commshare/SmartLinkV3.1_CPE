@@ -100,6 +100,12 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				PendingIntent signalPendingIntent = 
 						PendingIntent.getActivity(context, 3, signalIntent, 0);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, signalPendingIntent);
+				
+				//internet intent
+				Intent internetIntent = new Intent(context,MainActivity.class);
+				PendingIntent internetPendingIntent = 
+						PendingIntent.getActivity(context, 4, internetIntent, 0);
+				remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, internetPendingIntent);
 			//}
 			//wifi control
 			Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
