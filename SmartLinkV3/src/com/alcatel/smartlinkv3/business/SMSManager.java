@@ -323,6 +323,8 @@ public class SMSManager extends BaseManager {
 		String[] listNumbers = strNumbers.split(";");
 		ArrayList<String> phoneNumberLst = new ArrayList<String>();
 		for (int i = 0; i < listNumbers.length; i++) {
+			if(null == listNumbers[i] || listNumbers[i].length() == 0)
+				continue;
 			phoneNumberLst.add(listNumbers[i]);
 		}
     	

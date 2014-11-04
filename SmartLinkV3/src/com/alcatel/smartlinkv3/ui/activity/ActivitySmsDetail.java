@@ -504,7 +504,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 	}
 
 	private Date formatDateFromString(String time) {
-		SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sDate = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 		Date smsDate = null;
 		try {
 			smsDate = sDate.parse(time);
