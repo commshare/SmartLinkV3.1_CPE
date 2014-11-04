@@ -201,6 +201,7 @@
                <action android:name="com.alcatel.smartlinkv3.business.network.getnetworkinfo"/>
                <action android:name="com.alcatel.smartlinkv3.business.power.getBatteryState"/>
                <action android:name="com.alcatel.smartlinkv3.business.sms.getcontactlist"/>
+               <action android:name="com.alcatel.smartlinkv3.business.wan.getconnectstatus"/>
            </intent-filter>  
   
            <meta-data  

@@ -11,22 +11,22 @@ public class BatteryInfo extends BaseResult {
 		2: Removed;
 		3:Abort: Charger abort:error occur
 	 */
-	private int ChargeState = ConstValue.CHARGE_STATE_REMOVED;
+	private int chg_state = ConstValue.CHARGE_STATE_REMOVED;
 	private int BatteryLevel= 0;//BatteryLevel  (Min: 1 Max:100)
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		ChargeState = ConstValue.CHARGE_STATE_REMOVED;
+		chg_state = ConstValue.CHARGE_STATE_REMOVED;
 		BatteryLevel = 0;
 	}
 
 	//Charge state
 	public int getChargeState(){
-		return ChargeState;
+		return chg_state;
 	}
 
 	public void setChargeState(int nChargeState){
-		ChargeState = nChargeState;
+		chg_state = nChargeState;
 	}
 
 	//Charge state

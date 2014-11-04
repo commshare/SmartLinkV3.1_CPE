@@ -93,10 +93,10 @@ public class PowerManager extends BaseManager {
 	}
 	//get battery state
 	public void getBatteryState(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("PowerManagement", "GetBatteryState")) {
-			return;
-		}
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("PowerManagement", "GetBatteryState")) {
+//			return;
+//		}
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
@@ -125,10 +125,10 @@ public class PowerManager extends BaseManager {
 
 	//get power saving mode
 	public void getPowerSavingModeInfo(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("PowerManagement", "GetPowerSavingMode")) {
-			return;
-		}
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("PowerManagement", "GetPowerSavingMode")) {
+//			return;
+//		}
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
@@ -159,10 +159,10 @@ public class PowerManager extends BaseManager {
 
 	//set power saving mode
 	public void setPowerSavingModeInfo(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("PowerManagement", "SetPowerSavingMode")) {
-			return;
-		}
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("PowerManagement", "SetPowerSavingMode")) {
+//			return;
+//		}
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {

@@ -112,13 +112,15 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:layout_centerInParent="true" >
 
             <ImageButton
                 android:id="@+id/ib_widget_sms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/widget_sms_no_new_active"
+                android:background="@android:color/transparent"
+                android:src="@drawable/widget_sms_no_new_active"
                 android:contentDescription="@string/app_name" />
 
             <TextView
@@ -154,13 +156,14 @@
         <ProgressBar
             android:id="@+id/pb_widget_battery"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="45dp"
+            android:layout_height="27dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/widget_battery_full"
+            android:background="@drawable/widget_battery_empty"
             android:max="100"
-            android:progress="90"
-            android:progressDrawable="@drawable/battery_progress_status_3" />
+            android:progress="0"
+            android:progressDrawable="@drawable/battery_progress_status_3"
+            android:visibility="visible" />
 
         <ImageButton
             android:id="@+id/ib_widget_charge"

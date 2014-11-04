@@ -4,11 +4,11 @@ import com.alcatel.smartlinkv3.R;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 
-import android.R.integer;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -61,6 +61,10 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)) {
 					updateUIs(context);
 				}
+				
+				if (intent.getAction().equalsIgnoreCase(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)) {
+					updateUIs(context);
+				}
 	}
 
 	@Override
@@ -80,17 +84,21 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				//create a pending intent
 				PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 				remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
-				remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, pendingIntent);
+				Intent ibBatteryintent = new Intent(context, MainActivity.class);
+				ibBatteryintent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
+				//create a pending intent
+				PendingIntent ibBatterypendingIntent = PendingIntent.getActivity(context, 1, ibBatteryintent, 0);
+				remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, ibBatterypendingIntent);
 				//SMS intent
 				Intent smsIntent = new Intent(context,MainActivity.class);
 				smsIntent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
 				PendingIntent smsPendingIntent = 
-						PendingIntent.getActivity(context, 1, smsIntent, 0);
+						PendingIntent.getActivity(context, 2, smsIntent, 0);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, smsPendingIntent);
 				//signal intent
 				Intent signalIntent = new Intent(context,MainActivity.class);
 				PendingIntent signalPendingIntent = 
-						PendingIntent.getActivity(context, 2, signalIntent, 0);
+						PendingIntent.getActivity(context, 3, signalIntent, 0);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, signalPendingIntent);
 			//}
 			//wifi control
@@ -116,7 +124,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
 	private void updateUI(RemoteViews remoteViews){
 		m_blWifiConnected = DataConnectManager.getInstance().getWifiConnected();
-		m_blInternetConnected = DataConnectManager.getInstance().getMobileConnected();
+		ConnectionStatus status = BusinessMannager.getInstance().getConnectStatus().m_connectionStatus;
+		m_blInternetConnected = false;
+		if (ConnectionStatus.Connected == status) {
+			m_blInternetConnected = true;
+		}
 		m_blDeviceConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		updateSignal(remoteViews);
 		updateWifi(remoteViews);
@@ -202,7 +214,8 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				remoteViews.setViewVisibility(R.id.ib_widget_charge, View.VISIBLE);
 			}
 		}else {
-			remoteViews.setProgressBar(R.id.pb_widget_battery, 100, 0, false);remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
+			remoteViews.setProgressBar(R.id.pb_widget_battery, 100, 0, false);
+			remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
 			remoteViews.setViewVisibility(R.id.ib_widget_charge, View.GONE);
 		}
 	}
