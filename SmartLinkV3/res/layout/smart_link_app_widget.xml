@@ -3,7 +3,7 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_black"
+    android:background="@drawable/widget_bg"
     android:orientation="horizontal" >
 
     <!-- signal -->
@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/color_white"
+        android:background="@drawable/widget_bg_line"
         android:contentDescription="@string/app_name" />
 
     <!-- wifi status -->
@@ -40,21 +40,32 @@
         android:layout_weight="1" >
 
         <ImageView
-            android:id="@+id/iv_widget_wifi_status"
+            android:id="@+id/iv_widget_wifi_off"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/color_blue"
+            android:background="@drawable/widget_item_off"
             android:contentDescription="@string/app_name" />
+        
+        <ImageView
+            android:id="@+id/iv_widget_wifi_on"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/widget_item_select"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/ib_widget_wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/widget_btn_wifi_4"
+            android:background="@drawable/widget_btn_wifi_0"
             android:contentDescription="@string/app_name" />
     </RelativeLayout>
 
@@ -63,7 +74,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/color_white"
+        android:background="@drawable/widget_bg_line"
         android:contentDescription="@string/app_name" />
 
     <!-- Internet status -->
@@ -75,21 +86,32 @@
         android:layout_weight="1" >
 
         <ImageView
-            android:id="@+id/iv_widget_internet_status"
+            android:id="@+id/iv_widget_internet_off"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/color_blue"
+            android:background="@drawable/widget_item_off"
             android:contentDescription="@string/app_name" />
+        
+        <ImageView
+            android:id="@+id/iv_widget_internet_on"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/widget_item_select"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/ib_widget_internet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/widget_internet_connected"
+            android:background="@drawable/widget_internet_disconnected"
             android:contentDescription="@string/app_name" />
     </RelativeLayout>
 
@@ -98,7 +120,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/color_white"
+        android:background="@drawable/widget_bg_line"
         android:contentDescription="@string/app_name" />
 
     <!-- SMS status -->
@@ -120,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/widget_sms_no_new_active"
+                android:src="@drawable/widget_sms_no_new_grey"
                 android:contentDescription="@string/app_name" />
 
             <TextView
@@ -142,7 +164,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/color_white"
+        android:background="@drawable/widget_bg_line"
         android:contentDescription="@string/app_name" />
 
     <!-- battery status -->

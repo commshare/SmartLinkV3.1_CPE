@@ -161,20 +161,26 @@ public class SmartLinkWidget extends AppWidgetProvider {
 	private void updateWifi(RemoteViews remoteViews){
 		if (m_blWifiConnected) {
 			remoteViews.setImageViewResource(R.id.ib_widget_wifi, R.drawable.widget_btn_wifi_4);
-			remoteViews.setViewVisibility(R.id.iv_widget_wifi_status, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.iv_widget_wifi_on, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.iv_widget_wifi_off, View.GONE);
 		}else {
 			remoteViews.setImageViewResource(R.id.ib_widget_wifi, R.drawable.widget_btn_wifi_0);
-			remoteViews.setViewVisibility(R.id.iv_widget_wifi_status, View.GONE);
+			remoteViews.setViewVisibility(R.id.iv_widget_wifi_off, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.iv_widget_wifi_on, View.GONE);
 		}
 	}
 
 	private void updateInternet(RemoteViews remoteViews){
 		if (m_blInternetConnected) {
-			remoteViews.setImageViewResource(R.id.ib_widget_internet, R.drawable.widget_internet_connected);
-			remoteViews.setViewVisibility(R.id.iv_widget_internet_status, View.VISIBLE);
+			remoteViews.setImageViewResource(R.id.ib_widget_internet, 
+					R.drawable.widget_internet_connected);
+			remoteViews.setViewVisibility(R.id.iv_widget_internet_on, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.iv_widget_internet_off, View.GONE);
 		}else {
-			remoteViews.setImageViewResource(R.id.ib_widget_internet, R.drawable.widget_internet_disconnected);
-			remoteViews.setViewVisibility(R.id.iv_widget_internet_status, View.GONE);
+			remoteViews.setImageViewResource(R.id.ib_widget_internet, 
+					R.drawable.widget_internet_disconnected);
+			remoteViews.setViewVisibility(R.id.iv_widget_internet_off, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.iv_widget_internet_on, View.GONE);
 		}
 	}
 
