@@ -369,10 +369,25 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			break;
 		}
 	}
+	
+	@Override 
+	public void onBackPressed() { 
+		OnBtnBack();
+	} 
 
 	//
 	private void OnBtnBack() {
-		//BusinessMannager.getInstance().refreshSmsListAtOnce();
+		String strContent = m_etContent.getText().toString();
+		String strNumber = m_smsNumber;
+		if(strContent != null)
+			strContent = strContent.trim();
+		if(strContent != null && strContent.length() > 0 && strNumber != null && strNumber.length() > 0) {
+			DataValue data = new DataValue();
+			data.addParam("SMSId", m_nContactID);
+			data.addParam("Content", strContent);
+			data.addParam("Number", strNumber);
+			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
+		}
 		ActivitySmsDetail.this.finish();
 	}
 
