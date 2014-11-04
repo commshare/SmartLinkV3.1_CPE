@@ -276,6 +276,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 
 	//
 	private void OnBtnCancel() {
+		
 		this.finish();
 	}
 

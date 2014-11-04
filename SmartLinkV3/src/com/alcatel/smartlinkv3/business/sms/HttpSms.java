@@ -1,6 +1,8 @@
 package com.alcatel.smartlinkv3.business.sms;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -428,6 +430,76 @@ public class HttpSms {
         public SendStatusResult getModelResult() 
         {
              return result;
+        }
+    }
+	
+	/******************** SaveSMS  **************************************************************************************/	
+	public static class SaveSMS extends BaseRequest
+    {	
+		private int m_nSMSId = -1;
+		private String m_strSMSContent = new String();
+		private ArrayList<String> m_lstNumber = new ArrayList<String>();
+		
+        public SaveSMS(String strId,int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback) 
+        {
+        	super(callback);  
+        	m_strId = strId;
+        	m_nSMSId = nSMSId;
+        	m_strSMSContent = strSMSContent;
+        	m_lstNumber = (ArrayList<String>) lstNumber.clone();
+        }
+
+        @Override
+        protected void buildHttpParamJson() 
+        {
+        	try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSendSMSResult");
+	        	
+	        	JSONObject obj = new JSONObject();	 
+	        	obj.put("SMSId", m_nSMSId);
+	        	obj.put("SMSContent", m_strSMSContent);
+	        	JSONArray array = new JSONArray();
+	        	for(int i = 0;i < m_lstNumber.size();i++) {
+	        		array.put(m_lstNumber.get(i));
+	        	}
+	        	obj.put("PhoneNumber", array);
+	        	Date now = new Date();
+	        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String strTimeText = format.format(now);
+	        	obj.put("SMSTime", strTimeText);
+	        	
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+        	} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
+        @Override
+        public BaseResponse createResponseObject() 
+        {            
+            return new GetSendSMSResultResponse(m_finsishCallback);
+        }
+        
+    }
+	
+	public static class SaveSMSResponse extends BaseResponse
+    {
+        public SaveSMSResponse(IHttpFinishListener callback) 
+        {
+            super(callback);            
+        }
+
+        @Override
+        protected void parseContent(String strJsonResult) {
+        }
+
+        @Override
+        public <T> T getModelResult() 
+        {
+             return null;
         }
     }
 }

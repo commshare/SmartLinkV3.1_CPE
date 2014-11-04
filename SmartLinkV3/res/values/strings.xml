@@ -65,6 +65,7 @@
     <string name="IDS_SMS_DELETE_MULTI_ERROR">Delete %1$d successed, %2$d failed!</string>
     <string name="IDS_SMS_DELETE_ERROR_CONTENT">Delete SMS error!</string>
     <string name="IDS_SMS_DELETE_SUCCESS">Delete SMS success!</string>
+    <string name="sms_number_invalid">Error! Only 3 phone numbers are allowed.</string>
     <!-- sms end -->
     
     <!--connect device start -->

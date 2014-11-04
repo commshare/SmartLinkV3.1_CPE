@@ -92,6 +92,7 @@ public class MessageUti {
 	public static String SMS_DELETE_SMS_REQUSET = "com.alcatel.smartlinkv3.business.sms.deletesms";
 	public static String SMS_SEND_SMS_REQUSET = "com.alcatel.smartlinkv3.business.sms.sendsms";
 	public static String SMS_GET_SEND_STATUS_REQUSET = "com.alcatel.smartlinkv3.business.sms.getsendstatus";
+	public static String SMS_SAVE_SMS_REQUSET = "com.alcatel.smartlinkv3.business.sms.savesms"; 
 	/**************************SMS message end*********************************************************************************/
 	
 	/**************************Wan message start*********************************************************************************/
@@ -215,6 +216,7 @@ public class MessageUti {
 		httpMethods.put(SMS_DELETE_SMS_REQUSET, new HttpMethodUti(SMSManager.class, "deleteSms"));
 		httpMethods.put(SMS_GET_SMS_CONTENT_LIST_REQUSET, new HttpMethodUti(SMSManager.class, "getSMSContentListRequest"));
 		httpMethods.put(SMS_GET_SEND_STATUS_REQUSET, new HttpMethodUti(SMSManager.class, "getSmsSendResult"));
+		httpMethods.put(SMS_SAVE_SMS_REQUSET, new HttpMethodUti(SMSManager.class, "SaveSMS"));
 		/********************SMS method end**********************/
 		
 		/********************WAN method start**********************/

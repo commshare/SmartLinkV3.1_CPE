@@ -313,6 +313,18 @@ public class SMSManager extends BaseManager {
         }));
     } 
 	
+	private ArrayList<String> getNumberFromString(String number) {
+		String[] listNumbers = number.split(";");
+		ArrayList<String> phoneNumberLst = new ArrayList<String>();
+		for (int i = 0; i < listNumbers.length; i++) {
+			if(null == listNumbers[i] || listNumbers[i].length() == 0)
+				continue;
+			phoneNumberLst.add(listNumbers[i]);
+		}
+		
+		return phoneNumberLst;
+	}
+	
 	//SendSMS ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void sendSms(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "SendSMS") != true)
@@ -320,13 +332,7 @@ public class SMSManager extends BaseManager {
 		
 		String strContent = (String) data.getParamByKey("content");
 		String strNumbers = (String)data.getParamByKey("phone_number");
-		String[] listNumbers = strNumbers.split(";");
-		ArrayList<String> phoneNumberLst = new ArrayList<String>();
-		for (int i = 0; i < listNumbers.length; i++) {
-			if(null == listNumbers[i] || listNumbers[i].length() == 0)
-				continue;
-			phoneNumberLst.add(listNumbers[i]);
-		}
+		ArrayList<String> phoneNumberLst = getNumberFromString(strNumbers);
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SendSMS("6.6",-1,strContent,phoneNumberLst, new IHttpFinishListener() {           
             @Override
@@ -415,15 +421,17 @@ public class SMSManager extends BaseManager {
         }));
     } 
 	
-	/*	//ModifySMSReadStatus ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void modifySMSReadStatus(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "ModifySmsReadStatus") != true)
+	//SaveSMS ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void SaveSMS(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "SaveSMS") != true)
 			return;
 		
-		int nId = (Integer) data.getParamByKey("id");
-		boolean bStatus = (Boolean) data.getParamByKey("status");//Message read status. 0 - Read   1 - Unread 
-    	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSmsOperation.ModifySMSReadStatus("6.4",nId,bStatus == true?0:1, new IHttpFinishListener() {           
+		int nSmsId = (Integer) data.getParamByKey("SMSId");//the index of SMS, if savenew SMS is -1, else other.
+		String strCotent =  (String)data.getParamByKey("Content");
+		String strNumber =  (String)data.getParamByKey("Number");
+		ArrayList<String> phoneNumberLst = getNumberFromString(strNumber);
+		
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SaveSMS("6.8",nSmsId,strCotent,phoneNumberLst, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -440,11 +448,11 @@ public class SMSManager extends BaseManager {
                 	//Log
                 }
  
-                Intent megIntent= new Intent(MessageUti.SMS_MODIFY_SMS_READ_STATUS_REQUSET);
+                Intent megIntent= new Intent(MessageUti.SMS_SAVE_SMS_REQUSET);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
     			m_context.sendBroadcast(megIntent);
             }
         }));
-    }*/
+    } 	
 }
