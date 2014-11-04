@@ -50,9 +50,9 @@ public class NetworkInfoModel extends BaseModel{
 		m_strCellId = result.CellId;
 		m_strRncId = result.RncId;
 		if(result.Roaming == 0) {
-			m_bRoaming = false;
-		}else{
 			m_bRoaming = true;
+		}else{
+			m_bRoaming = false;
 		}
 		m_signalStrength = ENUM.SignalStrength.build(result.SignalStrength);
 	}

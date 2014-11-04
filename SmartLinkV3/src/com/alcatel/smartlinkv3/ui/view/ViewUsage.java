@@ -11,8 +11,11 @@ import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.ActivityNewSms;
+import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +23,8 @@ import android.content.IntentFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -28,12 +33,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class ViewUsage extends BaseViewImpl {
+public class ViewUsage extends BaseViewImpl implements OnClickListener{
 	private static final String TAG = ViewUsage.class.getSimpleName();
 	
 	/*home_panel  start*/
 	private ImageView m_homewarn;
 	private TextView m_homedata;
+	private TextView m_homedataprogressdec;
+	
+	private Button m_homeSetMonthlyBtn;
 	private ProgressBar m_homedataprogress;
 	private TextView m_homedowndata;
 	private TextView m_homeupdata;
@@ -90,6 +98,9 @@ public class ViewUsage extends BaseViewImpl {
 		m_homedataprogress = (ProgressBar) m_view.findViewById(R.id.usage_status_progress);
 		m_homedowndata = (TextView) m_view.findViewById(R.id.home_data_down_status);
 		m_homeupdata = (TextView) m_view.findViewById(R.id.home_data_up_status);
+		m_homeSetMonthlyBtn = (Button) m_view.findViewById(R.id.home_set_monthly_data_plan);
+		m_homeSetMonthlyBtn.setOnClickListener(this);
+		m_homedataprogressdec = (TextView) m_view.findViewById(R.id.usage_status_describtion);
 		
 		m_roamingwarn = (ImageView) m_view.findViewById(R.id.roaming_warn);
 		m_roamingdata = (TextView) m_view.findViewById(R.id.roaming_data);
@@ -126,15 +137,49 @@ public class ViewUsage extends BaseViewImpl {
 		
 	}
 	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.home_set_monthly_data_plan:
+			go2UsageSettingActivity();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void go2UsageSettingActivity(){	
+		Intent intent = new Intent();
+		intent.setClass(m_context, UsageSettingActivity.class);	
+		this.m_context.startActivity(intent);
+	
+	}
+	
 	private void updateUI(){
 		int nProgress =0;
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
 		
+		
+		
+		if(statistic.HMonthlyPlan!=0)
+	    {
+			m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HUseData)+" of "
+					+ CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)statistic.HMonthlyPlan));
+	    	nProgress = (int)(m_UsageRecordResult.HUseData*m_homedataprogress.getMax()/statistic.HMonthlyPlan);
+	    	Log.v("text", "p11111   nProgress="+nProgress);
+	    	if (nProgress > m_homedataprogress.getMax())
+				nProgress = m_homedataprogress.getMax();
+	    	m_homedataprogress.setProgress(nProgress);
+	    }else {
+	    	m_homedata.setVisibility(View.GONE);
+	    	m_homeSetMonthlyBtn.setVisibility(View.VISIBLE);
+	    	m_homedataprogress.setProgress(0);
+	    	m_homedataprogressdec.setVisibility(View.VISIBLE);
+		}
+		
 		m_homedowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseDL));
 		m_homeupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseUL));
-		m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HUseData)+" of "
-					+ CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)statistic.HMonthlyPlan));
 		if(m_UsageRecordResult.HUseData > statistic.HMonthlyPlan)
 		{
 			m_homewarn.setVisibility(View.VISIBLE);
@@ -142,16 +187,7 @@ public class ViewUsage extends BaseViewImpl {
 		{
 			m_homewarn.setVisibility(View.GONE);
 		}
-	    if(statistic.HMonthlyPlan!=0)
-	    {
-	    	nProgress = (int)(m_UsageRecordResult.HUseData*m_homedataprogress.getMax()/statistic.HMonthlyPlan);
-	    	Log.v("text", "p11111   nProgress="+nProgress);
-	    	if (nProgress > m_homedataprogress.getMax())
-				nProgress = m_homedataprogress.getMax();
-	    	m_homedataprogress.setProgress(nProgress);
-	    }else {
-	    	m_homedataprogress.setProgress(0);
-		}
+	    
 	    
 	    
 	    m_roamingdowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.RCurrUseDL));
@@ -175,6 +211,8 @@ public class ViewUsage extends BaseViewImpl {
 		}
 		
 	}
+	
+	
 
 }
 

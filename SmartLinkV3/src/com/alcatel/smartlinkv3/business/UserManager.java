@@ -186,14 +186,11 @@ public class UserManager extends BaseManager {
                 	if(strErrcode.length() == 0) {
                 		loginStateResult = response.getModelResult();
                 		m_loginStatus = UserLoginStatus.build(loginStateResult.getState());
-                		Log.v("login logout", "pccccc getLoginState1 m_loginStatus="+m_loginStatus);
                 	}else{
                 		m_loginStatus = UserLoginStatus.Logout;
-                		Log.v("login logout", "pccccc getLoginState2 m_loginStatus="+m_loginStatus);
                 	}
                 }else{
                 	m_loginStatus = UserLoginStatus.Logout;
-                	Log.v("login logout", "pccccc getLoginState3 m_loginStatus="+m_loginStatus);
                 }             
             }
         }));

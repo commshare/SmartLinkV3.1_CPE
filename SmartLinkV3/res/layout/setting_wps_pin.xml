@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/color_white"
-    android:visibility="visible"
+    android:visibility="gone"
     android:paddingBottom="6dip"
     android:paddingTop="6dip" >
 

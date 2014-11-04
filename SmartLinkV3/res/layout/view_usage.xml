@@ -43,17 +43,30 @@
                         android:contentDescription="@null"
                         android:visibility="gone"
                         android:background="@drawable/usage_warning" />
-	                <TextView
-	                    android:id="@+id/home_data"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="1.6 of 10 GB"
-                        android:textColor="@color/color_black"
-                        android:layout_alignParentRight="true"
+	                <FrameLayout
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
 	                    android:layout_centerVertical="true"
-                        android:textSize="16sp" />
+	                    android:layout_alignParentRight="true">
+		                <TextView
+		                    android:id="@+id/home_data"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:ellipsize="end"
+	                        android:singleLine="true"
+	                        android:text="1.6 of 10 GB"
+	                        android:textColor="@color/color_black"  
+	                        android:textSize="16sp" />
+		                <Button
+				           	android:id="@+id/home_set_monthly_data_plan"
+				           	android:layout_width="175dip"
+							android:layout_height="35dip"
+							android:visibility="gone"
+				           	android:background="@drawable/selector_common_button"
+				           	android:text="Set Monthly Data Plan"
+				           	android:textColor="@drawable/common_button_text"
+				           	android:textSize="16sp" />
+	                	</FrameLayout>
 	            </RelativeLayout> 
 	            <RelativeLayout
 	                android:id="@+id/usage_home_progress_panel"
@@ -63,16 +76,32 @@
 	                android:paddingBottom="12dip"
 	                android:paddingLeft="10dip"
 	                android:paddingRight="10dip" >
-	                <ProgressBar
-	                    android:id="@+id/usage_status_progress"
-	                    style="?android:attr/progressBarStyleHorizontal"
-	                    android:layout_width="match_parent"
-	                    android:layout_height="15dip"
+	                <FrameLayout
 	                    android:layout_alignParentLeft="true"
-	                    android:layout_below="@id/home_panel"
-	                    android:background="@drawable/usage_status_data_progress_bg"
-	                    android:max="100"
-	                    android:progressDrawable="@drawable/usage_status_progress_data" />
+		                android:layout_below="@id/home_panel"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content">
+		                <ProgressBar
+		                    android:id="@+id/usage_status_progress"
+		                    style="?android:attr/progressBarStyleHorizontal"
+		                    android:layout_width="match_parent"
+		                    android:layout_height="20dip"
+		                    android:background="@drawable/usage_status_data_progress_bg"
+		                    android:max="100"
+		                    android:progressDrawable="@drawable/usage_status_progress_data" />
+		                <TextView
+		                    android:id="@+id/usage_status_describtion"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_gravity="center"
+	                        android:gravity="center"
+	                        android:ellipsize="end"
+	                        android:singleLine="true"
+	                        android:visibility="gone"
+	                        android:text="No data plan set yet"
+	                        android:textColor="@color/color_black"  
+	                        android:textSize="12sp" />
+	                </FrameLayout>
 	            	</RelativeLayout>   
 	            <RelativeLayout
 	                android:id="@+id/home_data_panel"

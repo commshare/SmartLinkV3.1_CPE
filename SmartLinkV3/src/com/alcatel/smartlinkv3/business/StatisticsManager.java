@@ -174,7 +174,7 @@ public class StatisticsManager extends BaseManager {
 		//m_rollTimer.scheduleAtFixedRate(getUsageSettingsTask, 0, 10 * 1000);
 		if(m_getUsageSettingsTask == null) {
 			m_getUsageSettingsTask = new GetUsageSettingsTask();
-			m_rollTimer.scheduleAtFixedRate(m_getUsageSettingsTask, 0, 30 * 1000);
+			m_rollTimer.scheduleAtFixedRate(m_getUsageSettingsTask, 0, 10 * 1000);
 		}
 	}
 	
@@ -560,7 +560,7 @@ public class StatisticsManager extends BaseManager {
 		
 		if(m_getUsageHistoryTask == null) {
 			m_getUsageHistoryTask = new GetUsageHistoryTask();
-			m_getUsageHistoryRollTimer.scheduleAtFixedRate(m_getUsageHistoryTask, 0, 30 * 1000);
+			m_getUsageHistoryRollTimer.scheduleAtFixedRate(m_getUsageHistoryTask, 0, 10 * 1000);
 		}
 	}
     

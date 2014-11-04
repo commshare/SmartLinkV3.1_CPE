@@ -209,7 +209,7 @@ public class WanManager extends BaseManager {
 		//m_rollTimer.scheduleAtFixedRate(getUsageSettingsTask, 0, 10 * 1000);
 		if(m_getConnectionSettingsTask == null) {
 			m_getConnectionSettingsTask = new GetConnectionSettingsTask();
-			m_rollTimer.scheduleAtFixedRate(m_getConnectionSettingsTask, 0, 30 * 1000);
+			m_rollTimer.scheduleAtFixedRate(m_getConnectionSettingsTask, 0, 10 * 1000);
 		}
 	}
 		

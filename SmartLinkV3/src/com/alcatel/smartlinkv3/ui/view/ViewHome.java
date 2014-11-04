@@ -532,14 +532,14 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private void showSignalAndNetworkType() {
 		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
 		if (simStatus != SIMState.Accessable) {
-			m_networkTypeTextView.setVisibility(View.INVISIBLE);
-			m_networkRoamImageView.setVisibility(View.INVISIBLE);
+			m_networkTypeTextView.setVisibility(View.GONE);
+			m_networkRoamImageView.setVisibility(View.GONE);
 			m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 		}else{
 			NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
 			if(curNetwork.m_NetworkType == NetworkType.No_service) {
-				m_networkTypeTextView.setVisibility(View.INVISIBLE);
-				m_networkRoamImageView.setVisibility(View.INVISIBLE);
+				m_networkTypeTextView.setVisibility(View.GONE);
+				m_networkRoamImageView.setVisibility(View.GONE);
 				m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 				
 				return;
@@ -548,7 +548,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			if(curNetwork.m_bRoaming == true) 
 				m_networkRoamImageView.setVisibility(View.VISIBLE);
 			else
-				m_networkRoamImageView.setVisibility(View.INVISIBLE);
+				m_networkRoamImageView.setVisibility(View.GONE);
 			//show signal strength
 			if(curNetwork.m_signalStrength == SignalStrength.Level_0)
 				m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
@@ -562,7 +562,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
 			//show network type
 			if (curNetwork.m_NetworkType == NetworkType.UNKNOWN)
-				m_networkTypeTextView.setVisibility(View.INVISIBLE);
+				m_networkTypeTextView.setVisibility(View.GONE);
 			
 			//2G
 			if (curNetwork.m_NetworkType == NetworkType.Net_2G) {
