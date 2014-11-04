@@ -301,7 +301,7 @@ public class BusinessMannager {
 	}
     
     public int getNewSmsNumber() {    	
-    	return 1;//m_smsManager.GetUnreadSmsNumber();    	
+    	return m_smsManager.GetUnreadSmsNumber();    	
     }
     
     public void getContactMessagesAtOnceRequest() {
