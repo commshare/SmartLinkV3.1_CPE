@@ -11,6 +11,7 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
@@ -146,12 +147,19 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
 		
-		Intent it=getIntent();
-		int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-		if (nPage == 1) {
-			go2SmsView();
-		}else if (nPage == 2) {
-			go2SettingView();
+		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blCPEWifiConnected) {
+			Intent it=getIntent();
+			int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
+			if (nPage == 1) {
+				smsBtnClick();
+			}else if (nPage == 2) {
+				widgetBatteryBtnClick();
+			}
+		}else {
+			Intent itent = new Intent(this, RefreshWifiActivity.class);
+			startActivity(itent);
+			this.finish();
 		}
 	}
 
@@ -745,4 +753,33 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		});
 	}
 
+	private void widgetBatteryBtnClick() {
+		if (m_preButton == R.id.main_setting) {		
+			return;	
+		}	
+		if (LoginDialog.isLoginSwitchOff()) {		
+			go2SettingView();
+			Intent intent = new Intent(this, SettingPowerSavingActivity.class);
+			this.startActivity(intent);
+		} else {		
+			UserLoginStatus status = BusinessMannager.getInstance()				
+					.getLoginStatus();	
+			if (status == UserLoginStatus.OthersLogined) {			
+				PromptUserLogined();		
+			} else if (status == UserLoginStatus.selfLogined) {			
+				go2SettingView();
+				Intent intent = new Intent(this, SettingPowerSavingActivity.class);
+				this.startActivity(intent);
+			} else {			
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+					@Override				
+					public void onLoginFinished() {					
+						go2SettingView();
+						Intent intent = new Intent(MainActivity.this, SettingPowerSavingActivity.class);
+						MainActivity.this.startActivity(intent);
+					}			
+				});		
+			}	
+		}	
+	}
 }

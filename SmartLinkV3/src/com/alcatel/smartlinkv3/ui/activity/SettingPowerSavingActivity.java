@@ -8,7 +8,6 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.ui.view.ViewIndex;
 
 import android.content.Context;
 import android.content.Intent;
@@ -180,6 +179,9 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			m_pb_battery_status.setVisibility(View.GONE);
 		}
 		String strLevel = info.getBatterLevel() + "%";
+		if (ConstValue.CHARGE_STATE_CHARGING == nChargeState) {
+			strLevel = "Charging";
+		}
 		m_tv_battery_status.setText(strLevel);
 	}
 
@@ -231,7 +233,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				showBatterystatus();
+				initSwitchsState();
 			}
 		}
 
@@ -241,8 +243,13 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			String strTost = getString(R.string.setting_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				strTost = getString(R.string.setting_success);
-				BusinessMannager.getInstance().sendRequestMessage(MessageUti.POWER_GET_POWER_SAVING_MODE, null);
+				int nSmartMode = m_blSmartModeSwitchOn? ConstValue.ENABLE : ConstValue.DISABLE;
+				BusinessMannager.getInstance().getPowerSavingModeInfo().setSmartMode(nSmartMode);
+				int nWiFiMode = m_blWifiModeSwitchOn? ConstValue.ENABLE : ConstValue.DISABLE;
+				BusinessMannager.getInstance().getPowerSavingModeInfo().setWiFiMode(nWiFiMode);
 				//initSwitchsState();
+			}else {
+				initSwitchsState();
 			}
 			ShowWaiting(false);
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
@@ -251,18 +258,9 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_BATTERY_STATE)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_success);
+				showBatterystatus();
 			}
-			
-			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-		}
-		
-		if (intent.getAction().equalsIgnoreCase("openPage")) {
-			int nPage = intent.getIntExtra("Page", 100);
-			String strTemp= "" + nPage;
-			Toast.makeText(this, strTemp, Toast.LENGTH_SHORT).show();
 		}
 	}
 }
