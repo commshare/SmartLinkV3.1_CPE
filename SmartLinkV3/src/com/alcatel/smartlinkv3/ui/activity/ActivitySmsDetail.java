@@ -87,6 +87,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 	private boolean m_bDeleteEnd = false;
 	private boolean m_bNeedFinish = false;
 	private boolean m_bSendEnd = false;
+	private SendStatus m_sendStatus = SendStatus.None;
 
 	private boolean m_bFristGet = true;
 
@@ -136,8 +137,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET));		
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_DELETE_SMS_REQUSET));
-		registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
-		//		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_MODIFY_SMS_READ_STATUS_REQUSET));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
+		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET));
 
 		startGetSmsContentTask();
 	}
@@ -194,18 +195,18 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				String msgRes = this.getString(R.string.IDS_SMS_CHANGE_READ_ERROR);
     			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 			}
-		}
+		}*/
 
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET)){				
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)){				
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				if(m_bDeleteEnd == true) {
 					m_bDeleteEnd = false;
-					//m_progressWaiting.setVisibility(View.GONE);					
-					if (m_progress_dialog != null && m_progress_dialog.isShowing()) {
-						m_progress_dialog.dismiss();
-					}
+					m_progressWaiting.setVisibility(View.GONE);					
+					//if (m_progress_dialog != null && m_progress_dialog.isShowing()) {
+					//	m_progress_dialog.dismiss();
+					//}
 					m_etContent.setEnabled(true);
 					if(m_etContent.getText().toString() != null && m_etContent.getText().toString().length() > 0)
 						m_btnSend.setEnabled(true);
@@ -219,10 +220,10 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					}
 				}else if(m_bSendEnd == true){
 					m_bSendEnd = false;
-					//m_progressWaiting.setVisibility(View.GONE);
-					if (m_progress_dialog != null && m_progress_dialog.isShowing()) {
-						m_progress_dialog.dismiss();
-					}
+					m_progressWaiting.setVisibility(View.GONE);
+					//if (m_progress_dialog != null && m_progress_dialog.isShowing()) {
+					//	m_progress_dialog.dismiss();
+					//}
 					m_etContent.setEnabled(true);
 					m_btnDelete.setEnabled(true);
 					m_bDeleteSingleEnable = true;
@@ -233,10 +234,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 						m_btnSend.setEnabled(true);
 	    			}
 				}
-
-				getSmsListData();
 			}
-		}*/
+		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_DELETE_SMS_REQUSET)){				
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
@@ -250,25 +249,27 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				m_bDeleteEnd = true;
 				if(m_bDeleteMult == true) {//delete all sms
 					if(m_deleteNum == m_deleteSuccessNum) {
-						//						BusinessMannager.getInstance().refreshSmsListAtOnce();
+						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
 						String msgRes = this.getString(R.string.IDS_SMS_DELETE_MULTI_SUCCESS);
 						Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 						m_bNeedFinish = true;
-						this.finish();
+						//this.finish();
 					}else{
 						String strMsg = String.format(getString(R.string.IDS_SMS_DELETE_MULTI_ERROR), m_deleteSuccessNum,m_deleteNum - m_deleteSuccessNum);
 						Toast.makeText(this, strMsg, Toast.LENGTH_SHORT).show();
 						m_progressWaiting.setVisibility(View.GONE);
-						//						BusinessMannager.getInstance().refreshSmsListAtOnce();
+						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+						getSmsContentAtOnceRequest();
 					}
 				}else{//delete single sms
 					m_progressWaiting.setVisibility(View.GONE);
 					if(m_deleteNum == m_deleteSuccessNum) {
 						Toast.makeText(this, getString(R.string.IDS_SMS_DELETE_SUCCESS), Toast.LENGTH_SHORT).show();
-						//		    			BusinessMannager.getInstance().refreshSmsListAtOnce();
+						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+						getSmsContentAtOnceRequest();
 						if(m_bIsLastOneMessage == true) {
 							m_bNeedFinish = true;
-							this.finish();
+							//this.finish();
 						}
 					}else{
 						Toast.makeText(this, getString(R.string.IDS_SMS_DELETE_ERROR_CONTENT), Toast.LENGTH_SHORT).show();
@@ -282,7 +283,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {					
-				//BusinessMannager.getInstance().refreshSmsListAtOnce();
+				BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+				getSmsContentAtOnceRequest();
 			}
 			else if(strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
 			{
@@ -296,6 +298,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				m_btnSend.setEnabled(true);
 				m_btnDelete.setEnabled(true);
 				m_bDeleteSingleEnable = true;
+				getSmsContentAtOnceRequest();
 			}			
 			else{
 				String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_ERROR);
@@ -308,6 +311,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				m_btnSend.setEnabled(true);
 				m_btnDelete.setEnabled(true);
 				m_bDeleteSingleEnable = true;
+				getSmsContentAtOnceRequest();
 			}
 		}
 
@@ -317,7 +321,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {	
 				int nSendReslt = intent.getIntExtra(Const.SMS_SNED_STATUS, 0);
 				SendStatus sendStatus = SendStatus.build(nSendReslt);
-				//m_sendStatus = sendStatus;
+				m_sendStatus = sendStatus;
 				boolean bEnd = false;
 				if(sendStatus == SendStatus.Fail){
 					String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_ERROR);
@@ -337,7 +341,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 
 				if(bEnd == true){
 					m_bSendEnd = true;
-					//BusinessMannager.getInstance().refreshSmsListAtOnce();
+					getSmsContentAtOnceRequest();
 				}
 			}else{
 				m_progressWaiting.setVisibility(View.GONE);
