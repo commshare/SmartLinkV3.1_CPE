@@ -15,6 +15,8 @@ public class ConnectedDeviceItemModel{
 	public EnumDeviceType DeviceType = EnumDeviceType.USE_WEB_LOGIN;
 	public EnumConnectMode ConnectMode = EnumConnectMode.USB_CONNECT;
 	
+	public boolean bEditStatus = false;
+	
 	public void buildFromResult(DeviceInfo result) {
 		id = result.id;
 		DeviceName = result.DeviceName;

@@ -21,42 +21,65 @@
 	    <RelativeLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
-	        <EditText
-		        android:id="@+id/device_description"
-		        android:layout_width="wrap_content"
-		        android:layout_height="30dip"
-		        android:paddingLeft="5dip"
-		        android:paddingRight="15dip"
-		        android:layout_marginLeft="5dip"
-		        android:layout_centerVertical="true"
-		        android:background="@drawable/selector_edit_bg"
-		        android:inputType="none"
-		        android:text="super man"
-				android:singleLine="true"
-		        android:textSize="16sp" />
-	        <ImageView
-		        android:id="@+id/edit_image"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:clickable="true"
-		        android:background="@drawable/connected_edit"
-		        android:layout_marginLeft="10dip"
-		        android:layout_toRightOf="@id/device_description"
-		        android:layout_centerVertical="true"
-		        android:contentDescription="@null" />
 	        <Button
 		        android:id="@+id/block_button"
-		        android:layout_width="90dip"
-		        android:layout_height="35dip"
+		        android:layout_width="80dip"
+		        android:layout_height="28dip"
 		        android:background="@drawable/selector_common_button"
-		        android:paddingLeft="15dip"
-		        android:paddingRight="15dip"
 		        android:layout_alignParentRight="true"
 		        android:layout_centerVertical="true"
 		        android:layout_marginRight="10dip"
 		        android:text="@string/device_manage_block_btn"
 		        android:textSize="16sp"
 		        android:textColor="@color/color_white" />
+	        <RelativeLayout
+	            android:id="@+id/device_name_layout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_toLeftOf="@id/block_button" >
+		        <FrameLayout android:id="@+id/device_name_framelayout"
+		            android:layout_width="wrap_content"
+		            android:layout_marginLeft="5dip"
+		        	android:layout_height="wrap_content">
+			        <EditText
+				        android:id="@+id/device_description_editview"
+				        android:layout_width="wrap_content"
+				        android:maxWidth="115dip"
+				        android:layout_height="30dip"
+				        android:layout_marginLeft="5dip"
+				        android:layout_centerVertical="true"
+				        android:background="@drawable/selector_edit_bg"
+				        android:inputType="none"
+				        android:text="supedfddddddddddddd"
+				        android:textColor="@color/color_black"
+						android:singleLine="true"
+				        android:textSize="16sp" /> 
+				    <TextView
+				        android:id="@+id/device_description_textview"
+				        android:layout_width="wrap_content"
+				        android:maxWidth="115dip"
+				        android:layout_height="30dip"
+				        android:layout_marginLeft="5dip"
+				        android:gravity="center_vertical"
+				        android:layout_centerVertical="true"
+				        android:text="supedfddddddddddddd"
+				        android:textColor="@color/color_black"
+						android:singleLine="true"
+				        android:textSize="16sp" /> 
+			    </FrameLayout>
+		        <ImageView
+			        android:id="@+id/edit_image"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:keepScreenOn="true"
+			        android:clickable="true"
+			        android:background="@drawable/connected_edit"
+			        android:layout_marginTop="5dip"
+			        android:layout_toRightOf="@id/device_name_framelayout"
+			        android:layout_centerVertical="true"
+			        android:contentDescription="@null" />
+	        </RelativeLayout>
 	    </RelativeLayout>
 	    <TextView
 	        android:id="@+id/ip"

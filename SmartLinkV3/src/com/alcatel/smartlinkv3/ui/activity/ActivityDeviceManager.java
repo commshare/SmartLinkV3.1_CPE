@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -236,7 +237,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 
 	private void getListData() {
 
-		m_connecedDeviceLstData.clear();
+		//m_connecedDeviceLstData.clear();
 		m_blockedDeviceLstData.clear();
 		getConnectedDeviceList();
 		getBlockDeviceList();
@@ -244,6 +245,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	
 	private void updateConnectedDeviceUI()
 	{
+		ArrayList<ConnectedDeviceItemModel> data = (ArrayList<ConnectedDeviceItemModel>) m_connecedDeviceLstData.clone();
 		m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
 		for(int i = 0;i <m_connecedDeviceLstData.size();i++) {
 			ConnectedDeviceItemModel item = m_connecedDeviceLstData.get(i);
@@ -252,6 +254,16 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				m_connecedDeviceLstData.remove(i);
 				m_connecedDeviceLstData.add(0, item);
 				break;
+			}
+		}
+		
+		for(int i = 0;i <m_connecedDeviceLstData.size();i++) {
+			for(int j = 0;j < data.size();j++) {
+				if(m_connecedDeviceLstData.get(i).MacAddress.equalsIgnoreCase(data.get(j).MacAddress)&& 
+						m_connecedDeviceLstData.get(i).IPAddress.equalsIgnoreCase(data.get(j).IPAddress)) {
+					m_connecedDeviceLstData.get(i).bEditStatus = data.get(j).bEditStatus;
+					break;
+				}
 			}
 		}
 		((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
@@ -300,26 +312,25 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		public final class ViewHolder {
 			public Button blockBtn;
 			public ImageView icon;
-			public EditText deviceName;
+			public TextView deviceNameTextView;
+			public EditText deviceNameEditView;
+			public RelativeLayout deviceNameLayout;
 			public ImageView modifyDeviceName;
 			public TextView ip;
 			public TextView mac;
 		}
 
-		public View getView(final int position, View convertView,
-				ViewGroup parent) {
-			ViewHolder holder = null;
+		ViewHolder holder = null;
+		public View getView(final int position, View convertView,ViewGroup parent) {
 			if (convertView == null) {
 				holder = new ViewHolder();
-				convertView = LayoutInflater.from(ActivityDeviceManager.this)
-						.inflate(R.layout.device_manage_connected_item, null);
-				holder.blockBtn = (Button) convertView
-						.findViewById(R.id.block_button);
+				convertView = LayoutInflater.from(ActivityDeviceManager.this).inflate(R.layout.device_manage_connected_item, null);
+				holder.blockBtn = (Button) convertView.findViewById(R.id.block_button);
 				holder.icon = (ImageView) convertView.findViewById(R.id.icon);
-				holder.deviceName = (EditText) convertView
-						.findViewById(R.id.device_description);
-				holder.modifyDeviceName = (ImageView) convertView
-						.findViewById(R.id.edit_image);
+				holder.deviceNameTextView = (TextView) convertView.findViewById(R.id.device_description_textview);
+				holder.deviceNameEditView = (EditText) convertView.findViewById(R.id.device_description_editview);
+				holder.deviceNameLayout = (RelativeLayout)convertView.findViewById(R.id.device_name_layout);
+				holder.modifyDeviceName = (ImageView) convertView.findViewById(R.id.edit_image);
 				holder.ip = (TextView) convertView.findViewById(R.id.ip);
 				holder.mac = (TextView) convertView.findViewById(R.id.mac);
 				convertView.setTag(holder);
@@ -327,23 +338,62 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			final String displayName = m_connecedDeviceLstData.get(position).DeviceName;
-			holder.deviceName.setText(displayName);			
-			holder.ip.setText("IP:"+ m_connecedDeviceLstData.get(position).IPAddress);
-			final String mac = m_connecedDeviceLstData.get(position).MacAddress;
+			ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
+			final String displayName = model.DeviceName;
+			holder.deviceNameTextView.setText(displayName);
+			holder.deviceNameEditView.setText(displayName);
+			holder.ip.setText("IP:"+ model.IPAddress);
+			final String mac = model.MacAddress;
 			holder.mac.setText("MAC:"+ mac);
-			final EnumDeviceType type = m_connecedDeviceLstData.get(position).DeviceType;
+			final EnumDeviceType type = model.DeviceType;
 			
 			if(mac.equalsIgnoreCase(m_strLocalMac))
 			{
 				holder.blockBtn.setVisibility(View.GONE);
+				holder.deviceNameEditView.setVisibility(View.GONE);
 				holder.icon.setBackgroundResource(R.drawable.connected_profile);
+				holder.modifyDeviceName.setVisibility(View.GONE);
 			}
 			else
 			{
 				holder.blockBtn.setVisibility(View.VISIBLE);
 				holder.icon.setBackgroundResource(R.drawable.connected_device);
+				holder.modifyDeviceName.setVisibility(View.VISIBLE);
+				if(model.bEditStatus == true) {
+					holder.deviceNameEditView.setVisibility(View.VISIBLE);
+					holder.deviceNameTextView.setVisibility(View.GONE);
+					holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_finished);
+				}else{
+					holder.deviceNameEditView.setVisibility(View.GONE);
+					holder.deviceNameTextView.setVisibility(View.VISIBLE);
+					holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
+				}
 			}
+			
+			holder.modifyDeviceName.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {				
+					if(m_connecedDeviceLstData.get(position).bEditStatus == true) {
+						holder.deviceNameEditView.setVisibility(View.GONE);
+						holder.deviceNameTextView.setVisibility(View.VISIBLE);
+						m_connecedDeviceLstData.get(position).bEditStatus = false;
+						holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
+						String strName = holder.deviceNameEditView.getText().toString();
+						if(!strName.equals(displayName))
+						{
+							setDeviceName(strName, mac, type);
+						}	
+					}else{
+						m_connecedDeviceLstData.get(position).bEditStatus = true;
+						holder.deviceNameEditView.setVisibility(View.VISIBLE);
+						holder.deviceNameTextView.setVisibility(View.GONE);
+						holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_finished);
+					}
+					
+					((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
+				}
+			
+			});
 			
 			holder.blockBtn.setOnClickListener(new OnClickListener() {
 				@Override
@@ -354,7 +404,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			});
 			
 			
-			holder.deviceName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			holder.deviceNameEditView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
 				public boolean onEditorAction(TextView v, int actionId,	KeyEvent event) {
 				
@@ -365,7 +415,9 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 						if(!strName.equals(displayName))
 						{
 							setDeviceName(strName, mac, type);
-						}											
+						}	
+						m_connecedDeviceLstData.get(position).bEditStatus = false;
+						holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
 					}
 
 					return false;
