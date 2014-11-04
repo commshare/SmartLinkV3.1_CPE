@@ -197,9 +197,9 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 		
 	    String durationformat = this.getView().getResources().getString(R.string.usage_duration);
 	    Log.v("time", "pccccc CurrConnTimes="+m_UsageRecordResult.CurrConnTimes+"TConnTimes="+m_UsageRecordResult.TConnTimes);
-		String strCurrDuration = String.format(durationformat, m_UsageRecordResult.CurrConnTimes / 360, m_UsageRecordResult.CurrConnTimes % 360);
+		String strCurrDuration = String.format(durationformat, m_UsageRecordResult.CurrConnTimes/3600, (m_UsageRecordResult.CurrConnTimes%3600)/60);
 		m_durationtime.setText(strCurrDuration);
-		String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes / 360, m_UsageRecordResult.TConnTimes % 360);
+		String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes/3600, (m_UsageRecordResult.TConnTimes%3600)/60);
 		m_durationtotaltime.setText(strTotalDuration);
 		
 		if(m_UsageRecordResult.CurrConnTimes > statistic.HTimeLimitTimes)

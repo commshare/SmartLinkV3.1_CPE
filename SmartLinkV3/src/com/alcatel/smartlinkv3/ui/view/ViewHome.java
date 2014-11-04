@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
@@ -20,6 +21,7 @@ import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
 
@@ -80,6 +82,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	/*battery_panel  start*/
 	private TextView m_batteryscaleTextView;
 	private ProgressBar m_batteryProgress = null;
+	private ImageView m_batterychargingImageView = null;
+	private RelativeLayout m_batteryscalelayout; 
+	private RelativeLayout m_batterydescriptionlayout;
+	private TextView m_batterydescriptionTextView;
 	/*battery_panel  end*/
 	
 	/*access_panel  start*/
@@ -161,6 +167,16 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					showAccessDeviceState();
 				}
 			}
+			
+			if (intent.getAction().equals(MessageUti.POWER_GET_BATTERY_STATE)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+					showBatteryState();
+				}
+			}
+			
+			
 		}	
 	}
 	
@@ -198,6 +214,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
 		m_batteryProgress = (ProgressBar) m_view.findViewById(R.id.battery_progress);
+		m_batterychargingImageView = (ImageView) m_view.findViewById(R.id.connct_charging);
+		m_batteryscalelayout= (RelativeLayout) m_view.findViewById(R.id.battery_scale_layout);
+		m_batterydescriptionlayout= (RelativeLayout) m_view.findViewById(R.id.battery_description_layout);
+		m_batterydescriptionTextView = (TextView) m_view.findViewById(R.id.battery_description_label);
 		
 		m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
 		m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
@@ -391,7 +411,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			}
 		}
 		
-		String strConnDuration = String.format(home_connected_duration, statictime / 360, statictime % 360);
+		String strConnDuration = String.format(home_connected_duration, statictime/3600, (statictime%3600)/60);
 		m_timestatusTextView.setText(strConnDuration);
 		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));
 	
@@ -488,8 +508,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			if (settings.HUsedData >= settings.HMonthlyPlan) {
 				//show warning dialog
 				//m_connectWarningDialog.showDialog();
-				String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
-				Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
+				//String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
+				//Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
 				return;
 			}
 		}
@@ -584,7 +604,36 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 		
 	private void showBatteryState(){
-		
+		int nProgress =0;
+		BatteryInfo batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
+		if(ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()){
+			m_batteryProgress.setVisibility(View.VISIBLE);
+			m_batteryscalelayout.setVisibility(View.VISIBLE);
+			m_batterydescriptionlayout.setVisibility(View.GONE);
+			m_batterychargingImageView.setVisibility(View.GONE);
+			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
+			nProgress = (int)batteryinfo.getBatterLevel();
+	    	if (nProgress > m_batteryProgress.getMax())
+				nProgress = m_batteryProgress.getMax();
+	    	m_batteryProgress.setProgress(nProgress);
+		}else if(ConstValue.CHARGE_STATE_CHARGING == batteryinfo.getChargeState()){		
+			m_batteryProgress.setVisibility(View.GONE);
+			m_batteryscalelayout.setVisibility(View.GONE);
+			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
+			m_batterychargingImageView.setVisibility(View.VISIBLE);
+			
+			m_batterydescriptionTextView.setText(R.string.home_battery_ischarging);
+			
+		}else if(ConstValue.CHARGE_STATE_COMPLETED == batteryinfo.getChargeState()){
+			m_batterychargingImageView.setVisibility(View.GONE);
+			m_batteryProgress.setVisibility(View.VISIBLE);
+			m_batteryProgress.setProgress(m_batteryProgress.getMax());
+			m_batteryscalelayout.setVisibility(View.GONE);
+			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
+			m_batterydescriptionTextView.setText(R.string.home_battery_completed);
+		}else if(ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()){
+			
+		}
 	}
 	
 	private void showAccessDeviceState(){

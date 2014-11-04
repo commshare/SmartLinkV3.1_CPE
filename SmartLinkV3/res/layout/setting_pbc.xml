@@ -7,7 +7,7 @@
     android:background="@color/color_white"
     android:visibility="visible"
     android:paddingBottom="6dip"
-    android:paddingTop="10dip" >
+    android:paddingTop="12dip" >
 
         <ImageButton
             android:id="@+id/pbc_button"

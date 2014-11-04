@@ -450,7 +450,26 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		if (m_preButton == R.id.main_usage) {
 			return;
 		}
-		go2UsageView();
+		
+		if (LoginDialog.isLoginSwitchOff()) {
+			go2UsageView();
+		} else {
+			UserLoginStatus status = BusinessMannager.getInstance()
+					.getLoginStatus();
+
+			if (status == UserLoginStatus.OthersLogined) {
+				PromptUserLogined();
+			} else if (status == UserLoginStatus.selfLogined) {
+				go2UsageView();
+			} else {
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {
+					@Override
+					public void onLoginFinished() {
+						go2UsageView();
+					}
+				});
+			}
+		}
 	}
 	
 	private void go2UsageView() {

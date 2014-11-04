@@ -7,7 +7,7 @@
     android:background="@color/color_white"
     android:visibility="gone"
     android:paddingBottom="6dip"
-    android:paddingTop="6dip" >
+    android:paddingTop="12dip" >
 
          <RelativeLayout
 		    android:layout_width="match_parent"

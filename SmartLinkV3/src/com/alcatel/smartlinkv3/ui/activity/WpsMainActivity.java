@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 
@@ -54,18 +55,25 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 			if(intent.getAction().equals(MessageUti.WLAN_SET_WPS_PBC_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				String msgRes = null;
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					//updateUI();
+					msgRes = WpsMainActivity.this.getString(R.string.wps_setpbcsuccess);
+					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
+				}else {
+					msgRes = WpsMainActivity.this.getString(R.string.wps_setpbcfailed);
+					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
 				}
 			} else if (intent.getAction().equals(MessageUti.WLAN_SET_WPS_PIN_REQUSET)) {
 
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-
+				String msgRes = null;
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					//updateUI();
+					msgRes = WpsMainActivity.this.getString(R.string.wps_setwpspinsuccess);
+					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
 				}else{
-					
+					msgRes = WpsMainActivity.this.getString(R.string.wps_setwpspinfailed);
+					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
