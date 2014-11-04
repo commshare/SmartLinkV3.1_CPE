@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,10 +8,12 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.InquireDialog.OnInquireApply;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -273,10 +276,25 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			break;
 		}
 	}
+	
+	@Override 
+	public void onBackPressed() { 
+		OnBtnCancel();
+	} 
 
 	//
 	private void OnBtnCancel() {
-		
+		String strContent = m_etContent.getText().toString();
+		String strNumber = m_etNumber.getText().toString();
+		if(strContent != null)
+			strContent = strContent.trim();
+		if(strContent != null && strContent.length() > 0 && strNumber != null && strNumber.length() > 0) {
+			DataValue data = new DataValue();
+			data.addParam("SMSId", -1);
+			data.addParam("Content", strContent);
+			data.addParam("Number", strNumber);
+			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
+		}
 		this.finish();
 	}
 
@@ -285,15 +303,45 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 
-		DataValue data = new DataValue();
-		data.addParam("content", m_etContent.getText().toString());
-		data.addParam("phone_number", m_etNumber.getText().toString());
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SEND_SMS_REQUSET, data);
+		if(checkNumbers() == true) {
+			DataValue data = new DataValue();
+			data.addParam("content", m_etContent.getText().toString());
+			data.addParam("phone_number", m_etNumber.getText().toString());
+			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SEND_SMS_REQUSET, data);
+			
+			m_progressWaiting.setVisibility(View.VISIBLE);
+			m_btnSend.setEnabled(false);
+			m_etNumber.setEnabled(false);
+			m_etContent.setEnabled(false);
+		}else{
+			
+			String msgRes = this.getString(R.string.sms_number_invalid);
+			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+			m_etNumber.requestFocus();
+		}
+	}
+	
+	private boolean checkNumbers() {
+		String strNumber = m_etNumber.getText().toString();
+		ArrayList<String> numberLst = getNumberFromString(strNumber);
+		if(numberLst.size() > 3) {
+			return false;
+		}
+		return true;
+	}
+	
+	private ArrayList<String> getNumberFromString(String number) {
+		if(number == null)
+			number = new String();
+		String[] listNumbers = number.split(";");
+		ArrayList<String> phoneNumberLst = new ArrayList<String>();
+		for (int i = 0; i < listNumbers.length; i++) {
+			if(null == listNumbers[i] || listNumbers[i].length() == 0)
+				continue;
+			phoneNumberLst.add(listNumbers[i]);
+		}
 		
-		m_progressWaiting.setVisibility(View.VISIBLE);
-		m_btnSend.setEnabled(false);
-		m_etNumber.setEnabled(false);
-		m_etContent.setEnabled(false);
+		return phoneNumberLst;
 	}
 	
 	private void showNewSmsCnt(CharSequence s)
