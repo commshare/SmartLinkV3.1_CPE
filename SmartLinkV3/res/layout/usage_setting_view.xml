@@ -17,7 +17,7 @@
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentLeft="true"
 		         android:layout_centerVertical="true"
-		         android:padding="3dip"
+		         android:padding="5dip"
 		         android:src="@drawable/back"
 				 android:background="@null"/>
 			     <TextView
@@ -119,8 +119,7 @@
                 android:layout_marginLeft="10dip"
                 android:paddingBottom="12dip"
             	android:paddingTop="6dip"
-                android:singleLine="true"
-                android:text="Automatically connect even when in roaming."
+                android:text="@string/roaming_descrition"
                 android:textSize="16sp" 
                 android:textColor="@color/color_grey"/>
 	  	</LinearLayout>
@@ -165,7 +164,17 @@
                 android:textSize="20sp" 
                 android:textStyle="bold"
                 android:textColor="@color/color_black"/>
-		</RelativeLayout>   
+			</RelativeLayout>   
+			<TextView
+                android:id="@+id/enable_disconnected_descrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:paddingBottom="12dip"
+            	android:paddingTop="6dip"
+                android:text="@string/disconnected_descrition"
+                android:textSize="16sp" 
+                android:textColor="@color/color_grey"/>
 	  </LinearLayout>
 	  </LinearLayout>
    </ScrollView>

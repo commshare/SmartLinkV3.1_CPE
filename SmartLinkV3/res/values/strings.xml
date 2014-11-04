@@ -44,6 +44,8 @@
     
     <!-- Usage view end -->
     <string name="usage_duration">%1$slhr %2$smin</string>
+    <string name="roaming_descrition">Automatically connect even when in roaming.</string>
+    <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <!-- Usage view end -->
     
     <!--sms start -->
