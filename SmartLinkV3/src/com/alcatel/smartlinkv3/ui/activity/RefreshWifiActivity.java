@@ -57,10 +57,6 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	private void clickBtn1() {
 		if(isNoAnyConnection() == true) {
 			wifiSetting();
-		}else if(isOnlyData() == true){
-			wifiSetting();
-		}else if(isInexactWifi() == true) {
-			wifiSetting();
 		}
 	}
 	
@@ -80,9 +76,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	}
 	
 	private boolean isHaveWifi() {
-		if(DataConnectManager.getInstance().getWifiConnected() == false || 
-				( DataConnectManager.getInstance().getWifiConnected() == true &&
-				BusinessMannager.getInstance().getAlreadyRecongniseDeviceFlag() == false)) {
+		if(DataConnectManager.getInstance().getWifiConnected() == false) {
 			return false;
 		}
 		
@@ -90,26 +84,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	}
 	
 	public boolean isNoAnyConnection() {
-		if(DataConnectManager.getInstance().getMobileConnected() == false && 
-				isHaveWifi() == false) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public boolean isOnlyData() {
-		if(DataConnectManager.getInstance().getMobileConnected() == true && 
-				isHaveWifi() == false) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public boolean isInexactWifi() {
-		if( isHaveWifi() == true && 
-				DataConnectManager.getInstance().getCPEWifiConnected() == false) {
+		if(isHaveWifi() == false) {
 			return true;
 		}
 		
@@ -121,20 +96,6 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 			m_connectImage.setBackgroundResource(R.drawable.no_connection);
 			m_connectTitle.setText(R.string.refresh_wifi_title);
 			m_connectTip.setText(R.string.refresh_wifi_tip);
-			m_connectBtn1.setText(R.string.refresh);
-		}
-		
-//		if( isOnlyData() == true) {
-//			m_connectImage.setBackgroundResource(R.drawable.status_data_connected);
-//			m_connectTitle.setText(R.string.data_connect_title);
-//			m_connectTip.setText(R.string.data_connect_tip);
-//			m_connectBtn1.setText(R.string.refresh);
-//		}
-		
-		if(isInexactWifi() == true) {
-			m_connectImage.setBackgroundResource(R.drawable.status_inexact_wifi);
-			m_connectTitle.setText(R.string.inexact_wifi_title);
-			m_connectTip.setText(R.string.inexact_wifi_tip);
 			m_connectBtn1.setText(R.string.refresh);
 		}
 	}

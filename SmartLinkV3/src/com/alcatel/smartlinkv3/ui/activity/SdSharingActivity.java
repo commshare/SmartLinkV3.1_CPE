@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +25,9 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private RelativeLayout m_layoutStorage = null;
 	private SdSharingReceiver m_sdSharingReceiver = null;
 	private Button m_btnDlna = null;
-	private TextView m_back = null;
+	private ImageButton bnback = null;
+	private TextView tvback = null;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,13 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		m_btnDlna = (Button) this.findViewById(R.id.enable_dlna_btn);
 		m_btnDlna.setOnClickListener(this);
 		
-		m_back = (TextView) this.findViewById(R.id.Back);
-		m_back.setOnClickListener(this);
+		
+		
+		tvback = (TextView) this.findViewById(R.id.Back);
+		tvback.setOnClickListener(this);
+		
+		bnback = (ImageButton) this.findViewById(R.id.btn_back);
+		bnback.setOnClickListener(this);
 		
 		
 	}
@@ -81,6 +89,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 			break;
 			
 		case R.id.Back:
+		case R.id.btn_back:
 			onBackClick();
 			break;
 

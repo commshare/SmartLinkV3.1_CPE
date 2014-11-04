@@ -27,7 +27,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_below="@id/layout_top"
-	    android:layout_marginTop="30dip"
+	    android:layout_marginTop="40dip"
 		android:layout_marginBottom="30dp"
 	    android:overScrollMode="never" >
         <RelativeLayout 
@@ -39,7 +39,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_below="@id/layout_top"
 		        android:layout_centerHorizontal="true"
-		        android:layout_marginTop="30dip"
+		        android:layout_marginTop="20dip"
 		        android:layout_marginBottom="30dp"
 		        android:contentDescription="@null"
 		        android:background="@drawable/no_connection" />
@@ -53,9 +53,9 @@
 		        android:layout_gravity="center"
 		        android:gravity="center"
 		        android:text="@string/refresh_wifi_title"
-		        android:textSize="@dimen/dimen_textsize_16sp"
+		        android:textSize="@dimen/dimen_textsize_18sp"
 		        android:textStyle="bold" 
-		        android:textColor="@color/light_blue"/>
+		        android:textColor="@color/color_black"/>
 		
 		    <TextView
 		        android:id="@+id/textview_refresh_tip"
@@ -67,16 +67,17 @@
 		        android:layout_marginTop="10dp"
 		        android:gravity="center"
 		        android:text="@string/refresh_wifi_tip"
-		        android:textSize="@dimen/dimen_textsize_14sp" 
-		        android:textColor="@color/color_white"/>
+		        android:textSize="@dimen/dimen_textsize_16sp" 
+		        android:textStyle="bold"
+		        android:textColor="@color/color_black"/>
 		
 		    <Button
 		        android:id="@+id/btn_refresh"
-		        android:layout_width="180dip"
-		        android:layout_height="40dip"
+		        android:layout_width="85dip"
+		        android:layout_height="wrap_content"
 		        android:layout_below="@id/textview_refresh_tip"
 		        android:layout_centerHorizontal="true"
-		        android:layout_marginTop="20dp"
+		        android:layout_marginTop="40dp"
 		        android:background="@drawable/selector_common_button"
 		        android:gravity="center"
 		        android:text="@string/refresh"

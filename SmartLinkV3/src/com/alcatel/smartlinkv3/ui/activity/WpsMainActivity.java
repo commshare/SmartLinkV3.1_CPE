@@ -36,6 +36,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 public class WpsMainActivity extends BaseActivity implements OnClickListener{
 
 	private ImageButton bnBack;
+	private TextView tvback;
 	
 	private RadioGroup mRadioGroup;  
 	private RadioButton mRadio0,mRadio1;
@@ -112,6 +113,8 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
         
         bnBack = (ImageButton) findViewById(R.id.btn_back); 
         bnBack.setOnClickListener(this);
+        tvback = (TextView) this.findViewById(R.id.Back);
+		tvback.setOnClickListener(this);
         
         m_wpspinValue = (EditText) this.findViewById(R.id.wps_pin_value);
 		m_wpspinValue.setText("");
@@ -150,9 +153,10 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_back:
+		case R.id.Back:
 			this.finish();
 			break;
-			
+		
 		case R.id.wps_save_button:
 			onBtnWpsPinSaveClick();
 			break;

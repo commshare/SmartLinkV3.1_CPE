@@ -44,6 +44,8 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private final static int MAX_DISCONNECT_TIME_VALUE = 24 * 60 * 31;
 	
 	private ImageButton bnBack;
+	private TextView tvback;
+	
 	private EditText m_billingValue;
 	private EditText m_monthlyValue;
 	private long m_monthlyVal = 0;
@@ -231,6 +233,8 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		
 		ImageButton bnBack = (ImageButton) this.findViewById(R.id.btn_back);
 		bnBack.setOnClickListener(this);
+		tvback = (TextView) this.findViewById(R.id.Back);
+		tvback.setOnClickListener(this);
 		
 		initMonthlyEdit();
 		initBillingEdit();
@@ -298,6 +302,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_back:
+		case R.id.Back:
 			this.finish();
 			break;
 			
