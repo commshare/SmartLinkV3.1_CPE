@@ -36,7 +36,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private Button m_btnSend = null;
 	private EditText m_etNumber = null;
 	private EditText m_etContent = null;
-	private static final String NUMBER_REG_Ex = "^([pw+*#\\d]){1}(\\d|[pw*#]){0,19}$";
+	private static final String NUMBER_REG_Ex = "^([pw+*#\\d]){1}(\\d|[;pw*#]){0,99}$";
 	private String m_preMatchNumber = new String();
 	
 	private TextView m_tvCnt = null;
