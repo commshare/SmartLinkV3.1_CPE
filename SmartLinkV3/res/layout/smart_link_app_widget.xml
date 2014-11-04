@@ -156,6 +156,16 @@
                 android:textColor="@color/color_white"
                 android:textSize="12sp"
                 android:visibility="gone" />
+            
+            <ImageView
+                android:id="@+id/iv_widget_new_sms_plus9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/widget_sms_new_plus9"
+                android:contentDescription="@string/app_name"
+                android:visibility="gone" />
         </FrameLayout>
     </RelativeLayout>
 

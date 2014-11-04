@@ -192,17 +192,22 @@ public class SmartLinkWidget extends AppWidgetProvider {
 			if(nUnreadNumber > 0 && 10 > nUnreadNumber){
 				strNumberString += nUnreadNumber;
 			}else if (10 <= nUnreadNumber) {
-				strNumberString = "9+";
+				strNumberString = "";
 			}
 			remoteViews.setTextViewText(R.id.tv_widget_new_sms_number, strNumberString);
-			if (0 < nUnreadNumber) {
+			if (0 < nUnreadNumber && 10 > nUnreadNumber) {
 				remoteViews.setViewVisibility(R.id.tv_widget_new_sms_number, View.VISIBLE);
+				remoteViews.setViewVisibility(R.id.iv_widget_new_sms_plus9, View.GONE);
+			}else if (10 <= nUnreadNumber) {
+				remoteViews.setViewVisibility(R.id.iv_widget_new_sms_plus9, View.VISIBLE);
+				remoteViews.setViewVisibility(R.id.tv_widget_new_sms_number, View.GONE);
 			}else {
 				remoteViews.setViewVisibility(R.id.tv_widget_new_sms_number, View.GONE);
 			}
 		}else {
 			remoteViews.setImageViewResource(R.id.ib_widget_sms, R.drawable.widget_sms_no_new_grey);
 			remoteViews.setViewVisibility(R.id.tv_widget_new_sms_number, View.GONE);
+			remoteViews.setViewVisibility(R.id.iv_widget_new_sms_plus9, View.GONE);
 		}
 	}
 
