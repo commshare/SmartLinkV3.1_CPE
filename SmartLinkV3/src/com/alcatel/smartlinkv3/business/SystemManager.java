@@ -470,7 +470,7 @@ public class SystemManager extends BaseManager {
 
 	public void setDevicePowerOff(DataValue data){
 		if (!FeatureVersionManager.getInstance().
-				isSupportApi("System", "SetDeviceRestore")) {
+				isSupportApi("System", "SetDevicePowerOff")) {
 			return;
 		}
 

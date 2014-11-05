@@ -293,7 +293,7 @@ public class SharingManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.GetSDCardSpace("14.9",
+				new HttpSharing.GetSDcardStatus("14.9",
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
