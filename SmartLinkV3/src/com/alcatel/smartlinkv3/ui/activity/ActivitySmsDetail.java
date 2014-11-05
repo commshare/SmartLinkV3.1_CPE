@@ -138,7 +138,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_DELETE_SMS_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
-		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET));
+		//this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET));
 
 		startGetSmsContentTask();
 	}
@@ -186,18 +186,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			}
 		}
 
-		/*if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_MODIFY_SMS_READ_STATUS_REQUSET)){				
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				BusinessMannager.getInstance().refreshSmsListAtOnce();
-			}else{
-				String msgRes = this.getString(R.string.IDS_SMS_CHANGE_READ_ERROR);
-    			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-			}
-		}*/
-
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)){				
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET)){				
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -250,6 +239,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				if(m_bDeleteMult == true) {//delete all sms
 					if(m_deleteNum == m_deleteSuccessNum) {
 						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+						getSmsContentAtOnceRequest();
 						String msgRes = this.getString(R.string.IDS_SMS_DELETE_MULTI_SUCCESS);
 						Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 						m_bNeedFinish = true;
