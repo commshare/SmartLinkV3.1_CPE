@@ -6,10 +6,11 @@
     <LinearLayout
         android:id="@+id/ID_PUK_TOP_LAYOUT"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dip"
         android:orientation="vertical" >
 
         <RelativeLayout
+            android:layout_weight="1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
@@ -17,10 +18,15 @@
                 android:id="@+id/puk_close_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dip"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/image_view_close_button"
                 android:src="@drawable/close_button" />
-
+			<TextView
+	            android:layout_width="1dip"
+	            android:layout_height="fill_parent"
+	            android:layout_toRightOf="@id/puk_close_btn"
+	            android:background="@color/color_divider" />
             <TextView
                 android:id="@+id/puk_view_title"
                 android:layout_width="wrap_content"
