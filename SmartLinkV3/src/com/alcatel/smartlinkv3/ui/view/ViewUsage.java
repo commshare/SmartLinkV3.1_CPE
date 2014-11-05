@@ -79,6 +79,14 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 				}else{
 					updateUI();
 				}
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
+
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					updateUI();
+				}else{
+				}
 			}
 		}
 	}
@@ -118,6 +126,7 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 		m_viewUsageMsgReceiver = new ViewUsageBroadcastReceiver();
 		m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET));
 		m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
+		m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
 
 		updateUI();
 	}
@@ -159,11 +168,13 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 		int nProgress =0;
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
-		
-		
+
 		
 		if(statistic.HMonthlyPlan!=0)
 	    {
+			m_homeSetMonthlyBtn.setVisibility(View.GONE);
+			m_homedataprogressdec.setVisibility(View.GONE);
+			m_homedata.setVisibility(View.VISIBLE);
 			m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HUseData)+" of "
 					+ CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)statistic.HMonthlyPlan));
 	    	nProgress = (int)(m_UsageRecordResult.HUseData*m_homedataprogress.getMax()/statistic.HMonthlyPlan);

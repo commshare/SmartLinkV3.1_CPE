@@ -27,9 +27,8 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="12dip"
 	                android:paddingLeft="30dip"
-	                android:paddingRight="30dip"
-	                android:paddingTop="12dip"
-	                android:layout_centerInParent="true">
+	                android:paddingRight="10dip"
+	                android:paddingTop="12dip">
                     <RelativeLayout
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
@@ -42,6 +41,7 @@
 	                        android:background="@drawable/switch_off"
 	                        android:gravity="center" />
 	                    <LinearLayout
+	                        android:id="@+id/connect_lable_layout"
 		                    android:layout_width="wrap_content"
 		                    android:layout_height="wrap_content"
 		                    android:layout_toRightOf="@id/connect_button"
@@ -66,6 +66,14 @@
 		                        android:textColor="@color/home_connect_status"
 		                        android:textSize="16sp" />
 	                    </LinearLayout>
+	                    <ProgressBar
+		                    android:id="@+id/waiting_progress"
+		                    android:layout_width="30dip"
+		                    android:layout_height="30dip"
+		                    android:layout_centerVertical="true"
+		                    android:layout_toRightOf="@id/connect_lable_layout"
+		                    android:layout_marginLeft="2dp"
+		                    android:indeterminateDrawable="@drawable/progerss_connect" />
 	                </RelativeLayout>
                	</FrameLayout>
             	<LinearLayout
@@ -124,14 +132,7 @@
                            android:textSize="18sp" />
               </LinearLayout>
 
-              <ProgressBar
-                  android:id="@+id/waiting_progress"
-                  android:layout_width="30dip"
-                  android:layout_height="30dip"
-                  android:layout_toRightOf="@id/connect_layout"
-                  android:layout_centerVertical="true"
-                  android:layout_marginLeft="10dp"
-                  android:indeterminateDrawable="@drawable/progerss_connect" />
+              
               
             </RelativeLayout>
             
