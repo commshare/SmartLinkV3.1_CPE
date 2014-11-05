@@ -291,7 +291,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			}
 			
 			String strTime = (String) smsItem.strSummaryTime;
-			SimpleDateFormat sDate = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+			SimpleDateFormat sDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 			Date summaryDate = null;
 			try {
 				summaryDate = sDate.parse(strTime);
