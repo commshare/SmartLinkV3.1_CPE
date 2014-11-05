@@ -113,7 +113,7 @@
 			    <EditText
 			        android:id="@+id/ID_SMS_DETAIL_EDIT_CONTENT"
 			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
+			        android:layout_height="35dip"
 			        android:background="@drawable/selector_edit_bg"
 			        android:layout_centerVertical="true"
 			        android:layout_marginLeft="20dip"

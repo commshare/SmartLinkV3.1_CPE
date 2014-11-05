@@ -93,7 +93,7 @@
 			    <EditText
 			        android:id="@+id/edit_number"
 			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
+			        android:layout_height="35dip"
 			        android:background="@drawable/selector_edit_bg"
 			        android:layout_centerVertical="true"
 			        android:layout_marginLeft="10dip"
@@ -149,7 +149,7 @@
 			    <EditText
 			        android:id="@+id/edit_content"
 			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
+			        android:layout_height="35dip"
 			        android:background="@drawable/selector_edit_bg"
 			        android:layout_centerVertical="true"
 			        android:layout_marginLeft="20dip"
