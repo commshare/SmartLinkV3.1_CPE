@@ -321,7 +321,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		}else {
 			m_blPasswordOpened = true;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
-			m_btn_psd_switch.setVisibility(View.VISIBLE);
+			m_btn_psd_switch.setVisibility(View.GONE);
 			m_tv_no_password.setVisibility(View.GONE);
 			m_ib_hide_password.setVisibility(View.VISIBLE);
 			m_ib_show_password.setVisibility(View.GONE);
