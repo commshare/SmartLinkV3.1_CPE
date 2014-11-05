@@ -292,6 +292,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			data.addParam("Content", strContent);
 			data.addParam("Number", strNumber);
 			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
+			BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
 		}
 		this.finish();
 	}
