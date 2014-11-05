@@ -1,12 +1,15 @@
 package com.alcatel.smartlinkv3.ui.view;
 
 
+import java.util.ArrayList;
+
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
+import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
@@ -29,6 +32,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,8 +94,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	/*access_panel  start*/
 	private TextView m_accessnumTextView;
+	private TextView m_accessstatusTextView;
 	private ImageView m_accessImageView;
 	private RelativeLayout m_accessDeviceLayout;
+	private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
 	/*access_panel  end*/
 	
 	private LoginDialog m_loginDialog = null;
@@ -219,8 +225,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_batterydescriptionlayout= (RelativeLayout) m_view.findViewById(R.id.battery_description_layout);
 		m_batterydescriptionTextView = (TextView) m_view.findViewById(R.id.battery_description_label);
 		
+		
 		m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
 		m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
+		m_accessstatusTextView= (TextView) m_view.findViewById(R.id.access_label);
 		
 		m_loginDialog = new LoginDialog(this.m_context);
 		
@@ -637,9 +645,15 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 	
 	private void showAccessDeviceState(){
-		SystemStatus systemstatus = BusinessMannager.getInstance().getSystemStatus();
 		
-		m_accessnumTextView.setText(Integer.toString(systemstatus.getCurrNum()));
+		m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
+		m_accessnumTextView.setText(Integer.toString(m_connecedDeviceLstData.size()));
+		
+		String strOfficial = this.m_context.getString(R.string.access_lable);
+		String strHtmlOfficial = "<u>"+strOfficial+"</u>";
+		m_accessstatusTextView.setText(Html.fromHtml(strHtmlOfficial));
+		
+		
 		
 	}
 }

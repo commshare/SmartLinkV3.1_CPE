@@ -413,13 +413,13 @@
                         android:textSize="50sp"
                         android:textStyle="bold" />
                     <TextView
-                        android:id="@+id/access_status"
+                        android:id="@+id/access_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/access_num_label"
                         android:singleLine="true"
                         android:paddingTop="6dip"
-                        android:text="connected"
+                        android:text="@string/access_lable"
                         android:textColor="@color/color_blue"
                         android:textSize="14sp" />
                 </RelativeLayout>
