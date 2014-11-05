@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.PowerManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -110,25 +113,25 @@ public abstract class BaseActivity extends Activity{
 		}	
 	}
 
-/*	private void checkLogin()
-	{
-    	PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);  
-    	boolean bScreenOn = pm.isScreenOn();
-    	if(bScreenOn == false) {
-    		LoginDialog.setAlreadyLogin(false);
-    	}
-		
-    	ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);    	
-    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe")) {
-    		LoginDialog.setAlreadyLogin(false);
-    	}  
-    	//back键退出程序界面的处理
-    	else if(cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe") 
-    			&&  cn.getClassName().equalsIgnoreCase("com.alcatel.cpe.ui.activity.LoadingActivity"))
-    	{
-    		LoginDialog.setAlreadyLogin(false);
-    	}
-	   
-	}*/
+//	private void checkLogin()
+//	{
+//    	PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);  
+//    	boolean bScreenOn = pm.isScreenOn();
+//    	if(bScreenOn == false) {
+//    		LoginDialog.setAlreadyLogin(false);
+//    	}
+//		
+//    	ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);    	
+//    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+//    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe")) {
+//    		LoginDialog.setAlreadyLogin(false);
+//    	}  
+//    	//back键退出程序界面的处理
+//    	else if(cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe") 
+//    			&&  cn.getClassName().equalsIgnoreCase("com.alcatel.cpe.ui.activity.LoadingActivity"))
+//    	{
+//    		LoginDialog.setAlreadyLogin(false);
+//    	}
+//	   
+//	}
 }
