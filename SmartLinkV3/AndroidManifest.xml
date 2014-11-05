@@ -211,6 +211,14 @@
        
         <service android:name="com.alcatel.smartlinkv3.common.HttpService" >
         </service>
+        <receiver
+            android:name="com.alcatel.smartlinkv3.common.BootReceiver"
+            android:priority="2147483647" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                 <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
        
     </application>
 
