@@ -178,6 +178,7 @@
     <string name="dialog_delete_content_description">If you want to delete one SMS, long press it then choose delete.</string>
     <string name="dialog_delete_button">Delete Chat History</string>
     <string name="dialog_delete_single_sms_content">Delete this message?</string>
+    <string name="dialog_delete_multi_sms_content">Delete this message(s)?</string>
     <!-- Dialog end -->
     
 	<!-- new folder dialog start-->

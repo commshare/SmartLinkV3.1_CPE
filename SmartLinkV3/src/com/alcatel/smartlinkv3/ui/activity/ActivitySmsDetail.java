@@ -388,7 +388,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 	private void OnBtnDelete(){
 		final InquireDialog inquireDlg = new InquireDialog(ActivitySmsDetail.this);
 		inquireDlg.m_titleTextView.setText(R.string.dialog_delete_title);
-		inquireDlg.m_contentTextView.setText(R.string.dialog_delete_single_sms_content);
+		inquireDlg.m_contentTextView.setText(R.string.dialog_delete_multi_sms_content);
 		inquireDlg.m_contentDescriptionTextView.setText("");
 		inquireDlg.m_confirmBtn.setText(R.string.delete);
 		inquireDlg.showDialog(new OnInquireApply() {
