@@ -510,7 +510,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 	private void connect()
 	{
-		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
+//		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
 //		if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && settings.HMonthlyPlan > 0) {
 //			long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
 //			if (settings.HUsedData >= settings.HMonthlyPlan) {
