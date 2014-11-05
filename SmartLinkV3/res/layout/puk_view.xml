@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/image_view_close_button"
-                android:src="@drawable/selector_close_btn" />
+                android:src="@drawable/close_button" />
 
             <TextView
                 android:id="@+id/puk_view_title"
@@ -35,8 +35,8 @@
         </RelativeLayout>
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:background="@color/light_blue" />
+            android:layout_height="1dip"
+            android:background="@color/color_divider" />
     </LinearLayout>
 
     <RelativeLayout

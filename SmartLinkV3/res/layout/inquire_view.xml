@@ -20,8 +20,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/image_view_close_button"
-                android:src="@drawable/selector_close_btn" />
+                android:src="@drawable/close_button" />
 
+            <TextView
+	            android:layout_width="1dip"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@id/close_btn"
+	            android:background="@color/color_divider" />
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -36,7 +41,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:background="@color/light_blue" />
+            android:background="@color/color_divider" />
     </LinearLayout>
 
     <RelativeLayout

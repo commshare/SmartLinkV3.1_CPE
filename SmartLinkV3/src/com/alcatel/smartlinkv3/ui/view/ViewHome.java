@@ -246,6 +246,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_CONNECT_REQUSET));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_DISCONNECT_REQUSET));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET));
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
+		
 		
 		
 		showConnctBtnView();
