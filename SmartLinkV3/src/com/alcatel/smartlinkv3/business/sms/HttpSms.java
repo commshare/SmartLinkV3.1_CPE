@@ -342,6 +342,10 @@ public class HttpSms {
 	        		array.put(m_lstNumber.get(i));
 	        	}
 	        	obj.put("PhoneNumber", array);
+	        	Date now = new Date();
+	        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String strTimeText = format.format(now);
+	        	obj.put("SMSTime", strTimeText);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
