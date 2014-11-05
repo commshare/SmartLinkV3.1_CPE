@@ -367,7 +367,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
 					setSettingBilling();
 					// temporary behavior :just cancel edit focus
-
+					m_timeLimitDisconnectBtn.requestFocusFromTouch();
 					InputMethodManager imm = (InputMethodManager) UsageSettingActivity.this
 							.getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(m_billingValue.getWindowToken(), 0);
@@ -461,7 +461,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
 					setSettingMonthly();
 					// temporary behavior :just cancel edit focus
-
+					m_timeLimitDisconnectBtn.requestFocusFromTouch();
 					InputMethodManager imm = (InputMethodManager) UsageSettingActivity.this
 							.getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(m_monthlyValue.getWindowToken(), 0);
@@ -605,6 +605,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 								|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
 							setSettingTimeLimit();
 							// temporary behavior :just cancel edit focus
+							m_timeLimitDisconnectBtn.requestFocusFromTouch();
 							InputMethodManager imm = (InputMethodManager) UsageSettingActivity.this
 									.getSystemService(Context.INPUT_METHOD_SERVICE);
 							imm.hideSoftInputFromWindow(

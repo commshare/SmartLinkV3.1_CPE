@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.business;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.alcatel.smartlinkv3.business.StatisticsManager.GetUsageHistoryTask;
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
 import com.alcatel.smartlinkv3.business.system.StorageList;
@@ -36,11 +37,13 @@ public class SystemManager extends BaseManager {
 	// used to test the wifi
 	// connect state
 	private Timer m_getStorageTimer = new Timer();
+	private Timer m_getSystemStatusTimer = new Timer();
 
 	private String m_strAppVersion = "";
 
 	private GetFeaturesTask m_getFeaturesTask = null;
 	private GetExternalStorageDeviceTask m_getExternalStorageDeviceTask = null;
+	private GetSystemStatusTask m_getSystemStatusTask = null;
 
 	public Features getFeatures() {
 		return m_features;
@@ -86,7 +89,8 @@ public class SystemManager extends BaseManager {
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
 				getSystemInfo(null);
-				getSystemStatus(null);
+				//getSystemStatus(null);
+				startSystemStatusTask();
 
 				if (FeatureVersionManager.getInstance().isSupportApi("System",
 						"GetExternalStorageDevice")) {
@@ -134,6 +138,11 @@ public class SystemManager extends BaseManager {
 		if (null != m_getExternalStorageDeviceTask) {
 			m_getExternalStorageDeviceTask.cancel();
 			m_getExternalStorageDeviceTask = null;
+		}
+		
+		if (null != m_getSystemStatusTask) {
+			m_getSystemStatusTask.cancel();
+			m_getSystemStatusTask = null;
 		}
 	}
 
@@ -265,50 +274,56 @@ public class SystemManager extends BaseManager {
 		}
 	}
 
-	// Get System Status
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void getSystemStatus(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("System",
-				"GetSystemStatus") != true)
-			return;
+	// startSystemStatusTask
+		// //////////////////////////////////////////////////////////////////////////////////////////
 
-		boolean bCPEWifiConnected = DataConnectManager.getInstance()
-				.getCPEWifiConnected();
-		if (bCPEWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.GetSystemStatus("13.4",
-							new IHttpFinishListener() {
-						@Override
-						public void onHttpRequestFinish(
-								BaseResponse response) {
-							int ret = response.getResultCode();
-							String strErrcode = response.getErrorCode();
-							if (ret == BaseResponse.RESPONSE_OK
-									&& strErrcode.length() == 0) {
-								m_systemStatus = response
-										.getModelResult();
-							} else {
-								new Handler().postDelayed(
-										new Runnable() {
-											@Override
-											public void run() {
-												getSystemStatus(null);
-											}
-										}, 1000);
-							}
-
-							Intent megIntent = new Intent(
-									MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
-							megIntent.putExtra(
-									MessageUti.RESPONSE_RESULT, ret);
-							megIntent.putExtra(
-									MessageUti.RESPONSE_ERROR_CODE,
-									strErrcode);
-							m_context.sendBroadcast(megIntent);
-						}
-					}));
+		private void startSystemStatusTask() {
+			if(FeatureVersionManager.getInstance().isSupportApi("System", "GetSystemStatus") != true)
+				return;
+			
+			if(m_getSystemStatusTask == null) {
+				m_getSystemStatusTask = new GetSystemStatusTask();
+				m_getSystemStatusTimer.scheduleAtFixedRate(m_getSystemStatusTask, 0, 5 * 1000);
+			}
 		}
-	}
+
+		class GetSystemStatusTask extends TimerTask {
+			@Override
+			public void run() {
+				HttpRequestManager.GetInstance().sendPostRequest(
+						new HttpSystem.GetSystemStatus("13.4",
+								new IHttpFinishListener() {
+							@Override
+							public void onHttpRequestFinish(
+									BaseResponse response) {
+								int ret = response.getResultCode();
+								String strErrcode = response.getErrorCode();
+								if (ret == BaseResponse.RESPONSE_OK
+										&& strErrcode.length() == 0) {
+									m_systemStatus = response
+											.getModelResult();
+								} else {
+//									new Handler().postDelayed(
+//											new Runnable() {
+//												@Override
+//												public void run() {
+//													getSystemStatus(null);
+//												}
+//											}, 1000);
+								}
+
+								Intent megIntent = new Intent(
+										MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_RESULT, ret);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_ERROR_CODE,
+										strErrcode);
+								m_context.sendBroadcast(megIntent);
+							}
+						}));
+				}
+		}
 
 	// GetExternalStorageDevice
 	// //////////////////////////////////////////////////////////////////////////////////////////
