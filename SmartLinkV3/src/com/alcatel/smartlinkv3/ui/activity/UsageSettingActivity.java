@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 
@@ -78,14 +79,15 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 					showTimeLimitInfo();
 				}
 			} else if (intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
-
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-
+				String msgRes = null;
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					updateUI();
+					msgRes = UsageSettingActivity.this.getString(R.string.usage_clear_history_success);
+					Toast.makeText(UsageSettingActivity.this, msgRes,Toast.LENGTH_SHORT).show();
 				}else{
-					
+					msgRes = UsageSettingActivity.this.getString(R.string.usage_clear_history_fail);
+					Toast.makeText(UsageSettingActivity.this, msgRes,Toast.LENGTH_SHORT).show();
 				}
 			}else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)
 					|| intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)

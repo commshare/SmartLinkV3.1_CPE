@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.ActivityNewSms;
 import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
+import com.alcatel.smartlinkv3.ui.activity.WpsMainActivity;
 
 
 import android.app.Activity;
@@ -75,9 +76,13 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				String msgRes = null;
 				if (nResult == 0 && strErrorCode.length() == 0) {
+					msgRes = m_context.getString(R.string.usage_clear_history_success);
+					Toast.makeText(m_context, msgRes,Toast.LENGTH_SHORT).show();
 				}else{
-					updateUI();
+					msgRes = m_context.getString(R.string.usage_clear_history_fail);
+					Toast.makeText(m_context, msgRes,Toast.LENGTH_SHORT).show();
 				}
 			}else if (intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
 
