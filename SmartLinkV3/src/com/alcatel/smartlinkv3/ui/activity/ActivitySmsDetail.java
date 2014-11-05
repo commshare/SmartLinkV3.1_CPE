@@ -771,9 +771,9 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			int visibleItemCount, int totalItemCount) {
 		// TODO Auto-generated method stub
 		if(visibleItemCount <= totalItemCount) {
-			m_smsListView.setStackFromBottom(false);
-		}else{
 			m_smsListView.setStackFromBottom(true);
+		}else{
+			m_smsListView.setStackFromBottom(false);
 		}
 	}
 
