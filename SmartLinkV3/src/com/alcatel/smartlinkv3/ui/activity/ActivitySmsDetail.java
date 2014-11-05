@@ -382,6 +382,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			data.addParam("Number", strNumber);
 			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
 		}
+		BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
 		ActivitySmsDetail.this.finish();
 	}
 
