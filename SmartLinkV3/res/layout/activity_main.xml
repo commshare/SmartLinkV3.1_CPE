@@ -94,11 +94,12 @@
 	            android:id="@+id/new_sms_count"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_gravity="center"
+	            android:layout_gravity="center_horizontal"
 	            android:drawablePadding="5dip"
 	            android:gravity="center_horizontal"
+	            android:layout_marginTop="4dip"
 	            android:text="@string/main_sms"
-	            android:textColor="@color/color_grey"
+	            android:textColor="@color/color_white"
 	            android:textSize="12sp" />
         </FrameLayout>
         

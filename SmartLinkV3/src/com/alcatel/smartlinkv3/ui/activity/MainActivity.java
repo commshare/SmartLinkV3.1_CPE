@@ -312,14 +312,14 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		} else if (nNewSmsCount < 10) {
 			m_newSmsTextView.setVisibility(View.VISIBLE);
 			m_newSmsTextView.setText(String.valueOf(nNewSmsCount));
-			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_active
-					: R.drawable.main_new_sms_tab_grey;
+			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_9_plus_active
+					: R.drawable.main_new_sms_tab_9_plus_grey;
 			m_newSmsTextView.setBackgroundResource(nDrawable);
 		} else {
 			m_newSmsTextView.setVisibility(View.VISIBLE);
 			m_newSmsTextView.setText("");
-			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_9_plus_active
-					: R.drawable.main_new_sms_tab_9_plus_grey;
+			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_active
+					: R.drawable.main_new_sms_tab_grey;
 			m_newSmsTextView.setBackgroundResource(nDrawable);
 		}
 	}
