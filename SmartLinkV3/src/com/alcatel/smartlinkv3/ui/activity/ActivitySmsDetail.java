@@ -655,6 +655,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				holder.dateLayout.setVisibility(View.GONE);
 				holder.smsContentLayout.setVisibility(View.VISIBLE);
 				holder.smsDate.setText(m_smsListData.get(position).strTime);
+				
+				
 				holder.smsContent.setText((String)m_smsListData.get(position).strContent);
 				holder.smsContentLayout.setOnLongClickListener(new OnLongClickListener() {
 					@Override
@@ -699,29 +701,10 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					}
 
 				});
+
 				LayoutParams contentLayout = (LayoutParams) holder.smsContentLayout.getLayoutParams();
 				//LayoutParams contentLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-
-				/*SMSTag tag = (SMSTag) m_smsListData.get(position).get("type");
-				switch(tag)
-				{
-				case Read:
-				case NotRead:	
-				case Report:
-					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,R.id.sms_detail_content_layout);
-					holder.smsContent.setBackgroundResource(R.drawable.selector_sms_detail_receive);
-					break;
-				case Sent:
-				case NotSent:
-					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,R.id.sms_detail_content_layout);
-					holder.smsContent.setBackgroundResource(R.drawable.selector_sms_detail_out);
-					break;
-				default:
-					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,R.id.sms_detail_content_layout);
-					holder.smsContent.setBackgroundResource(R.drawable.selector_sms_detail_out);
-					break;
-				}*/
 				EnumSMSType type = m_smsListData.get(position).eSMSType;
 				int nContentLayoutBg = R.drawable.selector_sms_detail_receive;
 				switch(type)
@@ -729,18 +712,18 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				case Read:
 				case Unread:	
 				case Report:
-					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,R.id.sms_detail_content_layout);
+					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,R.id.sms_layout);
 					nContentLayoutBg = R.drawable.selector_sms_detail_receive;
-					contentLayout.setMargins(30, 10, 200, 10);
+					contentLayout.setMargins(30, 10, 80, 10);
 					holder.smsContent.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_black));
 					holder.smsDate.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_grey));
 					holder.sendFailText.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_grey));
 					holder.sentFail.setImageResource(R.drawable.warning_blue_bg);
 					break;
 				default:
-					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,R.id.sms_detail_content_layout);
+					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,R.id.sms_layout);
 					nContentLayoutBg = R.drawable.selector_sms_detail_out;
-					contentLayout.setMargins(200, 10, 30, 10);
+					contentLayout.setMargins(80, 10, 30, 10);
 					holder.smsContent.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_white));
 					holder.smsDate.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_sms_detail_send_grey));
 					holder.sendFailText.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_sms_detail_send_grey));
