@@ -8,10 +8,11 @@
     <LinearLayout
         android:id="@+id/top_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dip"
         android:orientation="vertical" >
 
         <RelativeLayout
+            android:layout_weight="1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
@@ -19,8 +20,14 @@
                 android:id="@+id/close_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dip"
                 android:contentDescription="@null"
                 android:src="@drawable/close_button" />
+            <TextView
+	            android:layout_width="1dip"
+	            android:layout_height="fill_parent"
+	            android:layout_toRightOf="@id/close_btn"
+	            android:background="@color/color_divider" />
 
             <TextView
                 android:id="@+id/title"
