@@ -511,16 +511,16 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private void connect()
 	{
 		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
-		if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && settings.HMonthlyPlan > 0) {
-			long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
-			if (settings.HUsedData >= settings.HMonthlyPlan) {
-				//show warning dialog
-				//m_connectWarningDialog.showDialog();
-				//String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
-				//Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
-				return;
-			}
-		}
+//		if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && settings.HMonthlyPlan > 0) {
+//			long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
+//			if (settings.HUsedData >= settings.HMonthlyPlan) {
+//				//show warning dialog
+//				//m_connectWarningDialog.showDialog();
+//				//String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
+//				//Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
+//				//return;
+//			}
+//		}
 	
 		if (m_bConnectPressd == false)
 			m_bConnectPressd = true;

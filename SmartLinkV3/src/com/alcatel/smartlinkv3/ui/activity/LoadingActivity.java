@@ -30,11 +30,6 @@ public class LoadingActivity extends Activity {
 		Thread searchingThread = new Thread() {
 			@Override
 			public void run() {
-
-				// check private cloud app				
-				//PackageUtils utils = new PackageUtils(LoadingActivity.this);
-				//utils.checkPrivateCloudApp();
-				// check wifi
 				if (!checkConnectState())
 					searchTimeOut();
 				else

@@ -38,13 +38,13 @@
     <string name="home_network_type_4g">4G</string>
     <string name="home_battery_ischarging">Charging</string>
     <string name="home_battery_completed">Charge completed</string>
-    <string name="home_connected_duration">%1$sHrs %2$sMin</string>
+    <string name="home_connected_duration">%1$sHrs %2$sMins</string>
     <string name="access_lable">connected</string>
     <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please change the monthly values or reset consumption.</string>
     <!-- Home view end -->
     
     <!-- Usage view end -->
-    <string name="usage_duration">%1$sHrs %2$sMin</string>
+    <string name="usage_duration">%1$sHrs %2$sMins</string>
     <string name="roaming_descrition">Automatically connect even when in roaming.</string>
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <!-- Usage view end -->
