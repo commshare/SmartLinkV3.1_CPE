@@ -215,9 +215,10 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			break;
 		case R.id.tv_titlebar_done:
 			onBtnDone();
-			if (isSettingsChanged()) {
-				setWlanSettingItems();
-			}
+			setWlanSettingItems();
+//			if (isSettingsChanged()) {
+//				setWlanSettingItems();
+//			}
 			break;
 
 		case R.id.btn_psd_switch:
@@ -502,6 +503,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_nType = m_nPreType;
 
 		m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+		if (SecurityMode.Disable == mode) {
+			m_strPreKey = "";
+		}
 		m_strKey = m_strPreKey;
 	}
 
