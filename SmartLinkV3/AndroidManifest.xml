@@ -209,6 +209,9 @@
                android:resource="@xml/smart_link_widget_provider" />  
        </receiver>
        
+        <service android:name="com.alcatel.smartlinkv3.common.HttpService" >
+        </service>
+       
     </application>
 
 </manifest>

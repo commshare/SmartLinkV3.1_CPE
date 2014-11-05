@@ -55,9 +55,9 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	}
 	
 	private void clickBtn1() {
-		if(isNoAnyConnection() == true) {
+		//if(isNoAnyConnection() == true) {
 			wifiSetting();
-		}
+		//}
 	}
 	
 	
