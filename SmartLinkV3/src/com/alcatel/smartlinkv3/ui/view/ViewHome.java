@@ -97,7 +97,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private TextView m_accessstatusTextView;
 	private ImageView m_accessImageView;
 	private RelativeLayout m_accessDeviceLayout;
-	private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
+	//private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
 	/*access_panel  end*/
 	
 	private LoginDialog m_loginDialog = null;
@@ -646,8 +646,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private void showAccessDeviceState(){
 		
-		m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
-		m_accessnumTextView.setText(Integer.toString(m_connecedDeviceLstData.size()));
+		SystemStatus systemstatus = BusinessMannager.getInstance().getSystemStatus();
+		m_accessnumTextView.setText(Integer.toString(systemstatus.getCurrNum()));
 		
 		String strOfficial = this.m_context.getString(R.string.access_lable);
 		String strHtmlOfficial = "<u>"+strOfficial+"</u>";
