@@ -239,11 +239,11 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				if(m_bDeleteMult == true) {//delete all sms
 					if(m_deleteNum == m_deleteSuccessNum) {
 						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
-						getSmsContentAtOnceRequest();
+						//getSmsContentAtOnceRequest();
 						String msgRes = this.getString(R.string.IDS_SMS_DELETE_MULTI_SUCCESS);
 						Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 						m_bNeedFinish = true;
-						//this.finish();
+						this.finish();
 					}else{
 						String strMsg = String.format(getString(R.string.IDS_SMS_DELETE_MULTI_ERROR), m_deleteSuccessNum,m_deleteNum - m_deleteSuccessNum);
 						Toast.makeText(this, strMsg, Toast.LENGTH_SHORT).show();
@@ -259,7 +259,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 						getSmsContentAtOnceRequest();
 						if(m_bIsLastOneMessage == true) {
 							m_bNeedFinish = true;
-							//this.finish();
+							this.finish();
 						}
 					}else{
 						Toast.makeText(this, getString(R.string.IDS_SMS_DELETE_ERROR_CONTENT), Toast.LENGTH_SHORT).show();
@@ -398,28 +398,41 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 
 				m_deleteCounter  = 0;
 				m_deleteSuccessNum  = 0;
-				m_deleteNum = m_smsListData.size();
+				m_deleteNum = getDeleteMessagesNumber();
 				m_bDeleteMult = true;
 				m_progressWaiting.setVisibility(View.VISIBLE);
 				m_etContent.setEnabled(false);
 				m_btnSend.setEnabled(false);
 				m_btnDelete.setEnabled(false);
 				m_bDeleteSingleEnable = false;
-				if(m_smsListData.size() == 1) {
+				if(m_deleteNum == 1) {
 					m_bIsLastOneMessage = true;
 				}else{
 					m_bIsLastOneMessage = false;
 				}
 				for (int i = 0; i < m_smsListData.size(); i++) {
-					DataValue data = new DataValue();
-					data.addParam("DelFlag", EnumSMSDelFlag.Delete_message);
-					data.addParam("ContactId", m_nContactID);
-					data.addParam("SMSId",m_smsListData.get(i).nSMSID);
-					BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_DELETE_SMS_REQUSET, data);
+					SMSDetailItem item = m_smsListData.get(i);
+					if(item.bIsDateItem == false) {
+						DataValue data = new DataValue();
+						data.addParam("DelFlag", EnumSMSDelFlag.Delete_message);
+						data.addParam("ContactId", m_nContactID);
+						data.addParam("SMSId",item.nSMSID);
+						BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_DELETE_SMS_REQUSET, data);
+					}
 				}
 				inquireDlg.closeDialog();
 			}	
 		});
+	}
+	
+	private int getDeleteMessagesNumber() {
+		int nNumber = 0;
+		for (int i = 0; i < m_smsListData.size(); i++) {
+			SMSDetailItem item = m_smsListData.get(i);
+			if(item.bIsDateItem == false)
+				nNumber++;
+		}
+		return nNumber;
 	}
 
 	private boolean isSameNumber(String strNumber1,String strNumber2) {
@@ -684,7 +697,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 								m_btnSend.setEnabled(false);
 								m_btnDelete.setEnabled(false);
 								m_bDeleteSingleEnable = false;
-								if(m_smsListData.size() == 1) {
+								if(getDeleteMessagesNumber() == 1) {
 									m_bIsLastOneMessage = true;
 								}else{
 									m_bIsLastOneMessage = false;
