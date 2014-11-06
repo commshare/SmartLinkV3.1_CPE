@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/widget_signal_3"
+            android:background="@drawable/widget_signal_0"
             android:contentDescription="@string/app_name" />
     </RelativeLayout>
 

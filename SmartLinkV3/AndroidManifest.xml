@@ -198,6 +198,7 @@
                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />  
                <action android:name="com.alcatel.smartlinkv3.business.cpewificonnectchange" >  
                </action>
+               <action android:name="android.intent.action.BOOT_COMPLETED" />
                <action android:name="com.alcatel.smartlinkv3.business.network.getnetworkinfo"/>
                <action android:name="com.alcatel.smartlinkv3.business.power.getBatteryState"/>
                <action android:name="com.alcatel.smartlinkv3.business.sms.getcontactlist"/>
