@@ -16,7 +16,7 @@ public class UsageRecordResult extends BaseResult{
 	public int RCurrUseDL = 0;//Current use download data in roaming network.
 	public int TConnTimes = 0;//The total connected Internet times.
 	public int CurrConnTimes = 0;//Current connected Internet times.
-	public int MaxUsageData = 0;//The Max usage date that the device should use, when the real usage is more than this data, the connection must disconnect.
+	public int MonthlyPlan = 0;//The Max usage date that the device should use, when the real usage is more than this data, the connection must disconnect.
 	
 	@Override
 	public void clear() {
@@ -29,7 +29,7 @@ public class UsageRecordResult extends BaseResult{
 		RCurrUseDL = 0;
 		TConnTimes = 0;
 		CurrConnTimes = 0;
-		MaxUsageData = 0;
+		MonthlyPlan = 0;
 	}
 	
 	public void clone(UsageRecordResult src) {	
@@ -43,7 +43,7 @@ public class UsageRecordResult extends BaseResult{
 		RCurrUseDL = src.RCurrUseDL;
 		TConnTimes = src.TConnTimes;
 		CurrConnTimes = src.CurrConnTimes;
-		MaxUsageData = src.MaxUsageData;
+		MonthlyPlan  = src.MonthlyPlan;
 	}
 	
 	public void setValue(UsageRecordResult result) {	
@@ -55,6 +55,6 @@ public class UsageRecordResult extends BaseResult{
 		RCurrUseDL = result.RCurrUseDL;
 		TConnTimes = result.TConnTimes;
 		CurrConnTimes = result.CurrConnTimes;
-		MaxUsageData = result.MaxUsageData;
+		MonthlyPlan = result.MonthlyPlan;
 	}
 }
