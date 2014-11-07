@@ -139,6 +139,14 @@
     <string name="setting_about_app_name">ALCATELONETOUCH</string>
     <string name="setting_success">Success</string>
     <string name="setting_failed">Failed</string>
+    <string name="setting_backup_failed">Set device back up failed.</string>
+    <string name="setting_backup_success">Set device back up successed.</string>
+    <string name="setting_restore_failed">Restore failed.</string>
+    <string name="setting_restore_success">Restore successed.</string>
+    <string name="setting_reboot_failed">Reboot failed.</string>
+    <string name="setting_reboot_success">Reboot successed.</string>
+    <string name="setting_reset_failed">Reset failed.</string>
+    <string name="setting_reset_success">Reset successed.</string>
     <!-- setting end -->
 
 	<!-- common start -->

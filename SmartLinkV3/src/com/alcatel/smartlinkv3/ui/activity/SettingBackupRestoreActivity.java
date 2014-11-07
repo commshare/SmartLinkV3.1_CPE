@@ -130,9 +130,9 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_BACKUP)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_failed);
+			String strTost = getString(R.string.setting_backup_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_success);
+				strTost = getString(R.string.setting_backup_success);
 			}
 			
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
@@ -142,9 +142,9 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESTORE)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_failed);
+			String strTost = getString(R.string.setting_restore_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_success);
+				strTost = getString(R.string.setting_restore_success);
 			}
 			
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
