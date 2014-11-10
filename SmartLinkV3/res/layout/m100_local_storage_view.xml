@@ -154,6 +154,7 @@
     	android:layout_below="@id/directory_layout"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
+        android:layout_marginLeft="10dip"
         android:background="@color/color_divider" />
     
     <RelativeLayout
@@ -222,7 +223,7 @@
             android:cacheColorHint="#00000000"
             android:choiceMode="singleChoice"
             android:divider="@color/color_divider"
-            android:dividerHeight="1dip"
+            android:dividerHeight="0dip"
             android:drawSelectorOnTop="false"
             android:listSelector="@drawable/selector_local_storage_item"
             android:overScrollMode="never" />
