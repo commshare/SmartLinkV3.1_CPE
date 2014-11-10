@@ -12,32 +12,44 @@
 
         <RadioGroup
             android:id="@+id/rg_wifi_mode"
+            android:gravity="left"
             android:layout_width="match_parent"
-            android:layout_height="61dp"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content" >
 
             <RadioButton
                 android:id="@+id/rb_2point4G_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:button="@drawable/radiobutton"
+                android:background="@android:color/transparent" 
+                android:layout_marginRight="10dp"
+                android:button="@null"
                 android:checked="true"
+                android:drawableRight="@drawable/radiobutton"
                 android:enabled="false"
+                android:paddingBottom="12dip"
+                android:paddingTop="12dip"
                 android:text="@string/setting_text_2point4G_wifi"
                 android:textColor="@color/color_black" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
 
             <RadioButton
                 android:id="@+id/rb_5G_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:button="@drawable/radiobutton"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="10dp" 
+                android:layout_marginRight="10dp"
+                android:button="@null"
                 android:checked="false"
+                android:drawableRight="@drawable/radiobutton"
                 android:enabled="false"
+                android:paddingBottom="12dip"
+                android:paddingTop="12dip"
                 android:text="@string/setting_text_5G_wifi"
                 android:textColor="@color/color_black" />
         </RadioGroup>
