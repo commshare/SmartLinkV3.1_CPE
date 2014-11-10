@@ -32,6 +32,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -104,7 +105,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private String home_connected_duration = null;
 
-	
+	Typeface typeFace = Typeface.createFromAsset(this.m_context.getAssets(),"fonts/Roboto_Light.ttf");
 	
 	
 	private ViewConnetBroadcastReceiver m_viewConnetMsgReceiver;
@@ -233,6 +234,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_loginDialog = new LoginDialog(this.m_context);
 		
 		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
+
 	}
 
 	@Override
@@ -597,17 +599,20 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			//2G
 			if (curNetwork.m_NetworkType == NetworkType.Net_2G) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
+				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_2g);
 			}
 			
 			//3G
 			if (curNetwork.m_NetworkType == NetworkType.Net_3G) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
+				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_3g);
 			}
 			//4G			
 			if (curNetwork.m_NetworkType == NetworkType.Net_4G) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
+				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_4g);
 			}
 		}
@@ -621,6 +626,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_batteryscalelayout.setVisibility(View.VISIBLE);
 			m_batterydescriptionlayout.setVisibility(View.GONE);
 			m_batterychargingImageView.setVisibility(View.GONE);
+			m_batteryscaleTextView.setTypeface(typeFace);
 			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
 			nProgress = (int)batteryinfo.getBatterLevel();
 	    	if (nProgress > m_batteryProgress.getMax())
@@ -631,7 +637,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_batteryscalelayout.setVisibility(View.GONE);
 			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
 			m_batterychargingImageView.setVisibility(View.VISIBLE);
-			
+			m_batterydescriptionTextView.setTypeface(typeFace);
 			m_batterydescriptionTextView.setText(R.string.home_battery_ischarging);
 			
 		}else if(ConstValue.CHARGE_STATE_COMPLETED == batteryinfo.getChargeState()){
@@ -640,6 +646,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_batteryProgress.setProgress(m_batteryProgress.getMax());
 			m_batteryscalelayout.setVisibility(View.GONE);
 			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
+			m_batterydescriptionTextView.setTypeface(typeFace);
 			m_batterydescriptionTextView.setText(R.string.home_battery_completed);
 		}else if(ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()){
 			
@@ -649,6 +656,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private void showAccessDeviceState(){
 		
 		SystemStatus systemstatus = BusinessMannager.getInstance().getSystemStatus();
+		m_accessnumTextView.setTypeface(typeFace);
 		m_accessnumTextView.setText(Integer.toString(systemstatus.getCurrNum()));
 		
 		String strOfficial = this.m_context.getString(R.string.access_lable);
