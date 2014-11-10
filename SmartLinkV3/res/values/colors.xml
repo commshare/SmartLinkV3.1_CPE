@@ -67,7 +67,7 @@
 
     <!-- custom spinner start -->
     <color name="custom_spinner_divider_line">#ff545454</color>
-    <color name="custom_spinner_bg">#ffc8c8c8</color>
+    <color name="custom_spinner_bg">#ffffff</color>
     <!-- custom spinner end -->
 
 </resources>

@@ -36,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/setting_about_app_name"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:textColor="@color/color_black" />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_margin="10dp"
             android:text="@string/setting_about_copyright"
             android:textColor="@color/color_grey"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
 
         <LinearLayout
             android:id="@+id/ll_about_link"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_margin="10dp"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/tv_link_official"
@@ -82,26 +82,20 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:textColor="@color/color_blue"
-                android:gravity="right|center_vertical"
-                android:paddingRight="10dp"
+                android:gravity="center"
                 android:text="@string/setting_about_official_website"
-                android:textSize="17sp" />
-
-            <ImageView android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color_blue"
-                android:contentDescription="@string/setting_about"/>
+                android:textSize="15sp" />
             <TextView
                 android:id="@+id/tv_link_management_page"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
-                android:gravity="left|center_vertical"
+                android:gravity="center"
                 android:clickable="true"
                 android:textColor="@color/color_blue"
                 android:text="@string/setting_about_management_page"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </RelativeLayout>
 

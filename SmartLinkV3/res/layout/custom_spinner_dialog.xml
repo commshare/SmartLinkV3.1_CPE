@@ -3,7 +3,7 @@
 	android:orientation="vertical" 
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent" 
-	android:background="@color/custom_spinner_bg">
+	android:background="@drawable/spiner_dialog_boder">
 	<ListView android:id="@+id/customspinner_list"
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
@@ -13,5 +13,5 @@
 		android:clickable="true"
 		android:listSelector="@color/color_transparent"
 		android:dividerHeight="1dip"
-		android:divider="@color/custom_spinner_divider_line"/>
+		android:divider="@color/color_divider"/>
 </LinearLayout>
