@@ -24,18 +24,19 @@
                 <FrameLayout
                     android:id="@+id/connect_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="12dip"
-	                android:paddingLeft="30dip"
-	                android:paddingRight="10dip"
-	                android:paddingTop="12dip">
+                    android:layout_height="wrap_content">
                     <RelativeLayout
-	                    android:layout_width="wrap_content"
+	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
+	                    android:paddingBottom="12dip"
+		                android:paddingLeft="38dip"
+		                android:paddingRight="10dip"
+		                android:paddingTop="12dip"
 	                    android:orientation="horizontal" >"
 	                    <Button
 	                        android:id="@+id/connect_button"
 	                        android:layout_centerVertical="true"
+	                        android:layout_alignParentLeft="true"
 	                        android:layout_width="wrap_content"
 	                        android:layout_height="wrap_content"
 	                        android:background="@drawable/switch_off"
@@ -131,8 +132,6 @@
                            android:textColor="@color/color_white"
                            android:textSize="18sp" />
               </LinearLayout>
-
-              
               
             </RelativeLayout>
             
@@ -142,8 +141,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="12dip"
-                android:paddingLeft="30dip"
-                android:paddingRight="30dip"
+                android:paddingLeft="38dip"
+                android:paddingRight="38dip"
                 android:paddingTop="12dip" >
                 <RelativeLayout
                     android:id="@+id/alarm_layout"
@@ -165,8 +164,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/home_time"
                         android:text="36Hrs 15Min"
                         android:textColor="@color/color_white"
@@ -194,7 +192,6 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:ellipsize="end"
-                        android:singleLine="true"
                         android:layout_toRightOf="@id/home_data"
                         android:text="32MB"
                         android:textColor="@color/color_white"
@@ -219,8 +216,8 @@
 		        android:layout_height="0dip"
 		        android:layout_weight="1"
 		        android:paddingBottom="12dip"
-		        android:paddingLeft="10dip"
-		        android:paddingRight="10dip"
+		        android:paddingLeft="18dip"
+		        android:paddingRight="18dip"
 		        android:paddingTop="12dip"
                 android:orientation="horizontal">
 
@@ -286,8 +283,8 @@
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:paddingBottom="12dip"
-                android:paddingLeft="10dip"
-                android:paddingRight="10dip"
+                android:paddingLeft="18dip"
+                android:paddingRight="18dip"
                 android:paddingTop="12dip" >
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -382,8 +379,8 @@
 		        android:layout_height="0dip"
 		        android:layout_weight="1"
                 android:paddingBottom="12dip"
-             	android:paddingLeft="10dip"
-             	android:paddingRight="10dip"
+             	android:paddingLeft="18dip"
+             	android:paddingRight="18dip"
              	android:paddingTop="12dip"
                 android:orientation="horizontal">
 

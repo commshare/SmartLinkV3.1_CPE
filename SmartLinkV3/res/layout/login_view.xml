@@ -102,7 +102,6 @@
 	        android:text="@string/btn_cancel"
 	        android:textColor="@drawable/common_button_text" />
 
-
     </RelativeLayout>
 
 </RelativeLayout>

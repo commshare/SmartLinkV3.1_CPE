@@ -527,8 +527,9 @@ public class StatisticsManager extends BaseManager {
 	public void clearAllRecords(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageRecordClear") != true)
 			return;
+		String strCleartime = (String) data.getParamByKey("clear_time");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear("7.2", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear("7.2",strCleartime, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   

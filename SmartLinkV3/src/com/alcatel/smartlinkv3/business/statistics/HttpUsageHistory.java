@@ -70,10 +70,13 @@ public class HttpUsageHistory {
 	/******************** SetUsageRecordClear  **************************************************************************************/	
 	public static class SetUsageRecordClear extends BaseRequest
     {	
-        public SetUsageRecordClear(String strId,IHttpFinishListener callback) 
+		String m_strUsageCleartime = new String();
+		
+        public SetUsageRecordClear(String strId,String Cleartime, IHttpFinishListener callback) 
         {
         	super(callback);  
         	m_strId = strId;
+        	m_strUsageCleartime = Cleartime;
         }
 
         @Override
@@ -83,7 +86,10 @@ public class HttpUsageHistory {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
 	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetUsageRecordClear");
 	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	JSONObject usageClearTime = new JSONObject();
+	        	usageClearTime.put("clear_time", m_strUsageCleartime);
+	        	
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, usageClearTime);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
         	} catch (JSONException e) {
 				// TODO Auto-generated catch block
