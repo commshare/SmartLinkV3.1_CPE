@@ -9,20 +9,17 @@
         android:id="@+id/layout_top"
         android:layout_width="fill_parent"
         android:layout_height="55dip"
-        android:background="@color/color_black">
-        <Button
+        android:background="@color/color_blue">
+        <TextView
             android:id="@+id/cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="40dip"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dip"
-            android:background="@drawable/selector_common_button"
             android:textColor="@color/color_white"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="18sp"
             android:text="@string/cancel"
             android:visibility="visible" />
         <com.alcatel.smartlinkv3.ui.view.SearchEditText
@@ -52,7 +49,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/search_number" >
 		<ListView android:id="@+id/list_view"
-		   	android:dividerHeight="1dip"
+		   	android:dividerHeight="0dip"
 		    android:divider="@color/color_divider"
 		    android:drawSelectorOnTop="false"
 		    android:choiceMode="singleChoice"

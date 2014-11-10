@@ -48,7 +48,7 @@ public class StorageSearchActivity extends BaseActivity implements
 	public static String ACTIVITY_MAIN = "com.alcatel.smartlink.ui.activity.searchfrommain";
 
 	private SearchEditText m_searchEditText;
-	private Button m_cancelBtn;
+	private TextView m_cancelBtn;
 	private TextView m_searchNumber;
 	private ListView m_searchStorageListView = null;
 	private ArrayList<FileItem> m_searchStorageListData = new ArrayList<FileItem>();
@@ -102,7 +102,7 @@ public class StorageSearchActivity extends BaseActivity implements
 		m_searchEditText = (SearchEditText) this
 				.findViewById(R.id.search_edit_text);
 		m_searchEditText.setSearchCallBack(this);
-		m_cancelBtn = (Button) this.findViewById(R.id.cancel_btn);
+		m_cancelBtn = (TextView) this.findViewById(R.id.cancel_btn);
 		m_cancelBtn.setOnClickListener(this);
 		m_searchNumber = (TextView) this.findViewById(R.id.search_number);
 		m_searchStorageListView = (ListView) this.findViewById(R.id.list_view);
