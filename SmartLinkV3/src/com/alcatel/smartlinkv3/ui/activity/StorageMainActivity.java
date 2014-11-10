@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 
 public class StorageMainActivity extends BaseActivity implements
 		OnClickListener {
-	private Button m_backBtn = null;
+	private LinearLayout m_backBtn = null;
 	private RelativeLayout m_localStorage = null;
 
 	private RelativeLayout m_noExtStorage = null;
@@ -82,7 +82,7 @@ public class StorageMainActivity extends BaseActivity implements
 		m_bNeedBack = false;
 
 		// get controls
-		m_backBtn = (Button) this.findViewById(R.id.btn_back);
+		m_backBtn = (LinearLayout) this.findViewById(R.id.back_layout);
 		m_backBtn.setOnClickListener(this);
 		m_localStorage = (RelativeLayout) this
 				.findViewById(R.id.local_storage_layout);
@@ -138,7 +138,7 @@ public class StorageMainActivity extends BaseActivity implements
 	public void onClick(View arg0) {
 
 		switch (arg0.getId()) {
-		case R.id.btn_back:
+		case R.id.back_layout:
 			this.finish();
 			break;
 		case R.id.local_storage_layout:

@@ -43,7 +43,7 @@ import android.widget.TextView;
 public class StorageUploadActivity extends BaseActivity implements OnClickListener {
 	private String m_curDirectory = null;
 
-	private Button m_cancelBtn = null;
+	private TextView m_cancelBtn = null;
 	private ImageView m_rootDirImage = null;
 	private ImageView m_arrowImage1 = null;
 	private ImageView m_arrowImage2 = null;
@@ -71,7 +71,7 @@ public class StorageUploadActivity extends BaseActivity implements OnClickListen
 		m_bNeedBack = false;		
 		m_uploadDir = this.getIntent().getStringExtra(UPLOAD_DIRECTORY);
 		// get controls
-		m_cancelBtn = (Button)this.findViewById(R.id.cancel_btn);
+		m_cancelBtn = (TextView)this.findViewById(R.id.cancel_btn);
 		m_cancelBtn.setOnClickListener(this);
 		
 		m_rootDirImage = (ImageView)this.findViewById(R.id.root_directory);

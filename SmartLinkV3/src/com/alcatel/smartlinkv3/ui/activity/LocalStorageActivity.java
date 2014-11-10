@@ -44,6 +44,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -53,8 +54,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class LocalStorageActivity extends BaseActivity implements
 		OnClickListener, OnItemClickListener {
-	private Button m_backBtn = null;
-	private Button m_editBtn = null;
+	private LinearLayout m_backBtn = null;
+	private TextView m_editBtn = null;
 	private TextView m_noFileTV = null;
 	public static File m_curDirectory = null;
 	private ImageView m_rootDirImage = null;
@@ -317,9 +318,9 @@ public class LocalStorageActivity extends BaseActivity implements
 		m_bNeedBack = false;
 
 		// get controls
-		m_backBtn = (Button) this.findViewById(R.id.back_btn);
+		m_backBtn = (LinearLayout) this.findViewById(R.id.back_layout);
 		m_backBtn.setOnClickListener(this);
-		m_editBtn = (Button) this.findViewById(R.id.edit_btn);
+		m_editBtn = (TextView) this.findViewById(R.id.edit_btn);
 		m_editBtn.setOnClickListener(this);
 		m_title = (TextView) this.findViewById(R.id.title);
 		m_noFileTV = (TextView) this.findViewById(R.id.no_file);
@@ -455,7 +456,7 @@ public class LocalStorageActivity extends BaseActivity implements
 
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
-		case R.id.back_btn:
+		case R.id.back_layout:
 			this.finish();
 			break;
 		case R.id.single_directorys:
