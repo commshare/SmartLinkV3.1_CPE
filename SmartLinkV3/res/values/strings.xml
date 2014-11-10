@@ -294,8 +294,8 @@
 	<string name="pbc_text2">2. On the Client (eg PC), open the Wi-Fi access utility and select the PBC;</string>
 	<string name="pbc_text3">3. Click the icon on the top;</string>
 	
-	<string name="wps_setpbcfailed">Set Pbc failed</string>
-	<string name="wps_setpbcsuccess">Set Pbc successed</string>
+	<string name="wps_setpbcfailed">Set PBC failed</string>
+	<string name="wps_setpbcsuccess">Set PBC successed</string>
 	<string name="wps_setwpspinfailed">Set WPS Pin failed</string>
 	<string name="wps_setwpspinsuccess">Set WPS Pin successed</string>
 	<!-- wps end -->

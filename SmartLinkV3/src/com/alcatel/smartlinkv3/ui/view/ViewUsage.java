@@ -187,24 +187,24 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 	    	if (nProgress > m_homedataprogress.getMax())
 				nProgress = m_homedataprogress.getMax();
 	    	m_homedataprogress.setProgress(nProgress);
+	    	if(m_UsageRecordResult.HUseData > statistic.HMonthlyPlan)
+			{
+				m_homewarn.setVisibility(View.VISIBLE);
+			}else
+			{
+				m_homewarn.setVisibility(View.GONE);
+			}
 	    }else {
 	    	m_homedata.setVisibility(View.GONE);
 	    	m_homeSetMonthlyBtn.setVisibility(View.VISIBLE);
 	    	m_homedataprogress.setProgress(0);
 	    	m_homedataprogressdec.setVisibility(View.VISIBLE);
+	    	m_homewarn.setVisibility(View.GONE);
+	    	
 		}
-		
 		m_homedowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseDL));
 		m_homeupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.HCurrUseUL));
-		if(m_UsageRecordResult.HUseData > statistic.HMonthlyPlan)
-		{
-			m_homewarn.setVisibility(View.VISIBLE);
-		}else
-		{
-			m_homewarn.setVisibility(View.GONE);
-		}
-	    
-	    
+
 	    
 	    m_roamingdowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.RCurrUseDL));
 	    m_roamingupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long)m_UsageRecordResult.RCurrUseUL));

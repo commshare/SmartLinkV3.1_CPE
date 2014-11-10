@@ -256,6 +256,7 @@
                 <RelativeLayout
                     android:layout_width="100dip"
                     android:layout_height="wrap_content"
+                    
                     android:layout_marginRight="8dip"
                     android:layout_alignParentRight="true"
                     android:orientation="horizontal" >
@@ -360,7 +361,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:ellipsize="end"
-                        android:singleLine="true"
                         android:text="Charging"
                         android:textColor="@color/color_blue"
                         android:textSize="24sp"
@@ -405,8 +405,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:singleLine="true"
-                        android:text="4"
+                        android:text="3"
                         android:textColor="@color/color_blue"
                         android:textSize="50sp"
                         android:textStyle="bold" />
@@ -415,7 +414,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/access_num_label"
-                        android:singleLine="true"
                         android:paddingTop="6dip"
                         android:text="@string/access_lable"
                         android:textColor="@color/color_blue"
