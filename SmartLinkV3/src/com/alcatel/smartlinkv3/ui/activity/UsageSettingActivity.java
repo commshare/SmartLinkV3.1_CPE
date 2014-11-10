@@ -40,7 +40,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 	private UsageSettingReceiver m_usettingreceiver = new UsageSettingReceiver();
 	
-	private final static int MONTHLY_MAX_VALUE = 102400; // megabyte
+	private final static int MONTHLY_MAX_VALUE = 99999999; // megabyte
 	private final static int BILLING_MAX_VALUE = 31; // megabyte
 	private final static int MAX_DISCONNECT_TIME_VALUE = 24 * 60 * 31;
 	
