@@ -76,7 +76,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dip"
-                    android:layout_marginRight="12dip"
                     android:layout_marginTop="10dip"
                     android:paddingBottom="10dip"
                     android:paddingTop="10dip" >
@@ -118,7 +117,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dip"
-                    android:layout_marginRight="12dip"
                     android:layout_marginTop="10dip"
                     android:paddingBottom="10dip"
                     android:paddingTop="10dip"
@@ -130,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dip"
+                        android:layout_marginLeft="8dip"
                         android:background="@drawable/item_storage_unavailable"
                         android:contentDescription="@null" />
 
@@ -138,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dip"
+                        android:layout_marginLeft="5dip"
                         android:layout_toRightOf="@+id/image_no_storage"
                         android:singleLine="true"
                         android:text="@string/m100_storage_main_no_external_storage"
@@ -243,7 +241,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dip"
-                    android:layout_marginRight="12dip"
                     android:layout_marginTop="10dip"
                     android:clickable="true"
                     android:paddingBottom="10dip"
