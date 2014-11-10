@@ -119,4 +119,10 @@
 		    </LinearLayout>
 	    </LinearLayout>
     </RelativeLayout>
+    <View
+        android:id="@+id/layout_top_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="10dip"
+        android:background="@color/color_divider" />
 </LinearLayout>
