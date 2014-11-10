@@ -41,7 +41,7 @@ public class InputDialog1 implements OnClickListener, OnKeyListener{
 	public TextView m_promptView = null;
 	public EditText m_inputEdit = null;
 	public Button m_okBtn = null;
-	public ImageView m_closeBtn = null;
+	public Button m_closeBtn = null;
 
 
 	public InputDialog1(Context context) {
@@ -63,7 +63,7 @@ public class InputDialog1 implements OnClickListener, OnKeyListener{
 		m_inputEdit = (EditText) m_input_view.findViewById(R.id.input);
 		m_okBtn = (Button) m_input_view.findViewById(R.id.ok_btn);
 		m_okBtn.setOnClickListener(this);
-		m_closeBtn = (ImageView) m_input_view.findViewById(R.id.close_btn);
+		m_closeBtn = (Button) m_input_view.findViewById(R.id.close_btn);
 		m_closeBtn.setOnClickListener(this);
 		
 		m_input_dialog.setCancelable(true);

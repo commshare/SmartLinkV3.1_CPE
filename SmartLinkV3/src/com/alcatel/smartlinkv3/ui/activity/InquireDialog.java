@@ -41,7 +41,7 @@ public class InquireDialog implements OnClickListener, OnKeyListener{
 	public TextView m_contentTextView = null;
 	public TextView m_contentDescriptionTextView = null;
 	public Button m_confirmBtn = null;
-	public ImageView m_closeBtn = null;
+	public Button m_closeBtn = null;
 	
 
 	public InquireDialog(Context context) {
@@ -63,7 +63,7 @@ public class InquireDialog implements OnClickListener, OnKeyListener{
 		m_contentDescriptionTextView = (TextView) m_inquire_view.findViewById(R.id.inquire_content_description);
 		m_confirmBtn = (Button) m_inquire_view.findViewById(R.id.inquire_btn);
 		m_confirmBtn.setOnClickListener(this);
-		m_closeBtn = (ImageView) m_inquire_view.findViewById(R.id.close_btn);
+		m_closeBtn = (Button) m_inquire_view.findViewById(R.id.close_btn);
 		m_closeBtn.setOnClickListener(this);
 		
 		m_inquire_dialog.setCancelable(true);

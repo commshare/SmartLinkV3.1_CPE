@@ -240,7 +240,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		m_btnApply = (Button) m_vLogin.findViewById(R.id.login_apply_btn);
 		m_btnApply.setOnClickListener(this);
 
-		ImageView closeBtn = (ImageView) m_vLogin
+		Button closeBtn = (Button) m_vLogin
 				.findViewById(R.id.login_close_btn);
 		closeBtn.setOnClickListener(this);
 

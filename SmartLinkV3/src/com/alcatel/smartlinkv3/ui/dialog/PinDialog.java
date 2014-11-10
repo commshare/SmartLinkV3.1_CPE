@@ -122,7 +122,7 @@ public class PinDialog implements OnClickListener, OnKeyListener, TextWatcher {
 		m_confirmBtn.setOnClickListener(this);
 		// m_confirmBtn.setTypeface(ViewUtilities.getTypeface());
 
-		ImageView cancelBtn = (ImageView) m_pin_view
+		Button cancelBtn = (Button) m_pin_view
 				.findViewById(R.id.pin_close_btn);
 		cancelBtn.setOnClickListener(this);
 
@@ -181,8 +181,6 @@ public class PinDialog implements OnClickListener, OnKeyListener, TextWatcher {
 		case R.id.pin_apply_btn:
 			apply();
 			break;
-
-		case R.id.pin_cancel_btn:
 		case R.id.pin_close_btn:
 			m_is_user_close = true;
 			cancel();

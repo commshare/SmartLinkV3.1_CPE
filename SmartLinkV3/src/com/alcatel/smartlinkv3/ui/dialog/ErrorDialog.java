@@ -22,7 +22,7 @@ public class ErrorDialog implements OnClickListener{
 	private View m_vError = null;
 	private Dialog m_dlgError = null;
 	private Button m_btnRetry = null;
-	private ImageView m_ivClose = null;
+	private Button m_ivClose = null;
 	private TextView m_tvTitle = null;
 	private ImageView m_image = null;
 	private AnimationDrawable m_anim = null;
@@ -63,7 +63,7 @@ public class ErrorDialog implements OnClickListener{
 		m_btnRetry = (Button)m_vError.findViewById(R.id.ID_BUTTON_RETRY);
 		m_btnRetry.setOnClickListener(this);
 		
-		m_ivClose = (ImageView)m_vError.findViewById(R.id.error_dialog_close_btn);
+		m_ivClose = (Button)m_vError.findViewById(R.id.error_dialog_close_btn);
 		m_ivClose.setOnClickListener(this);
 		
 		m_dlgError.setCancelable(false);

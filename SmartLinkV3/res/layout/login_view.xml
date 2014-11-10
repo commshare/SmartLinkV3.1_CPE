@@ -14,27 +14,12 @@
             android:layout_weight="1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/login_close_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dip"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/image_view_close_button"
-                android:src="@drawable/close_button" />
-
-            <TextView
-	            android:layout_width="1dip"
-	            android:layout_height="fill_parent"
-	            android:layout_toRightOf="@id/login_close_btn"
-	            android:background="@color/color_divider" />
             
             <TextView
                 android:id="@+id/login_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
                 android:layout_toRightOf="@+id/login_close_btn"
                 android:paddingLeft="8dip"
                 android:text="@string/login_title"
@@ -87,26 +72,36 @@
         android:id="@+id/ID_LOGIN_BOTTOM_LAYOUT"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
+        android:layout_centerHorizontal="true" 
         android:layout_below="@id/ID_LOGIN_CODE_LAYOUT" >
+        
+        <TextView 
+	        android:id="@+id/txtHide" 
+	        android:layout_width="25dip" 
+	        android:layout_height="1dip"  
+           	android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/login_apply_btn"
             android:layout_width="80dip"
             android:layout_height="30dip"
-            android:layout_centerInParent="true"
-            android:background="@drawable/selector_send_btn"
+            android:gravity="center"
+			android:layout_toLeftOf="@id/txtHide" 
+			android:layout_centerVertical="true"
+            android:background="@drawable/selector_common_button"
             android:text="@string/button_apply"
             android:textColor="@drawable/common_button_text" />
 
         <Button
-            android:id="@+id/login_cancel_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/button_style"
-            android:text="@string/button_cancel"
-            android:textColor="@color/font_color"
-            android:visibility="gone" />
+            android:id="@+id/login_close_btn"
+            android:layout_width="80dip"
+		    android:layout_height="30dip"
+	        android:layout_toRightOf="@id/txtHide" 
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/selector_common_button"
+	        android:text="@string/btn_cancel"
+	        android:textColor="@drawable/common_button_text" />
+
 
     </RelativeLayout>
 

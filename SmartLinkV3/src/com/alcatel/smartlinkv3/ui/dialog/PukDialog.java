@@ -47,7 +47,7 @@ public class PukDialog implements OnClickListener, OnKeyListener, TextWatcher {
     private TextView m_puk_remain_tv;
     private boolean m_last_puk_success = true;
     private Button m_confirmBtn;
-    private ImageView m_ivCancelBtn = null;
+    private Button m_ivCancelBtn = null;
     private Button m_btnCancel = null;
     private boolean m_is_user_close = false;
     private OnPUKError m_callback = null;
@@ -99,11 +99,11 @@ public class PukDialog implements OnClickListener, OnKeyListener, TextWatcher {
         m_confirmBtn.setOnClickListener(this);
         //m_confirmBtn.setTypeface(ViewUtilities.getTypeface());
         
-        m_ivCancelBtn = (ImageView)m_puk_view.findViewById(R.id.puk_close_btn);
+        m_ivCancelBtn = (Button)m_puk_view.findViewById(R.id.puk_close_btn);
         m_ivCancelBtn.setOnClickListener(this);
         //
-        m_btnCancel = (Button)m_puk_view.findViewById(R.id.puk_cancel_btn);
-        m_btnCancel.setOnClickListener(this);
+//        m_btnCancel = (Button)m_puk_view.findViewById(R.id.puk_cancel_btn);
+//        m_btnCancel.setOnClickListener(this);
         
         m_puk_dialog.setCancelable(false);
         //initFonts();
@@ -289,8 +289,7 @@ public class PukDialog implements OnClickListener, OnKeyListener, TextWatcher {
             case R.id.puk_apply_btn:
                 apply();
                 break;
-                
-            case R.id.puk_cancel_btn:
+
             case R.id.puk_close_btn:
                 m_is_user_close = true;                
                 cancel();

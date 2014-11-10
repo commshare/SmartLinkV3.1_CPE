@@ -27,7 +27,7 @@ public class InquireReplaceDialog implements OnClickListener, OnKeyListener{
 	public TextView m_titleTextView = null;
 	public TextView m_contentTextView = null;
 	public Button m_confirmBtn = null;
-	public ImageView m_closeBtn = null;
+	public Button m_closeBtn = null;
 	
 
 	public InquireReplaceDialog(Context context) {
@@ -52,7 +52,7 @@ public class InquireReplaceDialog implements OnClickListener, OnKeyListener{
 		m_contentTextView = (TextView) m_inquire_view.findViewById(R.id.inquire_content);
 		m_confirmBtn = (Button) m_inquire_view.findViewById(R.id.inquire_btn);
 		m_confirmBtn.setOnClickListener(this);
-		m_closeBtn = (ImageView) m_inquire_view.findViewById(R.id.close_btn);
+		m_closeBtn = (Button) m_inquire_view.findViewById(R.id.close_btn);
 		m_closeBtn.setOnClickListener(this);
 		
 		m_inquire_dialog.setCancelable(true);

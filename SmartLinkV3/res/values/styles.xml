@@ -13,8 +13,10 @@
  <!-- 无标题 -->
         <item name="android:windowBackground">@color/color_transparent</item>
  <!-- 背景透明 -->
-        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
  <!-- 模糊 -->
+		<item name="android:backgroundDimAmount">0.65</item>
+ <!-- 模糊度数 -->
     </style>
 
 </resources>

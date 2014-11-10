@@ -318,6 +318,7 @@
     <string name="puk_error_waring_title">Sorry, the PUK code is wrong!</string>
     <string name="error_info">Error</string>
     <string name="btn_reply">Retry</string>
+    <string name="btn_cancel">Cancel</string>
     <string name="IDS_PIN_LOCKED">PIN Locked</string>
     <string name="IDS_PUK_LOCKED">PUK Locked</string>
     <string name="IDS_PIN_CHECK_PIN_PROGRESS">Checking PIN</string>
