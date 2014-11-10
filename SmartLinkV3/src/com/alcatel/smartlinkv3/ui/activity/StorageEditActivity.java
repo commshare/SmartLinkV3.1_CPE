@@ -47,6 +47,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,8 +58,8 @@ public class StorageEditActivity extends BaseActivity implements
 	private String m_strCurLocation = "";
 	private String m_curDirectory = null;
 
-	private Button m_backBtn = null;
-	private Button m_doneBtn = null;
+	private LinearLayout m_backBtn = null;
+	private TextView m_doneBtn = null;
 	private TextView m_title = null;
 	private ImageView m_rootDirImage = null;
 	private ImageView m_arrowImage1 = null;
@@ -220,9 +221,9 @@ public class StorageEditActivity extends BaseActivity implements
 				LocalStorageActivity.CURRENT_DIRECTORY);
 
 		// get controls
-		m_backBtn = (Button) this.findViewById(R.id.back_btn);
+		m_backBtn = (LinearLayout) this.findViewById(R.id.back_layout);
 		m_backBtn.setOnClickListener(this);
-		m_doneBtn = (Button) this.findViewById(R.id.done_btn);
+		m_doneBtn = (TextView) this.findViewById(R.id.done_btn);
 		m_doneBtn.setOnClickListener(this);
 		m_title = (TextView) this.findViewById(R.id.title);
 		m_rootDirImage = (ImageView) this.findViewById(R.id.root_directory);
@@ -317,7 +318,7 @@ public class StorageEditActivity extends BaseActivity implements
 
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
-		case R.id.back_btn:
+		case R.id.back_layout:
 		case R.id.done_btn:
 			this.finish();
 			break;
