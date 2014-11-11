@@ -458,7 +458,7 @@ public class HttpSms {
         {
         	try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SendSMS");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SaveSMS");
 	        	
 	        	JSONObject obj = new JSONObject();	 
 	        	obj.put("SMSId", m_nSMSId);
