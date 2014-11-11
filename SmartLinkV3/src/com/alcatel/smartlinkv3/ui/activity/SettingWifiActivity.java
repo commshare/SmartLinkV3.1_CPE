@@ -303,13 +303,15 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			boolean blCheckSsid = checkSsid();
 			if (!blCheckSsid) {
 				m_strErrorInfo = getString(R.string.setting_ssid_invalid);
-				m_err_dialog.showDialog("Error", m_strErrorInfo);
+				m_err_dialog.showDialog(
+						getString(R.string.setting_wifi_error_title), m_strErrorInfo);
 				return;
 			}
 			if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
 				boolean blCheckPsd = checkPassword(m_strKey);
 				if (!blCheckPsd) {
-					m_err_dialog.showDialog("Error", m_strErrorInfo);
+					m_err_dialog.showDialog(
+							getString(R.string.setting_wifi_error_title), m_strErrorInfo);
 					return;
 				}
 			}
@@ -565,6 +567,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		// TODO Auto-generated method stub
 		super.onPause();
 		unregisterReceiver(m_msgReceiver);
+		m_err_dialog.closeDialog();
 	}
 
 	@Override

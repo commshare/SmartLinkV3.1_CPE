@@ -111,7 +111,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/selector_common_button"
                 android:gravity="center"
-                android:text="@string/setting_upgrade_btn_upgrade"
+                android:text="@string/setting_upgrade_btn_check"
                 android:textColor="@drawable/common_button_text"
                 android:textSize="16sp" />
         </RelativeLayout>

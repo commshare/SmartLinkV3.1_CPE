@@ -8,6 +8,7 @@ import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.business.update.HttpUpdate;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
@@ -42,6 +43,15 @@ public class UpdateManager extends BaseManager {
 				startGetDeviceNewVersionTask();
 			}
 		}
+		
+		if (intent.getAction().equalsIgnoreCase(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+			boolean bCPEWifiConnected = DataConnectManager.getInstance()
+					.getCPEWifiConnected();
+			if (!bCPEWifiConnected) {
+				clearData();
+				stopRollTimer();
+			}
+		}
 	}
 
 	@Override
@@ -54,7 +64,7 @@ public class UpdateManager extends BaseManager {
 	@Override
 	protected void stopRollTimer() {
 		// TODO Auto-generated method stub
-
+		stopGetDeviceNewVersionTask();
 	}
 
 	public DeviceNewVersionInfo getCheckNewVersionInfo(){
@@ -105,7 +115,9 @@ public class UpdateManager extends BaseManager {
 							if(BaseResponse.RESPONSE_OK == nRes &&
 									strError.length() == 0){
 								m_newFirmwareVersionInfo = response.getModelResult();
-								if(0 != m_newFirmwareVersionInfo.getState()){
+								if(EnumDeviceCheckingStatus.
+										antiBuild(EnumDeviceCheckingStatus.DEVICE_CHECKING) 
+										!= m_newFirmwareVersionInfo.getState()){
 									stopGetDeviceNewVersionTask();
 								}
 							}else {
@@ -220,10 +232,10 @@ public class UpdateManager extends BaseManager {
 	}
 
 	public void setCheckNewFirmwareVersion(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Update", "SetCheckNewVersion")) {
-			return;
-		}
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("Update", "SetCheckNewVersion")) {
+//			return;
+//		}
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {

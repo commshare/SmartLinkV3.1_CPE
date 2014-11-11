@@ -64,6 +64,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 	// just for test
 	private static final String USER_NAME = "admin";
+	private CommonErrorInfoDialog m_dialog_err_info;
 	
 	
 /*	private static boolean m_bAlreadyLogin = false;
@@ -79,6 +80,10 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	public LoginDialog(Context context) {
 		m_context = context;
 		m_auReceiver = new AuthenficationBroadcastReviever();
+
+		if (null == m_dialog_err_info) {
+			m_dialog_err_info = CommonErrorInfoDialog.getInstance(m_context);
+		}
 		createDialog();
 	}
 
@@ -115,8 +120,15 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 						&& strErrorCode
 								.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
 					m_bOtherUserLoginError = true;
-					SetErrorMsg(nRet, strErrorCode);
-					m_vLogin.startAnimation(m_shake);
+					m_dialog_err_info.showDialog(
+							m_context.getString(R.string.other_login_warning_title),
+							m_strMsgOtherUserLogined);
+					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
+						m_dlgProgress.dismiss();
+					}
+					closeDialog();
+//					SetErrorMsg(nRet, strErrorCode);
+//					m_vLogin.startAnimation(m_shake);
 					//setAlreadyLogin(false);
 
 				} else {
@@ -201,6 +213,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 	public void destroyDialog() {
 		closeDialog();
+		m_dialog_err_info.closeDialog();
 		try {
 			m_context.unregisterReceiver(m_auReceiver);
 		} catch (Exception e) {

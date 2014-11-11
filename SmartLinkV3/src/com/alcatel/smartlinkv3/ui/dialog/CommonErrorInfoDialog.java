@@ -20,7 +20,6 @@ public class CommonErrorInfoDialog implements OnClickListener{
 	private View m_vError = null;
 	private Dialog m_dlgError = null;
 	private Button m_btnOK = null;
-	private Button m_ivClose = null;
 	private TextView m_tvTitle = null;
 	private TextView m_tvErrorInfo=null;
 	public static boolean m_bIsShow = false;
@@ -59,9 +58,6 @@ public class CommonErrorInfoDialog implements OnClickListener{
 		m_btnOK = (Button)m_vError.findViewById(R.id.ID_BUTTON_OK);
 		m_btnOK.setOnClickListener(this);
 		
-		m_ivClose = (Button)m_vError.findViewById(R.id.error_dialog_close_btn);
-		m_ivClose.setOnClickListener(this);
-		
 		m_dlgError.setCancelable(false);
 		
 		m_tvErrorInfo = (TextView)m_vError.findViewById(R.id.tv_error_info);
@@ -73,9 +69,6 @@ public class CommonErrorInfoDialog implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.ID_BUTTON_OK:
-			closeDialog();
-			break;
-		case R.id.error_dialog_close_btn:
 			closeDialog();
 			break;
 

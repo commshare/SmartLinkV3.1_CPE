@@ -43,7 +43,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		controlTitle();
 		//create controls
 		createControls();
-		ShowWaiting(false);
 	}
 
 	private void controlTitle(){
@@ -70,7 +69,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_upgrade_waiting_progress);
 		
 		updateNewDeviceInfo(); 
-		String strCurAppVersion = getString(R.string.setting_upgrade_new_app_version);
+		String strCurAppVersion = getString(R.string.setting_upgrade_current_app_version);
 		strCurAppVersion += BusinessMannager.getInstance().getAppVersion();
 		m_tv_cur_app_version.setText(strCurAppVersion);
 		m_tv_new_app_version.setText("");
