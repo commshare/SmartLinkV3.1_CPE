@@ -184,6 +184,14 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_usageView.onDestroy();
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
+		destroyDialogs();
+	}
+	
+	private void destroyDialogs(){
+		m_dlgPin.destroyDialog();
+		m_dlgPuk.destroyDialog();
+		m_dlgError.destroyDialog();
+		m_loginDlg.destroyDialog();
 	}
 	
 	@Override

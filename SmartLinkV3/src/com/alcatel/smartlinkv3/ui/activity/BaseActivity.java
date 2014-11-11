@@ -49,7 +49,7 @@ public abstract class BaseActivity extends Activity{
 	protected void onPause() {	
     	super.onPause();
     	try {
-    		//this.unregisterReceiver(m_msgReceiver); 		
+    		this.unregisterReceiver(m_msgReceiver); 		
     		//checkLogin();
     	}catch(Exception e) {
     		e.printStackTrace();
