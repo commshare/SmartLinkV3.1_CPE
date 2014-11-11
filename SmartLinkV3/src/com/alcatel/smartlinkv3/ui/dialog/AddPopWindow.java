@@ -27,7 +27,8 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 	LinearLayout m_wps;
 	LinearLayout m_logout;
 
-	public AddPopWindow(final Activity context) {
+	public AddPopWindow(final Activity context) {	
+		super(context);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		conentView = inflater.inflate(R.layout.add_popup_dialog, null);
