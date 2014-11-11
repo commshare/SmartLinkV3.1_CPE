@@ -274,7 +274,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {					
 				BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
-				getSmsContentAtOnceRequest();
+				//getSmsContentAtOnceRequest();
 			}
 			else if(strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
 			{
