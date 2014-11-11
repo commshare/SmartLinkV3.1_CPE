@@ -169,9 +169,9 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			SMSSummaryItem item = new SMSSummaryItem();
 			for(int j = 0;j < sms.PhoneNumber.size();j++) {
 				if(j == sms.PhoneNumber.size() - 1) 
-					item.strNumber = sms.PhoneNumber.get(j);
+					item.strNumber += sms.PhoneNumber.get(j);
 				else
-					item.strNumber = sms.PhoneNumber.get(j) + ";";
+					item.strNumber = item.strNumber + sms.PhoneNumber.get(j) + ";";
 			}
 			item.nUnreadNumber = sms.UnreadCount;
 			item.nCount = sms.TSMSCount;
