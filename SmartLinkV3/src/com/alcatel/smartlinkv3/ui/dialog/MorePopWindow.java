@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -70,7 +72,8 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 			break;
 		case R.id.clear_history_layout:
 			SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-			if (simState.m_SIMState == SIMState.Accessable) {
+			ConnectStatusModel connectStatus = BusinessMannager.getInstance().getConnectStatus();
+			if ((simState.m_SIMState == SIMState.Accessable) && (connectStatus.m_connectionStatus == ConnectionStatus.Connected)) {
 				DataValue data = new DataValue();
 				SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date now = new Date();
