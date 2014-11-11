@@ -42,7 +42,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	
 	private final static int MONTHLY_MAX_VALUE = 99999999; // megabyte
 	private final static int BILLING_MAX_VALUE = 31; // megabyte
-	private final static int MAX_DISCONNECT_TIME_VALUE = 24 * 60 * 31;
+	private final static int MAX_DISCONNECT_TIME_VALUE = 9999;
 	
 	private ImageButton bnBack;
 	private TextView tvback;
