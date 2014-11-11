@@ -137,8 +137,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET));		
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_DELETE_SMS_REQUSET));
-		this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
-		//this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET));
+		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
+		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SAVE_SMS_REQUSET));
 
 		startGetSmsContentTask();
 	}
@@ -163,7 +163,20 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
 		super.onBroadcastReceive(context, intent);
-
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)){				
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String msgRes = null;
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				msgRes = this.getString(R.string.sms_save_success);
+			}else{
+				msgRes = this.getString(R.string.sms_save_error);
+			}
+			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+			this.finish();
+		}
+		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)){				
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
@@ -381,9 +394,10 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			data.addParam("Content", strContent);
 			data.addParam("Number", strNumber);
 			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
+		}else{
+			this.finish();
 		}
 		BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
-		ActivitySmsDetail.this.finish();
 	}
 
 	private void OnBtnDelete(){

@@ -69,6 +69,8 @@
     <string name="IDS_SMS_DELETE_ERROR_CONTENT">Delete SMS error!</string>
     <string name="IDS_SMS_DELETE_SUCCESS">Delete SMS success!</string>
     <string name="sms_number_invalid">Error! Only 3 phone numbers are allowed.</string>
+    <string name="sms_save_success">SMS is saved as a draft.</string>
+    <string name="sms_save_error">Save SMS failed.</string>
     <!-- sms end -->
     
     <!--connect device start -->

@@ -39,7 +39,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private Button m_btnSend = null;
 	private EditText m_etNumber = null;
 	private EditText m_etContent = null;
-	private static final String NUMBER_REG_Ex = "^([pw+*#\\d]){1}(\\d|[;pw*#]){0,99}$";
+	private static final String NUMBER_REG_Ex = "^([pw+*#\\d;]){1}(\\d|[;pw*#]){0,99}$";
 	private String m_preMatchNumber = new String();
 	
 	private TextView m_tvCnt = null;
@@ -146,22 +146,18 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onBroadcastReceive(context, intent);
 		
-		/*if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET)){				
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)){				
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String msgRes = null;
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				if(m_bSendEnd == true){
-					m_bSendEnd = false;
-					m_progressWaiting.setVisibility(View.GONE);
-					m_btnSend.setEnabled(true);
-	    			m_etNumber.setEnabled(true);
-	    			m_etContent.setEnabled(true);
-	    			if(m_sendStatus == SendStatus.Success) {
-	    				this.finish();
-	    			}
-				}
+				msgRes = this.getString(R.string.sms_save_success);
+			}else{
+				msgRes = this.getString(R.string.sms_save_error);
 			}
-		}*/
+			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+			this.finish();
+		}
 		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_SEND_SMS_REQUSET)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
@@ -241,7 +237,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		super.onResume();
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));		
 		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
-		//this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SMS_LIST_ROLL_REQUSET));
+		this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SAVE_SMS_REQUSET));
 	}
 
 	@Override
@@ -293,8 +289,10 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			data.addParam("Number", strNumber);
 			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
 			BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+		}else{
+			this.finish();
 		}
-		this.finish();
+		//this.finish();
 	}
 
 	//
