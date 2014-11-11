@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private TextView m_tvDlnaDesc = null;
 	private TextView m_tvSdcardUsage = null;
 	private TextView m_tvSdcardStatus = null;
+	private ProgressBar m_sdcardProgress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,9 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		String usage;
 		usage = String.format(format, 0, 0);
 		m_tvSdcardUsage.setText(usage);
+		
+		m_sdcardProgress = (ProgressBar) this.findViewById(R.id.sdcard_usage_progress);
+
 	}
 
 	@Override
@@ -72,6 +77,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		registerReceiver();
 		getDlnaSettings();		
 		getSambaSettings();
+		getSDCardSpace();
 	}
 
 	@Override
@@ -147,7 +153,26 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		String format = SdSharingActivity.this.getResources().getString(
 				R.string.sdcard_usage);
 		String usage = String.format(format, space.UsedSpace, space.TotalSpace);
-		m_tvSdcardUsage.setText(usage);
+		m_tvSdcardUsage.setText(usage);		
+		float used = Float.parseFloat(space.UsedSpace);
+		float total = Float.parseFloat(space.TotalSpace);
+		
+		if(total > 0.1)
+		{
+			m_tvSdcardStatus.setVisibility(View.GONE);
+			float nPos = ( used /total ) * 100;		
+			m_sdcardProgress.setProgress((int) nPos);	
+		}
+		else
+		{
+			m_tvSdcardStatus.setVisibility(View.VISIBLE);
+			format = this.getResources()
+					.getString(R.string.sdcard_usage);
+			usage = String.format(format, "0", "0");
+			m_tvSdcardUsage.setText(usage);	
+		}
+		
+		
 
 	}
 
@@ -236,17 +261,16 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-
-					if (Status.build(BusinessMannager.getInstance()
-							.getSambaSettings().SambaStatus) == Status.Disabled) {
-						m_btnDlna.setEnabled(false);
+					
+					 if(Status.build(BusinessMannager.getInstance().getSDCardStatus().SDcardStatus)  == Status.Disabled)
+					 {						
 						m_tvSdcardStatus.setVisibility(View.VISIBLE);
 						String format = SdSharingActivity.this.getResources()
 								.getString(R.string.sdcard_usage);
-						String usage = String.format(format, 0, 0);
-						m_tvSdcardUsage.setText(usage);
-					} else {
-						m_btnDlna.setEnabled(true);
+						String usage = String.format(format, "0", "0");
+						m_tvSdcardUsage.setText(usage);						
+						m_sdcardProgress.setProgress(0);
+					} else {						
 						m_tvSdcardStatus.setVisibility(View.GONE);
 						getSDCardSpace();
 					}

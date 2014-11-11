@@ -288,7 +288,7 @@
 	<string name="sd_card_sharing">SD Card Sharing</string>
 	<string name="sd_sharing">SD Sharing</string>
 	<string name="dlna">DLNA</string>
-	<string name="sdcard_usage">%1$dGB of %2$dGB used.</string>
+	<string name="sdcard_usage">%1$sGB of %2$sGB used.</string>
 	<string name="storage">Storage</string>		
 	<string name="not_available">Not Available</string>
 	<!-- sd sharing end -->

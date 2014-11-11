@@ -177,7 +177,7 @@ public class StorageMainActivity extends BaseActivity implements
 
 	private void updateUI() {
 
-		if (BusinessMannager.getInstance().getStorageList().DeviceList.size() == 0) {
+		if ( Status.build(BusinessMannager.getInstance().getSDCardStatus().SDcardStatus)  == Status.Disabled) {
 			showCurrentView(LAYOUT_TYPE.layout_no_storage);
 		} else {
 

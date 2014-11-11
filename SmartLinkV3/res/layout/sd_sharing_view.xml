@@ -172,14 +172,12 @@
                 android:paddingTop="6dip" >
 
                 <ProgressBar
-                    android:id="@+id/data_status_progress"
+                    android:id="@+id/sdcard_usage_progress"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="15dip"
                     android:background="@drawable/usage_status_data_progress_bg"
                     android:max="100"
-                    android:paddingBottom="6dip"
-                    android:paddingTop="6dip"
                     android:progressDrawable="@drawable/usage_status_progress_data" />
 
                 <TextView
