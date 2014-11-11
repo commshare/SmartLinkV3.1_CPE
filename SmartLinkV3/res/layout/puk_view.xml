@@ -140,7 +140,7 @@
             android:gravity="center"
 			android:layout_toLeftOf="@id/txtHide" 
 			android:layout_centerVertical="true"
-            android:background="@drawable/selector_send_btn"
+            android:background="@drawable/selector_common_button"
             android:text="@string/button_apply"
             android:textColor="@drawable/common_button_text" />
         
