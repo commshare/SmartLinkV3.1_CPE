@@ -23,7 +23,7 @@ public class ENUM {
 				return Disable;
 			}
 		}
-		
+
 		public static int antiBuild(OVER_TIME_STATE storeIn) {
 			if (storeIn == Disable) {
 				return 0;
@@ -43,7 +43,7 @@ public class ENUM {
 				return Disable;
 			}
 		}
-		
+
 		public static int antiBuild(OVER_DISCONNECT_STATE storeIn) {
 			if (storeIn == Enable) {
 				return 1;
@@ -52,7 +52,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	public static enum OVER_ROAMING_STATE {
 		Disable, Enable;
 
@@ -63,7 +63,7 @@ public class ENUM {
 				return Disable;
 			}
 		}
-		
+
 		public static int antiBuild(OVER_ROAMING_STATE storeIn) {
 			if (storeIn == Enable) {
 				return 1;
@@ -72,7 +72,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	/*
 	 * PDP connection type: 
 	 * PDP_TYPE_IPv4 = 0, 
@@ -96,7 +96,7 @@ public class ENUM {
 				return UNKNOWN;
 			}
 		}
-		
+
 		public static int antiBuild(PdpType storeIn) {
 			if (storeIn == PDP_TYPE_IPv4) {
 				return 0;
@@ -229,7 +229,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	public static enum SMSInit {
 		Complete, 
 		Initing;
@@ -250,7 +250,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	/*
 	 * 0 : read 1 : unread 2 : sent 3 : sent failed 4 : report 5 : flash 6: draft
 	 */
@@ -274,7 +274,7 @@ public class ENUM {
 				return Draft;
 			}
 		}
-		
+
 		public static int antiBuild(EnumSMSType type) {
 			if(type == Read) {
 				return 0;
@@ -293,7 +293,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	/*
 	 * //This flag means the SMS that want to delete.
 	 * 0: delete all SMS
@@ -312,7 +312,7 @@ public class ENUM {
 				return Delete_message;
 			}
 		}
-		
+
 		public static int antiBuild(EnumSMSDelFlag type) {
 			if(type == Delete_all) {
 				return 0;
@@ -323,7 +323,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	/*
 	 * 0 : none 1 : sending 2 : success 3 : fail still sending last message 4 :
 	 * fail with Memory full 5 : fail
@@ -347,7 +347,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	/*
 	 * 0: disconnected 1: connecting 2: connected 3: disconnecting
 	 */
@@ -465,7 +465,7 @@ public class ENUM {
 			} else
 				return Frequency_24GHZ;
 		}
-		
+
 		public static int antiBuild(WlanFrequency frequency) {
 			if (Frequency_24GHZ == frequency) {
 				return 0;
@@ -564,7 +564,7 @@ public class ENUM {
 				return 1;
 		}
 	}
-	
+
 	/**
 	 * WMode 0: auto 1: 802.11a 2: 802.11b 3: 802.11g 4: 802.11a+n 5: 802.11g+n
 	 */
@@ -632,10 +632,10 @@ public class ENUM {
 				return 0;
 		}
 	}
-	
+
 	public static enum WlanSupportMode{
 		Mode2Point4G, Mode5G, Mode2Point4GAnd5G;
-		
+
 		public static WlanSupportMode build(int nMode){
 			switch (nMode) {
 			case 0:
@@ -648,10 +648,10 @@ public class ENUM {
 			default:
 				return Mode2Point4G;
 			}
-			
+
 		}
 	}
-	
+
 	/*
 	 * 0: use the web UI and login device;
 	   1: just connected to device but not login.
@@ -659,7 +659,7 @@ public class ENUM {
 	 */
 	public static enum EnumDeviceType{
 		USE_WEB_LOGIN, CONNECTED_DEVICE_NOT_LOGIN;
-		
+
 		public static EnumDeviceType build(int nMode){
 			switch (nMode) {
 			case 0:
@@ -667,9 +667,9 @@ public class ENUM {
 			default:
 				return CONNECTED_DEVICE_NOT_LOGIN;
 			}
-			
+
 		}
-		
+
 		public static int antiBuild(EnumDeviceType type) {
 			switch (type) {
 			case USE_WEB_LOGIN:
@@ -679,7 +679,7 @@ public class ENUM {
 			}
 		}
 	}
-	
+
 	/*
 	 * 0:USB connect
 		1:WIFI connect
@@ -687,7 +687,7 @@ public class ENUM {
 	 */
 	public static enum EnumConnectMode{
 		USB_CONNECT, WIFI_CONNECT;
-		
+
 		public static EnumConnectMode build(int nMode){
 			switch (nMode) {
 			case 0:
@@ -695,7 +695,53 @@ public class ENUM {
 			default:
 				return WIFI_CONNECT;
 			}
-			
+
+		}
+	}
+
+	public static enum EnumDeviceCheckingStatus{
+		DEVICE_CHECKING, DEVICE_NEW_VERSION, DEVICE_NO_NEW_VERSION, DEVICE_NO_CONNECT, 
+		DEVICE_NOT_AVAILABLE, DEVICE_CHECK_ERROR;
+
+		public static EnumDeviceCheckingStatus build(int nStatus){
+			switch (nStatus) {
+			case 0:
+				return DEVICE_CHECKING;
+
+			case 1:
+				return DEVICE_NEW_VERSION;
+
+			case 2:
+				return DEVICE_NO_NEW_VERSION;
+			case 3:
+				return DEVICE_NO_CONNECT;
+			case 4:
+				return DEVICE_NOT_AVAILABLE;
+			case 5:
+				return DEVICE_CHECK_ERROR;
+
+			default:
+				return DEVICE_NO_NEW_VERSION;
+			}
+
+		}
+		public static int antiBuild(EnumDeviceCheckingStatus status){
+			int nStatus = 2;
+			if (DEVICE_CHECKING == status) {
+				nStatus = 0;
+			}else if (DEVICE_NEW_VERSION == status) {
+				nStatus = 1;
+			}else if (DEVICE_NO_NEW_VERSION == status) {
+				nStatus = 2;
+			}else if (DEVICE_NO_CONNECT == status) {
+				nStatus = 3;
+			}else if (DEVICE_NOT_AVAILABLE == status) {
+				nStatus = 4;
+			}else if (DEVICE_CHECK_ERROR == status) {
+				nStatus = 5;
+			}
+
+			return nStatus;
 		}
 	}
 }

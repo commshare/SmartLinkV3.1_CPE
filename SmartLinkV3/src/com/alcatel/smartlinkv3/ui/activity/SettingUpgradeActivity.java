@@ -4,6 +4,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.content.Context;
@@ -17,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingUpgradeActivity extends BaseActivity implements OnClickListener{
 
@@ -29,6 +29,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	private TextView m_tv_cur_firmware_version =null;
 	private TextView m_tv_cur_app_version=null;
 	private TextView m_tv_new_app_version=null;
+	private TextView m_tv_new_firmware_version = null;
 	private ProgressBar m_pb_waiting=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +61,22 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		m_tv_cur_firmware_version=(TextView)findViewById(R.id.tv_check_firmware);
 		m_tv_cur_app_version = (TextView)findViewById(R.id.tv_current_app_version);
 		m_tv_new_app_version = (TextView)findViewById(R.id.tv_new_app_version);
+		m_tv_new_firmware_version = (TextView)findViewById(R.id.tv_new_firmware_version);
 		m_btn_check_firmware = (Button)findViewById(R.id.btn_check_firmware);
 		m_btn_upgrade_app = (Button)findViewById(R.id.btn_app_upgrade);
 		m_btn_check_firmware.setOnClickListener(this);
 		m_btn_upgrade_app.setOnClickListener(this);
 		//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_upgrade_waiting_progress);
+		
+		updateNewDeviceInfo(); 
+		String strCurAppVersion = getString(R.string.setting_upgrade_new_app_version);
+		strCurAppVersion += BusinessMannager.getInstance().getAppVersion();
+		m_tv_cur_app_version.setText(strCurAppVersion);
+		m_tv_new_app_version.setText("");
+		String strCurFWVersion = getString(R.string.setting_upgrade_device_version);
+		strCurFWVersion += BusinessMannager.getInstance().getSystemInfo().getSwVersion();
+		m_tv_cur_firmware_version.setText(strCurFWVersion);
 	}
 
 	private void ShowWaiting(boolean blShow){
@@ -107,7 +118,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 	private void onBtnFirmwareCheck(){
 		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.UPDATE_GET_DEVICE_NEW_VERSION, null);
+				MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
 	}
 	
 	private void onBtnAppCheck(){
@@ -136,28 +147,52 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_success);
-				DeviceNewVersionInfo info = BusinessMannager.getInstance().getNewFirmwareInfo();
-				int nState = info.getState();
-				if (1 == nState) {
-					strTost = "The new version is ";
-					strTost += info.getVersion();
-					Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-					ShowWaiting(false);
-				}else if (2 == nState) {
-					strTost = "no new version";
-					Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-					ShowWaiting(false);
-				}else {
-					onBtnFirmwareCheck();
-				}
-			}else {				
-				Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+				updateNewDeviceInfo();
+			}else {
 				ShowWaiting(false);
+				String strNew = getString(R.string.setting_upgrade_check_failed);
+				setNewDeviceVersion(strNew);
 				
 			}
 		}
 	}
+	
+	private void setNewDeviceVersion(String strNewVesion){
+		m_tv_new_firmware_version.setText(strNewVesion);
+	}
+	
+	private void updateNewDeviceInfo(){
+		DeviceNewVersionInfo info = BusinessMannager.getInstance().getNewFirmwareInfo();
+		int nState = info.getState();
+		EnumDeviceCheckingStatus eStatus = EnumDeviceCheckingStatus.build(nState);
+		if (EnumDeviceCheckingStatus.DEVICE_CHECKING == eStatus) {
+			//waiting
+			ShowWaiting(true);
+		}else if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
+			String strNew = getString(R.string.setting_upgrade_device_version);
+			strNew += info.getVersion();
+			setNewDeviceVersion(strNew);
+			ShowWaiting(false);
+		}else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
+			ShowWaiting(false);
+			String strNew = getString(R.string.setting_upgrade_no_new_version);
+			setNewDeviceVersion(strNew);
+		}else if (EnumDeviceCheckingStatus.DEVICE_NO_CONNECT == eStatus) {
+			ShowWaiting(false);
+			String strNew = getString(R.string.setting_upgrade_no_connection);
+			setNewDeviceVersion(strNew);
+		}else if (EnumDeviceCheckingStatus.DEVICE_NOT_AVAILABLE == eStatus) {
+			ShowWaiting(false);
+			String strNew = getString(R.string.setting_upgrade_not_available);
+			setNewDeviceVersion(strNew);
+		}else if (EnumDeviceCheckingStatus.DEVICE_CHECK_ERROR == eStatus) {
+			ShowWaiting(false);
+			String strNew = getString(R.string.setting_upgrade_check_error);
+			setNewDeviceVersion(strNew);
+		}else {
+			ShowWaiting(false);
+		}
+	}
+	
 }

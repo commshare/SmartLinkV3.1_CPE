@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
@@ -18,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,10 +27,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-public class ViewSetting extends BaseViewImpl implements OnClickListener {
+public class ViewSetting extends BaseViewImpl{
 	
 	
 	private final int ITEM_WIFI_SETTING = 0;
@@ -99,9 +99,6 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	@Override
 	public void onResume() {
 		registerReceiver();
-		getWlanSettings();
-		getServiceState();
-		getDeviceInfo();
 	}
 
 	@Override
@@ -111,24 +108,6 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 	public void onDestroy() {
 	}
 
-	@Override
-	public void onClick(View v) {	
-
-	
-	}	
-	
-	private void getServiceState() {}
-	
-	private void getServiceSettings() {}
-	
-	private void getWlanSettings() {}
-	
-	private void getDeviceInfo()
-	{}
-	
-	private void launchPrivateCloudApp()
-	{}
-	
 	private List<SettingItem> getData(Context context){
 		List<SettingItem> list = new ArrayList<SettingItem>();
 		
@@ -141,8 +120,14 @@ public class ViewSetting extends BaseViewImpl implements OnClickListener {
 		item = new SettingItem(context.getString(R.string.setting_backup), false);
 		list.add(item);
 		
-		item = new SettingItem(context.getString(R.string.setting_upgrade), false);
-		list.add(item);
+		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+			item = new SettingItem(context.getString(R.string.setting_upgrade), true);
+			list.add(item);
+		}else {
+			item = new SettingItem(context.getString(R.string.setting_upgrade), false);
+			list.add(item);
+		}
 		
 		item = new SettingItem(context.getString(R.string.setting_device), false);
 		list.add(item);

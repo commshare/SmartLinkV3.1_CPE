@@ -3,7 +3,6 @@ package com.alcatel.smartlinkv3.business;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.alcatel.smartlinkv3.business.StatisticsManager.GetUsageHistoryTask;
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
 import com.alcatel.smartlinkv3.business.system.StorageList;
@@ -420,7 +419,7 @@ public class SystemManager extends BaseManager {
 							int nRet = response.getResultCode();
 							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESET);
-							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
 							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
@@ -447,7 +446,7 @@ public class SystemManager extends BaseManager {
 							int nRet = response.getResultCode();
 							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_BACKUP);
-							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
 							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
@@ -475,7 +474,7 @@ public class SystemManager extends BaseManager {
 							int nRet = response.getResultCode();
 							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
-							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
 							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
@@ -501,7 +500,7 @@ public class SystemManager extends BaseManager {
 							int nRet = response.getResultCode();
 							String strError = response.getErrorCode();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
-							intent.putExtra(MessageUti.SYSTEM_SET_DEVICE_RESET, nRet);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
 							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}

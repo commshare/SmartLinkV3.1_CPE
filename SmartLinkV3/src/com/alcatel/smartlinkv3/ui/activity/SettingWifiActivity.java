@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.view.CustomSpinner;
 import com.alcatel.smartlinkv3.ui.view.CustomSpinner.OnSpinnerItemSelectedListener;
 
@@ -94,6 +95,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	private ArrayAdapter<String> m_wepEncryptionadapter = null;
 	private ArrayAdapter<String> m_wpaEncryptionadapter = null;
 	private ArrayAdapter<String> m_wpaEncryptionadapter2 = null;
+	//
+	private CommonErrorInfoDialog m_err_dialog;
+	private String m_strErrorInfo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -110,7 +114,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		//create controls
 		createControls();
 		//init controls state
-		onBtnDone();
+		setControlsDoneStatus();
 	}
 
 	private void controlTitlebar(){
@@ -161,6 +165,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_tv_no_password = (TextView)findViewById(R.id.tv_no_psd);
 		m_btn_psd_switch = (Button)findViewById(R.id.btn_psd_switch);
 		m_btn_psd_switch.setOnClickListener(this);
+
+		m_err_dialog = CommonErrorInfoDialog.getInstance(this);
 		//init spiner
 		initSpiners();
 	}
@@ -215,10 +221,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			break;
 		case R.id.tv_titlebar_done:
 			onBtnDone();
-			setWlanSettingItems();
-//			if (isSettingsChanged()) {
-//				setWlanSettingItems();
-//			}
 			break;
 
 		case R.id.btn_psd_switch:
@@ -294,8 +296,34 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private void onBtnDone(){
+		//
+		boolean blHasChange = isSettingsChanged();
+		if (blHasChange) {
+			boolean blCheckSsid = checkSsid();
+			if (!blCheckSsid) {
+				m_strErrorInfo = getString(R.string.setting_ssid_invalid);
+				m_err_dialog.showDialog("Error", m_strErrorInfo);
+				return;
+			}
+			if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
+				boolean blCheckPsd = checkPassword(m_strKey);
+				if (!blCheckPsd) {
+					m_err_dialog.showDialog("Error", m_strErrorInfo);
+					return;
+				}
+			}
+			setWlanSettingItems();
+		}
+
+		setControlsDoneStatus();
+		//
+		synchValues();
+	}
+
+	@SuppressWarnings("deprecation")
+	private void setControlsDoneStatus(){
+
 		m_tv_edit.setVisibility(View.VISIBLE);
 		m_tv_done.setVisibility(View.GONE);
 		m_et_ssid.setEnabled(false);
@@ -329,10 +357,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_ll_encryption.setVisibility(View.GONE);
 		m_ll_security.setVisibility(View.GONE);
 		m_tv_psd_type_title.setVisibility(View.GONE);
-		//
-		synchValues();
 	}
-
 	private boolean isSettingsChanged(){
 		boolean blChanged = false;
 		m_nWlanAPMode = 0;
@@ -342,17 +367,29 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		m_strSsid = m_et_ssid.getText().toString();
 
-		m_nSecurityMode = m_securitySpinner.getSelectedItemPosition();
-
-		m_nType = m_encryptionSpinner.getSelectedItemPosition();
+		if (m_blPasswordOpened) {
+			m_nSecurityMode = m_securitySpinner.getSelectedItemPosition()+1;
+			m_nType = m_encryptionSpinner.getSelectedItemPosition();
+		}else {
+			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.Disable);
+			m_nType = -1;
+		}
 
 		m_strKey = m_et_password.getText().toString();
-		if (m_nPreWlanAPMode != m_nWlanAPMode
-				|| m_strSsid != m_strPreSsid
-				|| m_nSecurityMode != m_nPreSecurityMode
-				|| m_nType != m_nPreType
-				|| m_strKey != m_strPreKey) {
-			blChanged = true;
+		if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
+			if (m_nPreWlanAPMode != m_nWlanAPMode
+					|| 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid)
+					|| m_nSecurityMode != m_nPreSecurityMode
+					|| m_nType != m_nPreType
+					|| 0 != m_strKey.compareToIgnoreCase(m_strPreKey)) {
+				blChanged = true;
+			}
+		}else {
+			if (m_nPreWlanAPMode != m_nWlanAPMode
+					|| 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid)
+					|| m_nSecurityMode != m_nPreSecurityMode) {
+				blChanged = true;
+			}
 		}
 		return blChanged;
 	}
@@ -487,13 +524,16 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_nWlanAPMode = m_nPreSecurityMode;
 
 		m_strPreSsid = BusinessMannager.getInstance().getSsid();
-		m_strSsid = m_strPreKey;
+		m_strSsid = m_strPreSsid;
 
 		SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
 		m_nPreSecurityMode = SecurityMode.antiBuild(mode);
 		m_nSecurityMode = m_nPreSecurityMode;
 
-		if (SecurityMode.WEP == mode) {
+		if (SecurityMode.Disable == mode) {
+			m_nPreType = -1;
+		}
+		else if (SecurityMode.WEP == mode) {
 			m_nPreType = WEPEncryption.antiBuild(
 					BusinessMannager.getInstance().getWEPEncryption());
 		}else {
@@ -515,7 +555,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
-		
+
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
 	}
@@ -545,8 +585,94 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				strTost = getString(R.string.setting_success);
 			}
-			
+
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	/*
+	 * Wep key 
+		不能为空
+		如果是key长度是5或是13，则需要满足以下条件：
+		1.	ASCII码数字大于32并且小于127但不包含34、38、58、59、92对应的字符
+
+		如果wep key长度为10或是26，key只能包含0到9和大小写26个英文字母
+
+		WPA
+		WPA2
+		WPA/WPA2
+		需要同时满足3个条件：
+		1.	不能为空
+		2.	Key.length>7 && Key.length<64
+		3.	Key只包含ASCII码数字大于32并且小于127但不包含34、38、58、59、92对应的字符
+
+
+	 */
+	private boolean checkPassword(String strPsw) {
+		int nLength = strPsw.length();
+		boolean bCorrect = true;
+		if(SecurityMode.build(m_nSecurityMode) == SecurityMode.WEP) {
+			if(strPsw == null || !(nLength == 5 || nLength == 13 || nLength == 10 || nLength == 26)) {
+				bCorrect = false;
+			}else{
+				if(nLength == 5 || nLength == 13) {
+					for(int i = 0;i < nLength;i++) {
+						char c = strPsw.charAt(i);
+						if(!(c > 32 && c < 127 && c != 34 &&  c != 38 &&  c != 58 &&  c != 59 &&  c != 92)) {
+							bCorrect = false;
+							break;
+						}
+					}
+				}
+
+				if(nLength == 10 || nLength == 26) {
+					for(int i = 0;i < nLength;i++) {
+						char c = strPsw.charAt(i);
+						if(!(c >= '0' && c <= '9' || c >= 'a' &&  c <= 'z' ||  c >= 'A' &&  c <= 'Z')) {
+							bCorrect = false;
+							break;
+						}
+					}
+				}
+			}
+			if(bCorrect == true){
+				return true;
+			}else{
+				m_strErrorInfo = getString(R.string.setting_wep_password_error_prompt);
+				return false;
+			}
+		}else{
+			if(strPsw == null || !(nLength > 7 && nLength < 64)) {
+				bCorrect = false;
+			}else{
+				for(int i = 0;i < nLength;i++) {
+					char c = strPsw.charAt(i);
+					if(!(c > 32 && c < 127 && c != 34 &&  c != 38 &&  c != 58 &&  c != 59 &&  c != 92)) {
+						bCorrect = false;
+						break;
+					}
+				}
+			}
+
+			if(bCorrect == true){
+				return true;
+			}else{
+				m_strErrorInfo = getString(R.string.setting_wpa_password_error_prompt);
+				return false;
+			}
+		}
+	}
+
+	private boolean checkSsid(){
+		boolean blRes = true;
+		String strSsid = m_strSsid;
+		for (int i = 0; i < strSsid.length(); i++) {
+			char c = strSsid.charAt(i);
+			if (47 == c || 27 == c || 61 == c || 34 == c || 92 == c || 38 == c) {
+				blRes = false;
+				break;
+			}
+		}
+		return blRes;
 	}
 }

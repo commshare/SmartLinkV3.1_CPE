@@ -26,12 +26,21 @@
                 android:contentDescription="@string/setting_upgrade" />
 
             <TextView
-                android:id="@+id/tv_check_firmware"
+                android:id="@+id/tv_new_firmware_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/iv_upgrade_center_position_up"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp"
+                android:text="@string/setting_upgrade_new_app_version"
+                android:textColor="@color/color_black"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tv_check_firmware"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/tv_new_firmware_version"
+                android:layout_centerHorizontal="true"
                 android:text="@string/setting_upgrade_device_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />

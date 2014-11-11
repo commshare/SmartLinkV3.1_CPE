@@ -122,10 +122,15 @@
     <string name="setting_about_official_website">Official website</string>
     <string name="setting_about_management_page">Management page</string>
     <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd.\r\nAll right reserved.</string>
-    <string name="setting_upgrade_device_version">Device: Current Version vxxxx</string>
+    <string name="setting_upgrade_device_version">Device: Current Version v</string>
     <string name="setting_upgrade_btn_check">Check</string>
-    <string name="setting_upgrade_current_app_version">Mobile phone apps: Current Version v0.5</string>
-    <string name="setting_upgrade_new_app_version">Find a new version v0.6</string>
+    <string name="setting_upgrade_current_app_version">Mobile phone apps: Current Version v</string>
+    <string name="setting_upgrade_new_app_version">Find a new version v</string>
+    <string name="setting_upgrade_check_failed">Check failed</string>
+    <string name="setting_upgrade_no_new_version">No new version</string>
+    <string name="setting_upgrade_no_connection">NO connection</string>
+    <string name="setting_upgrade_not_available">Service not available</string>
+    <string name="setting_upgrade_check_error">Check error</string>
     <string name="setting_upgrade_btn_upgrade">Upgrade</string>
     <string name="setting_device_title">System Information</string>
     <string name="setting_device_software_version">Software Version:</string>
@@ -149,6 +154,7 @@
     <string name="setting_reboot_success">Reboot successed.</string>
     <string name="setting_reset_failed">Reset failed.</string>
     <string name="setting_reset_success">Reset successed.</string>
+    <string name="setting_ssid_invalid">The SSID must be ASCII characters but cannot comprise any of the following characters: /,\',=,\&quot;,\\,&amp;.</string>
     <!-- setting end -->
 
 	<!-- common start -->

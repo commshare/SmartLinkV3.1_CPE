@@ -152,6 +152,8 @@ public class MessageUti {
 			"com.alcatel.smartlinkv3.business.update.getDeviceUpgradeState";
 	public static String UPDATE_SET_DEVICE_STOP_UPDATE=
 			"com.alcatel.smartlinkv3.business.update_setDeviceStopUpdate";
+	public static String UPDATE_SET_CHECK_DEVICE_NEW_VERSION=
+			"com.alcatel.smartlinkv3.business.setCheckDeviceNewVersion";
 	/**************************update message end*********************************************************************************/
 	
 	/**************************device message start*******************************************************************************/
@@ -270,6 +272,8 @@ public class MessageUti {
 				new HttpMethodUti(UpdateManager.class, "getUpgradeState"));
 		httpMethods.put(UPDATE_SET_DEVICE_STOP_UPDATE,
 				new HttpMethodUti(UpdateManager.class, "stopUpdate"));
+		httpMethods.put(UPDATE_SET_CHECK_DEVICE_NEW_VERSION,
+				new HttpMethodUti(UpdateManager.class, "setCheckNewFirmwareVersion"));
 		/**************************update message end*********************************************************************************/
 		
 		
