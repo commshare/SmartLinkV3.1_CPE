@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/btn_back"
-                android:text="Back"
+                android:text="@string/back"
                 android:textColor="@color/color_white"
                 android:textSize="16sp" />
 
@@ -41,7 +41,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="SD Sharing"
+                android:text="@string/sd_sharing"
                 android:textColor="@color/color_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -86,7 +86,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/enable_dlna_btn"
                     android:singleLine="false"
-                    android:text="DLNA"
+                    android:text="@string/dlna"
                     android:textColor="@color/color_black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -107,14 +107,14 @@
                 android:paddingTop="6dip" >
 
                 <TextView
-                    android:id="@+id/enable_service_name_tag"
+                    android:id="@+id/tv_dlna_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/enable_dlna_btn"
                     android:singleLine="false"
-                    android:text="@string/service_name_description"
+                    android:text="@string/dlna_description"
                     android:textColor="@color/color_grey"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -133,27 +133,28 @@
                 android:paddingBottom="6dip"
                 android:paddingTop="6dip" >
 
-                <Button
-                    android:id="@+id/enable_sharing_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/switch_off"
-                    android:clickable="true" />
-
                 <TextView
-                    android:id="@+id/enable_sharing_tag"
+                    android:id="@+id/sdcard_sharing_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/enable_dlna_btn"
                     android:singleLine="false"
-                    android:text="SD Card Sharing"
+                    android:text="@string/sd_card_sharing"
                     android:textColor="@color/color_black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+                
+                 <TextView
+                    android:id="@+id/sdcard_sharing_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"                       
+                    android:text="@string/not_available"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
             </RelativeLayout>
 
             <View
@@ -182,11 +183,11 @@
                     android:progressDrawable="@drawable/usage_status_progress_data" />
 
                 <TextView
-                    android:id="@+id/data_status_tag"
+                    android:id="@+id/tv_sdcard_usage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="false"
-                    android:text="20GB of 30GB used"
+                    android:text="@string/sdcard_usage"
                     android:textColor="@color/color_grey"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -212,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:singleLine="true"
-                    android:text="Storage"
+                    android:text="@string/storage"
                     android:textColor="@color/color_black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -226,8 +227,10 @@
                     android:contentDescription="@null"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
+                android:layout_marginTop="6dip"
                 android:layout_height="1dip"
                 android:background="@color/color_divider" />
         </LinearLayout>

@@ -2,8 +2,10 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
+import com.alcatel.smartlinkv3.business.sharing.SDCardSpace;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.Status;
 import com.alcatel.smartlinkv3.ui.activity.StorageMainActivity;
 import com.alcatel.smartlinkv3.R;
 
@@ -25,9 +27,11 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private RelativeLayout m_layoutStorage = null;
 	private SdSharingReceiver m_sdSharingReceiver = null;
 	private Button m_btnDlna = null;
-	private ImageButton bnback = null;
-	private TextView tvback = null;
-	
+	private ImageButton m_btnback = null;
+	private TextView m_tvback = null;
+	private TextView m_tvDlnaDesc = null;
+	private TextView m_tvSdcardUsage = null;
+	private TextView m_tvSdcardStatus = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +43,22 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 		m_btnDlna = (Button) this.findViewById(R.id.enable_dlna_btn);
 		m_btnDlna.setOnClickListener(this);
-		
-		
-		
-		tvback = (TextView) this.findViewById(R.id.Back);
-		tvback.setOnClickListener(this);
-		
-		bnback = (ImageButton) this.findViewById(R.id.btn_back);
-		bnback.setOnClickListener(this);
-		
-		
+
+		m_tvback = (TextView) this.findViewById(R.id.Back);
+		m_tvback.setOnClickListener(this);
+
+		m_btnback = (ImageButton) this.findViewById(R.id.btn_back);
+		m_btnback.setOnClickListener(this);
+
+		m_tvDlnaDesc = (TextView) this.findViewById(R.id.tv_dlna_description);
+		m_tvSdcardUsage = (TextView) this.findViewById(R.id.tv_sdcard_usage);
+
+		m_tvSdcardStatus = (TextView) this
+				.findViewById(R.id.sdcard_sharing_status);
+		String format = this.getResources().getString(R.string.sdcard_usage);
+		String usage;
+		usage = String.format(format, 0, 0);
+		m_tvSdcardUsage.setText(usage);
 	}
 
 	@Override
@@ -60,8 +70,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 		registerReceiver();
-		getDlnaSettings();
-		getSDCardSpace();
+		getDlnaSettings();		
 		getSambaSettings();
 	}
 
@@ -78,7 +87,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-	
+
 		switch (v.getId()) {
 		case R.id.layout_storage:
 			onStorageClick();
@@ -87,7 +96,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		case R.id.enable_dlna_btn:
 			onDlnaClick();
 			break;
-			
+
 		case R.id.Back:
 		case R.id.btn_back:
 			onBackClick();
@@ -97,13 +106,12 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 			break;
 		}
 	}
-	
-	private void onStorageClick()
-	{
+
+	private void onStorageClick() {
 		Intent intent = new Intent(this, StorageMainActivity.class);
 		startActivity(intent);
 	}
-	
+
 	private void onBackClick() {
 		this.finish();
 	}
@@ -111,7 +119,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private void onDlnaClick() {
 		DlnaSettings settings = BusinessMannager.getInstance()
 				.getDlnaSettings();
-	
+
 		if (settings.DlnaStatus == 0) {
 			settings.DlnaStatus = 1;
 		} else {
@@ -134,6 +142,15 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 				MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
 	}
 
+	private void showSdcardUsage() {
+		SDCardSpace space = BusinessMannager.getInstance().getSDCardSpace();
+		String format = SdSharingActivity.this.getResources().getString(
+				R.string.sdcard_usage);
+		String usage = String.format(format, space.UsedSpace, space.TotalSpace);
+		m_tvSdcardUsage.setText(usage);
+
+	}
+
 	private void showDlnaSettings() {
 		DlnaSettings settings = BusinessMannager.getInstance()
 				.getDlnaSettings();
@@ -142,20 +159,30 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		} else {
 			m_btnDlna.setBackgroundResource(R.drawable.switch_on);
 		}
+
+		String format = this.getResources()
+				.getString(R.string.dlna_description);
+		String description;
+		if (settings.DlnaName.isEmpty()) {
+			description = String.format(format, BusinessMannager.getInstance()
+					.getSystemInfoModel().getDeviceName());
+		} else {
+			description = String.format(format, settings.DlnaName);
+		}
+
+		m_tvDlnaDesc.setText(description);
+
 	}
-	
-	private void getSDCardSpace()
-	{
+
+	private void getSDCardSpace() {
 		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET, null);	
+				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET, null);
 	}
-	
-	private void getSambaSettings()
-	{
+
+	private void getSambaSettings() {
 		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET, null);	
+				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET, null);
 	}
-	
 
 	private void registerReceiver() {
 		m_sdSharingReceiver = new SdSharingReceiver();
@@ -165,18 +192,18 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
 				MessageUti.SHARING_SET_DLNA_SETTING_REQUSET));
-		
+
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
-				MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET));		
-		
+				MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET));
+
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
-				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET));	
-		
+				MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET));
+
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
-				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET));	
-		
+				MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET));
+
 		this.registerReceiver(m_sdSharingReceiver, new IntentFilter(
-				MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET));	
+				MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET));
 
 	}
 
@@ -188,12 +215,43 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 					MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)
 					|| intent.getAction().equals(
 							MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)) {
-				showDlnaSettings();
+
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					showDlnaSettings();
+				}
 			} else if (intent.getAction().equals(
 					MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET)) {
-				//TODO				
-			}
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					showSdcardUsage();
+				}
+			} else if (intent.getAction().equals(
+					MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
 
+					if (Status.build(BusinessMannager.getInstance()
+							.getSambaSettings().SambaStatus) == Status.Disabled) {
+						m_btnDlna.setEnabled(false);
+						m_tvSdcardStatus.setVisibility(View.VISIBLE);
+						String format = SdSharingActivity.this.getResources()
+								.getString(R.string.sdcard_usage);
+						String usage = String.format(format, 0, 0);
+						m_tvSdcardUsage.setText(usage);
+					} else {
+						m_btnDlna.setEnabled(true);
+						m_tvSdcardStatus.setVisibility(View.GONE);
+						getSDCardSpace();
+					}
+				}
+			}
 		}
 	}
 

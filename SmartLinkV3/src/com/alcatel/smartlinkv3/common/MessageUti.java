@@ -231,7 +231,7 @@ public class MessageUti {
 		httpMethods.put(SHARING_SET_SAMBA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setSambaSetting"));	
 		httpMethods.put(SHARING_GET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "getDlnaSetting"));	
 		httpMethods.put(SHARING_SET_DLNA_SETTING_REQUSET, new HttpMethodUti(SharingManager.class, "setDlnaSetting"));	
-		httpMethods.put(SHARING_GET_SDCARD_SPACE_REQUSET, new HttpMethodUti(SharingManager.class, "GetSDCardSpace"));
+		httpMethods.put(SHARING_GET_SDCARD_SPACE_REQUSET, new HttpMethodUti(SharingManager.class, "getSDCardSpace"));
 		/********************Sharing method end**********************/			
 		
 		/********************WLAN method start**********************/

@@ -282,7 +282,13 @@
 	<string name="btn_cancel_downloading">Yes, stop the downloading</string>
 	
 	<!-- sd sharing start -->
-	<string name="service_name_description">Server Name: Y858 Media Server Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
+	<string name="dlna_description">Server Name: %1$s Media Server Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
+	<string name="sd_card_sharing">SD Card Sharing</string>
+	<string name="sd_sharing">SD Sharing</string>
+	<string name="dlna">DLNA</string>
+	<string name="sdcard_usage">%1$dGB of %2$dGB used.</string>
+	<string name="storage">Storage</string>		
+	<string name="not_available">Not Available</string>
 	<!-- sd sharing end -->
 	
 	<!-- wps start -->
