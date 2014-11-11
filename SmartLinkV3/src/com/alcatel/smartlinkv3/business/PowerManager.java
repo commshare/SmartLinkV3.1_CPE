@@ -72,7 +72,7 @@ public class PowerManager extends BaseManager {
 	private void startGetBatteryStatusTask() {
 		if(m_getBatteryStateTask == null) {
 			m_getBatteryStateTask = new getBatteryStateTask();
-			m_getBatteryRollTimer.scheduleAtFixedRate(m_getBatteryStateTask, 0, 20 * 1000);
+			m_getBatteryRollTimer.scheduleAtFixedRate(m_getBatteryStateTask, 0, 10 * 1000);
 		}
 	}
 	
