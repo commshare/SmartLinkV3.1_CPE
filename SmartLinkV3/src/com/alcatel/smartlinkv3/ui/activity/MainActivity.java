@@ -180,11 +180,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		destroyDialogs();
 		m_homeView.onDestroy();
 		m_usageView.onDestroy();
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
-		destroyDialogs();
 	}
 	
 	private void destroyDialogs(){
