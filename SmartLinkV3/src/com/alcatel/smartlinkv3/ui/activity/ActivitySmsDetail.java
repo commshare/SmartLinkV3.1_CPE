@@ -730,8 +730,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 
 				});
 
-				LayoutParams contentLayout = (LayoutParams) holder.smsContentLayout.getLayoutParams();
-				//LayoutParams contentLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				//LayoutParams contentLayout = (LayoutParams) holder.smsContentLayout.getLayoutParams();
+				LayoutParams contentLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 				EnumSMSType type = m_smsListData.get(position).eSMSType;
 				int nContentLayoutBg = R.drawable.selector_sms_detail_receive;
