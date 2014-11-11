@@ -266,6 +266,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				}
 			}
 		}
+		
 		((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
 		
 		String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);		
@@ -276,10 +277,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	
 	private void updateBlockDeviceUI()
 	{
-		m_blockedDeviceLstData = BusinessMannager.getInstance()
-				.getBlockDeviceList();
-		((BlockedDevAdapter) m_blockedDeviceList.getAdapter())
-				.notifyDataSetChanged();
+		m_blockedDeviceLstData = BusinessMannager.getInstance().getBlockDeviceList();
+		((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 		
 		String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);		
 		strBlockdCnt = String.format(strBlockdCnt, m_blockedDeviceLstData.size());
