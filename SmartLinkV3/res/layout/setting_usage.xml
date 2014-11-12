@@ -91,15 +91,15 @@
 
             <EditText
                 android:id="@+id/monthly_plan_value"
-                android:layout_width="wrap_content"
+                android:layout_width="90dip"
                 android:layout_height="30dip"
                 android:layout_marginLeft="30dip"
                 android:layout_marginRight="2dip"
                 android:layout_toRightOf="@+id/monthly_plan_tag"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
-                android:text="1024"
-                android:maxLength="6"
+                android:text="99999999"
+                android:maxLength="8"
                 android:imeOptions="actionDone"
                 android:width="65dip" />
             

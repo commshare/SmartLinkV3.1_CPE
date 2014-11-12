@@ -25,7 +25,7 @@
         android:id="@+id/search_btn"  
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"  
-        android:background="@drawable/m100_toolbarsearch_normal"  
+        android:background="@drawable/localsearch_normal"  
         android:layout_gravity="left|center_vertical"/> 
     <ImageButton  
         android:id="@+id/delete_btn"  
