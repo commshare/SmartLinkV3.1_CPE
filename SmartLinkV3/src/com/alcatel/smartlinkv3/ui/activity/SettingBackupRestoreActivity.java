@@ -120,7 +120,6 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		unregisterReceiver(m_msgReceiver);
 	}
 
 	@Override

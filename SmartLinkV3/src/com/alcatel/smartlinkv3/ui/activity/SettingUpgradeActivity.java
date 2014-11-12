@@ -136,7 +136,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		unregisterReceiver(m_msgReceiver);
 	}
 
 	@Override

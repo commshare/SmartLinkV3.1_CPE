@@ -566,7 +566,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		unregisterReceiver(m_msgReceiver);
 		m_err_dialog.closeDialog();
 	}
 

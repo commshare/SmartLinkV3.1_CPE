@@ -164,7 +164,6 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		unregisterReceiver(m_msgReceiver);
 	}
 
 	@Override
