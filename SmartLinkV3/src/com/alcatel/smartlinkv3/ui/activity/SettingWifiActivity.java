@@ -25,6 +25,7 @@ import android.text.InputType;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -214,6 +215,14 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			break;
 		case R.id.ib_title_back:
 		case R.id.tv_title_back:
+			//hide keyboard
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			boolean isOpen=imm.isActive();
+			if (isOpen) {
+				imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+
 			SettingWifiActivity.this.finish();
 			break;
 		case R.id.tv_titlebar_edit:
