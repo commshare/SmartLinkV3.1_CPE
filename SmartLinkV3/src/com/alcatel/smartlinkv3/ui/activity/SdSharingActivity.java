@@ -39,6 +39,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sd_sharing_view);
+		m_bNeedBack = false;
 
 		m_layoutStorage = (RelativeLayout) findViewById(R.id.layout_storage);
 		m_layoutStorage.setOnClickListener(this);

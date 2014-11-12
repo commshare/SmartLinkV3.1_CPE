@@ -6,6 +6,7 @@ import java.util.Map;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -173,6 +174,7 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 		int nProgress =0;
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
+		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 
 		
 		if(statistic.HMonthlyPlan!=0)
@@ -197,6 +199,9 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 	    }else {
 	    	m_homedata.setVisibility(View.GONE);
 	    	m_homeSetMonthlyBtn.setVisibility(View.VISIBLE);
+	    	if(sim.m_SIMState != SIMState.Accessable) {
+	    		m_homeSetMonthlyBtn.setEnabled(false);
+	    	}
 	    	m_homedataprogress.setProgress(0);
 	    	m_homedataprogressdec.setVisibility(View.VISIBLE);
 	    	m_homewarn.setVisibility(View.GONE);

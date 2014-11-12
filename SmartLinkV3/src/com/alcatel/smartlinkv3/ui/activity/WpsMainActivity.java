@@ -93,6 +93,8 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wps_view);
+		m_bNeedBack = false;
+		
 		init();
 	}
 
