@@ -63,9 +63,9 @@
 							android:layout_height="35dip"
 							android:visibility="gone"
 				           	android:background="@drawable/selector_common_button"
-				           	android:text="Set Monthly Data Plan"
+				           	android:text="@string/bt_set_monthlydata"
 				           	android:textColor="@drawable/common_button_text"
-				           	android:textSize="16sp" />
+				           	android:textSize="12sp" />
 	                	</FrameLayout>
 	            </RelativeLayout> 
 	            <RelativeLayout
@@ -98,7 +98,7 @@
 	                        android:ellipsize="end"
 	                        android:singleLine="true"
 	                        android:visibility="gone"
-	                        android:text="No data plan set yet"
+	                        android:text="@string/usage_status_des"
 	                        android:textColor="@color/color_black"  
 	                        android:textSize="12sp" />
 	                </FrameLayout>

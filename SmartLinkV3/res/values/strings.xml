@@ -44,6 +44,8 @@
     <!-- Home view end -->
     
     <!-- Usage view end -->
+    <string name="bt_set_monthlydata">Set Monthly Data Plan</string>
+    <string name="usage_status_des">No data plan set yet</string>
     <string name="usage_duration">%1$sHrs %2$sMins</string>
     <string name="roaming_descrition">Automatically connect even when in roaming.</string>
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
