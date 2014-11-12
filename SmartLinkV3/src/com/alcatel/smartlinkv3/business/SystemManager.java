@@ -507,4 +507,56 @@ public class SystemManager extends BaseManager {
 					}));
 		}
 	}
+	
+	public void setAppBackup(DataValue data){
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("System", "SetAppBackup")) {
+//			return;
+//		}
+
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.setAppBackupRequest("13.10", 
+							new IHttpFinishListener() {
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							int nRet = response.getResultCode();
+							String strError = response.getErrorCode();
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_APP_BACKUP);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
+							m_context.sendBroadcast(intent);
+						}
+					}));
+		}
+	}
+	
+	public void setAppRestoreBackup(DataValue data){
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("System", "SetAppRestoreBackup")) {
+//			return;
+//		}
+
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blWifiConnected) {
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSystem.setAppRestoreBackupRequest("13.11", 
+							new IHttpFinishListener() {
+
+						@Override
+						public void onHttpRequestFinish(BaseResponse response) {
+							// TODO Auto-generated method stub
+							int nRet = response.getResultCode();
+							String strError = response.getErrorCode();
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
+							m_context.sendBroadcast(intent);
+						}
+					}));
+		}
+	}
 }

@@ -513,4 +513,108 @@ public class HttpSystem {
 		}
 		
 	}
+	
+	public static class setAppBackupRequest extends BaseRequest{
+
+		public setAppBackupRequest(String strID, IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strID;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetAppBackup");
+
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new setAppBackupResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class setAppBackupResponse extends BaseResponse{
+
+		public setAppBackupResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public <T> T getModelResult() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
+	
+	public static class setAppRestoreBackupRequest extends BaseRequest{
+
+		public setAppRestoreBackupRequest(String strID, IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strID;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetAppBackup");
+
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new setAppBackupResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class setAppRestoreBackupResponse extends BaseResponse{
+
+		public setAppRestoreBackupResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public <T> T getModelResult() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
 }

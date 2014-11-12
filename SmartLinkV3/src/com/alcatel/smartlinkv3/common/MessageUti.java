@@ -56,6 +56,10 @@ public class MessageUti {
 			"com.alcatel.smartlinkv3.business.setDeviceRestore";
 	public static String SYSTEM_SET_DEVICE_POWER_OFF=
 			"com.alcatel.smartlinkv3.business.setDevicePowerOff";
+	public static String SYSTEM_SET_APP_BACKUP=
+			"com.alcatel.smartlinkv3.business.setAppBackup";
+	public static String SYSTEM_SET_APP_RESTORE_BACKUP=
+			"com.alcatel.smartlinkv3.business.setAppRestoreBackup";
 	/**************************System message end*********************************************************************************/
 	
 	/**************************Statistics message start*********************************************************************************/
@@ -186,6 +190,10 @@ public class MessageUti {
 				new HttpMethodUti(SystemManager.class, "restoreDevice"));
 		httpMethods.put(SYSTEM_SET_DEVICE_POWER_OFF, 
 				new HttpMethodUti(SystemManager.class, "setDevicePowerOff"));
+		httpMethods.put(SYSTEM_SET_APP_BACKUP, 
+				new HttpMethodUti(SystemManager.class, "setAppBackup"));
+		httpMethods.put(SYSTEM_SET_APP_RESTORE_BACKUP, 
+				new HttpMethodUti(SystemManager.class, "setAppRestoreBackup"));
 		/********************System method end**********************/
 		
 		/********************User method start**********************/

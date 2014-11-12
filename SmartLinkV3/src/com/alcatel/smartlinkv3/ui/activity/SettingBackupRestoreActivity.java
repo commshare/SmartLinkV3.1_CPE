@@ -95,15 +95,12 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	
 	private void onBtnBackup(){
 		BusinessMannager.getInstance().
-		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_BACKUP, null);
+		sendRequestMessage(MessageUti.SYSTEM_SET_APP_BACKUP, null);
 	}
 	
 	private void onBtnRestore(){
-		String strFile="";
-		DataValue data = new DataValue();
-		data.addParam("FileName", strFile);
 		BusinessMannager.getInstance().
-		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESTORE, data);
+		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
 	}
 
 	@Override
@@ -112,9 +109,9 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		m_bNeedBack = false;
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
-				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_BACKUP));
+				new IntentFilter(MessageUti.SYSTEM_SET_APP_BACKUP));
 		registerReceiver(m_msgReceiver, 
-				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_RESTORE));
+				new IntentFilter(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP));
 	}
 
 	@Override
@@ -127,7 +124,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	protected void onBroadcastReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		super.onBroadcastReceive(context, intent);
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_BACKUP)){
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_APP_BACKUP)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.setting_backup_failed);
@@ -139,7 +136,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			ShowWaiting(false);
 		}
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESTORE)){
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.setting_restore_failed);

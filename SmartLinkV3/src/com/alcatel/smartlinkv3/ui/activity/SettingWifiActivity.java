@@ -415,9 +415,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_securityOptions.add(STRING_WPA2);
 		m_securityOptions.add(STRING_WPA_WPA2);
 		m_wpaTypeOptions = new ArrayList<String>();
-		m_wpaTypeOptions.add(STRING_AUTO);
-		m_wpaTypeOptions.add(STRING_AES);
 		m_wpaTypeOptions.add(STRING_TKIP);
+		m_wpaTypeOptions.add(STRING_AES);
+		m_wpaTypeOptions.add(STRING_AUTO);
 		m_wpaTypeOptions2 = new ArrayList<String>();
 		m_wpaTypeOptions2.add(STRING_AES);
 		m_wepTypeOptions = new ArrayList<String>();
@@ -478,11 +478,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			}else{
 				m_encryptionSpinner.setAdapter(m_wpaEncryptionadapter,m_wpaTypeOptions);
 				if(wpaType == WPAEncryption.AUTO)
-					m_encryptionSpinner.setSelection(0);
+					m_encryptionSpinner.setSelection(2);
 				else if(wpaType == WPAEncryption.AES)
 					m_encryptionSpinner.setSelection(1);
 				else
-					m_encryptionSpinner.setSelection(2);
+					m_encryptionSpinner.setSelection(0);
 			}
 			m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
 			m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
@@ -511,7 +511,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 					m_encryptionSpinner.setSelection(0);//AES
 				}else{
 					m_encryptionSpinner.setAdapter(m_wpaEncryptionadapter,m_wpaTypeOptions);
-					m_encryptionSpinner.setSelection(0);//auto
+					m_encryptionSpinner.setSelection(2);//auto
 				}
 				m_curWEPPassword = m_et_password.getEditableText().toString();
 				m_et_password.setText(m_curWPAPassword);
