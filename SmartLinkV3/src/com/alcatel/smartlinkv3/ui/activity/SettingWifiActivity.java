@@ -268,6 +268,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_et_password.setEnabled(true);
 		m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
 		m_et_ssid.setBackgroundResource(R.drawable.selector_edit_bg);
+		m_et_password.setPadding(0, 0, 200, 0);
 		if(m_rg_wifi_mode.isShown()){
 			m_rb_2point4G_wifi.setEnabled(true);
 			m_rb_5G_wifi.setEnabled(true);
