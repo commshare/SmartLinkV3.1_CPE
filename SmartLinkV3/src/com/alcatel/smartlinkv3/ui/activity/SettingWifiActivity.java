@@ -333,6 +333,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_et_password.setEnabled(false);
 		m_et_password.setBackgroundDrawable(null);
 		m_et_ssid.setBackgroundDrawable(null);
+		m_et_password.setPadding(0, 0, 200, 0);
 		if(m_rg_wifi_mode.isShown()){
 			m_rb_2point4G_wifi.setEnabled(false);
 			m_rb_5G_wifi.setEnabled(false);
