@@ -554,6 +554,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		m_bNeedBack = false;
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));

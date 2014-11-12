@@ -151,6 +151,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		m_bNeedBack = false;
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_REBOOT));

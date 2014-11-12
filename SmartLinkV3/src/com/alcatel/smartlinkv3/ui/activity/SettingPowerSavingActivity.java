@@ -207,6 +207,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		m_bNeedBack = false;
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
@@ -214,7 +215,6 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
-		registerReceiver(m_msgReceiver, new IntentFilter("openPage"));
 	}
 
 	@Override
