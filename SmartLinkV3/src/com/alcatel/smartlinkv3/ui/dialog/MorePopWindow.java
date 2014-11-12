@@ -73,7 +73,7 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 		case R.id.clear_history_layout:
 			SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 			ConnectStatusModel connectStatus = BusinessMannager.getInstance().getConnectStatus();
-			if ((simState.m_SIMState == SIMState.Accessable) && (connectStatus.m_connectionStatus == ConnectionStatus.Connected)) {
+			if ((simState.m_SIMState == SIMState.Accessable) && (connectStatus.m_connectionStatus == ConnectionStatus.Disconnected)) {
 				DataValue data = new DataValue();
 				SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date now = new Date();

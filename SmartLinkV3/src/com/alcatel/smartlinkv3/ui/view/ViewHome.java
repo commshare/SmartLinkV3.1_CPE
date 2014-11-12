@@ -410,6 +410,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
 				m_connectToLabel.setText(R.string.home_disconnected_to);
 				m_connectWaiting.setVisibility(View.GONE);
+				statictime = (long)internetConnState.m_lConnectionTime;
+				staticdata = (long)internetConnState.m_lDlBytes+internetConnState.m_lUlBytes;
 			}
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connecting) {
 				m_connectToLabel.setText(R.string.home_connecting_to);

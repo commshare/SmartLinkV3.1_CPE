@@ -489,10 +489,14 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	}
 	
 	private void go2UsageView() {
-		setMainBtnStatus(R.id.main_usage);
-		showView(ViewIndex.VIEW_USAGE);
-		updateTitleUI(ViewIndex.VIEW_USAGE);
-		pageIndex = ViewIndex.VIEW_USAGE;
+		SimStatusModel simStatus = BusinessMannager.getInstance()
+				.getSimStatus();
+		if(simStatus.m_SIMState == SIMState.Accessable) {
+			setMainBtnStatus(R.id.main_usage);
+			showView(ViewIndex.VIEW_USAGE);
+			updateTitleUI(ViewIndex.VIEW_USAGE);
+			pageIndex = ViewIndex.VIEW_USAGE;
+		}
 	}
 	
 	private void smsBtnClick() {
@@ -522,10 +526,14 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	}
 
 	private void go2SmsView() {
-		setMainBtnStatus(R.id.tab_sms_layout);
-		showView(ViewIndex.VIEW_SMS);
-		updateTitleUI(ViewIndex.VIEW_SMS);
-		pageIndex = ViewIndex.VIEW_SMS;
+		SimStatusModel simStatus = BusinessMannager.getInstance()
+				.getSimStatus();
+		if(simStatus.m_SIMState == SIMState.Accessable) {
+			setMainBtnStatus(R.id.tab_sms_layout);
+			showView(ViewIndex.VIEW_SMS);
+			updateTitleUI(ViewIndex.VIEW_SMS);
+			pageIndex = ViewIndex.VIEW_SMS;
+		}
 	}
 
 	private void settingBtnClick() {
