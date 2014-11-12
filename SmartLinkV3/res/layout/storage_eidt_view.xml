@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="center"
-                    android:padding="12dip"
+                    android:layout_marginRight="10dip"
                     android:text="@string/done"
                     android:textColor="@drawable/common_button_text"
                     android:textSize="18sp"
