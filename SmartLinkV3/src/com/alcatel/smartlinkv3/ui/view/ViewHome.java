@@ -82,6 +82,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private TextView m_networkTypeTextView;
 	private ImageView m_networkRoamImageView;
 	private ImageView m_signalImageView;
+	private TextView m_networkLabelTextView;
 	/*sigel_panel  end*/
 	
 	/*battery_panel  start*/
@@ -218,6 +219,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);
 		m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);
 		m_networkRoamImageView = (ImageView) m_view.findViewById(R.id.connect_roam);
+		m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);
 		
 		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
 		m_batteryProgress = (ProgressBar) m_view.findViewById(R.id.battery_progress);
@@ -565,6 +567,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
 		if (simStatus != SIMState.Accessable) {
 			m_networkTypeTextView.setVisibility(View.GONE);
+			m_networkLabelTextView.setVisibility(View.VISIBLE);
 			m_networkRoamImageView.setVisibility(View.GONE);
 			m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
 		}else{
@@ -573,7 +576,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_networkTypeTextView.setVisibility(View.GONE);
 				m_networkRoamImageView.setVisibility(View.GONE);
 				m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
-				
+				m_networkLabelTextView.setVisibility(View.VISIBLE);
 				return;
 			}
 			//show roaming
@@ -595,6 +598,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			//show network type
 			if (curNetwork.m_NetworkType == NetworkType.UNKNOWN)
 				m_networkTypeTextView.setVisibility(View.GONE);
+				m_networkLabelTextView.setVisibility(View.VISIBLE);
 			
 			//2G
 			if (curNetwork.m_NetworkType == NetworkType.Net_2G) {
