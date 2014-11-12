@@ -222,7 +222,7 @@ public class StorageEditActivity extends BaseActivity implements
 
 		// get controls
 		m_backBtn = (LinearLayout) this.findViewById(R.id.back_layout);
-		m_backBtn.setOnClickListener(this);
+		//m_backBtn.setOnClickListener(this);
 		m_doneBtn = (TextView) this.findViewById(R.id.done_btn);
 		m_doneBtn.setOnClickListener(this);
 		m_title = (TextView) this.findViewById(R.id.title);
@@ -318,7 +318,7 @@ public class StorageEditActivity extends BaseActivity implements
 
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
-		case R.id.back_layout:
+		//case R.id.back_layout:
 		case R.id.done_btn:
 			this.finish();
 			break;
