@@ -54,7 +54,7 @@
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:text="1"
-                android:maxLength="6"
+                android:maxLength="8"
                 android:imeOptions="actionDone"
                 android:width="65dip" />
             
