@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class StorageMainActivity extends BaseActivity implements
 		OnClickListener {
@@ -201,6 +202,9 @@ public class StorageMainActivity extends BaseActivity implements
 		case layout_samba_disable:
 			m_noExtStorage.setVisibility(View.GONE);
 			m_sambaDisable.setVisibility(View.VISIBLE);		
+			TextView textDesc = (TextView) this.findViewById(R.id.samba_service_disableed_discription_view);
+			String strDeviceName = BusinessMannager.getInstance().getSystemInfo().getDeviceName();
+			textDesc.setText(String.format(this.getString(R.string.m100_storage_main_samba_service_disabled_description), strDeviceName));
 			m_hardDisc.setVisibility(View.GONE);
 			break;
 

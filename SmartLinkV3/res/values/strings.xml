@@ -279,7 +279,7 @@
     <string name="m100_storage_main_local_storage">Local Storage</string>
     <string name="m100_storage_main_samba_service">Samba Service</string>
     <string name="m100_storage_main_samba_service_disabled">Samba service is disabled</string>
-    <string name="m100_storage_main_samba_service_disabled_description">To access sd card connected to Y858, you need to switch on Samba Service below. Then, if you after want to switch off this service, you should go to "My Device > Settings > Advanced > Samba".</string>
+    <string name="m100_storage_main_samba_service_disabled_description">To access sd card connected to %1$s, you need to switch on Samba Service below.</string>
   	<string name="m100_loading_pecent">%1$d%%</string>
     <string name="m100_downloading_prompt">\"%1$s\" is downloading...</string>
     <string name="m100_uploading_prompt">\"%1$s\" is uploading...</string>
