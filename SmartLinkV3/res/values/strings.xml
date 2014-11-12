@@ -41,6 +41,7 @@
     <string name="home_connected_duration">%1$sHrs %2$sMins</string>
     <string name="access_lable">connected</string>
     <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please change the monthly values or reset consumption.</string>
+    
     <!-- Home view end -->
     
     <!-- Usage view end -->
@@ -51,6 +52,7 @@
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <string name="usage_clear_history_success">Clear usage history successfully!</string>
     <string name="usage_clear_history_fail">Clear usage history failed!</string>
+    <string name="usage_comsumptionexplain_label">If enable clear function, please disconnect first.</string>
     <!-- Usage view end -->
     
     <!--sms start -->

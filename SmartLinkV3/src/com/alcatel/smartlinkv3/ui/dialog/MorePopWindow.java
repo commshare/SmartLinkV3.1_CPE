@@ -27,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 public class MorePopWindow extends PopupWindow implements OnClickListener{
 	private View conentView;
@@ -64,6 +65,7 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent(); 
+		String msgRes = null;
 		switch (v.getId()) {
 		case R.id.usage_setting_layout:
             intent.setClass(v.getContext(), UsageSettingActivity.class);  
@@ -73,7 +75,7 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 		case R.id.clear_history_layout:
 			SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 			ConnectStatusModel connectStatus = BusinessMannager.getInstance().getConnectStatus();
-			if ((simState.m_SIMState == SIMState.Accessable) && (connectStatus.m_connectionStatus == ConnectionStatus.Disconnected)) {
+			if (connectStatus.m_connectionStatus == ConnectionStatus.Disconnected) {
 				DataValue data = new DataValue();
 				SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date now = new Date();
@@ -81,6 +83,9 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 				data.addParam("clear_time", strDate);
 				BusinessMannager.getInstance().sendRequestMessage(
 						MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET, data);
+			}else {
+				msgRes = v.getContext().getString(R.string.usage_comsumptionexplain_label);
+				Toast.makeText(v.getContext(), msgRes,Toast.LENGTH_SHORT).show();
 			}
 			this.dismiss();
 			break;	
