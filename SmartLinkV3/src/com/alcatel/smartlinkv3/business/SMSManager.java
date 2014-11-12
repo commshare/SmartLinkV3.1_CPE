@@ -200,6 +200,9 @@ public class SMSManager extends BaseManager {
 	}
 	
 	public void getContactMessagesAtOnceRequest(){
+		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSContactList") != true)
+			return;
+		
 		if(m_smsInit == SMSInit.Complete) {
 			GetContactMessagesTask task = new GetContactMessagesTask();
 			m_getSmsRollTimer.schedule(task, 0);

@@ -278,8 +278,6 @@ public class MessageUti {
 		
 		
 		/********************Sharing method start**********************/			
-		httpMethods.put(DEVICE_GET_CONNECTED_DEVICE_LIST, new HttpMethodUti(DeviceManager.class, "getConnectedDeviceList"));	
-		httpMethods.put(DEVICE_GET_BLOCK_DEVICE_LIST, new HttpMethodUti(DeviceManager.class, "getBlockDeviceList"));	
 		httpMethods.put(DEVICE_SET_CONNECTED_DEVICE_BLOCK, new HttpMethodUti(DeviceManager.class, "setConnectedDeviceBlock"));	
 		httpMethods.put(DEVICE_SET_DEVICE_UNLOCK, new HttpMethodUti(DeviceManager.class, "setDeviceUnlock"));	
 		httpMethods.put(DEVICE_SET_DEVICE_NAME, new HttpMethodUti(DeviceManager.class, "setDeviceName"));	

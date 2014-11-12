@@ -53,57 +53,37 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			if (intent.getAction().equals(
-					MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK
-						&& strErrorCode.length() == 0) {					
+			if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK&& strErrorCode.length() == 0) {					
 					updateConnectedDeviceUI();				
 				}
-			} else if (intent.getAction().equals(
-					MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK
-						&& strErrorCode.length() == 0) {
+			} else if (intent.getAction().equals(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK&& strErrorCode.length() == 0) {
 					
 					updateBlockDeviceUI();					
 				}				
-			} else if (intent.getAction().equals(
-					MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK
-						&& strErrorCode.length() == 0) {				
+			} else if (intent.getAction().equals(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
 					getListData();					
 				}				
-			} else if (intent.getAction().equals(
-					MessageUti.DEVICE_SET_DEVICE_UNLOCK)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK
-						&& strErrorCode.length() == 0) {				
+			} else if (intent.getAction().equals(MessageUti.DEVICE_SET_DEVICE_UNLOCK)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
 					getListData();					
 				}				
 			}
 			
-			else if (intent.getAction().equals(
-					MessageUti.DEVICE_SET_DEVICE_NAME)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK
-						&& strErrorCode.length() == 0) {				
+			else if (intent.getAction().equals(MessageUti.DEVICE_SET_DEVICE_NAME)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
 					getListData();					
 				}				
 			}
@@ -113,21 +93,11 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 
 	private void registerReceiver() {
 		m_deviceReceiver = new DeviceReceiver();
-
-		this.registerReceiver(m_deviceReceiver, new IntentFilter(
-				MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST));
-
-		this.registerReceiver(m_deviceReceiver, new IntentFilter(
-				MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST));
-
-		this.registerReceiver(m_deviceReceiver, new IntentFilter(
-				MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK));
-
-		this.registerReceiver(m_deviceReceiver, new IntentFilter(
-				MessageUti.DEVICE_SET_DEVICE_UNLOCK));
-
-		this.registerReceiver(m_deviceReceiver, new IntentFilter(
-				MessageUti.DEVICE_SET_DEVICE_NAME));
+		this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST));
+		this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST));
+		this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK));
+		this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_SET_DEVICE_UNLOCK));
+		this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_SET_DEVICE_NAME));
 	}
 
 	@Override
@@ -149,7 +119,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		m_txConnectedCnt = (TextView) this.findViewById(R.id.tx_connected_cnt);
 		m_txBlockCnt =  (TextView) this.findViewById(R.id.tx_block_cnt);		
 		String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);		
-		strConnectedCnt = String.format(strConnectedCnt, 1);
+		strConnectedCnt = String.format(strConnectedCnt, 0);
 		m_txConnectedCnt.setText(strConnectedCnt);
 		
 		String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);		
@@ -201,25 +171,15 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private void OnBtnBack() {
 		this.finish();
 	}
-
-	private void getConnectedDeviceList() {
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST, null);
-	}
-
-	private void getBlockDeviceList() {
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST, null);
-	}
 	
-	private void setConnectedDeviceBlock(String strDeviceName, String strMac )
-	{
+	private void setConnectedDeviceBlock(String strDeviceName, String strMac ) {
 		DataValue data = new DataValue();
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);	
 	}
 	
-	private void setDeviceUnlock(String strDeviceName, String strMac )
-	{
+	private void setDeviceUnlock(String strDeviceName, String strMac ) {
 		DataValue data = new DataValue();
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
@@ -236,11 +196,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	}	
 
 	private void getListData() {
-
-		//m_connecedDeviceLstData.clear();
-		m_blockedDeviceLstData.clear();
-		getConnectedDeviceList();
-		getBlockDeviceList();
+		BusinessMannager.getInstance().getGetConnectedDeviceTaskAtOnceRequest();
+		BusinessMannager.getInstance().getGetBlockDeviceListTaskAtOnceRequest();
 	}
 	
 	private void updateConnectedDeviceUI()

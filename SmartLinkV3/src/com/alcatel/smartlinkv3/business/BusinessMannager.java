@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.business.DeviceManager.GetBlockDeviceListTask;
+import com.alcatel.smartlinkv3.business.DeviceManager.GetConnectedDeviceTask;
 import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
 import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
@@ -412,6 +414,14 @@ public class BusinessMannager {
 	public ArrayList<ConnectedDeviceItemModel> getBlockDeviceList()
 	{
 		return m_deviceManager.getBlockDeviceList();
+	}
+	
+	public void getGetConnectedDeviceTaskAtOnceRequest(){
+		m_deviceManager.getGetConnectedDeviceTaskAtOnceRequest();
+	}
+	
+	public void getGetBlockDeviceListTaskAtOnceRequest(){
+		m_deviceManager.getGetBlockDeviceListTaskAtOnceRequest();
 	}
     /********************Device manager method end************************/   
 

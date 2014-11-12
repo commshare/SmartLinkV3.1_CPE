@@ -168,7 +168,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				}
 			}
 			
-			if (intent.getAction().equals(MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET)) {
+			if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -249,8 +249,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_CONNECT_REQUSET));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_DISCONNECT_REQUSET));
-		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
+		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST));
 		
 		
 		
@@ -658,10 +658,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 	
 	private void showAccessDeviceState(){
-		
-		SystemStatus systemstatus = BusinessMannager.getInstance().getSystemStatus();
+		ArrayList<ConnectedDeviceItemModel> connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
 		m_accessnumTextView.setTypeface(typeFace);
-		m_accessnumTextView.setText(Integer.toString(systemstatus.getCurrNum()));
+		m_accessnumTextView.setText(Integer.toString(connecedDeviceLstData.size()));
 		
 		String strOfficial = this.m_context.getString(R.string.access_lable);
 		String strHtmlOfficial = "<u>"+strOfficial+"</u>";
