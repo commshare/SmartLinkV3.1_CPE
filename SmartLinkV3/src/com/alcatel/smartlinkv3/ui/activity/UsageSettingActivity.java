@@ -74,9 +74,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					showSettingBilling();
-					showSettingMonthly();
-					showTimeLimitInfo();
+					updateUI();
 				}
 			} else if (intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
@@ -272,6 +270,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		showSettingBilling();
 		showSettingMonthly();
 		showTimeLimitInfo();
+		showUsageAutoDisconnectBtn();
 		showRoamingAutoDisconnectBtn();
 		
 	}
@@ -329,6 +328,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		showSettingBilling();
 		showSettingMonthly();
 		showTimeLimitInfo();
+		showUsageAutoDisconnectBtn();
 		showRoamingAutoDisconnectBtn();
 	}
 	
@@ -496,7 +496,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_monthlyValue.setEnabled(false);
 		}
 
-		showUsageAutoDisconnectBtn();
+		//showUsageAutoDisconnectBtn();
 	}
 	
 	private void setSettingMonthly() {

@@ -10,6 +10,7 @@ public class UsageSettingModel extends BaseResult{
 	
 	public int HBillingDay = 0;//Billing day (Min:1, Max:31),
 	public long HMonthlyPlan = 0;//The max data that on month could use..
+	public int HUnit = 0;
 	public long HUsedData = 0;//The used data in month.
 	public int HTimeLimitTimes = 0;//The time limit function open, must set the limit time.
 	public int HUsedTimes = 0;//The used time that after open time limit function.
@@ -22,6 +23,7 @@ public class UsageSettingModel extends BaseResult{
 		// TODO Auto-generated method stub
 		HBillingDay = 0;
 		HMonthlyPlan = 0;
+		HUnit = 0;
 		HUsedData = 0;
 		HTimeLimitFlag = ENUM.OVER_TIME_STATE.Disable;
 		HTimeLimitTimes = 0;
@@ -34,6 +36,7 @@ public class UsageSettingModel extends BaseResult{
 			return ;
 		HBillingDay = src.HBillingDay;
 		HMonthlyPlan = src.HMonthlyPlan;
+		HUnit = src.HUnit;
 		HUsedData = src.HUsedData;
 		HTimeLimitFlag = src.HTimeLimitFlag;
 		HTimeLimitTimes = src.HTimeLimitTimes;
@@ -44,6 +47,7 @@ public class UsageSettingModel extends BaseResult{
 	public void setValue(UsageSettingsResult result) {	
 		HBillingDay = result.BillingDay;
 		HMonthlyPlan = result.MonthlyPlan;
+		HUnit = result.Unit;
 		HUsedData = result.UsedData;
 		HTimeLimitFlag = ENUM.OVER_TIME_STATE.build(result.TimeLimitFlag);
 		HTimeLimitTimes = result.TimeLimitTimes;
