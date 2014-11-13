@@ -29,7 +29,7 @@
     		android:layout_marginBottom="12dip"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Push Button Configuration"
+            android:text="@string/wps_pbc_bt"
             android:textColor="@color/color_black"
             android:textSize="20sp" />
         

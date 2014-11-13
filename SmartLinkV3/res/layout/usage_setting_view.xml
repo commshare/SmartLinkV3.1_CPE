@@ -26,7 +26,7 @@
 			         android:layout_height="wrap_content"
 			         android:layout_centerVertical="true"
 			         android:layout_toRightOf="@id/btn_back"
-			         android:text="Back"
+			         android:text="@string/back"
 			         android:textColor="@color/color_white"
 			         android:textSize="16sp" /> 
 			    <TextView
@@ -36,7 +36,7 @@
 			        android:layout_centerInParent="true"
 			        android:gravity="center"
 			        android:singleLine="true"
-			        android:text="Usage Settings"
+			        android:text="@string/usage_setting_title"
 			        android:textColor="@color/color_white"
 			        android:textSize="20sp"
 			        android:textStyle="bold" />
@@ -106,7 +106,7 @@
                 android:layout_toLeftOf="@id/enable_roaming_btn"
                 android:layout_centerVertical="true"
                 android:singleLine="true"
-                android:text="Roaming"
+                android:text="@string/usage_setting_roaming"
                 android:textSize="20sp" 
                 android:textStyle="bold"
                 android:textColor="@color/color_black"/>
@@ -160,7 +160,7 @@
                 android:layout_toLeftOf="@id/enable_auto_disconnected_btn"
                 android:layout_centerVertical="true"
                 android:singleLine="true"
-                android:text="Auto Disconnected"
+                android:text="@string/usage_setting_autodisconnected"
                 android:textSize="20sp" 
                 android:textStyle="bold"
                 android:textColor="@color/color_black"/>

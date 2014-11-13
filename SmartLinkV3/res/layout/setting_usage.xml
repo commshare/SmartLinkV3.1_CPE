@@ -14,7 +14,7 @@
         android:paddingTop="6dip"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
-        android:text="Usage"
+        android:text="@string/usage_setting_usage"
         android:textSize="20sp"
         android:textStyle="bold" 
         android:textColor="@color/color_black"/>
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Billing Day:"
+                android:text="@string/usage_setting_billingday"
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
 
@@ -53,7 +53,6 @@
                 android:layout_toRightOf="@+id/billing_plan_tag"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
-                android:text="1"
                 android:maxLength="8"
                 android:imeOptions="actionDone"
                 android:width="65dip" />
@@ -64,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/billing_plan_value"
                 android:layout_centerVertical="true"
-                android:text="day"
+                android:text="@string/usage_setting_dayunit"
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
         </RelativeLayout>
@@ -85,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Monthly Data Plan:"
+                android:text="@string/usage_setting_monthlysataplan"
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
 
@@ -98,7 +97,6 @@
                 android:layout_toRightOf="@+id/monthly_plan_tag"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
-                android:text="99999999"
                 android:maxLength="8"
                 android:imeOptions="actionDone"
                 android:width="65dip" />
@@ -109,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/monthly_plan_value"
                 android:layout_centerVertical="true"
-                android:text="MB"
+                android:text="@string/usage_setting_monthlyunit"
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
         </RelativeLayout>
@@ -133,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Data Consumption:"
+                    android:text="@string/usage_setting_dataconsunption"
                     android:textSize="16sp"
                     android:textColor="@color/color_grey" />
 
@@ -143,7 +141,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:text="100MB"
                     android:textSize="16sp" 
                     android:textColor="@color/color_grey"/>
             </RelativeLayout>

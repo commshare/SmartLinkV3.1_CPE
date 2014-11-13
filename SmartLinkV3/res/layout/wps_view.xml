@@ -27,7 +27,7 @@
 		         android:layout_height="wrap_content"
 		         android:layout_centerVertical="true"
 		         android:layout_toRightOf="@id/btn_back"
-		         android:text="Back"
+		         android:text="@string/back"
 		         android:textColor="@color/color_white"
 		         android:textSize="16sp" /> 
 		    <TextView

@@ -22,7 +22,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_centerVertical="true"
-		        android:text="WPS PIN:"
+		        android:text="@string/wps_pin_tv"
 		        android:textSize="20sp"
 		        android:textColor="@color/color_black" />
 
@@ -33,7 +33,6 @@
 		        android:layout_toRightOf="@id/wps_pin_tag"
 		        android:background="@drawable/selector_edit_bg"
 		        android:inputType="number"
-		        android:text="1234"
 		        android:maxLength="8"
 		        android:imeOptions="actionDone"
 		        android:width="85dip" />
@@ -48,7 +47,7 @@
             android:background="@drawable/selector_common_button"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Save"
+            android:text="@string/wps_pin_bt"
             android:textColor="@drawable/common_button_text"
             android:textSize="16dip" />
 

@@ -37,7 +37,7 @@
                 android:layout_toLeftOf="@id/enable_time_limit_btn"
                 android:layout_centerVertical="true"
                 android:singleLine="true"
-                android:text="Time Limit"
+                android:text="@string/usage_setting_timelimit"
                 android:textSize="20sp" 
                 android:textStyle="bold"
                 android:textColor="@color/color_black"/>
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Set Time Limit:"
+                android:text="@string/usage_setting_settimelimit"
                 android:textSize="16sp" 
                 android:textColor="@color/color_black"/>
             
@@ -73,7 +73,6 @@
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:maxLength="4"
-                android:text="2"
                 android:imeOptions="actionDone"
                 android:width="65dip" />
             
@@ -83,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/set_time_limit_value"
                 android:layout_centerVertical="true"
-                android:text="min(s)"
+                android:text="@string/usage_setting_timeunit"
                 android:textSize="16sp" 
                 android:textColor="@color/color_black"/>
         </RelativeLayout>

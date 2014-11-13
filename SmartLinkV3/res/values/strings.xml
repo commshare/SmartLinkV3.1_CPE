@@ -6,8 +6,8 @@
     <!-- main fram start -->
     <string name="main_home">Home</string>
     <string name="main_usage">Usage</string>
-   	<string name="main_sms">SMS</string>
     <string name="main_setting">Settings</string>
+    <string name="main_sms">SMS</string>
     
     <!-- Home view start -->
     <string name="home_GB">GB</string>
@@ -40,20 +40,49 @@
     <string name="home_battery_completed">Charge completed</string>
     <string name="home_connected_duration">%1$sHrs %2$sMins</string>
     <string name="access_lable">connected</string>
-    <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please change the monthly values or reset consumption.</string>
+    <string name="home_sim_loched">Sim Card Locked</string>
+    <string name="home_no_sim">no sim card</string>
+    <string name="home_battery_unit">%</string>
     
+    <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please change the monthly values or reset consumption.</string>
     <!-- Home view end -->
     
+    <!-- pop dialog start -->
+    <string name="add_dialog_sdsharing">SD Sharing</string>
+    <string name="add_dialog_wps">WPS</string>
+    <string name="add_dialog_logout">Logout</string>
+    <string name="pop_dialog_usagesetting">Usage Setting</string>
+    <string name="pop_dialog_clearhistory">Clear History</string>
+    <!-- pop dialog end -->
+    
     <!-- Usage view end -->
+    <string name="usage_view_home">Home</string>
+    <string name="usage_view_duration">Duration</string>
     <string name="bt_set_monthlydata">Set Monthly Data Plan</string>
     <string name="usage_status_des">No data plan set yet</string>
     <string name="usage_duration">%1$sHrs %2$sMins</string>
-    <string name="roaming_descrition">Automatically connect even when in roaming.</string>
+    
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <string name="usage_clear_history_success">Clear usage history successfully!</string>
     <string name="usage_clear_history_fail">Clear usage history failed!</string>
     <string name="usage_comsumptionexplain_label">If enable clear function, please disconnect first.</string>
     <!-- Usage view end -->
+    
+    <!-- Usage setting start -->
+    <string name="usage_setting_title">Usage Settings</string>
+    <string name="usage_setting_timelimit">Time Limit</string>
+    <string name="usage_setting_settimelimit">Set Time Limit:</string>
+    <string name="usage_setting_timeunit">min(s)</string>
+    <string name="usage_setting_usage">Usage</string>
+    <string name="usage_setting_billingday">Billing Day:</string>
+    <string name="usage_setting_dayunit">day</string>
+    <string name="usage_setting_monthlysataplan">Monthly Data Plan:</string>
+    <string name="usage_setting_monthlyunit">MB</string>
+    <string name="usage_setting_dataconsunption">Data Consumption:</string>
+    <string name="usage_setting_roaming">Roaming</string>
+    <string name="roaming_descrition">Automatically connect even when in roaming.</string>
+    <string name="usage_setting_autodisconnected">Auto Disconnected</string>
+    <!-- Usage setting end -->
     
     <!--sms start -->
     <string name="sms_title">Message</string>
@@ -308,6 +337,10 @@
 	<!-- sd sharing end -->
 	
 	<!-- wps start -->
+	<string name="wps_pbc_bt">Push Button Configuration</string>
+	<string name="wps_pin_tv">WPS PIN:</string>
+	<string name="wps_pin_bt">Save</string>
+	
 	<string name="wps_pin_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
 	<string name="wps_pin_text2">2. On the Client(eg PC), open the Wi-Fi access utility and select the PIN method, then a 8 digits PIN code will be generated;</string>
 	<string name="wps_pin_text3">3. Enable PIN and entered the 8 digits PIN code;</string>

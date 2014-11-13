@@ -28,7 +28,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="Home"
+                        android:text="@string/usage_view_home"
                         android:textColor="@color/color_black"
                         android:layout_centerVertical="true"
                         android:textSize="24sp"
@@ -54,7 +54,6 @@
 	                        android:layout_height="wrap_content"
 	                        android:ellipsize="end"
 	                        android:singleLine="true"
-	                        android:text="1.6 of 10 GB"
 	                        android:textColor="@color/color_black"  
 	                        android:textSize="16sp" />
 		                <Button
@@ -133,7 +132,6 @@
                         android:layout_centerVertical="true"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="24MB"
                         android:textColor="@color/color_black"
                         android:textSize="16sp" />
                     <TextView
@@ -145,7 +143,6 @@
                         android:layout_centerVertical="true"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="32MB"
                         android:textColor="@color/color_black"
                         android:textSize="16sp" />
                     <ImageView
@@ -186,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="Roaming"
+                        android:text="@string/usage_setting_roaming"
                         android:textColor="@color/color_black"
                         android:layout_centerVertical="true"
                         android:textSize="24sp"
@@ -206,7 +203,6 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="30MB"
                         android:textColor="@color/color_black"
                         android:layout_alignParentRight="true"
 	                    android:layout_centerVertical="true"
@@ -243,7 +239,6 @@
                         android:padding="10dip"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="18MB"
                         android:textColor="@color/color_black"
                         android:textSize="16sp" />
                     <TextView
@@ -255,7 +250,6 @@
                         android:padding="10dip"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="12MB"
                         android:textColor="@color/color_black"
                         android:textSize="16sp" />
                     <ImageView
@@ -297,7 +291,7 @@
                         android:layout_centerVertical="true"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="Duration"
+                        android:text="@string/usage_view_duration"
                         android:textColor="@color/color_black"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -316,7 +310,6 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="85Hrs 15Min"
                         android:layout_centerVertical="true"
                         android:textColor="@color/color_black"
                         android:layout_alignParentRight="true"
@@ -351,7 +344,6 @@
                         android:layout_toRightOf="@id/duration_data_down"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="36Hrs 15Min"
                         android:padding="10dip"
                         android:layout_centerVertical="true"
                         android:textColor="@color/color_black"

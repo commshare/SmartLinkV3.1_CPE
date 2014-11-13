@@ -55,7 +55,6 @@
 		                        android:layout_height="wrap_content"
 		                        android:ellipsize="end"
 		                        android:singleLine="true"
-		                        android:text="China Unicom"
 		                        android:textColor="@color/color_white"
 		                        android:textSize="20sp"/>
 		                    <TextView
@@ -63,7 +62,6 @@
 		                        android:layout_width="wrap_content"
 		                        android:layout_height="wrap_content"
 		                        android:ellipsize="end"
-		                        android:text="Connected"
 		                        android:singleLine="true"
 		                        android:textColor="@color/home_connect_status"
 		                        android:textSize="16sp" />
@@ -108,7 +106,7 @@
 	                     android:ellipsize="end"
 	                     android:gravity="center"
 	                     android:singleLine="true"
-	                     android:text="Sim Card Locked"
+	                     android:text="@string/home_sim_loched"
 	                     android:textColor="@color/color_white"
 	                     android:textSize="18sp" />
 	              </LinearLayout>
@@ -142,7 +140,7 @@
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:ellipsize="end"
-                           android:text="no sim card"
+                           android:text="@string/home_no_sim"
                            android:singleLine="true"
                            android:textColor="@color/color_white"
                            android:textSize="18sp" />
@@ -181,7 +179,6 @@
                         android:ellipsize="end"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/home_time"
-                        android:text="36Hrs 15Min"
                         android:textColor="@color/color_white"
                         android:textSize="16sp" />
                 </RelativeLayout>
@@ -208,7 +205,6 @@
                         android:layout_centerInParent="true"
                         android:ellipsize="end"
                         android:layout_toRightOf="@id/home_data"
-                        android:text="32MB"
                         android:textColor="@color/color_white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -280,7 +276,6 @@
                      android:layout_height="wrap_content"
                      android:layout_alignParentLeft="true"
                      android:textColor="@color/color_blue"
-                     android:text="4G"
                      android:textSize="50sp"
                      android:textStyle="bold" />
                  
@@ -352,7 +347,6 @@
                         android:layout_alignParentLeft="true"
                         android:ellipsize="end"
                         android:gravity="top"
-                        android:text="100"
                         android:textColor="@color/color_blue"
                         android:textSize="50sp"
                         android:textStyle="bold" />
@@ -363,7 +357,7 @@
                         android:paddingTop="6dip"
                         android:ellipsize="end"
                         android:gravity="top"
-                        android:text="%"
+                        android:text="@string/home_battery_unit"
                         android:layout_toRightOf="@id/battery_scale_label"
                         android:textColor="@color/color_blue"
                         android:textSize="14sp" />
@@ -383,7 +377,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:ellipsize="end"
-                        android:text="Charging"
                         android:textColor="@color/color_blue"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -427,7 +420,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:text="3"
                         android:textColor="@color/color_blue"
                         android:textSize="50sp"
                         android:textStyle="bold" />
