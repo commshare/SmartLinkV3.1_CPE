@@ -450,15 +450,6 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		return nNumber;
 	}
 
-	private boolean isSameNumber(String strNumber1,String strNumber2) {
-		if(strNumber1.length() > ViewSms.SMS_MATCH_NUM) 
-			strNumber1 = strNumber1.substring(strNumber1.length() - ViewSms.SMS_MATCH_NUM);
-		if(strNumber2.length() > ViewSms.SMS_MATCH_NUM) 
-			strNumber2 = strNumber2.substring(strNumber2.length() - ViewSms.SMS_MATCH_NUM);
-
-		return strNumber1.equalsIgnoreCase(strNumber2);
-	}
-
 	//
 	private void OnBtnSend() {
 		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -600,6 +591,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			item.nSMSID = sms.SMSId;
 			m_smsListData.add(item);
 		}
+		
+		DarftSMSDisplay();
 
 		//test
 		/*SMSDetailItem item3 = new SMSDetailItem();
@@ -625,6 +618,16 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		//test
 
 		((SmsDetailListAdapter)m_smsListView.getAdapter()).notifyDataSetChanged();
+	}
+	
+	private void DarftSMSDisplay() {
+		if(m_smsListData.size() == 0)
+			return;
+		SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
+		if(item.eSMSType == EnumSMSType.Draft && !m_etContent.isFocused()) {
+			m_etContent.setEnabled(true);
+			m_etContent.setText(item.strContent);
+		}
 	}
 
 	private class SmsDetailListAdapter extends BaseAdapter{
@@ -733,8 +736,9 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				//LayoutParams contentLayout = (LayoutParams) holder.smsContentLayout.getLayoutParams();
 				LayoutParams contentLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-				EnumSMSType type = m_smsListData.get(position).eSMSType;
+				final EnumSMSType type = m_smsListData.get(position).eSMSType;
 				int nContentLayoutBg = R.drawable.selector_sms_detail_receive;
+				holder.smsContentLayout.setVisibility(View.VISIBLE);
 				switch(type)
 				{
 				case Read:
@@ -748,6 +752,10 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					holder.sendFailText.setTextColor(ActivitySmsDetail.this.getResources().getColor(R.color.color_grey));
 					holder.sentFail.setImageResource(R.drawable.warning_blue_bg);
 					break;
+				case Draft:
+					if(position == m_smsListData.size() - 1) {
+						holder.smsContentLayout.setVisibility(View.GONE);
+					}
 				default:
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,R.id.sms_layout);
 					nContentLayoutBg = R.drawable.selector_sms_detail_out;
@@ -768,10 +776,25 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					holder.sentFail.setVisibility(View.GONE);
 					holder.sendFailText.setVisibility(View.GONE);
 				}
+				
+				holder.smsContentLayout.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						if(type == EnumSMSType.SentFailed) {
+							FailedSMSClick(m_smsListData.get(position));
+						}
+					}
+				});
 			}
 
 			return convertView;
 		}
+	}
+	
+	private void FailedSMSClick(SMSDetailItem item){
+		m_etContent.setEnabled(true);
+		m_etContent.setText(item.strContent);
 	}
 
 	@Override

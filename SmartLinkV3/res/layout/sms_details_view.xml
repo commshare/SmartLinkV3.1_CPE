@@ -51,6 +51,8 @@
 	                android:id="@+id/delete_button"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
+	                android:focusable="true"
+			        android:focusableInTouchMode="true"
 	                android:layout_gravity="center"
 	                android:layout_marginLeft="10dip"
 	                android:background="@drawable/btn_delete" />
@@ -102,6 +104,8 @@
 			        android:id="@+id/ID_SMS_DETAIL_BUTTON_SEND"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			        android:focusable="true"
+			        android:focusableInTouchMode="true"
 			        android:background="@drawable/selector_send_btn"
 			        android:layout_alignParentRight="true"
 			        android:layout_centerVertical="true"

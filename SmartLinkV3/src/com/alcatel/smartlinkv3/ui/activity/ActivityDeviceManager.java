@@ -297,7 +297,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
 			final String displayName = model.DeviceName;
 			holder.deviceNameTextView.setText(displayName);
-			if(holder.deviceNameEditView.isInEditMode() == false)
+			if(holder.deviceNameEditView.isFocused() == false)
 				holder.deviceNameEditView.setText(displayName);
 			holder.ip.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_ip), model.IPAddress));
 			final String mac = model.MacAddress;
