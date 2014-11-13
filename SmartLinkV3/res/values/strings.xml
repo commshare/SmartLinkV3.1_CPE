@@ -164,6 +164,7 @@
     <string name="setting_upgrade_check_failed">Check failed</string>
     <string name="setting_upgrade_no_new_version">No new version</string>
     <string name="setting_upgrade_no_connection">NO connection</string>
+    <string name="setting_upgrade_firmware_warning">The upgrade process will continue for a few minutes, please don't power off. Are you sure want to upgrade the system?</string>
     <string name="setting_upgrade_not_available">Service not available</string>
     <string name="setting_upgrade_check_error">Check error</string>
     <string name="setting_upgrade_btn_upgrade">Upgrade</string>
