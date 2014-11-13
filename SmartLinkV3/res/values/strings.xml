@@ -83,6 +83,8 @@
     <string name="device_manage_block">Block Devices (%1$d)</string>
     <string name="device_manage_block_btn">Block</string>
     <string name="device_manage_unblock_btn">Unblock</string>
+    <string name="device_manage_ip">IP:%1$s</string>
+    <string name="device_manage_mac">MAC:%1$s</string>
     <!--connect device end -->
     
     <!-- setting start -->

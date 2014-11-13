@@ -299,9 +299,9 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			holder.deviceNameTextView.setText(displayName);
 			if(holder.deviceNameEditView.isInEditMode() == false)
 				holder.deviceNameEditView.setText(displayName);
-			holder.ip.setText("IP:"+ model.IPAddress);
+			holder.ip.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_ip), model.IPAddress));
 			final String mac = model.MacAddress;
-			holder.mac.setText("MAC:"+ mac);
+			holder.mac.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_mac), mac));
 			final EnumDeviceType type = model.DeviceType;
 			
 			if(mac.equalsIgnoreCase(m_strLocalMac))
@@ -433,7 +433,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			final String displayName = m_blockedDeviceLstData.get(position).DeviceName;
 			holder.deviceName.setText(displayName);
 			final String mac = m_blockedDeviceLstData.get(position).MacAddress;			
-			holder.mac.setText("MAC:" + mac);
+			holder.mac.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_mac), mac));
 			
 			holder.unblockBtn.setOnClickListener(new OnClickListener() {
 				@Override
