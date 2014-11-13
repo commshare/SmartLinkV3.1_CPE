@@ -136,7 +136,7 @@ public class ENUM {
 				return InvalidSim;
 			} else if (nState == 7) {
 				return Accessable;
-			} else if (nState == 8) {
+			} else if (nState == 11) {
 				return SimCardIsIniting;
 			}  else {
 				return NoSim;
