@@ -67,62 +67,10 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				}
 				
 				if (intent.getAction().equalsIgnoreCase("android.intent.action.BOOT_COMPLETED")) {
-					AppWidgetManager am = AppWidgetManager.getInstance(context);
-					ComponentName com = new ComponentName(context.getPackageName(),
-							"com.alcatel.smartlinkv3.appwidget.SmartLinkWidget");
-					int[] nIds = am.getAppWidgetIds(com);
-					RemoteViews remoteViews = 
-							new RemoteViews(context.getPackageName(),R.layout.smart_link_app_widget);
-					updateUI(remoteViews);
-					//if (m_blDeviceConnected) {
-
-						//power intent
-						Intent intent1 = new Intent(context, MainActivity.class);
-						intent1.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
-						//create a pending intent
-						PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, 0);
-						remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
-						Intent ibBatteryintent = new Intent(context, MainActivity.class);
-						ibBatteryintent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
-						//create a pending intent
-						PendingIntent ibBatterypendingIntent = PendingIntent.getActivity(context, 1, ibBatteryintent, 0);
-						remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, ibBatterypendingIntent);
-						//SMS intent
-						Intent smsIntent = new Intent(context,MainActivity.class);
-						smsIntent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
-						PendingIntent smsPendingIntent = 
-								PendingIntent.getActivity(context, 2, smsIntent, 0);
-						remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, smsPendingIntent);
-						//signal intent
-						Intent signalIntent = new Intent(context,MainActivity.class);
-						PendingIntent signalPendingIntent = 
-								PendingIntent.getActivity(context, 3, signalIntent, 0);
-						remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, signalPendingIntent);
-						
-						//internet intent
-						Intent internetIntent = new Intent(context,MainActivity.class);
-						PendingIntent internetPendingIntent = 
-								PendingIntent.getActivity(context, 4, internetIntent, 0);
-						remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, internetPendingIntent);
-					//}
-					//wifi control
-					Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-					if (android.os.Build.VERSION.SDK_INT > 10) {
-						wifiIntent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
-					} else {
-						wifiIntent = new Intent();
-						ComponentName component = new ComponentName("com.android.settings",
-								"com.android.settings.WirelessSettings");
-						wifiIntent.setComponent(component);
-						wifiIntent.setAction("android.intent.action.VIEW");
-					}
-					PendingIntent wifiPendingIntent = 
-							PendingIntent.getActivity(context, 0, wifiIntent, 0);
-					remoteViews.setOnClickPendingIntent(R.id.ib_widget_wifi, wifiPendingIntent);
-					//
-					//appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
-					am.updateAppWidget(nIds, remoteViews);
 				}
+				
+				connectControls(context);
+				
 	}
 
 	@Override
@@ -308,5 +256,64 @@ public class SmartLinkWidget extends AppWidgetProvider {
 			//
 			am.updateAppWidget(nIds[i], remoteViews);
 		}
+	}
+	
+	private void connectControls(Context context){
+
+		AppWidgetManager am = AppWidgetManager.getInstance(context);
+		ComponentName com = new ComponentName(context.getPackageName(),
+				"com.alcatel.smartlinkv3.appwidget.SmartLinkWidget");
+		int[] nIds = am.getAppWidgetIds(com);
+		RemoteViews remoteViews = 
+				new RemoteViews(context.getPackageName(),R.layout.smart_link_app_widget);
+		updateUI(remoteViews);
+		//if (m_blDeviceConnected) {
+
+			//power intent
+			Intent intent1 = new Intent(context, MainActivity.class);
+			intent1.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
+			//create a pending intent
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, 0);
+			remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
+			Intent ibBatteryintent = new Intent(context, MainActivity.class);
+			ibBatteryintent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
+			//create a pending intent
+			PendingIntent ibBatterypendingIntent = PendingIntent.getActivity(context, 1, ibBatteryintent, 0);
+			remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, ibBatterypendingIntent);
+			//SMS intent
+			Intent smsIntent = new Intent(context,MainActivity.class);
+			smsIntent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
+			PendingIntent smsPendingIntent = 
+					PendingIntent.getActivity(context, 2, smsIntent, 0);
+			remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, smsPendingIntent);
+			//signal intent
+			Intent signalIntent = new Intent(context,MainActivity.class);
+			PendingIntent signalPendingIntent = 
+					PendingIntent.getActivity(context, 3, signalIntent, 0);
+			remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, signalPendingIntent);
+			
+			//internet intent
+			Intent internetIntent = new Intent(context,MainActivity.class);
+			PendingIntent internetPendingIntent = 
+					PendingIntent.getActivity(context, 4, internetIntent, 0);
+			remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, internetPendingIntent);
+		//}
+		//wifi control
+		Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+		if (android.os.Build.VERSION.SDK_INT > 10) {
+			wifiIntent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
+		} else {
+			wifiIntent = new Intent();
+			ComponentName component = new ComponentName("com.android.settings",
+					"com.android.settings.WirelessSettings");
+			wifiIntent.setComponent(component);
+			wifiIntent.setAction("android.intent.action.VIEW");
+		}
+		PendingIntent wifiPendingIntent = 
+				PendingIntent.getActivity(context, 0, wifiIntent, 0);
+		remoteViews.setOnClickPendingIntent(R.id.ib_widget_wifi, wifiPendingIntent);
+		//
+		//appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+		am.updateAppWidget(nIds, remoteViews);
 	}
 }
