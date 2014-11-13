@@ -348,7 +348,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				nStatusId = R.string.Home_puk_locked;
 				m_unlockSimBtn.setVisibility(View.VISIBLE);
 			} else {
-				nStatusId = R.string.Home_unknown;
+				nStatusId = R.string.Home_no_sim;
 				m_unlockSimBtn.setVisibility(View.GONE);
 			}
 			
