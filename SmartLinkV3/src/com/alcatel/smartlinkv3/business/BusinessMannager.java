@@ -351,6 +351,30 @@ public class BusinessMannager {
 		return m_wlanManager.getWMode();
 	}
 	
+	public String getSsid_5G() {
+  		return m_wlanManager.getSsid_5G();
+  	} 
+       
+    public String getWifiPwd_5G() {
+  		return m_wlanManager.getWifiPwd_5G();
+  	}     
+    
+    public SecurityMode getSecurityMode_5G() {
+		return m_wlanManager.getSecurityMode_5G();
+	}
+	
+	public WPAEncryption getWPAEncryption_5G() {
+		return m_wlanManager.getWPAEncryption();
+	}
+	
+	public WEPEncryption getWEPEncryption_5G() {
+		return m_wlanManager.getWEPEncryption();
+	}
+	
+	public WModeEnum getWMode_5G() {
+		return m_wlanManager.getWMode();
+	}
+	
 	public WlanFrequency getWlanFrequency() {
 		return m_wlanManager.getWlanFrequency();
 	}

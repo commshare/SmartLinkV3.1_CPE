@@ -24,7 +24,9 @@ import android.content.Intent;
 public class WlanManager extends BaseManager {
 	private int m_nHostNum = 0;
 	private String m_strSsid = new String();
+	private String m_strSsid_5G = new String();
 	private String m_strWifiPwd = new String();
+	private String m_strWifiPwd_5G = new String();
 
 	private WlanSettingResult m_settings = new WlanSettingResult();
 
@@ -78,8 +80,16 @@ public class WlanManager extends BaseManager {
 		return m_strSsid;
 	}
 
+	public String getSsid_5G(){
+		return m_strSsid_5G;
+	}
+	
 	public String getWifiPwd() {
 		return m_strWifiPwd;
+	}
+	
+	public String getWifiPwd_5G(){
+		return m_strWifiPwd_5G;
 	}
 
 	public WlanSupportMode getCurSupportWlanMode(){
@@ -88,17 +98,33 @@ public class WlanManager extends BaseManager {
 	public SecurityMode getSecurityMode() {
 		return SecurityMode.build(m_settings.SecurityMode);
 	}
+	
+	public SecurityMode getSecurityMode_5G() {
+			return SecurityMode.build(m_settings.SecurityMode_5G);
+	}
 
 	public WPAEncryption getWPAEncryption() {
 		return WPAEncryption.build(m_settings.WpaType);
+	}
+	
+	public WPAEncryption getWPAEncryption_5G() {
+			return WPAEncryption.build(m_settings.WpaType_5G);
 	}
 
 	public WEPEncryption getWEPEncryption() {
 		return WEPEncryption.build(m_settings.WepType);
 	}
+	
+	public WEPEncryption getWEPEncryption_5G() {
+			return WEPEncryption.build(m_settings.WepType_5G);
+	}
 
 	public WModeEnum getWMode() {
 		return WModeEnum.build(m_settings.WMode);
+	}
+	
+	public WModeEnum getWMode_5G() {
+			return WModeEnum.build(m_settings.WMode_5G);
 	}
 
 	public WlanFrequency getWlanFrequency() {
@@ -109,19 +135,8 @@ public class WlanManager extends BaseManager {
 		return m_settings;
 	}
 	private void getInfoByWansetting() {
-		WlanFrequency wf = WlanFrequency.build(m_settings.WlanAPMode);
-		switch (wf) {
-		case Frequency_24GHZ:
-			m_strSsid = m_settings.Ssid;
-			break;
-		case Frequency_5GHZ:
-			m_strSsid = m_settings.Ssid_5G;
-			break;
-
-		default:
-			m_strSsid = "";
-			break;
-		}
+		m_strSsid = m_settings.Ssid;
+		m_strSsid_5G = m_settings.Ssid_5G;
 
 		SecurityMode secMode = SecurityMode.build(m_settings.SecurityMode);
 		switch (secMode) {
@@ -139,6 +154,25 @@ public class WlanManager extends BaseManager {
 			m_strWifiPwd = "";
 			break;
 		}
+		
+
+		secMode = SecurityMode.build(m_settings.SecurityMode_5G);
+		switch (secMode) {
+		case WEP:
+		case Disable:
+			m_strWifiPwd_5G = m_settings.WepKey_5G;
+			break;
+		case WPA:
+		case WPA2:
+		case WPA_WPA2:
+			m_strWifiPwd_5G = m_settings.WpaKey_5G;
+			break;
+
+		default:
+			m_strWifiPwd_5G = "";
+			break;
+		}
+
 	}
 
 	// GetNumOfHosts
@@ -214,26 +248,50 @@ public class WlanManager extends BaseManager {
 		Integer nEncryption = (Integer)data.getParamByKey("Encryption");
 		final WlanSettingResult settings = new WlanSettingResult();
 		settings.clone(m_settings);
-		settings.SecurityMode = nSecurity;
-		if(settings.SecurityMode != SecurityMode.antiBuild(SecurityMode.Disable)) {
-			if(settings.SecurityMode == SecurityMode.antiBuild(SecurityMode.WEP)) {
-				settings.WepType = nEncryption;
-				settings.WepKey = strPassword;
-			}else{
-				settings.WpaType = nEncryption;
-				settings.WpaKey = strPassword;
-			}
-		}
 		settings.WlanAPMode = nWlanAPMode;
 		WlanFrequency frequencyMode = WlanFrequency.build(nWlanAPMode);
+		boolean bl24GHZ = false;
+		boolean bl5GHZ = false;
 		if (WlanFrequency.Frequency_24GHZ == frequencyMode) {
 			settings.Ssid = strSsid;
+			bl24GHZ = true;
 		}else if (WlanFrequency.Frequency_5GHZ == frequencyMode) {
 			settings.Ssid_5G = strSsid;
+			bl5GHZ = true;
 		}else{
 			settings.Ssid = strSsid;
 			settings.Ssid_5G = strSsid;
+			bl24GHZ = true;
+			bl5GHZ = true;
 		}
+
+		if (bl24GHZ) {
+			settings.SecurityMode = nSecurity;
+			if(settings.SecurityMode != SecurityMode.antiBuild(SecurityMode.Disable)) {
+				if(settings.SecurityMode == SecurityMode.antiBuild(SecurityMode.WEP)) {
+					settings.WepType = nEncryption;
+					settings.WepKey = strPassword;
+				}else{
+					settings.WpaType = nEncryption;
+					settings.WpaKey = strPassword;
+				}
+			}
+		}
+
+		if (bl5GHZ) {
+			settings.SecurityMode_5G = nSecurity;
+			if(settings.SecurityMode_5G != SecurityMode.antiBuild(SecurityMode.Disable)) {
+				if(settings.SecurityMode_5G == SecurityMode.antiBuild(SecurityMode.WEP)) {
+					settings.WepType_5G = nEncryption;
+					settings.WepKey_5G = strPassword;
+				}else{
+					settings.WpaType_5G = nEncryption;
+					settings.WpaKey_5G = strPassword;
+				}
+			}
+
+		}
+		
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpWlanSetting.SetWlanSetting("5.5", settings,
 						new IHttpFinishListener() {
