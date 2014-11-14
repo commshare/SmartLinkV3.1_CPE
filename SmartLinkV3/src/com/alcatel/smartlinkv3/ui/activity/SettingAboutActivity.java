@@ -4,7 +4,6 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class SettingAboutActivity extends Activity implements OnClickListener{
+public class SettingAboutActivity extends BaseActivity implements OnClickListener{
 
 	private TextView m_tv_title = null;
 	private TextView m_tv_official;
@@ -86,5 +85,12 @@ public class SettingAboutActivity extends Activity implements OnClickListener{
 		default:
 			break;
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		m_bNeedBack = false;
+		super.onResume();
 	}
 }

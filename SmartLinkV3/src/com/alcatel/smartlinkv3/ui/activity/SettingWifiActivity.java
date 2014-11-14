@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -77,6 +78,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	private RadioButton m_rb_5G_wifi;
 	private TextView m_tv_no_password;
 	private Button m_btn_psd_switch;
+	private ProgressBar m_pb_waiting=null;
 	//spiners
 	private LinearLayout m_ll_security;
 	private LinearLayout m_ll_encryption;
@@ -109,13 +111,10 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 
 		m_blSupportMultiWifiMode= true;
-		synchValues();
 		//control title bar
 		controlTitlebar();
 		//create controls
 		createControls();
-		//init controls state
-		setControlsDoneStatus();
 	}
 
 	private void controlTitlebar(){
@@ -151,27 +150,27 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		m_ib_hide_password.setOnClickListener(this);
 		m_ib_show_password.setOnClickListener(this);
-
-		if(m_blSupportMultiWifiMode){
-			m_rg_wifi_mode.setVisibility(View.VISIBLE);
-		}else {
-			m_rg_wifi_mode.setVisibility(View.GONE);
-		}
-
-		if (WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
-			m_rg_wifi_mode.setVisibility(View.GONE);
-		}
-
 		//
 		m_tv_no_password = (TextView)findViewById(R.id.tv_no_psd);
 		m_btn_psd_switch = (Button)findViewById(R.id.btn_psd_switch);
 		m_btn_psd_switch.setOnClickListener(this);
 
-		m_err_dialog = CommonErrorInfoDialog.getInstance(this);
+		m_err_dialog = CommonErrorInfoDialog.getInstance(this);//
+		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_wifi_waiting_progress);
 		//init spiner
 		initSpiners();
 	}
 
+	private void ShowWaiting(boolean blShow){
+		if (blShow) {
+			m_pb_waiting.setVisibility(View.VISIBLE);
+		}else {
+			m_pb_waiting.setVisibility(View.GONE);
+		}
+		m_tv_edit.setEnabled(!blShow);
+		m_tv_done.setEnabled(!blShow);
+	}
+	
 	private void initSpiners(){
 		initSpinnerListString();
 		m_wpaEncryptionadapter = new ArrayAdapter<String>(this, 
@@ -195,7 +194,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_ll_security = (LinearLayout)findViewById(R.id.ll_security);
 		m_ll_encryption = (LinearLayout)findViewById(R.id.ll_encryption);
 		m_tv_psd_type_title = (TextView)findViewById(R.id.tv_psd_type_title);
-		initSpinersUI();
 	}
 
 	@Override
@@ -247,6 +245,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
 			m_strKey="";
 			m_et_password.setText(m_strKey);
+			m_et_password.setEnabled(false);
 			m_ib_hide_password.setVisibility(View.GONE);
 			m_ib_show_password.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.GONE);
@@ -257,6 +256,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
 			m_strKey=m_strPreKey;
 			m_et_password.setText(m_strKey);
+			m_et_password.setEnabled(true);
 			m_ib_hide_password.setVisibility(View.VISIBLE);
 			m_ib_show_password.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.VISIBLE);
@@ -292,6 +292,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
 			m_et_password.setText("");
+			m_et_password.setEnabled(false);
 			m_ll_encryption.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.GONE);
 			m_tv_psd_type_title.setVisibility(View.GONE);
@@ -328,13 +329,22 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			setWlanSettingItems();
 		}
 
-		setControlsDoneStatus();
 		//
 		synchValues();
+		setControlsDoneStatus();
 	}
 
 	@SuppressWarnings("deprecation")
 	private void setControlsDoneStatus(){
+		if(m_blSupportMultiWifiMode){
+			m_rg_wifi_mode.setVisibility(View.VISIBLE);
+		}else {
+			m_rg_wifi_mode.setVisibility(View.GONE);
+		}
+
+		if (WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
+			m_rg_wifi_mode.setVisibility(View.GONE);
+		}
 
 		m_tv_edit.setVisibility(View.VISIBLE);
 		m_tv_done.setVisibility(View.GONE);
@@ -349,7 +359,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		}
 		//show password switch
 		m_btn_psd_switch.setVisibility(View.GONE);
-		SecurityMode securityMode = BusinessMannager.getInstance().getSecurityMode();
+		SecurityMode securityMode = SecurityMode.build(m_nSecurityMode);
 		if (SecurityMode.Disable == securityMode) {
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
@@ -383,12 +393,12 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		if (m_blPasswordOpened) {
 			m_nSecurityMode = m_securitySpinner.getSelectedItemPosition()+1;
 			m_nType = m_encryptionSpinner.getSelectedItemPosition();
+			m_strKey = m_et_password.getText().toString();
 		}else {
 			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.Disable);
 			m_nType = -1;
 		}
 
-		m_strKey = m_et_password.getText().toString();
 		if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
 			if (m_nPreWlanAPMode != m_nWlanAPMode
 					|| 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid)
@@ -415,6 +425,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		data.addParam("Encryption", m_nType);
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
+		ShowWaiting(true);
 	}
 
 	private void initSpinnerListString() {
@@ -447,7 +458,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_encryptionSpinner.setSelection(0);
 			m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
 			m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
-			m_et_password.setText(m_curWEPPassword);
+			m_et_password.setText("");
 			return;
 		}
 
@@ -531,7 +542,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		}
 	}
 
-	private void synchValues(){
+	private void initValues(){
 		m_nPreWlanAPMode = WlanFrequency.antiBuild(
 				BusinessMannager.getInstance().getWlanFrequency());
 		m_nWlanAPMode = m_nPreSecurityMode;
@@ -561,6 +572,17 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		}
 		m_strKey = m_strPreKey;
 	}
+	private void synchValues(){
+		m_nPreSecurityMode = m_nWlanAPMode;
+
+		m_strPreSsid = m_strSsid;
+
+		m_nPreSecurityMode = m_nSecurityMode;
+
+		m_nPreType = m_nType;
+
+		m_strPreKey = m_strKey;
+	}
 
 	@Override
 	protected void onResume() {
@@ -572,6 +594,14 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
+
+
+		initValues();
+		//init controls state
+		setControlsDoneStatus();
+		initSpinersUI();
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
+		ShowWaiting(true);
 	}
 
 	@Override
@@ -589,6 +619,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				initValues();
+				//init controls state
+				setControlsDoneStatus();
+				initSpinersUI();
+				ShowWaiting(false);
 			}
 		}
 
@@ -598,9 +633,14 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			String strTost = getString(R.string.setting_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				strTost = getString(R.string.setting_success);
+			}else {
+				initValues();
+				setControlsDoneStatus();
+				initSpinersUI();
 			}
 
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+			ShowWaiting(false);
 		}
 	}
 

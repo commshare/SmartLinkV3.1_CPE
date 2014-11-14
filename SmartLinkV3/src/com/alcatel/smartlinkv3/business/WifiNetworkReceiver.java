@@ -17,6 +17,7 @@ import android.text.format.Formatter;
 import android.util.Log;
 public class WifiNetworkReceiver extends BroadcastReceiver{
 	private static int m_nType = -1;
+	private static String m_strGatewayMac = new String();
 	
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -71,6 +72,12 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
         return Formatter.formatIpAddress(dhcpInfo.gateway);  
     } 
 	
+	private String getGatewayMac(Context ctx) {
+		WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);  
+         WifiInfo wifiinfo = wifi_service.getConnectionInfo(); 
+         return wifiinfo.getMacAddress();
+	}
+	
 	private boolean checkHaveWifi(Context context) {
 		boolean isHave = false;
 		/*State wifiState = null; 
@@ -101,6 +108,15 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 			stopBussiness(context);
 		}else if(m_nType == ConnectivityManager.TYPE_WIFI) {
 			DataConnectManager.getInstance().setWifiConnected(true);
+			if(m_strGatewayMac.length() > 0) {
+				String strPreMac = m_strGatewayMac;
+				m_strGatewayMac = getGatewayMac(context);
+				if(strPreMac.equalsIgnoreCase(m_strGatewayMac) == false) {
+					DataConnectManager.getInstance().setCPEWifiConnected(false);
+				}
+			}else{
+				m_strGatewayMac = getGatewayMac(context);
+			}
 			testWebServer(context);
 		}else if(m_nType == ConnectivityManager.TYPE_MOBILE) {
 			DataConnectManager.getInstance().setMobileConnected(true);
