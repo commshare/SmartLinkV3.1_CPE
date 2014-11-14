@@ -253,12 +253,12 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					if(m_deleteNum == m_deleteSuccessNum) {
 						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
 						//getSmsContentAtOnceRequest();
-						String msgRes = this.getString(R.string.IDS_SMS_DELETE_MULTI_SUCCESS);
+						String msgRes = this.getString(R.string.sms_delete_multi_success);
 						Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 						m_bNeedFinish = true;
 						this.finish();
 					}else{
-						String strMsg = String.format(getString(R.string.IDS_SMS_DELETE_MULTI_ERROR), m_deleteSuccessNum,m_deleteNum - m_deleteSuccessNum);
+						String strMsg = String.format(getString(R.string.sms_delete_multi_error), m_deleteSuccessNum,m_deleteNum - m_deleteSuccessNum);
 						Toast.makeText(this, strMsg, Toast.LENGTH_SHORT).show();
 						m_progressWaiting.setVisibility(View.GONE);
 						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
@@ -267,7 +267,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				}else{//delete single sms
 					m_progressWaiting.setVisibility(View.GONE);
 					if(m_deleteNum == m_deleteSuccessNum) {
-						Toast.makeText(this, getString(R.string.IDS_SMS_DELETE_SUCCESS), Toast.LENGTH_SHORT).show();
+						Toast.makeText(this, getString(R.string.sms_delete_success), Toast.LENGTH_SHORT).show();
 						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
 						getSmsContentAtOnceRequest();
 						if(m_bIsLastOneMessage == true) {
@@ -275,7 +275,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 							this.finish();
 						}
 					}else{
-						Toast.makeText(this, getString(R.string.IDS_SMS_DELETE_ERROR_CONTENT), Toast.LENGTH_SHORT).show();
+						Toast.makeText(this, getString(R.string.sms_delete_error), Toast.LENGTH_SHORT).show();
 					}
 				}
 
@@ -291,7 +291,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			}
 			else if(strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
 			{
-				String msgRes = this.getString(R.string.IDS_SMS_ERRORMESSAGE_FULLERROR);
+				String msgRes = this.getString(R.string.sms_error_message_full_storage);
 				Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 				m_progressWaiting.setVisibility(View.GONE);
 				//    			if (m_progress_dialog != null && m_progress_dialog.isShowing()) {
@@ -304,7 +304,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				getSmsContentAtOnceRequest();
 			}			
 			else{
-				String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_ERROR);
+				String msgRes = this.getString(R.string.sms_error_send_error);
 				Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 				m_progressWaiting.setVisibility(View.GONE);
 				//    			if (m_progress_dialog != null && m_progress_dialog.isShowing()) {
@@ -327,17 +327,17 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				m_sendStatus = sendStatus;
 				boolean bEnd = false;
 				if(sendStatus == SendStatus.Fail){
-					String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_ERROR);
+					String msgRes = this.getString(R.string.sms_error_send_error);
 					Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 					bEnd = true;
 				}
 				if(sendStatus == SendStatus.Fail_Memory_Full) {
-					String msgRes = this.getString(R.string.IDS_SMS_ERRORMESSAGE_FULLERROR);
+					String msgRes = this.getString(R.string.sms_error_message_full_storage);
 					Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 					bEnd = true;
 				}
 				if(sendStatus == SendStatus.Success) {
-					String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_SUCCESS);
+					String msgRes = this.getString(R.string.sms_send_success);
 					Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 					bEnd = true;
 				}

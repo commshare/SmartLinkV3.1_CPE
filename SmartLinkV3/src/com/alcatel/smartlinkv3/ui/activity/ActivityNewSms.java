@@ -167,7 +167,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			}
 			else if(strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
 			{
-				String msgRes = this.getString(R.string.IDS_SMS_ERRORMESSAGE_FULLERROR);
+				String msgRes = this.getString(R.string.sms_error_message_full_storage);
     			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
     			m_progressWaiting.setVisibility(View.GONE);
     			m_btnSend.setEnabled(true);
@@ -175,7 +175,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
     			m_etContent.setEnabled(true);	
 			}
 			else {
-				String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_ERROR);
+				String msgRes = this.getString(R.string.sms_error_send_error);
     			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
     			m_progressWaiting.setVisibility(View.GONE);
     			m_btnSend.setEnabled(true);
@@ -193,17 +193,17 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 				m_sendStatus = sendStatus;
 				boolean bEnd = false;
 				if(sendStatus == SendStatus.Fail){
-					String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_ERROR);
+					String msgRes = this.getString(R.string.sms_error_send_error);
 	    			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 	    			bEnd = true;
 				}
 				if(sendStatus == SendStatus.Fail_Memory_Full) {
-					String msgRes = this.getString(R.string.IDS_SMS_ERRORMESSAGE_FULLERROR);
+					String msgRes = this.getString(R.string.sms_error_message_full_storage);
 	    			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 	    			bEnd = true;
 				}
 				if(sendStatus == SendStatus.Success) {
-					String msgRes = this.getString(R.string.IDS_SMS_ERROR_SEND_SUCCESS);
+					String msgRes = this.getString(R.string.sms_send_success);
 	    			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 	    			this.finish();
 	    			bEnd = true;
