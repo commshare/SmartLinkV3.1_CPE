@@ -2,7 +2,9 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.common.ENUM;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
@@ -112,6 +114,17 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 				new IntentFilter(MessageUti.SYSTEM_SET_APP_BACKUP));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
+		
+		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		if (SIMState.Accessable != sim.m_SIMState) {
+			m_btn_backup.setEnabled(false);
+			m_btn_restore.setEnabled(false);
+		}else {
+			m_btn_backup.setEnabled(true);
+			m_btn_restore.setEnabled(true);
+		}
 	}
 
 	@Override
@@ -147,5 +160,20 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 			ShowWaiting(false);
 		}
+		
+		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
+					m_btn_backup.setEnabled(true);
+					m_btn_restore.setEnabled(true);
+				}else{
+					m_btn_backup.setEnabled(false);
+					m_btn_restore.setEnabled(false);
+				}
+			}
+    	}
 	}
 }

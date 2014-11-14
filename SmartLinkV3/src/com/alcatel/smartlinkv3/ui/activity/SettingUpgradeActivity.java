@@ -6,6 +6,8 @@ import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +33,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	private TextView m_tv_new_app_version=null;
 	private TextView m_tv_new_firmware_version = null;
 	private ProgressBar m_pb_waiting=null;
+	private boolean m_blHasNewFirmware = false;
+	private boolean m_blHasNewApp = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -76,6 +80,11 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		String strCurFWVersion = getString(R.string.setting_upgrade_device_version);
 		strCurFWVersion += BusinessMannager.getInstance().getSystemInfo().getSwVersion();
 		m_tv_cur_firmware_version.setText(strCurFWVersion);
+		if (m_blHasNewApp) {
+			m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_upgrade);
+		}else {
+			m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_check);
+		}
 	}
 
 	private void ShowWaiting(boolean blShow){
@@ -101,13 +110,12 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			break;
 
 		case R.id.btn_app_upgrade:
-			onBtnAppCheck();
 			ShowWaiting(true);
+			onBtnAppCheck();
 			break;
 			
 		case R.id.btn_check_firmware:
 			onBtnFirmwareCheck();
-			ShowWaiting(true);
 			break;
 			
 		default:
@@ -116,12 +124,35 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	}
 
 	private void onBtnFirmwareCheck(){
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
+		if (m_blHasNewFirmware) {
+			final InquireDialog inquireDlg = new InquireDialog(this);
+			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+			inquireDlg.m_contentTextView
+					.setText(R.string.setting_upgrade_firmware_warning);
+			inquireDlg.m_contentDescriptionTextView.setText("");
+			inquireDlg.m_confirmBtn
+					.setBackgroundResource(R.drawable.selector_common_button);
+			inquireDlg.m_confirmBtn.setText(R.string.ok);
+			inquireDlg.showDialog(new OnInquireApply() {
+				
+				@Override
+				public void onInquireApply() {
+					// TODO Auto-generated method stub
+					//upgrade firmware
+					ShowWaiting(true);
+				}
+			});
+		}else {
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
+			ShowWaiting(true);
+			
+		}
 	}
 	
 	private void onBtnAppCheck(){
-		
+		m_tv_new_app_version.setText(R.string.setting_upgrade_no_new_version);
+		ShowWaiting(false);
 	}
 
 	@Override
@@ -169,9 +200,11 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			//waiting
 			ShowWaiting(true);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
+			m_blHasNewFirmware = true;
 			String strNew = getString(R.string.setting_upgrade_device_version);
 			strNew += info.getVersion();
 			setNewDeviceVersion(strNew);
+			m_btn_check_firmware.setText(R.string.setting_upgrade_btn_upgrade);
 			ShowWaiting(false);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
 			ShowWaiting(false);
