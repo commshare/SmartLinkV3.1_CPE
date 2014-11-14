@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/color_white"
-    android:visibility="gone"
+    
     android:paddingBottom="6dip"
     android:paddingTop="12dip" >
 
@@ -28,7 +28,7 @@
 
 		    <EditText
 		        android:id="@+id/wps_pin_value"
-		        android:layout_width="wrap_content"
+		        android:layout_width="95dip"
 		        android:layout_height="30dip"
 		        android:layout_toRightOf="@id/wps_pin_tag"
 		        android:background="@drawable/selector_edit_bg"
