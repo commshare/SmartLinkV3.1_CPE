@@ -199,11 +199,10 @@ public class StorageUploadActivity extends BaseActivity implements OnClickListen
 				IsDialog = true;
 				uploadFilesTwo.add(uploadFiles.get(j));
 				final InquireReplaceDialog inquireDlg = new InquireReplaceDialog(this);
-				DialogNum++;
-				//Log.v("pchong", "pccccc  DialogNum="+DialogNum);
+				DialogNum++;			
 				inquireDlg.m_titleTextView.setText(R.string.confirm_folder_replace);
 				inquireDlg.m_contentTextView.setText(R.string.confirm_folder_content);
-				inquireDlg.m_confirmBtn.setText(R.string.confirm_folder_yes);
+				inquireDlg.m_confirmBtn.setText(R.string.yes);
 				inquireDlg.showDialog(new OnInquireApply() {
 					@Override
 					public void onInquireApply() {

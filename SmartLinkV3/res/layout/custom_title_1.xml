@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:background="@color/color_transparent"
-        android:contentDescription="@string/setting_titlebar_text_back"
+        android:contentDescription="@string/back"
         android:src="@drawable/back" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/ib_title_back"
         android:gravity="center"
-        android:text="@string/setting_titlebar_text_back"
+        android:text="@string/back"
         android:textColor="@color/color_white"
         android:textSize="16sp" />
 

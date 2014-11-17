@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Smart Link</string>  
+    <string name="app_name">Smart Link</string>
+
+    <!-- common start -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="done">Done</string>
+    <string name="back">Back</string>
+    <string name="delete">Delete</string>
+    <string name="upload">Upload</string>
+    <string name="deleting">Deleting</string>
+    <string name="yes">Yes</string>
+    <string name="sending">Sending</string>
+    <string name="apply">Apply</string>
+    <!-- common end -->
+
 
     <!-- main fram start -->
     <string name="main_home">Home</string>
     <string name="main_usage">Usage</string>
     <string name="main_setting">Settings</string>
     <string name="main_sms">SMS</string>
-    
+
     <!-- Home view start -->
     <string name="home_GB">GB</string>
     <string name="home_KB">KB</string>
@@ -26,7 +40,6 @@
     <string name="Home_unknown">unknown</string>
     <string name="Home_zero_time">0 Min</string>
     <string name="Home_zero_data">0.00 MB</string>
-    
     <string name="home_no_service">No Service</string>
     <string name="home_initializing">Initializing</string>
     <string name="home_disconnected_to">Disconnected</string>
@@ -44,10 +57,10 @@
     <string name="home_sim_loched">Sim Card Locked</string>
     <string name="home_no_sim">no sim card</string>
     <string name="home_battery_unit">%</string>
-    
     <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please change the monthly values or reset consumption.</string>
     <!-- Home view end -->
-    
+
+
     <!-- pop dialog start -->
     <string name="add_dialog_sdsharing">SD Sharing</string>
     <string name="add_dialog_wps">WPS</string>
@@ -55,20 +68,21 @@
     <string name="pop_dialog_usagesetting">Usage Setting</string>
     <string name="pop_dialog_clearhistory">Clear History</string>
     <!-- pop dialog end -->
-    
+
+
     <!-- Usage view end -->
     <string name="usage_view_home">Home</string>
     <string name="usage_view_duration">Duration</string>
     <string name="bt_set_monthlydata">Set Monthly Data Plan</string>
     <string name="usage_status_des">No data plan set yet</string>
     <string name="usage_duration">%1$sHrs %2$sMins</string>
-    
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <string name="usage_clear_history_success">Clear usage history successfully!</string>
     <string name="usage_clear_history_fail">Clear usage history failed!</string>
     <string name="usage_comsumptionexplain_label">If enable clear function, please disconnect first.</string>
     <!-- Usage view end -->
-    
+
+
     <!-- Usage setting start -->
     <string name="usage_setting_title">Usage Settings</string>
     <string name="usage_setting_timelimit">Time Limit</string>
@@ -84,15 +98,15 @@
     <string name="roaming_descrition">Automatically connect even when in roaming.</string>
     <string name="usage_setting_autodisconnected">Auto Disconnected</string>
     <!-- Usage setting end -->
-    
-    <!--sms start -->
+
+
+    <!-- sms start -->
     <string name="sms_title">Message</string>
     <string name="sms_empty">No SMS</string>
     <string name="sms_init">SMS Unavailable</string>
     <string name="sms_list_view_draft">%1$d,draft</string>
     <string name="sms_send_fail">Fail</string>
     <string name="sms_report_message">Message delivered!</string>
-    <string name="IDS_SMS_BUTTON_BACK">Back</string>
     <string name="sms_to">To:</string>
     <string name="sms_new_title">New Message</string>
     <string name="sms_error_send_error">Send SMS error!</string>
@@ -106,8 +120,9 @@
     <string name="sms_save_success">SMS is saved as a draft.</string>
     <string name="sms_save_error">Save SMS failed.</string>
     <!-- sms end -->
-    
-    <!--connect device start -->
+
+
+    <!-- connect device start -->
     <string name="device_manage_title">Devices</string>
     <string name="device_manage_connected">Connected Devices (%1$d)</string>
     <string name="device_manage_block">Block Devices (%1$d)</string>
@@ -115,8 +130,9 @@
     <string name="device_manage_unblock_btn">Unblock</string>
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
-    <!--connect device end -->
-    
+    <!-- connect device end -->
+
+
     <!-- setting start -->
     <string name="setting_wifi">WiFi Settings</string>
     <string name="setting_power">Power Saving</string>
@@ -130,15 +146,14 @@
     <string name="setting_text_passwrod">Password:</string>
     <string name="setting_text_no_passwrod">No Password</string>
     <string name="setting_wifi_password_security_tip">Security:</string>
-  	<string name="setting_wifi_password_wpa_encryption_tip">WPA encryption:</string>
-  	<string name="setting_wifi_password_wpa_psw_tip">WPA-PSK:</string>
-  	<string name="setting_wifi_password_wep_encryption_tip">WEP encryption:</string>
-  	<string name="setting_wifi_password_wep_psw_tip">WEP-Key:</string>
-  	<string name="setting_wep_password_error_prompt">Wep Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
-  	<string name="setting_wpa_password_error_prompt">The WPA Pre&#8211;Shared Key (PSK) should be 8&#8211;63 ASCII characters and WPA PSK should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
-  	<string name="setting_password_error_prompt">Change Wifi Password Error, please retry after a moment!</string>
-  	<string name="setting_disable_password_error_prompt">Disable Wifi Password failed!</string>
-    <string name="setting_titlebar_text_back">Back</string>
+    <string name="setting_wifi_password_wpa_encryption_tip">WPA encryption:</string>
+    <string name="setting_wifi_password_wpa_psw_tip">WPA-PSK:</string>
+    <string name="setting_wifi_password_wep_encryption_tip">WEP encryption:</string>
+    <string name="setting_wifi_password_wep_psw_tip">WEP-Key:</string>
+    <string name="setting_wep_password_error_prompt">Wep Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
+    <string name="setting_wpa_password_error_prompt">The WPA Pre&#8211;Shared Key (PSK) should be 8&#8211;63 ASCII characters and WPA PSK should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
+    <string name="setting_password_error_prompt">Change Wifi Password Error, please retry after a moment!</string>
+    <string name="setting_disable_password_error_prompt">Disable Wifi Password failed!</string>
     <string name="setting_titlebar_text_edit">Edit</string>
     <string name="setting_titlebar_text_done">Done</string>
     <string name="setting_title_wifi">WiFi Settings</string>
@@ -196,40 +211,31 @@
     <string name="other_login_warning_title">Login warning</string>
     <!-- setting end -->
 
-	<!-- common start -->
-    <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
-    <string name="done">Done</string>
-    <string name="back">Back</string>   
-    <string name="delete">Delete</string>
-    <string name="upload">Upload</string>
-    <string name="deleting">Deleting</string>
-    <string name="yes">Yes</string>
-    <string name="sending">Sending</string>
-    <!-- common end -->
-    
+
     <!-- notification start -->
-    <string name="usage_limit_notification_title">Data usage warning</string>  
+    <string name="usage_limit_notification_title">Data usage warning</string>
     <string name="usage_limit_notification_content">%1$s traffic has been used.</string>
     <string name="time_limit_notification_title">Time limit warning</string>
     <string name="time_limit_notification_content">The time limit is approaching. The network will be disconnected.</string>
     <string name="overflow_notification_title">Usage limit warning</string>
-    <string name="overflow_notification_content">Monthly data plan has been used up.</string>    
-    <!-- notification end --> 
-    
-    <!-- samba errors-->
-  	<string name="list_samba_files_failed">List samba files failed!</string>
-    <string name="search_samba_files_failed">Search samba files failed!</string>  
-    <string name="smb_move_files_failed">Move file(s) failed.</string>
-    <string name="smb_open_file_error_no_app">No application to open the file.</string> 
-    <string name="smb_upload_file_failed">\"%1$s\" failed to upload.</string> 
-    <string name="smb_download_file_failed">\"%1$s\" failed to download.</string> 
-    <string name="smb_error_disk_full">The disk is full.</string> 
-    <string name="smb_error_logon_failure">Logon failure: unknown user name or bad password.</string> 
-    <string name="smb_error_open_unknown_file">This file can not be displayed via samba, you can download it and open it with another app.</string>   
-    <!-- samba errors-->
+    <string name="overflow_notification_content">Monthly data plan has been used up.</string>
+    <!-- notification end -->
 
-	<!-- Dialog start -->
+
+    <!-- samba errors -->
+    <string name="list_samba_files_failed">List samba files failed!</string>
+    <string name="search_samba_files_failed">Search samba files failed!</string>
+    <string name="smb_move_files_failed">Move file(s) failed.</string>
+    <string name="smb_open_file_error_no_app">No application to open the file.</string>
+    <string name="smb_upload_file_failed">\"%1$s\" failed to upload.</string>
+    <string name="smb_download_file_failed">\"%1$s\" failed to download.</string>
+    <string name="smb_error_disk_full">The disk is full.</string>
+    <string name="smb_error_logon_failure">Logon failure: unknown user name or bad password.</string>
+    <string name="smb_error_open_unknown_file">This file can not be displayed via samba, you can download it and open it with another app.</string>
+    <!-- samba errors -->
+
+
+    <!-- Dialog start -->
     <string name="dialog_delete_title">Confirm Deletion</string>
     <string name="dialog_delete_content">Confirm deletion of this chat\'s history</string>
     <string name="dialog_delete_content_description">If you want to delete one SMS, long press it then choose delete.</string>
@@ -237,131 +243,135 @@
     <string name="dialog_delete_single_sms_content">Delete this message?</string>
     <string name="dialog_delete_multi_sms_content">Delete this message(s)?</string>
     <!-- Dialog end -->
-    
-	<!-- new folder dialog start-->
-  	<string name="new_folder_dialog_title">Build a new folder</string>
-  	<string name="new_folder_prompt">Folder Name</string>
-  	<string name="directory_is_exist">The folder already exists.</string>
-  	<string name="new_folder_failed">New folder failed!</string>
-  	<!-- new folder dialog end-->
-  	
-  	<!-- rename folder dialog start-->
-  	<string name="rename_dialog_title">Rename</string>
-  	<string name="rename_prompt">New Name:</string>
-  	<string name="rename_is_exist">The name already exists.</string>
-  	<string name="rename_failed">Rename failed!</string>
-  	<string name="file_name_error">You have input invalide character</string>
+
+
+    <!-- new folder dialog start -->
+    <string name="new_folder_dialog_title">Build a new folder</string>
+    <string name="new_folder_prompt">Folder Name</string>
+    <string name="directory_is_exist">The folder already exists.</string>
+    <string name="new_folder_failed">New folder failed!</string>
+    <!-- new folder dialog end -->
+
+
+    <!-- rename folder dialog start -->
+    <string name="rename_dialog_title">Rename</string>
+    <string name="rename_prompt">New Name:</string>
+    <string name="rename_is_exist">The name already exists.</string>
+    <string name="rename_failed">Rename failed!</string>
+    <string name="file_name_error">You have input invalide character</string>
     <string name="file_name_start_with_space">File or folder name can not start with a space</string>
-  	<!-- rename folder dialog end-->
-  	
-  	<!-- replace folder dialog start-->
-  	<string name="confirm_folder_replace">confirm replace</string>
-	<string name="confirm_folder_content">There is already a file with the same name in this location.</string>
-	<string name="confirm_folder_yes">continue</string>
-	<string name="confirm_folder_cancel">cancel</string>
-	<!-- replace folder dialog end-->
-  	
-  	<!-- storage delete dialog start -->
+    <!-- rename folder dialog end -->
+
+
+    <!-- replace folder dialog start -->
+    <string name="confirm_folder_replace">confirm replace</string>
+    <string name="confirm_folder_content">There is already a file with the same name in this location.</string>
+    <!-- replace folder dialog end -->
+
+
+    <!-- storage delete dialog start -->
     <string name="delete_file_title">Delete item(s)?</string>
     <string name="delete_file_content">Are you sure you want to delete the file(s) or folder(s)?</string>
     <string name="delete_file_fail1">Delete failed!</string>
     <string name="delete_file_fail2">Delete %1$d successed, %2$d failed!</string>
     <!-- storage delete dialog end -->
-    
-  	<!-- storage search activity start-->
-  	<string name="search_number">%1$d Result(s) for \"%2$s\"</string>
-  	<!-- storage search activity end-->
-  	
-  	<!-- storage edit activity start-->
-	<string name="toolbar_download">Download</string>
-	<string name="toolbar_move">Move</string>
-	<string name="toolbar_rename">Rename</string>
-	<string name="toolbar_delete">Delete</string>
-	<string name="toolbar_select_all">All</string>
-  	<!-- storage edit activity end-->
-  	
-  	<!-- storage move to activity start-->
-  	<string name="move_to_title">Move To</string>
-  	<string name="move_to_to_here">To Here</string>
-  	<string name="move_to_is_subfolder_fail">The destination folder(%1$s) is a subfolder of the source folder(%2$s).</string>
-  	<string name="move_to_file_move_fail">Move %1$s failed.</string>
-  	<string name="move_to_file_already_exist_fail">%1$s already existed.</string>
-  	<!-- storage move to activity end-->
-  	
-  	<!-- storage download activity start-->
-  	<string name="download_files_tip">Your selection is downloading now, you can check it in Local Storage.</string>
-  	<!-- storage download activity end-->
-  	
-  	<!-- storage upload activity start-->
-  	<string name="upload_title">Upload</string>
-  	<string name="check_off_prompt">Former selection has been unchecked!</string>
-  	<!-- storage upload activity end-->
-  	
-  	<!-- set default local storage start-->
+
+
+    <!-- storage search activity start -->
+    <string name="search_number">%1$d Result(s) for \"%2$s\"</string>
+    <!-- storage search activity end -->
+
+
+    <!-- storage edit activity start -->
+    <string name="toolbar_download">Download</string>
+    <string name="toolbar_move">Move</string>
+    <string name="toolbar_rename">Rename</string>
+    <string name="toolbar_delete">Delete</string>
+    <string name="toolbar_select_all">All</string>
+    <!-- storage edit activity end -->
+
+
+    <!-- storage move to activity start -->
+    <string name="move_to_title">Move To</string>
+    <string name="move_to_to_here">To Here</string>
+    <string name="move_to_is_subfolder_fail">The destination folder(%1$s) is a subfolder of the source folder(%2$s).</string>
+    <string name="move_to_file_move_fail">Move %1$s failed.</string>
+    <string name="move_to_file_already_exist_fail">%1$s already existed.</string>
+    <!-- storage move to activity end -->
+
+
+    <!-- storage download activity start -->
+    <string name="download_files_tip">Your selection is downloading now, you can check it in Local Storage.</string>
+    <!-- storage download activity end -->
+
+
+    <!-- storage upload activity start -->
+    <string name="upload_title">Upload</string>
+    <string name="check_off_prompt">Former selection has been unchecked!</string>
+    <!-- storage upload activity end -->
+
+
+    <!-- set default local storage start -->
     <string name="set_default_storage_title">Set Default Folder</string>
     <string name="set_default_storage_select_btn">Select</string>
-    <!-- set default local storage end-->
-  	
-  	<!-- sdcard start -->
-  	<string name="edit">Edit</string>
-  	<string name="new_folder">New Folder</string>
+    <!-- set default local storage end -->
+
+
+    <!-- sdcard start -->
+    <string name="edit">Edit</string>
+    <string name="new_folder">New Folder</string>
     <string name="search">Search</string>
     <string name="no_file">No File</string>
     <string name="storage_main_title">Storage</string>
-    <string name="storage_main_media_box">Mobile Media Box</string>
     <string name="storage_main_hard_disc">SD Card</string>
     <string name="storage_main_no_external_storage">No external storage</string>
     <string name="storage_main_local_storage">Local Storage</string>
     <string name="storage_main_samba_service">Samba Service</string>
     <string name="storage_main_samba_service_disabled">Samba service is disabled</string>
     <string name="storage_main_samba_service_disabled_description">To access sd card connected to %1$s, you need to switch on Samba Service below.</string>
-  	<string name="loading_pecent">%1$d%%</string>
+    <string name="loading_pecent">%1$d%%</string>
     <string name="downloading_prompt">\"%1$s\" is downloading...</string>
     <string name="uploading_prompt">\"%1$s\" is uploading...</string>
-  	<!-- sdcard end -->
-  	
-  	<string name="title_cancel_uploading">Stop the Upload?</string>
-    <string name="content_cancel_uploading">Do you want to stop uploading \"%1$s\"?</string>
+    <!-- sdcard end -->
 
-	<string name="title_cancel_downloading">Stop the Download?</string>
+    <string name="title_cancel_uploading">Stop the Upload?</string>
+    <string name="content_cancel_uploading">Do you want to stop uploading \"%1$s\"?</string>
+    <string name="title_cancel_downloading">Stop the Download?</string>
     <string name="content_cancel_downloading">Do you want to stop downloading \"%1$s\"?</string>
-	
-	<!-- sd sharing start -->
-	<string name="dlna_name">Server Name: %1$s.</string>
-	<string name="dlna_description">Media Server Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
-	<string name="sd_card_sharing">SD Card Sharing</string>
-	<string name="sd_sharing">SD Sharing</string>
-	<string name="dlna">DLNA</string>
-	<string name="sdcard_usage">%1$sGB of %2$sGB used.</string>
-	<string name="storage">Storage</string>		
-	<string name="not_available">Not Available</string>
-	<!-- sd sharing end -->
-	
-	<!-- wps start -->
-	<string name="wps_pbc_bt">Push Button Configuration</string>
-	<string name="wps_pin_tv">WPS PIN:</string>
-	<string name="wps_pin_bt">Save</string>
-	
-	<string name="wps_pin_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
-	<string name="wps_pin_text2">2. On the Client(eg PC), open the Wi-Fi access utility and select the PIN method, then a 8 digits PIN code will be generated;</string>
-	<string name="wps_pin_text3">3. Enable PIN and entered the 8 digits PIN code;</string>
-	
-	<string name="pbc_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
-	<string name="pbc_text2">2. On the Client (eg PC), open the Wi-Fi access utility and select the PBC;</string>
-	<string name="pbc_text3">3. Click the icon on the top;</string>
-	
-	<string name="wps_setpbcfailed">Set PBC failed</string>
-	<string name="wps_setpbcsuccess">Set PBC successed</string>
-	<string name="wps_setwpspinfailed">Set WPS Pin failed</string>
-	<string name="wps_setwpspinsuccess">Set WPS Pin successed</string>
-	<!-- wps end -->
-	
-	<!-- PIN start-->
+
+    <!-- sd sharing start -->
+    <string name="dlna_name">Server Name: %1$s.</string>
+    <string name="dlna_description">Media Server Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
+    <string name="sd_card_sharing">SD Card Sharing</string>
+    <string name="sd_sharing">SD Sharing</string>
+    <string name="dlna">DLNA</string>
+    <string name="sdcard_usage">%1$sGB of %2$sGB used.</string>
+    <string name="storage">Storage</string>
+    <string name="not_available">Not Available</string>
+    <!-- sd sharing end -->
+
+
+    <!-- wps start -->
+    <string name="wps_pbc_bt">Push Button Configuration</string>
+    <string name="wps_pin_tv">WPS PIN:</string>
+    <string name="wps_pin_bt">Save</string>
+    <string name="wps_pin_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
+    <string name="wps_pin_text2">2. On the Client(eg PC), open the Wi-Fi access utility and select the PIN method, then a 8 digits PIN code will be generated;</string>
+    <string name="wps_pin_text3">3. Enable PIN and entered the 8 digits PIN code;</string>
+    <string name="pbc_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
+    <string name="pbc_text2">2. On the Client (eg PC), open the Wi-Fi access utility and select the PBC;</string>
+    <string name="pbc_text3">3. Click the icon on the top;</string>
+    <string name="wps_setpbcfailed">Set PBC failed</string>
+    <string name="wps_setpbcsuccess">Set PBC successed</string>
+    <string name="wps_setwpspinfailed">Set WPS Pin failed</string>
+    <string name="wps_setwpspinsuccess">Set WPS Pin successed</string>
+    <!-- wps end -->
+
+
+    <!-- PIN start -->
     <string name="puk_prompt_str">The comfirmed PIN code should be the same as new PIN code.</string>
     <string name="pin_title">Please input the PIN code!</string>
     <string name="pin_code_label">PIN Code:</string>
-    <string name="button_apply">Apply</string>
-    <string name="button_cancel">Cancel</string>
     <string name="pin_remain_three_times">Remain: 3 times</string>
     <string name="pin_error_waring_title">Sorry, the PIN code is wrong!</string>
     <string name="image_view_close_button">close button</string>
@@ -374,33 +384,31 @@
     <string name="puk_error_waring_title">Sorry, the PUK code is wrong!</string>
     <string name="error_info">Error</string>
     <string name="btn_reply">Retry</string>
-    <string name="btn_cancel">Cancel</string>
     <string name="IDS_PIN_LOCKED">PIN Locked</string>
     <string name="IDS_PUK_LOCKED">PUK Locked</string>
     <string name="IDS_PIN_CHECK_PIN_PROGRESS">Checking PIN</string>
     <string name="IDS_PIN_CHECK_PUK_PROGRESS">Checking PUK</string>
-    <string name="remain_times">Remain: %1$d time(s)</string>     
-    <!-- PIN end-->
-    
-    <!-- Login view start-->
+    <string name="remain_times">Remain: %1$d time(s)</string>
+    <!-- PIN end -->
+
+
+    <!-- Login view start -->
     <string name="login_title">Please Input Admin Password!</string>
-    <string name="login_btn_apply">Apply</string>
-    <string name="login_btn_cancel">Cancel</string>
     <string name="login_prompt_str">Your password is wrong!</string>
     <string name="login_user_name">admin</string>
     <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
     <string name="login_check_dialog_title">Login</string>
     <string name="login_check_dialog_content">Login</string>
     <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
-    <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!</string>   
-    <string name="login_warning">Login warning</string>   
-    <!-- Login view end  -->
-    
+    <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!</string>
+    <string name="login_warning">Login warning</string>
+    <!-- Login view end -->
+
+
     <!-- Refresh WIFI start -->
     <string name="refresh_wifi_title">No Wi-Fi Connected</string>
     <string name="refresh_wifi_tip">Please connect the mobile hotspot first!</string>
     <string name="refresh">Refresh</string>
-    <string name="inexact_wifi_title">Inexact Wi-Fi Connected</string>  
-    <string name="data_connect_title">Mobile data connected</string>
     <!-- Refresh WIFI end -->
+
 </resources>

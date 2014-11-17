@@ -2,9 +2,6 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.common.PackageUtils;
-
 
 import android.os.Bundle;
 import android.os.Handler;
