@@ -160,7 +160,7 @@
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="fill_parent"
-        android:layout_height="68dip"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/main_tabbar_background"
         android:orientation="horizontal"
