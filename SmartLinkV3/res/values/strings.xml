@@ -206,6 +206,8 @@
     <string name="setting_reboot_success">Reboot successed.</string>
     <string name="setting_reset_failed">Reset failed.</string>
     <string name="setting_reset_success">Reset successed.</string>
+    <string name="setting_power_off_failed">Power Off failed.</string>
+    <string name="setting_power_off_success">Power Off successed.</string>
     <string name="setting_ssid_invalid">The SSID must be ASCII characters but cannot comprise any of the following characters: /,\',=,\&quot;,\\,&amp;.</string>
     <string name="setting_wifi_error_title">Change Password</string>
     <string name="other_login_warning_title">Login warning</string>

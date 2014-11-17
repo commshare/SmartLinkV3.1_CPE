@@ -178,7 +178,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				strTost = getString(R.string.setting_reboot_success);
 			}
-			
+			ShowWaiting(false);
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
 		
@@ -189,18 +189,18 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				strTost = getString(R.string.setting_reset_success);
 			}
-			
+			ShowWaiting(false);
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
 		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_failed);
+			String strTost = getString(R.string.setting_power_off_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_success);
+				strTost = getString(R.string.setting_power_off_success);
 			}
-			
+			ShowWaiting(false);
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
 	}

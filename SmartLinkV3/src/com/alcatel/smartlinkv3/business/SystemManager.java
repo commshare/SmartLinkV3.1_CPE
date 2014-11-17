@@ -429,7 +429,7 @@ public class SystemManager extends BaseManager {
 							// TODO Auto-generated method stub
 							int nRet = response.getResultCode();
 							String strError = response.getErrorCode();
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
+							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF);
 							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
 							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
