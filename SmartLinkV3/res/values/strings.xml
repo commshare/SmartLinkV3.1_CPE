@@ -321,11 +321,9 @@
   	
   	<string name="title_cancel_uploading">Stop the Upload?</string>
     <string name="content_cancel_uploading">Do you want to stop uploading \"%1$s\"?</string>
-	<string name="btn_cancel_uploading">Yes, stop the upload</string>
-	
+
 	<string name="title_cancel_downloading">Stop the Download?</string>
     <string name="content_cancel_downloading">Do you want to stop downloading \"%1$s\"?</string>
-	<string name="btn_cancel_downloading">Yes, stop the downloading</string>
 	
 	<!-- sd sharing start -->
 	<string name="dlna_name">Server Name: %1$s.</string>

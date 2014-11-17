@@ -1002,7 +1002,7 @@ public class LocalStorageActivity extends BaseActivity implements
 		inquireDlg.m_contentTextView.setText(content);
 		inquireDlg.m_contentDescriptionTextView.setText("");		
 		inquireDlg.m_confirmBtn.setBackgroundResource(R.drawable.selector_common_button);
-		inquireDlg.m_confirmBtn.setText(R.string.btn_cancel_uploading);
+		inquireDlg.m_confirmBtn.setText(R.string.yes);
 		inquireDlg.showDialog(new OnInquireApply() {
 			@Override
 			public void onInquireApply() {	
@@ -1024,7 +1024,7 @@ public class LocalStorageActivity extends BaseActivity implements
 		inquireDlg.m_contentTextView.setText(content);
 		inquireDlg.m_contentDescriptionTextView.setText("");		
 		inquireDlg.m_confirmBtn.setBackgroundResource(R.drawable.selector_common_button);
-		inquireDlg.m_confirmBtn.setText(R.string.btn_cancel_downloading);
+		inquireDlg.m_confirmBtn.setText(R.string.yes);
 		inquireDlg.showDialog(new OnInquireApply() {
 			@Override
 			public void onInquireApply() {	
