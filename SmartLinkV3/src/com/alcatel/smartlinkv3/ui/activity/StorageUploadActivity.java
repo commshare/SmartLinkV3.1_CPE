@@ -425,20 +425,20 @@ public class StorageUploadActivity extends BaseActivity implements OnClickListen
 			String strName = item.name;
 			boolean bIsFolder = item.isDir;
 			if(bIsFolder == true) {
-				holder.itemImage.setBackgroundResource(R.drawable.m100_item_folder);
+				holder.itemImage.setBackgroundResource(R.drawable.item_folder);
 			}else{
 				//to do
 				FileType fileType = FileModel.getFileType(strName);
 				if(fileType == FileType.Audio) {
-					holder.itemImage.setBackgroundResource(R.drawable.m100_item_music);
+					holder.itemImage.setBackgroundResource(R.drawable.item_music);
 				}else if(fileType == FileType.Image) {
-					holder.itemImage.setBackgroundResource(R.drawable.m100_item_image);
+					holder.itemImage.setBackgroundResource(R.drawable.item_image);
 				}else if(fileType == FileType.Text) {
-					holder.itemImage.setBackgroundResource(R.drawable.m100_item_doc);
+					holder.itemImage.setBackgroundResource(R.drawable.item_doc);
 				}else if(fileType == FileType.Video){
-					holder.itemImage.setBackgroundResource(R.drawable.m100_item_video);
+					holder.itemImage.setBackgroundResource(R.drawable.item_video);
 				}else {
-					holder.itemImage.setBackgroundResource(R.drawable.m100_item_unknown_file);
+					holder.itemImage.setBackgroundResource(R.drawable.item_unknown_file);
 				}
 			}
 			holder.itemName.setText(strName);

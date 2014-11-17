@@ -41,14 +41,14 @@
 	        </LinearLayout>
 
             <TextView
-                android:id="@+id/m100_storage_main_title"
+                android:id="@+id/storage_main_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dip"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/m100_storage_main_title"
+                android:text="@string/storage_main_title"
                 android:textColor="@color/color_white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -87,7 +87,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dip"
-                        android:background="@drawable/m100_item_hard_disk"
+                        android:background="@drawable/item_hard_disk"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -97,7 +97,7 @@
                         android:layout_marginLeft="10dip"
                         android:layout_toRightOf="@id/image_hard_disc"
                         android:singleLine="true"
-                        android:text="@string/m100_storage_main_hard_disc"
+                        android:text="@string/storage_main_hard_disc"
                         android:textColor="@color/color_black"
                         android:textSize="16sp" />
 
@@ -139,7 +139,7 @@
                         android:layout_marginLeft="5dip"
                         android:layout_toRightOf="@+id/image_no_storage"
                         android:singleLine="true"
-                        android:text="@string/m100_storage_main_no_external_storage"
+                        android:text="@string/storage_main_no_external_storage"
                         android:textColor="@color/color_black"
                         android:textSize="16sp" />
 
@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="30dip"
-                        android:background="@drawable/m100_samba_switch_off"
+                        android:background="@drawable/samba_switch_off"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -172,7 +172,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="20dip"
                         android:gravity="center"
-                        android:text="@string/m100_storage_main_samba_service_disabled"
+                        android:text="@string/storage_main_samba_service_disabled"
                         android:textColor="@color/light_blue"
                         android:textSize="@dimen/dimen_textsize_16sp"
                         android:textStyle="bold" />
@@ -185,7 +185,7 @@
                         android:layout_marginRight="10dip"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="@string/m100_storage_main_samba_service_disabled_description"
+                        android:text="@string/storage_main_samba_service_disabled_description"
                         android:textColor="@color/color_black"
                         android:textSize="@dimen/dimen_textsize_16sp" />
 
@@ -206,7 +206,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="15dip"
-                            android:background="@drawable/m100_item_samba"
+                            android:background="@drawable/item_samba"
                             android:contentDescription="@null" />
 
                         <TextView
@@ -216,7 +216,7 @@
                             android:layout_marginLeft="10dip"
                             android:layout_toRightOf="@id/item_samba_image"
                             android:singleLine="true"
-                            android:text="@string/m100_storage_main_samba_service"
+                            android:text="@string/storage_main_samba_service"
                             android:textColor="@color/color_black"
                             android:textSize="16sp" />
 
@@ -254,7 +254,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dip"
-                        android:background="@drawable/m100_item_local_storage"
+                        android:background="@drawable/item_local_storage"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -264,7 +264,7 @@
                         android:layout_marginLeft="10dip"
                         android:layout_toRightOf="@id/device_info_setting_image"
                         android:singleLine="true"
-                        android:text="@string/m100_storage_main_local_storage"
+                        android:text="@string/storage_main_local_storage"
                         android:textColor="@color/color_black"
                         android:textSize="16sp" />
 

@@ -27,7 +27,6 @@ public class MessageUti {
 	public static String CPE_NETWORK_CONNECT_CHANGE = "com.alcatel.smartlinkv3.business.cpenetworkconnectchange";
 	public static String CPE_CHANGED_BILLING_MONTH = "com.alcatel.smartlinkv3.business.cpebillingmonthchanged";
 	public static String CPE_CHANGED_ALERT_SWITCH = "com.alcatel.smartlinkv3.business.cpealertswitchchanged";
-	public static String CPE_GET_MM100_ACCESS_POINTS_LIST_START = "com.alcatel.smartlinkv3.business.wlan.getmm100accesspointsliststart";
 	
 	/**************************User message start*********************************************************************************/
 	public static String USER_LOGIN_REQUEST = "com.alcatel.smartlinkv3.business.user.login";
@@ -40,9 +39,7 @@ public class MessageUti {
 	public static String SYSTEM_GET_SYSTEM_INFO_REQUSET =
 			"com.alcatel.smartlinkv3.business.system.getsysteminfo";
 	public static String SYSTEM_GET_SYSTEM_STATUS_REQUSET =
-			"com.alcatel.smartlinkv3.business.system.getsystemstatus";
-	public static String SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET =
-			"com.alcatel.smartlinkv3.business.system.getmm100systeminfo";
+			"com.alcatel.smartlinkv3.business.system.getsystemstatus";	
 	public static String SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET = 
 			"com.alcatel.smartlinkv3.business.system.getexternalstoragedevice";
 	
@@ -112,12 +109,6 @@ public class MessageUti {
 	public static String WLAN_GET_NUMBER_OF_HOST_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.wlan.gethostnum";
 	public static String WLAN_GET_WLAN_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getwalnsetting";
 	public static String WLAN_SET_WLAN_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.wlan.setwalnsetting";
-	public static String WLAN_GET_MM100_WLAN_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getmm100walnsetting";
-	public static String WLAN_GET_MM100_ACCESS_POINTS_LIST_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getmm100accesspointslist";
-	public static String WLAN_GET_MM100_REMOTE_AP_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getmm100remoteap";
-	public static String WLAN_SELECT_MM100_ACCESS_POINT_REQUSET = "com.alcatel.smartlinkv3.business.wlan.selectmm100accesspoint";
-	public static String WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET = "com.alcatel.smartlinkv3.business.wlan.dissconnectmm100clientpoint";
-	
 	public static String WLAN_SET_WPS_PIN_REQUSET = "com.alcatel.smartlinkv3.business.wlan.SetWPSPin";
 	public static String WLAN_SET_WPS_PBC_REQUSET = "com.alcatel.smartlinkv3.business.wlan.SetWPSPbc";
 	/**************************Wlan message end*********************************************************************************/
@@ -179,7 +170,6 @@ public class MessageUti {
 		/********************System method start**********************/
 		httpMethods.put(SYSTEM_GET_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemInfo"));
 		httpMethods.put(SYSTEM_GET_SYSTEM_STATUS_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemStatus"));
-		httpMethods.put(SYSTEM_GET_MM100_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getMM100SystemInfo"));
 		httpMethods.put(SYSTEM_SET_DEVICE_REBOOT, 
 				new HttpMethodUti(SystemManager.class, "rebootDevice"));
 		httpMethods.put(SYSTEM_SET_DEVICE_RESET, 
@@ -246,11 +236,7 @@ public class MessageUti {
 		
 		/********************WLAN method start**********************/
 		httpMethods.put(WLAN_GET_WLAN_SETTING_REQUSET, new HttpMethodUti(WlanManager.class, "getWlanSetting"));	
-		httpMethods.put(WLAN_SET_WLAN_SETTING_REQUSET, new HttpMethodUti(WlanManager.class, "setWlanSetting"));	
-		httpMethods.put(WLAN_GET_MM100_WLAN_SETTING_REQUSET, new HttpMethodUti(WlanManager.class, "getMM100WlanSetting"));	
-		httpMethods.put(WLAN_GET_MM100_ACCESS_POINTS_LIST_REQUSET, new HttpMethodUti(WlanManager.class, "getMM100AccessPointsList"));
-		httpMethods.put(WLAN_SELECT_MM100_ACCESS_POINT_REQUSET, new HttpMethodUti(WlanManager.class, "selectMM100AccessPoint"));
-		httpMethods.put(WLAN_DISSCONNECT_MM100_CLIENT_POINT_REQUSET, new HttpMethodUti(WlanManager.class, "disconnectClientAP"));
+		httpMethods.put(WLAN_SET_WLAN_SETTING_REQUSET, new HttpMethodUti(WlanManager.class, "setWlanSetting"));			
 		httpMethods.put(WLAN_SET_WPS_PIN_REQUSET, new HttpMethodUti(WlanManager.class, "SetWPSPin"));
 		httpMethods.put(WLAN_SET_WPS_PBC_REQUSET, new HttpMethodUti(WlanManager.class, "SetWPSPbc"));
 		/********************WLAN method end**********************/

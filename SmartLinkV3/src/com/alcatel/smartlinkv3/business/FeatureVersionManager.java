@@ -7,7 +7,6 @@ public class FeatureVersionManager {
 	private static FeatureVersionManager m_instance;
 	
 	//support device name
-	public static String VERSION_DEVICE_M100 = "MM100";
     public static synchronized   FeatureVersionManager getInstance()
     {
         if(m_instance == null) {

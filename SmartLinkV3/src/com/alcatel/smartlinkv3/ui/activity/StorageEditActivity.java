@@ -222,7 +222,7 @@ public class StorageEditActivity extends BaseActivity implements
 
 		// get controls
 		m_backBtn = (LinearLayout) this.findViewById(R.id.back_layout);
-		//m_backBtn.setOnClickListener(this);
+		// m_backBtn.setOnClickListener(this);
 		m_doneBtn = (TextView) this.findViewById(R.id.done_btn);
 		m_doneBtn.setOnClickListener(this);
 		m_title = (TextView) this.findViewById(R.id.title);
@@ -252,7 +252,6 @@ public class StorageEditActivity extends BaseActivity implements
 				.findViewById(R.id.waiting_progress);
 		m_progressWaiting.setVisibility(View.GONE);
 
-		initTitleBar();
 
 		if (LocalStorageActivity.FLAG_LOCAL.equalsIgnoreCase(m_strCurLocation)) {
 			getLocalEditStorageListData();
@@ -263,25 +262,6 @@ public class StorageEditActivity extends BaseActivity implements
 		showToolbarBtn();
 
 		m_renameFolderDlg = new InputDialog1(this);
-	}
-
-	private void initTitleBar() {
-		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {
-			String strTitle = "";
-			int iamgeId = 0;
-			if (FeatureVersionManager.getInstance().isSupportDevice(
-					FeatureVersionManager.VERSION_DEVICE_M100) == true) {
-				strTitle = this.getResources().getString(
-						R.string.m100_storage_main_media_box);
-				iamgeId = R.drawable.m100_media_box_grey;
-			} else {
-				strTitle = this.getResources().getString(
-						R.string.m100_storage_main_hard_disc);
-				iamgeId = R.drawable.m100_hard_disc_grey;
-			}
-			m_title.setText(strTitle);
-			m_rootDirImage.setImageResource(iamgeId);
-		}
 	}
 
 	@Override
@@ -318,7 +298,7 @@ public class StorageEditActivity extends BaseActivity implements
 
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
-		//case R.id.back_layout:
+		// case R.id.back_layout:
 		case R.id.done_btn:
 			this.finish();
 			break;
@@ -829,26 +809,24 @@ public class StorageEditActivity extends BaseActivity implements
 			String strName = item.name;
 			boolean bIsFolder = item.isDir;
 			if (bIsFolder == true) {
-				holder.itemImage
-						.setBackgroundResource(R.drawable.m100_item_folder);
+				holder.itemImage.setBackgroundResource(R.drawable.item_folder);
 			} else {
 				// to do
 				FileType fileType = FileModel.getFileType(strName);
 				if (fileType == FileType.Audio) {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_music);
+							.setBackgroundResource(R.drawable.item_music);
 				} else if (fileType == FileType.Image) {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_image);
+							.setBackgroundResource(R.drawable.item_image);
 				} else if (fileType == FileType.Text) {
-					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_doc);
+					holder.itemImage.setBackgroundResource(R.drawable.item_doc);
 				} else if (fileType == FileType.Video) {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_video);
+							.setBackgroundResource(R.drawable.item_video);
 				} else {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_unknown_file);
+							.setBackgroundResource(R.drawable.item_unknown_file);
 				}
 			}
 			holder.itemName.setText(strName);

@@ -417,22 +417,6 @@ public class ENUM {
 	}
 
 	/**
-	 * DeviceType, MM100 = 0; USB_Device = 1
-	 */
-	public static enum DeviceType {
-		MM100, USB_Device;
-
-		public static DeviceType build(int nType) {
-			if (nType == 0) {
-				return MM100;
-			} else if (nType == 1) {
-				return USB_Device;
-			} else
-				return MM100;
-		}
-	}
-
-	/**
 	 * AnonymousState State, Disabled = 0; Enabled = 1
 	 */
 	public static enum AnonymousState {

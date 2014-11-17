@@ -62,7 +62,7 @@
             android:contentDescription="@null"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
-            android:src="@drawable/m100_local_storage_grey" />
+            android:src="@drawable/local_storage_grey" />
 
         <TextView
             android:id="@+id/directory_parent"
@@ -84,7 +84,7 @@
             android:id="@+id/directory_arrow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/m100_directory_arrow"
+            android:background="@drawable/directory_arrow"
             android:contentDescription="@null" />
 
         <TextView
@@ -108,7 +108,7 @@
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/m100_directory_arrow"
+            android:background="@drawable/directory_arrow"
             android:contentDescription="@null" />
     </LinearLayout>
     
@@ -136,8 +136,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dip"
             android:clickable="true"
-            android:drawableTop="@drawable/m100_selector_new_folder_button"
-            android:text="@string/m100_new_folder"
+            android:drawableTop="@drawable/selector_new_folder_button"
+            android:text="@string/new_folder"
             android:textColor="@color/color_grey" />
         
         <TextView
@@ -160,8 +160,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dip"
             android:clickable="true"
-            android:drawableTop="@drawable/m100_selector_toolbar_search_button"
-            android:text="@string/m100_search"
+            android:drawableTop="@drawable/selector_toolbar_search_button"
+            android:text="@string/search"
             android:textColor="@color/color_grey" />
     </RelativeLayout>
     

@@ -60,7 +60,7 @@
             android:contentDescription="@null"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
-            android:src="@drawable/m100_local_storage_grey" />
+            android:src="@drawable/local_storage_grey" />
 
         <TextView
             android:id="@+id/directory_parent"
@@ -82,7 +82,7 @@
             android:id="@+id/directory_arrow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/m100_directory_arrow"
+            android:background="@drawable/directory_arrow"
             android:contentDescription="@null" />
 
         <TextView
@@ -105,7 +105,7 @@
             android:id="@+id/directory_arrow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/m100_directory_arrow"
+            android:background="@drawable/directory_arrow"
             android:contentDescription="@null"
             android:visibility="gone" />
         

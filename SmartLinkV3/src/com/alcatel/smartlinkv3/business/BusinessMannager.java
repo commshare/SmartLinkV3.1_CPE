@@ -24,7 +24,6 @@ import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
 import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.system.Features;
-import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
@@ -239,11 +238,6 @@ public class BusinessMannager {
 		return m_systemManager.getSystemInfoModel();
 	}
     
-	public StorageList getStorageList()
-	{
-		return m_systemManager.getStorageList();
-	}
-	
 	public boolean getAlreadyRecongniseDeviceFlag() {
 		return m_systemManager.getAlreadyRecongniseDeviceFlag();
 	}

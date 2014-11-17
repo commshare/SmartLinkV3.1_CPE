@@ -5,7 +5,6 @@ import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
-import com.alcatel.smartlinkv3.business.system.StorageList;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -24,7 +23,6 @@ import android.os.Handler;
 public class SystemManager extends BaseManager {
 	private Features m_features = new Features();
 	private SystemInfo m_systemInfo = new SystemInfo();
-	private StorageList m_storageList = new StorageList();
 	private SystemStatus m_systemStatus = new SystemStatus();
 
 	private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
@@ -41,7 +39,6 @@ public class SystemManager extends BaseManager {
 	private String m_strAppVersion = "";
 
 	private GetFeaturesTask m_getFeaturesTask = null;
-	private GetExternalStorageDeviceTask m_getExternalStorageDeviceTask = null;
 	private GetSystemStatusTask m_getSystemStatusTask = null;
 
 	public Features getFeatures() {
@@ -54,10 +51,6 @@ public class SystemManager extends BaseManager {
 
 	public SystemStatus getSystemStatus() {
 		return m_systemStatus;
-	}
-
-	public StorageList getStorageList() {
-		return m_storageList;
 	}
 
 	public boolean getAlreadyRecongniseDeviceFlag() {
@@ -73,7 +66,6 @@ public class SystemManager extends BaseManager {
 		m_features.clear();
 		m_systemInfo.clear();
 		m_systemInfo.clear();
-		m_storageList.clear();
 	}
 
 	@Override
@@ -87,17 +79,11 @@ public class SystemManager extends BaseManager {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
-				getSystemInfo(null);
-				//getSystemStatus(null);
+				getSystemInfo(null);		
 				startSystemStatusTask();
 
-				if (FeatureVersionManager.getInstance().isSupportApi("System",
-						"GetExternalStorageDevice")) {
-					startGetStorageTask();
-				}
 			} else {
-				stopRollTimer();
-				m_storageList.clear();
+				stopRollTimer();			
 				m_systemInfo.clear();
 				m_systemStatus.clear();
 				BusinessMannager.getInstance().getSystemInfoModel().clear();
@@ -130,14 +116,6 @@ public class SystemManager extends BaseManager {
 	}
 	@Override
 	protected void stopRollTimer() {
-		/*
-		 * m_getStorageTimer.cancel(); m_getStorageTimer.purge();
-		 * m_getStorageTimer = new Timer();
-		 */
-		if (null != m_getExternalStorageDeviceTask) {
-			m_getExternalStorageDeviceTask.cancel();
-			m_getExternalStorageDeviceTask = null;
-		}
 		
 		if (null != m_getSystemStatusTask) {
 			m_getSystemStatusTask.cancel();
@@ -324,54 +302,6 @@ public class SystemManager extends BaseManager {
 				}
 		}
 
-	// GetExternalStorageDevice
-	// //////////////////////////////////////////////////////////////////////////////////////////
-
-	private void startGetStorageTask() {
-		if (m_getExternalStorageDeviceTask == null) {
-			m_getExternalStorageDeviceTask = new GetExternalStorageDeviceTask();
-			m_getStorageTimer.scheduleAtFixedRate(
-					m_getExternalStorageDeviceTask, 0, 10000);
-		}
-	}
-
-	class GetExternalStorageDeviceTask extends TimerTask {
-		@Override
-		public void run() {
-			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.GetExternalStorageDevice("2.7",
-							new IHttpFinishListener() {
-						@Override
-						public void onHttpRequestFinish(
-								BaseResponse response) {
-							String strErrcode = new String();
-							int ret = response.getResultCode();
-							if (ret == BaseResponse.RESPONSE_OK) {
-								strErrcode = response.getErrorCode();
-								if (strErrcode.length() == 0) {
-									m_storageList = response
-											.getModelResult();
-
-								} else {
-									m_storageList.clear();
-								}
-							} else {
-								m_storageList.clear();
-							}
-
-							Intent megIntent = new Intent(
-									MessageUti.SYSTEM_GET_EXTERNAL_STORAGE_DEVICE_REQUSET);
-							megIntent.putExtra(
-									MessageUti.RESPONSE_RESULT, ret);
-							megIntent.putExtra(
-									MessageUti.RESPONSE_ERROR_CODE,
-									strErrcode);
-							m_context.sendBroadcast(megIntent);
-
-						}
-					}));
-		}
-	}
 
 	//device reboot
 	public void rebootDevice(DataValue data){
