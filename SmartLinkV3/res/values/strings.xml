@@ -19,7 +19,7 @@
     <string name="Home_sim_invalid">Invalid SIM</string>
     <string name="Home_pin_locked">PIN Locked</string>
     <string name="Home_puk_locked">PUK Locked</string>
-    <string name="Home_SimCard_IsIniting">Sim Card IsIniting</string>
+    <string name="Home_SimCard_IsIniting">Initializing</string>
     <string name="Home_PukTimes_UsedOut">Puk Times Used Out</string>
     <string name="Home_SimLock_Required">SIM Lock required</string>
     <string name="Home_SimCard_Detected">SIM Card detected</string>
