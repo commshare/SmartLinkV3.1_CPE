@@ -201,7 +201,9 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 	    	m_homeSetMonthlyBtn.setVisibility(View.VISIBLE);
 	    	if(sim.m_SIMState != SIMState.Accessable) {
 	    		m_homeSetMonthlyBtn.setEnabled(false);
-	    	}
+	    	}else {
+	    		m_homeSetMonthlyBtn.setEnabled(true);
+			}
 	    	m_homedataprogress.setProgress(0);
 	    	m_homedataprogressdec.setVisibility(View.VISIBLE);
 	    	m_homewarn.setVisibility(View.GONE);
