@@ -106,6 +106,7 @@ public class PukDialog implements OnClickListener, OnKeyListener, TextWatcher {
 //        m_btnCancel.setOnClickListener(this);
         
         m_puk_dialog.setCancelable(false);
+        m_puk_dialog.setCanceledOnTouchOutside(false);
         //initFonts();
         
         m_dlgPukShake = AnimationUtils.loadAnimation(m_context, R.anim.input_error_shake);

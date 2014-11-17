@@ -127,7 +127,7 @@ public class PinDialog implements OnClickListener, OnKeyListener, TextWatcher {
 		cancelBtn.setOnClickListener(this);
 
 		m_pin_dialog.setCancelable(true);
-
+		m_pin_dialog.setCanceledOnTouchOutside(false);
 		// initFonts();
 
 		m_shake = AnimationUtils.loadAnimation(m_context, R.anim.input_error_shake);
