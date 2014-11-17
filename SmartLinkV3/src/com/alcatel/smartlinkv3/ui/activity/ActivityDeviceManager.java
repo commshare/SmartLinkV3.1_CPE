@@ -137,6 +137,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		getLocalMacAddress();
 		registerReceiver();
 		getListData();
+		updateConnectedDeviceUI();
+		updateBlockDeviceUI();
 	}
 
 	@Override
