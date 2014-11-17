@@ -642,11 +642,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			}else {
 				m_nPreType = WPAEncryption.antiBuild(
 						BusinessMannager.getInstance().getWPAEncryption());
-				if (SecurityMode.Disable == mode) {
-					m_strPreKey = "";
-				}else {
-					m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
-				}
+			}
+			if (SecurityMode.Disable == mode) {
+				m_strPreKey = "";
+			}else {
+				m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
 			}		
 		}else {
 			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
@@ -661,11 +661,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			}else {
 				m_nPreType = WPAEncryption.antiBuild(
 						BusinessMannager.getInstance().getWPAEncryption_5G());
-				if (SecurityMode.Disable == mode) {
-					m_strPreKey = "";
-				}else {
-					m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
-				}
+			}
+			if (SecurityMode.Disable == mode) {
+				m_strPreKey = "";
+			}else {
+				m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
 			}
 		}
 
