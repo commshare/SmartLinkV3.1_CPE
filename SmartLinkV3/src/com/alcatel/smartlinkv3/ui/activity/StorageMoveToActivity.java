@@ -203,21 +203,9 @@ public class StorageMoveToActivity extends BaseActivity implements
 		} else {
 			getSambaStorageListData();
 		}
-		initTitleBar();
+	
 	}
 	
-	private void initTitleBar() {
-		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {
-			int iamgeId = 0;
-			if (FeatureVersionManager.getInstance().isSupportDevice(FeatureVersionManager.VERSION_DEVICE_M100) == true) {
-				iamgeId = R.drawable.m100_media_box_white;
-			} else {
-				iamgeId = R.drawable.m100_hard_disc_white;
-			}
-			m_rootDirImage.setImageResource(iamgeId);
-		}
-	}
-
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
 		super.onBroadcastReceive(context, intent);
@@ -717,7 +705,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 
 			FileItem item = m_moveTostorageListData.get(position);
 			String strName = item.name;
-			holder.itemImage.setBackgroundResource(R.drawable.m100_item_folder);
+			holder.itemImage.setBackgroundResource(R.drawable.item_folder);
 			holder.itemName.setText(strName);
 
 			return convertView;

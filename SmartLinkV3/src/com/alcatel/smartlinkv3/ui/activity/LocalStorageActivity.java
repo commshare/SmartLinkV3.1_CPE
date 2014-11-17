@@ -313,7 +313,7 @@ public class LocalStorageActivity extends BaseActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.m100_local_storage_view);
+		setContentView(R.layout.local_storage_view);
 		m_bNeedBack = false;
 
 		// get controls
@@ -380,9 +380,9 @@ public class LocalStorageActivity extends BaseActivity implements
 		if (m_flag.equalsIgnoreCase(FLAG_SAMBA)) {
 			String strTitle = "";			
 			strTitle = this.getResources().getString(
-						R.string.m100_storage_main_hard_disc);		
+						R.string.storage_main_hard_disc);		
 			m_title.setText(strTitle);
-			m_rootDirImage.setImageResource(R.drawable.m100_hard_disc_white);
+			m_rootDirImage.setImageResource(R.drawable.hard_disc_white);
 		}
 	}
 
@@ -693,11 +693,9 @@ public class LocalStorageActivity extends BaseActivity implements
 			m_arrowImage1.setVisibility(View.VISIBLE);
 			m_arrowImage2.setVisibility(View.GONE);
 			m_dirParentTv.setVisibility(View.GONE);
-			m_dirTv.setVisibility(View.GONE);
-			if (!FeatureVersionManager.getInstance().isSupportDevice(
-					FeatureVersionManager.VERSION_DEVICE_M100)) {
-				enableToolBtns(false);
-			}
+			m_dirTv.setVisibility(View.GONE);			
+			enableToolBtns(false);
+		
 		} else if (bIsParentRoot == true) {
 			m_rootDirImage.setVisibility(View.VISIBLE);
 			m_dirParentTv.setVisibility(View.GONE);
@@ -806,7 +804,7 @@ public class LocalStorageActivity extends BaseActivity implements
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = mInflater.inflate(
-						R.layout.m100_local_storage_list_adapter, null);
+						R.layout.local_storage_list_adapter, null);
 				holder.itemNormal = (RelativeLayout) convertView
 						.findViewById(R.id.item_normal);
 				holder.itemFolderLoading = (RelativeLayout) convertView
@@ -852,25 +850,25 @@ public class LocalStorageActivity extends BaseActivity implements
 					holder.itemFolderLoadingName.setText(strName);
 					String strFileName = LocalStorageActivity.this
 							.getResources().getString(
-									R.string.m100_uploading_prompt);
+									R.string.uploading_prompt);
 					strFileName = String.format(strFileName, m_writingFileName);
 					holder.itemFolderLoadingPrompt.setText(strFileName);
 					holder.itemFolderLoadingImage
-							.setBackgroundResource(R.drawable.m100_item_uploading_folder);
+							.setBackgroundResource(R.drawable.item_uploading_folder);
 				} else {
 					holder.itemNormal.setVisibility(View.GONE);
 					holder.itemFolderLoading.setVisibility(View.GONE);
 					holder.itemFileLoading.setVisibility(View.VISIBLE);
 					holder.itemFileLoadingImage
-							.setBackgroundResource(R.drawable.m100_item_uploading_file);
+							.setBackgroundResource(R.drawable.item_uploading_file);
 					holder.itemLoadingProgress.setProgress(item.percent);
 					String strFileName = LocalStorageActivity.this
 							.getResources().getString(
-									R.string.m100_uploading_prompt);
+									R.string.uploading_prompt);
 					strFileName = String.format(strFileName, strName);
 					holder.itemFileLoadingName.setText(strFileName);
 					String strPecent = LocalStorageActivity.this.getResources()
-							.getString(R.string.m100_loading_pecent);
+							.getString(R.string.loading_pecent);
 					strPecent = String.format(strPecent, item.percent);
 					holder.itemPercent.setText(strPecent);
 				}
@@ -882,25 +880,25 @@ public class LocalStorageActivity extends BaseActivity implements
 					holder.itemFolderLoadingName.setText(strName);
 					String strFileName = LocalStorageActivity.this
 							.getResources().getString(
-									R.string.m100_downloading_prompt);
+									R.string.downloading_prompt);
 					strFileName = String.format(strFileName, m_writingFileName);
 					holder.itemFolderLoadingPrompt.setText(strFileName);
 					holder.itemFolderLoadingImage
-							.setBackgroundResource(R.drawable.m100_item_downloading_folder);
+							.setBackgroundResource(R.drawable.item_downloading_folder);
 				} else {
 					holder.itemNormal.setVisibility(View.GONE);
 					holder.itemFolderLoading.setVisibility(View.GONE);
 					holder.itemFileLoading.setVisibility(View.VISIBLE);
 					holder.itemFileLoadingImage
-							.setBackgroundResource(R.drawable.m100_item_downloading_file);
+							.setBackgroundResource(R.drawable.item_downloading_file);
 					holder.itemLoadingProgress.setProgress(item.percent);
 					String strFileName = LocalStorageActivity.this
 							.getResources().getString(
-									R.string.m100_downloading_prompt);
+									R.string.downloading_prompt);
 					strFileName = String.format(strFileName, strName);
 					holder.itemFileLoadingName.setText(strFileName);
 					String strPecent = LocalStorageActivity.this.getResources()
-							.getString(R.string.m100_loading_pecent);
+							.getString(R.string.loading_pecent);
 					strPecent = String.format(strPecent, item.percent);
 					holder.itemPercent.setText(strPecent);
 				}
@@ -911,25 +909,25 @@ public class LocalStorageActivity extends BaseActivity implements
 				holder.itemNormalName.setText(strName);
 				if (bIsFolder == true) {
 					holder.itemNormalImage
-							.setBackgroundResource(R.drawable.m100_item_folder);
+							.setBackgroundResource(R.drawable.item_folder);
 				} else {
 					// to do
 					FileType fileType = FileModel.getFileType(strName);
 					if (fileType == FileType.Audio) {
 						holder.itemNormalImage
-								.setBackgroundResource(R.drawable.m100_item_music);
+								.setBackgroundResource(R.drawable.item_music);
 					} else if (fileType == FileType.Image) {
 						holder.itemNormalImage
-								.setBackgroundResource(R.drawable.m100_item_image);
+								.setBackgroundResource(R.drawable.item_image);
 					} else if (fileType == FileType.Text) {
 						holder.itemNormalImage
-								.setBackgroundResource(R.drawable.m100_item_doc);
+								.setBackgroundResource(R.drawable.item_doc);
 					} else if (fileType == FileType.Video) {
 						holder.itemNormalImage
-								.setBackgroundResource(R.drawable.m100_item_video);
+								.setBackgroundResource(R.drawable.item_video);
 					} else {
 						holder.itemNormalImage
-								.setBackgroundResource(R.drawable.m100_item_unknown_file);
+								.setBackgroundResource(R.drawable.item_unknown_file);
 					}
 				}
 			}

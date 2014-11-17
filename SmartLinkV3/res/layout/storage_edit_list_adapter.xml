@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:background="@drawable/m100_item_folder"/>
+            android:background="@drawable/item_folder"/>
         <CheckBox
             android:id="@+id/select"
             android:layout_width="wrap_content"

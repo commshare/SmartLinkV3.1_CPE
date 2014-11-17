@@ -63,9 +63,6 @@ public class HttpSystem {
 		@Override
         public Features getModelResult() 
         {
-        	//tset
-        	//m_features.setModel("MM100");
-        	//test
              return m_features;
         }
     }
@@ -179,62 +176,6 @@ public class HttpSystem {
         public SystemStatus getModelResult() 
         {
              return m_systemStatus;
-        }
-    }
-	
-	/******************** GetExternalStorageDevice  **************************************************************************************/	
-	public static class GetExternalStorageDevice extends BaseRequest
-    {	
-        public GetExternalStorageDevice(String strId,IHttpFinishListener callback) 
-        {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "System.GetExternalStorageDevice");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new GetExternalStorageDeviceResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class GetExternalStorageDeviceResponse extends BaseResponse
-    {
-		private StorageList m_result;
-        
-        public GetExternalStorageDeviceResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_result = gson.fromJson(strJsonResult, StorageList.class);
-        }
-
-        @SuppressWarnings("unchecked")
-		@Override
-        public StorageList getModelResult() 
-        {
-             return m_result;
         }
     }
 	

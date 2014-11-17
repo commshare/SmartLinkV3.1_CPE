@@ -317,25 +317,25 @@ public class StorageSearchActivity extends BaseActivity implements
 
 			if (bIsFolder == true) {
 				holder.itemImage
-						.setBackgroundResource(R.drawable.m100_item_folder);
+						.setBackgroundResource(R.drawable.item_folder);
 			} else {
 				// to do
 				FileType fileType = FileModel.getFileType(strName);
 				if (fileType == FileType.Audio) {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_music);
+							.setBackgroundResource(R.drawable.item_music);
 				} else if (fileType == FileType.Image) {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_image);
+							.setBackgroundResource(R.drawable.item_image);
 				} else if (fileType == FileType.Text) {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_doc);
+							.setBackgroundResource(R.drawable.item_doc);
 				} else if (fileType == FileType.Video) {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_video);
+							.setBackgroundResource(R.drawable.item_video);
 				} else {
 					holder.itemImage
-							.setBackgroundResource(R.drawable.m100_item_unknown_file);
+							.setBackgroundResource(R.drawable.item_unknown_file);
 				}
 			}
 			holder.itemName.setText(strName);

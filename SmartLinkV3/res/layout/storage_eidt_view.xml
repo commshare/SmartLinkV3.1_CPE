@@ -75,7 +75,7 @@
                 android:layout_toRightOf="@id/back_layout"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/m100_storage_main_local_storage"
+                android:text="@string/storage_main_local_storage"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/dimen_textsize_20sp"
                 android:textStyle="bold" />
@@ -99,7 +99,7 @@
             android:contentDescription="@null"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
-            android:src="@drawable/m100_local_storage_grey" />
+            android:src="@drawable/local_storage_grey" />
 
         <TextView
             android:id="@+id/directory_parent"
@@ -121,7 +121,7 @@
             android:id="@+id/directory_arrow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/m100_directory_arrow"
+            android:background="@drawable/directory_arrow"
             android:contentDescription="@null" />
 
         <TextView
@@ -144,7 +144,7 @@
             android:id="@+id/directory_arrow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/m100_directory_arrow"
+            android:background="@drawable/directory_arrow"
             android:contentDescription="@null"
             android:visibility="gone" />
     </LinearLayout>

@@ -37,7 +37,7 @@
 	            android:layout_alignParentLeft="true"
 	            android:layout_centerVertical="true"
 	            android:contentDescription="@null"
-	            android:background="@drawable/m100_item_folder"/>
+	            android:background="@drawable/item_folder"/>
 		    <TextView
 	           	android:id="@+id/name"
 	           	android:layout_width="wrap_content"

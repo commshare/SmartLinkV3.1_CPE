@@ -43,7 +43,7 @@
 	      android:gravity="left"
 	      android:textSize="18sp"
 	      android:visibility="gone"
-	      android:text="@string/m100_no_file"  />
+	      android:text="@string/no_file" />
     <FrameLayout 
 	    android:layout_width="match_parent"
         android:layout_height="match_parent"

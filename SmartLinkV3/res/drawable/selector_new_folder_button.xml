@@ -3,9 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_enabled="true"
-        android:drawable="@drawable/m100_toolbarsearch_normal" />
+        android:drawable="@drawable/toolbar_new_folder_normal" />
     <item  
         android:state_enabled="false"
-        android:drawable="@drawable/m100_toolbar_search_disabled" />
+        android:drawable="@drawable/toolbar_new_folder_disabled" />
  
 </selector>

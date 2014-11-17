@@ -207,7 +207,7 @@ public class StorageMainActivity extends BaseActivity implements
 			String strDeviceName = BusinessMannager.getInstance()
 					.getSystemInfo().getDeviceName();
 			textDesc.setText(String.format(
-					this.getString(R.string.m100_storage_main_samba_service_disabled_description),
+					this.getString(R.string.storage_main_samba_service_disabled_description),
 					strDeviceName));
 			m_hardDisc.setVisibility(View.GONE);
 			break;
