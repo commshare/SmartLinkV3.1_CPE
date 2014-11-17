@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.common;
 
+
 public class ENUM {
 	public static enum LOGIN_STATE {
 		Login, Logout;
@@ -188,23 +189,35 @@ public class ENUM {
 	 * Network Type 0: No service 1: GPRS 2: EDGE 3: UMTS 4: HSDPA 5: HSPA 6:
 	 * HSUPA 7: DC-HSPA+ 8: LTE 9: GSM 10: HSPA+ 11: UNKNOWN
 	 */
+	
 	public static enum NetworkType {
-		No_service, Net_2G, Net_3G, Net_4G, UNKNOWN;
+		No_service, GPRS, EDGE, HSPA, HSUPA, UMTS, HSPA_PLUS, DC_HSPA_PLUS, LTE, UNKNOWN;
 
 		public static NetworkType build(int nState) {
 			if (nState == 0) {
 				return No_service;
 			} else if (nState == 1) {
-				return Net_2G;
+				return GPRS;
 			} else if (nState == 2) {
-				return Net_3G;
+				return EDGE;
 			} else if (nState == 3) {
-				return Net_4G;
+				return HSPA;
+			} else if (nState == 4) {
+				return HSUPA;
+			} else if (nState == 5) {
+				return UMTS;
+			} else if (nState == 6) {
+				return HSPA_PLUS;
+			} else if (nState == 7) {
+				return DC_HSPA_PLUS;
+			} else if (nState == 8) {
+				return LTE;
 			} else {
 				return UNKNOWN;
 			}
 		}
 	}
+	
 
 	/*
 	 * RSSI value: 0: level 0 1: level 1 2: level 2 3: level 3 4: level 4 5:

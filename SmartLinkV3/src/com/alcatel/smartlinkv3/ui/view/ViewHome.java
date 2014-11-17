@@ -603,20 +603,32 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_networkLabelTextView.setVisibility(View.VISIBLE);
 			
 			//2G
-			if (curNetwork.m_NetworkType == NetworkType.Net_2G) {
+			if (curNetwork.m_NetworkType == NetworkType.EDGE
+					|| curNetwork.m_NetworkType == NetworkType.GPRS) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_2g);
 			}
 			
 			//3G
-			if (curNetwork.m_NetworkType == NetworkType.Net_3G) {
+			if (curNetwork.m_NetworkType == NetworkType.HSPA					
+					|| curNetwork.m_NetworkType == NetworkType.UMTS					
+					|| curNetwork.m_NetworkType == NetworkType.HSUPA) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_3g);
 			}
+			
+			//3G+
+			if (curNetwork.m_NetworkType == NetworkType.HSPA_PLUS					
+					|| curNetwork.m_NetworkType == NetworkType.DC_HSPA_PLUS) {
+				m_networkTypeTextView.setVisibility(View.VISIBLE);
+				m_networkTypeTextView.setTypeface(typeFace);
+				m_networkTypeTextView.setText(R.string.home_network_type_3g_plus);
+			}
+			
 			//4G			
-			if (curNetwork.m_NetworkType == NetworkType.Net_4G) {
+			if (curNetwork.m_NetworkType == NetworkType.LTE) {
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_4g);
