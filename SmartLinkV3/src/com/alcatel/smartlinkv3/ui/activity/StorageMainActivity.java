@@ -38,7 +38,6 @@ public class StorageMainActivity extends BaseActivity implements
 		layout_no_storage, layout_samba_disable, layout_hard_disc
 	}
 
-
 	private StorageReceiver m_receiver = new StorageReceiver();
 
 	private class StorageReceiver extends BroadcastReceiver {
@@ -164,21 +163,22 @@ public class StorageMainActivity extends BaseActivity implements
 	}
 
 	private void onSambaClick() {
-		
+
 		Intent it = new Intent(StorageMainActivity.this,
 				LocalStorageActivity.class);
-		String strRoot = FileUtils.addLastFileSeparator(BusinessMannager.getInstance().getSambaPath());
-		it.putExtra(
-				LocalStorageActivity.CURRENT_DIRECTORY, strRoot);
-		
+		String strRoot = FileUtils.addLastFileSeparator(BusinessMannager
+				.getInstance().getSambaPath());
+		it.putExtra(LocalStorageActivity.CURRENT_DIRECTORY, strRoot);
+
 		it.putExtra(LocalStorageActivity.FLAG_CURRENT_LOCATION,
-				LocalStorageActivity.FLAG_SAMBA);	
-		 this.startActivity(it);	
+				LocalStorageActivity.FLAG_SAMBA);
+		this.startActivity(it);
 	}
 
 	private void updateUI() {
 
-		if ( Status.build(BusinessMannager.getInstance().getSDCardStatus().SDcardStatus)  == Status.Disabled) {
+		if (Status
+				.build(BusinessMannager.getInstance().getSDCardStatus().SDcardStatus) == Status.Disabled) {
 			showCurrentView(LAYOUT_TYPE.layout_no_storage);
 		} else {
 
@@ -195,22 +195,26 @@ public class StorageMainActivity extends BaseActivity implements
 		switch (type) {
 		case layout_no_storage:
 			m_noExtStorage.setVisibility(View.VISIBLE);
-			m_sambaDisable.setVisibility(View.GONE);		
+			m_sambaDisable.setVisibility(View.GONE);
 			m_hardDisc.setVisibility(View.GONE);
 			break;
 
 		case layout_samba_disable:
 			m_noExtStorage.setVisibility(View.GONE);
-			m_sambaDisable.setVisibility(View.VISIBLE);		
-			TextView textDesc = (TextView) this.findViewById(R.id.samba_service_disableed_discription_view);
-			String strDeviceName = BusinessMannager.getInstance().getSystemInfo().getDeviceName();
-			textDesc.setText(String.format(this.getString(R.string.m100_storage_main_samba_service_disabled_description), strDeviceName));
+			m_sambaDisable.setVisibility(View.VISIBLE);
+			TextView textDesc = (TextView) this
+					.findViewById(R.id.samba_service_disableed_discription_view);
+			String strDeviceName = BusinessMannager.getInstance()
+					.getSystemInfo().getDeviceName();
+			textDesc.setText(String.format(
+					this.getString(R.string.m100_storage_main_samba_service_disabled_description),
+					strDeviceName));
 			m_hardDisc.setVisibility(View.GONE);
 			break;
 
 		case layout_hard_disc:
 			m_noExtStorage.setVisibility(View.GONE);
-			m_sambaDisable.setVisibility(View.GONE);			
+			m_sambaDisable.setVisibility(View.GONE);
 			m_hardDisc.setVisibility(View.VISIBLE);
 			break;
 

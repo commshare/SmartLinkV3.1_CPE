@@ -30,7 +30,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private Button m_btnDlna = null;
 	private ImageButton m_btnback = null;
 	private TextView m_tvback = null;
-	private TextView m_tvDlnaDesc = null;
+	private TextView m_tvDlnaName = null;
 	private TextView m_tvSdcardUsage = null;
 	private TextView m_tvSdcardStatus = null;
 	private ProgressBar m_sdcardProgress;
@@ -53,7 +53,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		m_btnback = (ImageButton) this.findViewById(R.id.btn_back);
 		m_btnback.setOnClickListener(this);
 
-		m_tvDlnaDesc = (TextView) this.findViewById(R.id.tv_dlna_description);
+		m_tvDlnaName = (TextView) this.findViewById(R.id.tv_dlna_name);
 		m_tvSdcardUsage = (TextView) this.findViewById(R.id.tv_sdcard_usage);
 
 		m_tvSdcardStatus = (TextView) this
@@ -187,7 +187,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		}
 
 		String format = this.getResources()
-				.getString(R.string.dlna_description);
+				.getString(R.string.dlna_name);
 		String description;
 		if (settings.DlnaName.isEmpty()) {
 			description = String.format(format, BusinessMannager.getInstance()
@@ -196,7 +196,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 			description = String.format(format, settings.DlnaName);
 		}
 
-		m_tvDlnaDesc.setText(description);
+		m_tvDlnaName.setText(description);
 
 	}
 
