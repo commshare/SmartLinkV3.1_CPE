@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.app.Activity;
@@ -43,6 +44,9 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private TextView m_txConnectedCnt;
 	private TextView m_txBlockCnt;
 	private ImageView m_refresh;
+	private ProgressBar m_waiting = null;
+	
+	private boolean m_bIsWorking = false;
 
 	private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
 	private ArrayList<ConnectedDeviceItemModel> m_blockedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
@@ -71,13 +75,21 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
 					getListData();					
-				}				
+				}		
+				m_bIsWorking = false;
+				m_waiting.setVisibility(View.GONE);
+				((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
+				((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 			} else if (intent.getAction().equals(MessageUti.DEVICE_SET_DEVICE_UNLOCK)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
 					getListData();					
-				}				
+				}	
+				m_bIsWorking = false;
+				m_waiting.setVisibility(View.GONE);
+				((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
+				((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 			}
 			
 			else if (intent.getAction().equals(MessageUti.DEVICE_SET_DEVICE_NAME)) {
@@ -129,6 +141,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		m_refresh = (ImageView) this.findViewById(R.id.refresh);
 		m_refresh.setOnClickListener(this);
 		
+		m_waiting = (ProgressBar) this.findViewById(R.id.waiting_progress);
+		
 	}
 
 	@Override
@@ -144,6 +158,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	@Override
 	public void onPause() {
 		super.onPause();
+		m_bIsWorking = false;
+		m_waiting.setVisibility(View.GONE);
 		this.unregisterReceiver(m_deviceReceiver);
 	}
 
@@ -295,6 +311,11 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
+			
+			if(m_bIsWorking == true)
+				holder.blockBtn.setEnabled(false);
+			else
+				holder.blockBtn.setEnabled(true);
 
 			ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
 			final String displayName = model.DeviceName;
@@ -356,8 +377,13 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			
 			holder.blockBtn.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v) {				
+				public void onClick(View v) {	
+					m_bIsWorking = true;
+					m_waiting.setVisibility(View.VISIBLE);
+					holder.blockBtn.setEnabled(false);
 					setConnectedDeviceBlock(displayName, mac);
+					((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
+					((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 				}
 			
 			});
@@ -414,9 +440,10 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			public TextView mac;
 		}
 
+		ViewHolder holder = null;
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
-			ViewHolder holder = null;
+			
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = LayoutInflater.from(ActivityDeviceManager.this)
@@ -432,6 +459,11 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				holder = (ViewHolder) convertView.getTag();
 			}			
 			
+			if(m_bIsWorking == true)
+				holder.unblockBtn.setEnabled(false);
+			else
+				holder.unblockBtn.setEnabled(true);
+			
 			final String displayName = m_blockedDeviceLstData.get(position).DeviceName;
 			holder.deviceName.setText(displayName);
 			final String mac = m_blockedDeviceLstData.get(position).MacAddress;			
@@ -439,8 +471,13 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			
 			holder.unblockBtn.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v) {				
+				public void onClick(View v) {	
+					m_bIsWorking = true;
+					m_waiting.setVisibility(View.VISIBLE);
+					holder.unblockBtn.setEnabled(false);
 					setDeviceUnlock(displayName, mac);
+					((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
+					((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 				}			
 			});			
 			
