@@ -138,6 +138,8 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				MessageUti.SIM_UNLOCK_PIN_REQUEST));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.SIM_UNLOCK_PUK_REQUEST));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.USER_LOGOUT_REQUEST));
 
 		m_homeView.onResume();
 		m_usageView.onResume();
@@ -228,6 +230,19 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				m_dlgPuk.onEnterPukResponse(true);
 			} else {
 				m_dlgPuk.onEnterPukResponse(false);
+			}
+		}
+		
+		if (intent.getAction().equalsIgnoreCase(
+				MessageUti.USER_LOGOUT_REQUEST)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+					BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent
+					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult
+					&& strErrorCode.length() == 0){
+				String strInfo = getString(R.string.login_logout_successful);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
