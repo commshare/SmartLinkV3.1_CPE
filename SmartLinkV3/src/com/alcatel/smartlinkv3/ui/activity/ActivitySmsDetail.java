@@ -384,6 +384,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 
 	//
 	private void OnBtnBack() {
+		BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
 		String strContent = m_etContent.getText().toString();
 		String strNumber = m_smsNumber;
 		if(strContent != null)
@@ -396,8 +397,15 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
 		}else{
 			this.finish();
+			SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
+			if(null != item && item.eSMSType == EnumSMSType.Draft) {
+				DataValue data = new DataValue();
+				data.addParam("DelFlag", EnumSMSDelFlag.Delete_message);
+				data.addParam("ContactId", item.nContactID);
+				data.addParam("SMSId",item.nSMSID);
+				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_DELETE_SMS_REQUSET, data);
+			}
 		}
-		BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
 	}
 
 	private void OnBtnDelete(){
