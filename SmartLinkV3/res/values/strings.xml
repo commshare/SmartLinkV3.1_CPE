@@ -184,6 +184,8 @@
     <string name="setting_upgrade_not_available">Service not available</string>
     <string name="setting_upgrade_check_error">Check error</string>
     <string name="setting_upgrade_btn_upgrade">Upgrade</string>
+    <string name="setting_upgrade_not_start">No start update</string>
+    <string name="setting_upgrade_complete">complete</string>
     <string name="setting_device_title">System Information</string>
     <string name="setting_device_software_version">Software Version:</string>
     <string name="setting_device_hadrware_version">Hardware Version:</string>

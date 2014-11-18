@@ -27,6 +27,7 @@ import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
+import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
@@ -418,6 +419,10 @@ public class BusinessMannager {
 	
 	public DeviceNewVersionInfo getNewFirmwareInfo(){
 		return m_updateManager.getCheckNewVersionInfo();
+	}
+	
+	public DeviceUpgradeStateInfo getUpgradeStateInfo(){
+		return m_updateManager.getUpgradeStatusInfo();
 	}
 	/*Power manager end***/
 	

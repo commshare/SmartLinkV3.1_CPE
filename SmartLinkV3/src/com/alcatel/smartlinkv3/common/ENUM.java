@@ -741,4 +741,37 @@ public class ENUM {
 			return nStatus;
 		}
 	}
+	
+	public static enum EnumDeviceUpgradeStatus{
+		DEVICE_UPGRADE_NOT_START, DEVICE_UPGRADE_UPDATING, DEVICE_UPGRADE_COMPLETE;
+
+		public static EnumDeviceUpgradeStatus build(int nStatus){
+			switch (nStatus) {
+			case 0:
+				return DEVICE_UPGRADE_NOT_START;
+
+			case 1:
+				return DEVICE_UPGRADE_UPDATING;
+
+			case 2:
+				return DEVICE_UPGRADE_COMPLETE;
+
+			default:
+				return DEVICE_UPGRADE_NOT_START;
+			}
+
+		}
+		public static int antiBuild(EnumDeviceUpgradeStatus status){
+			int nStatus = 0;
+			if (DEVICE_UPGRADE_NOT_START == status) {
+				nStatus = 0;
+			}else if (DEVICE_UPGRADE_UPDATING == status) {
+				nStatus = 1;
+			}else if (DEVICE_UPGRADE_COMPLETE == status) {
+				nStatus = 2;
+			}
+
+			return nStatus;
+		}
+	}
 }

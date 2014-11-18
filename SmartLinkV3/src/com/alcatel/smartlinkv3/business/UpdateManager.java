@@ -7,6 +7,7 @@ import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.business.update.HttpUpdate;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -23,6 +24,8 @@ public class UpdateManager extends BaseManager {
 	private DeviceUpgradeStateInfo m_upgradeFirmwareStateInfo=null;
 	private GetDeviceNewVersionTask m_taskGetDeviceNewVersion;
 	private Timer m_getDeviceNewVersionTimer = new Timer();
+	private Timer m_getDeviceUpgradeStatus = new Timer();
+	private GetDeviceUpgradeStatusTask m_taskGetDeviceUpgradeStatus;
 	public UpdateManager(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -30,6 +33,8 @@ public class UpdateManager extends BaseManager {
 		m_upgradeFirmwareStateInfo = new DeviceUpgradeStateInfo();
 		m_context.registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION));
+		m_context.registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE));
 	}
 
 	@Override
@@ -43,6 +48,15 @@ public class UpdateManager extends BaseManager {
 				startGetDeviceNewVersionTask();
 			}
 		}
+		
+		if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_START_UPDATE)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				startGetDeviceUpgradeStatusTask();
+			}
+		}
+		
 		
 		if (intent.getAction().equalsIgnoreCase(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
@@ -65,12 +79,17 @@ public class UpdateManager extends BaseManager {
 	protected void stopRollTimer() {
 		// TODO Auto-generated method stub
 		stopGetDeviceNewVersionTask();
+		stopGetDeviceUpgradeStatusTask();
 	}
 
 	public DeviceNewVersionInfo getCheckNewVersionInfo(){
 		return m_newFirmwareVersionInfo;
 	}
 
+	public DeviceUpgradeStateInfo getUpgradeStatusInfo(){
+		return m_upgradeFirmwareStateInfo;
+	}
+	
 	private void startGetDeviceNewVersionTask() {
 		if(m_taskGetDeviceNewVersion == null) {
 			m_taskGetDeviceNewVersion = new GetDeviceNewVersionTask();
@@ -91,6 +110,30 @@ public class UpdateManager extends BaseManager {
 		public void run() {
 			// TODO Auto-generated method stub
 			getDeviceNewVersion(null);
+		}
+		
+	}
+	
+	private void startGetDeviceUpgradeStatusTask() {
+		if(m_taskGetDeviceUpgradeStatus == null) {
+			m_taskGetDeviceUpgradeStatus = new GetDeviceUpgradeStatusTask();
+			m_getDeviceUpgradeStatus.scheduleAtFixedRate(m_taskGetDeviceUpgradeStatus, 0, 5 * 1000);
+		}
+	}
+	
+	private void stopGetDeviceUpgradeStatusTask() {
+		if(m_taskGetDeviceUpgradeStatus != null) {
+			m_taskGetDeviceUpgradeStatus.cancel();
+			m_taskGetDeviceUpgradeStatus = null;
+		}
+	}
+	
+	public class GetDeviceUpgradeStatusTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			getUpgradeState(null);
 		}
 		
 	}
@@ -149,17 +192,13 @@ public class UpdateManager extends BaseManager {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
-							boolean blStartRes = false;
 							int nRes = response.getResultCode();
 							String strError=response.getErrorCode();
-							if(BaseResponse.RESPONSE_OK == nRes &&
-									strError.length() == 0){
-								blStartRes = true;
-							}
 
 							Intent intent= new Intent(
 									MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
-							intent.putExtra("Result", blStartRes);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -182,17 +221,12 @@ public class UpdateManager extends BaseManager {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							// TODO Auto-generated method stub
-							boolean blStopRes = false;
 							int nRes = response.getResultCode();
 							String strError=response.getErrorCode();
-							if(BaseResponse.RESPONSE_OK == nRes &&
-									strError.length() == 0){
-								blStopRes = true;
-							}
-
 							Intent intent= new Intent(
 									MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE);
-							intent.putExtra("Result", blStopRes);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
@@ -221,10 +255,17 @@ public class UpdateManager extends BaseManager {
 									strError.length() == 0){
 								m_upgradeFirmwareStateInfo = response.getModelResult();
 							}
+							
+							if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING != 
+									EnumDeviceUpgradeStatus.
+									build(m_upgradeFirmwareStateInfo.getStatus())) {
+								stopGetDeviceUpgradeStatusTask();
+							}
 
 							Intent intent= new Intent(
 									MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE);
-							intent.putExtra("Result", nRes);
+							intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));

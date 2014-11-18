@@ -1,8 +1,23 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
+import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -12,7 +27,11 @@ import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -20,9 +39,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingUpgradeActivity extends BaseActivity implements OnClickListener{
 
+	private final int MSG_GET_NEW_VERSION = 10000000;
 	private TextView m_tv_titleTextView = null;
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
@@ -71,7 +92,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		m_btn_upgrade_app.setOnClickListener(this);
 		//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_upgrade_waiting_progress);
-		
+
 		updateNewDeviceInfo(); 
 		String strCurAppVersion = getString(R.string.setting_upgrade_current_app_version);
 		strCurAppVersion += BusinessMannager.getInstance().getAppVersion();
@@ -95,10 +116,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}
 		m_btn_check_firmware.setEnabled(!blShow);
 		m_btn_upgrade_app.setEnabled(!blShow);
-		m_ib_back.setEnabled(!blShow);
-		m_tv_back.setEnabled(!blShow);
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -113,11 +132,11 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			ShowWaiting(true);
 			onBtnAppCheck();
 			break;
-			
+
 		case R.id.btn_check_firmware:
 			onBtnFirmwareCheck();
 			break;
-			
+
 		default:
 			break;
 		}
@@ -128,31 +147,41 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			final InquireDialog inquireDlg = new InquireDialog(this);
 			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
 			inquireDlg.m_contentTextView
-					.setText(R.string.setting_upgrade_firmware_warning);
+			.setText(R.string.setting_upgrade_firmware_warning);
 			inquireDlg.m_contentDescriptionTextView.setText("");
 			inquireDlg.m_confirmBtn
-					.setBackgroundResource(R.drawable.selector_common_button);
+			.setBackgroundResource(R.drawable.selector_common_button);
 			inquireDlg.m_confirmBtn.setText(R.string.ok);
 			inquireDlg.showDialog(new OnInquireApply() {
-				
+
 				@Override
 				public void onInquireApply() {
 					// TODO Auto-generated method stub
 					//upgrade firmware
 					ShowWaiting(true);
+					inquireDlg.closeDialog();
+					BusinessMannager.getInstance().sendRequestMessage(
+							MessageUti.UPDATE_SET_DEVICE_START_UPDATE, null);
 				}
 			});
 		}else {
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
 			ShowWaiting(true);
-			
+
 		}
 	}
-	
+
 	private void onBtnAppCheck(){
-		m_tv_new_app_version.setText(R.string.setting_upgrade_no_new_version);
-		ShowWaiting(false);
+		if (m_blHasNewApp) {
+			Intent intent = new Intent(Intent.ACTION_VIEW);							
+			intent.setData(Uri.parse("market://details?id=com.alcatel.smartlinkv3"));							
+			startActivity(intent);
+		}else {
+			checkNewVersion();
+		}
+//		m_tv_new_app_version.setText(R.string.setting_upgrade_no_new_version);
+//		ShowWaiting(false);
 	}
 
 	@Override
@@ -162,6 +191,14 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION));
+
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.UPDATE_SET_DEVICE_START_UPDATE));
+
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE));
+		
+		
 	}
 
 	@Override
@@ -183,15 +220,46 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				ShowWaiting(false);
 				String strNew = getString(R.string.setting_upgrade_check_failed);
 				setNewDeviceVersion(strNew);
-				
+
+			}
+		}
+
+		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_START_UPDATE)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()){
+				//do nothing
+			}else {
+				ShowWaiting(false);
+				Toast.makeText(this, R.string.setting_failed, Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()){
+				//do nothing
+				DeviceUpgradeStateInfo info = BusinessMannager.getInstance().getUpgradeStateInfo();
+				EnumDeviceUpgradeStatus status = EnumDeviceUpgradeStatus.build(info.getStatus());
+				if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_NOT_START == status){
+					ShowWaiting(false);
+					Toast.makeText(this, R.string.setting_upgrade_not_start, Toast.LENGTH_SHORT).show();
+				}else if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
+					ShowWaiting(false);
+					Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
+				}
+			}else {
+				ShowWaiting(false);
+				Toast.makeText(this, R.string.setting_failed, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
-	
+
 	private void setNewDeviceVersion(String strNewVesion){
 		m_tv_new_firmware_version.setText(strNewVesion);
 	}
-	
+
 	private void updateNewDeviceInfo(){
 		DeviceNewVersionInfo info = BusinessMannager.getInstance().getNewFirmwareInfo();
 		int nState = info.getState();
@@ -201,7 +269,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			ShowWaiting(true);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
 			m_blHasNewFirmware = true;
-			String strNew = getString(R.string.setting_upgrade_device_version);
+			String strNew = getString(R.string.setting_upgrade_new_app_version);
 			strNew += info.getVersion();
 			setNewDeviceVersion(strNew);
 			m_btn_check_firmware.setText(R.string.setting_upgrade_btn_upgrade);
@@ -226,5 +294,89 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			ShowWaiting(false);
 		}
 	}
-	
+
+	private void checkNewVersion(){
+
+		new Thread() {
+			public void run() {
+
+				HttpParams myParams = new BasicHttpParams();
+				HttpConnectionParams.setConnectionTimeout(myParams, 20000);
+				HttpConnectionParams.setSoTimeout(myParams, 20000);
+				HttpClient httpclient = new DefaultHttpClient(myParams);
+
+				HttpPost post = new HttpPost("https://play.google.com/store/apps/details?id=com.alcatel.smartlinkv3");
+
+				HttpResponse response;
+				try {
+					response = httpclient.execute(post);
+					int nStatusCode = response.getStatusLine().getStatusCode();
+					if (nStatusCode == HttpStatus.SC_OK) {					
+						String strRes = EntityUtils.toString(response.getEntity(), "utf-8");	
+						int nPos = strRes.indexOf("softwareVersion");						
+						if (nPos != -1) {
+							Log.e("@@@", strRes);
+							strRes = strRes.substring(nPos);
+							int start = strRes.indexOf(">");						
+							int end = strRes.indexOf("<");
+							strRes = strRes.substring(start+1, end);			
+							strRes = strRes.trim();
+							Log.e("@@@", strRes);
+							Message msg = new Message();
+							msg.what = MSG_GET_NEW_VERSION;
+							Bundle data = new Bundle();
+							data.putString("version", strRes);
+							msg.setData(data);
+							handler.sendMessage(msg);
+
+						}
+
+					}
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					Message msg = new Message();
+					msg.what = 0;
+					handler.sendMessage(msg);
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					Message msg = new Message();
+					msg.what = 0;
+					handler.sendMessage(msg);
+					e.printStackTrace();
+				}
+
+			}
+		}.start();
+	}
+
+	private Handler handler = new Handler(){
+		public void handleMessage(Message msg){
+			ShowWaiting(false);
+			switch (msg.what) {
+			case MSG_GET_NEW_VERSION:
+				String strNewVersion = msg.getData().getString("version");
+				String currVer = BusinessMannager.getInstance().getAppVersion();		
+				m_tv_new_app_version.setText(getString(R.string.setting_upgrade_new_app_version)+
+						msg.getData().getString("version"));												
+				if(currVer.compareToIgnoreCase(strNewVersion) < 0)
+				{
+					m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_upgrade);
+					m_blHasNewApp = true;
+				}else {
+					m_tv_new_app_version.setText(R.string.setting_upgrade_no_new_version);
+					m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_check);
+					m_blHasNewApp = false;
+				}
+				break;
+
+			default:
+				m_tv_new_app_version.setText(R.string.setting_upgrade_check_failed);
+				m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_check);
+				m_blHasNewApp = false;
+				break;
+			}
+		}
+	};
+
 }
