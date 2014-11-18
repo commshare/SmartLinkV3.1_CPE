@@ -41,6 +41,7 @@ public class ViewSetting extends BaseViewImpl{
 	private ListView m_lvSettingListView = null;
 	private UprgadeAdapter adapter;
 	private List<SettingItem>list;
+	private boolean m_blFirst=true;
 	
 
 	private void registerReceiver() {}
@@ -102,7 +103,8 @@ public class ViewSetting extends BaseViewImpl{
 	}
 
 	@Override
-	public void onPause() {}
+	public void onPause() {
+	}
 
 	@Override
 	public void onDestroy() {
@@ -154,6 +156,8 @@ public class ViewSetting extends BaseViewImpl{
 	
 	private void goToUpgradeSettingPage(){
 		Intent intent = new Intent(m_context, SettingUpgradeActivity.class);
+		intent.putExtra("First", m_blFirst);
+		m_blFirst = false;
 		m_context.startActivity(intent);
 	}
 	

@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -93,7 +94,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_upgrade_waiting_progress);
 
-		updateNewDeviceInfo(); 
+		//updateNewDeviceInfo(); 
 		String strCurAppVersion = getString(R.string.setting_upgrade_current_app_version);
 		strCurAppVersion += BusinessMannager.getInstance().getAppVersion();
 		m_tv_cur_app_version.setText(strCurAppVersion);
@@ -101,6 +102,12 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		String strCurFWVersion = getString(R.string.setting_upgrade_device_version);
 		strCurFWVersion += BusinessMannager.getInstance().getSystemInfo().getSwVersion();
 		m_tv_cur_firmware_version.setText(strCurFWVersion);
+		m_tv_new_firmware_version.setText("");
+		Intent it = getIntent();
+		boolean blFirst = it.getBooleanExtra("First", true);
+		if (!blFirst) {
+			updateNewDeviceInfo();
+		}
 		if (m_blHasNewApp) {
 			m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_upgrade);
 		}else {
@@ -146,6 +153,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		if (m_blHasNewFirmware) {
 			final InquireDialog inquireDlg = new InquireDialog(this);
 			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+			inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
 			inquireDlg.m_contentTextView
 			.setText(R.string.setting_upgrade_firmware_warning);
 			inquireDlg.m_contentDescriptionTextView.setText("");
@@ -197,7 +205,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE));
-		
 		
 	}
 
