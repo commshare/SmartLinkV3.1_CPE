@@ -7,7 +7,6 @@ import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.file.FileItem;
 import com.alcatel.smartlinkv3.common.file.FileModel;
@@ -44,7 +43,6 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,7 +56,6 @@ public class StorageEditActivity extends BaseActivity implements
 	private String m_strCurLocation = "";
 	private String m_curDirectory = null;
 
-	private LinearLayout m_backBtn = null;
 	private TextView m_doneBtn = null;
 	private TextView m_title = null;
 	private ImageView m_rootDirImage = null;
@@ -221,8 +218,6 @@ public class StorageEditActivity extends BaseActivity implements
 				LocalStorageActivity.CURRENT_DIRECTORY);
 
 		// get controls
-		m_backBtn = (LinearLayout) this.findViewById(R.id.back_layout);
-		// m_backBtn.setOnClickListener(this);
 		m_doneBtn = (TextView) this.findViewById(R.id.done_btn);
 		m_doneBtn.setOnClickListener(this);
 		m_title = (TextView) this.findViewById(R.id.title);
@@ -252,6 +247,7 @@ public class StorageEditActivity extends BaseActivity implements
 				.findViewById(R.id.waiting_progress);
 		m_progressWaiting.setVisibility(View.GONE);
 
+		initTitleBar();
 
 		if (LocalStorageActivity.FLAG_LOCAL.equalsIgnoreCase(m_strCurLocation)) {
 			getLocalEditStorageListData();
@@ -295,10 +291,20 @@ public class StorageEditActivity extends BaseActivity implements
 			m_renameFolderDlg.closeDialog();
 		}
 	}
+	
+	private void initTitleBar() {
+		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {			
+			String strTitle = this.getResources().getString(
+						R.string.storage_main_hard_disc);
+			int	iamgeId = R.drawable.hard_disc_grey;			
+			m_title.setText(strTitle);
+			m_rootDirImage.setImageResource(iamgeId);
+		}
+	}
 
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
-		// case R.id.back_layout:
+
 		case R.id.done_btn:
 			this.finish();
 			break;

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.file.FileItem;
 import com.alcatel.smartlinkv3.common.file.FileSortUtils;
 import com.alcatel.smartlinkv3.common.file.FileSortUtils.SortMethod;
@@ -35,7 +34,6 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -197,7 +195,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 		MoveToStorageListAdapter moveToStorageListAdapter = new MoveToStorageListAdapter(
 				this);
 		m_moveToStorageListView.setAdapter(moveToStorageListAdapter);
-
+	
 		if (LocalStorageActivity.FLAG_LOCAL.equalsIgnoreCase(m_strCurLocation)) {
 			getLocalStorageListData();
 		} else {
