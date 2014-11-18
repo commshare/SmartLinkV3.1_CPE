@@ -599,12 +599,15 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
 			//show network type
 			if (curNetwork.m_NetworkType == NetworkType.UNKNOWN)
+			{
 				m_networkTypeTextView.setVisibility(View.GONE);
 				m_networkLabelTextView.setVisibility(View.VISIBLE);
+			}
 			
 			//2G
 			if (curNetwork.m_NetworkType == NetworkType.EDGE
 					|| curNetwork.m_NetworkType == NetworkType.GPRS) {
+				m_networkLabelTextView.setVisibility(View.GONE);
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_2g);
@@ -614,6 +617,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			if (curNetwork.m_NetworkType == NetworkType.HSPA					
 					|| curNetwork.m_NetworkType == NetworkType.UMTS					
 					|| curNetwork.m_NetworkType == NetworkType.HSUPA) {
+				m_networkLabelTextView.setVisibility(View.GONE);
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_3g);
@@ -622,6 +626,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			//3G+
 			if (curNetwork.m_NetworkType == NetworkType.HSPA_PLUS					
 					|| curNetwork.m_NetworkType == NetworkType.DC_HSPA_PLUS) {
+				m_networkLabelTextView.setVisibility(View.GONE);
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_3g_plus);
@@ -629,6 +634,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			
 			//4G			
 			if (curNetwork.m_NetworkType == NetworkType.LTE) {
+				m_networkLabelTextView.setVisibility(View.GONE);
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_4g);

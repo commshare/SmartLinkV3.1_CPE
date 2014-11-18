@@ -85,6 +85,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	private int pageIndex = 0;
 	
 	private RelativeLayout m_accessDeviceLayout;
+	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -140,6 +141,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				MessageUti.SIM_UNLOCK_PUK_REQUEST));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.USER_LOGOUT_REQUEST));
+		
+		
+		this.registerReceiver(m_msgReceiver2, new IntentFilter(
+				PAGE_TO_VIEW_HOME));
+		
 
 		m_homeView.onResume();
 		m_usageView.onResume();
@@ -157,6 +163,8 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				smsBtnClick();
 			}else if (nPage == 2) {
 				widgetBatteryBtnClick();
+			}else if (nPage == 3) {
+				homeBtnClick();
 			}
 		}else {
 			Intent itent = new Intent(this, RefreshWifiActivity.class);
@@ -244,6 +252,10 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				String strInfo = getString(R.string.login_logout_successful);
 				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			}
+		}
+		
+		if (intent.getAction().equalsIgnoreCase(PAGE_TO_VIEW_HOME)) {
+			homeBtnClick();
 		}
 	}
 	

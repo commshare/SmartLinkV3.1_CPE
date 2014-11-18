@@ -8,6 +8,7 @@ import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.PowerManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -22,6 +23,7 @@ import android.content.IntentFilter;
 
 public abstract class BaseActivity extends Activity{
 	protected ActivityBroadcastReceiver m_msgReceiver;
+	protected ActivityBroadcastReceiver m_msgReceiver2;
 	private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
 	protected boolean m_bNeedBack = true;//whether need to back main activity.
 	
@@ -40,6 +42,9 @@ public abstract class BaseActivity extends Activity{
        	m_msgReceiver = new ActivityBroadcastReceiver();
        	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));  
     	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)); 
+    	
+    	m_msgReceiver2 = new ActivityBroadcastReceiver();
+    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
 
     	showActivity(this);
     	back2MainActivity(this);
@@ -56,6 +61,20 @@ public abstract class BaseActivity extends Activity{
     	}
     }
 
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		try {
+    		this.unregisterReceiver(m_msgReceiver2); 		
+    		//checkLogin();
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+	}
+
 	protected void onBroadcastReceive(Context context, Intent intent)
 	{
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
@@ -65,6 +84,12 @@ public abstract class BaseActivity extends Activity{
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				back2MainActivity(context);
+			}
+		}else if(intent.getAction().equals(MessageUti.USER_LOGOUT_REQUEST)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				backMainActivity(context);
 			}
 		}
 	}
@@ -89,6 +114,23 @@ public abstract class BaseActivity extends Activity{
 				Intent intent = new Intent(context, MainActivity.class);	
 				context.startActivity(intent);
 				finish();
+			}
+		}
+	}
+	
+	private void backMainActivity(Context context) {
+		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		
+		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.selfLogined) {
+			dismissAllDialog();
+			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+				Intent intent = new Intent(context, MainActivity.class);	
+				context.startActivity(intent);
+				finish();
+			}else {
+				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+				context.sendBroadcast(intent2);
 			}
 		}
 	}

@@ -269,6 +269,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dip"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:orientation="horizontal" >
                  <TextView
                      android:id="@+id/connct_network_type"
@@ -285,8 +286,9 @@
                      android:layout_height="wrap_content"
                      android:layout_alignParentLeft="true"
                      android:visibility="gone"
+                     android:text="@string/home_no_service"
                      android:textColor="@color/color_blue"
-                     android:textSize="24sp"
+                     android:textSize="21sp"
                      android:textStyle="bold" />
                  </RelativeLayout>
             </RelativeLayout>
