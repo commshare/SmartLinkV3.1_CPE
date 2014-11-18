@@ -310,9 +310,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		if(m_blPasswordOpened){
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
-			m_strKey="";
-			m_et_password.setText(m_strKey);
+			m_et_password.setText("");
 			m_et_password.setEnabled(false);
+			m_et_password.setBackgroundDrawable(null);
 			m_ib_hide_password.setVisibility(View.GONE);
 			m_ib_show_password.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.GONE);
@@ -321,9 +321,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		}else {
 			m_blPasswordOpened = true;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
-			m_strKey=m_strPreKey;
 			m_et_password.setText(m_strKey);
 			m_et_password.setEnabled(true);
+			m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
 			m_ib_hide_password.setVisibility(View.VISIBLE);
 			m_ib_show_password.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.VISIBLE);
@@ -360,6 +360,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
 			m_et_password.setText("");
 			m_et_password.setEnabled(false);
+			m_et_password.setBackgroundDrawable(null);
 			m_ll_encryption.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.GONE);
 			m_tv_psd_type_title.setVisibility(View.GONE);
@@ -367,6 +368,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		}else {
 			m_blPasswordOpened = true;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
+			m_et_password.setText(m_strKey);
 			m_ll_encryption.setVisibility(View.VISIBLE);
 			m_ll_security.setVisibility(View.VISIBLE);
 			m_tv_psd_type_title.setVisibility(View.VISIBLE);
@@ -443,6 +445,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_tv_no_password.setVisibility(View.GONE);
 			m_ib_hide_password.setVisibility(View.VISIBLE);
 			m_ib_show_password.setVisibility(View.GONE);
+			if(!m_ib_show_password.isShown()){
+				m_et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+			}else {
+				m_et_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+			}
 		}
 		m_ll_encryption.setVisibility(View.GONE);
 		m_ll_security.setVisibility(View.GONE);
@@ -643,11 +650,12 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				m_nPreType = WPAEncryption.antiBuild(
 						BusinessMannager.getInstance().getWPAEncryption());
 			}
-			if (SecurityMode.Disable == mode) {
-				m_strPreKey = "";
-			}else {
-				m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
-			}		
+			m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+//			if (SecurityMode.Disable == mode) {
+//				m_strPreKey = "";
+//			}else {
+//				m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+//			}		
 		}else {
 			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
 			SecurityMode mode = BusinessMannager.getInstance().getSecurityMode_5G();
@@ -662,11 +670,12 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				m_nPreType = WPAEncryption.antiBuild(
 						BusinessMannager.getInstance().getWPAEncryption_5G());
 			}
-			if (SecurityMode.Disable == mode) {
-				m_strPreKey = "";
-			}else {
-				m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
-			}
+			m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+//			if (SecurityMode.Disable == mode) {
+//				m_strPreKey = "";
+//			}else {
+//				m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+//			}
 		}
 
 		m_strSsid = m_strPreSsid;
