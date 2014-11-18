@@ -30,7 +30,7 @@ public class StorageMainActivity extends BaseActivity implements
 	private LinearLayout m_sambaDisable = null;
 	private RelativeLayout m_hardDisc = null;
 
-	private RelativeLayout m_sambaSwitch = null;
+	private Button m_sambaSwitch = null;
 
 	private ProgressBar m_progressWaiting = null;
 
@@ -96,8 +96,7 @@ public class StorageMainActivity extends BaseActivity implements
 				.findViewById(R.id.item_hard_disc_layout);
 		m_hardDisc.setOnClickListener(this);
 
-		m_sambaSwitch = (RelativeLayout) this
-				.findViewById(R.id.item_samba_service);
+		m_sambaSwitch =  (Button) this.findViewById(R.id.connect_button);
 		m_sambaSwitch.setOnClickListener(this);
 
 		m_progressWaiting = (ProgressBar) this
@@ -145,7 +144,7 @@ public class StorageMainActivity extends BaseActivity implements
 			onLocalStorageClick();
 			break;
 
-		case R.id.item_samba_service:
+		case R.id.connect_button:
 			enableSamba();
 			break;
 
