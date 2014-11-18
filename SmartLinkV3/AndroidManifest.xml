@@ -212,6 +212,8 @@
        
         <service android:name="com.alcatel.smartlinkv3.common.HttpService" >
         </service>
+        <service android:name="com.alcatel.smartlinkv3.samba.SmbService" >
+        </service>
         <receiver
             android:name="com.alcatel.smartlinkv3.common.BootReceiver"
             android:priority="2147483647" >
