@@ -130,6 +130,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		
 		m_accessDeviceLayout = (RelativeLayout)m_homeView.getView().findViewById(R.id.access_num_layout);
 		m_accessDeviceLayout.setOnClickListener(this);
+		OnResponseAppWidget();
 	}
 
 	@Override
@@ -154,23 +155,6 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
-		
-		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blCPEWifiConnected) {
-			Intent it=getIntent();
-			int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-			if (nPage == 1) {
-				smsBtnClick();
-			}else if (nPage == 2) {
-				widgetBatteryBtnClick();
-			}else if (nPage == 3) {
-				homeBtnClick();
-			}
-		}else {
-			Intent itent = new Intent(this, RefreshWifiActivity.class);
-			startActivity(itent);
-			this.finish();
-		}
 	}
 
 	@Override
@@ -824,5 +808,33 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 				});		
 			}	
 		}	
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onNewIntent(intent);
+		setIntent(intent);
+		OnResponseAppWidget();
+		
+	}
+	
+	private void OnResponseAppWidget(){
+		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (blCPEWifiConnected) {
+			Intent it=getIntent();
+			int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
+			if (nPage == 2) {
+				smsBtnClick();
+			}else if (nPage == 3) {
+				widgetBatteryBtnClick();
+			}else if (nPage == 1) {
+				homeBtnClick();
+			}
+		}else {
+			Intent itent = new Intent(this, RefreshWifiActivity.class);
+			startActivity(itent);
+			this.finish();
+		}
 	}
 }
