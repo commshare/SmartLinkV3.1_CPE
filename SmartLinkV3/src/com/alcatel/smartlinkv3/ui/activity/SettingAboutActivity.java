@@ -80,7 +80,8 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
 			CommonUtil.openWebPage(this, "http://www.alcatelonetouch.com");
 			break;
 		case R.id.tv_link_management_page:
-			CommonUtil.openWebPage(this, "http://192.168.1.1");
+			String strTemp = "http://" + BusinessMannager.getInstance().getServerAddress();
+			CommonUtil.openWebPage(this, strTemp);
 			break;
 		default:
 			break;

@@ -145,6 +145,8 @@
     <string name="setting_text_ssid">SSID:</string>
     <string name="setting_text_passwrod">Password:</string>
     <string name="setting_text_no_passwrod">No Password</string>
+    <string name="setting_wifi_set_success">Change Wifi Settings successfully!</string>
+    <string name="setting_wifi_set_failed">Change Wifi Settings failed!</string>
     <string name="setting_wifi_password_security_tip">Security:</string>
     <string name="setting_wifi_password_wpa_encryption_tip">WPA encryption:</string>
     <string name="setting_wifi_password_wpa_psw_tip">WPA-PSK:</string>

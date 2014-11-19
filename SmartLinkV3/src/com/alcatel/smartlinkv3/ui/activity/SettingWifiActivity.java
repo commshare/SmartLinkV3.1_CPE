@@ -744,9 +744,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_failed);
+			String strTost = getString(R.string.setting_wifi_set_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_success);
+				strTost = getString(R.string.setting_wifi_set_success);
 			}else {
 				initValues();
 				setControlsDoneStatus();
