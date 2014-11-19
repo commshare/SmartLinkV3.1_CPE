@@ -2,6 +2,6 @@
 <animated-rotate 
     xmlns:android="http://schemas.android.com/apk/res/android" 
     android:interpolator="@android:anim/linear_interpolator"
-    android:drawable="@drawable/waiting_progress_blue" 
+    android:drawable="@drawable/waiting_progress" 
     android:pivotX="50%"
 	android:pivotY="50%" />

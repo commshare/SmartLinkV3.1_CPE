@@ -246,7 +246,7 @@
             android:layout_width="30dip"
             android:layout_height="30dip"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:indeterminateDrawable="@drawable/progerss_connect"
+            android:indeterminateDrawable="@drawable/progerss_blue"
             android:visibility="gone" />
     </FrameLayout>
 
