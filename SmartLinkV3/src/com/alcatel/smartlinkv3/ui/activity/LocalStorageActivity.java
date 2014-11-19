@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.file.FileItem;
 import com.alcatel.smartlinkv3.common.file.FileModel;
 import com.alcatel.smartlinkv3.common.file.FileSortUtils;
@@ -750,9 +749,12 @@ public class LocalStorageActivity extends BaseActivity implements
 		if (m_storageListData.size() > 0) {
 			m_noFileTV.setVisibility(View.GONE);
 			m_localStorageListView.setVisibility(View.VISIBLE);
+			m_editBtn.setVisibility(View.VISIBLE);
+			
 		} else {
 			m_noFileTV.setVisibility(View.VISIBLE);
 			m_localStorageListView.setVisibility(View.GONE);
+			m_editBtn.setVisibility(View.GONE);
 		}
 
 		FileSortUtils sort = new FileSortUtils();

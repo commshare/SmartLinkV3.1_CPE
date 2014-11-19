@@ -51,6 +51,12 @@
 	           	android:text="zhoudq"
 	           	android:textSize="@dimen/dimen_textsize_12sp"
 	           	android:textColor="@color/color_black"/>
-	    </RelativeLayout>
+	    </RelativeLayout>	    
     </RelativeLayout>
+        <View
+        android:id="@+id/layout_top_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="10dip"
+        android:background="@color/color_divider" />
 </LinearLayout>

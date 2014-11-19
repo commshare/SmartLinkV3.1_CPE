@@ -168,8 +168,12 @@ public class SmbUploadFilesTask extends Thread {
 				if (!parentFile.exists()) {
 					parentFile.mkdirs();
 				}
-				SmbFile dstFile = new SmbFile(dst, SmbUtils.AUTH);
-				src.renameTo(dstFile);
+				SmbFile dstFile = new SmbFile(dst, SmbUtils.AUTH);	
+				if(dstFile.exists())
+				{
+					dstFile.delete();
+				}
+				src.renameTo(dstFile);			
 				bRes = true;
 			} catch (SmbException e) {
 				HttpAccessLog.getInstance().writeLogToFile("Samba error: uploadfiles: "+ e.getMessage());
