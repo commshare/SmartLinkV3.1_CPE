@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils.TruncateAt;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.Window;
@@ -79,6 +80,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	private TextView m_tv_no_password;
 	private Button m_btn_psd_switch;
 	private ProgressBar m_pb_waiting=null;
+	private TextView m_tv_ssid;
 	//spiners
 	private LinearLayout m_ll_security;
 	private LinearLayout m_ll_encryption;
@@ -159,6 +161,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		m_err_dialog = CommonErrorInfoDialog.getInstance(this);//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_wifi_waiting_progress);
+		m_tv_ssid = (TextView)findViewById(R.id.tv_ssid);
 		//init spiner
 		initSpiners();
 	}
@@ -341,6 +344,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_tv_done.setVisibility(View.VISIBLE);
 		m_tv_edit.setVisibility(View.GONE);
 		m_et_ssid.setEnabled(true);
+		m_et_ssid.setVisibility(View.VISIBLE);
+		m_tv_ssid.setVisibility(View.GONE);
 		m_et_password.setEnabled(true);
 		m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
 		m_et_ssid.setBackgroundResource(R.drawable.selector_edit_bg);
@@ -418,6 +423,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_tv_edit.setVisibility(View.VISIBLE);
 		m_tv_done.setVisibility(View.GONE);
 		m_et_ssid.setEnabled(false);
+		m_tv_ssid.setText(m_strPreSsid);
+		m_tv_ssid.setVisibility(View.VISIBLE);
+		m_et_ssid.setVisibility(View.GONE);
 		m_et_password.setEnabled(false);
 		m_et_password.setBackgroundDrawable(null);
 		m_et_ssid.setBackgroundDrawable(null);
