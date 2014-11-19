@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class SmartLinkWidget extends AppWidgetProvider {
 
@@ -88,29 +89,29 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				Intent intent = new Intent(context, MainActivity.class);
 				intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
 				//create a pending intent
-				PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+				PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 				remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
 				Intent ibBatteryintent = new Intent(context, MainActivity.class);
 				ibBatteryintent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
 				//create a pending intent
-				PendingIntent ibBatterypendingIntent = PendingIntent.getActivity(context, 1, ibBatteryintent, 0);
+				PendingIntent ibBatterypendingIntent = PendingIntent.getActivity(context, 1, ibBatteryintent, PendingIntent.FLAG_CANCEL_CURRENT);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, ibBatterypendingIntent);
 				//SMS intent
 				Intent smsIntent = new Intent(context,MainActivity.class);
 				smsIntent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
 				PendingIntent smsPendingIntent = 
-						PendingIntent.getActivity(context, 2, smsIntent, 0);
+						PendingIntent.getActivity(context, 2, smsIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, smsPendingIntent);
 				//signal intent
 				Intent signalIntent = new Intent(context,MainActivity.class);
 				PendingIntent signalPendingIntent = 
-						PendingIntent.getActivity(context, 3, signalIntent, 0);
+						PendingIntent.getActivity(context, 3, signalIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, signalPendingIntent);
 				
 				//internet intent
 				Intent internetIntent = new Intent(context,MainActivity.class);
 				PendingIntent internetPendingIntent = 
-						PendingIntent.getActivity(context, 4, internetIntent, 0);
+						PendingIntent.getActivity(context, 4, internetIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 				remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, internetPendingIntent);
 			//}
 			//wifi control
@@ -125,7 +126,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				wifiIntent.setAction("android.intent.action.VIEW");
 			}
 			PendingIntent wifiPendingIntent = 
-					PendingIntent.getActivity(context, 0, wifiIntent, 0);
+					PendingIntent.getActivity(context, 5, wifiIntent, 0);
 			remoteViews.setOnClickPendingIntent(R.id.ib_widget_wifi, wifiPendingIntent);
 			//
 			//appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
@@ -273,29 +274,29 @@ public class SmartLinkWidget extends AppWidgetProvider {
 			Intent intent1 = new Intent(context, MainActivity.class);
 			intent1.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
 			//create a pending intent
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, 0);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
 			Intent ibBatteryintent = new Intent(context, MainActivity.class);
 			ibBatteryintent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
 			//create a pending intent
-			PendingIntent ibBatterypendingIntent = PendingIntent.getActivity(context, 1, ibBatteryintent, 0);
+			PendingIntent ibBatterypendingIntent = PendingIntent.getActivity(context, 1, ibBatteryintent, PendingIntent.FLAG_CANCEL_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, ibBatterypendingIntent);
 			//SMS intent
 			Intent smsIntent = new Intent(context,MainActivity.class);
 			smsIntent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
 			PendingIntent smsPendingIntent = 
-					PendingIntent.getActivity(context, 2, smsIntent, 0);
+					PendingIntent.getActivity(context, 2, smsIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, smsPendingIntent);
 			//signal intent
 			Intent signalIntent = new Intent(context,MainActivity.class);
 			PendingIntent signalPendingIntent = 
-					PendingIntent.getActivity(context, 3, signalIntent, 0);
+					PendingIntent.getActivity(context, 3, signalIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, signalPendingIntent);
 			
 			//internet intent
 			Intent internetIntent = new Intent(context,MainActivity.class);
 			PendingIntent internetPendingIntent = 
-					PendingIntent.getActivity(context, 4, internetIntent, 0);
+					PendingIntent.getActivity(context, 4, internetIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, internetPendingIntent);
 		//}
 		//wifi control
@@ -310,7 +311,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 			wifiIntent.setAction("android.intent.action.VIEW");
 		}
 		PendingIntent wifiPendingIntent = 
-				PendingIntent.getActivity(context, 0, wifiIntent, 0);
+				PendingIntent.getActivity(context, 5, wifiIntent, 0);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_wifi, wifiPendingIntent);
 		//
 		//appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
