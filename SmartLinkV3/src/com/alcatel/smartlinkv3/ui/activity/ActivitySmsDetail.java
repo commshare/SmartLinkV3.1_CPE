@@ -229,12 +229,14 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					m_etContent.setEnabled(true);
 					m_btnDelete.setEnabled(true);
 					m_bDeleteSingleEnable = true;
-					if(m_sendStatus == SendStatus.Success) {
+					m_etContent.setText("");
+					m_btnSend.setEnabled(false);
+					/*if(m_sendStatus == SendStatus.Success) {
 						m_etContent.setText("");
 						m_btnSend.setEnabled(false);
 	    			}else if(m_sendStatus == SendStatus.Fail || m_sendStatus == SendStatus.Fail_Memory_Full) {
 						m_btnSend.setEnabled(true);
-	    			}
+	    			}*/
 				}
 			}
 		}
