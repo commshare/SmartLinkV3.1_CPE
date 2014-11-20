@@ -15,8 +15,10 @@ import org.apache.http.util.EntityUtils;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
@@ -57,6 +59,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	private ProgressBar m_pb_waiting=null;
 	private boolean m_blHasNewFirmware = false;
 	private boolean m_blHasNewApp = false;
+	private boolean m_blUpdating = false;
+	private static String m_strNewFirmwareInfo="";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -105,9 +109,10 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		m_tv_new_firmware_version.setText("");
 		Intent it = getIntent();
 		boolean blFirst = it.getBooleanExtra("First", true);
-		if (!blFirst) {
-			updateNewDeviceInfo();
+		if (blFirst) {
+			m_strNewFirmwareInfo = "";
 		}
+		updateNewDeviceInfo(false);
 		if (m_blHasNewApp) {
 			m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_upgrade);
 		}else {
@@ -132,16 +137,33 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		switch (nID) {
 		case R.id.ib_title_back:
 		case R.id.tv_title_back:
-			SettingUpgradeActivity.this.finish();
+			if (m_pb_waiting.isShown() && m_blUpdating) {
+				showStopUpdateDialog();
+			}else {
+				SettingUpgradeActivity.this.finish();				
+			}
 			break;
 
 		case R.id.btn_app_upgrade:
-			ShowWaiting(true);
-			onBtnAppCheck();
+			ConnectStatusModel status = BusinessMannager.getInstance().getConnectStatus();
+			ConnectionStatus result = status.m_connectionStatus;
+			if (result != ConnectionStatus.Connected) {
+				m_tv_new_app_version.setText(R.string.setting_upgrade_no_connection);
+				m_strNewFirmwareInfo = "";
+			}else {
+				ShowWaiting(true);
+				onBtnAppCheck();
+			}
 			break;
 
 		case R.id.btn_check_firmware:
-			onBtnFirmwareCheck();
+			status = BusinessMannager.getInstance().getConnectStatus();
+			result = status.m_connectionStatus;
+			if (result != ConnectionStatus.Connected) {
+				m_tv_new_firmware_version.setText(R.string.setting_upgrade_no_connection);
+			}else {
+				onBtnFirmwareCheck();
+			}
 			break;
 
 		default:
@@ -222,7 +244,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				updateNewDeviceInfo();
+				updateNewDeviceInfo(true);
 			}else {
 				ShowWaiting(false);
 				String strNew = getString(R.string.setting_upgrade_check_failed);
@@ -238,7 +260,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				//do nothing
 			}else {
 				ShowWaiting(false);
-				Toast.makeText(this, R.string.setting_failed, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.setting_upgrade_start_update_failed, Toast.LENGTH_SHORT).show();
 			}
 		}
 
@@ -249,6 +271,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				//do nothing
 				DeviceUpgradeStateInfo info = BusinessMannager.getInstance().getUpgradeStateInfo();
 				EnumDeviceUpgradeStatus status = EnumDeviceUpgradeStatus.build(info.getStatus());
+				int nProgress = info.getProcess();
+				m_pb_waiting.setProgress(nProgress);
 				if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_NOT_START == status){
 					ShowWaiting(false);
 					Toast.makeText(this, R.string.setting_upgrade_not_start, Toast.LENGTH_SHORT).show();
@@ -258,7 +282,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				}
 			}else {
 				ShowWaiting(false);
-				Toast.makeText(this, R.string.setting_failed, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.setting_upgrade_get_update_state_failed, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -267,7 +291,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		m_tv_new_firmware_version.setText(strNewVesion);
 	}
 
-	private void updateNewDeviceInfo(){
+	private void updateNewDeviceInfo(boolean blNeedBackupNewVersionInfo){
 		DeviceNewVersionInfo info = BusinessMannager.getInstance().getNewFirmwareInfo();
 		int nState = info.getState();
 		EnumDeviceCheckingStatus eStatus = EnumDeviceCheckingStatus.build(nState);
@@ -278,28 +302,39 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			m_blHasNewFirmware = true;
 			String strNew = getString(R.string.setting_upgrade_new_app_version);
 			strNew += info.getVersion();
-			setNewDeviceVersion(strNew);
+			if (blNeedBackupNewVersionInfo) {
+				m_strNewFirmwareInfo = strNew;
+			}
 			m_btn_check_firmware.setText(R.string.setting_upgrade_btn_upgrade);
 			ShowWaiting(false);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
 			ShowWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_no_new_version);
-			setNewDeviceVersion(strNew);
+			if (blNeedBackupNewVersionInfo) {
+				m_strNewFirmwareInfo = strNew;
+			}
 		}else if (EnumDeviceCheckingStatus.DEVICE_NO_CONNECT == eStatus) {
 			ShowWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_no_connection);
-			setNewDeviceVersion(strNew);
+			if (blNeedBackupNewVersionInfo) {
+				m_strNewFirmwareInfo = strNew;
+			}
 		}else if (EnumDeviceCheckingStatus.DEVICE_NOT_AVAILABLE == eStatus) {
 			ShowWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_not_available);
-			setNewDeviceVersion(strNew);
+			if (blNeedBackupNewVersionInfo) {
+				m_strNewFirmwareInfo = strNew;
+			}
 		}else if (EnumDeviceCheckingStatus.DEVICE_CHECK_ERROR == eStatus) {
 			ShowWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_check_error);
-			setNewDeviceVersion(strNew);
+			if (blNeedBackupNewVersionInfo) {
+				m_strNewFirmwareInfo = strNew;
+			}
 		}else {
 			ShowWaiting(false);
 		}
+		setNewDeviceVersion(m_strNewFirmwareInfo);
 	}
 
 	private void checkNewVersion(){
@@ -357,6 +392,31 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}.start();
 	}
 
+	private void showStopUpdateDialog(){
+		final InquireDialog inquireDlg = new InquireDialog(this);
+		inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+		inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
+		inquireDlg.m_contentTextView
+		.setText(R.string.setting_upgrade_firmware_warning);
+		inquireDlg.m_contentDescriptionTextView.setText("");
+		inquireDlg.m_confirmBtn
+		.setBackgroundResource(R.drawable.selector_common_button);
+		inquireDlg.m_confirmBtn.setText(R.string.ok);
+		inquireDlg.showDialog(new OnInquireApply() {
+
+			@Override
+			public void onInquireApply() {
+				// TODO Auto-generated method stub
+				//upgrade firmware
+				ShowWaiting(true);
+				inquireDlg.closeDialog();
+				BusinessMannager.getInstance().sendRequestMessage(
+						MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE, null);
+				SettingUpgradeActivity.this.finish();
+			}
+		});
+	}
+	
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg){
 			ShowWaiting(false);

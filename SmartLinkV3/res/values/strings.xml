@@ -184,13 +184,18 @@
     <string name="setting_upgrade_new_app_version">Find a new version v</string>
     <string name="setting_upgrade_check_failed">Check failed</string>
     <string name="setting_upgrade_no_new_version">No new version</string>
-    <string name="setting_upgrade_no_connection">NO connection</string>
+    <string name="setting_upgrade_no_connection">No connection</string>
     <string name="setting_upgrade_firmware_warning">The upgrade process will continue for a few minutes, please don\'t power off. Are you sure want to upgrade the system?</string>
     <string name="setting_upgrade_not_available">Service not available</string>
     <string name="setting_upgrade_check_error">Check error</string>
     <string name="setting_upgrade_btn_upgrade">Upgrade</string>
-    <string name="setting_upgrade_not_start">No start update</string>
-    <string name="setting_upgrade_complete">complete</string>
+    <string name="setting_upgrade_not_start">Upgrade not start</string>
+    <string name="setting_upgrade_complete">Download complete, please wait until upgrading finished</string>
+    <string name="setting_upgrade_stop_error">Upgrade stop error</string>
+    <string name="setting_upgrade_get_update_state_failed">Get device update state failed.</string>
+    <string name="setting_upgrade_start_update_failed">Device start update failed.</string>
+    <string name="setting_upgrade_check_firmware_failed">Get New version failed.</string>
+    <string name="setting_upgrade_set_check_new_version_failed">Set check device new version failed.</string>
     <string name="setting_device_title">System Information</string>
     <string name="setting_device_software_version">Software Version:</string>
     <string name="setting_device_hadrware_version">Hardware Version:</string>
@@ -211,11 +216,11 @@
     <string name="setting_restore_success">Restore successed.</string>
     <string name="setting_restore_no_backup_file">No backup file.</string>
     <string name="setting_reboot_failed">Reboot failed.</string>
-    <string name="setting_reboot_success">Reboot successed.</string>
+    <string name="setting_reboot_success">Set successfully, device will reboot immediately.</string>
     <string name="setting_reset_failed">Reset failed.</string>
-    <string name="setting_reset_success">Reset successed.</string>
+    <string name="setting_reset_success">Set successfully, device will reset immediately.</string>
     <string name="setting_power_off_failed">Power Off failed.</string>
-    <string name="setting_power_off_success">Power Off successed.</string>
+    <string name="setting_power_off_success">Set successfully, device will power off immediately.</string>
     <string name="setting_ssid_invalid">The SSID must be ASCII characters but cannot comprise any of the following characters: /,\',=,\&quot;,\\,&amp;.</string>
     <string name="setting_wifi_error_title">Change Password</string>
     <string name="other_login_warning_title">Login warning</string>

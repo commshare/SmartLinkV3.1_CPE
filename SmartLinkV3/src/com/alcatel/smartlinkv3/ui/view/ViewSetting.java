@@ -7,7 +7,9 @@ import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
@@ -16,8 +18,10 @@ import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ViewSetting extends BaseViewImpl{
@@ -42,16 +47,17 @@ public class ViewSetting extends BaseViewImpl{
 	private UprgadeAdapter adapter;
 	private List<SettingItem>list;
 	private boolean m_blFirst=true;
+	private settingBroadcast m_receiver;
 	
 
-	private void registerReceiver() {}
+	private void registerReceiver() {
+		m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE));
+	}
 
 	public ViewSetting(Context context) {
 		super(context);
 		init();
-		
-		 
-
+		m_receiver = new settingBroadcast();
 	}
 
 	@Override
@@ -106,6 +112,11 @@ public class ViewSetting extends BaseViewImpl{
 
 	@Override
 	public void onPause() {
+		try{
+			m_context.unregisterReceiver(m_receiver);
+		}catch(Exception e){
+			
+		}
 	}
 
 	@Override
@@ -254,5 +265,23 @@ public class ViewSetting extends BaseViewImpl{
 				adapter.notifyDataSetChanged();
 			}
 		}
+	}
+	
+	private class settingBroadcast extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+				}else {
+
+					Toast.makeText(m_context, R.string.setting_upgrade_stop_error, Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
+		
 	}
 }
