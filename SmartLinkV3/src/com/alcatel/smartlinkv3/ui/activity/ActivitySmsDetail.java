@@ -460,9 +460,9 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 
 	//
 	private void OnBtnSend() {
-		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
-
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);  
+		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
+		
 		DataValue data = new DataValue();
 		data.addParam("content", m_etContent.getText().toString());
 		data.addParam("phone_number", m_tvTitle.getText().toString());
