@@ -781,9 +781,6 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	}
 
 	private void widgetBatteryBtnClick() {
-		if (m_preButton == R.id.main_setting) {		
-			return;	
-		}	
 		if (LoginDialog.isLoginSwitchOff()) {		
 			go2SettingView();
 			Intent intent = new Intent(this, SettingPowerSavingActivity.class);
