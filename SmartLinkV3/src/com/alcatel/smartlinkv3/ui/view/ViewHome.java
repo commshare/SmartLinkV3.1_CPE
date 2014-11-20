@@ -17,6 +17,7 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
@@ -518,17 +519,17 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 	private void connect()
 	{
-//		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
-//		if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && settings.HMonthlyPlan > 0) {
-//			long lTotalUsedUsage = BusinessMannager.getInstance().GetBillingMonthTotalUsage();
-//			if (settings.HUsedData >= settings.HMonthlyPlan) {
-//				//show warning dialog
-//				//m_connectWarningDialog.showDialog();
-//				//String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
-//				//Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
-//				//return;
-//			}
-//		}
+		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
+		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
+		if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
+			if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
+				//show warning dialog
+				//m_connectWarningDialog.showDialog();
+				String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
+				Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
+				return;
+			}
+		}
 	
 		if (m_bConnectPressd == false)
 			m_bConnectPressd = true;
@@ -537,7 +538,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 		m_bConnectReturn = false;
 		showNetworkState();
-		showConnctBtnView();
+		showConnctBtnView();	
 		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
 		if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
@@ -545,7 +546,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					MessageUti.WAN_DISCONNECT_REQUSET,null);
 		} else {
 			BusinessMannager.getInstance().sendRequestMessage(
-							MessageUti.WAN_CONNECT_REQUSET,null);
+					MessageUti.WAN_CONNECT_REQUSET,null);
 		}	
 	}
 	private void PromptUserLogined() {
