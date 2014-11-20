@@ -533,13 +533,14 @@ public class HttpSystem {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new setAppBackupResponse(m_finsishCallback);
+			return new setAppRestoreBackupResponse(m_finsishCallback);
 		}
 		
 	}
 	
 	public static class setAppRestoreBackupResponse extends BaseResponse{
 
+		private RestoreError m_errorInfo = null;
 		public setAppRestoreBackupResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
@@ -548,13 +549,15 @@ public class HttpSystem {
 		@Override
 		protected void parseContent(String strJsonResult) {
 			// TODO Auto-generated method stub
-			
+			Gson gson = new Gson();
+			m_errorInfo = gson.fromJson(strJsonResult, RestoreError.class);
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
-		public <T> T getModelResult() {
+		public RestoreError getModelResult() {
 			// TODO Auto-generated method stub
-			return null;
+			return m_errorInfo;
 		}
 		
 	}

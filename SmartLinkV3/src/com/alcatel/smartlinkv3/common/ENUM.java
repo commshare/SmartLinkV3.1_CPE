@@ -774,4 +774,37 @@ public class ENUM {
 			return nStatus;
 		}
 	}
+	
+	public static enum EnumRestoreErrorStatus{
+		RESTORE_ERROR_SUCCESSFUL, RESTORE_ERROR_NO_BACKUP_FILE, RESTORE_ERROR_OTHER_ERROR;
+
+		public static EnumRestoreErrorStatus build(int nStatus){
+			switch (nStatus) {
+			case 0:
+				return RESTORE_ERROR_SUCCESSFUL;
+
+			case 1:
+				return RESTORE_ERROR_NO_BACKUP_FILE;
+
+			case 2:
+				return RESTORE_ERROR_OTHER_ERROR;
+
+			default:
+				return RESTORE_ERROR_OTHER_ERROR;
+			}
+
+		}
+		public static int antiBuild(EnumRestoreErrorStatus status){
+			int nStatus = 0;
+			if (RESTORE_ERROR_SUCCESSFUL == status) {
+				nStatus = 0;
+			}else if (RESTORE_ERROR_NO_BACKUP_FILE == status) {
+				nStatus = 1;
+			}else if (RESTORE_ERROR_OTHER_ERROR == status) {
+				nStatus = 2;
+			}
+
+			return nStatus;
+		}
+	}
 }

@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
+import com.alcatel.smartlinkv3.business.system.RestoreError;
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -33,13 +34,15 @@ public class SystemManager extends BaseManager {
 	// disconnected,beacause
 	// used to test the wifi
 	// connect state
-	private Timer m_getStorageTimer = new Timer();
+//	private Timer m_getStorageTimer = new Timer();
 	private Timer m_getSystemStatusTimer = new Timer();
 
 	private String m_strAppVersion = "";
 
 	private GetFeaturesTask m_getFeaturesTask = null;
 	private GetSystemStatusTask m_getSystemStatusTask = null;
+	
+	private RestoreError m_errorInfo=new RestoreError();
 
 	public Features getFeatures() {
 		return m_features;
@@ -59,6 +62,10 @@ public class SystemManager extends BaseManager {
 
 	public String getAppVersion() {
 		return m_strAppVersion;
+	}
+	
+	public RestoreError getRestoreError(){
+		return m_errorInfo;
 	}
 
 	@Override
@@ -481,6 +488,10 @@ public class SystemManager extends BaseManager {
 							// TODO Auto-generated method stub
 							int nRet = response.getResultCode();
 							String strError = response.getErrorCode();
+							if (nRet == BaseResponse.RESPONSE_OK
+									&& strError.length() == 0){
+								m_errorInfo = response.getModelResult();
+							}
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
 							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
 							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);

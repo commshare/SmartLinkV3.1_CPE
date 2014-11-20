@@ -3,7 +3,9 @@ package com.alcatel.smartlinkv3.ui.activity;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.system.RestoreError;
 import com.alcatel.smartlinkv3.common.ENUM;
+import com.alcatel.smartlinkv3.common.ENUM.EnumRestoreErrorStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -154,7 +156,15 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.setting_restore_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_restore_success);
+				RestoreError info = BusinessMannager.getInstance().getRestoreError();
+				int nErrorStatus = info.getRestoreError();
+				EnumRestoreErrorStatus status = EnumRestoreErrorStatus.build(nErrorStatus);
+				if (status == 
+						EnumRestoreErrorStatus.RESTORE_ERROR_NO_BACKUP_FILE) {
+					strTost = getString(R.string.setting_restore_no_backup_file);
+				}else if (EnumRestoreErrorStatus.RESTORE_ERROR_SUCCESSFUL == status) {
+					strTost = getString(R.string.setting_restore_success);
+				}
 			}
 			
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
