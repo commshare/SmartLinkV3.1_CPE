@@ -72,8 +72,6 @@ public class ViewSetting extends BaseViewImpl{
 				switch(arg2){
 				case ITEM_WIFI_SETTING:
 					goToWifiSettingPage();
-					ImageView image = (ImageView)arg1.findViewById(R.id.flagUpgrade);
-					image.setVisibility(View.GONE);
 					break;
 				case ITEM_POWER_SETTING:
 					goToPowerSettingPage();
@@ -83,7 +81,6 @@ public class ViewSetting extends BaseViewImpl{
 					break;
 				case ITEM_UPGRADE_SETTING:
 					goToUpgradeSettingPage();
-					changeUpgradeFlag(ITEM_UPGRADE_SETTING, false);
 					break;
 				case ITEM_DEVICE_SETTING:
 					goToDeviceSettingPage();
@@ -100,6 +97,8 @@ public class ViewSetting extends BaseViewImpl{
 	@Override
 	public void onResume() {
 		registerReceiver();
+		list = getData(m_context);
+		adapter = new UprgadeAdapter(m_context, list);		
 	}
 
 	@Override

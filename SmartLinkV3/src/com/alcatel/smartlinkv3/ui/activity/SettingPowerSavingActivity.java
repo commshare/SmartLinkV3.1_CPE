@@ -212,9 +212,12 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
 		registerReceiver(m_msgReceiver, 
-				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
+				new IntentFilter(MessageUti.POWER_GET_POWER_SAVING_MODE));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
+		
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.POWER_GET_POWER_SAVING_MODE, null);
+		ShowWaiting(true);
 	}
 
 	@Override
@@ -234,6 +237,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				initSwitchsState();
 			}
+			ShowWaiting(false);
 		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_SET_POWER_SAVING_MODE)){
