@@ -24,6 +24,9 @@ public class SmartLinkWidget extends AppWidgetProvider {
 	private boolean m_blDeviceConnected=false;
 	private boolean m_blWifiConnected = false;
 	private boolean m_blInternetConnected = false;
+	private final int HOME_PAGE = 1;
+	private final int SMS_PAGE = 2;
+	//private final int BATTERY_PAGE = 3;
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		// TODO Auto-generated method stub
@@ -85,28 +88,28 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
 		//power intent
 		Intent intent = new Intent(context, MainActivity.class);
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 3);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		//create a pending intent
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
 		//				Intent ibBatteryintent = new Intent(context, MainActivity.class);
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 3);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		//create a pending intent
 		pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, pendingIntent);
 		//SMS intent
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", SMS_PAGE);
 		pendingIntent = 
 				PendingIntent.getActivity(context, 2, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, pendingIntent);
 		//signal intent
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		pendingIntent = 
 				PendingIntent.getActivity(context, 3, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, pendingIntent);
 
 		//internet intent
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		pendingIntent = 
 				PendingIntent.getActivity(context, 4, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
@@ -263,27 +266,27 @@ public class SmartLinkWidget extends AppWidgetProvider {
 		updateUI(remoteViews);
 		//power intent
 		Intent intent = new Intent(context, MainActivity.class);
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 3);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		//create a pending intent
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 3);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		//create a pending intent
 		pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_charge, pendingIntent);
 		//SMS intent
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 2);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", SMS_PAGE);
 		pendingIntent = 
 				PendingIntent.getActivity(context, 2, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_sms, pendingIntent);
 		//signal intent
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		pendingIntent = 
 				PendingIntent.getActivity(context, 3, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, pendingIntent);
 
 		//internet intent
-		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", 1);
+		intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
 		pendingIntent = 
 				PendingIntent.getActivity(context, 4, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);

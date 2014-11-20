@@ -11,7 +11,7 @@ import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
+//import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity;
 
@@ -33,11 +33,11 @@ public class ViewSetting extends BaseViewImpl{
 	
 	
 	private final int ITEM_WIFI_SETTING = 0;
-	private final int ITEM_POWER_SETTING = 1;
-	private final int ITEM_BACKUP_SETTING = 2;
-	private final int ITEM_UPGRADE_SETTING = 3;
-	private final int ITEM_DEVICE_SETTING = 4;
-	private final int ITEM_ABOUT_SETTING = 5;
+	//private final int ITEM_POWER_SETTING = 1;
+	private final int ITEM_BACKUP_SETTING = 1;
+	private final int ITEM_UPGRADE_SETTING = 2;
+	private final int ITEM_DEVICE_SETTING = 3;
+	private final int ITEM_ABOUT_SETTING = 4;
 	private ListView m_lvSettingListView = null;
 	private UprgadeAdapter adapter;
 	private List<SettingItem>list;
@@ -73,9 +73,9 @@ public class ViewSetting extends BaseViewImpl{
 				case ITEM_WIFI_SETTING:
 					goToWifiSettingPage();
 					break;
-				case ITEM_POWER_SETTING:
-					goToPowerSettingPage();
-					break;
+//				case ITEM_POWER_SETTING:
+//					goToPowerSettingPage();
+//					break;
 				case ITEM_BACKUP_SETTING:
 					goToBackupSettingPage();
 					break;
@@ -91,14 +91,17 @@ public class ViewSetting extends BaseViewImpl{
 				}
 			}
 		});
-		//scroll = (FriendlyScrollView) m_view.findViewById(R.id.scroll);
 	}
 
 	@Override
 	public void onResume() {
 		registerReceiver();
-		list = getData(m_context);
-		adapter = new UprgadeAdapter(m_context, list);		
+		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+		}else {
+			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
+		}	
 	}
 
 	@Override
@@ -115,8 +118,8 @@ public class ViewSetting extends BaseViewImpl{
 		SettingItem item = new SettingItem(context.getString(R.string.setting_wifi), false);
 		list.add(item);
 		
-		item = new SettingItem(context.getString(R.string.setting_power), false);
-		list.add(item);
+//		item = new SettingItem(context.getString(R.string.setting_power), false);
+//		list.add(item);
 		
 		item = new SettingItem(context.getString(R.string.setting_backup), false);
 		list.add(item);
@@ -143,10 +146,10 @@ public class ViewSetting extends BaseViewImpl{
 		m_context.startActivity(intent);
 	}
 	
-	private void goToPowerSettingPage(){
-		Intent intent = new Intent(m_context, SettingPowerSavingActivity.class);
-		m_context.startActivity(intent);
-	}
+//	private void goToPowerSettingPage(){
+//		Intent intent = new Intent(m_context, SettingPowerSavingActivity.class);
+//		m_context.startActivity(intent);
+//	}
 	
 	private void goToBackupSettingPage(){
 		Intent intent = new Intent(m_context, SettingBackupRestoreActivity.class);

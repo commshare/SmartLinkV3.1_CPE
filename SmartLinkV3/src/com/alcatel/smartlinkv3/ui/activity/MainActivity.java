@@ -51,6 +51,8 @@ import android.widget.ViewFlipper;
 import android.view.MotionEvent;
 
 public class MainActivity extends BaseActivity implements OnClickListener{
+	private final int HOME_PAGE = 1;
+	private final int SMS_PAGE = 2;
 	private int m_preButton = 0;
 	private int m_nNewCount = 0;
 
@@ -780,32 +782,32 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		});
 	}
 
-	private void widgetBatteryBtnClick() {
-		if (LoginDialog.isLoginSwitchOff()) {		
-			go2SettingView();
-			Intent intent = new Intent(this, SettingPowerSavingActivity.class);
-			this.startActivity(intent);
-		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.OthersLogined) {			
-				PromptUserLogined();		
-			} else if (status == UserLoginStatus.selfLogined) {			
-				go2SettingView();
-				Intent intent = new Intent(this, SettingPowerSavingActivity.class);
-				this.startActivity(intent);
-			} else {			
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-					@Override				
-					public void onLoginFinished() {					
-						go2SettingView();
-						Intent intent = new Intent(MainActivity.this, SettingPowerSavingActivity.class);
-						MainActivity.this.startActivity(intent);
-					}			
-				});		
-			}	
-		}	
-	}
+//	private void widgetBatteryBtnClick() {
+//		if (LoginDialog.isLoginSwitchOff()) {		
+//			go2SettingView();
+//			Intent intent = new Intent(this, SettingPowerSavingActivity.class);
+//			this.startActivity(intent);
+//		} else {		
+//			UserLoginStatus status = BusinessMannager.getInstance()				
+//					.getLoginStatus();	
+//			if (status == UserLoginStatus.OthersLogined) {			
+//				PromptUserLogined();		
+//			} else if (status == UserLoginStatus.selfLogined) {			
+//				go2SettingView();
+//				Intent intent = new Intent(this, SettingPowerSavingActivity.class);
+//				this.startActivity(intent);
+//			} else {			
+//				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+//					@Override				
+//					public void onLoginFinished() {					
+//						go2SettingView();
+//						Intent intent = new Intent(MainActivity.this, SettingPowerSavingActivity.class);
+//						MainActivity.this.startActivity(intent);
+//					}			
+//				});		
+//			}	
+//		}	
+//	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -821,11 +823,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		if (blCPEWifiConnected) {
 			Intent it=getIntent();
 			int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-			if (nPage == 2) {
+			if (nPage == SMS_PAGE) {
 				smsBtnClick();
-			}else if (nPage == 3) {
-				widgetBatteryBtnClick();
-			}else if (nPage == 1) {
+//			}else if (nPage == 3) {
+//				widgetBatteryBtnClick();
+			}else if (nPage == HOME_PAGE) {
 				homeBtnClick();
 			}
 		}else {
