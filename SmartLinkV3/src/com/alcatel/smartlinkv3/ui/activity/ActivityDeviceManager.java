@@ -15,9 +15,12 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -30,6 +33,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -97,7 +101,10 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
 					getListData();					
-				}				
+				}else{
+					String msgRes = ActivityDeviceManager.this.getString(R.string.device_manage_set_name_failed);
+					Toast.makeText(ActivityDeviceManager.this, msgRes, Toast.LENGTH_SHORT).show();
+				}
 			}
 			
 		}
@@ -267,6 +274,9 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	}
 	
 	public class ConnectedDevAdapter extends BaseAdapter {
+		
+		private String m_focusedMac = new String();
+		private int m_currentSelection = 0;
 
 		public ConnectedDevAdapter(Context context) {
 		}
@@ -350,6 +360,49 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				}
 			}
 			
+			holder.deviceNameEditView.addTextChangedListener(new TextWatcher() {
+
+				@Override
+				public void afterTextChanged(Editable arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void beforeTextChanged(CharSequence s, int start,
+						int count, int after) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onTextChanged(CharSequence s, int start,
+						int before, int count) {
+					// TODO Auto-generated method stub
+					String strText = holder.deviceNameEditView.getEditableText().toString();
+					String strNewText = strText.replaceAll("[,\":;&]", "");
+					if(strNewText.equals(strText) == false) {
+						holder.deviceNameEditView.setText(strNewText);
+					}
+				}
+				
+			});
+			
+			holder.deviceNameEditView.setOnFocusChangeListener(new OnFocusChangeListener() {		
+				@Override
+				public void onFocusChange(View view, boolean arg1) {
+					if(arg1 == false && m_connecedDeviceLstData.get(position).bEditStatus == true){
+						m_focusedMac = m_connecedDeviceLstData.get(position).MacAddress;
+						m_currentSelection = ((EditText)view).getSelectionStart();
+					}
+				}
+			});
+			
+			if(m_focusedMac.equals(model.MacAddress) && model.bEditStatus == true) {
+				holder.deviceNameEditView.requestFocus();        
+				holder.deviceNameEditView.setSelection(m_currentSelection);
+			}
+			
 			holder.modifyDeviceName.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {				
@@ -358,8 +411,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 						holder.deviceNameTextView.setVisibility(View.VISIBLE);
 						m_connecedDeviceLstData.get(position).bEditStatus = false;
 						holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
-						String strName = holder.deviceNameEditView.getText().toString();
-						if(!strName.equals(displayName))
+						String strName = holder.deviceNameEditView.getText().toString().trim();
+						if(strName.length() == 0) {
+							String msgRes = ActivityDeviceManager.this.getString(R.string.device_manage_name_empty);
+							Toast.makeText(ActivityDeviceManager.this, msgRes, Toast.LENGTH_SHORT).show();
+						}
+						if(strName.length() != 0 && !strName.equals(displayName))
 						{
 							setDeviceName(strName, mac, type);
 						}	

@@ -130,6 +130,9 @@
     <string name="device_manage_unblock_btn">Unblock</string>
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
+    <string name="device_manage_name_empty">Device name is invalid.</string>
+    <string name="device_manage_set_name_failed">Set failed!</string>
+    
     <!-- connect device end -->
 
 
