@@ -399,6 +399,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
 		}else{
 			this.finish();
+			if(m_smsListData.size() == 0)
+				return;
 			SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
 			if(null != item && item.eSMSType == EnumSMSType.Draft) {
 				DataValue data = new DataValue();
