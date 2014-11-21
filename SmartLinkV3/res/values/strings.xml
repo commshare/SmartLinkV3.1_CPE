@@ -355,8 +355,8 @@
     <string name="content_cancel_downloading">Do you want to stop downloading \"%1$s\"?</string>
 
     <!-- sd sharing start -->
-    <string name="dlna_name">Server Name: %1$s.</string>
-    <string name="dlna_description">Media Server Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
+    <string name="dlna_name">Server Name: %1$s Media Server.</string>
+    <string name="dlna_description">Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
     <string name="sd_card_sharing">SD Card Sharing</string>
     <string name="sd_sharing">SD Sharing</string>
     <string name="dlna">DLNA</string>
