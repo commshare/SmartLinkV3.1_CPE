@@ -66,8 +66,8 @@
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
                 android:orientation="horizontal"
-                android:paddingBottom="6dip"
-                android:paddingTop="6dip" >
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
 
                 <Button
                     android:id="@+id/enable_dlna_btn"
@@ -103,8 +103,8 @@
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
                 android:orientation="vertical"
-                android:paddingBottom="6dip"
-                android:paddingTop="6dip" >
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
 
                 <TextView
                     android:id="@+id/tv_dlna_name"
@@ -135,8 +135,8 @@
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
                 android:orientation="horizontal"
-                android:paddingBottom="6dip"
-                android:paddingTop="6dip" >
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
 
                 <TextView
                     android:id="@+id/sdcard_sharing_tag"
@@ -173,8 +173,8 @@
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
                 android:orientation="vertical"
-                android:paddingBottom="6dip"
-                android:paddingTop="6dip" >
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
 
                 <ProgressBar
                     android:id="@+id/sdcard_usage_progress"
@@ -206,16 +206,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
-                android:layout_marginTop="6dip"
+                android:layout_marginTop="15dip"
                 android:orientation="horizontal"
-                android:paddingBottom="6dip" >
+                android:paddingBottom="15dip" >
 
                 <TextView
                     android:id="@+id/storage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:paddingBottom="6dip"
+                    android:layout_height="wrap_content"                        
                     android:singleLine="true"
                     android:text="@string/storage"
                     android:textColor="@color/color_black"
@@ -226,16 +224,14 @@
                     android:id="@+id/storage_enter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"                 
                     android:contentDescription="@null"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:layout_marginTop="6dip"
+                android:layout_height="1dip"             
                 android:background="@color/color_divider" />
         </LinearLayout>
     </ScrollView>
