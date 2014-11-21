@@ -240,10 +240,13 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		}
 		
 		for(int i = 0;i <m_connecedDeviceLstData.size();i++) {
+			m_connecedDeviceLstData.get(i).strEditString = m_connecedDeviceLstData.get(i).DeviceName;
 			for(int j = 0;j < data.size();j++) {
 				if(m_connecedDeviceLstData.get(i).MacAddress.equalsIgnoreCase(data.get(j).MacAddress)&& 
 						m_connecedDeviceLstData.get(i).IPAddress.equalsIgnoreCase(data.get(j).IPAddress)) {
 					m_connecedDeviceLstData.get(i).bEditStatus = data.get(j).bEditStatus;
+					if(data.get(j).bEditStatus == true)
+						m_connecedDeviceLstData.get(i).strEditString = data.get(j).strEditString;
 					break;
 				}
 			}
@@ -327,11 +330,10 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			else
 				holder.blockBtn.setEnabled(true);
 
-			ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
+			final ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
 			final String displayName = model.DeviceName;
 			holder.deviceNameTextView.setText(displayName);
-			if(model.bEditStatus == false)
-				holder.deviceNameEditView.setText(displayName);
+			holder.deviceNameEditView.setText(model.strEditString);
 			holder.ip.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_ip), model.IPAddress));
 			final String mac = model.MacAddress;
 			holder.mac.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_mac), mac));
@@ -384,6 +386,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 					if(strNewText.equals(strText) == false) {
 						holder.deviceNameEditView.setText(strNewText);
 					}
+					model.strEditString = strNewText;
 				}
 				
 			});

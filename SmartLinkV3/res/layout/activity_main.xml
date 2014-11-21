@@ -72,7 +72,7 @@
             android:textColor="@color/color_grey"
             android:textSize="12sp" />
         
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/tab_sms_layout"
             android:layout_width="0dip"
             android:layout_height="match_parent"
@@ -81,9 +81,9 @@
 
             <TextView
 	            android:id="@+id/main_sms"
-	            android:layout_width="match_parent"
+	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_gravity="center"
+	            android:layout_centerInParent="true"
 	            android:drawablePadding="5dip"
 	            android:gravity="center_horizontal"
 	            android:text="@string/main_sms"
@@ -94,14 +94,13 @@
 	            android:id="@+id/new_sms_count"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_horizontal"
-	            android:drawablePadding="5dip"
+	            android:layout_toRightOf="@id/main_sms"
 	            android:gravity="center_horizontal"
 	            android:layout_marginTop="4dip"
 	            android:text="@string/main_sms"
 	            android:textColor="@color/color_white"
 	            android:textSize="12sp" />
-        </FrameLayout>
+        </RelativeLayout>
         
 
         <TextView

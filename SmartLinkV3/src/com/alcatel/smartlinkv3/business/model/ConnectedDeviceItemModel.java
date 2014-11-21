@@ -16,6 +16,7 @@ public class ConnectedDeviceItemModel{
 	public EnumConnectMode ConnectMode = EnumConnectMode.USB_CONNECT;
 	
 	public boolean bEditStatus = false;
+	public String strEditString = new String();
 	
 	public void buildFromResult(DeviceInfo result) {
 		id = result.id;

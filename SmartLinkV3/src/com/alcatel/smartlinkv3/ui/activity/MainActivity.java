@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	
 	private TextView m_homeBtn;
 	private TextView m_usageBtn;
-	private FrameLayout m_smsBtn;
+	private RelativeLayout m_smsBtn;
 	private TextView m_settingBtn;
 	
 	private TextView m_smsTextView;
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_homeBtn.setOnClickListener(this);
 		m_usageBtn = (TextView) this.findViewById(R.id.main_usage);
 		m_usageBtn.setOnClickListener(this);
-		m_smsBtn = (FrameLayout) this.findViewById(R.id.tab_sms_layout);
+		m_smsBtn = (RelativeLayout) this.findViewById(R.id.tab_sms_layout);
 		m_smsBtn.setOnClickListener(this);
 		m_settingBtn = (TextView) this.findViewById(R.id.main_setting);
 		m_settingBtn.setOnClickListener(this);
@@ -318,7 +318,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	public void updateNewSmsUI(int nNewSmsCount) {
 		m_nNewCount = nNewSmsCount;
 		int nActiveBtnId = m_preButton;
-		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_placeholder
+		/*int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_placeholder
 				: R.drawable.main_sms_placeholder;
 		Drawable d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
@@ -342,6 +342,25 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			m_newSmsTextView.setText("");
 			nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_new_sms_tab_active
 					: R.drawable.main_new_sms_tab_grey;
+			m_newSmsTextView.setBackgroundResource(nDrawable);
+		}*/
+		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_no_new_active
+				: R.drawable.main_sms_no_new_grey;
+		Drawable d = getResources().getDrawable(nDrawable);
+		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+		m_smsTextView.setCompoundDrawables(null, d, null, null);
+		
+		if (nNewSmsCount <= 0) {
+			m_newSmsTextView.setVisibility(View.GONE);
+		} else if (nNewSmsCount < 10) {
+			m_newSmsTextView.setVisibility(View.VISIBLE);
+			m_newSmsTextView.setText(String.valueOf(nNewSmsCount));
+			nDrawable = R.drawable.tab_sms_new;
+			m_newSmsTextView.setBackgroundResource(nDrawable);
+		} else {
+			m_newSmsTextView.setVisibility(View.VISIBLE);
+			m_newSmsTextView.setText("");
+			nDrawable = R.drawable.tab_sms_new_9_plus;
 			m_newSmsTextView.setBackgroundResource(nDrawable);
 		}
 	}
