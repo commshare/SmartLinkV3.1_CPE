@@ -58,7 +58,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private ProgressBar m_connectWaiting = null;
 	
-	private FrameLayout m_connectLayout = null;
+	private RelativeLayout m_connectLayout = null;
 	private TextView m_connectToNetworkTextView;
 	private TextView m_connectToLabel;
 	private Button m_connectBtn = null;
@@ -198,7 +198,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	protected void init() {
 		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_home,null);
 		
-		m_connectLayout = (FrameLayout) m_view.findViewById(R.id.connect_layout);
+		m_connectLayout = (RelativeLayout) m_view.findViewById(R.id.connect_layout);
 		m_connectToNetworkTextView = (TextView) m_view.findViewById(R.id.connect_network);
 		m_connectToLabel = (TextView) m_view.findViewById(R.id.connect_label);
 		m_connectBtn = (Button) m_view.findViewById(R.id.connect_button);
@@ -662,7 +662,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_batteryscalelayout.setVisibility(View.GONE);
 			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
 			m_batterychargingImageView.setVisibility(View.VISIBLE);
-			m_batterydescriptionTextView.setTypeface(typeFace);
 			m_batterydescriptionTextView.setText(R.string.home_battery_ischarging);
 			
 		}else if(ConstValue.CHARGE_STATE_COMPLETED == batteryinfo.getChargeState()){
@@ -671,7 +670,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_batteryProgress.setProgress(m_batteryProgress.getMax());
 			m_batteryscalelayout.setVisibility(View.GONE);
 			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
-			m_batterydescriptionTextView.setTypeface(typeFace);
 			m_batterydescriptionTextView.setText(R.string.home_battery_completed);
 		}else if(ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()){
 			
@@ -685,9 +683,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		String strOfficial = this.m_context.getString(R.string.access_lable);
 		String strHtmlOfficial = "<u>"+strOfficial+"</u>";
-		m_accessstatusTextView.setText(Html.fromHtml(strHtmlOfficial));
-		
-		
+		m_accessstatusTextView.setText(Html.fromHtml(strHtmlOfficial));	
 		
 	}
 }
