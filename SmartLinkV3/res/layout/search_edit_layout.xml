@@ -10,7 +10,8 @@
         android:paddingRight="35dip"
         android:background="@drawable/selector_edit_bg"
         android:imeOptions="actionSearch"
-        android:layout_gravity="center_vertical"  
+        android:layout_gravity="center_vertical" 
+        android:maxLength="30"
         android:singleLine="true" />
 	<ProgressBar
         android:id="@+id/waiting_progress"

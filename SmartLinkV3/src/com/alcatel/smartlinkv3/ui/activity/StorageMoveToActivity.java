@@ -195,13 +195,20 @@ public class StorageMoveToActivity extends BaseActivity implements
 		MoveToStorageListAdapter moveToStorageListAdapter = new MoveToStorageListAdapter(
 				this);
 		m_moveToStorageListView.setAdapter(moveToStorageListAdapter);
-	
+		initTitleBar();
 		if (LocalStorageActivity.FLAG_LOCAL.equalsIgnoreCase(m_strCurLocation)) {
 			getLocalStorageListData();
 		} else {
 			getSambaStorageListData();
 		}
 	
+	}
+	
+	private void initTitleBar() {
+		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {					
+			int iamgeId = R.drawable.hard_disc_white;			
+			m_rootDirImage.setImageResource(iamgeId);
+		}
 	}
 	
 	@Override
