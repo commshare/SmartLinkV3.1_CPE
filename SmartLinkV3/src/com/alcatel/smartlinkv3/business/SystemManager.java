@@ -330,7 +330,7 @@ public class SystemManager extends BaseManager {
 							String strError = response.getErrorMessage();
 							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_REBOOT);
 							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_MESSAGE, strError);
+							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
 							m_context.sendBroadcast(intent);
 						}
 					}));
