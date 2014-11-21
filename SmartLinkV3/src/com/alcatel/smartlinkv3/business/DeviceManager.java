@@ -76,7 +76,7 @@ public class DeviceManager extends BaseManager {
 		
 		if(m_getGetConnectedDeviceTask == null) {
 			m_getGetConnectedDeviceTask = new GetConnectedDeviceTask();
-			m_rollTimer.scheduleAtFixedRate(m_getGetConnectedDeviceTask, 0, 10 * 1000);
+			m_rollTimer.scheduleAtFixedRate(m_getGetConnectedDeviceTask, 0, 30 * 1000);
 		}
 	}
 	
@@ -136,7 +136,7 @@ public class DeviceManager extends BaseManager {
 		
 		if(m_getGetBlockDeviceListTask == null) {
 			m_getGetBlockDeviceListTask = new GetBlockDeviceListTask();
-			m_rollTimer.scheduleAtFixedRate(m_getGetBlockDeviceListTask, 0, 10 * 1000);
+			m_rollTimer.scheduleAtFixedRate(m_getGetBlockDeviceListTask, 0, 30 * 1000);
 		}
 	}
 	

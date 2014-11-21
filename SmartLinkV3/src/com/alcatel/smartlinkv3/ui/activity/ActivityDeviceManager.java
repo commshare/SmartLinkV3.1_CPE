@@ -17,6 +17,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +43,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 
-public class ActivityDeviceManager extends Activity implements OnClickListener {
+public class ActivityDeviceManager extends BaseActivity implements OnClickListener {
 	private ListView m_connecedDeviceList = null;
 	private ListView m_blockedDeviceList = null;
 	private LinearLayout m_back = null;
@@ -51,6 +53,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	private ProgressBar m_waiting = null;
 	
 	private boolean m_bIsWorking = false;
+	private boolean m_bEnableRefresh = false;
 
 	private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
 	private ArrayList<ConnectedDeviceItemModel> m_blockedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
@@ -64,8 +67,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK&& strErrorCode.length() == 0) {					
-					updateConnectedDeviceUI();				
+				if (nResult == BaseResponse.RESPONSE_OK&& strErrorCode.length() == 0) {	
+					if(m_bEnableRefresh == true || haveEditItem() == false) {
+						resetConnectEditFlag();
+						m_bEnableRefresh = false;
+						updateConnectedDeviceUI();	
+					}
 				}
 			} else if (intent.getAction().equals(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
@@ -157,7 +164,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		super.onResume();	
 		getLocalMacAddress();
 		registerReceiver();
-		getListData();
+		//getListData();
 		updateConnectedDeviceUI();
 		updateBlockDeviceUI();
 	}
@@ -166,6 +173,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 	public void onPause() {
 		super.onPause();
 		m_bIsWorking = false;
+		m_bEnableRefresh = false;
+		resetConnectEditFlag();
 		m_waiting.setVisibility(View.GONE);
 		this.unregisterReceiver(m_deviceReceiver);
 	}
@@ -187,6 +196,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			break;
 			
 		case R.id.refresh:
+			m_bEnableRefresh = true;
 			getListData();			
 		default:
 			break;
@@ -308,6 +318,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 		}
 
 		ViewHolder holder = null;
+		private String m_strEditString = new String();
 		public View getView(final int position, View convertView,ViewGroup parent) {
 			if (convertView == null) {
 				holder = new ViewHolder();
@@ -325,6 +336,8 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
+			//Log.d("dddd", "position:" + String.valueOf(position));
+			
 			if(m_bIsWorking == true)
 				holder.blockBtn.setEnabled(false);
 			else
@@ -333,7 +346,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			final ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
 			final String displayName = model.DeviceName;
 			holder.deviceNameTextView.setText(displayName);
-			holder.deviceNameEditView.setText(model.strEditString);
+			
 			holder.ip.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_ip), model.IPAddress));
 			final String mac = model.MacAddress;
 			holder.mac.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_mac), mac));
@@ -343,6 +356,7 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			{
 				holder.blockBtn.setVisibility(View.GONE);
 				holder.deviceNameEditView.setVisibility(View.GONE);
+				holder.deviceNameTextView.setVisibility(View.VISIBLE);
 				holder.icon.setBackgroundResource(R.drawable.connected_profile);
 				holder.modifyDeviceName.setVisibility(View.GONE);
 			}
@@ -353,6 +367,10 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				holder.modifyDeviceName.setVisibility(View.VISIBLE);
 				if(model.bEditStatus == true) {
 					holder.deviceNameEditView.setVisibility(View.VISIBLE);
+					holder.deviceNameEditView.setText(m_strEditString);
+					holder.deviceNameEditView.requestFocus();
+					int nSelection = m_strEditString.length() == 0?0:m_strEditString.length();
+					holder.deviceNameEditView.setSelection(nSelection);
 					holder.deviceNameTextView.setVisibility(View.GONE);
 					holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_finished);
 				}else{
@@ -367,7 +385,14 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				@Override
 				public void afterTextChanged(Editable arg0) {
 					// TODO Auto-generated method stub
-					
+					String strText = arg0.toString();
+					String strNewText = strText.replaceAll("[,\":;&]", "");
+					if(strNewText.equals(arg0.toString()) == false) {
+						arg0 = arg0.replace(0, arg0.length(), strNewText);
+					}
+					m_strEditString = strNewText;
+					//Log.d("dddd", "m_strEditString s:" + strText);
+					//Log.d("dddd", "m_strEditString:" + m_strEditString);
 				}
 
 				@Override
@@ -381,53 +406,38 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
 					// TODO Auto-generated method stub
-					String strText = holder.deviceNameEditView.getEditableText().toString();
-					String strNewText = strText.replaceAll("[,\":;&]", "");
-					if(strNewText.equals(strText) == false) {
-						holder.deviceNameEditView.setText(strNewText);
-					}
-					model.strEditString = strNewText;
+					
 				}
 				
 			});
 			
-			holder.deviceNameEditView.setOnFocusChangeListener(new OnFocusChangeListener() {		
-				@Override
-				public void onFocusChange(View view, boolean arg1) {
-					if(arg1 == false && m_connecedDeviceLstData.get(position).bEditStatus == true){
-						m_focusedMac = m_connecedDeviceLstData.get(position).MacAddress;
-						m_currentSelection = ((EditText)view).getSelectionStart();
-					}
-				}
-			});
-			
-			if(m_focusedMac.equals(model.MacAddress) && model.bEditStatus == true) {
-				holder.deviceNameEditView.requestFocus();        
-				holder.deviceNameEditView.setSelection(m_currentSelection);
-			}
-			
 			holder.modifyDeviceName.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v) {				
+				public void onClick(View v) {
 					if(m_connecedDeviceLstData.get(position).bEditStatus == true) {
-						holder.deviceNameEditView.setVisibility(View.GONE);
-						holder.deviceNameTextView.setVisibility(View.VISIBLE);
+						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);  
+						imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
+						
+						//holder.deviceNameTextView.setVisibility(View.VISIBLE);
 						m_connecedDeviceLstData.get(position).bEditStatus = false;
-						holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
-						String strName = holder.deviceNameEditView.getText().toString().trim();
-						if(strName.length() == 0) {
+						//holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
+						//String strName = holder.deviceNameEditView.getText().toString().trim();
+						String strName = m_strEditString.trim();
+						//holder.deviceNameEditView.setVisibility(View.GONE);
+						//Log.d("dddd", "onclick:" + strName);
+						if(strName.length() == 0 || strName.length() > 31) {
 							String msgRes = ActivityDeviceManager.this.getString(R.string.device_manage_name_empty);
 							Toast.makeText(ActivityDeviceManager.this, msgRes, Toast.LENGTH_SHORT).show();
 						}
 						if(strName.length() != 0 && !strName.equals(displayName))
 						{
-							setDeviceName(strName, mac, type);
+							//setDeviceName(strName, mac, type);
+							m_connecedDeviceLstData.get(position).DeviceName = strName;
 						}	
 					}else{
+						resetConnectEditFlag();
+						m_strEditString = m_connecedDeviceLstData.get(position).DeviceName;
 						m_connecedDeviceLstData.get(position).bEditStatus = true;
-						holder.deviceNameEditView.setVisibility(View.VISIBLE);
-						holder.deviceNameTextView.setVisibility(View.GONE);
-						holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_finished);
 					}
 					
 					((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
@@ -439,9 +449,12 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				@Override
 				public void onClick(View v) {	
 					m_bIsWorking = true;
+					m_bEnableRefresh = true;
 					m_waiting.setVisibility(View.VISIBLE);
 					holder.blockBtn.setEnabled(false);
+					resetConnectEditFlag();
 					setConnectedDeviceBlock(displayName, mac);
+					m_connecedDeviceLstData.remove(position);
 					((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
 					((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 				}
@@ -473,6 +486,20 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 			return convertView;
 		}
 
+	}
+	
+	private boolean haveEditItem() {
+		for(int i = 0;i < m_connecedDeviceLstData.size();i++) {
+			if(m_connecedDeviceLstData.get(i).bEditStatus == true)
+				return true;
+		}
+		return false;
+	}
+	
+	private void resetConnectEditFlag() {
+		for(int i = 0;i < m_connecedDeviceLstData.size();i++) {
+			m_connecedDeviceLstData.get(i).bEditStatus = false;
+		}
 	}
 
 	public class BlockedDevAdapter extends BaseAdapter {
@@ -534,8 +561,10 @@ public class ActivityDeviceManager extends Activity implements OnClickListener {
 				public void onClick(View v) {	
 					m_bIsWorking = true;
 					m_waiting.setVisibility(View.VISIBLE);
+					m_bEnableRefresh = true;
 					holder.unblockBtn.setEnabled(false);
 					setDeviceUnlock(displayName, mac);
+					m_blockedDeviceLstData.remove(position);
 					((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
 					((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 				}			
