@@ -520,7 +520,7 @@ public class HttpSystem {
 			// TODO Auto-generated method stub
 			try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetAppBackup");
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetAppRestoreBackup");
 
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
