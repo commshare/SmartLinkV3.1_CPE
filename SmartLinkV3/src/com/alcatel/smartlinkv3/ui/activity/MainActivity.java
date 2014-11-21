@@ -86,6 +86,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
+	private static boolean m_blLogout = false;
 	
 	private RelativeLayout m_accessDeviceLayout;
 	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
@@ -163,6 +164,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	@Override
 	public void onPause() {
 		super.onPause();
+		try {
+			this.unregisterReceiver(m_msgReceiver);
+		} catch (Exception e) {
+
+		}
 		m_homeView.onPause();
 		m_usageView.onPause();
 		m_smsView.onPause();
@@ -236,8 +242,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult
 					&& strErrorCode.length() == 0){
-				String strInfo = getString(R.string.login_logout_successful);
-				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+				if (m_blLogout) {
+					String strInfo = getString(R.string.login_logout_successful);
+					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();					
+				}
+				m_blLogout = false;
 			}
 		}
 		
@@ -687,6 +696,9 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		addPopWindow.showPopupWindow(m_Btnbar);
 	}
 	
+	public static void setLogoutFlag(boolean blLogout){
+		m_blLogout = blLogout;
+	}
 	private void moreBtnClick(){
 		MorePopWindow morePopWindow = new MorePopWindow(MainActivity.this);
 		morePopWindow.showPopupWindow(m_Btnbar);

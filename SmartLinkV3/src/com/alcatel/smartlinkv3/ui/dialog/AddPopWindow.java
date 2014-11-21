@@ -4,6 +4,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 import com.alcatel.smartlinkv3.ui.activity.SdSharingActivity;
 import com.alcatel.smartlinkv3.ui.activity.WpsMainActivity;
 
@@ -92,6 +93,7 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 	public void userLogout() {
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.selfLogined) {
+			MainActivity.setLogoutFlag(true);
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
 		}
