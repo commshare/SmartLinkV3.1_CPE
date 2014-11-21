@@ -431,7 +431,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 						}
 						if(strName.length() != 0 && !strName.equals(displayName))
 						{
-							//setDeviceName(strName, mac, type);
+							setDeviceName(strName, mac, type);
 							m_connecedDeviceLstData.get(position).DeviceName = strName;
 						}	
 					}else{
