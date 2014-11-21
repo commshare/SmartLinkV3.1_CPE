@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true"
     android:overScrollMode="never" >
 
         <LinearLayout
@@ -11,8 +10,7 @@
 	        android:orientation="vertical" >
 	        <LinearLayout
 	            android:layout_width="match_parent"
-	            android:layout_height="0dip"
-	            android:layout_weight="1"
+	            android:layout_height="wrap_content"
 	            android:orientation="vertical" > 
 	            <RelativeLayout
 	                android:id="@+id/home_panel"
@@ -161,13 +159,14 @@
 	        <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
+                android:paddingTop="6dip"
+                android:paddingBottom="6dip"
                 android:background="@color/color_divider" />
             
            	<LinearLayout
 	            android:id="@+id/frame_roaming"
 	            android:layout_width="match_parent"
-	            android:layout_height="0dip"
-	            android:layout_weight="1"
+	            android:layout_height="wrap_content"
 	            android:orientation="vertical" >
 	            <RelativeLayout
 	                android:id="@+id/roaming_panel"
@@ -268,13 +267,14 @@
 	        <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
+                android:paddingTop="6dip"
+                android:paddingBottom="6dip"
                 android:background="@color/color_divider" />
 		        
           	<LinearLayout
 	            android:id="@+id/frame_duration"
 	            android:layout_width="match_parent"
-	            android:layout_height="0dip"
-	            android:layout_weight="1"
+	            android:layout_height="wrap_content"
 	            android:orientation="vertical" >
 	            <RelativeLayout
 	                android:id="@+id/duration_panel"
