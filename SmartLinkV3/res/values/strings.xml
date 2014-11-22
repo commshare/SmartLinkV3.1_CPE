@@ -195,7 +195,7 @@
     <string name="setting_upgrade_get_update_state_failed">Get device update state failed.</string>
     <string name="setting_upgrade_start_update_failed">Device start update failed.</string>
     <string name="setting_upgrade_check_firmware_failed">Get New version failed.</string>
-    <string name="setting_upgrade_set_check_new_version_failed">Set check device new version failed.</string>
+    <string name="setting_upgrade_set_check_new_version_failed">Check device new version failed.</string>
     <string name="setting_device_title">System Information</string>
     <string name="setting_device_software_version">Software Version:</string>
     <string name="setting_device_hadrware_version">Hardware Version:</string>

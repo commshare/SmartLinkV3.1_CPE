@@ -109,6 +109,7 @@
             android:layout_width="40dip"
             android:layout_height="40dip"
             android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progerss_blue"
             android:visibility="gone" />
         <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
     </RelativeLayout>

@@ -56,11 +56,15 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	private TextView m_tv_cur_app_version=null;
 	private TextView m_tv_new_app_version=null;
 	private TextView m_tv_new_firmware_version = null;
+	private TextView m_tv_update_progress=null;
+	private ProgressBar m_pb_check_fw_waiting=null;
+	private ProgressBar m_pb_check_app_waiting=null;
 	private ProgressBar m_pb_waiting=null;
 	private boolean m_blHasNewFirmware = false;
 	private boolean m_blHasNewApp = false;
 	private boolean m_blUpdating = false;
 	private static String m_strNewFirmwareInfo="";
+	private int m_nUpdradeFWProgress=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -97,6 +101,9 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		m_btn_upgrade_app.setOnClickListener(this);
 		//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_upgrade_waiting_progress);
+		m_pb_check_app_waiting=(ProgressBar)findViewById(R.id.check_app_waiting_progress);
+		m_pb_check_fw_waiting=(ProgressBar)findViewById(R.id.check_firmware_waiting_progress);
+		m_tv_update_progress = (TextView)findViewById(R.id.tv_progress_update);
 
 		//updateNewDeviceInfo(); 
 		String strCurAppVersion = getString(R.string.setting_upgrade_current_app_version);
@@ -122,14 +129,40 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 	private void ShowWaiting(boolean blShow){
 		if (blShow) {
+			m_blUpdating = true;
 			m_pb_waiting.setVisibility(View.VISIBLE);
+			m_tv_update_progress.setVisibility(View.VISIBLE);
+			String strProgress = m_nUpdradeFWProgress+"%";
+			m_tv_update_progress.setText(strProgress);
 		}else {
+			m_blUpdating = false;
 			m_pb_waiting.setVisibility(View.GONE);
+			m_tv_update_progress.setVisibility(View.GONE);
+			m_nUpdradeFWProgress = 0;
+			String strProgress = m_nUpdradeFWProgress+"%";
+			m_tv_update_progress.setText(strProgress);
 		}
 		m_btn_check_firmware.setEnabled(!blShow);
 		m_btn_upgrade_app.setEnabled(!blShow);
 	}
 
+	private void showCheckFWWaiting(boolean blShow){
+		m_btn_check_firmware.setEnabled(!blShow);
+		if (blShow) {
+			m_pb_check_fw_waiting.setVisibility(View.VISIBLE);
+		}else {
+			m_pb_check_fw_waiting.setVisibility(View.GONE);
+		}
+	}
+	
+	private void showCheckAppWaiting(boolean blShow){
+		m_btn_upgrade_app.setEnabled(!blShow);
+		if (blShow) {
+			m_pb_check_app_waiting.setVisibility(View.VISIBLE);
+		}else {
+			m_pb_check_app_waiting.setVisibility(View.GONE);
+		}
+	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -173,6 +206,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 	private void onBtnFirmwareCheck(){
 		if (m_blHasNewFirmware) {
+			m_nUpdradeFWProgress = 0;
 			final InquireDialog inquireDlg = new InquireDialog(this);
 			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
 			inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
@@ -197,7 +231,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}else {
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
-			ShowWaiting(true);
+			showCheckFWWaiting(true);
 
 		}
 	}
@@ -227,6 +261,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION));
 		
 	}
 
@@ -240,13 +276,25 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	protected void onBroadcastReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		super.onBroadcastReceive(context, intent);
+		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				//do nothing
+			}else {
+				showCheckFWWaiting(false);
+				String strNew = getString(R.string.setting_upgrade_set_check_new_version_failed);
+				setNewDeviceVersion(strNew);
+
+			}
+		}
 		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				updateNewDeviceInfo(true);
 			}else {
-				ShowWaiting(false);
+				showCheckFWWaiting(false);
 				String strNew = getString(R.string.setting_upgrade_check_failed);
 				setNewDeviceVersion(strNew);
 
@@ -279,6 +327,10 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				}else if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
 					ShowWaiting(false);
 					Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
+				}else if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
+					m_nUpdradeFWProgress = info.getProcess();
+					String strProgress = m_nUpdradeFWProgress+"%";
+					m_tv_update_progress.setText(strProgress);
 				}
 			}else {
 				ShowWaiting(false);
@@ -297,7 +349,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		EnumDeviceCheckingStatus eStatus = EnumDeviceCheckingStatus.build(nState);
 		if (EnumDeviceCheckingStatus.DEVICE_CHECKING == eStatus) {
 			//waiting
-			ShowWaiting(true);
+			showCheckFWWaiting(true);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
 			m_blHasNewFirmware = true;
 			String strNew = getString(R.string.setting_upgrade_new_app_version);
@@ -306,38 +358,41 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				m_strNewFirmwareInfo = strNew;
 			}
 			m_btn_check_firmware.setText(R.string.setting_upgrade_btn_upgrade);
-			ShowWaiting(false);
+			showCheckFWWaiting(false);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
-			ShowWaiting(false);
+			showCheckFWWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_no_new_version);
 			if (blNeedBackupNewVersionInfo) {
 				m_strNewFirmwareInfo = strNew;
 			}
 		}else if (EnumDeviceCheckingStatus.DEVICE_NO_CONNECT == eStatus) {
-			ShowWaiting(false);
+			showCheckFWWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_no_connection);
 			if (blNeedBackupNewVersionInfo) {
 				m_strNewFirmwareInfo = strNew;
 			}
 		}else if (EnumDeviceCheckingStatus.DEVICE_NOT_AVAILABLE == eStatus) {
-			ShowWaiting(false);
+			showCheckFWWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_not_available);
 			if (blNeedBackupNewVersionInfo) {
 				m_strNewFirmwareInfo = strNew;
 			}
 		}else if (EnumDeviceCheckingStatus.DEVICE_CHECK_ERROR == eStatus) {
-			ShowWaiting(false);
+			showCheckFWWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_check_error);
 			if (blNeedBackupNewVersionInfo) {
 				m_strNewFirmwareInfo = strNew;
 			}
 		}else {
-			ShowWaiting(false);
+			showCheckFWWaiting(false);
 		}
 		setNewDeviceVersion(m_strNewFirmwareInfo);
 	}
 
 	private void checkNewVersion(){
+		
+		m_btn_upgrade_app.setEnabled(false);
+		m_pb_check_app_waiting.setVisibility(View.VISIBLE);
 
 		new Thread() {
 			public void run() {
@@ -419,7 +474,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg){
-			ShowWaiting(false);
+			m_btn_upgrade_app.setEnabled(true);
+			m_pb_check_app_waiting.setVisibility(View.GONE);
 			switch (msg.what) {
 			case MSG_GET_NEW_VERSION:
 				String strNewVersion = msg.getData().getString("version");

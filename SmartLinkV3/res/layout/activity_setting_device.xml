@@ -4,15 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/color_white" >
 
-    <FrameLayout 
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_white">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:orientation="vertical" >
+        android:background="@color/color_white" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -221,72 +222,74 @@
                     android:textSize="17sp" />
             </LinearLayout>
 
-        <!-- seperator -->
+            <!-- seperator -->
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:background="@color/main_bottom_divider"
-            android:contentDescription="@string/setting_device" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_device" />
+
+            <RelativeLayout
+                android:id="@+id/rl_device_control"
+                android:layout_width="match_parent"
+                android:layout_height="250dp" >
+
+                <Button
+                    android:id="@+id/btn_reboot"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_common_button"
+                    android:gravity="center"
+                    android:text="@string/setting_device_btn_reboot"
+                    android:textColor="@drawable/common_button_text"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/btn_power_off"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_above="@id/btn_reboot"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/selector_common_button"
+                    android:gravity="center"
+                    android:text="@string/setting_device_btn_power_off"
+                    android:textColor="@drawable/common_button_text"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/btn_reset"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/btn_reboot"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/selector_common_button"
+                    android:gravity="center"
+                    android:text="@string/setting_device_btn_reset"
+                    android:textColor="@drawable/common_button_text"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_device_control"
-            android:layout_width="match_parent"
-            android:layout_height="250dp" >
+            android:id="@+id/rl_device_waiting"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
 
-            <Button
-                android:id="@+id/btn_reboot"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+            <ProgressBar
+                android:id="@+id/pb_device_waiting_progress"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
                 android:layout_centerInParent="true"
-                android:background="@drawable/selector_common_button"
-                android:gravity="center"
-                android:text="@string/setting_device_btn_reboot"
-                android:textColor="@drawable/common_button_text"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/btn_power_off"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_above="@id/btn_reboot"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/selector_common_button"
-                android:gravity="center"
-                android:text="@string/setting_device_btn_power_off"
-                android:textColor="@drawable/common_button_text"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/btn_reset"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/btn_reboot"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_common_button"
-                android:gravity="center"
-                android:text="@string/setting_device_btn_reset"
-                android:textColor="@drawable/common_button_text"
-                android:textSize="15sp" />
+                android:indeterminateDrawable="@drawable/progerss_blue"
+                android:visibility="gone" />
+            <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
         </RelativeLayout>
-    </LinearLayout>
-    
-    <RelativeLayout
-        android:id="@+id/rl_device_waiting"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+    </FrameLayout>
 
-        <ProgressBar
-            android:id="@+id/pb_device_waiting_progress"
-            android:layout_width="40dip"
-            android:layout_height="40dip"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-        <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
-    </RelativeLayout>
-</FrameLayout>
 </ScrollView>
