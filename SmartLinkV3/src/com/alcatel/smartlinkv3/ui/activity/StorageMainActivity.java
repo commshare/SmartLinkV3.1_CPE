@@ -96,7 +96,7 @@ public class StorageMainActivity extends BaseActivity implements
 				.findViewById(R.id.item_hard_disc_layout);
 		m_hardDisc.setOnClickListener(this);
 
-		m_sambaSwitch =  (Button) this.findViewById(R.id.connect_button);
+		m_sambaSwitch = (Button) this.findViewById(R.id.connect_button);
 		m_sambaSwitch.setOnClickListener(this);
 
 		m_progressWaiting = (ProgressBar) this
@@ -176,10 +176,10 @@ public class StorageMainActivity extends BaseActivity implements
 
 	private void updateUI() {
 
-		/*if (Status
+		if (Status
 				.build(BusinessMannager.getInstance().getSDCardStatus().SDcardStatus) == Status.Disabled) {
 			showCurrentView(LAYOUT_TYPE.layout_no_storage);
-		} else */{
+		} else {
 
 			if (Status
 					.build(BusinessMannager.getInstance().getSambaSettings().SambaStatus) == Status.Enabled) {
