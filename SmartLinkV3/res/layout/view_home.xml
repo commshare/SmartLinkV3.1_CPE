@@ -31,7 +31,6 @@
 		                  		android:layout_width="100dip"
 		                  		android:layout_height="wrap_content"
 		                  		android:layout_centerInParent="true"
-		                  		android:paddingLeft="5dip"
 		                 		android:orientation="vertical" >
 			                 <TextView
 			                     android:id="@+id/connect_network"
@@ -58,17 +57,17 @@
 			                    android:layout_centerVertical="true"	
 			                    android:layout_width="wrap_content"
 			                    android:layout_height="wrap_content"
-			                    android:layout_alignParentLeft="true"
-			                    android:layout_marginLeft="35dip"
+			                    android:layout_toLeftOf="@id/connect_lable_layout"
+			                    android:layout_marginRight="5dip"
 			                    android:background="@drawable/switch_off"
 			                    android:gravity="center" />
 			                 <ProgressBar
 				                  android:id="@+id/waiting_progress"
 				                  android:layout_width="wrap_content"
 				                  android:layout_height="wrap_content"
-				                  android:layout_alignParentRight="true"
 				                  android:layout_centerVertical="true"
-				                  android:layout_marginRight="50dip"
+				                  android:layout_toRightOf="@id/connect_lable_layout"
+				                  android:layout_marginLeft="5dip"
 				                  android:indeterminateDrawable="@drawable/progerss_connect" />
 		             	</RelativeLayout>
 		            	<LinearLayout
