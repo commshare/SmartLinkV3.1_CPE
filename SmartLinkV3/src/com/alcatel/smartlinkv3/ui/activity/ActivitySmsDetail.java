@@ -77,15 +77,13 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 
 	private ProgressBar m_progressWaiting = null;
 
-	private int m_deleteCounter  = 0;
-	private int m_deleteSuccessNum  = 0;
-	private int m_deleteNum  = 0;
-	private boolean m_bDeleteMult = false;
+
+	private boolean m_bDeleteContact  = true;
 	private boolean m_bIsLastOneMessage = false;
 
 	private boolean m_bDeleteSingleEnable = true;
 	private boolean m_bDeleteEnd = false;
-	private boolean m_bNeedFinish = false;
+	//private boolean m_bNeedFinish = false;
 	private boolean m_bSendEnd = false;
 	private SendStatus m_sendStatus = SendStatus.None;
 
@@ -153,7 +151,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		m_bDeleteSingleEnable = true;
 		//m_etContent.setText("");
 
-		m_bNeedFinish = false;
+		//m_bNeedFinish = false;
 		m_bSendEnd = false;
 		m_bDeleteEnd = false;
 
@@ -216,10 +214,6 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 						m_btnSend.setEnabled(false);
 	    			m_btnDelete.setEnabled(true);
 	    			m_bDeleteSingleEnable = true;
-					if(m_bNeedFinish == true){
-						m_bNeedFinish = false;
-						this.finish();
-					}
 				}else if(m_bSendEnd == true){
 					m_bSendEnd = false;
 					m_progressWaiting.setVisibility(View.GONE);
@@ -244,43 +238,37 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_DELETE_SMS_REQUSET)){				
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			m_bDeleteEnd = true;
+			boolean bDeleteSeccuss = false;
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				m_deleteSuccessNum++;
+				bDeleteSeccuss = true;
 			}
-			m_deleteCounter++;
-
-			if(m_deleteCounter == m_deleteNum) {
-				m_bDeleteEnd = true;
-				if(m_bDeleteMult == true) {//delete all sms
-					if(m_deleteNum == m_deleteSuccessNum) {
-						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
-						//getSmsContentAtOnceRequest();
-						String msgRes = this.getString(R.string.sms_delete_multi_success);
-						Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-						m_bNeedFinish = true;
-						this.finish();
-					}else{
-						String strMsg = String.format(getString(R.string.sms_delete_multi_error), m_deleteSuccessNum,m_deleteNum - m_deleteSuccessNum);
-						Toast.makeText(this, strMsg, Toast.LENGTH_SHORT).show();
-						m_progressWaiting.setVisibility(View.GONE);
-						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
-						getSmsContentAtOnceRequest();
-					}
-				}else{//delete single sms
+			
+			if(m_bDeleteContact == true) {
+				if(bDeleteSeccuss == true) {
+					BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+					String msgRes = this.getString(R.string.sms_delete_multi_success);
+					Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+					this.finish();
+				}else{
+					String strMsg = getString(R.string.sms_delete_multi_error);
+					Toast.makeText(this, strMsg, Toast.LENGTH_SHORT).show();
 					m_progressWaiting.setVisibility(View.GONE);
-					if(m_deleteNum == m_deleteSuccessNum) {
-						Toast.makeText(this, getString(R.string.sms_delete_success), Toast.LENGTH_SHORT).show();
-						BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
-						getSmsContentAtOnceRequest();
-						if(m_bIsLastOneMessage == true) {
-							m_bNeedFinish = true;
-							this.finish();
-						}
-					}else{
-						Toast.makeText(this, getString(R.string.sms_delete_error), Toast.LENGTH_SHORT).show();
-					}
+					BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+					getSmsContentAtOnceRequest();
 				}
-
+			}else{
+				m_progressWaiting.setVisibility(View.GONE);
+				if(bDeleteSeccuss == true) {
+					Toast.makeText(this, getString(R.string.sms_delete_success), Toast.LENGTH_SHORT).show();
+					BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+					if(m_bIsLastOneMessage == true) {
+						this.finish();
+					}
+				}else{
+					Toast.makeText(this, getString(R.string.sms_delete_error), Toast.LENGTH_SHORT).show();
+				}
+				getSmsContentAtOnceRequest();
 			}
 		}
 
@@ -423,29 +411,27 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			public void onInquireApply() {
 				// TODO Auto-generated method stub
 
-				m_deleteCounter  = 0;
-				m_deleteSuccessNum  = 0;
-				m_deleteNum = getDeleteMessagesNumber();
-				m_bDeleteMult = true;
+				m_bDeleteContact = true;
 				m_progressWaiting.setVisibility(View.VISIBLE);
 				m_etContent.setEnabled(false);
 				m_btnSend.setEnabled(false);
 				m_btnDelete.setEnabled(false);
 				m_bDeleteSingleEnable = false;
-				if(m_deleteNum == 1) {
-					m_bIsLastOneMessage = true;
-				}else{
-					m_bIsLastOneMessage = false;
-				}
+				
+				boolean bHaveSms = false;
 				for (int i = 0; i < m_smsListData.size(); i++) {
 					SMSDetailItem item = m_smsListData.get(i);
 					if(item.bIsDateItem == false) {
-						DataValue data = new DataValue();
-						data.addParam("DelFlag", EnumSMSDelFlag.Delete_message);
-						data.addParam("ContactId", m_nContactID);
-						data.addParam("SMSId",item.nSMSID);
-						BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_DELETE_SMS_REQUSET, data);
+						bHaveSms = true;
+						break;
 					}
+				}
+				
+				if(bHaveSms == true) {
+					DataValue data = new DataValue();
+					data.addParam("DelFlag", EnumSMSDelFlag.Delete_contact_messages);
+					data.addParam("ContactId", m_nContactID);
+					BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_DELETE_SMS_REQUSET, data);
 				}
 				inquireDlg.closeDialog();
 			}	
@@ -723,10 +709,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 							@Override
 							public void onInquireApply() {
 								// TODO Auto-generated method stub
-								m_deleteCounter  = 0;
-								m_deleteSuccessNum  = 0;
-								m_deleteNum = 1;
-								m_bDeleteMult = false;
+								m_bDeleteContact = false;
 								m_progressWaiting.setVisibility(View.VISIBLE);
 								//								m_progress_dialog = ProgressDialog.show(ActivitySmsDetail.this, null, 
 								//										getString(R.string.deleting),true, false);

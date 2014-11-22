@@ -113,7 +113,7 @@
     <string name="sms_send_success">Send SMS success.</string>
     <string name="sms_error_message_full_storage">The storage of SMS is full!</string>
     <string name="sms_delete_multi_success">Delete conversation success!</string>
-    <string name="sms_delete_multi_error">Delete %1$d successed, %2$d failed!</string>
+    <string name="sms_delete_multi_error">Delete conversation failed!</string>
     <string name="sms_delete_error">Delete SMS error!</string>
     <string name="sms_delete_success">Delete SMS success!</string>
     <string name="sms_number_invalid">Error! Only 3 phone numbers are allowed.</string>
