@@ -57,6 +57,9 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	private int m_preButton = 0;
 	private int m_nNewCount = 0;
 
+	private RelativeLayout rl_top;
+	//private LinearLayout ll_buttom;
+	
 	private ViewFlipper m_viewFlipper;
 	
 	private TextView m_homeBtn;
@@ -97,6 +100,18 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
 		this.getWindowManager().getDefaultDisplay()
 				.getMetrics(m_displayMetrics);
+		rl_top = (RelativeLayout)findViewById(R.id.main_layout_top);
+		//ll_buttom = (LinearLayout)findViewById(R.id.layout_bottom);
+        
+        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        
+       //RelativeLayout.LayoutParams ll_params = (RelativeLayout.LayoutParams) ll_buttom.getLayoutParams();// new LinearLayout.LayoutParams(
+                //LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        rl_params.height = (m_displayMetrics.heightPixels * 9)/100;
+        //ll_params.height = m_displayMetrics.heightPixels / 10;
+        rl_top.setLayoutParams(rl_params);
+        //ll_buttom.setLayoutParams(ll_params);
 
 		m_homeBtn = (TextView) this.findViewById(R.id.main_home);
 		m_homeBtn.setOnClickListener(this);

@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/main_layout_top"
 	    android:layout_width="fill_parent"
-	    android:layout_height="45dip"
+	    android:layout_height="wrap_content"
 	    android:background="@color/main_title_background" >
 	
         <TextView
@@ -40,7 +40,7 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dip"
+        android:layout_height="58dip"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:id="@+id/layout_bottom"
@@ -53,7 +53,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="5dip"
+            android:drawablePadding="3dip"
             android:gravity="center_horizontal"
             android:text="@string/main_home"
             android:textColor="@color/color_grey"
@@ -66,7 +66,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="5dip"
+            android:drawablePadding="3dip"
             android:gravity="center_horizontal"
             android:text="@string/main_usage"
             android:textColor="@color/color_grey"
@@ -84,7 +84,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_centerInParent="true"
-	            android:drawablePadding="5dip"
+	            android:drawablePadding="3dip"
 	            android:gravity="center_horizontal"
 	            android:text="@string/main_sms"
 	            android:textColor="@color/color_grey"
@@ -96,12 +96,11 @@
 	            android:layout_height="wrap_content"
 	            android:layout_toRightOf="@id/main_sms"
 	            android:gravity="center_horizontal"
-	            android:layout_marginTop="4dip"
+	            android:layout_marginTop="3dip"
 	            android:text="@string/main_sms"
 	            android:textColor="@color/color_white"
 	            android:textSize="12sp" />
         </RelativeLayout>
-        
 
         <TextView
             android:id="@+id/main_setting"
@@ -110,7 +109,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="5dip"
+            android:drawablePadding="3dip"
             android:gravity="center_horizontal"
             android:text="@string/main_setting"
             android:textColor="@color/color_grey"

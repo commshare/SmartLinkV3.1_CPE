@@ -1,27 +1,20 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ScrollView01"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true"
-    android:overScrollMode="never" >
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/frame_home"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
         <LinearLayout
             android:id="@+id/frame_connect"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
-	        android:layout_weight="3"
+	        android:layout_weight="4"
             android:background="@color/home_connect_background_blue"
             android:orientation="vertical" >
             <LinearLayout
 	            android:layout_width="fill_parent"
 	            android:layout_height="0dip"
-	            android:layout_weight="3">
+	            android:layout_weight="5">
 	            <RelativeLayout
 	                android:id="@+id/connect_panel"
 	                android:layout_width="match_parent"
@@ -32,6 +25,7 @@
 		                    android:id="@+id/connect_layout"
 		                 	android:layout_width="match_parent"
 		                 	android:layout_height="wrap_content"
+		                 	
 		                 	android:orientation="horizontal" >"
 		                 	<LinearLayout
 		                    	android:id="@+id/connect_lable_layout"
@@ -47,7 +41,7 @@
 			                     android:ellipsize="end"
 			                     android:singleLine="true"
 			                     android:textColor="@color/color_white"
-			                     android:textSize="20sp"/>
+			                     android:textSize="18sp"/>
 			                 <TextView
 			                     android:id="@+id/connect_label"
 			                     android:layout_width="wrap_content"
@@ -55,35 +49,32 @@
 			                     android:ellipsize="end"
 			                     android:singleLine="true"
 			                     android:textColor="@color/home_connect_status"
-			                     android:textSize="16sp" />
+			                     android:textSize="14sp" />
 		                	 </LinearLayout>
 			                 <Button
 			                    android:id="@+id/connect_button"
 			                    android:layout_centerVertical="true"	
 			                    android:layout_width="wrap_content"
 			                    android:layout_height="wrap_content"
-			                    android:padding="5dip"
 			                    android:layout_toLeftOf="@id/connect_lable_layout"
 			                    android:background="@drawable/switch_off"
 			                    android:gravity="center" />
 			                 <ProgressBar
 				                  android:id="@+id/waiting_progress"
-				                  android:layout_width="30dip"
-				                  android:layout_height="30dip"
-				                  android:padding="5dip"
+				                  android:layout_width="wrap_content"
+				                  android:layout_height="wrap_content"
 				                  android:layout_centerVertical="true"
 				                  android:layout_toRightOf="@id/connect_lable_layout"
-				                  android:layout_marginLeft="2dp"
 				                  android:indeterminateDrawable="@drawable/progerss_connect" />
 		             	</RelativeLayout>
 		            	<LinearLayout
 		                  android:id="@+id/sim_card_locked_layout"
 		                  android:layout_width="wrap_content"
-		                  android:layout_height="match_parent"
+		                  android:layout_height="wrap_content"
 		                  android:paddingBottom="12dip"
 			              android:paddingTop="12dip"
 		                  android:layout_centerHorizontal="true"
-		                  android:visibility="gone"   
+		                  android:visibility="gone"
 		                  android:orientation="vertical" >
 		                  <LinearLayout
 			                android:layout_width="wrap_content"
@@ -149,7 +140,7 @@
             <LinearLayout
 	            android:layout_width="fill_parent"
 	            android:layout_height="0dip"
-	            android:layout_weight="2">
+	            android:layout_weight="4">
 	            <RelativeLayout
 	                android:id="@+id/data_panel"
 	                android:layout_width="match_parent"
@@ -171,8 +162,6 @@
 	                        android:id="@+id/home_time"
 	                        android:layout_width="wrap_content"
 	                        android:layout_height="wrap_content"
-	                        android:layout_alignParentLeft="true"
-	                        android:layout_marginTop="3dip"
 	                        android:contentDescription="@null"
 	                        android:visibility="visible"
 	                        android:background="@drawable/home_time" />
@@ -197,8 +186,7 @@
 	                        android:id="@+id/home_data"
 	                        android:layout_width="wrap_content"
 	                        android:layout_height="wrap_content"
-	                        android:layout_alignParentLeft="true"
-	                        android:layout_marginTop="3dip"
+	                        android:layout_centerVertical="true"
 	                        android:layout_marginLeft="35dip"
 	                        android:contentDescription="@null"
 	                        android:visibility="visible"
@@ -222,7 +210,7 @@
 	        <LinearLayout
 	            android:layout_width="fill_parent"
 	            android:layout_height="0dip"
-	            android:layout_weight="5"
+	            android:layout_weight="7"
 	            android:orientation="vertical" >
 	            <RelativeLayout
 			        android:id="@+id/sigel_panel"
@@ -310,15 +298,16 @@
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:layout_toLeftOf="@id/txtHide"
+	                    android:layout_marginRight="3dip"
 	                    android:layout_centerVertical="true" >
 	                    <ProgressBar
 	                        android:id="@+id/battery_progress"
 	                        style="?android:attr/progressBarStyleHorizontal"
-	                        android:layout_width="68dip"
-	                        android:layout_height="35dip"
+	                        android:layout_width="58dip"
+	                        android:layout_height="34dip"
 	                        android:background="@drawable/battery_progress_bg"
 	                        android:max="100"
-	                        android:progress="75"
+	                        android:progress="65"
 	                        android:progressDrawable="@drawable/battery_progress_status"/>
 	                    <ImageView
 	                        android:id="@+id/connct_charging"
@@ -432,4 +421,3 @@
 	        </RelativeLayout>
     	</LinearLayout>
 	</LinearLayout>
-</ScrollView>
