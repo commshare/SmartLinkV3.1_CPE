@@ -670,6 +670,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			public TextView smsDate;	
 			public ImageView sentFail;
 			public TextView sendFailText;
+			public View placeHolder;
 		}
 
 		public View getView(final int position, View convertView, ViewGroup parent) {
@@ -684,11 +685,17 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				holder.smsContent = (TextView)convertView.findViewById(R.id.sms_detail_content);
 				holder.sentFail = (ImageView)convertView.findViewById(R.id.sms_sent_fail_image);
 				holder.sendFailText = (TextView)convertView.findViewById(R.id.sms_sent_fail_text);
+				holder.placeHolder = (View)convertView.findViewById(R.id.place_holder);
 				convertView.setTag(holder);
 
 			}else {
 				holder = (ViewHolder)convertView.getTag();
 			}
+			
+			if(position == m_smsListData.size() -  1)
+				holder.placeHolder.setVisibility(View.VISIBLE);
+			else
+				holder.placeHolder.setVisibility(View.GONE);
 
 			if(m_smsListData.get(position).bIsDateItem == true) {
 				holder.date.setText(m_smsListData.get(position).strTime);
