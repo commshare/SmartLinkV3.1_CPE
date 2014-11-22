@@ -1,159 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white" >
-    
-    <FrameLayout 
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_white">
+        android:background="@color/color_white" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/rl_power_display"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="50dp" >
+            android:layout_height="match_parent"
+            android:background="@color/color_white"
+            android:orientation="vertical" >
 
-            <FrameLayout
-                android:id="@+id/fl_power_show"
-                android:layout_width="89dp"
-                android:layout_height="147dp"
-                android:layout_centerInParent="true" >
+            
+            <RelativeLayout
+                android:id="@+id/rl_power_display"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+
+                <FrameLayout
+                    android:id="@+id/fl_power_show"
+                    android:layout_width="89dp"
+                    android:layout_height="147dp"
+                    android:layout_centerInParent="true" >
+
+                    <ImageView
+                        android:id="@+id/iv_power_display"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/setting_power"
+                        android:src="@drawable/power_saving_charge"
+                        android:visibility="gone" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_power_saving"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/power_saving_bg"
+                        android:max="100"
+                        android:progress="90"
+                        android:progressDrawable="@drawable/battery_progress_status_2" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_power_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fl_power_show"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_power_saving_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/tv_wifi_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="10dp"
+                    android:text="@string/setting_power_wifi_description"
+                    android:textColor="@color/color_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/iv_power_display"
+                    android:id="@+id/iv_power_seperator_1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/setting_power"
-                    android:src="@drawable/power_saving_charge"
-                    android:visibility="gone" />
+                    android:layout_height="1dp"
+                    android:layout_above="@id/tv_wifi_description"
+                    android:background="@android:color/darker_gray"
+                    android:contentDescription="@string/setting_power" />
 
-                <ProgressBar
-                    android:id="@+id/pb_power_saving"
-                    style="?android:attr/progressBarStyleHorizontal"
+                <RelativeLayout
+                    android:id="@+id/rl_power_wifi_control"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/power_saving_bg"
-                    android:max="100"
-                    android:progress="90"
-                    android:progressDrawable="@drawable/battery_progress_status_2" />
-            </FrameLayout>
+                    android:layout_height="61dp"
+                    android:layout_above="@id/iv_power_seperator_1"
+                    android:layout_margin="10dp" >
 
-            <TextView
-                android:id="@+id/tv_power_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fl_power_show"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/color_black"
-                android:textSize="16sp" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tx_power_wifi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/setting_power_wifi"
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/iv_seperator_3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:contentDescription="@string/setting_power" />
+                    <Button
+                        android:id="@+id/btn_power_wifi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/switch_off" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_power_seperator_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_above="@id/rl_power_wifi_control"
+                    android:background="@android:color/darker_gray"
+                    android:contentDescription="@string/setting_power" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_power_smart_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="61dp"
+                    android:layout_above="@id/iv_power_seperator_2"
+                    android:layout_margin="10dp" >
+
+                    <TextView
+                        android:id="@+id/tx_power_smart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/setting_power_smart"
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/btn_power_smart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/switch_off" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_power_seperator_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_above="@id/rl_power_smart_control"
+                    android:background="@android:color/darker_gray"
+                    android:contentDescription="@string/setting_power" />
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_power_smart_control"
-            android:layout_width="match_parent"
-            android:layout_height="61dp"
-            android:layout_margin="10dp" >
+            android:id="@+id/rl_power_waiting"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
 
-            <TextView
-                android:id="@+id/tx_power_smart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="@string/setting_power_smart"
-                android:textColor="@color/color_black"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/btn_power_smart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/switch_off" />
+            <ProgressBar
+                android:id="@+id/pb_power_waiting_progress"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+            <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
         </RelativeLayout>
+    </FrameLayout>
 
-        <ImageView
-            android:id="@+id/iv_seperator_2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:contentDescription="@string/setting_power" />
-
-        <RelativeLayout
-            android:id="@+id/rl_power_wifi_control"
-            android:layout_width="match_parent"
-            android:layout_height="61dp"
-            android:layout_margin="10dp" >
-
-            <TextView
-                android:id="@+id/tx_power_wifi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="@string/setting_power_wifi"
-                android:textColor="@color/color_black"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/btn_power_wifi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/switch_off" />
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/iv_seperator_1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:contentDescription="@string/setting_power" />
-
-        <TextView
-            android:id="@+id/tv_wifi_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/setting_power_wifi_description"
-            android:textColor="@color/color_grey"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    
-    <RelativeLayout
-        android:id="@+id/rl_power_waiting"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <ProgressBar
-            android:id="@+id/pb_power_waiting_progress"
-            android:layout_width="40dip"
-            android:layout_height="40dip"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-        <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
-    </RelativeLayout>
-</FrameLayout>
-</ScrollView>
+</LinearLayout>

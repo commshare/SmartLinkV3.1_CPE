@@ -69,6 +69,7 @@
                 android:id="@+id/ll_ssid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical" >
 
                 <TextView
@@ -81,8 +82,9 @@
                     android:textSize="16sp" />
 
                 <FrameLayout 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
                     
                 <EditText
                     android:id="@+id/edit_ssid"
@@ -163,7 +165,7 @@
                         android:id="@+id/tv_security"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:text="@string/setting_wifi_password_security_tip"
                         android:textColor="@color/color_black"
                         android:textSize="12sp" />
@@ -172,6 +174,7 @@
                         android:id="@+id/security_spinner"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/dropdown"
                         android:paddingLeft="10dip" />
                 </LinearLayout>
@@ -186,7 +189,7 @@
                         android:id="@+id/tv_encryption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="15dp"
                         android:text="@string/setting_wifi_password_wpa_encryption_tip"
                         android:textColor="@color/color_black"
                         android:textSize="12sp" />
@@ -195,6 +198,7 @@
                         android:id="@+id/encryption_spinner"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/dropdown"
                         android:paddingLeft="10dip" />
                 </LinearLayout>
@@ -203,7 +207,7 @@
                     android:id="@+id/tv_psd_type_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:text="@string/setting_wifi_password_wpa_psw_tip"
                     android:textColor="@color/color_black"
                     android:textSize="12sp" />
@@ -217,8 +221,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="13dp"
                         android:background="@drawable/selector_edit_bg"
+                        android:maxLength="63"
                         android:inputType="text"
                         android:paddingRight="50dp"
                         android:textSize="16sp" />

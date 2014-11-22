@@ -348,7 +348,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_tv_ssid.setVisibility(View.GONE);
 		m_et_password.setEnabled(true);
 		m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
-		m_et_ssid.setBackgroundResource(R.drawable.selector_edit_bg);
+//		m_et_ssid.setBackgroundResource(R.drawable.selector_edit_bg);
 		m_et_password.setPadding(0, 0, 200, 0);
 		if(m_rg_wifi_mode.isShown()){
 			m_rb_2point4G_wifi.setEnabled(true);
@@ -378,7 +378,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_ll_security.setVisibility(View.VISIBLE);
 			m_tv_psd_type_title.setVisibility(View.VISIBLE);
 		}
-
+		m_et_ssid.requestFocus();
 	}
 
 	private void onBtnDone(){
@@ -428,7 +428,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_et_ssid.setVisibility(View.GONE);
 		m_et_password.setEnabled(false);
 		m_et_password.setBackgroundDrawable(null);
-		m_et_ssid.setBackgroundDrawable(null);
+//		m_et_ssid.setBackgroundDrawable(null);
 		m_et_password.setPadding(0, 0, 200, 0);
 		if(m_rg_wifi_mode.isShown()){
 			m_rb_2point4G_wifi.setEnabled(false);
