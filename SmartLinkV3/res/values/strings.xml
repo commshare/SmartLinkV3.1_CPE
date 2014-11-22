@@ -168,8 +168,8 @@
     <string name="setting_title_device">Device</string>
     <string name="setting_title_about">About</string>
     <string name="setting_power_smart">Smart</string>
-    <string name="setting_power_wifi">Wi-Fi</string>
-    <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for a long time</string>
+    <string name="setting_power_wifi">WiFi Sleep</string>
+    <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for 30 mins, press any key to wake up.</string>
     <string name="setting_backup_description">Backup the configuration.</string>
     <string name="setting_backup_btn_backup">Backup</string>
     <string name="setting_restore_description">Restore the configuration.</string>
