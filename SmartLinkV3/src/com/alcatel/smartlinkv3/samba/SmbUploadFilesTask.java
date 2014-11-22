@@ -45,7 +45,7 @@ public class SmbUploadFilesTask extends Thread {
 	@Override
 	public void run() {
 		SmbUtils.deleteFile(mSmbTemp);
-		SmbUtils.createDir(mSmbTemp);
+		createDir(mSmbTemp);
 
 		for (int i = 0; i < mFiles.size(); i++) {
 			uploadFiles(mFiles.get(i).path, mSmbTemp);
@@ -61,12 +61,12 @@ public class SmbUploadFilesTask extends Thread {
 			} else if (file.isDirectory()) {
 				String smbDirTmp = FileUtils
 						.combinePath(smbDir, file.getName());
-				SmbUtils.createDir(smbDirTmp);
+				createDir(smbDirTmp);
 				String dstPath = getDstPathByTemp(smbDirTmp);
 				File[] files = file.listFiles();
 
 				// start for UI fresh
-				if (SmbUtils.createDir(dstPath)) {
+				if (createDir(dstPath)) {
 					onFinish(dstPath);
 				} else {
 					onError(dstPath);
@@ -77,7 +77,7 @@ public class SmbUploadFilesTask extends Thread {
 				}
 
 				// end for UI fresh
-				if (SmbUtils.createDir(dstPath)) {
+				if (createDir(dstPath)) {
 					onFinish(dstPath);
 				} else {
 					onError(dstPath);
@@ -205,5 +205,39 @@ public class SmbUploadFilesTask extends Thread {
 		intent.putExtra(SmbUtils.SMB_OPT_FILES_PATH, path);
 		intent.putExtra(SmbUtils.SMB_OPT_FILES_PROGRESS, progress);
 		mContext.sendBroadcast(intent);
+	}
+	
+	private void onDiskFull()
+	{			
+		Intent intent = new Intent(SmbUtils.SMB_MSG_UPLOAD_FILES_DISKFULL);				
+		mContext.sendBroadcast(intent);
+		mError = true;		
+	}
+	
+	public boolean createDir(String path) {
+		boolean bRes = false;
+		SmbFile smbFile;
+		try {
+			smbFile = new SmbFile(path, SmbUtils.AUTH);
+			try {
+				if (!smbFile.exists()) {
+					smbFile.mkdirs();
+				}
+				bRes = true;
+			} catch (SmbException e) {	
+				
+				if(SmbError.SMB_ERR_DISK_FULL == e.getNtStatus())
+				{
+					onDiskFull();
+				}				
+			
+				HttpAccessLog.getInstance().writeLogToFile("Samba error: uploadfiles :createDir: "+ e.getMessage());	
+				e.printStackTrace();
+			}
+		} catch (MalformedURLException e) {
+			HttpAccessLog.getInstance().writeLogToFile("Samba error: uploadfiles: createDir: "+ e.getMessage());	
+			e.printStackTrace();
+		}
+		return bRes;
 	}
 }

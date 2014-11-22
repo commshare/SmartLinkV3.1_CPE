@@ -16,7 +16,6 @@ import com.alcatel.smartlinkv3.common.file.FileModel;
 import com.alcatel.smartlinkv3.common.file.FileUtils;
 import com.alcatel.smartlinkv3.common.file.FileModel.FileType;
 import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -34,15 +33,16 @@ public class SmbUtils {
 	public static final int SMB_MSG_TASK_ERROR = 1;
 	public static final int SMB_MSG_FILE_EXISTS = 2;
 	public static final int SMB_MSG_TASK_UPDATE = 3;	
-	
+	public static final int SMB_MSG_DISK_FULL = 4 ;	
 	//options
 	public static final String SMB_OPT_FILES_PATH = "com.alcatel.smartlink.samba.smbutils.files.path";
-	public static final String SMB_OPT_FILES_PROGRESS = "com.alcatel.smartlink.samba.smbutils.files.progress";
+	public static final String SMB_OPT_FILES_PROGRESS = "com.alcatel.smartlink.samba.smbutils.files.progress";	
 	
 	//msg
 	public static final String SMB_MSG_UPLOAD_FILES_FINISH = "com.alcatel.smartlink.samba.smbutils.uploadfiles.finish";
 	public static final String SMB_MSG_UPLOAD_FILES_ERROR = "com.alcatel.smartlink.samba.smbutils.uploadfiles.error";
 	public static final String SMB_MSG_UPLOAD_FILES_UPDATE = "com.alcatel.smartlink.samba.smbutils.uploadfiles.update";
+	public static final String SMB_MSG_UPLOAD_FILES_DISKFULL = "com.alcatel.smartlink.samba.smbutils.uploadfiles.diskfull";
 	
 	public static final String SMB_MSG_DOWNLOAD_FILES_FINISH = "com.alcatel.smartlink.samba.smbutils.downloadfiles.finish";
 	public static final String SMB_MSG_DOWNLOAD_FILES_ERROR = "com.alcatel.smartlink.samba.smbutils.downloadfiles.error";
@@ -115,7 +115,7 @@ public class SmbUtils {
 					smbFile.mkdirs();
 				}
 				bRes = true;
-			} catch (SmbException e) {
+			} catch (SmbException e) {				
 				HttpAccessLog.getInstance().writeLogToFile("Samba error: createDir: "+ e.getMessage());	
 				e.printStackTrace();
 			}
@@ -157,15 +157,5 @@ public class SmbUtils {
 	public static int getPercentNumber(long size, long totalSize)
 	{		
        return (int) (((double)size / (double) totalSize)*100);       
-	}
-	
-	public static void showErrorMsg(int errCode)
-	{
-		Context context =  SmartLinkV3App.getInstance().getApplicationContext();
-		int resId = SmbError.getErrorDescription(errCode);
-		if(resId != SmbError.ERROR_RES){
-			String strErr = context.getString(resId);		
-			Toast.makeText(context, strErr, Toast.LENGTH_LONG).show();
-		}		
-	}
+	}	
 }

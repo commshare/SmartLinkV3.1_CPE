@@ -26,13 +26,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -205,8 +203,7 @@ public class StorageUploadActivity extends BaseActivity implements OnClickListen
 				inquireDlg.m_confirmBtn.setText(R.string.yes);
 				inquireDlg.showDialog(new OnInquireApply() {
 					@Override
-					public void onInquireApply() {
-						// TODO Auto-generated method stub
+					public void onInquireApply() {					
 						inquireDlg.closeDialog();
 						DialogNum--;
 						if(DialogNum < 1)
@@ -219,8 +216,7 @@ public class StorageUploadActivity extends BaseActivity implements OnClickListen
 						
 				},new OnInquireCancle() {
 					@Override
-					public void onInquireCancel() {
-						// TODO Auto-generated method stub
+					public void onInquireCancel() {						
 						uploadFilesTwo.remove(0);
 						inquireDlg.closeDialog();
 						DialogNum--;
@@ -245,18 +241,14 @@ public class StorageUploadActivity extends BaseActivity implements OnClickListen
 			}
 		}
 		
-		LocalStorageActivity.uploadFiles(uploadFiles, m_uploadDir);
-		Log.v("pchong", "pccccc  uploadFiles.size"+uploadFiles.size());
-	/*	SmbUploadFilesTask task = new SmbUploadFilesTask(uploadFiles, m_uploadDir, this);
-		task.start();*/		
+		LocalStorageActivity.uploadFiles(uploadFiles, m_uploadDir);	
 		if(IsDialog != true)
 		{
 			this.finish();
 		}
 		
 	}
-	private void finishActivity() {
-		// TODO Auto-generated method stub
+	private void finishActivity() {	
 		this.finish();
 	}
 	

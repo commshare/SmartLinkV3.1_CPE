@@ -136,6 +136,11 @@ public class StorageEditActivity extends BaseActivity implements
 				Toast.makeText(StorageEditActivity.this, msgExists,
 						Toast.LENGTH_SHORT).show();
 				break;
+				
+			case SmbUtils.SMB_MSG_DISK_FULL:
+				String strDiskFull =  StorageEditActivity.this.getString(R.string.smb_error_disk_full);
+				Toast.makeText(StorageEditActivity.this, strDiskFull, Toast.LENGTH_LONG).show();
+				break;
 			}
 		}
 	};

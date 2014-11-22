@@ -137,6 +137,12 @@ public class LocalStorageActivity extends BaseActivity implements
 				Toast.makeText(LocalStorageActivity.this, msgExists,
 						Toast.LENGTH_SHORT).show();
 				break;
+				
+			case SmbUtils.SMB_MSG_DISK_FULL:
+				String strDiskFull =  LocalStorageActivity.this.getString(R.string.smb_error_disk_full);
+				Toast.makeText(LocalStorageActivity.this, strDiskFull, Toast.LENGTH_LONG).show();
+				break;
+			
 			}
 		}
 	};
@@ -188,6 +194,14 @@ public class LocalStorageActivity extends BaseActivity implements
 						getSambaStorageListData();
 					}
 
+				}
+				else if ( intent.getAction().equals(
+						SmbUtils.SMB_MSG_UPLOAD_FILES_DISKFULL))
+				{					
+					String strDiskFull =  LocalStorageActivity.this.getString(R.string.smb_error_disk_full);
+					Toast.makeText(LocalStorageActivity.this, strDiskFull, Toast.LENGTH_LONG).show();
+					getSambaStorageListData();
+					
 				}
 				else if (intent.getAction().equals(
 						SmbUtils.SMB_MSG_REFRESH_FILES)) {			
@@ -438,6 +452,9 @@ public class LocalStorageActivity extends BaseActivity implements
 				SmbUtils.SMB_MSG_UPLOAD_FILES_ERROR));
 		this.registerReceiver(m_fileReceiver, new IntentFilter(
 				SmbUtils.SMB_MSG_UPLOAD_FILES_UPDATE));
+		
+		this.registerReceiver(m_fileReceiver, new IntentFilter(
+				SmbUtils.SMB_MSG_UPLOAD_FILES_DISKFULL));			
 
 		// download
 		this.registerReceiver(m_fileReceiver, new IntentFilter(

@@ -144,6 +144,11 @@ public class StorageMoveToActivity extends BaseActivity implements
     			String msgExists = StorageMoveToActivity.this.getString(R.string.directory_is_exist);
     			Toast.makeText(StorageMoveToActivity.this, msgExists, Toast.LENGTH_SHORT).show();
     			break;
+    			
+    		case SmbUtils.SMB_MSG_DISK_FULL:
+				String strDiskFull =  StorageMoveToActivity.this.getString(R.string.smb_error_disk_full);
+				Toast.makeText(StorageMoveToActivity.this, strDiskFull, Toast.LENGTH_LONG).show();
+				break;
     		}  		
     	}    	
     };

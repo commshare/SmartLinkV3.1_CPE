@@ -10,8 +10,7 @@ import android.os.Handler;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 
-
-public class SmbNewFolderTask extends Thread{
+public class SmbNewFolderTask extends Thread {
 	private String mPath;
 	private Handler mHandler;
 
@@ -21,47 +20,51 @@ public class SmbNewFolderTask extends Thread{
 	}
 
 	@Override
-	 public void run() {
+	public void run() {
 		try {
-			
+
 			SmbFile smbFile = new SmbFile(mPath, SmbUtils.AUTH);
 			try {
 				if (smbFile.exists()) {
-					onExists();								
-				} else {					
+					onExists();
+				} else {
 					smbFile.mkdirs();
-				}				
-				onFinish();	
+				}
+				onFinish();
 			} catch (SmbException e) {
-				HttpAccessLog.getInstance().writeLogToFile("Samba error: newfolder: "+ e.getMessage());
+				HttpAccessLog.getInstance().writeLogToFile(
+						"Samba error: newfolder: " + e.getMessage());
 				e.printStackTrace();
-				onError();				
+				if (SmbError.SMB_ERR_DISK_FULL == e.getNtStatus()) {
+					onDiskFull();
+				} else {
+					onError();
+				}
 			}
 		} catch (MalformedURLException e) {
-			HttpAccessLog.getInstance().writeLogToFile("Samba error: newfolder: "+ e.getMessage());
+			HttpAccessLog.getInstance().writeLogToFile(
+					"Samba error: newfolder: " + e.getMessage());
 			e.printStackTrace();
 			onError();
-		}		
+		}
 	}
-	
-	private void onFinish()
-	{
-		mHandler.obtainMessage(
-				SmbUtils.SMB_MSG_TASK_FINISH, null)
-				.sendToTarget();		
+
+	private void onFinish() {
+		mHandler.obtainMessage(SmbUtils.SMB_MSG_TASK_FINISH, null)
+				.sendToTarget();
 	}
-	
-	private void onError()
-	{
-		mHandler.obtainMessage(
-				SmbUtils.SMB_MSG_TASK_ERROR, null)
-				.sendToTarget();	
+
+	private void onError() {
+		mHandler.obtainMessage(SmbUtils.SMB_MSG_TASK_ERROR, null)
+				.sendToTarget();
 	}
-	
-	private void onExists()
-	{
-		mHandler.obtainMessage(
-				SmbUtils.SMB_MSG_FILE_EXISTS, null)
-				.sendToTarget();		
-	}	
+
+	private void onExists() {
+		mHandler.obtainMessage(SmbUtils.SMB_MSG_FILE_EXISTS, null)
+				.sendToTarget();
+	}
+
+	private void onDiskFull() {
+		mHandler.obtainMessage(SmbUtils.SMB_MSG_DISK_FULL, null).sendToTarget();
+	}
 }
