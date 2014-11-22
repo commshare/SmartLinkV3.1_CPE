@@ -56,15 +56,17 @@
 			                    android:layout_centerVertical="true"	
 			                    android:layout_width="wrap_content"
 			                    android:layout_height="wrap_content"
-			                    android:layout_toLeftOf="@id/connect_lable_layout"
+			                    android:layout_alignParentLeft="true"
+			                    android:layout_marginLeft="38dip"
 			                    android:background="@drawable/switch_off"
 			                    android:gravity="center" />
 			                 <ProgressBar
 				                  android:id="@+id/waiting_progress"
 				                  android:layout_width="wrap_content"
 				                  android:layout_height="wrap_content"
+				                  android:layout_alignParentRight="true"
 				                  android:layout_centerVertical="true"
-				                  android:layout_toRightOf="@id/connect_lable_layout"
+				                  android:layout_marginRight="50dip"
 				                  android:indeterminateDrawable="@drawable/progerss_connect" />
 		             	</RelativeLayout>
 		            	<LinearLayout
