@@ -82,4 +82,8 @@
 	            android:textColor="@color/color_grey"/>
 	    </RelativeLayout>
 	</RelativeLayout>
+	<View android:id="@+id/place_holder"
+	    android:layout_width="fill_parent"
+        	android:layout_height="10dip" 
+       	 	android:layout_below="@id/sms_detail_content_layout"/>
 </RelativeLayout>
