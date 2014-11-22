@@ -136,10 +136,12 @@ public class StorageEditActivity extends BaseActivity implements
 				Toast.makeText(StorageEditActivity.this, msgExists,
 						Toast.LENGTH_SHORT).show();
 				break;
-				
+
 			case SmbUtils.SMB_MSG_DISK_FULL:
-				String strDiskFull =  StorageEditActivity.this.getString(R.string.smb_error_disk_full);
-				Toast.makeText(StorageEditActivity.this, strDiskFull, Toast.LENGTH_LONG).show();
+				String strDiskFull = StorageEditActivity.this
+						.getString(R.string.smb_error_disk_full);
+				Toast.makeText(StorageEditActivity.this, strDiskFull,
+						Toast.LENGTH_LONG).show();
 				break;
 			}
 		}
@@ -295,12 +297,12 @@ public class StorageEditActivity extends BaseActivity implements
 			m_renameFolderDlg.closeDialog();
 		}
 	}
-	
+
 	private void initTitleBar() {
-		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {			
+		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {
 			String strTitle = this.getResources().getString(
-						R.string.storage_main_hard_disc);
-			int	iamgeId = R.drawable.hard_disc_grey;			
+					R.string.storage_main_hard_disc);
+			int iamgeId = R.drawable.hard_disc_grey;
 			m_title.setText(strTitle);
 			m_rootDirImage.setImageResource(iamgeId);
 		}

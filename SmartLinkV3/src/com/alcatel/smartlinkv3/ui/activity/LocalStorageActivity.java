@@ -107,7 +107,12 @@ public class LocalStorageActivity extends BaseActivity implements
 				m_localStorageListView.setEnabled(true);
 				m_progressWaiting.setVisibility(View.GONE);
 				
-				String strErr =  (String) msg.obj;			
+				String strErr =  (String) msg.obj;	
+				
+				if(strErr.isEmpty())
+				{
+					strErr = LocalStorageActivity.this.getResources().getString(R.string.list_samba_files_failed);
+				}
 				Toast.makeText(LocalStorageActivity.this, strErr,
 						Toast.LENGTH_LONG).show();
 				break;

@@ -70,88 +70,92 @@ public class StorageMoveToActivity extends BaseActivity implements
 	private static final int MSG_LOGCL_STOREAGE_TO_HERE = 0;
 
 	private String m_parentSmabaDirectory;
-	
+
 	// samba list files
-	
-    private Handler m_smbListFilesTaskHandler = new Handler(){
-    	@SuppressWarnings("unchecked")
+
+	private Handler m_smbListFilesTaskHandler = new Handler() {
+		@SuppressWarnings("unchecked")
 		public void handleMessage(Message msg) {
-    		switch(msg.what)
-    		{
-    		case SmbUtils.SMB_MSG_TASK_FINISH:    			
-    			ListFilesResult res = (ListFilesResult) msg.obj;
+			switch (msg.what) {
+			case SmbUtils.SMB_MSG_TASK_FINISH:
+				ListFilesResult res = (ListFilesResult) msg.obj;
 				m_progressWaiting.setVisibility(View.GONE);
 				m_parentSmabaDirectory = res.mParentPath;
 				m_moveTostorageListData.clear();
-				m_moveTostorageListData = (ArrayList<FileItem>) res.mFiles.clone();
-				showSambaDirectoryLayout();			
-				updateListView();  
-    			break;
-    			
-    		case SmbUtils.SMB_MSG_TASK_ERROR:
-    			m_progressWaiting.setVisibility(View.GONE);
-    			String strErr = StorageMoveToActivity.this
-    					.getString(R.string.list_samba_files_failed);
-    			Toast.makeText(StorageMoveToActivity.this, strErr,
-    					Toast.LENGTH_LONG).show();
-    			break;     	
-    		}  		
-    	}    	
-    };	
-	
-	// samba move files	
+				m_moveTostorageListData = (ArrayList<FileItem>) res.mFiles
+						.clone();
+				showSambaDirectoryLayout();
+				updateListView();
+				break;
+
+			case SmbUtils.SMB_MSG_TASK_ERROR:
+				m_progressWaiting.setVisibility(View.GONE);
+				String strErr = StorageMoveToActivity.this
+						.getString(R.string.list_samba_files_failed);
+				Toast.makeText(StorageMoveToActivity.this, strErr,
+						Toast.LENGTH_LONG).show();
+				break;
+			}
+		}
+	};
+
+	// samba move files
 	private Handler m_smbMoveFilesTaskHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			
-			switch(msg.what)
-    		{
-    		case SmbUtils.SMB_MSG_TASK_FINISH:    			
-    			m_newFolder.setEnabled(true);
-    			m_ToHere.setEnabled(true);
-    			m_search.setEnabled(true);
-    			m_progressWaiting.setVisibility(View.GONE);				
-    			LocalStorageActivity.m_curSambaDirectory =m_curDirectory;
-    			StorageMoveToActivity.this.finish();	
-    			Intent intent = new Intent(SmbUtils.SMB_MSG_REFRESH_FILES);			
-    			StorageMoveToActivity.this.sendBroadcast(intent);		
-    			break;
-    			
-    		case SmbUtils.SMB_MSG_TASK_ERROR:    		
-    			String strErr = StorageMoveToActivity.this
-    					.getString(R.string.smb_move_files_failed);    			
-    			Toast.makeText(StorageMoveToActivity.this, strErr,
-    					Toast.LENGTH_LONG).show();    			
-    			break;     		
-    		}  
-		}
-	}; 
 
-    //samba create new folder 
-    private Handler m_smbNewFolderTaskHandler = new Handler(){
-    	public void handleMessage(Message msg) {
-    		switch(msg.what)
-    		{
-    		case SmbUtils.SMB_MSG_TASK_FINISH:
-    			getSambaStorageListData();
-    			break;
-    			
-    		case SmbUtils.SMB_MSG_TASK_ERROR:
-    			String msgError = StorageMoveToActivity.this.getString(R.string.new_folder_failed);
-    			Toast.makeText(StorageMoveToActivity.this, msgError, Toast.LENGTH_SHORT).show();
-    			break;
-    			
-    		case SmbUtils.SMB_MSG_FILE_EXISTS:
-    			String msgExists = StorageMoveToActivity.this.getString(R.string.directory_is_exist);
-    			Toast.makeText(StorageMoveToActivity.this, msgExists, Toast.LENGTH_SHORT).show();
-    			break;
-    			
-    		case SmbUtils.SMB_MSG_DISK_FULL:
-				String strDiskFull =  StorageMoveToActivity.this.getString(R.string.smb_error_disk_full);
-				Toast.makeText(StorageMoveToActivity.this, strDiskFull, Toast.LENGTH_LONG).show();
+			switch (msg.what) {
+			case SmbUtils.SMB_MSG_TASK_FINISH:
+				m_newFolder.setEnabled(true);
+				m_ToHere.setEnabled(true);
+				m_search.setEnabled(true);
+				m_progressWaiting.setVisibility(View.GONE);
+				LocalStorageActivity.m_curSambaDirectory = m_curDirectory;
+				StorageMoveToActivity.this.finish();
+				Intent intent = new Intent(SmbUtils.SMB_MSG_REFRESH_FILES);
+				StorageMoveToActivity.this.sendBroadcast(intent);
 				break;
-    		}  		
-    	}    	
-    };
+
+			case SmbUtils.SMB_MSG_TASK_ERROR:
+				String strErr = StorageMoveToActivity.this
+						.getString(R.string.smb_move_files_failed);
+				Toast.makeText(StorageMoveToActivity.this, strErr,
+						Toast.LENGTH_LONG).show();
+				break;
+			}
+		}
+	};
+
+	// samba create new folder
+	private Handler m_smbNewFolderTaskHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case SmbUtils.SMB_MSG_TASK_FINISH:
+				getSambaStorageListData();
+				break;
+
+			case SmbUtils.SMB_MSG_TASK_ERROR:
+				String msgError = StorageMoveToActivity.this
+						.getString(R.string.new_folder_failed);
+				Toast.makeText(StorageMoveToActivity.this, msgError,
+						Toast.LENGTH_SHORT).show();
+				break;
+
+			case SmbUtils.SMB_MSG_FILE_EXISTS:
+				String msgExists = StorageMoveToActivity.this
+						.getString(R.string.directory_is_exist);
+				Toast.makeText(StorageMoveToActivity.this, msgExists,
+						Toast.LENGTH_SHORT).show();
+				break;
+
+			case SmbUtils.SMB_MSG_DISK_FULL:
+				String strDiskFull = StorageMoveToActivity.this
+						.getString(R.string.smb_error_disk_full);
+				Toast.makeText(StorageMoveToActivity.this, strDiskFull,
+						Toast.LENGTH_LONG).show();
+				break;
+			}
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -206,16 +210,16 @@ public class StorageMoveToActivity extends BaseActivity implements
 		} else {
 			getSambaStorageListData();
 		}
-	
+
 	}
-	
+
 	private void initTitleBar() {
-		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {					
-			int iamgeId = R.drawable.hard_disc_white;			
+		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {
+			int iamgeId = R.drawable.hard_disc_white;
 			m_rootDirImage.setImageResource(iamgeId);
 		}
 	}
-	
+
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
 		super.onBroadcastReceive(context, intent);
@@ -229,19 +233,17 @@ public class StorageMoveToActivity extends BaseActivity implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation))
-		{
+		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {
 			StorageMonitor.registerReceiver(this);
-		}	
+		}
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		if(LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation))
-		{
+		if (LocalStorageActivity.FLAG_SAMBA.equalsIgnoreCase(m_strCurLocation)) {
 			StorageMonitor.unregisterReceiver(this);
-		}	
+		}
 	}
 
 	public void onClick(View arg0) {
@@ -255,13 +257,10 @@ public class StorageMoveToActivity extends BaseActivity implements
 				m_curDirectory = Environment.getExternalStorageDirectory()
 						.getPath();
 				getLocalStorageListData();
-			}
-			else
-			{			
-				m_curDirectory = BusinessMannager.getInstance().getSambaPath();							
-				m_curDirectory = FileUtils
-							.addLastFileSeparator(m_curDirectory);
-					getSambaStorageListData();
+			} else {
+				m_curDirectory = BusinessMannager.getInstance().getSambaPath();
+				m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
+				getSambaStorageListData();
 			}
 
 			break;
@@ -277,9 +276,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 				}
 
 				getLocalStorageListData();
-			}
-			else
-			{
+			} else {
 				m_curDirectory = m_parentSmabaDirectory;
 				getSambaStorageListData();
 			}
@@ -290,9 +287,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 			if (LocalStorageActivity.FLAG_LOCAL
 					.equalsIgnoreCase(m_strCurLocation)) {
 				getLocalStorageListData();
-			}
-			else
-			{
+			} else {
 				getSambaStorageListData();
 			}
 			break;
@@ -333,8 +328,9 @@ public class StorageMoveToActivity extends BaseActivity implements
 		if (LocalStorageActivity.FLAG_LOCAL.equalsIgnoreCase(m_strCurLocation)) {
 			toHereLocal();
 		} else {
-			SmbMoveFilesTask task = new SmbMoveFilesTask(m_selectedFile, m_curDirectory, m_smbMoveFilesTaskHandler);
-			task.start();		
+			SmbMoveFilesTask task = new SmbMoveFilesTask(m_selectedFile,
+					m_curDirectory, m_smbMoveFilesTaskHandler);
+			task.start();
 		}
 	}
 
@@ -350,8 +346,9 @@ public class StorageMoveToActivity extends BaseActivity implements
 				if (result.m_bResult == false) {
 					Toast.makeText(StorageMoveToActivity.this,
 							result.m_strMess, Toast.LENGTH_SHORT).show();
-				}else{
-					LocalStorageActivity.m_curDirectory = new File(m_curDirectory);
+				} else {
+					LocalStorageActivity.m_curDirectory = new File(
+							m_curDirectory);
 					StorageMoveToActivity.this.finish();
 					return;
 				}
@@ -427,18 +424,17 @@ public class StorageMoveToActivity extends BaseActivity implements
 			if (m_curDirectory != null)
 				intent.putExtra(LocalStorageActivity.CURRENT_DIRECTORY,
 						m_curDirectory);
-		}
-		else {
+		} else {
 			intent.putExtra(LocalStorageActivity.FLAG_CURRENT_LOCATION,
 					LocalStorageActivity.FLAG_SAMBA);
 			intent.putExtra(LocalStorageActivity.CURRENT_DIRECTORY,
 					m_curDirectory);
-		}		 
+		}
 
 		intent.putExtra(StorageSearchActivity.ACTIVITY_FROM,
 				StorageSearchActivity.ACTIVITY_MOVE_TO);
 
-		this.startActivityForResult(intent, REQUESTCODE);		
+		this.startActivityForResult(intent, REQUESTCODE);
 	}
 
 	@Override
@@ -453,9 +449,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 					if (LocalStorageActivity.FLAG_LOCAL
 							.equalsIgnoreCase(m_strCurLocation)) {
 						getLocalStorageListData();
-					}
-					else
-					{
+					} else {
 						getSambaStorageListData();
 					}
 				}
@@ -485,7 +479,9 @@ public class StorageMoveToActivity extends BaseActivity implements
 					int count) {
 				String editable = newFolderDlg.m_inputEdit.getText().toString();
 				boolean isInvalide = FileUtils.isInvalidFileName(editable);
-				if (editable != null && editable.length() != 0 && editable.getBytes().length <= FileUtils.FILENAME_MAX_LENGTH) {
+				if (editable != null
+						&& editable.length() != 0
+						&& editable.getBytes().length <= FileUtils.FILENAME_MAX_LENGTH) {
 					if (isInvalide) {
 						String strErr = StorageMoveToActivity.this
 								.getString(R.string.file_name_error);
@@ -539,7 +535,6 @@ public class StorageMoveToActivity extends BaseActivity implements
 		}
 	}
 
-	
 	private void createSambaFolder(InputDialog1 dlg) {
 		String editable = dlg.m_inputEdit.getText().toString();
 		String newFolder = FileUtils.combinePath(m_curDirectory, editable);
@@ -550,7 +545,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 	}
 
 	private void showDirectoryLayout() {
-		String strRoot = Environment.getExternalStorageDirectory().getPath();		
+		String strRoot = Environment.getExternalStorageDirectory().getPath();
 		boolean bIsRoot = false;
 		boolean bIsParentRoot = false;
 		File curFile = new File(m_curDirectory);
@@ -607,34 +602,34 @@ public class StorageMoveToActivity extends BaseActivity implements
 	}
 
 	private void getSambaStorageListData() {
-		
-		HttpAccessLog.getInstance().writeLogToFile("StorageMoveToActivity getSambaStorageListData path: "+ m_curDirectory);	
+
+		HttpAccessLog.getInstance().writeLogToFile(
+				"StorageMoveToActivity getSambaStorageListData path: "
+						+ m_curDirectory);
 		String strRoot = BusinessMannager.getInstance().getSambaPath();
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
-		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);		
-		if(m_curDirectory.indexOf(strRoot) >= 0)
-		{
-			
-		}
-		else
-		{
+		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
+		if (m_curDirectory.indexOf(strRoot) >= 0) {
+
+		} else {
 			m_curDirectory = strRoot;
-		}			
+		}
 
+		m_moveTostorageListData.clear();
+		m_progressWaiting.setVisibility(View.VISIBLE);
+		SmbListFilesTask task = new SmbListFilesTask(m_curDirectory,
+				m_moveTostorageListData, LIST_FILE_MODEL.DIR_ONLY,
+				m_smbListFilesTaskHandler);
+		task.start();
 
-			m_moveTostorageListData.clear();
-			m_progressWaiting.setVisibility(View.VISIBLE);
-			SmbListFilesTask task = new SmbListFilesTask(m_curDirectory,
-					m_moveTostorageListData,  LIST_FILE_MODEL.DIR_ONLY, m_smbListFilesTaskHandler);
-			task.start();	
-	
 	}
 
 	private void showSambaDirectoryLayout() {
 		String strRoot = BusinessMannager.getInstance().getSambaPath();
 		strRoot = FileUtils.addLastFileSeparator(strRoot);
 		m_curDirectory = FileUtils.addLastFileSeparator(m_curDirectory);
-		m_parentSmabaDirectory = FileUtils.addLastFileSeparator(m_parentSmabaDirectory);
+		m_parentSmabaDirectory = FileUtils
+				.addLastFileSeparator(m_parentSmabaDirectory);
 		boolean bIsRoot = false;
 		boolean bIsParentRoot = false;
 		if (m_curDirectory.equalsIgnoreCase(strRoot))
@@ -642,7 +637,7 @@ public class StorageMoveToActivity extends BaseActivity implements
 
 		if (m_parentSmabaDirectory.equalsIgnoreCase(strRoot))
 			bIsParentRoot = true;
-		
+
 		enableToolBtns(true);
 
 		if (bIsRoot == true) {
@@ -701,8 +696,8 @@ public class StorageMoveToActivity extends BaseActivity implements
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
-				convertView = mInflater
-						.inflate(R.layout.storage_move_to_list_adapter, null);
+				convertView = mInflater.inflate(
+						R.layout.storage_move_to_list_adapter, null);
 				holder.itemName = (TextView) convertView
 						.findViewById(R.id.name);
 				holder.itemImage = (ImageView) convertView
@@ -735,19 +730,15 @@ public class StorageMoveToActivity extends BaseActivity implements
 				m_curDirectory = file.getPath();
 			}
 			getLocalStorageListData();
-		}
-		else
-		{
+		} else {
 			m_curDirectory = item.path;
-			getSambaStorageListData();		
-		}	
+			getSambaStorageListData();
+		}
 	}
-	
-	
-	private void enableToolBtns(boolean bStatus)
-	{
+
+	private void enableToolBtns(boolean bStatus) {
 		m_newFolder.setEnabled(bStatus);
-		m_ToHere.setEnabled(bStatus);	
+		m_ToHere.setEnabled(bStatus);
 	}
 
 }
