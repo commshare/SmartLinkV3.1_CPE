@@ -3,6 +3,8 @@ package com.alcatel.smartlinkv3.business;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import jcifs.dcerpc.msrpc.netdfs;
+
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.business.update.HttpUpdate;
@@ -64,6 +66,8 @@ public class UpdateManager extends BaseManager {
 			if (!bCPEWifiConnected) {
 				clearData();
 				stopRollTimer();
+			}else {
+				setCheckNewFirmwareVersion(null);
 			}
 		}
 	}

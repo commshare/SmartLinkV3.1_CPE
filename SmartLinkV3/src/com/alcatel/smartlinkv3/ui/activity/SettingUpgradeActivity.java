@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -118,8 +119,10 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		boolean blFirst = it.getBooleanExtra("First", true);
 		if (blFirst) {
 			m_strNewFirmwareInfo = "";
+			updateNewDeviceInfo(false);
+		}else {
+			updateNewDeviceInfo(true);
 		}
-		updateNewDeviceInfo(false);
 		if (m_blHasNewApp) {
 			m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_upgrade);
 		}else {
@@ -184,7 +187,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				m_tv_new_app_version.setText(R.string.setting_upgrade_no_connection);
 				m_strNewFirmwareInfo = "";
 			}else {
-				ShowWaiting(true);
 				onBtnAppCheck();
 			}
 			break;
@@ -391,20 +393,21 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 	private void checkNewVersion(){
 		
-		m_btn_upgrade_app.setEnabled(false);
-		m_pb_check_app_waiting.setVisibility(View.VISIBLE);
+		showCheckAppWaiting(true);
 
 		new Thread() {
 			public void run() {
 
 				HttpParams myParams = new BasicHttpParams();
-				HttpConnectionParams.setConnectionTimeout(myParams, 20000);
-				HttpConnectionParams.setSoTimeout(myParams, 20000);
+				HttpConnectionParams.setConnectionTimeout(myParams, 2000);
+				HttpConnectionParams.setSoTimeout(myParams, 2000);
 				HttpClient httpclient = new DefaultHttpClient(myParams);
 
 				HttpPost post = new HttpPost("https://play.google.com/store/apps/details?id=com.alcatel.smartlinkv3");
 
 				HttpResponse response;
+				int nMsgId = 0;
+				String strNewVersionString = "";
 				try {
 					response = httpclient.execute(post);
 					int nStatusCode = response.getStatusLine().getStatusCode();
@@ -419,30 +422,29 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 							strRes = strRes.substring(start+1, end);			
 							strRes = strRes.trim();
 							Log.e("@@@", strRes);
-							Message msg = new Message();
-							msg.what = MSG_GET_NEW_VERSION;
-							Bundle data = new Bundle();
-							data.putString("version", strRes);
-							msg.setData(data);
-							handler.sendMessage(msg);
-
+							nMsgId = MSG_GET_NEW_VERSION;
+							strNewVersionString = strRes;
 						}
 
 					}
-				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
-					Message msg = new Message();
-					msg.what = 0;
-					handler.sendMessage(msg);
+				}  catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}catch (ClientProtocolException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					Message msg = new Message();
-					msg.what = 0;
-					handler.sendMessage(msg);
+					e.printStackTrace();
+				}  catch (Exception e) {
 					e.printStackTrace();
 				}
 
+				Message msg = new Message();
+				msg.what = nMsgId;
+				Bundle data = new Bundle();
+				data.putString("version", strNewVersionString);
+				msg.setData(data);
+				handler.sendMessage(msg);
+				
 			}
 		}.start();
 	}
@@ -474,8 +476,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg){
-			m_btn_upgrade_app.setEnabled(true);
-			m_pb_check_app_waiting.setVisibility(View.GONE);
+			showCheckAppWaiting(false);
 			switch (msg.what) {
 			case MSG_GET_NEW_VERSION:
 				String strNewVersion = msg.getData().getString("version");

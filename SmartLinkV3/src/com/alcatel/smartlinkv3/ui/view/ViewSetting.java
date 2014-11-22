@@ -52,6 +52,8 @@ public class ViewSetting extends BaseViewImpl{
 
 	private void registerReceiver() {
 		m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE));
+		m_context.registerReceiver(m_receiver, 
+				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION));
 	}
 
 	public ViewSetting(Context context) {
@@ -104,6 +106,7 @@ public class ViewSetting extends BaseViewImpl{
 		registerReceiver();
 		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
 		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+			m_blFirst = false;
 			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
 		}else {
 			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
@@ -279,6 +282,20 @@ public class ViewSetting extends BaseViewImpl{
 				}else {
 
 					Toast.makeText(m_context, R.string.setting_upgrade_stop_error, Toast.LENGTH_SHORT).show();
+				}
+			}
+			
+			if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+					int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+					if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+						m_blFirst = false;
+						changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+					}else {
+						changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
+					}
 				}
 			}
 		}
