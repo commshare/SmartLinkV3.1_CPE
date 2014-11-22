@@ -28,7 +28,7 @@
 		                 	android:orientation="horizontal" >"
 		                 	<LinearLayout
 		                    	android:id="@+id/connect_lable_layout"
-		                  		android:layout_width="100dip"
+		                  		android:layout_width="96dip"
 		                  		android:layout_height="wrap_content"
 		                  		android:layout_centerInParent="true"
 		                 		android:orientation="vertical" >
@@ -58,7 +58,7 @@
 			                    android:layout_width="wrap_content"
 			                    android:layout_height="wrap_content"
 			                    android:layout_toLeftOf="@id/connect_lable_layout"
-			                    android:layout_marginRight="5dip"
+			                    android:layout_marginRight="10dip"
 			                    android:background="@drawable/switch_off"
 			                    android:gravity="center" />
 			                 <ProgressBar
@@ -67,7 +67,7 @@
 				                  android:layout_height="wrap_content"
 				                  android:layout_centerVertical="true"
 				                  android:layout_toRightOf="@id/connect_lable_layout"
-				                  android:layout_marginLeft="5dip"
+				                  android:layout_marginLeft="10dip"
 				                  android:indeterminateDrawable="@drawable/progerss_connect" />
 		             	</RelativeLayout>
 		            	<LinearLayout
