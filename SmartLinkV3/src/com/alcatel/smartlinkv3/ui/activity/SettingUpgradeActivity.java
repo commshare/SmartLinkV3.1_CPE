@@ -185,7 +185,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			ConnectionStatus result = status.m_connectionStatus;
 			if (result != ConnectionStatus.Connected) {
 				m_tv_new_app_version.setText(R.string.setting_upgrade_no_connection);
-				m_strNewFirmwareInfo = "";
 			}else {
 				onBtnAppCheck();
 			}
@@ -196,6 +195,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			result = status.m_connectionStatus;
 			if (result != ConnectionStatus.Connected) {
 				m_tv_new_firmware_version.setText(R.string.setting_upgrade_no_connection);
+				m_strNewFirmwareInfo = "";
 			}else {
 				onBtnFirmwareCheck();
 			}
@@ -246,8 +246,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}else {
 			checkNewVersion();
 		}
-//		m_tv_new_app_version.setText(R.string.setting_upgrade_no_new_version);
-//		ShowWaiting(false);
 	}
 
 	@Override
@@ -394,6 +392,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	private void checkNewVersion(){
 		
 		showCheckAppWaiting(true);
+		//when checking new version, clear last checking result.
+		m_tv_new_app_version.setText("");
 
 		new Thread() {
 			public void run() {
