@@ -148,7 +148,7 @@ public class SmbListFilesTask extends Thread {
 	}
 
 	private void onError(String strErr) {
-		mHandler.obtainMessage(SmbUtils.SMB_MSG_TASK_ERROR, null)
+		mHandler.obtainMessage(SmbUtils.SMB_MSG_TASK_ERROR, strErr)
 				.sendToTarget();
 	}
 }

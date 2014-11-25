@@ -109,7 +109,7 @@ public class LocalStorageActivity extends BaseActivity implements
 				
 				String strErr =  (String) msg.obj;	
 				
-				if(strErr.isEmpty())
+				if(strErr== null || strErr.isEmpty())
 				{
 					strErr = LocalStorageActivity.this.getResources().getString(R.string.list_samba_files_failed);
 				}
