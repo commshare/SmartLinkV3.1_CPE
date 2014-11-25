@@ -30,8 +30,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/iv_upgrade_center_position_up"
+                android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="@string/setting_upgrade_new_app_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />
@@ -42,6 +45,9 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/tv_new_firmware_version"
                 android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="@string/setting_upgrade_device_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />
@@ -104,7 +110,10 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/iv_upgrade_center_position_down"
                 android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:layout_marginBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="@string/setting_upgrade_new_app_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />
@@ -115,6 +124,9 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/tv_new_app_version"
                 android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="@string/setting_upgrade_current_app_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />

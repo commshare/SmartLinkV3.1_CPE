@@ -148,8 +148,8 @@
     <string name="setting_text_ssid">SSID:</string>
     <string name="setting_text_passwrod">Contraseña:</string>
     <string name="setting_text_no_passwrod">No hay contraseña</string>
-    <string name="setting_wifi_set_success">¡Cambiar la configuracion de WiFi con exito!</string>
-    <string name="setting_wifi_set_failed">¡Cambiar configuracion WiFi falló!</string>
+    <string name="setting_wifi_set_success">Error al cambiar los ajustes de Wi-Fi.</string>
+    <string name="setting_wifi_set_failed">Los ajustes de Wi-Fi se han cambiado correctamente.</string>
     <string name="setting_wifi_password_security_tip">Seguridad:</string>
     <string name="setting_wifi_password_wpa_encryption_tip">Codificación WPA:</string>
     <string name="setting_wifi_password_wpa_psw_tip">WPA-PSK:</string>
