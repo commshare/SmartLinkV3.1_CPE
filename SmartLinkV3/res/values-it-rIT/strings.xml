@@ -357,7 +357,7 @@
     <!-- sd sharing start -->
     <string name="dlna_name">Nome server: %1$s Server multimediale.</string>
     <string name="dlna_description">Attivando il DLNA, il contenuto multimediale della scheda micro SD sarà disponibile ai dispositivi collegati.</string>
-    <string name="sd_card_sharing">Condivisione scheda SD</string>
+    <string name="sd_card_sharing">Scheda SD</string>
     <string name="sd_sharing">Condivisione SD</string>
     <string name="dlna">DLNA</string>
     <string name="sdcard_usage">%1$s GB di %2$s GB utilizzati.</string>
