@@ -311,7 +311,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 					SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 					strTimeText = format.format(summaryDate);
 				}else{
-					SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm");
+					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 					strTimeText = format.format(summaryDate);
 				}
 			}

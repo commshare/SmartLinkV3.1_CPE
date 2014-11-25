@@ -558,7 +558,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				SMSDetailItem item = new SMSDetailItem();
 				item.bIsDateItem = true;
 				if(smsDate != null) {
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 					item.strTime = format.format(smsDate);
 				}
 
@@ -570,7 +570,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					SMSDetailItem item = new SMSDetailItem();
 					item.bIsDateItem = true;
 					if(smsDate != null) {
-						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+						SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						item.strTime = format.format(smsDate);
 					}
 
@@ -581,7 +581,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			SMSDetailItem item = new SMSDetailItem();
 			item.bIsDateItem = false;
 			item.strContent = sms.SMSContent;
-			SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			item.strTime = format.format(smsDate);
 			//item.strTime = sms.SMSTime;
 			item.eSMSType = sms.SMSType;
