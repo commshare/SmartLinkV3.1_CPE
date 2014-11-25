@@ -8,6 +8,7 @@ import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
 import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
 import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.EnumConnectMode;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceType;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -348,6 +349,11 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 			final ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
 			final String displayName = model.DeviceName;
 			holder.deviceNameTextView.setText(displayName);
+			
+			if(model.ConnectMode == EnumConnectMode.USB_CONNECT) 
+				holder.blockBtn.setEnabled(false);
+			else
+				holder.blockBtn.setEnabled(true);
 			
 			holder.ip.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_ip), model.IPAddress));
 			final String mac = model.MacAddress;
