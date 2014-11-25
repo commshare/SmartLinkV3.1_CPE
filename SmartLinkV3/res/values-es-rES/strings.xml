@@ -96,7 +96,7 @@
     <string name="usage_setting_dataconsunption">Consumo de datos:</string>
     <string name="usage_setting_roaming">Roaming</string>
     <string name="roaming_descrition">Conectar automáticamente incluso cuando está en roaming.</string>
-    <string name="usage_setting_autodisconnected">Desconectado automáticamente</string>
+    <string name="usage_setting_autodisconnected">Desconexión automática</string>
     <!-- Usage setting end -->
 
 
@@ -367,9 +367,12 @@
 
 
     <!-- wps start -->
+    <string name="wps_title">WPS</string>
+    <string name="wps_pbc_bt_disc">PBC(Configuración del pulsador)</string>
+    <string name="wps_pin_bt_disc">PIN WPS</string>
     <string name="wps_pbc_bt">Configuración del pulsador</string>
     <string name="wps_pin_tv">PIN WPS:</string>
-    <string name="wps_pin_bt">Save</string>
+    <string name="wps_pin_bt">Guardar</string>
     <string name="wps_pin_text1">1. Pulse el botón WPS de este dispositivo hasta que en la pantalla aparezca WPS.</string>
     <string name="wps_pin_text2">2. En el cliente (p. ej., PC), abra la red Wi-Fi y seleccione el método PIN, a continuación, se generará un código PIN de 8 dígitos.</string>
     <string name="wps_pin_text3">3. Active el PIN e introduzca el código PIN de 8 dígitos.</string>

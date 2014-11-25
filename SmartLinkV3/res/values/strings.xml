@@ -367,6 +367,9 @@
 
 
     <!-- wps start -->
+    <string name="wps_title">WPS</string>
+    <string name="wps_pbc_bt_disc">PBC(Push Button Configuration)</string>
+    <string name="wps_pin_bt_disc">WPS PIN</string>
     <string name="wps_pbc_bt">Push Button Configuration</string>
     <string name="wps_pin_tv">WPS PIN:</string>
     <string name="wps_pin_bt">Save</string>

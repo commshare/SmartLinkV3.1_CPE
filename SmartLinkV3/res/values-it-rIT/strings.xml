@@ -84,7 +84,7 @@
 
 
     <!-- Usage setting start -->
-    <string name="usage_setting_title">Impostazioni utilizzo=</string>
+    <string name="usage_setting_title">Impostazioni</string>
     <string name="usage_setting_timelimit">Limite orario</string>
     <string name="usage_setting_settimelimit">Imposta limite orario:</string>
     <string name="usage_setting_timeunit">min</string>
@@ -367,6 +367,9 @@
 
 
     <!-- wps start -->
+    <string name="wps_title">WPS</string>
+    <string name="wps_pbc_bt_disc">PBC(Configurazione tasto Push)</string>
+    <string name="wps_pin_bt_disc">PIN WPS</string>
     <string name="wps_pbc_bt">Configurazione tasto Push</string>
     <string name="wps_pin_tv">PIN WPS:</string>
     <string name="wps_pin_bt">Salva</string>

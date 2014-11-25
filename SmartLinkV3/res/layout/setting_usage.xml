@@ -15,7 +15,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:text="@string/usage_setting_usage"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold" 
         android:textColor="@color/color_black"/>
 

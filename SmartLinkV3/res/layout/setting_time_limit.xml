@@ -38,7 +38,7 @@
                 android:layout_centerVertical="true"
                 android:singleLine="true"
                 android:text="@string/usage_setting_timelimit"
-                android:textSize="20sp" 
+                android:textSize="18sp" 
                 android:textStyle="bold"
                 android:textColor="@color/color_black"/>
 		</RelativeLayout>

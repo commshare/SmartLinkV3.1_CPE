@@ -367,7 +367,10 @@
 
 
     <!-- wps start -->
-    <string name="wps_pbc_bt">Push Button Configuration (PBC)</string>
+    <string name="wps_title">WPS</string>
+    <string name="wps_pbc_bt_disc">PBC(Configuration du bouton de commande)</string>
+    <string name="wps_pin_bt_disc">PIN WPS</string>
+    <string name="wps_pbc_bt">Configuration du bouton de commande</string>
     <string name="wps_pin_tv">PIN WPS :</string>
     <string name="wps_pin_bt">Enregistrer</string>
     <string name="wps_pin_text1">1. Appuyez sur le bouton WPS de l’appareil jusqu’à ce que ce dernier affiche WPS.</string>
@@ -387,13 +390,13 @@
     <string name="puk_prompt_str">Le code PIN de confirmation doit être le même que le nouveau code PIN.</string>
     <string name="pin_title">Saisissez le code PIN.</string>
     <string name="pin_code_label">Code PIN :</string>
-    <string name="pin_remain_three_times">Autres tentatives : 3 fois</string>
+    <string name="pin_remain_three_times">Restez: 3 fois</string>
     <string name="pin_error_waring_title">Le code PIN est incorrect !</string>
     <string name="image_view_close_button">bouton fermer</string>
     <string name="puk_title">Saisissez le code PUK.</string>
     <string name="puk_code_label">Code PUK :</string>
-    <string name="puk_remain_three_times">Autres tentatives : 3 fois</string>
-    <string name="puk_new_pin_label">Nouveau code PIN :</string>
+    <string name="puk_remain_three_times">Restez: 3 fois</string>
+    <string name="puk_new_pin_label">Nouveau PIN :</string>
     <string name="puk_confirm_pin_label">Confirmation :</string>
     <string name="puk_format_wrong_msg">Le code PUK doit comporter 8 chiffres.</string>
     <string name="puk_error_waring_title">Le code PUK est incorrect !</string>
