@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_titleTextView = (TextView) this.findViewById(R.id.main_title);
 		
 		m_Btnbar = (Button) this.findViewById(R.id.btnbar);
-		m_Btnbar.setOnClickListener(this);;
+		m_Btnbar.setOnClickListener(this);
 		
 
 		addView();

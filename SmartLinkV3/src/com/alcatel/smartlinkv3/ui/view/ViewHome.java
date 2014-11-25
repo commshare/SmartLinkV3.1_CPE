@@ -659,18 +659,19 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	    	m_batteryProgress.setProgress(nProgress);
 		}else if(ConstValue.CHARGE_STATE_CHARGING == batteryinfo.getChargeState()){		
 			m_batteryProgress.setVisibility(View.GONE);
-			m_batteryscalelayout.setVisibility(View.GONE);
-			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
+			m_batteryscalelayout.setVisibility(View.VISIBLE);
+			m_batterydescriptionlayout.setVisibility(View.GONE);
 			m_batterychargingImageView.setVisibility(View.VISIBLE);
-			m_batterydescriptionTextView.setText(R.string.home_battery_ischarging);
-			
+			m_batteryscaleTextView.setTypeface(typeFace);
+			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
 		}else if(ConstValue.CHARGE_STATE_COMPLETED == batteryinfo.getChargeState()){
 			m_batterychargingImageView.setVisibility(View.GONE);
 			m_batteryProgress.setVisibility(View.VISIBLE);
+			m_batterydescriptionlayout.setVisibility(View.GONE);
 			m_batteryProgress.setProgress(m_batteryProgress.getMax());
 			m_batteryscalelayout.setVisibility(View.GONE);
-			m_batterydescriptionlayout.setVisibility(View.VISIBLE);
-			m_batterydescriptionTextView.setText(R.string.home_battery_completed);
+			m_batteryscaleTextView.setTypeface(typeFace);
+			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
 		}else if(ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()){
 			
 		}
