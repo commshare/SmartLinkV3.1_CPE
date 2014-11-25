@@ -168,7 +168,7 @@
     <string name="setting_title_device">Appareil</string>
     <string name="setting_title_about">À propos</string>
     <string name="setting_power_smart">Smart</string>
-    <string name="setting_power_wifi">WWifi de dormance</string>
+    <string name="setting_power_wifi">Wifi de dormance</string>
     <string name="setting_power_wifi_description">Wi-Fi se éteint automatiquement si la connexion est inactive pendant 30 minutes, appuyez sur une touche pour se réveiller.</string>
     <string name="setting_backup_description">Sauvegardez la configuration.</string>
     <string name="setting_backup_btn_backup">Sauvegarder</string>
