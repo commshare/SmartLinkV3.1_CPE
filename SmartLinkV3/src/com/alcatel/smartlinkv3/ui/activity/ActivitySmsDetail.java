@@ -55,7 +55,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 
 public class ActivitySmsDetail extends BaseActivity implements OnClickListener,OnScrollListener, TextWatcher {
-	public static final int ONE_SMS_LENGTH = 67;
+	public static final int ONE_SMS_LENGTH = 160;
 	public static final String INTENT_EXTRA_SMS_NUMBER = "sms_number";
 	public static final String INTENT_EXTRA_CONTACT_ID = "contact_id";
 
