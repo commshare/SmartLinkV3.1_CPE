@@ -56,7 +56,7 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_centerInParent="true"
-	            android:layout_marginLeft="8dip"
+	            android:layout_marginLeft="13dip"
 	            android:layout_marginRight="8dip"
 	            android:gravity="center"
 	            android:text="@string/sms_new_title"
