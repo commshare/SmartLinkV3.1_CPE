@@ -179,9 +179,9 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			m_pb_battery_status.setVisibility(View.GONE);
 		}
 		String strLevel = info.getBatterLevel() + "%";
-		if (ConstValue.CHARGE_STATE_CHARGING == nChargeState) {
-			strLevel = "Charging";
-		}
+//		if (ConstValue.CHARGE_STATE_CHARGING == nChargeState) {
+//			strLevel = "Charging";
+//		}
 		m_tv_battery_status.setText(strLevel);
 	}
 
