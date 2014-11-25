@@ -68,6 +68,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 			if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				m_waiting.setVisibility(View.GONE);
 				if (nResult == BaseResponse.RESPONSE_OK&& strErrorCode.length() == 0) {	
 					if(m_bEnableRefresh == true || haveEditItem() == false) {
 						resetConnectEditFlag();
@@ -200,6 +201,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 			
 		case R.id.refresh:
 			m_bEnableRefresh = true;
+			m_waiting.setVisibility(View.VISIBLE);
 			getListData();			
 		default:
 			break;
