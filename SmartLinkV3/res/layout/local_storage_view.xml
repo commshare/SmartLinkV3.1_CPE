@@ -56,7 +56,6 @@
                     android:clickable="true"
                     android:layout_gravity="right"
                     android:layout_marginRight="10dip"
-                    android:padding="12dip"
                     android:text="@string/edit"
                     android:textColor="@drawable/common_button_text"
                     android:textSize="18sp"
