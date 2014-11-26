@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="320dip"
-    android:layout_height="187dip"
+    android:layout_height="197dip"
     android:background="@drawable/dialog_bg" >
 
     <LinearLayout
@@ -38,7 +38,7 @@
     <RelativeLayout
         android:id="@+id/ID_LOGIN_CODE_LAYOUT"
         android:layout_width="fill_parent"
-        android:layout_height="90dip"
+        android:layout_height="100dip"
         android:layout_below="@id/ID_LOGIN_TOP_LAYOUT" >
 
         <EditText
