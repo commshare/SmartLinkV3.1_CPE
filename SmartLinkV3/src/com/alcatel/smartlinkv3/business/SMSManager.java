@@ -188,7 +188,7 @@ public class SMSManager extends BaseManager {
 		
 		if(m_getContactMessagesTask == null) {
 			m_getContactMessagesTask = new GetContactMessagesTask();
-			m_getSmsRollTimer.scheduleAtFixedRate(m_getContactMessagesTask, 0, 120 * 1000);
+			m_getSmsRollTimer.scheduleAtFixedRate(m_getContactMessagesTask, 0, 30 * 1000);
 		}
 	}
 	
