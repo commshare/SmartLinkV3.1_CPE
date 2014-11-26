@@ -37,7 +37,7 @@
 		        android:layout_centerInParent="true"
 		        android:gravity="center"
 		        android:singleLine="true"
-		        android:text="WPS"
+		        android:text="@string/wps_title"
 		        android:textColor="@color/color_white"
 		        android:textSize="20sp"
 		        android:textStyle="bold" />
@@ -78,7 +78,7 @@
 		            android:textColor="@color/color_black"
 		            android:textSize="16sp"
 		            android:textStyle="bold"
-		            android:text="PBC(Push Button Configuration)" />
+		            android:text="@string/wps_pbc_bt_disc" />
 		        
 		        <View
 		            android:layout_width="fill_parent"
@@ -99,7 +99,7 @@
 		            android:textStyle="bold"
 		            android:drawableRight="@drawable/selector_checkbox"
 		            android:textColor="@color/color_black"
-		            android:text="WPS PIN" />  
+		            android:text="@string/wps_pin_bt_disc" />  
 	    	</RadioGroup>  
 	        
 	        <View
