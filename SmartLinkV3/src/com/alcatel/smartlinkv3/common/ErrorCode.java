@@ -6,7 +6,7 @@ public class ErrorCode {
 	/********************User ErrorCode end**********************/
 	
 	/********************SMS ErrorCode start**********************/
-	public static final String ERR_SMS_SIM_IS_FULL = "60303";
+	public static final String ERR_SMS_SIM_IS_FULL = "060603";
 	/********************SMS ErrorCode end**********************/
 
 }
