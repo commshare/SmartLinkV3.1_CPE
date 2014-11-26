@@ -58,7 +58,9 @@
                     android:layout_marginRight="10dip"
                     android:text="@string/edit"
                     android:textColor="@drawable/common_button_text"
-                    android:textSize="18sp"
+                    android:paddingTop="8dip"
+                    android:paddingBottom="8dip"
+                    android:textSize="15sp"
                     android:visibility="visible" />
             </LinearLayout>
 
