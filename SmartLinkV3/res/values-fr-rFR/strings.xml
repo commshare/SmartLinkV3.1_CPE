@@ -177,7 +177,7 @@
     <string name="setting_about_version">Version</string>
     <string name="setting_about_official_website">Site Web officiel</string>
     <string name="setting_about_management_page">Page de gestion</string>
-    <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd.\r\nTous droits réservés.</string>
+    <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. Tous droits réservés.</string>
     <string name="setting_upgrade_device_version">Appareil : version actuelle v</string>
     <string name="setting_upgrade_btn_check">Vérifier</string>
     <string name="setting_upgrade_current_app_version">Applications pour portable : version actuelle v</string>

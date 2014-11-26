@@ -168,7 +168,7 @@
     <string name="setting_title_device">Dispositivo</string>
     <string name="setting_title_about">Acerca de</string>
     <string name="setting_power_smart">Smart</string>
-    <string name="setting_power_wifi">WiFi dormir</string>
+    <string name="setting_power_wifi">WiFi del sueño</string>
     <string name="setting_power_wifi_description">Wi - Fi se apaga automaticamente si la conexión está inactivo durante 30 minutos, presione cualquier tecla para despertar.</string>
     <string name="setting_backup_description">Hacer copia de seguridad de la configuración.</string>
     <string name="setting_backup_btn_backup">Copia de seguridad</string>
@@ -177,7 +177,7 @@
     <string name="setting_about_version">Versión</string>
     <string name="setting_about_official_website">Web oficial</string>
     <string name="setting_about_management_page">Página de administración</string>
-    <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd.\r\nTodos los derechos reservados.</string>
+    <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. Todos los derechos reservados.</string>
     <string name="setting_upgrade_device_version">Dispositivo: Versión actual v</string>
     <string name="setting_upgrade_btn_check">Comprobar</string>
     <string name="setting_upgrade_current_app_version">Aplicaciones del teléfono: Versión actual v</string>
