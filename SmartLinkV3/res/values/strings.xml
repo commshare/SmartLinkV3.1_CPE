@@ -108,7 +108,7 @@
     <string name="sms_send_fail">Fail</string>
     <string name="sms_report_message">Message delivered!</string>
     <string name="sms_to">To:</string>
-    <string name="sms_new_title">New Message</string>
+    <string name="sms_new_title">Message</string>
     <string name="sms_error_send_error">Send SMS error!</string>
     <string name="sms_send_success">Send SMS success.</string>
     <string name="sms_error_message_full_storage">The storage of SMS is full!</string>

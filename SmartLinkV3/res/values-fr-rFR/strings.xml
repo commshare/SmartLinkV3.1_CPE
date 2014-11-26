@@ -108,7 +108,7 @@
     <string name="sms_send_fail">Échec</string>
     <string name="sms_report_message">Message remis !</string>
     <string name="sms_to">À :</string>
-    <string name="sms_new_title">Nouveau message</string>
+    <string name="sms_new_title">Message</string>
     <string name="sms_error_send_error">Erreur d’envoi du SMS !</string>
     <string name="sms_send_success">SMS envoyé</string>
     <string name="sms_error_message_full_storage">L’espace pour les SMS est saturé !</string>
