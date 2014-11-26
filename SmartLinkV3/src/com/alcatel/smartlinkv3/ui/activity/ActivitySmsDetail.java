@@ -55,7 +55,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 
 public class ActivitySmsDetail extends BaseActivity implements OnClickListener,OnScrollListener, TextWatcher {
-	public static final int ONE_SMS_LENGTH = 160;
+	//public static final int ONE_SMS_LENGTH = 160;
 	public static final String INTENT_EXTRA_SMS_NUMBER = "sms_number";
 	public static final String INTENT_EXTRA_CONTACT_ID = "contact_id";
 
@@ -98,7 +98,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		m_etContent.addTextChangedListener(this);
 
 		m_tvCnt = (TextView)findViewById(R.id.sms_cnt);
-		String text = ONE_SMS_LENGTH+"/1"; 
+		String text = getOneSmsLenth(new String())+"/1"; 
 		m_tvCnt.setText(text);
 		// Text View
 		m_tvTitle = (TextView) this.findViewById(R.id.ID_SMS_DETAIL_TITLE);
@@ -468,22 +468,34 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 
 	private void showNewSmsCnt(CharSequence s)
 	{
+		int nSmsLength = getOneSmsLenth(s.toString());
+		int nRemain = nSmsLength - s.length() % nSmsLength;
 
-		int nRemain = ONE_SMS_LENGTH - s.length() % ONE_SMS_LENGTH;
-
-		if(s.length() >= ONE_SMS_LENGTH  && nRemain == ONE_SMS_LENGTH )
+		if(s.length() >= nSmsLength  && nRemain == nSmsLength )
 		{			 
 			nRemain = 0;
 		}
 
 		int nCnt = 1;
 
-		if(s.length() > ONE_SMS_LENGTH)
+		if(s.length() > nSmsLength)
 		{
-			nCnt = (s.length() -1 ) / ONE_SMS_LENGTH +1;	
+			nCnt = (s.length() -1 ) / nSmsLength +1;	
 		}	
 
 		m_tvCnt.setText(nRemain + "/" + nCnt);		
+	}
+	
+	public static int getOneSmsLenth(String strSmsContent) {
+		if(null == strSmsContent)
+			return 160;
+		
+		if(strSmsContent.length() < strSmsContent.getBytes().length) {
+			return 67;
+		}else{
+			return 160;
+		}
+		
 	}
 
 	//

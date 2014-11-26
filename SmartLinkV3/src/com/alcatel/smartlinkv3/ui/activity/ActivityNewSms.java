@@ -69,7 +69,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		setEditTextChangedListener();
 		
 		m_tvCnt = (TextView)findViewById(R.id.sms_cnt);
-		String text = ActivitySmsDetail.ONE_SMS_LENGTH+"/1"; 
+		String text = ActivitySmsDetail.getOneSmsLenth(new String())+"/1"; 
 		m_tvCnt.setText(text);
 		
 		m_progressWaiting = (ProgressBar) this.findViewById(R.id.sms_new_waiting_progress);
@@ -343,19 +343,19 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	
 	private void showNewSmsCnt(CharSequence s)
 	{
+		int nSmsLength = ActivitySmsDetail.getOneSmsLenth(s.toString());
+		int nRemain = nSmsLength - s.length() % nSmsLength;
 		
-		int nRemain = ActivitySmsDetail.ONE_SMS_LENGTH - s.length() % ActivitySmsDetail.ONE_SMS_LENGTH;
-		
-		if(s.length() >= ActivitySmsDetail.ONE_SMS_LENGTH  && nRemain == ActivitySmsDetail.ONE_SMS_LENGTH )
+		if(s.length() >= nSmsLength  && nRemain == nSmsLength )
 		{			 
 			nRemain = 0;
 		}
 		
 		int nCnt = 1;
 		
-		if(s.length() > ActivitySmsDetail.ONE_SMS_LENGTH)
+		if(s.length() > nSmsLength)
 		{
-			nCnt = (s.length() -1 ) / ActivitySmsDetail.ONE_SMS_LENGTH +1;	
+			nCnt = (s.length() -1 ) / nSmsLength +1;	
 		}	
 		
 		m_tvCnt.setText(nRemain + "/" + nCnt);		
