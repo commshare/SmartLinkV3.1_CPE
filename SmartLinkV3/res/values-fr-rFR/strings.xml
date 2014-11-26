@@ -128,8 +128,8 @@
     <string name="device_manage_block">Dispositifs bloqués (%1$d)</string>
     <string name="device_manage_block_btn">Bloquer</string>
     <string name="device_manage_unblock_btn">Débloquer</string>
-    <string name="device_manage_ip">IP:%1$s</string>
-    <string name="device_manage_mac">MAC:%1$s</string>
+    <string name="device_manage_ip">IP : %1$s</string>
+    <string name="device_manage_mac">MAC : %1$s</string>
     <string name="device_manage_name_empty">Un nom de dispositif invalide.</string>
     <string name="device_manage_set_name_failed">Ensemble a échoué!</string>
     
