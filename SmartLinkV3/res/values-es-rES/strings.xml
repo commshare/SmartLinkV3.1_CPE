@@ -39,7 +39,7 @@
     <string name="Home_SimCard_Detected">Se ha detectado tarjeta SIM</string>
     <string name="Home_unknown">desconocido</string>
     <string name="Home_zero_time">0 h 0 min</string>
-    <string name="Home_zero_data">0.00 MB</string>
+    <string name="Home_zero_data">%1$s MB</string>
     <string name="home_no_service">Sin servicio</string>
     <string name="home_initializing">Inicializando</string>
     <string name="home_disconnected_to">Desconectado</string>

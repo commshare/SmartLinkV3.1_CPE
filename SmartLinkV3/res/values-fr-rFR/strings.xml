@@ -39,7 +39,7 @@
     <string name="Home_SimCard_Detected">Carte SIM détectée</string>
     <string name="Home_unknown">Inconnu</string>
     <string name="Home_zero_time">0 h 0 m</string>
-    <string name="Home_zero_data">0,00 Mo</string>
+    <string name="Home_zero_data">%1$s Mo</string>
     <string name="home_no_service">Aucun service</string>
     <string name="home_initializing">Initialisation…</string>
     <string name="home_disconnected_to">Déconnecté</string>
@@ -368,9 +368,9 @@
 
     <!-- wps start -->
     <string name="wps_title">WPS</string>
-    <string name="wps_pbc_bt_disc">PBC(Configuration du bouton de commande)</string>
+    <string name="wps_pbc_bt_disc">PBC (Push Button Configuration)</string>
     <string name="wps_pin_bt_disc">PIN WPS</string>
-    <string name="wps_pbc_bt">Configuration du bouton de commande</string>
+    <string name="wps_pbc_bt">Push Button Configuration (PBC)</string>
     <string name="wps_pin_tv">PIN WPS :</string>
     <string name="wps_pin_bt">Enregistrer</string>
     <string name="wps_pin_text1">1. Appuyez sur le bouton WPS de l’appareil jusqu’à ce que ce dernier affiche WPS.</string>

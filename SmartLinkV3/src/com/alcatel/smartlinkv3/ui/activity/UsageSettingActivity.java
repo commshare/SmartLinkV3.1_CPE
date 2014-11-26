@@ -717,7 +717,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
 		ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
 			if(m_bIsRoamingDisconnectedEdit == false) {
-				if (usageSetting.HMonthlyPlan > 0) {
+//				if (usageSetting.HMonthlyPlan > 0) {
 					m_roamingDisconnectBtn.setEnabled(true);
 					if (connectionSetting.HRoamingConnect == OVER_ROAMING_STATE.Disable) {
 						// off
@@ -728,11 +728,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 						m_roamingDisconnectBtn
 								.setBackgroundResource(R.drawable.switch_on);
 					}
-				} else {
-					m_roamingDisconnectBtn.setEnabled(false);
-					m_roamingDisconnectBtn
-							.setBackgroundResource(R.drawable.switch_off);
-				}
+//				} else {
+//					m_roamingDisconnectBtn.setEnabled(false);
+//					m_roamingDisconnectBtn
+//							.setBackgroundResource(R.drawable.switch_off);
+//				}
 			}
 //		} else {
 //			m_usageAutoDisconnectBtn.setEnabled(false);

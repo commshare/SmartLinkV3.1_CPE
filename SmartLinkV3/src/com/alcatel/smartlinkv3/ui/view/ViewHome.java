@@ -106,6 +106,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private LoginDialog m_loginDialog = null;
 	
 	private String home_connected_duration = null;
+	private String home_connected_zero_duration = null;
+	private String strZeroConnDuration = null;
 
 	Typeface typeFace = Typeface.createFromAsset(this.m_context.getAssets(),"fonts/Roboto_Light.ttf");
 	
@@ -237,6 +239,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_loginDialog = new LoginDialog(this.m_context);
 		
 		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
+		
+		strZeroConnDuration = String.format(home_connected_zero_duration, 0.00);
 
 	}
 
@@ -364,7 +368,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_nosimcardLayout.setVisibility(View.VISIBLE);
 			}
 			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(R.string.Home_zero_data);
+			m_datastatusTextView.setText(strZeroConnDuration);
 			m_connectLayout.setVisibility(View.GONE);
 			return;
 		}
@@ -378,7 +382,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_nosimcardLayout.setVisibility(View.VISIBLE);
 			m_connectLayout.setVisibility(View.GONE);
 			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(R.string.Home_zero_data);
+			m_datastatusTextView.setText(strZeroConnDuration);
 			return;
 		}
 		
@@ -388,7 +392,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_nosimcardLayout.setVisibility(View.VISIBLE);
 			m_connectLayout.setVisibility(View.GONE);
 			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(R.string.Home_zero_data);
+			m_datastatusTextView.setText(strZeroConnDuration);
 			return;
 		}
 
@@ -441,7 +445,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_connectWaiting.setVisibility(View.GONE);
 			m_connectBtn.setVisibility(View.INVISIBLE);
 			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(R.string.Home_zero_data);
+			m_datastatusTextView.setText(strZeroConnDuration);
 			return;
 		}
 		
@@ -450,7 +454,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_connectWaiting.setVisibility(View.GONE);
 			m_connectBtn.setVisibility(View.INVISIBLE);
 			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(R.string.Home_zero_data);
+			m_datastatusTextView.setText(strZeroConnDuration);
 			return;
 		}
 		m_connectBtn.setVisibility(View.VISIBLE);
