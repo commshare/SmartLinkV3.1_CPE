@@ -108,7 +108,7 @@
     <string name="sms_send_fail">Errore</string>
     <string name="sms_report_message">Messaggio consegnato.</string>
     <string name="sms_to">A:</string>
-    <string name="sms_new_title">Nuovo messaggio</string>
+    <string name="sms_new_title">Messaggio</string>
     <string name="sms_error_send_error">Errore invio SMS.</string>
     <string name="sms_send_success">SMS inviato correttamente.</string>
     <string name="sms_error_message_full_storage">La memoria degli SMS è piena.</string>
