@@ -343,7 +343,7 @@
     <string name="storage_main_local_storage">Almacenamiento local</string>
     <string name="storage_main_samba_service">Servicio Samba</string>
     <string name="storage_main_samba_service_disabled">El servicio Samba está desactivado.</string>
-    <string name="storage_main_samba_service_disabled_description">To access sd card connected to %1$s, you need to switch on Samba Service below.</string>
+    <string name="storage_main_samba_service_disabled_description">Para acceder a la tarjeta SD conectada al %1$s, es necesario activar el servicio de Samba a continuación.</string>
     <string name="loading_pecent">%1$d%%</string>
     <string name="downloading_prompt">\"%1$s\" se está descargando...</string>
     <string name="uploading_prompt">\"%1$s\" se está subiendo...</string>
