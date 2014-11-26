@@ -20,6 +20,7 @@ import com.alcatel.smartlinkv3.ui.view.CustomSpinner.OnSpinnerItemSelectedListen
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils.TruncateAt;
@@ -523,8 +524,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_wpaTypeOptions2 = new ArrayList<String>();
 		m_wpaTypeOptions2.add(STRING_AES);
 		m_wepTypeOptions = new ArrayList<String>();
-		m_wepTypeOptions.add(STRING_OPEN);
-		m_wepTypeOptions.add(STRING_SHARE);
+		Resources res = getResources();
+		String[] wepMode = res.getStringArray(R.array.setting_wep_mode_array);
+		for (int i = 0; i < wepMode.length; i++) {
+			m_wepTypeOptions.add(wepMode[i]);
+		}
 	}
 
 	private void initSpinersUI() {
