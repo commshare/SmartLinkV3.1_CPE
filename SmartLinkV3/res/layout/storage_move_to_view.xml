@@ -136,6 +136,7 @@
             android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dip"
+            android:gravity="center"
             android:clickable="true"
             android:drawableTop="@drawable/selector_new_folder_button"
             android:text="@string/new_folder"
@@ -147,6 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:layout_marginLeft="10dip"
             android:clickable="true"
             android:drawableTop="@drawable/selector_to_here_button"
@@ -161,6 +163,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dip"
             android:clickable="true"
+            android:gravity="center"
             android:drawableTop="@drawable/selector_toolbar_search_button"
             android:text="@string/search"
             android:textColor="@color/color_grey" />

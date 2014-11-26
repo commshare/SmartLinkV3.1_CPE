@@ -308,7 +308,7 @@
 
     <!-- storage move to activity start -->
     <string name="move_to_title">Déplacer vers</string>
-    <string name="move_to_to_here">À cet emplacement</string>
+    <string name="move_to_to_here">ici</string>
     <string name="move_to_is_subfolder_fail">Le dossier de destination (%1$s) est un sous-dossier du dossier source (%2$s).</string>
     <string name="move_to_file_move_fail">Déplacement de %1$s impossible !</string>
     <string name="move_to_file_already_exist_fail">%1$s existe déjà.</string>
