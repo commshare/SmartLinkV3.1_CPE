@@ -60,7 +60,7 @@
                     android:layout_marginRight="10dip"
                     android:text="@string/done"
                     android:textColor="@drawable/common_button_text"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:visibility="visible" />
             </LinearLayout>
 
