@@ -40,8 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:singleLine="true"
                 android:paddingLeft="10dip"
+                android:singleLine="true"
                 android:text="@string/sd_sharing"
                 android:textColor="@color/color_white"
                 android:textSize="20sp"
@@ -79,13 +79,21 @@
                     android:background="@drawable/switch_off"
                     android:clickable="true" />
 
+                <ProgressBar
+                    android:id="@+id/waiting_progress"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toLeftOf="@id/enable_dlna_btn"
+                    android:indeterminateDrawable="@drawable/progerss_blue" />
+
                 <TextView
                     android:id="@+id/enable_dlna_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/enable_dlna_btn"
+                    android:layout_toLeftOf="@id/waiting_progress"
                     android:singleLine="false"
                     android:text="@string/dlna"
                     android:textColor="@color/color_black"
@@ -110,7 +118,7 @@
                 <TextView
                     android:id="@+id/tv_dlna_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"                                     
+                    android:layout_height="wrap_content"
                     android:text="@string/dlna_name"
                     android:textColor="@color/color_grey"
                     android:textSize="16sp" />
@@ -118,7 +126,7 @@
                 <TextView
                     android:id="@+id/tv_dlna_description"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"                          
+                    android:layout_height="wrap_content"
                     android:singleLine="false"
                     android:text="@string/dlna_description"
                     android:textColor="@color/color_grey"
@@ -214,7 +222,7 @@
                 <TextView
                     android:id="@+id/storage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"                        
+                    android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/storage"
                     android:textColor="@color/color_black"
@@ -225,14 +233,14 @@
                     android:id="@+id/storage_enter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"                 
+                    android:layout_alignParentRight="true"
                     android:contentDescription="@null"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dip"             
+                android:layout_height="1dip"
                 android:background="@color/color_divider" />
         </LinearLayout>
     </ScrollView>

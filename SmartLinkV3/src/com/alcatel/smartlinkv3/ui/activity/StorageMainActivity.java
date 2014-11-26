@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.Status;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -221,11 +222,24 @@ public class StorageMainActivity extends BaseActivity implements
 	}
 
 	private void enableSamba() {
+		
+		//enable samba
 		m_progressWaiting.setVisibility(View.VISIBLE);
 		DataValue data = new DataValue();
 		data.addParam("SambaStatus", 1);
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET, data);
+		
+		//disable dlna
+		DlnaSettings settings = BusinessMannager.getInstance()
+				.getDlnaSettings();
+		DataValue dataDlna = new DataValue();
+		dataDlna.addParam("DlnaName", settings.DlnaName);
+		settings.DlnaStatus = 0;
+		dataDlna.addParam("DlnaStatus", settings.DlnaStatus);			
+		BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, dataDlna);	
+		
 	}
 
 	private void getSambaSettings() {

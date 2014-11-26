@@ -34,7 +34,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private TextView m_tvSdcardUsage = null;
 	private TextView m_tvSdcardStatus = null;
 	private ProgressBar m_sdcardProgress;
-
+	private ProgressBar m_progressWaiting = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,6 +64,10 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		m_tvSdcardUsage.setText(usage);
 		
 		m_sdcardProgress = (ProgressBar) this.findViewById(R.id.sdcard_usage_progress);
+		
+		m_progressWaiting = (ProgressBar) this
+				.findViewById(R.id.waiting_progress);
+		m_progressWaiting.setVisibility(View.GONE);
 
 	}
 
@@ -124,24 +128,39 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private void onDlnaClick() {
+		
+		m_progressWaiting.setVisibility(View.VISIBLE);
 		DlnaSettings settings = BusinessMannager.getInstance()
 				.getDlnaSettings();
-
+		DataValue dataDlna = new DataValue();
+		dataDlna.addParam("DlnaName", settings.DlnaName);
 		if (settings.DlnaStatus == 0) {
-			settings.DlnaStatus = 1;
+			settings.DlnaStatus = 1;			
+			dataDlna.addParam("DlnaStatus", settings.DlnaStatus);			
+			setDlnaSettings(dataDlna);			
+			
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, dataDlna);				
+		
+			DataValue dataSamba = new DataValue();
+			dataSamba.addParam("SambaStatus", 0);
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET, dataSamba);
+			
+			
 		} else {
 			settings.DlnaStatus = 0;
+			dataDlna.addParam("DlnaStatus", settings.DlnaStatus);			
+			setDlnaSettings(dataDlna);
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, dataDlna);	
 		}
 
-		DataValue data = new DataValue();
-		data.addParam("DlnaStatus", settings.DlnaStatus);
-		data.addParam("DlnaName", settings.DlnaName);
-		setDlnaSettings(data);
+	
 	}
 
 	private void setDlnaSettings(DataValue data) {
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
+		
 	}
 
 	private void getDlnaSettings() {
@@ -171,9 +190,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 					.getString(R.string.sdcard_usage);
 			usage = String.format(format, "0", "0");
 			m_tvSdcardUsage.setText(usage);	
-		}
-		
-		
+		}		
 
 	}
 
@@ -241,6 +258,8 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 					MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)
 					|| intent.getAction().equals(
 							MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)) {
+				
+				m_progressWaiting.setVisibility(View.GONE);
 
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent
