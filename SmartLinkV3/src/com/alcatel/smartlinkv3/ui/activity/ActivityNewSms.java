@@ -152,6 +152,8 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			String msgRes = null;
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				msgRes = this.getString(R.string.sms_save_success);
+			}else if(strErrorCode.endsWith(ErrorCode.ERR_SAVE_SMS_SIM_IS_FULL)){
+				msgRes = this.getString(R.string.sms_error_message_full_storage);
 			}else{
 				msgRes = this.getString(R.string.sms_save_error);
 			}
