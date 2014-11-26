@@ -41,7 +41,7 @@
     <string name="Home_zero_time">0 H 0 Min</string>
     <string name="Home_zero_data">0,00 MB</string>
     <string name="home_no_service">Nessun servizio</string>
-    <string name="home_initializing">Inizializzazione in corso</string>
+    <string name="home_initializing">Inizializzazione</string>
     <string name="home_disconnected_to">Scollegato</string>
     <string name="home_connected_to">Collegato</string>
     <string name="home_connecting_to">Connessione in corso</string>
