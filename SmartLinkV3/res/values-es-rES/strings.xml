@@ -368,7 +368,7 @@
 
     <!-- wps start -->
     <string name="wps_title">WPS</string>
-    <string name="wps_pbc_bt_disc">PBC(Configuración del pulsador)</string>
+    <string name="wps_pbc_bt_disc">CP (configuración del pulsador)</string>
     <string name="wps_pin_bt_disc">PIN WPS</string>
     <string name="wps_pbc_bt">Configuración del pulsador</string>
     <string name="wps_pin_tv">PIN WPS:</string>
