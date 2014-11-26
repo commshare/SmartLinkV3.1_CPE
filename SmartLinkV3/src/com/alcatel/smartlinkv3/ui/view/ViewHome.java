@@ -241,7 +241,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
 		home_connected_zero_duration = this.getView().getResources().getString(R.string.Home_zero_data);
 		
-		strZeroConnDuration = String.format(home_connected_zero_duration, 0.00);
+		strZeroConnDuration = String.format(home_connected_zero_duration, "0.00");
 
 	}
 
