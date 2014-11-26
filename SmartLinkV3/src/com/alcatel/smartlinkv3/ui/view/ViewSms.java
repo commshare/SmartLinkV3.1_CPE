@@ -149,12 +149,12 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		public int compare(Object o1, Object o2) {
 			SMSSummaryItem c1 = (SMSSummaryItem) o1;
 			SMSSummaryItem c2 = (SMSSummaryItem) o2;
-			String time1 = (String) c1.strSummaryTime;
-			String time2 = (String) c2.strSummaryTime;
-
-			if(time1.compareToIgnoreCase(time2) > 0)
+			Date d1 = ActivitySmsDetail.formatDateFromString(c1.strSummaryTime);
+			Date d2 = ActivitySmsDetail.formatDateFromString(c2.strSummaryTime);
+			
+			if(d1.after(d2) == true)
 				return -1;
-			if(time1.compareToIgnoreCase(time2) == 0)
+			if(d1.equals(d2) == true)
 				return 0;
 			return 1;
 		}
