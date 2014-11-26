@@ -535,15 +535,17 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		public int compare(Object o1, Object o2) {
 			SMSContentItemModel c1 = (SMSContentItemModel) o1;
 			SMSContentItemModel c2 = (SMSContentItemModel) o2;
-			if(c1.SMSTime.compareToIgnoreCase(c2.SMSTime) > 0)
+			Date d1 = formatDateFromString(c1.SMSTime);
+			Date d2 = formatDateFromString(c2.SMSTime);
+			if(d1.after(d2) == true)
 				return 1;
-			if(c1.SMSTime.compareToIgnoreCase(c2.SMSTime) == 0)
+			if(d1.equals(d2) == true)
 				return 0;
 			return -1;
 		}
 	}
 
-	private Date formatDateFromString(String time) {
+	public static Date formatDateFromString(String time) {
 		SimpleDateFormat sDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		Date smsDate = null;
 		try {
