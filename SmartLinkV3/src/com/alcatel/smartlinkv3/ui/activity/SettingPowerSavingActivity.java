@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +35,12 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	private ProgressBar m_pb_battery_status=null;
 	private ImageView m_iv_battery_charge=null;
 	private ProgressBar m_pb_waiting=null;
+	private RelativeLayout m_rlWifi=null;
+	private ImageView m_ivSeperatorWifi=null;
 
 	private boolean m_blSmartModeSwitchOn=true;
 	private boolean m_blWifiModeSwitchOn=true;
+	private boolean m_blShowWifiSleep = true;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -79,6 +83,20 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		m_btn_wifi_mode_switch.setOnClickListener(this);
 		//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_power_waiting_progress);
+		//get device name from feature list
+		String strDeviceName = BusinessMannager.getInstance().getFeatures().getDeviceName();
+		if (0 == strDeviceName.compareToIgnoreCase("Y900")) {
+			m_blShowWifiSleep = false;
+		}
+		m_rlWifi = (RelativeLayout)findViewById(R.id.rl_power_wifi_control);
+		m_ivSeperatorWifi = (ImageView)findViewById(R.id.iv_power_seperator_1);
+		if (!m_blShowWifiSleep) {
+			m_rlWifi.setVisibility(View.GONE);
+			m_ivSeperatorWifi.setVisibility(View.GONE);
+		}else {
+			m_rlWifi.setVisibility(View.VISIBLE);
+			m_ivSeperatorWifi.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void ShowWaiting(boolean blShow){

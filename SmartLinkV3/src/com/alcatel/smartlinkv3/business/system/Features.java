@@ -7,22 +7,22 @@ import java.util.Map;
 import com.alcatel.smartlinkv3.business.BaseResult;
 
 public class Features extends BaseResult{
-	private String Model = new String();
+	private String DeviceName = new String();
 	private String HttpApiVersion = new String();
 	private Map<String, ArrayList<String>> Features = new HashMap<String, ArrayList<String>>();
 	
 	@Override
 	public void clear(){
-		Model = "";
+		DeviceName = "";
 		HttpApiVersion = "";
 		Features.clear();
 	}
 	
-	public String getModel() {
-		return Model;
+	public String getDeviceName() {
+		return DeviceName;
 	}
-	public void setModel(String model) {
-		Model = model;
+	public void setDeviceName(String strDeviceName) {
+		DeviceName = strDeviceName;
 	}
 	public String getHttpApiVersion() {
 		return HttpApiVersion;

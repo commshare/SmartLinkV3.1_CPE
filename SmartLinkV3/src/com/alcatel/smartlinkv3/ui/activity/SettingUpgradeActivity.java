@@ -352,7 +352,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			showCheckFWWaiting(true);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
 			m_blHasNewFirmware = true;
-			String strNew = getString(R.string.setting_upgrade_new_app_version);
+			String strNew = getString(R.string.setting_upgrade_new_device_version);
 			strNew += info.getVersion();
 			if (blNeedBackupNewVersionInfo) {
 				m_strNewFirmwareInfo = strNew;

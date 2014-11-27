@@ -47,7 +47,7 @@ public class SystemManager extends BaseManager {
 	public Features getFeatures() {
 		return m_features;
 	}
-
+	
 	public SystemInfo getSystemInfoModel() {
 		return m_systemInfo;
 	}

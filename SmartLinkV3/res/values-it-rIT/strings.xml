@@ -178,7 +178,8 @@
     <string name="setting_about_official_website">Sito Web ufficiale</string>
     <string name="setting_about_management_page">Pagina gestione</string>
     <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. Tutti i diritti riservati.</string>
-    <string name="setting_upgrade_device_version">Dispositivo: Versione corrente v</string>
+    <string name="setting_upgrade_device_version">Dispositivo: Versione corrente </string>
+    <string name="setting_upgrade_new_device_version">Trova nuova versione </string>
     <string name="setting_upgrade_btn_check">Controlla</string>
     <string name="setting_upgrade_current_app_version">Applicazioni telefono cellulare: Versione corrente v</string>
     <string name="setting_upgrade_new_app_version">Trova nuova versione v</string>

@@ -27,6 +27,6 @@ public class FeatureVersionManager {
     }
     
     public boolean isSupportDevice(String strDeviceName) {
-    	return BusinessMannager.getInstance().getFeatures().getModel().equalsIgnoreCase(strDeviceName);
+    	return BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase(strDeviceName);
     }
 }
