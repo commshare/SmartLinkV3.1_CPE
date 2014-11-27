@@ -147,7 +147,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 		m_progressWaiting.setVisibility(View.GONE);
 
 		m_etContent.setEnabled(true);
-		m_btnSend.setEnabled(true);
+		//m_btnSend.setEnabled(true);
 		m_bDeleteSingleEnable = true;
 		//m_etContent.setText("");
 
