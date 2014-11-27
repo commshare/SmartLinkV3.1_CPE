@@ -140,7 +140,7 @@ public class ENUM {
 			} else if (nState == 11) {
 				return SimCardIsIniting;
 			}  else {
-				return NoSim;
+				return InvalidSim;
 			}
 		}
 	}
