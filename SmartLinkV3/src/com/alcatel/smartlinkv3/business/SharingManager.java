@@ -83,7 +83,8 @@ public class SharingManager extends BaseManager {
 			return;
 
 		int status = (Integer) data.getParamByKey("SambaStatus");
-
+		final int nPreStatus = m_sambaSettings.SambaStatus;
+		m_sambaSettings.SambaStatus = status;
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpSharing.SetSambaSetting("14.4", status,
 						new IHttpFinishListener() {
@@ -97,10 +98,10 @@ public class SharingManager extends BaseManager {
 									if (strErrcode.length() == 0) {
 
 									} else {
-
+										m_sambaSettings.SambaStatus = nPreStatus;
 									}
 								} else {
-
+									m_sambaSettings.SambaStatus = nPreStatus;
 								}
 
 								Intent megIntent = new Intent(
@@ -162,6 +163,8 @@ public class SharingManager extends BaseManager {
 
 		int status = (Integer) data.getParamByKey("DlnaStatus");
 		String name = (String) data.getParamByKey("DlnaName");
+		final int nPreStatus = m_dlnaSettings.DlnaStatus;
+		m_dlnaSettings.DlnaStatus = status;
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpSharing.SetDlnaSetting("14.2", status, name,
 						new IHttpFinishListener() {
@@ -175,10 +178,10 @@ public class SharingManager extends BaseManager {
 									if (strErrcode.length() == 0) {
 
 									} else {
-
+										m_dlnaSettings.DlnaStatus = nPreStatus;
 									}
 								} else {
-
+									m_dlnaSettings.DlnaStatus = nPreStatus;
 								}
 
 								Intent megIntent = new Intent(

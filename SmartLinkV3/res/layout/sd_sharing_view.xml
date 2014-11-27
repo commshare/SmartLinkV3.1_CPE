@@ -100,6 +100,47 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </RelativeLayout>
+            
+            <RelativeLayout
+                android:id="@+id/samba_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:orientation="horizontal"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
+
+                <Button
+                    android:id="@+id/enable_samba_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/switch_off"
+                    android:clickable="true" />
+
+                <ProgressBar
+                    android:id="@+id/samba_waiting_progress"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toLeftOf="@id/enable_samba_btn"
+                    android:indeterminateDrawable="@drawable/progerss_blue" />
+
+                <TextView
+                    android:id="@+id/enable_samba_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/waiting_progress"
+                    android:singleLine="false"
+                    android:text="@string/samba"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"

@@ -357,10 +357,11 @@
 
     <!-- sd sharing start -->
     <string name="dlna_name">Server Name: %1$s Media Server.</string>
-    <string name="dlna_description">Turning on DLNA makes the media content on the micro SD card available to connected devices.</string>
+    <string name="dlna_description">Turning on DLNA/SAMBA makes the media content on the micro SD card available to connected devices.</string>
     <string name="sd_card_sharing">SD Card Sharing</string>
     <string name="sd_sharing">SD Sharing</string>
     <string name="dlna">DLNA</string>
+    <string name="samba">SAMBA</string>
     <string name="sdcard_usage">%1$s GB of %2$s GB used.</string>
     <string name="storage">Storage</string>
     <string name="not_available">Not Available</string>

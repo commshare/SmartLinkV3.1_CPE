@@ -357,10 +357,11 @@
 
     <!-- sd sharing start -->
     <string name="dlna_name">Nom du serveur : %1$s Serveur multimédia.</string>
-    <string name="dlna_description">L’activation de la fonction DLNA met à disposition les fichiers multimédias sur la carte micro SD aux appareils connectés.</string>
+    <string name="dlna_description">L’activation de la fonction DLNA/SAMBA met à disposition les fichiers multimédias sur la carte micro SD aux appareils connectés.</string>
     <string name="sd_card_sharing">Partage de carte SD</string>
     <string name="sd_sharing">Partage de carte SD</string>
     <string name="dlna">DLNA</string>
+    <string name="samba">SAMBA</string>
     <string name="sdcard_usage">Utilisé : %1$s Go sur %2$s Go.</string>
     <string name="storage">Stockage</string>
     <string name="not_available">Indisponible</string>

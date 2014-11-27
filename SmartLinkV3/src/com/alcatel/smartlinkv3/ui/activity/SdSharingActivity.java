@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.business.sharing.SDCardSpace;
+import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.Status;
@@ -28,6 +29,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private RelativeLayout m_layoutStorage = null;
 	private SdSharingReceiver m_sdSharingReceiver = null;
 	private Button m_btnDlna = null;
+	private Button m_btnSamba = null;
 	private ImageButton m_btnback = null;
 	private TextView m_tvback = null;
 	private TextView m_tvDlnaName = null;
@@ -35,6 +37,11 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private TextView m_tvSdcardStatus = null;
 	private ProgressBar m_sdcardProgress;
 	private ProgressBar m_progressWaiting = null;
+	private ProgressBar m_sambaProgressWaiting = null;
+	
+	
+	private boolean m_dlnaClicked = false;
+	private boolean m_sambaClicked = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +53,9 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 		m_btnDlna = (Button) this.findViewById(R.id.enable_dlna_btn);
 		m_btnDlna.setOnClickListener(this);
+		
+		m_btnSamba = (Button) this.findViewById(R.id.enable_samba_btn);
+		m_btnSamba.setOnClickListener(this);
 
 		m_tvback = (TextView) this.findViewById(R.id.Back);
 		m_tvback.setOnClickListener(this);
@@ -64,9 +74,10 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		m_tvSdcardUsage.setText(usage);
 		
 		m_sdcardProgress = (ProgressBar) this.findViewById(R.id.sdcard_usage_progress);
+		m_sambaProgressWaiting = (ProgressBar) this.findViewById(R.id.samba_waiting_progress);
+		m_sambaProgressWaiting.setVisibility(View.GONE);
 		
-		m_progressWaiting = (ProgressBar) this
-				.findViewById(R.id.waiting_progress);
+		m_progressWaiting = (ProgressBar) this.findViewById(R.id.waiting_progress);
 		m_progressWaiting.setVisibility(View.GONE);
 
 	}
@@ -89,6 +100,10 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	public void onPause() {
 		super.onPause();
 		this.unregisterReceiver(m_sdSharingReceiver);
+		m_progressWaiting.setVisibility(View.GONE);
+		m_sambaProgressWaiting.setVisibility(View.GONE);
+		m_dlnaClicked = false;
+		m_sambaClicked = false;
 	}
 
 	@Override
@@ -106,6 +121,10 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
 		case R.id.enable_dlna_btn:
 			onDlnaClick();
+			break;
+			
+		case R.id.enable_samba_btn:
+			onSambaClick();
 			break;
 
 		case R.id.Back:
@@ -126,17 +145,43 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 	private void onBackClick() {
 		this.finish();
 	}
+	
+	private void onSambaClick() {
+		if(m_dlnaClicked == true || m_sambaClicked == true) 
+			return;
+		m_sambaClicked = true;
+		
+		m_sambaProgressWaiting.setVisibility(View.VISIBLE);
+		SambaSettings settings = BusinessMannager.getInstance().getSambaSettings();
+		
+		if(settings.SambaStatus == 0) { //0: disable
+			DataValue dataSamba = new DataValue();
+			dataSamba.addParam("SambaStatus", 1);
+			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET, dataSamba);
+			
+			DlnaSettings dlnaSettings = BusinessMannager.getInstance().getDlnaSettings();
+			DataValue dataDlna = new DataValue();
+			dataDlna.addParam("DlnaName", dlnaSettings.DlnaName);
+			dataDlna.addParam("DlnaStatus", 0);
+			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, dataDlna);
+		}else{
+			DataValue dataSamba = new DataValue();
+			dataSamba.addParam("SambaStatus", 0);
+			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET, dataSamba);
+		}
+	
+	}
 
 	private void onDlnaClick() {
-		
+		if(m_dlnaClicked == true || m_sambaClicked == true) 
+			return;
+		m_dlnaClicked = true;
 		m_progressWaiting.setVisibility(View.VISIBLE);
-		DlnaSettings settings = BusinessMannager.getInstance()
-				.getDlnaSettings();
+		DlnaSettings settings = BusinessMannager.getInstance().getDlnaSettings();
 		DataValue dataDlna = new DataValue();
 		dataDlna.addParam("DlnaName", settings.DlnaName);
-		if (settings.DlnaStatus == 0) {
-			settings.DlnaStatus = 1;			
-			dataDlna.addParam("DlnaStatus", settings.DlnaStatus);			
+		if (settings.DlnaStatus == 0) {			
+			dataDlna.addParam("DlnaStatus", 1);			
 			setDlnaSettings(dataDlna);			
 			
 			BusinessMannager.getInstance().sendRequestMessage(
@@ -193,6 +238,15 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		}		
 
 	}
+	
+	private void showSambaSettings() {
+		SambaSettings settings = BusinessMannager.getInstance().getSambaSettings();
+		if (settings.SambaStatus == 0) {
+			m_btnSamba.setBackgroundResource(R.drawable.switch_off);
+		} else {
+			m_btnSamba.setBackgroundResource(R.drawable.switch_on);
+		}
+	}
 
 	private void showDlnaSettings() {
 		DlnaSettings settings = BusinessMannager.getInstance()
@@ -206,7 +260,7 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		String format = this.getResources()
 				.getString(R.string.dlna_name);
 		String description;
-		if (settings.DlnaName.isEmpty()) {
+		if (settings.DlnaName.length() == 0) {
 			description = String.format(format, BusinessMannager.getInstance()
 					.getSystemInfoModel().getDeviceName());
 		} else {
@@ -254,20 +308,37 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			if (intent.getAction().equals(
-					MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)
-					|| intent.getAction().equals(
-							MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)) {
-				
-				m_progressWaiting.setVisibility(View.GONE);
-
+			if (intent.getAction().equals(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
 					showDlnaSettings();
 				}
-			} else if (intent.getAction().equals(
+			}else if ( intent.getAction().equals(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)) {
+				m_dlnaClicked = false;
+				m_progressWaiting.setVisibility(View.GONE);
+
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					showDlnaSettings();
+				}
+			}else if (intent.getAction().equals(MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					showSambaSettings();
+				}
+			}else if ( intent.getAction().equals(MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET)) {
+				m_sambaClicked = false;
+				m_sambaProgressWaiting.setVisibility(View.GONE);
+
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					showSambaSettings();
+				}
+			}else if (intent.getAction().equals(
 					MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent

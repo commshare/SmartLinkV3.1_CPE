@@ -357,10 +357,11 @@
 
     <!-- sd sharing start -->
     <string name="dlna_name">Nombre del servidor: %1$s Servidor multimedia.</string>
-    <string name="dlna_description">Al activar DLNA, los contenidos multimedia de la tarjeta microSD pasan a estar disponibles para los dispositivos conectados.</string>
+    <string name="dlna_description">Al activar DLNA/SAMBA, los contenidos multimedia de la tarjeta microSD pasan a estar disponibles para los dispositivos conectados.</string>
     <string name="sd_card_sharing">Compartir tarjeta SD</string>
     <string name="sd_sharing">Compartir SD</string>
     <string name="dlna">DLNA</string>
+    <string name="samba">SAMBA</string>
     <string name="sdcard_usage">%1$s GB de %2$s GB en uso.</string>
     <string name="storage">Almacenamiento</string>
     <string name="not_available">No disponible</string>
