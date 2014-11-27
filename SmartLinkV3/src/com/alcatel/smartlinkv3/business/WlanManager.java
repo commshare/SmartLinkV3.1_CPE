@@ -409,10 +409,10 @@ public class WlanManager extends BaseManager {
 
 	//get wlan support mode
 	public void getWlanSupportMode(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Wlan", "GetWlanSupportMode")) {
-			return;
-		}
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("Wlan", "GetWlanSupportMode")) {
+//			return;
+//		}
 
 		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blCPEWifiConnected) {

@@ -419,6 +419,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		if (WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
 			m_rg_wifi_mode.setVisibility(View.GONE);
+		}else {
+			m_rg_wifi_mode.setVisibility(View.VISIBLE);
 		}
 
 		m_tv_edit.setVisibility(View.VISIBLE);

@@ -10,6 +10,7 @@ import android.R.string;
 import com.alcatel.smartlinkv3.business.lan.LanInfo;
 import com.alcatel.smartlinkv3.business.lan.HttpLan.getLanSettingsResponse;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
+import com.alcatel.smartlinkv3.business.wlan.WlanSupportModeType;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -315,8 +316,8 @@ public class HttpWlanSetting {
 		protected void parseContent(String strJsonResult) {
 			// TODO Auto-generated method stub
 			Gson gson= new Gson();
-			int nMode = gson.fromJson(strJsonResult, Integer.class);
-			mode = WlanSupportMode.build(nMode);
+			WlanSupportModeType type = gson.fromJson(strJsonResult, WlanSupportModeType.class);
+			mode = WlanSupportMode.build(type.getWlanSupportMode());
 		}
 
 		@SuppressWarnings("unchecked")
