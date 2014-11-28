@@ -132,7 +132,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 	}
 
 	private void updateUI(RemoteViews remoteViews){
-		m_blWifiConnected = DataConnectManager.getInstance().getWifiConnected();
+		m_blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		ConnectionStatus status = BusinessMannager.getInstance().getConnectStatus().m_connectionStatus;
 		m_blInternetConnected = false;
 		if (ConnectionStatus.Connected == status) {
