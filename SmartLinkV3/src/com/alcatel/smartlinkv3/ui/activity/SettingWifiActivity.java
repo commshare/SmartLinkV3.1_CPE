@@ -339,6 +339,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	}
 	private void onBtnEdit(){
 		m_tv_done.setVisibility(View.VISIBLE);
+
+		m_tv_edit.setFocusable(false);
+		m_tv_edit.setFocusableInTouchMode(false);
 		m_tv_edit.setVisibility(View.GONE);
 		m_et_ssid.setEnabled(true);
 		m_et_ssid.setVisibility(View.VISIBLE);
@@ -375,6 +378,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_ll_security.setVisibility(View.VISIBLE);
 			m_tv_psd_type_title.setVisibility(View.VISIBLE);
 		}
+		m_et_ssid.setFocusable(true);
+		m_et_ssid.setFocusableInTouchMode(true);
 		m_et_ssid.requestFocus();
 	}
 
@@ -455,6 +460,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_ll_encryption.setVisibility(View.GONE);
 		m_ll_security.setVisibility(View.GONE);
 		m_tv_psd_type_title.setVisibility(View.GONE);
+		m_tv_edit.setFocusable(true);
+		m_tv_edit.setFocusableInTouchMode(true);
+		m_tv_edit.requestFocus();
 	}
 	private boolean isSettingsChanged(){
 		boolean blChanged = false;

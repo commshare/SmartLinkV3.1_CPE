@@ -51,6 +51,7 @@
                     android:background="@android:color/transparent"
                     android:button="@null"
                     android:checked="false"
+                    android:focusable="true"
                     android:drawableRight="@drawable/radiobutton"
                     android:enabled="false"
                     android:paddingBottom="12dip"

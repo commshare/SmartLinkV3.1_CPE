@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
+import com.alcatel.smartlinkv3.business.system.HttpSystem.GetFeature;
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -65,6 +66,8 @@ public class WlanManager extends BaseManager {
 				startGetHostNumTask();
 				getWlanSupportMode(null);
 				getWlanSetting(null);
+			}else {
+				m_wlanSupportMode = WlanSupportMode.Mode2Point4G;
 			}
 		}
 	}
@@ -409,10 +412,13 @@ public class WlanManager extends BaseManager {
 
 	//get wlan support mode
 	public void getWlanSupportMode(DataValue data){
-//		if (!FeatureVersionManager.getInstance().
-//				isSupportApi("Wlan", "GetWlanSupportMode")) {
-//			return;
-//		}
+		String strDeviceName = BusinessMannager.getInstance().getFeatures().getDeviceName();
+		if (!FeatureVersionManager.getInstance().
+				isSupportApi("Wlan", "GetWlanSupportMode")) {
+			if (0 != strDeviceName.compareToIgnoreCase("Y900")) {
+				return;				
+			}
+		}
 
 		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blCPEWifiConnected) {
