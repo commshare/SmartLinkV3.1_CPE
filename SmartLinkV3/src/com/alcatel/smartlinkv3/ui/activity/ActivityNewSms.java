@@ -285,12 +285,18 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		if(strContent != null)
 			strContent = strContent.trim();
 		if(strContent != null && strContent.length() > 0 && strNumber != null && strNumber.length() > 0) {
-			DataValue data = new DataValue();
-			data.addParam("SMSId", -1);
-			data.addParam("Content", strContent);
-			data.addParam("Number", strNumber);
-			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
-			BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+			if(checkNumbers() == true) {
+				DataValue data = new DataValue();
+				data.addParam("SMSId", -1);
+				data.addParam("Content", strContent);
+				data.addParam("Number", strNumber);
+				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
+				BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+			}else{
+				String msgRes = this.getString(R.string.sms_number_invalid);
+				Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+				m_etNumber.requestFocus();
+			}
 		}else{
 			this.finish();
 		}
