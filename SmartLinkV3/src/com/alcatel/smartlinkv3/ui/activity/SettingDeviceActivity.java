@@ -25,7 +25,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
 	private TextView m_tv_swVersion_value=null;
-	private TextView m_tv_hwVersion_value=null;
+	//private TextView m_tv_hwVersion_value=null;
 	private TextView m_tv_device_name_value=null;
 	private TextView m_tv_imei_value=null;
 	private TextView m_tv_mac_value=null;
@@ -65,7 +65,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private void createControls(){
 		//system information values
 		m_tv_swVersion_value = (TextView)findViewById(R.id.tv_sw_version_info);
-		m_tv_hwVersion_value = (TextView)findViewById(R.id.tv_hw_version_info);
+		//m_tv_hwVersion_value = (TextView)findViewById(R.id.tv_hw_version_info);
 		m_tv_device_name_value = (TextView)findViewById(R.id.tv_device_name_info);
 		m_tv_imei_value = (TextView)findViewById(R.id.tv_imei_info);
 		m_tv_mac_value = (TextView)findViewById(R.id.tv_mac_address_info);
@@ -140,7 +140,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private void setSystemInfo(){
 		SystemInfoModel systemInfo = BusinessMannager.getInstance().getSystemInfoModel();
 		m_tv_swVersion_value.setText(systemInfo.getSwVersion());
-		m_tv_hwVersion_value.setText(systemInfo.getHwVersion());
+		//m_tv_hwVersion_value.setText(systemInfo.getHwVersion());
 		m_tv_device_name_value.setText(systemInfo.getDeviceName());
 		m_tv_imei_value.setText(systemInfo.getIMEI());
 		m_tv_mac_value.setText(systemInfo.getMacAddress());
