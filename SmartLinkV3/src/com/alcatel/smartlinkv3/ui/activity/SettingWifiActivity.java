@@ -305,8 +305,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_nType = m_nPreType;
 
 		m_strKey = m_strPreKey;
-		//set controls
-		setControlsDoneStatus();
 		initSpinersUI();
 	}
 	

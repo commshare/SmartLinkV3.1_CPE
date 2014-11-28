@@ -37,6 +37,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	private ProgressBar m_pb_waiting=null;
 	private RelativeLayout m_rlWifi=null;
 	private ImageView m_ivSeperatorWifi=null;
+	private TextView m_tv_wifi_description=null;
 
 	private boolean m_blSmartModeSwitchOn=true;
 	private boolean m_blWifiModeSwitchOn=true;
@@ -90,12 +91,15 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		}
 		m_rlWifi = (RelativeLayout)findViewById(R.id.rl_power_wifi_control);
 		m_ivSeperatorWifi = (ImageView)findViewById(R.id.iv_power_seperator_1);
+		m_tv_wifi_description = (TextView)findViewById(R.id.tv_wifi_description);
 		if (!m_blShowWifiSleep) {
 			m_rlWifi.setVisibility(View.GONE);
 			m_ivSeperatorWifi.setVisibility(View.GONE);
+			m_tv_wifi_description.setVisibility(View.GONE);
 		}else {
 			m_rlWifi.setVisibility(View.VISIBLE);
 			m_ivSeperatorWifi.setVisibility(View.VISIBLE);
+			m_tv_wifi_description.setVisibility(View.VISIBLE);
 		}
 	}
 
