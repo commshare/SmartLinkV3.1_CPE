@@ -74,7 +74,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	private TextView m_tv_edit;
 	private TextView m_tv_done;
 	private FrameLayout m_fl_titlebar;
-	private Boolean m_blSupportMultiWifiMode=false;
 	private RadioGroup m_rg_wifi_mode;
 	private RadioButton m_rb_2point4G_wifi;
 	private RadioButton m_rb_5G_wifi;
@@ -113,7 +112,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		setContentView(R.layout.activity_setting_wifi);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 
-		m_blSupportMultiWifiMode= true;
 		//control title bar
 		controlTitlebar();
 		//create controls
@@ -409,12 +407,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 	@SuppressWarnings("deprecation")
 	private void setControlsDoneStatus(){
-		if(m_blSupportMultiWifiMode){
-			m_rg_wifi_mode.setVisibility(View.VISIBLE);
-		}else {
-			m_rg_wifi_mode.setVisibility(View.GONE);
-		}
-
 		if (WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
 			m_rg_wifi_mode.setVisibility(View.GONE);
 		}else {

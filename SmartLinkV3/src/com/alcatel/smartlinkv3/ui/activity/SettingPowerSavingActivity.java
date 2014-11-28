@@ -99,6 +99,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		}else {
 			m_rlWifi.setVisibility(View.VISIBLE);
 			m_ivSeperatorWifi.setVisibility(View.VISIBLE);
+			//m_tv_wifi_description.setText(R.string.setting_power_wifi_description);
 			m_tv_wifi_description.setVisibility(View.VISIBLE);
 		}
 	}
