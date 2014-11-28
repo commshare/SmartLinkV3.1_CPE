@@ -36,7 +36,7 @@ public class UpdateManager extends BaseManager {
 		m_context.registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION));
 		m_context.registerReceiver(m_msgReceiver, 
-				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE));
+				new IntentFilter(MessageUti.UPDATE_SET_DEVICE_START_UPDATE));
 	}
 
 	@Override
