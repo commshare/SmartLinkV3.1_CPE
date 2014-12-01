@@ -674,7 +674,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			m_batteryProgress.setVisibility(View.VISIBLE);
 			m_batterydescriptionlayout.setVisibility(View.GONE);
 			m_batteryProgress.setProgress(m_batteryProgress.getMax());
-			m_batteryscalelayout.setVisibility(View.GONE);
+			m_batteryscalelayout.setVisibility(View.VISIBLE);
 			m_batteryscaleTextView.setTypeface(typeFace);
 			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
 		}else if(ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()){
