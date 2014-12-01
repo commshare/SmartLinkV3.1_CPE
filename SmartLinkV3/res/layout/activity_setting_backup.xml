@@ -42,7 +42,7 @@
 
             <Button
                 android:id="@+id/btn_backup"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_center_position_up"
                 android:layout_centerHorizontal="true"
@@ -92,7 +92,7 @@
 
             <Button
                 android:id="@+id/btn_restore"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_center_position_down"
                 android:layout_centerHorizontal="true"
