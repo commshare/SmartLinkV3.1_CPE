@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -173,11 +174,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		switch (nID) {
 		case R.id.ib_title_back:
 		case R.id.tv_title_back:
-			if (m_pb_waiting.isShown() && m_blUpdating) {
-				showStopUpdateDialog();
-			}else {
-				SettingUpgradeActivity.this.finish();				
-			}
+			onBtnBack();
 			break;
 
 		case R.id.btn_app_upgrade:
@@ -206,6 +203,13 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}
 	}
 
+	private void onBtnBack(){
+		if (m_pb_waiting.isShown() && m_blUpdating) {
+			showStopUpdateDialog();
+		}else {
+			SettingUpgradeActivity.this.finish();				
+		}
+	}
 	private void onBtnFirmwareCheck(){
 		if (m_blHasNewFirmware) {
 			m_nUpdradeFWProgress = 0;
@@ -502,5 +506,14 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			}
 		}
 	};
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		Log.v("UpgradeActivity", "OnKeyDown:"+event.getKeyCode());
+		if (KeyEvent.KEYCODE_BACK == keyCode) {
+			onBtnBack();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 }
