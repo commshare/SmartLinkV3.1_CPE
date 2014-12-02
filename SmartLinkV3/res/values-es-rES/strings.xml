@@ -169,7 +169,7 @@
     <string name="setting_title_about">Acerca de</string>
     <string name="setting_power_smart">Smart</string>
     <string name="setting_power_wifi">WiFi del sueño</string>
-    <string name="setting_power_wifi_description">Wi - Fi se apaga automaticamente si la conexión está inactivo durante 30 minutos, presione cualquier tecla para despertar.</string>
+    <string name="setting_power_wifi_description">Wi-Fi se apagará automáticamente si la conexión está inactiva durante 30 minutos, pulse cualquier tecla para activar.</string>
     <string name="setting_backup_description">Hacer copia de seguridad de la configuración.</string>
     <string name="setting_backup_btn_backup">Copia de seguridad</string>
     <string name="setting_restore_description">Restaurar la configuración.</string>
