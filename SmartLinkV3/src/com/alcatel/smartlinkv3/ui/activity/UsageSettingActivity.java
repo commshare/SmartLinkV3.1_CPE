@@ -489,6 +489,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			} else {
 				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
 					m_monthlyValue.setText("");
+				setUsageAutoDisconnectFalse();
 			}
 
 		} else {
@@ -688,6 +689,21 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
 				data);
 
+	}
+	
+	private void setUsageAutoDisconnectFalse() {
+		m_bIsAutoDisconnectedEdit = true;
+		UsageSettingModel usageSetting = BusinessMannager.getInstance()
+				.getUsageSettings();
+		DataValue data = new DataValue();
+		if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable) {
+			data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
+		} else {
+			return;
+		}
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
+				data);
 	}
 	
 	private void onBtnTimeLimitDisconnectClick() {
