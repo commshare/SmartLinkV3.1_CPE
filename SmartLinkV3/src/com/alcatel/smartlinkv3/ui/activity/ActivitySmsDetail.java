@@ -225,14 +225,14 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 					m_etContent.setEnabled(true);
 					m_btnDelete.setEnabled(true);
 					m_bDeleteSingleEnable = true;
-					m_etContent.setText("");
-					m_btnSend.setEnabled(false);
-					/*if(m_sendStatus == SendStatus.Success) {
+					//m_etContent.setText("");
+					//m_btnSend.setEnabled(false);
+					if(m_sendStatus == SendStatus.Success) {
 						m_etContent.setText("");
 						m_btnSend.setEnabled(false);
 	    			}else if(m_sendStatus == SendStatus.Fail || m_sendStatus == SendStatus.Fail_Memory_Full) {
 						m_btnSend.setEnabled(true);
-	    			}*/
+	    			}
 				}
 			}
 		}
@@ -293,6 +293,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				m_btnSend.setEnabled(true);
 				m_btnDelete.setEnabled(true);
 				m_bDeleteSingleEnable = true;
+				m_bSendEnd = true;
+				m_sendStatus = SendStatus.Fail_Memory_Full;
 				getSmsContentAtOnceRequest();
 			}			
 			else{
@@ -306,6 +308,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				m_btnSend.setEnabled(true);
 				m_btnDelete.setEnabled(true);
 				m_bDeleteSingleEnable = true;
+				m_bSendEnd = true;
+				m_sendStatus = SendStatus.Fail;
 				getSmsContentAtOnceRequest();
 			}
 		}

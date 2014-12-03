@@ -175,6 +175,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
     			m_btnSend.setEnabled(true);
     			m_etNumber.setEnabled(true);
     			m_etContent.setEnabled(true);	
+    			this.finish();
 			}
 			else {
 				String msgRes = this.getString(R.string.sms_error_send_error);
@@ -203,6 +204,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 					String msgRes = this.getString(R.string.sms_error_message_full_storage);
 	    			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 	    			bEnd = true;
+	    			this.finish();
 				}
 				if(sendStatus == SendStatus.Success) {
 					String msgRes = this.getString(R.string.sms_send_success);
