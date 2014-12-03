@@ -39,7 +39,7 @@
 			        android:paddingLeft="23dip"
 			        android:text="@string/usage_setting_title"
 			        android:textColor="@color/color_white"
-			        android:textSize="20sp"
+			        android:textSize="18sp"
 			        android:textStyle="bold" />
 	    </RelativeLayout>  
 	</LinearLayout>
