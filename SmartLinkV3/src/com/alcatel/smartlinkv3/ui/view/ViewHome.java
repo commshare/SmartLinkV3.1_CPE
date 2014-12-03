@@ -527,8 +527,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
-		if (internetConnState.m_connectionStatus != ConnectionStatus.Connected
-				|| internetConnState.m_connectionStatus != ConnectionStatus.Connecting) {
+		if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected
+				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
 			if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
 				if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
 					//show warning dialog
