@@ -197,6 +197,7 @@
     <string name="setting_upgrade_start_update_failed">Dispositivo inicio actualizar fallado.</string>
     <string name="setting_upgrade_check_firmware_failed">Obtener nueva version fracasado.</string>
     <string name="setting_upgrade_set_check_new_version_failed">DISPOSITIVO DE RETENCIÓN nueva version fracasado.</string>
+    <string name="setting_upgrade_config_google_play">Por favor config aplicación Google Play.</string>
     <string name="setting_device_title">Información del sistema</string>
     <string name="setting_device_software_version">Versión de Software:</string>
     <string name="setting_device_hadrware_version">Versión de Hardware:</string>

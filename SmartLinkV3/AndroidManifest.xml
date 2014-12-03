@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name = "android.permission.GET_ACCOUNTS"  />
 
     <application
         android:name="com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App"

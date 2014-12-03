@@ -197,6 +197,7 @@
     <string name="setting_upgrade_start_update_failed">Avvia aggiornamento del dispositivo non è riuscita.</string>
     <string name="setting_upgrade_check_firmware_failed">Ottenere Nuova versione fallito.</string>
     <string name="setting_upgrade_set_check_new_version_failed">Controllare dispositivo nuova versione non è riuscita.</string>
+    <string name="setting_upgrade_config_google_play">Si prega di config Google Play App.</string>
     <string name="setting_device_title">Informazioni sistema</string>
     <string name="setting_device_software_version">Versione Software:</string>
     <string name="setting_device_hadrware_version">Versione Hardware:</string>

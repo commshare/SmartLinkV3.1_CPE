@@ -27,6 +27,8 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -244,14 +246,32 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 	private void onBtnAppCheck(){
 		if (m_blHasNewApp) {
-			Intent intent = new Intent(Intent.ACTION_VIEW);							
-			intent.setData(Uri.parse("market://details?id=com.alcatel.smartlinkv3"));							
-			startActivity(intent);
+			if (hasGooglePlayAccount()) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);							
+				intent.setData(Uri.parse("market://details?id=com.alcatel.smartlinkv3"));							
+				startActivity(intent);
+			}else {
+				Toast.makeText(this, R.string.setting_upgrade_config_google_play, Toast.LENGTH_LONG).show();
+			}
 		}else {
 			checkNewVersion();
 		}
 	}
 
+	private boolean hasGooglePlayAccount(){
+		boolean blHas = false;
+		AccountManager accountManager = AccountManager.get(this);
+		Account[] accounts = accountManager.getAccounts();
+		for (Account account:accounts) {
+			Log.d("Account", "account.name="+account.name);
+			Log.d("Account", "account.type="+account.type);
+			if (account.type.equalsIgnoreCase("com.google")) {
+				blHas = true;
+				break;
+			}
+		}
+		return blHas;
+	}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub

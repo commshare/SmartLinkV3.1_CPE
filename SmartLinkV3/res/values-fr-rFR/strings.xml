@@ -197,6 +197,7 @@
     <string name="setting_upgrade_start_update_failed">Mise à jour de démarrage de l\'appareil a échoué.</string>
     <string name="setting_upgrade_check_firmware_failed">Obtenez Nouvelle version échoué.</string>
     <string name="setting_upgrade_set_check_new_version_failed">Vérifier dispositif nouvelle version a échoué.</string>
+    <string name="setting_upgrade_config_google_play">Se il vous plaît config application Google Play.</string>
     <string name="setting_device_title">Informations système</string>
     <string name="setting_device_software_version">Version logicielle :</string>
     <string name="setting_device_hadrware_version">Version matérielle :</string>
