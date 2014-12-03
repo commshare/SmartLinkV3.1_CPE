@@ -63,28 +63,27 @@
                 android:textSize="16sp" 
                 android:textColor="@color/color_black"/>
             
+            <TextView
+                android:id="@+id/set_time_limit_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_timeunit"
+                android:textSize="16sp" 
+                android:textColor="@color/color_black"/>
+            
             <EditText
                 android:id="@+id/set_time_limit_value"
                 android:layout_width="wrap_content"
                 android:layout_height="30dip"
-                android:layout_marginLeft="30dip"
                 android:layout_marginRight="2dip"
-                android:layout_toRightOf="@+id/set_time_limit_tag"
+                android:layout_toLeftOf="@+id/set_time_limit_unit"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:maxLength="4"
                 android:imeOptions="actionDone"
                 android:width="65dip" />
-            
-            <TextView
-                android:id="@+id/set_time_limit_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/set_time_limit_value"
-                android:layout_centerVertical="true"
-                android:text="@string/usage_setting_timeunit"
-                android:textSize="16sp" 
-                android:textColor="@color/color_black"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

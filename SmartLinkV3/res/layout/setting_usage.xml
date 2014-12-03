@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,28 +43,27 @@
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
 
-            <EditText
-                android:id="@+id/billing_plan_value"
-                android:layout_width="65dip"
-                android:layout_height="30dip"
-                android:layout_marginLeft="30dip"
-                android:layout_marginRight="2dip"
-                android:layout_toRightOf="@+id/billing_plan_tag"
-                android:background="@drawable/selector_edit_bg"
-                android:inputType="number"
-                android:maxLength="8"
-                android:imeOptions="actionDone"
-                android:width="65dip" />
-            
             <TextView
                 android:id="@+id/billing_plan_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/billing_plan_value"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="@string/usage_setting_dayunit"
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
+            
+            <EditText
+                android:id="@+id/billing_plan_value"
+                android:layout_width="65dip"
+                android:layout_height="30dip"
+                android:layout_marginRight="2dip"
+                android:layout_toLeftOf="@+id/billing_plan_unit"
+                android:background="@drawable/selector_edit_bg"
+                android:inputType="number"
+                android:maxLength="8"
+                android:imeOptions="actionDone"
+                android:width="65dip" />        
         </RelativeLayout>
 
         <RelativeLayout
@@ -87,29 +85,28 @@
                 android:text="@string/usage_setting_monthlysataplan"
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
-
-            <EditText
-                android:id="@+id/monthly_plan_value"
-                android:layout_width="65dip"
-                android:layout_height="30dip"
-                android:layout_marginLeft="30dip"
-                android:layout_marginRight="2dip"
-                android:layout_toRightOf="@+id/monthly_plan_tag"
-                android:background="@drawable/selector_edit_bg"
-                android:inputType="number"
-                android:maxLength="8"
-                android:imeOptions="actionDone"
-                android:width="65dip" />
             
             <TextView
                 android:id="@+id/monthly_plan_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/monthly_plan_value"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="@string/usage_setting_monthlyunit"
                 android:textSize="16sp"
                 android:textColor="@color/color_black" />
+
+            <EditText
+                android:id="@+id/monthly_plan_value"
+                android:layout_width="65dip"
+                android:layout_height="30dip"
+                android:layout_marginRight="2dip"
+                android:layout_toLeftOf="@+id/monthly_plan_unit"
+                android:background="@drawable/selector_edit_bg"
+                android:inputType="number"
+                android:maxLength="8"
+                android:imeOptions="actionDone"
+                android:width="65dip" />
         </RelativeLayout>
 
         <LinearLayout
@@ -145,5 +142,51 @@
                     android:textColor="@color/color_grey"/>
             </RelativeLayout>
         </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/frame_auto_disconnected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dip"
+           	android:layout_marginRight="10dip"
+           	android:paddingTop="6dip"
+            android:paddingBottom="12dip" >
+            <Button
+                android:id="@+id/enable_auto_disconnected_btn"
+                android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/switch_off"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enable_auto_disconnected_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/enable_auto_disconnected_btn"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="@string/usage_setting_autodisconnected"
+                android:textSize="18sp" 
+                android:textStyle="bold"
+                android:textColor="@color/color_black"/>
+			</RelativeLayout>   
+			<TextView
+                android:id="@+id/enable_disconnected_descrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:paddingBottom="12dip"
+                android:text="@string/disconnected_descrition"
+                android:textSize="16sp" 
+                android:textColor="@color/color_grey"/>
+	  </LinearLayout>
     </LinearLayout>
 </LinearLayout>
