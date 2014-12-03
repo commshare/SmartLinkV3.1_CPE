@@ -365,6 +365,8 @@
     <string name="sdcard_usage">%1$s GB of %2$s GB used.</string>
     <string name="storage">Storage</string>
     <string name="not_available">Not Available</string>
+    <string name="dlna_set_failed">Set failed!</string>
+    <string name="samba_set_failed">Set failed!</string>
     <!-- sd sharing end -->
 
 

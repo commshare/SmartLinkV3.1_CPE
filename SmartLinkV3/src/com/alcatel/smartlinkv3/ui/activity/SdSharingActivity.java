@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SdSharingActivity extends BaseActivity implements OnClickListener {
 
@@ -322,12 +323,18 @@ public class SdSharingActivity extends BaseActivity implements OnClickListener {
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
 					showDlnaSettings();
+				}else{
+					String strMsg = getString(R.string.dlna_set_failed);
+					Toast.makeText(SdSharingActivity.this, strMsg, Toast.LENGTH_SHORT).show();
 				}
 			}else if (intent.getAction().equals(MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
 					showSambaSettings();
+				}else{
+					String strMsg = getString(R.string.samba_set_failed);
+					Toast.makeText(SdSharingActivity.this, strMsg, Toast.LENGTH_SHORT).show();
 				}
 			}else if ( intent.getAction().equals(MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET)) {
 				m_sambaClicked = false;

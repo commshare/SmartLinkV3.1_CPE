@@ -365,6 +365,8 @@
     <string name="sdcard_usage">Utilisé : %1$s Go sur %2$s Go.</string>
     <string name="storage">Stockage</string>
     <string name="not_available">Indisponible</string>
+    <string name="dlna_set_failed">Ensemble a échoué!</string>
+    <string name="samba_set_failed">Ensemble a échoué!</string>
     <!-- sd sharing end -->
 
 
