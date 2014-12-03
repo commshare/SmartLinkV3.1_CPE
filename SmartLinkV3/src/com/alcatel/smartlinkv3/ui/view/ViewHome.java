@@ -526,13 +526,17 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	{
 		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
-		if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
-			if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
-				//show warning dialog
-				//m_connectWarningDialog.showDialog();
-				String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
-				Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
-				return;
+		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		if (internetConnState.m_connectionStatus != ConnectionStatus.Connected
+				|| internetConnState.m_connectionStatus != ConnectionStatus.Connecting) {
+			if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
+				if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
+					//show warning dialog
+					//m_connectWarningDialog.showDialog();
+					String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
+					Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
+					return;
+				}
 			}
 		}
 	
@@ -544,7 +548,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_bConnectReturn = false;
 		showNetworkState();
 		showConnctBtnView();	
-		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		
 		if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
 			BusinessMannager.getInstance().sendRequestMessage(
