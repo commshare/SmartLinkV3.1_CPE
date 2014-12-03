@@ -310,6 +310,12 @@ public class StatisticsManager extends BaseManager {
 		final long nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
 		nUsageSettings.clone(m_usageSettings);
+		
+		if(nMonthlyPlan <= 0)
+		{
+			final ENUM.OVER_DISCONNECT_STATE nAutoDisconnFlag = (ENUM.OVER_DISCONNECT_STATE) data.getParamByKey("auto_disconn_flag");
+			nUsageSettings.AutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.antiBuild(nAutoDisconnFlag);
+		}
 		nUsageSettings.MonthlyPlan = nMonthlyPlan;
     	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           

@@ -489,7 +489,6 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			} else {
 				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
 					m_monthlyValue.setText("");
-				setUsageAutoDisconnectFalse();
 			}
 
 		} else {
@@ -506,6 +505,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (m_monthlyValue.getText().toString().length() > 0) {
 			usage = (int) Long.parseLong(m_monthlyValue.getText().toString());
 		}
+		
 		if (usage != this.byte2megabyte(m_monthlyVal)) {
 			if (usage > MONTHLY_MAX_VALUE) {
 				usage = MONTHLY_MAX_VALUE;
@@ -516,6 +516,13 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			
 			m_bIsMonthlyValueEdit = true;
 			DataValue usageData = new DataValue();
+			if(usage <= 0)
+			{
+				usageData.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
+				m_usageAutoDisconnectBtn.setEnabled(false);
+				m_usageAutoDisconnectBtn
+						.setBackgroundResource(R.drawable.switch_off);
+			}
 			usageData.addParam("monthly_plan", megabyte2byte(usage));
 			m_monthlyVal = megabyte2byte(usage);
 			BusinessMannager.getInstance().sendRequestMessage(
@@ -672,38 +679,27 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void onBtnUsageAutoDisconnectClick() {
-		m_bIsAutoDisconnectedEdit = true;
 		UsageSettingModel usageSetting = BusinessMannager.getInstance()
 				.getUsageSettings();
-		DataValue data = new DataValue();
-		if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
-			m_usageAutoDisconnectBtn
-					.setBackgroundResource(R.drawable.switch_on);
-			data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Enable);
-		} else {
-			m_usageAutoDisconnectBtn
-					.setBackgroundResource(R.drawable.switch_off);
-			data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
+		if(usageSetting.HMonthlyPlan > 0)
+		{
+			m_bIsAutoDisconnectedEdit = true;
+			DataValue data = new DataValue();
+			
+			if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
+				m_usageAutoDisconnectBtn
+						.setBackgroundResource(R.drawable.switch_on);
+				data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Enable);
+			} else {
+				m_usageAutoDisconnectBtn
+						.setBackgroundResource(R.drawable.switch_off);
+				data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
+			}
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
+					data);
 		}
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
-				data);
 
-	}
-	
-	private void setUsageAutoDisconnectFalse() {
-		m_bIsAutoDisconnectedEdit = true;
-		UsageSettingModel usageSetting = BusinessMannager.getInstance()
-				.getUsageSettings();
-		DataValue data = new DataValue();
-		if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable) {
-			data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
-		} else {
-			return;
-		}
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
-				data);
 	}
 	
 	private void onBtnTimeLimitDisconnectClick() {
