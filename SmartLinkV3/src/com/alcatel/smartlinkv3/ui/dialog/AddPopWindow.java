@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.dialog;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
@@ -20,6 +21,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 
 public class AddPopWindow extends PopupWindow implements OnClickListener{
@@ -57,6 +59,20 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 				.findViewById(R.id.logout_layout);
 		m_logout.setOnClickListener(this);
 		
+		showSdSharing();
+	}
+	
+	private void showSdSharing() {
+		TextView divider = (TextView) conentView.findViewById(R.id.sd_sharing_layout_divider);
+		
+		boolean bSupport = FeatureVersionManager.getInstance().isSupportModule("Sharing");
+		if(bSupport == true) {
+			m_sd_sharing.setVisibility(View.VISIBLE);
+			divider.setVisibility(View.VISIBLE);
+		}else{
+			m_sd_sharing.setVisibility(View.GONE);
+			divider.setVisibility(View.GONE);
+		}
 	}
 
 
