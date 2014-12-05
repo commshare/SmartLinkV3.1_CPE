@@ -359,8 +359,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_tv_no_password.setVisibility(View.GONE);
 		//show password switch
 		m_btn_psd_switch.setVisibility(View.VISIBLE);
-		SecurityMode securityMode = BusinessMannager.getInstance().getSecurityMode();
-		if (SecurityMode.Disable == securityMode) {
+		//SecurityMode securityMode = BusinessMannager.getInstance().getSecurityMode();
+		if (SecurityMode.Disable == SecurityMode.build(m_nSecurityMode)) {
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
 			m_et_password.setText("");
@@ -416,6 +416,12 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_rg_wifi_mode.setVisibility(View.GONE);
 		}else {
 			m_rg_wifi_mode.setVisibility(View.VISIBLE);
+		}
+		
+		if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nWlanAPMode) {
+			m_rb_2point4G_wifi.setChecked(true);
+		}else{
+			m_rb_5G_wifi.setChecked(true);
 		}
 
 		m_tv_edit.setVisibility(View.VISIBLE);
@@ -549,8 +555,24 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 			}
-			m_et_password.setText("");
+			m_et_password.setVisibility(View.GONE);
+			m_ib_hide_password.setVisibility(View.GONE);
+			m_ib_show_password.setVisibility(View.GONE);
+			m_ll_encryption.setVisibility(View.GONE);
+			m_ll_security.setVisibility(View.GONE);
+			m_tv_psd_type_title.setVisibility(View.GONE);
+			m_blPasswordOpened = false;
+			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
 			return;
+		}else{
+			m_blPasswordOpened = true;
+			m_et_password.setVisibility(View.VISIBLE);
+			m_ib_hide_password.setVisibility(View.VISIBLE);
+			m_ib_show_password.setVisibility(View.GONE);
+			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
+			m_ll_encryption.setVisibility(View.VISIBLE);
+			m_ll_security.setVisibility(View.VISIBLE);
+			m_tv_psd_type_title.setVisibility(View.VISIBLE);
 		}
 
 		if(securityMode == SecurityMode.WEP)
@@ -724,8 +746,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		initValues();
 		//init controls state
-		setControlsDoneStatus();
 		initSpinersUI();
+		setControlsDoneStatus();
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
 		ShowWaiting(true);
 	}
@@ -747,8 +769,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				initValues();
 				//init controls state
-				setControlsDoneStatus();
 				initSpinersUI();
+				setControlsDoneStatus();
 				ShowWaiting(false);
 			}
 		}
@@ -761,8 +783,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				strTost = getString(R.string.setting_wifi_set_success);
 			}else {
 				initValues();
-				setControlsDoneStatus();
 				initSpinersUI();
+				setControlsDoneStatus();
 			}
 
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
@@ -772,19 +794,19 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 	/*
 	 * Wep key 
-		不能为空
-		如果是key长度是5或是13，则需要满足以下条件：
-		1.	ASCII码数字大于32并且小于127但不包含34、38、58、59、92对应的字符
+		涓嶈兘涓虹┖
+		濡傛灉鏄痥ey闀垮害鏄�鎴栨槸13锛屽垯闇�婊¤冻浠ヤ笅鏉′欢锛�
+		1.	ASCII鐮佹暟瀛楀ぇ浜�2骞朵笖灏忎簬127浣嗕笉鍖呭惈34銆�8銆�8銆�9銆�2瀵瑰簲鐨勫瓧绗�
 
-		如果wep key长度为10或是26，key只能包含0到9和大小写26个英文字母
+		濡傛灉wep key闀垮害涓�0鎴栨槸26锛宬ey鍙兘鍖呭惈0鍒�鍜屽ぇ灏忓啓26涓嫳鏂囧瓧姣�
 
 		WPA
 		WPA2
 		WPA/WPA2
-		需要同时满足3个条件：
-		1.	不能为空
+		闇�鍚屾椂婊¤冻3涓潯浠讹細
+		1.	涓嶈兘涓虹┖
 		2.	Key.length>7 && Key.length<64
-		3.	Key只包含ASCII码数字大于32并且小于127但不包含34、38、58、59、92对应的字符
+		3.	Key鍙寘鍚獳SCII鐮佹暟瀛楀ぇ浜�2骞朵笖灏忎簬127浣嗕笉鍖呭惈34銆�8銆�8銆�9銆�2瀵瑰簲鐨勫瓧绗�
 
 
 	 */
