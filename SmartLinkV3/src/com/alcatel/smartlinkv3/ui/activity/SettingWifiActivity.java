@@ -312,7 +312,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
 			m_et_password.setText("");
 			m_et_password.setEnabled(false);
-			m_et_password.setBackgroundDrawable(null);
+			m_et_password.setVisibility(View.GONE);
 			m_ib_hide_password.setVisibility(View.GONE);
 			m_ib_show_password.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.GONE);
@@ -323,7 +323,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_on);
 			m_et_password.setText(m_strKey);
 			m_et_password.setEnabled(true);
-			m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
+			m_et_password.setVisibility(View.VISIBLE);
+			//m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
 			m_ib_hide_password.setVisibility(View.VISIBLE);
 			m_ib_show_password.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.VISIBLE);
@@ -347,7 +348,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_et_ssid.setVisibility(View.VISIBLE);
 		m_tv_ssid.setVisibility(View.GONE);
 		m_et_password.setEnabled(true);
-		m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
+		m_et_password.setVisibility(View.VISIBLE);
+		//m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
 //		m_et_ssid.setBackgroundResource(R.drawable.selector_edit_bg);
 		m_et_password.setPadding(0, 0, 200, 0);
 		if(m_rg_wifi_mode.isShown()){
@@ -365,7 +367,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_btn_psd_switch.setBackgroundResource(R.drawable.switch_off);
 			m_et_password.setText("");
 			m_et_password.setEnabled(false);
-			m_et_password.setBackgroundDrawable(null);
+			m_et_password.setVisibility(View.GONE);
+			//m_et_password.setBackgroundDrawable(null);
 			m_ll_encryption.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.GONE);
 			m_tv_psd_type_title.setVisibility(View.GONE);
@@ -431,7 +434,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_tv_ssid.setVisibility(View.VISIBLE);
 		m_et_ssid.setVisibility(View.GONE);
 		m_et_password.setEnabled(false);
-		m_et_password.setBackgroundDrawable(null);
+		//m_et_password.setVisibility(View.GONE);
+		//m_et_password.setBackgroundDrawable(null);
 //		m_et_ssid.setBackgroundDrawable(null);
 		m_et_password.setPadding(0, 0, 200, 0);
 		if(m_rg_wifi_mode.isShown()){
