@@ -39,7 +39,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private Button m_btnSend = null;
 	private EditText m_etNumber = null;
 	private EditText m_etContent = null;
-	private static final String NUMBER_REG_Ex = "^([+*#\\d;]){1}(\\d|[;*#]){0,99}$";
+	private static final String NUMBER_REG_Ex = "^([+*#\\d;]){1}(\\d|[;*#]){0,}$";
 	private String m_preMatchNumber = new String();
 	
 	private TextView m_tvCnt = null;
@@ -131,12 +131,25 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		Pattern   p   =   Pattern.compile(NUMBER_REG_Ex);     
 		Matcher   m   =   p.matcher(str); 
 		//return   m.replaceAll("").trim();
-		if(m.matches() || str == null || str.length() == 0) {
-			m_preMatchNumber = str;
-			return str;
-		}else{
-			return m_preMatchNumber;
+		if((m.matches() || str == null || str.length() == 0) && checkAllNumber(str)) {
+			if(str == null)
+				str = new String();
+
+			m_preMatchNumber = str;	
 		}
+		
+		return m_preMatchNumber;
+	}
+	
+	private boolean checkAllNumber(String strNumber) {
+		ArrayList<String> numberLst = getNumberFromString(strNumber);
+		for(int i = 0;i < numberLst.size();i++) {
+			if(numberLst.get(i).length() > 20) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 
