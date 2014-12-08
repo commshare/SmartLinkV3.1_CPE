@@ -386,6 +386,9 @@
     <string name="pbc_text3">3. Cliquez sur l’icône en haut de l’écran.</string>
     <string name="wps_setpbcfailed">Échec de paramétrage de PBC</string>
     <string name="wps_setpbcsuccess">Paramétrage de PBC effectué</string>
+    <string name="wps_setwpspinmodefailed">Set WPS PIN mode failed.</string>
+    <string name="wps_setwpspinnotsupport">WPS PIN not support in  WEP, WPA, WPA2 SKIP mode.</string>
+    <string name="wps_setwpspinisworking">WPS is active</string>
     <string name="wps_setwpspinfailed">Échec de paramétrage du code PIN WPS</string>
     <string name="wps_setwpspinsuccess">Paramétrage du code PIN WPS effectué</string>
     <!-- wps end -->

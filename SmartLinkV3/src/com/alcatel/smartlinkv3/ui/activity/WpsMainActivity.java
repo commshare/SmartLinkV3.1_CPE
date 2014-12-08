@@ -5,8 +5,10 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -47,6 +49,9 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 	private Button m_wpspinBtn;
 	
 	private ImageButton m_bnpbc;
+	public static final String ERR_SET_WPS_PIN_FAILED = "050601";
+	public static final String ERR_SET_WPS_PIN_NOT_SUPPORT = "050602";
+	public static final String ERR_SET_WPS_PIN_IS_WORKING = "050603";
 	
 	private WpsSettingReceiver m_wpsreceiver = new WpsSettingReceiver();
 	
@@ -72,10 +77,22 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 				if (nResult == 0 && strErrorCode.length() == 0) {
 					msgRes = WpsMainActivity.this.getString(R.string.wps_setwpspinsuccess);
 					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
-				}else{
+				}else if (nResult == 0 && strErrorCode
+						.equalsIgnoreCase(ERR_SET_WPS_PIN_FAILED)) {
+					msgRes = WpsMainActivity.this.getString(R.string.wps_setwpspinmodefailed);
+					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
+				}else if(nResult == 0 && strErrorCode
+						.equalsIgnoreCase(ERR_SET_WPS_PIN_NOT_SUPPORT)){
+					msgRes = WpsMainActivity.this.getString(R.string.wps_setwpspinnotsupport);
+					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
+				}else if(nResult == 0 && strErrorCode
+						.equalsIgnoreCase(ERR_SET_WPS_PIN_IS_WORKING)){
+					msgRes = WpsMainActivity.this.getString(R.string.wps_setwpspinisworking);
+					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
+				}else {
 					msgRes = WpsMainActivity.this.getString(R.string.wps_setwpspinfailed);
 					Toast.makeText(WpsMainActivity.this, msgRes,Toast.LENGTH_SHORT).show();
-				}
+				}		
 			}
 		}
 	}
