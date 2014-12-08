@@ -111,7 +111,7 @@
     <string name="sms_new_title">Message</string>
     <string name="sms_error_send_error">Send SMS error!</string>
     <string name="sms_send_success">Send SMS success.</string>
-    <string name="sms_error_message_full_storage">The storage of SMS is full!</string>
+    <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new SMS.</string>
     <string name="sms_delete_multi_success">Delete conversation success!</string>
     <string name="sms_delete_multi_error">Delete conversation failed!</string>
     <string name="sms_delete_error">Delete SMS error!</string>

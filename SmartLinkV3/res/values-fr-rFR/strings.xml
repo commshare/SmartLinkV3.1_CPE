@@ -111,7 +111,7 @@
     <string name="sms_new_title">Message</string>
     <string name="sms_error_send_error">Erreur d’envoi du SMS !</string>
     <string name="sms_send_success">SMS envoyé</string>
-    <string name="sms_error_message_full_storage">L’espace pour les SMS est saturé !</string>
+    <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new SMS.</string>
     <string name="sms_delete_multi_success">Suppression de conversation effectuée</string>
     <string name="sms_delete_multi_error">Suppression de conversation Échec</string>
     <string name="sms_delete_error">Erreur de suppression de SMS !</string>
