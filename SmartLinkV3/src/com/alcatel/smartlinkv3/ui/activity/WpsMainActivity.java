@@ -215,7 +215,7 @@ public class WpsMainActivity extends BaseActivity implements OnClickListener{
 
 		String strwpsPin = m_wpspinValue.getText().toString();
 		DataValue data = new DataValue();
-		data.addParam("Security", strwpsPin);
+		data.addParam("WpsPin", strwpsPin);
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_SET_WPS_PIN_REQUSET, data);
 		
 	}
