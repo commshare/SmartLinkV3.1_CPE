@@ -159,6 +159,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_RESET));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
+		
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+		ShowWaiting(true);
 	}
 
 	@Override
@@ -181,6 +186,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			ShowWaiting(false);
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
+			ShowWaiting(false);
+			setSystemInfo();
+		}
+		
+		
 		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESET)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
