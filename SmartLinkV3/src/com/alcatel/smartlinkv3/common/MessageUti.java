@@ -111,6 +111,7 @@ public class MessageUti {
 	public static String WLAN_SET_WLAN_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.wlan.setwalnsetting";
 	public static String WLAN_SET_WPS_PIN_REQUSET = "com.alcatel.smartlinkv3.business.wlan.SetWPSPin";
 	public static String WLAN_SET_WPS_PBC_REQUSET = "com.alcatel.smartlinkv3.business.wlan.SetWPSPbc";
+	public static String WLAN_GET_WLAN_SUPPORT_MODE_REQUSET = "com.alcatel.smartlinkv3.business.wlan.getWlanSupportMode";
 	/**************************Wlan message end*********************************************************************************/
 	
 	/**************************Sharing message start*********************************************************************************/
@@ -239,6 +240,7 @@ public class MessageUti {
 		httpMethods.put(WLAN_SET_WLAN_SETTING_REQUSET, new HttpMethodUti(WlanManager.class, "setWlanSetting"));			
 		httpMethods.put(WLAN_SET_WPS_PIN_REQUSET, new HttpMethodUti(WlanManager.class, "SetWPSPin"));
 		httpMethods.put(WLAN_SET_WPS_PBC_REQUSET, new HttpMethodUti(WlanManager.class, "SetWPSPbc"));
+		httpMethods.put(WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, new HttpMethodUti(WlanManager.class, "getWlanSupportMode"));
 		/********************WLAN method end**********************/
 
 		/**************************LAN message start*******************************************************************************/

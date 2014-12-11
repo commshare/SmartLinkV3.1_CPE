@@ -11,6 +11,7 @@ import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
@@ -747,6 +748,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
+		registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
+		
 
 
 		initValues();
@@ -777,6 +780,17 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				initSpinersUI();
 				setControlsDoneStatus();
 				ShowWaiting(false);
+			}
+		}
+		
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				//init controls state
+				initSpinersUI();
+				setControlsDoneStatus();
 			}
 		}
 

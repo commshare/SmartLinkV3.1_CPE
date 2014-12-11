@@ -431,10 +431,16 @@ public class WlanManager extends BaseManager {
 							// TODO Auto-generated method stub
 							int nRes = response.getResultCode();
 							String strErr = response.getErrorMessage();
-							if (BaseResponse.RESPONSE_OK == nRes &&
-									0 == strErr.length()) {
+							if (BaseResponse.RESPONSE_OK == nRes && 0 == strErr.length()) {
 								m_wlanSupportMode = response.getModelResult();
+							}else{
+								getWlanSupportMode(null);
 							}
+							
+							Intent megIntent = new Intent(MessageUti.WLAN_SET_WPS_PBC_REQUSET);
+							megIntent.putExtra(MessageUti.RESPONSE_RESULT,nRes);
+							megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,strErr);
+							m_context.sendBroadcast(megIntent);
 						}
 					}));
 		}

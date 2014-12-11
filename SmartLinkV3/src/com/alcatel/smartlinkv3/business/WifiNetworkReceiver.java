@@ -75,7 +75,7 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 	private String getGatewayMac(Context ctx) {
 		WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);  
          WifiInfo wifiinfo = wifi_service.getConnectionInfo(); 
-         return wifiinfo.getMacAddress();
+         return wifiinfo.getBSSID();
 	}
 	
 	private boolean checkHaveWifi(Context context) {
