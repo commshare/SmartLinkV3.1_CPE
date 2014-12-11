@@ -757,6 +757,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		initSpinersUI();
 		setControlsDoneStatus();
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
 		ShowWaiting(true);
 	}
 
