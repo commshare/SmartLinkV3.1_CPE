@@ -21,9 +21,9 @@ public class CommonUtil {
 		BigDecimal temp = new BigDecimal(traffic);
 		BigDecimal divide = new BigDecimal(1024);
 		BigDecimal divideM = new BigDecimal(1024l * 1024l);
-		trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_DOWN);
+		trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
 		if(trafficMB.compareTo(divide) >= 0){
-			trafficGB = trafficMB.divide(divide,2,BigDecimal.ROUND_DOWN);
+			trafficGB = trafficMB.divide(divide,2,BigDecimal.ROUND_HALF_UP);
 			return trafficGB + context.getResources().getString(R.string.home_GB);
 		}else{
 			return trafficMB + context.getResources().getString(R.string.home_MB);
