@@ -416,6 +416,7 @@ public class WlanManager extends BaseManager {
 		if (!FeatureVersionManager.getInstance().
 				isSupportApi("Wlan", "GetWlanSupportMode")) {
 			if (0 != strDeviceName.compareToIgnoreCase("Y900")) {
+				m_wlanSupportMode = WlanSupportMode.Mode2Point4G;
 				return;				
 			}
 		}
