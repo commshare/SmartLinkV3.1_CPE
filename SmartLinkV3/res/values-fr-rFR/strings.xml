@@ -111,7 +111,7 @@
     <string name="sms_new_title">Message</string>
     <string name="sms_error_send_error">Erreur d’envoi du SMS !</string>
     <string name="sms_send_success">SMS envoyé</string>
-    <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new SMS.</string>
+    <string name="sms_error_message_full_storage">La boîte aux SMS est pleine. Supprimez-en pour pouvoir en envoyer/enregistrer des nouveaux.</string>
     <string name="sms_delete_multi_success">Suppression de conversation effectuée</string>
     <string name="sms_delete_multi_error">Suppression de conversation Échec</string>
     <string name="sms_delete_error">Erreur de suppression de SMS !</string>
@@ -387,8 +387,8 @@
     <string name="wps_setpbcfailed">Échec de paramétrage de PBC</string>
     <string name="wps_setpbcsuccess">Paramétrage de PBC effectué</string>
     <string name="wps_setwpspinmodefailed">Set WPS PIN mode failed.</string>
-    <string name="wps_setwpspinnotsupport">WPS PIN not support in  WEP, WPA, WPA2 SKIP mode.</string>
-    <string name="wps_setwpspinisworking">WPS is active</string>
+    <string name="wps_setwpspinnotsupport">WPS indisponible sous TKIP WEP, WPA, WPA2 !</string>
+    <string name="wps_setwpspinisworking">WPS actif.</string>
     <string name="wps_setwpspinfailed">Échec de paramétrage du code PIN WPS</string>
     <string name="wps_setwpspinsuccess">Paramétrage du code PIN WPS effectué</string>
     <!-- wps end -->

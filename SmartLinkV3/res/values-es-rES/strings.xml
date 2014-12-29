@@ -111,7 +111,7 @@
     <string name="sms_new_title">Mensaje</string>
     <string name="sms_error_send_error">Enviar error de SMS.</string>
     <string name="sms_send_success">Envío correcto de SMS.</string>
-    <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new SMS.</string>
+    <string name="sms_error_message_full_storage">El buzón de SMS está lleno, elimine algunos SMS para poder enviar/guardar SMS nuevos.</string>
     <string name="sms_delete_multi_success">Se ha borrado la conversación correctamente.</string>
     <string name="sms_delete_multi_error">Se ha borrado la conversación error.</string>
     <string name="sms_delete_error">Eliminar error de SMS.</string>
@@ -387,8 +387,8 @@
     <string name="wps_setpbcfailed">Error al establecer la CP.</string>
     <string name="wps_setpbcsuccess">La CP se ha establecido correctamente.</string>
     <string name="wps_setwpspinmodefailed">Set WPS PIN mode failed.</string>
-    <string name="wps_setwpspinnotsupport">WPS PIN not support in  WEP, WPA, WPA2 SKIP mode.</string>
-    <string name="wps_setwpspinisworking">WPS is active</string>
+    <string name="wps_setwpspinnotsupport">WPS no disponible con WEP, WPA, WPA2 TKIP</string>
+    <string name="wps_setwpspinisworking">WPS activada.</string>
     <string name="wps_setwpspinfailed">Error al establecer el PIN WPS.</string>
     <string name="wps_setwpspinsuccess">El PIN WPS se ha establecido correctamente.</string>
     <!-- wps end -->
