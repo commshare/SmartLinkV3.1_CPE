@@ -386,7 +386,7 @@
     <string name="pbc_text3">3. Haga clic en el icono de la parte superior.</string>
     <string name="wps_setpbcfailed">Error al establecer la CP.</string>
     <string name="wps_setpbcsuccess">La CP se ha establecido correctamente.</string>
-    <string name="wps_setwpspinmodefailed">Set WPS PIN mode failed.</string>
+    <string name="wps_setwpspinmodefailed">¡Error de PIN WPS.</string>
     <string name="wps_setwpspinnotsupport">WPS no disponible con WEP, WPA, WPA2 TKIP</string>
     <string name="wps_setwpspinisworking">WPS activada.</string>
     <string name="wps_setwpspinfailed">Error al establecer el PIN WPS.</string>
