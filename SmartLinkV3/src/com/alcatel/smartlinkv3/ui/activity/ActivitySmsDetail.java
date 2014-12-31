@@ -21,6 +21,7 @@ import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
+import com.alcatel.smartlinkv3.common.ToastUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.InquireDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.view.ViewSms;
@@ -284,7 +285,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 			else if(strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
 			{
 				String msgRes = this.getString(R.string.sms_error_message_full_storage);
-				Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+				ToastUtil.showMessage(this, msgRes, Toast.LENGTH_SHORT);
 				m_progressWaiting.setVisibility(View.GONE);
 				//    			if (m_progress_dialog != null && m_progress_dialog.isShowing()) {
 				//    				m_progress_dialog.dismiss();
@@ -305,6 +307,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				//    				m_progress_dialog.dismiss();
 				//    			}
 				m_etContent.setEnabled(true);
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);  
+				imm.hideSoftInputFromWindow(m_etContent.getWindowToken(), 0);
 				m_btnSend.setEnabled(true);
 				m_btnDelete.setEnabled(true);
 				m_bDeleteSingleEnable = true;
@@ -329,7 +333,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 				}
 				if(sendStatus == SendStatus.Fail_Memory_Full) {
 					String msgRes = this.getString(R.string.sms_error_message_full_storage);
-					Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+					ToastUtil.showMessage(this, msgRes, Toast.LENGTH_SHORT);
 					bEnd = true;
 				}
 				if(sendStatus == SendStatus.Success) {
@@ -457,7 +462,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,O
 	//
 	private void OnBtnSend() {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);  
-		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
+		imm.hideSoftInputFromWindow(m_etContent.getWindowToken(), 0);
 		
 		DataValue data = new DataValue();
 		data.addParam("content", m_etContent.getText().toString());
