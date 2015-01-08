@@ -427,6 +427,7 @@
     <string name="login_check_dialog_content">Inicio de sesión</string>
     <string name="login_invalid_password">Contraseña no válida La contraseña solo puede contener 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg"> Otro usuario ha iniciado sesión, vuelva a intentarlo en unos momentos.</string>
+    <string name="login_login_time_used_out_msg">Iniciar sesión veces se utiliza fuera, usted puede iniciar sesión hasta que el reinicio del dispositivo.</string>
     <string name="login_warning">Advertencia de inicio de sesión</string>
     <string name="login_logout_successful">Se ha cerrado sesión correctamente.</string>
     <!-- Login view end -->

@@ -56,9 +56,11 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private String m_strMsgInvalidPassword;
 	private String m_strMsgWrongPassword;
 	private String m_strMsgOtherUserLogined;
+	private String m_strMsgLoginTimeUsedOut;
 	private AuthenficationBroadcastReviever m_auReceiver;
 	private static OnLoginFinishedListener m_callback;
 	private boolean m_bOtherUserLoginError = false;
+	private boolean m_bLoginTimeUsedOutError = false;
 	
 	private String m_password = "";
 
@@ -110,6 +112,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					CPEConfig.getInstance().setLoginPassword(m_password);
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
+					m_bLoginTimeUsedOutError = false;
 					closeDialog();
 					if (null != m_callback) {
 						m_callback.onLoginFinished();
@@ -120,6 +123,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 						&& strErrorCode
 								.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
 					m_bOtherUserLoginError = true;
+					m_bLoginTimeUsedOutError = false;
 					m_dialog_err_info.showDialog(
 							m_context.getString(R.string.other_login_warning_title),
 							m_strMsgOtherUserLogined);
@@ -131,8 +135,25 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 //					m_vLogin.startAnimation(m_shake);
 					//setAlreadyLogin(false);
 
-				} else {
+				} else if (BaseResponse.RESPONSE_OK == nRet
+						&& strErrorCode
+						.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
+					m_bLoginTimeUsedOutError = true;
 					m_bOtherUserLoginError = false;
+					m_dialog_err_info.showDialog(
+							m_context.getString(R.string.other_login_warning_title),
+							m_strMsgLoginTimeUsedOut);
+					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
+						m_dlgProgress.dismiss();
+					}
+					closeDialog();
+		//			SetErrorMsg(nRet, strErrorCode);
+		//			m_vLogin.startAnimation(m_shake);
+					//setAlreadyLogin(false);
+
+				}else {
+					m_bOtherUserLoginError = false;
+					m_bLoginTimeUsedOutError = false;
 					SetErrorMsg(nRet, strErrorCode);
 					m_vLogin.startAnimation(m_shake);
 					//setAlreadyLogin(false);
@@ -169,7 +190,10 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			if (BaseResponse.RESPONSE_OK == nResponseResult
 					&& err.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
 				m_tvPasswordError.setText(m_strMsgOtherUserLogined);
-			} else {
+			} else if(BaseResponse.RESPONSE_OK == nResponseResult
+					&& err.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)){
+				m_tvPasswordError.setText(m_strMsgLoginTimeUsedOut);
+			}else {
 				m_tvPasswordError.setText(m_strMsgWrongPassword);
 			}
 			m_btnApply.setEnabled(false);
@@ -228,6 +252,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				R.string.login_prompt_str);
 		m_strMsgOtherUserLogined = m_context.getResources().getString(
 				R.string.login_other_user_logined_error_msg);
+		m_strMsgLoginTimeUsedOut = m_context.getResources().getString(
+				R.string.login_login_time_used_out_msg);
 
 		LayoutInflater factory = LayoutInflater.from(m_context);
 		m_vLogin = factory.inflate(R.layout.login_view, null);
@@ -288,7 +314,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				String strTitle = "";
 				if (m_bOtherUserLoginError) {
 					strTitle = m_strMsgOtherUserLogined;
-				} else {
+				} else if(m_bLoginTimeUsedOutError){
+					strTitle = m_strMsgLoginTimeUsedOut;
+				}else{
 					strTitle = m_context
 							.getString(R.string.login_psd_error_msg);
 				}

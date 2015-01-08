@@ -427,6 +427,7 @@
     <string name="login_check_dialog_content">Connexion</string>
     <string name="login_invalid_password">Mot de passe non valide ! Il ne peut inclure que les caractères 0 à 9, a à z, A à Z, \"-+!@$#^&#038;*\".</string>
     <string name="login_other_user_logined_error_msg">Un autre utilisateur est connecté. Veuillez réessayer un peu plus tard.</string>
+    <string name="login_login_time_used_out_msg">Connexion fois est utilisé sur, vous pouvez vous connecter jusqu'à ce que le redémarrage de l'appareil.</string>
     <string name="login_warning">Avertissement de connexion</string>
     <string name="login_logout_successful">Déconnexion effectuée</string>
     <!-- Login view end -->

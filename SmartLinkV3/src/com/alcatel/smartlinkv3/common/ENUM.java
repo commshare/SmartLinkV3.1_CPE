@@ -605,23 +605,23 @@ public class ENUM {
 	}
 
 	/*
-	 * Login status 0: logout 1: logined 2:some body login
+	 * Login status 0: logout 1: logined 2:the login times used out
 	 */
 	public static enum UserLoginStatus {
-		Logout, selfLogined, OthersLogined;
+		Logout, selfLogined, LoginTimeOut;
 
 		public static UserLoginStatus build(int status) {
 			if (status == 1) {
 				return selfLogined;
 			} else if (status == 2) {
-				return OthersLogined;
+				return LoginTimeOut;
 			} else {
 				return Logout;
 			}
 		}
 
 		public static int antiBuild(UserLoginStatus status) {
-			if (status == OthersLogined) {
+			if (status == LoginTimeOut) {
 				return 2;
 			} else if (status == selfLogined) {
 				return 1;

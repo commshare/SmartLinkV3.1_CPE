@@ -427,6 +427,7 @@
     <string name="login_check_dialog_content">Accesso</string>
     <string name="login_invalid_password">Password non valida. La password può contenere solo i seguenti caratteri 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg">Un altro utente sta effettuando l\'accesso. Riprovare ad accedere tra un momento.</string>
+    <string name="login_login_time_used_out_msg">Tempi di accesso viene utilizzato fuori, è possibile accedere fino al riavvio del dispositivo.</string>
     <string name="login_warning">Avviso sull\'accesso</string>
     <string name="login_logout_successful">Logout eseguito correttamente</string>
     <!-- Login view end -->

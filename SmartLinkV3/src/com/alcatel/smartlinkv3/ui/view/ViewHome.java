@@ -507,7 +507,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			UserLoginStatus status = BusinessMannager.getInstance()
 					.getLoginStatus();
 
-			if (status == UserLoginStatus.OthersLogined) {
+			if (status == UserLoginStatus.LoginTimeOut) {
 				PromptUserLogined();
 			} else if (status == UserLoginStatus.selfLogined) {
 				connect();	
@@ -562,7 +562,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		final InquireDialog inquireDlg = new InquireDialog(m_context);
 		inquireDlg.m_titleTextView.setText(R.string.login_check_dialog_title);
 		inquireDlg.m_contentTextView
-				.setText(R.string.login_other_user_logined_error_msg);
+				.setText(R.string.login_login_time_used_out_msg);
 		inquireDlg.m_contentDescriptionTextView.setText("");
 		inquireDlg.m_confirmBtn
 				.setBackgroundResource(R.drawable.selector_common_button);

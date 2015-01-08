@@ -427,6 +427,7 @@
     <string name="login_check_dialog_content">Login</string>
     <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!</string>
+    <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.</string>
     <string name="login_warning">Login warning</string>
     <string name="login_logout_successful">Logout successfully!</string>
     <!-- Login view end -->
