@@ -93,7 +93,7 @@ public class UserManager extends BaseManager {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) { 
                 		startUpdateLoginTimeTask();
-                		m_loginStatus = UserLoginStatus.selfLogined;
+                		m_loginStatus = UserLoginStatus.login;
                 		
                 	}else{
                 		if(null != m_updateLoginTimeTask) {

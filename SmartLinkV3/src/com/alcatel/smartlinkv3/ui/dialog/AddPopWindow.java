@@ -108,7 +108,7 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 	
 	public void userLogout() {
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
-		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.selfLogined) {
+		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
 			MainActivity.setLogoutFlag(true);
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);

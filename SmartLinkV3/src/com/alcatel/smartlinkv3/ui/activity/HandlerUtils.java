@@ -66,7 +66,7 @@ public class HandlerUtils {
 	
 	public static void userLogout() {
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
-		if (m_loginStatus != null && m_loginStatus!=UserLoginStatus.Logout) {
+		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
 			Log.v("login logout", "pccccc userLogout m_loginStatus="+m_loginStatus);

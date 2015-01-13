@@ -122,7 +122,7 @@ public abstract class BaseActivity extends Activity{
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 		
-		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.selfLogined) {
+		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
 			dismissAllDialog();
 			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
 				Intent intent = new Intent(context, MainActivity.class);	

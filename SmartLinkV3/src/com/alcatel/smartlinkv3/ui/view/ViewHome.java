@@ -509,7 +509,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 			if (status == UserLoginStatus.LoginTimeOut) {
 				PromptUserLogined();
-			} else if (status == UserLoginStatus.selfLogined) {
+			} else if (status == UserLoginStatus.login) {
 				connect();	
 			} else {
 				m_loginDialog.showDialog(new OnLoginFinishedListener() {

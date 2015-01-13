@@ -447,7 +447,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 						.getLoginStatus();	
 				if (status == UserLoginStatus.LoginTimeOut) {			
 					PromptUserLogined();		
-				} else if (status == UserLoginStatus.selfLogined) {			
+				} else if (status == UserLoginStatus.login) {			
 					go2Click();		
 				} else {			
 					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
@@ -489,7 +489,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 					.getLoginStatus();	
 			if (status == UserLoginStatus.LoginTimeOut) {			
 				PromptUserLogined();		
-			} else if (status == UserLoginStatus.selfLogined) {			
+			} else if (status == UserLoginStatus.login) {			
 				startDeviceManagerActivity();		
 			} else {			
 				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
@@ -533,7 +533,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
 			if (status == UserLoginStatus.LoginTimeOut) {
 				PromptUserLogined();
-			} else if (status == UserLoginStatus.selfLogined) {
+			} else if (status == UserLoginStatus.login) {
 				go2UsageView();
 			} else {
 				m_loginDlg.showDialog(new OnLoginFinishedListener() {
@@ -570,7 +570,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
 			if (status == UserLoginStatus.LoginTimeOut) {
 				PromptUserLogined();
-			} else if (status == UserLoginStatus.selfLogined) {
+			} else if (status == UserLoginStatus.login) {
 				go2SmsView();
 			} else {
 				m_loginDlg.showDialog(new OnLoginFinishedListener() {
@@ -605,7 +605,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 					.getLoginStatus();	
 			if (status == UserLoginStatus.LoginTimeOut) {			
 				PromptUserLogined();		
-			} else if (status == UserLoginStatus.selfLogined) {			
+			} else if (status == UserLoginStatus.login) {			
 				go2SettingView();		
 			} else {			
 				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
@@ -840,7 +840,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 					.getLoginStatus();	
 			if (status == UserLoginStatus.LoginTimeOut) {			
 				PromptUserLogined();		
-			} else if (status == UserLoginStatus.selfLogined) {			
+			} else if (status == UserLoginStatus.login) {			
 				go2SettingView();
 				Intent intent = new Intent(this, SettingPowerSavingActivity.class);
 				this.startActivity(intent);
