@@ -4,6 +4,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
@@ -91,6 +92,8 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
 	private static boolean m_blLogout = false;
+	
+	private CommonErrorInfoDialog m_dialog_timeout_info;
 	
 	private RelativeLayout m_accessDeviceLayout;
 	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
@@ -814,20 +817,13 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	}
 	
 	private void PromptUserLogined() {
-		final InquireDialog inquireDlg = new InquireDialog(this);
-		inquireDlg.m_titleTextView.setText(R.string.login_check_dialog_title);
-		inquireDlg.m_contentTextView
-				.setText(R.string.login_login_time_used_out_msg);
-		inquireDlg.m_contentDescriptionTextView.setText("");
-		inquireDlg.m_confirmBtn
-				.setBackgroundResource(R.drawable.selector_common_button);
-		inquireDlg.m_confirmBtn.setText(R.string.ok);
-		inquireDlg.showDialog(new OnInquireApply() {
-			@Override
-			public void onInquireApply() {
-				inquireDlg.closeDialog();
-			}
-		});
+		if (null == m_dialog_timeout_info) {
+			m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(this);
+		}
+		m_dialog_timeout_info.showDialog(
+				this.getString(R.string.other_login_warning_title),
+				this.getResources().getString(
+						R.string.login_login_time_used_out_msg));
 	}
 
 	private void widgetBatteryBtnClick() {
