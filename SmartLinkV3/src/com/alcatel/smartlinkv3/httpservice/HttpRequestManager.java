@@ -43,7 +43,7 @@ public class HttpRequestManager {
 	private LinkedList<BaseResponse> m_response_list;
 
 	private int m_nDisconnectNum = 0;
-	private int DISCONNECT_NUMBER = 1;
+	private int DISCONNECT_NUMBER = 5;
 	// private Context m_context = null;
 
 	private Boolean m_bStopBussiness = false;

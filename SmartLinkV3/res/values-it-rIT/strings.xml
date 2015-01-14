@@ -215,7 +215,7 @@
     <string name="setting_backup_failed">Impostazione backup dispositivo non riuscita.</string>
     <string name="setting_backup_success">Impostazione backup dispositivo riuscita.</string>
     <string name="setting_restore_failed">Ripristino non riuscito.</string>
-    <string name="setting_restore_success">Ripristino avvenuto correttamente.</string>
+    <string name="setting_restore_success">Ripristino avvenuto correttamente, il dispositivo si riavvierà immediatamente.</string>
     <string name="setting_restore_no_backup_file">Nessun file di backup.</string>
     <string name="setting_reboot_failed">Riavvio non riuscito.</string>
     <string name="setting_reboot_success">Impostare con successo, il dispositivo si riavvierà immediatamente.</string>

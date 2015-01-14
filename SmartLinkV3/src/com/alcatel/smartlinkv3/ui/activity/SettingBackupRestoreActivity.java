@@ -103,6 +103,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	}
 	
 	private void onBtnRestore(){
+		m_btn_restore.setEnabled(false);
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
 	}
@@ -164,6 +165,13 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 					strTost = getString(R.string.setting_restore_no_backup_file);
 				}else if (EnumRestoreErrorStatus.RESTORE_ERROR_SUCCESSFUL == status) {
 					strTost = getString(R.string.setting_restore_success);
+				}
+			}
+			else
+			{
+				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
+					m_btn_restore.setEnabled(true);
 				}
 			}
 			

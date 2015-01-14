@@ -215,7 +215,7 @@
     <string name="setting_backup_failed">Error en la copia de seguridad del dispositivo.</string>
     <string name="setting_backup_success">La copia de seguridad del dispositivo se ha realizado correctamente.</string>
     <string name="setting_restore_failed">Se ha producido un error durante la restauración.</string>
-    <string name="setting_restore_success">Se ha restaurado correctamente.</string>
+    <string name="setting_restore_success">Se ha restaurado correctamente, el dispositivo se reiniciará inmediatamente.</string>
     <string name="setting_restore_no_backup_file">No hay archivo de copia de seguridad.</string>
     <string name="setting_reboot_failed">Se ha producido un error durante el reinicio.</string>
     <string name="setting_reboot_success">Establecido con exito, el dispositivo se reiniciará inmediatamente.</string>

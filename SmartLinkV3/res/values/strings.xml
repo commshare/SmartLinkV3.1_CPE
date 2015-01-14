@@ -215,7 +215,7 @@
     <string name="setting_backup_failed">Set device back up failed.</string>
     <string name="setting_backup_success">Set device back up successed.</string>
     <string name="setting_restore_failed">Restore failed.</string>
-    <string name="setting_restore_success">Restore successed.</string>
+    <string name="setting_restore_success">Restore successed, device will reboot immediately.</string>
     <string name="setting_restore_no_backup_file">No backup file.</string>
     <string name="setting_reboot_failed">Reboot failed.</string>
     <string name="setting_reboot_success">Set successfully, device will reboot immediately.</string>

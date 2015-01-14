@@ -215,7 +215,7 @@
     <string name="setting_backup_failed">Échec de configuration de la sauvegarde de l’appareil</string>
     <string name="setting_backup_success">Configuration de la sauvegarde de l’appareil effectuée</string>
     <string name="setting_restore_failed">Échec de la restauration</string>
-    <string name="setting_restore_success">Restauration effectuée</string>
+    <string name="setting_restore_success">Restauration effectuée, le dispositif va redémarrer immédiatement.</string>
     <string name="setting_restore_no_backup_file">Pas de fichier de sauvegarde.</string>
     <string name="setting_reboot_failed">Échec du redémarrage</string>
     <string name="setting_reboot_success">Régler avec succès, le dispositif va redémarrer immédiatement.</string>
