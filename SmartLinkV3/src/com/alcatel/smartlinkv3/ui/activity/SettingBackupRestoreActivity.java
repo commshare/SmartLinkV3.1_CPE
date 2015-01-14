@@ -31,6 +31,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	private Button m_btn_backup=null;
 	private Button m_btn_restore=null;
 	private ProgressBar m_pbWaitingBar=null;
+	private boolean  m_bRestore = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -42,6 +43,8 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		prepareTitlebar();
 		createControls();
 		ShowWaiting(false);
+		
+		
 	}
 
 	private void prepareTitlebar(){
@@ -69,7 +72,15 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			m_pbWaitingBar.setVisibility(View.GONE);
 		}
 		m_btn_backup.setEnabled(!blShow);
-		m_btn_restore.setEnabled(!blShow);
+		if(m_bRestore)
+		{
+			m_btn_restore.setEnabled(false);	
+		}
+		else
+		{
+			m_btn_restore.setEnabled(!blShow);
+		}
+		
 		m_ib_back.setEnabled(!blShow);
 		m_tv_back.setEnabled(!blShow);
 	}
@@ -104,6 +115,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	
 	private void onBtnRestore(){
 		m_btn_restore.setEnabled(false);
+		m_bRestore = true;
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
 	}
@@ -169,6 +181,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			}
 			else
 			{
+				m_bRestore = false;
 				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					m_btn_restore.setEnabled(true);
@@ -186,7 +199,14 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					m_btn_backup.setEnabled(true);
-					m_btn_restore.setEnabled(true);
+					if(m_bRestore)
+					{
+						m_btn_restore.setEnabled(false);	
+					}
+					else
+					{
+						m_btn_restore.setEnabled(true);
+					}
 				}else{
 					m_btn_backup.setEnabled(false);
 					m_btn_restore.setEnabled(false);
