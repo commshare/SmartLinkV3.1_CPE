@@ -124,7 +124,7 @@
 			        android:layout_marginRight="10dip"
 			        android:layout_toLeftOf="@id/ID_SMS_DETAIL_BUTTON_SEND"
 			        android:inputType="none"
-			        android:maxLength="670"
+			        android:maxLength="1600"
 			        android:scrollbarStyle="outsideOverlay"
 			        android:scrollbars="vertical"
 			        android:textSize="20sp" />

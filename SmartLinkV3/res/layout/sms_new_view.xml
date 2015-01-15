@@ -156,7 +156,7 @@
 			        android:layout_marginRight="10dip"
 			        android:layout_toLeftOf="@id/send_btn"
 			        android:inputType="none"
-			        android:maxLength="670"
+			        android:maxLength="1600"
 			        android:scrollbarStyle="outsideOverlay"
 			        android:scrollbars="vertical"
 			        android:textSize="20sp" />
