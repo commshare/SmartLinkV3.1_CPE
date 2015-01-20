@@ -21,7 +21,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.telephony.SmsMessage;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -117,9 +119,35 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 					m_btnSend.setEnabled(true);
 				}else{
 					m_btnSend.setEnabled(false);
+				}			
+
+				int sms[] = SmsMessage.calculateLength(s, false);
+				int msgCount = sms[0];
+				int codeUnitCount = sms[1];
+				int codeUnitsRemaining = sms[2];
+				int codeUnitSize = sms[3];
+
+				m_tvCnt.setText(codeUnitsRemaining + "/" + msgCount);
+
+				if (msgCount > 10) {
+					int nMax= 670;
+					if(codeUnitSize == 1)
+					{
+						nMax = 1530;
+					}
+					int selEndIndex = Selection.getSelectionEnd(s);
+					String newStr = strContent.substring(0, nMax);
+					m_etContent.setText(newStr);
+
+					Editable editable = m_etContent.getText();
+					int newLen = editable.length();
+
+					if (selEndIndex > newLen) {
+						selEndIndex = editable.length();
+					}
+
+					Selection.setSelection(editable, selEndIndex);
 				}
-				
-				showNewSmsCnt(s);
 			}
 
 			@Override
