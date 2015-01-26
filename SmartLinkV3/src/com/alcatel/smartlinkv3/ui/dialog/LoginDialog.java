@@ -154,7 +154,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				}else {
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;
-					SetErrorMsg(nRet, strErrorCode);
+					//SetErrorMsg(nRet, strErrorCode);
 					m_vLogin.startAnimation(m_shake);
 					//setAlreadyLogin(false);
 				}
