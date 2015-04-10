@@ -1,0 +1,297 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_white" >
+
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+	    <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:background="@color/main_title_background" >
+		    <LinearLayout android:id="@+id/back_layout"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:clickable="true"
+	            android:layout_alignParentLeft="true"
+	            android:layout_centerVertical="true"
+	            android:orientation="horizontal"
+	            android:layout_marginLeft="10dip" >
+		         <ImageView
+		             android:id="@+id/back_button"
+		             android:layout_width="wrap_content"
+		             android:layout_height="wrap_content"
+		             android:background="@drawable/back"
+		             android:layout_gravity="center_vertical"
+		             android:contentDescription="@null" />
+		         <TextView
+		             android:layout_width="wrap_content"
+		             android:layout_height="wrap_content"
+		             android:layout_gravity="center_vertical"
+		             android:gravity="center"
+		             android:text="@string/back"
+		             android:singleLine="true"
+		             android:layout_marginLeft="5dip"
+		             android:textColor="@color/color_white"
+		             android:textSize="18sp" />
+	        </LinearLayout>
+
+            <TextView
+                android:id="@+id/storage_main_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/storage_main_title"
+                android:textColor="@color/color_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+	    </RelativeLayout>  
+	</LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/title_layout"
+        android:background="@color/color_white"
+        android:overScrollMode="never" >
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/item_hard_disc_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginTop="10dip"
+                    android:paddingBottom="10dip"
+                    android:paddingTop="10dip" >
+
+                    <ImageView
+                        android:id="@+id/image_hard_disc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dip"
+                        android:background="@drawable/item_hard_disk"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dip"
+                        android:layout_toRightOf="@id/image_hard_disc"
+                        android:singleLine="true"
+                        android:text="@string/storage_main_hard_disc"
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dip"
+                        android:background="@drawable/right_arrow_big"
+                        android:contentDescription="@null" />
+                    
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/item_no_ext_storage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginTop="10dip"
+                    android:paddingBottom="10dip"
+                    android:paddingTop="10dip"
+                    android:visibility="gone" >
+
+                    <ImageView
+                        android:id="@+id/image_no_storage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dip"
+                        android:background="@drawable/item_storage_unavailable"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dip"
+                        android:layout_toRightOf="@+id/image_no_storage"
+                        android:singleLine="true"
+                        android:text="@string/storage_main_no_external_storage"
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+                                    
+                <View
+		              android:layout_width="match_parent"
+		              android:layout_height="1dip"
+		              android:layout_marginLeft="12dip"
+		              android:background="@color/color_divider" />
+
+                <LinearLayout
+                    android:id="@+id/samba_disable_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dip"
+                        android:background="@drawable/samba_switch_off"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dip"
+                        android:gravity="center"
+                        android:text="@string/storage_main_samba_service_disabled"
+                        android:textColor="@color/light_blue"
+                        android:textSize="@dimen/dimen_textsize_16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/samba_service_disableed_discription_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dip"
+                        android:layout_marginRight="10dip"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/storage_main_samba_service_disabled_description"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/dimen_textsize_16sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/item_samba_service"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dip"
+                        android:layout_marginRight="12dip"
+                        android:layout_marginTop="10dip"
+                        android:paddingBottom="10dip"
+                        android:paddingTop="10dip" >
+
+                        <ImageView
+                            android:id="@+id/item_samba_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dip"
+                            android:background="@drawable/item_samba"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dip"
+                            android:layout_toRightOf="@id/item_samba_image"
+                            android:singleLine="true"
+                            android:text="@string/storage_main_samba_service"
+                            android:textColor="@color/color_black"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/connect_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="15dip"
+                            android:background="@drawable/switch_off" />                       
+                    </RelativeLayout>
+                    
+                    <View
+			                android:layout_width="match_parent"
+			                android:layout_height="1dip"
+			                android:layout_marginLeft="12dip"
+			                android:background="@color/color_divider" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/local_storage_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginTop="10dip"
+                    android:clickable="true"
+                    android:paddingBottom="10dip"
+                    android:paddingTop="10dip" >
+
+                    <ImageView
+                        android:id="@+id/device_info_setting_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dip"
+                        android:background="@drawable/item_local_storage"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dip"
+                        android:layout_toRightOf="@id/device_info_setting_image"
+                        android:singleLine="true"
+                        android:text="@string/storage_main_local_storage"
+                        android:textColor="@color/color_black"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dip"
+                        android:background="@drawable/right_arrow_big"
+                        android:contentDescription="@null" />
+                </RelativeLayout>
+                <View
+		                android:layout_width="match_parent"
+		                android:layout_height="1dip"
+		                android:layout_marginLeft="12dip"
+		                android:background="@color/color_divider" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/waiting_progress"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:indeterminateDrawable="@drawable/progerss_blue"
+                android:visibility="gone" />
+        </FrameLayout>
+    </ScrollView>
+
+</RelativeLayout>

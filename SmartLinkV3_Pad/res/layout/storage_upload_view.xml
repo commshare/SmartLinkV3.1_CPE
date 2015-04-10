@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_white" >
+
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+	    <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:background="@color/main_title_background" >
+
+            <TextView
+                android:id="@+id/cancel_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+            	android:layout_centerVertical="true"
+                android:layout_marginRight="10dip"
+                android:padding="12dip"
+                android:text="@string/cancel"
+                android:textColor="@drawable/common_button_text"
+                android:textSize="18sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/upload_title"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/directory_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_layout"
+        android:layout_marginTop="1dip"
+        android:background="@color/color_white"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/root_directory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:src="@drawable/local_storage_grey" />
+
+        <TextView
+            android:id="@+id/directory_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:ellipsize="middle"
+            android:gravity="center"
+             android:maxEms="7"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:singleLine="true"
+            android:textColor="@color/color_black"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/directory_arrow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/directory_arrow"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/directory"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:ellipsize="middle"
+            android:gravity="center"
+             android:maxEms="7"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:singleLine="true"
+            android:textColor="@color/color_black"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/directory_arrow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/directory_arrow"
+            android:contentDescription="@null"
+            android:visibility="gone" />      
+      
+    </LinearLayout>
+    
+        <View
+        android:id="@+id/layout_top_divider"
+    	android:layout_below="@id/directory_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="10dip"
+        android:background="@color/color_divider" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="68dip"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_white"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/upload_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:background="@drawable/selector_common_button"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip"
+            android:layout_marginLeft="20dip"
+            android:gravity="center"
+            android:text="@string/upload"
+            android:textColor="@drawable/common_button_text"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_textsize_12sp" />
+
+        <CheckBox
+            android:id="@+id/select_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:button="@null"
+            android:checked="false"
+            android:drawablePadding="5dip"
+            android:drawableTop="@drawable/selector_checkbox"
+            android:gravity="center"
+            android:paddingTop="5dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:text="@string/toolbar_select_all"
+            android:textColor="@color/color_grey"
+            android:textSize="@dimen/dimen_textsize_12sp"/>
+        
+        <View
+            android:layout_width="1dip"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/select_all"
+            android:background="@color/color_light_gray" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_layout"
+        android:layout_below="@id/directory_layout" >
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:choiceMode="singleChoice"
+            android:divider="@color/color_divider"
+            android:dividerHeight="0dip"
+            android:drawSelectorOnTop="false"
+            android:listSelector="@drawable/selector_local_storage_item"
+            android:overScrollMode="never" />
+
+        <ProgressBar
+            android:id="@+id/waiting_progress"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:indeterminateDrawable="@drawable/progerss_blue"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</RelativeLayout>

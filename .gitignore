@@ -5,3 +5,10 @@ SmartLinkV3/.classpath
 SmartLinkV3/project.properties
 SmartLinkV3/build.xml
 SmartLinkV3/local.properties
+SmartLinkV3_Pad/bin/*
+SmartLinkV3_Pad/gen/*
+SmartLinkV3_Pad/.settings
+SmartLinkV3_Pad/.classpath
+SmartLinkV3_Pad/project.properties
+SmartLinkV3_Pad/build.xml
+SmartLinkV3_Pad/local.properties
