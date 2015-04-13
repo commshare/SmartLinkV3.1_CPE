@@ -17,10 +17,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 
-import com.alcatel.smartlinkv3.mediaplayer.AllShareApplication;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.LogFactory;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 public class DlnaService extends Service implements IBaseEngine,
 													DeviceChangeListener,
@@ -85,7 +85,7 @@ public class DlnaService extends Service implements IBaseEngine,
 		mAllShareProxy = AllShareProxy.getInstance(this);
 		
 		mControlPoint = new ControlPoint();
-		AllShareApplication.getInstance().setControlPoint(mControlPoint);
+		SmartLinkV3App.getInstance().setControlPoint(mControlPoint);
 		mControlPoint.addDeviceChangeListener(this);
 		mControlPoint.addSearchResponseListener(new SearchResponseListener() {		
 			public void deviceSearchResponseReceived(SSDPPacket ssdpPacket) {
@@ -116,7 +116,7 @@ public class DlnaService extends Service implements IBaseEngine,
 	
 	private void unInit(){
 		unRegisterNetworkStatusBR();
-		AllShareApplication.getInstance().setControlPoint(null);
+		SmartLinkV3App.getInstance().setControlPoint(null);
 		mCenterWorkThread.setSearchListener(null);
 		mCenterWorkThread.exit();
 	}

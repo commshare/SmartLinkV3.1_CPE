@@ -13,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.mediaplayer.activity.BaseActivity;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.MediaManager;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
 import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.FileHelper;
+import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 
 public class PicturePlayerActivity extends BaseActivity implements DownLoadHelper.IDownLoadCallback,
 																		PictureUtil.IScalCallback{

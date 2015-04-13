@@ -34,6 +34,7 @@ import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity;
+import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 
 public class ContentActivity extends BaseActivity implements OnItemClickListener, IDeviceChangeListener, 
 												BrowseRequestCallback, OnClickListener{

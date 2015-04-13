@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.mediaplayer.activity.BaseActivity;
+
 import com.alcatel.smartlinkv3.mediaplayer.music.lrc.LrcDownLoadHelper;
 import com.alcatel.smartlinkv3.mediaplayer.music.lrc.LyricView;
 import com.alcatel.smartlinkv3.mediaplayer.music.lrc.MusicUtils;
@@ -47,6 +47,7 @@ import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.DlnaUtils;
 import com.alcatel.smartlinkv3.mediaplayer.util.FileHelper;
 import com.alcatel.smartlinkv3.mediaplayer.util.LogFactory;
+import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 
 public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpdateListener,
 												OnSeekCompleteListener, OnErrorListener,

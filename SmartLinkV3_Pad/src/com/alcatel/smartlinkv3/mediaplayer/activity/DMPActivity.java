@@ -22,13 +22,10 @@ import com.alcatel.smartlinkv3.mediaplayer.adapter.DeviceAdapter;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
+import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 
 
-/**
- * @author lance
- * @csdn  http://blog.csdn.net/geniuseoe2012
- * @github https://github.com/geniusgithub
- */
+
 public class DMPActivity extends BaseActivity implements OnClickListener, 
 															IDeviceChangeListener,
 															OnItemClickListener{

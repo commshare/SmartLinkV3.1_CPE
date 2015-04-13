@@ -15,7 +15,7 @@ import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
 import android.content.Context;
 import android.content.Intent;
 
-
+//外部类过滤DLNA设备信息保留DMS设备列表，并发出更新广播通知UI
 public class AllShareProxy implements IDeviceOperator,
 										IDeviceOperator.IDMSDeviceOperator{
 

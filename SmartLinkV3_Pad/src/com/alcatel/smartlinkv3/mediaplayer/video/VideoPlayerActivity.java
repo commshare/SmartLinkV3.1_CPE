@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.mediaplayer.activity.BaseActivity;
 import com.alcatel.smartlinkv3.mediaplayer.music.LoaderHelper;
 import com.alcatel.smartlinkv3.mediaplayer.player.AbstractTimer;
 import com.alcatel.smartlinkv3.mediaplayer.player.CheckDelayTimer;
@@ -38,6 +37,7 @@ import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
 import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.DlnaUtils;
 import com.alcatel.smartlinkv3.mediaplayer.util.LogFactory;
+import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 
 public class VideoPlayerActivity extends BaseActivity implements OnBufferingUpdateListener,
 											OnSeekCompleteListener, OnErrorListener{
