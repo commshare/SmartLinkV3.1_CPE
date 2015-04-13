@@ -25,6 +25,7 @@ import com.alcatel.smartlinkv3.ui.dialog.AddPopWindow;
 import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
 import com.alcatel.smartlinkv3.ui.view.ViewHome;
 import com.alcatel.smartlinkv3.ui.view.ViewIndex;
+import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
 import com.alcatel.smartlinkv3.ui.view.ViewSetting;
 import com.alcatel.smartlinkv3.ui.view.ViewSms;
 import com.alcatel.smartlinkv3.ui.view.ViewUsage;
@@ -38,6 +39,7 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.GestureDetector.OnGestureListener;
@@ -65,6 +67,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	private ViewFlipper m_viewFlipper;
 	
 	private TextView m_homeBtn;
+	private TextView m_microsdBtn;
 	private TextView m_usageBtn;
 	private RelativeLayout m_smsBtn;
 	private TextView m_settingBtn;
@@ -81,6 +84,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	private ViewSms m_smsView = null;
 	
 	private ViewSetting m_settingView = null;
+	private ViewMicroSD m_microsdView = null;
 
 	public static DisplayMetrics m_displayMetrics = new DisplayMetrics();
 	
@@ -119,6 +123,8 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
 		m_homeBtn = (TextView) this.findViewById(R.id.main_home);
 		m_homeBtn.setOnClickListener(this);
+		m_microsdBtn = (TextView) this.findViewById(R.id.main_microsd);
+		m_microsdBtn.setOnClickListener(this);
 		m_usageBtn = (TextView) this.findViewById(R.id.main_usage);
 		m_usageBtn.setOnClickListener(this);
 		m_smsBtn = (RelativeLayout) this.findViewById(R.id.tab_sms_layout);
@@ -175,6 +181,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_usageView.onResume();
 		m_smsView.onResume();
 		m_settingView.onResume();
+		m_microsdView.onResume();
 		
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
@@ -192,6 +199,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_usageView.onPause();
 		m_smsView.onPause();
 		m_settingView.onPause();
+		m_microsdView.onPause();
 	}
 
 	@Override
@@ -207,6 +215,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_usageView.onDestroy();
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
+		m_microsdView.onDestroy();
 	}
 	
 	private void destroyDialogs(){
@@ -442,6 +451,9 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		case R.id.main_setting:
 			settingBtnClick();
 			break;
+		case R.id.main_microsd:
+			microsdBtnClick();
+			break;
 		case R.id.btnbar:
 			if (LoginDialog.isLoginSwitchOff()) {		
 				go2Click();	
@@ -627,6 +639,16 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		updateTitleUI(ViewIndex.VIEW_SETTINGE);
 		pageIndex = ViewIndex.VIEW_SETTINGE;
 	}
+	
+	private void microsdBtnClick() {
+		go2MicroSDView();
+	}
+	
+	private void go2MicroSDView(){
+		showView(ViewIndex.VIEW_MICROSD);
+		updateTitleUI(ViewIndex.VIEW_MICROSD);
+		pageIndex = ViewIndex.VIEW_MICROSD;
+	}
 
 	private void addView() {
 		m_homeView = new ViewHome(this);	
@@ -644,6 +666,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_settingView = new ViewSetting(this);
 		m_viewFlipper.addView(m_settingView.getView(),
 				ViewIndex.VIEW_SETTINGE, m_viewFlipper.getLayoutParams());
+		
+		m_microsdView = new ViewMicroSD(this);
+		m_viewFlipper.addView(m_microsdView.getView(),
+				ViewIndex.VIEW_MICROSD, m_viewFlipper.getLayoutParams());
+		
 	}
 
 	public void showView(int viewIndex) {
@@ -673,6 +700,10 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			m_titleTextView.setText(R.string.main_setting);
 			m_Btnbar.setVisibility(View.GONE);
 			setMainBtnStatus(R.id.main_setting);
+		}
+		if(viewIndex == ViewIndex.VIEW_MICROSD) {
+			m_titleTextView.setText(R.string.main_microsd);
+			m_Btnbar.setVisibility(View.GONE);
 		}
 	}
 

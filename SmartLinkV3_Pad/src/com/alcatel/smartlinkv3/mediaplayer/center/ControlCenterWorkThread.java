@@ -57,7 +57,7 @@ private static final CommonLog log = LogFactory.createLog();
 	
 	@Override
 	public void run() {
-		log.e("ControlCenterWorkThread run...");		
+		log.e("ControlCenterThread is running...");		
 		
 		while(true)
 		{
@@ -81,7 +81,7 @@ private static final CommonLog log = LogFactory.createLog();
 			}
 		}
 		
-		log.e("ControlCenterWorkThread over...");		
+		log.e("ControlCenterThread is over...");		
 	}
 	
 	private void refreshDevices(){

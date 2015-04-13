@@ -35,7 +35,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.LoadingActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|keyboardHidden|screenSize"          
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
@@ -46,54 +46,54 @@
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.MainActivity"
-            android:screenOrientation="portrait"
+
             android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden|screenSize"          
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.RefreshWifiActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivityNewSms"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.SdSharingActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name=".ui.activity.UsageSettingActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name=".ui.activity.WpsMainActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -101,7 +101,7 @@
         
         <activity 
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle">
@@ -109,7 +109,7 @@
         </activity>
         <activity 
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle">
@@ -118,7 +118,7 @@
         
         <activity 
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle">
@@ -127,7 +127,7 @@
         
         <activity 
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle">
@@ -136,7 +136,7 @@
         
         <activity 
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle">
@@ -145,56 +145,56 @@
         
         <activity 
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle">
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.StorageMainActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.StorageEditActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.StorageMoveToActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.StorageSearchActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.StorageUploadActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.LocalStorageActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.SetDefaultDirectoryActivity"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager"
-            android:screenOrientation="portrait"
+
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>

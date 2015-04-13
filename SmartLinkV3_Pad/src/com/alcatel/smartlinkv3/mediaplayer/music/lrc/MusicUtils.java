@@ -152,7 +152,7 @@ public class MusicUtils {
 //		}
 //	}
 
-	private static final String LYRICS_DIR = "/geniusgithub/lyrics";
+	private static final String LYRICS_DIR = "/alcatelsmartlinkv3/lyrics";
 
 	public static String getLyricDir() {
 		File file = Environment.getExternalStorageDirectory();

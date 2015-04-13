@@ -3,7 +3,7 @@ package org.cybergarage.util;
 
 
 public class LogFactory {
-	private static final String TAG = "all_share";
+	private static final String TAG = "smartlinkv3";
 	private static CommonLog log = null;
 
 	public static CommonLog createLog() {
