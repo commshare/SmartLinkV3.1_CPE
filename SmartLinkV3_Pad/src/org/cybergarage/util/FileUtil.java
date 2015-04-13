@@ -68,12 +68,10 @@ public final class FileUtil
 		}
 	}
 	
-	/** 根据文件的名字判断是不是xml文件，是返回true，否则返回false */
 	public final static boolean isXMLFileName(String name)
 	{
-		if (StringUtil.hasData(name) == false){
+		if (StringUtil.hasData(name) == false)
 			return false;
-		}
 		String lowerName = name.toLowerCase();
 		return lowerName.endsWith("xml");
 	}

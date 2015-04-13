@@ -18,7 +18,6 @@
 
 package org.cybergarage.util;
 
-/** ThreadCore 继承 Runnable */
 public class ThreadCore implements Runnable
 {
 	////////////////////////////////////////////////
@@ -35,17 +34,14 @@ public class ThreadCore implements Runnable
 	
 	private java.lang.Thread mThreadObject = null;
 	
-	/** 设置线程对象 */
 	public void setThreadObject(java.lang.Thread obj) {
 		mThreadObject = obj;
 	}
 
-	/** 获取线程对象 */
 	public java.lang.Thread getThreadObject() {
 		return mThreadObject;
 	}
 
-	/** 启动线程 */
 	public void start() 
 	{
 		java.lang.Thread threadObject = getThreadObject();
@@ -56,18 +52,15 @@ public class ThreadCore implements Runnable
 		}
 	}
 	
-	@Override
 	public void run()
 	{
 	}
 
-	/** 判断当前运行的线程是否 mThreadObject 对象  是返回true 否则返回false*/
 	public boolean isRunnable()
 	{
 		return (Thread.currentThread() == getThreadObject()) ? true : false;
 	}
 	
-	/** 停止线程并设置 mThreadObject 为null*/
 	public void stop() 
 	{
 		java.lang.Thread threadObject = getThreadObject();
@@ -82,7 +75,6 @@ public class ThreadCore implements Runnable
 		}
 	}
 	
-	/** 重启线程的方法 */
 	public void restart()
 	{
 		stop();

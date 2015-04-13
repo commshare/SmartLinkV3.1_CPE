@@ -5,6 +5,7 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.mediaplayer.activity.DMSActivity;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 import com.alcatel.smartlinkv3.ui.activity.SdSharingActivity;
 import com.alcatel.smartlinkv3.ui.activity.WpsMainActivity;
@@ -25,19 +26,20 @@ import android.widget.TextView;
 
 
 public class AddPopWindow extends PopupWindow implements OnClickListener{
-	private View conentView;
+	private View contentView;
 	LinearLayout m_sd_sharing;
 	LinearLayout m_wps;
 	LinearLayout m_logout;
+	LinearLayout m_dlna;
 
 	public AddPopWindow(final Activity context) {	
 		super(context);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		conentView = inflater.inflate(R.layout.add_popup_dialog, null);
+		contentView = inflater.inflate(R.layout.add_popup_dialog, null);
 		int h = context.getWindowManager().getDefaultDisplay().getHeight();
 		int w = context.getWindowManager().getDefaultDisplay().getWidth();
-		this.setContentView(conentView);
+		this.setContentView(contentView);
 		this.setWidth(w / 2 + 50);
 		this.setHeight(LayoutParams.WRAP_CONTENT);
 		this.setFocusable(true);
@@ -47,23 +49,27 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 		this.setBackgroundDrawable(dw);
 
 		//this.setAnimationStyle(R.style.AnimationPreview);
-		m_sd_sharing = (LinearLayout) conentView
+		m_sd_sharing = (LinearLayout) contentView
 				.findViewById(R.id.sd_sharing_layout);
 		m_sd_sharing.setOnClickListener(this);
 		
-		m_wps = (LinearLayout) conentView
+		m_wps = (LinearLayout) contentView
 				.findViewById(R.id.wps_layout);
 		m_wps.setOnClickListener(this);
 		
-		m_logout = (LinearLayout) conentView
+		m_logout = (LinearLayout) contentView
 				.findViewById(R.id.logout_layout);
 		m_logout.setOnClickListener(this);
+		
+		m_dlna = (LinearLayout) contentView
+				.findViewById(R.id.dlna);
+		m_dlna.setOnClickListener(this);
 		
 		showSdSharing();
 	}
 	
 	private void showSdSharing() {
-		TextView divider = (TextView) conentView.findViewById(R.id.sd_sharing_layout_divider);
+		TextView divider = (TextView) contentView.findViewById(R.id.sd_sharing_layout_divider);
 		
 		boolean bSupport = FeatureVersionManager.getInstance().isSupportModule("Sharing");
 		if(bSupport == true) {
@@ -91,6 +97,11 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 			break;
 		case R.id.logout_layout:
 			userLogout();
+			break;
+		case R.id.dlna:
+			intent.setClass(v.getContext(), DMSActivity.class);
+			v.getContext().startActivity(intent);
+//			Log.v("DLNA", "TEST");
 			break;
 		}
 		this.dismiss();

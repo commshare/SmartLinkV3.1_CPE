@@ -9,6 +9,7 @@
         android:targetSdkVersion="17" />
     
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+   	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
@@ -16,9 +17,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+   	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name = "android.permission.GET_ACCOUNTS"  />
+   	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" /> 
 
     <application
         android:name="com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App"
@@ -192,7 +199,35 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         
+        <activity
+            android:name="com.alcatel.smartlinkv3.mediaplayer.activity.DMSActivity"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
         
+        <activity
+            android:name="com.alcatel.smartlinkv3.mediaplayer.activity.ContentActivity"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+    		android:screenOrientation="landscape" 
+            android:launchMode="singleTask">
+        </activity>
+        
+        <activity
+            android:name="com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+    		android:screenOrientation="landscape" 
+            android:launchMode="singleTask">
+        </activity>
+        
+        <activity
+            android:name="com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:launchMode="singleTask">
+        </activity>
         
         <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >  
            <intent-filter >  
@@ -215,6 +250,13 @@
         </service>
         <service android:name="com.alcatel.smartlinkv3.samba.SmbService" >
         </service>
+        <service android:name="com.alcatel.smartlinkv3.mediaplayer.center.DlnaService" android:enabled="true">
+			<intent-filter>
+                <action android:name="com.geniusgithub.allshare.search_device" />
+                <action android:name="com.geniusgithub.allshare.reset_search_device" />
+                
+            </intent-filter>
+		</service>
         <receiver
             android:name="com.alcatel.smartlinkv3.common.BootReceiver"
             android:priority="2147483647" >
