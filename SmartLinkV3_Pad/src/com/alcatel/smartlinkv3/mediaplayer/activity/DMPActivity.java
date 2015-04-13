@@ -29,7 +29,7 @@ import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
  * @csdn  http://blog.csdn.net/geniuseoe2012
  * @github https://github.com/geniusgithub
  */
-public class DMSActivity extends BaseActivity implements OnClickListener, 
+public class DMPActivity extends BaseActivity implements OnClickListener, 
 															IDeviceChangeListener,
 															OnItemClickListener{
     /** Called when the activity is first created. */

@@ -200,7 +200,7 @@
         </activity>
         
         <activity
-            android:name="com.alcatel.smartlinkv3.mediaplayer.activity.DMSActivity"
+            android:name="com.alcatel.smartlinkv3.mediaplayer.activity.DMPActivity"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
