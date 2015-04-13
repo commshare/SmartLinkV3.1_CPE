@@ -1,6 +1,10 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import java.util.List;
+
+import org.cybergarage.upnp.Device;
+
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
@@ -46,6 +50,7 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -54,7 +59,13 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.view.MotionEvent;
 
-public class MainActivity extends BaseActivity implements OnClickListener{
+import com.alcatel.smartlinkv3.mediaplayer.activity.ContentActivity;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
+
+public class MainActivity extends BaseActivity implements OnClickListener,
+															IDeviceChangeListener{
 	private final int HOME_PAGE = 1;
 	private final int SMS_PAGE = 2;
 	private final int BATTERY_PAGE = 3;
@@ -101,6 +112,10 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 	
 	private RelativeLayout m_accessDeviceLayout;
 	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
+	
+	private DMSDeviceBrocastFactory mBrocastFactory;
+	private AllShareProxy mAllShareProxy;
+	private Device mDevice;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -160,6 +175,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_accessDeviceLayout = (RelativeLayout)m_homeView.getView().findViewById(R.id.access_num_layout);
 		m_accessDeviceLayout.setOnClickListener(this);
 		OnResponseAppWidget();
+		
+		mAllShareProxy = AllShareProxy.getInstance(this);
+		mAllShareProxy.startSearch();
+		mBrocastFactory = new DMSDeviceBrocastFactory(this);
+    	mBrocastFactory.registerListener(this);
 	}
 
 	@Override
@@ -216,6 +236,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
 		m_microsdView.onDestroy();
+		mBrocastFactory.unRegisterListener();
 	}
 	
 	private void destroyDialogs(){
@@ -910,5 +931,31 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			startActivity(itent);
 			this.finish();
 		}
+	}
+	
+	@Override
+	public void onDeviceChange(boolean isSelDeviceChange) {
+		updateDeviceList();
+	}
+	
+	private void updateDeviceList(){
+		List<Device> list = mAllShareProxy.getDMSDeviceList();
+		if(list.size() == 1)
+		{
+			mDevice = list.get(0);
+		}else {
+		
+		}
+	}
+	
+	public void onDLNAClick() {
+		// TODO Auto-generated method stub
+		mAllShareProxy.setDMSSelectedDevice(mDevice);
+		goContentActivity();
+	}
+	
+	private void goContentActivity(){
+		Intent intent = new Intent(this, ContentActivity.class);
+		startActivity(intent);
 	}
 }
