@@ -2,7 +2,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import org.cybergarage.upnp.ControlPoint;
 
-import com.alcatel.smartlinkv3.common.HttpService;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
 import android.app.*;
@@ -27,8 +27,9 @@ public class SmartLinkV3App extends Application {
 		CrashHandler crashHandler = CrashHandler.getInstance();
 		crashHandler.init(getApplicationContext());	
 		m_instance = this;
-		Log.d("HttpService", "Application onCreate ");
-		HttpService.startService();		
+		BusinessMannager.getInstance();
+//		Log.d("HttpService", "Application onCreate ");
+//		HttpService.startService();		
 		
 		HandlerUtils.replaceHandler();
 		
