@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.business;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.business.DeviceManager.GetBlockDeviceListTask;
@@ -75,6 +76,8 @@ public class BusinessMannager {
 	public WifiNetworkReceiver m_wifiNetworkReceiver = null;
 	private SystemInfoModel m_systemInfoModel=null;
 	
+	public HashMap<String, BaseManager> m_class = new HashMap<String, BaseManager>();
+	
 	private static BusinessMannager m_instance;
     public static synchronized   BusinessMannager getInstance()
     {
@@ -110,6 +113,20 @@ public class BusinessMannager {
     	
     	m_deviceManager = new DeviceManager(m_context);
     	
+    	m_class.put("SystemManager", m_systemManager);
+    	m_class.put("UserManager", m_userManager);
+    	m_class.put("StatisticsManager", m_statisticsManager);
+    	m_class.put("SimManager", m_simManager);
+    	m_class.put("NetworkManager", m_networkManager);
+    	m_class.put("SMSManager", m_smsManager);
+    	m_class.put("WanManager", m_wanManager);
+    	m_class.put("WlanManager", m_wlanManager);
+    	m_class.put("SharingManager", m_sharingManager);
+    	m_class.put("UpdateManager", m_updateManager);
+    	m_class.put("LanManager", m_lanManager);
+    	m_class.put("PowerManager", m_powerManager);
+    	m_class.put("DeviceManager", m_deviceManager);
+    	
     	m_systemInfoModel = new SystemInfoModel();
     	m_wifiNetworkReceiver = new WifiNetworkReceiver();
     	m_context.registerReceiver(m_wifiNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -141,6 +158,11 @@ public class BusinessMannager {
     		if(httpMethod == null) {
     			Log.d(TAG,"MessageUti.httpMethods map have not http message:" + strMessageId);
     		}else{
+    			
+    			BaseManager mclass = m_class.get(httpMethod.getManagerClassName());
+    			Method method = mclass.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
+    			method.invoke(mclass, data);
+    			/*
     			//System manager
     			if(SystemManager.class.getSimpleName().equalsIgnoreCase(httpMethod.getManagerClassName())) {
     				Method method = m_systemManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
@@ -214,7 +236,7 @@ public class BusinessMannager {
     				Method method = m_updateManager.getClass().getMethod(httpMethod.getMethodString(), DataValue.class);
     				method.invoke(m_updateManager, data);
     			}
-    			
+    			*/
     			//to add manager
     		}
 		} catch (NoSuchMethodException e) {

@@ -320,6 +320,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					strTitle = m_context
 							.getString(R.string.login_psd_error_msg);
 				}
+				if (m_dlgProgress != null && m_dlgProgress.isShowing())
+					m_dlgProgress.dismiss();
+				
 				ErrorDialog.getInstance(m_context).showDialog(strTitle,
 						new OnClickBtnRetry() {
 
