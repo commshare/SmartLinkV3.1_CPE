@@ -15,9 +15,7 @@
 
 package org.cybergarage.http;
 
-/** HTTP 请求监听 */
 public interface HTTPRequestListener
 {
-	/** http请求接收 */
 	public void httpRequestRecieved(HTTPRequest httpReq);
 }

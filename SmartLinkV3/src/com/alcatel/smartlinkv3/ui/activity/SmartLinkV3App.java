@@ -1,6 +1,9 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import org.cybergarage.upnp.ControlPoint;
+
 import com.alcatel.smartlinkv3.common.HttpService;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
 import android.app.*;
 import android.util.Log;
@@ -8,6 +11,10 @@ import android.util.Log;
 public class SmartLinkV3App extends Application {
 	
 	private static SmartLinkV3App m_instance = null;  
+	
+	private AllShareProxy mAllShareProxy;
+
+	private ControlPoint mControlPoint;
 	  
     public static SmartLinkV3App getInstance() {  
         return m_instance;  
@@ -24,5 +31,15 @@ public class SmartLinkV3App extends Application {
 		HttpService.startService();		
 		
 		HandlerUtils.replaceHandler();
+		
+		mAllShareProxy = AllShareProxy.getInstance(this);
+	}
+	
+	public void setControlPoint(ControlPoint controlPoint){
+		mControlPoint = controlPoint;
+	}
+	
+	public ControlPoint getControlPoint(){
+		return mControlPoint;
 	}
 }

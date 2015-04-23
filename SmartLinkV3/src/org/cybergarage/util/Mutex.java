@@ -15,17 +15,14 @@
 
 package org.cybergarage.util;
 
-/** Mutex 互斥 对象*/
 public class Mutex
 {
-	/** syncLock 同步锁，默认为false */
 	private boolean syncLock;
 	
 	////////////////////////////////////////////////
 	//	Constructor
 	////////////////////////////////////////////////
 
-	/** 创建一个Mutex对象，同步锁默认为false */
 	public Mutex()
 	{
 		syncLock = false;
@@ -34,7 +31,7 @@ public class Mutex
 	////////////////////////////////////////////////
 	//	lock
 	////////////////////////////////////////////////
-	/**锁住线程的方法 让该线程进入等待队列*/
+	
 	public synchronized void lock()
 	{
 		while(syncLock == true) {
@@ -48,7 +45,6 @@ public class Mutex
 		syncLock = true;
 	}
 
-	/** 解锁所有线程的方法 */
 	public synchronized void unlock()
 	{
 		syncLock = false;

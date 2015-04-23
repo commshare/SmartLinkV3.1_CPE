@@ -17,7 +17,6 @@ package org.cybergarage.util;
 
 public final class StringUtil
 {
-	/** 判断value是否为null或空字符串，是就返回false，否则返回true */
 	public final static boolean hasData(String value)
 	{
 		if (value == null)
@@ -38,7 +37,6 @@ public final class StringUtil
 		return 0;
 	}
 
-	/** 将value的值转换为long型 */
 	public final static long toLong(String value)
 	{
 		try {

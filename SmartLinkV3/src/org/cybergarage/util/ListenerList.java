@@ -17,11 +17,8 @@ package org.cybergarage.util;
 
 import java.util.Vector;
 
-/** ListenerList 继承  Vector */
 public class ListenerList extends Vector
 {
-	/** 添加对象到  ListenerList 集合中，如果集合中包含此对象返回false，否则集合中添加对象返回true*/
-	@Override
 	public boolean add(Object obj)
 	{
 		if (0 <= indexOf(obj))

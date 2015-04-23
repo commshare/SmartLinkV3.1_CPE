@@ -23,21 +23,15 @@ package org.cybergarage.http;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/** 日期时间类 */
 public class Date
 {
-	/** Calendar 日历 */
 	private Calendar cal;
 
-	/** 创建一个Date 
-	 * @param cal Calendar对象
-	 **/
 	public Date(Calendar cal)
 	{
 		this.cal = cal;
 	}
 
-	/** 获取 Calendar 日历对象*/
 	public Calendar getCalendar()
 	{
 		return cal;
@@ -47,25 +41,19 @@ public class Date
 	//	Time
 	////////////////////////////////////////////////
 
-	/** 获取时 */
 	public int getHour()
 	{
 		// Thanks for Theo Beisch (10/20/04)
-		//Calendar.HOUR_OF_DAY 一天中的小时
 		return getCalendar().get(Calendar.HOUR_OF_DAY);
 	}
 
-	/** 获取分 */
 	public int getMinute()
 	{
-		//Calendar.MINUTE 指示一小时中的分钟
 		return getCalendar().get(Calendar.MINUTE);
 	}
 
-	/** 获取秒 */
 	public int getSecond()
 	{
-		// Calendar.SECOND 指示一分钟中的秒
 		return getCalendar().get(Calendar.SECOND);
 	}
 	
@@ -73,13 +61,11 @@ public class Date
 	//	paint
 	////////////////////////////////////////////////
 
-	/** 获取本地Date的实例 */
 	public final static Date getLocalInstance()
 	{
 		return new Date(Calendar.getInstance());
 	}
 
-	/** 指定GMT格式的Date */
 	public final static Date getInstance()
 	{
 		// Thanks for Theo Beisch (10/20/04)
@@ -97,7 +83,6 @@ public class Date
 		return Integer.toString(value);
 	}
 
-	/** 月的数组 */
 	private final static String MONTH_STRING[] = {
 		"Jan",
 		"Feb",
@@ -113,7 +98,6 @@ public class Date
 		"Dec",
 	};
 
-	/** 获取月份 */
 	public final static String toMonthString(int value)
 	{
 		value -= Calendar.JANUARY;
@@ -122,7 +106,6 @@ public class Date
 		return "";
 	}
 	
-	/** 周的数组 */
 	private final static String WEEK_STRING[] = {
 		"Sun",
 		"Mon",
@@ -133,7 +116,6 @@ public class Date
 		"Sat",
 	};
 
-	/** 获取星期中的第几天 */
 	public final static String toWeekString(int value)
 	{
 		value -= Calendar.SUNDAY;
@@ -142,7 +124,6 @@ public class Date
 		return "";
 	}
 
-	/** 如果传入的int小于10，则在前面加上0 */
 	public final static String toTimeString(int value)
 	{
 		String str  = "";
@@ -152,7 +133,6 @@ public class Date
 		return str;
 	}
 	
-	/** 获取要发出日期消息头的值 */
 	public String getDateString()
 	{
 		// Thanks for Theo Beisch (10/20/04)
