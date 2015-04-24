@@ -5,7 +5,6 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.PackageUtils;
 
 import android.os.Bundle;
 import android.provider.Settings;

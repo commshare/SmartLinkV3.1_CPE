@@ -13,7 +13,6 @@ public class MethodProp {
 		add("SMS.GetSmsSendResult", false);
 		add("SMS.ModifySmsReadStatus", false);
 		add("SMS.SaveSms", false);	
-		add("CallLog.DeleteCallLog", false);		
 	}
 
 	private static void add(String name, Boolean removealbe) {
