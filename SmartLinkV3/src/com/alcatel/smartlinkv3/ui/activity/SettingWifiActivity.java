@@ -25,8 +25,10 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils.TruncateAt;
+import android.util.Log;
 import android.view.View.OnClickListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -141,6 +143,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_ib_show_password = (ImageButton)findViewById(R.id.ib_show_password);
 		m_ib_hide_password = (ImageButton)findViewById(R.id.ib_hide_password);
 		m_rg_wifi_mode = (RadioGroup)findViewById(R.id.rg_wifi_mode);
+		setViewGroupVisibility(m_rg_wifi_mode, View.VISIBLE);
 		m_rb_2point4G_wifi = (RadioButton)findViewById(R.id.rb_2point4G_wifi);
 		m_rb_5G_wifi = (RadioButton)findViewById(R.id.rb_5G_wifi);
 		m_rb_2point4G_wifi.setOnClickListener(this);
@@ -896,5 +899,14 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			}
 		}
 		return blRes;
+	}
+	
+	private void setViewGroupVisibility(ViewGroup view, final int visibility){
+		final int count = view.getChildCount();
+		for(int i = 0; i < count; ++i){
+			View temp = view.getChildAt(i);
+			temp.setVisibility(visibility);
+		}
+		view.setVisibility(visibility);
 	}
 }

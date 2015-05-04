@@ -19,7 +19,8 @@
                 android:id="@+id/rg_wifi_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left" >
+                android:gravity="left" 
+                android:background="@color/color_white">
 
                 <RadioButton
                     android:id="@+id/rb_2point4G_wifi"
@@ -32,8 +33,8 @@
                     android:checked="true"
                     android:drawableRight="@drawable/radiobutton"
                     android:enabled="false"
-                    android:paddingBottom="12dip"
-                    android:paddingTop="12dip"
+                    android:paddingBottom="10dip"
+                    android:paddingTop="10dip"
                     android:text="@string/setting_text_2point4G_wifi"
                     android:textColor="@color/color_black" />
 
@@ -54,8 +55,8 @@
                     android:focusable="true"
                     android:drawableRight="@drawable/radiobutton"
                     android:enabled="false"
-                    android:paddingBottom="12dip"
-                    android:paddingTop="12dip"
+                    android:paddingBottom="10dip"
+                    android:paddingTop="10dip"
                     android:text="@string/setting_text_5G_wifi"
                     android:textColor="@color/color_black" />
             </RadioGroup>
@@ -70,14 +71,15 @@
                 android:id="@+id/ll_ssid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical" >
+                android:padding="10dp"
+                android:orientation="horizontal" 
+                android:background="@color/color_white">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:layout_weight="1"
                     android:text="@string/setting_text_ssid"
                     android:textColor="@color/color_black"
                     android:textSize="16sp" />
@@ -85,27 +87,28 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" >
+                    android:gravity="end"
+                    android:layout_weight="1">
 
                     <EditText
                         android:id="@+id/edit_ssid"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
+                        android:layout_height="match_parent"
                         android:background="@drawable/selector_edit_bg"
                         android:inputType="text"
                         android:maxLength="32"
                         android:textSize="16sp"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:gravity="end" />
 
                     <TextView
                         android:id="@+id/tv_ssid"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
+                        android:layout_height="match_parent"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textSize="16sp" />
+                        android:textSize="16sp" 
+                        android:gravity="end" /> 
                 </FrameLayout>
             </LinearLayout>
 
@@ -119,8 +122,9 @@
                 android:id="@+id/ll_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical" >
+                android:padding="10dp"
+                android:orientation="vertical" 
+                android:background="@color/color_white">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
