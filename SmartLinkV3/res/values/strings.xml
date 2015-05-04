@@ -138,7 +138,9 @@
 
 
     <!-- setting start -->
-    <string name="setting_wifi">WiFi Settings</string>
+    <string name="setting_wifi">WiFi</string>
+    <string name="setting_account">Account</string>
+    <string name="setting_network">Network</string>
     <string name="setting_power">Power Saving</string>
     <string name="setting_upgrade">Upgrade</string>
     <string name="setting_device">Device</string>
