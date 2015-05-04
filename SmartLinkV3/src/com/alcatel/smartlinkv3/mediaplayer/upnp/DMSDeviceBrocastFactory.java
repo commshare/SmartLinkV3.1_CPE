@@ -9,10 +9,10 @@ import android.content.IntentFilter;
 
 public class DMSDeviceBrocastFactory extends AbstractDeviceBrocastFactory{
 	
-	public static final String ADD_DEVICES = "com.geniusgithub.allshare.add_dms_device";
-	public static final String REMOVE_DEVICES = "com.geniusgithub.allshare.remove_dms_device";
-	public static final String REMOVE_EXTRA_FLAG = "com.geniusgithub.allshare.remove_dms_extra_flag";
-	public static final String CLEAR_DEVICES = "com.geniusgithub.allshare.clear_dms_device";
+	public static final String ADD_DEVICES = "com.alcatel.smartlinkv3.allshare.add_dms_device";
+	public static final String REMOVE_DEVICES = "com.alcatel.smartlinkv3.allshare.remove_dms_device";
+	public static final String REMOVE_EXTRA_FLAG = "com.alcatel.smartlinkv3.allshare.remove_dms_extra_flag";
+	public static final String CLEAR_DEVICES = "com.alcatel.smartlinkv3.allshare.clear_dms_device";
 	
 	
 	public DMSDeviceBrocastFactory(Context context) {

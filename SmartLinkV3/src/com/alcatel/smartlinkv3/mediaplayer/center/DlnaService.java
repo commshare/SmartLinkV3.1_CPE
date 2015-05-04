@@ -28,8 +28,8 @@ public class DlnaService extends Service implements IBaseEngine,
 	
 	private static final CommonLog log = LogFactory.createLog();
 	
-	public static final String SEARCH_DEVICES = "com.geniusgithub.allshare.search_device";
-	public static final String RESET_SEARCH_DEVICES = "com.geniusgithub.allshare.reset_search_device";
+	public static final String SEARCH_DEVICES = "com.alcatel.smartlinkv3.allshare.search_device";
+	public static final String RESET_SEARCH_DEVICES = "com.alcatel.smartlinkv3.allshare.reset_search_device";
 	
 	private static final int NETWORK_CHANGE = 0x0001;
 	private boolean firstReceiveNetworkChangeBR = true;

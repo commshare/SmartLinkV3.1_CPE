@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.alcatel.smartlinkv3"
     android:versionCode="13"
-    android:versionName="1.13.0" >
+    android:versionName="1.1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -250,8 +250,8 @@
         </service>
         <service android:name="com.alcatel.smartlinkv3.mediaplayer.center.DlnaService" android:enabled="true">
 			<intent-filter>
-                <action android:name="com.geniusgithub.allshare.search_device" />
-                <action android:name="com.geniusgithub.allshare.reset_search_device" />
+                <action android:name="com.alcatel.smartlinkv3.allshare.search_device" />
+                <action android:name="com.alcatel.smartlinkv3.allshare.reset_search_device" />
                 
             </intent-filter>
 		</service>
