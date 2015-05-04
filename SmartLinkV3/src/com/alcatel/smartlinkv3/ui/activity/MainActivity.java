@@ -662,10 +662,33 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	}
 	
 	private void microsdBtnClick() {
-		go2MicroSDView();
+		if (m_preButton == R.id.main_microsd) {
+			return;
+		}		
+	
+		if (LoginDialog.isLoginSwitchOff()) {
+			go2MicroSDView();
+		} else {
+			UserLoginStatus status = BusinessMannager.getInstance()
+					.getLoginStatus();
+
+			if (status == UserLoginStatus.LoginTimeOut) {
+				PromptUserLogined();
+			} else if (status == UserLoginStatus.login) {
+				go2MicroSDView();
+			} else {
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {
+					@Override
+					public void onLoginFinished() {
+						go2MicroSDView();
+					}
+				});
+			}
+		}
 	}
 	
 	private void go2MicroSDView(){
+		setMainBtnStatus(R.id.main_microsd);
 		showView(ViewIndex.VIEW_MICROSD);
 		updateTitleUI(ViewIndex.VIEW_MICROSD);
 		pageIndex = ViewIndex.VIEW_MICROSD;
@@ -759,6 +782,15 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		nTextColor = nDrawable = nActiveBtnId == R.id.main_setting ? R.color.color_blue
 				: R.color.color_grey;
 		m_settingBtn.setTextColor(this.getResources().getColor(nTextColor));
+		
+		nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_setting_active
+				: R.drawable.main_setting_grey;
+		d = getResources().getDrawable(nDrawable);
+		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+		m_microsdBtn.setCompoundDrawables(null, d, null, null);
+		nTextColor = nDrawable = nActiveBtnId == R.id.main_microsd ? R.color.color_blue
+				: R.color.color_grey;
+		m_microsdBtn.setTextColor(this.getResources().getColor(nTextColor));
 	}
 
 	
