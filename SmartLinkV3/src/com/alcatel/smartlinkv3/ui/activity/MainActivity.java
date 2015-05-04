@@ -783,8 +783,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				: R.color.color_grey;
 		m_settingBtn.setTextColor(this.getResources().getColor(nTextColor));
 		
-		nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_setting_active
-				: R.drawable.main_setting_grey;
+		nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_microssd_active
+				: R.drawable.main_microssd_grey;
 		d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_microsdBtn.setCompoundDrawables(null, d, null, null);

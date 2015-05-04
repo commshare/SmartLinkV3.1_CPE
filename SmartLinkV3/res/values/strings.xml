@@ -136,6 +136,12 @@
     
     <!-- connect device end -->
 
+<!-- microsd start -->
+    <string name="microsd_file">File</string>
+    <string name="microsd_videos">Videos</string>
+    <string name="microsd_music">Music</string>
+    <string name="microsd_pictures">Pictures</string>
+ <!-- microsd end -->
 
     <!-- setting start -->
     <string name="setting_wifi">WiFi</string>
