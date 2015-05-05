@@ -239,6 +239,9 @@
     <string name="setting_current_password">Current Password</string>
     <string name="setting_new_password">New Password</string>
     <string name="setting_confirm_password">Confirm Password</string>
+    <string name="setting_network_mode">Network Mode</string>
+    <string name="setting_network_selection">Network Selection</string>
+    <string name="setting_network_profile_management">Profile Management</string>
     <string name="other_login_warning_title">Login warning</string>
     <!-- setting end -->
 

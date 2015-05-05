@@ -2,12 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@color/color_white"
+    android:id="@+id/setting_network_content">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="network" />
+    <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" 
+           android:background="@color/color_white"
+           android:id="@+id/level_one_menu">
+           
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:id="@+id/network_mode">
+               
+            <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_network_mode"
+               android:layout_gravity="start"
+               />
+            
+             <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_light_gray"
+               android:textSize="20sp" 
+               android:layout_gravity="end"
+               android:text="test"
+               />
+        </FrameLayout>
+        
+        <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/main_bottom_divider"
+          android:contentDescription="@string/setting_network" />
+        
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/network_selection">
+             <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_network_selection"
+               />
+             <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_light_gray"
+               android:textSize="20sp" 
+               android:layout_gravity="end"
+               android:text="test"
+               />
+         </FrameLayout>
+            
+         <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/main_bottom_divider"
+          android:contentDescription="@string/setting_network" />
+            
+         <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/network_profile_management">
+             <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_network_profile_management"
+               />
+             <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_light_gray"
+               android:textSize="20sp" 
+               android:layout_gravity="end"
+               android:text="test"
+               />
+         </FrameLayout>
+         
+        <ImageView
+           android:layout_width="match_parent"
+           android:layout_height="1dp"
+           android:background="@color/main_bottom_divider"
+           android:contentDescription="@string/setting_network" />
+     </LinearLayout>
 
 </LinearLayout>
