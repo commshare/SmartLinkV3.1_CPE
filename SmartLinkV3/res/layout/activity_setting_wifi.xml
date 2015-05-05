@@ -26,15 +26,16 @@
                     android:id="@+id/rb_2point4G_wifi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:background="@android:color/transparent"
+                     android:textSize="20sp" 
                     android:button="@null"
                     android:checked="true"
                     android:drawableRight="@drawable/radiobutton"
                     android:enabled="false"
-                    android:paddingBottom="10dip"
-                    android:paddingTop="10dip"
+                    android:paddingBottom="15dip"
+                    android:paddingTop="15dip"
                     android:text="@string/setting_text_2point4G_wifi"
                     android:textColor="@color/color_black" />
 
@@ -47,16 +48,17 @@
                     android:id="@+id/rb_5G_wifi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:background="@android:color/transparent"
+                     android:textSize="20sp" 
                     android:button="@null"
                     android:checked="false"
                     android:focusable="true"
                     android:drawableRight="@drawable/radiobutton"
                     android:enabled="false"
-                    android:paddingBottom="10dip"
-                    android:paddingTop="10dip"
+                    android:paddingBottom="15dip"
+                    android:paddingTop="15dip"
                     android:text="@string/setting_text_5G_wifi"
                     android:textColor="@color/color_black" />
             </RadioGroup>
@@ -71,7 +73,7 @@
                 android:id="@+id/ll_ssid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:orientation="horizontal" 
                 android:background="@color/color_white">
 
@@ -82,7 +84,7 @@
                     android:layout_weight="1"
                     android:text="@string/setting_text_ssid"
                     android:textColor="@color/color_black"
-                    android:textSize="16sp" />
+                    android:textSize="20sp" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -94,10 +96,10 @@
                         android:id="@+id/edit_ssid"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/selector_edit_bg"
+                        android:background="@null"
                         android:inputType="text"
                         android:maxLength="32"
-                        android:textSize="16sp"
+                         android:textSize="20sp" 
                         android:visibility="gone"
                         android:gravity="end" />
 
@@ -107,7 +109,7 @@
                         android:layout_height="match_parent"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textSize="16sp" 
+                         android:textSize="20sp" 
                         android:gravity="end" /> 
                 </FrameLayout>
             </LinearLayout>
@@ -122,141 +124,184 @@
                 android:id="@+id/ll_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:orientation="vertical" 
                 android:background="@color/color_white">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content" 
+                    android:padding="15dp"
+                    android:id="@+id/ll_password_status">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:text="@string/setting_text_passwrod"
                         android:textColor="@color/color_black"
-                        android:textSize="16sp" />
+                         android:textSize="20sp" 
+                         android:layout_weight="1"/>
 
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true" >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                         android:layout_weight="1" 
+                         android:gravity="right">
 
                         <TextView
                             android:id="@+id/tv_no_psd"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_gravity="right|center_vertical"
+                            android:gravity="end"
                             android:text="@string/setting_text_no_passwrod"
                             android:textColor="@color/color_black"
-                            android:textSize="16sp"
+                            android:textSize="20sp"
                             android:visibility="gone" />
 
-                        <Button
+                        <TextView
                             android:id="@+id/btn_psd_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|center_vertical"
-                            android:background="@drawable/switch_off"
+                            android:gravity="end"
+                            android:background="@drawable/pwd_switcher_off"
+                             android:textSize="20sp"
                             android:visibility="gone" />
-                    </FrameLayout>
-                </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/divider1"
+	                android:layout_width="match_parent"
+	                android:layout_height="1dp"
+	                android:background="@color/main_bottom_divider"
+	                android:contentDescription="@string/setting_wifi" />
+                
                 <LinearLayout
                     android:id="@+id/ll_security"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="horizontal" 
+                    >
 
                     <TextView
                         android:id="@+id/tv_security"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:text="@string/setting_wifi_password_security_tip"
                         android:textColor="@color/color_black"
-                        android:textSize="12sp" />
+                        android:textSize="20sp" 
+                        android:padding="15dp"
+                        android:layout_weight="1"/>
 
                     <com.alcatel.smartlinkv3.ui.view.CustomSpinner
                         android:id="@+id/security_spinner"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
                         android:background="@drawable/dropdown"
-                        android:paddingLeft="10dip" />
+                        android:layout_weight="4"/>
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/divider2"
+	                android:layout_width="match_parent"
+	                android:layout_height="1dp"
+	                android:background="@color/main_bottom_divider"
+	                android:contentDescription="@string/setting_wifi" />
+                
                 <LinearLayout
                     android:id="@+id/ll_encryption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="horizontal" 
+                    >
 
                     <TextView
                         android:id="@+id/tv_encryption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:text="@string/setting_wifi_password_wpa_encryption_tip"
                         android:textColor="@color/color_black"
-                        android:textSize="12sp" />
+                        android:textSize="20sp"
+                        android:padding="15dp"
+                        android:layout_weight="1" />
 
                     <com.alcatel.smartlinkv3.ui.view.CustomSpinner
                         android:id="@+id/encryption_spinner"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
                         android:background="@drawable/dropdown"
-                        android:paddingLeft="10dip" />
+                        android:layout_weight="4"/>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_psd_type_title"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/divider3"
+	                android:layout_width="match_parent"
+	                android:layout_height="1dp"
+	                android:background="@color/main_bottom_divider"
+	                android:contentDescription="@string/setting_wifi" />
+                
+                <LinearLayout
+                    android:id="@+id/edit_password_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal" 
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+                    
+                    <TextView
+                    android:id="@+id/tv_psd_type_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="@string/setting_wifi_password_wpa_psw_tip"
                     android:textColor="@color/color_black"
-                    android:textSize="12sp" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <EditText
+                    android:textSize="20sp"
+                    android:layout_weight="10" 
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                     android:background="@color/color_white"/>
+                    
+                    <LinearLayout
+                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                         android:layout_weight="7" 
+                         android:orientation="horizontal"
+                         android:gravity="right"
+                        >
+                        <EditText
                         android:id="@+id/edit_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="13dp"
-                        android:background="@drawable/selector_edit_wifi_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:inputType="text"
-                        android:maxLength="63"
-                        android:paddingRight="50dp"
-                        android:textSize="16sp" />
+                        android:textSize="20sp" 
+                        android:text="1234567890"
+                        android:background="@color/color_white"/>
 
-                    <ImageButton
+                        
+                        <ImageButton
                         android:id="@+id/ib_show_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:background="@color/color_transparent"
-                        android:contentDescription="@string/setting_wifi"
                         android:src="@drawable/password_show"
-                        android:visibility="gone" />
-
-                    <ImageButton
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/setting_wifi"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone"                       
+                        android:textSize="20sp"/>
+                        
+                        <ImageButton
                         android:id="@+id/ib_hide_password"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:background="@color/color_transparent"
-                        android:contentDescription="@string/setting_wifi"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/password_hide"
-                        android:visibility="visible" />
-                </FrameLayout>
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/setting_wifi"
+                        android:background="@android:color/transparent"
+                        android:visibility="visible"/>            
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <ImageView
