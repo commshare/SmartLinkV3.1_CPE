@@ -5,7 +5,6 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.mediaplayer.activity.DMPActivity;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 import com.alcatel.smartlinkv3.ui.activity.SdSharingActivity;
 import com.alcatel.smartlinkv3.ui.activity.WpsMainActivity;
@@ -61,10 +60,6 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 				.findViewById(R.id.logout_layout);
 		m_logout.setOnClickListener(this);
 		
-		m_dlna = (LinearLayout) contentView
-				.findViewById(R.id.dlna);
-		m_dlna.setOnClickListener(this);
-		
 		showSdSharing();
 	}
 	
@@ -97,11 +92,6 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 			break;
 		case R.id.logout_layout:
 			userLogout();
-			break;
-		case R.id.dlna:
-			intent.setClass(v.getContext(), DMPActivity.class);
-			v.getContext().startActivity(intent);
-//			Log.v("DLNA", "TEST");
 			break;
 		}
 		this.dismiss();

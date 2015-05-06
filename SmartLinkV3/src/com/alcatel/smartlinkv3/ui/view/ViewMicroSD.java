@@ -63,7 +63,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(DLNA_DEVICES_OK)) {
-				Log.v("pchong", "test 111111");
 				filetag = true;
 				mHandler = new Handler();
 		    	mHandler.postDelayed(new RequestDirectoryRunnable(), 100);
@@ -308,12 +307,10 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		// TODO Auto-generated method stub
 	//	showProgress(false);
 		mCurItems = list;
-		Log.v("pchong", "test 222222");
 		if(!filetag)
 		{
 			filetag = true;
 			goToDlnaViewPage();
-			Log.v("pchong", "test 444444");
 		}
 	}
 
@@ -346,7 +343,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
     	}else{
 			MediaItem item = (MediaItem) mCurItems.get(position);
 			filetag = false;
-			Log.v("pchong", "test 333333");
 			
 			if (UpnpUtil.isAudioItem(item)) {
 				goMusicPlayerActivity(position, item);
@@ -366,7 +362,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		intent.setClass(this.m_context, Go2ContentActivity.class);
 		intent.putExtra(LIST_KEY, (Serializable)mCurItems);
 		//intent.putExtra(LIST_KEY, mCurItems);
-		Log.v("pchong", "test 555555");
 		m_context.startActivity(intent);
 	}
 

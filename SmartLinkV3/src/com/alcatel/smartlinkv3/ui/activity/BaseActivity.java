@@ -46,8 +46,8 @@ public abstract class BaseActivity extends Activity{
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
 
-    	//showActivity(this);
-    	//back2MainActivity(this);
+    	showActivity(this);
+    	back2MainActivity(this);
 	}
 	
 	@Override
@@ -78,18 +78,18 @@ public abstract class BaseActivity extends Activity{
 	protected void onBroadcastReceive(Context context, Intent intent)
 	{
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-    		//showActivity(context);
+    		showActivity(context);
     	}else if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				//back2MainActivity(context);
+				back2MainActivity(context);
 			}
 		}else if(intent.getAction().equals(MessageUti.USER_LOGOUT_REQUEST)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				//backMainActivity(context);
+				backMainActivity(context);
 			}
 		}
 	}
@@ -101,7 +101,7 @@ public abstract class BaseActivity extends Activity{
 	    	onBroadcastReceive(context,intent);
         }  	
 	}
-	/*
+	
 	private void back2MainActivity(Context context) {
 		if(m_bNeedBack == false) 
 			return;
@@ -154,7 +154,7 @@ public abstract class BaseActivity extends Activity{
 			finish();
 		}	
 	}
-*/
+
 //	private void checkLogin()
 //	{
 //    	PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);  

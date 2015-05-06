@@ -10,8 +10,6 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
@@ -35,12 +33,8 @@ import com.alcatel.smartlinkv3.ui.view.ViewSms;
 import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 
 import android.net.DhcpInfo;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.R.integer;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -49,29 +43,18 @@ import android.graphics.drawable.Drawable;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.View;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-import android.view.MotionEvent;
 
-import com.alcatel.smartlinkv3.mediaplayer.activity.ContentActivity;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
-import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
-import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy.BrowseRequestCallback;
 
 public class MainActivity extends BaseActivity implements OnClickListener,
 															IDeviceChangeListener{
@@ -486,27 +469,26 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			break;
 		case R.id.main_microsd:
 			microsdBtnClick();
-			//onDLNAClick();
 			break;
 		case R.id.btnbar:
-//			if (LoginDialog.isLoginSwitchOff()) {		
+			if (LoginDialog.isLoginSwitchOff()) {		
 				go2Click();	
-//			} else {		
-//				UserLoginStatus status = BusinessMannager.getInstance()				
-//						.getLoginStatus();	
-//				if (status == UserLoginStatus.LoginTimeOut) {			
-//					PromptUserLogined();		
-//				} else if (status == UserLoginStatus.login) {			
-//					go2Click();		
-//				} else {			
-//					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-//						@Override				
-//						public void onLoginFinished() {					
-//							go2Click();				
-//						}			
-//					});		
-//				}	
-//			}
+			} else {		
+				UserLoginStatus status = BusinessMannager.getInstance()				
+						.getLoginStatus();	
+				if (status == UserLoginStatus.LoginTimeOut) {			
+					PromptUserLogined();		
+				} else if (status == UserLoginStatus.login) {			
+					go2Click();		
+				} else {			
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+						@Override				
+						public void onLoginFinished() {					
+							go2Click();				
+						}			
+					});		
+				}	
+			}
 					
 			break;
 		case R.id.unlock_sim_button:
@@ -677,28 +659,27 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	private void microsdBtnClick() {
 		if (m_preButton == R.id.main_microsd) {
 			return;
-		}		
-	
+		}
 		
-//		if (LoginDialog.isLoginSwitchOff()) {
+		if (LoginDialog.isLoginSwitchOff()) {
 			go2MicroSDView();
-//		} else {
-//			UserLoginStatus status = BusinessMannager.getInstance()
-//					.getLoginStatus();
-//
-//			if (status == UserLoginStatus.LoginTimeOut) {
-//				PromptUserLogined();
-//			} else if (status == UserLoginStatus.login) {
-//				go2MicroSDView();
-//			} else {
-//				m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//					@Override
-//					public void onLoginFinished() {
-//						go2MicroSDView();
-//					}
-//				});
-//			}
-//		}
+		} else {
+			UserLoginStatus status = BusinessMannager.getInstance()
+					.getLoginStatus();
+
+			if (status == UserLoginStatus.LoginTimeOut) {
+				PromptUserLogined();
+			} else if (status == UserLoginStatus.login) {
+				go2MicroSDView();
+			} else {
+				m_loginDlg.showDialog(new OnLoginFinishedListener() {
+					@Override
+					public void onLoginFinished() {
+						go2MicroSDView();
+					}
+				});
+			}
+		}
 	}
 	
 	private void go2MicroSDView(){
@@ -975,9 +956,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				homeBtnClick();
 			}
 		}else {
-		//	Intent itent = new Intent(this, RefreshWifiActivity.class);
-		//	startActivity(itent);
-		//	this.finish();
+			Intent itent = new Intent(this, RefreshWifiActivity.class);
+			startActivity(itent);
+			this.finish();
 		}
 	}
 	
@@ -999,16 +980,12 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		{
 			if(tmp.getLocation().substring(7, 18).equalsIgnoreCase(getServerAddress(this)))
 			{
-				Log.v("panchong", "test111111  str ="+tmp.getLocation().substring(7, 18));
 				mDevice = tmp;
 			}
 		}
 		mAllShareProxy.setDMSSelectedDevice(mDevice);
 		
-		Intent msdIntent= new Intent(this.m_microsdView.DLNA_DEVICES_OK);
+		Intent msdIntent= new Intent(ViewMicroSD.DLNA_DEVICES_OK);
 		sendBroadcast(msdIntent);
 	}
-	
-
-
 }
