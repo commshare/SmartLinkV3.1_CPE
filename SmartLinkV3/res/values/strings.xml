@@ -144,7 +144,9 @@
  <!-- microsd end -->
 
     <!-- setting start -->
-    <string name="setting_wifi">WiFi Settings</string>
+    <string name="setting_wifi">WiFi</string>
+    <string name="setting_account">Account</string>
+    <string name="setting_network">Network</string>
     <string name="setting_power">Power Saving</string>
     <string name="setting_upgrade">Upgrade</string>
     <string name="setting_device">Device</string>
@@ -157,8 +159,8 @@
     <string name="setting_text_no_passwrod">No Password</string>
     <string name="setting_wifi_set_success">Change Wifi Settings successfully!</string>
     <string name="setting_wifi_set_failed">Change Wifi Settings failed!</string>
-    <string name="setting_wifi_password_security_tip">Security:</string>
-    <string name="setting_wifi_password_wpa_encryption_tip">WPA encryption:</string>
+    <string name="setting_wifi_password_security_tip">Security Type:</string>
+    <string name="setting_wifi_password_wpa_encryption_tip">Encryption Type:</string>
     <string name="setting_wifi_password_wpa_psw_tip">WPA-PSK:</string>
     <string name="setting_wifi_password_wep_encryption_tip">WEP encryption:</string>
     <string name="setting_wifi_password_wep_psw_tip">WEP-Key:</string>
@@ -232,6 +234,19 @@
     <string name="setting_power_off_success">Set successfully, device will power off immediately.</string>
     <string name="setting_ssid_invalid">The SSID must be ASCII characters but cannot comprise any of the following characters: /,\',=,\&quot;,\\,&amp;.</string>
     <string name="setting_wifi_error_title">Change Password</string>
+    <string name="setting_change_login_password">Change Login Password</string>
+    <string name="setting_log_out">Log Out</string>
+    <string name="setting_current_password">Current Password</string>
+    <string name="setting_new_password">New Password</string>
+    <string name="setting_confirm_password">Confirm Password</string>
+    <string name="setting_network_mode">Network Mode</string>
+    <string name="setting_network_selection">Network Selection</string>
+    <string name="setting_network_profile_management">Profile Management</string>
+    <string name="setting_network_mode_auto">Auto</string>
+    <string name="setting_network_mode_manual">Manual</string>
+    <string name="setting_network_mode_2G_only">2G Only</string>
+    <string name="setting_network_mode_3G_only">3G Only</string>
+    <string name="setting_network_mode_4G_only">4G Only</string>
     <string name="other_login_warning_title">Login warning</string>
     <!-- setting end -->
 

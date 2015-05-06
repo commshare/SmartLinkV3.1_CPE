@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/color_white">
+
+    <LinearLayout
+           android:id="@+id/logout_and_change_password"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" 
+           android:background="@color/color_white"
+           android:visibility="visible">
+           
+           <TextView
+               android:id="@+id/setting_change_password"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_change_login_password"
+               />
+
+           <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+           
+            <TextView
+                android:id="@+id/setting_logout"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_log_out"
+               />
+            
+            <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+     </LinearLayout>
+     
+    <LinearLayout
+           android:id="@+id/input_password"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" 
+           android:background="@color/color_white"
+           android:visibility="gone">
+           
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_current_password"
+               />
+
+           <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+           
+            <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_new_password"
+               />
+            
+            <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+            
+            <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_confirm_password"
+               />
+            
+            <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+     </LinearLayout>
+
+</LinearLayout>

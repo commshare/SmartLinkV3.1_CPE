@@ -107,6 +107,25 @@
             android:theme="@style/titlebarstyle">
             
         </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity"
+
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingNetworkActivity"
+
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
         <activity 
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity"
 

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+	  <RadioGroup
+            android:id="@+id/setting_network_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start" 
+            android:background="@color/color_white">
+
+            <RadioButton
+                android:id="@+id/mode_auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent"
+                 android:textSize="20sp" 
+                android:button="@null"
+                android:checked="true"
+                android:drawableLeft="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_auto"
+                android:textColor="@color/color_black" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
+
+            <RadioButton
+                android:id="@+id/mode_4g"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent"
+                 android:textSize="20sp" 
+                android:button="@null"
+                android:checked="false"
+                android:drawableLeft="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_4G_only"
+                android:textColor="@color/color_black" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
+            
+            <RadioButton
+                android:id="@+id/mode_3g"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent"
+                 android:textSize="20sp" 
+                android:button="@null"
+                android:checked="false"
+                android:drawableLeft="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_3G_only"
+                android:textColor="@color/color_black" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
+            
+            <RadioButton
+                android:id="@+id/mode_2g"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent"
+                 android:textSize="20sp" 
+                android:button="@null"
+                android:checked="false"
+                android:drawableLeft="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_2G_only"
+                android:textColor="@color/color_black" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
+        </RadioGroup>
+            
+    
+
+</LinearLayout>
