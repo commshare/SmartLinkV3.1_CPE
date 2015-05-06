@@ -15,7 +15,7 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
             Bundle savedInstanceState)  {
 		
-        return inflater.inflate(R.layout.fragment_network_selection, container, false);  
+        return inflater.inflate(R.layout.fragment_profile_management, container, false);  
     }  
 
 	@Override

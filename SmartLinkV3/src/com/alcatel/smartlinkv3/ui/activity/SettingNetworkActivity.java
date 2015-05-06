@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 import com.alcatel.smartlinkv3.R;
 
 import android.os.Bundle;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.view.View;
@@ -22,6 +23,9 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	private FrameLayout m_network_selection=null;
 	private FrameLayout m_network_profile_management=null;
 	private LinearLayout m_level_one_menu=null;
+	
+	private FragmentManager m_fragment_manager;
+	FragmentTransaction m_transaction;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,15 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_network_profile_management.setOnClickListener(this);
 		
 		m_level_one_menu = (LinearLayout) findViewById(R.id.level_one_menu);
+		m_fragment_manager = getFragmentManager();
+	}
+	
+	private void popFragment(Fragment menu){
+		m_level_one_menu.setVisibility(View.GONE);
+		m_transaction= m_fragment_manager.beginTransaction();
+		m_transaction.replace(R.id.setting_network_content, menu);
+		m_transaction.addToBackStack(null);
+		m_transaction.commit();
 	}
 	
 	@Override
@@ -65,21 +78,25 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		switch (nID) {
 		case R.id.tv_title_back:
 		case R.id.ib_title_back:
-			SettingNetworkActivity.this.finish();
+			this.onBackPressed();
 			break;
 		case R.id.network_mode:
-			m_level_one_menu.setVisibility(View.GONE);
-			FragmentManager fm = getFragmentManager();
-			FragmentTransaction tx = fm.beginTransaction();
-			tx.add(R.id.setting_network_content, new FragmentNetworkMode(), null);
-			tx.commit();
+			popFragment(new FragmentNetworkMode());
 			break;
 		case R.id.network_selection:
+			popFragment(new FragmentNetworkSelection());
 			break;
 		case R.id.network_profile_management:
+			popFragment(new FragmentProfileManagement());
 			break;
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	public void onBackPressed(){
+		super.onBackPressed();
+		m_level_one_menu.setVisibility(View.VISIBLE);
 	}
 }
