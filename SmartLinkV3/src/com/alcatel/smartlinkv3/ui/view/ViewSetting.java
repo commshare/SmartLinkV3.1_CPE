@@ -215,7 +215,7 @@ public class ViewSetting extends BaseViewImpl{
 		}
 
 		@Override
-		public View getView(int arg0, View arg1, ViewGroup arg2) {
+		public View getView(int arg0, View convertView, ViewGroup arg2) {
 			// TODO Auto-generated method stub
 			View itemView = LayoutInflater.from(this.context).inflate(R.layout.setting_item,
 					null);

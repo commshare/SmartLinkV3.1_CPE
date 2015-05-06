@@ -1,9 +1,22 @@
 package com.alcatel.smartlinkv3.mediaplayer.upnp;
 
-public class MediaItem {
+import java.io.Serializable;
+
+public class MediaItem implements Serializable{
 	
 	
-	public static class ResInfo {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static class ResInfo implements Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
 		public String protocolInfo = "";
 		public String resolution = "";
 		public long size = 0;

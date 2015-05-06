@@ -27,9 +27,9 @@ public class LoadingActivity extends Activity {
 		Thread searchingThread = new Thread() {
 			@Override
 			public void run() {
-				if (!checkConnectState())
-					searchTimeOut();
-				else
+			//	if (!checkConnectState())
+			//		searchTimeOut();
+			//	else
 					startMainActivity();
 			}
 		};

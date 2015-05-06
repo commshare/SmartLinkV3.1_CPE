@@ -34,7 +34,11 @@ import com.alcatel.smartlinkv3.ui.view.ViewSetting;
 import com.alcatel.smartlinkv3.ui.view.ViewSms;
 import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 
+import android.net.DhcpInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
@@ -42,6 +46,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -60,9 +65,13 @@ import android.widget.ViewFlipper;
 import android.view.MotionEvent;
 
 import com.alcatel.smartlinkv3.mediaplayer.activity.ContentActivity;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
+import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy.BrowseRequestCallback;
 
 public class MainActivity extends BaseActivity implements OnClickListener,
 															IDeviceChangeListener{
@@ -177,7 +186,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		OnResponseAppWidget();
 		
 		mAllShareProxy = AllShareProxy.getInstance(this);
-		mAllShareProxy.startSearch();
 		mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	mBrocastFactory.registerListener(this);
 	}
@@ -205,6 +213,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
+		
+		//updateDeviceList();
+		
 	}
 
 	@Override
@@ -236,6 +247,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
 		m_microsdView.onDestroy();
+		
 		mBrocastFactory.unRegisterListener();
 	}
 	
@@ -474,26 +486,27 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			break;
 		case R.id.main_microsd:
 			microsdBtnClick();
+			//onDLNAClick();
 			break;
 		case R.id.btnbar:
-			if (LoginDialog.isLoginSwitchOff()) {		
+//			if (LoginDialog.isLoginSwitchOff()) {		
 				go2Click();	
-			} else {		
-				UserLoginStatus status = BusinessMannager.getInstance()				
-						.getLoginStatus();	
-				if (status == UserLoginStatus.LoginTimeOut) {			
-					PromptUserLogined();		
-				} else if (status == UserLoginStatus.login) {			
-					go2Click();		
-				} else {			
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-						@Override				
-						public void onLoginFinished() {					
-							go2Click();				
-						}			
-					});		
-				}	
-			}
+//			} else {		
+//				UserLoginStatus status = BusinessMannager.getInstance()				
+//						.getLoginStatus();	
+//				if (status == UserLoginStatus.LoginTimeOut) {			
+//					PromptUserLogined();		
+//				} else if (status == UserLoginStatus.login) {			
+//					go2Click();		
+//				} else {			
+//					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
+//						@Override				
+//						public void onLoginFinished() {					
+//							go2Click();				
+//						}			
+//					});		
+//				}	
+//			}
 					
 			break;
 		case R.id.unlock_sim_button:
@@ -666,28 +679,31 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			return;
 		}		
 	
-		if (LoginDialog.isLoginSwitchOff()) {
+		
+//		if (LoginDialog.isLoginSwitchOff()) {
 			go2MicroSDView();
-		} else {
-			UserLoginStatus status = BusinessMannager.getInstance()
-					.getLoginStatus();
-
-			if (status == UserLoginStatus.LoginTimeOut) {
-				PromptUserLogined();
-			} else if (status == UserLoginStatus.login) {
-				go2MicroSDView();
-			} else {
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {
-					@Override
-					public void onLoginFinished() {
-						go2MicroSDView();
-					}
-				});
-			}
-		}
+//		} else {
+//			UserLoginStatus status = BusinessMannager.getInstance()
+//					.getLoginStatus();
+//
+//			if (status == UserLoginStatus.LoginTimeOut) {
+//				PromptUserLogined();
+//			} else if (status == UserLoginStatus.login) {
+//				go2MicroSDView();
+//			} else {
+//				m_loginDlg.showDialog(new OnLoginFinishedListener() {
+//					@Override
+//					public void onLoginFinished() {
+//						go2MicroSDView();
+//					}
+//				});
+//			}
+//		}
 	}
 	
 	private void go2MicroSDView(){
+		mAllShareProxy.startSearch();
+		
 		setMainBtnStatus(R.id.main_microsd);
 		showView(ViewIndex.VIEW_MICROSD);
 		updateTitleUI(ViewIndex.VIEW_MICROSD);
@@ -783,8 +799,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				: R.color.color_grey;
 		m_settingBtn.setTextColor(this.getResources().getColor(nTextColor));
 		
-		nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_setting_active
-				: R.drawable.main_setting_grey;
+		nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_microssd_active
+				: R.drawable.main_microssd_grey;
 		d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_microsdBtn.setCompoundDrawables(null, d, null, null);
@@ -959,9 +975,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				homeBtnClick();
 			}
 		}else {
-			Intent itent = new Intent(this, RefreshWifiActivity.class);
-			startActivity(itent);
-			this.finish();
+		//	Intent itent = new Intent(this, RefreshWifiActivity.class);
+		//	startActivity(itent);
+		//	this.finish();
 		}
 	}
 	
@@ -970,24 +986,29 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		updateDeviceList();
 	}
 	
+	private String getServerAddress(Context ctx){  
+        WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);  
+        DhcpInfo dhcpInfo = wifi_service.getDhcpInfo(); 
+        return Formatter.formatIpAddress(dhcpInfo.gateway);  
+    } 
+	
 	private void updateDeviceList(){
 		List<Device> list = mAllShareProxy.getDMSDeviceList();
-		if(list.size() == 1)
-		{
-			mDevice = list.get(0);
-		}else {
 		
+		for(Device tmp : list)
+		{
+			if(tmp.getLocation().substring(7, 18).equalsIgnoreCase(getServerAddress(this)))
+			{
+				Log.v("panchong", "test111111  str ="+tmp.getLocation().substring(7, 18));
+				mDevice = tmp;
+			}
 		}
-	}
-	
-	public void onDLNAClick() {
-		// TODO Auto-generated method stub
 		mAllShareProxy.setDMSSelectedDevice(mDevice);
-		goContentActivity();
+		
+		Intent msdIntent= new Intent(this.m_microsdView.DLNA_DEVICES_OK);
+		sendBroadcast(msdIntent);
 	}
 	
-	private void goContentActivity(){
-		Intent intent = new Intent(this, ContentActivity.class);
-		startActivity(intent);
-	}
+
+
 }

@@ -210,6 +210,11 @@
         </activity>
         
         <activity
+            android:name="com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        
+        <activity
             android:name="com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity"
             android:theme="@android:style/Theme.NoTitleBar"
     		android:screenOrientation="landscape" 

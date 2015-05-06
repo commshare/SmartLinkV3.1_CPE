@@ -34,6 +34,7 @@ public class SmartLinkV3App extends Application {
 		HandlerUtils.replaceHandler();
 		
 		mAllShareProxy = AllShareProxy.getInstance(this);
+		
 	}
 	
 	public void setControlPoint(ControlPoint controlPoint){
