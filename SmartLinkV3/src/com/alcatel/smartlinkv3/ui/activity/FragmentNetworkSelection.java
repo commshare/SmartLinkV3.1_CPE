@@ -35,6 +35,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 		
 		View rootView = inflater.inflate(R.layout.fragment_network_selection, container, false); 
 		
+		((SettingNetworkActivity)getActivity()).changeTitlebar(R.string.setting_network_selection);
 		initUi(rootView);
         
 		

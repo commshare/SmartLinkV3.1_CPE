@@ -16,6 +16,12 @@ import android.widget.TextView;
 
 public class SettingNetworkActivity extends BaseActivity implements OnClickListener{
 	
+	private final String TAG_FRAGMENT_NETWORK_MODE = "FRAGMENT_NETWORK_MODE";
+	private final String TAG_FRAGMENT_NETWORK_SELECTION = "FRAGMENT_NETWORK_SELECTION";
+	private final String TAG_FRAGMENT_PROFILE_MANAGEMENT = "FRAGMENT_NETWORK_MANAGEMENT";
+	private final String TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL = "FRAGMENT_NETWORK_MANAGEMENT_DETAIL";
+	private final String TAG_FRAGMENT_PROFILE_MANAGEMENT_PROTOCAL = "FRAGMENT_NETWORK_MANAGEMENT_PROTOCAL";
+	
 	private TextView m_tv_title = null;
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
@@ -23,6 +29,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	private FrameLayout m_network_selection=null;
 	private FrameLayout m_network_profile_management=null;
 	private LinearLayout m_level_one_menu=null;
+	private LinearLayout m_add_and_delete_container = null;
 	
 	private FragmentManager m_fragment_manager;
 	FragmentTransaction m_transaction;
@@ -50,6 +57,10 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_tv_back.setOnClickListener(this);
 	}
 	
+	public void changeTitlebar(int title){
+		m_tv_title.setText(title);
+	}
+	
 	private void initUi(){
 		m_network_mode = (FrameLayout) findViewById(R.id.network_mode);
 		m_network_selection = (FrameLayout) findViewById(R.id.network_selection);
@@ -61,12 +72,15 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		
 		m_level_one_menu = (LinearLayout) findViewById(R.id.level_one_menu);
 		m_fragment_manager = getFragmentManager();
+		
+		m_add_and_delete_container = (LinearLayout)findViewById(R.id.fl_add_and_delete);
+		m_add_and_delete_container.setVisibility(View.GONE);
 	}
 	
-	private void popFragment(Fragment menu){
+	private void popFragment(Fragment menu, String fragmentTag){
 		m_level_one_menu.setVisibility(View.GONE);
 		m_transaction= m_fragment_manager.beginTransaction();
-		m_transaction.replace(R.id.setting_network_content, menu);
+		m_transaction.replace(R.id.setting_network_content, menu, fragmentTag);
 		m_transaction.addToBackStack(null);
 		m_transaction.commit();
 	}
@@ -81,13 +95,13 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			this.onBackPressed();
 			break;
 		case R.id.network_mode:
-			popFragment(new FragmentNetworkMode());
+			popFragment(new FragmentNetworkMode(), TAG_FRAGMENT_NETWORK_MODE);
 			break;
 		case R.id.network_selection:
-			popFragment(new FragmentNetworkSelection());
+			popFragment(new FragmentNetworkSelection(), TAG_FRAGMENT_NETWORK_SELECTION);
 			break;
 		case R.id.network_profile_management:
-			popFragment(new FragmentProfileManagement());
+			popFragment(new FragmentProfileManagement(), TAG_FRAGMENT_PROFILE_MANAGEMENT);
 			break;
 		default:
 			break;
@@ -96,7 +110,12 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	
 	@Override
 	public void onBackPressed(){
-		super.onBackPressed();
 		m_level_one_menu.setVisibility(View.VISIBLE);
+		changeTitlebar(R.string.setting_network);
+		if(m_fragment_manager.findFragmentByTag(TAG_FRAGMENT_PROFILE_MANAGEMENT) != null 
+				&& m_add_and_delete_container.getVisibility() == View.VISIBLE){
+			m_add_and_delete_container.setVisibility(View.GONE);
+		}
+		super.onBackPressed();
 	}
 }

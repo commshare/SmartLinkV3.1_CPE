@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_light_gray"
-               android:textSize="20sp" 
-               android:text="profile management"
-               />
+    <ListView
+       	 android:id="@+id/profile_list"
+		 android:layout_width="match_parent"
+		 android:layout_height="wrap_content"
+		 android:divider="@color/main_bottom_divider"
+		 android:footerDividersEnabled="true"
+		 android:dividerHeight="1dp"
+		 android:orientation="vertical">
+        
+    </ListView>
 
 </LinearLayout>

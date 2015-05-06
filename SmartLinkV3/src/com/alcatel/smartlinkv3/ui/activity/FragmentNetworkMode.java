@@ -15,6 +15,7 @@ public class FragmentNetworkMode extends Fragment implements OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
             Bundle savedInstanceState)  {
 		
+		((SettingNetworkActivity)getActivity()).changeTitlebar(R.string.setting_network_mode);
         return inflater.inflate(R.layout.fragment_network_mode, container, false);  
     }  
 

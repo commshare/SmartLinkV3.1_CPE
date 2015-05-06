@@ -52,7 +52,33 @@
             android:textColor="@color/color_white"
             android:textSize="16sp"
             android:visibility="gone" />
-    </FrameLayout>    
+    </FrameLayout>
+    
+    <LinearLayout
+        android:id="@+id/fl_add_and_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:visibility="gone" >
+
+        <ImageButton
+            android:id="@+id/tv_titlebar_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:src="@drawable/title_bar_add" />
+        
+        <ImageButton
+            android:id="@+id/tv_titlebar_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:src="@drawable/title_bar_delete"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_title_title"
