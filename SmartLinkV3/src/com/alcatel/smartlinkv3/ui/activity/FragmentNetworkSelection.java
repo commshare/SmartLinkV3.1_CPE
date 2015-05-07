@@ -24,10 +24,12 @@ import com.alcatel.smartlinkv3.R;
 
 public class FragmentNetworkSelection extends Fragment implements OnClickListener{
 	
-	ListView m_network_list;
-	LinearLayout m_network_list_conainer;
-	RadioButton m_auto_mode;
-	RadioButton m_manual_mode;
+	private static ListView m_network_list;
+	private static LinearLayout m_network_list_conainer;
+	private static RadioButton m_auto_mode;
+	private static RadioButton m_manual_mode;
+	
+	private SettingNetworkActivity m_parent_activity = null;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
@@ -43,8 +45,10 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
     }
 	
 	private void initUi(View view){
+		m_parent_activity = (SettingNetworkActivity) getActivity();
+		
 		m_network_list = (ListView) view.findViewById(R.id.network_list);
-        NetworkListAdapter m_adapter = new NetworkListAdapter(getActivity(), getNetworkList());
+        NetworkListAdapter m_adapter = new NetworkListAdapter(m_parent_activity, getNetworkList());
         m_network_list.setAdapter(m_adapter);
         
         m_network_list_conainer = (LinearLayout) view.findViewById(R.id.network_list_container);
@@ -78,21 +82,6 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	private List<String> getNetworkList(){
 		List<String> data = new ArrayList<String>();
 		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Available");
-		data.add("Forbidden");
-		data.add("Forbidden");
-		data.add("Forbidden");
-		data.add("Forbidden");
-		data.add("Forbidden");
 		data.add("Forbidden");
 		return data;
 	}
@@ -103,16 +92,16 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 		
 	}
 	
-	private class NetworkListAdapter extends BaseAdapter{
+	private static class NetworkListAdapter extends BaseAdapter{
 		
-		private LayoutInflater m_inflater;
-		private List<String> m_data;
-		private int m_selected_position = -1;
-		private RadioButton m_selected_button;
+		private static LayoutInflater m_inflater;
+		private static List<String> m_data;
+		private static int m_selected_position = -1;
+		private static RadioButton m_selected_button;
 		
 		public NetworkListAdapter(Context context, List<String> data){
-			this.m_inflater = LayoutInflater.from(context);
-			this.m_data = data;
+			m_inflater = LayoutInflater.from(context);
+			m_data = data;
 		}
 
 		@Override

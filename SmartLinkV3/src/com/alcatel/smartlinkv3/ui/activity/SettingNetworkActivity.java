@@ -1,5 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import java.util.Stack;
+
 import com.alcatel.smartlinkv3.R;
 
 import android.os.Bundle;
@@ -16,23 +18,29 @@ import android.widget.TextView;
 
 public class SettingNetworkActivity extends BaseActivity implements OnClickListener{
 	
-	private final String TAG_FRAGMENT_NETWORK_MODE = "FRAGMENT_NETWORK_MODE";
-	private final String TAG_FRAGMENT_NETWORK_SELECTION = "FRAGMENT_NETWORK_SELECTION";
-	private final String TAG_FRAGMENT_PROFILE_MANAGEMENT = "FRAGMENT_NETWORK_MANAGEMENT";
-	private final String TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL = "FRAGMENT_NETWORK_MANAGEMENT_DETAIL";
-	private final String TAG_FRAGMENT_PROFILE_MANAGEMENT_PROTOCAL = "FRAGMENT_NETWORK_MANAGEMENT_PROTOCAL";
+	public static final String TAG_FRAGMENT_NETWORK_MODE = "FRAGMENT_NETWORK_MODE";
+	public static final String TAG_FRAGMENT_NETWORK_SELECTION = "FRAGMENT_NETWORK_SELECTION";
+	public static final String TAG_FRAGMENT_PROFILE_MANAGEMENT = "FRAGMENT_NETWORK_MANAGEMENT";
+	public static final String TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL = "FRAGMENT_NETWORK_MANAGEMENT_DETAIL";
 	
-	private TextView m_tv_title = null;
-	private ImageButton m_ib_back=null;
-	private TextView m_tv_back=null;
-	private FrameLayout m_network_mode=null;
-	private FrameLayout m_network_selection=null;
-	private FrameLayout m_network_profile_management=null;
-	private LinearLayout m_level_one_menu=null;
-	private LinearLayout m_add_and_delete_container = null;
+	private static FragmentNetworkMode m_fragment_network_mode = null;
+	private static FragmentNetworkSelection m_fragment_network_selection = null;
+	private static FragmentProfileManagement m_fragment_profile_management = null;
+	private static FragmentProfileManagementDetail m_fragment_profile_management_detail = null;
 	
-	private FragmentManager m_fragment_manager;
-	FragmentTransaction m_transaction;
+	private static Stack<String> m_fragment_tag_stack = null;
+	
+	private static TextView m_tv_title = null;
+	private static ImageButton m_ib_back=null;
+	private static TextView m_tv_back=null;
+	private static FrameLayout m_network_mode=null;
+	private static FrameLayout m_network_selection=null;
+	private static FrameLayout m_network_profile_management=null;
+	private static LinearLayout m_level_one_menu=null;
+	private static LinearLayout m_add_and_delete_container = null;
+	
+	private static FragmentManager m_fragment_manager;
+	private static FragmentTransaction m_transaction;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +83,59 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		
 		m_add_and_delete_container = (LinearLayout)findViewById(R.id.fl_add_and_delete);
 		m_add_and_delete_container.setVisibility(View.GONE);
+		
+		m_fragment_tag_stack = new Stack<String>();
+		
+		m_fragment_network_mode = new FragmentNetworkMode();
+		m_fragment_network_selection = new FragmentNetworkSelection();
+		m_fragment_profile_management = new FragmentProfileManagement();
+		m_fragment_profile_management_detail = new FragmentProfileManagementDetail();
 	}
 	
-	private void popFragment(Fragment menu, String fragmentTag){
+	public void showFragmentNetworkMode(){
+		showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
+	}
+	
+	public void showFragmentNetworkSelection(){
+		showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
+	}
+	
+	public void showFragmentProfileManagement(){
+		showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
+	}
+	
+	public void showFragmentProfileManagementDetail(){
+		showFragment(m_fragment_profile_management_detail, TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
+	}
+	
+	private void showFragment(Fragment menu, String fragmentTag){
+		addToFragmentTagStack(fragmentTag);
 		m_level_one_menu.setVisibility(View.GONE);
 		m_transaction= m_fragment_manager.beginTransaction();
 		m_transaction.replace(R.id.setting_network_content, menu, fragmentTag);
 		m_transaction.addToBackStack(null);
 		m_transaction.commit();
+	}
+	
+	public FragmentManager getSettingNetworkFragmentManager(){
+		return m_fragment_manager;
+	}
+	
+	public String getCurrentFragmentTag(){
+		return m_fragment_tag_stack.peek();
+	}
+	
+	public void addToFragmentTagStack(String fragmentTag){
+		m_fragment_tag_stack.push(fragmentTag);
+	}
+	
+	public void popFragmentTagStack(){
+		if(!m_fragment_tag_stack.isEmpty())
+			m_fragment_tag_stack.pop();
+	}
+	
+	public void setAddAndDeleteVisibility(final int visibility){
+		m_add_and_delete_container.setVisibility(visibility);
 	}
 	
 	@Override
@@ -95,13 +148,13 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			this.onBackPressed();
 			break;
 		case R.id.network_mode:
-			popFragment(new FragmentNetworkMode(), TAG_FRAGMENT_NETWORK_MODE);
+			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
 			break;
 		case R.id.network_selection:
-			popFragment(new FragmentNetworkSelection(), TAG_FRAGMENT_NETWORK_SELECTION);
+			showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
 			break;
 		case R.id.network_profile_management:
-			popFragment(new FragmentProfileManagement(), TAG_FRAGMENT_PROFILE_MANAGEMENT);
+			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
 			break;
 		default:
 			break;
@@ -110,11 +163,32 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	
 	@Override
 	public void onBackPressed(){
-		m_level_one_menu.setVisibility(View.VISIBLE);
-		changeTitlebar(R.string.setting_network);
-		if(m_fragment_manager.findFragmentByTag(TAG_FRAGMENT_PROFILE_MANAGEMENT) != null 
-				&& m_add_and_delete_container.getVisibility() == View.VISIBLE){
-			m_add_and_delete_container.setVisibility(View.GONE);
+		popFragmentTagStack();
+		if(!m_fragment_tag_stack.isEmpty()){
+			m_level_one_menu.setVisibility(View.GONE);
+			String FragmentTag = m_fragment_tag_stack.peek();
+			
+			if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT)){
+				changeTitlebar(R.string.setting_network_profile_management);
+				setAddAndDeleteVisibility(View.VISIBLE);
+			}
+			else if(FragmentTag.equals(TAG_FRAGMENT_NETWORK_SELECTION)){
+				changeTitlebar(R.string.setting_network_selection);
+				setAddAndDeleteVisibility(View.GONE);
+			}
+			else if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)){
+				changeTitlebar(R.string.setting_network_profile_management_profile_detail);
+				setAddAndDeleteVisibility(View.GONE);
+			}
+			else if(FragmentTag.equals(TAG_FRAGMENT_NETWORK_MODE)){
+				changeTitlebar(R.string.setting_network_mode);
+				setAddAndDeleteVisibility(View.GONE);
+			}
+		}
+		else{
+			m_level_one_menu.setVisibility(View.VISIBLE);
+			changeTitlebar(R.string.setting_network);
+			setAddAndDeleteVisibility(View.GONE);
 		}
 		super.onBackPressed();
 	}

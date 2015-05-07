@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -21,29 +22,31 @@ import com.alcatel.smartlinkv3.R;
 
 public class FragmentProfileManagement extends Fragment implements OnClickListener{
 	
-	ListView m_profile_list;
-	ImageButton m_add_profile = null;
-	ImageButton m_delete_profile = null;
-	LinearLayout m_add_and_delete_container = null;
+	private static ListView m_profile_list;
+	private static ImageButton m_add_profile = null;
+	private static ImageButton m_delete_profile = null;
+	private static SettingNetworkActivity m_parent_activity = null;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
             Bundle savedInstanceState)  {
 		
-		((SettingNetworkActivity)getActivity()).changeTitlebar(R.string.setting_network_profile_management);
 		View rootView = inflater.inflate(R.layout.fragment_profile_management, container, false);  
 		initUi(rootView);
         return rootView;
     }
 	
 	private void initUi(View rootView){
+		
+		m_parent_activity = (SettingNetworkActivity) getActivity();
+		m_parent_activity.setAddAndDeleteVisibility(View.VISIBLE);
+		
+		m_parent_activity.changeTitlebar(R.string.setting_network_profile_management);
+		
 		m_add_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_add);
 		m_delete_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_delete);
 		m_add_profile.setOnClickListener(this);
 		m_delete_profile.setOnClickListener(this);
-		
-		m_add_and_delete_container = (LinearLayout) getActivity().findViewById(R.id.fl_add_and_delete);
-		m_add_and_delete_container.setVisibility(View.VISIBLE);
 		
 		m_profile_list = (ListView) rootView.findViewById(R.id.profile_list);
 		ProfileListAdapter adapter = new ProfileListAdapter(getActivity(), getProfileList());
@@ -53,23 +56,13 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 	private List<String> getProfileList(){
 		List<String> data = new ArrayList<String>();
 		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
 		data.add("Default");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
-		data.add("");
 		return data;
+	}
+	
+	private static void goToDetailProfile(){
+		m_parent_activity.setAddAndDeleteVisibility(View.GONE);
+		m_parent_activity.showFragmentProfileManagementDetail();
 	}
 
 	@Override
@@ -78,16 +71,16 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		
 	}
 
-private class ProfileListAdapter extends BaseAdapter{
+private static class ProfileListAdapter extends BaseAdapter{
 		
-		private LayoutInflater m_inflater;
-		private List<String> m_data;
-		private int m_selected_position = -1;
-		private RadioButton m_selected_button;
+		private static LayoutInflater m_inflater;
+		private static List<String> m_data;
+		private static int m_selected_position = -1;
+		private static RadioButton m_selected_button;
 		
 		public ProfileListAdapter(Context context, List<String> data){
-			this.m_inflater = LayoutInflater.from(context);
-			this.m_data = data;
+			m_inflater = LayoutInflater.from(context);
+			m_data = data;
 		}
 
 		@Override
@@ -133,6 +126,8 @@ private class ProfileListAdapter extends BaseAdapter{
 					}
 					m_selected_position = position;
 					m_selected_button = (RadioButton) view;
+					
+					goToDetailProfile();
 				}
 			});
 			

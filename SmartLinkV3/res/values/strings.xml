@@ -242,6 +242,17 @@
     <string name="setting_network_mode">Network Mode</string>
     <string name="setting_network_selection">Network Selection</string>
     <string name="setting_network_profile_management">Profile Management</string>
+    <string name="setting_network_profile_management_profile_name">*Profile Name</string>
+    <string name="setting_network_profile_management_dial_number">*Dial Number</string>
+    <string name="setting_network_profile_management_apn">APN</string>
+    <string name="setting_network_profile_management_user_name">User Name</string>
+    <string name="setting_network_profile_management_password">Password</string>
+    <string name="setting_network_profile_management_protocol">Protocol</string>
+    <string name="setting_network_profile_management_protocol_none">None</string>
+    <string name="setting_network_profile_management_protocol_tcp">TCP</string>
+    <string name="setting_network_profile_management_protocol_udp">UDP</string>
+    <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
+    <string name="setting_network_profile_management_profile_detail">Profile Detail</string>
     <string name="setting_network_mode_auto">Auto</string>
     <string name="setting_network_mode_manual">Manual</string>
     <string name="setting_network_mode_2G_only">2G Only</string>
