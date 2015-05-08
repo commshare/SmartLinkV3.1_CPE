@@ -14,6 +14,7 @@ import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
+import com.alcatel.smartlinkv3.ui.activity.SystemInfoActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingNetworkActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
@@ -45,6 +46,8 @@ public class ViewSetting extends BaseViewImpl{
 	private final int ITEM_ABOUT_SETTING = 4;
 	//Previous upgrade setting was 3, device was 4, about was 5, power was 1, backup was 2.
 	private final int ITEM_UPGRADE_SETTING = 5;
+	private final int ITEM_POWER_SETTING = 6;
+	private final int ITEM_BACKUP_SETTING = 7;
 	private ListView m_lvSettingListView = null;
 	private UprgadeAdapter adapter;
 	private List<SettingItem>list;
@@ -83,15 +86,6 @@ public class ViewSetting extends BaseViewImpl{
 				case ITEM_WIFI_SETTING:
 					goToWifiSettingPage();
 					break;
-//				case ITEM_POWER_SETTING:
-//					goToPowerSettingPage();
-//					break;
-//				case ITEM_BACKUP_SETTING:
-//					goToBackupSettingPage();
-//					break;
-//				case ITEM_UPGRADE_SETTING:
-//					goToUpgradeSettingPage();
-//					break;
 				case ITEM_ACCOUNT_SETTING:
 					goToAccountSettingPage();
 					break;
@@ -103,6 +97,15 @@ public class ViewSetting extends BaseViewImpl{
 					break;
 				case ITEM_ABOUT_SETTING:
 					goToAboutSettingPage();
+					break;
+				case ITEM_POWER_SETTING:
+					goToPowerSettingPage();
+					break;
+				case ITEM_BACKUP_SETTING:
+					goToBackupSettingPage();
+					break;
+				case ITEM_UPGRADE_SETTING:
+					goToUpgradeSettingPage();
 					break;
 				}
 			}
@@ -140,21 +143,6 @@ public class ViewSetting extends BaseViewImpl{
 		SettingItem item = new SettingItem(context.getString(R.string.setting_wifi), false);
 		list.add(item);
 		
-//		item = new SettingItem(context.getString(R.string.setting_power), false);
-//		list.add(item);
-//		
-//		item = new SettingItem(context.getString(R.string.setting_backup), false);
-//		list.add(item);
-//		
-//		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
-//		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
-//			item = new SettingItem(context.getString(R.string.setting_upgrade), true);
-//			list.add(item);
-//		}else {
-//			item = new SettingItem(context.getString(R.string.setting_upgrade), false);
-//			list.add(item);
-//		}
-		
 		item = new SettingItem(context.getString(R.string.setting_account), false);
 		list.add(item);
 		
@@ -166,6 +154,22 @@ public class ViewSetting extends BaseViewImpl{
 		
 		item = new SettingItem(context.getString(R.string.setting_about), false);
 		list.add(item);
+		
+		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+			item = new SettingItem(context.getString(R.string.setting_upgrade), true);
+			list.add(item);
+		}else {
+			item = new SettingItem(context.getString(R.string.setting_upgrade), false);
+			list.add(item);
+		}
+		
+		item = new SettingItem(context.getString(R.string.setting_power), false);
+		list.add(item);
+		
+		item = new SettingItem(context.getString(R.string.setting_backup), false);
+		list.add(item);
+		
 		return list;
 	}
 	
@@ -174,22 +178,22 @@ public class ViewSetting extends BaseViewImpl{
 		m_context.startActivity(intent);
 	}
 	
-//	private void goToPowerSettingPage(){
-//		Intent intent = new Intent(m_context, SettingPowerSavingActivity.class);
-//		m_context.startActivity(intent);
-//	}
-//	
-//	private void goToBackupSettingPage(){
-//		Intent intent = new Intent(m_context, SettingBackupRestoreActivity.class);
-//		m_context.startActivity(intent);
-//	}
-//	
-//	private void goToUpgradeSettingPage(){
-//		Intent intent = new Intent(m_context, SettingUpgradeActivity.class);
-//		intent.putExtra("First", m_blFirst);
-//		m_blFirst = false;
-//		m_context.startActivity(intent);
-//	}
+	private void goToPowerSettingPage(){
+		Intent intent = new Intent(m_context, SettingPowerSavingActivity.class);
+		m_context.startActivity(intent);
+	}
+	
+	private void goToBackupSettingPage(){
+		Intent intent = new Intent(m_context, SettingBackupRestoreActivity.class);
+		m_context.startActivity(intent);
+	}
+	
+	private void goToUpgradeSettingPage(){
+		Intent intent = new Intent(m_context, SettingUpgradeActivity.class);
+		intent.putExtra("First", m_blFirst);
+		m_blFirst = false;
+		m_context.startActivity(intent);
+	}
 	
 	private void goToAccountSettingPage(){
 		Intent intent = new Intent(m_context, SettingAccountActivity.class);
@@ -202,6 +206,7 @@ public class ViewSetting extends BaseViewImpl{
 	}
 	
 	private void goToDeviceSettingPage(){
+		//Intent intent = new Intent(m_context, SystemInfoActivity.class);
 		Intent intent = new Intent(m_context, SettingDeviceActivity.class);
 		m_context.startActivity(intent);
 	}

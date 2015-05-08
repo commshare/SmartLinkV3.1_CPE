@@ -215,9 +215,14 @@
     <string name="setting_device_mac_address">MAC Address:</string>
     <string name="setting_device_ip">IP Address:</string>
     <string name="setting_device_subnet">Subnet Mask:</string>
-    <string name="setting_device_btn_power_off">Power off</string>
+    <string name="setting_device_btn_power_off">Power Off</string>
     <string name="setting_device_btn_reboot">Reboot</string>
+    <string name="setting_device_btn_restart">Restart</string>
     <string name="setting_device_btn_reset">Reset</string>
+    <string name="setting_device_upgrade_system">Upgrade System</string>
+    <string name="setting_device_backup_and_reset">Backup&amp;Reset</string>
+    <string name="setting_device_pin_code">PIN Code</string>
+    <string name="setting_device_web_version">Web Version</string>
     <string name="setting_about_app_name">ALCATELONETOUCH</string>
     <string name="setting_success">Success</string>
     <string name="setting_failed">Failed</string>
