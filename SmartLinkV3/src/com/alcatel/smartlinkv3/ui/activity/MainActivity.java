@@ -985,7 +985,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		}
 		mAllShareProxy.setDMSSelectedDevice(mDevice);
 		
-		Intent msdIntent= new Intent(ViewMicroSD.DLNA_DEVICES_OK);
+		Intent msdIntent= new Intent(ViewMicroSD.DLNA_DEVICES_SUCCESS);
 		sendBroadcast(msdIntent);
 	}
 }
