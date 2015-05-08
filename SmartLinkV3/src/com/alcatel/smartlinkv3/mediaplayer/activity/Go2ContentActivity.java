@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,7 +44,8 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 	
 	private TextView mTVSelDeV;
 	private ListView mContentListView;
-	private Button mBtnBack;
+	private ImageButton mBtnBack;
+	private TextView tvback;
 	
 	
 	private ContentAdapter mContentAdapter;
@@ -80,7 +82,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		
-		Intent msdIntent= new Intent(ViewMicroSD.DLNA_DEVICES_OK);
+		Intent msdIntent= new Intent(ViewMicroSD.DLNA_DEVICES_SUCCESS);
 		sendBroadcast(msdIntent);
 		
 		mContentManager.clear();
@@ -92,11 +94,13 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 	private void initView()
     {
     	
-    	mTVSelDeV = (TextView) findViewById(R.id.tv_selDev);
+    	mTVSelDeV = (TextView) findViewById(R.id.title);
     	mContentListView = (ListView) findViewById(R.id.content_list);
     	mContentListView.setOnItemClickListener(this);
-    	mBtnBack = (Button) findViewById(R.id.btn_back);
+    	mBtnBack = (ImageButton) findViewById(R.id.btn_back);
     	mBtnBack.setOnClickListener(this);
+    	tvback = (TextView) this.findViewById(R.id.Back);
+		tvback.setOnClickListener(this);
     	
     	mProgressDialog = new ProgressDialog(this);   	
     	mProgressDialog.setMessage("Loading...");
@@ -116,7 +120,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
     	
     	mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	
-    	updateSelDev();
+    	updateSelDevUI(this.getIntent().getStringExtra("title"));
     	
     	mBrocastFactory.registerListener(this);
     }
@@ -245,19 +249,13 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 	}
 	
 	
-	private void updateSelDev()
+	private void updateSelDevUI(String title)
 	{
-		setSelDevUI(mAllShareProxy.getDMSSelectedDevice());
-	}
-	
-	
-	private void setSelDevUI(Device device)
-	{
-		if (device == null)
+		if (title == null)
 		{
 			mTVSelDeV.setText("no select device");
 		}else{
-			mTVSelDeV.setText(device.getFriendlyName());
+			mTVSelDeV.setText(title);
 		}
 		
 	}
@@ -267,6 +265,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		// TODO Auto-generated method stub
 		switch(v.getId()){
 		case R.id.btn_back:
+		case R.id.Back:	
 			back();
 			break;
 		}

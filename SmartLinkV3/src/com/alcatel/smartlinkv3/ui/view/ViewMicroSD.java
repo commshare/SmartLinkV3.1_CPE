@@ -51,21 +51,24 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	
 	private AllShareProxy mAllShareProxy;
 	private List<MediaItem> mCurItems;	
+	private List<MediaItem> mNextItems;	
 	private DMSDeviceBrocastFactory mBrocastFactory;
 	private Handler mHandler;
 	private Boolean filetag = false;
+	private String titlePosition=null;
 	
 	private ViewMicroSDBroadcastReceiver m_viewMicroSDMsgReceiver;
-	public static String DLNA_DEVICES_OK = "com.alcatel.smartlinkv3.dlna.device_success";
-	public  final static String LIST_KEY = "com.alcatel.smartlinkv3.ArrayList";  
+	public static String DLNA_DEVICES_SUCCESS = "com.alcatel.smartlinkv3.dlna.device_success";
+	public  final static String LIST_KEY = "com.alcatel.smartlinkv3.dlna.ArrayList";  
 	
 	private class ViewMicroSDBroadcastReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if(intent.getAction().equals(DLNA_DEVICES_OK)) {
+			if(intent.getAction().equals(DLNA_DEVICES_SUCCESS)) {
 				filetag = true;
 				mHandler = new Handler();
 		    	mHandler.postDelayed(new RequestDirectoryRunnable(), 100);
+		    	Log.v("pchong", "item 11111");
 	    	}
 		}
 	}
@@ -85,6 +88,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		mAllShareProxy = AllShareProxy.getInstance(this.m_context);
 		//mBrocastFactory = new DMSDeviceBrocastFactory(this.m_context);
 		mCurItems = new ArrayList<MediaItem>();
+		mNextItems = new ArrayList<MediaItem>();
     	//mBrocastFactory.registerListener(this);	
 	}
 	
@@ -98,7 +102,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	public void onResume() {
 		// TODO Auto-generated method stub
 		m_viewMicroSDMsgReceiver = new ViewMicroSDBroadcastReceiver();
-		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_OK));
+		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_SUCCESS));
 	}
 
 	@Override
@@ -306,10 +310,13 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	public void onGetItems(final List<MediaItem> list) {
 		// TODO Auto-generated method stub
 	//	showProgress(false);
-		mCurItems = list;
-		if(!filetag)
+		
+		if(filetag)
 		{
+			mCurItems = list;
+		}else{
 			filetag = true;
+			mNextItems =list;
 			goToDlnaViewPage();
 		}
 	}
@@ -318,6 +325,8 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		Log.v("pchong", "item 22222");
+		
 		switch(position){
 		case ITEM_FILE:
 			goToFilePage();
@@ -341,27 +350,31 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
     		CommonUtil.showToask(this.m_context, "can't find any devices,please check network!");
     		return ;
     	}else{
-			MediaItem item = (MediaItem) mCurItems.get(position);
-			filetag = false;
-			
-			if (UpnpUtil.isAudioItem(item)) {
-				goMusicPlayerActivity(position, item);
-			}else if (UpnpUtil.isVideoItem(item)){
-				goVideoPlayerActivity(position, item);
-			}else if (UpnpUtil.isPictureItem(item)){
-				goPicturePlayerActivity(position, item);
-			}else{
-				BrowseDMSProxy.syncGetItems(this.m_context, item.getStringid(), this);
-			  	//showProgress(true);
-			}
+    		if(mCurItems.size() > position)
+    		{
+    			MediaItem item = (MediaItem) mCurItems.get(position);
+    			titlePosition = item.getTitle();
+    			filetag = false;
+    			
+    			if (UpnpUtil.isAudioItem(item)) {
+    				goMusicPlayerActivity(position, item);
+    			}else if (UpnpUtil.isVideoItem(item)){
+    				goVideoPlayerActivity(position, item);
+    			}else if (UpnpUtil.isPictureItem(item)){
+    				goPicturePlayerActivity(position, item);
+    			}else{
+    				BrowseDMSProxy.syncGetItems(this.m_context, item.getStringid(), this);
+    			  	//showProgress(true);
+    			}
+    		}
     	}
 	}
 		
 	private void goToDlnaViewPage(){
 		Intent intent = new Intent();
 		intent.setClass(this.m_context, Go2ContentActivity.class);
-		intent.putExtra(LIST_KEY, (Serializable)mCurItems);
-		//intent.putExtra(LIST_KEY, mCurItems);
+		intent.putExtra(LIST_KEY, (Serializable)mNextItems);
+		intent.putExtra("title", titlePosition);
 		m_context.startActivity(intent);
 	}
 
