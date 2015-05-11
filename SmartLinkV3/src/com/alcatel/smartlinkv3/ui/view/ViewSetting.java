@@ -289,7 +289,7 @@ public class ViewSetting extends BaseViewImpl{
 	}
 	
 	private void changeUpgradeFlag(int itemIndex, Boolean blUpgrade){
-		if(itemIndex >= ITEM_WIFI_SETTING && itemIndex <= ITEM_ABOUT_SETTING){
+		if(itemIndex >= ITEM_WIFI_SETTING && itemIndex <= ITEM_UPGRADE_SETTING){
 			SettingItem item = list.get(itemIndex);
 			Boolean blOldUpgrade = item.getUpgradeFlag();
 			if(blOldUpgrade != blUpgrade){

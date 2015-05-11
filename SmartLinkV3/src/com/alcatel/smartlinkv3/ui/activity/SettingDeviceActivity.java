@@ -1,15 +1,23 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingDeviceActivity extends BaseActivity implements OnClickListener{
 	
@@ -25,6 +33,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private static FrameLayout m_web_version = null;
 	private static FrameLayout m_restart = null;
 	private static FrameLayout m_power_off = null;
+	
+	private static ProgressBar m_pb_waiting=null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +77,28 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_restart.setOnClickListener(this);
 		m_power_off = (FrameLayout) findViewById(R.id.device_power_off);
 		m_power_off.setOnClickListener(this);
+		
+		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
+		
+		ShowWaiting(false);
+	}
+	
+	private void ShowWaiting(boolean blShow){
+		if (blShow) {
+			m_pb_waiting.setVisibility(View.VISIBLE);
+		}else {
+			m_pb_waiting.setVisibility(View.GONE);
+		}
+		m_system_info.setEnabled(!blShow);
+		m_power_off.setEnabled(!blShow);
+		m_restart.setEnabled(!blShow);
+		m_backup_and_reset.setEnabled(!blShow);
+		m_ib_back.setEnabled(!blShow);
+		m_tv_back.setEnabled(!blShow);
+		m_upgrade_system.setEnabled(!blShow);
+		m_power_saving.setEnabled(!blShow);
+		m_pin_code.setEnabled(!blShow);
+		m_web_version.setEnabled(!blShow);
 	}
 	
 	private void goToSystemInfoPage(){
@@ -107,13 +139,96 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		case R.id.device_pin_code:
 			break;
 		case R.id.device_web_version:
+			String strTemp = "http://" + BusinessMannager.getInstance().getServerAddress();
+			CommonUtil.openWebPage(this, strTemp);
 			break;
 		case R.id.device_restart:
+			onBtnRestart();
+			ShowWaiting(true);
 			break;
 		case R.id.device_power_off:
+			onBtnPowerOff();
+			ShowWaiting(true);
 			break;
 		default:
 			break;
+		}
+	}
+	
+	private void onBtnPowerOff(){
+		BusinessMannager.getInstance().
+		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF, null);
+	}
+	
+	private void onBtnRestart(){
+		BusinessMannager.getInstance().
+		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_REBOOT, null);
+	}
+	
+	private void onBtnReset(){
+		BusinessMannager.getInstance().
+		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESET, null);
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		m_bNeedBack = false;
+		super.onResume();
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_REBOOT));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_RESET));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
+		
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+		ShowWaiting(true);
+	}
+	
+	@Override
+	protected void onBroadcastReceive(Context context, Intent intent) {
+		// TODO Auto-generated method stub
+		super.onBroadcastReceive(context, intent);
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_REBOOT)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_reboot_failed);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_reboot_success);
+			}
+			ShowWaiting(false);
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+		}
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
+			ShowWaiting(false);
+		}
+		
+		
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESET)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_reset_failed);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_reset_success);
+			}
+			ShowWaiting(false);
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+		}
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.setting_power_off_failed);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				strTost = getString(R.string.setting_power_off_success);
+			}
+			ShowWaiting(false);
+			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
 	}
 
