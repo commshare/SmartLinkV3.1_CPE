@@ -18,13 +18,13 @@ import android.widget.TextView;
 
 public class FragmentProfileManagementDetail extends Fragment implements OnClickListener{
 	
-	private static SettingNetworkActivity m_parent_activity = null;
-	private static LinearLayout m_protocol_selection = null;
-	private static RadioGroup m_protocol_list = null;
-	private static LinearLayout m_profile_detail_container = null;
-	private static FrameLayout m_default_switcher = null;
-	private static TextView m_switch_icon = null;
-	private static View m_root_view = null;
+	private SettingNetworkActivity m_parent_activity = null;
+	private LinearLayout m_protocol_selection = null;
+	private RadioGroup m_protocol_list = null;
+	private LinearLayout m_profile_detail_container = null;
+	private FrameLayout m_default_switcher = null;
+	private TextView m_switch_icon = null;
+	private View m_root_view = null;
 	
 	private static boolean m_is_default = false;
 	

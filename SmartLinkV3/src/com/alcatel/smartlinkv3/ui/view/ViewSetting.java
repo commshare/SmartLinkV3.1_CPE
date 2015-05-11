@@ -14,6 +14,7 @@ import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingNewAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SystemInfoActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingNetworkActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
@@ -212,7 +213,7 @@ public class ViewSetting extends BaseViewImpl{
 	}
 	
 	private void goToAboutSettingPage(){
-		Intent intent = new Intent(m_context, SettingAboutActivity.class);
+		Intent intent = new Intent(m_context, SettingNewAboutActivity.class);
 		m_context.startActivity(intent);
 	}
 	

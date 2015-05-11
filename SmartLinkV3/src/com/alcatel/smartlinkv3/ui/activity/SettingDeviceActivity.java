@@ -21,20 +21,22 @@ import android.widget.Toast;
 
 public class SettingDeviceActivity extends BaseActivity implements OnClickListener{
 	
-	private static TextView m_tv_title = null;
-	private static ImageButton m_ib_back=null;
-	private static TextView m_tv_back=null;
+	private TextView m_tv_title = null;
+	private ImageButton m_ib_back=null;
+	private TextView m_tv_back=null;
 	
-	private static FrameLayout m_system_info = null;
-	private static FrameLayout m_upgrade_system = null;
-	private static FrameLayout m_backup_and_reset = null;
-	private static FrameLayout m_power_saving = null;
-	private static FrameLayout m_pin_code = null;
-	private static FrameLayout m_web_version = null;
-	private static FrameLayout m_restart = null;
-	private static FrameLayout m_power_off = null;
+	private FrameLayout m_system_info = null;
+	private FrameLayout m_upgrade_system = null;
+	private FrameLayout m_backup_and_reset = null;
+	private FrameLayout m_power_saving = null;
+	private FrameLayout m_pin_code = null;
+	private FrameLayout m_web_version = null;
+	private FrameLayout m_restart = null;
+	private FrameLayout m_power_off = null;
 	
-	private static ProgressBar m_pb_waiting=null;
+	private ProgressBar m_pb_waiting=null;
+	
+	private boolean m_is_pincode_shown;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

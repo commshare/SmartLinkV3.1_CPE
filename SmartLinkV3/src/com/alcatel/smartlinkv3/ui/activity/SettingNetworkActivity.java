@@ -18,29 +18,29 @@ import android.widget.TextView;
 
 public class SettingNetworkActivity extends BaseActivity implements OnClickListener{
 	
-	public static final String TAG_FRAGMENT_NETWORK_MODE = "FRAGMENT_NETWORK_MODE";
-	public static final String TAG_FRAGMENT_NETWORK_SELECTION = "FRAGMENT_NETWORK_SELECTION";
-	public static final String TAG_FRAGMENT_PROFILE_MANAGEMENT = "FRAGMENT_NETWORK_MANAGEMENT";
-	public static final String TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL = "FRAGMENT_NETWORK_MANAGEMENT_DETAIL";
+	public final String TAG_FRAGMENT_NETWORK_MODE = "FRAGMENT_NETWORK_MODE";
+	public final String TAG_FRAGMENT_NETWORK_SELECTION = "FRAGMENT_NETWORK_SELECTION";
+	public final String TAG_FRAGMENT_PROFILE_MANAGEMENT = "FRAGMENT_NETWORK_MANAGEMENT";
+	public final String TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL = "FRAGMENT_NETWORK_MANAGEMENT_DETAIL";
 	
-	private static FragmentNetworkMode m_fragment_network_mode = null;
-	private static FragmentNetworkSelection m_fragment_network_selection = null;
-	private static FragmentProfileManagement m_fragment_profile_management = null;
-	private static FragmentProfileManagementDetail m_fragment_profile_management_detail = null;
+	private FragmentNetworkMode m_fragment_network_mode = null;
+	private FragmentNetworkSelection m_fragment_network_selection = null;
+	private FragmentProfileManagement m_fragment_profile_management = null;
+	private FragmentProfileManagementDetail m_fragment_profile_management_detail = null;
 	
-	private static Stack<String> m_fragment_tag_stack = null;
+	private Stack<String> m_fragment_tag_stack = null;
 	
-	private static TextView m_tv_title = null;
-	private static ImageButton m_ib_back=null;
-	private static TextView m_tv_back=null;
-	private static FrameLayout m_network_mode=null;
-	private static FrameLayout m_network_selection=null;
-	private static FrameLayout m_network_profile_management=null;
-	private static LinearLayout m_level_one_menu=null;
-	private static LinearLayout m_add_and_delete_container = null;
+	private TextView m_tv_title = null;
+	private ImageButton m_ib_back=null;
+	private TextView m_tv_back=null;
+	private FrameLayout m_network_mode=null;
+	private FrameLayout m_network_selection=null;
+	private FrameLayout m_network_profile_management=null;
+	private LinearLayout m_level_one_menu=null;
+	private LinearLayout m_add_and_delete_container = null;
 	
-	private static FragmentManager m_fragment_manager;
-	private static FragmentTransaction m_transaction;
+	private FragmentManager m_fragment_manager;
+	private FragmentTransaction m_transaction;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +159,17 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		m_fragment_tag_stack.clear();
+		m_fragment_tag_stack = null;
+		m_fragment_network_mode = null;
+		m_fragment_network_selection = null;
+		m_fragment_profile_management = null;
+		m_fragment_profile_management_detail = null;
 	}
 	
 	@Override

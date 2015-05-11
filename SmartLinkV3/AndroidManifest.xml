@@ -132,6 +132,12 @@
             android:theme="@style/titlebarstyle" >
         </activity>
         <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingNewAboutActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle" >
+        </activity>
+        <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"

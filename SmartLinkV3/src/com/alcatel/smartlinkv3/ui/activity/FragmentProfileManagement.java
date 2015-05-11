@@ -22,10 +22,10 @@ import com.alcatel.smartlinkv3.R;
 
 public class FragmentProfileManagement extends Fragment implements OnClickListener{
 	
-	private static ListView m_profile_list;
-	private static ImageButton m_add_profile = null;
-	private static ImageButton m_delete_profile = null;
-	private static SettingNetworkActivity m_parent_activity = null;
+	private ListView m_profile_list;
+	private ImageButton m_add_profile = null;
+	private ImageButton m_delete_profile = null;
+	private SettingNetworkActivity m_parent_activity = null;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
@@ -60,7 +60,7 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		return data;
 	}
 	
-	private static void goToDetailProfile(){
+	private void goToDetailProfile(){
 		m_parent_activity.setAddAndDeleteVisibility(View.GONE);
 		m_parent_activity.showFragmentProfileManagementDetail();
 	}
@@ -71,12 +71,12 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		
 	}
 
-private static class ProfileListAdapter extends BaseAdapter{
+private class ProfileListAdapter extends BaseAdapter{
 		
-		private static LayoutInflater m_inflater;
-		private static List<String> m_data;
-		private static int m_selected_position = -1;
-		private static RadioButton m_selected_button;
+		private LayoutInflater m_inflater;
+		private List<String> m_data;
+		private int m_selected_position = -1;
+		private RadioButton m_selected_button;
 		
 		public ProfileListAdapter(Context context, List<String> data){
 			m_inflater = LayoutInflater.from(context);

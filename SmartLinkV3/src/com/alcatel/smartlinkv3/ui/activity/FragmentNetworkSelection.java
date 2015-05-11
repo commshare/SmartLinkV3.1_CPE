@@ -24,10 +24,10 @@ import com.alcatel.smartlinkv3.R;
 
 public class FragmentNetworkSelection extends Fragment implements OnClickListener{
 	
-	private static ListView m_network_list;
-	private static LinearLayout m_network_list_conainer;
-	private static RadioButton m_auto_mode;
-	private static RadioButton m_manual_mode;
+	private ListView m_network_list;
+	private LinearLayout m_network_list_conainer;
+	private RadioButton m_auto_mode;
+	private RadioButton m_manual_mode;
 	
 	private SettingNetworkActivity m_parent_activity = null;
 	

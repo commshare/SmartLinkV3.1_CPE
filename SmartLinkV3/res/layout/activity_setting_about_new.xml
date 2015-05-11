@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical" >
+    
+<LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" 
+           android:background="@color/color_white">
+           
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+               
+            <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_about_version"
+               android:id="@+id/device_about_app_version"
+               android:layout_gravity="start"
+               />
+            
+             <ImageView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:contentDescription="@string/setting_wifi"
+		        android:src="@drawable/right_arrow_big"
+		        android:layout_marginRight="15dp"
+		        android:layout_gravity="center|end"/>
+        </FrameLayout>
+        
+        <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/main_bottom_divider"
+          android:contentDescription="@string/setting_device"/>
+        
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/device_about_feedback" >
+             <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_about_feedback"
+               />
+             <ImageView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:contentDescription="@string/setting_wifi"
+		        android:src="@drawable/right_arrow_big"
+		        android:layout_marginRight="15dp"
+		        android:layout_gravity="center|end"/>
+         </FrameLayout>
+            
+         <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/main_bottom_divider"
+          android:contentDescription="@string/setting_device" />
+            
+         <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/device_about_official_website" >
+             <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="15dp"
+               android:textColor="@color/color_black"
+               android:textSize="20sp" 
+               android:text="@string/setting_about_official_website"
+               />
+            <ImageView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:contentDescription="@string/setting_wifi"
+		        android:src="@drawable/right_arrow_big"
+		        android:layout_marginRight="15dp"
+		        android:layout_gravity="center|end"/>
+         </FrameLayout>
+         
+        <ImageView
+           android:layout_width="match_parent"
+           android:layout_height="1dp"
+           android:background="@color/main_bottom_divider"
+           android:contentDescription="@string/setting_device" />
+        
+        </LinearLayout>
+</LinearLayout>
