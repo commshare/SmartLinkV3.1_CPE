@@ -110,6 +110,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 						&& strErrorCode.length() == 0) {
 
 					CPEConfig.getInstance().setLoginPassword(m_password);
+					CPEConfig.getInstance().setLoginUsername(USER_NAME);
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;
