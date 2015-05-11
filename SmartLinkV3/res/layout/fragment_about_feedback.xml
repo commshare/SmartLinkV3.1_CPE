@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<EditText  
+	    android:id="@+id/setting_about_feedback_comment_editor"    
+	    android:layout_width="match_parent"   
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"  
+	    android:layout_margin="15dp"
+	    android:background="@drawable/setting_about_feedback"
+	    android:hint="Thank you for your comments..."/>
+	<LinearLayout
+	    android:layout_width="match_parent"   
+	    android:layout_height="match_parent"
+	    android:layout_weight="2.1" 
+		android:orientation="vertical"
+		android:layout_marginLeft="15dp"
+		android:layout_marginRight="15dp">
+	    <TextView
+	        android:layout_weight="1"  
+		    android:layout_width="match_parent"   
+		    android:layout_height="match_parent"
+			android:textSize="20sp"
+			android:gravity="bottom"
+		    android:text="Your Contact (Optional)"/>
+	        
+
+	    <EditText  
+	    android:id="@+id/setting_about_feedback_contact_editor"    
+	    android:layout_width="match_parent"   
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"  
+	    android:background="@drawable/setting_about_feedback"
+	    android:hint="Your Phone Number, Email"/>
+	 </LinearLayout>  
+	 <LinearLayout
+	    android:layout_width="match_parent"   
+	    android:layout_height="match_parent"
+	    android:layout_weight="2"    >
+	 </LinearLayout>
+</LinearLayout>
