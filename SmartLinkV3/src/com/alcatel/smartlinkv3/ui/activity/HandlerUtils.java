@@ -69,7 +69,7 @@ public class HandlerUtils {
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
-			Log.v("login logout", "pccccc userLogout m_loginStatus="+m_loginStatus);
+			MainActivity.setHomeLogoutFlag(true);
 		}
 	}
 }

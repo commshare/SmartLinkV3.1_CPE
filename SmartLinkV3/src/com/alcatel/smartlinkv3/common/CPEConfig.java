@@ -113,4 +113,14 @@ public class CPEConfig {
 	public void setLoginPassword(String password) {
 		mSettings.setLoginPassword(password);
 	}
+	
+	//login username
+	
+	public String getLoginUsername() {
+		return mSettings.getLoginPassword();
+	}
+
+	public void setLoginUsername(String username) {
+		mSettings.setLoginPassword(username);
+	}
 }

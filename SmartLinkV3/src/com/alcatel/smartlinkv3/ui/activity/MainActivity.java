@@ -6,6 +6,8 @@ import java.util.List;
 import org.cybergarage.upnp.Device;
 
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
@@ -99,6 +101,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
 	private static boolean m_blLogout = false;
+	private static boolean m_blHomeLogout = false;
 	
 	private CommonErrorInfoDialog m_dialog_timeout_info;
 	
@@ -197,7 +200,14 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
 		
-		//updateDeviceList();
+		if (m_blHomeLogout) {
+			DataValue data = new DataValue();
+			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
+			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.USER_LOGIN_REQUEST, data);		
+			m_blHomeLogout = false;
+		}
 		
 	}
 
@@ -987,5 +997,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		Intent msdIntent= new Intent(ViewMicroSD.DLNA_DEVICES_SUCCESS);
 		sendBroadcast(msdIntent);
+	}
+	
+	public static void setHomeLogoutFlag(boolean blhomeLogout){
+		m_blHomeLogout = blhomeLogout;
 	}
 }
