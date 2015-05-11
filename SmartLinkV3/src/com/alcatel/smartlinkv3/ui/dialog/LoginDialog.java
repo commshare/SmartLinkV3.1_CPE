@@ -12,6 +12,7 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 
 import android.app.Dialog;
@@ -109,8 +110,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				if (BaseResponse.RESPONSE_OK == nRet
 						&& strErrorCode.length() == 0) {
 
-					CPEConfig.getInstance().setLoginPassword(m_password);
-					CPEConfig.getInstance().setLoginUsername(USER_NAME);
+					SmartLinkV3App.getInstance().setLoginPassword(m_password);
+					SmartLinkV3App.getInstance().setLoginUsername(USER_NAME);
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;

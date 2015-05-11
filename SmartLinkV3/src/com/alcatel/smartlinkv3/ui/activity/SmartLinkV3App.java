@@ -15,6 +15,9 @@ public class SmartLinkV3App extends Application {
 	private AllShareProxy mAllShareProxy;
 
 	private ControlPoint mControlPoint;
+	
+	private String mapp_password = new String();
+	private String mapp_username = new String();
 	  
     public static SmartLinkV3App getInstance() {  
         return m_instance;  
@@ -44,4 +47,23 @@ public class SmartLinkV3App extends Application {
 	public ControlPoint getControlPoint(){
 		return mControlPoint;
 	}
+	
+	//login password
+			public String getLoginPassword() {
+				return mapp_password;
+			}
+
+			public void setLoginPassword(String password) {
+				mapp_password = password;
+			}
+			
+			//login username
+			
+			public String getLoginUsername() {
+				return mapp_username;
+			}
+
+			public void setLoginUsername(String username) {
+				mapp_username = username;
+			}
 }

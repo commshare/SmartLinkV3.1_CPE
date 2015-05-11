@@ -202,8 +202,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		if (m_blHomeLogout) {
 			DataValue data = new DataValue();
-			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
-			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
+			data.addParam("user_name", SmartLinkV3App.getInstance().getLoginUsername());
+			data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGIN_REQUEST, data);		
 			m_blHomeLogout = false;

@@ -11,7 +11,7 @@ public class CPESettings {
 	private static final String ITEM_WIFI_PASSWORD_SWITCH_STATE = "WifiPasswordSwitch";
 	private static final String ITEM_DEFAULT_DIRECTORY = "DefaultDirectory";
 	private static final String ITEM_LOGIN_PWD = "LoginPwd";
-	private static final String ITEM_LOGIN_USERNAME = "LoginUsername";
+	//private static final String ITEM_LOGIN_USERNAME = "LoginUsername";
 
 	private Context mContext = null;
 	private boolean mNotificationSwitchOn = false;
@@ -19,7 +19,7 @@ public class CPESettings {
 	private boolean mWifiPasswordSwitchOn = false;
 	private String m_defaultDir = new String();
 	private String m_password = new String();
-	private String m_username = new String();
+	//private String m_username = new String();
 	public CPESettings(Context context)
 	{
 		mContext = context;
@@ -63,7 +63,7 @@ public class CPESettings {
 		mWifiPasswordSwitchOn = sp.getBoolean(ITEM_WIFI_PASSWORD_SWITCH_STATE, false);
 		m_defaultDir = sp.getString(ITEM_DEFAULT_DIRECTORY, "");
 		m_password = sp.getString(ITEM_LOGIN_PWD, "");
-		m_username = sp.getString(ITEM_LOGIN_USERNAME, "");
+		//m_username = sp.getString(ITEM_LOGIN_USERNAME, "");
 	}
 	
 	private void saveSettings()
@@ -75,7 +75,7 @@ public class CPESettings {
 		edt.putBoolean(ITEM_WIFI_PASSWORD_SWITCH_STATE, mWifiPasswordSwitchOn);
 		edt.putString(ITEM_DEFAULT_DIRECTORY, m_defaultDir);
 		edt.putString(ITEM_LOGIN_PWD, m_password);		
-		edt.putString(ITEM_LOGIN_USERNAME, m_username);
+		//edt.putString(ITEM_LOGIN_USERNAME, m_username);
 		edt.commit();	
 	}
 	
@@ -100,12 +100,12 @@ public class CPESettings {
 	}
 	
 	//login username
-	public String getLoginUsername() {
-		return m_username;
-	}
-
-	public void setLoginUsername(String username) {
-		m_username = username;
-		saveSettings();
-	}
+//	public String getLoginUsername() {
+//		return m_username;
+//	}
+//
+//	public void setLoginUsername(String username) {
+//		m_username = username;
+//		saveSettings();
+//	}
 }
