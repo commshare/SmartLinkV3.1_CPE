@@ -92,6 +92,7 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 			break;
 		case R.id.logout_layout:
 			userLogout();
+			MainActivity.setAutoLoginFlag(false);
 			break;
 		}
 		this.dismiss();

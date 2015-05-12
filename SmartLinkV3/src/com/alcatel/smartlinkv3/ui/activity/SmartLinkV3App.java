@@ -3,6 +3,8 @@ package com.alcatel.smartlinkv3.ui.activity;
 import org.cybergarage.upnp.ControlPoint;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
 import android.app.*;
@@ -38,6 +40,14 @@ public class SmartLinkV3App extends Application {
 		
 		mAllShareProxy = AllShareProxy.getInstance(this);
 		
+		if(MainActivity.getAutoLoginFlag())
+		{
+			DataValue data = new DataValue();
+			data.addParam("user_name", SmartLinkV3App.getInstance().getLoginUsername());
+			data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.USER_LOGIN_REQUEST, data);
+		}
 	}
 	
 	public void setControlPoint(ControlPoint controlPoint){
@@ -49,21 +59,21 @@ public class SmartLinkV3App extends Application {
 	}
 	
 	//login password
-			public String getLoginPassword() {
-				return mapp_password;
-			}
+	public String getLoginPassword() {
+		return mapp_password;
+	}
 
-			public void setLoginPassword(String password) {
-				mapp_password = password;
-			}
-			
-			//login username
-			
-			public String getLoginUsername() {
-				return mapp_username;
-			}
+	public void setLoginPassword(String password) {
+		mapp_password = password;
+	}
+	
+	//login username
+	
+	public String getLoginUsername() {
+		return mapp_username;
+	}
 
-			public void setLoginUsername(String username) {
-				mapp_username = username;
-			}
+	public void setLoginUsername(String username) {
+		mapp_username = username;
+	}
 }

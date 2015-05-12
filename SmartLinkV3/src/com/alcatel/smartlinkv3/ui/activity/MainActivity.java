@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
 	private static boolean m_blLogout = false;
-	private static boolean m_blHomeLogout = false;
+	private static boolean m_blAutoLogin = false;
 	
 	private CommonErrorInfoDialog m_dialog_timeout_info;
 	
@@ -174,6 +174,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		mAllShareProxy = AllShareProxy.getInstance(this);
 		mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	mBrocastFactory.registerListener(this);
+    	
 	}
 
 	@Override
@@ -199,16 +200,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
-		
-		if (m_blHomeLogout) {
-			DataValue data = new DataValue();
-			data.addParam("user_name", SmartLinkV3App.getInstance().getLoginUsername());
-			data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.USER_LOGIN_REQUEST, data);		
-			m_blHomeLogout = false;
-		}
-		
 	}
 
 	@Override
@@ -490,13 +481,19 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 					PromptUserLogined();		
 				} else if (status == UserLoginStatus.login) {			
 					go2Click();		
-				} else {			
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-						@Override				
-						public void onLoginFinished() {					
-							go2Click();				
-						}			
-					});		
+				} else {
+					if (m_blAutoLogin) {
+						go2Click();
+					}else
+					{
+						m_loginDlg.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								go2Click();
+								m_blAutoLogin = true;
+							}
+						});
+					}
 				}	
 			}
 					
@@ -577,12 +574,18 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			} else if (status == UserLoginStatus.login) {
 				go2UsageView();
 			} else {
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {
-					@Override
-					public void onLoginFinished() {
-						go2UsageView();
-					}
-				});
+				if (m_blAutoLogin) {
+					go2UsageView();
+				}else
+				{
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {
+						@Override
+						public void onLoginFinished() {
+							go2UsageView();
+							m_blAutoLogin = true;
+						}
+					});
+				}
 			}
 		}
 	}
@@ -614,12 +617,18 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			} else if (status == UserLoginStatus.login) {
 				go2SmsView();
 			} else {
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {
-					@Override
-					public void onLoginFinished() {
-						go2SmsView();
-					}
-				});
+				if (m_blAutoLogin) {
+					go2SmsView();
+				}else
+				{
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {
+						@Override
+						public void onLoginFinished() {
+							go2SmsView();
+							m_blAutoLogin = true;
+						}
+					});
+				}
 			}
 		}	
 	}
@@ -648,13 +657,19 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				PromptUserLogined();		
 			} else if (status == UserLoginStatus.login) {			
 				go2SettingView();		
-			} else {			
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-					@Override				
-					public void onLoginFinished() {					
-						go2SettingView();				
-					}			
-				});		
+			} else {
+				if (m_blAutoLogin) {
+					go2SettingView();	
+				}else
+				{
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {
+						@Override
+						public void onLoginFinished() {
+							go2SettingView();
+							m_blAutoLogin = true;
+						}
+					});
+				}
 			}	
 		}	
 	}
@@ -682,12 +697,18 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			} else if (status == UserLoginStatus.login) {
 				go2MicroSDView();
 			} else {
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {
-					@Override
-					public void onLoginFinished() {
-						go2MicroSDView();
-					}
-				});
+				if (m_blAutoLogin) {
+					go2MicroSDView();
+				}else
+				{
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {
+						@Override
+						public void onLoginFinished() {
+							go2MicroSDView();
+							m_blAutoLogin = true;
+						}
+					});
+				}
 			}
 		}
 	}
@@ -999,7 +1020,11 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		sendBroadcast(msdIntent);
 	}
 	
-	public static void setHomeLogoutFlag(boolean blhomeLogout){
-		m_blHomeLogout = blhomeLogout;
+	public static void setAutoLoginFlag(boolean blautoLogin){
+		m_blAutoLogin = blautoLogin;
+	}
+	
+	public static boolean getAutoLoginFlag(){
+		return m_blAutoLogin;
 	}
 }
