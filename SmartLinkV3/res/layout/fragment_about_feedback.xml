@@ -2,43 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/setting_background_color" >
     
 	<EditText  
 	    android:id="@+id/setting_about_feedback_comment_editor"    
 	    android:layout_width="match_parent"   
 	    android:layout_height="match_parent"
 	    android:layout_weight="1"  
-	    android:layout_margin="15dp"
+	    android:layout_marginLeft="15dp"
+	    android:layout_marginRight="15dp"
+	    android:layout_marginTop="15dp"
+	    android:gravity="top|start"
+	    android:textSize="16sp"
 	    android:background="@drawable/setting_about_feedback"
-	    android:hint="Thank you for your comments..."/>
+	    android:hint="@string/setting_about_feedback_comment_hint"/>
 	<LinearLayout
 	    android:layout_width="match_parent"   
 	    android:layout_height="match_parent"
-	    android:layout_weight="2.1" 
+	    android:layout_weight="2.5" 
 		android:orientation="vertical"
 		android:layout_marginLeft="15dp"
-		android:layout_marginRight="15dp">
+		android:layout_marginRight="15dp"
+		android:gravity="center">
 	    <TextView
 	        android:layout_weight="1"  
 		    android:layout_width="match_parent"   
 		    android:layout_height="match_parent"
-			android:textSize="20sp"
+			android:textSize="16sp"
 			android:gravity="bottom"
-		    android:text="Your Contact (Optional)"/>
+		    android:text="@string/setting_about_feedback_contact_title"/>
 	        
-
-	    <EditText  
-	    android:id="@+id/setting_about_feedback_contact_editor"    
-	    android:layout_width="match_parent"   
-	    android:layout_height="match_parent"
-	    android:layout_weight="1"  
-	    android:background="@drawable/setting_about_feedback"
-	    android:hint="Your Phone Number, Email"/>
+	    <LinearLayout
+	        android:layout_width="match_parent"   
+		    android:layout_height="match_parent"
+		    android:layout_weight="1" >
+		    <EditText  
+			    android:id="@+id/setting_about_feedback_contact_editor"    
+			    android:layout_width="match_parent"   
+			    android:layout_height="wrap_content"
+			    android:textSize="16sp"
+			    android:background="@drawable/setting_about_feedback"
+			    android:hint="@string/setting_about_feedback_contact"/>
+	    </LinearLayout>
+	    
 	 </LinearLayout>  
 	 <LinearLayout
 	    android:layout_width="match_parent"   
 	    android:layout_height="match_parent"
-	    android:layout_weight="2"    >
+	    android:layout_weight="2"
+	    android:orientation="horizontal"
+	    android:padding="15dp"
+	    android:id="@+id/setting_about_feedback_add_picture_container" >
+	    <com.alcatel.smartlinkv3.ui.view.SquareLayout
+	        android:id="@+id/setting_about_feedback_add_picture"
+		    android:layout_height="match_parent"
+		    android:layout_width="match_parent" 
+		    android:gravity="center_vertical|center_horizontal" 
+		    android:textSize = "32sp" 
+		    android:text = "@string/setting_about_feedback_contact_add_photo"
+		    
+		    android:background="@drawable/setting_about_feedback"
+	        />
 	 </LinearLayout>
 </LinearLayout>

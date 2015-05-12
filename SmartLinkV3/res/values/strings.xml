@@ -185,6 +185,10 @@
     <string name="setting_restore_btn_restore">Restore</string>
     <string name="setting_about_version">Version</string>
     <string name="setting_about_feedback">Feedback</string>
+    <string name="setting_about_feedback_comment_hint">Thank you for your comments &#8230;</string>
+    <string name="setting_about_feedback_contact_title">Your Contact (Optional)</string>
+    <string name="setting_about_feedback_contact">Your Phone Number, Email</string>
+    <string name="setting_about_feedback_contact_add_photo">+</string>
     <string name="setting_about_official_website">Official website</string>
     <string name="setting_about_management_page">Management page</string>
     <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. All right reserved.</string>
