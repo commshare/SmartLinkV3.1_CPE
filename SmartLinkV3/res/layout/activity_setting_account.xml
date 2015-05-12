@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="@color/color_white">
+    android:background="@color/setting_background_color">
 
     <LinearLayout
            android:id="@+id/logout_and_change_password"
@@ -11,7 +11,8 @@
            android:layout_height="wrap_content"
            android:orientation="vertical" 
            android:background="@color/color_white"
-           android:visibility="visible">
+           android:visibility="visible"
+           android:layout_margin="20dp">
            
            <TextView
                android:id="@+id/setting_change_password"
@@ -38,12 +39,6 @@
                android:textSize="20sp" 
                android:text="@string/setting_log_out"
                />
-            
-            <ImageView
-	            android:layout_width="match_parent"
-	            android:layout_height="1dp"
-	            android:background="@color/main_bottom_divider"
-	            android:contentDescription="@string/setting_account" />
      </LinearLayout>
      
     <LinearLayout
@@ -52,6 +47,9 @@
            android:layout_height="wrap_content"
            android:orientation="vertical" 
            android:background="@color/color_white"
+           android:layout_marginTop="20dp"
+           android:layout_marginLeft="20dp"
+           android:layout_marginRight="20dp"
            android:visibility="gone">
            
            <TextView
@@ -92,12 +90,16 @@
                android:textSize="20sp" 
                android:text="@string/setting_confirm_password"
                />
-            
-            <ImageView
-	            android:layout_width="match_parent"
-	            android:layout_height="1dp"
-	            android:background="@color/main_bottom_divider"
-	            android:contentDescription="@string/setting_account" />
      </LinearLayout>
+     <TextView
+         	   android:id="@+id/password_notice"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:textColor="@color/color_deep_grey"
+               android:textSize="12sp" 
+               android:text="@string/setting_password_note"
+               android:layout_marginLeft="20dp"
+           	   android:layout_marginRight="20dp"
+               />
 
 </LinearLayout>

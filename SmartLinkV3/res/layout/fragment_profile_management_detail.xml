@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:layout_margin="20dp"
+    android:background="@color/setting_background_color">
     
     
     <LinearLayout
@@ -302,21 +304,16 @@
             
 		<ImageView
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/main_bottom_divider"
-                android:contentDescription="@string/setting_wifi" 
-                android:layout_marginBottom="40dp"/>
-		
-		<ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/main_bottom_divider"
+                android:layout_height="20dp"
+                android:background="@color/setting_background_color"
                 android:contentDescription="@string/setting_wifi" />
+
 		<FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" 
                     android:padding="15dp"
-                    android:id="@+id/profile_set_default">
+                    android:id="@+id/profile_set_default"
+                    android:background="@color/color_white">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -335,12 +332,7 @@
                             android:background="@drawable/pwd_switcher_off"
                             android:visibility="visible" />
            </FrameLayout>
-           
-		<ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/main_bottom_divider"
-                android:contentDescription="@string/setting_wifi" />
+
 	</LinearLayout>
 		
     <RadioGroup

@@ -3,20 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="@color/color_white"
+    android:background="@color/setting_background_color"
     android:id="@+id/setting_network_content">
 
     <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="vertical" 
-           android:background="@color/color_white"
-           android:id="@+id/level_one_menu">
+           android:background="@color/setting_background_color"
+           android:id="@+id/level_one_menu"
+           android:layout_margin="20dp">
            
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
-            android:id="@+id/network_mode">
+            android:id="@+id/network_mode"
+            android:background="@color/color_white">
                
             <TextView
                android:layout_width="wrap_content"
@@ -48,7 +50,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/network_selection">
+            android:id="@+id/network_selection"
+            android:background="@color/color_white">
              <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
@@ -68,16 +71,12 @@
                />
          </FrameLayout>
             
-         <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_network" />
-            
          <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/network_profile_management">
+            android:id="@+id/network_profile_management"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_white">
              <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
@@ -96,12 +95,6 @@
                android:text="test"
                />
          </FrameLayout>
-         
-        <ImageView
-           android:layout_width="match_parent"
-           android:layout_height="1dp"
-           android:background="@color/main_bottom_divider"
-           android:contentDescription="@string/setting_network" />
      </LinearLayout>
 
 </LinearLayout>

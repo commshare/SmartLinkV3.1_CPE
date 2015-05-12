@@ -28,6 +28,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	private LinearLayout m_network_list_conainer;
 	private RadioButton m_auto_mode;
 	private RadioButton m_manual_mode;
+	private TextView m_network_searching_title;
 	
 	private SettingNetworkActivity m_parent_activity = null;
 	
@@ -56,11 +57,15 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
         m_auto_mode = (RadioButton) view.findViewById(R.id.mode_auto);
         m_manual_mode = (RadioButton) view.findViewById(R.id.mode_manual);
         
+        m_network_searching_title =(TextView)view.findViewById(R.id.network_searching_title);
+        
         if(m_auto_mode.isChecked() == true){
         	m_network_list_conainer.setVisibility(View.GONE);
+        	m_network_searching_title.setVisibility(View.GONE);
         }
         if(m_manual_mode.isChecked() == true){
         	m_network_list_conainer.setVisibility(View.VISIBLE);
+        	m_network_searching_title.setVisibility(View.VISIBLE);
         }
         
         m_auto_mode.setOnCheckedChangeListener(new OnCheckedChangeListener(){
@@ -70,9 +75,11 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				// TODO Auto-generated method stub
 				if(checked == true){
 					m_network_list_conainer.setVisibility(View.GONE);
+					m_network_searching_title.setVisibility(View.GONE);
 				}
 				else if(checked == false){
 					m_network_list_conainer.setVisibility(View.VISIBLE);
+					m_network_searching_title.setVisibility(View.VISIBLE);
 				}
 			}
         	

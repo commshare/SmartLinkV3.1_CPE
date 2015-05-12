@@ -19,6 +19,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	private TextView m_tv_done;
 	private LinearLayout m_logout_and_changepwd;
 	private LinearLayout m_inputpwd;
+	private TextView m_notice;
 	private FrameLayout m_fl_titlebar;
 	private TextView m_change_password;
 	private TextView m_logout;
@@ -67,18 +68,23 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		
 		m_change_password.setOnClickListener(this);
 		m_logout.setOnClickListener(this);
+		
+		m_notice = (TextView)findViewById(R.id.password_notice);
+		m_notice.setVisibility(View.GONE);
 	}
 	
 	private void changePwdClick(){
 		m_logout_and_changepwd.setVisibility(View.GONE);
 		m_inputpwd.setVisibility(View.VISIBLE);
 		m_tv_done.setVisibility(View.VISIBLE);
+		m_notice.setVisibility(View.VISIBLE);
 	}
 	
 	private void doneChangePassword(){
 		m_tv_done.setVisibility(View.GONE);
 		m_logout_and_changepwd.setVisibility(View.VISIBLE);
 		m_inputpwd.setVisibility(View.GONE);
+		m_notice.setVisibility(View.GONE);
 	}
 	
 	@Override
