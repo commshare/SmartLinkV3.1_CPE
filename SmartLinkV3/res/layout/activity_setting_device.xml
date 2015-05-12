@@ -3,19 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="@color/color_white"
-    android:id="@+id/setting_device">
-
-    <LinearLayout
+    android:background="@color/setting_background_color"
+    android:id="@+id/setting_device"
+    android:padding="20dp">
+    
+	<ScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:id="@+id/device_menu_container">
+    	<LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="vertical" 
-           android:background="@color/color_white">
+           android:background="@color/setting_background_color">
            
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
-            android:id="@+id/device_system_info">
+            android:id="@+id/device_system_info"
+            android:background="@color/color_white">
                
             <TextView
                android:layout_width="wrap_content"
@@ -38,14 +44,15 @@
         
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
+          android:layout_height="20dp"
+          android:background="@color/setting_background_color"
           android:contentDescription="@string/setting_device"/>
         
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/device_upgrade_system" >
+            android:id="@+id/device_upgrade_system" 
+            android:background="@color/color_white">
              <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
@@ -72,7 +79,8 @@
          <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/device_backup_and_reset" >
+            android:id="@+id/device_backup_and_reset"
+            android:background="@color/color_white" >
              <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
@@ -99,7 +107,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/device_power_saving"  >
+            android:id="@+id/device_power_saving"
+            android:background="@color/color_white"  >
                
             <TextView
                android:layout_width="wrap_content"
@@ -122,14 +131,15 @@
         
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
+          android:layout_height="20dp"
+          android:background="@color/setting_background_color"
           android:contentDescription="@string/setting_device" />
         
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/device_pin_code"  >
+            android:id="@+id/device_pin_code"
+            android:background="@color/color_white"   >
                
             <TextView
                android:layout_width="wrap_content"
@@ -159,7 +169,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/device_web_version"  >
+            android:id="@+id/device_web_version"
+            android:background="@color/color_white"   >
                
             <TextView
                android:layout_width="wrap_content"
@@ -182,14 +193,15 @@
         
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
+          android:layout_height="20dp"
+          android:background="@color/setting_background_color"
           android:contentDescription="@string/setting_device" />
         
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
-            android:id="@+id/device_restart" >
+            android:id="@+id/device_restart"
+            android:background="@color/color_white"  >
                
             <TextView
                android:layout_width="wrap_content"
@@ -219,7 +231,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/device_power_off"  >
+            android:id="@+id/device_power_off"
+            android:background="@color/color_white"   >
                
             <TextView
                android:layout_width="wrap_content"
@@ -240,12 +253,36 @@
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
+       
      </LinearLayout>
+     
+    </ScrollView>
+    
+	<FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:padding="15dp"
+        android:id="@+id/setting_device_pincode_editor"
+        android:background="@color/color_white"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/setting_device_pin_code_edit"
+            android:textColor="@color/color_black"
+             android:textSize="20sp" />
+
+
+            <TextView
+                android:id="@+id/btn_default_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|center_vertical"
+                android:gravity="end"
+                android:background="@drawable/pwd_switcher_off"
+                android:visibility="visible" />
+    </FrameLayout>
      
     <RelativeLayout
             android:id="@+id/setting_device_waiting"

@@ -224,6 +224,7 @@
     <string name="setting_device_backup_and_reset">Backup&amp;Reset</string>
     <string name="setting_device_pin_code">PIN Code</string>
     <string name="setting_device_web_version">Web Version</string>
+    <string name="setting_device_pin_code_edit">PIN Enable</string>
     <string name="setting_about_app_name">ALCATELONETOUCH</string>
     <string name="setting_success">Success</string>
     <string name="setting_failed">Failed</string>

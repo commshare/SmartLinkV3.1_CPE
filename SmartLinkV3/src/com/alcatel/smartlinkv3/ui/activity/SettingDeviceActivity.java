@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	
 	private ProgressBar m_pb_waiting=null;
 	
-	private boolean m_is_pincode_shown;
+	private FrameLayout m_pincode_editor = null;
+	private ScrollView m_device_menu_container = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_power_off.setOnClickListener(this);
 		
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
+		
+		m_pincode_editor = (FrameLayout) findViewById(R.id.setting_device_pincode_editor);
+		m_pincode_editor.setVisibility(View.GONE);
+		m_pincode_editor.setOnClickListener(this);
+		
+		m_device_menu_container = (ScrollView) findViewById(R.id.device_menu_container);
+		m_device_menu_container.setVisibility(View.VISIBLE);
 		
 		ShowWaiting(false);
 	}
@@ -139,6 +148,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			goToPowerSettingPage();
 			break;
 		case R.id.device_pin_code:
+			onBtnPincodeSetting();
 			break;
 		case R.id.device_web_version:
 			String strTemp = "http://" + BusinessMannager.getInstance().getServerAddress();
@@ -152,9 +162,18 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			onBtnPowerOff();
 			ShowWaiting(true);
 			break;
+		case R.id.setting_device_pincode_editor:
+			m_device_menu_container.setVisibility(View.VISIBLE);
+			m_pincode_editor.setVisibility(View.GONE);
+			break;
 		default:
 			break;
 		}
+	}
+	
+	private void onBtnPincodeSetting(){
+		m_device_menu_container.setVisibility(View.GONE);
+		m_pincode_editor.setVisibility(View.VISIBLE);
 	}
 	
 	private void onBtnPowerOff(){
