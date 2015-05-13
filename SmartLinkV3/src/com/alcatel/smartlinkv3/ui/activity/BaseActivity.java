@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import java.util.ArrayList;
 
+import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
@@ -9,6 +10,9 @@ import com.alcatel.smartlinkv3.business.PowerManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -20,6 +24,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.widget.Toast;
 
 public abstract class BaseActivity extends Activity{
 	protected ActivityBroadcastReceiver m_msgReceiver;
@@ -45,6 +50,21 @@ public abstract class BaseActivity extends Activity{
     	
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
+    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGIN_REQUEST));
+
+    	if(CPEConfig.getInstance().getAutoLoginFlag())
+		{
+    		UserLoginStatus status = BusinessMannager.getInstance()				
+					.getLoginStatus();	
+    		if (status == UserLoginStatus.Logout) {
+			DataValue data = new DataValue();
+			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
+			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.USER_LOGIN_REQUEST, data);
+			MainActivity.setAutoProFlag(true);
+    		}
+		}
 
     	showActivity(this);
     	back2MainActivity(this);
@@ -77,6 +97,7 @@ public abstract class BaseActivity extends Activity{
 
 	protected void onBroadcastReceive(Context context, Intent intent)
 	{
+		String msgRes = null;
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
     		showActivity(context);
     	}else if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
@@ -90,6 +111,25 @@ public abstract class BaseActivity extends Activity{
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				backMainActivity(context);
+			}
+		}else if (intent.getAction().equalsIgnoreCase(
+				MessageUti.USER_LOGIN_REQUEST)) {			
+			MainActivity.setAutoProFlag(false);
+			Intent intent3= new Intent(MainActivity.AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS);
+			context.sendBroadcast(intent3);
+		
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){
+				CPEConfig.getInstance().setAutoLoginFlag(false);
+			}else if(BaseResponse.RESPONSE_OK == nResult&& strErrorCode.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)){
+				msgRes = this.getString(R.string.login_login_time_used_out_msg);
+				Toast.makeText(this, msgRes,Toast.LENGTH_SHORT).show();
+				CPEConfig.getInstance().setAutoLoginFlag(false);
+			}else if(BaseResponse.RESPONSE_OK == nResult&& strErrorCode.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)){
+				msgRes = this.getString(R.string.login_psd_error_msg);
+				Toast.makeText(this, msgRes,Toast.LENGTH_SHORT).show();
+				CPEConfig.getInstance().setAutoLoginFlag(false);
 			}
 		}
 	}

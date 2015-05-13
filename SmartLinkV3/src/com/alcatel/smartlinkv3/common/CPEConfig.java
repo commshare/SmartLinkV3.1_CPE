@@ -105,22 +105,33 @@ public class CPEConfig {
 	
 	
 	//login password
-	//login password
-//	public String getLoginPassword() {
-//		return mSettings.getLoginPassword();
-//	}
-//
-//	public void setLoginPassword(String password) {
-//		mSettings.setLoginPassword(password);
-//	}
-//	
-//	//login username
-//	
-//	public String getLoginUsername() {
-//		return mSettings.getLoginPassword();
-//	}
-//
-//	public void setLoginUsername(String username) {
-//		mSettings.setLoginPassword(username);
-//	}
+	
+	public String getLoginPassword() {
+		return mSettings.getLoginPassword();
+	}
+
+	public void setLoginPassword(String password) {
+		mSettings.setLoginPassword(password);
+	}
+	
+	//login username
+	
+	public String getLoginUsername() {
+		return mSettings.getLoginPassword();
+	}
+
+	public void setLoginUsername(String username) {
+		mSettings.setLoginPassword(username);
+	}
+
+	//login status
+	
+		public boolean getAutoLoginFlag() {
+			return mSettings.getAutoLoginFlag();
+		}
+
+		public void setAutoLoginFlag(boolean blAutoLogin) {
+			mSettings.setAutoLoginFlag(blAutoLogin);
+		}
+		
 }

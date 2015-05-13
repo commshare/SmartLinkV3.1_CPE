@@ -23,6 +23,7 @@ import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -508,17 +509,21 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			UserLoginStatus status = BusinessMannager.getInstance()
 					.getLoginStatus();
 
-			if (status == UserLoginStatus.LoginTimeOut) {
-				PromptUserLogined();
+			if (status == UserLoginStatus.Logout) {
+				if (CPEConfig.getInstance().getAutoLoginFlag()) {
+					connect();
+				}else{
+					m_loginDialog.showDialog(new OnLoginFinishedListener() {
+						@Override
+						public void onLoginFinished() {
+							connect();
+						}
+					});
+				}
 			} else if (status == UserLoginStatus.login) {
 				connect();	
 			} else {
-				m_loginDialog.showDialog(new OnLoginFinishedListener() {
-					@Override
-					public void onLoginFinished() {
-						connect();	
-					}
-				});
+				PromptUserLogined();
 			}
 		}	
 	}

@@ -110,8 +110,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				if (BaseResponse.RESPONSE_OK == nRet
 						&& strErrorCode.length() == 0) {
 
-					SmartLinkV3App.getInstance().setLoginPassword(m_password);
-					SmartLinkV3App.getInstance().setLoginUsername(USER_NAME);
+					CPEConfig.getInstance().setLoginPassword(m_password);
+					CPEConfig.getInstance().setLoginUsername(USER_NAME);
+					CPEConfig.getInstance().setAutoLoginFlag(true);
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;

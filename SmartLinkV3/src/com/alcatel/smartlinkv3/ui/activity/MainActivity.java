@@ -37,6 +37,7 @@ import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -101,12 +102,13 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
 	private static boolean m_blLogout = false;
-	private static boolean m_blAutoLogin = false;
+	private static boolean m_blAutoPro = false;
 	
 	private CommonErrorInfoDialog m_dialog_timeout_info;
 	
 	private RelativeLayout m_accessDeviceLayout;
 	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
+	public static String AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS = "com.alcatel.smartlinkv3.AutLoginReturn";
 	
 	private DMSDeviceBrocastFactory mBrocastFactory;
 	private AllShareProxy mAllShareProxy;
@@ -174,6 +176,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		mAllShareProxy = AllShareProxy.getInstance(this);
 		mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	mBrocastFactory.registerListener(this);
+    	
+    	mProgressDialog = new ProgressDialog(this);   	
+    	mProgressDialog.setMessage("Loading...");
     	
 	}
 
@@ -297,6 +302,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		if (intent.getAction().equalsIgnoreCase(PAGE_TO_VIEW_HOME)) {
 			homeBtnClick();
+		}
+		
+		if (intent.getAction().equalsIgnoreCase(AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS)) {
+			showProgress(false);
 		}
 	}
 	
@@ -455,6 +464,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onClick(View v) {
+		if(m_blAutoPro)
+		{
+			showProgress(true);
+		}
 		switch (v.getId()) {
 		case R.id.main_home:
 			homeBtnClick();
@@ -477,23 +490,21 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			} else {		
 				UserLoginStatus status = BusinessMannager.getInstance()				
 						.getLoginStatus();	
-				if (status == UserLoginStatus.LoginTimeOut) {			
-					PromptUserLogined();		
-				} else if (status == UserLoginStatus.login) {			
-					go2Click();		
-				} else {
-					if (m_blAutoLogin) {
+				if (status == UserLoginStatus.Logout) {
+					if (CPEConfig.getInstance().getAutoLoginFlag()) {
 						go2Click();
-					}else
-					{
+					}else{
 						m_loginDlg.showDialog(new OnLoginFinishedListener() {
 							@Override
 							public void onLoginFinished() {
 								go2Click();
-								m_blAutoLogin = true;
 							}
 						});
 					}
+				} else if (status == UserLoginStatus.login) {			
+					go2Click();		
+				} else {		
+					PromptUserLogined();	
 				}	
 			}
 					
@@ -525,17 +536,21 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		} else {		
 			UserLoginStatus status = BusinessMannager.getInstance()				
 					.getLoginStatus();	
-			if (status == UserLoginStatus.LoginTimeOut) {			
-				PromptUserLogined();		
+			if (status == UserLoginStatus.Logout) {
+				if (CPEConfig.getInstance().getAutoLoginFlag()) {
+					startDeviceManagerActivity();
+				}else{
+					m_loginDlg.showDialog(new OnLoginFinishedListener() {
+						@Override
+						public void onLoginFinished() {
+							startDeviceManagerActivity();
+						}
+					});
+				}
 			} else if (status == UserLoginStatus.login) {			
 				startDeviceManagerActivity();		
-			} else {			
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-					@Override				
-					public void onLoginFinished() {					
-						startDeviceManagerActivity();				
-					}			
-				});		
+			} else {
+				PromptUserLogined();
 			}	
 		}
 		
@@ -569,23 +584,21 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			UserLoginStatus status = BusinessMannager.getInstance()
 					.getLoginStatus();
 
-			if (status == UserLoginStatus.LoginTimeOut) {
-				PromptUserLogined();
-			} else if (status == UserLoginStatus.login) {
-				go2UsageView();
-			} else {
-				if (m_blAutoLogin) {
+			if (status == UserLoginStatus.Logout) {
+				if (CPEConfig.getInstance().getAutoLoginFlag()) {
 					go2UsageView();
-				}else
-				{
+				}else{
 					m_loginDlg.showDialog(new OnLoginFinishedListener() {
 						@Override
 						public void onLoginFinished() {
 							go2UsageView();
-							m_blAutoLogin = true;
 						}
 					});
 				}
+			} else if (status == UserLoginStatus.login) {
+				go2UsageView();
+			} else {
+				PromptUserLogined();
 			}
 		}
 	}
@@ -612,23 +625,21 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			UserLoginStatus status = BusinessMannager.getInstance()
 					.getLoginStatus();
 
-			if (status == UserLoginStatus.LoginTimeOut) {
-				PromptUserLogined();
-			} else if (status == UserLoginStatus.login) {
-				go2SmsView();
-			} else {
-				if (m_blAutoLogin) {
+			if (status == UserLoginStatus.Logout) {
+				if (CPEConfig.getInstance().getAutoLoginFlag()) {
 					go2SmsView();
-				}else
-				{
+				}else{
 					m_loginDlg.showDialog(new OnLoginFinishedListener() {
 						@Override
 						public void onLoginFinished() {
 							go2SmsView();
-							m_blAutoLogin = true;
 						}
 					});
 				}
+			} else if (status == UserLoginStatus.login) {
+				go2SmsView();
+			} else {
+				PromptUserLogined();
 			}
 		}	
 	}
@@ -653,23 +664,21 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		} else {		
 			UserLoginStatus status = BusinessMannager.getInstance()				
 					.getLoginStatus();	
-			if (status == UserLoginStatus.LoginTimeOut) {			
-				PromptUserLogined();		
-			} else if (status == UserLoginStatus.login) {			
-				go2SettingView();		
-			} else {
-				if (m_blAutoLogin) {
-					go2SettingView();	
-				}else
-				{
+			if (status == UserLoginStatus.Logout) {
+				if (CPEConfig.getInstance().getAutoLoginFlag()) {
+					go2SettingView();
+				}else{
 					m_loginDlg.showDialog(new OnLoginFinishedListener() {
 						@Override
 						public void onLoginFinished() {
 							go2SettingView();
-							m_blAutoLogin = true;
 						}
 					});
 				}
+			} else if (status == UserLoginStatus.login) {			
+				go2SettingView();		
+			} else {
+				PromptUserLogined();
 			}	
 		}	
 	}
@@ -688,28 +697,25 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		if (LoginDialog.isLoginSwitchOff()) {
 			go2MicroSDView();
-		} else {
-			UserLoginStatus status = BusinessMannager.getInstance()
-					.getLoginStatus();
-
-			if (status == UserLoginStatus.LoginTimeOut) {
-				PromptUserLogined();
-			} else if (status == UserLoginStatus.login) {
-				go2MicroSDView();
-			} else {
-				if (m_blAutoLogin) {
+		} else {		
+			UserLoginStatus status = BusinessMannager.getInstance()				
+					.getLoginStatus();	
+			if (status == UserLoginStatus.Logout) {
+				if (CPEConfig.getInstance().getAutoLoginFlag()) {
 					go2MicroSDView();
-				}else
-				{
+				}else{
 					m_loginDlg.showDialog(new OnLoginFinishedListener() {
 						@Override
 						public void onLoginFinished() {
 							go2MicroSDView();
-							m_blAutoLogin = true;
 						}
 					});
 				}
-			}
+			} else if (status == UserLoginStatus.login) {			
+				go2MicroSDView();		
+			} else {		
+				PromptUserLogined();	
+			}	
 		}
 	}
 	
@@ -1020,11 +1026,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		sendBroadcast(msdIntent);
 	}
 	
-	public static void setAutoLoginFlag(boolean blautoLogin){
-		m_blAutoLogin = blautoLogin;
+	public static void setAutoProFlag(boolean blAutoLogin){
+		m_blAutoPro = blAutoLogin;;
 	}
 	
-	public static boolean getAutoLoginFlag(){
-		return m_blAutoLogin;
+	public static boolean getAutoProFlag(){
+		return  m_blAutoPro;
+	}
+	
+	private ProgressDialog mProgressDialog;
+	private void showProgress(boolean bShow)
+	{	
+		if (bShow){
+			mProgressDialog.show();
+		}else
+		{
+			mProgressDialog.dismiss();
+		}	
 	}
 }

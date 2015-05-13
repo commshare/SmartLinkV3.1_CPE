@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.ui.dialog;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
@@ -92,7 +93,7 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 			break;
 		case R.id.logout_layout:
 			userLogout();
-			MainActivity.setAutoLoginFlag(false);
+			CPEConfig.getInstance().setAutoLoginFlag(false);
 			break;
 		}
 		this.dismiss();

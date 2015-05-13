@@ -39,15 +39,6 @@ public class SmartLinkV3App extends Application {
 		HandlerUtils.replaceHandler();
 		
 		mAllShareProxy = AllShareProxy.getInstance(this);
-		
-		if(MainActivity.getAutoLoginFlag())
-		{
-			DataValue data = new DataValue();
-			data.addParam("user_name", SmartLinkV3App.getInstance().getLoginUsername());
-			data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.USER_LOGIN_REQUEST, data);
-		}
 	}
 	
 	public void setControlPoint(ControlPoint controlPoint){
@@ -59,21 +50,21 @@ public class SmartLinkV3App extends Application {
 	}
 	
 	//login password
-	public String getLoginPassword() {
-		return mapp_password;
-	}
-
-	public void setLoginPassword(String password) {
-		mapp_password = password;
-	}
-	
+//	public String getLoginPassword() {
+//		return mapp_password;
+//	}
+//
+//	public void setLoginPassword(String password) {
+//		mapp_password = password;
+//	}
+//	
 	//login username
-	
-	public String getLoginUsername() {
-		return mapp_username;
-	}
-
-	public void setLoginUsername(String username) {
-		mapp_username = username;
-	}
+//	
+//	public String getLoginUsername() {
+//		return mapp_username;
+//	}
+//
+//	public void setLoginUsername(String username) {
+//		mapp_username = username;
+//	}
 }
