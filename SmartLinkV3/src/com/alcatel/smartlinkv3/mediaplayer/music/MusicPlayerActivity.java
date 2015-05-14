@@ -408,8 +408,8 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 	
 		public ImageButton mBtnPlay;
 		public ImageButton mBtnPause;
-		public ImageButton mBtnPre;
-		public ImageButton mBtnNext;
+//		public ImageButton mBtnPre;
+//		public ImageButton mBtnNext;
 		public SeekBar mSeekBar;
 		public TextView mTVCurTime;
 		public TextView mTVTotalTime;
@@ -442,12 +442,12 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 			
 			mBtnPlay = (ImageButton) findViewById(R.id.btn_play);
 			mBtnPause = (ImageButton) findViewById(R.id.btn_pause);
-			mBtnPre = (ImageButton) findViewById(R.id.btn_playpre);
-			mBtnNext = (ImageButton) findViewById(R.id.btn_playnext);
+//			mBtnPre = (ImageButton) findViewById(R.id.btn_playpre);
+//			mBtnNext = (ImageButton) findViewById(R.id.btn_playnext);
 			mBtnPlay.setOnClickListener(this);
 			mBtnPause.setOnClickListener(this);	
-			mBtnPre.setOnClickListener(this);
-			mBtnNext.setOnClickListener(this);
+//			mBtnPre.setOnClickListener(this);
+//			mBtnNext.setOnClickListener(this);
 			
 			mSeekBar = (SeekBar) findViewById(R.id.playback_seeker);
 			mTVCurTime = (TextView) findViewById(R.id.tv_curTime);
@@ -539,12 +539,12 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 				case R.id.btn_pause:
 					mMusicControlCenter.pause();
 					break;
-				case R.id.btn_playpre:
-					mMusicControlCenter.prev();
-					break;
-				case R.id.btn_playnext:
-					mMusicControlCenter.next();
-					break;
+//				case R.id.btn_playpre:
+//					mMusicControlCenter.prev();
+//					break;
+//				case R.id.btn_playnext:
+//					mMusicControlCenter.next();
+//					break;
 			}
 		}
 		

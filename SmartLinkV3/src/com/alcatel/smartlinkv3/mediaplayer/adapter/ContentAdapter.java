@@ -41,10 +41,10 @@ public class ContentAdapter extends BaseAdapter{
 		mContext = context;
 		
 		Resources res = context.getResources();
-		foldIcon = res.getDrawable(R.drawable.ic_menu_archive);
-		musicIcon = res.getDrawable(R.drawable.tab_icon_music);
-		picIcon = res.getDrawable(R.drawable.tab_icon_pic);
-		videoIcon = res.getDrawable(R.drawable.tab_icon_video);
+		foldIcon = res.getDrawable(R.drawable.microsd_item_folder);
+		musicIcon = res.getDrawable(R.drawable.microsd_item_music);
+		picIcon = res.getDrawable(R.drawable.microsd_item_pictures);
+		videoIcon = res.getDrawable(R.drawable.microsd_item_videos);
 	}
 	
 	public void refreshData(List<MediaItem>  contentItem)

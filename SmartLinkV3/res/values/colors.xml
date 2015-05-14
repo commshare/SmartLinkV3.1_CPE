@@ -87,4 +87,7 @@
     
     <color name="setting_background_color">#efeff4</color>
 
+    <!-- DLNA start -->
+    <color name="media_tool_background_color">#ff808080</color>
+    <!-- DLNA end -->
 </resources>

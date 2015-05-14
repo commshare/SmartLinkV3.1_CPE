@@ -10,12 +10,6 @@
 		android:layout_centerVertical="true" 
 		android:layout_centerHorizontal="true" >
 		
-		<ImageView 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:src="@drawable/media_prepare_startup">
-		</ImageView>
 		<ProgressBar 
 		    android:layout_width="62dp" 
 		    android:layout_height="62dp" 
