@@ -27,8 +27,7 @@ import android.widget.RelativeLayout;
 
 public class FragmentAboutFeedback extends Fragment implements OnClickListener{
 	
-	private final int RESULT_OK = 101;
-	private final int RESULT_CODE = 1;
+	private final int REQUEST_IMAGE = 1;
 	
 	private SettingNewAboutActivity m_parent_activity;
 	private SquareLayout m_add_photo;
@@ -61,7 +60,7 @@ public class FragmentAboutFeedback extends Fragment implements OnClickListener{
 //				m_add_photo_container.addView(m_photo, 0);
 				
 				Intent intent = new Intent(m_parent_activity, SettingAboutFeedbackImageSelector.class);
-				startActivity(intent);
+				startActivityForResult(intent, 0);
 			}
 		});
 	}
@@ -70,5 +69,15 @@ public class FragmentAboutFeedback extends Fragment implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (1 == requestCode) {
+			if (1 == resultCode) {
+				m_add_photo.setBackgroundColor(Color.BLUE);
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }
