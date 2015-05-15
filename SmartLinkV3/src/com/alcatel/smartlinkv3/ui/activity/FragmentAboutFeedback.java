@@ -54,16 +54,14 @@ public class FragmentAboutFeedback extends Fragment implements OnClickListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				m_photo = new SquareLayout(getActivity());
-//				m_photo.setBackgroundColor(Color.BLACK);
-				LinearLayout.LayoutParams layoutParams  = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);  
-				layoutParams.setMargins(0, 0, 20, 0);
-				m_photo.setLayoutParams(layoutParams);
-				Intent intent = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, RESULT_CODE);  
-				m_add_photo_container.addView(m_photo, 0);
+//				m_photo = new SquareLayout(getActivity());
+////				m_photo.setBackgroundColor(Color.BLACK);
+//				LinearLayout.LayoutParams layoutParams  = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);  
+//				layoutParams.setMargins(0, 0, 20, 0);
+//				m_add_photo_container.addView(m_photo, 0);
+				
+				Intent intent = new Intent(m_parent_activity, SettingAboutFeedbackImageSelector.class);
+				startActivity(intent);
 			}
 		});
 	}
@@ -73,27 +71,4 @@ public class FragmentAboutFeedback extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
-		super.onActivityResult(requestCode, resultCode, data);  
-        if (requestCode == RESULT_CODE && null != data) {  
-        	 Uri selectedImage = data.getData();
-             String[] filePathColumn = { MediaStore.Images.Media.DATA };
-  
-             Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                     filePathColumn, null, null, null);
-             cursor.moveToFirst();
-  
-             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-             String picturePath = cursor.getString(columnIndex);
-             cursor.close();
-             
-             Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-             BitmapDrawable bd= new BitmapDrawable(getActivity().getResources(), bitmap); 
-             m_photo.setBackground(bd);
-        }  
-        
-    }  
-
 }

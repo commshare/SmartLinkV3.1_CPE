@@ -224,6 +224,12 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingAboutFeedbackImageSelector"
+			android:launchMode="singleTask"
+             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/titlebarstyle"  >
+        </activity>
 
         <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >
             <intent-filter>

@@ -656,31 +656,32 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	}
 
 	private void settingBtnClick() {
-		if (m_preButton == R.id.main_setting) {		
-			return;	
-		}	
-		if (LoginDialog.isLoginSwitchOff()) {		
-			go2SettingView();	
-		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					go2SettingView();
-				}else{
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							go2SettingView();
-						}
-					});
-				}
-			} else if (status == UserLoginStatus.login) {			
-				go2SettingView();		
-			} else {
-				PromptUserLogined();
-			}	
-		}	
+//		if (m_preButton == R.id.main_setting) {		
+//			return;	
+//		}	
+//		if (LoginDialog.isLoginSwitchOff()) {		
+//			go2SettingView();	
+//		} else {		
+//			UserLoginStatus status = BusinessMannager.getInstance()				
+//					.getLoginStatus();	
+//			if (status == UserLoginStatus.Logout) {
+//				if (CPEConfig.getInstance().getAutoLoginFlag()) {
+//					go2SettingView();
+//				}else{
+//					m_loginDlg.showDialog(new OnLoginFinishedListener() {
+//						@Override
+//						public void onLoginFinished() {
+//							go2SettingView();
+//						}
+//					});
+//				}
+//			} else if (status == UserLoginStatus.login) {			
+//				go2SettingView();		
+//			} else {
+//				PromptUserLogined();
+//			}	
+//		}	
+		go2SettingView();		
 	}
 
 	private void go2SettingView() {
