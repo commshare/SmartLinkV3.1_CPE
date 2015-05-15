@@ -4,19 +4,32 @@
 
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
- <!-- 边框 -->
+        <!-- 边框 -->
         <item name="android:windowIsFloating">true</item>
- <!-- 是否浮现在activity之上 -->
+        <!-- 是否浮现在activity之上 -->
         <item name="android:windowIsTranslucent">false</item>
- <!-- 半透明 -->
+        <!-- 半透明 -->
         <item name="android:windowNoTitle">true</item>
- <!-- 无标题 -->
+        <!-- 无标题 -->
         <item name="android:windowBackground">@color/color_transparent</item>
- <!-- 背景透明 -->
+        <!-- 背景透明 -->
         <item name="android:backgroundDimEnabled">true</item>
- <!-- 模糊 -->
-		<item name="android:backgroundDimAmount">0.65</item>
- <!-- 模糊度数 -->
+        <!-- 模糊 -->
+        <item name="android:backgroundDimAmount">0.65</item>
+        <!-- 模糊度数 -->
+    </style>
+
+    <style name="ExitActivityStyle" parent="exit_activity_style">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="exit_activity_style" parent="@android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
 </resources>

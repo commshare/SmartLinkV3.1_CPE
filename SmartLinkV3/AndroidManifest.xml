@@ -34,14 +34,20 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.alcatel.smartlinkv3.ui.activity.LoadingActivity"
+            android:name="com.alcatel.smartlinkv3.ui.activity.LauncherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@style/ExitActivityStyle" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.LoadingActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.GuideActivity"
@@ -226,9 +232,9 @@
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.SettingAboutFeedbackImageSelector"
-			android:launchMode="singleTask"
-             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/titlebarstyle"  >
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle" >
         </activity>
 
         <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >
