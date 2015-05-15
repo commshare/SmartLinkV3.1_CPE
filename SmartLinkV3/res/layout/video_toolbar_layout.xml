@@ -6,14 +6,15 @@
 	<RelativeLayout 
 	    android:id="@+id/down_toolview"
 	    android:layout_width="fill_parent"
-	    android:layout_height="100dp"
+	    android:layout_height="60dp"
 	    android:layout_alignParentBottom="true"
-	    android:background="@drawable/media_tool_bg1">
+	    android:background="@color/media_tool_background_color">
 	    
 	    <RelativeLayout 
 	    android:id="@+id/miniplayLayout" 
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="fill_parent"
+	    android:padding="8dp"
 	    android:layout_alignParentBottom="true">		
      
 	        <ImageButton 
@@ -31,43 +32,22 @@
 	        android:layout_centerInParent="true"
 			android:visibility="gone"
 	        android:background="@drawable/selector_btn_pause">
-	        </ImageButton>    
-	        
-   
-	        <ImageButton 
-	        android:id="@+id/btn_playpre" 
-	        android:layout_width="wrap_content" 
-	        android:layout_height="wrap_content"
-	        android:layout_toLeftOf="@id/btn_play"
-			android:layout_marginRight="20dp"
-	        android:layout_centerVertical="true"
-	        android:background="@drawable/selector_btn_pre">
 	        </ImageButton>
-	        
-	        <ImageButton 
-	        android:id="@+id/btn_playnext" 
-	        android:layout_width="wrap_content" 
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/btn_play"
-	 		android:layout_marginLeft="20dp"
-	        android:layout_centerVertical="true"
-	        android:background="@drawable/selector_btn_next">
-	        </ImageButton>		
 	               	
 	    </RelativeLayout>
 	    
 	      
 	    <RelativeLayout 
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content"
-	    android:layout_above="@id/miniplayLayout">		
+	    android:layout_width="wrap_content" 
+	    android:layout_height="fill_parent"
+	    android:layout_toRightOf="@id/miniplayLayout">		
         
             <TextView 
 		    android:text="@string/init_time" 
 		    android:id="@+id/tv_totalTime" 
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_marginRight="10dp"
+		    android:layout_marginRight="8dp"
 		    android:layout_centerVertical="true"
 			android:textColor="@android:color/white"
 			android:textSize="20sp"
@@ -103,27 +83,23 @@
 	        android:layout_height="wrap_content"	  
 	        android:layout_centerVertical="true"
 	        android:layout_toLeftOf="@id/tv_curTime"
-	        android:layout_marginRight="10dp"
-	        android:paddingLeft="15.0dip" 
-		    android:paddingRight="15.0dip"
-	        android:maxHeight="55.0dip" 
-		    android:minHeight="55.0dip" 
+	        android:layout_marginRight="2dp"
+	        android:paddingLeft="10.0dip" 
+		    android:paddingRight="10.0dip"
+	        android:maxHeight="39.0dip" 
+		    android:minHeight="39.0dip" 
 	        android:max="100"
-	        android:thumbOffset="15dp"
+	        android:thumbOffset="8dp"
 	        android:progressDrawable="@drawable/seekbar_background"
-	        android:thumb="@drawable/seekbar_thumb"/> 
-               	
-		</RelativeLayout>       
-			
+	        android:thumb="@drawable/seekbar_thumb"/>       	
+		</RelativeLayout>       		
 	</RelativeLayout>
 	
 	<RelativeLayout 
 	    android:id="@+id/up_toolview"
 	    android:layout_width="fill_parent"
 	    android:layout_height="30dp"
-	    android:layout_alignParentTop="true"
-	    android:background="@drawable/media_tool_bg2">
-	    
+	    android:layout_alignParentTop="true">
 	    
 	        <TextView 
 		    android:id="@+id/tv_title" 
@@ -133,9 +109,6 @@
 	    	android:textColor="@android:color/white"
 	    	android:textSize="20sp">
 		    </TextView>
-		    
-	      
-	</RelativeLayout>
-	    
+	</RelativeLayout> 
 
 </RelativeLayout>

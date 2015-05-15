@@ -66,8 +66,8 @@ public abstract class BaseActivity extends Activity{
     		}
 		}
 
-    	showActivity(this);
-    	back2MainActivity(this);
+    	//showActivity(this);
+    	//back2MainActivity(this);
 	}
 	
 	@Override
@@ -99,18 +99,18 @@ public abstract class BaseActivity extends Activity{
 	{
 		String msgRes = null;
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-    		showActivity(context);
+    		//showActivity(context);
     	}else if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				back2MainActivity(context);
+				//back2MainActivity(context);
 			}
 		}else if(intent.getAction().equals(MessageUti.USER_LOGOUT_REQUEST)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				backMainActivity(context);
+				//backMainActivity(context);
 			}
 		}else if (intent.getAction().equalsIgnoreCase(
 				MessageUti.USER_LOGIN_REQUEST)) {			
@@ -142,58 +142,58 @@ public abstract class BaseActivity extends Activity{
         }  	
 	}
 	
-	private void back2MainActivity(Context context) {
-		if(m_bNeedBack == false) 
-			return;
-		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
-		
-		if(bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
-				dismissAllDialog();	
-				Intent intent = new Intent(context, MainActivity.class);	
-				context.startActivity(intent);
-				finish();
-			}
-		}
-	}
-	
-	private void backMainActivity(Context context) {
-		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
-		
-		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
-			dismissAllDialog();
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
-				Intent intent = new Intent(context, MainActivity.class);	
-				context.startActivity(intent);
-				finish();
-			}else {
-				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
-				context.sendBroadcast(intent2);
-			}
-		}
-	}
-	
-	private void showActivity(Context context) {
-	
-		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();		
-		
-		if(bCPEWifiConnected == true && 
-				this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())	)
-			{
-			dismissAllDialog();	
-			Intent intent = new Intent(context, MainActivity.class);		
-			context.startActivity(intent);
-			finish();									
-			
-		}else if(bCPEWifiConnected == false && !this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
-			dismissAllDialog();		
-			Intent intent = new Intent(context, RefreshWifiActivity.class);
-			context.startActivity(intent);	
-			finish();
-		}	
-	}
+//	private void back2MainActivity(Context context) {
+//		if(m_bNeedBack == false) 
+//			return;
+//		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+//		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+//		
+//		if(bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
+//			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+//				dismissAllDialog();	
+//				Intent intent = new Intent(context, MainActivity.class);	
+//				context.startActivity(intent);
+//				finish();
+//			}
+//		}
+//	}
+//	
+//	private void backMainActivity(Context context) {
+//		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+//		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+//		
+//		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
+//			dismissAllDialog();
+//			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+//				Intent intent = new Intent(context, MainActivity.class);	
+//				context.startActivity(intent);
+//				finish();
+//			}else {
+//				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+//				context.sendBroadcast(intent2);
+//			}
+//		}
+//	}
+//	
+//	private void showActivity(Context context) {
+//	
+//		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();		
+//		
+//		if(bCPEWifiConnected == true && 
+//				this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())	)
+//			{
+//			dismissAllDialog();	
+//			Intent intent = new Intent(context, MainActivity.class);		
+//			context.startActivity(intent);
+//			finish();									
+//			
+//		}else if(bCPEWifiConnected == false && !this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
+//			dismissAllDialog();		
+//			Intent intent = new Intent(context, RefreshWifiActivity.class);
+//			context.startActivity(intent);	
+//			finish();
+//		}	
+//	}
 
 //	private void checkLogin()
 //	{

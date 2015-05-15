@@ -10,7 +10,7 @@ public class FileManager {
 		if (CommonUtil.hasSDCard()) {
 			return CommonUtil.getRootFilePath() + "icons/";
 		} else {
-			return CommonUtil.getRootFilePath() + "com.geniusgithub/mediaplayer/icons/";
+			return CommonUtil.getRootFilePath() + "com.alcatel.smartlinkv3/mediaplayer/icons/";
 		}
 	}
 	

@@ -696,28 +696,28 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			return;
 		}
 		
-		if (LoginDialog.isLoginSwitchOff()) {
+//		if (LoginDialog.isLoginSwitchOff()) {
 			go2MicroSDView();
-		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					go2MicroSDView();
-				}else{
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							go2MicroSDView();
-						}
-					});
-				}
-			} else if (status == UserLoginStatus.login) {			
-				go2MicroSDView();		
-			} else {		
-				PromptUserLogined();	
-			}	
-		}
+//		} else {		
+//			UserLoginStatus status = BusinessMannager.getInstance()				
+//					.getLoginStatus();	
+//			if (status == UserLoginStatus.Logout) {
+//				if (CPEConfig.getInstance().getAutoLoginFlag()) {
+//					go2MicroSDView();
+//				}else{
+//					m_loginDlg.showDialog(new OnLoginFinishedListener() {
+//						@Override
+//						public void onLoginFinished() {
+//							go2MicroSDView();
+//						}
+//					});
+//				}
+//			} else if (status == UserLoginStatus.login) {			
+//				go2MicroSDView();		
+//			} else {		
+//				PromptUserLogined();	
+//			}	
+//		}
 	}
 	
 	private void go2MicroSDView(){
@@ -994,9 +994,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				homeBtnClick();
 			}
 		}else {
-			Intent itent = new Intent(this, RefreshWifiActivity.class);
-			startActivity(itent);
-			this.finish();
+//			Intent itent = new Intent(this, RefreshWifiActivity.class);
+//			startActivity(itent);
+//			this.finish();
 		}
 	}
 	

@@ -114,12 +114,12 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 			mLoadView = findViewById(R.id.show_load_progress);
 		
 			
-			mBtnPre = (ImageButton) findViewById(R.id.btn_playpre);
-			mBtnNext = (ImageButton) findViewById(R.id.btn_playnext);
+//			mBtnPre = (ImageButton) findViewById(R.id.btn_playpre);
+//			mBtnNext = (ImageButton) findViewById(R.id.btn_playnext);
 			mBtnPlay = (ImageButton) findViewById(R.id.btn_play);
 			mBtnPause = (ImageButton) findViewById(R.id.btn_pause);
-			mBtnPre.setOnClickListener(this);
-			mBtnNext.setOnClickListener(this);
+			//mBtnPre.setOnClickListener(this);
+			//mBtnNext.setOnClickListener(this);
 			mBtnPlay.setOnClickListener(this);
 			mBtnPause.setOnClickListener(this);
 		}
@@ -167,12 +167,12 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.btn_playpre:
-				mControlCenter.prev();
-				break;
-			case R.id.btn_playnext:
-				mControlCenter.next();
-				break;
+//			case R.id.btn_playpre:
+//				mControlCenter.prev();
+//				break;
+//			case R.id.btn_playnext:
+//				mControlCenter.next();
+//				break;
 			case R.id.btn_play:
 				mControlCenter.startAutoPlay(true);
 				togglePlayPause();
