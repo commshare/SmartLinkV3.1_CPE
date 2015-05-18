@@ -227,4 +227,69 @@ public class HttpUser {
 			return null;
 		}    
     }
+	
+	/******************** Change Password**************************************************************************************/	
+	public static class ChangePassword extends BaseRequest{
+		
+		String m_strUserName = new String();
+		String m_strCurrPsw = new String();
+		String m_strNewPsw = new String();
+
+		public ChangePassword(String strId,String strUserName,String strCurrPsw,String strNewPsw,IHttpFinishListener callback) {
+			super(callback);
+			m_strUserName = strUserName;
+			m_strCurrPsw = strCurrPsw;
+			m_strNewPsw = strNewPsw;
+        	m_strId = strId;
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ChangePassword");
+	        	
+	        	JSONObject userInfo = new JSONObject();
+	        	userInfo.put("UserName", m_strUserName);
+	        	userInfo.put("CurrPassword", m_strCurrPsw);
+	        	userInfo.put("NewPassword", m_strNewPsw);
+	        	
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+        	} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new ChangePasswordResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class ChangePasswordResponse extends BaseResponse{
+
+		public ChangePasswordResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public <T> T getModelResult() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
 }

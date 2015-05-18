@@ -31,6 +31,7 @@ public class MessageUti {
 	/**************************User message start*********************************************************************************/
 	public static String USER_LOGIN_REQUEST = "com.alcatel.smartlinkv3.business.user.login";
 	public static String USER_LOGOUT_REQUEST = "com.alcatel.smartlinkv3.business.user.logout";
+	public static String USER_CHANGE_PASSWORD_REQUEST = "com.alcatel.smartlinkv3.business.user.changepassword";
 	/**************************User message end*********************************************************************************/
 	
 	/**************************System message start*********************************************************************************/
@@ -190,6 +191,7 @@ public class MessageUti {
 		/********************User method start**********************/
 		httpMethods.put(USER_LOGIN_REQUEST, new HttpMethodUti(UserManager.class, "login"));
 		httpMethods.put(USER_LOGOUT_REQUEST, new HttpMethodUti(UserManager.class, "logout"));
+		httpMethods.put(USER_CHANGE_PASSWORD_REQUEST, new HttpMethodUti(UserManager.class, "changepassword"));
 		/********************User method end**********************/
 		
 		/********************Statistics method start**********************/

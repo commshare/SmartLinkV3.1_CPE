@@ -231,4 +231,43 @@ public class UserManager extends BaseManager {
 			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 30000);
 		}
 	}
+	
+	//Change Password Request///////////////////////////////////////////////////////////////////////////////////
+	public void changepassword(DataValue data){
+		if(FeatureVersionManager.getInstance().isSupportApi("User", "ChangePassword") != true){
+			Log.v("PassWordChanged", "Failed1");
+			return;
+		}
+		String strUserName = (String) data.getParamByKey("user_name");
+    	String strCurrPsw = (String) data.getParamByKey("current_password");
+    	String strNewPsw = (String) data.getParamByKey("new_password");
+    	
+    	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ChangePassword("1.4", strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) { 
+//                		Log.v("PassWordChanged", "Successfully");
+                	}
+                	else{
+//                		Log.v("PassWordChanged", "Failed2");
+                	}
+                }
+                else{
+//                	Log.v("PassWordChanged", "Failed3");
+                }
+                
+                Intent megIntent= new Intent(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+			}
+    	}));
+	}
 }

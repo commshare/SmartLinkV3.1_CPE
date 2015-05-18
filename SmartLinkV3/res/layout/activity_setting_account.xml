@@ -50,15 +50,18 @@
            android:layout_marginTop="20dp"
            android:layout_marginLeft="20dp"
            android:layout_marginRight="20dp"
-           android:visibility="gone">
+           android:visibility="visible">
            
-           <TextView
+           <EditText
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
                android:padding="15dp"
                android:textColor="@color/color_black"
                android:textSize="20sp" 
-               android:text="@string/setting_current_password"
+               android:id="@+id/current_password"
+               android:hint="@string/setting_current_password"
+               android:inputType="textPassword"
+               android:background="@null"
                />
 
            <ImageView
@@ -67,13 +70,16 @@
 	            android:background="@color/main_bottom_divider"
 	            android:contentDescription="@string/setting_account" />
            
-            <TextView
+            <EditText
+               android:background="@null"
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
                android:padding="15dp"
                android:textColor="@color/color_black"
+               android:id="@+id/new_password"
                android:textSize="20sp" 
-               android:text="@string/setting_new_password"
+               android:hint="@string/setting_new_password"
+               android:inputType="textPassword"
                />
             
             <ImageView
@@ -82,13 +88,16 @@
 	            android:background="@color/main_bottom_divider"
 	            android:contentDescription="@string/setting_account" />
             
-            <TextView
+            <EditText
+               android:background="@null"
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
                android:padding="15dp"
                android:textColor="@color/color_black"
+               android:id="@+id/confirm_password"
+               android:inputType="textPassword"
                android:textSize="20sp" 
-               android:text="@string/setting_confirm_password"
+               android:hint="@string/setting_confirm_password"
                />
      </LinearLayout>
      <TextView

@@ -75,7 +75,7 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 //		m_fragment_manager = getFragmentManager();
 //		m_fragment_feedback = new FragmentAboutFeedback();
 		
-//		m_is_feedback_shown = false;
+		m_is_feedback_shown = false;
 		updateMenuVisibility(View.VISIBLE);
 	}
 	

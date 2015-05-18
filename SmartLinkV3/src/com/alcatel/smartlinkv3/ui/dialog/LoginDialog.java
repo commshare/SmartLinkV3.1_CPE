@@ -66,7 +66,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private String m_password = "";
 
 	// just for test
-	private static final String USER_NAME = "admin";
+	public static final String USER_NAME = "admin";
 	private CommonErrorInfoDialog m_dialog_err_info;
 	
 	

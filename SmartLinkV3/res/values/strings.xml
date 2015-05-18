@@ -477,6 +477,10 @@
     <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.</string>
     <string name="login_warning">Login warning</string>
     <string name="login_logout_successful">Logout successfully!</string>
+    <string name="change_password_successful">Change password successfully!</string>
+    <string name="wrong_current_password">The current password is wrong!</string>
+    <string name="change_password_failed">Change password failed!</string>
+    <string name="unknown_error">Unknown error!</string>
     <!-- Login view end -->
 
 
