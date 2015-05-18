@@ -9,34 +9,6 @@
          android:layout_width="match_parent"
     	 android:layout_height="match_parent">     
     </ImageView>
-
-    <RelativeLayout 
-	    android:id="@+id/miniplayLayout" 
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content"
-	   	android:background="@color/media_tool_background_color"
-	   	android:padding="5dp"
-	    android:layout_alignParentBottom="true"
-	    android:gravity="center">		
-        
-            <ImageButton 
-	        android:id="@+id/btn_play" 
-	        android:layout_width="wrap_content" 
-	        android:layout_height="wrap_content"
-	        android:layout_centerInParent="true"
-	        android:background="@drawable/selector_btn_play">
-	        </ImageButton>
-                 
-            <ImageButton 
-	        android:id="@+id/btn_pause" 
-	        android:layout_width="wrap_content" 
-	        android:layout_height="wrap_content"
-	        android:layout_centerInParent="true"
-			android:visibility="gone"
-	        android:background="@drawable/selector_btn_pause">
-	        </ImageButton> 
-	               	
-	</RelativeLayout>
 	
     <LinearLayout
         android:id="@+id/show_load_progress" 
