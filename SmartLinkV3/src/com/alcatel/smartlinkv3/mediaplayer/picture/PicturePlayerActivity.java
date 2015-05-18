@@ -94,10 +94,10 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 	class UIManager implements OnClickListener{
 		
 		public ImageView mImageView;
-		public ImageButton mBtnPre;
-		public ImageButton mBtnNext;
-		public ImageButton mBtnPlay;
-		public ImageButton mBtnPause;
+//		public ImageButton mBtnPre;
+//		public ImageButton mBtnNext;
+//		public ImageButton mBtnPlay;
+//		public ImageButton mBtnPause;
 		public View mLoadView;
 		
 		public Bitmap recycleBitmap;
@@ -116,12 +116,12 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 			
 //			mBtnPre = (ImageButton) findViewById(R.id.btn_playpre);
 //			mBtnNext = (ImageButton) findViewById(R.id.btn_playnext);
-			mBtnPlay = (ImageButton) findViewById(R.id.btn_play);
-			mBtnPause = (ImageButton) findViewById(R.id.btn_pause);
+//			mBtnPlay = (ImageButton) findViewById(R.id.btn_play);
+//			mBtnPause = (ImageButton) findViewById(R.id.btn_pause);
 			//mBtnPre.setOnClickListener(this);
 			//mBtnNext.setOnClickListener(this);
-			mBtnPlay.setOnClickListener(this);
-			mBtnPause.setOnClickListener(this);
+//			mBtnPlay.setOnClickListener(this);
+//			mBtnPause.setOnClickListener(this);
 		}
 		
 		public void setBitmap(Bitmap bitmap){
@@ -173,14 +173,14 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 //			case R.id.btn_playnext:
 //				mControlCenter.next();
 //				break;
-			case R.id.btn_play:
-				mControlCenter.startAutoPlay(true);
-				togglePlayPause();
-				break;
-			case R.id.btn_pause:
-				mControlCenter.startAutoPlay(false);
-				togglePlayPause();
-				break;
+//			case R.id.btn_play:
+//				mControlCenter.startAutoPlay(true);
+//				togglePlayPause();
+//				break;
+//			case R.id.btn_pause:
+//				mControlCenter.startAutoPlay(false);
+//				togglePlayPause();
+//				break;
 			default:
 				break;
 			}
@@ -188,13 +188,13 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		}
 		
 		public void togglePlayPause(){
-			if (mBtnPlay.isShown()){
-				mBtnPlay.setVisibility(View.INVISIBLE);
-				mBtnPause.setVisibility(View.VISIBLE);
-			}else{
-				mBtnPlay.setVisibility(View.VISIBLE);
-				mBtnPause.setVisibility(View.INVISIBLE);
-			}
+//			if (mBtnPlay.isShown()){
+//				mBtnPlay.setVisibility(View.INVISIBLE);
+//				mBtnPause.setVisibility(View.VISIBLE);
+//			}else{
+//				mBtnPlay.setVisibility(View.VISIBLE);
+//				mBtnPause.setVisibility(View.INVISIBLE);
+//			}
 		}
 	}
 	
