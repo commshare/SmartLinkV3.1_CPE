@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -147,6 +146,7 @@ public class SettingAboutFeedbackImageSelector extends BaseActivity implements O
 		            }
 				}
 			}
+			
 		});
 	}
 	
@@ -173,16 +173,21 @@ public class SettingAboutFeedbackImageSelector extends BaseActivity implements O
         if(getBitmapFromMemCache(url) != null){  
             return getBitmapFromMemCache(url);  
         }else {  
-        	Bitmap bitmap = null;
-        		if(url != null){
-        			BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();  
-        			bmpFactoryOptions.inSampleSize = 8;  
-//        		    bmpFactoryOptions.inJustDecodeBounds = true;  
-        			bitmap = BitmapFactory.decodeFile(url, bmpFactoryOptions);
-        	}
-                addBitmapToMemoryCache(url, bitmap);  
-                return bitmap;
-        	}
+        	Bitmap bitmap = BitmapFactory.decodeFile(url); 
+        	
+        	Matrix matrix = new Matrix();
+    		int height = bitmap.getHeight();
+    		int width = bitmap.getWidth();
+    		float scale = (float)height/(float)width;
+    		float scalewidth = ((float)screenwidth)/((float)width)/3.0f;
+    		float scaleheight = ((float)screenheight)/((float)height)/3.0f/scale;
+    		matrix.postScale(scalewidth, scaleheight);
+    		bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),  
+                    matrix, true);  
+            //将Bitmap 加入内存缓存  
+            addBitmapToMemoryCache(url, bitmap);  
+            return bitmap;  
+        }  
     } 
 
 	@Override
@@ -260,17 +265,6 @@ public class SettingAboutFeedbackImageSelector extends BaseActivity implements O
 			ImageView img = (ImageView) convertView.findViewById(R.id.image_selector_image_icon); 
 			img.setTag(BaseTag + Integer.toString(position));
 			img.setBackgroundColor(Color.BLUE);
-			convertView.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					SettingAboutFeedbackImageSelector.this.finish();
-				}
-				
-			});
-//			viewHolder.image.setTag(BaseTag + Integer.toString(position));
-//			viewHolder.image.setBackgroundColor(Color.BLUE);
 			return convertView;
 		}
 	}
