@@ -22,13 +22,13 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 	private TextView m_tv_title_back = null;
 	
 	private TextView m_app_version = null;
-	private FrameLayout m_feedback = null;
+//	private FrameLayout m_feedback = null;
 	private FrameLayout m_official_website = null;
 	private LinearLayout m_menu_container = null;
 	
-	private FragmentAboutFeedback m_fragment_feedback = null;
-	private FragmentManager m_fragment_manager;
-	private FragmentTransaction m_transaction;
+//	private FragmentAboutFeedback m_fragment_feedback = null;
+//	private FragmentManager m_fragment_manager;
+//	private FragmentTransaction m_transaction;
 	
 	private boolean m_is_feedback_shown;
 	
@@ -60,8 +60,8 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 	private void initUi(){
 		m_app_version = (TextView)findViewById(R.id.device_about_app_version);
 		
-		m_feedback = (FrameLayout)findViewById(R.id.device_about_feedback);
-		m_feedback.setOnClickListener(this);
+//		m_feedback = (FrameLayout)findViewById(R.id.device_about_feedback);
+//		m_feedback.setOnClickListener(this);
 		
 		m_official_website = (FrameLayout)findViewById(R.id.device_about_official_website);
 		m_official_website.setOnClickListener(this);
@@ -72,10 +72,10 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 		
 		m_menu_container = (LinearLayout) findViewById(R.id.device_about_menu_container);
 		
-		m_fragment_manager = getFragmentManager();
-		m_fragment_feedback = new FragmentAboutFeedback();
+//		m_fragment_manager = getFragmentManager();
+//		m_fragment_feedback = new FragmentAboutFeedback();
 		
-		m_is_feedback_shown = false;
+//		m_is_feedback_shown = false;
 		updateMenuVisibility(View.VISIBLE);
 	}
 	
@@ -92,16 +92,16 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 		case R.id.ib_title_back:
 			this.onBackPressed();
 			break;
-		case R.id.device_about_feedback:
-			if(!m_is_feedback_shown){
-				m_is_feedback_shown = true;
-				updateMenuVisibility(View.GONE);
-				m_transaction= m_fragment_manager.beginTransaction();
-				m_transaction.replace(R.id.device_about_container, m_fragment_feedback);
-				m_transaction.addToBackStack(null);
-				m_transaction.commit();
-			}
-			break;
+//		case R.id.device_about_feedback:
+//			if(!m_is_feedback_shown){
+//				m_is_feedback_shown = true;
+//				updateMenuVisibility(View.GONE);
+//				m_transaction= m_fragment_manager.beginTransaction();
+//				m_transaction.replace(R.id.device_about_container, m_fragment_feedback);
+//				m_transaction.addToBackStack(null);
+//				m_transaction.commit();
+//			}
+//			break;
 		case R.id.device_about_official_website:
 			CommonUtil.openWebPage(this, "http://www.alcatelonetouch.com");
 			break;

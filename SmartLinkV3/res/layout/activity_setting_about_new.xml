@@ -38,7 +38,7 @@
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
-        <ImageView
+        <!--<ImageView
           android:layout_width="match_parent"
           android:layout_height="20dp"
           android:background="@color/setting_background_color"
@@ -64,6 +64,7 @@
 		        android:layout_marginRight="15dp"
 		        android:layout_gravity="center|end"/>
          </FrameLayout>
+         -->
             
          <ImageView
           android:layout_width="match_parent"
