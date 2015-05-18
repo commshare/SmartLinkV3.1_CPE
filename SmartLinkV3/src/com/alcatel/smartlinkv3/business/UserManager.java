@@ -7,6 +7,7 @@ import com.alcatel.smartlinkv3.business.user.HttpUser;
 import com.alcatel.smartlinkv3.business.user.LoginStateResult;
 import com.alcatel.smartlinkv3.business.user.LoginTokens;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -252,15 +253,9 @@ public class UserManager extends BaseManager {
                 
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) { 
-//                		Log.v("PassWordChanged", "Successfully");
-                	}
-                	else{
-//                		Log.v("PassWordChanged", "Failed2");
-                	}
                 }
                 else{
-//                	Log.v("PassWordChanged", "Failed3");
+                	strErrcode = ErrorCode.UNKNOWN_ERROR;
                 }
                 
                 Intent megIntent= new Intent(MessageUti.USER_CHANGE_PASSWORD_REQUEST);

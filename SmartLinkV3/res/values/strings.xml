@@ -480,6 +480,7 @@
     <string name="change_password_successful">Change password successfully!</string>
     <string name="wrong_current_password">The current password is wrong!</string>
     <string name="change_password_failed">Change password failed!</string>
+    <string name="inconsistent_new_password">Inconsistent new pass word!</string>
     <string name="unknown_error">Unknown error!</string>
     <!-- Login view end -->
 

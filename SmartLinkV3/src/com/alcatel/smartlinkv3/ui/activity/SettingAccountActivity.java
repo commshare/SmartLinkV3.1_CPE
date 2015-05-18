@@ -4,6 +4,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -21,6 +22,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -47,9 +49,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	
 	private IntentFilter m_change_password_filter;
 	private PassWordChangeReceiver m_password_change_receiver;
-	
-	private final String CHANGE_PASSWORD_FAILED = "010401";
-	private final String CURRENT_PASSWORD_IS_WRONG = "010402";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -121,9 +120,22 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		String currentPwd = m_current_password.getText().toString();
 		String newPwd = m_new_password.getText().toString();
 		String confirmPwd = m_confirm_password.getText().toString();
-		if(!newPwd.equals(confirmPwd))
+		if(!newPwd.equals(confirmPwd)){
+			String strInfo = getString(R.string.inconsistent_new_password);
+			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			return;
+		}
 		userChangePassword(LoginDialog.USER_NAME, currentPwd, confirmPwd);
+		
+		m_current_password.setText(null);
+		m_new_password.setText(null);
+		m_confirm_password.setText(null);
+		
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
+		imm.hideSoftInputFromWindow(m_current_password.getWindowToken(),0);
+		imm.hideSoftInputFromWindow(m_new_password.getWindowToken(),0);
+		imm.hideSoftInputFromWindow(m_confirm_password.getWindowToken(),0);
+		
 		m_tv_done.setVisibility(View.GONE);
 		m_logout_and_changepwd.setVisibility(View.VISIBLE);
 		m_inputpwd.setVisibility(View.GONE);
@@ -215,11 +227,11 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
-					if(strErrorCode.equals(CURRENT_PASSWORD_IS_WRONG)){
+					if(strErrorCode.equals(ErrorCode.CURRENT_PASSWORD_IS_WRONG)){
 						String strInfo = getString(R.string.wrong_current_password);
 						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 					}
-					else if(strErrorCode.equals(CHANGE_PASSWORD_FAILED)){
+					else if(strErrorCode.equals(ErrorCode.CHANGE_PASSWORD_FAILED)){
 						String strInfo = getString(R.string.change_password_failed);
 						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 					}
