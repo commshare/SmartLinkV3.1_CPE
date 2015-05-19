@@ -18,9 +18,11 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +36,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 public class FragmentNetworkSelection extends Fragment implements OnClickListener{
 	
 	private ListView m_network_list;
-	private LinearLayout m_network_list_conainer;
+	private FrameLayout m_network_list_conainer;
 	private RadioButton m_auto_mode;
 	private RadioButton m_manual_mode;
 	private TextView m_network_searching_title;
@@ -46,6 +48,8 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	private NetworkSearchResultReceiver m_network_search_result_receiver;
 	
 	private List<NetworkItem> m_network_search_result_list = null;
+	
+	private RelativeLayout m_waiting_search_result;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
@@ -64,12 +68,14 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 		m_search_network_result_filter = new IntentFilter(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
 		m_search_network_result_filter.addAction(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
 		m_network_search_result_receiver = new NetworkSearchResultReceiver();
+		
+		m_waiting_search_result = (RelativeLayout) view.findViewById(R.id.network_list_progress_circle);
 		m_parent_activity = (SettingNetworkActivity) getActivity();
 		
 		m_network_list = (ListView) view.findViewById(R.id.network_list);
         
         
-        m_network_list_conainer = (LinearLayout) view.findViewById(R.id.network_list_container);
+        m_network_list_conainer = (FrameLayout) view.findViewById(R.id.network_list_container);
         
         m_auto_mode = (RadioButton) view.findViewById(R.id.mode_auto);
         m_manual_mode = (RadioButton) view.findViewById(R.id.mode_manual);
@@ -118,6 +124,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 		super.onStart();
 		BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult();
 		m_parent_activity.registerReceiver(m_network_search_result_receiver, m_search_network_result_filter);  
+		m_waiting_search_result.setVisibility(View.VISIBLE);
 	}
 	
 	@Override
@@ -275,6 +282,8 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					if(m_network_search_result_list != null){
 						m_adapter = new NetworkListAdapter(m_parent_activity, m_network_search_result_list);
 				        m_network_list.setAdapter(m_adapter);
+				        
+				        m_waiting_search_result.setVisibility(View.GONE);
 					}
 						
 				}
