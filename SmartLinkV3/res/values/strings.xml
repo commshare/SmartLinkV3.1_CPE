@@ -278,11 +278,13 @@
 
     <!-- notification start -->
     <string name="usage_limit_notification_title">Data usage warning</string>
-    <string name="usage_limit_notification_content">%1$s traffic has been used.</string>
-    <string name="time_limit_notification_title">Time limit warning</string>
-    <string name="time_limit_notification_content">The time limit is approaching. The network will be disconnected.</string>
-    <string name="overflow_notification_title">Usage limit warning</string>
-    <string name="overflow_notification_content">Monthly data plan has been used up.</string>
+    <string name="usage_limit_notification_content">Your usage has less than 10%.</string>
+    <string name="battery_limit_notification_title">Battery warning</string>
+    <string name="battery_limit_notification_content">Battery is low, 20% reminding.</string>
+    <string name="new_message_notification_title">New Message</string>
+    <string name="new_message_notification_content">There is a new message..</string>
+    <string name="upgrade_notification_title">Upgrade </string>
+    <string name="upgrade_notification_content">There is a new version..</string>
     <!-- notification end -->
 
 

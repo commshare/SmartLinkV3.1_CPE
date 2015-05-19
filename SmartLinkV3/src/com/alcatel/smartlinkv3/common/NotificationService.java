@@ -9,7 +9,9 @@ import com.alcatel.smartlinkv3.business.StatisticsManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
+import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
@@ -33,12 +35,13 @@ import android.widget.RemoteViews;
 
 public class NotificationService extends Service {
 	private static enum ALERT_TYPE {
-		UsageLimit, TimeLimit, Overflow
+		 BatteryLimit, UsageLimit, NewMessage, Upgrade
 	}
 
 	private boolean m_isNeedToAlertUsageLimit = true;
-	private boolean m_isNeedToAlertTimeLimit = true;
-	private boolean m_isNeedToAlertOverflow = true;
+	private boolean m_isNeedToAlertBatteryLimit = true;
+	private boolean m_isNeedToAlertNewMessage = true;
+	private boolean m_isNeedToAlertUpgrade = true;
 	
 	
 	private NotificationManager m_nm ;
@@ -64,23 +67,11 @@ public class NotificationService extends Service {
 						if (bBillingDayChange || bCalibrationValueChange
 								|| bLimitValueChange || bTotalValueChange
 								|| bOverFlowStateChange) {
-							m_isNeedToAlertUsageLimit = true;
-							m_isNeedToAlertOverflow = true;							
-							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());						
-							m_nm.cancel(ALERT_TYPE.Overflow.ordinal());
+							m_isNeedToAlertUsageLimit = true;						
+							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 						} else if (bOverTimeValueChange || bOverTimeStateChange) {
-
-							m_isNeedToAlertTimeLimit = true;
-							m_nm.cancel(ALERT_TYPE.TimeLimit.ordinal());
 						}
 
-					}
-				}	
-				
-				if(intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)) {
-					ConnectStatusModel connect = BusinessMannager.getInstance().getConnectStatus();
-					if (connect.m_connectionStatus == ConnectionStatus.Disconnected) {
-						m_isNeedToAlertTimeLimit = true;
 					}
 				}
 				
@@ -102,26 +93,9 @@ public class NotificationService extends Service {
 					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 				}
 				
-				
-				if (intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET) || 
-						intent.getAction().equals(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET) || 
-						intent.getAction().equals(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET)) {
-					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-					if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-						boolean bIsChange = intent.getBooleanExtra(StatisticsManager.IS_CHANGED,false);
-						if(bIsChange == true) {
-							m_isNeedToAlertOverflow = true;												
-							m_nm.cancel(ALERT_TYPE.Overflow.ordinal());
-						}
-					}
-				}
-				
 				if(intent.getAction().equals(MessageUti.CPE_CHANGED_BILLING_MONTH)) {
-					m_isNeedToAlertUsageLimit = true;
-					m_isNeedToAlertOverflow = true;							
-					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());						
-					m_nm.cancel(ALERT_TYPE.Overflow.ordinal());
+					m_isNeedToAlertUsageLimit = true;						
+					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 				}
 				
 				if(intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
@@ -132,10 +106,8 @@ public class NotificationService extends Service {
 					if (nResult == BaseResponse.RESPONSE_OK
 							&& strErrorCode.length() == 0) {
 						
-		    			m_isNeedToAlertUsageLimit = true;
-						m_isNeedToAlertOverflow = true;							
-						m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());						
-						m_nm.cancel(ALERT_TYPE.Overflow.ordinal());
+		    			m_isNeedToAlertUsageLimit = true;					
+						m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 		    		}
 		    	}
 				
@@ -146,18 +118,44 @@ public class NotificationService extends Service {
 						SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 						if(simStatus.m_SIMState != ENUM.SIMState.Accessable) {
 							m_isNeedToAlertUsageLimit = true;
-							m_isNeedToAlertTimeLimit = true;
-							m_isNeedToAlertOverflow = true;
+							m_isNeedToAlertNewMessage = true;
 							m_nm.cancelAll();
 						}
 					}
-		    	}
-
+		    	}		
+//battery				
+				if (intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_BATTERY_STATE)) {
+					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+							m_isNeedToAlertBatteryLimit = true;
+							m_nm.cancelAll();
+						}
+					}
+//sms
+				if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)) {
+					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+						m_isNeedToAlertNewMessage = true;
+							m_nm.cancelAll();
+					}
+				}
+//upgrade
+				if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
+					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+						m_isNeedToAlertNewMessage = true;
+							m_nm.cancelAll();
+					}
+				}
 				alert();
 			} else {
 				m_isNeedToAlertUsageLimit = true;
-				m_isNeedToAlertTimeLimit = true;
-				m_isNeedToAlertOverflow = true;
+				m_isNeedToAlertBatteryLimit = true;
+				m_isNeedToAlertNewMessage = true;
+				m_isNeedToAlertUpgrade = true;
 				m_nm.cancelAll();			
 			}
 
@@ -193,12 +191,18 @@ public class NotificationService extends Service {
 				MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.CPE_CHANGED_BILLING_MONTH));
+		
+		
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.UPDATE_GET_DEVICE_NEW_VERSION));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.POWER_GET_BATTERY_STATE));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.CPE_CHANGED_ALERT_SWITCH));
-		this.registerReceiver(m_msgReceiver, new IntentFilter(
-				MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
 		
 		
 		m_nm = (NotificationManager) this
@@ -228,13 +232,13 @@ public class NotificationService extends Service {
 	public static void startService() {
 		Context context = SmartLinkV3App.getInstance().getApplicationContext();
 		if (!isServiceRunning(context)) {
-			Log.d("HttpService", "startService");
+			Log.d("NotificationService", "startService");
 			startHttpService(context);
 		}
 	}
 
 	private static void startHttpService(Context context) {
-		Log.d("HttpService", "startHttpService");
+		Log.d("NotificationService", "startNotificationService");
 		Intent Intent = new Intent(context, NotificationService.class);
 		context.startService(Intent);
 	}
@@ -256,11 +260,15 @@ public class NotificationService extends Service {
 	}
 
 	private void alert() {
-
 		UsageSettingModel settings = BusinessMannager.getInstance()
 				.getUsageSettings();
 		long lTotalUsedUsage = BusinessMannager.getInstance()
 				.GetBillingMonthTotalUsage();
+
+		BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
+		int newSmsNumber = BusinessMannager.getInstance().getNewSmsNumber();	
+		DeviceNewVersionInfo newVersioninfo = BusinessMannager.getInstance().getNewFirmwareInfo();
+		
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		if (simState.m_SIMState != SIMState.Accessable) 
 			return;
@@ -270,43 +278,46 @@ public class NotificationService extends Service {
 				&& lTotalUsedUsage >= settings.HMonthlyPlan
 				&& m_isNeedToAlertUsageLimit == true && 
 				CPEConfig.getInstance().getNotificationSwitch() == true) {
-			// usage alert
 			Log.e("alert", "usage alert");
 			showNotification(ALERT_TYPE.UsageLimit, lTotalUsedUsage);
 			m_isNeedToAlertUsageLimit = false;
 			
-		}/* else if (lTotalUsedUsage >= settings.HMonthlyPlan
-				&& settings.HMonthlyPlan > 0
-				&& m_isNeedToAlertOverflow == true && 
-				settings.m_overflowState == OVER_FLOW_STATE.Enable) {
-			// overflow alert
-			Log.e("alert", "overflow alert");
-			showNotification(ALERT_TYPE.Overflow, lTotalUsedUsage);
-			m_isNeedToAlertOverflow = false;
+		} else if (newSmsNumber > 0
+						&& m_isNeedToAlertNewMessage == true ) {
+			Log.e("alert", "message alert");
+			showNotification(ALERT_TYPE.NewMessage, newSmsNumber);
+			m_isNeedToAlertNewMessage = false;
 
-		} else if (isOverTime(settings.HTimeLimitTimes)
-				&& settings.m_overtimeState == OVER_TIME_STATE.Enable
-				&& m_isNeedToAlertTimeLimit == true) {
-			// overtime alert
-			Log.e("alert", "overtime alert");
-			showNotification(ALERT_TYPE.TimeLimit, lTotalUsedUsage);
-			m_isNeedToAlertTimeLimit = false;
-		}*/
-
-	}
-
-	private boolean isOverTime(long lOvertime) {
-		boolean bOverTime = false;
-		ConnectStatusModel connect = BusinessMannager.getInstance()
-				.getConnectStatus();
-		if (connect.m_connectionStatus == ConnectionStatus.Connected) {
-			if (connect.m_lConnectionTime >= (lOvertime - 1) * 60) {
-				bOverTime = true;
-			}
+		} else if (isOverBattery(batteryinfo.getBatterLevel())
+						&& m_isNeedToAlertBatteryLimit == true) {
+			Log.e("alert", "battery alert");
+			showNotification(ALERT_TYPE.BatteryLimit, batteryinfo.getBatterLevel());
+			m_isNeedToAlertBatteryLimit = false;
+			
+		} else if(isHaveNewVersion(newVersioninfo.getState())
+						&& m_isNeedToAlertUpgrade == true){
+			Log.e("alert", "upgrade alert");
+			showNotification(ALERT_TYPE.Upgrade, newVersioninfo.getState());
+			m_isNeedToAlertUpgrade = false;
 		}
-		return bOverTime;
 	}
 
+	private boolean isOverBattery(int BatteryLevel) {
+		boolean bOverBattery = false;
+		if (BatteryLevel <= 20) {
+			bOverBattery = true;
+		}
+		return bOverBattery;
+	}
+
+	private boolean isHaveNewVersion(int istate) {
+		boolean bnewVersion = false;
+		if (1 == istate) {
+			bnewVersion = true;
+		}
+		return bnewVersion;
+	}
+	
 	private void showNotification(ALERT_TYPE type, long used) {		
 		Intent it = new Intent(this, MainActivity.class);	
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
@@ -336,16 +347,18 @@ public class NotificationService extends Service {
 			strTitle = this.getResources().getString(R.string.usage_limit_notification_title);
 			break;	
 			
-		case TimeLimit:	
-			strTitle = this.getResources().getString(R.string.time_limit_notification_title);
+		case BatteryLimit:	
+			strTitle = this.getResources().getString(R.string.battery_limit_notification_title);
 			break;
 		
-		case Overflow:
-			strTitle = this.getResources().getString(R.string.overflow_notification_title);
+		case NewMessage:
+			strTitle = this.getResources().getString(R.string.new_message_notification_title);
 			break;
 		
+		case Upgrade:
+			strTitle = this.getResources().getString(R.string.upgrade_notification_title);
+			break;
 		}
-		
 		return strTitle;
 	}
 	
@@ -359,13 +372,17 @@ public class NotificationService extends Service {
 			strContent =  String.format(str, CommonUtil.ConvertTrafficToStringFromMB(this, used));
 			break;	
 			
-		case TimeLimit:	
-			strContent= this.getResources().getString(R.string.time_limit_notification_content);
+		case BatteryLimit:	
+			strContent= this.getResources().getString(R.string.battery_limit_notification_content);
 		break;
 		
-		case Overflow:
-			strContent= this.getResources().getString(R.string.overflow_notification_content);
-			break;			
+		case NewMessage:
+			strContent= this.getResources().getString(R.string.new_message_notification_content);
+			break;
+			
+		case Upgrade:
+			strContent= this.getResources().getString(R.string.upgrade_notification_content);
+			break;		
 		}
 		return strContent;
 	}
