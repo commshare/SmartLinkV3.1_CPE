@@ -10,6 +10,8 @@ public class CPESettings {
 	private static final String ITEM_NOTIFICATION_V1_VOLUME_VALUE = "UsageNotificationValue";
 	private static final String ITEM_WIFI_PASSWORD_SWITCH_STATE = "WifiPasswordSwitch";
 	private static final String ITEM_DEFAULT_DIRECTORY = "DefaultDirectory";
+	
+	private static final String LOGIN_SETTING_FILE = "LoginSetting";
 	private static final String ITEM_LOGIN_PWD = "LoginPwd";
 	private static final String ITEM_LOGIN_USERNAME = "LoginUsername";
 	private static final String ITEM_LOGIN_STATUS = "LoginStatus";
@@ -64,9 +66,6 @@ public class CPESettings {
 		m_NotificationVolumeValue = sp.getInt(ITEM_NOTIFICATION_V1_VOLUME_VALUE, 0);
 		mWifiPasswordSwitchOn = sp.getBoolean(ITEM_WIFI_PASSWORD_SWITCH_STATE, false);
 		m_defaultDir = sp.getString(ITEM_DEFAULT_DIRECTORY, "");
-		m_password = sp.getString(ITEM_LOGIN_PWD, "");
-		m_username = sp.getString(ITEM_LOGIN_USERNAME, "");
-		m_blAutoLogin = sp.getBoolean(ITEM_LOGIN_STATUS, false);
 	}
 	
 	private void saveSettings()
@@ -77,6 +76,23 @@ public class CPESettings {
 		edt.putInt(ITEM_NOTIFICATION_V1_VOLUME_VALUE, m_NotificationVolumeValue);
 		edt.putBoolean(ITEM_WIFI_PASSWORD_SWITCH_STATE, mWifiPasswordSwitchOn);
 		edt.putString(ITEM_DEFAULT_DIRECTORY, m_defaultDir);
+		edt.commit();	
+	}
+	
+	private void loadLoginSettings()
+	{
+		SharedPreferences sp = mContext.getSharedPreferences(LOGIN_SETTING_FILE, Context.MODE_PRIVATE);
+		m_password = sp.getString(ITEM_LOGIN_PWD, "");
+		m_username = sp.getString(ITEM_LOGIN_USERNAME, "");
+		m_blAutoLogin = sp.getBoolean(ITEM_LOGIN_STATUS, false);
+		
+		
+	}
+	
+	private void saveLoginSettings()
+	{
+		SharedPreferences sp = mContext.getSharedPreferences(LOGIN_SETTING_FILE, Context.MODE_PRIVATE);
+		Editor edt = sp.edit();
 		edt.putString(ITEM_LOGIN_PWD, m_password);		
 		edt.putString(ITEM_LOGIN_USERNAME, m_username);
 		edt.putBoolean(ITEM_LOGIN_STATUS, m_blAutoLogin);
@@ -94,32 +110,36 @@ public class CPESettings {
 	}
 	
 	//login password
-		public String getLoginPassword() {
-			return m_password;
-		}
+	public String getLoginPassword() {
+		loadLoginSettings();
+		String str = m_password;
+		return m_password;
+	}
 
-		public void setLoginPassword(String password) {
-			m_password = password;
-			saveSettings();
-		}
-		
-		//login username
-		public String getLoginUsername() {
-			return m_username;
-		}
+	public void setLoginPassword(String password) {
+		m_password = password;
+		saveLoginSettings();
+	}
+	
+	//login username
+	public String getLoginUsername() {
+		loadLoginSettings();
+		return m_username;
+	}
 
-		public void setLoginUsername(String username) {
-			m_username = username;
-			saveSettings();
-		}
-		
-		//login status
-		public  void setAutoLoginFlag(boolean blAutoLogin){
-			m_blAutoLogin = blAutoLogin;
-			saveSettings();
-		}
-		
-		public  boolean getAutoLoginFlag( ){
-			return m_blAutoLogin;
-		}
+	public void setLoginUsername(String username) {
+		m_username = username;
+		saveLoginSettings();
+	}
+	
+	//login status
+	public  void setAutoLoginFlag(boolean blAutoLogin){
+		m_blAutoLogin = blAutoLogin;
+		saveLoginSettings();
+	}
+	
+	public  boolean getAutoLoginFlag( ){
+		loadLoginSettings();
+		return m_blAutoLogin;
+	}
 }

@@ -133,6 +133,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
 						m_dlgProgress.dismiss();
 					}
+					CPEConfig.getInstance().setAutoLoginFlag(false);
 					closeDialog();
 //					SetErrorMsg(nRet, strErrorCode);
 //					m_vLogin.startAnimation(m_shake);
@@ -149,6 +150,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
 						m_dlgProgress.dismiss();
 					}
+					CPEConfig.getInstance().setAutoLoginFlag(false);
 					closeDialog();
 		//			SetErrorMsg(nRet, strErrorCode);
 		//			m_vLogin.startAnimation(m_shake);
@@ -158,8 +160,33 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;
 					//SetErrorMsg(nRet, strErrorCode);
-					m_vLogin.startAnimation(m_shake);
+					if(CPEConfig.getInstance().getAutoLoginFlag())
+					{
+						// Show error dialog
+						String strTitle = "";
+						if (m_bOtherUserLoginError) {
+							strTitle = m_strMsgOtherUserLogined;
+						} else if(m_bLoginTimeUsedOutError){
+							strTitle = m_strMsgLoginTimeUsedOut;
+						}else{
+							strTitle = m_context
+									.getString(R.string.login_psd_error_msg);
+						}
+						if (m_dlgProgress != null && m_dlgProgress.isShowing())
+							m_dlgProgress.dismiss();
+						ErrorDialog.getInstance(m_context).showDialog(strTitle,
+								new OnClickBtnRetry() {
+
+									@Override
+									public void onRetry() {
+										showDialog();
+									}
+								});
+					}else{
+						m_vLogin.startAnimation(m_shake);
+					}
 					//setAlreadyLogin(false);
+					//CPEConfig.getInstance().setAutoLoginFlag(false);
 				}
 			}
 		}

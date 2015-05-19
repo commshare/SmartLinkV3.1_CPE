@@ -50,7 +50,6 @@ public abstract class BaseActivity extends Activity{
     	
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
-    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGIN_REQUEST));
 
     	if(CPEConfig.getInstance().getAutoLoginFlag())
 		{
@@ -111,25 +110,6 @@ public abstract class BaseActivity extends Activity{
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				backMainActivity(context);
-			}
-		}else if (intent.getAction().equalsIgnoreCase(
-				MessageUti.USER_LOGIN_REQUEST)) {			
-			MainActivity.setAutoProFlag(false);
-			Intent intent3= new Intent(MainActivity.AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS);
-			context.sendBroadcast(intent3);
-		
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){
-				CPEConfig.getInstance().setAutoLoginFlag(false);
-			}else if(BaseResponse.RESPONSE_OK == nResult&& strErrorCode.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)){
-				msgRes = this.getString(R.string.login_login_time_used_out_msg);
-				Toast.makeText(this, msgRes,Toast.LENGTH_SHORT).show();
-				CPEConfig.getInstance().setAutoLoginFlag(false);
-			}else if(BaseResponse.RESPONSE_OK == nResult&& strErrorCode.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)){
-				msgRes = this.getString(R.string.login_psd_error_msg);
-				Toast.makeText(this, msgRes,Toast.LENGTH_SHORT).show();
-				CPEConfig.getInstance().setAutoLoginFlag(false);
 			}
 		}
 	}

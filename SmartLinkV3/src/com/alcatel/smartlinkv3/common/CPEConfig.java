@@ -117,11 +117,11 @@ public class CPEConfig {
 	//login username
 	
 	public String getLoginUsername() {
-		return mSettings.getLoginPassword();
+		return mSettings.getLoginUsername();
 	}
 
 	public void setLoginUsername(String username) {
-		mSettings.setLoginPassword(username);
+		mSettings.setLoginUsername(username);
 	}
 
 	//login status
