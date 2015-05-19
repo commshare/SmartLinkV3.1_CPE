@@ -4,6 +4,7 @@ import org.cybergarage.upnp.ControlPoint;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.NotificationService;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
@@ -18,8 +19,8 @@ public class SmartLinkV3App extends Application {
 
 	private ControlPoint mControlPoint;
 	
-	private String mapp_password = new String();
-	private String mapp_username = new String();
+//	private String mapp_password = new String();
+//	private String mapp_username = new String();
 	  
     public static SmartLinkV3App getInstance() {  
         return m_instance;  
@@ -32,9 +33,8 @@ public class SmartLinkV3App extends Application {
 		CrashHandler crashHandler = CrashHandler.getInstance();
 		crashHandler.init(getApplicationContext());	
 		m_instance = this;
-		BusinessMannager.getInstance();
-//		Log.d("HttpService", "Application onCreate ");
-//		HttpService.startService();		
+		Log.d("HttpService", "Application onCreate ");
+		NotificationService.startService();
 		
 		HandlerUtils.replaceHandler();
 		
