@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alcatel.smartlinkv3.business.DeviceManager;
+import com.alcatel.smartlinkv3.business.NetworkManager;
 import com.alcatel.smartlinkv3.business.PowerManager;
 import com.alcatel.smartlinkv3.business.LanManager;
 import com.alcatel.smartlinkv3.business.SMSManager;
@@ -85,6 +86,7 @@ public class MessageUti {
 	
 	/**************************Network message start*********************************************************************************/
 	public static String NETWORK_GET_NETWORK_INFO_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.network.getnetworkinfo";
+	public static String NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.network.searchnetworkresult";
 	/**************************Network message end*********************************************************************************/
 	
 	/**************************SMS message start*********************************************************************************/
@@ -279,7 +281,6 @@ public class MessageUti {
 		httpMethods.put(DEVICE_SET_CONNECTED_DEVICE_BLOCK, new HttpMethodUti(DeviceManager.class, "setConnectedDeviceBlock"));	
 		httpMethods.put(DEVICE_SET_DEVICE_UNLOCK, new HttpMethodUti(DeviceManager.class, "setDeviceUnlock"));	
 		httpMethods.put(DEVICE_SET_DEVICE_NAME, new HttpMethodUti(DeviceManager.class, "setDeviceName"));	
-		/********************Sharing method end**********************/			
-	
+		/********************Sharing method end**********************/	
 	}
 }

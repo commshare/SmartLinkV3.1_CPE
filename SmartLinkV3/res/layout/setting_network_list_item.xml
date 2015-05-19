@@ -18,7 +18,7 @@
              android:enabled="true"
              android:paddingBottom="15dip"
              android:paddingTop="15dip"
-             android:text="test"
+             android:text=""
              android:textColor="@color/color_black" />
 
 	<TextView 

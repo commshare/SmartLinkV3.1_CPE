@@ -1,11 +1,16 @@
 package com.alcatel.smartlinkv3.business;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkInfo;
+import com.alcatel.smartlinkv3.business.network.HttpSearchNetwork;
+import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult;
+import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
+import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItemList;
 import com.alcatel.smartlinkv3.business.network.NetworkInfoResult;
 import com.alcatel.smartlinkv3.business.sim.AutoEnterPinStateResult;
 import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
@@ -13,10 +18,13 @@ import com.alcatel.smartlinkv3.business.sim.HttpChangePinAndState;
 import com.alcatel.smartlinkv3.business.sim.HttpGetSimStatus;
 import com.alcatel.smartlinkv3.business.sim.HttpUnlockPinPuk;
 import com.alcatel.smartlinkv3.business.sim.SIMStatusResult;
+import com.alcatel.smartlinkv3.business.user.HttpUser;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
@@ -24,11 +32,20 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 public class NetworkManager extends BaseManager {
 	private NetworkInfoModel m_networkInfo = new NetworkInfoModel();
 	private Timer m_getNetworkInfoRollTimer = new Timer();
 	private GetNetworkInfoTask m_getNetworkInfoTask = null;
+	private SearchNetworkResultTask m_searchNetworkResultTask = null;
+	private List<NetworkItem> m_NetworkList = null;
+	
+	public final int SEARCH_NOT_NETWORK = 0;
+	public final int SEARCHING = 1;
+	public final int SEARCH_SUCCESSFUL = 2;
+	public final int SEARCH_FAILED = 3;
+	
 	
 	@Override
 	protected void clearData() {
@@ -44,6 +61,11 @@ public class NetworkManager extends BaseManager {
 		if(m_getNetworkInfoTask != null) {
 			m_getNetworkInfoTask.cancel();
 			m_getNetworkInfoTask = null;
+		}
+		
+		if(m_searchNetworkResultTask != null) {
+			m_searchNetworkResultTask.cancel();
+			m_searchNetworkResultTask = null;
 		}
 	}
 	
@@ -91,6 +113,19 @@ public class NetworkManager extends BaseManager {
 			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_getNetworkInfoTask, 0, 10 * 1000);
 		}
 	}
+	
+	public void startSearchNetworkResult() {
+		if(FeatureVersionManager.getInstance().isSupportApi("Network", "SearchNetworkResult") != true)
+			return;
+		getNetworkSearchState();
+	}
+	
+	public void stopSearchNetworkResult() {
+		if(m_searchNetworkResultTask != null) {
+			m_searchNetworkResultTask.cancel();
+			m_searchNetworkResultTask = null;
+		}
+	}
     
 	class GetNetworkInfoTask extends TimerTask{ 
         @Override
@@ -120,5 +155,98 @@ public class NetworkManager extends BaseManager {
                 }
             }));
         } 
+	}
+	
+	class SearchNetworkResultTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetworkResult.SearchNetworkResult("4.3", new IHttpFinishListener(){
+
+				@Override
+				public void onHttpRequestFinish(BaseResponse response) {
+					// TODO Auto-generated method stub
+					String strErrcode = new String();
+                    int ret = response.getResultCode();
+                    if(ret == BaseResponse.RESPONSE_OK) {
+                    	strErrcode = response.getErrorCode();
+                    	if(strErrcode.length() == 0) {
+                    		
+                    		try{
+                    			NetworkItemList networkItemList = response.getModelResult();
+                    			if(networkItemList.SearchState == SEARCH_SUCCESSFUL){
+                    				m_NetworkList = networkItemList.ListNetworkItem;
+//                        			Log.v("NetworkSearchResult", m_NetworkList.get(0).ShortName);
+                    				for(NetworkItem tmp : m_NetworkList){
+                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.Rat));
+                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.State));
+                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.NetworkID));
+                    					Log.v("NetworkSearchResult1", tmp.Numberic);
+                    					Log.v("NetworkSearchResult1", tmp.ShortName);
+                    					
+                    				}
+                    				stopSearchNetworkResult();
+                					
+                					Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
+                                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                        			m_context.sendBroadcast(megIntent);
+                        		}
+                    			else if(networkItemList.SearchState == SEARCH_FAILED || networkItemList.SearchState == SEARCH_NOT_NETWORK){
+                    				stopSearchNetworkResult();
+                    			}
+                    			else{
+                    				Log.v("NetworkSearchResult", Integer.toString(networkItemList.SearchState));
+                    			}
+                    		}
+                    		catch(Exception e){
+                    			Log.v("NetworkSearchResult2", "Exception");
+                    			stopSearchNetworkResult();
+                    		}
+                    	}else{
+                    		//Log
+                    	}
+                    }else{
+                    	//Log
+                    }
+                    
+				}
+				
+			}));
+		}
+		
+	}
+	
+	private void getNetworkSearchState(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork("4.2", new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) { 
+                		Log.v("NetworkSearchResult", "Success");
+                		if(m_searchNetworkResultTask == null) {
+                			m_searchNetworkResultTask = new SearchNetworkResultTask();
+                			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_searchNetworkResultTask, 0, 5 * 1000);
+                		}
+                	}else{
+                		Log.v("NetworkSearchResult", "Failed");
+                	}
+                }
+                else{
+                	Log.v("NetworkSearchResult", "Failed");
+                }
+			}
+    	}));
+	}
+	
+	public List<NetworkItem> getNetworkList(){
+		return m_NetworkList;
 	}
 }

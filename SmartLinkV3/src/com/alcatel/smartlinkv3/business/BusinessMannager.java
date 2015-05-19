@@ -314,6 +314,10 @@ public class BusinessMannager {
     /********************sim method end************************/
     
     /********************network manager Data start**********************/
+    public NetworkManager getNetworkManager() {
+		return m_networkManager;
+	}
+    
     public NetworkInfoModel getNetworkInfo() {
 		return m_networkManager.getNetworkInfo();
 	}
