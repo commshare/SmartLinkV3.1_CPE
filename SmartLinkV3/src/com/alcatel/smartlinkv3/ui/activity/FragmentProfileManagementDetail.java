@@ -70,11 +70,13 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			break;
 		case R.id.profile_set_default:
 			if(m_is_default == false){
-				m_switch_icon.setBackground(getResources().getDrawable(R.drawable.pwd_switcher_on));
+				//m_switch_icon.setBackground(getResources().getDrawable(R.drawable.pwd_switcher_on));
+				m_switch_icon.setBackgroundResource(R.drawable.pwd_switcher_on);
 				m_is_default = true;
 			}
 			else if(m_is_default == true){
-				m_switch_icon.setBackground(getResources().getDrawable(R.drawable.pwd_switcher_off));
+				//m_switch_icon.setBackground(getResources().getDrawable(R.drawable.pwd_switcher_off));
+				m_switch_icon.setBackgroundResource(R.drawable.pwd_switcher_off);
 				m_is_default = false;
 			}
 			break;

@@ -16,6 +16,7 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import android.R.bool;
 import android.util.Log;
 
 public class FtpClientProxy {
@@ -95,6 +96,8 @@ public class FtpClientProxy {
 			}
 			ftpClient.setFileType(FTPClient.FILE_STRUCTURE);
 			ftpClient.enterLocalPassiveMode();
+			// ftpClient.setControlEncoding("UTF-8");
+			// ftpClient.setConnectTimeout(5000);
 			// ftpClient.enterLocalActiveMode();
 			// ftpClient.enterRemotePassiveMode();
 			// ftpClient.enterRemoteActiveMode(InetAddress.getByName(config.address),config.port);
@@ -165,6 +168,64 @@ public class FtpClientProxy {
 	public Boolean changeDirectory(String remoteFoldPath) throws Exception {
 
 		return ftpClient.changeWorkingDirectory(remoteFoldPath);
+	}
+
+	boolean createLocalFolder(String strFolder) {
+		File file = new File(strFolder);
+
+		if (!file.exists()) {
+
+			if (file.mkdirs()) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+		return true;
+	}
+
+	public boolean downloadAndsubFiles(String local, String remote)
+			throws Exception {
+		FtpDownloadStatus result = FtpDownloadStatus.Download_From_Break_Failed;
+		boolean success = false;
+
+		FTPFile remoteFile = ftpClient.mlistFile(remote);
+
+		if (remoteFile.isFile()) {
+			result = download(local, remote);
+			if (result == FtpDownloadStatus.Download_New_Success)
+				success = true;
+			return success;
+		}
+
+		List<FTPFile> list = this.getFileList(remote);
+
+		if (list == null || list.size() == 0) {
+			return false;
+		}
+
+		for (FTPFile ftpFile : list) {
+			String name = ftpFile.getName();
+
+			if (ftpFile.isDirectory()) {
+				createLocalFolder(local + "/" + name);
+				success = downloadAndsubFiles(local + "/" + name, remote + "/"
+						+ name);
+
+				if (!success)
+					break;
+			} else {
+				result = download(local + "/" + name, remote + "/" + name);
+
+				if (result != FtpDownloadStatus.Download_New_Success)
+					break;
+			}
+		}
+
+		success = true;
+
+		return success;
 	}
 
 	public FtpDownloadStatus download(String local, String remote)
@@ -378,6 +439,45 @@ public class FtpClientProxy {
 		return success;
 	}
 
+	public boolean deleteFiles(String remoteFilePath) throws Exception {
+		boolean success = false;
+		boolean result = false;
+
+		FTPFile remoteFile = ftpClient.mlistFile(remoteFilePath);
+
+		if (remoteFile.isFile()) {
+			result = deleteFtpServerFile(remoteFilePath);
+			if (result == true)
+				success = true;
+			return success;
+		}
+
+		List<FTPFile> list = this.getFileList(remoteFilePath);
+
+		if (list == null || list.size() == 0) {
+			return false;
+		}
+
+		for (FTPFile ftpFile : list) {
+			String name = ftpFile.getName();
+
+			if (ftpFile.isDirectory()) {
+				success = deleteFoldAndsubFiles(remoteFilePath);
+				if (!success)
+					break;
+			} else {
+				result = deleteFtpServerFile(remoteFilePath);
+
+				if (result != true)
+					break;
+			}
+		}
+
+		success = true;
+
+		return success;
+	}
+
 	public void disconnect() throws IOException {
 		if (ftpClient.isConnected()) {
 			ftpClient.disconnect();
@@ -479,35 +579,6 @@ public class FtpClientProxy {
 
 		return status;
 	}
-
-	/*
-	 * public Element getCurrentElement(){ document =
-	 * DocumentHelper.createDocument(); return document.addElement("root"); }
-	 * 
-	 * public void createDirectoryXML(String remotePath,Element fatherElement)
-	 * throws Exception{
-	 * 
-	 * List<FTPFile> list = this.getFileList(); for(FTPFile ftpfile:list){
-	 * Element currentElement = fatherElement; //当前的目录节点 String newRemotePath =
-	 * (remotePath+"/"+ftpfile.getName()).replaceAll("//","/");
-	 * if(ftpfile.isDirectory()){ Element dirElement =
-	 * fatherElement.addElement("dir") ;
-	 * dirElement.addAttribute("name",ftpfile.getName()); currentElement =
-	 * dirElement; this.changeDirectory(newRemotePath); //从根目录开始
-	 * 
-	 * // String currentWorkPath = this.printWorkingDirectory(); //
-	 * createDirectoryXML(currentWorkPath,dirElement);
-	 * 
-	 * createDirectoryXML(newRemotePath,dirElement); }else{ Element fileElement
-	 * = fatherElement.addElement("file");//文件节点
-	 * fileElement.setText(ftpfile.getName()) ; } } }
-	 * 
-	 * public void saveXML(){ XMLWriter output = new XMLWriter(); //输出格式化
-	 * OutputFormat format = OutputFormat.createPrettyPrint(); try { output =
-	 * new XMLWriter(new FileWriter("src/com/shine/Ftp/config/dir.xml"),
-	 * format); output.write(this.document); output.close(); } catch
-	 * (IOException e) { e.printStackTrace(); } }
-	 */
 
 	public void close() {
 		if (ftpClient.isConnected()) {

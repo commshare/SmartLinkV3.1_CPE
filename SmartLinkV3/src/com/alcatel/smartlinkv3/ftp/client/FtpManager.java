@@ -27,7 +27,7 @@ public class FtpManager {
 
 	FtpManagerIRetrieveListener ftpManagerListener;
 
-	protected FtpManager() {
+	public FtpManager() {
 
 	}
 
@@ -196,21 +196,6 @@ public class FtpManager {
 		return ftpProxy.getFTPFiles(remoteDir);
 	}
 
-	public boolean deleteFold(String remoteFoldPath) throws Exception {
-		return ftpProxy.deleteFold(remoteFoldPath);
-	}
-
-	public boolean deleteFile(String remoteFilePath) throws Exception {
-
-		return ftpProxy.deleteFtpServerFile(remoteFilePath);
-	}
-
-	public boolean deleteFoldAndsubFiles(String remoteFoldPath)
-			throws Exception {
-
-		return ftpProxy.deleteFoldAndsubFiles(remoteFoldPath);
-	}
-
 	public boolean connectLogin() {
 		boolean iRet = false;
 
@@ -249,18 +234,22 @@ public class FtpManager {
 		isLogin = false;
 	}
 
-	public FtpDownloadStatus download(String localFile, String remoteFile)
-			throws IOException {
-
+	public boolean download(String localFile, String remoteFile){
+		boolean iStatus = false;
+		
 		if (!isLogin) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_ERROR,
 					ERROR.FILE_DOWNLOAD_ERROR);
 		}
+		
+		try {
+			iStatus = ftpProxy.downloadAndsubFiles(localFile, remoteFile);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		FtpDownloadStatus iStatus = ftpProxy.download(localFile, remoteFile);
-
-		if ((iStatus == FtpDownloadStatus.Download_New_Success)
-				|| (iStatus == FtpDownloadStatus.Download_From_Break_Success)) {
+		if (iStatus) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_SUCCESS,
 					ERROR.SUCCESS);
 		}
@@ -268,6 +257,30 @@ public class FtpManager {
 		return iStatus;
 	}
 
+	public boolean deleteFiles(String remoteFilePath) {
+		boolean iStatus = false;
+
+		if (!isLogin) {
+			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_ERROR,
+					ERROR.FILE_DOWNLOAD_ERROR);
+		}
+
+		try {
+			iStatus = ftpProxy.deleteFiles(remoteFilePath);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (iStatus) {
+			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_SUCCESS,
+					ERROR.SUCCESS);
+		}
+
+		return iStatus;
+	}
+	
+	
 	public FtpUploadStatus upload(String localFile, String remoteFile)
 			throws IOException {
 

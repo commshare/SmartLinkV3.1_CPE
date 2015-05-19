@@ -7,6 +7,8 @@ import java.util.List;
 import org.cybergarage.upnp.Device;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity;
 import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
@@ -379,5 +381,14 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	}
 
 	private void goToFilePage(){
+		// TODO: add ftp client module
+		CommonUtil.showToask(this.m_context, "goToFilePage!");
+		
+		Intent intent = new Intent();
+		intent.setClass(this.m_context, FtpFileExplorerTabActivity.class);
+/*		intent.putExtra(LIST_KEY, (Serializable)mNextItems);
+		intent.putExtra("title", titlePosition);*/
+		m_context.startActivity(intent);
+	
 	}
 }
