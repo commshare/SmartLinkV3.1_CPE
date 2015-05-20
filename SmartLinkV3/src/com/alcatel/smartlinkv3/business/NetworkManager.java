@@ -7,10 +7,13 @@ import java.util.TimerTask;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkInfo;
+import com.alcatel.smartlinkv3.business.network.HttpGetNetworkSettings;
+import com.alcatel.smartlinkv3.business.network.HttpGetNetworkSettings.GetNetworkSettingResult;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetwork;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItemList;
+import com.alcatel.smartlinkv3.business.network.HttpSetNetworkSettings;
 import com.alcatel.smartlinkv3.business.network.NetworkInfoResult;
 import com.alcatel.smartlinkv3.business.sim.AutoEnterPinStateResult;
 import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
@@ -40,12 +43,23 @@ public class NetworkManager extends BaseManager {
 	private GetNetworkInfoTask m_getNetworkInfoTask = null;
 	private SearchNetworkResultTask m_searchNetworkResultTask = null;
 	private List<NetworkItem> m_NetworkList = null;
+	private GetNetworkSettingResult m_network_setting_result = null;
+	
+	private int m_network_mode = -1;
+	private int m_network_selection = -1;
 	
 	public final int SEARCH_NOT_NETWORK = 0;
 	public final int SEARCHING = 1;
 	public final int SEARCH_SUCCESSFUL = 2;
 	public final int SEARCH_FAILED = 3;
 	
+	public int getNetworkMode(){
+		return m_network_mode;
+	}
+	
+	public int getNetworkSelection(){
+		return m_network_selection;
+	}
 	
 	@Override
 	protected void clearData() {
@@ -114,7 +128,7 @@ public class NetworkManager extends BaseManager {
 		}
 	}
 	
-	public void startSearchNetworkResult() {
+	public void startSearchNetworkResult(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("Network", "SearchNetworkResult") != true)
 			return;
 		getNetworkSearchState();
@@ -248,5 +262,84 @@ public class NetworkManager extends BaseManager {
 	
 	public List<NetworkItem> getNetworkList(){
 		return m_NetworkList;
+	}
+	
+	public void GetNetworkSettings(DataValue data){
+		if(FeatureVersionManager.getInstance().isSupportApi("Network", "GetNetworkSettings") != true){
+			return;
+		}
+			
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkSettings.GetNetworkSettings("4.6", new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) { 
+                		try{
+                			m_network_setting_result = response.getModelResult();
+                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetselectionMode);
+                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetworkMode);
+                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetworkBand);
+                			m_network_mode = m_network_setting_result.NetworkMode;
+                			m_network_selection = m_network_setting_result.NetselectionMode;
+                		}
+                		catch(Exception e){
+                			
+                		}
+                		
+                	}else{
+                		//Log
+                	}
+                }else{
+                	//Log
+                }
+                
+                Intent megIntent= new Intent(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+ 
+			}
+			
+		}));
+	}
+	
+	public void SetNetworkSettings(DataValue data){
+		if(FeatureVersionManager.getInstance().isSupportApi("Network", "SetNetworkSettings") != true){
+			return;
+		}
+    	
+    	int networkMode = (Integer) data.getParamByKey("network_mode");
+    	int netselectionMode = (Integer) data.getParamByKey("netselection_mode");
+    	
+    	HttpRequestManager.GetInstance().sendPostRequest(new HttpSetNetworkSettings.SetNetworkSettings("4.7", networkMode, netselectionMode, new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) { 
+                		Log.v("GetNetworkSettingsTest", "Yes");
+                	}else{
+                		//Log
+                	}
+                }else{
+                	//Log
+                }
+                
+                Intent megIntent= new Intent(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+			}
+    		
+    	}));
 	}
 }

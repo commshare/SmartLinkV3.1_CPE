@@ -87,6 +87,8 @@ public class MessageUti {
 	/**************************Network message start*********************************************************************************/
 	public static String NETWORK_GET_NETWORK_INFO_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.network.getnetworkinfo";
 	public static String NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.network.searchnetworkresult";
+	public static String NETWORK_GET_NETWORK_SETTING_REQUEST = "com.alcatel.smartlinkv3.business.network.getnetworksettings";
+	public static String NETWORK_SET_NETWORK_SETTING_REQUEST = "com.alcatel.smartlinkv3.business.network.setnetworksettings";
 	/**************************Network message end*********************************************************************************/
 	
 	/**************************SMS message start*********************************************************************************/
@@ -195,6 +197,12 @@ public class MessageUti {
 		httpMethods.put(USER_LOGOUT_REQUEST, new HttpMethodUti(UserManager.class, "logout"));
 		httpMethods.put(USER_CHANGE_PASSWORD_REQUEST, new HttpMethodUti(UserManager.class, "changepassword"));
 		/********************User method end**********************/
+		
+		/********************Network method start**********************/
+		httpMethods.put(NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET, new HttpMethodUti(NetworkManager.class, "startSearchNetworkResult"));
+		httpMethods.put(NETWORK_GET_NETWORK_SETTING_REQUEST, new HttpMethodUti(NetworkManager.class, "GetNetworkSettings"));
+		httpMethods.put(NETWORK_SET_NETWORK_SETTING_REQUEST, new HttpMethodUti(NetworkManager.class, "SetNetworkSettings"));
+		/********************Network method end**********************/
 		
 		/********************Statistics method start**********************/
 		httpMethods.put(STATISTICS_SET_BILLING_DAY_REQUSET, new HttpMethodUti(StatisticsManager.class, "setBillingDay"));

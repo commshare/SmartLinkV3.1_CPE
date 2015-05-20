@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	
 	private ListView m_network_list;
 	private FrameLayout m_network_list_conainer;
+	private RadioGroup m_network_selection;
 	private RadioButton m_auto_mode;
 	private RadioButton m_manual_mode;
 	private TextView m_network_searching_title;
@@ -50,6 +52,9 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	private List<NetworkItem> m_network_search_result_list = null;
 	
 	private RelativeLayout m_waiting_search_result;
+	
+	private final int SELECTION_MODE_AUTO = 0;
+	private final int SELECTION_MODE_MANUAL = 1;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
@@ -77,6 +82,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
         
         m_network_list_conainer = (FrameLayout) view.findViewById(R.id.network_list_container);
         
+        m_network_selection = (RadioGroup)view.findViewById(R.id.setting_network_selection);
         m_auto_mode = (RadioButton) view.findViewById(R.id.mode_auto);
         m_manual_mode = (RadioButton) view.findViewById(R.id.mode_manual);
         
@@ -109,6 +115,16 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			}
         	
         });
+        
+		if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
+			BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
+			m_manual_mode.setChecked(true);
+			m_auto_mode.setChecked(false);
+		}
+		else{
+			m_manual_mode.setChecked(false);
+			m_auto_mode.setChecked(true);
+		}
 	}
 	
 	private List<String> getNetworkList(){
@@ -122,7 +138,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult();
+		
 		m_parent_activity.registerReceiver(m_network_search_result_receiver, m_search_network_result_filter);  
 		m_waiting_search_result.setVisibility(View.VISIBLE);
 	}

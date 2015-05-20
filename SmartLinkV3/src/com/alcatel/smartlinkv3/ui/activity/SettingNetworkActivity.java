@@ -3,17 +3,29 @@ package com.alcatel.smartlinkv3.ui.activity;
 import java.util.Stack;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BaseManager;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.HttpMethodUti;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SettingNetworkActivity extends BaseActivity implements OnClickListener{
@@ -33,14 +45,22 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	private TextView m_tv_title = null;
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
-	private FrameLayout m_network_mode=null;
-	private FrameLayout m_network_selection=null;
+	private FrameLayout m_network_mode_container=null;
+	private FrameLayout m_network_selection_container=null;
 	private FrameLayout m_network_profile_management=null;
 	private LinearLayout m_level_one_menu=null;
 	private LinearLayout m_add_and_delete_container = null;
 	
 	private FragmentManager m_fragment_manager;
 	private FragmentTransaction m_transaction;
+	
+	private RelativeLayout m_waiting_circle;
+	private TextView m_mode_desc;
+	private TextView m_selection_desc;
+	
+	private IntentFilter m_get_network_setting_filter;
+	private IntentFilter m_set_network_setting_filter;
+	private NetworkSettingReceiver m_network_setting_receiver;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +90,24 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	}
 	
 	private void initUi(){
-		m_network_mode = (FrameLayout) findViewById(R.id.network_mode);
-		m_network_selection = (FrameLayout) findViewById(R.id.network_selection);
+		
+		m_get_network_setting_filter = new IntentFilter(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
+		m_set_network_setting_filter = new IntentFilter(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
+		m_get_network_setting_filter.addAction(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
+		m_set_network_setting_filter.addAction(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
+		m_network_setting_receiver = new NetworkSettingReceiver();
+		
+		m_network_mode_container = (FrameLayout) findViewById(R.id.network_mode);
+		m_network_selection_container = (FrameLayout) findViewById(R.id.network_selection);
 		m_network_profile_management = (FrameLayout) findViewById(R.id.network_profile_management);
 		
-		m_network_mode.setOnClickListener(this);
-		m_network_selection.setOnClickListener(this);
+		m_mode_desc = (TextView)findViewById(R.id.network_mode_desc);
+		m_selection_desc = (TextView)findViewById(R.id.network_selection_desc);
+		
+		m_waiting_circle = (RelativeLayout) findViewById(R.id.waiting_progressbar);
+		
+		m_network_mode_container.setOnClickListener(this);
+		m_network_selection_container.setOnClickListener(this);
 		m_network_profile_management.setOnClickListener(this);
 		
 		m_level_one_menu = (LinearLayout) findViewById(R.id.level_one_menu);
@@ -170,6 +202,8 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_fragment_network_selection = null;
 		m_fragment_profile_management = null;
 		m_fragment_profile_management_detail = null;
+		
+		unregisterReceiver(m_network_setting_receiver);  
 	}
 	
 	@Override
@@ -203,4 +237,137 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		}
 		super.onBackPressed();
 	}
+	
+	private void UserGetNetworkSetting(){
+		registerReceiver(m_network_setting_receiver, m_get_network_setting_filter);  
+		registerReceiver(m_network_setting_receiver, m_set_network_setting_filter);  
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
+		m_waiting_circle.setVisibility(View.VISIBLE);
+		m_network_mode_container.setEnabled(false);
+		m_network_selection_container.setEnabled(false);
+		m_network_profile_management.setEnabled(false);
+	}
+	
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+//		BusinessMannager.getInstance().getNetworkManager().GetNetworkSettings(null);
+		
+//		DataValue data = new DataValue();
+//		data.addParam("network_mode", 0);
+//		data.addParam("netselection_mode", 0);
+//		BusinessMannager.getInstance().sendRequestMessage(
+//				MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
+		UserGetNetworkSetting();
+	}
+	
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		
+		super.onResume();
+	}
+	
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+	
+	private class NetworkSettingReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+					switch(BusinessMannager.getInstance().getNetworkManager().getNetworkMode()){
+					
+					case 0:
+						m_mode_desc.setText("Auto");
+						break;
+					case 1:
+						m_mode_desc.setText("2G only");
+						break;
+					case 2:
+						m_mode_desc.setText("3G only");
+						break;
+					case 3:
+						m_mode_desc.setText("LTE only");
+						break;
+					default:
+						m_mode_desc.setText("Error");
+						break;
+						
+					}
+					
+					switch(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection()){
+					case 0:
+						m_selection_desc.setText("Auto");
+						break;
+					case 1:
+						m_selection_desc.setText("Manual");
+						break;
+					default:
+						break;
+					}
+					
+//					current_network_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkMode();
+//					current_network_selection_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkSelection();
+					
+					m_network_mode_container.setEnabled(true);
+					m_network_selection_container.setEnabled(true);
+					m_network_profile_management.setEnabled(true);
+					m_waiting_circle.setVisibility(View.GONE);
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					//Log
+				}
+			}
+			
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+					BusinessMannager.getInstance().sendRequestMessage(
+							MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					//Log
+				}
+				
+//				if(!m_fragment_tag_stack.isEmpty()){
+//					String FragmentTag = m_fragment_tag_stack.peek();
+//					if(FragmentTag.equals(TAG_FRAGMENT_NETWORK_MODE)){
+//						SettingNetworkActivity.this.onBackPressed();
+//					}
+//				}
+			}
+		}
+	}
+	
 }

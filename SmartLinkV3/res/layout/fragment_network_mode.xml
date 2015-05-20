@@ -36,7 +36,7 @@
                 android:background="@color/main_bottom_divider" />
 
             <RadioButton
-                android:id="@+id/mode_4g"
+                android:id="@+id/mode_2g"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -49,7 +49,7 @@
                 android:enabled="true"
                 android:paddingBottom="15dip"
                 android:paddingTop="15dip"
-                android:text="@string/setting_network_mode_4G_only"
+                android:text="@string/setting_network_mode_2G_only"
                 android:textColor="@color/color_black" />
             
             <View
@@ -80,7 +80,7 @@
                 android:background="@color/main_bottom_divider" />
             
             <RadioButton
-                android:id="@+id/mode_2g"
+                android:id="@+id/mode_lte"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -93,7 +93,7 @@
                 android:enabled="true"
                 android:paddingBottom="15dip"
                 android:paddingTop="15dip"
-                android:text="@string/setting_network_mode_2G_only"
+                android:text="@string/setting_network_mode_LTE_only"
                 android:textColor="@color/color_black" />
             
         </RadioGroup>
