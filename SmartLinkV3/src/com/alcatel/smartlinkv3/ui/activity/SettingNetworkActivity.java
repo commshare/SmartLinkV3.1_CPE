@@ -25,8 +25,11 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class SettingNetworkActivity extends BaseActivity implements OnClickListener{
 	
@@ -35,7 +38,6 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	public final String TAG_FRAGMENT_PROFILE_MANAGEMENT = "FRAGMENT_NETWORK_MANAGEMENT";
 	public final String TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL = "FRAGMENT_NETWORK_MANAGEMENT_DETAIL";
 	
-	private FragmentNetworkMode m_fragment_network_mode = null;
 	private FragmentNetworkSelection m_fragment_network_selection = null;
 	private FragmentProfileManagement m_fragment_profile_management = null;
 	private FragmentProfileManagementDetail m_fragment_profile_management_detail = null;
@@ -61,6 +63,25 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	private IntentFilter m_get_network_setting_filter;
 	private IntentFilter m_set_network_setting_filter;
 	private NetworkSettingReceiver m_network_setting_receiver;
+	
+	
+	private RadioGroup m_network_mode_radiogroup = null;
+	private final int MODE_ERROR = -1;
+	private int m_current_mode = MODE_ERROR;
+	private final int MODE_AUTO = 0;
+	private final int MODE_2G_ONLY = 1;
+	private final int MODE_3G_ONLY = 2;
+	private final int MODE_LTE_ONLY = 3;
+	private int m_current_network_selection_mode = -1;
+	
+	private RadioButton mode_auto = null;
+	private RadioButton mode_2g_only = null;
+	private RadioButton mode_3g_only = null;
+	private RadioButton mode_lte_only = null;
+	
+	
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,14 +139,53 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		
 		m_fragment_tag_stack = new Stack<String>();
 		
-		m_fragment_network_mode = new FragmentNetworkMode();
 		m_fragment_network_selection = new FragmentNetworkSelection();
 		m_fragment_profile_management = new FragmentProfileManagement();
 		m_fragment_profile_management_detail = new FragmentProfileManagementDetail();
-	}
-	
-	public void showFragmentNetworkMode(){
-		showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
+		
+		
+		
+		
+		
+		changeTitlebar(R.string.setting_network_mode);
+		m_network_mode_radiogroup = (RadioGroup)findViewById(R.id.setting_network_mode);
+		m_current_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkMode();
+		m_current_network_selection_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkSelection();
+		
+		mode_auto = (RadioButton)findViewById(R.id.mode_auto);
+		mode_2g_only = (RadioButton)findViewById(R.id.mode_2g);
+		mode_3g_only = (RadioButton)findViewById(R.id.mode_3g);
+		mode_lte_only = (RadioButton)findViewById(R.id.mode_lte);
+		
+		m_network_mode_radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				// TODO Auto-generated method stub
+				
+				switch(checkedId){
+				case R.id.mode_auto:
+					UserSetNetworkMode(MODE_AUTO);
+					break;
+				case R.id.mode_2g:
+					UserSetNetworkMode(MODE_2G_ONLY);
+					break;
+				case R.id.mode_3g:
+					UserSetNetworkMode(MODE_3G_ONLY);
+					break;
+				case R.id.mode_lte:
+					UserSetNetworkMode(MODE_LTE_ONLY);
+					break;
+				default:
+					break;
+				}
+			}
+			
+		});
+		
+//		refresButton();
+		
+		
 	}
 	
 	public void showFragmentNetworkSelection(){
@@ -180,7 +240,8 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			this.onBackPressed();
 			break;
 		case R.id.network_mode:
-			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
+//			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
+			m_network_mode_radiogroup.setVisibility(View.VISIBLE);
 			break;
 		case R.id.network_selection:
 			showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
@@ -198,7 +259,6 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		super.onDestroy();
 		m_fragment_tag_stack.clear();
 		m_fragment_tag_stack = null;
-		m_fragment_network_mode = null;
 		m_fragment_network_selection = null;
 		m_fragment_profile_management = null;
 		m_fragment_profile_management_detail = null;
@@ -208,6 +268,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	
 	@Override
 	public void onBackPressed(){
+		super.onBackPressed();
 		popFragmentTagStack();
 		if(!m_fragment_tag_stack.isEmpty()){
 			m_level_one_menu.setVisibility(View.GONE);
@@ -235,7 +296,6 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			changeTitlebar(R.string.setting_network);
 			setAddAndDeleteVisibility(View.GONE);
 		}
-		super.onBackPressed();
 	}
 	
 	private void UserGetNetworkSetting(){
@@ -243,6 +303,53 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		registerReceiver(m_network_setting_receiver, m_set_network_setting_filter);  
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
+		m_waiting_circle.setVisibility(View.VISIBLE);
+		m_network_mode_container.setEnabled(false);
+		m_network_selection_container.setEnabled(false);
+		m_network_profile_management.setEnabled(false);
+	}
+	
+	
+	private void refresButton(){
+		switch(BusinessMannager.getInstance().getNetworkManager().getNetworkMode()){
+		case MODE_AUTO:
+			mode_auto.setChecked(true);
+			mode_2g_only.setChecked(false);
+			mode_3g_only.setChecked(false);
+			mode_lte_only.setChecked(false);
+			break;
+		case MODE_2G_ONLY:
+			mode_auto.setChecked(false);
+			mode_2g_only.setChecked(true);
+			mode_3g_only.setChecked(false);
+			mode_lte_only.setChecked(false);
+			break;
+		case MODE_3G_ONLY:
+			mode_auto.setChecked(false);
+			mode_2g_only.setChecked(false);
+			mode_3g_only.setChecked(true);
+			mode_lte_only.setChecked(false);
+			break;
+		case MODE_LTE_ONLY:
+			mode_auto.setChecked(false);
+			mode_2g_only.setChecked(false);
+			mode_3g_only.setChecked(false);
+			mode_lte_only.setChecked(true);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void UserSetNetworkMode(final int mode){
+		if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() != MODE_ERROR){
+			DataValue data = new DataValue();
+			data.addParam("network_mode", mode);
+			data.addParam("netselection_mode", BusinessMannager.getInstance().getNetworkManager().getNetworkSelection());
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
+		}
+		m_network_mode_radiogroup.setVisibility(View.GONE);
 		m_waiting_circle.setVisibility(View.VISIBLE);
 		m_network_mode_container.setEnabled(false);
 		m_network_selection_container.setEnabled(false);
@@ -301,15 +408,31 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 					
 					case 0:
 						m_mode_desc.setText("Auto");
+						mode_auto.setChecked(true);
+						mode_2g_only.setChecked(false);
+						mode_3g_only.setChecked(false);
+						mode_lte_only.setChecked(false);
 						break;
 					case 1:
 						m_mode_desc.setText("2G only");
+						mode_auto.setChecked(false);
+						mode_2g_only.setChecked(true);
+						mode_3g_only.setChecked(false);
+						mode_lte_only.setChecked(false);
 						break;
 					case 2:
 						m_mode_desc.setText("3G only");
+						mode_auto.setChecked(false);
+						mode_2g_only.setChecked(false);
+						mode_3g_only.setChecked(true);
+						mode_lte_only.setChecked(false);
 						break;
 					case 3:
 						m_mode_desc.setText("LTE only");
+						mode_auto.setChecked(false);
+						mode_2g_only.setChecked(false);
+						mode_3g_only.setChecked(false);
+						mode_lte_only.setChecked(true);
 						break;
 					default:
 						m_mode_desc.setText("Error");
@@ -344,6 +467,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
+				Log.v("GetNetworkSettingsTest2", "Yes");
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
 						BaseResponse.RESPONSE_OK);
 				
@@ -361,10 +485,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 				}
 				
 //				if(!m_fragment_tag_stack.isEmpty()){
-//					String FragmentTag = m_fragment_tag_stack.peek();
-//					if(FragmentTag.equals(TAG_FRAGMENT_NETWORK_MODE)){
-//						SettingNetworkActivity.this.onBackPressed();
-//					}
+//					popFragmentStack();
 //				}
 			}
 		}

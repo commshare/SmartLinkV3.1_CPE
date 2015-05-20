@@ -192,14 +192,14 @@ public class NetworkManager extends BaseManager {
                     			if(networkItemList.SearchState == SEARCH_SUCCESSFUL){
                     				m_NetworkList = networkItemList.ListNetworkItem;
 //                        			Log.v("NetworkSearchResult", m_NetworkList.get(0).ShortName);
-                    				for(NetworkItem tmp : m_NetworkList){
-                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.Rat));
-                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.State));
-                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.NetworkID));
-                    					Log.v("NetworkSearchResult1", tmp.Numberic);
-                    					Log.v("NetworkSearchResult1", tmp.ShortName);
-                    					
-                    				}
+//                    				for(NetworkItem tmp : m_NetworkList){
+//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.Rat));
+//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.State));
+//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.NetworkID));
+//                    					Log.v("NetworkSearchResult1", tmp.Numberic);
+//                    					Log.v("NetworkSearchResult1", tmp.ShortName);
+//                    					
+//                    				}
                     				stopSearchNetworkResult();
                 					
                 					Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
@@ -281,9 +281,9 @@ public class NetworkManager extends BaseManager {
                 	if(strErrcode.length() == 0) { 
                 		try{
                 			m_network_setting_result = response.getModelResult();
-                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetselectionMode);
+//                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetselectionMode);
                 			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetworkMode);
-                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetworkBand);
+//                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetworkBand);
                 			m_network_mode = m_network_setting_result.NetworkMode;
                 			m_network_selection = m_network_setting_result.NetselectionMode;
                 		}
@@ -326,7 +326,7 @@ public class NetworkManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) { 
-                		Log.v("GetNetworkSettingsTest", "Yes");
+//                		Log.v("GetNetworkSettingsTest", "Yes");
                 	}else{
                 		//Log
                 	}
