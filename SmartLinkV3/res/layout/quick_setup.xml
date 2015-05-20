@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="bottom"
+    		android:gravity="center"
+        android:orientation="vertical" >
+        
+    <TextView
+        android:id="@+id/qs_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:text="@string/qs_item_pin_code"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+     <TextView
+        android:id="@+id/qs_item_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="10sp"
+        android:text="@string/qs_pin_code_prompt"
+        android:textAppearance="?android:attr/textAppearanceSmallInverse" />
+
+    <com.alcatel.smartlinkv3.ui.view.ClearEditText android:id="@+id/password"  
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:textSize="18sp"          >  
+    </com.alcatel.smartlinkv3.ui.view.ClearEditText>  
+
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/navigator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/navigator_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="left|center_vertical"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/back_disable"
+        android:text="@string/back" />
+    
+    <TextView
+        android:id="@+id/navigator_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableRight="@drawable/right_arrow_small"        
+        android:gravity="center_vertical|right"
+        android:layout_gravity="right|center_vertical"
+        android:text="@string/skip" />
+</LinearLayout>
+
+
+</LinearLayout>

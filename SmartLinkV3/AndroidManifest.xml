@@ -67,6 +67,13 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+        <activity android:excludeFromRecents="true" 
+            android:noHistory="true" 
+            android:launchMode="standard" 
+            android:name=".ui.activity.QuickSetupActivity" 
+            android:screenOrientation="sensor" android:label="@string/qs_title">
+        </activity>
+            
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete"
             android:configChanges="orientation|screenSize|keyboardHidden"
