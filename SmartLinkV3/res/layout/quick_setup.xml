@@ -32,12 +32,12 @@
         android:text="@string/qs_pin_code_prompt"
         android:textAppearance="?android:attr/textAppearanceSmallInverse" />
 
-    <EditText android:id="@+id/password"  
-        android:layout_width="280sp"  
+    <com.alcatel.smartlinkv3.ui.view.ClearEditText android:id="@+id/password"  
+        android:layout_width="match_parent"  
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:textSize="18sp"          >  
-    </EditText>  
+    </com.alcatel.smartlinkv3.ui.view.ClearEditText>  
 
 </LinearLayout>
     <LinearLayout
