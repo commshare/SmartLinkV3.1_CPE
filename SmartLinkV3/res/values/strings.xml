@@ -15,21 +15,22 @@
     <string name="sending">Sending</string>
     <string name="apply">Apply</string>
     <string name="skip">Skip</string>
+    <string name="next">Next</string>
     <string name="finish">Finish</string>
     <!-- common end -->
     
     <!-- Qucik Setup -->
     <string name="qs_title">Quick Setup</string>
     <string name="qs_item_pin_code">PIN Code</string>
-    <string name="qs_pin_code_prompt">Please input the PIN code\nRemain: %1$d time(s)</string>
+    <string name="qs_pin_code_prompt">Please input the PIN code\nRemain: <xliff:g id="INPUTTIMES">%1$d</xliff:g> time(s)</string>
     <string name="qs_item_wifi_ssid">Wi-Fi Network Name (SSID)</string>
     <string name="qs_wifi_ssid_prompt">The SSID should be 1&#8211;32 characters.</string>
     <string name="qs_item_wifi_passwd">Wi-Fi Password</string>
     <string name="qs_wifi_passwd_prompt">The password should be 8&#8211;83 characters.</string>
     <string name="qs_completed">Setup Completed</string>
     <string name="qs_summary">Your device is ready to use.</string>    
-    <string name="qs_wifi_ssid">Wi-Fi Network Name (SSID): %1$s</string>      
-    <string name="qs_wifi_passwd">Wi-Fi Password: %1$s</string>
+    <string name="qs_wifi_ssid">Wi-Fi Network Name (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>      
+    <string name="qs_wifi_passwd">Wi-Fi Password: <xliff:g id="PASSWD">%1$s</xliff:g></string>
     <!-- Quick Setup End -->
 
     <!-- main fram start -->
