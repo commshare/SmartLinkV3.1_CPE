@@ -247,7 +247,8 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
 			break;
 		case R.id.network_profile_management:
-			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
+//			BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork();
+//			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
 			break;
 		default:
 			break;
@@ -483,10 +484,6 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 						&& strErrorCode.length() > 0){
 					//Log
 				}
-				
-//				if(!m_fragment_tag_stack.isEmpty()){
-//					popFragmentStack();
-//				}
 			}
 		}
 	}

@@ -7,8 +7,11 @@ import java.util.TimerTask;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkInfo;
+import com.alcatel.smartlinkv3.business.network.HttpGetNetworkRegsterState;
+import com.alcatel.smartlinkv3.business.network.HttpGetNetworkRegsterState.GetNetworkRegsterStateResult;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkSettings;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkSettings.GetNetworkSettingResult;
+import com.alcatel.smartlinkv3.business.network.HttpRegisterNetwork;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetwork;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
@@ -41,6 +44,7 @@ public class NetworkManager extends BaseManager {
 	private NetworkInfoModel m_networkInfo = new NetworkInfoModel();
 	private Timer m_getNetworkInfoRollTimer = new Timer();
 	private GetNetworkInfoTask m_getNetworkInfoTask = null;
+	private GetNetworkRegisterStateTask m_getNetworkRegisterStateTask = null;
 	private SearchNetworkResultTask m_searchNetworkResultTask = null;
 	private List<NetworkItem> m_NetworkList = null;
 	private GetNetworkSettingResult m_network_setting_result = null;
@@ -140,6 +144,22 @@ public class NetworkManager extends BaseManager {
 			m_searchNetworkResultTask = null;
 		}
 	}
+	
+	public void stopGetNetworkRegisterState(){
+		if(m_getNetworkRegisterStateTask != null){
+			m_getNetworkRegisterStateTask.cancel();
+			m_getNetworkRegisterStateTask = null;
+		}
+	}
+	
+	private void startGetRegisterStateTask() {
+		if(FeatureVersionManager.getInstance().isSupportApi("Network", "GetNetworkRegisterState") != true)
+			return;
+		if(m_getNetworkRegisterStateTask == null) {
+			m_getNetworkRegisterStateTask = new GetNetworkRegisterStateTask();
+			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_getNetworkRegisterStateTask, 0, 3 * 1000);
+		}
+	}
     
 	class GetNetworkInfoTask extends TimerTask{ 
         @Override
@@ -192,14 +212,14 @@ public class NetworkManager extends BaseManager {
                     			if(networkItemList.SearchState == SEARCH_SUCCESSFUL){
                     				m_NetworkList = networkItemList.ListNetworkItem;
 //                        			Log.v("NetworkSearchResult", m_NetworkList.get(0).ShortName);
-//                    				for(NetworkItem tmp : m_NetworkList){
-//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.Rat));
-//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.State));
-//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.NetworkID));
-//                    					Log.v("NetworkSearchResult1", tmp.Numberic);
-//                    					Log.v("NetworkSearchResult1", tmp.ShortName);
-//                    					
-//                    				}
+                    				for(NetworkItem tmp : m_NetworkList){
+                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.Rat));
+                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.State));
+                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.NetworkID));
+                    					Log.v("NetworkSearchResult1", tmp.Numberic);
+                    					Log.v("NetworkSearchResult1", tmp.ShortName);
+                    					
+                    				}
                     				stopSearchNetworkResult();
                 					
                 					Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
@@ -231,6 +251,78 @@ public class NetworkManager extends BaseManager {
 		}
 		
 	}
+	
+	
+	class GetNetworkRegisterStateTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkRegsterState.GetNetworkRegisterState("4.5", new IHttpFinishListener(){
+
+				@Override
+				public void onHttpRequestFinish(BaseResponse response) {
+					// TODO Auto-generated method stub
+					String strErrcode = new String();
+                    int ret = response.getResultCode();
+                    if(ret == BaseResponse.RESPONSE_OK) {
+                    	strErrcode = response.getErrorCode();
+                    	Log.v("NetworkRegisterTest", "RESPONSE_OK");
+                    	if(strErrcode.length() == 0) {
+	                    		try{
+	                    			GetNetworkRegsterStateResult registerResult = response.getModelResult();
+		                    		Log.v("NetworkRegisterTest", "" + registerResult.State);
+		                    		if(registerResult.State == 0 || registerResult.State == 2 || registerResult.State == 3){
+		                    			stopGetNetworkRegisterState();
+		                    		}
+	                    		}
+	                    		catch(Exception e){
+	                    			
+	                    		}
+                    		}
+                    	}
+				}
+				
+			}));
+		}
+		
+	}
+	
+	
+	public void startRegisterNetwork(final int networId){
+		if(FeatureVersionManager.getInstance().isSupportApi("Network", "RegisterNetwork") != true){
+			return;
+		}
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpRegisterNetwork.RegisterNetwork("4.4", networId, new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) {
+                    		try{
+	                    		Log.v("NetworkRegisterTest", "OKOK");
+	                    		startGetRegisterStateTask();
+	                    		Intent megIntent= new Intent(MessageUti.NETWORK_REGESTER_NETWORK_REQUEST);
+	                            megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+	                            megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+	                			m_context.sendBroadcast(megIntent);
+	                    		
+	                    		
+                    		}
+                    		catch(Exception e){
+                    			
+                    		}
+                		}
+                	}
+			}
+			
+		}));
+	}
+	
 	
 	private void getNetworkSearchState(){
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork("4.2", new IHttpFinishListener(){
@@ -313,8 +405,8 @@ public class NetworkManager extends BaseManager {
 			return;
 		}
     	
-    	int networkMode = (Integer) data.getParamByKey("network_mode");
-    	int netselectionMode = (Integer) data.getParamByKey("netselection_mode");
+    	final int networkMode = (Integer) data.getParamByKey("network_mode");
+    	final int netselectionMode = (Integer) data.getParamByKey("netselection_mode");
     	
     	HttpRequestManager.GetInstance().sendPostRequest(new HttpSetNetworkSettings.SetNetworkSettings("4.7", networkMode, netselectionMode, new IHttpFinishListener(){
 
@@ -327,6 +419,8 @@ public class NetworkManager extends BaseManager {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) { 
 //                		Log.v("GetNetworkSettingsTest", "Yes");
+                		 m_network_mode = networkMode;
+                		 m_network_selection = netselectionMode;
                 	}else{
                 		//Log
                 	}

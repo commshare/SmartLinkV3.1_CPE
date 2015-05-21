@@ -89,6 +89,7 @@ public class MessageUti {
 	public static String NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.network.searchnetworkresult";
 	public static String NETWORK_GET_NETWORK_SETTING_REQUEST = "com.alcatel.smartlinkv3.business.network.getnetworksettings";
 	public static String NETWORK_SET_NETWORK_SETTING_REQUEST = "com.alcatel.smartlinkv3.business.network.setnetworksettings";
+	public static String NETWORK_REGESTER_NETWORK_REQUEST = "com.alcatel.smartlinkv3.business.network.registernetwork";
 	/**************************Network message end*********************************************************************************/
 	
 	/**************************SMS message start*********************************************************************************/

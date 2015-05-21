@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/white" >
+    android:background="@color/white"
+    android:id = "@+id/network_selection_list_item_container" >
     
     <RadioButton
              android:id="@+id/network_selection_list_item"
@@ -20,7 +21,9 @@
              android:paddingBottom="15dip"
              android:paddingTop="15dip"
              android:text=""
-             android:textColor="@color/color_black" />
+             android:textColor="@color/color_black" >
+             
+    </RadioButton>
 
 	<TextView 
 		android:id="@+id/network_desc" 

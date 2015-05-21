@@ -3,22 +3,20 @@ package com.alcatel.smartlinkv3.business.network;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.alcatel.smartlinkv3.business.network.HttpSetNetworkSettings.SetNetworkSettingsResponse;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-public class HttpSetNetworkSettings {
-	public static class SetNetworkSettings extends BaseRequest{
+public class HttpRegisterNetwork {
+	public static class RegisterNetwork extends BaseRequest{
 
-		private int NetworkMode = 0;
-		private int NetselectionMode = 0;
-		private int NetworkBand = 0;
-		public SetNetworkSettings(String strId, int networkMode, int netSelectionMode, IHttpFinishListener callback) {
+		private int NetworkID;
+		public RegisterNetwork(String strId, int networkID, IHttpFinishListener callback) {
 			super(callback);
 			m_strId = strId;
-			NetworkMode = networkMode;
-			NetselectionMode = netSelectionMode;
+			NetworkID = networkID;
 			// TODO Auto-generated constructor stub
 		}
 
@@ -27,14 +25,12 @@ public class HttpSetNetworkSettings {
 			// TODO Auto-generated method stub
 			try {
 				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD, "SetNetworkSettings");
+				m_requestParamJson.put(ConstValue.JSON_METHOD, "RegisterNetwork");
 				
-				JSONObject settingInfo = new JSONObject();	 
-				settingInfo.put("NetworkMode", NetworkMode);
-				settingInfo.put("NetselectionMode", NetselectionMode);
-				settingInfo.put("NetworkBand", NetworkBand);
+				JSONObject registerInfo = new JSONObject();	 
+				registerInfo.put("NetworkID", NetworkID);
 				
-				m_requestParamJson.put(ConstValue.JSON_PARAMS, settingInfo);
+				m_requestParamJson.put(ConstValue.JSON_PARAMS, registerInfo);
 				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -45,14 +41,14 @@ public class HttpSetNetworkSettings {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new SetNetworkSettingsResponse(m_finsishCallback);
+			return new RegisterNetworkResponse(m_finsishCallback);
 		}
 		
 	}
 	
-	public static class SetNetworkSettingsResponse extends BaseResponse {
+	public static class RegisterNetworkResponse extends BaseResponse {
 
-		public SetNetworkSettingsResponse(IHttpFinishListener callback) {
+		public RegisterNetworkResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 		}

@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
+import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -47,6 +48,10 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	private SettingNetworkActivity m_parent_activity = null;
 	
 	private IntentFilter m_search_network_result_filter;
+	private IntentFilter m_fragment_get_network_setting_filter;
+	private IntentFilter m_fragment_set_network_setting_filter;
+	private IntentFilter m_fragment_register_network_filter;
+	
 	private NetworkSearchResultReceiver m_network_search_result_receiver;
 	
 	private List<NetworkItem> m_network_search_result_list = null;
@@ -55,6 +60,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	
 	private final int SELECTION_MODE_AUTO = 0;
 	private final int SELECTION_MODE_MANUAL = 1;
+	private final int MODE_ERROR = -1;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
@@ -72,6 +78,13 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	private void initUi(View view){
 		m_search_network_result_filter = new IntentFilter(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
 		m_search_network_result_filter.addAction(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
+		m_fragment_get_network_setting_filter = new IntentFilter(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
+		m_fragment_set_network_setting_filter = new IntentFilter(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
+		m_fragment_get_network_setting_filter.addAction(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
+		m_fragment_set_network_setting_filter.addAction(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
+		m_fragment_register_network_filter = new IntentFilter(MessageUti.NETWORK_REGESTER_NETWORK_REQUEST);
+		m_fragment_register_network_filter.addAction(MessageUti.NETWORK_REGESTER_NETWORK_REQUEST);
+		
 		m_network_search_result_receiver = new NetworkSearchResultReceiver();
 		
 		m_waiting_search_result = (RelativeLayout) view.findViewById(R.id.network_list_progress_circle);
@@ -88,14 +101,30 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
         
         m_network_searching_title =(TextView)view.findViewById(R.id.network_searching_title);
         
-        if(m_auto_mode.isChecked() == true){
-        	m_network_list_conainer.setVisibility(View.GONE);
-        	m_network_searching_title.setVisibility(View.GONE);
-        }
-        if(m_manual_mode.isChecked() == true){
-        	m_network_list_conainer.setVisibility(View.VISIBLE);
-        	m_network_searching_title.setVisibility(View.VISIBLE);
-        }
+        if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
+//			UserSetNetworkSelection(SELECTION_MODE_MANUAL);
+			m_manual_mode.setChecked(true);
+			m_auto_mode.setChecked(false);
+			m_network_searching_title.setVisibility(View.VISIBLE);
+			m_waiting_search_result.setVisibility(View.VISIBLE);
+			BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
+		}
+		else if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
+//			UserSetNetworkSelection(SELECTION_MODE_AUTO);
+			m_manual_mode.setChecked(false);
+			m_auto_mode.setChecked(true);
+			m_network_searching_title.setVisibility(View.GONE);
+			m_waiting_search_result.setVisibility(View.GONE);
+		}
+        
+//        if(m_auto_mode.isChecked() == true){
+//        	m_network_list_conainer.setVisibility(View.GONE);
+//        	m_network_searching_title.setVisibility(View.GONE);
+//        }
+//        if(m_manual_mode.isChecked() == true){
+//        	m_network_list_conainer.setVisibility(View.VISIBLE);
+//        	m_network_searching_title.setVisibility(View.VISIBLE);
+//        }
         
         m_auto_mode.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
@@ -103,44 +132,49 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
 				// TODO Auto-generated method stub
 				if(checked == true){
-					m_network_list_conainer.setVisibility(View.GONE);
+//					m_network_list_conainer.setVisibility(View.GONE);
+//					m_network_searching_title.setVisibility(View.GONE);
+					Log.v("NetworkSearchResult", "auto");
+					UserSetNetworkSelection(SELECTION_MODE_AUTO);
 					m_network_searching_title.setVisibility(View.GONE);
-//					BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult();
+					BusinessMannager.getInstance().getNetworkManager().stopSearchNetworkResult();
 				}
 				else if(checked == false){
-					m_network_list_conainer.setVisibility(View.VISIBLE);
+//					m_network_list_conainer.setVisibility(View.VISIBLE);
+//					m_network_searching_title.setVisibility(View.VISIBLE);
+					Log.v("NetworkSearchResult", "manual");
+					UserSetNetworkSelection(SELECTION_MODE_MANUAL);
 					m_network_searching_title.setVisibility(View.VISIBLE);
-//					BusinessMannager.getInstance().getNetworkManager().stopSearchNetworkResult();
+//					BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
 				}
 			}
         	
         });
         
-		if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
-			BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
-			m_manual_mode.setChecked(true);
-			m_auto_mode.setChecked(false);
-		}
-		else{
-			m_manual_mode.setChecked(false);
-			m_auto_mode.setChecked(true);
+        getActivity().registerReceiver(m_network_search_result_receiver, m_search_network_result_filter);  
+        getActivity().registerReceiver(m_network_search_result_receiver, m_fragment_get_network_setting_filter);  
+        getActivity().registerReceiver(m_network_search_result_receiver, m_fragment_set_network_setting_filter);  
+        getActivity().registerReceiver(m_network_search_result_receiver, m_fragment_register_network_filter);  
+        
+	}
+	
+	private void UserSetNetworkSelection(final int mode){
+		if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() != MODE_ERROR){
+			m_waiting_search_result.setVisibility(View.VISIBLE);
+			DataValue data = new DataValue();
+			data.addParam("network_mode", BusinessMannager.getInstance().getNetworkManager().getNetworkMode());
+			data.addParam("netselection_mode", mode);
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
 		}
 	}
 	
-	private List<String> getNetworkList(){
-		List<String> data = new ArrayList<String>();
-		data.add("Available");
-		data.add("Forbidden");
-		return data;
-	}
-
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
 		
-		m_parent_activity.registerReceiver(m_network_search_result_receiver, m_search_network_result_filter);  
-		m_waiting_search_result.setVisibility(View.VISIBLE);
+//		m_waiting_search_result.setVisibility(View.GONE);
 	}
 	
 	@Override
@@ -165,7 +199,12 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		m_parent_activity.unregisterReceiver(m_network_search_result_receiver);  
+	}
+	
+	@Override
+	public void onDestroyView(){
+		super.onDestroyView();
+		getActivity().unregisterReceiver(m_network_search_result_receiver);  
 	}
 	
 	private  class NetworkListAdapter extends BaseAdapter{
@@ -216,17 +255,21 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			holder.m_network_radiobutton.setText(m_data.get(position).ShortName);
 			if(m_data.get(position).State == 0){
 				holder.m_network_title.setText("Unknown");
+				holder.m_network_radiobutton.setEnabled(false);
 			}
 			else if(m_data.get(position).State == 1){
 				holder.m_network_title.setText("Available");
+				holder.m_network_radiobutton.setEnabled(true);
 			}
 			else if(m_data.get(position).State == 2){
 				holder.m_network_title.setText("Selected");
 				m_selected_position = position;
 				m_selected_button = holder.m_network_radiobutton;
+				holder.m_network_radiobutton.setEnabled(false);
 			}
 			else{
 				holder.m_network_title.setText("Forbidden");
+				holder.m_network_radiobutton.setEnabled(false);
 			}
 			
 			if(m_selected_position != position){
@@ -248,10 +291,16 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					//Log.v("NetworkSearchResult", "" + position);
 					if(position != m_selected_position && m_selected_button != null){
 						m_selected_button.setChecked(false);
+						m_selected_button.setEnabled(true);
 					}
+					
+					BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork(position);
+					m_data.get(m_selected_position).State = 1;
 					m_selected_position = position;
 					m_selected_button = (RadioButton) view;
-//					NetworkListAdapter.this.notifyDataSetChanged();
+					m_data.get(position).State = 2;
+					m_waiting_search_result.setVisibility(View.VISIBLE);
+					NetworkListAdapter.this.notifyDataSetChanged();
 				}
 			});
 			
@@ -260,7 +309,17 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					// TODO Auto-generated method stub
-					Log.v("NetworkSearchResult", "" + position);
+//					if(isChecked){
+//						TextView tv = (TextView) m_network_list.getChildAt(position).findViewById(R.id.network_desc);
+//						Log.v("NetworkSearchResult", "Checked position" + position + " " + tv.getText().toString());
+//						tv.setText("Selected");
+//					}
+//					else{
+//						TextView tv = (TextView) m_network_list.getChildAt(position).findViewById(R.id.network_desc);
+//						Log.v("NetworkSearchResult", "Unchecked position" + position + " " + tv.getText().toString());
+//						tv.setText("Available");
+//					}
+//					NetworkListAdapter.this.notifyDataSetChanged();
 				}
 			});
 			return convertView;
@@ -308,6 +367,50 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					
 				}
 			}
+			
+			
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
+				Log.v("NetworkSearchResult", "Yes");
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+					if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
+						BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
+					}
+					else if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
+						m_waiting_search_result.setVisibility(View.GONE);
+					}
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					//Log
+				}
+			}
+			
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.NETWORK_REGESTER_NETWORK_REQUEST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+					m_waiting_search_result.setVisibility(View.GONE);
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					
+				}
+			}
+			
 		}
 		
 	}
