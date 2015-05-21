@@ -11,17 +11,16 @@
 
     <LinearLayout
         android:id="@+id/ll"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="24.0dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:clickable="true"
             android:padding="15.0dip"
             android:src="@drawable/selector_dot_guide" />
@@ -29,7 +28,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:clickable="true"
             android:padding="15.0dip"
             android:src="@drawable/selector_dot_guide" />
@@ -37,15 +35,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="15.0dip"
-            android:src="@drawable/selector_dot_guide" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:clickable="true"
             android:padding="15.0dip"
             android:src="@drawable/selector_dot_guide" />

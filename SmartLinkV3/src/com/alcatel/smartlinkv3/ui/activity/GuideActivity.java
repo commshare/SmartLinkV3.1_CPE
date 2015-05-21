@@ -34,7 +34,6 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 		mViews.add(inflater.inflate(R.layout.what_new_one, null));
 		mViews.add(inflater.inflate(R.layout.what_new_two, null));
 		mViews.add(inflater.inflate(R.layout.what_new_three, null));
-		mViews.add(inflater.inflate(R.layout.what_new_four, null));
 
 		mVPAdapter = new ViewPagerAdapter(mViews, this);
 		mVP = (ViewPager) findViewById(R.id.viewpager);

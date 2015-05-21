@@ -637,4 +637,14 @@
     <string name="pref_show_real_path_summary">Show real path in navigation bar</string>
     <!-- FTP FILE END -->
 
+    <!-- Welcome Guide -->
+    <string name="guide1_title">Our family</string>
+    <string name="guide1_description">You can use this app to control our products</string>
+    <string name="guide2_title">View usage in real time</string>
+    <string name="guide2_description">Usage Plan, Usage Alert, Time Limit, Control Connecter</string>
+    <string name="guide3_title">Sharing</string>
+    <string name="guide3_description">Pictures, music, video, Documents</string>
+    <string name="what_new_btn_text">Start</string>
+    <!-- Welcome Guide End -->
+
 </resources>

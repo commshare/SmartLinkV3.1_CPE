@@ -13,7 +13,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
+import android.widget.Button;
 
 public class ViewPagerAdapter extends PagerAdapter {
 	private List<View> mViews;
@@ -42,9 +42,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, int position) {
 		container.addView(mViews.get(position), 0);
 		if (position == (mViews.size() - 1)) {
-			ImageView startImageBtn = (ImageView) container
-					.findViewById(R.id.iv_start);
-			startImageBtn.setOnClickListener(new OnClickListener() {
+			Button startBtn = (Button) container.findViewById(R.id.btn_start);
+			startBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					setGuided();
