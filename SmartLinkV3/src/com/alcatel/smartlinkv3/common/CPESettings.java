@@ -23,11 +23,14 @@ public class CPESettings {
 	private String m_defaultDir = new String();
 	private String m_password = new String();
 	private String m_username = new String();
-	private boolean m_blAutoLogin = false;
+	//private boolean m_blAutoLogin = false;
+	
+	
 	public CPESettings(Context context)
 	{
 		mContext = context;
 		loadSettings();
+		loadLoginSettings();
 	}
 	
 	public void setDefaultDir(String strDir) {
@@ -66,6 +69,7 @@ public class CPESettings {
 		m_NotificationVolumeValue = sp.getInt(ITEM_NOTIFICATION_V1_VOLUME_VALUE, 0);
 		mWifiPasswordSwitchOn = sp.getBoolean(ITEM_WIFI_PASSWORD_SWITCH_STATE, false);
 		m_defaultDir = sp.getString(ITEM_DEFAULT_DIRECTORY, "");
+	
 	}
 	
 	private void saveSettings()
@@ -84,7 +88,7 @@ public class CPESettings {
 		SharedPreferences sp = mContext.getSharedPreferences(LOGIN_SETTING_FILE, Context.MODE_PRIVATE);
 		m_password = sp.getString(ITEM_LOGIN_PWD, "");
 		m_username = sp.getString(ITEM_LOGIN_USERNAME, "");
-		m_blAutoLogin = sp.getBoolean(ITEM_LOGIN_STATUS, false);
+		//m_blAutoLogin = sp.getBoolean(ITEM_LOGIN_STATUS, false);
 		
 		
 	}
@@ -95,9 +99,10 @@ public class CPESettings {
 		Editor edt = sp.edit();
 		edt.putString(ITEM_LOGIN_PWD, m_password);		
 		edt.putString(ITEM_LOGIN_USERNAME, m_username);
-		edt.putBoolean(ITEM_LOGIN_STATUS, m_blAutoLogin);
+		//edt.putBoolean(ITEM_LOGIN_STATUS, m_blAutoLogin);
 		edt.commit();	
 	}
+	
 	
 	//change wifi password
 	public boolean getChangeWifiPwdSwitch() {
@@ -111,8 +116,6 @@ public class CPESettings {
 	
 	//login password
 	public String getLoginPassword() {
-		loadLoginSettings();
-		String str = m_password;
 		return m_password;
 	}
 
@@ -123,7 +126,6 @@ public class CPESettings {
 	
 	//login username
 	public String getLoginUsername() {
-		loadLoginSettings();
 		return m_username;
 	}
 
@@ -133,13 +135,27 @@ public class CPESettings {
 	}
 	
 	//login status
-	public  void setAutoLoginFlag(boolean blAutoLogin){
-		m_blAutoLogin = blAutoLogin;
+//	public  void setAutoLoginFlag(boolean blAutoLogin){
+//		m_blAutoLogin = blAutoLogin;
+//		saveLoginSettings();
+//	}
+	
+	public  boolean getAutoLoginFlag( ){
+		if(m_username != "" && m_password != "")
+		{
+			return true;			
+		}
+		else
+		{
+			return false;			
+		}
+	}
+	
+	public void userLogout()
+	{
+		m_username = "";
+		m_password = "";
 		saveLoginSettings();
 	}
 	
-	public  boolean getAutoLoginFlag( ){
-		loadLoginSettings();
-		return m_blAutoLogin;
-	}
 }

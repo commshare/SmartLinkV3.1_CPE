@@ -8,10 +8,14 @@ import org.cybergarage.upnp.Device;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
@@ -19,6 +23,7 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
@@ -37,6 +42,8 @@ import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.R.integer;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -46,14 +53,19 @@ import android.graphics.drawable.Drawable;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.View;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.view.MotionEvent;
 
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
@@ -98,6 +110,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	private PukDialog m_dlgPuk = null;
 	private ErrorDialog m_dlgError = null;
 	private LoginDialog m_loginDlg = null;
+	private AutoLoginProgressDialog	m_autoLoginDialog = null;
 
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
@@ -165,6 +178,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		m_dlgPuk = PukDialog.getInstance(this);
 		m_dlgError = ErrorDialog.getInstance(this);
 		m_loginDlg = new LoginDialog(this);
+		m_autoLoginDialog = new AutoLoginProgressDialog(this);		
 		m_unlockSimBtn = (Button) m_homeView.getView().findViewById(
 				R.id.unlock_sim_button);
 		m_unlockSimBtn.setOnClickListener(this);
@@ -195,6 +209,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		this.registerReceiver(m_msgReceiver2, new IntentFilter(
 				PAGE_TO_VIEW_HOME));
+		
+		this.registerReceiver(m_msgReceiver2, new IntentFilter(
+				AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS));
 		
 
 		m_homeView.onResume();
@@ -245,6 +262,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		m_dlgPuk.destroyDialog();
 		m_dlgError.destroyDialog();
 		m_loginDlg.destroyDialog();
+		m_autoLoginDialog.destroyDialog();
 	}
 	
 	@Override
@@ -305,8 +323,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		}
 		
 		if (intent.getAction().equalsIgnoreCase(AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS)) {
-			showProgress(false);
+			//showProgress(false);
 		}
+		
 	}
 	
 	private void simRollRequest() {
@@ -466,7 +485,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	public void onClick(View v) {
 		if(m_blAutoPro)
 		{
-			showProgress(true);
+			//showProgress(true);
 		}
 		switch (v.getId()) {
 		case R.id.main_home:
@@ -488,19 +507,57 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			if (LoginDialog.isLoginSwitchOff()) {		
 				go2Click();	
 			} else {		
-				UserLoginStatus status = BusinessMannager.getInstance()				
-						.getLoginStatus();	
-				if (status == UserLoginStatus.Logout) {
-					if (CPEConfig.getInstance().getAutoLoginFlag()) {
-						go2Click();
-					}else{
-						m_loginDlg.showDialog(new OnLoginFinishedListener() {
-							@Override
-							public void onLoginFinished() {
-								go2Click();
+				UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();	
+				if (status == UserLoginStatus.Logout) 
+				{
+					m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+					{
+						public void onLoginSuccess() 				
+						{
+							go2Click();
+						}
+
+						public void onLoginFailed(String error_code)
+						{
+							if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+							{
+								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}
-						});
-					}
+							else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+							{
+								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
+							}
+							else
+							{
+								ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+										new OnClickBtnRetry() 
+								{
+									@Override
+									public void onRetry() 
+									{
+										m_loginDlg.showDialog(new OnLoginFinishedListener() {
+											@Override
+											public void onLoginFinished() {
+												go2Click();
+											}
+										});
+									}
+								});
+							}				
+						}
+
+						@Override
+						public void onFirstLogin() 
+						{
+							m_loginDlg.showDialog(new OnLoginFinishedListener() {
+								@Override
+								public void onLoginFinished() {
+									go2Click();
+								}
+							});
+						}					
+					});			
+					
 				} else if (status == UserLoginStatus.login) {			
 					go2Click();		
 				} else {		
@@ -534,26 +591,66 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		if (LoginDialog.isLoginSwitchOff()) {		
 			startDeviceManagerActivity();	
 		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					startDeviceManagerActivity();
-				}else{
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							startDeviceManagerActivity();
+			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();	
+			if (status == UserLoginStatus.Logout) 
+			{
+				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+				{
+					public void onLoginSuccess() 				
+					{
+						startDeviceManagerActivity();
+					}
+
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 						}
-					});
-				}
-			} else if (status == UserLoginStatus.login) {			
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
+						}
+						else
+						{
+							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+									new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									m_loginDlg.showDialog(new OnLoginFinishedListener() {
+										@Override
+										public void onLoginFinished() {
+											startDeviceManagerActivity();
+										}
+									});
+								}
+							});
+						}				
+					}
+
+					@Override
+					public void onFirstLogin() 
+					{
+						m_loginDlg.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								startDeviceManagerActivity();
+							}
+						});
+					}					
+				});				
+			} 
+			else if (status == UserLoginStatus.login) 
+			{			
 				startDeviceManagerActivity();		
-			} else {
+			} 
+			else 
+			{
 				PromptUserLogined();
 			}	
-		}
-		
+		}	
 	}
 	
 	private void startDeviceManagerActivity()
@@ -581,20 +678,58 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		if (LoginDialog.isLoginSwitchOff()) {
 			go2UsageView();
 		} else {
-			UserLoginStatus status = BusinessMannager.getInstance()
-					.getLoginStatus();
+			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
 
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					go2UsageView();
-				}else{
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							go2UsageView();
+			if (status == UserLoginStatus.Logout) 
+			{
+				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+				{
+					public void onLoginSuccess() 				
+					{
+						go2UsageView();
+					}
+
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 						}
-					});
-				}
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
+						}
+						else
+						{
+							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+									new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									m_loginDlg.showDialog(new OnLoginFinishedListener() {
+										@Override
+										public void onLoginFinished() {
+											go2UsageView();
+										}
+									});
+								}
+							});
+						}				
+					}
+
+					@Override
+					public void onFirstLogin() 
+					{
+						m_loginDlg.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								go2UsageView();
+							}
+						});
+					}					
+				});					
+				
 			} else if (status == UserLoginStatus.login) {
 				go2UsageView();
 			} else {
@@ -622,20 +757,58 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		if (LoginDialog.isLoginSwitchOff()) {
 			go2SmsView();
 		} else {
-			UserLoginStatus status = BusinessMannager.getInstance()
-					.getLoginStatus();
+			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
 
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					go2SmsView();
-				}else{
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							go2SmsView();
+			if (status == UserLoginStatus.Logout) 
+			{
+				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+				{
+					public void onLoginSuccess() 				
+					{
+						go2SmsView();
+					}
+
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 						}
-					});
-				}
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
+						}
+						else
+						{
+							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+									new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									m_loginDlg.showDialog(new OnLoginFinishedListener() {
+										@Override
+										public void onLoginFinished() {
+											go2SmsView();
+										}
+									});
+								}
+							});
+						}				
+					}
+
+					@Override
+					public void onFirstLogin() 
+					{
+						m_loginDlg.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								go2SmsView();
+							}
+						});						
+					}					
+				});				
+				
 			} else if (status == UserLoginStatus.login) {
 				go2SmsView();
 			} else {
@@ -662,19 +835,57 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		if (LoginDialog.isLoginSwitchOff()) {		
 			go2SettingView();	
 		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					go2SettingView();
-				}else{
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							go2SettingView();
+			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();	
+			if (status == UserLoginStatus.Logout) 
+			{				
+				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+				{
+					public void onLoginSuccess() 				
+					{
+						go2SettingView();
+					}
+
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 						}
-					});
-				}
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
+						}
+						else
+						{
+							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+									new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									m_loginDlg.showDialog(new OnLoginFinishedListener() {
+										@Override
+										public void onLoginFinished() {
+											go2SettingView();
+										}
+									});
+								}
+							});
+						}				
+					}
+
+					@Override
+					public void onFirstLogin() 
+					{
+						m_loginDlg.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								go2SettingView();
+							}
+						});
+					}					
+				});				
+				
 			} else if (status == UserLoginStatus.login) {			
 				go2SettingView();		
 			} else {
@@ -946,31 +1157,74 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
 	private void widgetBatteryBtnClick() {
 		if (LoginDialog.isLoginSwitchOff()) {		
-			go2SettingView();
-			Intent intent = new Intent(this, SettingPowerSavingActivity.class);
-			this.startActivity(intent);
-		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.LoginTimeOut) {			
-				PromptUserLogined();		
-			} else if (status == UserLoginStatus.login) {			
-				go2SettingView();
-				Intent intent = new Intent(this, SettingPowerSavingActivity.class);
-				this.startActivity(intent);
-			} else {			
-				m_loginDlg.showDialog(new OnLoginFinishedListener() {				
-					@Override				
-					public void onLoginFinished() {					
-						go2SettingView();
-						Intent intent = new Intent(MainActivity.this, SettingPowerSavingActivity.class);
-						MainActivity.this.startActivity(intent);
-					}			
-				});		
-			}	
+			go2SettingPowerSavingActivity();
+		} else {
+			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+
+			if (status == UserLoginStatus.Logout) 
+			{				
+				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+				{
+					public void onLoginSuccess() 				
+					{
+						go2SettingPowerSavingActivity();
+					}
+
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+						}
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
+						}
+						else
+						{
+							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+									new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									m_loginDlg.showDialog(new OnLoginFinishedListener() {
+										@Override
+										public void onLoginFinished() {
+											go2SettingPowerSavingActivity();
+										}
+									});
+								}
+							});
+						}				
+					}
+
+					@Override
+					public void onFirstLogin() 
+					{
+						m_loginDlg.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								go2SettingPowerSavingActivity();								
+							}
+						});
+					}					
+				});				
+				
+			} else if (status == UserLoginStatus.login) {
+				go2SettingPowerSavingActivity();
+			} else {
+				PromptUserLogined();
+			}
 		}	
 	}
 
+	private void go2SettingPowerSavingActivity()
+	{
+		go2SettingView();
+		Intent intent = new Intent(this, SettingPowerSavingActivity.class);
+		this.startActivity(intent);
+	}
 	@Override
 	protected void onNewIntent(Intent intent) {
 		// TODO Auto-generated method stub

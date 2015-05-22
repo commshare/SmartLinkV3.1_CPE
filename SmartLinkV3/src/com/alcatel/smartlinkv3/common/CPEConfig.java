@@ -129,9 +129,14 @@ public class CPEConfig {
 		public boolean getAutoLoginFlag() {
 			return mSettings.getAutoLoginFlag();
 		}
-
-		public void setAutoLoginFlag(boolean blAutoLogin) {
-			mSettings.setAutoLoginFlag(blAutoLogin);
+		
+		public void userLogout()
+		{
+			mSettings.userLogout();
 		}
+
+//		public void setAutoLoginFlag(boolean blAutoLogin) {
+//			mSettings.setAutoLoginFlag(blAutoLogin);
+//		}
 		
 }

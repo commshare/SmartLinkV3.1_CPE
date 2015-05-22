@@ -158,7 +158,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 			break;
 		case R.id.setting_logout:
 			userLogout();
-			CPEConfig.getInstance().setAutoLoginFlag(false);
+			CPEConfig.getInstance().userLogout();
 //			userChangePassword();
 			break;
 		default:

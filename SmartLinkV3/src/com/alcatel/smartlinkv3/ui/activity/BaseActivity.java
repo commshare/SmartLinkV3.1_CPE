@@ -24,6 +24,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.widget.Toast;
 
 public abstract class BaseActivity extends Activity{
@@ -31,6 +32,8 @@ public abstract class BaseActivity extends Activity{
 	protected ActivityBroadcastReceiver m_msgReceiver2;
 	private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
 	protected boolean m_bNeedBack = true;//whether need to back main activity.
+	
+	private LoginDialog m_loginDlg = null;
 	
 	protected void addToDialogManager(Dialog dialog) {
 		m_dialogManager.add(dialog);
@@ -50,21 +53,7 @@ public abstract class BaseActivity extends Activity{
     	
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
-
-    	if(CPEConfig.getInstance().getAutoLoginFlag())
-		{
-    		UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-    		if (status == UserLoginStatus.Logout) {
-			DataValue data = new DataValue();
-			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
-			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.USER_LOGIN_REQUEST, data);
-			MainActivity.setAutoProFlag(true);
-    		}
-		}
-
+    	
     	showActivity(this);
     	back2MainActivity(this);
 	}

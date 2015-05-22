@@ -217,7 +217,6 @@
         <activity
             android:name="com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity

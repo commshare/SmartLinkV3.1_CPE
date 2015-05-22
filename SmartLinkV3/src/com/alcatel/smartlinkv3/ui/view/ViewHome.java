@@ -3,8 +3,12 @@ package com.alcatel.smartlinkv3.ui.view;
 
 import java.util.ArrayList;
 
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -25,6 +29,8 @@ import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -106,6 +112,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	/*access_panel  end*/
 	
 	private LoginDialog m_loginDialog = null;
+	private AutoLoginProgressDialog	m_autoLoginDialog = null;
 	
 	private String home_connected_duration = null;
 	private String home_connected_zero_duration = null;
@@ -287,6 +294,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	@Override
 	public void onDestroy() {
 		m_loginDialog.destroyDialog();
+		m_autoLoginDialog.destroyDialog();
 	}
 
 	@Override
@@ -501,28 +509,67 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	}
 	
-	private void connectBtnClick() {
-		
-		if (LoginDialog.isLoginSwitchOff()) {
+	private void connectBtnClick() 
+	{		
+		if (LoginDialog.isLoginSwitchOff()) 
+		{
 			connect();	
-		} else {
-			UserLoginStatus status = BusinessMannager.getInstance()
-					.getLoginStatus();
+		}
+		else 
+		{
+			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
 
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					connect();
-				}else{
-					m_loginDialog.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							connect();
+			if (status == UserLoginStatus.Logout) 
+			{
+				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+				{
+					public void onLoginSuccess() 				
+					{
+						connect();
+					}
+
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+						{
+							m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getOtherUserLoginString());
 						}
-					});
-				}
-			} else if (status == UserLoginStatus.login) {
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+						{
+							m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
+						}
+						else
+						{
+							ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+									new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									m_loginDialog.showDialog();
+								}
+							});
+						}				
+					}
+
+					@Override
+					public void onFirstLogin() 
+					{
+						m_loginDialog.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								connect();;								
+							}
+						});						
+					}					
+				});
+			} 
+			else if (status == UserLoginStatus.login) 
+			{
 				connect();	
-			} else {
+			} 
+			else 
+			{
 				PromptUserLogined();
 			}
 		}	

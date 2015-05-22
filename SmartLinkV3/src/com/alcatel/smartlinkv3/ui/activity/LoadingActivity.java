@@ -43,7 +43,8 @@ public class LoadingActivity extends Activity {
 				SHAREDPREFERENCES_NAME, Context.MODE_PRIVATE);
 		isFirstIn = preferences.getBoolean("isFirstIn", true);
 		if (isFirstIn) {
-			goGuide();
+			//goGuide();
+			goHome();
 		} else {
 			goHome();
 		}

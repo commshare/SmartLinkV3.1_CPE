@@ -30,7 +30,6 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 	LinearLayout m_sd_sharing;
 	LinearLayout m_wps;
 	LinearLayout m_logout;
-	LinearLayout m_dlna;
 
 	public AddPopWindow(final Activity context) {	
 		super(context);
@@ -93,7 +92,8 @@ public class AddPopWindow extends PopupWindow implements OnClickListener{
 			break;
 		case R.id.logout_layout:
 			userLogout();
-			CPEConfig.getInstance().setAutoLoginFlag(false);
+			CPEConfig.getInstance().userLogout();
+			//CPEConfig.getInstance().setAutoLoginFlag(false);
 			break;
 		}
 		this.dismiss();

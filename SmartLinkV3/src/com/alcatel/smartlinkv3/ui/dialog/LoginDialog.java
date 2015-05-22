@@ -62,8 +62,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private static OnLoginFinishedListener m_callback;
 	private boolean m_bOtherUserLoginError = false;
 	private boolean m_bLoginTimeUsedOutError = false;
+	private boolean m_bLoginPasswordError = false;
 	
-	private String m_password = "";
+	private static String m_password = CPEConfig.getInstance().getLoginPassword();
 
 	// just for test
 	public static final String USER_NAME = "admin";
@@ -112,10 +113,11 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 					CPEConfig.getInstance().setLoginPassword(m_password);
 					CPEConfig.getInstance().setLoginUsername(USER_NAME);
-					CPEConfig.getInstance().setAutoLoginFlag(true);
+					//CPEConfig.getInstance().setAutoLoginFlag(true);
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;
+					m_bLoginPasswordError = false;
 					closeDialog();
 					if (null != m_callback) {
 						m_callback.onLoginFinished();
@@ -127,13 +129,14 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 								.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
 					m_bOtherUserLoginError = true;
 					m_bLoginTimeUsedOutError = false;
+					m_bLoginPasswordError=false;
 					m_dialog_err_info.showDialog(
 							m_context.getString(R.string.other_login_warning_title),
 							m_strMsgOtherUserLogined);
 					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
 						m_dlgProgress.dismiss();
 					}
-					CPEConfig.getInstance().setAutoLoginFlag(false);
+					//CPEConfig.getInstance().setAutoLoginFlag(false);
 					closeDialog();
 //					SetErrorMsg(nRet, strErrorCode);
 //					m_vLogin.startAnimation(m_shake);
@@ -144,19 +147,21 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 						.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
 					m_bLoginTimeUsedOutError = true;
 					m_bOtherUserLoginError = false;
+					m_bLoginPasswordError = false;
 					m_dialog_err_info.showDialog(
 							m_context.getString(R.string.other_login_warning_title),
 							m_strMsgLoginTimeUsedOut);
 					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
 						m_dlgProgress.dismiss();
 					}
-					CPEConfig.getInstance().setAutoLoginFlag(false);
+					//CPEConfig.getInstance().setAutoLoginFlag(false);
 					closeDialog();
 		//			SetErrorMsg(nRet, strErrorCode);
 		//			m_vLogin.startAnimation(m_shake);
 					//setAlreadyLogin(false);
 
 				}else {
+					m_bLoginPasswordError = true;
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;
 					//SetErrorMsg(nRet, strErrorCode);
@@ -191,7 +196,57 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			}
 		}
 	}
+	
+	public boolean getOtherUserLoginErrorStatus()
+	{
+		if(m_bOtherUserLoginError){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public String getOtherUserLoginString()
+	{
+		return m_strMsgOtherUserLogined;
+	}
+	
 
+	public boolean getLoginTimeUsedOutErrorStatus()
+	{
+		if(m_bLoginTimeUsedOutError){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public String getLoginTimeUsedOutString()
+	{
+		return m_strMsgLoginTimeUsedOut;
+	}
+	
+	public boolean getLoginPasswordErrorStatus()
+	{
+		if(m_bLoginPasswordError){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public String getLoginPasswordErrorString()
+	{
+		return m_strMsgWrongPassword;
+	}
+	
+	public CommonErrorInfoDialog getCommonErrorInfoDialog()
+	{
+			return m_dialog_err_info;
+	}
+	
+	
+	
 	public void showDialog(OnLoginFinishedListener callback) {
 		m_callback = callback;
 	/*	if (getAlreadyLogin()) {
@@ -232,7 +287,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		}
 	}
 
-	private void showDialog() {
+	public void showDialog() {
 		if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
 			m_dlgProgress.dismiss();
 		}
