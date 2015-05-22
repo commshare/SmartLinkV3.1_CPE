@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class FtpFileListItem {
 	public static void setupFileListItemInfo(Context context, View view,
@@ -74,7 +75,9 @@ public class FtpFileListItem {
 
 		if (fileInfo.IsDir) {
 			lFileImageFrame.setVisibility(View.GONE);
-			lFileImage.setImageResource(R.drawable.folder);
+			// TODO : 修改文件夹图标
+			//lFileImage.setImageResource(R.drawable.folder);
+			lFileImage.setImageResource(R.drawable.microsd_item_folder);
 		} else {
 			fileIcon.setIcon(fileInfo, lFileImage, lFileImageFrame);
 		}
@@ -123,7 +126,7 @@ public class FtpFileListItem {
 		private Menu mMenu;
 		private Context mContext;
 		private FtpFileViewInteractionHub mFileViewInteractionHub;
-
+		
 		private void initMenuItemSelectAllOrCancel() {
 			boolean isSelectedAll = mFileViewInteractionHub.isSelectedAll();
 			mMenu.findItem(R.id.action_cancel).setVisible(isSelectedAll);
@@ -148,13 +151,20 @@ public class FtpFileListItem {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = ((Activity) mContext).getMenuInflater();
 			mMenu = menu;
-			inflater.inflate(R.menu.ftp_operation_menu, mMenu);
-			initMenuItemSelectAllOrCancel();
+			// TODO : 修改操作条菜单
+			//inflater.inflate(R.menu.ftp_operation_menu, mMenu);
+			inflater.inflate(R.menu.ftp_operation_bar_menu, mMenu);
+			// TODO : 屏蔽
+			//initMenuItemSelectAllOrCancel();
 			return true;
 		}
 
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return true;
+		}
+		// TODO : 被上面方法替代
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu, boolean _OLD_MARK) {
 			mMenu.findItem(R.id.action_copy_path).setVisible(
 					mFileViewInteractionHub.getSelectedFileList().size() == 1);
 			mMenu.findItem(R.id.action_cancel).setVisible(
@@ -211,6 +221,16 @@ public class FtpFileListItem {
 			case R.id.action_select_all:
 				mFileViewInteractionHub.onOperationSelectAll();
 				initMenuItemSelectAllOrCancel();
+				break;
+				
+			// TODO : 添加的菜单项
+			case R.id.action_rename :
+				mFileViewInteractionHub.onOperationRename();
+				Toast.makeText(mContext, "Rename.", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.action_details:
+				mFileViewInteractionHub.onOperationInfo();
+				Toast.makeText(mContext, "Details.", Toast.LENGTH_SHORT).show();
 				break;
 			}
 			Util.updateActionModeTitle(mode, mContext, mFileViewInteractionHub

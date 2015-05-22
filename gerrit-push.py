@@ -246,7 +246,7 @@ if __name__ == '__main__':
         if msg != 0:
             sys.exit(msg)
 
-        ret = do_action(cmd, "Now Push Commit to Gerrit\n", True)
+        ret = do_action(cmd, "Now Push Commit to Gerrit\n", False)
         print ret
         if ret.startswith("Permission denied (publickey)."):
             color_print('''Please login 'http://gerrit.tcl-ta.com:8081/login/',

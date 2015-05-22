@@ -576,6 +576,8 @@
     <string name="menu_item_sort_name">Name</string>
     <string name="menu_item_sort_size">Size</string>
     <string name="menu_item_sort_type">Type</string>
+    <string name="menu_item_sort_by_name">Sort by name</string>
+    <string name="menu_item_sort_by_type">Sort by type</string>
     <string name="new_folder_name">New folder</string>
     <string name="no">No</string>
     <string name="ftpfile_no_file">No files</string>
@@ -606,7 +608,10 @@
     <string name="operation_upload">Upload</string>
     <string name="operation_selectall">Select All</string>
     <string name="operation_send">Send</string>
+    <string name="operation_share">Share</string>
     <string name="operation_show_sys">Show hidden files</string>
+    <string name="operation_edit">Edit</string>
+    <string name="operation_add_file">Add file</string>
     <string name="operation_unfavorite">Remove from Favorites</string>
     <string name="removed_favorite">Removed from Favorites</string>
     <string name="sd_folder">SD card</string>

@@ -62,6 +62,9 @@ public interface IFileInteractionListener {
     public FileInfo getItem(int pos);
 
     public void sortCurrentList(FileSortHelper sort);
+    
+    //// TODO 添加接口
+	public void notifyDataChanged();
 
     public Collection<FileInfo> getAllFiles();
 

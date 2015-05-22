@@ -7,6 +7,24 @@
     android:paddingBottom="5dip"
     android:orientation="horizontal"
     android:gravity="center_vertical">
+    
+    <FrameLayout
+        android:id="@+id/file_checkbox_area"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingLeft="10dip">
+
+        <ImageView
+            android:id="@+id/file_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:gravity="center"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -83,22 +101,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/file_checkbox_area"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingLeft="10dip">
-
-        <ImageView
-            android:id="@+id/file_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:gravity="center"
-            android:layout_gravity="center" />
-
-    </FrameLayout>
+    
 
 </LinearLayout>

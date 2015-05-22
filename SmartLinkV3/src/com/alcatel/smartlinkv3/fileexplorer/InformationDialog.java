@@ -54,7 +54,9 @@ public class InformationDialog extends AlertDialog {
         mView = getLayoutInflater().inflate(R.layout.information_dialog, null);
 
         if (mFileInfo.IsDir) {
-            setIcon(R.drawable.folder);
+        	// TODO : 修改文件夹图标
+            //setIcon(R.drawable.folder);
+            setIcon(R.drawable.microsd_item_folder);
             asyncGetSize();
         } else {
             setIcon(R.drawable.file_icon_default);

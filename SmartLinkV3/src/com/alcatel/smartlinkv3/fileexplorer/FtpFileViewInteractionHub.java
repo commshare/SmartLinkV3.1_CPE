@@ -901,6 +901,16 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 	private static final int MENU_SETTING = 17;
 
 	private static final int MENU_EXIT = 18;
+	
+	// TODO : 编辑可选框
+	private boolean makrEditCheckBox = false;
+	public boolean canEditCheckBox() {
+		return this.makrEditCheckBox;
+	}
+	private void switchEditCheckBox() {
+		this.makrEditCheckBox = !this.makrEditCheckBox;
+		mFileViewListener.notifyDataChanged();
+	}
 
 	private OnMenuItemClickListener menuItemClick = new OnMenuItemClickListener() {
 
@@ -993,6 +1003,15 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			case MENU_INFO:
 				onOperationInfo();
 				break;
+			// TODO 添加菜单选项操作
+			case GlobalConsts.MENU_EDIT :
+				switchEditCheckBox();
+				Toast.makeText(mContext, "Edit File.", Toast.LENGTH_SHORT).show();
+				break;
+			case GlobalConsts.MENU_ADD_FILE	:
+				Toast.makeText(mContext, "Add File.", Toast.LENGTH_SHORT).show();
+				break;
+				
 			default:
 				return false;
 			}
@@ -1013,13 +1032,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 
 	private SelectFilesCallback mSelectFilesCallback;
 
-	public boolean onCreateOptionsMenu(Menu menu) {
+	// TODO 修改，添加参数标记_OLD_MARK,为重用方法，被修改方法替代
+	public boolean onCreateOptionsMenu(Menu menu, boolean _OLD_MARK) {
 		clearSelection();
 		showDropdownNavigation(false);
-
-		// menu.add(0, MENU_SEARCH, 0,
-		// R.string.menu_item_search).setOnMenuItemClickListener(
-		// menuItemClick);
 
 		addMenuItem(menu, MENU_UPLOAD, 0, R.string.operation_upload,
 				R.drawable.ic_menu_select_all);
@@ -1052,6 +1068,36 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 				drawable.ic_menu_close_clear_cancel);
 		return true;
 	}
+	
+	// TODO 添加，替代旧方法
+	public boolean onCreateOptionsMenu(Menu menu) {
+		clearSelection();
+		showDropdownNavigation(false);
+
+		addDefaultMenu(menu);
+		return true;
+	}
+	// TODO 添加，修改菜单选项
+	private void addDefaultMenu(Menu menu) {
+		addMenuItem(menu, MENU_SORT_NAME, 0, R.string.menu_item_sort_by_name,
+				R.drawable.btn_radio_on_normal);
+		addMenuItem(menu, MENU_SORT_TYPE, 1, R.string.menu_item_sort_by_type,
+				R.drawable.btn_radio_on_normal);
+		//menu.getItem(MENU_SORT_NAME).setChecked(true);
+		
+		addMenuItem(menu, GlobalConsts.MENU_SHOWHIDE, 2,
+				R.string.operation_show_sys, R.drawable.ic_menu_show_sys);
+		
+		addMenuItem(menu, GlobalConsts.MENU_EDIT, 3,
+				R.string.operation_edit, R.drawable.storage_toolbar_rename_normal);
+		
+		addMenuItem(menu, GlobalConsts.MENU_NEW_FOLDER, 4,
+				R.string.operation_create_folder, R.drawable.ic_menu_new_folder);
+		addMenuItem(menu, GlobalConsts.MENU_ADD_FILE, 5,
+				R.string.operation_add_file, R.drawable.item_uploading_file);
+		
+		
+	}
 
 	private void addMenuItem(Menu menu, int itemId, int order, int string) {
 		addMenuItem(menu, itemId, order, string, -1);
@@ -1073,7 +1119,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 		return true;
 	}
 
-	private void updateMenuItems(Menu menu) {
+	// TODO 修改，添加参数标记，被替代
+	private void updateMenuItems(Menu menu, boolean _OLD_MARK) {
 		menu.findItem(MENU_SELECTALL).setTitle(
 				isSelectedAll() ? R.string.operation_cancel_selectall
 						: R.string.operation_selectall);
@@ -1095,6 +1142,17 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			}
 		}
 
+	}
+	// TODO 添加，替代方法
+	private void updateMenuItems(Menu menu) {
+		
+		menu.findItem(MENU_SORT_NAME).setChecked(mFileSortHelper.getSortMethod() == SortMethod.name);
+		menu.findItem(MENU_SORT_TYPE).setChecked(mFileSortHelper.getSortMethod() == SortMethod.type);
+		
+		MenuItem menuItem = menu.findItem(GlobalConsts.MENU_SHOWHIDE);
+		boolean isHidden = Settings.instance().getShowDotAndHiddenFiles();
+		menuItem.setTitle(isHidden ? R.string.operation_hide_sys : R.string.operation_show_sys);
+		
 	}
 
 	public boolean isFileSelected(String filePath) {

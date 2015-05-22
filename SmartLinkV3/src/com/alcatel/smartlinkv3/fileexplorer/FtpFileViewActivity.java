@@ -971,6 +971,12 @@ public class FtpFileViewActivity extends Fragment implements
 		mFileNameList.add(file);
 		onDataChanged();
 	}
+	
+	// TODO 添加接口
+	@Override
+	public void notifyDataChanged() {
+		onDataChanged();
+	}
 
 	@Override
 	public int getItemCount() {

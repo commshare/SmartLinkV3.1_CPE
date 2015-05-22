@@ -62,9 +62,15 @@ public class FtpFileListAdapter extends ArrayAdapter<FileInfo> {
         FileInfo lFileInfo = mFileViewInteractionHub.getItem(position);
         FtpFileListItem.setupFileListItemInfo(mContext, view, lFileInfo,
                 mFileIcon, mFileViewInteractionHub);
-        view.findViewById(R.id.file_checkbox_area).setOnClickListener(
-                new FtpFileListItem.FileItemOnClickListener(mContext,
-                        mFileViewInteractionHub));
+        
+     // TODO: 修改file checbox 可见度
+        if (mFileViewInteractionHub.canEditCheckBox()) {
+        	view.findViewById(R.id.file_checkbox_area).setVisibility(View.VISIBLE);
+        	view.findViewById(R.id.file_checkbox_area).setOnClickListener(
+        			new FtpFileListItem.FileItemOnClickListener(mContext, mFileViewInteractionHub));
+    	} else {
+    		view.findViewById(R.id.file_checkbox_area).setVisibility(View.GONE);
+    	}	
         return view;
     }
 }
