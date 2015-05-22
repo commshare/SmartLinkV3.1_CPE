@@ -23,8 +23,8 @@ import com.alcatel.smartlinkv3.R;
 public class FragmentProfileManagement extends Fragment implements OnClickListener{
 	
 	private ListView m_profile_list;
-	private ImageButton m_add_profile = null;
-	private ImageButton m_delete_profile = null;
+//	private ImageButton m_add_profile = null;
+//	private ImageButton m_delete_profile = null;
 	private SettingNetworkActivity m_parent_activity = null;
 	
 	@Override  
@@ -43,10 +43,10 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		
 		m_parent_activity.changeTitlebar(R.string.setting_network_profile_management);
 		
-		m_add_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_add);
-		m_delete_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_delete);
-		m_add_profile.setOnClickListener(this);
-		m_delete_profile.setOnClickListener(this);
+//		m_add_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_add);
+//		m_delete_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_delete);
+//		m_add_profile.setOnClickListener(this);
+//		m_delete_profile.setOnClickListener(this);
 		
 		m_profile_list = (ListView) rootView.findViewById(R.id.profile_list);
 		ProfileListAdapter adapter = new ProfileListAdapter(getActivity(), getProfileList());
@@ -60,7 +60,7 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		return data;
 	}
 	
-	private void goToDetailProfile(){
+	public void goToDetailProfile(){
 		m_parent_activity.setAddAndDeleteVisibility(View.GONE);
 		m_parent_activity.showFragmentProfileManagementDetail();
 	}

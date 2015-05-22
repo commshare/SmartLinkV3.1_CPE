@@ -25,6 +25,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -199,9 +200,11 @@ public class ViewSetting extends BaseViewImpl{
 	private void goToAccountSettingPage(){
 		Intent intent = new Intent(m_context, SettingAccountActivity.class);
 		m_context.startActivity(intent);
+		Log.v("TESTCLICK", "ACCOUNT");
 	}
 	
 	private void goToNetworkSettingPage(){
+		Log.v("TESTCLICK", "NETWORK");
 		Intent intent = new Intent(m_context, SettingNetworkActivity.class);
 		m_context.startActivity(intent);
 	}

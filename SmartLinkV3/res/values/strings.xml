@@ -73,6 +73,7 @@
     <string name="access_lable">connected</string>
     <string name="home_sim_loched">Sim Card Locked</string>
     <string name="home_no_sim">no sim card</string>
+    <string name="home_sim_not_accessible">Sim card is not accessible</string>
     <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please change the monthly values or reset consumption.</string>
     <!-- Home view end -->

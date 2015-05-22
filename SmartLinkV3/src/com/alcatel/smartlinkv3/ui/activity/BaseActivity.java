@@ -129,6 +129,8 @@ public abstract class BaseActivity extends Activity{
 		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 		
 		if(bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
+			String strInfo = getString(R.string.home_sim_not_accessible);
+			Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
 				dismissAllDialog();	
 				Intent intent = new Intent(context, MainActivity.class);	

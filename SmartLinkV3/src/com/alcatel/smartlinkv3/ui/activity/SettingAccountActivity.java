@@ -54,7 +54,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_setting_account);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
@@ -194,7 +193,9 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 //		IntentFilter filter = new IntentFilter();  
 //		filter.addAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
 //		PassWordChangeReceiver receiver = new PassWordChangeReceiver();
+		Log.v("TESTCLICK", "ACCOUNT7");
 		registerReceiver(m_password_change_receiver, m_change_password_filter);  
+		Log.v("TESTCLICK", "ACCOUNT8");
 	}
 	
 	@Override
@@ -207,6 +208,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	protected void onDestroy(){
 		super.onDestroy();
 		unregisterReceiver(m_password_change_receiver);  
+		Log.v("TESTCLICK", "ACCOUNT9");
 	}
 	
 	private class PassWordChangeReceiver extends BroadcastReceiver{

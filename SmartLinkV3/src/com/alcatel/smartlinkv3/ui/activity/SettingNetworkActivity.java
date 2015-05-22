@@ -53,6 +53,9 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	private LinearLayout m_level_one_menu=null;
 	private LinearLayout m_add_and_delete_container = null;
 	
+	private TextView m_add_profile;
+	private TextView m_delete_profile;
+	
 	private FragmentManager m_fragment_manager;
 	private FragmentTransaction m_transaction;
 	
@@ -136,6 +139,11 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		
 		m_add_and_delete_container = (LinearLayout)findViewById(R.id.fl_add_and_delete);
 		m_add_and_delete_container.setVisibility(View.GONE);
+		
+		m_add_profile = (TextView) findViewById(R.id.tv_titlebar_add);
+		m_add_profile.setOnClickListener(this);
+		m_delete_profile = (TextView) findViewById(R.id.tv_titlebar_delete);
+		m_delete_profile.setOnClickListener(this);
 		
 		m_fragment_tag_stack = new Stack<String>();
 		
@@ -249,6 +257,17 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		case R.id.network_profile_management:
 //			BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork();
 			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
+			break;
+		case R.id.tv_titlebar_add:
+//			setAddAndDeleteVisibility(View.GONE);
+			Log.v("AddButton", "Test");
+			showFragmentProfileManagementDetail();
+			m_add_and_delete_container.setVisibility(View.GONE);
+			break;
+		case R.id.tv_titlebar_delete:
+			Log.v("AddButton", "Test");
+			showFragmentProfileManagementDetail();
+			m_add_and_delete_container.setVisibility(View.GONE);
 			break;
 		default:
 			break;
