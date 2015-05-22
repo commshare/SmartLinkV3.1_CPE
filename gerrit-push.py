@@ -155,8 +155,10 @@ def email():
     return git_config('user.email')
 
 def emailuser():
-#email().split()[0]
+    #email().split()[0]
     m = re.search('.*(?=@)', email())
+    if m is None:
+        return None
     return m.group(0)
 
 def repo():
@@ -206,11 +208,26 @@ if __name__ == '__main__':
         sys.stdout.write(c(fmt, *args))
         sys.stdout.flush()
 
+    if username() is None or username() == "":
+        print "Use command ",
+        color_print(" 'git config user.name' ")
+        print "to set your name first."
+        sys.exit(3)
+
+    if emailuser() is None:
+        print "Use command",
+        color_print(" 'git config user.email' ")
+        print "to set your email. \nIt is the email address that you set in Gerrit."
+        sys.exit(4)
+
     if len(gerrit_account()) == 0:
-        print "no gerrit account"
+        color_print("no gerrit account.\n")
+        #git config color.ui
+
         candidates = [username(), emailuser(), "Input Other"]
+        #candidates = list([username(), emailuser()]) + ["Input Other"]
         select = get_list_select(candidates,
-                "Please setting your gerrit account:\n",
+                "Please setting your gerrit account, which is always the eamil account.:\n",
                 c)
         if select == -1 or select == (len(candidates) -1):
             gerritaccount = raw_input("Please enter your gerrit account:\n").strip()
