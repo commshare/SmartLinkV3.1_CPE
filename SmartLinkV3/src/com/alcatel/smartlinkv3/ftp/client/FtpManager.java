@@ -1,4 +1,4 @@
-﻿package com.alcatel.smartlinkv3.ftp.client;
+package com.alcatel.smartlinkv3.ftp.client;
 
 import java.io.File;
 import java.io.FileOutputStream;

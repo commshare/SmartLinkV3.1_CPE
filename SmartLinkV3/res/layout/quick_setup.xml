@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+   	android:background="@color/color_white"
     android:orientation="vertical" >
 
         <LinearLayout
@@ -35,6 +36,8 @@
     <com.alcatel.smartlinkv3.ui.view.ClearEditText android:id="@+id/password"  
         android:layout_width="match_parent"  
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
         android:inputType="textPassword"
         android:textSize="18sp"          >  
     </com.alcatel.smartlinkv3.ui.view.ClearEditText>  
@@ -45,6 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="5sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
         android:orientation="horizontal" >
 
     <TextView
@@ -54,18 +60,20 @@
         android:layout_weight="1"
         android:layout_gravity="left|center_vertical"
         android:gravity="center_vertical"
-        android:drawableLeft="@drawable/back_disable"
-        android:text="@string/back" />
+        android:drawableLeft="@drawable/left_arrow_big"
+        android:text="@string/back"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
         android:id="@+id/navigator_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:drawableRight="@drawable/right_arrow_small"        
+        android:drawableRight="@drawable/right_arrow_big"        
         android:gravity="center_vertical|right"
         android:layout_gravity="right|center_vertical"
-        android:text="@string/skip" />
+        android:text="@string/skip"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 </LinearLayout>
 
 

@@ -252,10 +252,13 @@ public class FtpFileViewActivity extends Fragment implements
 	private static final int DOWNLOAD = 4;
 	private static final int UPLOAD = 5;
 
+
 	private static final int CLOSE = -2;
 	private static final int GETFILE = 7;
 	private static final int DELETE = 8;
 	private static final int PAUSE_DOWNLOAD = 9;
+	private static final int MOVE = 10;
+	private static final int COPY = 11;
 
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
@@ -368,6 +371,15 @@ public class FtpFileViewActivity extends Fragment implements
 					deleteFiles(p2);
 					CMD = -1;
 					break;
+					
+				case MOVE:
+					CMD = -1;
+					break;
+					
+				case COPY:
+					CMD = -1;
+					break;
+					
 				case CLOSE:
 					try {
 						ftp.close();
