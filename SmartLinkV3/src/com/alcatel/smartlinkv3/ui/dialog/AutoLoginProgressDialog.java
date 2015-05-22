@@ -100,6 +100,8 @@ public class AutoLoginProgressDialog
 			else if (arg1.getAction().equalsIgnoreCase(
 					MessageUti.USER_LOGIN_REQUEST)) 
 			{
+				if(m_dlgProgress != null && !m_dlgProgress.isShowing())
+					return;
 				closeDialog();
 				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
 				String strErrorCode = arg1.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);

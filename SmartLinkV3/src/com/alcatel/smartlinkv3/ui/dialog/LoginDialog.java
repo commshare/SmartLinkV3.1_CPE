@@ -45,6 +45,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private Context m_context;
 	private static final String REG_STR = "[^a-zA-Z0-9-\\+!@\\$#\\^&\\*]";
 	public boolean m_bIsShow = false;
+	public boolean m_bIsApply = false;
 	private Dialog m_dlgLogin = null;
 	private ProgressDialog m_dlgProgress = null;
 	private View m_vLogin = null;
@@ -105,6 +106,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				}
 			} else if (arg1.getAction().equalsIgnoreCase(
 					MessageUti.USER_LOGIN_REQUEST)) {
+				m_bIsApply = false;
+				if(!m_dlgLogin.isShowing())
+					return;
 				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
 				String strErrorCode = arg1
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
@@ -260,6 +264,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				m_etPassword.requestFocus();
 				m_dlgLogin.show();
 				m_bIsShow = true;
+				m_bIsApply = false;
 			}
 			m_vLogin.clearAnimation();
 		//}
@@ -301,6 +306,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				m_dlgLogin.show();
 			}
 			m_bIsShow = true;
+			m_bIsApply = false;
 		}
 		m_vLogin.clearAnimation();
 	}
@@ -318,6 +324,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		}
 
 		m_bIsShow = false;
+		m_bIsApply = false;
 	}
 
 	public void destroyDialog() {
@@ -421,7 +428,10 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 	}
 
-	private void apply() {
+	private void apply() {		
+		if(m_bIsApply)
+			return;
+		
 		m_password = m_etPassword.getText().toString();
 		Pattern pattern = Pattern.compile(REG_STR);
 		Matcher matcher = pattern.matcher(m_password);
@@ -449,6 +459,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		data.addParam("password", m_password);
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.USER_LOGIN_REQUEST, data);
+		m_bIsApply = true;
 	}
 
 	@Override
