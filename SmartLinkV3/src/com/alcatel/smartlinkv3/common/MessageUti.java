@@ -171,6 +171,10 @@ public class MessageUti {
 			"com.alcatel.smartlinkv3.business.update.setdevicename";
 	/**************************device message end*********************************************************************************/
 	
+	/**************************profile message start*******************************************************************************/
+	public static String PROFILE_GET_PROFILE_LIST_REQUEST = "com.alcatel.smartlinkv3.business.profile.getprofilelist";
+	/**************************profile message end*******************************************************************************/
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static Map<String, HttpMethodUti> httpMethods = new HashMap<String, HttpMethodUti>();
 	public static void intHttpMethods() {

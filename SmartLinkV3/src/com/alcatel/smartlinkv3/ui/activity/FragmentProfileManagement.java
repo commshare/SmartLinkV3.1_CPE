@@ -6,8 +6,12 @@ import java.util.List;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +20,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.ProfileManager;
+import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
+import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 public class FragmentProfileManagement extends Fragment implements OnClickListener{
 	
@@ -26,6 +37,16 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 //	private ImageButton m_add_profile = null;
 //	private ImageButton m_delete_profile = null;
 	private SettingNetworkActivity m_parent_activity = null;
+	private RelativeLayout m_progress_bar;
+	
+	private List<ProfileItem> m_profile_list_data = null;
+	
+	private IntentFilter m_fragment_get_profile_list_request_filter;
+	private GetProfileListReceiver m_fragment_get_profile_list_request_receiver;
+	
+	private ProfileListAdapter m_adapter;
+	
+//	private NetworkSearchResultReceiver m_network_search_result_receiver;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
@@ -38,19 +59,27 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 	
 	private void initUi(View rootView){
 		
+		m_fragment_get_profile_list_request_receiver = new GetProfileListReceiver();
+		m_fragment_get_profile_list_request_filter = new IntentFilter(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST);
+		m_fragment_get_profile_list_request_filter.addAction(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST);
+		
 		m_parent_activity = (SettingNetworkActivity) getActivity();
 		m_parent_activity.setAddAndDeleteVisibility(View.VISIBLE);
 		
 		m_parent_activity.changeTitlebar(R.string.setting_network_profile_management);
+		
+		m_progress_bar = (RelativeLayout) rootView.findViewById(R.id.waiting_loading_profile_progressbar);
+		m_progress_bar.setVisibility(View.VISIBLE);
 		
 //		m_add_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_add);
 //		m_delete_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_delete);
 //		m_add_profile.setOnClickListener(this);
 //		m_delete_profile.setOnClickListener(this);
 		
+		getActivity().registerReceiver(m_fragment_get_profile_list_request_receiver, m_fragment_get_profile_list_request_filter);  
+		
 		m_profile_list = (ListView) rootView.findViewById(R.id.profile_list);
-		ProfileListAdapter adapter = new ProfileListAdapter(getActivity(), getProfileList());
-		m_profile_list.setAdapter(adapter);
+		BusinessMannager.getInstance().getProfileManager().startGetProfileList(null);
 	}
 	
 	private List<String> getProfileList(){
@@ -60,9 +89,9 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		return data;
 	}
 	
-	public void goToDetailProfile(){
+	public void goToDetailProfile(Bundle data){
 		m_parent_activity.setAddAndDeleteVisibility(View.GONE);
-		m_parent_activity.showFragmentProfileManagementDetail();
+		m_parent_activity.showFragmentProfileManagementDetail(data);
 	}
 
 	@Override
@@ -74,11 +103,11 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 private class ProfileListAdapter extends BaseAdapter{
 		
 		private LayoutInflater m_inflater;
-		private List<String> m_data;
+		private List<ProfileItem> m_data;
 		private int m_selected_position = -1;
 		private RadioButton m_selected_button;
 		
-		public ProfileListAdapter(Context context, List<String> data){
+		public ProfileListAdapter(Context context, List<ProfileItem> data){
 			m_inflater = LayoutInflater.from(context);
 			m_data = data;
 		}
@@ -115,7 +144,8 @@ private class ProfileListAdapter extends BaseAdapter{
 			else{
 				holder = (ViewHolder)convertView.getTag();
 			}
-			holder.m_profile_title.setText(m_data.get(position));
+			holder.m_profile_title.setText(m_data.get(position).Default == 1 ? "Default" : "");
+			holder.m_profile_radiobutton.setText(m_data.get(position).ProfileName);
 			holder.m_profile_radiobutton.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -126,8 +156,18 @@ private class ProfileListAdapter extends BaseAdapter{
 					}
 					m_selected_position = position;
 					m_selected_button = (RadioButton) view;
-					
-					goToDetailProfile();
+					ProfileItem profileData = m_data.get(position);
+					Bundle dataBundle = new Bundle();
+					dataBundle.putString(m_parent_activity.TAG_OPERATION, m_parent_activity.TAG_OPERATION_EDIT_PROFILE);
+					dataBundle.putString(m_parent_activity.TAG_PROFILE_NAME, profileData.ProfileName);
+					dataBundle.putString(m_parent_activity.TAG_APN, profileData.APN);
+					dataBundle.putString(m_parent_activity.TAG_USER_NAME, profileData.UserName);
+					dataBundle.putString(m_parent_activity.TAG_DAIL_NUMBER, profileData.DailNumber);
+					dataBundle.putInt(m_parent_activity.TAG_DEFAULT, profileData.Default);
+					dataBundle.putInt(m_parent_activity.TAG_PROFILE_ID, profileData.ProfileID);
+					dataBundle.putInt(m_parent_activity.TAG_IS_PREDEFINE, profileData.IsPredefine);
+					dataBundle.putInt(m_parent_activity.TAG_AUTH_TYPE, profileData.AuthType);
+					goToDetailProfile(dataBundle);
 				}
 			});
 			
@@ -148,4 +188,48 @@ private class ProfileListAdapter extends BaseAdapter{
 			RadioButton m_profile_radiobutton;
 		}
 	}
+
+
+	private class GetProfileListReceiver extends BroadcastReceiver{
+	
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+//					m_network_search_result_list = BusinessMannager.getInstance().getNetworkManager().getNetworkList();
+					m_profile_list_data = BusinessMannager.getInstance().getProfileManager().GetProfileListData();
+					m_adapter = new ProfileListAdapter(getActivity(), m_profile_list_data);
+					m_profile_list.setAdapter(m_adapter);
+					m_progress_bar.setVisibility(View.GONE);
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					
+				}
+			}
+			
+		}
+		
+	}
+	
+	@Override
+	public void onDestroyView(){
+		super.onDestroyView();
+		try {
+			getActivity().unregisterReceiver(m_fragment_get_profile_list_request_receiver);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
+	
 }

@@ -105,7 +105,6 @@
                android:textColor="@color/color_light_gray"
                android:textSize="20sp" 
                android:layout_gravity="end"
-               android:text="test"
                />
          </FrameLayout>
      </LinearLayout>

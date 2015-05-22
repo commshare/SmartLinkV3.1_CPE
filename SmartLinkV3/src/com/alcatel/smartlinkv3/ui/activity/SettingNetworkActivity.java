@@ -38,11 +38,32 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	public final String TAG_FRAGMENT_PROFILE_MANAGEMENT = "FRAGMENT_NETWORK_MANAGEMENT";
 	public final String TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL = "FRAGMENT_NETWORK_MANAGEMENT_DETAIL";
 	
+	//////////////////////////////profile tags start/////////////////////////////////
+	public final String TAG_OPERATION = "operation";
+	public final String TAG_OPERATION_EDIT_PROFILE = "edit_profile";
+	public final String TAG_OPERATION_ADD_PROFILE = "add_profile";
+	public final String TAG_PROFILE_NAME = "name";
+	public final String TAG_APN = "apn";
+	public final String TAG_USER_NAME = "usre_name";
+	public final String TAG_PASSWORD = "password";
+	public final String TAG_DEFAULT = "default";
+	public final String TAG_PROFILE_ID = "profile_id";
+	public final String TAG_IS_PREDEFINE = "is_predefine";
+	public final String TAG_AUTH_TYPE = "auth_type";
+	public final String TAG_DAIL_NUMBER = "dial_number";
+	public final String TAG_IP_ADDRESS = "ip_address";
+//////////////////////////////profile tags end/////////////////////////////////
+	
 	private FragmentNetworkSelection m_fragment_network_selection = null;
 	private FragmentProfileManagement m_fragment_profile_management = null;
 	private FragmentProfileManagementDetail m_fragment_profile_management_detail = null;
 	
 	private Stack<String> m_fragment_tag_stack = null;
+	
+	private TextView m_tv_done = null;
+	private TextView m_tv_edit = null;
+	private FrameLayout m_edit_or_done_container = null;
+	
 	
 	private TextView m_tv_title = null;
 	private ImageButton m_ib_back=null;
@@ -145,6 +166,15 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_delete_profile = (TextView) findViewById(R.id.tv_titlebar_delete);
 		m_delete_profile.setOnClickListener(this);
 		
+		
+		m_edit_or_done_container = (FrameLayout) findViewById(R.id.fl_edit_or_done);
+		m_edit_or_done_container.setVisibility(View.GONE);
+		m_tv_edit = (TextView)findViewById(R.id.tv_titlebar_edit);
+		m_tv_edit.setVisibility(View.GONE);
+		m_tv_done = (TextView)findViewById(R.id.tv_titlebar_done);
+		m_tv_done.setVisibility(View.VISIBLE);
+		m_tv_done.setOnClickListener(this);
+		
 		m_fragment_tag_stack = new Stack<String>();
 		
 		m_fragment_network_selection = new FragmentNetworkSelection();
@@ -204,14 +234,27 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
 	}
 	
+	public void showFragmentProfileManagementDetail(Bundle data){
+		addToFragmentTagStack(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
+		m_level_one_menu.setVisibility(View.GONE);
+		m_transaction= m_fragment_manager.beginTransaction();
+		m_fragment_profile_management_detail.setArguments(data);
+		m_transaction.replace(R.id.setting_network_content, m_fragment_profile_management_detail, TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
+		m_transaction.addToBackStack(null);
+		m_transaction.commit();
+		m_edit_or_done_container.setVisibility(View.VISIBLE);
+	}
+	
 	public void showFragmentProfileManagementDetail(){
 		showFragment(m_fragment_profile_management_detail, TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
+		m_edit_or_done_container.setVisibility(View.VISIBLE);
 	}
 	
 	private void showFragment(Fragment menu, String fragmentTag){
 		addToFragmentTagStack(fragmentTag);
 		m_level_one_menu.setVisibility(View.GONE);
 		m_transaction= m_fragment_manager.beginTransaction();
+		menu.setArguments(null);
 		m_transaction.replace(R.id.setting_network_content, menu, fragmentTag);
 		m_transaction.addToBackStack(null);
 		m_transaction.commit();
@@ -238,6 +281,10 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_add_and_delete_container.setVisibility(visibility);
 	}
 	
+	public void setEditOrDoneVisibility(final int visibility){
+		m_edit_or_done_container.setVisibility(visibility);
+	}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -248,26 +295,44 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			this.onBackPressed();
 			break;
 		case R.id.network_mode:
+			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 //			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
 			m_network_mode_radiogroup.setVisibility(View.VISIBLE);
 			break;
 		case R.id.network_selection:
+			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 			showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
 			break;
 		case R.id.network_profile_management:
+			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 //			BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork();
 			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
 			break;
 		case R.id.tv_titlebar_add:
+			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
+			if(m_fragment_tag_stack.size() > 0){
+				Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
+			}
 //			setAddAndDeleteVisibility(View.GONE);
-			Log.v("AddButton", "Test");
 			showFragmentProfileManagementDetail();
 			m_add_and_delete_container.setVisibility(View.GONE);
 			break;
 		case R.id.tv_titlebar_delete:
-			Log.v("AddButton", "Test");
+			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
+			if(m_fragment_tag_stack.size() > 0){
+				Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
+			}
 			showFragmentProfileManagementDetail();
 			m_add_and_delete_container.setVisibility(View.GONE);
+			break;
+		case R.id.tv_titlebar_done:
+			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
+			if(!m_fragment_tag_stack.isEmpty()){
+				String FragmentTag = m_fragment_tag_stack.peek();
+				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)){
+					this.onBackPressed();
+				}
+			}
 			break;
 		default:
 			break;
@@ -296,6 +361,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	public void onBackPressed(){
 		super.onBackPressed();
 		popFragmentTagStack();
+		setEditOrDoneVisibility(View.GONE);
 		if(!m_fragment_tag_stack.isEmpty()){
 			m_level_one_menu.setVisibility(View.GONE);
 			String FragmentTag = m_fragment_tag_stack.peek();

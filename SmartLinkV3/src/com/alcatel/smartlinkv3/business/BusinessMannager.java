@@ -70,6 +70,7 @@ public class BusinessMannager {
 	private LanManager m_lanManager=null;
 	private UpdateManager m_updateManager=null;
 	private DeviceManager m_deviceManager = null;
+	private ProfileManager m_profileManager = null;
 	
 	private String m_strServerAddress = "192.168.1.1";
 	
@@ -113,6 +114,8 @@ public class BusinessMannager {
     	
     	m_deviceManager = new DeviceManager(m_context);
     	
+    	m_profileManager = new ProfileManager(m_context);
+    	
     	m_class.put("SystemManager", m_systemManager);
     	m_class.put("UserManager", m_userManager);
     	m_class.put("StatisticsManager", m_statisticsManager);
@@ -126,6 +129,7 @@ public class BusinessMannager {
     	m_class.put("LanManager", m_lanManager);
     	m_class.put("PowerManager", m_powerManager);
     	m_class.put("DeviceManager", m_deviceManager);
+    	m_class.put("ProfileManager", m_profileManager);
     	
     	m_systemInfoModel = new SystemInfoModel();
     	m_wifiNetworkReceiver = new WifiNetworkReceiver();
@@ -322,6 +326,12 @@ public class BusinessMannager {
 		return m_networkManager.getNetworkInfo();
 	}
     /********************network manager method end************************/
+    
+    /********************profile manager method start*************************/
+    public ProfileManager getProfileManager(){
+    	return m_profileManager;
+    }
+    /********************profile manager method end*************************/
     
     /********************sms manager Data start**********************/
     public SMSInit getSMSInit() {

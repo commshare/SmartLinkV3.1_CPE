@@ -29,33 +29,16 @@
                     android:text="@string/setting_network_profile_management_profile_name"
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
-
-                <FrameLayout
+            	<EditText
+                    android:id="@+id/edit_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/edit_profile"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:inputType="text"
-                        android:maxLength="32"
-                         android:textSize="20sp" 
-                        android:visibility="gone"
-                        android:gravity="end" />
-
-                    <TextView
-                        android:id="@+id/display_profile_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                         android:textSize="20sp" 
-                        android:gravity="end" /> 
-            </FrameLayout>
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:maxLength="32"
+                     android:textSize="20sp" 
+                    android:gravity="end" />
         </LinearLayout>
         
 		<ImageView
@@ -81,32 +64,18 @@
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
 
-                <FrameLayout
+                
+
+            	<EditText
+                    android:id="@+id/edit_dial_number"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/edit_dial_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:inputType="text"
-                        android:maxLength="32"
-                         android:textSize="20sp" 
-                        android:visibility="gone"
-                        android:gravity="end" />
-
-                    <TextView
-                        android:id="@+id/display_dial_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                         android:textSize="20sp" 
-                        android:gravity="end" /> 
-            </FrameLayout>
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:maxLength="32"
+                     android:textSize="20sp" 
+                    android:gravity="end" />
         </LinearLayout>
         
 		<ImageView
@@ -132,32 +101,16 @@
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
 
-                <FrameLayout
+                <EditText
+                    android:id="@+id/edit_apn"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/edit_apn"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:inputType="text"
-                        android:maxLength="32"
-                         android:textSize="20sp" 
-                        android:visibility="gone"
-                        android:gravity="end" />
-
-                    <TextView
-                        android:id="@+id/display_apn"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                         android:textSize="20sp" 
-                        android:gravity="end" /> 
-            </FrameLayout>
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:maxLength="32"
+                     android:textSize="20sp" 
+                    android:gravity="end" />
         </LinearLayout>
         
 		<ImageView
@@ -183,32 +136,17 @@
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
 
-                <FrameLayout
+            <EditText
+                    android:id="@+id/edit_user_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/edit_user_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:inputType="text"
-                        android:maxLength="32"
-                         android:textSize="20sp" 
-                        android:visibility="gone"
-                        android:gravity="end" />
-
-                    <TextView
-                        android:id="@+id/display_user_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                         android:textSize="20sp" 
-                        android:gravity="end" /> 
-            </FrameLayout>
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:maxLength="32"
+                     android:textSize="20sp" 
+                    android:gravity="end" />    
+                
         </LinearLayout>
         
 		<ImageView
@@ -234,32 +172,17 @@
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
 
-                <FrameLayout
+             <EditText
+                    android:id="@+id/edit_password"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/edit_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:inputType="text"
-                        android:maxLength="32"
-                         android:textSize="20sp" 
-                        android:visibility="gone"
-                        android:gravity="end" />
-
-                    <TextView
-                        android:id="@+id/display_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                         android:textSize="20sp" 
-                        android:gravity="end" /> 
-            </FrameLayout>
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:maxLength="32"
+                     android:textSize="20sp" 
+                    android:gravity="end" />       
+                
         </LinearLayout>
             
 		<ImageView
@@ -380,7 +303,7 @@
                     android:enabled="true"
                     android:paddingBottom="15dip"
                     android:paddingTop="15dip"
-                    android:text="@string/setting_network_profile_management_protocol_tcp"
+                    android:text="@string/setting_network_profile_management_auth_type_pap"
                     android:textColor="@color/color_black" />
                 
                 <View
@@ -403,7 +326,7 @@
                     android:enabled="true"
                     android:paddingBottom="15dip"
                     android:paddingTop="15dip"
-                    android:text="@string/setting_network_profile_management_protocol_udp"
+                    android:text="@string/setting_network_profile_management_auth_type_chap"
                     android:textColor="@color/color_black" />
                 
                 <View
@@ -426,7 +349,7 @@
                     android:enabled="true"
                     android:paddingBottom="15dip"
                     android:paddingTop="15dip"
-                    android:text="@string/setting_network_profile_management_protocol_tcp_or_udp"
+                    android:text="@string/setting_network_profile_management_auth_type_pap_and_chap"
                     android:textColor="@color/color_black" />
             </RadioGroup>
                 

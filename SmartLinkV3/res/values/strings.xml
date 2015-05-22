@@ -173,6 +173,7 @@
     <string name="setting_text_5G_wifi">5G WiFi</string>
     <string name="setting_text_ssid">SSID:</string>
     <string name="setting_text_passwrod">Password:</string>
+    <string name="setting_set_default">Default</string>
     <string name="setting_text_no_passwrod">No Password</string>
     <string name="setting_wifi_set_success">Change Wifi Settings successfully!</string>
     <string name="setting_wifi_set_failed">Change Wifi Settings failed!</string>
@@ -291,6 +292,9 @@
     <string name="setting_network_mode_4G_only">4G Only</string>
     <string name="setting_network_mode_LTE_only">LTE Only</string>
     <string name="other_login_warning_title">Login warning</string>
+    <string name="setting_network_profile_management_auth_type_pap">PAP</string>
+    <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
+    <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&#038;CHAP</string>
     <!-- setting end -->
 
 
