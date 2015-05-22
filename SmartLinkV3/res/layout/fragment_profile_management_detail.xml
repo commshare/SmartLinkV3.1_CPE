@@ -241,7 +241,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/setting_text_passwrod"
+                        android:text="@string/setting_set_default"
                         android:textColor="@color/color_black"
                          android:textSize="20sp" />
 

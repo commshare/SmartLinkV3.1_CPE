@@ -163,6 +163,7 @@ private class ProfileListAdapter extends BaseAdapter{
 					dataBundle.putString(m_parent_activity.TAG_APN, profileData.APN);
 					dataBundle.putString(m_parent_activity.TAG_USER_NAME, profileData.UserName);
 					dataBundle.putString(m_parent_activity.TAG_DAIL_NUMBER, profileData.DailNumber);
+					dataBundle.putString(m_parent_activity.TAG_PASSWORD, profileData.Password);
 					dataBundle.putInt(m_parent_activity.TAG_DEFAULT, profileData.Default);
 					dataBundle.putInt(m_parent_activity.TAG_PROFILE_ID, profileData.ProfileID);
 					dataBundle.putInt(m_parent_activity.TAG_IS_PREDEFINE, profileData.IsPredefine);

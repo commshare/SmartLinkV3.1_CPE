@@ -297,6 +297,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		case R.id.network_mode:
 			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 //			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
+			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(null);
 			m_network_mode_radiogroup.setVisibility(View.VISIBLE);
 			break;
 		case R.id.network_selection:
