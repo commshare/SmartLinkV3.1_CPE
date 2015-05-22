@@ -248,7 +248,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			break;
 		case R.id.network_profile_management:
 //			BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork();
-//			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
+			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
 			break;
 		default:
 			break;
@@ -264,7 +264,13 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_fragment_profile_management = null;
 		m_fragment_profile_management_detail = null;
 		
-		unregisterReceiver(m_network_setting_receiver);  
+		try{
+			unregisterReceiver(m_network_setting_receiver);  
+		}
+		catch(Exception e){
+			
+		}
+		
 	}
 	
 	@Override

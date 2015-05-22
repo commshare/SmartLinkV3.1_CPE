@@ -204,7 +204,12 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	@Override
 	public void onDestroyView(){
 		super.onDestroyView();
-		getActivity().unregisterReceiver(m_network_search_result_receiver);  
+		try {
+			getActivity().unregisterReceiver(m_network_search_result_receiver);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
 	}
 	
 	private  class NetworkListAdapter extends BaseAdapter{
@@ -295,7 +300,9 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					}
 					
 					BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork(position);
-					m_data.get(m_selected_position).State = 1;
+					if(m_selected_position >= 0){
+						m_data.get(m_selected_position).State = 1;
+					}
 					m_selected_position = position;
 					m_selected_button = (RadioButton) view;
 					m_data.get(position).State = 2;
