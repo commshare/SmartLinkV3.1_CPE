@@ -234,6 +234,19 @@ public class FtpManager {
 		isLogin = false;
 	}
 
+	boolean createLocalFolder(String strFolder) {
+		File file = new File(strFolder);
+
+		if (!file.exists()) {
+			if (file.mkdirs()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public boolean download(String localFile, String remoteFile){
 		boolean iStatus = false;
 		
@@ -241,7 +254,7 @@ public class FtpManager {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_ERROR,
 					ERROR.FILE_DOWNLOAD_ERROR);
 		}
-		
+					
 		try {
 			iStatus = ftpProxy.downloadAndsubFiles(localFile, remoteFile);
 		} catch (Exception e) {

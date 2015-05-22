@@ -198,6 +198,10 @@ public class FtpClientProxy {
 				success = true;
 			return success;
 		}
+		
+		if (remoteFile.isDirectory()) {
+			createLocalFolder(local);
+		}
 
 		List<FTPFile> list = this.getFileList(remote);
 

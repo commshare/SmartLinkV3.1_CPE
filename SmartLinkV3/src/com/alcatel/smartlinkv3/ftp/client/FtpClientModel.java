@@ -16,13 +16,13 @@ public class FtpClientModel {
 	public String ftpClientConfigFile;
 
 	public FtpClientModel() {
-		host = "192.168.1.103";
+		host = "192.168.1.103"; // Default ip
 		port = 2221;
 		bufferSize = 1024 * 4;
-		username = "admin";
-		password = "admin";
+		username = "anonymous";
+		password = "";
 
-		localDir = "/mnt/sdcard/ftpconf/";
+		localDir = "/mnt/sdcard/LinkApp/";
 		remoteDir = "/"; // root dir
 
 		ftpClientConfigDir = "/mnt/sdcard/ftpconf/";

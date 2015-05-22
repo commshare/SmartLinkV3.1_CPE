@@ -34,12 +34,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.DhcpInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -96,7 +100,7 @@ public class FtpFileViewActivity extends Fragment implements
 
 	private FtpManager ftp = null;
 	private Thread thread = null;
-	private Context mContext;
+	private Context mContext = null;
 	private pubLog logger = null;
 	private FtpClientModel m_ftp = null;
 
@@ -444,7 +448,7 @@ public class FtpFileViewActivity extends Fragment implements
 			logger.i("download file lists: " + f.fileName);
 
 			String remotePath = f.filePath + File.separator + f.fileName;
-			String localPath = "/mnt/sdcard/ftpconf/" + File.separator
+			String localPath = m_ftp.localDir + File.separator
 					+ f.fileName;
 			ftp.download(localPath, remotePath);
 
@@ -554,7 +558,21 @@ public class FtpFileViewActivity extends Fragment implements
 
 		ftp.setTransferFtpListener(TransferListener);
 		ftp.setFtpManagerListener(FtpManagerListener);
+		
 		m_ftp = new FtpClientModel();
+		
+		if(1 == 1){
+			m_ftp.host = getServerAddress(mContext);
+			m_ftp.port = 21;
+		}
+		
+
+		m_ftp.localDir = Environment.getExternalStorageDirectory().getPath()
+				+ "/LinkApp";
+		
+		logger.v("Local directory: " + m_ftp.localDir);
+		logger.v("Server ip is: " + m_ftp.host);
+
 		ftp.setConfig(mContext, m_ftp);
 
 		thread = new Thread(ftpTask);
@@ -563,20 +581,28 @@ public class FtpFileViewActivity extends Fragment implements
 
 		return true;
 	}
-
+	
+	
+	private String getServerAddress(Context ctx){  
+        WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);  
+        DhcpInfo dhcpInfo = wifi_service.getDhcpInfo(); 
+        return Formatter.formatIpAddress(dhcpInfo.gateway);  
+    }
+	
 	private boolean mBackspaceExit;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
 		boolean iRet = ftp_init();
 
 		if (!iRet) {
 			logger.w("ftp init fail!");
 		}
-
+				
 		mActivity = getActivity();
+			
 		// getWindow().setFormat(android.graphics.PixelFormat.RGBA_8888);
 		mRootView = inflater.inflate(R.layout.ftp_file_explorer_list,
 				container, false);
