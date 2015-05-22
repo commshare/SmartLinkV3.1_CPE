@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.mediaplayer.picture;
 import org.cybergarage.util.CommonLog;
 import org.cybergarage.util.LogFactory;
 
+import android.R.string;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
@@ -83,6 +85,7 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		if (intent != null){
 			curIndex = intent.getIntExtra(PLAY_INDEX, 0);		
 			mMediaInfo = MediaItemFactory.getItemFromIntent(intent);
+			mUIManager.setTitle(mMediaInfo.title);
 		}
 		
 		mControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getPictureList());
@@ -92,6 +95,10 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 	}	
 	
 	class UIManager implements OnClickListener{
+		
+		public TextView btitle;
+		private ImageButton bnBack;
+		private TextView tvback;
 		
 		public ImageView mImageView;
 //		public ImageButton mBtnPre;
@@ -110,6 +117,12 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		
 		
 		private void initView() {
+			btitle = (TextView) findViewById(R.id.title);
+			bnBack = (ImageButton) findViewById(R.id.btn_back);
+			bnBack.setOnClickListener(this);
+			tvback = (TextView) findViewById(R.id.Back);
+			tvback.setOnClickListener(this);
+			
 			mImageView = (ImageView) findViewById(R.id.imageview);
 			mLoadView = findViewById(R.id.show_load_progress);
 		
@@ -122,6 +135,10 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 			//mBtnNext.setOnClickListener(this);
 //			mBtnPlay.setOnClickListener(this);
 //			mBtnPause.setOnClickListener(this);
+		}
+		
+		public void setTitle(String text){
+			btitle.setText(text);
 		}
 		
 		public void setBitmap(Bitmap bitmap){
@@ -167,6 +184,10 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.btn_back:
+			case R.id.Back:
+				finish();
+				break;
 //			case R.id.btn_playpre:
 //				mControlCenter.prev();
 //				break;
@@ -272,8 +293,7 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 				mUIManager.setBitmap(bitmap);
 			}
 		});
-	
-	
+
 	}
 
 	@Override
@@ -286,6 +306,4 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		mUIManager.showProgress(true);
 	}
 	
-	
-		
 }

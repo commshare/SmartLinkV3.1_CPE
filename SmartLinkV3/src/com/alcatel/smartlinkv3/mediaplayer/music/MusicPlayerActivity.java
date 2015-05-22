@@ -31,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-
 import com.alcatel.smartlinkv3.mediaplayer.music.lrc.LrcDownLoadHelper;
 import com.alcatel.smartlinkv3.mediaplayer.music.lrc.LyricView;
 import com.alcatel.smartlinkv3.mediaplayer.music.lrc.MusicUtils;
@@ -221,6 +220,7 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 		if (intent != null){
 			curIndex = intent.getIntExtra(PLAY_INDEX, 0);		
 			mMediaInfo = MediaItemFactory.getItemFromIntent(intent);
+			mUIManager.setTitle(mMediaInfo.title);
 		}
 		
 		mMusicControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getMusicList());
@@ -394,6 +394,9 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 	
 	/*---------------------------------------------------------------------------*/
 	class UIManager implements OnClickListener, OnSeekBarChangeListener, OnDataCaptureListener{
+		public TextView btitle;
+		private ImageButton bnBack;
+		private TextView tvback;
 		
 		public View mPrepareView;
 		public TextView mTVPrepareSpeed;
@@ -428,6 +431,12 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 		}
 
 		public void initView(){
+			btitle = (TextView) findViewById(R.id.title);
+			
+			bnBack = (ImageButton) findViewById(R.id.btn_back);
+			bnBack.setOnClickListener(this);
+			tvback = (TextView) findViewById(R.id.Back);
+			tvback.setOnClickListener(this);
 			
 			mPrepareView = findViewById(R.id.prepare_panel);
 			mTVPrepareSpeed = (TextView) findViewById(R.id.tv_prepare_speed);
@@ -470,6 +479,9 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 	    	mLyricView = (LyricView) findViewById(R.id.lrc_view);
 		}
 
+		public void setTitle(String text){
+			btitle.setText(text);
+		}
 		
 		public void unInit(){
 			
@@ -533,6 +545,10 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 
 			switch(v.getId())
 			{
+				case R.id.btn_back:
+				case R.id.Back:
+					finish();
+					break;
 				case R.id.btn_play:
 					mMusicControlCenter.replay();
 					break;

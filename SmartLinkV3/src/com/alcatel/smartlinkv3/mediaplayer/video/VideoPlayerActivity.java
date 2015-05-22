@@ -176,6 +176,7 @@ public static final String PLAY_INDEX = "player_index";
 		if (intent != null){
 			curIndex = intent.getIntExtra(PLAY_INDEX, 0);		
 			mMediaInfo = MediaItemFactory.getItemFromIntent(intent);
+			mUIManager.setTitle(mMediaInfo.title);
 		}
 		
 		mVideoControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getVideoList());
@@ -374,6 +375,9 @@ public static final String PLAY_INDEX = "player_index";
 	
 	/*---------------------------------------------------------------------------*/
 	class UIManager implements OnClickListener, OnSeekBarChangeListener, SurfaceHolder.Callback{
+		public TextView btitle;
+		private ImageButton bnBack;
+		private TextView tvback;
 		
 		public View mPrepareView;
 		public TextView mTVPrepareSpeed;
@@ -404,6 +408,12 @@ public static final String PLAY_INDEX = "player_index";
 		}
 
 		public void initView(){
+			btitle = (TextView) findViewById(R.id.title);
+			
+			bnBack = (ImageButton) findViewById(R.id.btn_back);
+			bnBack.setOnClickListener(this);
+			tvback = (TextView) findViewById(R.id.Back);
+			tvback.setOnClickListener(this);
 			
 			mPrepareView = findViewById(R.id.prepare_panel);
 			mTVPrepareSpeed = (TextView) findViewById(R.id.tv_prepare_speed);
@@ -444,6 +454,9 @@ public static final String PLAY_INDEX = "player_index";
 	    	
 		}
 
+		public void setTitle(String text){
+			btitle.setText(text);
+		}
 		
 		public void unInit(){
 			
@@ -485,6 +498,10 @@ public static final String PLAY_INDEX = "player_index";
 
 			switch(v.getId())
 			{
+				case R.id.btn_back:
+				case R.id.Back:
+					finish();
+					break;
 				case R.id.btn_play:
 					mVideoControlCenter.replay();
 					break;
@@ -565,10 +582,6 @@ public static final String PLAY_INDEX = "player_index";
 		public void setTotalTime(int totalTime){
 			String timeString = DlnaUtils.formateTime(totalTime);
 			mTVTotalTime.setText(timeString);
-		}
-		
-		public void setTitle(String title){
-			mTitle.setText(title);
 		}
 		
 		public void updateMediaInfoView(MediaItem mediaInfo){

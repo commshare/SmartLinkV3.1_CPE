@@ -3,6 +3,43 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 			
+         <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:layout_alignParentTop="true"
+	    	android:background="@color/main_title_background" >
+		    	<ImageButton 
+		         android:id="@+id/btn_back"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:layout_alignParentLeft="true"
+		         android:layout_centerVertical="true"
+		         android:padding="5dip"
+		         android:src="@drawable/back"
+				 android:background="@null"/>
+			     <TextView
+			         android:id="@+id/Back"
+			         android:layout_width="fill_parent"
+			         android:layout_height="wrap_content"
+			         android:layout_centerVertical="true"
+			         android:layout_toRightOf="@id/btn_back"
+			         android:text="@string/back"
+			         android:textColor="@color/color_white"
+			         android:textSize="16sp" /> 
+			    <TextView
+			        android:id="@+id/title"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_centerInParent="true"
+			        android:gravity="center"
+			        android:singleLine="true"
+			        android:paddingLeft="23dip"
+			        android:textColor="@color/color_white"
+			        android:textSize="18sp"
+			        android:textStyle="bold" />
+	    </RelativeLayout>  
+	    
 	<RelativeLayout 
 	    android:id="@+id/down_toolview"
 	    android:layout_width="fill_parent"
