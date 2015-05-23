@@ -60,7 +60,6 @@ public class HttpAddNewProfile {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			Log.v("GetProfileResultADD", "End");
 			return new AddNewProfileResponse(m_finsishCallback);
 		}
 		

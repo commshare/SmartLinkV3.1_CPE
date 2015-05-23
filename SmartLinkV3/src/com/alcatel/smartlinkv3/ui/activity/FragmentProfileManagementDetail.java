@@ -47,7 +47,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 	private LinearLayout m_protocol_container;
 	private TextView m_protocol_displayer;
 	
-	private String operation;
+	private String operation = "";
 	private String ProfileName = "";
 	private String APN = "";
 	private String UserName = "";

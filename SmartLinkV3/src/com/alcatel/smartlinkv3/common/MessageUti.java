@@ -174,6 +174,7 @@ public class MessageUti {
 	/**************************profile message start*******************************************************************************/
 	public static String PROFILE_GET_PROFILE_LIST_REQUEST = "com.alcatel.smartlinkv3.business.profile.getprofilelist";
 	public static String PROFILE_ADD_NEW_PROFILE_REQUEST = "com.alcatel.smartlinkv3.business.profile.addnewprofile";
+	public static String PROFILE_DELETE_PROFILE_REQUEST = "com.alcatel.smartlinkv3.business.profile.deleteprofile";
 	/**************************profile message end*******************************************************************************/
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

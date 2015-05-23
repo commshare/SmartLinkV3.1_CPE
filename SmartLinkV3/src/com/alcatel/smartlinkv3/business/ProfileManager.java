@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.business.profile.HttpAddNewProfile;
+import com.alcatel.smartlinkv3.business.profile.HttpDeleteProfile;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.GetProfileListResult;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
@@ -111,7 +112,48 @@ public class ProfileManager extends BaseManager{
 		}));
 	}
 	
-	
+	public void startDeleteProfile(DataValue data){
+		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "DeleteProfile") != true){
+			return;
+		}
+		
+		int profileId = (Integer) data.getParamByKey("profile_id");
+		
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile("15.4", profileId, new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	try {
+						strErrcode = response.getErrorCode();
+						if(strErrcode.length() == 0) { 
+							Log.v("GetProfileResultDELETE", "Yes");
+						}else{
+							//Log
+						}
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }else{
+                	//Log
+                	Log.v("GetProfileResultDELETE", "No");
+                }
+                
+                Intent megIntent= new Intent(MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+                
+			}
+			
+		}));
+		
+	}
 
 	public ProfileManager(Context context) {
 		super(context);

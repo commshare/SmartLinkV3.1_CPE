@@ -102,10 +102,8 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 	private RadioButton mode_2g_only = null;
 	private RadioButton mode_3g_only = null;
 	private RadioButton mode_lte_only = null;
-	
-	
-	
-	
+
+	private boolean m_delete_menu = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -238,6 +236,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		addToFragmentTagStack(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
 		m_level_one_menu.setVisibility(View.GONE);
 		m_transaction= m_fragment_manager.beginTransaction();
+		m_fragment_profile_management_detail.setArguments(null);
 		m_fragment_profile_management_detail.setArguments(data);
 		m_transaction.replace(R.id.setting_network_content, m_fragment_profile_management_detail, TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
 		m_transaction.addToBackStack(null);
@@ -245,7 +244,11 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_edit_or_done_container.setVisibility(View.VISIBLE);
 	}
 	
-	public void showFragmentProfileManagementDetail(){
+	public void showAddFragmentProfileManagementDetail(){
+		
+		Bundle dataBundle = new Bundle();
+		dataBundle.putString(TAG_OPERATION, TAG_OPERATION_ADD_PROFILE);
+		m_fragment_profile_management_detail.setArguments(dataBundle);
 		showFragment(m_fragment_profile_management_detail, TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
 		m_edit_or_done_container.setVisibility(View.VISIBLE);
 	}
@@ -295,43 +298,47 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			this.onBackPressed();
 			break;
 		case R.id.network_mode:
-			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 //			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
-			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(null);
+//			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(null);
+//			BusinessMannager.getInstance().getProfileManager().startDeleteProfile(null);
 			m_network_mode_radiogroup.setVisibility(View.VISIBLE);
 			break;
 		case R.id.network_selection:
-			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 			showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
 			break;
 		case R.id.network_profile_management:
-			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
-//			BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork();
 			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
 			break;
 		case R.id.tv_titlebar_add:
-			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 			if(m_fragment_tag_stack.size() > 0){
 				Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
 			}
 //			setAddAndDeleteVisibility(View.GONE);
-			showFragmentProfileManagementDetail();
+			Bundle dataBundle = new Bundle();
+			dataBundle.putString(TAG_OPERATION, TAG_OPERATION_ADD_PROFILE);
+			showFragmentProfileManagementDetail(dataBundle);
 			m_add_and_delete_container.setVisibility(View.GONE);
 			break;
 		case R.id.tv_titlebar_delete:
-			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 			if(m_fragment_tag_stack.size() > 0){
 				Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
 			}
-			showFragmentProfileManagementDetail();
 			m_add_and_delete_container.setVisibility(View.GONE);
+			m_edit_or_done_container.setVisibility(View.VISIBLE);
+			m_tv_title.setText(R.string.setting_network_profile_management_delete_profile);
+			m_delete_menu = true;
 			break;
 		case R.id.tv_titlebar_done:
-			Log.v("STACKFRAGMENT", m_fragment_tag_stack.size()+"");
 			if(!m_fragment_tag_stack.isEmpty()){
 				String FragmentTag = m_fragment_tag_stack.peek();
 				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)){
 					this.onBackPressed();
+				}
+				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT)){
+					m_edit_or_done_container.setVisibility(View.INVISIBLE);
+					m_add_and_delete_container.setVisibility(View.VISIBLE);
+					m_tv_title.setText(R.string.setting_network_profile_management);
+					m_delete_menu = false;
 				}
 			}
 			break;
@@ -400,6 +407,10 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_network_mode_container.setEnabled(false);
 		m_network_selection_container.setEnabled(false);
 		m_network_profile_management.setEnabled(false);
+	}
+	
+	public boolean isDeleteMode(){
+		return m_delete_menu;
 	}
 	
 	

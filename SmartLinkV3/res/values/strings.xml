@@ -285,6 +285,7 @@
     <string name="setting_network_profile_management_protocol_udp">UDP</string>
     <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
     <string name="setting_network_profile_management_profile_detail">Profile Detail</string>
+    <string name="setting_network_profile_management_delete_profile">Delete Profile</string>
     <string name="setting_network_mode_auto">Auto</string>
     <string name="setting_network_mode_manual">Manual</string>
     <string name="setting_network_mode_2G_only">2G Only</string>
