@@ -23,6 +23,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -39,9 +40,58 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity;
 import com.alcatel.smartlinkv3.fileexplorer.Util;
 
-
-
+//TODO 修改
 public class FtpFileExplorerTabActivity extends Activity {
+	ActionMode mActionMode;
+	
+	public void setActionMode(ActionMode actionMode) {
+        mActionMode = actionMode;
+    }
+
+    public ActionMode getActionMode() {
+        return mActionMode;
+    }
+    
+    public interface IBackPressedListener {
+        /**
+         * 处理back事件。
+         * @return True: 表示已经处理; False: 没有处理，让基类处理。
+         */
+        boolean onBack();
+    }
+    
+    private IBackPressedListener mBackPressedListener;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);       
+
+        final ActionBar bar = getActionBar();
+        bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME);
+        
+        Fragment fragment = Fragment.instantiate(
+        		this, FtpFileViewActivity.class.getName(), savedInstanceState);
+        mBackPressedListener = (FtpFileViewActivity)fragment;
+
+        FragmentManager fragmentManager = this.getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(android.R.id.content, fragment);
+        fragmentTransaction.commit();
+        
+        
+    }      
+    
+    @Override
+    public void onBackPressed() {
+        if (!mBackPressedListener.onBack()) {
+            super.onBackPressed();
+        }
+    }
+	    
+}
+
+//TODO
+class OLD_MARK_FtpFileExplorerTabActivity extends Activity {
     private static final String INSTANCESTATE_TAB = "tab";
     private static final int DEFAULT_OFFSCREEN_PAGES = 2;
     ViewPager mViewPager;
