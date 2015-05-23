@@ -33,6 +33,9 @@ import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ActionMode;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -43,244 +46,289 @@ import com.alcatel.smartlinkv3.fileexplorer.Util;
 //TODO 修改
 public class FtpFileExplorerTabActivity extends Activity {
 	ActionMode mActionMode;
-	
+
 	public void setActionMode(ActionMode actionMode) {
-        mActionMode = actionMode;
-    }
+		mActionMode = actionMode;
+	}
 
-    public ActionMode getActionMode() {
-        return mActionMode;
-    }
-    
-    public interface IBackPressedListener {
-        /**
-         * 处理back事件。
-         * @return True: 表示已经处理; False: 没有处理，让基类处理。
-         */
-        boolean onBack();
-    }
-    
-    private IBackPressedListener mBackPressedListener;
-    
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);       
+	public ActionMode getActionMode() {
+		return mActionMode;
+	}
 
-        final ActionBar bar = getActionBar();
-        bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME);
-        
-        Fragment fragment = Fragment.instantiate(
-        		this, FtpFileViewActivity.class.getName(), savedInstanceState);
-        mBackPressedListener = (FtpFileViewActivity)fragment;
+	public interface IBackPressedListener {
+		/**
+		 * 处理back事件。
+		 * 
+		 * @return True: 表示已经处理; False: 没有处理，让基类处理。
+		 */
+		boolean onBack();
+	}
 
-        FragmentManager fragmentManager = this.getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(android.R.id.content, fragment);
-        fragmentTransaction.commit();
-        
-        
-    }      
-    
-    @Override
-    public void onBackPressed() {
-        if (!mBackPressedListener.onBack()) {
-            super.onBackPressed();
-        }
-    }
-	    
+	private IBackPressedListener mBackPressedListener;
+
+	private boolean initCustomActionBar() {
+		ActionBar mActionbar = getActionBar();
+		if (mActionbar == null) {
+			return false;
+		}
+
+		mActionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+				ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+						| ActionBar.DISPLAY_SHOW_TITLE);
+		mActionbar.setDisplayShowCustomEnabled(true);
+		mActionbar.setCustomView(R.layout.custom_actionbar);
+		TextView tvTitle = (TextView) mActionbar.getCustomView().findViewById(
+				R.id.tv_title_title);
+		tvTitle.setText(R.string.microsd_file);
+		mActionbar.getCustomView().findViewById(R.id.ib_title_back)
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						FtpFileExplorerTabActivity.this.finish();
+					}
+				});
+		mActionbar.getCustomView().findViewById(R.id.tv_title_back)
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						FtpFileExplorerTabActivity.this.finish();
+					}
+				});
+		return true;
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		final ActionBar bar = getActionBar();
+		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE
+				| ActionBar.DISPLAY_SHOW_HOME);
+
+		Fragment fragment = Fragment.instantiate(this,
+				FtpFileViewActivity.class.getName(), savedInstanceState);
+		mBackPressedListener = (FtpFileViewActivity) fragment;
+
+		initCustomActionBar();
+
+		FragmentManager fragmentManager = this.getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+		fragmentTransaction.replace(android.R.id.content, fragment);
+		fragmentTransaction.commit();
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (!mBackPressedListener.onBack()) {
+			super.onBackPressed();
+		}
+	}
+
 }
 
-//TODO
+// TODO
 class OLD_MARK_FtpFileExplorerTabActivity extends Activity {
-    private static final String INSTANCESTATE_TAB = "tab";
-    private static final int DEFAULT_OFFSCREEN_PAGES = 2;
-    ViewPager mViewPager;
-    TabsAdapter mTabsAdapter;
-    ActionMode mActionMode;
+	private static final String INSTANCESTATE_TAB = "tab";
+	private static final int DEFAULT_OFFSCREEN_PAGES = 2;
+	ViewPager mViewPager;
+	TabsAdapter mTabsAdapter;
+	ActionMode mActionMode;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.fragment_pager);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setOffscreenPageLimit(DEFAULT_OFFSCREEN_PAGES);
+		setContentView(R.layout.fragment_pager);
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setOffscreenPageLimit(DEFAULT_OFFSCREEN_PAGES);
 
-        final ActionBar bar = getActionBar();
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME);
+		final ActionBar bar = getActionBar();
+		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE
+				| ActionBar.DISPLAY_SHOW_HOME);
 
-        mTabsAdapter = new TabsAdapter(this, mViewPager);
-        
-/*        mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_category),
-                FileCategoryActivity.class, null);
-        
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_sd),
-                FileViewActivity.class, null);*/
-        
-        
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_ftp_client),
-                FtpFileViewActivity.class, null);
-        
-        
-/*        mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_remote),
-                ServerControlActivity.class, null);*/
-        bar.setSelectedNavigationItem(PreferenceManager.getDefaultSharedPreferences(this)
-                .getInt(INSTANCESTATE_TAB, Util.CATEGORY_TAB_INDEX));
-    }
+		mTabsAdapter = new TabsAdapter(this, mViewPager);
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putInt(INSTANCESTATE_TAB, getActionBar().getSelectedNavigationIndex());
-        editor.commit();
-    }
+		/*
+		 * mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_category),
+		 * FileCategoryActivity.class, null);
+		 * 
+		 * mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_sd),
+		 * FileViewActivity.class, null);
+		 */
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-/*        if (getActionBar().getSelectedNavigationIndex() == Util.CATEGORY_TAB_INDEX) {
-            FileCategoryActivity categoryFragement =(FileCategoryActivity) mTabsAdapter.getItem(Util.CATEGORY_TAB_INDEX);
-            if (categoryFragement.isHomePage()) {
-                reInstantiateCategoryTab();
-            } else {
-                categoryFragement.setConfigurationChanged(true);
-            }
-        }
-        super.onConfigurationChanged(newConfig);*/
-    }
+		mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_ftp_client),
+				FtpFileViewActivity.class, null);
 
-    public void reInstantiateCategoryTab() {
-        mTabsAdapter.destroyItem(mViewPager, Util.CATEGORY_TAB_INDEX,
-                mTabsAdapter.getItem(Util.CATEGORY_TAB_INDEX));
-        mTabsAdapter.instantiateItem(mViewPager, Util.CATEGORY_TAB_INDEX);
-    }
+		/*
+		 * mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_remote),
+		 * ServerControlActivity.class, null);
+		 */
+		bar.setSelectedNavigationItem(PreferenceManager
+				.getDefaultSharedPreferences(this).getInt(INSTANCESTATE_TAB,
+						Util.CATEGORY_TAB_INDEX));
+	}
 
-    @Override
-    public void onBackPressed() {
-        IBackPressedListener backPressedListener = (IBackPressedListener) mTabsAdapter
-                .getItem(mViewPager.getCurrentItem());
-        if (!backPressedListener.onBack()) {
-            super.onBackPressed();
-        }
-    }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(this).edit();
+		editor.putInt(INSTANCESTATE_TAB, getActionBar()
+				.getSelectedNavigationIndex());
+		editor.commit();
+	}
 
-    public interface IBackPressedListener {
-        /**
-         * 处理back事件。
-         * @return True: 表示已经处理; False: 没有处理，让基类处理。
-         */
-        boolean onBack();
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		/*
+		 * if (getActionBar().getSelectedNavigationIndex() ==
+		 * Util.CATEGORY_TAB_INDEX) { FileCategoryActivity categoryFragement
+		 * =(FileCategoryActivity)
+		 * mTabsAdapter.getItem(Util.CATEGORY_TAB_INDEX); if
+		 * (categoryFragement.isHomePage()) { reInstantiateCategoryTab(); } else
+		 * { categoryFragement.setConfigurationChanged(true); } }
+		 * super.onConfigurationChanged(newConfig);
+		 */
+	}
 
-    public void setActionMode(ActionMode actionMode) {
-        mActionMode = actionMode;
-    }
+	public void reInstantiateCategoryTab() {
+		mTabsAdapter.destroyItem(mViewPager, Util.CATEGORY_TAB_INDEX,
+				mTabsAdapter.getItem(Util.CATEGORY_TAB_INDEX));
+		mTabsAdapter.instantiateItem(mViewPager, Util.CATEGORY_TAB_INDEX);
+	}
 
-    public ActionMode getActionMode() {
-        return mActionMode;
-    }
+	@Override
+	public void onBackPressed() {
+		IBackPressedListener backPressedListener = (IBackPressedListener) mTabsAdapter
+				.getItem(mViewPager.getCurrentItem());
+		if (!backPressedListener.onBack()) {
+			super.onBackPressed();
+		}
+	}
 
-    public Fragment getFragment(int tabIndex) {
-        return mTabsAdapter.getItem(tabIndex);
-    }
+	public interface IBackPressedListener {
+		/**
+		 * 处理back事件。
+		 * 
+		 * @return True: 表示已经处理; False: 没有处理，让基类处理。
+		 */
+		boolean onBack();
+	}
 
-    /**
-     * This is a helper class that implements the management of tabs and all
-     * details of connecting a ViewPager with associated TabHost.  It relies on a
-     * trick.  Normally a tab host has a simple API for supplying a View or
-     * Intent that each tab will show.  This is not sufficient for switching
-     * between pages.  So instead we make the content part of the tab host
-     * 0dp high (it is not shown) and the TabsAdapter supplies its own dummy
-     * view to show as the tab content.  It listens to changes in tabs, and takes
-     * care of switch to the correct paged in the ViewPager whenever the selected
-     * tab changes.
-     */
-    public static class TabsAdapter extends FragmentPagerAdapter
-            implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
-        private final Context mContext;
-        private final ActionBar mActionBar;
-        private final ViewPager mViewPager;
-        private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+	public void setActionMode(ActionMode actionMode) {
+		mActionMode = actionMode;
+	}
 
-        static final class TabInfo {
-            private final Class<?> clss;
-            private final Bundle args;
-            private Fragment fragment;
+	public ActionMode getActionMode() {
+		return mActionMode;
+	}
 
-            TabInfo(Class<?> _class, Bundle _args) {
-                clss = _class;
-                args = _args;
-            }
-        }
+	public Fragment getFragment(int tabIndex) {
+		return mTabsAdapter.getItem(tabIndex);
+	}
 
-        public TabsAdapter(Activity activity, ViewPager pager) {
-            super(activity.getFragmentManager());
-            mContext = activity;
-            mActionBar = activity.getActionBar();
-            mViewPager = pager;
-            mViewPager.setAdapter(this);
-            mViewPager.setOnPageChangeListener(this);
-        }
+	/**
+	 * This is a helper class that implements the management of tabs and all
+	 * details of connecting a ViewPager with associated TabHost. It relies on a
+	 * trick. Normally a tab host has a simple API for supplying a View or
+	 * Intent that each tab will show. This is not sufficient for switching
+	 * between pages. So instead we make the content part of the tab host 0dp
+	 * high (it is not shown) and the TabsAdapter supplies its own dummy view to
+	 * show as the tab content. It listens to changes in tabs, and takes care of
+	 * switch to the correct paged in the ViewPager whenever the selected tab
+	 * changes.
+	 */
+	public static class TabsAdapter extends FragmentPagerAdapter implements
+			ActionBar.TabListener, ViewPager.OnPageChangeListener {
+		private final Context mContext;
+		private final ActionBar mActionBar;
+		private final ViewPager mViewPager;
+		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 
-        public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
-            TabInfo info = new TabInfo(clss, args);
-            tab.setTag(info);
-            tab.setTabListener(this);
-            mTabs.add(info);
-            mActionBar.addTab(tab);
-            notifyDataSetChanged();
-        }
+		static final class TabInfo {
+			private final Class<?> clss;
+			private final Bundle args;
+			private Fragment fragment;
 
-        @Override
-        public int getCount() {
-            return mTabs.size();
-        }
+			TabInfo(Class<?> _class, Bundle _args) {
+				clss = _class;
+				args = _args;
+			}
+		}
 
-        @Override
-        public Fragment getItem(int position) {
-            TabInfo info = mTabs.get(position);
-            if (info.fragment == null) {
-                info.fragment = Fragment.instantiate(mContext, info.clss.getName(), info.args);
-            }
-            return info.fragment;
-        }
+		public TabsAdapter(Activity activity, ViewPager pager) {
+			super(activity.getFragmentManager());
+			mContext = activity;
+			mActionBar = activity.getActionBar();
+			mViewPager = pager;
+			mViewPager.setAdapter(this);
+			mViewPager.setOnPageChangeListener(this);
+		}
 
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
+		public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
+			TabInfo info = new TabInfo(clss, args);
+			tab.setTag(info);
+			tab.setTabListener(this);
+			mTabs.add(info);
+			mActionBar.addTab(tab);
+			notifyDataSetChanged();
+		}
 
-        @Override
-        public void onPageSelected(int position) {
-            mActionBar.setSelectedNavigationItem(position);
-        }
+		@Override
+		public int getCount() {
+			return mTabs.size();
+		}
 
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
+		@Override
+		public Fragment getItem(int position) {
+			TabInfo info = mTabs.get(position);
+			if (info.fragment == null) {
+				info.fragment = Fragment.instantiate(mContext,
+						info.clss.getName(), info.args);
+			}
+			return info.fragment;
+		}
 
-        @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            Object tag = tab.getTag();
-            for (int i=0; i<mTabs.size(); i++) {
-                if (mTabs.get(i) == tag) {
-                    mViewPager.setCurrentItem(i);
-                }
-            }
-            if(!tab.getText().equals(mContext.getString(R.string.tab_sd))) {
-                ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext).getActionMode();
-                if (actionMode != null) {
-                    actionMode.finish();
-                }
-            }
-        }
+		@Override
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
+		}
 
-        @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-        }
+		@Override
+		public void onPageSelected(int position) {
+			mActionBar.setSelectedNavigationItem(position);
+		}
 
-        @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-        }
-    }
+		@Override
+		public void onPageScrollStateChanged(int state) {
+		}
+
+		@Override
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			Object tag = tab.getTag();
+			for (int i = 0; i < mTabs.size(); i++) {
+				if (mTabs.get(i) == tag) {
+					mViewPager.setCurrentItem(i);
+				}
+			}
+			if (!tab.getText().equals(mContext.getString(R.string.tab_sd))) {
+				ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
+						.getActionMode();
+				if (actionMode != null) {
+					actionMode.finish();
+				}
+			}
+		}
+
+		@Override
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		}
+
+		@Override
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		}
+	}
 }

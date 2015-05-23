@@ -61,13 +61,14 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
-        <activity android:excludeFromRecents="true" 
-            android:noHistory="true" 
-            android:launchMode="standard" 
-            android:name=".ui.activity.QuickSetupActivity" 
-            android:screenOrientation="sensor" android:label="@string/qs_title">
+        <activity
+            android:name=".ui.activity.QuickSetupActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/qs_title"
+            android:launchMode="standard"
+            android:noHistory="true"
+            android:screenOrientation="sensor" >
         </activity>
-            
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -236,20 +237,17 @@
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle" >
         </activity>
-
         <activity
             android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-        
-       <activity
+        <activity
             android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity"
-            android:theme="@android:style/Theme.Holo.Light"
             android:configChanges="screenSize|keyboardHidden"
             android:screenOrientation="sensor"
+            android:theme="@style/Custom_ActionBar_Style"
             android:uiOptions="splitActionBarWhenNarrow" >
-
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
 
@@ -269,8 +267,7 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        
-        
+
         <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
