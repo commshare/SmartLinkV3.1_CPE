@@ -36,4 +36,13 @@
     <dimen name="dimen_textsize_19sp">19sp</dimen>    
     <dimen name="dimen_textsize_22sp">22sp</dimen>
     <dimen name="dimen_flux_use_text_padding">3dip</dimen> 
+
+    <dimen name="path_indicator_height">32.0dip</dimen>
+    <dimen name="path_indicator_top_line_thick">2.0dip</dimen>
+    <dimen name="path_indicator_button_margin_left">-9.0dip</dimen>
+    <dimen name="path_indicator_button_text_size">15.0dip</dimen>
+    <dimen name="path_indicator_first_button_padding_left">12.0dip</dimen>
+    <dimen name="path_indicator_button_padding_left">15.0dip</dimen>
+    <dimen name="path_indicator_button_padding_right">16.0dip</dimen>
+
 </resources>

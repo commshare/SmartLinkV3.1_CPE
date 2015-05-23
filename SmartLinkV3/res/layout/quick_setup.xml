@@ -35,11 +35,14 @@
 
     <com.alcatel.smartlinkv3.ui.view.ClearEditText android:id="@+id/password"  
         android:layout_width="match_parent"  
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_height="30dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:layout_marginTop="@dimen/dimen_20dip"
+        android:background="@drawable/selector_edit_bg"
         android:inputType="textPassword"
-        android:textSize="18sp"          >  
+        android:textSize="13sp"          >  
     </com.alcatel.smartlinkv3.ui.view.ClearEditText>  
 
 </LinearLayout>

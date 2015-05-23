@@ -192,7 +192,10 @@ def get_cmd(c):
 def do_action(cmd, prompt, output=False):
     color_print(prompt)
     if output:
-        return commands.getoutput(cmd)
+        p = os.popen(cmd)
+        return p.read().strip()
+        #commands is not work properly in MingGW.
+        #return commands.getoutput(cmd)
     else:
         return os.system(cmd)
 
@@ -248,7 +251,7 @@ if __name__ == '__main__':
 
         ret = do_action(cmd, "Now Push Commit to Gerrit\n", False)
         print ret
-        if ret.startswith("Permission denied (publickey)."):
+        if isinstance(ret, str) and ret.startswith("Permission denied (publickey)."):
             color_print('''Please login 'http://gerrit.tcl-ta.com:8081/login/',
 click user name on the right top corner, navigate 'Settings/SSH Public Keys',
 add SSH Public Key which is the content of file '~/.ssh/id_rsa.pub'.\n''')
