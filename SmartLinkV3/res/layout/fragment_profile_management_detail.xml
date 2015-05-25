@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
@@ -351,6 +351,19 @@
                     android:paddingTop="15dip"
                     android:text="@string/setting_network_profile_management_auth_type_pap_and_chap"
                     android:textColor="@color/color_black" />
-            </RadioGroup>
+     </RadioGroup>
+     <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:id="@+id/profile_waiting_progressbar"
+            android:background="@null"
+            android:visibility="visible"  >
+            <ProgressBar
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/progerss_blue"
+                />
+    </RelativeLayout>
                 
-</LinearLayout>
+</FrameLayout>

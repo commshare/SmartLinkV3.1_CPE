@@ -332,6 +332,8 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 			if(!m_fragment_tag_stack.isEmpty()){
 				String FragmentTag = m_fragment_tag_stack.peek();
 				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)){
+					m_fragment_profile_management_detail.AddOrDeleteProfile();
+//					Log.v("AddOrEditProfile", "TEST");
 					this.onBackPressed();
 				}
 				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT)){

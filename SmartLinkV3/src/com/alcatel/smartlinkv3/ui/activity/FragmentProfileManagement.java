@@ -89,13 +89,6 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		BusinessMannager.getInstance().getProfileManager().startGetProfileList(null);
 	}
 	
-	private List<String> getProfileList(){
-		List<String> data = new ArrayList<String>();
-		data.add("");
-		data.add("Default");
-		return data;
-	}
-	
 	public void goToDetailProfile(Bundle data){
 		m_parent_activity.setAddAndDeleteVisibility(View.GONE);
 		m_parent_activity.showFragmentProfileManagementDetail(data);

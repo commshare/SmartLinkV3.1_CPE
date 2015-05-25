@@ -5,9 +5,11 @@ import java.util.List;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.business.profile.HttpAddNewProfile;
 import com.alcatel.smartlinkv3.business.profile.HttpDeleteProfile;
+import com.alcatel.smartlinkv3.business.profile.HttpEditProfile;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.GetProfileListResult;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
+import com.alcatel.smartlinkv3.business.profile.HttpSetDefaultProfile;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -81,7 +83,13 @@ public class ProfileManager extends BaseManager{
 			return;
 		}
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile("15.2", "TestName", "3GNET", "TESTNAME", "1111", 0, new IHttpFinishListener(){
+		String ProfileName = (String) data.getParamByKey("profile_name");
+		String APN = (String) data.getParamByKey("apn");
+		String UserName = (String) data.getParamByKey("user_name");
+		String Password = (String) data.getParamByKey("password");
+		int AuthType = (Integer) data.getParamByKey("auth_type");
+		
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile("15.2", ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -92,7 +100,7 @@ public class ProfileManager extends BaseManager{
                 	try {
 						strErrcode = response.getErrorCode();
 						if(strErrcode.length() == 0) { 
-							Log.v("GetProfileResultADD", "Yes");
+							Log.v("AddOrEditProfile", "Yes");
 						}else{
 							//Log
 						}
@@ -103,7 +111,7 @@ public class ProfileManager extends BaseManager{
 					}
                 }else{
                 	//Log
-                	Log.v("GetProfileResultADD", "No");
+                	Log.v("AddOrEditProfile", "No");
                 }
                 startGetProfileList(null);
                 
@@ -111,6 +119,51 @@ public class ProfileManager extends BaseManager{
 			
 		}));
 	}
+	
+	
+	public void startEditProfile(DataValue data){
+		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "EditProfile") != true){
+			return;
+		}
+		
+		int profileID = (Integer) data.getParamByKey("profile_id");
+		String ProfileName = (String) data.getParamByKey("profile_name");
+		String APN = (String) data.getParamByKey("apn");
+		String UserName = (String) data.getParamByKey("user_name");
+		String Password = (String) data.getParamByKey("password");
+		int AuthType = (Integer) data.getParamByKey("auth_type");
+		
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpEditProfile.EditProfile("15.3", profileID, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	try {
+						strErrcode = response.getErrorCode();
+						if(strErrcode.length() == 0) { 
+							Log.v("AddOrEditProfile", "Yes");
+						}else{
+							//Log
+						}
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }else{
+                	//Log
+                	Log.v("AddOrEditProfile", "No");
+                }
+                startGetProfileList(null);
+                
+			}
+			
+		}));
+	}
+	
 	
 	public void startDeleteProfile(DataValue data){
 		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "DeleteProfile") != true){
@@ -145,6 +198,49 @@ public class ProfileManager extends BaseManager{
                 }
                 
                 Intent megIntent= new Intent(MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+                
+			}
+			
+		}));
+		
+	}
+	
+	public void startSetDefaultProfile(DataValue data){
+		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "SetDefaultProfile") != true){
+			return;
+		}
+		
+		int profileId = (Integer) data.getParamByKey("profile_id");
+		
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile("15.5", profileId, new IHttpFinishListener(){
+
+			@Override
+			public void onHttpRequestFinish(BaseResponse response) {
+				// TODO Auto-generated method stub
+				String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	try {
+						strErrcode = response.getErrorCode();
+						if(strErrcode.length() == 0) { 
+							Log.v("SetDefaultProfileResult", "Yes");
+						}else{
+							//Log
+						}
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }else{
+                	//Log
+                	Log.v("SetDefaultProfileResult", "No");
+                }
+                
+                Intent megIntent= new Intent(MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
     			m_context.sendBroadcast(megIntent);
