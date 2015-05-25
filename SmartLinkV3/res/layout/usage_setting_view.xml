@@ -48,7 +48,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
        	android:layout_below="@id/title_layout"
-       	android:background="@color/color_white" 
+       	android:background="@color/setting_background_color" 
         android:overScrollMode="never" >
     
         <LinearLayout
@@ -63,8 +63,7 @@
 	        
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/color_divider" />
+            android:layout_height="20dip"/>
            
        	<include
        		android:layout_width="match_parent"
@@ -73,14 +72,14 @@
         
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/color_divider" />
+            android:layout_height="20dip"/>
 	        
         <LinearLayout
             android:id="@+id/frame_roaming"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="6dip"
+            android:background="@color/color_white"
             android:orientation="vertical" >
             <RelativeLayout
             android:layout_width="match_parent"

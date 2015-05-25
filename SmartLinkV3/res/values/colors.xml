@@ -102,8 +102,9 @@
     <color name="remote_connect_text">#FFe78018</color>
     <color name="remote_disconnect_text">#FF901821</color>
     <!-- FTP FILE END -->
-
+	<!-- DLNA start -->
     <color name="setting_background_color">#efeff4</color>
+	<!-- DLNA end -->
 
     <!-- DLNA start -->
     <color name="media_tool_background_color">#ff808080</color>
