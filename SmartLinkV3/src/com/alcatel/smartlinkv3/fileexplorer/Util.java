@@ -445,7 +445,7 @@ public class Util {
         notification.defaults = Notification.DEFAULT_SOUND;
         if (intent == null) {
             // FIXEME: category tab is disabled
-            intent = new Intent(context, FtpFileViewActivity.class);
+            intent = new Intent(context, FtpFileViewFragment.class);
         }
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         notification.setLatestEventInfo(context, title, body, contentIntent);

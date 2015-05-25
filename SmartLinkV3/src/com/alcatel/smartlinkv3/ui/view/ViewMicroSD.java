@@ -8,7 +8,7 @@ import org.cybergarage.upnp.Device;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
 import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;

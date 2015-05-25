@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.util.Log;
 
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity.FtpCommandProc;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.FtpCommandProc;
 import com.alcatel.smartlinkv3.ftp.client.FtpClientModel;
 import com.alcatel.smartlinkv3.ftp.client.FtpManager;
 import com.alcatel.smartlinkv3.ftp.client.FtpManagerIRetrieveListener;

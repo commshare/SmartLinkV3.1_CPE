@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -45,6 +46,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,7 +58,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity.IBackPressedListener;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity.OnBackPressedListener;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.UICmd;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.uiCommandListener;
@@ -66,8 +68,8 @@ import com.alcatel.smartlinkv3.ftp.client.FtpManagerIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
 
-public class FtpFileViewActivity extends Fragment implements
-		IFileInteractionListener, IBackPressedListener {
+public class FtpFileViewFragment extends Fragment implements
+		IFileInteractionListener, OnBackPressedListener {
 
 	public static final String EXT_FILTER_KEY = "ext_filter";
 
@@ -561,7 +563,7 @@ public class FtpFileViewActivity extends Fragment implements
 		
 		m_ftp = new FtpClientModel();
 		
-		if(1 == 1){
+		if (true) {
 			m_ftp.host = getServerAddress(mContext);
 			m_ftp.port = 21;
 		}
@@ -590,6 +592,30 @@ public class FtpFileViewActivity extends Fragment implements
     }
 	
 	private boolean mBackspaceExit;
+	
+	interface IConnectedActionMode {
+		public void setActionMode(ActionMode actionMode);
+	    public ActionMode getActionMode();
+	    public ActionMode launchActionMode(ActionMode.Callback callback);
+	    public ActionBar obtainActionBar();
+	}
+	private IConnectedActionMode mCommectedActionMode;
+	
+	@Override  
+	public void onAttach(Activity activity){  
+	      super.onAttach(activity);	      
+	      try{  
+	          mCommectedActionMode =(IConnectedActionMode)activity;
+	      }catch(ClassCastException e){
+	          throw new ClassCastException( 
+	        		  activity.toString() + "must implement IConnectedActionMode");
+	      }
+	}
+	
+	@Override
+	public Activity obtainActivity() {
+		return this.getActivity();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -611,7 +637,7 @@ public class FtpFileViewActivity extends Fragment implements
 
 		mFileCagetoryHelper = new FileCategoryHelper(mActivity);
 		mFileViewInteractionHub = new FtpFileViewInteractionHub(this);
-
+		mFileViewInteractionHub.setConnectdActionMode(mCommectedActionMode);
 		mFileViewInteractionHub.setUiCommandListener(mUiCmdListener);// test
 
 		Intent intent = mActivity.getIntent();
@@ -834,11 +860,6 @@ public class FtpFileViewActivity extends Fragment implements
 	@Override
 	public View getViewById(int id) {
 		return mRootView.findViewById(id);
-	}
-
-	@Override
-	public Context getContext() {
-		return mActivity;
 	}
 
 	@Override

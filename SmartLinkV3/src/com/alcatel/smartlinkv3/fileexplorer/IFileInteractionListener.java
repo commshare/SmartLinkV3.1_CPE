@@ -19,7 +19,7 @@
 
 package com.alcatel.smartlinkv3.fileexplorer;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
@@ -29,7 +29,7 @@ public interface IFileInteractionListener {
 
     public View getViewById(int id);
 
-    public Context getContext();
+    public Activity obtainActivity();
 
     public void startActivity(Intent intent);
 

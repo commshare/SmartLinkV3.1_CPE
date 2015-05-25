@@ -237,11 +237,8 @@
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle" >
         </activity>
-        <activity
-            android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
+
+
         <activity
             android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity"
             android:configChanges="screenSize|keyboardHidden"

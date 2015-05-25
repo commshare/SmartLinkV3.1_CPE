@@ -27,10 +27,13 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FileSortHelper.SortMethod;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileListItem.ModeCallback;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileOperationHelper.IOperationProgressListener;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity.SelectFilesCallback;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.IConnectedActionMode;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.SelectFilesCallback;
 import com.alcatel.smartlinkv3.fileexplorer.TextInputDialog.OnFinishListener;
 
 import android.R.drawable;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -65,7 +68,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FtpFileViewInteractionHub implements IOperationProgressListener {
+public class FtpFileViewInteractionHub 
+	implements IOperationProgressListener, IConnectedActionMode {
 	private static final String LOG_TAG = "FtpFileViewInteractionHub";
 
 	private IFileInteractionListener mFileViewListener;
@@ -88,7 +92,29 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 
 	private ImageView mNavigationBarUpDownArrow;
 
-	private Context mContext;
+	private Activity mActivity;
+	
+	private IConnectedActionMode mCommectedActionMode;
+	public void setConnectdActionMode(IConnectedActionMode icam) {
+		this.mCommectedActionMode = icam;
+	}
+	@Override
+	public void setActionMode(ActionMode actionMode) {
+		mCommectedActionMode.setActionMode(actionMode);
+	}
+	
+	@Override
+    public ActionMode getActionMode() {
+		return mCommectedActionMode.getActionMode();
+	}	
+	@Override
+	public ActionMode launchActionMode(ActionMode.Callback callback) {
+		return mCommectedActionMode.launchActionMode(callback);
+	}
+	@Override
+	public ActionBar obtainActionBar() {
+		return mCommectedActionMode.obtainActionBar();
+	}
 
 	private uiCommandListener mUICmdListener;
 
@@ -127,11 +153,11 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 		setup();
 		mFileOperationHelper = new FtpFileOperationHelper(this);
 		mFileSortHelper = new FileSortHelper();
-		mContext = mFileViewListener.getContext();
+		mActivity = mFileViewListener.obtainActivity();
 	}
 
 	private void showProgress(String msg) {
-		progressDialog = new ProgressDialog(mContext);
+		progressDialog = new ProgressDialog(mActivity);
 		// dialog.setIcon(R.drawable.icon);
 		progressDialog.setMessage(msg);
 		progressDialog.setIndeterminate(true);
@@ -279,8 +305,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 				break;
 			case R.id.path_pane_up_level:
 				onOperationUpLevel();
-				ActionMode mode = ((FtpFileExplorerTabActivity) mContext)
-						.getActionMode();
+				//ActionMode mode = ((FtpFileExplorerTabActivity) mContext)
+				//		.getActionMode();
+				ActionMode mode = getActionMode();
 				if (mode != null) {
 					mode.finish();
 				}
@@ -305,11 +332,11 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 	}
 
 	private void onOperationSetting() {
-		Intent intent = new Intent(mContext,
+		Intent intent = new Intent(mActivity,
 				FileExplorerPreferenceActivity.class);
 		if (intent != null) {
 			try {
-				mContext.startActivity(intent);
+				mActivity.startActivity(intent);
 			} catch (ActivityNotFoundException e) {
 				Log.e(LOG_TAG, "fail to start setting: " + e.toString());
 			}
@@ -329,7 +356,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 				stringId = R.string.added_favorite;
 			}
 
-			Toast.makeText(mContext, stringId, Toast.LENGTH_SHORT).show();
+			Toast.makeText(mActivity, stringId, Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -353,13 +380,16 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			f.Selected = true;
 			mCheckedFileNameList.add(f);
 		}
-		FtpFileExplorerTabActivity fileExplorerTabActivity = (FtpFileExplorerTabActivity) mContext;
-		ActionMode mode = fileExplorerTabActivity.getActionMode();
+		//FtpFileExplorerTabActivity fileExplorerTabActivity = (FtpFileExplorerTabActivity) mContext;
+		//ActionMode mode = fileExplorerTabActivity.getActionMode();
+		ActionMode mode = getActionMode();
 		if (mode == null) {
-			mode = fileExplorerTabActivity.startActionMode(new ModeCallback(
-					mContext, this));
-			fileExplorerTabActivity.setActionMode(mode);
-			Util.updateActionModeTitle(mode, mContext, getSelectedFileList()
+			//mode = fileExplorerTabActivity.startActionMode(new ModeCallback(
+			//		mContext, this));
+			mode = this.launchActionMode(new ModeCallback(mActivity, this));
+			//fileExplorerTabActivity.setActionMode(mode);
+			setActionMode(mode);
+			Util.updateActionModeTitle(mode, mActivity, getSelectedFileList()
 					.size());
 		}
 		mFileViewListener.onDataChanged();
@@ -401,7 +431,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 				if (end == -1)
 					break;
 
-				View listItem = LayoutInflater.from(mContext).inflate(
+				View listItem = LayoutInflater.from(mActivity).inflate(
 						R.layout.ftp_dropdown_item, null);
 
 				View listContent = listItem.findViewById(R.id.list_item);
@@ -450,10 +480,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 	}
 
 	public void onOperationCreateFolder() {
-		TextInputDialog dialog = new TextInputDialog(mContext,
-				mContext.getString(R.string.operation_create_folder),
-				mContext.getString(R.string.operation_create_folder_message),
-				mContext.getString(R.string.new_folder_name),
+		TextInputDialog dialog = new TextInputDialog(mActivity,
+				mActivity.getString(R.string.operation_create_folder),
+				mActivity.getString(R.string.operation_create_folder_message),
+				mActivity.getString(R.string.new_folder_name),
 				new OnFinishListener() {
 					@Override
 					public boolean onFinish(String text) {
@@ -473,9 +503,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 					mCurrentPath, text)));
 			mFileListView.setSelection(mFileListView.getCount() - 1);
 		} else {
-			new AlertDialog.Builder(mContext)
+			new AlertDialog.Builder(mActivity)
 					.setMessage(
-							mContext.getString(R.string.fail_to_create_folder))
+							mActivity.getString(R.string.fail_to_create_folder))
 					.setPositiveButton(R.string.confirm, null).create().show();
 			return false;
 		}
@@ -518,14 +548,14 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 	}
 
 	private void copy(CharSequence text) {
-		ClipboardManager cm = (ClipboardManager) mContext
+		ClipboardManager cm = (ClipboardManager) mActivity
 				.getSystemService(Context.CLIPBOARD_SERVICE);
 		cm.setText(text);
 	}
 
 	private void onOperationPaste() {
 		if (mFileOperationHelper.Paste(mCurrentPath)) {
-			showProgress(mContext.getString(R.string.operation_pasting));
+			showProgress(mActivity.getString(R.string.operation_pasting));
 		}
 	}
 
@@ -587,7 +617,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 		ArrayList<FileInfo> selectedFileList = getSelectedFileList();
 		for (FileInfo f : selectedFileList) {
 			if (f.IsDir) {
-				AlertDialog dialog = new AlertDialog.Builder(mContext)
+				AlertDialog dialog = new AlertDialog.Builder(mActivity)
 						.setMessage(R.string.error_info_cant_send_folder)
 						.setPositiveButton(R.string.confirm, null).create();
 				dialog.show();
@@ -607,9 +637,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 	}
 
 	public void onOperationRename() {
-		int pos = mListViewContextMenuSelectedItem;
-		if (pos == -1)
-			return;
+		// TODO : 去掉上下文菜单选择判断
+		//int pos = mListViewContextMenuSelectedItem;
+		//if (pos == -1)
+		//	return;
 
 		if (getSelectedFileList().size() == 0)
 			return;
@@ -617,9 +648,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 		final FileInfo f = getSelectedFileList().get(0);
 		clearSelection();
 
-		TextInputDialog dialog = new TextInputDialog(mContext,
-				mContext.getString(R.string.operation_rename),
-				mContext.getString(R.string.operation_rename_message),
+		TextInputDialog dialog = new TextInputDialog(mActivity,
+				mActivity.getString(R.string.operation_rename),
+				mActivity.getString(R.string.operation_rename_message),
 				f.fileName, new OnFinishListener() {
 					@Override
 					public boolean onFinish(String text) {
@@ -639,8 +670,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			f.fileName = text;
 			mFileViewListener.onDataChanged();
 		} else {
-			new AlertDialog.Builder(mContext)
-					.setMessage(mContext.getString(R.string.fail_to_rename))
+			new AlertDialog.Builder(mActivity)
+					.setMessage(mActivity.getString(R.string.fail_to_rename))
 					.setPositiveButton(R.string.confirm, null).create().show();
 			return false;
 		}
@@ -668,7 +699,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			intent.setData(Uri.fromFile(new File(path)));
 			Log.v(LOG_TAG, "file changed, send broadcast:" + intent.toString());
 		}
-		mContext.sendBroadcast(intent);
+		mActivity.sendBroadcast(intent);
 	}
 
 	public void onFtpDownload() {
@@ -696,15 +727,15 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 	private void doOperationDelete(final ArrayList<FileInfo> selectedFileList) {
 		final ArrayList<FileInfo> selectedFiles = new ArrayList<FileInfo>(
 				selectedFileList);
-		Dialog dialog = new AlertDialog.Builder(mContext)
+		Dialog dialog = new AlertDialog.Builder(mActivity)
 				.setMessage(
-						mContext.getString(R.string.operation_delete_confirm_message))
+						mActivity.getString(R.string.operation_delete_confirm_message))
 				.setPositiveButton(R.string.confirm,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
 								if (mFileOperationHelper.Delete(selectedFiles)) {
-									showProgress(mContext
+									showProgress(mActivity
 											.getString(R.string.operation_deleting));
 								}
 								clearSelection();
@@ -729,7 +760,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 		if (file == null)
 			return;
 
-		InformationDialog dialog = new InformationDialog(mContext, file,
+		InformationDialog dialog = new InformationDialog(mActivity, file,
 				mFileViewListener.getFileIconHelper());
 		dialog.show();
 		clearSelection();
@@ -742,7 +773,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			clearSelection();
 		} else if (mFileOperationHelper.isMoveState()) {
 			if (mFileOperationHelper.EndMove(mCurrentPath)) {
-				showProgress(mContext.getString(R.string.operation_moving));
+				showProgress(mActivity.getString(R.string.operation_moving));
 			}
 		} else {
 			onOperationPaste();
@@ -839,7 +870,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 	}
 
 	private void onShowFilesDialog() {
-		fileListDialog = new Dialog(mContext);
+		fileListDialog = new Dialog(mActivity);
 		fileListDialog.setTitle("File Upload");
 
 		fileListDialog.setContentView(R.layout.ftp_dialog_files);
@@ -933,7 +964,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 				// show dialog
 				// choose the files
 				// put the files into fileinfo
-				Toast.makeText(mContext, "ftp upload", Toast.LENGTH_SHORT)
+				Toast.makeText(mActivity, "ftp upload", Toast.LENGTH_SHORT)
 						.show();
 				onShowFilesDialog();
 				break;
@@ -959,7 +990,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 				onOperationSetting();
 				break;
 			case MENU_EXIT:
-				((FtpFileExplorerTabActivity) mContext).finish();
+				//((FtpFileExplorerTabActivity) mActivity).finish();
+				mActivity.finish();
 				break;
 			// sort
 			case MENU_SORT_NAME:
@@ -1006,10 +1038,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			// TODO 添加菜单选项操作
 			case GlobalConsts.MENU_EDIT :
 				switchEditCheckBox();
-				Toast.makeText(mContext, "Edit File.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mActivity, "Edit File.", Toast.LENGTH_SHORT).show();
 				break;
 			case GlobalConsts.MENU_ADD_FILE	:
-				Toast.makeText(mContext, "Add File.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mActivity, "Add File.", Toast.LENGTH_SHORT).show();
 				break;
 				
 			default:
@@ -1179,8 +1211,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 
 		if (isInSelection()) {
 			boolean selected = lFileInfo.Selected;
-			ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-					.getActionMode();
+			//ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
+			//		.getActionMode();
+			ActionMode actionMode = getActionMode();
 			ImageView checkBox = (ImageView) view
 					.findViewById(R.id.file_checkbox);
 			if (selected) {
@@ -1198,7 +1231,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 			}
 			lFileInfo.Selected = !selected;
 
-			Util.updateActionModeTitle(actionMode, mContext,
+			Util.updateActionModeTitle(actionMode, mActivity,
 					mCheckedFileNameList.size());
 			return;
 		}
@@ -1213,8 +1246,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 		}
 
 		mCurrentPath = getAbsoluteName(mCurrentPath, lFileInfo.fileName);
-		ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-				.getActionMode();
+		//ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
+		//		.getActionMode();
+		ActionMode actionMode = this.getActionMode();
 		if (actionMode != null) {
 			actionMode.finish();
 		}
@@ -1292,7 +1326,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener {
 
 	private void viewFile(FileInfo lFileInfo) {
 		try {
-			IntentBuilder.viewFile(mContext, lFileInfo.filePath);
+			IntentBuilder.viewFile(mActivity, lFileInfo.filePath);
 		} catch (ActivityNotFoundException e) {
 			Log.e(LOG_TAG, "fail to view file: " + e.toString());
 		}

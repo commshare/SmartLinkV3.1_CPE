@@ -40,58 +40,73 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewActivity;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
 import com.alcatel.smartlinkv3.fileexplorer.Util;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.IConnectedActionMode;
 
 //TODO 修改
-public class FtpFileExplorerTabActivity extends Activity {
-	ActionMode mActionMode;
+public class FtpFileExplorerTabActivity extends Activity 
+	implements FtpFileViewFragment.IConnectedActionMode {
+	private ActionMode mActionMode;
 
+	@Override
 	public void setActionMode(ActionMode actionMode) {
-		mActionMode = actionMode;
+		this.mActionMode = actionMode;
 	}
-
+	@Override
 	public ActionMode getActionMode() {
-		return mActionMode;
+		return this.mActionMode;
+	}	
+	@Override
+	public ActionMode launchActionMode(ActionMode.Callback callback) {
+		return startActionMode(callback);
+	}
+	@Override
+	public ActionBar obtainActionBar() {
+		return getActionBar();
 	}
 
-	public interface IBackPressedListener {
+	public interface OnBackPressedListener {
 		/**
-		 * 处理back事件。
-		 * 
 		 * @return True: 表示已经处理; False: 没有处理，让基类处理。
 		 */
 		boolean onBack();
 	}
 
-	private IBackPressedListener mBackPressedListener;
+	private OnBackPressedListener mBackPressedListener;
 
-	private boolean initCustomActionBar() {
-		ActionBar mActionbar = getActionBar();
+	private boolean initCustomActionBar(Activity activity) {
+		final Activity _activity = activity;
+		
+		ActionBar mActionbar = _activity.getActionBar();
 		if (mActionbar == null) {
 			return false;
 		}
 
-		mActionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
-				ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
-						| ActionBar.DISPLAY_SHOW_TITLE);
+		mActionbar.setDisplayOptions(
+				ActionBar.DISPLAY_SHOW_CUSTOM,
+				ActionBar.DISPLAY_SHOW_CUSTOM | 
+				ActionBar.DISPLAY_SHOW_HOME | 
+				ActionBar.DISPLAY_SHOW_TITLE);
+		
 		mActionbar.setDisplayShowCustomEnabled(true);
+		
 		mActionbar.setCustomView(R.layout.custom_actionbar);
-		TextView tvTitle = (TextView) mActionbar.getCustomView().findViewById(
-				R.id.tv_title_title);
+		
+		TextView tvTitle = (TextView) mActionbar.getCustomView().findViewById(R.id.tv_title_title);
 		tvTitle.setText(R.string.microsd_file);
-		mActionbar.getCustomView().findViewById(R.id.ib_title_back)
-				.setOnClickListener(new OnClickListener() {
+		mActionbar.getCustomView().findViewById(R.id.ib_title_back).setOnClickListener(
+				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						FtpFileExplorerTabActivity.this.finish();
+						_activity.finish();
 					}
 				});
-		mActionbar.getCustomView().findViewById(R.id.tv_title_back)
-				.setOnClickListener(new OnClickListener() {
+		mActionbar.getCustomView().findViewById(R.id.tv_title_back).setOnClickListener(
+				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						FtpFileExplorerTabActivity.this.finish();
+						_activity.finish();
 					}
 				});
 		return true;
@@ -100,23 +115,25 @@ public class FtpFileExplorerTabActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		final ActionBar bar = getActionBar();
-		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE
-				| ActionBar.DISPLAY_SHOW_HOME);
-
-		Fragment fragment = Fragment.instantiate(this,
-				FtpFileViewActivity.class.getName(), savedInstanceState);
-		mBackPressedListener = (FtpFileViewActivity) fragment;
-
-		initCustomActionBar();
-
-		FragmentManager fragmentManager = this.getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-		fragmentTransaction.replace(android.R.id.content, fragment);
-		fragmentTransaction.commit();
-
+		
+		if (initCustomActionBar(this)) {
+			try {	
+				Fragment fragment = Fragment.instantiate(this,
+						FtpFileViewFragment.class.getName(), savedInstanceState);
+				mBackPressedListener = (FtpFileViewFragment) fragment;		
+		
+				FragmentManager fragmentManager = this.getFragmentManager();
+				FragmentTransaction fragmentTransaction = fragmentManager
+						.beginTransaction();
+				fragmentTransaction.replace(android.R.id.content, fragment);
+				fragmentTransaction.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				this.finish();
+			}
+		} else {
+			finish();
+		}
 	}
 
 	@Override
@@ -128,7 +145,7 @@ public class FtpFileExplorerTabActivity extends Activity {
 
 }
 
-// TODO
+// TODO 废弃
 class OLD_MARK_FtpFileExplorerTabActivity extends Activity {
 	private static final String INSTANCESTATE_TAB = "tab";
 	private static final int DEFAULT_OFFSCREEN_PAGES = 2;
@@ -160,7 +177,7 @@ class OLD_MARK_FtpFileExplorerTabActivity extends Activity {
 		 */
 
 		mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_ftp_client),
-				FtpFileViewActivity.class, null);
+				FtpFileViewFragment.class, null);
 
 		/*
 		 * mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_remote),

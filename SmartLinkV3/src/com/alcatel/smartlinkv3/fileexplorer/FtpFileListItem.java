@@ -99,15 +99,19 @@ public class FtpFileListItem {
 			assert (img != null && img.getTag() != null);
 			FileInfo tag = (FileInfo) img.getTag();
 			tag.Selected = !tag.Selected;
-			ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-					.getActionMode();
+			//ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
+			//		.getActionMode();
+			ActionMode actionMode = mFileViewInteractionHub.getActionMode();
 
 			if (actionMode == null) {
-				actionMode = ((FtpFileExplorerTabActivity) mContext)
-						.startActionMode(new ModeCallback(mContext,
-								mFileViewInteractionHub));
-				((FtpFileExplorerTabActivity) mContext)
-						.setActionMode(actionMode);
+				//actionMode = ((FtpFileExplorerTabActivity) mContext)
+				//		.startActionMode(new ModeCallback(mContext,
+				//				mFileViewInteractionHub));
+				//((FtpFileExplorerTabActivity) mContext)
+				//		.setActionMode(actionMode);
+				actionMode = mFileViewInteractionHub.launchActionMode(
+						new ModeCallback(mContext,mFileViewInteractionHub));
+				mFileViewInteractionHub.setActionMode(actionMode);
 			} else {
 				actionMode.invalidate();
 			}
@@ -134,8 +138,9 @@ public class FtpFileListItem {
 		}
 
 		private void scrollToSDcardTab() {
-			ActionBar bar = ((FtpFileExplorerTabActivity) mContext)
-					.getActionBar();
+			//ActionBar bar = ((FtpFileExplorerTabActivity) mContext)
+			//		.getActionBar();
+			ActionBar bar = mFileViewInteractionHub.obtainActionBar();
 			if (bar.getSelectedNavigationIndex() != Util.SDCARD_TAB_INDEX) {
 				bar.setSelectedNavigationItem(Util.SDCARD_TAB_INDEX);
 			}
@@ -241,7 +246,8 @@ public class FtpFileListItem {
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			mFileViewInteractionHub.clearSelection();
-			((FtpFileExplorerTabActivity) mContext).setActionMode(null);
+			//((FtpFileExplorerTabActivity) mContext).setActionMode(null);
+			mFileViewInteractionHub.setActionMode(null);
 		}
 	}
 }
