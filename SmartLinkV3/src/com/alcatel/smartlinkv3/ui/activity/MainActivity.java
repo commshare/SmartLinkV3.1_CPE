@@ -190,7 +190,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		mAllShareProxy = AllShareProxy.getInstance(this);
 		mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	mBrocastFactory.registerListener(this);
-    	
+    
+  //  	showMicroView();
 	}
 
 	@Override
@@ -1265,11 +1266,14 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		sendBroadcast(msdIntent);
 	}
 	
-	public static void setAutoProFlag(boolean blAutoLogin){
-		m_blAutoPro = blAutoLogin;;
-	}
-	
-	public static boolean getAutoProFlag(){
-		return  m_blAutoPro;
+	public void showMicroView()
+	{
+		
+		boolean bSupport = true;//FeatureVersionManager.getInstance().isSupportModule("Sharing");
+		if(bSupport == true) {
+			m_microsdBtn.setVisibility(View.VISIBLE);
+		}else{
+			m_microsdBtn.setVisibility(View.GONE);
+		}
 	}
 }
