@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	
 	private RelativeLayout m_accessDeviceLayout;
 	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
-	public static String AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS = "com.alcatel.smartlinkv3.AutLoginReturn";
+//	public static String AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS = "com.alcatel.smartlinkv3.AutLoginReturn";
 	
 	private DMSDeviceBrocastFactory mBrocastFactory;
 	private AllShareProxy mAllShareProxy;
@@ -191,9 +191,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	mBrocastFactory.registerListener(this);
     	
-    	mProgressDialog = new ProgressDialog(this);   	
-    	mProgressDialog.setMessage("Loading...");
-    	
 	}
 
 	@Override
@@ -209,10 +206,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		this.registerReceiver(m_msgReceiver2, new IntentFilter(
 				PAGE_TO_VIEW_HOME));
-		
-		this.registerReceiver(m_msgReceiver2, new IntentFilter(
-				AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS));
-		
 
 		m_homeView.onResume();
 		m_usageView.onResume();
@@ -320,10 +313,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		
 		if (intent.getAction().equalsIgnoreCase(PAGE_TO_VIEW_HOME)) {
 			homeBtnClick();
-		}
-		
-		if (intent.getAction().equalsIgnoreCase(AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS)) {
-			//showProgress(false);
 		}
 		
 	}
@@ -483,10 +472,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onClick(View v) {
-		if(m_blAutoPro)
-		{
-			//showProgress(true);
-		}
 		switch (v.getId()) {
 		case R.id.main_home:
 			homeBtnClick();
@@ -1286,16 +1271,5 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	
 	public static boolean getAutoProFlag(){
 		return  m_blAutoPro;
-	}
-	
-	private ProgressDialog mProgressDialog;
-	private void showProgress(boolean bShow)
-	{	
-		if (bShow){
-			mProgressDialog.show();
-		}else
-		{
-			mProgressDialog.dismiss();
-		}	
 	}
 }

@@ -117,7 +117,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 					CPEConfig.getInstance().setLoginPassword(m_password);
 					CPEConfig.getInstance().setLoginUsername(USER_NAME);
-					//CPEConfig.getInstance().setAutoLoginFlag(true);
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;
@@ -140,7 +139,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
 						m_dlgProgress.dismiss();
 					}
-					//CPEConfig.getInstance().setAutoLoginFlag(false);
 					closeDialog();
 //					SetErrorMsg(nRet, strErrorCode);
 //					m_vLogin.startAnimation(m_shake);
@@ -158,7 +156,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
 						m_dlgProgress.dismiss();
 					}
-					//CPEConfig.getInstance().setAutoLoginFlag(false);
 					closeDialog();
 		//			SetErrorMsg(nRet, strErrorCode);
 		//			m_vLogin.startAnimation(m_shake);
@@ -195,7 +192,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 						m_vLogin.startAnimation(m_shake);
 					}
 					//setAlreadyLogin(false);
-					//CPEConfig.getInstance().setAutoLoginFlag(false);
 				}
 			}
 		}

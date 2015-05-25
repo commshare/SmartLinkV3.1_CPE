@@ -32,8 +32,7 @@ public abstract class BaseActivity extends Activity{
 	protected ActivityBroadcastReceiver m_msgReceiver2;
 	private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
 	protected boolean m_bNeedBack = true;//whether need to back main activity.
-	
-	private LoginDialog m_loginDlg = null;
+
 	
 	protected void addToDialogManager(Dialog dialog) {
 		m_dialogManager.add(dialog);
@@ -85,7 +84,6 @@ public abstract class BaseActivity extends Activity{
 
 	protected void onBroadcastReceive(Context context, Intent intent)
 	{
-		String msgRes = null;
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
     		showActivity(context);
     	}else if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
