@@ -2,14 +2,23 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
+import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
+import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -39,6 +48,10 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	
 	private FrameLayout m_pincode_editor = null;
 	private ScrollView m_device_menu_container = null;
+	
+	private PinDialog m_dlgPin = null;
+	private PukDialog m_dlgPuk = null;
+	private ErrorDialog m_dlgError = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +101,10 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_pincode_editor.setVisibility(View.GONE);
 		m_pincode_editor.setOnClickListener(this);
 		
+		m_dlgPin = PinDialog.getInstance(this);
+		m_dlgPuk = PukDialog.getInstance(this);
+		m_dlgError = ErrorDialog.getInstance(this);
+		
 		m_device_menu_container = (ScrollView) findViewById(R.id.device_menu_container);
 		m_device_menu_container.setVisibility(View.VISIBLE);
 		
@@ -111,6 +128,157 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_pin_code.setEnabled(!blShow);
 		m_web_version.setEnabled(!blShow);
 	}
+	
+	
+	private void simRollRequest() {
+		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+
+		if (sim.m_SIMState == SIMState.PinRequired) {
+			// close PUK dialog
+			if (null != m_dlgPuk && PukDialog.m_isShow)
+				m_dlgPuk.closeDialog();
+			// set the remain times
+			if (null != m_dlgPin)
+				m_dlgPin.updateRemainTimes(sim.m_nPinRemainingTimes);
+
+			if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
+				if (!PinDialog.m_isShow) {
+					m_dlgPin.showDialog(sim.m_nPinRemainingTimes,
+							new OnPINError() {
+								@Override
+								public void onPinError() {
+									String strMsg = getString(R.string.pin_error_waring_title);
+									m_dlgError.showDialog(strMsg,
+											new OnClickBtnRetry() {
+												@Override
+												public void onRetry() {
+													m_dlgPin.showDialog();
+												}
+											});
+								}
+							});
+				} else {
+					m_dlgPin.onSimStatusReady(sim);
+				}
+			}
+		} else if (sim.m_SIMState == SIMState.PukRequired) {// puk
+			// close PIN dialog
+			if (null != m_dlgPin && PinDialog.m_isShow)
+				m_dlgPin.closeDialog();
+
+			// set the remain times
+			if (null != m_dlgPuk)
+				m_dlgPuk.updateRemainTimes(sim.m_nPukRemainingTimes);
+
+			if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
+				if (!PukDialog.m_isShow) {
+					m_dlgPuk.showDialog(sim.m_nPukRemainingTimes,
+							new OnPUKError() {
+
+								@Override
+								public void onPukError() {
+									String strMsg = getString(R.string.puk_error_waring_title);
+									m_dlgError.showDialog(strMsg,
+											new OnClickBtnRetry() {
+
+												@Override
+												public void onRetry() {
+													m_dlgPuk.showDialog();
+												}
+											});
+								}
+							});
+				} else {
+					m_dlgPuk.onSimStatusReady(sim);
+				}
+			}
+		} else {
+			closePinAndPukDialog();
+		}
+	}
+	
+	private void closePinAndPukDialog() {
+		if (m_dlgPin != null)
+			m_dlgPin.closeDialog();
+
+		if (m_dlgPuk != null)
+			m_dlgPuk.closeDialog();
+
+		if (m_dlgError != null)
+			m_dlgError.closeDialog();
+	}
+	
+	
+	private void ShowPinDialog() {
+		// close PUK dialog
+		if (null != m_dlgPuk && PukDialog.m_isShow) {
+			m_dlgPuk.closeDialog();
+		}
+
+		SimStatusModel simStatus = BusinessMannager.getInstance()
+				.getSimStatus();
+		// set the remain times
+		if (null != m_dlgPin) {
+			m_dlgPin.updateRemainTimes(simStatus.m_nPinRemainingTimes);
+		}
+		if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
+			if (!PinDialog.m_isShow) {
+				m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes,
+						new OnPINError() {
+
+							@Override
+							public void onPinError() {
+								String strMsg = getString(R.string.pin_error_waring_title);
+								m_dlgError.showDialog(strMsg,
+										new OnClickBtnRetry() {
+
+											@Override
+											public void onRetry() {
+												m_dlgPin.showDialog();
+											}
+										});
+							}
+						});
+			}
+		}
+	}
+	
+	private void ShowPukDialog() {
+		// close PIN dialog
+		if (null != m_dlgPin && PinDialog.m_isShow) {
+			m_dlgPin.closeDialog();
+		}
+
+		SimStatusModel simStatus = BusinessMannager.getInstance()
+				.getSimStatus();
+		// set the remain times
+		if (null != m_dlgPuk) {
+			m_dlgPuk.updateRemainTimes(simStatus.m_nPukRemainingTimes);
+		}
+		if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
+			if (!PukDialog.m_isShow) {
+				m_dlgPuk.showDialog(simStatus.m_nPukRemainingTimes,
+						new OnPUKError() {
+
+							@Override
+							public void onPukError() {
+								String strMsg = getString(R.string.puk_error_waring_title);
+								m_dlgError.showDialog(strMsg,
+										new OnClickBtnRetry() {
+
+											@Override
+											public void onRetry() {
+												m_dlgPuk.showDialog();
+											}
+										});
+
+							}
+						});
+			}
+		}
+	}
+	
+	
 	
 	private void goToSystemInfoPage(){
 		Intent intent = new Intent(this, SystemInfoActivity.class);
@@ -163,8 +331,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			ShowWaiting(true);
 			break;
 		case R.id.setting_device_pincode_editor:
-			m_device_menu_container.setVisibility(View.VISIBLE);
-			m_pincode_editor.setVisibility(View.GONE);
+//			m_device_menu_container.setVisibility(View.VISIBLE);
+//			m_pincode_editor.setVisibility(View.GONE);
+			m_dlgPin.cancelUserClose();
+			m_dlgPuk.cancelUserClose();
+			ShowPinDialog();
 			break;
 		default:
 			break;
@@ -205,9 +376,16 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
 		
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.SIM_UNLOCK_PIN_REQUEST));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.SIM_UNLOCK_PUK_REQUEST));
+		
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
 		ShowWaiting(true);
 	}
+	
+	
 	
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
@@ -251,6 +429,40 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			ShowWaiting(false);
 			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 		}
+		
+		if (intent.getAction().equalsIgnoreCase(
+				MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
+				simRollRequest();
+			}
+		} else if (intent.getAction().equalsIgnoreCase(
+				MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+					BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent
+					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult
+					&& strErrorCode.length() == 0) {
+				m_dlgPin.onEnterPinResponse(true);
+			} else {
+				m_dlgPin.onEnterPinResponse(false);
+			}
+		} else if (intent.getAction().equalsIgnoreCase(
+				MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+					BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent
+					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult
+					&& strErrorCode.length() == 0) {
+				m_dlgPuk.onEnterPukResponse(true);
+			} else {
+				m_dlgPuk.onEnterPukResponse(false);
+			}
+		}
+		
 	}
 
 }

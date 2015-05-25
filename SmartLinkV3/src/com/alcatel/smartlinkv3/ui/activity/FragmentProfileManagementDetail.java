@@ -68,6 +68,8 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 	private String DailNumber = "*99#";
 	private String IPAddress = "";
 	
+	private int NewAuthType = -1;
+	
 	private IntentFilter m_set_default_profile_filter;
 	private ProfileDetailReceiver m_profile_receiver;
 	
@@ -265,19 +267,19 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			switch(checkedId){
 			case R.id.protocol_none:
 //				m_selected_protocol = 0;
-				AuthType = 0;
+				NewAuthType = 0;
 				break;
 			case R.id.protocol_tcp:
 //				m_selected_protocol = 1;
-				AuthType = 1;
+				NewAuthType = 1;
 				break;
 			case R.id.protocol_udp:
 //				m_selected_protocol = 2;
-				AuthType = 2;
+				NewAuthType = 2;
 				break;
 			case R.id.protocol_tcp_or_udp:
 //				m_selected_protocol = 3;
-				AuthType = 3;
+				NewAuthType = 3;
 				break;
 			default:
 				break;
@@ -301,7 +303,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			return true;
 		if(!t_Password.equals(Password))
 			return true;
-		if(t_AuthType != AuthType)
+		if(t_AuthType != AuthType && NewAuthType != -1)
 			return true;
 		
 		return false;
@@ -358,7 +360,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			if(passWord.length() == 0){
 				passWord = "";
 			}
-			int auth_type = AuthType == -1 ? 0 : AuthType;
+			int auth_type = NewAuthType == -1 ? 0 : NewAuthType;
 			Log.v("AddOrEditProfile", Integer.toString(auth_type));
 			
 			if(isChanged(profileName, APN, userName, passWord, auth_type)){
