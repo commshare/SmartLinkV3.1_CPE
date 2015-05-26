@@ -187,6 +187,11 @@ public class FtpFileListItem {
 				mFileViewInteractionHub.onFtpDownload();
 				mode.finish();
 				break;
+			case 1: // TODO
+				System.out.println("ftp,click upload button");
+				mFileViewInteractionHub.onFtpUpload();
+				mode.finish();
+				break;
 			case R.id.action_delete:
 				// mFileViewInteractionHub.onOperationDelete();
 				mFileViewInteractionHub.onFtpDelete();

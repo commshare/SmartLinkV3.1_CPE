@@ -126,52 +126,43 @@ public class FtpFileCommandTask {
 	}
 
 	public void ftp_connect() {
-		// ftpTask.CMD = CONNECT;
 		ftpTask.awakenCMD(CONNECT);
 	}
 
 	public void ftp_showfiles(String remotePath) {
-		// ftpTask.CMD = SHOWFILES;
-
 		ftpTask.setRemotePath(remotePath);
-		// ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(SHOWFILES);
 	}
 
 	public void ftp_download(ArrayList<FileInfo> remoteFiles) {
-		// ftpTask.CMD = DOWNLOAD;
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(DOWNLOAD);
 	}
 
-	public void ftp_upload(String remotePath) {
-		// ftpTask.CMD = UPLOAD;
+	public void ftp_upload(ArrayList<FileInfo> localFiles,String remotePath) {
+		ftpTask.setLocalFiles(localFiles);
 		ftpTask.setRemotePath(remotePath);
 		ftpTask.awakenCMD(UPLOAD);
 	}
 
 	public void ftp_delete(ArrayList<FileInfo> remoteFiles) {
-		// ftpTask.CMD = DELETE;
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(DELETE);
 	}
 
 	public void ftp_move(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		// ftpTask.CMD = MOVE;
 		ftpTask.setRemotePath(remotePath);
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(MOVE);
 	}
 
 	public void ftp_copy(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		// ftpTask.CMD = COPY;
 		ftpTask.setRemotePath(remotePath);
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(COPY);
 	}
 
 	public void ftp_close() {
-		// ftpTask.CMD = CLOSE;
 		ftpTask.awakenCMD(CLOSE);
 	}
 
@@ -286,13 +277,6 @@ public class FtpFileCommandTask {
 			default:
 				break;
 			}
-
-			// try {
-			// Thread.sleep(1000);
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
-			// }
-
 		}
 
 		@Override
@@ -424,13 +408,12 @@ public class FtpFileCommandTask {
 		}
 
 		for (FileInfo f : remote) {
-			logger.i("download file lists: " + f.fileName);
-
 			String remotePath = f.filePath + File.separator + f.fileName;
 			String localPath = m_ftp.localDir + File.separator + f.fileName;
-
-			logger.i("remotePath: " + remotePath);
-			logger.i("localPath: " + localPath);
+			
+			logger.i("download filename: " + f.fileName);
+			logger.i("download remotePath: " + remotePath);
+			logger.i("download localPath: " + localPath);
 
 			ftp.download(localPath, remotePath);
 

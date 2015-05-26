@@ -150,7 +150,13 @@ public class FtpFileViewFragment extends Fragment implements
 		@Override
 		public void upload(ArrayList<FileInfo> local, String remote) {
 			// TODO Auto-generated method stub
+			ArrayList<FileInfo> files = new ArrayList<FileInfo>();
 
+			for (FileInfo f : local) {
+				files.add(f);
+			}
+
+			cmdTask.ftp_upload(files,remote);
 		}
 
 		@Override

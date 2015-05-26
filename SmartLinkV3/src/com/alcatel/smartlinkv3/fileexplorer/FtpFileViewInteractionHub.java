@@ -705,6 +705,10 @@ public class FtpFileViewInteractionHub
 	public void onFtpDownload() {
 		mUICmdListener.download(getSelectedFileList(), null);
 	}
+	
+	public void onFtpUpload() {
+		mUICmdListener.upload(getSelectedFileList(), null);
+	}
 
 	public void onFtpDelete() {
 		mUICmdListener.delete(getSelectedFileList());
