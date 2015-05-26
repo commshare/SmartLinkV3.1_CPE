@@ -17,6 +17,7 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 
+import android.R.bool;
 import android.util.Log;
 
 public class FtpClientProxy {
@@ -184,7 +185,57 @@ public class FtpClientProxy {
 		}
 		return true;
 	}
+	
+	public FTPFile getFileByName(String remoteDir, String name) {
+		FTPFile[] files = this.getFTPFiles(remoteDir);
+		if (files != null) {
+			for (FTPFile f : files) {
+				if (name.equalsIgnoreCase(f.getName())) {
+					return f;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public boolean moveFile(String fromFile, String toFile) throws IOException {
+		if (!ftpClient.rename(fromFile, toFile)) {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	public String getPathFromURL(String remoteURL) {
+		String path = "";
+		// get file name from the path
+		String fName = remoteURL.trim();
+		String fileName = fName.substring(fName.lastIndexOf("/") + 1);
 
+		path = remoteURL.replace(fileName, "");
+
+		return path;
+	}
+	
+	public FTPFile getParentFtpFile(String remotePath){
+		FTPFile ftp = null;
+		
+        		
+		return ftp;
+	}
+	
+	// TODO
+	public boolean isDirectory(String remote) throws IOException{
+		
+		FTPFile remoteFile = ftpClient.mlistFile(remote);
+		
+		if(remote == null){
+			
+		}
+		
+		return true;
+	}
+	
 	public boolean downloadAndsubFiles(String local, String remote)
 			throws Exception {
 		FtpDownloadStatus result = FtpDownloadStatus.Download_From_Break_Failed;
@@ -203,14 +254,35 @@ public class FtpClientProxy {
 		 * 
 		 * if (remoteFile.isDirectory()) { createLocalFolder(local); }
 		 */
-
+		
+		
+		
+		if(true){
+			FTPFile remoteFile = ftpClient.mlistFile("/sdcard/231.jpg");
+			if(remoteFile == null){
+				logger.w("remote test is null");
+			}
+			if(remoteFile.isDirectory()){
+				logger.w("remote test is a Directory!");
+			}
+			logger.w("remote test is a file ");
+			
+			
+			String tmp = getPathFromURL(remote);
+			logger.w("remote test is a file ");
+			return true;
+		}
+		
+		
 		FTPFile[] list = ftpClient.listFiles(remote);
 
 		if (list == null) {
 			logger.w("getFileList() return null!");
 			return false;
 		}
-
+		
+		logger.i("list.length: " + list.length);
+		
 		if (list.length != 1) {
 			logger.w("this is a derectory?");
 			createLocalFolder(local);

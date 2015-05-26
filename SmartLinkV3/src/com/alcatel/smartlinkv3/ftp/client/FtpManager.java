@@ -246,15 +246,15 @@ public class FtpManager {
 		}
 		return true;
 	}
-	
-	public boolean download(String localFile, String remoteFile){
+
+	public boolean download(String localFile, String remoteFile) {
 		boolean iStatus = false;
-		
+
 		if (!isLogin) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_ERROR,
 					ERROR.FILE_DOWNLOAD_ERROR);
 		}
-					
+
 		try {
 			iStatus = ftpProxy.downloadAndsubFiles(localFile, remoteFile);
 		} catch (Exception e) {
@@ -292,8 +292,7 @@ public class FtpManager {
 
 		return iStatus;
 	}
-	
-	
+
 	public FtpUploadStatus upload(String localFile, String remoteFile)
 			throws IOException {
 
