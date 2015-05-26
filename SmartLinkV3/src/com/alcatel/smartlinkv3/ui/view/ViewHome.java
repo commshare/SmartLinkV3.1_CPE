@@ -246,6 +246,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_accessstatusTextView= (TextView) m_view.findViewById(R.id.access_label);
 		
 		m_loginDialog = new LoginDialog(this.m_context);
+		m_autoLoginDialog = new AutoLoginProgressDialog(this.m_context);
 		
 		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
 		home_connected_zero_duration = this.getView().getResources().getString(R.string.Home_zero_data);
