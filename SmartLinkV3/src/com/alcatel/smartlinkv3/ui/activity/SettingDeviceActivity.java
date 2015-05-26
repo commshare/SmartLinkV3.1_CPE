@@ -53,6 +53,12 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private PukDialog m_dlgPuk = null;
 	private ErrorDialog m_dlgError = null;
 	
+	private TextView m_switch_button = null;
+	
+	private boolean isPinRequired;
+	
+	private boolean testPinRequired;//Dummy Data
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -97,6 +103,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
 		
+		m_switch_button = (TextView) findViewById(R.id.btn_default_switch);
+		
 		m_pincode_editor = (FrameLayout) findViewById(R.id.setting_device_pincode_editor);
 		m_pincode_editor.setVisibility(View.GONE);
 		m_pincode_editor.setOnClickListener(this);
@@ -109,6 +117,15 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_device_menu_container.setVisibility(View.VISIBLE);
 		
 		ShowWaiting(false);
+		
+		isPinRequired = false;
+		testPinRequired = false;
+		if(testPinRequired){
+			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+		}
+		else{
+			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+		}
 	}
 	
 	private void ShowWaiting(boolean blShow){
@@ -133,7 +150,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private void simRollRequest() {
 		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 
-		if (sim.m_SIMState == SIMState.PinRequired) {
+		if (isPinRequired) {
 			// close PUK dialog
 			if (null != m_dlgPuk && PukDialog.m_isShow)
 				m_dlgPuk.closeDialog();
@@ -331,15 +348,28 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			ShowWaiting(true);
 			break;
 		case R.id.setting_device_pincode_editor:
-//			m_device_menu_container.setVisibility(View.VISIBLE);
-//			m_pincode_editor.setVisibility(View.GONE);
-			m_dlgPin.cancelUserClose();
-			m_dlgPuk.cancelUserClose();
-			ShowPinDialog();
+			onDoneEditPincodeSetting();
+//			m_dlgPin.cancelUserClose();
+//			m_dlgPuk.cancelUserClose();
+//			ShowPinDialog();
 			break;
 		default:
 			break;
 		}
+	}
+	
+	private void onDoneEditPincodeSetting(){
+//		m_device_menu_container.setVisibility(View.VISIBLE);
+//		m_pincode_editor.setVisibility(View.GONE);
+		if(testPinRequired){
+			testPinRequired = false;
+			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+		}
+		else{
+			testPinRequired = true;
+			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+		}
+		
 	}
 	
 	private void onBtnPincodeSetting(){
@@ -380,6 +410,10 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				MessageUti.SIM_UNLOCK_PIN_REQUEST));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.SIM_UNLOCK_PUK_REQUEST));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.USER_LOGOUT_REQUEST));
 		
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
 		ShowWaiting(true);
@@ -436,6 +470,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
 				simRollRequest();
+				Log.v("PINCHECK", "ROLL");
 			}
 		} else if (intent.getAction().equalsIgnoreCase(
 				MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
@@ -446,8 +481,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if (BaseResponse.RESPONSE_OK == nResult
 					&& strErrorCode.length() == 0) {
 				m_dlgPin.onEnterPinResponse(true);
+				Log.v("PINCHECK", "TRUE");
+//				simRollRequest();
 			} else {
 				m_dlgPin.onEnterPinResponse(false);
+				Log.v("PINCHECK", "FALSE");
+				isPinRequired = true;
+//				simRollRequest();
 			}
 		} else if (intent.getAction().equalsIgnoreCase(
 				MessageUti.SIM_UNLOCK_PUK_REQUEST)) {

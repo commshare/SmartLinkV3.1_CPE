@@ -287,6 +287,7 @@ public class SimManager extends BaseManager {
         	                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
         	                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
         	        			m_context.sendBroadcast(megIntent);
+        	        			Log.v("PINCHECK", "BROADCAST");
                     		}
                     	}else if(strErrcode.equalsIgnoreCase("1") 
                     			||strErrcode.equalsIgnoreCase("6") )

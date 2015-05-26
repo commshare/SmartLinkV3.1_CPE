@@ -264,7 +264,7 @@
         android:padding="15dp"
         android:id="@+id/setting_device_pincode_editor"
         android:background="@color/color_white"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="match_parent"
