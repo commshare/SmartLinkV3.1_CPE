@@ -208,20 +208,20 @@ public class FtpClientProxy {
 	
 	public String getPathFromURL(String remoteURL) {
 		String path = "";
+
 		// get file name from the path
 		String fName = remoteURL.trim();
 		String fileName = fName.substring(fName.lastIndexOf("/") + 1);
-
 		path = remoteURL.replace(fileName, "");
 
 		return path;
 	}
 	
-	public FTPFile getParentFtpFile(String remotePath){
-		FTPFile ftp = null;
+	public FTPFile getFtpFileByParent(String remotePath){
+		FTPFile parentFtp = null;
 		
         		
-		return ftp;
+		return parentFtp;
 	}
 	
 	// TODO
@@ -256,22 +256,10 @@ public class FtpClientProxy {
 		 */
 		
 		
-		
-		if(true){
-			FTPFile remoteFile = ftpClient.mlistFile("/sdcard/231.jpg");
-			if(remoteFile == null){
-				logger.w("remote test is null");
-			}
-			if(remoteFile.isDirectory()){
-				logger.w("remote test is a Directory!");
-			}
-			logger.w("remote test is a file ");
+	/*	if(true){
 			
-			
-			String tmp = getPathFromURL(remote);
-			logger.w("remote test is a file ");
 			return true;
-		}
+		}*/
 		
 		
 		FTPFile[] list = ftpClient.listFiles(remote);
