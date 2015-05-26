@@ -11,9 +11,9 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class SettingNetworkActivity extends BaseActivity implements OnClickListener{
+public class SettingNetworkActivity extends BaseFragmentActivity implements OnClickListener{
 	
 	public final String TAG_FRAGMENT_NETWORK_MODE = "FRAGMENT_NETWORK_MODE";
 	public final String TAG_FRAGMENT_NETWORK_SELECTION = "FRAGMENT_NETWORK_SELECTION";
@@ -154,7 +154,7 @@ public class SettingNetworkActivity extends BaseActivity implements OnClickListe
 		m_network_profile_management.setOnClickListener(this);
 		
 		m_level_one_menu = (LinearLayout) findViewById(R.id.level_one_menu);
-		m_fragment_manager = getFragmentManager();
+		m_fragment_manager = this.getSupportFragmentManager();
 		
 		m_add_and_delete_container = (LinearLayout)findViewById(R.id.fl_add_and_delete);
 		m_add_and_delete_container.setVisibility(View.GONE);
