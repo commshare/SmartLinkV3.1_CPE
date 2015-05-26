@@ -4,14 +4,15 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
-import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
+import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
+import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
 
 import android.content.Context;
@@ -49,7 +50,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private FrameLayout m_pincode_editor = null;
 	private ScrollView m_device_menu_container = null;
 	
-	private PinDialog m_dlgPin = null;
+	private PinStateDialog m_dlgPin = null;
 	private PukDialog m_dlgPuk = null;
 	private ErrorDialog m_dlgError = null;
 	
@@ -57,7 +58,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	
 	private boolean isPinRequired;
 	
-	private boolean testPinRequired;//Dummy Data
+	private boolean m_pin_state;
+	private ENUM.PinState m_requested_pinState = ENUM.PinState.NotAvailable;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +111,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_pincode_editor.setVisibility(View.GONE);
 		m_pincode_editor.setOnClickListener(this);
 		
-		m_dlgPin = PinDialog.getInstance(this);
+		m_dlgPin = PinStateDialog.getInstance(this);
 		m_dlgPuk = PukDialog.getInstance(this);
 		m_dlgError = ErrorDialog.getInstance(this);
 		
@@ -119,12 +121,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		ShowWaiting(false);
 		
 		isPinRequired = false;
-		testPinRequired = false;
-		if(testPinRequired){
+		if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
 			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+			m_requested_pinState = ENUM.PinState.Disable;
 		}
-		else{
+		else if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
 			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+			m_requested_pinState = ENUM.PinState.PinEnableVerified;
 		}
 	}
 	
@@ -150,7 +153,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private void simRollRequest() {
 		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 
-		if (isPinRequired) {
+		if (isPinRequired && sim.m_nPinRemainingTimes > 0) {
 			// close PUK dialog
 			if (null != m_dlgPuk && PukDialog.m_isShow)
 				m_dlgPuk.closeDialog();
@@ -159,7 +162,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				m_dlgPin.updateRemainTimes(sim.m_nPinRemainingTimes);
 
 			if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
-				if (!PinDialog.m_isShow) {
+				if (!PinStateDialog.m_isShow) {
 					m_dlgPin.showDialog(sim.m_nPinRemainingTimes,
 							new OnPINError() {
 								@Override
@@ -180,7 +183,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			}
 		} else if (sim.m_SIMState == SIMState.PukRequired) {// puk
 			// close PIN dialog
-			if (null != m_dlgPin && PinDialog.m_isShow)
+			if (null != m_dlgPin && PinStateDialog.m_isShow)
 				m_dlgPin.closeDialog();
 
 			// set the remain times
@@ -237,9 +240,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		// set the remain times
 		if (null != m_dlgPin) {
 			m_dlgPin.updateRemainTimes(simStatus.m_nPinRemainingTimes);
+			Log.v("PINCHECK", "CLICK2");
 		}
-		if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
-			if (!PinDialog.m_isShow) {
+		if (null != m_dlgPin) {
+			Log.v("PINCHECK", "CLICK3");
+			if (!PinStateDialog.m_isShow) {
 				m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes,
 						new OnPINError() {
 
@@ -262,7 +267,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	
 	private void ShowPukDialog() {
 		// close PIN dialog
-		if (null != m_dlgPin && PinDialog.m_isShow) {
+		if (null != m_dlgPin && PinStateDialog.m_isShow) {
 			m_dlgPin.closeDialog();
 		}
 
@@ -348,25 +353,31 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			ShowWaiting(true);
 			break;
 		case R.id.setting_device_pincode_editor:
-			onDoneEditPincodeSetting();
+//			onDoneEditPincodeSetting();
 //			m_dlgPin.cancelUserClose();
 //			m_dlgPuk.cancelUserClose();
-//			ShowPinDialog();
+			Log.v("PINCHECK", "CLICK");
+			ShowPinDialog();
 			break;
 		default:
 			break;
 		}
 	}
 	
+	@Override
+	public void onStart(){
+		super.onStart();
+	}
+	
 	private void onDoneEditPincodeSetting(){
 //		m_device_menu_container.setVisibility(View.VISIBLE);
 //		m_pincode_editor.setVisibility(View.GONE);
-		if(testPinRequired){
-			testPinRequired = false;
+		if(m_pin_state){
+			m_pin_state = false;
 			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
 		}
 		else{
-			testPinRequired = true;
+			m_pin_state = true;
 			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
 		}
 		
@@ -407,11 +418,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
 		
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
-				MessageUti.SIM_UNLOCK_PIN_REQUEST));
-		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.SIM_UNLOCK_PUK_REQUEST));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(
+				MessageUti.SIM_CHANGE_PIN_STATE_REQUEST));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.USER_LOGOUT_REQUEST));
 		
@@ -473,7 +484,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				Log.v("PINCHECK", "ROLL");
 			}
 		} else if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
+				MessageUti.SIM_CHANGE_PIN_STATE_REQUEST)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
 					BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent
@@ -482,27 +493,30 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 					&& strErrorCode.length() == 0) {
 				m_dlgPin.onEnterPinResponse(true);
 				Log.v("PINCHECK", "TRUE");
-//				simRollRequest();
+				if(m_requested_pinState == ENUM.PinState.Disable){
+					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+					m_requested_pinState = ENUM.PinState.PinEnableVerified;
+				}
+				else if(m_requested_pinState == ENUM.PinState.PinEnableVerified){
+					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+					m_requested_pinState = ENUM.PinState.Disable;
+				}
+//				closePinAndPukDialog();
+				isPinRequired = false;
 			} else {
 				m_dlgPin.onEnterPinResponse(false);
 				Log.v("PINCHECK", "FALSE");
 				isPinRequired = true;
-//				simRollRequest();
-			}
-		} else if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult
-					&& strErrorCode.length() == 0) {
-				m_dlgPuk.onEnterPukResponse(true);
-			} else {
-				m_dlgPuk.onEnterPukResponse(false);
 			}
 		}
-		
+		else if (intent.getAction().equalsIgnoreCase(
+				MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
+				Log.v("PINCHECK", "PUK");
+			}
+		}
 	}
 
 }

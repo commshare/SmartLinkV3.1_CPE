@@ -65,14 +65,12 @@ public class SimManager extends BaseManager {
 		return m_autoPinState;
 	}
 	
-	//SetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void setAutoEnterPinState(DataValue data) {
+	public void changePinState(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePinState") != true)
 			return;
 		
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
-    	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState("2.5",nState,strPin, new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
@@ -88,9 +86,43 @@ public class SimManager extends BaseManager {
                 	}
                 }else{
                 	//Log
+                	
                 }
  
-                Intent megIntent= new Intent(MessageUti.SIM_CHANGE_PIN_REQUEST);
+                Intent megIntent= new Intent(MessageUti.SIM_CHANGE_PIN_STATE_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+            }
+        }));
+    } 
+	
+	//SetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void setAutoEnterPinState(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePinState") != true)
+			return;
+		
+		int nState = (Integer) data.getParamByKey("state");
+		String strPin = (String) data.getParamByKey("pin");
+    	
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState("2.7",nState,strPin, new IHttpFinishListener() {           
+            @Override
+			public void onHttpRequestFinish(BaseResponse response) 
+            {   
+            	String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) {
+                		
+                	}else{
+                		
+                	}
+                }else{
+                	//Log
+                }
+ 
+                Intent megIntent= new Intent(MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
     			m_context.sendBroadcast(megIntent);
@@ -102,7 +134,6 @@ public class SimManager extends BaseManager {
 	public void getAutoPinState(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetAutoValidatePinState") != true)
 			return;
-    	
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState("2.6",new IHttpFinishListener() {           
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
@@ -113,7 +144,14 @@ public class SimManager extends BaseManager {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
                 		AutoEnterPinStateResult result = response.getModelResult();
-                		m_autoPinState.build(result.State);
+//                		m_autoPinState.build(result.State);
+                		Log.v("PINCHECK", "RESULT " + result.State);
+                		if(result.State == 1){
+                			m_autoPinState = AutoPinState.Enable;
+                		}
+                		else{
+                			m_autoPinState = AutoPinState.Disable;
+                		}
                 	}else{
                 		
                 	}
@@ -121,7 +159,7 @@ public class SimManager extends BaseManager {
                 	//Log
                 }
  
-                Intent megIntent= new Intent(MessageUti.SIM_CHANGE_PIN_REQUEST);
+                Intent megIntent= new Intent(MessageUti.SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
     			m_context.sendBroadcast(megIntent);
@@ -276,6 +314,8 @@ public class SimManager extends BaseManager {
                     		SimStatusModel pre = new SimStatusModel();
                     		pre.clone(m_simStatus);
                     		m_simStatus.setValue(simStatusResult);
+                    		Log.v("PINCHECK", "PINSTATUS " + simStatusResult.PinState);
+                    		
                     		
                     		if(m_simStatus.m_SIMState == SIMState.Accessable) {
                     			if(m_bisFastSpeed == true)

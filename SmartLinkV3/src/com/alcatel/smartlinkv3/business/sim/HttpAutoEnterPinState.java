@@ -3,6 +3,8 @@ package com.alcatel.smartlinkv3.business.sim;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -64,7 +66,73 @@ public class HttpAutoEnterPinState {
              return m_autoEnterPinState;
         }
     }
+	/******************** SetAutoValidatePinState  **************************************************************************************/	
+	public static class SetAutoValidatePinState extends BaseRequest
+    {		
+		private String m_strPin = new String();
+		private int m_nState = 0;
+		
+        public SetAutoValidatePinState(String strId,int nState,String strPin,IHttpFinishListener callback) 
+        {
+        	super(callback);  
+        	m_strId = strId;
+        	m_nState = nState;
+        	m_strPin = strPin;
+        }
+
+        @Override
+        protected void buildHttpParamJson() 
+        {
+        	try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetAutoValidatePinState");
+
+	        	JSONObject setState = new JSONObject();
+	        	setState.put("State", m_nState);
+	        	setState.put("Pin", m_strPin);
+	        	if(m_nState == 0){
+	        		
+	        	}
+	        	else{
+	        		
+	        	}
+	        	
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, setState);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+        	} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
+        @Override
+        public BaseResponse createResponseObject() 
+        {            
+            return new SetAutoValidatePinStateResponse(m_finsishCallback);
+        }
+        
+    }
 	
+	public static class SetAutoValidatePinStateResponse extends BaseResponse
+    {
+        
+        public SetAutoValidatePinStateResponse(IHttpFinishListener callback) 
+        {
+            super(callback);            
+        }
+
+        @Override
+        protected void parseContent(String strJsonResult) 
+        {
+        	
+        }
+
+        @Override
+        public <T> T getModelResult() 
+        {
+             return null;
+        }
+    }
 	/******************** ChangePinState  **************************************************************************************/	
 	public static class ChangePinState extends BaseRequest
     {		
@@ -89,6 +157,12 @@ public class HttpAutoEnterPinState {
 	        	JSONObject setState = new JSONObject();
 	        	setState.put("State", m_nState);
 	        	setState.put("Pin", m_strPin);
+	        	if(m_nState == 0){
+	        		Log.v("PINCHECK", "REQUESTDISABLE");
+	        	}
+	        	else{
+	        		Log.v("PINCHECK", "REQUESTENABLE");
+	        	}
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, setState);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
