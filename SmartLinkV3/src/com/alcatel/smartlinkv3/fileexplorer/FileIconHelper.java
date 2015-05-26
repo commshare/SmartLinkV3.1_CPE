@@ -43,7 +43,7 @@ public class FileIconHelper implements IconLoadFinishListener {
     static {
         addItem(new String[] {
             "mp3"
-        }, R.drawable.file_icon_mp3);
+        }, R.drawable.microsd_item_music);
         addItem(new String[] {
             "wma"
         }, R.drawable.file_icon_wma);
@@ -55,10 +55,10 @@ public class FileIconHelper implements IconLoadFinishListener {
         }, R.drawable.file_icon_mid);
         addItem(new String[] {
                 "mp4", "wmv", "mpeg", "m4v", "3gp", "3gpp", "3g2", "3gpp2", "asf"
-        }, R.drawable.file_icon_video);
+        }, R.drawable.microsd_item_videos);
         addItem(new String[] {
                 "jpg", "jpeg", "gif", "png", "bmp", "wbmp"
-        }, R.drawable.file_icon_picture);
+        }, R.drawable.microsd_item_pictures);
         addItem(new String[] {
                 "txt", "log", "xml", "ini", "lrc"
         }, R.drawable.file_icon_txt);
@@ -102,16 +102,17 @@ public class FileIconHelper implements IconLoadFinishListener {
     }
 
     public void setIcon(FileInfo fileInfo, ImageView fileImage, ImageView fileImageFrame) {
-        String filePath = fileInfo.filePath;
-        long fileId = fileInfo.dbId;
-        String extFromFilename = Util.getExtFromFilename(filePath);
-        FileCategory fc = FileCategoryHelper.getCategoryFromPath(filePath);
+        //String filePath = fileInfo.filePath;
+        String filename = fileInfo.fileName;
+        //long fileId = fileInfo.dbId;
+        String extFromFilename = Util.getExtFromFilename(filename);
+        //FileCategory fc = FileCategoryHelper.getCategoryFromPath(filename);
         fileImageFrame.setVisibility(View.GONE);
-        boolean set = false;
+        //boolean set = false;
         int id = getFileIcon(extFromFilename);
         fileImage.setImageResource(id);
 
-        mIconLoader.cancelRequest(fileImage);
+/*        mIconLoader.cancelRequest(fileImage);
         switch (fc) {
             case Apk:
                 set = mIconLoader.loadIcon(fileImage, filePath, fileId, fc);
@@ -135,6 +136,7 @@ public class FileIconHelper implements IconLoadFinishListener {
 
         if (!set)
             fileImage.setImageResource(R.drawable.file_icon_default);
+*/            
     }
 
     @Override
