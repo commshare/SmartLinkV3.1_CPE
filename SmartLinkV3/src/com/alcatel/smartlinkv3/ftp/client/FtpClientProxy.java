@@ -16,7 +16,7 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-import android.R.bool;
+
 import android.util.Log;
 
 public class FtpClientProxy {
@@ -71,6 +71,7 @@ public class FtpClientProxy {
 					FTPClientConfig.SYST_UNIX);
 			ftpClientConfig.setLenientFutureDates(true);
 			ftpClient.configure(ftpClientConfig);
+			logger.i("connect host = " + config.host + ",port = " + config.port);
 			ftpClient.connect(config.host, config.port);
 			int reply = this.ftpClient.getReplyCode();
 			if (!FTPReply.isPositiveCompletion(reply)) {
@@ -121,6 +122,7 @@ public class FtpClientProxy {
 	public FTPFile getFTPFile(String remotePath) {
 		try {
 			Log.d("", "getFTPFile.........." + remotePath);
+			// mlistFile() has bugs or need server support,it returns null sometimes
 			FTPFile f = ftpClient.mlistFile(remotePath);
 			return f;
 		} catch (IOException e) {
@@ -142,7 +144,8 @@ public class FtpClientProxy {
 	}
 
 	public void setRestartOffset(long len) {
-		ftpClient.setRestartOffset(len); // file offset position
+		// file offset position
+		ftpClient.setRestartOffset(len); 
 	}
 
 	public boolean isDone() {
@@ -166,7 +169,6 @@ public class FtpClientProxy {
 	}
 
 	public Boolean changeDirectory(String remoteFoldPath) throws Exception {
-
 		return ftpClient.changeWorkingDirectory(remoteFoldPath);
 	}
 
@@ -174,13 +176,11 @@ public class FtpClientProxy {
 		File file = new File(strFolder);
 
 		if (!file.exists()) {
-
 			if (file.mkdirs()) {
 				return true;
 			} else {
 				return false;
 			}
-
 		}
 		return true;
 	}
@@ -190,45 +190,71 @@ public class FtpClientProxy {
 		FtpDownloadStatus result = FtpDownloadStatus.Download_From_Break_Failed;
 		boolean success = false;
 
-		FTPFile remoteFile = ftpClient.mlistFile(remote);
+		// mlistFile() has bugs or permision problem?,it returns null sometimes.
+		/*
+		 * FTPFile remoteFile = ftpClient.mlistFile(remote);
+		 * 
+		 * if (null == remoteFile) { logger.w("mlistFile() return null!");
+		 * return false; }
+		 * 
+		 * if (remoteFile.isFile()) { result = download(local, remote); if
+		 * (result == FtpDownloadStatus.Download_New_Success) success = true;
+		 * return success; }
+		 * 
+		 * if (remoteFile.isDirectory()) { createLocalFolder(local); }
+		 */
 
-		if (remoteFile.isFile()) {
-			result = download(local, remote);
-			if (result == FtpDownloadStatus.Download_New_Success)
-				success = true;
-			return success;
-		}
-		
-		if (remoteFile.isDirectory()) {
-			createLocalFolder(local);
-		}
+		FTPFile[] list = ftpClient.listFiles(remote);
 
-		List<FTPFile> list = this.getFileList(remote);
-
-		if (list == null || list.size() == 0) {
+		if (list == null) {
+			logger.w("getFileList() return null!");
 			return false;
 		}
 
+		if (list.length != 1) {
+			logger.w("this is a derectory?");
+			createLocalFolder(local);
+		} else {
+			result = download(local, remote);
+		/*	if (result != FtpDownloadStatus.Download_New_Success) {
+				logger.w("download file [" + remote + "]" + "fail!");
+				return false;
+			}
+			return true;*/
+		}
+
 		for (FTPFile ftpFile : list) {
-			String name = ftpFile.getName();
+			String filename = ftpFile.getName();
+			if (filename.equals(".") || filename.equals("..")) {
+				// skip parent directory and the directory itself
+				continue;
+			}
 
+			logger.i("download file name : " + filename);
 			if (ftpFile.isDirectory()) {
-				createLocalFolder(local + "/" + name);
-				success = downloadAndsubFiles(local + "/" + name, remote + "/"
-						+ name);
+				createLocalFolder(local + "/" + filename);
+				logger.i("create local dir : " + local + "/" + filename);
+				success = downloadAndsubFiles(local + "/" + filename, remote
+						+ "/" + filename);
 
-				if (!success)
+				if (!success) {
+					logger.w("download file 1 [" + remote + "/" + filename
+							+ "]" + "fail!");
 					break;
+				}
 			} else {
-				result = download(local + "/" + name, remote + "/" + name);
+				result = download(local + "/" + filename, remote + "/"
+						+ filename);
 
-				if (result != FtpDownloadStatus.Download_New_Success)
+				if (result != FtpDownloadStatus.Download_New_Success) {
+					logger.w("download file 2 [" + remote + "/" + filename
+							+ "]" + "fail!");
 					break;
+				}
 			}
 		}
 
 		success = true;
-
 		return success;
 	}
 
@@ -241,12 +267,19 @@ public class FtpClientProxy {
 				remote.getBytes("GBK"), "iso-8859-1"));
 
 		if (files.length != 1) {
-			logger.v("remote file is not exist!");
+			logger.v("remote file" + remote + " is not exist!");
 			return FtpDownloadStatus.Remote_File_Noexist;
 		}
 
 		long lRemoteSize = files[0].getSize();
 		File f = new File(local);
+
+		File parentDir = f.getParentFile();
+		if (!parentDir.exists()) {
+			parentDir.mkdir();
+		}
+
+		logger.i("new File :" + local);
 
 		if (f.exists()) {
 			long localSize = f.length();
@@ -447,31 +480,41 @@ public class FtpClientProxy {
 		boolean success = false;
 		boolean result = false;
 
-		FTPFile remoteFile = ftpClient.mlistFile(remoteFilePath);
+		/*
+		 * FTPFile remoteFile = ftpClient.mlistFile(remoteFilePath); if
+		 * (remoteFile.isFile()) { result = deleteFtpServerFile(remoteFilePath);
+		 * if (result == true) success = true; return success; }
+		 */
 
-		if (remoteFile.isFile()) {
-			result = deleteFtpServerFile(remoteFilePath);
-			if (result == true)
-				success = true;
-			return success;
-		}
+		FTPFile[] list = ftpClient.listFiles(remoteFilePath);
 
-		List<FTPFile> list = this.getFileList(remoteFilePath);
-
-		if (list == null || list.size() == 0) {
+		if (list == null) {
+			logger.w("getFileList() return null!");
 			return false;
 		}
+		// it's a file
+		if (list.length == 1) {
+			logger.i("file!");
+			result = deleteFtpServerFile(remoteFilePath);
+			return result;
+		}
 
+		// it's a empty directory
+		if (list.length == 0) {
+			logger.i("directory!");
+			result = deleteFoldAndsubFiles(remoteFilePath);
+			return result;
+		}
+		// it's a directory,and have sub directories and files
 		for (FTPFile ftpFile : list) {
 			String name = ftpFile.getName();
-
+			logger.i("delete filename: " + name);
 			if (ftpFile.isDirectory()) {
 				success = deleteFoldAndsubFiles(remoteFilePath);
 				if (!success)
 					break;
 			} else {
 				result = deleteFtpServerFile(remoteFilePath);
-
 				if (result != true)
 					break;
 			}
