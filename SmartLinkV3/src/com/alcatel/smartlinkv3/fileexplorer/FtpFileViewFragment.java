@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 
+import org.apache.commons.net.ftp.FTPCmd;
 import org.apache.commons.net.ftp.FTPFile;
 
 import android.app.ActionBar;
@@ -58,7 +59,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
+
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity.OnBackPressedListener;
+
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.FtpCommandListener;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.UICmd;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.uiCommandListener;
@@ -105,7 +109,9 @@ public class FtpFileViewFragment extends Fragment implements
 	private Context mContext = null;
 	private pubLog logger = null;
 	private FtpClientModel m_ftp = null;
-
+	
+	FtpFileCommandTask cmdTask = null;
+	
 	// memorize the scroll positions of previous paths
 	private ArrayList<PathScrollPositionItem> mScrollPositionList = new ArrayList<PathScrollPositionItem>();
 	private String mPreviousPath;
@@ -137,8 +143,8 @@ public class FtpFileViewFragment extends Fragment implements
 				files.add(f);
 			}
 
-			ftpTask.CMD = SHOWFILE;
-			ftpTask.setRemoteFiles(files);
+			// TODO
+			cmdTask.ftp_showfiles("/");
 		}
 
 		@Override
@@ -163,12 +169,12 @@ public class FtpFileViewFragment extends Fragment implements
 		public void download(ArrayList<FileInfo> remote, String local) {
 			// TODO Auto-generated method stub
 			ArrayList<FileInfo> files = new ArrayList<FileInfo>();
-
+			
 			for (FileInfo f : remote) {
 				files.add(f);
 			}
-			ftpTask.CMD = DOWNLOAD;
-			ftpTask.setRemoteFiles(files);
+
+			cmdTask.ftp_download(files);
 		}
 
 		@Override
@@ -179,8 +185,8 @@ public class FtpFileViewFragment extends Fragment implements
 			for (FileInfo f : remote) {
 				files.add(f);
 			}
-			ftpTask.CMD = DELETE;
-			ftpTask.setRemoteFiles(files);
+		
+			cmdTask.ftp_delete(files);
 		}
 
 		@Override
@@ -252,229 +258,17 @@ public class FtpFileViewFragment extends Fragment implements
 		}
 	};
 
-	// ftp command type
-	private static final int CONNECT = 1;
-	private static final int SHOWFILE = 3;
-	private static final int DOWNLOAD = 4;
-	private static final int UPLOAD = 5;
-
-
-	private static final int CLOSE = -2;
-	private static final int GETFILE = 7;
-	private static final int DELETE = 8;
-	private static final int PAUSE_DOWNLOAD = 9;
-	private static final int MOVE = 10;
-	private static final int COPY = 11;
 
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
+	private static final int PAUSE_DOWNLOAD = 9;
 	private static final int MSG_REFRESH_UI = 10;
-
-	// ftp task
-	private FtpCommandProc ftpTask = new FtpCommandProc();
-	private boolean isLogin = false;
-
-	private void sendMsg(int msgType, Object obj) {
-		Message msg = new Message();
-		msg.what = msgType;
-		msg.obj = obj;
-		handler.sendMessage(msg);
-	}
-
-	private void ftpConnect() {
-		if (isLogin) {
-			return;
-		}
-
-		if (ftp.connectLogin()) {
-			sendMsg(MSG_SHOW_TOAST, "ftp login success!");
-			isLogin = true;
-			handler.sendEmptyMessage(2);
-		} else {
-			sendMsg(MSG_SHOW_TOAST, "ftp login fail!");
-		}
-	}
-
-	class FtpCommandProc implements Runnable {
-		public int CMD = -1;
-		public String p1 = "/";
-		private ArrayList<FileInfo> p2 = new ArrayList<FileInfo>();
-		private ArrayList<FileInfo> p3 = new ArrayList<FileInfo>();
-		public boolean running = false;
-
-		public void setRemotePath(String p1) {
-			this.p1 = p1;
-		}
-
-		public void setRemoteFiles(ArrayList<FileInfo> p2) {
-			this.p2 = p2;
-		}
-
-		public void setLocalFiles(ArrayList<FileInfo> p3) {
-			this.p3 = p3;
-		}
+	
+	FtpCommandListener ftpCommandListener = new FtpCommandListener() {
 
 		@Override
-		public void run() {
-			running = true;
-			logger.v("enter runnable...");
-			while (running) {
-				switch (CMD) {
-				case CONNECT:
-					logger.v("ftp is connecting!....");
-					ftpConnect();
-					CMD = -1;
-					break;
-				case 2:
-					// ftpChangeDir();
-					CMD = -1;
-					break;
-				case SHOWFILE:
-					showFiles(p1);
-					CMD = -1;
-					break;
-				case DOWNLOAD:
-					if (p2.size() == 0) {
-						logger.w("download fail,file size is 0 on task");
-						CMD = -1;
-						break;
-					}
-
-					logger.i("download file size: " + p2.size());
-
-					for (FileInfo f : p2) {
-						logger.i("download file lists: " + f.fileName);
-					}
-
-					logger.i("on downloanning...");
-					downloadFile(p2);
-					CMD = -1;
-					break;
-				case UPLOAD:
-					// TODO
-					try {
-						ftp.upload("/mnt/sdcard/ftpconf/Burning.mp3",
-								"/Burning.mp3");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					CMD = -1;
-					break;
-
-				case DELETE:
-					if (p2.size() == 0) {
-						logger.w("delete fail,file size is 0 on task");
-						CMD = -1;
-						break;
-					}
-
-					logger.i("delete file size: " + p2.size());
-
-					for (FileInfo f : p2) {
-						logger.i("delete file lists: " + f.fileName);
-					}
-					deleteFiles(p2);
-					CMD = -1;
-					break;
-					
-				case MOVE:
-					CMD = -1;
-					break;
-					
-				case COPY:
-					CMD = -1;
-					break;
-					
-				case CLOSE:
-					try {
-						ftp.close();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					CMD = -1;
-					running = false;
-					break;
-				case GETFILE:
-					CMD = -1;
-				default:
-					break;
-				}
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-	}
-
-	private void deleteFiles(ArrayList<FileInfo> remote) {
-
-		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
-			return;
-		}
-
-		if ((remote == null) || (remote.size() == 0)) {
-			sendMsg(MSG_SHOW_TOAST, "can not find the remote files!");
-			logger.w("delete fail,can't not find the remote file!");
-			return;
-		}
-
-		for (FileInfo f : remote) {
-			logger.i("delete file lists: " + f.fileName);
-			String remotePath = f.filePath + File.separator + f.fileName;
-			ftp.deleteFiles(remotePath);
-		}
-
-		sendMsg(MSG_SHOW_TOAST, "delete success!");
-
-	}
-
-	private void downloadFile(ArrayList<FileInfo> remote) {
-
-		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
-			return;
-		}
-
-		if ((remote == null) || (remote.size() == 0)) {
-			sendMsg(MSG_SHOW_TOAST, "can not find the remote files!");
-			logger.w("download fail,can't not find the remote file!");
-			return;
-		}
-
-		for (FileInfo f : remote) {
-			logger.i("download file lists: " + f.fileName);
-
-			String remotePath = f.filePath + File.separator + f.fileName;
-			String localPath = m_ftp.localDir + File.separator
-					+ f.fileName;
-			ftp.download(localPath, remotePath);
-
-		}
-		sendMsg(MSG_SHOW_TOAST, "download success!");
-
-	}
-
-	private void showFiles(String path) {
-		if (isLogin) {
-			try {
-				String fstr = "";
-				FTPFile[] ftpFile = ftp.showListFile(path);
-				sendMsg(MSG_REFRESH_UI, ftpFile);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				sendMsg(MSG_SHOW_TOAST, "Ftp File List Error:" + e);
-			}
-		}
-	}
-
-	private Handler handler = new Handler() {
-		public void handleMessage(Message msg) {
+		public void ftpMsgHandler(Message msg) {
+			// TODO Auto-generated method stub
 			int what = msg.what;
 			switch (what) {
 			case -1:
@@ -542,55 +336,6 @@ public class FtpFileViewFragment extends Fragment implements
 		}
 	};
 
-	private boolean ftp_init() {
-		ftp = new FtpManager();
-
-		mContext = getActivity().getApplicationContext();
-		try {
-			ftp.init(mContext);
-			ftp.reset(mContext);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		logger = new pubLog();
-		logger.setTag("ftpClient");
-		logger.setDebug(true);
-		logger.v("ftp init success!");
-
-		ftp.setTransferFtpListener(TransferListener);
-		ftp.setFtpManagerListener(FtpManagerListener);
-		
-		m_ftp = new FtpClientModel();
-		
-		if (true) {
-			m_ftp.host = getServerAddress(mContext);
-			m_ftp.port = 21;
-		}
-		
-
-		m_ftp.localDir = Environment.getExternalStorageDirectory().getPath()
-				+ "/LinkApp";
-		
-		logger.v("Local directory: " + m_ftp.localDir);
-		logger.v("Server ip is: " + m_ftp.host);
-
-		ftp.setConfig(mContext, m_ftp);
-
-		thread = new Thread(ftpTask);
-		ftpTask.CMD = CONNECT;
-		thread.start();
-
-		return true;
-	}
-	
-	
-	private String getServerAddress(Context ctx){  
-        WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);  
-        DhcpInfo dhcpInfo = wifi_service.getDhcpInfo(); 
-        return Formatter.formatIpAddress(dhcpInfo.gateway);  
-    }
-	
 	private boolean mBackspaceExit;
 	
 	interface IConnectedActionMode {
@@ -621,12 +366,13 @@ public class FtpFileViewFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		boolean iRet = ftp_init();
-
-		if (!iRet) {
-			logger.w("ftp init fail!");
-		}
-				
+		mContext = getActivity();
+		cmdTask = new FtpFileCommandTask();
+		cmdTask.init(getActivity());
+		cmdTask.setFtpCommandListener(ftpCommandListener);
+		cmdTask.start();
+		
+		
 		mActivity = getActivity();
 			
 		// getWindow().setFormat(android.graphics.PixelFormat.RGBA_8888);
@@ -725,8 +471,9 @@ public class FtpFileViewFragment extends Fragment implements
 		mFileViewInteractionHub.setCurrentPath(currentDir);
 		Log.i(LOG_TAG, "CurrentDir = " + currentDir);
 
-		mFileViewInteractionHub.setHostTag(m_ftp.host + m_ftp.port + "/");
-
+		mFileViewInteractionHub.setHostTag(cmdTask.getConfig().host
+				+ cmdTask.getConfig().port + "/");
+	
 		mBackspaceExit = (uri != null)
 				&& (TextUtils.isEmpty(action) || (!action
 						.equals(Intent.ACTION_PICK) && !action
@@ -832,8 +579,7 @@ public class FtpFileViewFragment extends Fragment implements
 	}
 
 	public boolean onRefreshFileList(String path, FileSortHelper sort) {
-		ftpTask.CMD = SHOWFILE;
-		ftpTask.setRemotePath(path);
+		cmdTask.ftp_showfiles(path);
 		return true;
 	}
 
