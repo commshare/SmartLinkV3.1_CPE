@@ -21,6 +21,7 @@ package com.alcatel.smartlinkv3.fileexplorer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.alcatel.smartlinkv3.R;
@@ -1046,6 +1047,7 @@ public class FtpFileViewInteractionHub
 				break;
 			case GlobalConsts.MENU_ADD_FILE	:
 				Toast.makeText(mActivity, "Add File.", Toast.LENGTH_SHORT).show();
+				
 				break;
 				
 			default:
@@ -1057,6 +1059,16 @@ public class FtpFileViewInteractionHub
 		}
 
 	};
+	
+	//class FileUpload {	    
+	//    public ArrayList<File> getUploadFileList() {
+	//        ArrayList<File> listFile = new ArrayList<File>();
+	//        Intent intent = new Intent();
+	//        intent.setAction(Intent.ACTION_PICK);
+	//        intent.setType("*/*");
+	//        return listFile;
+	//    }
+	//}
 
 	private com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode mCurrentMode;
 
