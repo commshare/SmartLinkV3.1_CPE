@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	
 	private DMSDeviceBrocastFactory mBrocastFactory;
 	private AllShareProxy mAllShareProxy;
-	private Device mDevice;
+	private static Device mDevice;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -249,6 +249,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		m_microsdView.onDestroy();
 		
 		mBrocastFactory.unRegisterListener();
+		mAllShareProxy.exitSearch();
 	}
 	
 	private void destroyDialogs(){
@@ -1252,18 +1253,25 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	
 	private void updateDeviceList(){
 		List<Device> list = mAllShareProxy.getDMSDeviceList();
+		String str1 = null;
+		String str2 = null;
+		
 		
 		for(Device tmp : list)
 		{
-			if(tmp.getLocation().substring(7, 18).equalsIgnoreCase(getServerAddress(this)))
+			str1 = tmp.getLocation().substring(7);
+			str2 = str1.substring(0,str1.indexOf(":"));
+			if(str2.equalsIgnoreCase(getServerAddress(this)))
 			{
 				mDevice = tmp;
 			}
 		}
+		
 		mAllShareProxy.setDMSSelectedDevice(mDevice);
 		
 		Intent msdIntent= new Intent(ViewMicroSD.DLNA_DEVICES_SUCCESS);
 		sendBroadcast(msdIntent);
+		
 	}
 	
 	public void showMicroView()

@@ -103,6 +103,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
+		Log.v("pchong", "ViewMicroSD onResume");
 		m_viewMicroSDMsgReceiver = new ViewMicroSDBroadcastReceiver();
 		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_SUCCESS));
 	}
@@ -111,6 +112,8 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	public void onPause() {
 		// TODO Auto-generated method stub
 		try {
+//			mAllShareProxy.exitSearch();
+			Log.v("pchong", "ViewMicroSD onPause");
 			m_context.unregisterReceiver(m_viewMicroSDMsgReceiver);
 		} catch (Exception e) {
 
@@ -120,6 +123,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
+		Log.v("pchong", "ViewMicroSD onDestroy");
 	}
 	
 	private List<MicrosdItem> getData(Context context){
