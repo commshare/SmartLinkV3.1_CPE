@@ -138,7 +138,7 @@ public class FtpFileViewInteractionHub
 		void download(ArrayList<FileInfo> remote, String local);
 
 		// TODO
-		void upload(ArrayList<FileInfo> local, String remote);
+		void upload(ArrayList<File> local, String remote);
 
 		void copy(ArrayList<FileInfo> remote1, String remote2);
 
@@ -707,7 +707,7 @@ public class FtpFileViewInteractionHub
 	}
 	
 	public void onFtpUpload() {
-		mUICmdListener.upload(getSelectedFileList(), null);
+		mUICmdListener.upload(null, null);
 	}
 
 	public void onFtpDelete() {

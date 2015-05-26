@@ -139,7 +139,7 @@ public class FtpFileCommandTask {
 		ftpTask.awakenCMD(DOWNLOAD);
 	}
 
-	public void ftp_upload(ArrayList<FileInfo> localFiles,String remotePath) {
+	public void ftp_upload(ArrayList<File> localFiles,String remotePath) {
 		ftpTask.setLocalFiles(localFiles);
 		ftpTask.setRemotePath(remotePath);
 		ftpTask.awakenCMD(UPLOAD);
@@ -170,7 +170,7 @@ public class FtpFileCommandTask {
 		public int CMD = -1;
 		private String remoteRootPath = "/";
 		private ArrayList<FileInfo> remoteFiles = new ArrayList<FileInfo>();
-		private ArrayList<FileInfo> localFiles = new ArrayList<FileInfo>();
+		private ArrayList<File> localFiles = new ArrayList<File>();
 
 		public void setRemotePath(String remoteRootPath) {
 			this.remoteRootPath = remoteRootPath;
@@ -180,7 +180,7 @@ public class FtpFileCommandTask {
 			this.remoteFiles = remoteFiles;
 		}
 
-		public void setLocalFiles(ArrayList<FileInfo> localFiles) {
+		public void setLocalFiles(ArrayList<File> localFiles) {
 			this.localFiles = localFiles;
 		}
 
