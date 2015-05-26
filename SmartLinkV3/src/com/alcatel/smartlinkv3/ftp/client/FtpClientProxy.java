@@ -206,7 +206,7 @@ public class FtpClientProxy {
 	}
 	
 	
-	public String getPathFromURL(String remoteURL) {
+	public String getParentPathFromURL(String remoteURL) {
 		String path = "";
 
 		// get file name from the path
@@ -217,23 +217,51 @@ public class FtpClientProxy {
 		return path;
 	}
 	
-	public FTPFile getFtpFileByParent(String remotePath){
-		FTPFile parentFtp = null;
-		
-        		
-		return parentFtp;
+	public String getFileNameFromURL(String remoteURL) {
+		String fName = remoteURL.trim();
+		String fileName = fName.substring(fName.lastIndexOf("/") + 1);
+
+		return fileName;
+	}
+	
+	public FTPFile getFtpFileByPath(String remotePath) {
+		FTPFile[] parentFtp = null;
+
+		String parentPath = this.getParentPathFromURL(remotePath);
+		String filename = getFileNameFromURL(remotePath);
+
+		parentFtp = this.getFTPFiles(parentPath);
+
+		if (parentFtp != null) {
+			for (FTPFile f : parentFtp) {
+				if (filename.equalsIgnoreCase(f.getName())) {
+					return f;
+				}
+			}
+		}
+
+		return null;
 	}
 	
 	// TODO
-	public boolean isDirectory(String remote) throws IOException{
-		
+	public boolean isDirectory(String remote) throws IOException {
 		FTPFile remoteFile = ftpClient.mlistFile(remote);
-		
-		if(remote == null){
-			
+
+		if (remoteFile == null) {
+			logger.w("remote file is not exist or have not permerssion!");
+			FTPFile ftpFile = this.getFtpFileByPath(remote);
+
+			if (ftpFile.isDirectory()) {
+				return true;
+			}
+
+		} else {
+			if (remoteFile.isDirectory()) {
+				return true;
+			}
 		}
-		
-		return true;
+
+		return false;
 	}
 	
 	public boolean downloadAndsubFiles(String local, String remote)
@@ -255,32 +283,27 @@ public class FtpClientProxy {
 		 * if (remoteFile.isDirectory()) { createLocalFolder(local); }
 		 */
 		
-		
-	/*	if(true){
-			
-			return true;
-		}*/
-		
-		
-		FTPFile[] list = ftpClient.listFiles(remote);
-
-		if (list == null) {
-			logger.w("getFileList() return null!");
-			return false;
-		}
-		
-		logger.i("list.length: " + list.length);
-		
-		if (list.length != 1) {
-			logger.w("this is a derectory?");
+		FTPFile ftp = this.getFtpFileByPath(remote);
+		boolean isDirectory = this.isDirectory(remote);
+		if (isDirectory) {
+			logger.i("file name [" + remote + "]" + " is a directroy");
 			createLocalFolder(local);
 		} else {
+			logger.i("file name [" + remote + "]" + " is a file");
 			result = download(local, remote);
-		/*	if (result != FtpDownloadStatus.Download_New_Success) {
-				logger.w("download file [" + remote + "]" + "fail!");
-				return false;
+			if (result == FtpDownloadStatus.Download_New_Success) {
+				success = true;
+			} else {
+				success = false;
 			}
-			return true;*/
+			return success;
+		}
+	
+		FTPFile[] list = ftpClient.listFiles(remote);
+
+		if (list == null || list.length == 0) {
+			logger.w("getFileList() return null!");
+			return false;
 		}
 
 		for (FTPFile ftpFile : list) {
@@ -537,7 +560,6 @@ public class FtpClientProxy {
 	}
 
 	public boolean deleteFiles(String remoteFilePath) throws Exception {
-		boolean success = false;
 		boolean result = false;
 
 		/*
@@ -546,43 +568,15 @@ public class FtpClientProxy {
 		 * if (result == true) success = true; return success; }
 		 */
 
-		FTPFile[] list = ftpClient.listFiles(remoteFilePath);
-
-		if (list == null) {
-			logger.w("getFileList() return null!");
-			return false;
-		}
-		// it's a file
-		if (list.length == 1) {
-			logger.i("file!");
-			result = deleteFtpServerFile(remoteFilePath);
-			return result;
-		}
-
-		// it's a empty directory
-		if (list.length == 0) {
-			logger.i("directory!");
+		boolean isDirectory = this.isDirectory(remoteFilePath);
+		
+		if (isDirectory) {
 			result = deleteFoldAndsubFiles(remoteFilePath);
-			return result;
-		}
-		// it's a directory,and have sub directories and files
-		for (FTPFile ftpFile : list) {
-			String name = ftpFile.getName();
-			logger.i("delete filename: " + name);
-			if (ftpFile.isDirectory()) {
-				success = deleteFoldAndsubFiles(remoteFilePath);
-				if (!success)
-					break;
-			} else {
-				result = deleteFtpServerFile(remoteFilePath);
-				if (result != true)
-					break;
-			}
+		} else {
+			result = deleteFtpServerFile(remoteFilePath);
 		}
 
-		success = true;
-
-		return success;
+		return result;
 	}
 
 	public void disconnect() throws IOException {
