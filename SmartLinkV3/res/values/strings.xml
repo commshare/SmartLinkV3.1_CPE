@@ -296,11 +296,12 @@
     <string name="setting_network_mode_2G_only">2G Only</string>
     <string name="setting_network_mode_3G_only">3G Only</string>
     <string name="setting_network_mode_4G_only">4G Only</string>
-    <string name="setting_network_mode_LTE_only">LTE Only</string>
+    <string name="setting_network_mode_LTE_only">4G Only</string>
     <string name="other_login_warning_title">Login warning</string>
     <string name="setting_network_profile_management_auth_type_pap">PAP</string>
     <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
     <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&#038;CHAP</string>
+    <string name="setting_network_profile_management_cannot_delete_predefined_profile">Can not delete predefined profile</string>
     <!-- setting end -->
 
 
@@ -511,6 +512,7 @@
     <string name="wrong_current_password">The current password is wrong!</string>
     <string name="change_password_failed">Change password failed!</string>
     <string name="inconsistent_new_password">Inconsistent new pass word!</string>
+    <string name="change_passowrd_invalid_password">Password can not be empty or too short!</string>
     <string name="unknown_error">Unknown error!</string>
     <!-- Login view end -->
 

@@ -124,6 +124,12 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		if(confirmPwd.length() < 4){
+			String strInfo = getString(R.string.change_passowrd_invalid_password);
+			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		userChangePassword(LoginDialog.USER_NAME, currentPwd, confirmPwd);
 		
 		m_current_password.setText(null);
@@ -193,9 +199,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 //		IntentFilter filter = new IntentFilter();  
 //		filter.addAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
 //		PassWordChangeReceiver receiver = new PassWordChangeReceiver();
-		Log.v("TESTCLICK", "ACCOUNT7");
 		registerReceiver(m_password_change_receiver, m_change_password_filter);  
-		Log.v("TESTCLICK", "ACCOUNT8");
 	}
 	
 	@Override
@@ -208,7 +212,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	protected void onDestroy(){
 		super.onDestroy();
 		unregisterReceiver(m_password_change_receiver);  
-		Log.v("TESTCLICK", "ACCOUNT9");
 	}
 	
 	private class PassWordChangeReceiver extends BroadcastReceiver{

@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
@@ -175,12 +176,18 @@ private class ProfileListAdapter extends BaseAdapter{
 					else{
 						Log.v("GetProfileResultDELETEPOSITION", "" + position);
 						Log.v("GetProfileResultDELETEID", "" + m_profile_list_data.get(position).ProfileID);
-						m_progress_bar.setVisibility(View.VISIBLE);
-						selected_deleted_position = position;
-						int ProfileId = m_profile_list_data.get(position).ProfileID;
-						DataValue data = new DataValue();
-						data.addParam("profile_id", ProfileId);
-						BusinessMannager.getInstance().getProfileManager().startDeleteProfile(data);
+						if(m_profile_list_data.get(position).IsPredefine == 1){
+							m_progress_bar.setVisibility(View.VISIBLE);
+							selected_deleted_position = position;
+							int ProfileId = m_profile_list_data.get(position).ProfileID;
+							DataValue data = new DataValue();
+							data.addParam("profile_id", ProfileId);
+							BusinessMannager.getInstance().getProfileManager().startDeleteProfile(data);
+						}
+						else if(m_profile_list_data.get(position).IsPredefine == 0){
+							String strInfo = getString(R.string.setting_network_profile_management_cannot_delete_predefined_profile);
+							Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
+						}
 					}
 					
 				}
