@@ -107,6 +107,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			m_auto_mode.setChecked(false);
 			m_network_searching_title.setVisibility(View.VISIBLE);
 			m_waiting_search_result.setVisibility(View.VISIBLE);
+			m_network_list_conainer.setVisibility(View.VISIBLE);
 			BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
 		}
 		else if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
@@ -115,6 +116,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			m_auto_mode.setChecked(true);
 			m_network_searching_title.setVisibility(View.GONE);
 			m_waiting_search_result.setVisibility(View.GONE);
+			m_network_list_conainer.setVisibility(View.GONE);
 		}
         
 //        if(m_auto_mode.isChecked() == true){
@@ -137,6 +139,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					Log.v("NetworkSearchResult", "auto");
 					UserSetNetworkSelection(SELECTION_MODE_AUTO);
 					m_network_searching_title.setVisibility(View.GONE);
+					m_network_list_conainer.setVisibility(View.GONE);
 					BusinessMannager.getInstance().getNetworkManager().stopSearchNetworkResult();
 				}
 				else if(checked == false){
@@ -145,6 +148,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					Log.v("NetworkSearchResult", "manual");
 					UserSetNetworkSelection(SELECTION_MODE_MANUAL);
 					m_network_searching_title.setVisibility(View.VISIBLE);
+					m_network_list_conainer.setVisibility(View.VISIBLE);
 //					BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
 				}
 			}
