@@ -31,6 +31,8 @@ import com.alcatel.smartlinkv3.fileexplorer.FtpFileOperationHelper.IOperationPro
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.IConnectedActionMode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.SelectFilesCallback;
 import com.alcatel.smartlinkv3.fileexplorer.TextInputDialog.OnFinishListener;
+import com.alcatel.smartlinkv3.ui.view.PathIndicator;
+import com.alcatel.smartlinkv3.ui.view.PathIndicator.OnPathChangeListener;
 
 import android.R.drawable;
 import android.app.ActionBar;
@@ -85,15 +87,9 @@ public class FtpFileViewInteractionHub
 
 	private ProgressDialog progressDialog;
 
-	private View mNavigationBar;
-
-	private TextView mNavigationBarText;
-
-	private View mDropdownNavigation;
-
-	private ImageView mNavigationBarUpDownArrow;
-
 	private Activity mActivity;
+	
+  private PathIndicator mPathIndicator;
 	
 	private IConnectedActionMode mCommectedActionMode;
 	public void setConnectdActionMode(IConnectedActionMode icam) {
@@ -150,8 +146,42 @@ public class FtpFileViewInteractionHub
 
 	public FtpFileViewInteractionHub(IFileInteractionListener fileViewListener) {
 		assert (fileViewListener != null);
-		mFileViewListener = fileViewListener;
-		setup();
+		mFileViewListener = fileViewListener;    
+    
+    mPathIndicator = (PathIndicator)mFileViewListener.getViewById(R.id.path_indicator);
+    mPathIndicator.setOnPathChangeListener(new OnPathChangeListener(){
+      /*
+       * User click PathIndicator to change folder.
+       */
+      @Override
+      public void onPathSelected(int targetFolderID, String targetFolderPath) {
+        if (mFileViewListener.onNavigation(targetFolderPath))
+          return;
+
+        if (targetFolderPath.isEmpty()) {
+          mCurrentPath = mRoot;
+        } else {
+          mCurrentPath = targetFolderPath;
+        }
+        refreshFileList();      
+      }
+      
+    });
+
+    mFileListView = (ListView) mFileViewListener.getViewById(R.id.file_path_list);
+    mFileListView.setLongClickable(true);
+    mFileListView.setOnCreateContextMenuListener(mListViewContextMenuListener);
+    mFileListView.setOnItemClickListener(new OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        onListItemClick(parent, view, position, id);
+      }
+    });
+  
+    mConfirmOperationBar = mFileViewListener.getViewById(R.id.moving_operation_bar);
+    setupClick(mConfirmOperationBar, R.id.button_moving_confirm);
+    setupClick(mConfirmOperationBar, R.id.button_moving_cancel);
+        
 		mFileOperationHelper = new FtpFileOperationHelper(this);
 		mFileSortHelper = new FileSortHelper();
 		mActivity = mFileViewListener.obtainActivity();
@@ -233,35 +263,6 @@ public class FtpFileViewInteractionHub
 				|| mFileOperationHelper.canPaste();
 	}
 
-	private void setup() {
-		setupNavigationBar();
-		setupFileListView();
-		setupOperationPane();
-	}
-
-	private void setupNavigationBar() {
-		mNavigationBar = mFileViewListener.getViewById(R.id.navigation_bar);
-		mNavigationBarText = (TextView) mFileViewListener
-				.getViewById(R.id.current_path_view);
-		mNavigationBarUpDownArrow = (ImageView) mFileViewListener
-				.getViewById(R.id.path_pane_arrow);
-		View clickable = mFileViewListener.getViewById(R.id.current_path_pane);
-		clickable.setOnClickListener(buttonClick);
-
-		mDropdownNavigation = mFileViewListener
-				.getViewById(R.id.dropdown_navigation);
-
-		setupClick(mNavigationBar, R.id.path_pane_up_level);
-	}
-
-	// buttons
-	private void setupOperationPane() {
-		mConfirmOperationBar = mFileViewListener
-				.getViewById(R.id.moving_operation_bar);
-		setupClick(mConfirmOperationBar, R.id.button_moving_confirm);
-		setupClick(mConfirmOperationBar, R.id.button_moving_cancel);
-	}
-
 	private void setupClick(View v, int id) {
 		View button = (v != null ? v.findViewById(id) : mFileViewListener
 				.getViewById(id));
@@ -295,24 +296,21 @@ public class FtpFileViewInteractionHub
 			case R.id.button_operation_cancel:
 				onOperationSelectAllOrCancel();
 				break;
-			case R.id.current_path_pane:
-				onNavigationBarClick();
-				break;
 			case R.id.button_moving_confirm:
 				onOperationButtonConfirm();
 				break;
 			case R.id.button_moving_cancel:
 				onOperationButtonCancel();
 				break;
-			case R.id.path_pane_up_level:
-				onOperationUpLevel();
-				//ActionMode mode = ((FtpFileExplorerTabActivity) mContext)
-				//		.getActionMode();
-				ActionMode mode = getActionMode();
-				if (mode != null) {
-					mode.finish();
-				}
-				break;
+//			case R.id.path_pane_up_level:
+//				onOperationUpLevel();
+//				//ActionMode mode = ((FtpFileExplorerTabActivity) mContext)
+//				//		.getActionMode();
+//				ActionMode mode = getActionMode();
+//				if (mode != null) {
+//					mode.finish();
+//				}
+//				break;
 			}
 		}
 
@@ -402,7 +400,6 @@ public class FtpFileViewInteractionHub
 		public void onClick(View v) {
 			String path = (String) v.getTag();
 			assert (path != null);
-			showDropdownNavigation(false);
 			if (mFileViewListener.onNavigation(path))
 				return;
 
@@ -416,56 +413,7 @@ public class FtpFileViewInteractionHub
 
 	};
 
-	protected void onNavigationBarClick() {
-		if (mDropdownNavigation.getVisibility() == View.VISIBLE) {
-			showDropdownNavigation(false);
-		} else {
-			LinearLayout list = (LinearLayout) mDropdownNavigation
-					.findViewById(R.id.dropdown_navigation_list);
-			list.removeAllViews();
-			int pos = 0;
-			String displayPath = mFileViewListener.getDisplayPath(mCurrentPath);
-			boolean root = true;
-			int left = 0;
-			while (pos != -1 && !displayPath.equals("/")) {// 如果当前位置在根文件夹则不显示导航条
-				int end = displayPath.indexOf("/", pos);
-				if (end == -1)
-					break;
-
-				View listItem = LayoutInflater.from(mActivity).inflate(
-						R.layout.ftp_dropdown_item, null);
-
-				View listContent = listItem.findViewById(R.id.list_item);
-				listContent.setPadding(left, 0, 0, 0);
-				left += 20;
-				ImageView img = (ImageView) listItem
-						.findViewById(R.id.item_icon);
-
-				img.setImageResource(root ? R.drawable.dropdown_icon_root
-						: R.drawable.dropdown_icon_folder);
-				root = false;
-
-				TextView text = (TextView) listItem
-						.findViewById(R.id.path_name);
-				String substring = displayPath.substring(pos, end);
-				if (substring.isEmpty())
-					substring = "/";
-				text.setText(substring);
-
-				listItem.setOnClickListener(navigationClick);
-				listItem.setTag(mFileViewListener.getRealPath(displayPath
-						.substring(0, end)));
-				pos = end + 1;
-				list.addView(listItem);
-			}
-			if (list.getChildCount() > 0)
-				showDropdownNavigation(true);
-
-		}
-	}
-
 	public boolean onOperationUpLevel() {
-		showDropdownNavigation(false);
 
 		if (mFileViewListener.onOperation(GlobalConsts.OPERATION_UP_LEVEL)) {
 			return true;
@@ -573,14 +521,11 @@ public class FtpFileViewInteractionHub
 
 	public void refreshFileList() {
 		clearSelection();
-		updateNavigationPane();
-
 		// onRefreshFileList returns true indicates list has changed
 		mFileViewListener.onRefreshFileList(mCurrentPath, mFileSortHelper);
-
 		// update move operation button state
-		updateConfirmButtons();
-
+		updateConfirmButtons();    
+    mPathIndicator.setPath(mCurrentPath);
 	}
 
 	private void updateConfirmButtons() {
@@ -599,19 +544,6 @@ public class FtpFileViewInteractionHub
 		}
 
 		confirmButton.setText(text);
-	}
-
-	private void updateNavigationPane() {
-		View upLevel = mFileViewListener.getViewById(R.id.path_pane_up_level);
-		upLevel.setVisibility(mRoot.equals(mCurrentPath) ? View.INVISIBLE
-				: View.VISIBLE);
-
-		View arrow = mFileViewListener.getViewById(R.id.path_pane_arrow);
-		arrow.setVisibility(mRoot.equals(mCurrentPath) ? View.GONE
-				: View.VISIBLE);
-
-		mNavigationBarText.setText(mFileViewListener
-				.getDisplayPath(mCurrentPath));
 	}
 
 	public void onOperationSend() {
@@ -808,9 +740,6 @@ public class FtpFileViewInteractionHub
 				ContextMenuInfo menuInfo) {
 			if (isInSelection() || isMoveState())
 				return;
-
-			showDropdownNavigation(false);
-
 			AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
 			FavoriteDatabaseHelper databaseHelper = FavoriteDatabaseHelper
@@ -845,23 +774,7 @@ public class FtpFileViewInteractionHub
 
 	// File List view setup
 	private ListView mFileListView;
-
 	private int mListViewContextMenuSelectedItem;
-
-	private void setupFileListView() {
-		mFileListView = (ListView) mFileViewListener
-				.getViewById(R.id.file_path_list);
-		mFileListView.setLongClickable(true);
-		mFileListView
-				.setOnCreateContextMenuListener(mListViewContextMenuListener);
-		mFileListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				onListItemClick(parent, view, position, id);
-			}
-		});
-	}
 
 	Dialog fileListDialog;
 	ProgressBar progressBar;
@@ -1082,7 +995,6 @@ public class FtpFileViewInteractionHub
 	// TODO 修改，添加参数标记_OLD_MARK,为重用方法，被修改方法替代
 	public boolean onCreateOptionsMenu(Menu menu, boolean _OLD_MARK) {
 		clearSelection();
-		showDropdownNavigation(false);
 
 		addMenuItem(menu, MENU_UPLOAD, 0, R.string.operation_upload,
 				R.drawable.ic_menu_select_all);
@@ -1119,8 +1031,6 @@ public class FtpFileViewInteractionHub
 	// TODO 添加，替代旧方法
 	public boolean onCreateOptionsMenu(Menu menu) {
 		clearSelection();
-		showDropdownNavigation(false);
-
 		addDefaultMenu(menu);
 		return true;
 	}
@@ -1216,8 +1126,7 @@ public class FtpFileViewInteractionHub
 
 	public void onListItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		FileInfo lFileInfo = mFileViewListener.getItem(position);
-		showDropdownNavigation(false);
+		FileInfo lFileInfo = mFileViewListener.getItem(position);		
 
 		if (lFileInfo == null) {
 			Log.e(LOG_TAG, "file does not exist on position:" + position);
@@ -1348,9 +1257,7 @@ public class FtpFileViewInteractionHub
 	}
 
 	public boolean onBackPressed() {
-		if (mDropdownNavigation.getVisibility() == View.VISIBLE) {
-			mDropdownNavigation.setVisibility(View.GONE);
-		} else if (isInSelection()) {
+	  if (isInSelection()) {
 			clearSelection();
 		} else if (!onOperationUpLevel()) {
 			return false;
@@ -1370,12 +1277,6 @@ public class FtpFileViewInteractionHub
 		refreshFileList();
 	}
 
-	private void showDropdownNavigation(boolean show) {
-		mDropdownNavigation.setVisibility(show ? View.VISIBLE : View.GONE);
-		mNavigationBarUpDownArrow.setImageResource(mDropdownNavigation
-				.getVisibility() == View.VISIBLE ? R.drawable.arrow_up
-				: R.drawable.arrow_down);
-	}
 
 	@Override
 	public void onFileChanged(String path) {

@@ -17,11 +17,10 @@
       android:clickable="true"
       android:includeFontPadding="false"
       android:shadowDy="2.0"
-      android:shadowRadius="2.0" />  
-    <View  
-    android:id="@+id/path_indicator_divider"
-    android:layout_width="1px"  
-    android:layout_height="fill_parent" 
-    android:background="#ffb2b2b2"   
-  /> 
+      android:shadowRadius="2.0" />
+  <View
+        android:id="@+id/path_indicator_divider"
+        android:layout_width="1px"
+        android:layout_height="fill_parent"
+        android:background="@color/path_indicator_button_divider" />
 </FrameLayout>

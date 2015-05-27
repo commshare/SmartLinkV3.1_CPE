@@ -596,8 +596,6 @@ public class FtpFileViewFragment extends Fragment implements
 		View noSdView = mRootView.findViewById(R.id.sd_not_available_page);
 		noSdView.setVisibility(sdCardReady ? View.GONE : View.VISIBLE);
 
-		View navigationBar = mRootView.findViewById(R.id.navigation_bar);
-		navigationBar.setVisibility(sdCardReady ? View.VISIBLE : View.GONE);
 		mFileListView.setVisibility(sdCardReady ? View.VISIBLE : View.GONE);
 
 		if (sdCardReady) {
