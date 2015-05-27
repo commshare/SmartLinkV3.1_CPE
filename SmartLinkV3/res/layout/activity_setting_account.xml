@@ -52,17 +52,34 @@
            android:layout_marginRight="20dp"
            android:visibility="visible">
            
-           <EditText
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:id="@+id/current_password"
-               android:hint="@string/setting_current_password"
-               android:inputType="textPassword"
-               android:background="@null"
+        	<LinearLayout 
+        	   android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="horizontal"  >
+               <TextView
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="12dp"
+	               android:paddingBottom="12dp"
+	               android:paddingLeft="12dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="16sp" 
+	               android:text="@string/setting_current_password"
+	               android:layout_weight="0.7"
                />
+        	    <EditText
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="12dp"
+	               android:paddingBottom="12dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="16sp" 
+	               android:id="@+id/current_password"
+	               android:inputType="textPassword"
+	               android:background="@null"
+	               android:layout_weight="1"
+               />
+        	</LinearLayout>
 
            <ImageView
 	            android:layout_width="match_parent"
@@ -70,17 +87,34 @@
 	            android:background="@color/main_bottom_divider"
 	            android:contentDescription="@string/setting_account" />
            
-            <EditText
-               android:background="@null"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:id="@+id/new_password"
-               android:textSize="20sp" 
-               android:hint="@string/setting_new_password"
-               android:inputType="textPassword"
-               />
+           <LinearLayout 
+        	   android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="horizontal"  >
+               <TextView
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="12dp"
+	               android:paddingBottom="12dp"
+	               android:paddingLeft="12dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="16sp" 
+	               android:text="@string/setting_new_password"
+	               android:layout_weight="0.7"
+              	 />
+               <EditText
+	               android:background="@null"
+	               android:layout_width="match_parent"
+	               android:layout_height="wrap_content" 
+	               android:paddingTop="12dp"
+	               android:paddingBottom="12dp"
+	               android:textColor="@color/color_black"
+	               android:id="@+id/new_password"
+	               android:textSize="16sp" 
+	               android:inputType="textPassword"
+	               android:layout_weight="1"
+               	/>
+            </LinearLayout>
             
             <ImageView
 	            android:layout_width="match_parent"
@@ -88,17 +122,36 @@
 	            android:background="@color/main_bottom_divider"
 	            android:contentDescription="@string/setting_account" />
             
-            <EditText
-               android:background="@null"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:id="@+id/confirm_password"
-               android:inputType="textPassword"
-               android:textSize="20sp" 
-               android:hint="@string/setting_confirm_password"
-               />
+            <LinearLayout 
+        	   android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"  >
+               <TextView
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="12dp"
+	               android:paddingBottom="12dp"
+	               android:paddingLeft="12dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="16sp" 
+	               android:text="@string/setting_confirm_password"
+	               android:layout_weight="0.7"
+              	 />
+               
+               <EditText
+	               android:background="@null"
+	               android:layout_width="match_parent"
+	               android:layout_height="wrap_content" 
+	               android:paddingTop="12dp"
+	               android:paddingBottom="12dp"
+	               android:textColor="@color/color_black"
+	               android:id="@+id/confirm_password"
+	               android:inputType="textPassword"
+	               android:textSize="16sp" 
+	               android:layout_weight="1"
+	               />
+             </LinearLayout>
+            
      </LinearLayout>
      <TextView
          	   android:id="@+id/password_notice"

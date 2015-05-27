@@ -236,13 +236,13 @@ public class UserManager extends BaseManager {
 	//Change Password Request///////////////////////////////////////////////////////////////////////////////////
 	public void changepassword(DataValue data){
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "ChangePassword") != true){
-			Log.v("PassWordChanged", "Failed1");
 			return;
 		}
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strCurrPsw = (String) data.getParamByKey("current_password");
     	String strNewPsw = (String) data.getParamByKey("new_password");
     	
+    	Log.v("PassWordChanged", "Status1");
     	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ChangePassword("1.4", strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
 
 			@Override
@@ -257,7 +257,7 @@ public class UserManager extends BaseManager {
                 else{
                 	strErrcode = ErrorCode.UNKNOWN_ERROR;
                 }
-                
+                Log.v("PassWordChanged", "Status2");
                 Intent megIntent= new Intent(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);

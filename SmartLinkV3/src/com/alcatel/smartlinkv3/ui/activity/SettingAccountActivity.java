@@ -119,6 +119,11 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		String currentPwd = m_current_password.getText().toString();
 		String newPwd = m_new_password.getText().toString();
 		String confirmPwd = m_confirm_password.getText().toString();
+		if(currentPwd.length() == 0){
+			String strInfo = getString(R.string.input_current_password);
+			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		if(!newPwd.equals(confirmPwd)){
 			String strInfo = getString(R.string.inconsistent_new_password);
 			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
@@ -140,11 +145,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		imm.hideSoftInputFromWindow(m_current_password.getWindowToken(),0);
 		imm.hideSoftInputFromWindow(m_new_password.getWindowToken(),0);
 		imm.hideSoftInputFromWindow(m_confirm_password.getWindowToken(),0);
-		
-		m_tv_done.setVisibility(View.GONE);
-		m_logout_and_changepwd.setVisibility(View.VISIBLE);
-		m_inputpwd.setVisibility(View.GONE);
-		m_notice.setVisibility(View.GONE);
 	}
 	
 	@Override
@@ -228,7 +228,11 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
 						String strInfo = getString(R.string.change_password_successful);
-						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();					
+						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+						m_tv_done.setVisibility(View.GONE);
+						m_logout_and_changepwd.setVisibility(View.VISIBLE);
+						m_inputpwd.setVisibility(View.GONE);
+						m_notice.setVisibility(View.GONE);
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
@@ -249,6 +253,10 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
+			}
+			else{
+				String strInfo = getString(R.string.unknown_error);
+				Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 			}
 		}
 		
