@@ -6,6 +6,7 @@ import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
@@ -60,6 +61,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	
 	private boolean m_pin_state;
 	private ENUM.PinState m_requested_pinState = ENUM.PinState.NotAvailable;
+	
+	private boolean m_blFirst=true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -316,6 +319,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		Intent intent = new Intent(this, SettingPowerSavingActivity.class);
 		startActivity(intent);
 	}
+	
+	private void goToUpgradeSettingPage(){
+		Intent intent = new Intent(this, SettingUpgradeActivity.class);
+		intent.putExtra("First", m_blFirst);
+		m_blFirst = false;
+		startActivity(intent);
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -330,6 +340,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			goToSystemInfoPage();
 			break;
 		case R.id.device_upgrade_system:
+			goToUpgradeSettingPage();
 			break;
 		case R.id.device_backup_and_reset:
 			goToBackupSettingPage();
@@ -356,7 +367,6 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //			onDoneEditPincodeSetting();
 //			m_dlgPin.cancelUserClose();
 //			m_dlgPuk.cancelUserClose();
-			Log.v("PINCHECK", "CLICK");
 			ShowPinDialog();
 			break;
 		default:
@@ -425,6 +435,17 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				MessageUti.SIM_CHANGE_PIN_STATE_REQUEST));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.USER_LOGOUT_REQUEST));
+		this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE));
+		this.registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION));
+		
+		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+			m_blFirst = false;
+//			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+		}else {
+//			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
+		}	
 		
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
 		ShowWaiting(true);
@@ -517,6 +538,32 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				Log.v("PINCHECK", "PUK");
 			}
 		}
+		
+		if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+			}else {
+
+				Toast.makeText(getBaseContext(), R.string.setting_upgrade_stop_error, Toast.LENGTH_SHORT).show();
+			}
+		}
+		
+		if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+				int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+				if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+					m_blFirst = false;
+//					changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+				}else {
+//					changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
+				}
+			}
+		}
+		
+		
 	}
 
 }

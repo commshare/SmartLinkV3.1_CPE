@@ -62,8 +62,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:orientation="horizontal"
-                android:visibility="gone" >
+                android:orientation="horizontal" >
 
                 <TextView
                     android:layout_width="match_parent"
@@ -236,7 +235,8 @@
             <RelativeLayout
                 android:id="@+id/rl_device_control"
                 android:layout_width="match_parent"
-                android:layout_height="250dp" >
+                android:layout_height="250dp"
+                android:visibility="gone" >
 
                 <Button
                     android:id="@+id/btn_reboot"

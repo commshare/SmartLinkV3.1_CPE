@@ -47,9 +47,9 @@ public class ViewSetting extends BaseViewImpl{
 	private final int ITEM_DEVICE_SETTING =3;
 	private final int ITEM_ABOUT_SETTING = 4;
 	//Previous upgrade setting was 3, device was 4, about was 5, power was 1, backup was 2.
-	private final int ITEM_UPGRADE_SETTING = 5;
-	private final int ITEM_POWER_SETTING = 6;
-	private final int ITEM_BACKUP_SETTING = 7;
+//	private final int ITEM_UPGRADE_SETTING = 5;
+//	private final int ITEM_POWER_SETTING = 6;
+//	private final int ITEM_BACKUP_SETTING = 7;
 	private ListView m_lvSettingListView = null;
 	private UprgadeAdapter adapter;
 	private List<SettingItem>list;
@@ -100,14 +100,16 @@ public class ViewSetting extends BaseViewImpl{
 				case ITEM_ABOUT_SETTING:
 					goToAboutSettingPage();
 					break;
-				case ITEM_POWER_SETTING:
-					goToPowerSettingPage();
-					break;
-				case ITEM_BACKUP_SETTING:
-					goToBackupSettingPage();
-					break;
-				case ITEM_UPGRADE_SETTING:
-					goToUpgradeSettingPage();
+//				case ITEM_POWER_SETTING:
+//					goToPowerSettingPage();
+//					break;
+//				case ITEM_BACKUP_SETTING:
+//					goToBackupSettingPage();
+//					break;
+//				case ITEM_UPGRADE_SETTING:
+//					goToUpgradeSettingPage();
+//					break;
+				default:
 					break;
 				}
 			}
@@ -120,9 +122,9 @@ public class ViewSetting extends BaseViewImpl{
 		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
 		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
 			m_blFirst = false;
-			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+//			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
 		}else {
-			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
+//			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
 		}	
 	}
 
@@ -157,20 +159,20 @@ public class ViewSetting extends BaseViewImpl{
 		item = new SettingItem(context.getString(R.string.setting_about), false);
 		list.add(item);
 		
-		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
-		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
-			item = new SettingItem(context.getString(R.string.setting_upgrade), true);
-			list.add(item);
-		}else {
-			item = new SettingItem(context.getString(R.string.setting_upgrade), false);
-			list.add(item);
-		}
-		
-		item = new SettingItem(context.getString(R.string.setting_power), false);
-		list.add(item);
-		
-		item = new SettingItem(context.getString(R.string.setting_backup), false);
-		list.add(item);
+//		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+//		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+//			item = new SettingItem(context.getString(R.string.setting_upgrade), true);
+//			list.add(item);
+//		}else {
+//			item = new SettingItem(context.getString(R.string.setting_upgrade), false);
+//			list.add(item);
+//		}
+//		
+//		item = new SettingItem(context.getString(R.string.setting_power), false);
+//		list.add(item);
+//		
+//		item = new SettingItem(context.getString(R.string.setting_backup), false);
+//		list.add(item);
 		
 		return list;
 	}
@@ -200,11 +202,9 @@ public class ViewSetting extends BaseViewImpl{
 	private void goToAccountSettingPage(){
 		Intent intent = new Intent(m_context, SettingAccountActivity.class);
 		m_context.startActivity(intent);
-		Log.v("TESTCLICK", "ACCOUNT");
 	}
 	
 	private void goToNetworkSettingPage(){
-		Log.v("TESTCLICK", "NETWORK");
 		Intent intent = new Intent(m_context, SettingNetworkActivity.class);
 		m_context.startActivity(intent);
 	}
@@ -292,16 +292,16 @@ public class ViewSetting extends BaseViewImpl{
 		}
 	}
 	
-	private void changeUpgradeFlag(int itemIndex, Boolean blUpgrade){
-		if(itemIndex >= ITEM_WIFI_SETTING && itemIndex <= ITEM_UPGRADE_SETTING){
-			SettingItem item = list.get(itemIndex);
-			Boolean blOldUpgrade = item.getUpgradeFlag();
-			if(blOldUpgrade != blUpgrade){
-				item.setUpgradeFlag(blUpgrade);
-				adapter.notifyDataSetChanged();
-			}
-		}
-	}
+//	private void changeUpgradeFlag(int itemIndex, Boolean blUpgrade){
+//		if(itemIndex >= ITEM_WIFI_SETTING && itemIndex <= ITEM_UPGRADE_SETTING){
+//			SettingItem item = list.get(itemIndex);
+//			Boolean blOldUpgrade = item.getUpgradeFlag();
+//			if(blOldUpgrade != blUpgrade){
+//				item.setUpgradeFlag(blUpgrade);
+//				adapter.notifyDataSetChanged();
+//			}
+//		}
+//	}
 	
 	private class settingBroadcast extends BroadcastReceiver{
 
@@ -325,9 +325,9 @@ public class ViewSetting extends BaseViewImpl{
 					int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
 					if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
 						m_blFirst = false;
-						changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+//						changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
 					}else {
-						changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
+//						changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
 					}
 				}
 			}
