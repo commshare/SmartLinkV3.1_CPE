@@ -591,6 +591,36 @@ public class ENUM {
 			}
 		}
 	}
+	
+	public static enum SsidHiddenEnum {
+		
+		SsidHidden_Unknown,
+		SsidHidden_Disable,
+		SsidHidden_Enable;
+		
+		public static SsidHiddenEnum build(int nType) {
+			if(nType == 0){
+				return SsidHidden_Disable;
+			}
+			else if(nType == 1){
+				return SsidHidden_Enable;
+			}
+			else {
+				return SsidHidden_Unknown;
+			}
+		}
+		
+		public static int antiBuild(SsidHiddenEnum type){
+			switch(type){
+			case SsidHidden_Disable:
+				return 0;
+			case SsidHidden_Enable:
+				return 1;
+			default:
+				return -1;
+			}
+		}
+	}
 
 	public static enum WIFIConnectStatus {
 		Connected, Disconnected;

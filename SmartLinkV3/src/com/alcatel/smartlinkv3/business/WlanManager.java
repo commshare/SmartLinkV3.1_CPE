@@ -3,11 +3,11 @@ package com.alcatel.smartlinkv3.business;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 import com.alcatel.smartlinkv3.business.system.HttpSystem.GetFeature;
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
@@ -137,6 +137,15 @@ public class WlanManager extends BaseManager {
 	public WlanSettingResult getWlanSettingResult(){
 		return m_settings;
 	}
+	
+	public SsidHiddenEnum getSsidHidden() {
+		return SsidHiddenEnum.build(m_settings.SsidHidden);
+	}
+	
+	public SsidHiddenEnum getSsidHidden_5G() {
+		return SsidHiddenEnum.build(m_settings.SsidHidden_5G);
+	}
+	
 	private void getInfoByWansetting() {
 		m_strSsid = m_settings.Ssid;
 		m_strSsid_5G = m_settings.Ssid_5G;
@@ -249,6 +258,7 @@ public class WlanManager extends BaseManager {
 		String strPassword = (String) data.getParamByKey("Password");
 		Integer nSecurity = (Integer)data.getParamByKey("Security");
 		Integer nEncryption = (Integer)data.getParamByKey("Encryption");
+		Integer nSsidStatus = (Integer) data.getParamByKey("SsidStatus");
 		final WlanSettingResult settings = new WlanSettingResult();
 		settings.clone(m_settings);
 		settings.WlanAPMode = nWlanAPMode;
@@ -257,13 +267,17 @@ public class WlanManager extends BaseManager {
 		boolean bl5GHZ = false;
 		if (WlanFrequency.Frequency_24GHZ == frequencyMode) {
 			settings.Ssid = strSsid;
+			settings.SsidHidden = nSsidStatus;
 			bl24GHZ = true;
 		}else if (WlanFrequency.Frequency_5GHZ == frequencyMode) {
 			settings.Ssid_5G = strSsid;
+			settings.SsidHidden_5G = nSsidStatus;
 			bl5GHZ = true;
 		}else{
 			settings.Ssid = strSsid;
 			settings.Ssid_5G = strSsid;
+			settings.SsidHidden = nSsidStatus;
+			settings.SsidHidden_5G = nSsidStatus;
 			bl24GHZ = true;
 			bl5GHZ = true;
 		}

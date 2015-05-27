@@ -33,6 +33,7 @@ import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.common.HttpMethodUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -421,6 +422,14 @@ public class BusinessMannager {
 	
 	public WlanSettingResult getWlanSettingResult(){
 		return m_wlanManager.getWlanSettingResult();
+	}
+	
+	public SsidHiddenEnum getSsidStatus(){
+		return m_wlanManager.getSsidHidden();
+	}
+	
+	public SsidHiddenEnum getSsidStatus_5G(){
+		return m_wlanManager.getSsidHidden_5G();
 	}
     /********************wlan manager method end************************/      
     

@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
@@ -84,6 +85,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	private TextView m_btn_psd_switch;
 	private ProgressBar m_pb_waiting=null;
 	private TextView m_tv_ssid;
+	
+	private LinearLayout m_ll_edit_ssid_broadcast;
+	private TextView m_btn_ssid_broadcast_switch;
+	private SsidHiddenEnum m_pre_ssid_status = SsidHiddenEnum.SsidHidden_Disable;
+	private SsidHiddenEnum m_ssid_status = SsidHiddenEnum.SsidHidden_Disable;
 	//spiners
 	private LinearLayout m_ll_security;
 	private LinearLayout m_ll_encryption;
@@ -166,6 +172,12 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_err_dialog = CommonErrorInfoDialog.getInstance(this);//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_wifi_waiting_progress);
 		m_tv_ssid = (TextView)findViewById(R.id.tv_ssid);
+		
+		m_ll_edit_ssid_broadcast = (LinearLayout)findViewById(R.id.ll_edit_ssid_broadcast);
+		m_ll_edit_ssid_broadcast.setOnClickListener(this);
+		m_ll_edit_ssid_broadcast.setEnabled(false);
+		m_btn_ssid_broadcast_switch = (TextView) findViewById(R.id.btn_ssid_broadcast_switch);
+//		m_pre_ssid_status = SsidHiddenEnum.SsidHidden_Enable;
 		//init spiner
 		initSpiners();
 	}
@@ -244,6 +256,10 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			onBtnPasswordSwitch();
 			break;
 			
+		case R.id.ll_edit_ssid_broadcast:
+			onBtnSSIDSwitch();
+			break;
+			
 		case R.id.rb_2point4G_wifi:
 		case R.id.rb_5G_wifi:
 			onWifModeChanged();
@@ -251,6 +267,17 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		default:
 			break;
 
+		}
+	}
+	
+	private void onBtnSSIDSwitch(){
+		if(m_ssid_status == SsidHiddenEnum.SsidHidden_Disable){
+			m_ssid_status = SsidHiddenEnum.SsidHidden_Enable;
+			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
+		}
+		else if(m_ssid_status == SsidHiddenEnum.SsidHidden_Enable){
+			m_ssid_status = SsidHiddenEnum.SsidHidden_Disable;
+			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
 		}
 	}
 
@@ -349,7 +376,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	}
 	private void onBtnEdit(){
 		m_tv_done.setVisibility(View.VISIBLE);
-
+		m_ll_edit_ssid_broadcast.setEnabled(true);
+		
 		m_tv_edit.setFocusable(false);
 		m_tv_edit.setFocusableInTouchMode(false);
 		m_tv_edit.setVisibility(View.GONE);
@@ -419,7 +447,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			}
 			setWlanSettingItems();
 		}
-
+		m_ll_edit_ssid_broadcast.setEnabled(false);
 		//
 		synchValues();
 		setControlsDoneStatus();
@@ -512,13 +540,15 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 					|| 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid)
 					|| m_nSecurityMode != m_nPreSecurityMode
 					|| m_nType != m_nPreType
-					|| 0 != m_strKey.compareToIgnoreCase(m_strPreKey)) {
+					|| 0 != m_strKey.compareToIgnoreCase(m_strPreKey)
+					|| !m_pre_ssid_status.equals(m_ssid_status)) {
 				blChanged = true;
 			}
 		}else {
 			if (m_nPreWlanAPMode != m_nWlanAPMode
 					|| 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid)
-					|| m_nSecurityMode != m_nPreSecurityMode) {
+					|| m_nSecurityMode != m_nPreSecurityMode
+					|| !m_pre_ssid_status.equals(m_ssid_status)) {
 				blChanged = true;
 			}
 		}
@@ -531,6 +561,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		data.addParam("Password", m_strKey);
 		data.addParam("Security", m_nSecurityMode);
 		data.addParam("Encryption", m_nType);
+		data.addParam("SsidStatus", SsidHiddenEnum.antiBuild(m_ssid_status));
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
 		ShowWaiting(true);
@@ -655,6 +686,14 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			}
 			m_et_password.setText(m_curWPAPassword);
 		}
+		
+		if(m_ssid_status.equals(SsidHiddenEnum.SsidHidden_Disable)){
+			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
+		}
+		else if(m_ssid_status.equals(SsidHiddenEnum.SsidHidden_Enable)){
+			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
+		}
+		
 	}
 
 	@Override
@@ -695,6 +734,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_nWlanAPMode = m_nPreWlanAPMode;
 
 		if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nWlanAPMode) {
+			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus();
 			m_strPreSsid = BusinessMannager.getInstance().getSsid();
 			SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
 			m_nPreSecurityMode = SecurityMode.antiBuild(mode);	
@@ -715,6 +755,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 //				m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
 //			}		
 		}else {
+			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus_5G();
 			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
 			SecurityMode mode = BusinessMannager.getInstance().getSecurityMode_5G();
 			m_nPreSecurityMode = SecurityMode.antiBuild(mode);	
@@ -735,6 +776,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 //				m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
 //			}
 		}
+		m_ssid_status = m_pre_ssid_status;
 
 		m_strSsid = m_strPreSsid;
 
