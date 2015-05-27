@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import com.alcatel.smartlinkv3.R;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

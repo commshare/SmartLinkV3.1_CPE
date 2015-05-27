@@ -36,6 +36,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.DhcpInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -498,6 +499,7 @@ public class FtpFileViewFragment extends Fragment implements
 		setHasOptionsMenu(true);
 		return mRootView;
 	}
+
 
 	@Override
 	public void onDestroyView() {

@@ -1047,7 +1047,16 @@ public class FtpFileViewInteractionHub
 				break;
 			case GlobalConsts.MENU_ADD_FILE	:
 				Toast.makeText(mActivity, "Add File.", Toast.LENGTH_SHORT).show();
-				
+				//IntentBuilder.pickFile(mActivity);
+				ExternalFileObtain.getInstance(mActivity).getFiles(
+				        new ExternalFileObtain.OnGetFilesListener() {                    
+                    @Override
+                    public void onGetFiles(ArrayList<File> list) {
+                        // TODO Auto-generated method stub
+                        Log.i("ADD_FILE", list.toString());
+                        mUICmdListener.upload(list, mCurrentPath);
+                    }
+                });
 				break;
 				
 			default:
@@ -1059,16 +1068,6 @@ public class FtpFileViewInteractionHub
 		}
 
 	};
-	
-	//class FileUpload {	    
-	//    public ArrayList<File> getUploadFileList() {
-	//        ArrayList<File> listFile = new ArrayList<File>();
-	//        Intent intent = new Intent();
-	//        intent.setAction(Intent.ACTION_PICK);
-	//        intent.setType("*/*");
-	//        return listFile;
-	//    }
-	//}
 
 	private com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode mCurrentMode;
 
