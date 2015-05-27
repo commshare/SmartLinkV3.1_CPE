@@ -4,7 +4,10 @@ import com.alcatel.smartlinkv3.R;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -29,7 +32,7 @@ import java.util.ArrayList;
 
 public class PathIndicator extends HorizontalScrollView
  {
-  private static final String MODULE = "PathIndicator";
+  private static final String TAG = "PathIndicator";
   private Context mContext;
   private String mCurrentPathIndicatorPath;
   private Animation mAnimation;
@@ -75,24 +78,27 @@ public class PathIndicator extends HorizontalScrollView
           return;
         int i = 0;
         for (ViewHolder vh : mFolderButtonViewHolderList) {
-          i++;
           if( vh.mPathIndicatorButton == view) {
             index = i;
             break;
           }
+          i++;
         }
         
-        if (index == -1){
+        if (index == -1 || mPathChangeListener == null){
           return;
         }
-
-        if (mPathChangeListener == null)
-          return;
+        
         StringBuilder sb = new StringBuilder();
-        for (String f : mFolderList) {
-          sb.append(f);
+
+        sb.append(File.separator);
+        for (i = 0; i <= index; i++) {
+          sb.append(mFolderList.get(i));
+          if (i < index)
           sb.append(File.separator);
         }
+
+        Log.v(TAG, "onPathSelected : " + sb.toString());
         mPathChangeListener.onPathSelected(0, sb.toString());
       }
 
@@ -116,7 +122,8 @@ public class PathIndicator extends HorizontalScrollView
     // FrameLayout folderButtonContainer =
     // (FrameLayout)view.findViewById(R.id.path_indicator_container);
     TextView folderButton = (TextView) view.findViewById(R.id.path_indicator_button);
-    ViewHolder vh = new ViewHolder(view, folderButton, null);
+    View divider = view.findViewById(R.id.path_indicator_divider);
+    ViewHolder vh = new ViewHolder(view, folderButton, divider);
     view.setId(index + 1);
     folderButton.setText(folderName);
     folderButton.setOnClickListener(mFolderButtonClickListener);
@@ -124,7 +131,9 @@ public class PathIndicator extends HorizontalScrollView
 
     folderButton.setEnabled(true);
 
-    if (index != totalSize && isAdd)
+    Log.v(TAG, "folderName:" + folderName + ", index : " + index + 
+        ", totalSize : " + totalSize + ", isAdd: " + isAdd);
+    if (index != totalSize ||isAdd)
       mFolderList.add(getAbsoluteFolderName(folderName));
 
     RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -132,15 +141,14 @@ public class PathIndicator extends HorizontalScrollView
         RelativeLayout.LayoutParams.MATCH_PARENT);
     if (mFolderButtonViewHolderList != null) {
       if (mFolderButtonViewHolderList.size() > 0) {
-        lp.leftMargin = (int) res
-            .getDimension(R.dimen.path_indicator_button_margin_left);
-        ViewHolder lvh = mFolderButtonViewHolderList.get(mFolderButtonViewHolderList
-            .size() - 1);
+        lp.leftMargin = (int) res.getDimension(R.dimen.path_indicator_button_margin_left);
+        ViewHolder lvh = mFolderButtonViewHolderList.get(mFolderButtonViewHolderList.size() - 1);
         lp.addRule(RelativeLayout.RIGHT_OF, lvh.mContainer.getId());
       } else {
         folderButton.setPadding(
             (int) res.getDimension(R.dimen.path_indicator_first_button_padding_left),
-            folderButton.getPaddingTop(), folderButton.getPaddingRight(),
+            folderButton.getPaddingTop(),
+            folderButton.getPaddingRight(),
             folderButton.getPaddingBottom());
         lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
       }
@@ -182,10 +190,9 @@ public class PathIndicator extends HorizontalScrollView
 
       });
     }
-    
-    //TOOD::??
-    //mFolderButtonContainer.addView(view, lp);
-    addView(view, lp);
+
+    mFolderButtonContainer.addView(view, lp);
+    //addView(view, lp);
     post(new Runnable() {
 
       @Override
@@ -206,29 +213,37 @@ public class PathIndicator extends HorizontalScrollView
     mFolderButtonViewHolderList = new ArrayList<ViewHolder>();
     mFolderButtonContainer = new RelativeLayout(mContext);
     addView(mFolderButtonContainer, 
-        new LayoutParams(
-            LayoutParams.MATCH_PARENT,
-            LayoutParams.MATCH_PARENT));
+        new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     
   }
   private String getAbsoluteFolderName(String path){
     //String folderPath;
     //mContext.getString(resId);
+
+    Log.v(TAG, "getAbsoluteFolderName :" + path);
     return path;    
   }
   
   private String getCurPathIndicatorPath() {
     int length = mFolderList.size();
     StringBuilder path = new StringBuilder();
+
+    path.append('/');
     for(int i=0; i < length; i++){
       path.append(mFolderList.get(i));
-    }
-    path.append("/");
+      if (i != length - 1)
+      path.append('/');
+    }   
     mCurrentPathIndicatorPath = path.toString();
+    Log.v(TAG, "Current PathIndicator Path :" + mCurrentPathIndicatorPath);
     return mCurrentPathIndicatorPath;
   }
   
   private String getDisPlayedPath(String path){
+    //String folderPath = path;
+    //String localPath = new StringBuilder().append(File.separator).append(path).toString();
+    //Log.v(TAG, "getDisPlayedPath Path In :" + path + ", Path return :"+ localPath);
+    //return localPath;
     return path;
   }
   
@@ -262,64 +277,75 @@ public class PathIndicator extends HorizontalScrollView
     mPathChangeListener = listener;    
   }
   
+  /*
+   * folderPath="/sdcard"; 
+   * 
+   */
   public void setPath(String folderPath){
     if (folderPath == null )
       return;
     
-    String currentFolderName = folderPath.substring(folderPath.length(),
-        folderPath.lastIndexOf("/")+1);
+    String currentFolderName = folderPath.substring(folderPath.lastIndexOf("/")+1, folderPath.length());
     String preFolderName = "";
     
-    if (folderPath.length() > 0 && !getCurPathIndicatorPath().equals(folderPath)
-        && !mForceRefreshPathIndicatorBar){     
+    if (folderPath.length() > 0 && getCurPathIndicatorPath().equals(folderPath)
+        && !mForceRefreshPathIndicatorBar){
+      Log.v(TAG, "do not need to add folder: " + folderPath);
       return;
     }
-    if (folderPath.length() == 0) {
-      return;      
-    } else if (folderPath.length() == 1){
-      if ('/' != folderPath.charAt(0))
+    if (folderPath.length() == 0 
+        ||(folderPath.length() == 1 && '/' != folderPath.charAt(0))){      
         return;
-    }
+    }    
     
-    Log.d(MODULE, new StringBuilder().
-                      append(" setPath() - folderPath : ").
-                      append(folderPath).
-                      toString());
+    Log.v(TAG, " setPath() - folderPath : " + folderPath);
     String[] folders = getDisPlayedPath(folderPath).substring(1).split("/");
-    String[] preFolders = new String[]{""};
-    
-    if (!mForceRefreshPathIndicatorBar)
-      return;
+    String[] preFolders = new String[]{};    
+
+    Log.v(TAG, "folders:");
+    for (String f : folders) {
+      Log.v(TAG, "\t'" + f + "'");
+    }
+
     if (mPrePathIndicatorPath != null){
       preFolders = getDisPlayedPath(mPrePathIndicatorPath).substring(1).split("/");
       preFolderName = mPrePathIndicatorPath.substring(mPrePathIndicatorPath.lastIndexOf("/") + 1, 
           mPrePathIndicatorPath.length());
+      Log.v(TAG, "mPrePathIndicatorPath: " + mPrePathIndicatorPath + " split into:");
+      for (String f : preFolders) {
+        Log.v(TAG, "\t'" + f + "'");
+      }
     }
     
     if(preFolders.length == folders.length && mPrePathIndicatorPath != null){
-     if(currentFolderName.equals(preFolderName) && !mForceRefreshPathIndicatorBar)
+     if(currentFolderName.equals(preFolderName) && !mForceRefreshPathIndicatorBar){
        return;
+    }
      clear();
      addPath(folders, true);
     } else {
-      clear();
       if (preFolders.length < folders.length) {
+        clear();
         addPath(folders, true);
       } else if (preFolders.length > folders.length) {
         File currentFolder = new File(folderPath);
         File preFolder = new File(mPrePathIndicatorPath);
+        clear();
         if(preFolder.getParent().equals(currentFolder.getAbsolutePath())){
-          addPath(preFolders, false);
+          Log.v(TAG, "remove folder " + preFolders[0]);
+         // addPath(preFolders, false);
+          addPath(folders, true);
         } else {
           addPath(folders, true);
         }
-      } else if (preFolders.length > folders.length) {
+      } else if (preFolders.length == folders.length) {
         if(currentFolderName.equals(preFolderName)
             && !"".equals(preFolderName)
             && !mForceRefreshPathIndicatorBar) {
           return;
         }
       } else {
+        clear();
         addPath(folders, true);
       }
     }
@@ -327,15 +353,21 @@ public class PathIndicator extends HorizontalScrollView
     if (mForceRefreshPathIndicatorBar)
       mForceRefreshPathIndicatorBar = false;
     
-    folderPath = mPrePathIndicatorPath;
+    mPrePathIndicatorPath = folderPath;
     if (mFolderButtonViewHolderList == null || mFolderButtonViewHolderList.size() == 0) 
       return;
     
     ViewHolder v = mFolderButtonViewHolderList.get(mFolderButtonViewHolderList.size() - 1);
-    if (v == null || v.mPathIndicatorButton == null)
-      return;
+    if (v != null && v.mPathIndicatorButton != null){
     v.mPathIndicatorButton.setClickable(false);
-    v.mPathIndicatorButton.setShadowLayer(2.0F, .0F, 2.0F, Color.BLACK);
+    v.mPathIndicatorButton.setTextColor(Color.BLACK);
+    }
+    
+    v = mFolderButtonViewHolderList.get(0);
+    if (v != null && v.mPathIndicatorDivider != null) {
+    v.mPathIndicatorDivider.setVisibility(View.INVISIBLE);
+    }
+    //v.mPathIndicatorButton.setShadowLayer(2.0F, .0F, 2.0F, Color.RED);
   }
   
   public interface OnPathChangeListener {
@@ -356,14 +388,14 @@ public class PathIndicator extends HorizontalScrollView
 
   class ViewHolder {
     public FrameLayout mContainer;
-    public ImageView mPathIndicatorArrow;
+    public View mPathIndicatorDivider;
     public TextView mPathIndicatorButton;
 
     public ViewHolder(FrameLayout container, TextView pathIndicatorButton,
-        ImageView pathIndicatorArrow) {
+        View pathIndicatorDivider) {
       mContainer = container;
       mPathIndicatorButton = pathIndicatorButton;
-      mPathIndicatorArrow = pathIndicatorArrow;
+      mPathIndicatorDivider = pathIndicatorDivider;
     }
   }
 }
