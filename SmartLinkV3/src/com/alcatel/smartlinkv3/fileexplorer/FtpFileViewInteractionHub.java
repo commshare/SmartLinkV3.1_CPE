@@ -71,8 +71,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FtpFileViewInteractionHub 
-	implements IOperationProgressListener, IConnectedActionMode {
+public class FtpFileViewInteractionHub implements IOperationProgressListener,
+		IConnectedActionMode {
 	private static final String LOG_TAG = "FtpFileViewInteractionHub";
 
 	private IFileInteractionListener mFileViewListener;
@@ -88,26 +88,30 @@ public class FtpFileViewInteractionHub
 	private ProgressDialog progressDialog;
 
 	private Activity mActivity;
-	
-  private PathIndicator mPathIndicator;
-	
+
+	private PathIndicator mPathIndicator;
+
 	private IConnectedActionMode mCommectedActionMode;
+
 	public void setConnectdActionMode(IConnectedActionMode icam) {
 		this.mCommectedActionMode = icam;
 	}
+
 	@Override
 	public void setActionMode(ActionMode actionMode) {
 		mCommectedActionMode.setActionMode(actionMode);
 	}
-	
+
 	@Override
-    public ActionMode getActionMode() {
+	public ActionMode getActionMode() {
 		return mCommectedActionMode.getActionMode();
-	}	
+	}
+
 	@Override
 	public ActionMode launchActionMode(ActionMode.Callback callback) {
 		return mCommectedActionMode.launchActionMode(callback);
 	}
+
 	@Override
 	public ActionBar obtainActionBar() {
 		return mCommectedActionMode.obtainActionBar();
@@ -146,42 +150,48 @@ public class FtpFileViewInteractionHub
 
 	public FtpFileViewInteractionHub(IFileInteractionListener fileViewListener) {
 		assert (fileViewListener != null);
-		mFileViewListener = fileViewListener;    
-    
-    mPathIndicator = (PathIndicator)mFileViewListener.getViewById(R.id.path_indicator);
-    mPathIndicator.setOnPathChangeListener(new OnPathChangeListener(){
-      /*
-       * User click PathIndicator to change folder.
-       */
-      @Override
-      public void onPathSelected(int targetFolderID, String targetFolderPath) {
-        if (mFileViewListener.onNavigation(targetFolderPath))
-          return;
+		mFileViewListener = fileViewListener;
 
-        if (targetFolderPath.isEmpty()) {
-          mCurrentPath = mRoot;
-        } else {
-          mCurrentPath = targetFolderPath;
-        }
-        refreshFileList();      
-      }
-      
-    });
+		mPathIndicator = (PathIndicator) mFileViewListener
+				.getViewById(R.id.path_indicator);
+		mPathIndicator.setOnPathChangeListener(new OnPathChangeListener() {
+			/*
+			 * User click PathIndicator to change folder.
+			 */
+			@Override
+			public void onPathSelected(int targetFolderID,
+					String targetFolderPath) {
+				if (mFileViewListener.onNavigation(targetFolderPath))
+					return;
 
-    mFileListView = (ListView) mFileViewListener.getViewById(R.id.file_path_list);
-    mFileListView.setLongClickable(true);
-    mFileListView.setOnCreateContextMenuListener(mListViewContextMenuListener);
-    mFileListView.setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        onListItemClick(parent, view, position, id);
-      }
-    });
-  
-    mConfirmOperationBar = mFileViewListener.getViewById(R.id.moving_operation_bar);
-    setupClick(mConfirmOperationBar, R.id.button_moving_confirm);
-    setupClick(mConfirmOperationBar, R.id.button_moving_cancel);
-        
+				if (targetFolderPath.isEmpty()) {
+					mCurrentPath = mRoot;
+				} else {
+					mCurrentPath = targetFolderPath;
+				}
+				refreshFileList();
+			}
+
+		});
+
+		mFileListView = (ListView) mFileViewListener
+				.getViewById(R.id.file_path_list);
+		mFileListView.setLongClickable(true);
+		mFileListView
+				.setOnCreateContextMenuListener(mListViewContextMenuListener);
+		mFileListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				onListItemClick(parent, view, position, id);
+			}
+		});
+
+		mConfirmOperationBar = mFileViewListener
+				.getViewById(R.id.moving_operation_bar);
+		setupClick(mConfirmOperationBar, R.id.button_moving_confirm);
+		setupClick(mConfirmOperationBar, R.id.button_moving_cancel);
+
 		mFileOperationHelper = new FtpFileOperationHelper(this);
 		mFileSortHelper = new FileSortHelper();
 		mActivity = mFileViewListener.obtainActivity();
@@ -302,15 +312,15 @@ public class FtpFileViewInteractionHub
 			case R.id.button_moving_cancel:
 				onOperationButtonCancel();
 				break;
-//			case R.id.path_pane_up_level:
-//				onOperationUpLevel();
-//				//ActionMode mode = ((FtpFileExplorerTabActivity) mContext)
-//				//		.getActionMode();
-//				ActionMode mode = getActionMode();
-//				if (mode != null) {
-//					mode.finish();
-//				}
-//				break;
+			// case R.id.path_pane_up_level:
+			// onOperationUpLevel();
+			// //ActionMode mode = ((FtpFileExplorerTabActivity) mContext)
+			// // .getActionMode();
+			// ActionMode mode = getActionMode();
+			// if (mode != null) {
+			// mode.finish();
+			// }
+			// break;
 			}
 		}
 
@@ -379,14 +389,15 @@ public class FtpFileViewInteractionHub
 			f.Selected = true;
 			mCheckedFileNameList.add(f);
 		}
-		//FtpFileExplorerTabActivity fileExplorerTabActivity = (FtpFileExplorerTabActivity) mContext;
-		//ActionMode mode = fileExplorerTabActivity.getActionMode();
+		// FtpFileExplorerTabActivity fileExplorerTabActivity =
+		// (FtpFileExplorerTabActivity) mContext;
+		// ActionMode mode = fileExplorerTabActivity.getActionMode();
 		ActionMode mode = getActionMode();
 		if (mode == null) {
-			//mode = fileExplorerTabActivity.startActionMode(new ModeCallback(
-			//		mContext, this));
+			// mode = fileExplorerTabActivity.startActionMode(new ModeCallback(
+			// mContext, this));
 			mode = this.launchActionMode(new ModeCallback(mActivity, this));
-			//fileExplorerTabActivity.setActionMode(mode);
+			// fileExplorerTabActivity.setActionMode(mode);
 			setActionMode(mode);
 			Util.updateActionModeTitle(mode, mActivity, getSelectedFileList()
 					.size());
@@ -524,8 +535,8 @@ public class FtpFileViewInteractionHub
 		// onRefreshFileList returns true indicates list has changed
 		mFileViewListener.onRefreshFileList(mCurrentPath, mFileSortHelper);
 		// update move operation button state
-		updateConfirmButtons();    
-    mPathIndicator.setPath(mCurrentPath);
+		updateConfirmButtons();
+		mPathIndicator.setPath(mCurrentPath);
 	}
 
 	private void updateConfirmButtons() {
@@ -571,9 +582,9 @@ public class FtpFileViewInteractionHub
 
 	public void onOperationRename() {
 		// TODO : 去掉上下文菜单选择判断
-		//int pos = mListViewContextMenuSelectedItem;
-		//if (pos == -1)
-		//	return;
+		// int pos = mListViewContextMenuSelectedItem;
+		// if (pos == -1)
+		// return;
 
 		if (getSelectedFileList().size() == 0)
 			return;
@@ -638,13 +649,37 @@ public class FtpFileViewInteractionHub
 	public void onFtpDownload() {
 		mUICmdListener.download(getSelectedFileList(), null);
 	}
-	
+
 	public void onFtpUpload() {
 		mUICmdListener.upload(null, null);
 	}
 
 	public void onFtpDelete() {
-		mUICmdListener.delete(getSelectedFileList());
+		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+		LayoutInflater inflater = LayoutInflater.from(mActivity);
+		View view = inflater.inflate(R.layout.custom_delete_dlg, null);
+		builder.setView(view);
+
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mUICmdListener.delete(getSelectedFileList());
+				dialog.dismiss();
+			}
+		});
+		builder.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		AlertDialog alertDialog = builder.show();
+
+		Button positiveBtn = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+		positiveBtn.setTextColor(0xff0070c5);
+		Button negativeBtn = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+		negativeBtn.setTextColor(0xff0070c5);
 	}
 
 	public void onOperationDelete() {
@@ -666,7 +701,8 @@ public class FtpFileViewInteractionHub
 				selectedFileList);
 		Dialog dialog = new AlertDialog.Builder(mActivity)
 				.setMessage(
-						mActivity.getString(R.string.operation_delete_confirm_message))
+						mActivity
+								.getString(R.string.operation_delete_confirm_message))
 				.setPositiveButton(R.string.confirm,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
@@ -850,12 +886,14 @@ public class FtpFileViewInteractionHub
 	private static final int MENU_SETTING = 17;
 
 	private static final int MENU_EXIT = 18;
-	
+
 	// TODO : 编辑可选框
 	private boolean makrEditCheckBox = false;
+
 	public boolean canEditCheckBox() {
 		return this.makrEditCheckBox;
 	}
+
 	private void switchEditCheckBox() {
 		this.makrEditCheckBox = !this.makrEditCheckBox;
 		mFileViewListener.notifyDataChanged();
@@ -908,7 +946,7 @@ public class FtpFileViewInteractionHub
 				onOperationSetting();
 				break;
 			case MENU_EXIT:
-				//((FtpFileExplorerTabActivity) mActivity).finish();
+				// ((FtpFileExplorerTabActivity) mActivity).finish();
 				mActivity.finish();
 				break;
 			// sort
@@ -954,24 +992,26 @@ public class FtpFileViewInteractionHub
 				onOperationInfo();
 				break;
 			// TODO 添加菜单选项操作
-			case GlobalConsts.MENU_EDIT :
+			case GlobalConsts.MENU_EDIT:
 				switchEditCheckBox();
-				Toast.makeText(mActivity, "Edit File.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mActivity, "Edit File.", Toast.LENGTH_SHORT)
+						.show();
 				break;
-			case GlobalConsts.MENU_ADD_FILE	:
-				Toast.makeText(mActivity, "Add File.", Toast.LENGTH_SHORT).show();
-				//IntentBuilder.pickFile(mActivity);
+			case GlobalConsts.MENU_ADD_FILE:
+				Toast.makeText(mActivity, "Add File.", Toast.LENGTH_SHORT)
+						.show();
+				// IntentBuilder.pickFile(mActivity);
 				ExternalFileObtain.getInstance(mActivity).getFiles(
-				        new ExternalFileObtain.OnGetFilesListener() {                    
-                    @Override
-                    public void onGetFiles(ArrayList<File> list) {
-                        // TODO Auto-generated method stub
-                        Log.i("ADD_FILE", list.toString());
-                        mUICmdListener.upload(list, mCurrentPath);
-                    }
-                });
+						new ExternalFileObtain.OnGetFilesListener() {
+							@Override
+							public void onGetFiles(ArrayList<File> list) {
+								// TODO Auto-generated method stub
+								Log.i("ADD_FILE", list.toString());
+								mUICmdListener.upload(list, mCurrentPath);
+							}
+						});
 				break;
-				
+
 			default:
 				return false;
 			}
@@ -1027,33 +1067,33 @@ public class FtpFileViewInteractionHub
 				drawable.ic_menu_close_clear_cancel);
 		return true;
 	}
-	
+
 	// TODO 添加，替代旧方法
 	public boolean onCreateOptionsMenu(Menu menu) {
 		clearSelection();
 		addDefaultMenu(menu);
 		return true;
 	}
+
 	// TODO 添加，修改菜单选项
 	private void addDefaultMenu(Menu menu) {
 		addMenuItem(menu, MENU_SORT_NAME, 0, R.string.menu_item_sort_by_name,
 				R.drawable.btn_radio_on_normal);
 		addMenuItem(menu, MENU_SORT_TYPE, 1, R.string.menu_item_sort_by_type,
 				R.drawable.btn_radio_on_normal);
-		//menu.getItem(MENU_SORT_NAME).setChecked(true);
-		
+		// menu.getItem(MENU_SORT_NAME).setChecked(true);
+
 		addMenuItem(menu, GlobalConsts.MENU_SHOWHIDE, 2,
 				R.string.operation_show_sys, R.drawable.ic_menu_show_sys);
-		
-		addMenuItem(menu, GlobalConsts.MENU_EDIT, 3,
-				R.string.operation_edit, R.drawable.storage_toolbar_rename_normal);
-		
+
+		addMenuItem(menu, GlobalConsts.MENU_EDIT, 3, R.string.operation_edit,
+				R.drawable.storage_toolbar_rename_normal);
+
 		addMenuItem(menu, GlobalConsts.MENU_NEW_FOLDER, 4,
 				R.string.operation_create_folder, R.drawable.ic_menu_new_folder);
 		addMenuItem(menu, GlobalConsts.MENU_ADD_FILE, 5,
 				R.string.operation_add_file, R.drawable.item_uploading_file);
-		
-		
+
 	}
 
 	private void addMenuItem(Menu menu, int itemId, int order, int string) {
@@ -1100,16 +1140,20 @@ public class FtpFileViewInteractionHub
 		}
 
 	}
+
 	// TODO 添加，替代方法
 	private void updateMenuItems(Menu menu) {
-		
-		menu.findItem(MENU_SORT_NAME).setChecked(mFileSortHelper.getSortMethod() == SortMethod.name);
-		menu.findItem(MENU_SORT_TYPE).setChecked(mFileSortHelper.getSortMethod() == SortMethod.type);
-		
+
+		menu.findItem(MENU_SORT_NAME).setChecked(
+				mFileSortHelper.getSortMethod() == SortMethod.name);
+		menu.findItem(MENU_SORT_TYPE).setChecked(
+				mFileSortHelper.getSortMethod() == SortMethod.type);
+
 		MenuItem menuItem = menu.findItem(GlobalConsts.MENU_SHOWHIDE);
 		boolean isHidden = Settings.instance().getShowDotAndHiddenFiles();
-		menuItem.setTitle(isHidden ? R.string.operation_hide_sys : R.string.operation_show_sys);
-		
+		menuItem.setTitle(isHidden ? R.string.operation_hide_sys
+				: R.string.operation_show_sys);
+
 	}
 
 	public boolean isFileSelected(String filePath) {
@@ -1126,7 +1170,7 @@ public class FtpFileViewInteractionHub
 
 	public void onListItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		FileInfo lFileInfo = mFileViewListener.getItem(position);		
+		FileInfo lFileInfo = mFileViewListener.getItem(position);
 
 		if (lFileInfo == null) {
 			Log.e(LOG_TAG, "file does not exist on position:" + position);
@@ -1135,8 +1179,8 @@ public class FtpFileViewInteractionHub
 
 		if (isInSelection()) {
 			boolean selected = lFileInfo.Selected;
-			//ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-			//		.getActionMode();
+			// ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
+			// .getActionMode();
 			ActionMode actionMode = getActionMode();
 			ImageView checkBox = (ImageView) view
 					.findViewById(R.id.file_checkbox);
@@ -1170,8 +1214,8 @@ public class FtpFileViewInteractionHub
 		}
 
 		mCurrentPath = getAbsoluteName(mCurrentPath, lFileInfo.fileName);
-		//ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-		//		.getActionMode();
+		// ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
+		// .getActionMode();
 		ActionMode actionMode = this.getActionMode();
 		if (actionMode != null) {
 			actionMode.finish();
@@ -1257,7 +1301,7 @@ public class FtpFileViewInteractionHub
 	}
 
 	public boolean onBackPressed() {
-	  if (isInSelection()) {
+		if (isInSelection()) {
 			clearSelection();
 		} else if (!onOperationUpLevel()) {
 			return false;
@@ -1276,7 +1320,6 @@ public class FtpFileViewInteractionHub
 		// refresh to hide selected files
 		refreshFileList();
 	}
-
 
 	@Override
 	public void onFileChanged(String path) {

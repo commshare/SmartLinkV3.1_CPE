@@ -76,7 +76,7 @@ public class FtpFileListItem {
 		if (fileInfo.IsDir) {
 			lFileImageFrame.setVisibility(View.GONE);
 			// TODO : 修改文件夹图标
-			//lFileImage.setImageResource(R.drawable.folder);
+			// lFileImage.setImageResource(R.drawable.folder);
 			lFileImage.setImageResource(R.drawable.microsd_item_folder);
 		} else {
 			fileIcon.setIcon(fileInfo, lFileImage, lFileImageFrame);
@@ -99,18 +99,19 @@ public class FtpFileListItem {
 			assert (img != null && img.getTag() != null);
 			FileInfo tag = (FileInfo) img.getTag();
 			tag.Selected = !tag.Selected;
-			//ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-			//		.getActionMode();
+			// ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
+			// .getActionMode();
 			ActionMode actionMode = mFileViewInteractionHub.getActionMode();
 
 			if (actionMode == null) {
-				//actionMode = ((FtpFileExplorerTabActivity) mContext)
-				//		.startActionMode(new ModeCallback(mContext,
-				//				mFileViewInteractionHub));
-				//((FtpFileExplorerTabActivity) mContext)
-				//		.setActionMode(actionMode);
-				actionMode = mFileViewInteractionHub.launchActionMode(
-						new ModeCallback(mContext,mFileViewInteractionHub));
+				// actionMode = ((FtpFileExplorerTabActivity) mContext)
+				// .startActionMode(new ModeCallback(mContext,
+				// mFileViewInteractionHub));
+				// ((FtpFileExplorerTabActivity) mContext)
+				// .setActionMode(actionMode);
+				actionMode = mFileViewInteractionHub
+						.launchActionMode(new ModeCallback(mContext,
+								mFileViewInteractionHub));
 				mFileViewInteractionHub.setActionMode(actionMode);
 			} else {
 				actionMode.invalidate();
@@ -130,7 +131,7 @@ public class FtpFileListItem {
 		private Menu mMenu;
 		private Context mContext;
 		private FtpFileViewInteractionHub mFileViewInteractionHub;
-		
+
 		private void initMenuItemSelectAllOrCancel() {
 			boolean isSelectedAll = mFileViewInteractionHub.isSelectedAll();
 			mMenu.findItem(R.id.action_cancel).setVisible(isSelectedAll);
@@ -138,8 +139,8 @@ public class FtpFileListItem {
 		}
 
 		private void scrollToSDcardTab() {
-			//ActionBar bar = ((FtpFileExplorerTabActivity) mContext)
-			//		.getActionBar();
+			// ActionBar bar = ((FtpFileExplorerTabActivity) mContext)
+			// .getActionBar();
 			ActionBar bar = mFileViewInteractionHub.obtainActionBar();
 			if (bar.getSelectedNavigationIndex() != Util.SDCARD_TAB_INDEX) {
 				bar.setSelectedNavigationItem(Util.SDCARD_TAB_INDEX);
@@ -157,10 +158,10 @@ public class FtpFileListItem {
 			MenuInflater inflater = ((Activity) mContext).getMenuInflater();
 			mMenu = menu;
 			// TODO : 修改操作条菜单
-			//inflater.inflate(R.menu.ftp_operation_menu, mMenu);
+			// inflater.inflate(R.menu.ftp_operation_menu, mMenu);
 			inflater.inflate(R.menu.ftp_operation_bar_menu, mMenu);
 			// TODO : 屏蔽
-			//initMenuItemSelectAllOrCancel();
+			// initMenuItemSelectAllOrCancel();
 			return true;
 		}
 
@@ -168,8 +169,10 @@ public class FtpFileListItem {
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			return true;
 		}
+
 		// TODO : 被上面方法替代
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu, boolean _OLD_MARK) {
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu,
+				boolean _OLD_MARK) {
 			mMenu.findItem(R.id.action_copy_path).setVisible(
 					mFileViewInteractionHub.getSelectedFileList().size() == 1);
 			mMenu.findItem(R.id.action_cancel).setVisible(
@@ -232,9 +235,9 @@ public class FtpFileListItem {
 				mFileViewInteractionHub.onOperationSelectAll();
 				initMenuItemSelectAllOrCancel();
 				break;
-				
+
 			// TODO : 添加的菜单项
-			case R.id.action_rename :
+			case R.id.action_rename:
 				mFileViewInteractionHub.onOperationRename();
 				Toast.makeText(mContext, "Rename.", Toast.LENGTH_SHORT).show();
 				break;
@@ -251,7 +254,7 @@ public class FtpFileListItem {
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			mFileViewInteractionHub.clearSelection();
-			//((FtpFileExplorerTabActivity) mContext).setActionMode(null);
+			// ((FtpFileExplorerTabActivity) mContext).setActionMode(null);
 			mFileViewInteractionHub.setActionMode(null);
 		}
 	}
