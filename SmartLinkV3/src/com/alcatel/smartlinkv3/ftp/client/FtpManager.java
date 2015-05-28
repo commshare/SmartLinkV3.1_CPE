@@ -279,7 +279,7 @@ public class FtpManager {
 		}
 
 		try {
-			iStatus = ftpProxy.deleteFiles(remoteFilePath);
+			iStatus = ftpProxy.deleteFoldAndsubFiles(remoteFilePath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -288,23 +288,26 @@ public class FtpManager {
 		if (iStatus) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_SUCCESS,
 					ERROR.SUCCESS);
+			logger.i("delete file [" + remoteFilePath + "]" + "success!");
+		}else{
+			logger.i("delete file [" + remoteFilePath + "]" + "fail!");
 		}
 
 		return iStatus;
 	}
 
-	public FtpUploadStatus upload(String localFile, String remoteFile)
+	public boolean upload(String localFile, String remoteFile)
 			throws IOException {
+		boolean iStatus = false;
 
 		if (!isLogin) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_UPLOAD_ERROR,
 					ERROR.FILE_UPLOAD_ERROR);
 		}
 
-		FtpUploadStatus iStatus = ftpProxy.upload(localFile, remoteFile);
+		iStatus = ftpProxy.uploadAndsubFiles(localFile, remoteFile);
 
-		if ((iStatus == FtpUploadStatus.Upload_New_File_Success)
-				|| (iStatus == FtpUploadStatus.Upload_From_Break_Success)) {
+		if (iStatus) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_UPLOAD_SUCCESS,
 					ERROR.SUCCESS);
 		}

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.util.Arrays;
 import java.util.List;
@@ -16,18 +17,20 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-
 import android.R.bool;
+import android.os.Looper;
+import android.provider.MediaStore.Files;
 import android.util.Log;
 
 public class FtpClientProxy {
 
-	FTPClient ftpClient = new FTPClient();
-	pubLog logger = new pubLog();
+	private FTPClient ftpClient = new FTPClient();
+	private pubLog logger = new pubLog();
 
-	FtpClientModel config;
-	FtpTransferIRetrieveListener listener;
+	private FtpClientModel config;
+	public FtpTransferIRetrieveListener listener;
 	volatile boolean stopDownload = false;
+	private volatile int reply = 0;
 
 	public FtpClientProxy() {
 
@@ -40,6 +43,10 @@ public class FtpClientProxy {
 	public int init() {
 
 		return 0;
+	}
+
+	public int getReply() {
+		return this.reply;
 	}
 
 	public FtpClientModel getConfig() {
@@ -98,7 +105,10 @@ public class FtpClientProxy {
 			}
 			ftpClient.setFileType(FTPClient.FILE_STRUCTURE);
 			ftpClient.enterLocalPassiveMode();
-			// ftpClient.setControlEncoding("UTF-8");
+			reply = ftpClient.getReplyCode();
+			// ftpClient.setControlEncoding("GBK");
+			ftpClient.setControlEncoding("UTF-8");
+			// ftpClient.setControlEncoding("gb2312");
 			// ftpClient.setConnectTimeout(5000);
 			// ftpClient.enterLocalActiveMode();
 			// ftpClient.enterRemotePassiveMode();
@@ -113,7 +123,7 @@ public class FtpClientProxy {
 
 	public FTPFile[] getFTPFiles(String remoteDir) {
 		try {
-			return ftpClient.listFiles(remoteDir);
+			return ftpClient.listFiles(convertToUTF8(remoteDir));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +133,7 @@ public class FtpClientProxy {
 	public FTPFile getFTPFile(String remotePath) {
 		try {
 			Log.d("", "getFTPFile.........." + remotePath);
-			// mlistFile() has bugs or need server support,it returns null sometimes
+			// mlistFile() need server support,it returns null sometimes
 			FTPFile f = ftpClient.mlistFile(remotePath);
 			return f;
 		} catch (IOException e) {
@@ -146,7 +156,7 @@ public class FtpClientProxy {
 
 	public void setRestartOffset(long len) {
 		// file offset position
-		ftpClient.setRestartOffset(len); 
+		ftpClient.setRestartOffset(len);
 	}
 
 	public boolean isDone() {
@@ -185,7 +195,7 @@ public class FtpClientProxy {
 		}
 		return true;
 	}
-	
+
 	public FTPFile getFileByName(String remoteDir, String name) {
 		FTPFile[] files = this.getFTPFiles(remoteDir);
 		if (files != null) {
@@ -197,33 +207,32 @@ public class FtpClientProxy {
 		}
 		return null;
 	}
-	
+
 	public boolean moveFile(String fromFile, String toFile) throws IOException {
 		if (!ftpClient.rename(fromFile, toFile)) {
 			return false;
 		}
 		return true;
 	}
-	
-	
-	public String getParentPathFromURL(String remoteURL) {
-		String path = "";
 
+	public String getParentPathFromURL(String remoteURL) {
+		String parentPath = "";
 		// get file name from the path
 		String fName = remoteURL.trim();
 		String fileName = fName.substring(fName.lastIndexOf("/") + 1);
-		path = remoteURL.replace(fileName, "");
+		parentPath = remoteURL.substring(0,
+				remoteURL.length() - fileName.length() - 1);
 
-		return path;
+		return parentPath;
 	}
-	
+
 	public String getFileNameFromURL(String remoteURL) {
 		String fName = remoteURL.trim();
 		String fileName = fName.substring(fName.lastIndexOf("/") + 1);
 
 		return fileName;
 	}
-	
+
 	public FTPFile getFtpFileByPath(String remotePath) {
 		FTPFile[] parentFtp = null;
 
@@ -231,7 +240,7 @@ public class FtpClientProxy {
 		String filename = getFileNameFromURL(remotePath);
 
 		parentFtp = this.getFTPFiles(parentPath);
-
+		logger.i("parentPath: " + parentPath);
 		if (parentFtp != null) {
 			for (FTPFile f : parentFtp) {
 				if (filename.equalsIgnoreCase(f.getName())) {
@@ -240,9 +249,10 @@ public class FtpClientProxy {
 			}
 		}
 
+		logger.w("can not find parentFtp by the remotePath: " + remotePath);
 		return null;
 	}
-	
+
 	// TODO
 	public boolean isDirectory(String remote) throws IOException {
 		FTPFile remoteFile = ftpClient.mlistFile(remote);
@@ -250,6 +260,10 @@ public class FtpClientProxy {
 		if (remoteFile == null) {
 			logger.w("remote file is not exist or have not permerssion!");
 			FTPFile ftpFile = this.getFtpFileByPath(remote);
+
+			if (ftpFile == null) {
+				logger.w("FTPFile is null!");
+			}
 
 			if (ftpFile.isDirectory()) {
 				return true;
@@ -263,7 +277,7 @@ public class FtpClientProxy {
 
 		return false;
 	}
-	
+
 	public boolean downloadAndsubFiles(String local, String remote)
 			throws Exception {
 		FtpDownloadStatus result = FtpDownloadStatus.Download_From_Break_Failed;
@@ -282,7 +296,7 @@ public class FtpClientProxy {
 		 * 
 		 * if (remoteFile.isDirectory()) { createLocalFolder(local); }
 		 */
-		
+
 		FTPFile ftp = this.getFtpFileByPath(remote);
 		boolean isDirectory = this.isDirectory(remote);
 		if (isDirectory) {
@@ -298,7 +312,7 @@ public class FtpClientProxy {
 			}
 			return success;
 		}
-	
+
 		FTPFile[] list = ftpClient.listFiles(remote);
 
 		if (list == null || list.length == 0) {
@@ -346,8 +360,7 @@ public class FtpClientProxy {
 		FtpDownloadStatus result;
 		listener.onStart();
 
-		FTPFile[] files = ftpClient.listFiles(new String(
-				remote.getBytes("GBK"), "iso-8859-1"));
+		FTPFile[] files = this.getFTPFiles(remote);
 
 		if (files.length != 1) {
 			logger.v("remote file" + remote + " is not exist!");
@@ -375,7 +388,7 @@ public class FtpClientProxy {
 			FileOutputStream out = new FileOutputStream(f, true);
 			ftpClient.setRestartOffset(localSize);
 			InputStream in = ftpClient.retrieveFileStream(new String(remote
-					.getBytes("GBK"), "iso-8859-1"));
+					.getBytes("UTF-8"), "iso-8859-1"));
 
 			byte[] bytes = new byte[config.bufferSize];
 
@@ -414,7 +427,7 @@ public class FtpClientProxy {
 		} else {
 			OutputStream out = new FileOutputStream(f);
 			InputStream in = ftpClient.retrieveFileStream(new String(remote
-					.getBytes("GBK"), "iso-8859-1"));
+					.getBytes("UTF-8"), "iso-8859-1"));
 			byte[] bytes = new byte[1024];
 			long step = lRemoteSize / 100;
 			long process = 0;
@@ -455,7 +468,6 @@ public class FtpClientProxy {
 
 	public FtpUploadStatus upload(String local, String remote)
 			throws IOException {
-		ftpClient.setControlEncoding("GBK");
 		FtpUploadStatus result;
 
 		String remoteFileName = remote;
@@ -467,14 +479,12 @@ public class FtpClientProxy {
 				return FtpUploadStatus.Parameter_Error;
 			}
 
-			if (createDirecroty(remote, ftpClient) == FtpUploadStatus.Create_Directory_Fail) {
+			if (createFtpDirecroty(ftpClient, remote) == FtpUploadStatus.Create_Directory_Fail) {
 				return FtpUploadStatus.Create_Directory_Fail;
 			}
 		}
 
-		// check the remote file if exist
-		FTPFile[] files = ftpClient.listFiles(new String(remoteFileName
-				.getBytes("GBK"), "iso-8859-1"));
+		FTPFile[] files = this.getFTPFiles(remoteFileName);
 
 		if (files.length == 1) {
 			long remoteSize = files[0].getSize();
@@ -489,7 +499,7 @@ public class FtpClientProxy {
 			result = uploadFile(remoteFileName, f, ftpClient, remoteSize);
 
 			if (result == FtpUploadStatus.Upload_From_Break_Failed) {
-				if (!ftpClient.deleteFile(remoteFileName)) {
+				if (!ftpClient.deleteFile(convertToUTF8(remoteFileName))) {
 					return FtpUploadStatus.Delete_Remote_Faild;
 				}
 				result = uploadFile(remoteFileName, f, ftpClient, 0);
@@ -501,8 +511,58 @@ public class FtpClientProxy {
 		return result;
 	}
 
+	public boolean uploadAndsubFiles(String local, String remote)
+			throws IOException {
+		File localFile = new File(local);
+		boolean result = false;
+
+		if (localFile.isFile()) {
+			logger.i("localfile is a file: " + local);
+			// upload a file
+			FtpUploadStatus status = upload(local, remote);
+
+			if ((status == FtpUploadStatus.Upload_New_File_Success)
+					|| (status == FtpUploadStatus.Upload_From_Break_Success)) {
+				result = true;
+			} else {
+				result = false;
+			}
+
+			return result;
+		} else {
+			logger.i("localfile is a directory: " + local);
+			logger.i("create remote directory: " + remote);
+			// create remtoe directory,it's a parent directory
+			ftpClient.makeDirectory(convertToUTF8(remote));
+		}
+
+		File[] localFiles = localFile.listFiles();
+
+		for (File currentFile : localFiles) {
+			String localFileName = currentFile.getName();
+			if (currentFile.isDirectory()) {
+				createFtpDirecroty(ftpClient, remote + "/" + localFileName);
+				result = uploadAndsubFiles(local + "/" + localFileName, remote
+						+ "/" + localFileName);
+			} else {
+				FtpUploadStatus status = upload(local + "/" + localFileName,
+						remote + "/" + localFileName);
+
+				if ((status == FtpUploadStatus.Upload_New_File_Success)
+						|| (status == FtpUploadStatus.Upload_From_Break_Success)) {
+					result = true;
+				} else {
+					result = false;
+				}
+			}
+		}
+
+		return true;
+	}
+
 	public List<FTPFile> getFileList(String remotePath) throws Exception {
-		List<FTPFile> ftpfiles = Arrays.asList(ftpClient.listFiles(remotePath));
+		List<FTPFile> ftpfiles = Arrays.asList(ftpClient
+				.listFiles(convertToUTF8(remotePath)));
 		return ftpfiles;
 	}
 
@@ -529,25 +589,40 @@ public class FtpClientProxy {
 		return ftpClient.removeDirectory(remoteFoldPath);
 	}
 
+	public String convertToUTF8(String str) throws UnsupportedEncodingException {
+		return new String(str.getBytes("UTF-8"), "iso-8859-1");
+	}
+
 	public boolean deleteFoldAndsubFiles(String remoteFoldPath)
 			throws Exception {
-
 		boolean success = false;
+
+		boolean isDirectory = this.isDirectory(remoteFoldPath);
+
+		// it's a file
+		if (!isDirectory) {
+			success = deleteFtpServerFile(convertToUTF8(remoteFoldPath));
+			return success;
+		}
+
 		List<FTPFile> list = this.getFileList(remoteFoldPath);
 
 		if (list == null || list.size() == 0) {
-			return deleteFold(remoteFoldPath);
+			logger.i("delete a empty directory: " + remoteFoldPath);
+			return deleteFold(convertToUTF8(remoteFoldPath));
 		}
 
 		for (FTPFile ftpFile : list) {
-
 			String name = ftpFile.getName();
+			String filename = remoteFoldPath + "/" + name;
+			String remoteFile = convertToUTF8(filename);
+
 			if (ftpFile.isDirectory()) {
-				success = deleteFoldAndsubFiles(remoteFoldPath + "/" + name);
+				success = deleteFoldAndsubFiles(remoteFile);
 				if (!success)
 					break;
 			} else {
-				success = deleteFtpServerFile(remoteFoldPath + "/" + name);
+				success = deleteFtpServerFile(remoteFile);
 				if (!success)
 					break;
 			}
@@ -555,28 +630,8 @@ public class FtpClientProxy {
 
 		if (!success)
 			return false;
-		success = deleteFold(remoteFoldPath);
+		success = deleteFold(convertToUTF8(remoteFoldPath));
 		return success;
-	}
-
-	public boolean deleteFiles(String remoteFilePath) throws Exception {
-		boolean result = false;
-
-		/*
-		 * FTPFile remoteFile = ftpClient.mlistFile(remoteFilePath); if
-		 * (remoteFile.isFile()) { result = deleteFtpServerFile(remoteFilePath);
-		 * if (result == true) success = true; return success; }
-		 */
-
-		boolean isDirectory = this.isDirectory(remoteFilePath);
-		
-		if (isDirectory) {
-			result = deleteFoldAndsubFiles(remoteFilePath);
-		} else {
-			result = deleteFtpServerFile(remoteFilePath);
-		}
-
-		return result;
 	}
 
 	public void disconnect() throws IOException {
@@ -585,15 +640,14 @@ public class FtpClientProxy {
 		}
 	}
 
-	public FtpUploadStatus createDirecroty(String remote, FTPClient ftpClient)
+	public FtpUploadStatus createFtpDirecroty(FTPClient ftpClient, String remote)
 			throws IOException {
 
 		FtpUploadStatus status = FtpUploadStatus.Create_Directory_Success;
 		String directory = remote.substring(0, remote.lastIndexOf("/") + 1);
-		if (!directory.equalsIgnoreCase("/")
-				&& !ftpClient.changeWorkingDirectory(new String(directory
-						.getBytes("GBK"), "iso-8859-1"))) {
 
+		if (!directory.equalsIgnoreCase("/")
+				&& !ftpClient.changeWorkingDirectory(convertToUTF8(directory))) {
 			int start = 0;
 			int end = 0;
 			if (directory.startsWith("/")) {
@@ -602,10 +656,11 @@ public class FtpClientProxy {
 				start = 0;
 			}
 			end = directory.indexOf("/", start);
-
+			logger.i("end: " + end);
 			while (true) {
 				String subDirectory = new String(remote.substring(start, end)
-						.getBytes("GBK"), "iso-8859-1");
+						.getBytes("UTF-8"), "iso-8859-1");
+				logger.i("subDirectory: " + subDirectory);
 				if (!ftpClient.changeWorkingDirectory(subDirectory)) {
 					if (ftpClient.makeDirectory(subDirectory)) {
 						ftpClient.changeWorkingDirectory(subDirectory);
@@ -638,7 +693,7 @@ public class FtpClientProxy {
 		RandomAccessFile raf = new RandomAccessFile(localFile, "r");
 
 		OutputStream out = ftpClient.appendFileStream(new String(remoteFile
-				.getBytes("GBK"), "iso-8859-1"));
+				.getBytes("UTF-8"), "iso-8859-1"));
 
 		if (out == null) {
 			logger.v("Remote OutputStream is null!");
@@ -658,11 +713,11 @@ public class FtpClientProxy {
 		while ((c = raf.read(bytes)) != -1) {
 			out.write(bytes, 0, c);
 			localreadbytes += c;
-			if (localreadbytes / step != process) {
-				process = localreadbytes / step;
-				logger.v("Upload Process:" + process);
-				// TODO: Report the process
-			}
+			/*
+			 * if (localreadbytes / step != process) { process = localreadbytes
+			 * / step; logger.v("Upload Process:" + process); // TODO: Report
+			 * the process }
+			 */
 		}
 
 		out.flush();

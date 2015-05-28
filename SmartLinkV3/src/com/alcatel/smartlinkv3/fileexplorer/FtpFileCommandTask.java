@@ -130,7 +130,7 @@ public class FtpFileCommandTask {
 	}
 
 	public void ftp_showfiles(String remotePath) {
-		ftpTask.setRemotePath(remotePath);
+		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.awakenCMD(SHOWFILES);
 	}
 
@@ -141,7 +141,7 @@ public class FtpFileCommandTask {
 
 	public void ftp_upload(ArrayList<File> localFiles,String remotePath) {
 		ftpTask.setLocalFiles(localFiles);
-		ftpTask.setRemotePath(remotePath);
+		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.awakenCMD(UPLOAD);
 	}
 
@@ -151,13 +151,13 @@ public class FtpFileCommandTask {
 	}
 
 	public void ftp_move(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		ftpTask.setRemotePath(remotePath);
+		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(MOVE);
 	}
 
 	public void ftp_copy(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		ftpTask.setRemotePath(remotePath);
+		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(COPY);
 	}
@@ -169,13 +169,18 @@ public class FtpFileCommandTask {
 	class FtpCommandProc implements Runnable {
 		public int CMD = -1;
 		private String remoteRootPath = "/";
+		private String remotePath = "/";
 		private ArrayList<FileInfo> remoteFiles = new ArrayList<FileInfo>();
 		private ArrayList<File> localFiles = new ArrayList<File>();
 
-		public void setRemotePath(String remoteRootPath) {
+		public void setRemoteRootPath(String remoteRootPath) {
 			this.remoteRootPath = remoteRootPath;
 		}
-
+		
+		public void setRemotePath(String remotePath) {
+			this.remotePath = remotePath;
+		}
+		
 		public void setRemoteFiles(ArrayList<FileInfo> remoteFiles) {
 			this.remoteFiles = remoteFiles;
 		}
@@ -189,7 +194,7 @@ public class FtpFileCommandTask {
 			notifyAll();
 		}
 
-		private synchronized void runCmd() {
+		private synchronized void runCmd() throws IOException {
 			while (CMD == -1) {
 				try {
 					wait();
@@ -226,18 +231,30 @@ public class FtpFileCommandTask {
 				}
 
 				logger.i("on downloanning...");
-				downloadFile(remoteFiles);
+				downloadFiles(remoteFiles);
 				CMD = -1;
 				break;
 			case UPLOAD:
-				// TODO
-				try {
-					ftp.upload("/mnt/sdcard/ftpconf/Burning.mp3",
-							"/Burning.mp3");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if(false){
+					if (localFiles.size() == 0) {
+						logger.w("upload fail,file size is 0 on task");
+						CMD = -1;
+						break;
+					}
+					
+					uploadFiles(localFiles,remotePath);
 				}
+		
+				// test
+				if (false) {
+					try {
+						ftp.upload("/mnt/sdcard/LinkApp/test", "/sdcard/test");
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+				}
+				
 				CMD = -1;
 				break;
 
@@ -283,7 +300,12 @@ public class FtpFileCommandTask {
 		public void run() {
 			logger.v("enter runnable...");
 			while (running) {
-				runCmd();
+				try {
+					runCmd();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -372,7 +394,8 @@ public class FtpFileCommandTask {
 	}
 
 	private void deleteFiles(ArrayList<FileInfo> remote) {
-
+		boolean result = false;
+		
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
 			return;
@@ -387,14 +410,41 @@ public class FtpFileCommandTask {
 		for (FileInfo f : remote) {
 			logger.i("delete file lists: " + f.fileName);
 			String remotePath = f.filePath + File.separator + f.fileName;
-			ftp.deleteFiles(remotePath);
+			result = ftp.deleteFiles(remotePath);
+
+			if (result) {
+				sendMsg(MSG_SHOW_TOAST, "delete file [" + remotePath
+						+ "] success!");
+			} else {
+				sendMsg(MSG_SHOW_TOAST, "delete file [" + remotePath
+						+ "] fail!");
+			}
+		}
+		
+	}
+	
+	private void uploadFiles(ArrayList<File> local, String remote)
+			throws IOException {
+		if (!isLogin) {
+			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			return;
 		}
 
-		sendMsg(MSG_SHOW_TOAST, "delete success!");
+		if ((local == null) || (local.size() == 0)) {
+			sendMsg(MSG_SHOW_TOAST, "can not find the local files!");
+			logger.w("download fail,can't not find the local files!");
+			return;
+		}
+		// TODO
+		for (File f : local) {
+			String localPath = f.getPath();
+			ftp.upload(localPath, remote);
 
+		}
+		sendMsg(MSG_SHOW_TOAST, "upload success!");
 	}
-
-	private void downloadFile(ArrayList<FileInfo> remote) {
+	
+	private void downloadFiles(ArrayList<FileInfo> remote) {
 
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
@@ -439,7 +489,9 @@ public class FtpFileCommandTask {
 	private String getServerAddress(Context ctx) {
 		WifiManager wifi_service = (WifiManager) ctx
 				.getSystemService(Context.WIFI_SERVICE);
+		
 		DhcpInfo dhcpInfo = wifi_service.getDhcpInfo();
+		
 		return Formatter.formatIpAddress(dhcpInfo.gateway);
 	}
 
