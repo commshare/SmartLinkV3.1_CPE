@@ -25,6 +25,8 @@ import java.util.ArrayList;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.uiCommandListener;
+
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -53,6 +55,11 @@ public class FtpFileOperationHelper {
 
     public void setFilenameFilter(FilenameFilter f) {
         mFilter = f;
+    }
+    
+    private uiCommandListener mUICmdListener;
+    public void setUiCommandListener(uiCommandListener UICmdListener) {
+        this.mUICmdListener = UICmdListener;
     }
 
     public boolean FtpShowFileLists(String path) {
@@ -200,7 +207,30 @@ public class FtpFileOperationHelper {
         return false;
     }
 
+    
     public boolean Rename(FileInfo f, String newName) {
+        if (f == null || newName == null) {
+            Log.e(LOG_TAG, "Rename: null parameter");
+            return false;
+        }
+
+        //File file = new File(f.filePath);
+        String newPath = Util.makePath(Util.getPathFromFilepath(f.filePath), newName);
+        //final boolean needScan = file.isFile();
+        try {
+            //boolean ret = file.renameTo(new File(newPath));
+            // TODO :  rename file api
+            Log.e(LOG_TAG, "Rename: " + f.fileName + " to " + newName);
+            //mUICmdListener.rename(f,newName);
+            return true;
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Fail to rename file," + e.toString());
+        }
+        return false;
+    }
+    // TODO : 废除，被替代
+    @Deprecated
+    public boolean Rename(FileInfo f, String newName, boolean _OLD_MARK) {
         if (f == null || newName == null) {
             Log.e(LOG_TAG, "Rename: null parameter");
             return false;
@@ -233,9 +263,9 @@ public class FtpFileOperationHelper {
                     DeleteFile(f);
                 }
 
-                mOperationListener.onFileChanged(Environment
-                        .getExternalStorageDirectory()
-                        .getAbsolutePath());
+                //mOperationListener.onFileChanged(Environment
+                //        .getExternalStorageDirectory()
+                //        .getAbsolutePath());
 
                 clear();
             }
@@ -293,7 +323,9 @@ public class FtpFileOperationHelper {
         Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
     }
 
-    private boolean MoveFile(FileInfo f, String dest) {
+    // TODO : 废除，被替代
+    @Deprecated 
+    private boolean MoveFile(FileInfo f, String dest, boolean _OLD_MARK) {
         Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
 
         if (f == null || dest == null) {
@@ -309,6 +341,22 @@ public class FtpFileOperationHelper {
             Log.e(LOG_TAG, "Fail to move file," + e.toString());
         }
         return false;
+    }
+    
+    private boolean MoveFile (FileInfo f, String dest) {
+        Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
+
+        if (f == null || dest == null) {
+            Log.e(LOG_TAG, "CopyFile: null parameter");
+            return false;
+        }
+
+        //File file = new File(f.filePath);
+        //String newPath = Util.makePath(dest, f.fileName);
+        ArrayList<FileInfo> remote1 = new ArrayList<FileInfo>();
+        remote1.add(f);
+        mUICmdListener.move(remote1, dest);
+        return true;
     }
 
     private void copyFileList(ArrayList<FileInfo> files) {

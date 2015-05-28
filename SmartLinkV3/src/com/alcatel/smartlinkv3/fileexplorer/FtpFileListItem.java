@@ -52,6 +52,8 @@ public class FtpFileListItem {
 		ImageView checkbox = (ImageView) view.findViewById(R.id.file_checkbox);
 		if (fileViewInteractionHub.getMode() == Mode.Pick) {
 			checkbox.setVisibility(View.GONE);
+		} if (fileViewInteractionHub.getMode() == Mode.Move) {
+		    checkbox.setVisibility(View.GONE);
 		} else {
 			checkbox.setVisibility(fileViewInteractionHub.canShowCheckBox() ? View.VISIBLE
 					: View.GONE);
@@ -171,8 +173,8 @@ public class FtpFileListItem {
 		}
 
 		// TODO : 被上面方法替代
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu,
-				boolean _OLD_MARK) {
+		@Deprecated 
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu, boolean _OLD_MARK) {
 			mMenu.findItem(R.id.action_copy_path).setVisible(
 					mFileViewInteractionHub.getSelectedFileList().size() == 1);
 			mMenu.findItem(R.id.action_cancel).setVisible(
@@ -196,7 +198,7 @@ public class FtpFileListItem {
 				mode.finish();
 				break;
 			case R.id.action_delete:
-				// mFileViewInteractionHub.onOperationDelete();
+				mFileViewInteractionHub.onOperationDelete();
 				mFileViewInteractionHub.onFtpDelete();
 				mode.finish();
 				break;
@@ -216,7 +218,9 @@ public class FtpFileListItem {
 				 * .moveToFile(mFileViewInteractionHub.getSelectedFileList());
 				 * mode.finish();
 				 */
-				scrollToSDcardTab();
+				//scrollToSDcardTab();
+			    Toast.makeText(mContext, "Move to.", Toast.LENGTH_SHORT).show();
+			    mFileViewInteractionHub.onOperationMove();
 				break;
 			case R.id.action_send:
 				mFileViewInteractionHub.onOperationSend();

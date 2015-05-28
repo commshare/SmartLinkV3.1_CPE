@@ -166,6 +166,7 @@ public class FtpFileExplorerTabActivity extends Activity
 }
 
 // TODO 废弃
+@Deprecated 
 class OLD_MARK_FtpFileExplorerTabActivity extends Activity {
 	private static final String INSTANCESTATE_TAB = "tab";
 	private static final int DEFAULT_OFFSCREEN_PAGES = 2;

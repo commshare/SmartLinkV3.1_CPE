@@ -120,7 +120,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	private uiCommandListener mUICmdListener;
 
 	public enum Mode {
-		View, Pick
+		View, Pick , Move
 	};
 
 	public enum UICmd {
@@ -128,7 +128,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	}
 
 	public void setUiCommandListener(uiCommandListener UICmdListener) {
-		mUICmdListener = UICmdListener;
+		this.mUICmdListener = UICmdListener;
+		mFileOperationHelper.setUiCommandListener(UICmdListener);
 	}
 
 	public interface uiCommandListener {
@@ -994,13 +995,11 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			// TODO 添加菜单选项操作
 			case GlobalConsts.MENU_EDIT:
 				switchEditCheckBox();
-				Toast.makeText(mActivity, "Edit File.", Toast.LENGTH_SHORT)
-						.show();
+				//Toast.makeText(mActivity, "Edit File.", Toast.LENGTH_SHORT).show();
 				break;
-			case GlobalConsts.MENU_ADD_FILE:
-				Toast.makeText(mActivity, "Add File.", Toast.LENGTH_SHORT)
-						.show();
-				// IntentBuilder.pickFile(mActivity);
+			case GlobalConsts.MENU_ADD_FILE	:
+				//Toast.makeText(mActivity, "Add File.", Toast.LENGTH_SHORT).show();
+				//IntentBuilder.pickFile(mActivity);
 				ExternalFileObtain.getInstance(mActivity).getFiles(
 						new ExternalFileObtain.OnGetFilesListener() {
 							@Override
@@ -1033,6 +1032,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	private SelectFilesCallback mSelectFilesCallback;
 
 	// TODO 修改，添加参数标记_OLD_MARK,为重用方法，被修改方法替代
+	@Deprecated 
 	public boolean onCreateOptionsMenu(Menu menu, boolean _OLD_MARK) {
 		clearSelection();
 
@@ -1117,6 +1117,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	}
 
 	// TODO 修改，添加参数标记，被替代
+	@Deprecated 
 	private void updateMenuItems(Menu menu, boolean _OLD_MARK) {
 		menu.findItem(MENU_SELECTALL).setTitle(
 				isSelectedAll() ? R.string.operation_cancel_selectall
@@ -1323,7 +1324,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 	@Override
 	public void onFileChanged(String path) {
-		notifyFileSystemChanged(path);
+		//notifyFileSystemChanged(path);
 	}
 
 	public void startSelectFiles(SelectFilesCallback callback) {

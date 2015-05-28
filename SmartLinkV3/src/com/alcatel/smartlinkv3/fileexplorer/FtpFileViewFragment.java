@@ -169,7 +169,7 @@ public class FtpFileViewFragment extends Fragment implements
 		@Override
 		public void move(ArrayList<FileInfo> remote1, String remote2) {
 			// TODO Auto-generated method stub
-
+		    cmdTask.ftp_move(remote1, remote2);
 		}
 
 		@Override
