@@ -8,9 +8,9 @@ public class FileManager {
 
 	public static String getSaveRootDir() {
 		if (CommonUtil.hasSDCard()) {
-			return CommonUtil.getRootFilePath() + "icons/";
+			return CommonUtil.getRootFilePath() + "dlnaicons/";
 		} else {
-			return CommonUtil.getRootFilePath() + "com.alcatel.smartlinkv3/mediaplayer/icons/";
+			return CommonUtil.getRootFilePath() + "smartlinkv3/mediaplayer/dlnaicons/";
 		}
 	}
 	
