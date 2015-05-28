@@ -662,6 +662,9 @@
     <string name="pref_show_real_path_summary">Show real path in navigation bar</string>
     <string name="custom_delete_dlg_text1">Delete</string>
     <string name="custom_delete_dlg_text2">Selected file will be deleted?</string>
+    <string name="details_text_size">Size:</string>
+    <string name="details_text_create_date">Create Date:</string>
+    <string name="details_text_modified_date">Modified Date:</string>
     <!-- FTP FILE END -->
 
 
