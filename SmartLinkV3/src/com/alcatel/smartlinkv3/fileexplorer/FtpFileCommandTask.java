@@ -36,6 +36,7 @@ public class FtpFileCommandTask {
 	private static final int CLOSE = -2;
 	private static final int MOVE = 10;
 	private static final int COPY = 11;
+	private static final int RENAME = 12;
 
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
@@ -161,7 +162,12 @@ public class FtpFileCommandTask {
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(COPY);
 	}
-
+	
+	public void ftp_rename(String fromFile, String toFile) {
+		ftpTask.setRename(fromFile, toFile);
+		ftpTask.awakenCMD(RENAME);
+	}
+	
 	public void ftp_close() {
 		ftpTask.awakenCMD(CLOSE);
 	}
@@ -172,7 +178,12 @@ public class FtpFileCommandTask {
 		private String remotePath = "/";
 		private ArrayList<FileInfo> remoteFiles = new ArrayList<FileInfo>();
 		private ArrayList<File> localFiles = new ArrayList<File>();
-
+		
+		//TODO
+		private String fromFile = null;
+		private String toFile = null;
+		
+		
 		public void setRemoteRootPath(String remoteRootPath) {
 			this.remoteRootPath = remoteRootPath;
 		}
@@ -187,6 +198,11 @@ public class FtpFileCommandTask {
 
 		public void setLocalFiles(ArrayList<File> localFiles) {
 			this.localFiles = localFiles;
+		}
+		
+		public void setRename(String fromFile,String toFile){
+			this.fromFile = fromFile;
+			this.toFile = toFile;
 		}
 
 		public synchronized void awakenCMD(int cmd) {
@@ -280,7 +296,14 @@ public class FtpFileCommandTask {
 			case COPY:
 				CMD = -1;
 				break;
-
+			case RENAME:
+				if((this.fromFile != null) && (this.toFile != null)){
+					renameFile(this.fromFile,this.toFile);
+				}
+				
+				CMD = -1;
+				break;
+				
 			case CLOSE:
 				try {
 					ftp.close();
@@ -421,6 +444,31 @@ public class FtpFileCommandTask {
 			}
 		}
 		
+	}
+	
+	private void renameFile(String fromFile, String toFile) throws IOException {
+		if (!isLogin) {
+			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			return;
+		}
+		if (null == fromFile) {
+			logger.w("source file [" + fromFile + "] can't not be null!");
+			return;
+		}
+
+		if (null == toFile) {
+			logger.w("obj file [" + fromFile + "] can't not be null!");
+			return;
+		}
+
+		boolean result = ftp.rename(fromFile, toFile);
+
+		if (result) {
+			sendMsg(MSG_SHOW_TOAST, "rename file [" + fromFile + "] success!");
+		} else {
+			sendMsg(MSG_SHOW_TOAST, "rename file [" + fromFile + "] fail!");
+		}
+
 	}
 	
 	private void uploadFiles(ArrayList<File> local, String remote)

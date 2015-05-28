@@ -242,7 +242,8 @@ public class FtpFileListItem {
 
 			// TODO : 添加的菜单项
 			case R.id.action_rename:
-				mFileViewInteractionHub.onOperationRename();
+				//mFileViewInteractionHub.onOperationRename();
+				mFileViewInteractionHub.onRename();
 				Toast.makeText(mContext, "Rename.", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.action_details:

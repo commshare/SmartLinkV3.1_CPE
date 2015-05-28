@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import android.R.bool;
 import android.content.Context;
 import android.graphics.Bitmap.Config;
 import android.util.Log;
@@ -312,6 +313,24 @@ public class FtpManager {
 					ERROR.SUCCESS);
 		}
 
+		return iStatus;
+	}
+	
+	public boolean rename(String fromFile, String toFile) throws IOException {
+		boolean iStatus = false;
+		
+		if (!isLogin) {
+			ftpManagerListener.onStatus(FtpMessage.FILE_UPLOAD_ERROR,
+					ERROR.FILE_UPLOAD_ERROR);
+		}
+		
+		iStatus = ftpProxy.renameFile(fromFile, toFile);
+		
+		if (iStatus) {
+			ftpManagerListener.onStatus(FtpMessage.FILE_RENAME_SUCCESS,
+					ERROR.SUCCESS);
+		}
+		
 		return iStatus;
 	}
 

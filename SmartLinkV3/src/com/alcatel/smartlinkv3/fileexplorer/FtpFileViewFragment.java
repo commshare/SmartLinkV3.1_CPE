@@ -213,6 +213,12 @@ public class FtpFileViewFragment extends Fragment implements
 		    cmdTask.ftp_copy(files, remote2);
 		}
 
+		@Override
+		public void rename(String fromFile, String toFile) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	};
 
 	volatile long every = 0;

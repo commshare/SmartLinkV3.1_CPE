@@ -208,8 +208,16 @@ public class FtpClientProxy {
 		return null;
 	}
 
+	
+	public boolean renameFile(String fromFile, String toFile) throws IOException {
+		if (!ftpClient.rename(convertToUTF8(fromFile), convertToUTF8(toFile))) {
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean moveFile(String fromFile, String toFile) throws IOException {
-		if (!ftpClient.rename(fromFile, toFile)) {
+		if (!ftpClient.rename(convertToUTF8(fromFile), convertToUTF8(toFile))) {
 			return false;
 		}
 		return true;

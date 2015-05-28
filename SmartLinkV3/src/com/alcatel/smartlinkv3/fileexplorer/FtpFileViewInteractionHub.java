@@ -145,7 +145,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		void copy(ArrayList<FileInfo> remote1, String remote2);
 
 		void move(ArrayList<FileInfo> remote1, String remote2);
-
+		
+		void rename(String fromFile, String toFile);
+		
 		void delete(ArrayList<FileInfo> remote);
 	}
 
@@ -653,6 +655,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 	public void onFtpUpload() {
 		mUICmdListener.upload(null, null);
+	}
+	
+	public void onRename(){
+		mUICmdListener.rename(null, null);
 	}
 
 	public void onFtpDelete() {

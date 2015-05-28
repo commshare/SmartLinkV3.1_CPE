@@ -19,6 +19,9 @@ public class FtpMessage {
 	public static String FILE_DOWNLOAD_ERROR = "Download fail!";
 	public static String FILE_UPLOAD_SUCCESS = "Upload success";
 	public static String FILE_UPLOAD_ERROR = "Upload fail!";
+	public static String FILE_RENAME_ERROR = "Rename fail!";
+	public static String FILE_RENAME_SUCCESS = "Rename success!";
+	
 	public static String UNKNOW_SYSTEM_ERROR = "Unknow system error!";
 
 }
