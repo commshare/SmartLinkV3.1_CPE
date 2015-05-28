@@ -37,7 +37,7 @@
 
     <!-- main fram start -->
     <string name="main_home">Home</string>
-    <string name="main_microsd">MicroSD</string>
+    <string name="main_sdsharing">SD Sharing</string>
     <string name="main_usage">Usage</string>
     <string name="main_setting">Settings</string>
     <string name="main_sms">SMS</string>

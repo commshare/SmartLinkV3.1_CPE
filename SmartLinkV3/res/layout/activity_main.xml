@@ -28,7 +28,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dip"
-            android:visibility="visible"
+            android:visibility="gone"
             android:background="@drawable/actionbar_plus_icon" />         
 	</RelativeLayout>
     <View
@@ -58,19 +58,6 @@
             android:text="@string/main_home"
             android:textColor="@color/color_grey"
             android:textSize="12sp" />
-        
-        <TextView
-            android:id="@+id/main_microsd"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:drawablePadding="3dip"
-            android:gravity="center_horizontal"
-            android:text="@string/main_microsd"
-            android:textColor="@color/color_grey"
-            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/main_usage"
@@ -82,6 +69,19 @@
             android:drawablePadding="3dip"
             android:gravity="center_horizontal"
             android:text="@string/main_usage"
+            android:textColor="@color/color_grey"
+            android:textSize="12sp" />
+                
+        <TextView
+            android:id="@+id/main_microsd"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="3dip"
+            android:gravity="center_horizontal"
+            android:text="@string/main_sdsharing"
             android:textColor="@color/color_grey"
             android:textSize="12sp" />
         

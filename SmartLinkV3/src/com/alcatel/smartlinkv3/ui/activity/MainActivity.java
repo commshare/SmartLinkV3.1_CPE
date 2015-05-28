@@ -30,7 +30,6 @@ import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
-import com.alcatel.smartlinkv3.ui.dialog.AddPopWindow;
 import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
 import com.alcatel.smartlinkv3.ui.view.ViewHome;
 import com.alcatel.smartlinkv3.ui.view.ViewIndex;
@@ -115,7 +114,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
 	private static boolean m_blLogout = false;
-	private static boolean m_blAutoPro = false;
 	
 	private CommonErrorInfoDialog m_dialog_timeout_info;
 	
@@ -564,10 +562,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	
 	private void go2Click()
 	{
-		if(this.pageIndex == ViewIndex.VIEW_HOME)
-		{
-			addBtnClick();
-		}else if(this.pageIndex == ViewIndex.VIEW_USAGE){
+		if(this.pageIndex == ViewIndex.VIEW_USAGE){
 			moreBtnClick();
 		}else if(this.pageIndex == ViewIndex.VIEW_SMS){
 			editBtnClick();
@@ -935,6 +930,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		m_viewFlipper.addView(m_usageView.getView(),
 				ViewIndex.VIEW_USAGE, m_viewFlipper.getLayoutParams());
 		
+		m_microsdView = new ViewMicroSD(this);
+		m_viewFlipper.addView(m_microsdView.getView(),
+				ViewIndex.VIEW_MICROSD, m_viewFlipper.getLayoutParams());
+		
 		m_smsView = new ViewSms(this);
 		m_viewFlipper.addView(m_smsView.getView(), ViewIndex.VIEW_SMS,
 				m_viewFlipper.getLayoutParams());
@@ -942,10 +941,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		m_settingView = new ViewSetting(this);
 		m_viewFlipper.addView(m_settingView.getView(),
 				ViewIndex.VIEW_SETTINGE, m_viewFlipper.getLayoutParams());
-		
-		m_microsdView = new ViewMicroSD(this);
-		m_viewFlipper.addView(m_microsdView.getView(),
-				ViewIndex.VIEW_MICROSD, m_viewFlipper.getLayoutParams());
 		
 	}
 
@@ -956,8 +951,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	public void updateTitleUI(int viewIndex) {
 		if (viewIndex == ViewIndex.VIEW_HOME) {
 			m_titleTextView.setText(R.string.main_home);
-			m_Btnbar.setVisibility(View.VISIBLE);
-			m_Btnbar.setBackgroundResource(R.drawable.actionbar_plus_icon);
+			//m_Btnbar.setVisibility(View.VISIBLE);
+			//m_Btnbar.setBackgroundResource(R.drawable.actionbar_plus_icon);
+			m_Btnbar.setVisibility(View.GONE);
 			setMainBtnStatus(R.id.main_home);
 		}
 		if (viewIndex == ViewIndex.VIEW_USAGE) {
@@ -978,7 +974,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 			setMainBtnStatus(R.id.main_setting);
 		}
 		if(viewIndex == ViewIndex.VIEW_MICROSD) {
-			m_titleTextView.setText(R.string.main_microsd);
+			m_titleTextView.setText(R.string.main_sdsharing);
 			m_Btnbar.setVisibility(View.GONE);
 		}
 	}
@@ -1023,12 +1019,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 		nTextColor = nDrawable = nActiveBtnId == R.id.main_microsd ? R.color.color_blue
 				: R.color.color_grey;
 		m_microsdBtn.setTextColor(this.getResources().getColor(nTextColor));
-	}
-
-	
-	private void addBtnClick(){
-		AddPopWindow addPopWindow = new AddPopWindow(MainActivity.this);
-		addPopWindow.showPopupWindow(m_Btnbar);
 	}
 	
 	public static void setLogoutFlag(boolean blLogout){

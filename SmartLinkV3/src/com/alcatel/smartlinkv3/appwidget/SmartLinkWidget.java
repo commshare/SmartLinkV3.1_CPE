@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.appwidget;
 
-import com.alcatel.smartlinkv3.R;
 
+import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
