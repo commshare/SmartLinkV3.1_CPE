@@ -139,4 +139,12 @@ public class CPEConfig {
 //			mSettings.setAutoLoginFlag(blAutoLogin);
 //		}
 		
+		public boolean getInitialLaunchedFlag() {
+		  return mSettings.getInitialLaunchedFlag();
+		}
+		
+		public void setInitialLaunchedFlag() {
+		   mSettings.setInitialLaunchedFlag();
+		}
+		
 }

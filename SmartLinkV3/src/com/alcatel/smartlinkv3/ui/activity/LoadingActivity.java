@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.common.CPEConfig;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +14,6 @@ import android.content.res.Configuration;
 
 public class LoadingActivity extends Activity {
 	private final int SPLASH_DISPLAY_INTERNAL = 1000;
-	private final String SHAREDPREFERENCES_NAME = "first_pref";
-	boolean isFirstIn = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +38,8 @@ public class LoadingActivity extends Activity {
 	}
 
 	private void checkPreference() {
-		SharedPreferences preferences = getSharedPreferences(
-				SHAREDPREFERENCES_NAME, Context.MODE_PRIVATE);
-		isFirstIn = preferences.getBoolean("isFirstIn", true);
-		if (isFirstIn) {
-			//goGuide();
-			goHome();
+		if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
+			goGuide();
 		} else {
 			goHome();
 		}

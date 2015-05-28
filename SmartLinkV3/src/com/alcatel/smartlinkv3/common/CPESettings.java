@@ -15,11 +15,13 @@ public class CPESettings {
 	private static final String ITEM_LOGIN_PWD = "LoginPwd";
 	private static final String ITEM_LOGIN_USERNAME = "LoginUsername";
 	private static final String ITEM_LOGIN_STATUS = "LoginStatus";
+  private static final String ITEM_INIT_LAUNCH = "InitialLaunch";
 
 	private Context mContext = null;
 	private boolean mNotificationSwitchOn = false;
 	private int m_NotificationVolumeValue = 0;
 	private boolean mWifiPasswordSwitchOn = false;
+	private boolean mLaunched = false;
 	private String m_defaultDir = new String();
 	private String m_password = new String();
 	private String m_username = new String();
@@ -69,7 +71,7 @@ public class CPESettings {
 		m_NotificationVolumeValue = sp.getInt(ITEM_NOTIFICATION_V1_VOLUME_VALUE, 0);
 		mWifiPasswordSwitchOn = sp.getBoolean(ITEM_WIFI_PASSWORD_SWITCH_STATE, false);
 		m_defaultDir = sp.getString(ITEM_DEFAULT_DIRECTORY, "");
-	
+		mLaunched = sp.getBoolean(ITEM_INIT_LAUNCH, false);	
 	}
 	
 	private void saveSettings()
@@ -80,6 +82,7 @@ public class CPESettings {
 		edt.putInt(ITEM_NOTIFICATION_V1_VOLUME_VALUE, m_NotificationVolumeValue);
 		edt.putBoolean(ITEM_WIFI_PASSWORD_SWITCH_STATE, mWifiPasswordSwitchOn);
 		edt.putString(ITEM_DEFAULT_DIRECTORY, m_defaultDir);
+		edt.putBoolean(ITEM_INIT_LAUNCH, mLaunched);
 		edt.commit();	
 	}
 	
@@ -88,9 +91,7 @@ public class CPESettings {
 		SharedPreferences sp = mContext.getSharedPreferences(LOGIN_SETTING_FILE, Context.MODE_PRIVATE);
 		m_password = sp.getString(ITEM_LOGIN_PWD, "");
 		m_username = sp.getString(ITEM_LOGIN_USERNAME, "");
-		//m_blAutoLogin = sp.getBoolean(ITEM_LOGIN_STATUS, false);
-		
-		
+		//m_blAutoLogin = sp.getBoolean(ITEM_LOGIN_STATUS, false);		
 	}
 	
 	private void saveLoginSettings()
@@ -158,4 +159,16 @@ public class CPESettings {
 		saveLoginSettings();
 	}
 	
+	/*  
+	 * Flag to mark whether the SmartLink is launched after 
+	 * install or update.
+	 */
+	public boolean getInitialLaunchedFlag() {
+	  return mLaunched;
+	}
+	
+  public void setInitialLaunchedFlag() {
+    mLaunched = true;
+    saveSettings();
+  }	
 }
