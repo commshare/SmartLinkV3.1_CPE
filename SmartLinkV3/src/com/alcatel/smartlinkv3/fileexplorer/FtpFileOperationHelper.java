@@ -254,7 +254,9 @@ public class FtpFileOperationHelper {
         return false;
     }
 
-    public boolean Delete(ArrayList<FileInfo> files) {
+    // TODO : 废除，被替代
+    @Deprecated
+    public boolean Delete(ArrayList<FileInfo> files, boolean _OLD_MARK) {
         copyFileList(files);
         asnycExecute(new Runnable() {
             @Override
@@ -263,17 +265,25 @@ public class FtpFileOperationHelper {
                     DeleteFile(f);
                 }
 
-                //mOperationListener.onFileChanged(Environment
-                //        .getExternalStorageDirectory()
-                //        .getAbsolutePath());
+                mOperationListener.onFileChanged(Environment
+                        .getExternalStorageDirectory()
+                        .getAbsolutePath());
 
                 clear();
             }
         });
         return true;
     }
+    public boolean Delete(ArrayList<FileInfo> files) {
+        copyFileList(files);
+        mUICmdListener.delete(files);
+        clear();
+        return true;
+    }
 
-    protected void DeleteFile(FileInfo f) {
+    // TODO : 废除，被替代
+    @Deprecated 
+    protected void DeleteFile(FileInfo f, boolean _OLD_MARK) {
         if (f == null) {
             Log.e(LOG_TAG, "DeleteFile: null parameter");
             return;
@@ -293,8 +303,22 @@ public class FtpFileOperationHelper {
 
         Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
     }
+    protected void DeleteFile(FileInfo f) {
+        if (f == null) {
+            Log.e(LOG_TAG, "DeleteFile: null parameter");
+            return;
+        }
+        
+        ArrayList<FileInfo> list = new ArrayList<FileInfo>();
+        list.add(f);
+        mUICmdListener.delete(list);
 
-    private void CopyFile(FileInfo f, String dest) {
+        Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
+    }
+
+    // TODO : 废除，被替代
+    @Deprecated
+    private void CopyFile(FileInfo f, String dest, boolean _OLD_MARK) {
         if (f == null || dest == null) {
             Log.e(LOG_TAG, "CopyFile: null parameter");
             return;
@@ -320,6 +344,17 @@ public class FtpFileOperationHelper {
         } else {
             String destFile = Util.copyFile(f.filePath, dest);
         }
+        Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
+    }
+    private void CopyFile(FileInfo f, String dest) {
+        if (f == null || dest == null) {
+            Log.e(LOG_TAG, "CopyFile: null parameter");
+            return;
+        }
+        
+        ArrayList<FileInfo> list = new ArrayList<FileInfo>();
+        list.add(f);
+        mUICmdListener.copy(list, dest);
         Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
     }
 

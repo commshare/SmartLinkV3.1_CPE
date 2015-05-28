@@ -700,30 +700,34 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	private void doOperationDelete(final ArrayList<FileInfo> selectedFileList) {
 		final ArrayList<FileInfo> selectedFiles = new ArrayList<FileInfo>(
 				selectedFileList);
-		Dialog dialog = new AlertDialog.Builder(mActivity)
-				.setMessage(
-						mActivity
-								.getString(R.string.operation_delete_confirm_message))
-				.setPositiveButton(R.string.confirm,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int whichButton) {
-								if (mFileOperationHelper.Delete(selectedFiles)) {
-									showProgress(mActivity
-											.getString(R.string.operation_deleting));
-								}
-								clearSelection();
-							}
-						})
-				.setNegativeButton(R.string.cancel,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								clearSelection();
-							}
-						}).create();
-		dialog.show();
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View view = inflater.inflate(R.layout.custom_delete_dlg, null);
+        builder.setView(view);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mUICmdListener.delete(selectedFiles);
+                dialog.dismiss();
+                clearSelection();
+            }
+        });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        clearSelection();
+                    }
+                });
+        AlertDialog alertDialog = builder.show();
+
+        Button positiveBtn = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveBtn.setTextColor(0xff0070c5);
+        Button negativeBtn = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        negativeBtn.setTextColor(0xff0070c5);
 	}
 
 	public void onOperationInfo() {
@@ -1209,7 +1213,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			if (mCurrentMode == Mode.Pick) {
 				mFileViewListener.onPick(lFileInfo);
 			} else {
-				viewFile(lFileInfo);
+			    // TODO : 文件单击无效
+				;//viewFile(lFileInfo);
 			}
 			return;
 		}

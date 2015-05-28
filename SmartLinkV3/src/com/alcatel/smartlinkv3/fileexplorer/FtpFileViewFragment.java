@@ -169,7 +169,12 @@ public class FtpFileViewFragment extends Fragment implements
 		@Override
 		public void move(ArrayList<FileInfo> remote1, String remote2) {
 			// TODO Auto-generated method stub
-		    cmdTask.ftp_move(remote1, remote2);
+		    ArrayList<FileInfo> files = new ArrayList<FileInfo>();
+            
+            for (FileInfo f : remote1) {
+                files.add(f);
+            }
+		    cmdTask.ftp_move(files, remote2);
 		}
 
 		@Override
@@ -199,7 +204,13 @@ public class FtpFileViewFragment extends Fragment implements
 		@Override
 		public void copy(ArrayList<FileInfo> remote1, String remote2) {
 			// TODO Auto-generated method stub
-
+		    ArrayList<FileInfo> files = new ArrayList<FileInfo>();
+            
+            for (FileInfo f : remote1) {
+                files.add(f);
+            }
+            Log.d(LOG_TAG, "Ftp Copy:" + files.toString() + "To" + remote2);
+		    cmdTask.ftp_copy(files, remote2);
 		}
 
 	};
