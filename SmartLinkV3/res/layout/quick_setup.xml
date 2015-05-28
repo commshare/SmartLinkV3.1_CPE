@@ -2,16 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   	android:background="@color/color_white"
+    android:background="@color/color_white"
     android:orientation="vertical" >
-
-        <LinearLayout
+    
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_vertical"
     		android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"         
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:layout_marginBottom="20sp">
         
     <TextView
         android:id="@+id/qs_item_title"
@@ -21,7 +24,8 @@
         android:layout_marginBottom="20sp"
         android:gravity="center"
         android:text="@string/qs_item_pin_code"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textStyle="bold"
+        android:textColor="@color/color_black" />
 
      <TextView
         android:id="@+id/qs_item_prompt"
@@ -29,29 +33,50 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginBottom="10sp"
+        android:layout_marginBottom="20sp"
         android:text="@string/qs_pin_code_prompt"
-        android:textAppearance="?android:attr/textAppearanceSmallInverse" />
+        android:textColor="@color/color_light_gray" />
 
     <com.alcatel.smartlinkv3.ui.view.ClearEditText android:id="@+id/password"  
         android:layout_width="match_parent"  
         android:layout_height="30dip"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="30dip"
-        android:layout_marginRight="30dip"
-        android:layout_marginTop="@dimen/dimen_20dip"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/dimen_20dip"
         android:background="@drawable/selector_edit_bg"
         android:inputType="textPassword"
-        android:textSize="13sp"          >  
+        android:textAppearance="?android:attr/textAppearanceMedium"     >  
     </com.alcatel.smartlinkv3.ui.view.ClearEditText>  
 
+    <TextView
+        android:id="@+id/qs_detail_wifissid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20sp"
+        android:gravity="left"
+        android:visibility="gone"
+        android:text="@string/qs_wifi_ssid"
+        android:textColor="@color/color_black" />
+    <TextView
+        android:id="@+id/qs_detail_wifipasswd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20sp"
+        android:gravity="left"
+        android:visibility="gone"
+        android:text="@string/qs_wifi_passwd"
+        android:textColor="@color/color_black" />
+    
 </LinearLayout>
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/navigator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="5sp"
+        android:layout_marginBottom="8sp"
         android:layout_marginLeft="10sp"
         android:layout_marginRight="10sp"
         android:orientation="horizontal" >
@@ -60,24 +85,24 @@
         android:id="@+id/navigator_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="left|center_vertical"
         android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"
         android:drawableLeft="@drawable/left_arrow_big"
         android:text="@string/back"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
+        android:textColor="@color/color_black" />
+
     <TextView
         android:id="@+id/navigator_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:drawableRight="@drawable/right_arrow_big"        
         android:gravity="center_vertical|right"
         android:layout_gravity="right|center_vertical"
+        android:layout_alignParentRight="true"
         android:text="@string/skip"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-</LinearLayout>
+        android:textColor="@color/color_black" />
+</RelativeLayout>
 
 
 </LinearLayout>

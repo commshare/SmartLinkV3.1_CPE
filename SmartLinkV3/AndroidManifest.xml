@@ -63,10 +63,10 @@
         <activity
             android:name=".ui.activity.QuickSetupActivity"
             android:excludeFromRecents="true"
-            android:label="@string/qs_title"
-            android:launchMode="standard"
+            android:launchMode="singleTask"
             android:noHistory="true"
-            android:screenOrientation="sensor" >
+            android:theme="@style/titlebarstyle"
+            android:screenOrientation="sensor" > 
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete"
