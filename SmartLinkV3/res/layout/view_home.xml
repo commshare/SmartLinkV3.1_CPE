@@ -208,10 +208,16 @@
             </LinearLayout>
            	</LinearLayout>       	
 
+        <ScrollView
+    		android:layout_width="fill_parent"
+    		android:layout_height="0dip"
+    		android:layout_weight="7"
+    		android:fillViewport="true"
+    		android:overScrollMode="never" >
 	        <LinearLayout
 	            android:layout_width="fill_parent"
-	            android:layout_height="0dip"
-	            android:layout_weight="7"
+	            android:layout_height="fill_parent"
+	            
 	            android:orientation="vertical" >
 	            <RelativeLayout
 			        android:id="@+id/sigel_panel"
@@ -421,4 +427,5 @@
 	            </RelativeLayout>
 	        </RelativeLayout>
     	</LinearLayout>
+    	</ScrollView>
 	</LinearLayout>

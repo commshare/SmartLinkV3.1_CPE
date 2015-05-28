@@ -5,6 +5,7 @@
     android:orientation="vertical" >
 
          <RelativeLayout
+            android:id="@+id/b_title"
 	        android:layout_width="fill_parent" 
 	        android:layout_height="50dip"
 	    	android:orientation="vertical"
@@ -21,7 +22,7 @@
 				 android:background="@null"/>
 			     <TextView
 			         android:id="@+id/Back"
-			         android:layout_width="fill_parent"
+			         android:layout_width="wrap_content"
 			         android:layout_height="wrap_content"
 			         android:layout_centerVertical="true"
 			         android:layout_toRightOf="@id/btn_back"
@@ -30,12 +31,13 @@
 			         android:textSize="16sp" /> 
 			    <TextView
 			        android:id="@+id/title"
-			        android:layout_width="fill_parent"
+			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_centerInParent="true"
 			        android:gravity="center"
 			        android:singleLine="true"
 			        android:paddingLeft="23dip"
+			        android:paddingRight="23dip"
 			        android:textColor="@color/color_white"
 			        android:textSize="18sp"
 			        android:textStyle="bold" />
@@ -43,8 +45,9 @@
 	    
     <ImageView
          android:id="@+id/imageview"
+         android:layout_below="@id/b_title"
          android:layout_width="match_parent"
-    	 android:layout_height="match_parent">     
+    	 android:layout_height="wrap_content">     
     </ImageView>
 	
     <LinearLayout
