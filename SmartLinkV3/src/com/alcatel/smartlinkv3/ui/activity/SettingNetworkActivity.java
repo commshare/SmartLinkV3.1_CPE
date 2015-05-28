@@ -111,6 +111,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		super.onCreate(savedInstanceState);
 		
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		getWindow().setBackgroundDrawable(null);
 		setContentView(R.layout.activity_setting_network);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		
@@ -534,7 +535,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 						mode_lte_only.setChecked(false);
 						break;
 					case 3:
-						m_mode_desc.setText("LTE only");
+						m_mode_desc.setText("4G only");
 						mode_auto.setChecked(false);
 						mode_2g_only.setChecked(false);
 						mode_3g_only.setChecked(false);
@@ -573,7 +574,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
-				Log.v("GetNetworkSettingsTest2", "Yes");
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
 						BaseResponse.RESPONSE_OK);
 				

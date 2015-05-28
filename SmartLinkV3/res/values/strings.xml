@@ -302,6 +302,14 @@
     <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
     <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&#038;CHAP</string>
     <string name="setting_network_profile_management_cannot_delete_predefined_profile">Can not delete predefined profile</string>
+    <string name="setting_wifi_wep">WEP</string>
+    <string name="setting_wifi_wpa">WPA</string>
+    <string name="setting_wifi_wpa2">WPA2</string>
+    <string name="setting_wifi_wpa_or_wpa2">WPA&#047;WPA2</string>
+    <string name="setting_wifi_aes">AES</string>
+    <string name="setting_wifi_tkip">TKIP</string>
+    <string name="setting_wifi_open">Open</string>
+    <string name="setting_wifi_share">Share</string>
     <!-- setting end -->
 
 

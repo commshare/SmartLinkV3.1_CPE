@@ -24,6 +24,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.text.TextUtils.TruncateAt;
 import android.util.Log;
@@ -44,7 +46,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SettingWifiActivity extends BaseActivity 
+public class SettingWifiActivity extends BaseFragmentActivity 
 implements OnClickListener,OnSpinnerItemSelectedListener{
 
 	private String STRING_WEP = "WEP";
@@ -113,6 +115,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	//
 	private CommonErrorInfoDialog m_err_dialog;
 	private String m_strErrorInfo;
+	private LinearLayout m_content_container;
+	
+	private Button testButton;
+	private TextView m_security_type;
+	private TextView m_encription_mode;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -126,6 +133,32 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		controlTitlebar();
 		//create controls
 		createControls();
+		testButton = (Button) findViewById(R.id.testWifiSelection);
+		testButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				setContentVisibility(View.GONE);
+				
+				m_tv_edit.setVisibility(View.GONE);
+				m_tv_done.setVisibility(View.GONE);
+				m_tv_back.setVisibility(View.GONE);
+				m_ib_back.setVisibility(View.GONE);
+				
+				FragmentManager fm = getSupportFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				Bundle dataBundle = new Bundle();
+				dataBundle.putInt("Security_Mode", m_nPreSecurityMode);
+				dataBundle.putInt("Mode_Type", m_nPreType);
+				FragmentWifiSettingTypeSelection fg = new FragmentWifiSettingTypeSelection();
+				fg.setArguments(dataBundle);
+				ft.replace(R.id.setting_network_wifi_content_container, fg);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+			
+		});
 	}
 
 	private void controlTitlebar(){
@@ -179,6 +212,11 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_btn_ssid_broadcast_switch = (TextView) findViewById(R.id.btn_ssid_broadcast_switch);
 //		m_pre_ssid_status = SsidHiddenEnum.SsidHidden_Enable;
 		//init spiner
+		m_content_container = (LinearLayout) findViewById(R.id.setting_network_wifi_content);
+		m_security_type = (TextView)findViewById(R.id.set_wifi_security_mode);
+		m_security_type.setOnClickListener(this);
+		m_encription_mode = (TextView)findViewById(R.id.set_wifi_security_encription_type);
+		m_security_type.setOnClickListener(this);
 		initSpiners();
 	}
 
@@ -243,7 +281,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 						InputMethodManager.HIDE_NOT_ALWAYS);
 			}
 
-			SettingWifiActivity.this.finish();
+			SettingWifiActivity.this.onBackPressed();
 			break;
 		case R.id.tv_titlebar_edit:
 			onBtnEdit();
@@ -264,10 +302,36 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		case R.id.rb_5G_wifi:
 			onWifModeChanged();
 			break;
+		case R.id.set_wifi_security_mode:
+			goToWifiSettingFragment();
+			break;
+		case R.id.set_wifi_security_encription_type:
+			goToWifiSettingFragment();
+			break;
 		default:
 			break;
 
 		}
+	}
+	
+	private void goToWifiSettingFragment(){
+		setContentVisibility(View.GONE);
+		
+		m_tv_edit.setVisibility(View.GONE);
+		m_tv_done.setVisibility(View.GONE);
+		m_tv_back.setVisibility(View.GONE);
+		m_ib_back.setVisibility(View.GONE);
+		
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		Bundle dataBundle = new Bundle();
+		dataBundle.putInt("Security_Mode", m_nPreSecurityMode);
+		dataBundle.putInt("Mode_Type", m_nPreType);
+		FragmentWifiSettingTypeSelection fg = new FragmentWifiSettingTypeSelection();
+		fg.setArguments(dataBundle);
+		ft.replace(R.id.setting_network_wifi_content_container, fg);
+		ft.addToBackStack(null);
+		ft.commit();
 	}
 	
 	private void onBtnSSIDSwitch(){
@@ -527,8 +591,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_strSsid = m_et_ssid.getText().toString();
 
 		if (m_blPasswordOpened) {
-			m_nSecurityMode = m_securitySpinner.getSelectedItemPosition()+1;
-			m_nType = m_encryptionSpinner.getSelectedItemPosition();
+//			m_nSecurityMode = m_securitySpinner.getSelectedItemPosition()+1;
+//			m_nType = m_encryptionSpinner.getSelectedItemPosition();
 			m_strKey = m_et_password.getText().toString();
 		}else {
 			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.Disable);
@@ -630,16 +694,26 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			//m_tv_psd_type_title.setVisibility(View.VISIBLE);
 		}
 
-		if(securityMode == SecurityMode.WEP)
+		if(securityMode == SecurityMode.WEP){
 			m_securitySpinner.setSelection(0);
-		else if(securityMode == SecurityMode.WPA)
+			m_security_type.setText(R.string.setting_wifi_wep);
+		}
+		else if(securityMode == SecurityMode.WPA){
 			m_securitySpinner.setSelection(1);
-		else if(securityMode == SecurityMode.WPA2)
+			m_security_type.setText(R.string.setting_wifi_wpa);
+		}
+		else if(securityMode == SecurityMode.WPA2){
 			m_securitySpinner.setSelection(2);
-		else if(securityMode == SecurityMode.WPA_WPA2)
+			m_security_type.setText(R.string.setting_wifi_wpa2);
+		}
+		else if(securityMode == SecurityMode.WPA_WPA2){
 			m_securitySpinner.setSelection(3);
-		else
+			m_security_type.setText(R.string.setting_wifi_wpa_or_wpa2);
+		}
+		else{
 			m_securitySpinner.setSelection(0);
+			m_security_type.setText(R.string.setting_wifi_wep);
+		}
 
 		//
 		if(securityMode == SecurityMode.WEP) {
@@ -654,10 +728,14 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 			}
-			if(wepType == WEPEncryption.Open)
+			if(wepType == WEPEncryption.Open){
 				m_encryptionSpinner.setSelection(0);
-			else 
+				m_encription_mode.setText(R.string.setting_wifi_open);
+			}
+			else{
 				m_encryptionSpinner.setSelection(1);
+				m_encription_mode.setText(R.string.setting_wifi_share);
+			} 
 			m_et_password.setText(m_curWEPPassword);
 		}else{
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
@@ -677,12 +755,18 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				m_encryptionSpinner.setSelection(0);
 			}else{
 				m_encryptionSpinner.setAdapter(m_wpaEncryptionadapter,m_wpaTypeOptions);
-				if(wpaType == WPAEncryption.AUTO)
+				if(wpaType == WPAEncryption.AUTO){
 					m_encryptionSpinner.setSelection(2);
-				else if(wpaType == WPAEncryption.AES)
+					m_encription_mode.setText(R.string.setting_network_mode_auto);
+				}
+				else if(wpaType == WPAEncryption.AES){
 					m_encryptionSpinner.setSelection(1);
-				else
+					m_encription_mode.setText(R.string.setting_wifi_aes);
+				}
+				else{
 					m_encryptionSpinner.setSelection(0);
+					m_encription_mode.setText(R.string.setting_wifi_tkip);
+				}
 			}
 			m_et_password.setText(m_curWPAPassword);
 		}
@@ -975,5 +1059,76 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	
 	private void setOneDividerVisibility(final int visibility){
 		findViewById(R.id.divider1).setVisibility(visibility);
+	}
+	
+	public void setContentVisibility(final int visibility){
+		m_content_container.setVisibility(visibility);
+	}
+	
+	public void setEditButtonVisibility(final int visibility){
+		m_tv_edit.setVisibility(visibility);
+		
+	}
+	
+	public void setDoneButtonVisibility(final int visibility){
+		m_tv_done.setVisibility(visibility);
+	}
+	
+	public void setBackButtonVisibility(final int visibility){
+		m_tv_back.setVisibility(visibility);
+		m_ib_back.setVisibility(visibility);
+	}
+	
+	public void setWifiMode(int SecurityMode, int Type){
+		m_nSecurityMode = SecurityMode;
+		m_nType = Type;
+		switch(m_nSecurityMode){
+		case 1:
+			m_security_type.setText(R.string.setting_wifi_wep);
+			switch(m_nType){
+			case 0:
+				m_encription_mode.setText(R.string.setting_wifi_open);
+				break;
+			case 1:
+				m_encription_mode.setText(R.string.setting_wifi_share);
+				break;
+			default:
+				break;
+			}
+			return;
+		case 2:
+			m_security_type.setText(R.string.setting_wifi_wpa);
+			break;
+		case 3:
+			m_security_type.setText(R.string.setting_wifi_wpa2);
+			break;
+		case 4:
+			m_security_type.setText(R.string.setting_wifi_wpa_or_wpa2);
+			break;
+		case 0:
+			m_security_type.setText(R.string.setting_wifi_wep);
+			break;
+		default:
+			break;
+		}
+		
+		switch(m_nType){
+		case 0:
+			m_encription_mode.setText(R.string.setting_wifi_tkip);
+			break;
+		case 1:
+			m_encription_mode.setText(R.string.setting_wifi_aes);
+			break;
+		case 2:
+			m_encription_mode.setText(R.string.setting_network_mode_auto);
+			break;
+		default:
+			break;
+		}
+		
+		Log.v("WIFIMODE", "PRE" + m_nPreSecurityMode);
+		Log.v("WIFIMODE", "" + m_nSecurityMode);
+		Log.v("WIFIMODE", "PRETYPE" + m_nPreType);
+		Log.v("WIFIMODE", "TYPE" + m_nType);
 	}
 }

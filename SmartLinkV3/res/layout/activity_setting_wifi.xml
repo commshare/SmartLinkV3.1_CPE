@@ -7,12 +7,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null" >
+        android:background="@null"
+        android:id="@+id/setting_network_wifi_content_container" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/setting_background_color"
+            android:id="@+id/setting_network_wifi_content"
             android:orientation="vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp" >
@@ -239,14 +241,25 @@
                         android:textSize="20sp" 
                         android:padding="15dp"
                         android:layout_weight="1"/>
+                    
+                    <TextView
+                        android:id="@+id/set_wifi_security_mode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=""
+                        android:textColor="@color/color_black"
+                        android:textSize="20sp" 
+                        android:padding="15dp"
+                        android:layout_weight="1.6"
+                        />
 
-                    <com.alcatel.smartlinkv3.ui.view.CustomSpinner
+                    <com.alcatel.smartlinkv3.ui.view.CustomSpinner 
                         android:id="@+id/security_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:paddingLeft="10dp"
                         android:background="@drawable/dropdown"
-                        android:layout_weight="2.5"/>
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <ImageView
@@ -272,6 +285,16 @@
                         android:textSize="20sp"
                         android:padding="15dp"
                         android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/set_wifi_security_encription_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=""
+                        android:textColor="@color/color_black"
+                        android:textSize="20sp" 
+                        android:padding="15dp"
+                        android:layout_weight="1.6"
+                        />
 
                     <com.alcatel.smartlinkv3.ui.view.CustomSpinner
                         android:id="@+id/encryption_spinner"
@@ -279,7 +302,7 @@
                         android:layout_height="match_parent"
                         android:paddingLeft="10dp"
                         android:background="@drawable/dropdown"
-                        android:layout_weight="2.5"/>
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <ImageView
@@ -350,6 +373,12 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        
+        <Button 
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:id="@+id/testWifiSelection"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/rl_wifi_waiting"
