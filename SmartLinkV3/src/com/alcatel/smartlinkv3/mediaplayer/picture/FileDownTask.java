@@ -40,7 +40,8 @@ public class FileDownTask implements Runnable{
 			int count = 0;
 			while(true){
 				ret = request();
-				if (ret || count > 2){			
+				log.e("request fail,cur ret =" + ret);
+				if (ret || count > 3){			
 					break;
 				}
 				count++;
