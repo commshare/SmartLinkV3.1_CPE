@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ftp.client;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -132,14 +133,12 @@ public class FtpClientProxy {
 
 	public FTPFile getFTPFile(String remotePath) {
 		try {
-			Log.d("", "getFTPFile.........." + remotePath);
 			// mlistFile() need server support,it returns null sometimes
 			FTPFile f = ftpClient.mlistFile(remotePath);
 			return f;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Log.d("", "getFTPFile null..........");
 		return null;
 	}
 
@@ -169,31 +168,32 @@ public class FtpClientProxy {
 	}
 
 	public boolean checkFileExist(String filePath) throws Exception {
-		boolean flag = false;
+		boolean result = false;
 		File file = new File(filePath);
-		if (!file.exists()) {
-			throw new Exception("File is not exist!");
+
+		if (file.exists()) {
+			result = true;
 		} else {
-			flag = true;
+			result = false;
+			throw new Exception("File is not exist!");
 		}
-		return flag;
+
+		return result;
 	}
 
 	public Boolean changeDirectory(String remoteFoldPath) throws Exception {
-		return ftpClient.changeWorkingDirectory(remoteFoldPath);
+		return ftpClient.changeWorkingDirectory(convertToUTF8(remoteFoldPath));
 	}
 
-	boolean createLocalFolder(String strFolder) {
+	public boolean createLocalFolder(String strFolder) {
 		File file = new File(strFolder);
 
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				return true;
-			} else {
-				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	public FTPFile getFileByName(String remoteDir, String name) {
@@ -208,14 +208,14 @@ public class FtpClientProxy {
 		return null;
 	}
 
-	
-	public boolean renameFile(String fromFile, String toFile) throws IOException {
+	public boolean renameFile(String fromFile, String toFile)
+			throws IOException {
 		if (!ftpClient.rename(convertToUTF8(fromFile), convertToUTF8(toFile))) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean moveFile(String fromFile, String toFile) throws IOException {
 		if (!ftpClient.rename(convertToUTF8(fromFile), convertToUTF8(toFile))) {
 			return false;
@@ -290,20 +290,6 @@ public class FtpClientProxy {
 			throws Exception {
 		FtpDownloadStatus result = FtpDownloadStatus.Download_From_Break_Failed;
 		boolean success = false;
-
-		// mlistFile() has bugs or permision problem?,it returns null sometimes.
-		/*
-		 * FTPFile remoteFile = ftpClient.mlistFile(remote);
-		 * 
-		 * if (null == remoteFile) { logger.w("mlistFile() return null!");
-		 * return false; }
-		 * 
-		 * if (remoteFile.isFile()) { result = download(local, remote); if
-		 * (result == FtpDownloadStatus.Download_New_Success) success = true;
-		 * return success; }
-		 * 
-		 * if (remoteFile.isDirectory()) { createLocalFolder(local); }
-		 */
 
 		FTPFile ftp = this.getFtpFileByPath(remote);
 		boolean isDirectory = this.isDirectory(remote);
@@ -574,18 +560,13 @@ public class FtpClientProxy {
 		return ftpfiles;
 	}
 
-	public List<FTPFile> getFileList() throws Exception {
-		List<FTPFile> ftpfiles = Arrays.asList(ftpClient.listFiles());
-		return ftpfiles;
-	}
-
 	public Boolean deleteFtpServerFile(String remoteFilePath) throws Exception {
-		return ftpClient.deleteFile(remoteFilePath);
+		return ftpClient.deleteFile(convertToUTF8(remoteFilePath));
 	}
 
 	public boolean createFold(String remoteFoldPath) throws Exception {
 
-		boolean flag = ftpClient.makeDirectory(remoteFoldPath);
+		boolean flag = ftpClient.makeDirectory(convertToUTF8(remoteFoldPath));
 		if (!flag) {
 			throw new Exception("create fold fail!");
 		}
@@ -593,8 +574,7 @@ public class FtpClientProxy {
 	}
 
 	public boolean deleteFold(String remoteFoldPath) throws Exception {
-
-		return ftpClient.removeDirectory(remoteFoldPath);
+		return ftpClient.removeDirectory(convertToUTF8(remoteFoldPath));
 	}
 
 	public String convertToUTF8(String str) throws UnsupportedEncodingException {
@@ -609,7 +589,7 @@ public class FtpClientProxy {
 
 		// it's a file
 		if (!isDirectory) {
-			success = deleteFtpServerFile(convertToUTF8(remoteFoldPath));
+			success = deleteFtpServerFile(remoteFoldPath);
 			return success;
 		}
 
@@ -617,13 +597,12 @@ public class FtpClientProxy {
 
 		if (list == null || list.size() == 0) {
 			logger.i("delete a empty directory: " + remoteFoldPath);
-			return deleteFold(convertToUTF8(remoteFoldPath));
+			return deleteFold(remoteFoldPath);
 		}
 
 		for (FTPFile ftpFile : list) {
 			String name = ftpFile.getName();
-			String filename = remoteFoldPath + "/" + name;
-			String remoteFile = convertToUTF8(filename);
+			String remoteFile = remoteFoldPath + "/" + name;
 
 			if (ftpFile.isDirectory()) {
 				success = deleteFoldAndsubFiles(remoteFile);
@@ -640,12 +619,6 @@ public class FtpClientProxy {
 			return false;
 		success = deleteFold(convertToUTF8(remoteFoldPath));
 		return success;
-	}
-
-	public void disconnect() throws IOException {
-		if (ftpClient.isConnected()) {
-			ftpClient.disconnect();
-		}
 	}
 
 	public FtpUploadStatus createFtpDirecroty(FTPClient ftpClient, String remote)
@@ -704,7 +677,7 @@ public class FtpClientProxy {
 				.getBytes("UTF-8"), "iso-8859-1"));
 
 		if (out == null) {
-			logger.v("Remote OutputStream is null!");
+			logger.i("Remote OutputStream is null!");
 			raf.close();
 			return FtpUploadStatus.File_Non_Exits;
 		}
@@ -742,6 +715,38 @@ public class FtpClientProxy {
 		}
 
 		return status;
+	}
+
+	public Boolean mergeFile(String localPath, String desFile, String mergeStr) {
+		FileInputStream inputStream = null;
+		FileOutputStream fileOutStream = null;
+		try {
+			inputStream = new FileInputStream(localPath + "/" + desFile);
+			byte allBytes[] = new byte[inputStream.available()];
+			inputStream.read(allBytes);
+			fileOutStream = new FileOutputStream(localPath + "/" + desFile);
+			fileOutStream.write(mergeStr.getBytes());
+			fileOutStream.write(allBytes);
+		}
+
+		catch (IOException e) {
+			return false;
+		} finally {
+			try {
+				fileOutStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return true;
 	}
 
 	public void close() {
