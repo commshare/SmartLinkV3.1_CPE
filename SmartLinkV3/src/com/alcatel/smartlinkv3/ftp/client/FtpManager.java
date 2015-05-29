@@ -249,7 +249,7 @@ public class FtpManager {
 	}
 
 	public boolean download(String localFile, String remoteFile) {
-		boolean iStatus = false;
+		boolean result = false;
 
 		if (!isLogin) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_ERROR,
@@ -257,18 +257,18 @@ public class FtpManager {
 		}
 
 		try {
-			iStatus = ftpProxy.downloadAndsubFiles(localFile, remoteFile);
+			result = ftpProxy.downloadAndsubFiles(localFile, remoteFile);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		if (iStatus) {
+		if (result) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_SUCCESS,
 					ERROR.SUCCESS);
 		}
 
-		return iStatus;
+		return result;
 	}
 
 	public boolean deleteFiles(String remoteFilePath) {

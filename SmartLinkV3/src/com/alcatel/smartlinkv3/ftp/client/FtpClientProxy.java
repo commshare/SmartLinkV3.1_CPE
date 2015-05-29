@@ -291,8 +291,8 @@ public class FtpClientProxy {
 		FtpDownloadStatus result = FtpDownloadStatus.Download_From_Break_Failed;
 		boolean success = false;
 
-		FTPFile ftp = this.getFtpFileByPath(remote);
 		boolean isDirectory = this.isDirectory(remote);
+		
 		if (isDirectory) {
 			logger.i("file name [" + remote + "]" + " is a directroy");
 			createLocalFolder(local);
@@ -345,7 +345,7 @@ public class FtpClientProxy {
 			}
 		}
 
-		success = true;
+		//success = true;
 		return success;
 	}
 

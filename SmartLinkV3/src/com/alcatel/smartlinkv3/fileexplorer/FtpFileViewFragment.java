@@ -64,6 +64,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity.OnBackPressedListener;
 
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.FtpCommandListener;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.OnCallResponse;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.UICmd;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.uiCommandListener;
@@ -219,6 +220,13 @@ public class FtpFileViewFragment extends Fragment implements
 			cmdTask.ftp_rename(fromFile, toFile);
 		}
 
+		@Override
+		public void share(ArrayList<FileInfo> remote, OnCallResponse response) {
+			// TODO Auto-generated method stub
+			cmdTask.ftp_share(remote);
+			cmdTask.setOnCallResponse(response);
+		}
+
 	};
 
 	volatile long every = 0;
@@ -284,6 +292,7 @@ public class FtpFileViewFragment extends Fragment implements
 
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
+	private static final int MSG_SHARE_FILE = 2;
 	private static final int PAUSE_DOWNLOAD = 9;
 	private static final int MSG_REFRESH_UI = 10;
 
@@ -301,8 +310,10 @@ public class FtpFileViewFragment extends Fragment implements
 						.show();
 				mFileViewInteractionHub.refreshFileList();
 				break;
-			case 2:
-				// enableBtn(!isOK);
+			case MSG_SHARE_FILE:
+				ArrayList<ShareFileInfo> shareFiles = (ArrayList<ShareFileInfo>) msg.obj;
+				
+				
 				break;
 			case 5:
 				// progressText.setText(msg.obj + "%");

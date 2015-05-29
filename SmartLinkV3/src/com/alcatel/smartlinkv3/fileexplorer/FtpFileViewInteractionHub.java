@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FileSortHelper.SortMethod;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.OnCallResponse;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileListItem.ModeCallback;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileOperationHelper.IOperationProgressListener;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.IConnectedActionMode;
@@ -149,6 +150,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		void rename(String fromFile, String toFile);
 
 		void delete(ArrayList<FileInfo> remote);
+		
+		void share(ArrayList<FileInfo> remote,OnCallResponse response);
 	}
 
 	public FtpFileViewInteractionHub(IFileInteractionListener fileViewListener) {
@@ -658,6 +661,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 	public void onRename() {
 		mUICmdListener.rename(null, null);
+	}
+
+	public void onShare() {
+		mUICmdListener.share(null, null);
 	}
 
 	public void onFtpDelete() {
