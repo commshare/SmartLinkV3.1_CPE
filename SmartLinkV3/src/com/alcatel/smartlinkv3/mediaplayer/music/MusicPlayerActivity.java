@@ -86,6 +86,7 @@ public class MusicPlayerActivity extends BaseActivity implements OnBufferingUpda
 		super.onCreate(savedInstanceState);	
 		log.e("onCreate");
 		setContentView(R.layout.music_player_layout);
+		m_bNeedBack = false;
 		setupsView();	
 		initData();
 		

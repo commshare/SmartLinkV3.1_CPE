@@ -44,6 +44,7 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.picture_player_layout);
+		m_bNeedBack = false;
 		
 		initView();
 		initData();

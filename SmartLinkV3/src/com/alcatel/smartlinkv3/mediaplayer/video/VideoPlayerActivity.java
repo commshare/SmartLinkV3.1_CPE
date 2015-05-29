@@ -78,6 +78,7 @@ public static final String PLAY_INDEX = "player_index";
 		super.onCreate(savedInstanceState);	
 		log.e("onCreate");
 		setContentView(R.layout.video_player_layout);
+		m_bNeedBack = false;
 		setupsView();	
 		initData();
 		
