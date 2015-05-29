@@ -563,7 +563,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		confirmButton.setText(text);
 	}
 
-	public void onOperationSend() {
+	// TODO 修改，添加参数标记_OLD_MARK,为重用方法，被修改方法替代
+    @Deprecated
+	public void onOperationSend(boolean _OLD_MARK) {
 		ArrayList<FileInfo> selectedFileList = getSelectedFileList();
 		for (FileInfo f : selectedFileList) {
 			if (f.IsDir) {
@@ -573,7 +575,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				dialog.show();
 				return;
 			}
-		}
+		}		
 
 		Intent intent = IntentBuilder.buildSendFile(selectedFileList);
 		if (intent != null) {
@@ -585,6 +587,47 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		}
 		clearSelection();
 	}
+    public void onOperationSend() {
+        ArrayList<FileInfo> selectedFileList = getSelectedFileList();
+        for (FileInfo f : selectedFileList) {
+            if (f.IsDir) {
+                AlertDialog dialog = new AlertDialog.Builder(mActivity)
+                        .setMessage(R.string.error_info_cant_send_folder)
+                        .setPositiveButton(R.string.confirm, null).create();
+                dialog.show();
+                return;
+            }
+        }
+        Log.d("Send", selectedFileList.toString());
+        Log.d("Send", String.valueOf(selectedFileList.size()));
+        mUICmdListener.share(selectedFileList, new FtpFileCommandTask.OnCallResponse() {           
+            @Override
+            public void callResponse(Object obj) {
+                Log.d("Send", "response share.");
+                try {
+                    @SuppressWarnings("unchecked")
+                    final ArrayList<ShareFileInfo> list = (ArrayList<ShareFileInfo>) obj;
+                    
+                    mFileViewListener.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                           Intent intent = IntentBuilder.buildShareFile(list);
+                            if (intent != null) {
+                                try {
+                                    mFileViewListener.startActivity(intent);
+                                } catch (ActivityNotFoundException e) {
+                                    Log.e(LOG_TAG, "fail to view file: " + e.toString());
+                                }
+                            }
+                        }
+                    });
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                }
+                clearSelection();
+            }
+        });
+    }
 
 	public void onOperationRename() {
 		// TODO : 去掉上下文菜单选择判断

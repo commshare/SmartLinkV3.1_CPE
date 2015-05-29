@@ -116,6 +116,38 @@ public class IntentBuilder {
 
         return intent;
     }
+    
+    public static Intent buildShareFile(ArrayList<ShareFileInfo> files) {
+        ArrayList<Uri> uris = new ArrayList<Uri>();
+
+        String mimeType = "*/*";
+        for (ShareFileInfo file : files) {
+            if (file.IsDir)
+                continue;
+
+            File fileIn = new File(file.filePath);
+            mimeType = getMimeType(file.fileName);
+            Uri u = Uri.fromFile(fileIn);
+            uris.add(u);
+        }
+
+        if (uris.size() == 0)
+            return null;
+
+        boolean multiple = uris.size() > 1;
+        Intent intent = new Intent(multiple ? android.content.Intent.ACTION_SEND_MULTIPLE
+                : android.content.Intent.ACTION_SEND);
+
+        if (multiple) {
+            intent.setType("*/*");
+            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        } else {
+            intent.setType(mimeType);
+            intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
+        }
+
+        return intent;
+    }
 
     private static String getMimeType(String filePath) {
         int dotPosition = filePath.lastIndexOf('.');
