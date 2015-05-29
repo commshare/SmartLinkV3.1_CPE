@@ -140,7 +140,7 @@ public class FtpFileCommandTask {
 		ftpTask.awakenCMD(DOWNLOAD);
 	}
 
-	public void ftp_upload(ArrayList<File> localFiles,String remotePath) {
+	public void ftp_upload(ArrayList<File> localFiles, String remotePath) {
 		ftpTask.setLocalFiles(localFiles);
 		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.awakenCMD(UPLOAD);
@@ -162,12 +162,12 @@ public class FtpFileCommandTask {
 		ftpTask.setRemoteFiles(remoteFiles);
 		ftpTask.awakenCMD(COPY);
 	}
-	
+
 	public void ftp_rename(String fromFile, String toFile) {
 		ftpTask.setRename(fromFile, toFile);
 		ftpTask.awakenCMD(RENAME);
 	}
-	
+
 	public void ftp_close() {
 		ftpTask.awakenCMD(CLOSE);
 	}
@@ -178,20 +178,19 @@ public class FtpFileCommandTask {
 		private String remotePath = "/";
 		private ArrayList<FileInfo> remoteFiles = new ArrayList<FileInfo>();
 		private ArrayList<File> localFiles = new ArrayList<File>();
-		
-		//TODO
+
+		// TODO
 		private String fromFile = null;
 		private String toFile = null;
-		
-		
+
 		public void setRemoteRootPath(String remoteRootPath) {
 			this.remoteRootPath = remoteRootPath;
 		}
-		
+
 		public void setRemotePath(String remotePath) {
 			this.remotePath = remotePath;
 		}
-		
+
 		public void setRemoteFiles(ArrayList<FileInfo> remoteFiles) {
 			this.remoteFiles = remoteFiles;
 		}
@@ -199,8 +198,8 @@ public class FtpFileCommandTask {
 		public void setLocalFiles(ArrayList<File> localFiles) {
 			this.localFiles = localFiles;
 		}
-		
-		public void setRename(String fromFile,String toFile){
+
+		public void setRename(String fromFile, String toFile) {
 			this.fromFile = fromFile;
 			this.toFile = toFile;
 		}
@@ -251,16 +250,16 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 			case UPLOAD:
-				if(false){
+				if (true) {
 					if (localFiles.size() == 0) {
 						logger.w("upload fail,file size is 0 on task");
 						CMD = -1;
 						break;
 					}
-					
-					uploadFiles(localFiles,remotePath);
+
+					uploadFiles(localFiles, remotePath);
 				}
-		
+
 				// test
 				if (false) {
 					try {
@@ -270,7 +269,7 @@ public class FtpFileCommandTask {
 						e2.printStackTrace();
 					}
 				}
-				
+
 				CMD = -1;
 				break;
 
@@ -297,13 +296,13 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 			case RENAME:
-				if((this.fromFile != null) && (this.toFile != null)){
-					renameFile(this.fromFile,this.toFile);
+				if ((this.fromFile != null) && (this.toFile != null)) {
+					renameFile(this.fromFile, this.toFile);
 				}
-				
+
 				CMD = -1;
 				break;
-				
+
 			case CLOSE:
 				try {
 					ftp.close();
@@ -418,7 +417,7 @@ public class FtpFileCommandTask {
 
 	private void deleteFiles(ArrayList<FileInfo> remote) {
 		boolean result = false;
-		
+
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
 			return;
@@ -443,9 +442,9 @@ public class FtpFileCommandTask {
 						+ "] fail!");
 			}
 		}
-		
+
 	}
-	
+
 	private void renameFile(String fromFile, String toFile) throws IOException {
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
@@ -470,7 +469,7 @@ public class FtpFileCommandTask {
 		}
 
 	}
-	
+
 	private void uploadFiles(ArrayList<File> local, String remote)
 			throws IOException {
 		if (!isLogin) {
@@ -491,7 +490,7 @@ public class FtpFileCommandTask {
 		}
 		sendMsg(MSG_SHOW_TOAST, "upload success!");
 	}
-	
+
 	private void downloadFiles(ArrayList<FileInfo> remote) {
 
 		if (!isLogin) {
@@ -508,7 +507,7 @@ public class FtpFileCommandTask {
 		for (FileInfo f : remote) {
 			String remotePath = f.filePath + File.separator + f.fileName;
 			String localPath = m_ftp.localDir + File.separator + f.fileName;
-			
+
 			logger.i("download filename: " + f.fileName);
 			logger.i("download remotePath: " + remotePath);
 			logger.i("download localPath: " + localPath);
@@ -537,9 +536,9 @@ public class FtpFileCommandTask {
 	private String getServerAddress(Context ctx) {
 		WifiManager wifi_service = (WifiManager) ctx
 				.getSystemService(Context.WIFI_SERVICE);
-		
+
 		DhcpInfo dhcpInfo = wifi_service.getDhcpInfo();
-		
+
 		return Formatter.formatIpAddress(dhcpInfo.gateway);
 	}
 
