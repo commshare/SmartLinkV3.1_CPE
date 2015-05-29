@@ -603,7 +603,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 					public boolean onFinish(String text) {
 						return doRename(f, text);
 					}
-
 				});
 
 		dialog.show();
@@ -684,6 +683,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				});
 		AlertDialog alertDialog = builder.show();
 
+		alertDialog.setCanceledOnTouchOutside(false);
 		Button positiveBtn = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
 		positiveBtn.setTextColor(0xff0070c5);
 		Button negativeBtn = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -748,8 +748,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		InformationDialog dialog = new InformationDialog(mActivity, file,
 				mFileViewListener.getFileIconHelper());
 		dialog.show();
-		Button negativeBtn = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-		negativeBtn.setTextColor(0xff0070c5);
+
+		dialog.setCanceledOnTouchOutside(false);
+		Button neutralBtn = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+		neutralBtn.setTextColor(0xff0070c5);
 		clearSelection();
 	}
 

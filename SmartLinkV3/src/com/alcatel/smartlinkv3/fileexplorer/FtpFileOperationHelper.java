@@ -33,374 +33,382 @@ import android.text.TextUtils;
 import android.util.Log;
 
 public class FtpFileOperationHelper {
-    private static final String LOG_TAG = "FileOperation";
+	private static final String LOG_TAG = "FileOperation";
 
-    private ArrayList<FileInfo> mCurFileNameList = new ArrayList<FileInfo>();
+	private ArrayList<FileInfo> mCurFileNameList = new ArrayList<FileInfo>();
 
-    private boolean mMoving;
+	private boolean mMoving;
 
-    private IOperationProgressListener mOperationListener;
+	private IOperationProgressListener mOperationListener;
 
-    private FilenameFilter mFilter;
+	private FilenameFilter mFilter;
 
-    public interface IOperationProgressListener {
-        void onFinish();
+	public interface IOperationProgressListener {
+		void onFinish();
 
-        void onFileChanged(String path);
-    }
+		void onFileChanged(String path);
+	}
 
-    public FtpFileOperationHelper(IOperationProgressListener l) {
-        mOperationListener = l;
-    }
+	public FtpFileOperationHelper(IOperationProgressListener l) {
+		mOperationListener = l;
+	}
 
-    public void setFilenameFilter(FilenameFilter f) {
-        mFilter = f;
-    }
-    
-    private uiCommandListener mUICmdListener;
-    public void setUiCommandListener(uiCommandListener UICmdListener) {
-        this.mUICmdListener = UICmdListener;
-    }
+	public void setFilenameFilter(FilenameFilter f) {
+		mFilter = f;
+	}
 
-    public boolean FtpShowFileLists(String path) {
-        if (mCurFileNameList.size() == 0)
-            return false;
+	private uiCommandListener mUICmdListener;
 
-        final String _path = path;
-        asnycExecute(new Runnable() {
-            @Override
-            public void run() {
+	public void setUiCommandListener(uiCommandListener UICmdListener) {
+		this.mUICmdListener = UICmdListener;
+	}
 
-            }
-        });
+	public boolean FtpShowFileLists(String path) {
+		if (mCurFileNameList.size() == 0)
+			return false;
 
-        return true;
-    }
-    
-    
-    public boolean CreateFolder(String path, String name) {
-        Log.v(LOG_TAG, "CreateFolder >>> " + path + "," + name);
+		final String _path = path;
+		asnycExecute(new Runnable() {
+			@Override
+			public void run() {
 
-        File f = new File(Util.makePath(path, name));
-        if (f.exists())
-            return false;
+			}
+		});
 
-        return f.mkdir();
-    }
+		return true;
+	}
 
-    public void Copy(ArrayList<FileInfo> files) {
-        copyFileList(files);
-    }
+	public boolean CreateFolder(String path, String name) {
+		Log.v(LOG_TAG, "CreateFolder >>> " + path + "," + name);
 
-    public boolean Paste(String path) {
-        if (mCurFileNameList.size() == 0)
-            return false;
+		File f = new File(Util.makePath(path, name));
+		if (f.exists())
+			return false;
 
-        final String _path = path;
-        asnycExecute(new Runnable() {
-            @Override
-            public void run() {
-                for (FileInfo f : mCurFileNameList) {
-                    CopyFile(f, _path);
-                }
+		return f.mkdir();
+	}
 
-                mOperationListener.onFileChanged(Environment
-                        .getExternalStorageDirectory()
-                        .getAbsolutePath());
+	public void Copy(ArrayList<FileInfo> files) {
+		copyFileList(files);
+	}
 
-                clear();
-            }
-        });
+	public boolean Paste(String path) {
+		if (mCurFileNameList.size() == 0)
+			return false;
 
-        return true;
-    }
+		final String _path = path;
+		asnycExecute(new Runnable() {
+			@Override
+			public void run() {
+				for (FileInfo f : mCurFileNameList) {
+					CopyFile(f, _path);
+				}
 
-    public boolean canPaste() {
-        return mCurFileNameList.size() != 0;
-    }
+				mOperationListener.onFileChanged(Environment
+						.getExternalStorageDirectory().getAbsolutePath());
 
-    public void StartMove(ArrayList<FileInfo> files) {
-        if (mMoving)
-            return;
+				clear();
+			}
+		});
 
-        mMoving = true;
-        copyFileList(files);
-    }
+		return true;
+	}
 
-    public boolean isMoveState() {
-        return mMoving;
-    }
+	public boolean canPaste() {
+		return mCurFileNameList.size() != 0;
+	}
 
-    public boolean canMove(String path) {
-        for (FileInfo f : mCurFileNameList) {
-            if (!f.IsDir)
-                continue;
+	public void StartMove(ArrayList<FileInfo> files) {
+		if (mMoving)
+			return;
 
-            if (Util.containsPath(f.filePath, path))
-                return false;
-        }
+		mMoving = true;
+		copyFileList(files);
+	}
 
-        return true;
-    }
+	public boolean isMoveState() {
+		return mMoving;
+	}
 
-    public void clear() {
-        synchronized(mCurFileNameList) {
-            mCurFileNameList.clear();
-        }
-    }
+	public boolean canMove(String path) {
+		for (FileInfo f : mCurFileNameList) {
+			if (!f.IsDir)
+				continue;
 
-    public boolean EndMove(String path) {
-        if (!mMoving)
-            return false;
-        mMoving = false;
+			if (Util.containsPath(f.filePath, path))
+				return false;
+		}
 
-        if (TextUtils.isEmpty(path))
-            return false;
+		return true;
+	}
 
-        final String _path = path;
-        asnycExecute(new Runnable() {
-            @Override
-            public void run() {
-                    for (FileInfo f : mCurFileNameList) {
-                        MoveFile(f, _path);
-                    }
+	public void clear() {
+		synchronized (mCurFileNameList) {
+			mCurFileNameList.clear();
+		}
+	}
 
-                    mOperationListener.onFileChanged(Environment
-                            .getExternalStorageDirectory()
-                            .getAbsolutePath());
+	public boolean EndMove(String path) {
+		if (!mMoving)
+			return false;
+		mMoving = false;
 
-                    clear();
-                }
-        });
+		if (TextUtils.isEmpty(path))
+			return false;
 
-        return true;
-    }
+		final String _path = path;
+		asnycExecute(new Runnable() {
+			@Override
+			public void run() {
+				for (FileInfo f : mCurFileNameList) {
+					MoveFile(f, _path);
+				}
 
-    public ArrayList<FileInfo> getFileList() {
-        return mCurFileNameList;
-    }
+				mOperationListener.onFileChanged(Environment
+						.getExternalStorageDirectory().getAbsolutePath());
 
-    private void asnycExecute(Runnable r) {
-        final Runnable _r = r;
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object... params) {
-                synchronized(mCurFileNameList) {
-                    _r.run();
-                }
-                if (mOperationListener != null) {
-                    mOperationListener.onFinish();
-                }
+				clear();
+			}
+		});
 
-                return null;
-            }
-        }.execute();
-    }
+		return true;
+	}
 
-    public boolean isFileSelected(String path) {
-        synchronized(mCurFileNameList) {
-            for (FileInfo f : mCurFileNameList) {
-                if (f.filePath.equalsIgnoreCase(path))
-                    return true;
-            }
-        }
-        return false;
-    }
+	public ArrayList<FileInfo> getFileList() {
+		return mCurFileNameList;
+	}
 
-    
-    public boolean Rename(FileInfo f, String newName) {
-        if (f == null || newName == null) {
-            Log.e(LOG_TAG, "Rename: null parameter");
-            return false;
-        }
+	private void asnycExecute(Runnable r) {
+		final Runnable _r = r;
+		new AsyncTask() {
+			@Override
+			protected Object doInBackground(Object... params) {
+				synchronized (mCurFileNameList) {
+					_r.run();
+				}
+				if (mOperationListener != null) {
+					mOperationListener.onFinish();
+				}
 
-        //File file = new File(f.filePath);
-        String newPath = Util.makePath(Util.getPathFromFilepath(f.filePath), newName);
-        //final boolean needScan = file.isFile();
-        try {
-            //boolean ret = file.renameTo(new File(newPath));
-            // TODO :  rename file api
-            Log.e(LOG_TAG, "Rename: " + f.fileName + " to " + newName);
-            //mUICmdListener.rename(f,newName);
-            return true;
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Fail to rename file," + e.toString());
-        }
-        return false;
-    }
-    // TODO : 废除，被替代
-    @Deprecated
-    public boolean Rename(FileInfo f, String newName, boolean _OLD_MARK) {
-        if (f == null || newName == null) {
-            Log.e(LOG_TAG, "Rename: null parameter");
-            return false;
-        }
+				return null;
+			}
+		}.execute();
+	}
 
-        File file = new File(f.filePath);
-        String newPath = Util.makePath(Util.getPathFromFilepath(f.filePath), newName);
-        final boolean needScan = file.isFile();
-        try {
-            boolean ret = file.renameTo(new File(newPath));
-            if (ret) {
-                if (needScan) {
-                    mOperationListener.onFileChanged(f.filePath);
-                }
-                mOperationListener.onFileChanged(newPath);
-            }
-            return ret;
-        } catch (SecurityException e) {
-            Log.e(LOG_TAG, "Fail to rename file," + e.toString());
-        }
-        return false;
-    }
+	public boolean isFileSelected(String path) {
+		synchronized (mCurFileNameList) {
+			for (FileInfo f : mCurFileNameList) {
+				if (f.filePath.equalsIgnoreCase(path))
+					return true;
+			}
+		}
+		return false;
+	}
 
-    // TODO : 废除，被替代
-    @Deprecated
-    public boolean Delete(ArrayList<FileInfo> files, boolean _OLD_MARK) {
-        copyFileList(files);
-        asnycExecute(new Runnable() {
-            @Override
-            public void run() {
-                for (FileInfo f : mCurFileNameList) {
-                    DeleteFile(f);
-                }
+	public boolean Rename(FileInfo f, String newName) {
+		if (f == null || newName == null) {
+			Log.e(LOG_TAG, "Rename: null parameter");
+			return false;
+		}
 
-                mOperationListener.onFileChanged(Environment
-                        .getExternalStorageDirectory()
-                        .getAbsolutePath());
+		// File file = new File(f.filePath);
+		String newPath = Util.makePath(Util.getPathFromFilepath(f.filePath),
+				newName);
+		String fromFile = Util.makePath(Util.getPathFromFilepath(f.filePath),
+				f.fileName);
+		// final boolean needScan = file.isFile();
+		try {
+			// boolean ret = file.renameTo(new File(newPath));
+			// TODO : rename file api
+			Log.e(LOG_TAG, "Rename: " + f.fileName + " to " + newPath);
+			Log.e(LOG_TAG, "fromFile:"+fromFile);
 
-                clear();
-            }
-        });
-        return true;
-    }
-    public boolean Delete(ArrayList<FileInfo> files) {
-        copyFileList(files);
-        mUICmdListener.delete(files);
-        clear();
-        return true;
-    }
+			mUICmdListener.rename(fromFile, newName);
+			return true;
+		} catch (Exception e) {
+			Log.e(LOG_TAG, "Fail to rename file," + e.toString());
+		}
+		return false;
+	}
 
-    // TODO : 废除，被替代
-    @Deprecated 
-    protected void DeleteFile(FileInfo f, boolean _OLD_MARK) {
-        if (f == null) {
-            Log.e(LOG_TAG, "DeleteFile: null parameter");
-            return;
-        }
+	// TODO : 废除，被替代
+	@Deprecated
+	public boolean Rename(FileInfo f, String newName, boolean _OLD_MARK) {
+		if (f == null || newName == null) {
+			Log.e(LOG_TAG, "Rename: null parameter");
+			return false;
+		}
 
-        File file = new File(f.filePath);
-        boolean directory = file.isDirectory();
-        if (directory) {
-            for (File child : file.listFiles(mFilter)) {
-                if (Util.isNormalFile(child.getAbsolutePath())) {
-                    DeleteFile(Util.GetFileInfo(child, mFilter, true));
-                }
-            }
-        }
+		File file = new File(f.filePath);
+		String newPath = Util.makePath(Util.getPathFromFilepath(f.filePath),
+				newName);
+		final boolean needScan = file.isFile();
+		try {
+			boolean ret = file.renameTo(new File(newPath));
+			if (ret) {
+				if (needScan) {
+					mOperationListener.onFileChanged(f.filePath);
+				}
+				mOperationListener.onFileChanged(newPath);
+			}
+			return ret;
+		} catch (SecurityException e) {
+			Log.e(LOG_TAG, "Fail to rename file," + e.toString());
+		}
+		return false;
+	}
 
-        file.delete();
+	// TODO : 废除，被替代
+	@Deprecated
+	public boolean Delete(ArrayList<FileInfo> files, boolean _OLD_MARK) {
+		copyFileList(files);
+		asnycExecute(new Runnable() {
+			@Override
+			public void run() {
+				for (FileInfo f : mCurFileNameList) {
+					DeleteFile(f);
+				}
 
-        Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
-    }
-    protected void DeleteFile(FileInfo f) {
-        if (f == null) {
-            Log.e(LOG_TAG, "DeleteFile: null parameter");
-            return;
-        }
-        
-        ArrayList<FileInfo> list = new ArrayList<FileInfo>();
-        list.add(f);
-        mUICmdListener.delete(list);
+				mOperationListener.onFileChanged(Environment
+						.getExternalStorageDirectory().getAbsolutePath());
 
-        Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
-    }
+				clear();
+			}
+		});
+		return true;
+	}
 
-    // TODO : 废除，被替代
-    @Deprecated
-    private void CopyFile(FileInfo f, String dest, boolean _OLD_MARK) {
-        if (f == null || dest == null) {
-            Log.e(LOG_TAG, "CopyFile: null parameter");
-            return;
-        }
+	public boolean Delete(ArrayList<FileInfo> files) {
+		copyFileList(files);
+		mUICmdListener.delete(files);
+		clear();
+		return true;
+	}
 
-        File file = new File(f.filePath);
-        if (file.isDirectory()) {
+	// TODO : 废除，被替代
+	@Deprecated
+	protected void DeleteFile(FileInfo f, boolean _OLD_MARK) {
+		if (f == null) {
+			Log.e(LOG_TAG, "DeleteFile: null parameter");
+			return;
+		}
 
-            // directory exists in destination, rename it
-            String destPath = Util.makePath(dest, f.fileName);
-            File destFile = new File(destPath);
-            int i = 1;
-            while (destFile.exists()) {
-                destPath = Util.makePath(dest, f.fileName + " " + i++);
-                destFile = new File(destPath);
-            }
+		File file = new File(f.filePath);
+		boolean directory = file.isDirectory();
+		if (directory) {
+			for (File child : file.listFiles(mFilter)) {
+				if (Util.isNormalFile(child.getAbsolutePath())) {
+					DeleteFile(Util.GetFileInfo(child, mFilter, true));
+				}
+			}
+		}
 
-            for (File child : file.listFiles(mFilter)) {
-                if (!child.isHidden() && Util.isNormalFile(child.getAbsolutePath())) {
-                    CopyFile(Util.GetFileInfo(child, mFilter, Settings.instance().getShowDotAndHiddenFiles()), destPath);
-                }
-            }
-        } else {
-            String destFile = Util.copyFile(f.filePath, dest);
-        }
-        Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
-    }
-    private void CopyFile(FileInfo f, String dest) {
-        if (f == null || dest == null) {
-            Log.e(LOG_TAG, "CopyFile: null parameter");
-            return;
-        }
-        
-        ArrayList<FileInfo> list = new ArrayList<FileInfo>();
-        list.add(f);
-        mUICmdListener.copy(list, dest);
-        Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
-    }
+		file.delete();
 
-    // TODO : 废除，被替代
-    @Deprecated 
-    private boolean MoveFile(FileInfo f, String dest, boolean _OLD_MARK) {
-        Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
+		Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
+	}
 
-        if (f == null || dest == null) {
-            Log.e(LOG_TAG, "CopyFile: null parameter");
-            return false;
-        }
+	protected void DeleteFile(FileInfo f) {
+		if (f == null) {
+			Log.e(LOG_TAG, "DeleteFile: null parameter");
+			return;
+		}
 
-        File file = new File(f.filePath);
-        String newPath = Util.makePath(dest, f.fileName);
-        try {
-            return file.renameTo(new File(newPath));
-        } catch (SecurityException e) {
-            Log.e(LOG_TAG, "Fail to move file," + e.toString());
-        }
-        return false;
-    }
-    
-    private boolean MoveFile (FileInfo f, String dest) {
-        Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
+		ArrayList<FileInfo> list = new ArrayList<FileInfo>();
+		list.add(f);
+		mUICmdListener.delete(list);
 
-        if (f == null || dest == null) {
-            Log.e(LOG_TAG, "CopyFile: null parameter");
-            return false;
-        }
+		Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
+	}
 
-        //File file = new File(f.filePath);
-        //String newPath = Util.makePath(dest, f.fileName);
-        ArrayList<FileInfo> remote1 = new ArrayList<FileInfo>();
-        remote1.add(f);
-        mUICmdListener.move(remote1, dest);
-        return true;
-    }
+	// TODO : 废除，被替代
+	@Deprecated
+	private void CopyFile(FileInfo f, String dest, boolean _OLD_MARK) {
+		if (f == null || dest == null) {
+			Log.e(LOG_TAG, "CopyFile: null parameter");
+			return;
+		}
 
-    private void copyFileList(ArrayList<FileInfo> files) {
-        synchronized(mCurFileNameList) {
-            mCurFileNameList.clear();
-            for (FileInfo f : files) {
-                mCurFileNameList.add(f);
-            }
-        }
-    }
+		File file = new File(f.filePath);
+		if (file.isDirectory()) {
+
+			// directory exists in destination, rename it
+			String destPath = Util.makePath(dest, f.fileName);
+			File destFile = new File(destPath);
+			int i = 1;
+			while (destFile.exists()) {
+				destPath = Util.makePath(dest, f.fileName + " " + i++);
+				destFile = new File(destPath);
+			}
+
+			for (File child : file.listFiles(mFilter)) {
+				if (!child.isHidden()
+						&& Util.isNormalFile(child.getAbsolutePath())) {
+					CopyFile(Util.GetFileInfo(child, mFilter, Settings
+							.instance().getShowDotAndHiddenFiles()), destPath);
+				}
+			}
+		} else {
+			String destFile = Util.copyFile(f.filePath, dest);
+		}
+		Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
+	}
+
+	private void CopyFile(FileInfo f, String dest) {
+		if (f == null || dest == null) {
+			Log.e(LOG_TAG, "CopyFile: null parameter");
+			return;
+		}
+
+		ArrayList<FileInfo> list = new ArrayList<FileInfo>();
+		list.add(f);
+		mUICmdListener.copy(list, dest);
+		Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
+	}
+
+	// TODO : 废除，被替代
+	@Deprecated
+	private boolean MoveFile(FileInfo f, String dest, boolean _OLD_MARK) {
+		Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
+
+		if (f == null || dest == null) {
+			Log.e(LOG_TAG, "CopyFile: null parameter");
+			return false;
+		}
+
+		File file = new File(f.filePath);
+		String newPath = Util.makePath(dest, f.fileName);
+		try {
+			return file.renameTo(new File(newPath));
+		} catch (SecurityException e) {
+			Log.e(LOG_TAG, "Fail to move file," + e.toString());
+		}
+		return false;
+	}
+
+	private boolean MoveFile(FileInfo f, String dest) {
+		Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
+
+		if (f == null || dest == null) {
+			Log.e(LOG_TAG, "CopyFile: null parameter");
+			return false;
+		}
+
+		// File file = new File(f.filePath);
+		// String newPath = Util.makePath(dest, f.fileName);
+		ArrayList<FileInfo> remote1 = new ArrayList<FileInfo>();
+		remote1.add(f);
+		mUICmdListener.move(remote1, dest);
+		return true;
+	}
+
+	private void copyFileList(ArrayList<FileInfo> files) {
+		synchronized (mCurFileNameList) {
+			mCurFileNameList.clear();
+			for (FileInfo f : files) {
+				mCurFileNameList.add(f);
+			}
+		}
+	}
 
 }
