@@ -225,7 +225,7 @@
 	                android:background="@color/main_bottom_divider"
 	                android:contentDescription="@string/setting_wifi" />
                 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/ll_security"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -234,25 +234,31 @@
 
                     <TextView
                         android:id="@+id/tv_security"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/setting_wifi_password_security_tip"
                         android:textColor="@color/color_black"
                         android:textSize="20sp" 
-                        android:padding="15dp"
-                        android:layout_weight="1"/>
+                        android:padding="15dp"/>
                     
                     <TextView
                         android:id="@+id/set_wifi_security_mode"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text=""
                         android:textColor="@color/color_black"
                         android:textSize="20sp" 
                         android:padding="15dp"
-                        android:layout_weight="1.6"
+                        android:layout_marginRight="25dp"
+                        android:gravity="right"
                         />
-                </LinearLayout>
+                    <ImageView
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:contentDescription="@string/setting_wifi"
+				        android:src="@drawable/right_arrow_big"
+				        android:layout_marginRight="15dp"
+				        android:layout_gravity="center|end"/>
+                </FrameLayout>
 
                 <ImageView
                     android:id="@+id/divider2"
@@ -261,7 +267,7 @@
 	                android:background="@color/main_bottom_divider"
 	                android:contentDescription="@string/setting_wifi" />
                 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/ll_encryption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -270,24 +276,30 @@
 
                     <TextView
                         android:id="@+id/tv_encryption"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/setting_wifi_password_wpa_encryption_tip"
                         android:textColor="@color/color_black"
                         android:textSize="20sp"
-                        android:padding="15dp"
-                        android:layout_weight="1" />
+                        android:padding="15dp"/>
                     <TextView
                         android:id="@+id/set_wifi_security_encription_type"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text=""
                         android:textColor="@color/color_black"
                         android:textSize="20sp" 
                         android:padding="15dp"
-                        android:layout_weight="1.6"
+                         android:gravity="right"
+                         android:layout_marginRight="25dp"
                         />
-                </LinearLayout>
+                    <ImageView
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:contentDescription="@string/setting_wifi"
+				        android:src="@drawable/right_arrow_big"
+				        android:layout_marginRight="15dp"
+				        android:layout_gravity="center|end"/>
+                </FrameLayout>
 
                 <ImageView
                     android:id="@+id/divider3"

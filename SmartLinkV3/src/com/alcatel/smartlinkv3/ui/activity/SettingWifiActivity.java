@@ -79,8 +79,8 @@ implements OnClickListener{
 	private SsidHiddenEnum m_pre_ssid_status = SsidHiddenEnum.SsidHidden_Disable;
 	private SsidHiddenEnum m_ssid_status = SsidHiddenEnum.SsidHidden_Disable;
 	//spiners
-	private LinearLayout m_ll_security;
-	private LinearLayout m_ll_encryption;
+	private FrameLayout m_ll_security;
+	private FrameLayout m_ll_encryption;
 	private LinearLayout m_ll_password_status;
 	private TextView m_tv_psd_type_title;
 	private TextView m_passwordPrompt;
@@ -182,8 +182,8 @@ implements OnClickListener{
 	private void initSpiners(){
 		m_encryptionPrompt = (TextView)findViewById(R.id.tv_encryption);
 		m_passwordPrompt = (TextView)findViewById(R.id.tv_psd_type_title);
-		m_ll_security = (LinearLayout)findViewById(R.id.ll_security);
-		m_ll_encryption = (LinearLayout)findViewById(R.id.ll_encryption);
+		m_ll_security = (FrameLayout)findViewById(R.id.ll_security);
+		m_ll_encryption = (FrameLayout)findViewById(R.id.ll_encryption);
 		m_ll_password_status = (LinearLayout)findViewById(R.id.ll_password_status);
 		m_tv_psd_type_title = (TextView)findViewById(R.id.tv_psd_type_title);
 	}
@@ -648,6 +648,15 @@ implements OnClickListener{
 				wmode = BusinessMannager.getInstance().getWMode_5G();
 				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
+			}
+			if(wpaType == WPAEncryption.AUTO){
+				m_encription_mode.setText(R.string.setting_network_mode_auto);
+			}
+			else if(wpaType == WPAEncryption.AES){
+				m_encription_mode.setText(R.string.setting_wifi_aes);
+			}
+			else{
+				m_encription_mode.setText(R.string.setting_wifi_tkip);
 			}
 //			if(wmode == WModeEnum.WMode_802_11a_n || wmode == WModeEnum.WMode_802_11g_n) {
 //				
