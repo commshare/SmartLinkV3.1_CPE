@@ -113,7 +113,6 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 	      startBtn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
-	          CPEConfig.getInstance().setInitialLaunchedFlag();
 	          goHome();
 	        }
 	      });
@@ -127,7 +126,7 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 	  }
 
 	  private void goHome() {
-	    Intent intent = new Intent(mActivity, LoadingActivity.class);
+	    Intent intent = new Intent(mActivity, MainActivity.class);
 	    mActivity.startActivity(intent);
 	    mActivity.finish();
 	  }

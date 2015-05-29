@@ -19,7 +19,7 @@ public class LoadingActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loading);
-		checkPreference();
+		goHome();
 	}
 
 	@Override
@@ -37,19 +37,13 @@ public class LoadingActivity extends Activity {
 		super.onDestroy();
 	}
 
-	private void checkPreference() {
-		if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
-			goGuide();
-		} else {
-			goHome();
-		}
-	}
-
 	private void goHome() {
 		Thread searchingThread = new Thread() {
 			@Override
 			public void run() {
-				if (!checkConnectState())
+		    if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
+		      goGuide();
+		    } else if (!checkConnectState())
 					searchTimeOut();
 				else
 					startMainActivity();
