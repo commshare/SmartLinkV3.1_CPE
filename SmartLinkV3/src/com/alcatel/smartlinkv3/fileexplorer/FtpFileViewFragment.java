@@ -110,9 +110,9 @@ public class FtpFileViewFragment extends Fragment implements
 	private Context mContext = null;
 	private pubLog logger = null;
 	private FtpClientModel m_ftp = null;
-	
+
 	FtpFileCommandTask cmdTask = null;
-	
+
 	// memorize the scroll positions of previous paths
 	private ArrayList<PathScrollPositionItem> mScrollPositionList = new ArrayList<PathScrollPositionItem>();
 	private String mPreviousPath;
@@ -157,7 +157,7 @@ public class FtpFileViewFragment extends Fragment implements
 				files.add(f);
 			}
 
-			cmdTask.ftp_upload(files,remote);
+			cmdTask.ftp_upload(files, remote);
 		}
 
 		@Override
@@ -169,19 +169,19 @@ public class FtpFileViewFragment extends Fragment implements
 		@Override
 		public void move(ArrayList<FileInfo> remote1, String remote2) {
 			// TODO Auto-generated method stub
-		    ArrayList<FileInfo> files = new ArrayList<FileInfo>();
-            
-            for (FileInfo f : remote1) {
-                files.add(f);
-            }
-		    cmdTask.ftp_move(files, remote2);
+			ArrayList<FileInfo> files = new ArrayList<FileInfo>();
+
+			for (FileInfo f : remote1) {
+				files.add(f);
+			}
+			cmdTask.ftp_move(files, remote2);
 		}
 
 		@Override
 		public void download(ArrayList<FileInfo> remote, String local) {
 			// TODO Auto-generated method stub
 			ArrayList<FileInfo> files = new ArrayList<FileInfo>();
-			
+
 			for (FileInfo f : remote) {
 				files.add(f);
 			}
@@ -197,26 +197,26 @@ public class FtpFileViewFragment extends Fragment implements
 			for (FileInfo f : remote) {
 				files.add(f);
 			}
-		
+
 			cmdTask.ftp_delete(files);
 		}
 
 		@Override
 		public void copy(ArrayList<FileInfo> remote1, String remote2) {
 			// TODO Auto-generated method stub
-		    ArrayList<FileInfo> files = new ArrayList<FileInfo>();
-            
-            for (FileInfo f : remote1) {
-                files.add(f);
-            }
-            Log.d(LOG_TAG, "Ftp Copy:" + files.toString() + "To" + remote2);
-		    cmdTask.ftp_copy(files, remote2);
+			ArrayList<FileInfo> files = new ArrayList<FileInfo>();
+
+			for (FileInfo f : remote1) {
+				files.add(f);
+			}
+			Log.d(LOG_TAG, "Ftp Copy:" + files.toString() + "To" + remote2);
+			cmdTask.ftp_copy(files, remote2);
 		}
 
 		@Override
 		public void rename(String fromFile, String toFile) {
 			// TODO Auto-generated method stub
-			
+			cmdTask.ftp_rename(fromFile, toFile);
 		}
 
 	};
@@ -282,12 +282,11 @@ public class FtpFileViewFragment extends Fragment implements
 		}
 	};
 
-
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
 	private static final int PAUSE_DOWNLOAD = 9;
 	private static final int MSG_REFRESH_UI = 10;
-	
+
 	FtpCommandListener ftpCommandListener = new FtpCommandListener() {
 
 		@Override
@@ -361,26 +360,30 @@ public class FtpFileViewFragment extends Fragment implements
 	};
 
 	private boolean mBackspaceExit;
-	
+
 	interface IConnectedActionMode {
 		public void setActionMode(ActionMode actionMode);
-	    public ActionMode getActionMode();
-	    public ActionMode launchActionMode(ActionMode.Callback callback);
-	    public ActionBar obtainActionBar();
+
+		public ActionMode getActionMode();
+
+		public ActionMode launchActionMode(ActionMode.Callback callback);
+
+		public ActionBar obtainActionBar();
 	}
+
 	private IConnectedActionMode mCommectedActionMode;
-	
-	@Override  
-	public void onAttach(Activity activity){  
-	      super.onAttach(activity);	      
-	      try{  
-	          mCommectedActionMode =(IConnectedActionMode)activity;
-	      }catch(ClassCastException e){
-	          throw new ClassCastException( 
-	        		  activity.toString() + "must implement IConnectedActionMode");
-	      }
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mCommectedActionMode = (IConnectedActionMode) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ "must implement IConnectedActionMode");
+		}
 	}
-	
+
 	@Override
 	public Activity obtainActivity() {
 		return this.getActivity();
@@ -389,16 +392,15 @@ public class FtpFileViewFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		mContext = getActivity();
 		cmdTask = new FtpFileCommandTask();
 		cmdTask.init(getActivity());
 		cmdTask.setFtpCommandListener(ftpCommandListener);
 		cmdTask.start();
-		
-		
+
 		mActivity = getActivity();
-			
+
 		// getWindow().setFormat(android.graphics.PixelFormat.RGBA_8888);
 		mRootView = inflater.inflate(R.layout.ftp_file_explorer_list,
 				container, false);
@@ -497,7 +499,7 @@ public class FtpFileViewFragment extends Fragment implements
 
 		mFileViewInteractionHub.setHostTag(cmdTask.getConfig().host
 				+ cmdTask.getConfig().port + "/");
-	
+
 		mBackspaceExit = (uri != null)
 				&& (TextUtils.isEmpty(action) || (!action
 						.equals(Intent.ACTION_PICK) && !action
@@ -516,7 +518,6 @@ public class FtpFileViewFragment extends Fragment implements
 		setHasOptionsMenu(true);
 		return mRootView;
 	}
-
 
 	@Override
 	public void onDestroyView() {
@@ -761,7 +762,7 @@ public class FtpFileViewFragment extends Fragment implements
 		mFileNameList.add(file);
 		onDataChanged();
 	}
-	
+
 	// TODO 添加接口
 	@Override
 	public void notifyDataChanged() {
