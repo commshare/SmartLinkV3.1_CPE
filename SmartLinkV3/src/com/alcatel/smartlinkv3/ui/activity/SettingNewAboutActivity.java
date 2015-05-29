@@ -118,5 +118,11 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 		}
 		super.onBackPressed();
 	}
+	
+	@Override
+	protected void onResume(){
+		m_bNeedBack = false;
+		super.onResume();
+	}
 
 }
