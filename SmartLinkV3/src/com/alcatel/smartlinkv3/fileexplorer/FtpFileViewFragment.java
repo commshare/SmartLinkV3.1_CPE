@@ -222,14 +222,15 @@ public class FtpFileViewFragment extends Fragment implements
 
 		@Override
 		public void share(ArrayList<FileInfo> remote, OnCallResponse response) {
-		    ArrayList<FileInfo> files = new ArrayList<FileInfo>();
+			// TODO Auto-generated method stub
+			ArrayList<FileInfo> files = new ArrayList<FileInfo>();
+			for (FileInfo f : remote) {
+				files.add(f);
+			}
 
-            for (FileInfo f : remote) {
-                files.add(f);
-            }
 			cmdTask.setOnCallResponse(response);
 			cmdTask.ftp_share(files);
-			Log.d("Send", String.valueOf(files.size()));			
+
 		}
 
 	};

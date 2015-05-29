@@ -22,6 +22,7 @@ import com.alcatel.smartlinkv3.ftp.client.FtpManager;
 import com.alcatel.smartlinkv3.ftp.client.FtpManagerIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
+import com.alcatel.smartlinkv3.samba.SmbHttpServer;
 
 
 //TODO: CallBack
@@ -186,7 +187,7 @@ public class FtpFileCommandTask {
 	}
 	
 	public void ftp_share(ArrayList<FileInfo> remoteFiles) {
-		ftpTask.setRemoteFiles(remoteFiles);
+		ftpTask.setShareFiles(remoteFiles);
 		ftpTask.awakenCMD(SHARE);
 	}
 	
@@ -200,7 +201,7 @@ public class FtpFileCommandTask {
 		private String remotePath = "/";
 		private ArrayList<FileInfo> remoteFiles = new ArrayList<FileInfo>();
 		private ArrayList<File> localFiles = new ArrayList<File>();
-
+		private ArrayList<FileInfo> shareFiles = new ArrayList<FileInfo>();
 		// TODO
 		private String fromFile = null;
 		private String toFile = null;
@@ -217,6 +218,10 @@ public class FtpFileCommandTask {
 			this.remoteFiles = remoteFiles;
 		}
 
+		public void setShareFiles(ArrayList<FileInfo> shareFiles) {
+			this.shareFiles = shareFiles;
+		}
+		
 		public void setLocalFiles(ArrayList<File> localFiles) {
 			this.localFiles = localFiles;
 		}
@@ -325,10 +330,10 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 			case SHARE:
-				if (this.remoteFiles != null) {
-					shareFiles(this.remoteFiles);
+				if (this.shareFiles != null) {
+					shareFiles(this.shareFiles);
 				}
-				
+
 				CMD = -1;
 				break;
 			case CLOSE:
@@ -603,7 +608,7 @@ public class FtpFileCommandTask {
 		mOnCallResponse.callResponse(shareFiles);
 		//sendMsg(MSG_SHARE_FILE, shareFiles);
 		
-		sendMsg(MSG_SHOW_TOAST, "Ftp file share");
+		sendMsg(MSG_SHOW_TOAST, "Ftp file share success");
 	}
 
 	private String getServerAddress(Context ctx) {
