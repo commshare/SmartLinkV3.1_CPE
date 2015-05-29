@@ -1,6 +1,5 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
@@ -12,12 +11,9 @@ import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.view.CustomSpinner;
-import com.alcatel.smartlinkv3.ui.view.CustomSpinner.OnSpinnerItemSelectedListener;
 
 import android.content.Context;
 import android.content.Intent;
@@ -47,17 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingWifiActivity extends BaseFragmentActivity 
-implements OnClickListener,OnSpinnerItemSelectedListener{
-
-	private String STRING_WEP = "WEP";
-	private String STRING_WPA = "WPA";
-	private String STRING_WPA2 = "WPA2";
-	private String STRING_WPA_WPA2 = "WPA/WPA2";
-	private String STRING_AUTO = "Auto";
-	private String STRING_AES = "AES";
-	private String STRING_TKIP = "TKIP";
-	private String STRING_OPEN = "open";
-	private String STRING_SHARE = "share";
+implements OnClickListener{
 	//
 	private boolean m_blPasswordOpened = false;
 	private int m_nPreWlanAPMode = -1;
@@ -97,27 +83,16 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	private LinearLayout m_ll_encryption;
 	private LinearLayout m_ll_password_status;
 	private TextView m_tv_psd_type_title;
-	private CustomSpinner m_securitySpinner;
-	private CustomSpinner m_encryptionSpinner;
 	private TextView m_passwordPrompt;
 	private TextView m_encryptionPrompt;
 	private String m_curWPAPassword = "";
 	private String m_curWEPPassword = "";
 
-	private ArrayList<String> m_securityOptions = null;
-	private ArrayList<String> m_wpaTypeOptions = null;
-	private ArrayList<String> m_wpaTypeOptions2 = null;
-	private ArrayList<String> m_wepTypeOptions = null;
-
-	private ArrayAdapter<String> m_wepEncryptionadapter = null;
-	private ArrayAdapter<String> m_wpaEncryptionadapter = null;
-	private ArrayAdapter<String> m_wpaEncryptionadapter2 = null;
 	//
 	private CommonErrorInfoDialog m_err_dialog;
 	private String m_strErrorInfo;
 	private LinearLayout m_content_container;
 	
-	private Button testButton;
 	private TextView m_security_type;
 	private TextView m_encription_mode;
 	@Override
@@ -133,32 +108,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		controlTitlebar();
 		//create controls
 		createControls();
-		testButton = (Button) findViewById(R.id.testWifiSelection);
-		testButton.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				setContentVisibility(View.GONE);
-				
-				m_tv_edit.setVisibility(View.GONE);
-				m_tv_done.setVisibility(View.GONE);
-				m_tv_back.setVisibility(View.GONE);
-				m_ib_back.setVisibility(View.GONE);
-				
-				FragmentManager fm = getSupportFragmentManager();
-				FragmentTransaction ft = fm.beginTransaction();
-				Bundle dataBundle = new Bundle();
-				dataBundle.putInt("Security_Mode", m_nPreSecurityMode);
-				dataBundle.putInt("Mode_Type", m_nPreType);
-				FragmentWifiSettingTypeSelection fg = new FragmentWifiSettingTypeSelection();
-				fg.setArguments(dataBundle);
-				ft.replace(R.id.setting_network_wifi_content_container, fg);
-				ft.addToBackStack(null);
-				ft.commit();
-			}
-			
-		});
 	}
 
 	private void controlTitlebar(){
@@ -216,7 +165,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		m_security_type = (TextView)findViewById(R.id.set_wifi_security_mode);
 		m_security_type.setOnClickListener(this);
 		m_encription_mode = (TextView)findViewById(R.id.set_wifi_security_encription_type);
-		m_security_type.setOnClickListener(this);
+		m_encription_mode.setOnClickListener(this);
 		initSpiners();
 	}
 
@@ -231,24 +180,7 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 	}
 
 	private void initSpiners(){
-		initSpinnerListString();
-		m_wpaEncryptionadapter = new ArrayAdapter<String>(this, 
-				R.layout.custom_spinner_simple_item,
-				R.id.spinner_sample_lable, 
-				m_wpaTypeOptions);
-		m_wpaEncryptionadapter2 = new ArrayAdapter<String>(this, 
-				R.layout.custom_spinner_simple_item,
-				R.id.spinner_sample_lable, 
-				m_wpaTypeOptions2);
-		m_wepEncryptionadapter = new ArrayAdapter<String>(this, 
-				R.layout.custom_spinner_simple_item,
-				R.id.spinner_sample_lable, 
-				m_wepTypeOptions);
-		m_securitySpinner = (CustomSpinner)findViewById(R.id.security_spinner); 
-		m_securitySpinner.SetOnSpinnerItemSelectedListener(this);
 		m_encryptionPrompt = (TextView)findViewById(R.id.tv_encryption);
-		m_encryptionSpinner = (CustomSpinner)findViewById(R.id.encryption_spinner); 
-		m_encryptionSpinner.SetOnSpinnerItemSelectedListener(this);
 		m_passwordPrompt = (TextView)findViewById(R.id.tv_psd_type_title);
 		m_ll_security = (LinearLayout)findViewById(R.id.ll_security);
 		m_ll_encryption = (LinearLayout)findViewById(R.id.ll_encryption);
@@ -325,8 +257,8 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		Bundle dataBundle = new Bundle();
-		dataBundle.putInt("Security_Mode", m_nPreSecurityMode);
-		dataBundle.putInt("Mode_Type", m_nPreType);
+		dataBundle.putInt("Security_Mode", m_nSecurityMode);
+		dataBundle.putInt("Mode_Type", m_nType);
 		FragmentWifiSettingTypeSelection fg = new FragmentWifiSettingTypeSelection();
 		fg.setArguments(dataBundle);
 		ft.replace(R.id.setting_network_wifi_content_container, fg);
@@ -631,37 +563,12 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		ShowWaiting(true);
 	}
 
-	private void initSpinnerListString() {
-		m_securityOptions = new ArrayList<String>();
-		m_securityOptions.add(STRING_WEP);
-		m_securityOptions.add(STRING_WPA);
-		m_securityOptions.add(STRING_WPA2);
-		m_securityOptions.add(STRING_WPA_WPA2);
-		m_wpaTypeOptions = new ArrayList<String>();
-		m_wpaTypeOptions.add(STRING_TKIP);
-		m_wpaTypeOptions.add(STRING_AES);
-		m_wpaTypeOptions.add(STRING_AUTO);
-		m_wpaTypeOptions2 = new ArrayList<String>();
-		m_wpaTypeOptions2.add(STRING_AES);
-		m_wepTypeOptions = new ArrayList<String>();
-		Resources res = getResources();
-		String[] wepMode = res.getStringArray(R.array.setting_wep_mode_array);
-		for (int i = 0; i < wepMode.length; i++) {
-			m_wepTypeOptions.add(wepMode[i]);
-		}
-	}
-
 	private void initSpinersUI() {
 		SecurityMode securityMode = SecurityMode.build(m_nPreSecurityMode);
-		ArrayAdapter<String> securityAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_simple_item,R.id.spinner_sample_lable, m_securityOptions);
-		m_securitySpinner.setAdapter(securityAdapter,m_securityOptions);
 		m_et_ssid.setText(m_strPreSsid);
 		if(securityMode == SecurityMode.Disable) {
-			m_securitySpinner.setSelection(0);
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
-			m_encryptionSpinner.setAdapter(m_wepEncryptionadapter,m_wepTypeOptions);
-			m_encryptionSpinner.setSelection(0);
 			if (WlanFrequency.Frequency_24GHZ == WlanFrequency.build(m_nPreWlanAPMode)) {
 				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
 				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
@@ -695,23 +602,18 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		}
 
 		if(securityMode == SecurityMode.WEP){
-			m_securitySpinner.setSelection(0);
 			m_security_type.setText(R.string.setting_wifi_wep);
 		}
 		else if(securityMode == SecurityMode.WPA){
-			m_securitySpinner.setSelection(1);
 			m_security_type.setText(R.string.setting_wifi_wpa);
 		}
 		else if(securityMode == SecurityMode.WPA2){
-			m_securitySpinner.setSelection(2);
 			m_security_type.setText(R.string.setting_wifi_wpa2);
 		}
 		else if(securityMode == SecurityMode.WPA_WPA2){
-			m_securitySpinner.setSelection(3);
 			m_security_type.setText(R.string.setting_wifi_wpa_or_wpa2);
 		}
 		else{
-			m_securitySpinner.setSelection(0);
 			m_security_type.setText(R.string.setting_wifi_wep);
 		}
 
@@ -719,7 +621,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		if(securityMode == SecurityMode.WEP) {
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
-			m_encryptionSpinner.setAdapter(m_wepEncryptionadapter,m_wepTypeOptions);
 			WEPEncryption wepType = BusinessMannager.getInstance().getWEPEncryption();
 			m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
 			m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
@@ -729,11 +630,9 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 			}
 			if(wepType == WEPEncryption.Open){
-				m_encryptionSpinner.setSelection(0);
 				m_encription_mode.setText(R.string.setting_wifi_open);
 			}
 			else{
-				m_encryptionSpinner.setSelection(1);
 				m_encription_mode.setText(R.string.setting_wifi_share);
 			} 
 			m_et_password.setText(m_curWEPPassword);
@@ -750,24 +649,19 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
 			}
-			if(wmode == WModeEnum.WMode_802_11a_n || wmode == WModeEnum.WMode_802_11g_n) {
-				m_encryptionSpinner.setAdapter(m_wpaEncryptionadapter2,m_wpaTypeOptions2);
-				m_encryptionSpinner.setSelection(0);
-			}else{
-				m_encryptionSpinner.setAdapter(m_wpaEncryptionadapter,m_wpaTypeOptions);
-				if(wpaType == WPAEncryption.AUTO){
-					m_encryptionSpinner.setSelection(2);
-					m_encription_mode.setText(R.string.setting_network_mode_auto);
-				}
-				else if(wpaType == WPAEncryption.AES){
-					m_encryptionSpinner.setSelection(1);
-					m_encription_mode.setText(R.string.setting_wifi_aes);
-				}
-				else{
-					m_encryptionSpinner.setSelection(0);
-					m_encription_mode.setText(R.string.setting_wifi_tkip);
-				}
-			}
+//			if(wmode == WModeEnum.WMode_802_11a_n || wmode == WModeEnum.WMode_802_11g_n) {
+//				
+//			}else{
+//				if(wpaType == WPAEncryption.AUTO){
+//					m_encription_mode.setText(R.string.setting_network_mode_auto);
+//				}
+//				else if(wpaType == WPAEncryption.AES){
+//					m_encription_mode.setText(R.string.setting_wifi_aes);
+//				}
+//				else{
+//					m_encription_mode.setText(R.string.setting_wifi_tkip);
+//				}
+//			}
 			m_et_password.setText(m_curWPAPassword);
 		}
 		
@@ -778,38 +672,6 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
 		}
 		
-	}
-
-	@Override
-	public void onSpinnerItemSelected(CustomSpinner view, int position) {
-		// TODO Auto-generated method stub
-		switch(view.getId()){
-		case R.id.security_spinner:
-			if(m_securityOptions.get(position).equalsIgnoreCase(STRING_WEP)) {
-				m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
-				m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
-				m_encryptionSpinner.setAdapter(m_wepEncryptionadapter,m_wepTypeOptions);
-				m_encryptionSpinner.setSelection(0);//open
-				m_curWPAPassword = m_et_password.getEditableText().toString();
-				m_et_password.setText(m_curWEPPassword);
-			}else{
-				m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
-				m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
-				WModeEnum wmode = BusinessMannager.getInstance().getWMode();
-				if(wmode == WModeEnum.WMode_802_11a_n || wmode == WModeEnum.WMode_802_11g_n) {
-					m_encryptionSpinner.setAdapter(m_wpaEncryptionadapter2,m_wpaTypeOptions2);
-					m_encryptionSpinner.setSelection(0);//AES
-				}else{
-					m_encryptionSpinner.setAdapter(m_wpaEncryptionadapter,m_wpaTypeOptions);
-					m_encryptionSpinner.setSelection(2);//auto
-				}
-				m_curWEPPassword = m_et_password.getEditableText().toString();
-				m_et_password.setText(m_curWPAPassword);
-			}
-			break;
-		case R.id.encryption_spinner:
-			break;
-		}
 	}
 
 	private void initValues(){
@@ -1125,10 +987,5 @@ implements OnClickListener,OnSpinnerItemSelectedListener{
 		default:
 			break;
 		}
-		
-		Log.v("WIFIMODE", "PRE" + m_nPreSecurityMode);
-		Log.v("WIFIMODE", "" + m_nSecurityMode);
-		Log.v("WIFIMODE", "PRETYPE" + m_nPreType);
-		Log.v("WIFIMODE", "TYPE" + m_nType);
 	}
 }
