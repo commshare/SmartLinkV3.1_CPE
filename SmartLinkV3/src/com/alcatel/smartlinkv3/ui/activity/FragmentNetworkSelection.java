@@ -136,7 +136,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				if(checked == true){
 //					m_network_list_conainer.setVisibility(View.GONE);
 //					m_network_searching_title.setVisibility(View.GONE);
-					Log.v("NetworkSearchResult", "auto");
+//					Log.v("NetworkSearchResult", "auto");
 					UserSetNetworkSelection(SELECTION_MODE_AUTO);
 					m_network_searching_title.setVisibility(View.GONE);
 					m_network_list_conainer.setVisibility(View.GONE);
@@ -145,7 +145,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				else if(checked == false){
 //					m_network_list_conainer.setVisibility(View.VISIBLE);
 //					m_network_searching_title.setVisibility(View.VISIBLE);
-					Log.v("NetworkSearchResult", "manual");
+//					Log.v("NetworkSearchResult", "manual");
 					UserSetNetworkSelection(SELECTION_MODE_MANUAL);
 					m_network_searching_title.setVisibility(View.VISIBLE);
 					m_network_list_conainer.setVisibility(View.VISIBLE);
@@ -382,7 +382,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
-				Log.v("NetworkSearchResult", "Yes");
+//				Log.v("NetworkSearchResult", "Yes");
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
 						BaseResponse.RESPONSE_OK);
 				

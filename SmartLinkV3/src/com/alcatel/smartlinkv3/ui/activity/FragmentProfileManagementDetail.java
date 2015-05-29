@@ -313,7 +313,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 		if(operation == m_parent_activity.TAG_OPERATION_ADD_PROFILE){
 			String profileName = m_edit_profile_name.getText().toString();
 			if(profileName.length() == 0){
-				Log.v("AddOrEditProfile", "empty");
+//				Log.v("AddOrEditProfile", "empty");
 				return;
 			}
 			String APN = m_edit_apn.getText().toString();
@@ -329,7 +329,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				passWord = "";
 			}
 			int auth_type = AuthType == -1 ? 0 : AuthType;
-			Log.v("AddOrEditProfile", Integer.toString(auth_type));
+//			Log.v("AddOrEditProfile", Integer.toString(auth_type));
 			
 			DataValue data = new DataValue();
 			data.addParam("profile_name", profileName);
@@ -361,7 +361,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				passWord = "";
 			}
 			int auth_type = NewAuthType == -1 ? 0 : NewAuthType;
-			Log.v("AddOrEditProfile", Integer.toString(auth_type));
+//			Log.v("AddOrEditProfile", Integer.toString(auth_type));
 			
 			if(isChanged(profileName, APN, userName, passWord, auth_type)){
 				DataValue data = new DataValue();
@@ -410,7 +410,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 	public void onDestroyView(){
 		super.onDestroyView();
 		try{
-			
+			getActivity().unregisterReceiver(m_profile_receiver);  
 		}
 		catch(Exception e){
 			

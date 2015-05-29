@@ -174,8 +174,8 @@ private class ProfileListAdapter extends BaseAdapter{
 						goToDetailProfile(dataBundle);
 					}
 					else{
-						Log.v("GetProfileResultDELETEPOSITION", "" + position);
-						Log.v("GetProfileResultDELETEID", "" + m_profile_list_data.get(position).ProfileID);
+//						Log.v("GetProfileResultDELETEPOSITION", "" + position);
+//						Log.v("GetProfileResultDELETEID", "" + m_profile_list_data.get(position).ProfileID);
 						if(m_profile_list_data.get(position).IsPredefine == 1){
 							m_progress_bar.setVisibility(View.VISIBLE);
 							selected_deleted_position = position;
