@@ -46,18 +46,18 @@ public class ProfileManager extends BaseManager{
 						if(strErrcode.length() == 0) { 
 							GetProfileListResult profileList = response.getModelResult();
 							m_profile_list = profileList.ProfileList;
-							for(ProfileItem tmp : profileList.ProfileList){
-            					Log.v("GetProfileResultAPN", tmp.APN);
-            					Log.v("GetProfileResultDialNumber", tmp.DailNumber);
-//            					Log.v("GetProfileResultIPAdress", tmp.IPAddress);
-            					Log.v("GetProfileResultPassword", tmp.Password);
-            					Log.v("GetProfileResultProfileName", tmp.ProfileName);
-            					Log.v("GetProfileResultUserName", tmp.UserName);
-            					Log.v("GetProfileResultAuthType", "" + tmp.AuthType);
-            					Log.v("GetProfileResultDefault", "" + tmp.Default);
-            					Log.v("GetProfileResultIsPredefine","" +  tmp.IsPredefine);
-            					Log.v("GetProfileResultProfileID", "" + tmp.ProfileID);
-            				}
+//							for(ProfileItem tmp : profileList.ProfileList){
+//            					Log.v("GetProfileResultAPN", tmp.APN);
+//            					Log.v("GetProfileResultDialNumber", tmp.DailNumber);
+////            					Log.v("GetProfileResultIPAdress", tmp.IPAddress);
+//            					Log.v("GetProfileResultPassword", tmp.Password);
+//            					Log.v("GetProfileResultProfileName", tmp.ProfileName);
+//            					Log.v("GetProfileResultUserName", tmp.UserName);
+//            					Log.v("GetProfileResultAuthType", "" + tmp.AuthType);
+//            					Log.v("GetProfileResultDefault", "" + tmp.Default);
+//            					Log.v("GetProfileResultIsPredefine","" +  tmp.IsPredefine);
+//            					Log.v("GetProfileResultProfileID", "" + tmp.ProfileID);
+//            				}
 						}else{
 							//Log
 						}
@@ -100,7 +100,7 @@ public class ProfileManager extends BaseManager{
                 	try {
 						strErrcode = response.getErrorCode();
 						if(strErrcode.length() == 0) { 
-							Log.v("AddOrEditProfile", "Yes");
+//							Log.v("AddOrEditProfile", "Yes");
 						}else{
 							//Log
 						}
@@ -111,7 +111,7 @@ public class ProfileManager extends BaseManager{
 					}
                 }else{
                 	//Log
-                	Log.v("AddOrEditProfile", "No");
+//                	Log.v("AddOrEditProfile", "No");
                 }
                 startGetProfileList(null);
                 
@@ -144,7 +144,7 @@ public class ProfileManager extends BaseManager{
                 	try {
 						strErrcode = response.getErrorCode();
 						if(strErrcode.length() == 0) { 
-							Log.v("AddOrEditProfile", "Yes");
+//							Log.v("AddOrEditProfile", "Yes");
 						}else{
 							//Log
 						}
@@ -155,7 +155,7 @@ public class ProfileManager extends BaseManager{
 					}
                 }else{
                 	//Log
-                	Log.v("AddOrEditProfile", "No");
+//                	Log.v("AddOrEditProfile", "No");
                 }
                 startGetProfileList(null);
                 
@@ -183,7 +183,7 @@ public class ProfileManager extends BaseManager{
                 	try {
 						strErrcode = response.getErrorCode();
 						if(strErrcode.length() == 0) { 
-							Log.v("GetProfileResultDELETE", "Yes");
+//							Log.v("GetProfileResultDELETE", "Yes");
 						}else{
 							//Log
 						}
@@ -194,7 +194,7 @@ public class ProfileManager extends BaseManager{
 					}
                 }else{
                 	//Log
-                	Log.v("GetProfileResultDELETE", "No");
+//                	Log.v("GetProfileResultDELETE", "No");
                 }
                 
                 Intent megIntent= new Intent(MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
@@ -226,7 +226,7 @@ public class ProfileManager extends BaseManager{
                 	try {
 						strErrcode = response.getErrorCode();
 						if(strErrcode.length() == 0) { 
-							Log.v("SetDefaultProfileResult", "Yes");
+//							Log.v("SetDefaultProfileResult", "Yes");
 						}else{
 							//Log
 						}
@@ -237,7 +237,7 @@ public class ProfileManager extends BaseManager{
 					}
                 }else{
                 	//Log
-                	Log.v("SetDefaultProfileResult", "No");
+//                	Log.v("SetDefaultProfileResult", "No");
                 }
                 
                 Intent megIntent= new Intent(MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST);

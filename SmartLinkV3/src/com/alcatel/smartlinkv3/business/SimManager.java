@@ -79,11 +79,11 @@ public class SimManager extends BaseManager {
                 int ret = response.getResultCode();
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		
-                	}else{
-                		
-                	}
+//                	if(strErrcode.length() == 0) {
+//                		
+//                	}else{
+//                		
+//                	}
                 }else{
                 	//Log
                 	
@@ -145,7 +145,7 @@ public class SimManager extends BaseManager {
                 	if(strErrcode.length() == 0) {
                 		AutoEnterPinStateResult result = response.getModelResult();
 //                		m_autoPinState.build(result.State);
-                		Log.v("PINCHECK", "RESULT " + result.State);
+//                		Log.v("PINCHECK", "RESULT " + result.State);
                 		if(result.State == 1){
                 			m_autoPinState = AutoPinState.Enable;
                 		}
@@ -314,7 +314,7 @@ public class SimManager extends BaseManager {
                     		SimStatusModel pre = new SimStatusModel();
                     		pre.clone(m_simStatus);
                     		m_simStatus.setValue(simStatusResult);
-                    		Log.v("PINCHECK", "PINSTATUS " + simStatusResult.PinState);
+//                    		Log.v("PINCHECK", "PINSTATUS " + simStatusResult.PinState);
                     		
                     		
                     		if(m_simStatus.m_SIMState == SIMState.Accessable) {
@@ -327,7 +327,7 @@ public class SimManager extends BaseManager {
         	                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
         	                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
         	        			m_context.sendBroadcast(megIntent);
-        	        			Log.v("PINCHECK", "BROADCAST");
+//        	        			Log.v("PINCHECK", "BROADCAST");
                     		}
                     	}else if(strErrcode.equalsIgnoreCase("1") 
                     			||strErrcode.equalsIgnoreCase("6") )
