@@ -1276,8 +1276,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			if (mCurrentMode == Mode.Pick) {
 				mFileViewListener.onPick(lFileInfo);
 			} else {
-				// TODO : 文件单击无效
-				;// viewFile(lFileInfo);
+				// TODO : 
+				//viewFile(lFileInfo);
+				viewMediaFile(lFileInfo);
 			}
 			return;
 		}
@@ -1363,10 +1364,44 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 	private void viewFile(FileInfo lFileInfo) {
 		try {
-			IntentBuilder.viewFile(mActivity, lFileInfo.filePath);
+		    String filePath = Util.makePath(lFileInfo.filePath, lFileInfo.fileName);
+			IntentBuilder.viewFile(mActivity, filePath);
 		} catch (ActivityNotFoundException e) {
 			Log.e(LOG_TAG, "fail to view file: " + e.toString());
 		}
+	}
+	
+	// TODO
+	private void viewMediaFile(FileInfo inof) {
+	    
+	    ArrayList<FileInfo> list = new ArrayList<FileInfo>();
+	    list.add(inof);	    
+	    this.mUICmdListener.share(list, new FtpFileCommandTask.OnCallResponse() {
+            
+            @Override
+            public void callResponse(Object obj) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<ShareFileInfo> list = (ArrayList<ShareFileInfo>) obj;
+                    ShareFileInfo info = list.get(0);
+                    if (info == null) return;                    
+                    final String filePath = info.filePath;
+                    Log.d("view", "view file path : " + filePath);
+                    mFileViewListener.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                IntentBuilder.viewMediaFile(mActivity, filePath);
+                            } catch (ActivityNotFoundException e) {
+                                Log.e(LOG_TAG, "fail to view file: " + e.toString());
+                            }
+                        }
+                    });
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                }
+            }
+        });    
 	}
 
 	public boolean onBackPressed() {

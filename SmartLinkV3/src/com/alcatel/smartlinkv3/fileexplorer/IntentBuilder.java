@@ -32,12 +32,31 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class IntentBuilder {
+    
+    public static void viewMediaFile(Context context, String filePath) {
+        String type = getMimeType(filePath);
+        Log.d("view", "viewFile type : " + type);
+        
+        if (TextUtils.isEmpty(type))
+            return;
+        
+        if (TextUtils.equals(type, "*/*"))
+            return;
+        
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(new File(filePath)), type);
+        context.startActivity(intent);
+    }
 
     public static void viewFile(final Context context, final String filePath) {
         String type = getMimeType(filePath);
-
+        Log.d("view", "viewFile type : " + type);
+        
         if (!TextUtils.isEmpty(type) && !TextUtils.equals(type, "*/*")) {
             /* 设置intent的file与MimeType */
             Intent intent = new Intent();
