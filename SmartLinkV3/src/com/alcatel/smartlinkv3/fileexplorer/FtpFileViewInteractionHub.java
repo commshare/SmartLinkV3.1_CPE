@@ -654,7 +654,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		dialog.show();
 	}
 
-	private boolean doRename(final FileInfo f, String text) {
+	// TODO : 
+	private boolean doRename(final FileInfo f, String text, boolean _OLD_MARK) {
 		if (TextUtils.isEmpty(text))
 			return false;
 
@@ -670,6 +671,16 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 		return true;
 	}
+	private boolean doRename(final FileInfo f, String text) {
+        if (TextUtils.isEmpty(text))
+            return false;
+        Log.d("fileexplorer", "rename : old file is " + f.filePath + " new file is " + text);
+        String fromFile = Util.makePath(f.filePath, f.fileName);
+        String toFile = Util.makePath(f.filePath, text);
+        mUICmdListener.rename(fromFile, toFile);
+
+        return true;
+    }
 
 	private void notifyFileSystemChanged(String path) {
 		if (path == null)
@@ -1372,10 +1383,13 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	}
 	
 	// TODO
-	private void viewMediaFile(FileInfo inof) {
+	private void viewMediaFile(FileInfo info) {
+	    
+	    if (!Util.isMediaFile(info.fileName))
+	        return;
 	    
 	    ArrayList<FileInfo> list = new ArrayList<FileInfo>();
-	    list.add(inof);	    
+	    list.add(info);
 	    this.mUICmdListener.share(list, new FtpFileCommandTask.OnCallResponse() {
             
             @Override

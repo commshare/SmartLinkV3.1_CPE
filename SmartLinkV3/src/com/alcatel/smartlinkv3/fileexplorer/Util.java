@@ -29,6 +29,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
@@ -510,4 +511,31 @@ public class Util {
 
 	public static int CATEGORY_TAB_INDEX = 0;
 	public static int SDCARD_TAB_INDEX = 1;
+	
+	public static boolean isMediaFile(String filename) {
+	    String type = getMimeType(filename);
+        Log.d("view", "viewFile type : " + type);
+        
+        if (TextUtils.isEmpty(type))
+            return false;
+        
+        if (TextUtils.equals(type, "*/*"))
+            return false;
+        
+        return true;
+	}
+	
+	private static String getMimeType(String filename) {
+        int dot = filename.lastIndexOf('.');
+        if (dot == -1)
+            return "*/*";
+
+        String ext = filename.substring(dot + 1, filename.length()).toLowerCase();
+        String mimeType = MimeUtils.guessMimeTypeFromExtension(ext);
+        if (ext.equals("mtz")) {
+            mimeType = "application/miui-mtz";
+        }
+
+        return mimeType != null ? mimeType : "*/*";
+    }
 }

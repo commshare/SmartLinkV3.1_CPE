@@ -168,7 +168,11 @@ public class FtpFileListItem {
 		}
 
 		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {		    
+		 // TODO :
+		    boolean isVisible = (mFileViewInteractionHub.getSelectedFileList().size() == 1);
+		    mMenu.findItem(R.id.action_rename).setVisible(isVisible);
+		    mMenu.findItem(R.id.action_details).setVisible(isVisible);		   
 			return true;
 		}
 
@@ -242,13 +246,11 @@ public class FtpFileListItem {
 
 			// TODO : 添加的菜单项
 			case R.id.action_rename:
-				//mFileViewInteractionHub.onOperationRename();
-				mFileViewInteractionHub.onRename();
-				Toast.makeText(mContext, "Rename.", Toast.LENGTH_SHORT).show();
+				mFileViewInteractionHub.onOperationRename();
+				//mFileViewInteractionHub.onRename();
 				break;
 			case R.id.action_details:
 				mFileViewInteractionHub.onOperationInfo();
-				Toast.makeText(mContext, "Details.", Toast.LENGTH_SHORT).show();
 				break;
 			}
 			Util.updateActionModeTitle(mode, mContext, mFileViewInteractionHub
