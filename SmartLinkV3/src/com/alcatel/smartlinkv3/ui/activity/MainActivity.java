@@ -190,20 +190,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
     	mBrocastFactory.registerListener(this);
     
   //  	showMicroView();
-    /*
-     * If user use smartlink app first, go to quick setup UI.
-     * Add by xusl.
-     */
-    if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
-      m_loginDlg.showDialog(new OnLoginFinishedListener() {
-        @Override
-        public void onLoginFinished() {
-          Intent intent = new Intent();
-          intent.setClass(getBaseContext(), QuickSetupActivity.class);
-          startActivity(intent);
-        }
-      });
-    }
+
 	}
 
 	@Override
@@ -254,10 +241,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	public void onDestroy() {
 		super.onDestroy();
 		destroyDialogs();
-		
-		if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
-		  CPEConfig.getInstance().setInitialLaunchedFlag();
-		}
     
 		m_homeView.onDestroy();
 		m_usageView.onDestroy();

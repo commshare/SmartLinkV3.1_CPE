@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 
 import android.app.Dialog;
@@ -60,7 +61,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private String m_strMsgOtherUserLogined;
 	private String m_strMsgLoginTimeUsedOut;
 	private AuthenficationBroadcastReviever m_auReceiver;
-	private static OnLoginFinishedListener m_callback;
+	private static OnLoginFinishedListener m_loginCallback;
+	private CancelLoginListener mCancelCallback=null;
 	private boolean m_bOtherUserLoginError = false;
 	private boolean m_bLoginTimeUsedOutError = false;
 	private boolean m_bLoginPasswordError = false;
@@ -122,9 +124,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					m_bLoginTimeUsedOutError = false;
 					m_bLoginPasswordError = false;
 					closeDialog();
-					if (null != m_callback) {
-						m_callback.onLoginFinished();
-						m_callback = null;
+					if (null != m_loginCallback) {
+						m_loginCallback.onLoginFinished();
+						m_loginCallback = null;
 					}
 
 				} else if (BaseResponse.RESPONSE_OK == nRet
@@ -248,7 +250,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	
 	
 	public void showDialog(OnLoginFinishedListener callback) {
-		m_callback = callback;
+		m_loginCallback = callback;
 	/*	if (getAlreadyLogin()) {
 			m_callback.onLoginFinished();
 		} else {*/
@@ -411,7 +413,18 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				if (m_dlgProgress != null && m_dlgProgress.isShowing())
 					m_dlgProgress.dismiss();
 				
-				ErrorDialog.getInstance(m_context).showDialog(strTitle,
+				ErrorDialog errorDialog = ErrorDialog.getInstance(m_context);
+        if (mCancelCallback != null) {
+          errorDialog.setCancelCallback(new OnClickBtnCancel() {
+
+            @Override
+            public void onCancel() {
+              mCancelCallback.onCancelLogin();
+            }
+
+          });
+        }
+				errorDialog.showDialog(strTitle,
 						new OnClickBtnRetry() {
 
 							@Override
@@ -488,6 +501,10 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 		return false;
 	}
+	
+	public void setCancelCallback(CancelLoginListener l) {
+	  mCancelCallback = l;
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -498,6 +515,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 		case R.id.login_close_btn:
 			closeDialog();
+			if (mCancelCallback != null){
+			  mCancelCallback.onCancelLogin();
+			}
 			break;
 		}
 	}
@@ -505,6 +525,10 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	//
 	public interface OnLoginFinishedListener {
 		public void onLoginFinished();
+	}
+	
+	public interface CancelLoginListener {
+	  public void onCancelLogin();
 	}
 
 	public static boolean isLoginSwitchOff() {

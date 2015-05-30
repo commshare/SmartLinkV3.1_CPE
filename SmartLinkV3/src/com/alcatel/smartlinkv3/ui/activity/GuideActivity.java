@@ -113,7 +113,9 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 	      startBtn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
-	          goHome();
+	          Intent intent = new Intent(mActivity, QuickSetupActivity.class);
+	          mActivity.startActivity(intent);
+	          mActivity.finish();
 	        }
 	      });
 	    }
@@ -123,12 +125,6 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 	  @Override
 	  public boolean isViewFromObject(View arg0, Object arg1) {
 	    return arg0 == arg1;
-	  }
-
-	  private void goHome() {
-	    Intent intent = new Intent(mActivity, MainActivity.class);
-	    mActivity.startActivity(intent);
-	    mActivity.finish();
 	  }
 	}
 }

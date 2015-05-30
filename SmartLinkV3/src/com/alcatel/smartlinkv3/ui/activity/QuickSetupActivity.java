@@ -4,6 +4,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -14,6 +15,13 @@ import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.DialogAutoDismiss;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.CancelLoginListener;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.view.ClearEditText;
 
 import android.app.Activity;
@@ -21,8 +29,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -31,13 +37,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuickSetupActivity  extends Activity implements OnClickListener{
-  //private State mStep = State.UNKNOW;
-
   private static final String TAG = "QuickSetupActivity";
   protected BroadcastReceiver mReceiver;
   private TextView mNavigatorLeft;
@@ -46,11 +49,13 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private TextView mWiFiSSIDTextView;
   private TextView mWiFiPasswdTextView;
   private StateHandler mStateHandler;
-  private boolean mPINCheckEnable;
   private ClearEditText mEnterText;  
   protected TextView mSetupTitle;
   private String mWiFiSSID;
   private String mWiFiPasswd;
+  private boolean mSendRequest = false;//If user not change settings, do not send request.
+  private ErrorDialog mPINErrorDialog = null;
+  private LoginDialog mLoginDialog = null;
   private Context mContext;
   private BusinessMannager mBusinessMgr;
   
@@ -61,11 +66,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
      * DO NOT CLAIN 'android:theme="@android:style/Theme.Black.NoTitleBar"' 
      * in AndroidManifest.xml
      */
-    mContext = getBaseContext();
+    mContext = this;
     mBusinessMgr = BusinessMannager.getInstance();
     requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
     setContentView(R.layout.quick_setup);
     getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.custom_title_1);
+
     TextView title = (TextView) findViewById(R.id.tv_title_title);
     if (title != null)
       title.setText(R.string.qs_title);
@@ -78,14 +84,40 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mNavigatorLeft = (TextView)findViewById(R.id.navigator_left);
     mEnterText = (ClearEditText)findViewById(R.id.password);
     mWiFiSSIDTextView = (TextView)findViewById(R.id.qs_detail_wifissid);
-    mWiFiPasswdTextView = (TextView)findViewById(R.id.qs_detail_wifipasswd);    
+    mWiFiPasswdTextView = (TextView)findViewById(R.id.qs_detail_wifipasswd);   
     
-    //mPINCheckEnable = savedInstanceState.getBoolean("PINCheck", false);
-    buildStateHandlerChain(false);
-
     mReceiver = new QSBroadcastReceiver();
+    
+    setViewsVisibility(false, true);
+    mLoginDialog = new LoginDialog(this);
+    mLoginDialog.setCancelCallback(new CancelLoginListener() {
+
+      @Override
+      public void onCancelLogin() {
+        finishQuickSetup(true);        
+      }
+      
+    });
+    mLoginDialog.showDialog(new OnLoginFinishedListener() {
+      @Override
+      public void onLoginFinished() {
+        buildStateHandlerChain(false);
+      }
+    });  
   }
   
+  private void setViewsVisibility(boolean visible, boolean all) {
+    int visibility = visible ? View.VISIBLE : View.INVISIBLE;
+    mSetupTitle.setVisibility(visibility);
+    mPromptText.setVisibility(visibility);
+    mEnterText.setVisibility(visibility);
+    mNavigatorRight.setVisibility(visibility);
+    if (all) {
+      mNavigatorLeft.setVisibility(visibility);
+    }
+  }
+  
+
   private void buildStateHandlerChain(boolean clear) {
     //SimManager poll SIM_GET_SIM_STATUS_ROLL_REQUSET in task, but it do not always 
     //broadcaset SIM request.
@@ -102,22 +134,28 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       }
     }
     
-    if(sim.m_SIMState == SIMState.NoSim ||
-        sim.m_SIMState != SIMState.PinRequired && sim.m_PinState == PinState.PinEnableVerified){
-      mStateHandler = new WiFiSSIDHandler(false);
+    setViewsVisibility(true, false);
+    /*
+     * refer to MainActivity.simRollRequest() to handle SIM/PIN state
+     */
+    //if(sim.m_SIMState == SIMState.NoSim ||
+    //    sim.m_SIMState != SIMState.PinRequired && sim.m_PinState == PinState.PinEnableVerified){
+    if (sim.m_SIMState == SIMState.PinRequired) {
+      //if SIMState.PinRequired, that means sim.m_nPinRemainingTimes > 0
+      mStateHandler = new PinCodeHandler(sim.m_nPinRemainingTimes);
+      mStateHandler.addNextStateHandler(new WiFiSSIDHandler(true));
     } else {
-      mStateHandler = new PinCodeHandler();
-      mStateHandler.addNextStateHandler(new WiFiSSIDHandler(true));          
+      mStateHandler = new WiFiSSIDHandler(false);
     }        
-    
+//TODO:: NEED TEST
+      
     mStateHandler.goTail().addNextStateHandler(new WiFiPasswdHandler()).
     addNextStateHandler(new SetupSummaryHandler());
-    mStateHandler.setupViews();
-    
+    mStateHandler.setupViews();    
+
     //mNavigatorLeft.setOnClickListener(this);
     mNavigatorRight.setOnClickListener(QuickSetupActivity.this);
     //mNavigatorRight.setTextColor(Color.BLACK);
-    //mNavigatorLeft.setTextColor(Color.BLACK);
   }
   
   @Override
@@ -127,13 +165,19 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       return;
     
     if (v == mNavigatorRight) {
-      nextSetting();
+      nextSetting(true);
     } else if (v == mNavigatorLeft) {
       backSetting();
     }
   }
   
-  private void nextSetting() {
+  /*
+   * param checkStore whether let state handler do settings
+   */
+  private void nextSetting(boolean checkStore) {
+    if(checkStore && mStateHandler.storeSetting() == false)
+      return;
+    
     StateHandler handler = mStateHandler.goNext();
     if (handler != null){
       mStateHandler = handler;
@@ -147,13 +191,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mStateHandler = handler;
       handler.setupViews();
     }
-  }
-  private boolean checkQuicksetupStatus() {
-    SharedPreferences preferences = getSharedPreferences(
-        "QUICKSETUP", Context.MODE_PRIVATE);
-    Editor editor = preferences.edit();
-    boolean qs_stat = preferences.getBoolean("status", true);
-    return qs_stat;
   }
   
   @Override
@@ -178,6 +215,15 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       }
   }
   
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (mPINErrorDialog != null)
+      mPINErrorDialog.destroyDialog();
+    if (mLoginDialog != null)
+      mLoginDialog.destroyDialog();
+  }
+  
   class QSBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -194,16 +240,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           context.startActivity(new Intent(context, RefreshWifiActivity.class));
           // finish();
         }
-      } else if (action.equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-        if (ok) {
-          buildStateHandlerChain(true);
-        }
       } else if (action.equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
         if (BaseResponse.RESPONSE_OK == result && 0 == error.length()) {
           mWiFiSSID = mBusinessMgr.getSsid();
           mWiFiPasswd = mBusinessMgr.getWifiPwd();
 
-          if(mEnterText.getText().length() > 0) {
+          if(mStateHandler == null || mEnterText.getText().length() > 0) {
             return;
           }  
           if (mStateHandler.getState() == State.WIFI_SSID) {
@@ -211,12 +253,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           } else if (mStateHandler.getState() == State.WIFI_PASSWD) {
             mEnterText.setHint(mWiFiPasswd);
           }
-          //mEnterText.invalidate();
         }
       } else if (action.equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)) {
         if (BaseResponse.RESPONSE_OK == result && 0 == error.length()) {
-          mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
-
+          //mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
+          finishQuickSetup(false);
         } else {
           if (mStateHandler == null)
             return;
@@ -226,11 +267,37 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
             Log.v(TAG, "set wifi ssid failed, return " + error);
           }
         }
+      } else if (action.equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
+        if (ok) {
+          buildStateHandlerChain(true);
+        }
       } else if (action.equalsIgnoreCase(MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
+        if(mStateHandler == null) {
+          return;
+        } 
         if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
-          // m_dlgPin.onEnterPinResponse(true);
+          //TODO::actually, if user enter correct PIN, it never need go back PIN enter interface.
+          nextSetting(false);
         } else {
-          // m_dlgPin.onEnterPinResponse(false);
+          //PIN unlock
+          if (mStateHandler.retryTimes() > 0) {
+            mPINErrorDialog = ErrorDialog.getInstance(mContext);
+
+            mPINErrorDialog.showDialog(getString(R.string.pin_error_waring_title),
+                new OnClickBtnRetry() {
+
+                  @Override
+                  public void onRetry() {
+                    mStateHandler.retryInput();
+                  }
+                });
+          } else {
+            // PIN LOCK
+            CommonErrorInfoDialog dialog = CommonErrorInfoDialog.getInstance(mContext);
+            //TODO:: NEED ADD CONFIRM CALLBACK
+            dialog.showDialog(getString(R.string.qs_item_pin_code), 
+                    getString(R.string.pin_error_waring_title));
+          }
         }
       }
     }
@@ -258,6 +325,15 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mBusinessMgr.sendRequestMessage(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
   }
   
+  private void finishQuickSetup(boolean cancel){
+    if(cancel) {
+      CPEConfig.getInstance().setInitialLaunchedFlag();
+    }
+    Intent it = new Intent(mContext, MainActivity.class);
+    startActivity(it);
+    finish();
+  }
+  
   enum State {
     UNKNOW, PIN_CODE, WIFI_SSID, WIFI_PASSWD, SUMMARY, FINISH;    
   }
@@ -267,11 +343,13 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     private StateHandler mPreviousHandler;
     private StateHandler mNextHandler;
     protected boolean mSkipSetup;
+    protected boolean mIsHead;
     protected int mInputMax;
     protected int mInputMin;
     StateHandler(State state, int inputMin, int inputMax) {
       mState = state;
       mSkipSetup = true;
+      mIsHead = false;
       mPreviousHandler = null;
       mNextHandler = null;
       mInputMax = inputMax;
@@ -358,29 +436,23 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       }
     }
     abstract public void setupViews();
-    public void storeSetting() {}
-  }
+    public boolean storeSetting() {return true;}
 
-  class UnknowHandler extends StateHandler {
-    UnknowHandler(){
-      super(State.UNKNOW, 0, 0);      
-    }
-
-    @Override
-    public void setupViews() {
-      mSetupTitle.setText(getString(R.string.qs_completed));
-      mPromptText.setText(getString(R.string.qs_summary));
-      mNavigatorRight.setText(R.string.finish);
-      mEnterText.setVisibility(View.GONE);
-      mWiFiSSIDTextView.setVisibility(View.VISIBLE);
-      mWiFiPasswdTextView.setVisibility(View.VISIBLE);  
-    }
+    public int retryTimes(){return 0;}
+    public boolean retryInput(){return true;}
   }
   
+  /*
+   * When SIM PIN check is enabled, User can unlock SIM PIN in Quick Setup 
+   * step, or skip. If user skip this step, he/she should unlock PIN in some
+   * step that need check PIN later. 
+   */
   class PinCodeHandler extends StateHandler {
-    private int mPINTryTimes = 3;
-    PinCodeHandler() {
+    private int mPINTryTimes;
+    PinCodeHandler(int tryTimes) {
       super(State.PIN_CODE, 8, 8);
+      mIsHead = true;
+      mPINTryTimes = tryTimes;
     }
 
     @Override
@@ -394,19 +466,34 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mEnterText.getText().clear();
       mEnterText.addTextChangedListener(this);
     }
+    
+    public int retryTimes(){return mPINTryTimes;}
+    
+    public boolean retryInput(){
+      mPINTryTimes--;
+      mEnterText.getText().clear();
+      mPromptText.setText(getString(R.string.qs_pin_code_prompt, mPINTryTimes));
+      mNavigatorRight.setText(R.string.skip);
+      mSkipSetup = true;
+      return true;
+    }
 
     @Override
-    public void storeSetting() {
-      if(!mSkipSetup)
-        return;      
+    public boolean storeSetting() {
+      if(mSkipSetup)
+        return true;
+
+      DataValue data = new DataValue();
+      data.addParam("pin", mEnterText.getText().toString());
+      mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
+      return false;
     }
   }
   
   class WiFiSSIDHandler extends StateHandler {
-    private boolean mHaveBackSetting;
-    WiFiSSIDHandler(boolean back){
+    WiFiSSIDHandler(boolean isHead){
       super(State.WIFI_SSID, 1, 32);
-      mHaveBackSetting = back;
+      mIsHead = isHead;
     }
 
     @Override
@@ -414,8 +501,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mSetupTitle.setText(getString(R.string.qs_item_wifi_ssid));
       mPromptText.setText(getString(R.string.qs_wifi_ssid_prompt));
       mNavigatorRight.setText(R.string.skip);
-      mNavigatorLeft.setVisibility(mHaveBackSetting ? View.VISIBLE : View.GONE);
-      if (mHaveBackSetting) {
+      mNavigatorLeft.setVisibility(mIsHead ? View.VISIBLE : View.GONE);
+      if (mIsHead) {
         mNavigatorLeft.setVisibility(View.VISIBLE );
         mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       } else {
@@ -430,17 +517,18 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     }
 
     @Override
-    public void storeSetting() {
-      if(mSkipSetup) {
-        //mWiFiSSID = null;
-        return;
-      }
+    public boolean storeSetting() {
+      if(mSkipSetup == false) {
       //setWiFiConfigure(mEnterText.getText().toString(), mWiFiPasswd);
+        String enter = mEnterText.getText().toString();
+        if (!enter.equals(mWiFiSSID)) {
+          mWiFiSSID = enter;
+          mSendRequest = true;
+        }
+        //mWiFiSSID = null;
+      }
 
-
-        mWiFiSSID = mEnterText.getText().toString();
-      
-     
+      return true;
     }
     
     @Override   
@@ -470,13 +558,18 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     }
 
     @Override
-    public void storeSetting() {
-      if(mSkipSetup) {
+    public boolean storeSetting() {
+      if(mSkipSetup == false) {
+        //setWiFiConfigure(mWiFiSSID, mEnterText.getText().toString());
+        String enter = mEnterText.getText().toString();
+        if (enter.equals(mWiFiPasswd)) {
+          mWiFiPasswd = enter;
+          mSendRequest = true;
+        }
         //mWiFiPasswd = null;
-        return;
       }
-      //setWiFiConfigure(mWiFiSSID, mEnterText.getText().toString());
-      mWiFiPasswd = mEnterText.getText().toString();
+
+      return true;
     }    
   }
   
@@ -498,11 +591,14 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     }
 
     @Override
-    public void storeSetting() {
-      setWiFiConfigure(mWiFiSSID, mWiFiPasswd);
-      Intent it = new Intent(mContext, MainActivity.class);
-      startActivity(it);
-      finish();
+    public boolean storeSetting() {
+      CPEConfig.getInstance().setInitialLaunchedFlag();
+      if (mSendRequest) {
+        setWiFiConfigure(mWiFiSSID, mWiFiPasswd);
+      } else {
+        finishQuickSetup(false);
+      }
+      return true;
     }
   }
 }

@@ -28,6 +28,7 @@ public class ErrorDialog implements OnClickListener{
 	private AnimationDrawable m_anim = null;
 	public static boolean m_bIsShow = false;
 	private OnClickBtnRetry m_callback;
+	private OnClickBtnCancel mCancelCallback=null;
 	
 	public static ErrorDialog getInstance(Context context)
 	{
@@ -95,6 +96,10 @@ public class ErrorDialog implements OnClickListener{
 			break;
 		case R.id.error_dialog_close_btn:
 			closeDialog();
+			if (mCancelCallback != null){
+			  mCancelCallback.onCancel();
+			  mCancelCallback = null;
+			}
 			break;
 
 		default:
@@ -127,9 +132,18 @@ public class ErrorDialog implements OnClickListener{
 		}
 	}
 	
+	public void setCancelCallback(OnClickBtnCancel cb) {
+	  mCancelCallback = cb;
+	}
+	
 	//
 	public interface OnClickBtnRetry
 	{
 		public void onRetry();
 	}
+	
+	public interface OnClickBtnCancel
+  {
+    public void onCancel();
+  }
 }
