@@ -202,8 +202,8 @@ public class FtpFileListItem {
 				mode.finish();
 				break;
 			case R.id.action_delete:
-				//mFileViewInteractionHub.onOperationDelete();
-				mFileViewInteractionHub.onFtpDelete();
+				mFileViewInteractionHub.onOperationDelete();
+				//mFileViewInteractionHub.onFtpDelete();
 				mode.finish();
 				break;
 			case R.id.action_copy:

@@ -387,7 +387,7 @@ public class FtpFileOperationHelper {
 	}
 
 	private boolean MoveFile(FileInfo f, String dest) {
-		Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
+		Log.v(LOG_TAG, "Move File " + f.filePath + "/" + f.fileName + " to " + dest);
 
 		if (f == null || dest == null) {
 			Log.e(LOG_TAG, "CopyFile: null parameter");

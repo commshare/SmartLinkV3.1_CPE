@@ -721,7 +721,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		mUICmdListener.share(null, null);
 	}
 
-	public void onFtpDelete() {
+	public void onFtpDelete(final ArrayList<FileInfo> list) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 		LayoutInflater inflater = LayoutInflater.from(mActivity);
 		View view = inflater.inflate(R.layout.custom_delete_dlg, null);
@@ -731,8 +731,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						mUICmdListener.delete(getSelectedFileList());
+						mUICmdListener.delete(list);
+						Log.d(LOG_TAG, "selected file list size is " + String.valueOf(list.size()));
 						dialog.dismiss();
+						
 					}
 				});
 		builder.setNegativeButton(mActivity.getString(R.string.cancel),
@@ -752,7 +754,11 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	}
 
 	public void onOperationDelete() {
-		doOperationDelete(getSelectedFileList());
+		//doOperationDelete(getSelectedFileList());
+	    ArrayList<FileInfo> list = new ArrayList<FileInfo>(getSelectedFileList());
+	    Log.d(LOG_TAG, "selected file list size is " + String.valueOf(list.size()));
+	    onFtpDelete(list);
+	    clearSelection();
 	}
 
 	public void onOperationDelete(int position) {
@@ -1083,7 +1089,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 							@Override
 							public void onGetFiles(ArrayList<File> list) {
 								// TODO Auto-generated method stub
-								Log.i("ADD_FILE", list.toString());
+								Log.i("ADD_FILE", "upload file" + list.toString() + " to " + mCurrentPath);
 								mUICmdListener.upload(list, mCurrentPath);
 							}
 						});
