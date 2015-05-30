@@ -24,7 +24,6 @@ import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
 import com.alcatel.smartlinkv3.samba.SmbHttpServer;
 
-
 //TODO: CallBack
 public class FtpFileCommandTask {
 	// ftp command
@@ -57,10 +56,11 @@ public class FtpFileCommandTask {
 	private FtpCommandListener m_FtpCommandListener;
 	// private Handler handler = null;
 	private boolean isLogin = false;
-	
+
 	private ArrayList<ShareFileInfo> mShareFiles = new ArrayList<ShareFileInfo>();
-	
+
 	private OnCallResponse mOnCallResponse;
+
 	public void setOnCallResponse(OnCallResponse response) {
 		this.mOnCallResponse = response;
 	}
@@ -68,11 +68,11 @@ public class FtpFileCommandTask {
 	public interface OnCallResponse {
 		void callResponse(Object obj);
 	}
-	
+
 	public OnCallResponse getOnCallResponse() {
 		return this.mOnCallResponse;
 	}
-	
+
 	public interface FtpCommandListener {
 		// ui thread
 		void ftpMsgHandler(Message msg);
@@ -98,7 +98,10 @@ public class FtpFileCommandTask {
 		logger.setDebug(true);
 		logger.v("ftp init success!");
 
+		// if download or upload,this is provide transfer status
 		ftp.setTransferFtpListener(TransferListener);
+
+		// ftp operatetion status
 		ftp.setFtpManagerListener(FtpManagerListener);
 
 		m_ftp = new FtpClientModel();
@@ -160,7 +163,7 @@ public class FtpFileCommandTask {
 
 	public void ftp_upload(ArrayList<File> localFiles, String remotePath) {
 		ftpTask.setLocalFiles(localFiles);
-		ftpTask.setRemoteRootPath(remotePath);
+		ftpTask.setRemotePath(remotePath);
 		ftpTask.awakenCMD(UPLOAD);
 	}
 
@@ -185,12 +188,12 @@ public class FtpFileCommandTask {
 		ftpTask.setRename(fromFile, toFile);
 		ftpTask.awakenCMD(RENAME);
 	}
-	
+
 	public void ftp_share(ArrayList<FileInfo> remoteFiles) {
 		ftpTask.setShareFiles(remoteFiles);
 		ftpTask.awakenCMD(SHARE);
 	}
-	
+
 	public void ftp_close() {
 		ftpTask.awakenCMD(CLOSE);
 	}
@@ -221,7 +224,7 @@ public class FtpFileCommandTask {
 		public void setShareFiles(ArrayList<FileInfo> shareFiles) {
 			this.shareFiles = shareFiles;
 		}
-		
+
 		public void setLocalFiles(ArrayList<File> localFiles) {
 			this.localFiles = localFiles;
 		}
@@ -503,8 +506,10 @@ public class FtpFileCommandTask {
 
 	}
 
-	private void uploadFiles(ArrayList<File> local, String remote)
+	private void uploadFiles(ArrayList<File> local, String remotePath)
 			throws IOException {
+		boolean result = false;
+
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
 			return;
@@ -518,15 +523,22 @@ public class FtpFileCommandTask {
 		// TODO
 		for (File f : local) {
 			String localPath = f.getPath();
-			ftp.upload(localPath, remote);
-
+			result = ftp.upload(localPath,
+					remotePath + File.separator + f.getName());
+			if (!result) {
+				sendMsg(MSG_SHOW_TOAST, "upload fail: localPath = " + localPath
+						+ ",remotePath = " + remotePath + File.separator + f.getName());
+				logger.w("upload fail: localPath = " + localPath
+						+ ",remotePath = " + remotePath + File.separator + f.getName());
+				return;
+			}
 		}
 		sendMsg(MSG_SHOW_TOAST, "upload success!");
 	}
 
 	private boolean downloadFiles(ArrayList<FileInfo> remote) {
 		boolean result = false;
-		
+
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
 			return false;
@@ -547,8 +559,8 @@ public class FtpFileCommandTask {
 			logger.i("download localPath: " + localPath);
 
 			result = ftp.download(localPath, remotePath);
-			
-			if(!result){
+
+			if (!result) {
 				sendMsg(MSG_SHOW_TOAST, "download failure: " + remotePath);
 				return false;
 			}
@@ -572,10 +584,10 @@ public class FtpFileCommandTask {
 			}
 		}
 	}
-	
+
 	private void shareFiles(ArrayList<FileInfo> remote) {
 		boolean result = false;
-		
+
 		if (!isLogin) {
 			return;
 		}
@@ -585,7 +597,7 @@ public class FtpFileCommandTask {
 			logger.w("download fail,can't not find the remote file!");
 			return;
 		}
-		
+
 		ArrayList<ShareFileInfo> shareFiles = mShareFiles;
 		mShareFiles.clear();
 
@@ -604,10 +616,10 @@ public class FtpFileCommandTask {
 			localFile = Util.GetShareFileInfo(localPath);
 			shareFiles.add(localFile);
 		}
-		
+
 		mOnCallResponse.callResponse(shareFiles);
-		//sendMsg(MSG_SHARE_FILE, shareFiles);
-		
+		// sendMsg(MSG_SHARE_FILE, shareFiles);
+
 		sendMsg(MSG_SHOW_TOAST, "Ftp file share success");
 	}
 
