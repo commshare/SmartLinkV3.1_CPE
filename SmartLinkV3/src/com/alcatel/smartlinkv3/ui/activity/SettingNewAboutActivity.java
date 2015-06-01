@@ -92,16 +92,6 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 		case R.id.ib_title_back:
 			this.onBackPressed();
 			break;
-//		case R.id.device_about_feedback:
-//			if(!m_is_feedback_shown){
-//				m_is_feedback_shown = true;
-//				updateMenuVisibility(View.GONE);
-//				m_transaction= m_fragment_manager.beginTransaction();
-//				m_transaction.replace(R.id.device_about_container, m_fragment_feedback);
-//				m_transaction.addToBackStack(null);
-//				m_transaction.commit();
-//			}
-//			break;
 		case R.id.device_about_official_website:
 			CommonUtil.openWebPage(this, "http://www.alcatelonetouch.com");
 			break;

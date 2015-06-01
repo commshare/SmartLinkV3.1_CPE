@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:layout_margin="20dp"
+    android:layout_marginTop="20dp"
     android:background="@color/setting_background_color">
     
     
@@ -13,6 +13,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
+        
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_wifi" />
 		<LinearLayout
                 android:id="@+id/profile_detail_name"
                 android:layout_width="match_parent"
@@ -224,7 +230,11 @@
                         android:gravity="end" /> 
             </FrameLayout>
         </LinearLayout>
-            
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_wifi" />    
 		<ImageView
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
