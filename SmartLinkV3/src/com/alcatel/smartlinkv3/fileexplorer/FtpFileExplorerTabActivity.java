@@ -26,30 +26,25 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewConfiguration;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
 import com.alcatel.smartlinkv3.fileexplorer.Util;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.IConnectedActionMode;
 
 //TODO 修改
 public class FtpFileExplorerTabActivity extends Activity 
@@ -118,12 +113,25 @@ public class FtpFileExplorerTabActivity extends Activity
 				});
 		return true;
 	}
+	
+	private void setOverflowShowingAlways() {
+	    try {
+	        ViewConfiguration config = ViewConfiguration.get(this);
+	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	        menuKeyField.setAccessible(true);
+	        menuKeyField.setBoolean(config, false);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		if (initCustomActionBar(this)) {
+		    setOverflowShowingAlways();
+		    
 			try {	
 				Fragment fragment = Fragment.instantiate(this,
 						FtpFileViewFragment.class.getName(), savedInstanceState);

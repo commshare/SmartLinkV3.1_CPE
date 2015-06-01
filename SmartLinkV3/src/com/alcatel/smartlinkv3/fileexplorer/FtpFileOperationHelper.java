@@ -135,7 +135,8 @@ public class FtpFileOperationHelper {
 			if (!f.IsDir)
 				continue;
 
-			if (Util.containsPath(f.filePath, path))
+			String filePath = Util.makePath(f.filePath, f.fileName);
+			if (Util.containsPath(filePath, path))
 				return false;
 		}
 
