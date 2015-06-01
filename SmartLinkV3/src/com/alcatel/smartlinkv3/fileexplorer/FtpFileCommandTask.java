@@ -531,7 +531,7 @@ public class FtpFileCommandTask {
 
 	}
 
-	private void moveFiles(ArrayList<FileInfo> fromFiles, String toFile)
+	private void moveFiles(ArrayList<FileInfo> fromFiles, String remotePath)
 			throws IOException {
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
@@ -542,14 +542,17 @@ public class FtpFileCommandTask {
 			return;
 		}
 
-		if (null == toFile) {
-			logger.w("obj file [" + toFile + "] can't not be null!");
+		if (null == remotePath) {
+			logger.w("obj file [" + remotePath + "] can't not be null!");
 			return;
 		}
 
 		for (FileInfo f : fromFiles) {
 			String fromFile = f.filePath + File.separator + f.fileName;
-
+			String toFile =  remotePath + File.separator + f.fileName;
+			
+			logger.i("move fromFile = " + fromFile + ", move toFile = " + toFile);
+			
 			boolean result = ftp.move(fromFile, toFile);
 
 			if (result) {
