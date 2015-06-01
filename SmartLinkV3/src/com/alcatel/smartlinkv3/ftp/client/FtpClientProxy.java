@@ -330,8 +330,9 @@ public class FtpClientProxy {
 						+ "/" + filename);
 
 				if (!success) {
-					logger.w("download file 1 [" + remote + "/" + filename
+					logger.w("download directory [" + remote + "/" + filename
 							+ "]" + "fail!");
+					logger.i("result: " + result);
 					// break;
 					return false;
 				}
@@ -340,9 +341,10 @@ public class FtpClientProxy {
 						+ filename);
 
 				if ((result != FtpDownloadStatus.Download_New_Success)
-						|| (result != FtpDownloadStatus.Download_From_Break_Success)) {
-					logger.w("download file 2 [" + remote + "/" + filename
-							+ "]" + "fail!");
+						&& (result != FtpDownloadStatus.Download_From_Break_Success)) {
+					logger.w("download file [" + remote + "/" + filename + "]"
+							+ "fail!");
+					logger.i("result: " + result);
 					// break;
 					return false;
 				}
@@ -378,10 +380,10 @@ public class FtpClientProxy {
 		if (f.exists()) {
 			long localSize = f.length();
 			if (localSize >= lRemoteSize) {
-				logger.v("fail,the size of local file is bigger then remote file!");
+				//logger.i("fail,the size of local file is bigger then remote file!");
 				listener.onError("local has the file yet!", 0);
 				// TODO
-				// return FtpDownloadStatus.Local_Bigger_Remote;
+				return FtpDownloadStatus.Download_From_Break_Success;
 			}
 
 			FileOutputStream out = new FileOutputStream(f, true);
