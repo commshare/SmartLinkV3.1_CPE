@@ -149,7 +149,9 @@ public class FtpFileOperationHelper {
 		}
 	}
 
-	public boolean EndMove(String path) {
+	// TODO : 废除，被替代
+    @Deprecated
+	public boolean EndMove(String path, boolean OLD_MARK) {
 		if (!mMoving)
 			return false;
 		mMoving = false;
@@ -174,6 +176,33 @@ public class FtpFileOperationHelper {
 
 		return true;
 	}
+    public void EndMove(String path) {
+        final String _path = path;
+        
+        asnycExecute(new Runnable() {
+            @Override
+            public void run() {
+                for (FileInfo f : mCurFileNameList) {
+                    MoveFile(f, _path);
+                }
+
+                mOperationListener.onFileChanged(Environment
+                        .getExternalStorageDirectory().getAbsolutePath());
+
+                clear();
+            }
+        });
+    }
+    public boolean checkMove(String path) {
+        if (!mMoving)
+            return false;
+        mMoving = false;
+        
+        if (TextUtils.isEmpty(path))
+            return false;
+        
+        return true;
+    }
 
 	public ArrayList<FileInfo> getFileList() {
 		return mCurFileNameList;

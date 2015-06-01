@@ -874,8 +874,12 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			mSelectFilesCallback = null;
 			clearSelection();
 		} else if (mFileOperationHelper.isMoveState()) {
-			if (mFileOperationHelper.EndMove(mCurrentPath)) {
-				showProgress(mActivity.getString(R.string.operation_moving));
+			//if (mFileOperationHelper.EndMove(mCurrentPath)) {
+			//	showProgress(mActivity.getString(R.string.operation_moving));
+			//}
+			if (mFileOperationHelper.checkMove(mCurrentPath)) {
+			    showProgress(mActivity.getString(R.string.operation_moving));
+			    mFileOperationHelper.EndMove(mCurrentPath);
 			}
 		} else {
 			onOperationPaste();
