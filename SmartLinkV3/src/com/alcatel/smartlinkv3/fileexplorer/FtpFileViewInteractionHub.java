@@ -471,7 +471,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		negativeBtn.setTextColor(0xff0070c5);
 	}
 
-	private boolean doCreateFolder(String text) {
+	// TODO 修改，添加参数标记_OLD_MARK,为重用方法，被修改方法替代
+	private boolean doCreateFolder(String text, boolean OLD_MRAK) {
 		if (TextUtils.isEmpty(text))
 			return false;
 
@@ -489,6 +490,15 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 		return true;
 	}
+	private boolean doCreateFolder(String text) {
+        if (TextUtils.isEmpty(text))
+            return false;
+        
+        String pathCreateFolder = Util.makePath(mCurrentPath, text);
+        mUICmdListener.create_folder(pathCreateFolder, null);
+
+        return true;
+    }
 
 	public void onOperationSearch() {
 
