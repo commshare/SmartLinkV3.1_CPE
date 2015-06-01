@@ -19,7 +19,6 @@
 
 package com.alcatel.smartlinkv3.fileexplorer;
 
-
 import com.alcatel.smartlinkv3.R;
 
 import android.app.AlertDialog;
@@ -28,59 +27,65 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class TextInputDialog extends AlertDialog {
-    private String mInputText;
-    private String mTitle;
-    private String mMsg;
-    private OnFinishListener mListener;
-    private Context mContext;
-    private View mView;
-    private EditText mFolderName;
+	private String mInputString;
+	private String mOptionTitle;
+	private String mTips;
+	private OnFinishListener mListener;
+	private Context mContext;
+	private View mView;
+	private EditText mEditText;
+	private TextView mOTTextView;
+	private TextView mTipsTextView;
 
-    public interface OnFinishListener {
-        // return true to accept and dismiss, false reject
-        boolean onFinish(String text);
-    }
+	public interface OnFinishListener {
+		// return true to accept and dismiss, false reject
+		boolean onFinish(String text);
+	}
 
-    public TextInputDialog(Context context, String title, String msg, String text, OnFinishListener listener) {
-        super(context);
-        mTitle = title;
-        mMsg = msg;
-        mListener = listener;
-        mInputText = text;
-        mContext = context;
-    }
+	public TextInputDialog(Context context, String optionTitle, String tips,
+			OnFinishListener listener) {
+		super(context);
+		mContext = context;
+		mOptionTitle = optionTitle;
+		mTips = tips;
+		mListener = listener;
+	}
 
-    public String getInputText() {
-        return mInputText;
-    }
+	public String getInputText() {
+		return mInputString;
+	}
 
-    protected void onCreate(Bundle savedInstanceState) {
-        mView = getLayoutInflater().inflate(R.layout.textinput_dialog, null);
+	protected void onCreate(Bundle savedInstanceState) {
+		mView = getLayoutInflater().inflate(R.layout.textinput_dialog, null);
 
-        setTitle(mTitle);
-        setMessage(mMsg);
+		mOTTextView = (TextView) mView.findViewById(R.id.option_title);
+		mTipsTextView = (TextView) mView.findViewById(R.id.tips);
+		mEditText = (EditText) mView.findViewById(R.id.input_edit_text);
 
-        mFolderName = (EditText) mView.findViewById(R.id.text);
-        mFolderName.setText(mInputText);
+		mOTTextView.setText(mOptionTitle);
+		if (mTips == null) {
+			mTipsTextView.setVisibility(View.GONE);
+		} else {
+			mTipsTextView.setText(mTips);
+		}
 
-        setView(mView);
-        setButton(BUTTON_POSITIVE, mContext.getString(android.R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == BUTTON_POSITIVE) {
-                            mInputText = mFolderName.getText().toString();
-                            if (mListener.onFinish(mInputText)) {
-                                dismiss();
-                            }
-                        }
-                    }
-                });
-        setButton(BUTTON_NEGATIVE, mContext.getString(android.R.string.cancel),
-                (DialogInterface.OnClickListener) null);
+		setView(mView);
+		setButton(BUTTON_POSITIVE, mContext.getString(R.string.ok),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mInputString = mEditText.getText().toString();
+						if (mListener.onFinish(mInputString)) {
+							dismiss();
+						}
+					}
+				});
+		setButton(BUTTON_NEGATIVE, mContext.getString(R.string.cancel),
+				(DialogInterface.OnClickListener) null);
 
-        super.onCreate(savedInstanceState);
-    }
+		super.onCreate(savedInstanceState);
+	}
 }

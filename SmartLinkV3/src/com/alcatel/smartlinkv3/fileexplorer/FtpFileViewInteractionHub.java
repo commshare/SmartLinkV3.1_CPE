@@ -455,7 +455,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		TextInputDialog dialog = new TextInputDialog(mActivity,
 				mActivity.getString(R.string.operation_create_folder),
 				mActivity.getString(R.string.operation_create_folder_message),
-				mActivity.getString(R.string.new_folder_name),
 				new OnFinishListener() {
 					@Override
 					public boolean onFinish(String text) {
@@ -464,6 +463,12 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				});
 
 		dialog.show();
+
+		dialog.setCanceledOnTouchOutside(false);
+		Button positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+		positiveBtn.setTextColor(0xff0070c5);
+		Button negativeBtn = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+		negativeBtn.setTextColor(0xff0070c5);
 	}
 
 	private boolean doCreateFolder(String text) {
@@ -648,9 +653,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		clearSelection();
 
 		TextInputDialog dialog = new TextInputDialog(mActivity,
-				mActivity.getString(R.string.operation_rename),
-				mActivity.getString(R.string.operation_rename_message),
-				f.fileName, new OnFinishListener() {
+				mActivity.getString(R.string.operation_rename), null,
+				new OnFinishListener() {
 					@Override
 					public boolean onFinish(String text) {
 						return doRename(f, text);
@@ -658,6 +662,12 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				});
 
 		dialog.show();
+
+		dialog.setCanceledOnTouchOutside(false);
+		Button positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+		positiveBtn.setTextColor(0xff0070c5);
+		Button negativeBtn = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+		negativeBtn.setTextColor(0xff0070c5);
 	}
 
 	// TODO : 
