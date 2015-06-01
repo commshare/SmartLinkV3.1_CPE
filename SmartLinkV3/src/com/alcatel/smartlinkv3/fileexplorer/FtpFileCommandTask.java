@@ -332,7 +332,7 @@ public class FtpFileCommandTask {
 				break;
 
 			case MOVE:
-				if ((this.fromFile != null) && (this.toFile != null)) {
+				if ((this.fromFiles != null) && (this.toFile != null)) {
 					moveFiles(this.fromFiles, this.toFile);
 				}
 
@@ -401,6 +401,7 @@ public class FtpFileCommandTask {
 			 * long per = now / every; changeProgressText((int) per);
 			 */
 			// changeProgressText((int) now);
+			logger.i("transfer progress: " + now);
 		}
 
 		@Override
