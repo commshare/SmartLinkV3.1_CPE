@@ -152,6 +152,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		void delete(ArrayList<FileInfo> remote);
 		
 		void share(ArrayList<FileInfo> remote,OnCallResponse response);
+		
+		void create_folder(String remote,OnCallResponse response);
 	}
 
 	public FtpFileViewInteractionHub(IFileInteractionListener fileViewListener) {
@@ -719,6 +721,14 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 	public void onShare() {
 		mUICmdListener.share(null, null);
+	}
+	
+	public void onMove() {
+		mUICmdListener.move(null, null);
+	}
+	
+	public void onCreateFolder() {
+		mUICmdListener.create_folder(null, null);
 	}
 
 	public void onFtpDelete(final ArrayList<FileInfo> list) {

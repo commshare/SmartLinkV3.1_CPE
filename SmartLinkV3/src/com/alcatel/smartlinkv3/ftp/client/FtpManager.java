@@ -126,7 +126,7 @@ public class FtpManager {
 	private void createDirsFiles(Context mContext) throws IOException {
 		boolean iRet = false;
 
-		iRet = createFolder(m_ftpClient.ftpClientConfigDir);
+		iRet = createLocalFolder(m_ftpClient.ftpClientConfigDir);
 
 		if (!iRet) {
 			logger.w("create ftp config folder fail!");
@@ -164,7 +164,7 @@ public class FtpManager {
 		}
 	}
 
-	boolean createFolder(String strFolder) {
+	boolean createLocalFolder(String strFolder) {
 		File file = new File(strFolder);
 
 		if (!file.exists()) {
@@ -235,19 +235,6 @@ public class FtpManager {
 		isLogin = false;
 	}
 
-	boolean createLocalFolder(String strFolder) {
-		File file = new File(strFolder);
-
-		if (!file.exists()) {
-			if (file.mkdirs()) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public boolean download(String localFile, String remoteFile) {
 		boolean result = false;
 
@@ -290,7 +277,7 @@ public class FtpManager {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_SUCCESS,
 					ERROR.SUCCESS);
 			logger.i("delete file [" + remoteFilePath + "]" + "success!");
-		}else{
+		} else {
 			logger.i("delete file [" + remoteFilePath + "]" + "fail!");
 		}
 
@@ -315,23 +302,58 @@ public class FtpManager {
 
 		return iStatus;
 	}
-	
+
 	public boolean rename(String fromFile, String toFile) throws IOException {
 		boolean iStatus = false;
-		
+
 		if (!isLogin) {
-			ftpManagerListener.onStatus(FtpMessage.FILE_UPLOAD_ERROR,
-					ERROR.FILE_UPLOAD_ERROR);
+			return false;
 		}
-		
+
 		iStatus = ftpProxy.renameFile(fromFile, toFile);
-		
+
 		if (iStatus) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_RENAME_SUCCESS,
 					ERROR.SUCCESS);
 		}
-		
+
 		return iStatus;
+	}
+	
+	
+	public boolean move(String fromFile, String toFile) throws IOException {
+		boolean iStatus = false;
+
+		if (!isLogin) {
+			return false;
+		}
+		
+		iStatus = ftpProxy.moveFile(fromFile, toFile);
+
+		if (iStatus) {
+			ftpManagerListener.onStatus(FtpMessage.FILE_RENAME_SUCCESS,
+					ERROR.SUCCESS);
+		}
+
+		return iStatus;
+	}
+	
+
+	public boolean createFolder(String remotePath) throws IOException {
+		boolean result = false;
+		
+		if (!isLogin) {
+			return false;
+		}
+
+		result = ftpProxy.mkdir(remotePath);
+
+		if (!result) {
+			return false;
+		}
+		
+		
+		return result;
 	}
 
 	public static class ERROR {

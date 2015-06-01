@@ -233,6 +233,13 @@ public class FtpFileViewFragment extends Fragment implements
 
 		}
 
+		@Override
+		public void create_folder(String remote, OnCallResponse response) {
+			// TODO Auto-generated method stub
+			cmdTask.setOnCallResponse(response);
+			cmdTask.ftp_create_folder(remote);
+		}
+
 	};
 
 	volatile long every = 0;

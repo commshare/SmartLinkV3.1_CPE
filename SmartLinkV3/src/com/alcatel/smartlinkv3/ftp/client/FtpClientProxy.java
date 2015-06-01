@@ -222,7 +222,7 @@ public class FtpClientProxy {
 		}
 		return true;
 	}
-
+	
 	public String getParentPathFromURL(String remoteURL) {
 		String parentPath = "";
 		// get file name from the path
@@ -478,7 +478,7 @@ public class FtpClientProxy {
 				return FtpUploadStatus.Parameter_Error;
 			}
 
-			if (createFtpDirecroty(ftpClient, remote) == FtpUploadStatus.Create_Directory_Fail) {
+			if (createFtpDirecroty(remote) == FtpUploadStatus.Create_Directory_Fail) {
 				return FtpUploadStatus.Create_Directory_Fail;
 			}
 		}
@@ -540,7 +540,7 @@ public class FtpClientProxy {
 		for (File currentFile : localFiles) {
 			String localFileName = currentFile.getName();
 			if (currentFile.isDirectory()) {
-				createFtpDirecroty(ftpClient, remote + "/" + localFileName);
+				createFtpDirecroty(remote + "/" + localFileName);
 				result = uploadAndsubFiles(local + "/" + localFileName, remote
 						+ "/" + localFileName);
 			} else {
@@ -626,7 +626,7 @@ public class FtpClientProxy {
 		return success;
 	}
 
-	public FtpUploadStatus createFtpDirecroty(FTPClient ftpClient, String remote)
+	public FtpUploadStatus createFtpDirecroty(String remote)
 			throws IOException {
 
 		FtpUploadStatus status = FtpUploadStatus.Create_Directory_Success;
@@ -752,6 +752,10 @@ public class FtpClientProxy {
 		}
 
 		return true;
+	}
+
+	public boolean mkdir(String remotePath) throws IOException {
+		return ftpClient.makeDirectory(convertToUTF8(remotePath));
 	}
 
 	public void close() {

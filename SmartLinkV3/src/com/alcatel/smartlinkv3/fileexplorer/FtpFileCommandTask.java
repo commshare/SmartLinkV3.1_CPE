@@ -39,6 +39,7 @@ public class FtpFileCommandTask {
 	private static final int COPY = 11;
 	private static final int RENAME = 12;
 	private static final int SHARE = 13;
+	private static final int CREATE_FOLDER = 14;
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
 	private static final int MSG_SHARE_FILE = 2;
@@ -173,9 +174,14 @@ public class FtpFileCommandTask {
 	}
 
 	public void ftp_move(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.setRemoteFiles(remoteFiles);
+		ftpTask.setRemotePath(remotePath);
 		ftpTask.awakenCMD(MOVE);
+	}
+
+	public void ftp_create_folder(String remotePath) {
+		ftpTask.setRemotePath(remotePath);
+		ftpTask.awakenCMD(CREATE_FOLDER);
 	}
 
 	public void ftp_copy(ArrayList<FileInfo> remoteFiles, String remotePath) {
@@ -206,6 +212,7 @@ public class FtpFileCommandTask {
 		private ArrayList<File> localFiles = new ArrayList<File>();
 		private ArrayList<FileInfo> shareFiles = new ArrayList<FileInfo>();
 		// TODO
+		private ArrayList<FileInfo> fromFiles = null;
 		private String fromFile = null;
 		private String toFile = null;
 
@@ -231,6 +238,11 @@ public class FtpFileCommandTask {
 
 		public void setRename(String fromFile, String toFile) {
 			this.fromFile = fromFile;
+			this.toFile = toFile;
+		}
+
+		public void setMoveFile(ArrayList<FileInfo> fromFiles, String toFile) {
+			this.fromFiles = fromFiles;
 			this.toFile = toFile;
 		}
 
@@ -320,9 +332,22 @@ public class FtpFileCommandTask {
 				break;
 
 			case MOVE:
+				if ((this.fromFile != null) && (this.toFile != null)) {
+					moveFiles(this.fromFiles, this.toFile);
+				}
+
 				CMD = -1;
 				break;
+
 			case COPY:
+				CMD = -1;
+				break;
+
+			case CREATE_FOLDER:
+				if (this.remotePath != null) {
+					createFolder(this.remotePath);
+				}
+
 				CMD = -1;
 				break;
 			case RENAME:
@@ -492,7 +517,7 @@ public class FtpFileCommandTask {
 		}
 
 		if (null == toFile) {
-			logger.w("obj file [" + fromFile + "] can't not be null!");
+			logger.w("obj file [" + toFile + "] can't not be null!");
 			return;
 		}
 
@@ -502,6 +527,36 @@ public class FtpFileCommandTask {
 			sendMsg(MSG_SHOW_TOAST, "rename file [" + fromFile + "] success!");
 		} else {
 			sendMsg(MSG_SHOW_TOAST, "rename file [" + fromFile + "] fail!");
+		}
+
+	}
+
+	private void moveFiles(ArrayList<FileInfo> fromFiles, String toFile)
+			throws IOException {
+		if (!isLogin) {
+			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			return;
+		}
+		if (null == fromFiles) {
+			logger.w("source file [" + fromFiles + "] can't not be null!");
+			return;
+		}
+
+		if (null == toFile) {
+			logger.w("obj file [" + toFile + "] can't not be null!");
+			return;
+		}
+
+		for (FileInfo f : fromFiles) {
+			String fromFile = f.filePath + File.separator + f.fileName;
+
+			boolean result = ftp.move(fromFile, toFile);
+
+			if (result) {
+				sendMsg(MSG_SHOW_TOAST, "move file [" + fromFile + "] success!");
+			} else {
+				sendMsg(MSG_SHOW_TOAST, "move file [" + fromFile + "] fail!");
+			}
 		}
 
 	}
@@ -526,10 +581,13 @@ public class FtpFileCommandTask {
 			result = ftp.upload(localPath,
 					remotePath + File.separator + f.getName());
 			if (!result) {
-				sendMsg(MSG_SHOW_TOAST, "upload fail: localPath = " + localPath
-						+ ",remotePath = " + remotePath + File.separator + f.getName());
+				sendMsg(MSG_SHOW_TOAST,
+						"upload fail: localPath = " + localPath
+								+ ",remotePath = " + remotePath
+								+ File.separator + f.getName());
 				logger.w("upload fail: localPath = " + localPath
-						+ ",remotePath = " + remotePath + File.separator + f.getName());
+						+ ",remotePath = " + remotePath + File.separator
+						+ f.getName());
 				return;
 			}
 		}
@@ -620,7 +678,25 @@ public class FtpFileCommandTask {
 		mOnCallResponse.callResponse(shareFiles);
 		// sendMsg(MSG_SHARE_FILE, shareFiles);
 
-		sendMsg(MSG_SHOW_TOAST, "Ftp file share success");
+		sendMsg(MSG_SHOW_TOAST, "Ftp file share success!");
+	}
+
+	private void createFolder(String remoteFolder) throws IOException {
+		boolean result = false;
+
+		if (!isLogin) {
+			return;
+		}
+
+		result = ftp.createFolder(remoteFolder);
+
+		if (result) {
+			sendMsg(MSG_SHOW_TOAST, "create folder success!");
+		} else {
+			sendMsg(MSG_SHOW_TOAST, "create folder fail: " + remoteFolder);
+			logger.i("create folder fail: " + remoteFolder);
+		}
+
 	}
 
 	private String getServerAddress(Context ctx) {

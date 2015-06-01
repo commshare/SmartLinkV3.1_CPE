@@ -22,6 +22,9 @@ public class FtpMessage {
 	public static String FILE_RENAME_ERROR = "Rename fail!";
 	public static String FILE_RENAME_SUCCESS = "Rename success!";
 	
+	public static String FILE_MOVE_SUCCESS = "Move success!";
+	public static String FILE_MOVE_FAIL = "Move fail!";
+	
 	public static String UNKNOW_SYSTEM_ERROR = "Unknow system error!";
 
 }
