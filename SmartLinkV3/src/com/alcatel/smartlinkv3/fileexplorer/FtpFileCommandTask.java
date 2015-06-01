@@ -174,8 +174,7 @@ public class FtpFileCommandTask {
 	}
 
 	public void ftp_move(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		ftpTask.setRemoteFiles(remoteFiles);
-		ftpTask.setRemotePath(remotePath);
+		ftpTask.setMoveFile(remoteFiles, remotePath);
 		ftpTask.awakenCMD(MOVE);
 	}
 
