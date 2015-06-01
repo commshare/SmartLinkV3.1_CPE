@@ -242,8 +242,7 @@
             android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity"
             android:configChanges="screenSize|keyboardHidden"
             android:screenOrientation="sensor"
-            android:theme="@style/Custom_ActionBar_Style"
-            android:uiOptions="splitActionBarWhenNarrow" >
+            android:theme="@style/Custom_ActionBar_Style" >
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
 
