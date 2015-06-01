@@ -23,6 +23,7 @@ public class CommonErrorInfoDialog implements OnClickListener{
 	private TextView m_tvTitle = null;
 	private TextView m_tvErrorInfo=null;
 	public static boolean m_bIsShow = false;
+  private OnClickConfirmBotton mConfirmCallback=null;
 	
 	public static CommonErrorInfoDialog getInstance(Context context)
 	{
@@ -70,6 +71,10 @@ public class CommonErrorInfoDialog implements OnClickListener{
 		switch (v.getId()) {
 		case R.id.ID_BUTTON_OK:
 			closeDialog();
+      if (mConfirmCallback != null) {
+        mConfirmCallback.onConfirm();
+        mConfirmCallback = null;
+      }
 			break;
 
 		default:
@@ -80,13 +85,14 @@ public class CommonErrorInfoDialog implements OnClickListener{
 	public void destroyDialog(){
 		closeDialog();
 		m_instance = null;
+    mConfirmCallback = null;
 	}
 	
 	public void closeDialog()
 	{
 		if(m_dlgError != null && m_dlgError.isShowing()){
 			m_dlgError.dismiss();
-			m_bIsShow = false;			
+			m_bIsShow = false;	
 		}
 	}
 	
@@ -101,4 +107,10 @@ public class CommonErrorInfoDialog implements OnClickListener{
 			m_bIsShow = true;
 		}
 	}
+	 public void setCancelCallback(OnClickConfirmBotton cb) {
+	    mConfirmCallback = cb;
+	  }
+	 public interface OnClickConfirmBotton {	 
+	    public void onConfirm();
+	 }
 }

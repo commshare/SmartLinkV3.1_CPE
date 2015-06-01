@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 
 import java.util.ArrayList;
@@ -113,7 +114,9 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 	      startBtn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
-	          Intent intent = new Intent(mActivity, QuickSetupActivity.class);
+	          boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();	          	          
+	          Class<?> clazz = bCPEWifiConnected ? QuickSetupActivity.class : RefreshWifiActivity.class;
+	          Intent intent = new Intent(mActivity, clazz);
 	          mActivity.startActivity(intent);
 	          mActivity.finish();
 	        }

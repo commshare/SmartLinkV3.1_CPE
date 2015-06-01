@@ -4,6 +4,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
 
 import android.os.Bundle;
@@ -103,10 +104,20 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		
-		if(bCPEWifiConnected == true) {	
-			startMainActivity();	
+		if(!bCPEWifiConnected)
+		  return;
+		
+		Class<?> clazz;
+		if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
+		  clazz = QuickSetupActivity.class;
+		} else {	
+		  clazz = MainActivity.class;				
 			Log.d("refreshsd", "startMainActivity");
 		}
+			 
+	    Intent it = new Intent(this, clazz);
+	    startActivity(it);
+	    finish();	  
 	}
 
 	private void wifiSetting() {
@@ -150,12 +161,5 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     	}catch(Exception e) {
     		
     	}
-	}
-
-	private void startMainActivity() {
-		Intent it = new Intent(this, MainActivity.class);
-		this.startActivity(it);
-		this.finish();
-	}
-	
+	}	
 }

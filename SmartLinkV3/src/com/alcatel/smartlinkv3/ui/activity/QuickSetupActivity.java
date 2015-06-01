@@ -16,6 +16,7 @@ import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.DialogAutoDismiss;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -56,6 +57,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private boolean mSendRequest = false;//If user not change settings, do not send request.
   private ErrorDialog mPINErrorDialog = null;
   private LoginDialog mLoginDialog = null;
+  private CommonErrorInfoDialog mConfirmDialog = null;
   private Context mContext;
   private BusinessMannager mBusinessMgr;
   
@@ -117,7 +119,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     }
   }
   
-
+  /*
+   * put various Settings into a chain. This chain is a 
+   * double link queue, and mStateHandler is the cursor.
+   * The head and tail of queue are not linked. 
+   */
   private void buildStateHandlerChain(boolean clear) {
     //SimManager poll SIM_GET_SIM_STATUS_ROLL_REQUSET in task, but it do not always 
     //broadcaset SIM request.
@@ -146,7 +152,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mStateHandler.addNextStateHandler(new WiFiSSIDHandler(true));
     } else {
       mStateHandler = new WiFiSSIDHandler(false);
-    }        
+   }        
 //TODO:: NEED TEST
       
     mStateHandler.goTail().addNextStateHandler(new WiFiPasswdHandler()).
@@ -193,6 +199,28 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     }
   }
   
+  /*
+   * When user enter correct PIN, or he/she enter 3 error codes, 
+   * disable PIN code setting. 
+   */
+  private void removePINCodeSetting() {
+    StateHandler handler = mStateHandler;
+    if (handler == null || handler.mIsHead == false || handler.mState != State.PIN_CODE) {
+      Log.e(TAG, "Current state is not PIN code or it is not the head sate.");
+      return;
+    }
+
+    handler.mPreviousHandler = null;
+    mStateHandler = handler.mNextHandler;
+    handler.mNextHandler = null;
+
+    if (mStateHandler != null) {
+      mStateHandler.mPreviousHandler = null;
+      mStateHandler.mIsHead = true;
+      mStateHandler.setupViews();
+    }
+  }
+  
   @Override
   protected void onResume() {
     super.onResume();
@@ -222,6 +250,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mPINErrorDialog.destroyDialog();
     if (mLoginDialog != null)
       mLoginDialog.destroyDialog();
+    if (mConfirmDialog != null)
+      mConfirmDialog.destroyDialog();
   }
   
   class QSBroadcastReceiver extends BroadcastReceiver {
@@ -276,8 +306,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           return;
         } 
         if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
-          //TODO::actually, if user enter correct PIN, it never need go back PIN enter interface.
-          nextSetting(false);
+          //actually, if user enter correct PIN, it never need go back PIN enter interface.
+          removePINCodeSetting();
+          //nextSetting(false);
         } else {
           //PIN unlock
           if (mStateHandler.retryTimes() > 0) {
@@ -293,9 +324,17 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
                 });
           } else {
             // PIN LOCK
-            CommonErrorInfoDialog dialog = CommonErrorInfoDialog.getInstance(mContext);
-            //TODO:: NEED ADD CONFIRM CALLBACK
-            dialog.showDialog(getString(R.string.qs_item_pin_code), 
+            mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
+            mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+
+              @Override
+              public void onConfirm() {
+                removePINCodeSetting();
+                //finishQuickSetup(true);                
+              }
+            
+            });
+            mConfirmDialog.showDialog(getString(R.string.qs_item_pin_code), 
                     getString(R.string.pin_error_waring_title));
           }
         }
@@ -325,8 +364,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mBusinessMgr.sendRequestMessage(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
   }
   
-  private void finishQuickSetup(boolean cancel){
-    if(cancel) {
+  private void finishQuickSetup(boolean setFlag){
+    if(setFlag) {
       CPEConfig.getInstance().setInitialLaunchedFlag();
     }
     Intent it = new Intent(mContext, MainActivity.class);
@@ -503,11 +542,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mNavigatorRight.setText(R.string.skip);
       mNavigatorLeft.setVisibility(mIsHead ? View.VISIBLE : View.GONE);
       if (mIsHead) {
-        mNavigatorLeft.setVisibility(View.VISIBLE );
-        mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
-      } else {
         mNavigatorLeft.setVisibility(View.INVISIBLE);
         mNavigatorLeft.setClickable(false);
+      } else {
+        mNavigatorLeft.setVisibility(View.VISIBLE);
+        mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       }
       mEnterText.setInputType(InputType.TYPE_CLASS_TEXT);
       mEnterText.getText().clear();

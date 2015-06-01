@@ -110,6 +110,7 @@ public class ErrorDialog implements OnClickListener{
 	public void destroyDialog(){
 		closeDialog();
 		m_instance = null;
+    mCancelCallback = null;
 	}
 	
 	public void closeDialog()
