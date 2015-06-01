@@ -64,6 +64,7 @@ import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -184,9 +185,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 		mFileListView = (ListView) mFileViewListener
 				.getViewById(R.id.file_path_list);
-		mFileListView.setLongClickable(true);
-		mFileListView
-				.setOnCreateContextMenuListener(mListViewContextMenuListener);
+		//mFileListView.setLongClickable(true);
+		//mFileListView
+		//		.setOnCreateContextMenuListener(mListViewContextMenuListener);
 		mFileListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -194,6 +195,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				onListItemClick(parent, view, position, id);
 			}
 		});
+		
+		mFileListView.setOnItemLongClickListener(mOnItemLongClickListerner);
 
 		mConfirmOperationBar = mFileViewListener
 				.getViewById(R.id.moving_operation_bar);
@@ -439,8 +442,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		}
 
 		if (!mRoot.equals(mCurrentPath)) {
-			mCurrentPath = new File(mCurrentPath).getParent();
-			refreshFileList();
+			//mCurrentPath = new File(mCurrentPath).getParent();
+			mCurrentPath = Util.getParent(mCurrentPath);
+		    refreshFileList();
 			return true;
 		}
 
@@ -831,6 +835,18 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		neutralBtn.setTextColor(0xff0070c5);
 		clearSelection();
 	}
+	
+	public void onOperationAddFile() {
+	    ExternalFileObtain.getInstance(mActivity).getFiles(
+            new ExternalFileObtain.OnGetFilesListener() {
+                @Override
+                public void onGetFiles(ArrayList<File> list) {
+                    // TODO Auto-generated method stub
+                    Log.i("ADD_FILE", "upload file" + list.toString() + " to " + mCurrentPath);
+                    mUICmdListener.upload(list, mCurrentPath);
+                }
+            });
+	}
 
 	public void onOperationButtonConfirm() {
 		if (isSelectingFiles()) {
@@ -989,7 +1005,11 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 	private void switchEditCheckBox() {
 		this.makrEditCheckBox = !this.makrEditCheckBox;
-		mFileViewListener.notifyDataChanged();
+		if (this.makrEditCheckBox) {
+		    mFileViewListener.notifyDataChanged();
+		} else {
+		    clearSelection();
+		}
 	}
 
 	private OnMenuItemClickListener menuItemClick = new OnMenuItemClickListener() {
@@ -1091,18 +1111,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				// Toast.LENGTH_SHORT).show();
 				break;
 			case GlobalConsts.MENU_ADD_FILE:
-				// Toast.makeText(mActivity, "Add File.",
-				// Toast.LENGTH_SHORT).show();
-				// IntentBuilder.pickFile(mActivity);
-				ExternalFileObtain.getInstance(mActivity).getFiles(
-						new ExternalFileObtain.OnGetFilesListener() {
-							@Override
-							public void onGetFiles(ArrayList<File> list) {
-								// TODO Auto-generated method stub
-								Log.i("ADD_FILE", "upload file" + list.toString() + " to " + mCurrentPath);
-								mUICmdListener.upload(list, mCurrentPath);
-							}
-						});
+				onOperationAddFile();
 				break;
 
 			default:
@@ -1319,6 +1328,21 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		}
 		refreshFileList();
 	}
+	
+	private OnItemLongClickListener mOnItemLongClickListerner = new OnItemLongClickListener() {
+	    @Override
+	    public  boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+	        FtpFileListItem.FileItemOnClickListener listener = 
+	                new FtpFileListItem.FileItemOnClickListener(mActivity,FtpFileViewInteractionHub.this);
+	        View viewFileCheckboxArea = view.findViewById(R.id.file_checkbox_area);
+	        listener.onClick(viewFileCheckboxArea);
+	        if (!canEditCheckBox()) {
+	            switchEditCheckBox();
+	        }
+	        
+	        return true;
+	    }
+	};
 
 	public void setRootPath(String path) {
 		mRoot = path;

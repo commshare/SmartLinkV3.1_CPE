@@ -538,4 +538,23 @@ public class Util {
 
         return mimeType != null ? mimeType : "*/*";
     }
+
+    public static String getParent(String path) {
+        int length = path.length(), firstInPath = 0;
+        if (File.separatorChar == '\\' && length > 2 && path.charAt(1) == ':') {
+            firstInPath = 2;
+        }
+        int index = path.lastIndexOf(File.separatorChar);
+        if (index == -1 && firstInPath > 0) {
+            index = 2;
+        }
+        if (index == -1 || path.charAt(length - 1) == File.separatorChar) {
+            return null;
+        }
+        if (path.indexOf(File.separatorChar) == index
+                && path.charAt(firstInPath) == File.separatorChar) {
+            return path.substring(0, index + 1);
+        }
+        return path.substring(0, index);
+    }
 }
