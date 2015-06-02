@@ -5,7 +5,7 @@
     android:orientation="vertical" 
     android:background="@color/setting_background_color"
     android:id="@+id/setting_device"
-    android:paddingBottom="20dp">
+    android:paddingBottom="30dp">
     
 	<ScrollView
 	    android:layout_width="match_parent"
@@ -26,9 +26,9 @@
             <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_device_title"
                android:layout_gravity="start"
                />
@@ -38,7 +38,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -50,7 +50,7 @@
         
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="20dp"
+          android:layout_height="30dp"
           android:background="@color/setting_background_color"
           android:contentDescription="@string/setting_device"/>
         
@@ -68,9 +68,9 @@
              <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_device_upgrade_system"
                />
              <ImageView
@@ -78,7 +78,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
          </FrameLayout>
             
@@ -96,9 +96,9 @@
              <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_title_backup"
                />
             <ImageView
@@ -106,7 +106,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
          </FrameLayout>
          
@@ -125,9 +125,9 @@
             <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_title_power"
                android:layout_gravity="start"
                />
@@ -137,7 +137,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -149,7 +149,7 @@
         
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="20dp"
+          android:layout_height="30dp"
           android:background="@color/setting_background_color"
           android:contentDescription="@string/setting_device" />
         
@@ -168,9 +168,9 @@
             <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_device_pin_code"
                android:layout_gravity="start"
                />
@@ -180,7 +180,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -199,9 +199,9 @@
             <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_device_web_version"
                android:layout_gravity="start"
                />
@@ -211,7 +211,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -223,7 +223,7 @@
         
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="20dp"
+          android:layout_height="30dp"
           android:background="@color/setting_background_color"
           android:contentDescription="@string/setting_device" />
         
@@ -242,9 +242,9 @@
             <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_device_btn_restart"
                android:layout_gravity="start"
                />
@@ -254,7 +254,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -273,9 +273,9 @@
             <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="15dp"
+               android:padding="25dp"
                android:textColor="@color/color_black"
-               android:textSize="20sp" 
+               android:textSize="30sp" 
                android:text="@string/setting_device_btn_power_off"
                android:layout_gravity="start"
                />
@@ -285,7 +285,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginRight="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -306,19 +306,19 @@
         android:visibility="visible">
 
         <TextView
-            android:layout_margin="15dp"
+            android:layout_margin="25dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/setting_device_pin_code_edit"
             android:textColor="@color/color_black"
-             android:textSize="20sp" />
+             android:textSize="30sp" />
 
 
             <TextView
-                android:layout_margin="15dp"
                 android:id="@+id/btn_default_switch"
+                android:layout_marginRight="25dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:gravity="end"
                 android:background="@drawable/pwd_switcher_off"
@@ -333,8 +333,8 @@
 
             <ProgressBar
                 android:id="@+id/pb_device_waiting_progress"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
                 android:layout_centerInParent="true"
                 android:indeterminateDrawable="@drawable/progerss_blue"
                 android:visibility="gone" />

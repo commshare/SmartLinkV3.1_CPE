@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="30dp"
     android:background="@color/setting_background_color">
     
     
@@ -23,7 +23,7 @@
                 android:id="@+id/profile_detail_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="25dp"
                 android:orientation="horizontal" 
                 android:background="@color/color_white">
 
@@ -34,7 +34,7 @@
                     android:layout_weight="1"
                     android:text="@string/setting_network_profile_management_profile_name"
                     android:textColor="@color/color_black"
-                    android:textSize="20sp" />
+                    android:textSize="30sp" />
             	<EditText
                     android:id="@+id/edit_profile"
                     android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:background="@null"
                     android:layout_weight="1"
                     android:inputType="text"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:gravity="end" />
         </LinearLayout>
         
@@ -56,7 +56,7 @@
                 android:id="@+id/profile_detail_dial_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="25dp"
                 android:orientation="horizontal" 
                 android:background="@color/color_white">
 
@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:text="@string/setting_network_profile_management_dial_number"
                     android:textColor="@color/color_black"
-                    android:textSize="20sp" />
+                    android:textSize="30sp" />
 
                 
 
@@ -78,7 +78,7 @@
                     android:background="@null"
                     android:layout_weight="1"
                     android:inputType="text"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:gravity="end" />
         </LinearLayout>
         
@@ -92,7 +92,7 @@
                 android:id="@+id/profile_detail_apn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="25dp"
                 android:orientation="horizontal" 
                 android:background="@color/color_white">
 
@@ -103,7 +103,7 @@
                     android:layout_weight="1"
                     android:text="@string/setting_network_profile_management_apn"
                     android:textColor="@color/color_black"
-                    android:textSize="20sp" />
+                    android:textSize="30sp" />
 
                 <EditText
                     android:id="@+id/edit_apn"
@@ -112,7 +112,7 @@
                     android:background="@null"
                     android:layout_weight="1"
                     android:inputType="text"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:gravity="end" />
         </LinearLayout>
         
@@ -126,7 +126,7 @@
                 android:id="@+id/profile_detail_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="25dp"
                 android:orientation="horizontal" 
                 android:background="@color/color_white">
 
@@ -137,7 +137,7 @@
                     android:layout_weight="1"
                     android:text="@string/setting_network_profile_management_user_name"
                     android:textColor="@color/color_black"
-                    android:textSize="20sp" />
+                    android:textSize="30sp" />
 
             <EditText
                     android:id="@+id/edit_user_name"
@@ -146,7 +146,7 @@
                     android:background="@null"
                     android:layout_weight="1"
                     android:inputType="text"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:gravity="end" />    
                 
         </LinearLayout>
@@ -161,7 +161,7 @@
                 android:id="@+id/profile_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="25dp"
                 android:orientation="horizontal" 
                 android:background="@color/color_white">
 
@@ -172,7 +172,7 @@
                     android:layout_weight="1"
                     android:text="@string/setting_network_profile_management_password"
                     android:textColor="@color/color_black"
-                    android:textSize="20sp" />
+                    android:textSize="30sp" />
 
              <EditText
                     android:id="@+id/edit_password"
@@ -181,7 +181,7 @@
                     android:background="@null"
                     android:layout_weight="1"
                     android:inputType="text"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:gravity="end" />       
                 
         </LinearLayout>
@@ -196,7 +196,7 @@
                 android:id="@+id/profile_protocal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="25dp"
                 android:orientation="horizontal" 
                 android:background="@color/color_white">
 
@@ -207,7 +207,7 @@
                     android:layout_weight="1"
                     android:text="@string/setting_network_profile_management_protocol"
                     android:textColor="@color/color_black"
-                    android:textSize="20sp" />
+                    android:textSize="30sp" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -221,7 +221,7 @@
                         android:layout_height="match_parent"
                         android:ellipsize="end"
                         android:singleLine="true"
-                         android:textSize="20sp" 
+                         android:textSize="30sp" 
                         android:gravity="end" /> 
             </FrameLayout>
         </LinearLayout>
@@ -232,29 +232,32 @@
                 android:contentDescription="@string/setting_wifi" />    
 		<ImageView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="30dp"
                 android:background="@color/setting_background_color"
                 android:contentDescription="@string/setting_wifi" />
 
 		<FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" 
-                    android:padding="15dp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
                     android:id="@+id/profile_set_default"
                     android:background="@color/color_white">
 
                     <TextView
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/setting_set_default"
                         android:textColor="@color/color_black"
-                         android:textSize="20sp" />
+                         android:textSize="30sp" />
 
 
                         <TextView
                             android:id="@+id/btn_default_switch"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"
                             android:gravity="end"
                             android:background="@drawable/pwd_switcher_off"
@@ -275,16 +278,16 @@
                     android:id="@+id/protocol_none"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:background="@android:color/transparent"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:button="@null"
                     android:checked="true"
                     android:drawableLeft="@drawable/radiobutton"
                     android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
+                    android:paddingBottom="25dip"
+                    android:paddingTop="25dip"
                     android:text="@string/setting_network_profile_management_protocol_none"
                     android:textColor="@color/color_black" />
 
@@ -297,17 +300,17 @@
                     android:id="@+id/protocol_tcp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:background="@android:color/transparent"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:button="@null"
                     android:checked="false"
                     android:focusable="true"
                     android:drawableLeft="@drawable/radiobutton"
                     android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
+                    android:paddingBottom="25dip"
+                    android:paddingTop="25dip"
                     android:text="@string/setting_network_profile_management_auth_type_pap"
                     android:textColor="@color/color_black" />
                 
@@ -320,17 +323,17 @@
                     android:id="@+id/protocol_udp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="35dp"
                     android:background="@android:color/transparent"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:button="@null"
                     android:checked="false"
                     android:focusable="true"
                     android:drawableLeft="@drawable/radiobutton"
                     android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
+                    android:paddingBottom="25dip"
+                    android:paddingTop="25dip"
                     android:text="@string/setting_network_profile_management_auth_type_chap"
                     android:textColor="@color/color_black" />
                 
@@ -343,17 +346,17 @@
                     android:id="@+id/protocol_tcp_or_udp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:background="@android:color/transparent"
-                     android:textSize="20sp" 
+                     android:textSize="30sp" 
                     android:button="@null"
                     android:checked="false"
                     android:focusable="true"
                     android:drawableLeft="@drawable/radiobutton"
                     android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
+                    android:paddingBottom="25dip"
+                    android:paddingTop="25dip"
                     android:text="@string/setting_network_profile_management_auth_type_pap_and_chap"
                     android:textColor="@color/color_black" />
      </RadioGroup>
@@ -364,8 +367,8 @@
             android:background="@null"
             android:visibility="visible"  >
             <ProgressBar
-                android:layout_width="40dip"
-                android:layout_height="40dip"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
                 android:layout_centerInParent="true"
                 android:indeterminateDrawable="@drawable/progerss_blue"
                 />
