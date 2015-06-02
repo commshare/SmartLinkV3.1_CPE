@@ -115,8 +115,7 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:inputType="text"
-                        android:maxLength="32"
-                         android:textSize="20sp" 
+                        android:textSize="20sp" 
                         android:visibility="gone"
                         android:gravity="end" />
 

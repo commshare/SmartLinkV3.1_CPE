@@ -146,6 +146,8 @@ implements OnClickListener{
 		}else {
 			m_et_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 		}
+		
+		m_et_password.setMinWidth(100);
 
 		m_ib_hide_password.setOnClickListener(this);
 		m_ib_show_password.setOnClickListener(this);
@@ -440,6 +442,14 @@ implements OnClickListener{
 	private void onBtnDone(){
 		//
 		if(!m_isTypeSelecttionShown){
+			m_strSsid = m_et_ssid.getText().toString();
+			if(m_strSsid.length() == 0){
+				m_et_ssid.setText(m_strPreSsid);
+				m_tv_ssid.setText(m_strPreSsid);
+				String strTost = getString(R.string.setting_wifi_ssid_can_not_be_empty);
+				Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+				return;
+			}
 			boolean blHasChange = isSettingsChanged();
 			if (blHasChange) {
 				boolean blCheckSsid = checkSsid();

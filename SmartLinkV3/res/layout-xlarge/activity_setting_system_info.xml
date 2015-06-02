@@ -43,7 +43,7 @@
                     android:gravity="center_vertical|left"
                     android:text="@string/setting_device_software_version"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_sw_version_info"
@@ -52,16 +52,16 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
             <!-- Hardware Version -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:gravity="center_vertical|left"
                     android:text="@string/setting_device_hadrware_version"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_hw_version_info"
@@ -80,7 +80,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
             <!-- Device Name -->
 
@@ -88,8 +88,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:gravity="center_vertical|left"
                     android:text="@string/setting_device_device_name"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_device_name_info"
@@ -108,16 +108,16 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
             <!-- IMEI -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -127,7 +127,7 @@
                     android:gravity="center_vertical|left"
                     android:text="@string/setting_device_imei"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_imei_info"
@@ -136,16 +136,16 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
             <!-- MAC Address -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -155,7 +155,7 @@
                     android:gravity="center_vertical|left"
                     android:text="@string/setting_device_mac_address"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_mac_address_info"
@@ -164,16 +164,16 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
             <!-- IP Address -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -183,7 +183,7 @@
                     android:gravity="center_vertical|left"
                     android:text="@string/setting_device_ip"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_ip_address_info"
@@ -192,15 +192,15 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
             <!-- Subnet Mask -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -210,7 +210,7 @@
                     android:gravity="center_vertical|left"
                     android:text="@string/setting_device_subnet"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_subnet_mask_info"
@@ -219,7 +219,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:textColor="@color/color_black"
-                    android:textSize="17sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
 
             <!-- seperator -->
