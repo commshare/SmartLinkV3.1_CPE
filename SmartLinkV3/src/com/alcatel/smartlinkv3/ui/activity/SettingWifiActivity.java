@@ -95,6 +95,8 @@ implements OnClickListener{
 	
 	private TextView m_security_type;
 	private TextView m_encription_mode;
+	
+	private boolean m_isTypeSelecttionShown;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -127,6 +129,7 @@ implements OnClickListener{
 	}
 
 	private void createControls(){
+		m_isTypeSelecttionShown = false;
 		m_et_ssid = (EditText)findViewById(R.id.edit_ssid);
 		m_et_password = (EditText)findViewById(R.id.edit_password);
 		m_ib_show_password = (ImageButton)findViewById(R.id.ib_show_password);
@@ -209,8 +212,13 @@ implements OnClickListener{
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			boolean isOpen=imm.isActive();
 			if (isOpen) {
-				imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
-						InputMethodManager.HIDE_NOT_ALWAYS);
+				try {
+					imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
+							InputMethodManager.HIDE_NOT_ALWAYS);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			SettingWifiActivity.this.onBackPressed();
@@ -246,14 +254,21 @@ implements OnClickListener{
 		}
 	}
 	
+	@Override
+	public void onBackPressed(){
+		super.onBackPressed();
+		revertWifiModeSetting();
+	}
+	
 	private void goToWifiSettingFragment(){
 		setContentVisibility(View.GONE);
 		
 		m_tv_edit.setVisibility(View.GONE);
-		m_tv_done.setVisibility(View.GONE);
-		m_tv_back.setVisibility(View.GONE);
-		m_ib_back.setVisibility(View.GONE);
+//		m_tv_done.setVisibility(View.GONE);
+//		m_tv_back.setVisibility(View.GONE);
+//		m_ib_back.setVisibility(View.GONE);
 		
+		setTypeSelectionFragmentVisible(true);
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		Bundle dataBundle = new Bundle();
@@ -424,29 +439,34 @@ implements OnClickListener{
 
 	private void onBtnDone(){
 		//
-		boolean blHasChange = isSettingsChanged();
-		if (blHasChange) {
-			boolean blCheckSsid = checkSsid();
-			if (!blCheckSsid) {
-				m_strErrorInfo = getString(R.string.setting_ssid_invalid);
-				m_err_dialog.showDialog(
-						getString(R.string.setting_wifi_error_title), m_strErrorInfo);
-				return;
-			}
-			if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
-				boolean blCheckPsd = checkPassword(m_strKey);
-				if (!blCheckPsd) {
+		if(!m_isTypeSelecttionShown){
+			boolean blHasChange = isSettingsChanged();
+			if (blHasChange) {
+				boolean blCheckSsid = checkSsid();
+				if (!blCheckSsid) {
+					m_strErrorInfo = getString(R.string.setting_ssid_invalid);
 					m_err_dialog.showDialog(
 							getString(R.string.setting_wifi_error_title), m_strErrorInfo);
 					return;
 				}
+				if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
+					boolean blCheckPsd = checkPassword(m_strKey);
+					if (!blCheckPsd) {
+						m_err_dialog.showDialog(
+								getString(R.string.setting_wifi_error_title), m_strErrorInfo);
+						return;
+					}
+				}
+				setWlanSettingItems();
 			}
-			setWlanSettingItems();
+			m_ll_edit_ssid_broadcast.setEnabled(false);
+			//
+			synchValues();
+			setControlsDoneStatus();
 		}
-		m_ll_edit_ssid_broadcast.setEnabled(false);
-		//
-		synchValues();
-		setControlsDoneStatus();
+		else{
+			super.onBackPressed();
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -950,9 +970,22 @@ implements OnClickListener{
 		m_ib_back.setVisibility(visibility);
 	}
 	
+	public void setTypeSelectionFragmentVisible(final boolean isShown){
+		m_isTypeSelecttionShown = isShown;
+	}
+	
+	public void revertWifiModeSetting(){
+		m_nSecurityMode = m_nPreSecurityMode;
+		m_nType = m_nPreType;
+		setWifiMode(m_nSecurityMode, m_nType);
+	}
+	
 	public void setWifiMode(int SecurityMode, int Type){
 		m_nSecurityMode = SecurityMode;
 		m_nType = Type;
+		if(m_nType < 0){
+			m_nType = 0;
+		}
 		switch(m_nSecurityMode){
 		case 1:
 			m_security_type.setText(R.string.setting_wifi_wep);

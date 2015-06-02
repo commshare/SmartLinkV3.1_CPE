@@ -28,14 +28,6 @@
                android:id="@+id/device_about_app_version"
                android:layout_gravity="start"
                />
-            
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
-		        android:layout_gravity="center|end"/>
         </FrameLayout>
             
          <ImageView

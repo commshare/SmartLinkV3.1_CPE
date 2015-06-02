@@ -52,7 +52,8 @@
             android:background="@drawable/selector_edit_bg"
             android:inputType="textPassword"
             android:maxLength="16"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:imeOptions="flagNoExtractUi" />
 
         <TextView
             android:id="@+id/login_label_prompt"
