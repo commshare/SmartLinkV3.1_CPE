@@ -1029,11 +1029,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 	private void switchEditCheckBox() {
 		this.makrEditCheckBox = !this.makrEditCheckBox;
-		if (this.makrEditCheckBox) {
-		    mFileViewListener.notifyDataChanged();
-		} else {
+		if (!canEditCheckBox()) {
 		    clearSelection();
 		}
+		mFileViewListener.notifyDataChanged();
 	}
 
 	private OnMenuItemClickListener menuItemClick = new OnMenuItemClickListener() {
