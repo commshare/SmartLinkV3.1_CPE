@@ -15,7 +15,7 @@ public class ThumbnailManager {
 	}
 	
 	public static String getSavePictureFullPath(String uri) {
-		return getSavePictureRootDir() + getFormatUri(uri);
+		return getSavePictureRootDir() + String.valueOf(uri.hashCode());
 	}
 	
 	public static String getSaveMusicRootDir() {
@@ -27,24 +27,7 @@ public class ThumbnailManager {
 	}
 	
 	public static String getSaveMusicFullPath(String uri) {
-		return getSaveMusicRootDir() + getFormatUri(uri);
-	}
-
-	public static String getFormatUri(String uri)
-	{
-		uri  = uri.replace("/", "_");
-		uri  = uri.replace(":", "");	
-		uri  = uri.replace("?", "_");
-		uri  = uri.replace("%", "_");	
-		
-		int length = uri.length();
-		if (length > 150)
-		{
-			uri = uri.substring(length - 150);
-		}
-		
-		
-		return uri;
+		return getSaveMusicRootDir() + String.valueOf(uri.hashCode());
 	}
 	
 }
