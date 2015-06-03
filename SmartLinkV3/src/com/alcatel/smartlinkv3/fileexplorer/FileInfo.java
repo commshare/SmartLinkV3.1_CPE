@@ -42,5 +42,7 @@ public class FileInfo {
     public boolean isHidden;
 
     public long dbId; // id in the database, if is from database
+    
+    public int fileType;
 
 }

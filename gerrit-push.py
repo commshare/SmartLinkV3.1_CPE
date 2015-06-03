@@ -22,7 +22,7 @@ import os
 import re
 import platform
 import commands
-import subprocess
+import shlex, subprocess
 
 def usage():
     print('''
@@ -186,9 +186,16 @@ def get_cmd(c):
     print('%20s  :   %s' %('Branch', c(branch())))
     print('%78s' %(78*'-'))
 
+    #return ["git",
+    #        "push",
+    #        "ssh://%(user)s@172.24.61.94:29418/%(repo)s" % {'user':gerrit_account(), 'repo': repo()},
+    #        "HEAD:refs/for/%(branch)s" % {'branch':branch_merge(branch()},
+    #        ]
+    #shlex.split can be used
     return '''git push ssh://%(username)s@172.24.61.94:29418/%(repo)s HEAD:refs/for/%(branch)s''' \
             %{'username':gerrit_account(), 'repo': repo(),
                     'branch':branch_merge(branch())}
+
 
 def do_action(cmd, prompt, output=False):
     color_print(prompt)
@@ -198,9 +205,16 @@ def do_action(cmd, prompt, output=False):
 
         #commands is not work properly in MingGW.
         #return commands.getoutput(cmd)
-        return subprocess.check_output(cmd)
+        try:
+            output = subprocess.check_output(shlex.split(cmd))
+        except OSError as error:
+            output = str(error)
+            print "command is ", cmd
+            print error
+        return output
     else:
         return os.system(cmd)
+        #return subprocess.call(cmd)
 
 if __name__ == '__main__':
     if len(sys.argv) != 1:
