@@ -109,7 +109,7 @@ public class FtpFileViewFragment extends Fragment implements
 	private FtpManager ftp = null;
 	private Thread thread = null;
 	private Context mContext = null;
-	private pubLog logger = null;
+	private pubLog logger = pubLog.getLogger();
 	private FtpClientModel m_ftp = null;
 
 	FtpFileCommandTask cmdTask = null;
@@ -244,36 +244,47 @@ public class FtpFileViewFragment extends Fragment implements
 
 	volatile long every = 0;
 
-	FtpTransferIRetrieveListener TransferListener = new FtpTransferIRetrieveListener() {
-		@Override
-		public void onTrack(long now) {
-			/*
-			 * long per = now / every; changeProgressText((int) per);
-			 */
-			// changeProgressText((int) now);
-		}
-
-		@Override
-		public void onError(Object obj, int type) {
-			// sendMsg(obj + "");
-		}
-
-		public void onDone() {
-			// changeProgressText(100);
-		}
-
-		@Override
-		public void onCancel(Object obj) {
-			Log.d("", "onCancel...............");
-		}
+	FtpTransferIRetrieveListener TransferListener = new FtpTransferIRetrieveListener(){
 
 		@Override
 		public void onStart(String filePath) {
 			// TODO Auto-generated method stub
-			
+			logger.i("onStart...............");
+			logger.i("transfer process filePath =  " + filePath);
 		}
-	};
 
+		@Override
+		public void onTrack(long nowOffset) {
+			// TODO Auto-generated method stub
+			/*
+			 * long per = now / every; changeProgressText((int) per);
+			 */
+			// changeProgressText((int) now);
+			logger.i("transfer process: " + nowOffset);
+		}
+
+		@Override
+		public void onError(Object obj, int type) {
+			// TODO Auto-generated method stub
+			logger.i("onError...............");
+		}
+
+		@Override
+		public void onCancel(Object obj) {
+			// TODO Auto-generated method stub
+			logger.i("onCancel.............");
+		}
+
+		@Override
+		public void onDone() {
+			// TODO Auto-generated method stub
+			logger.i("onDone...............");
+			// changeProgressText(100);
+		}
+		
+	};
+	
+	
 	FtpManagerIRetrieveListener FtpManagerListener = new FtpManagerIRetrieveListener() {
 		@Override
 		public void onTrack(long now) {
@@ -325,8 +336,7 @@ public class FtpFileViewFragment extends Fragment implements
 				break;
 			case MSG_SHARE_FILE:
 				ArrayList<ShareFileInfo> shareFiles = (ArrayList<ShareFileInfo>) msg.obj;
-				
-				
+
 				break;
 			case 5:
 				// progressText.setText(msg.obj + "%");
@@ -421,6 +431,7 @@ public class FtpFileViewFragment extends Fragment implements
 		cmdTask = new FtpFileCommandTask();
 		cmdTask.init(getActivity());
 		cmdTask.setFtpCommandListener(ftpCommandListener);
+		cmdTask.setFtpTransferListener(TransferListener);
 		cmdTask.start();
 
 		mActivity = getActivity();

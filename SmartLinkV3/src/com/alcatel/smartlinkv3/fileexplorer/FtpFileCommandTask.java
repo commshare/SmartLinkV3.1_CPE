@@ -22,8 +22,12 @@ import com.alcatel.smartlinkv3.ftp.client.FtpClientModel;
 import com.alcatel.smartlinkv3.ftp.client.FtpManager;
 import com.alcatel.smartlinkv3.ftp.client.FtpManagerIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
+import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask;
+import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask.TaskPoolOnCallResponse;
+import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTaskManager;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
 import com.alcatel.smartlinkv3.samba.SmbHttpServer;
+
 
 //TODO: CallBack
 public class FtpFileCommandTask {
@@ -86,8 +90,8 @@ public class FtpFileCommandTask {
 	}
 
 	public void setFtpTransferListener(
-			FtpTransferIRetrieveListener TransferListener) {
-		ftp.setTransferFtpListener(TransferListener);
+			FtpTransferIRetrieveListener listener) {
+		ftp.setTransferFtpListener(listener);
 	}
 
 	public boolean init(Context mContext) {
@@ -111,7 +115,7 @@ public class FtpFileCommandTask {
 		logger.v("ftp init success!");
 
 		// if download or upload,this is provide transfer status
-		ftp.setTransferFtpListener(TransferListener);
+		//ftp.setTransferFtpListener(TransferListener);
 
 		// ftp operatetion status
 		ftp.setFtpManagerListener(FtpManagerListener);
@@ -287,20 +291,47 @@ public class FtpFileCommandTask {
 				break;
 			case DOWNLOAD:
 				// TODO: need a thread pool
-				if (remoteFiles.size() == 0) {
-					logger.w("download fail,file size is 0 on task");
-					CMD = -1;
-					break;
+				
+				if(true){
+					if (remoteFiles.size() == 0) {
+						logger.w("download fail,file size is 0 on task");
+						CMD = -1;
+						break;
+					}
+
+					logger.i("download file size: " + remoteFiles.size());
+
+					for (FileInfo f : remoteFiles) {
+						logger.i("download file lists: " + f.fileName);
+					}
+
+					logger.i("on downloanning...");
+					downloadFiles(remoteFiles);
 				}
-
-				logger.i("download file size: " + remoteFiles.size());
-
-				for (FileInfo f : remoteFiles) {
-					logger.i("download file lists: " + f.fileName);
+				
+				
+				if (false) {
+					if (remoteFiles.size() == 0) {
+						logger.w("download fail,file size is 0 on task");
+						CMD = -1;
+						break;
+					}
+					
+					ThreadPoolTaskManager downloadTaskMananger = ThreadPoolTaskManager
+							.getInstance();
+					
+					TaskPoolOnCallResponse onCallResponse = new TaskPoolOnCallResponse(){
+						@Override
+						public void taskCallResponse(Object obj) {
+							// TODO Auto-generated method stub
+							logger.i("taskCallResponse()...");
+							downloadFiles(remoteFiles);
+						}
+					};
+				
+					downloadTaskMananger.addDownloadTask(new ThreadPoolTask("ftp", onCallResponse));
 				}
-
-				logger.i("on downloanning...");
-				downloadFiles(remoteFiles);
+				
 				CMD = -1;
 				break;
 			case UPLOAD:
@@ -653,7 +684,6 @@ public class FtpFileCommandTask {
 
 		try {
 			FTPFile[] ftpFile = ftp.showListFile(path);
-			logger.v("ftp show files!");
 			sendMsg(MSG_REFRESH_UI, ftpFile);
 
 		} catch (Exception e) {
