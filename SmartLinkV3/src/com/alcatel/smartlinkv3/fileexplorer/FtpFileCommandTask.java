@@ -415,12 +415,6 @@ public class FtpFileCommandTask {
 		}
 
 		@Override
-		public void onStart() {
-			Log.d("", "transfer onStart.....");
-			// getEVE();
-		}
-
-		@Override
 		public void onError(Object obj, int type) {
 			logger.i("transfer error: " + obj);
 			// sendMsg(obj + "");
@@ -434,6 +428,12 @@ public class FtpFileCommandTask {
 		@Override
 		public void onCancel(Object obj) {
 			logger.i("transfer cancel.....");
+		}
+
+		@Override
+		public void onStart(String fileName, String filePath) {
+			// TODO Auto-generated method stub
+			
 		}
 	};
 
