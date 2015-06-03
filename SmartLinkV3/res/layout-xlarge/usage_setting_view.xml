@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+	    <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="100dip"
+	    	android:orientation="vertical"
+	    	android:background="@color/main_title_background" >
+		    	<ImageButton 
+		         android:id="@+id/btn_back"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:layout_alignParentLeft="true"
+		         android:layout_centerVertical="true"
+		         android:padding="8dip"
+		         android:src="@drawable/back"
+				 android:background="@null"/>
+			     <TextView
+			         android:id="@+id/Back"
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:layout_centerVertical="true"
+			         android:layout_toRightOf="@id/btn_back"
+			         android:text="@string/back"
+			         android:textColor="@color/color_white"
+			         android:textSize="24sp" /> 
+			    <TextView
+			        android:id="@+id/title"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_centerInParent="true"
+			        android:gravity="center"
+			        android:singleLine="true"
+			        android:paddingLeft="32dip"
+			        android:text="@string/usage_setting_title"
+			        android:textColor="@color/color_white"
+			        android:textSize="27sp"
+			        android:textStyle="bold" />
+	    </RelativeLayout>  
+	</LinearLayout>
+	
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+       	android:layout_below="@id/title_layout"
+       	android:background="@color/setting_background_color" 
+        android:overScrollMode="never" >
+    
+        <LinearLayout
+            android:id="@+id/frame_roaming"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+	    <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/setting_usage" />
+	        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dip"/>
+           
+       	<include
+       		android:layout_width="match_parent"
+       		android:layout_height="wrap_content"
+       		layout="@layout/setting_time_limit" />
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dip"/>
+	        
+        <LinearLayout
+            android:id="@+id/frame_roaming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="9dip"
+            android:background="@color/color_white"
+            android:orientation="vertical" >
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:paddingBottom="9dip"
+            android:paddingTop="9dip" >
+            <Button
+                android:id="@+id/enable_roaming_btn"
+                android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/switch_off"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enable_roaming_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/enable_roaming_btn"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="@string/usage_setting_roaming"
+                android:textSize="27sp" 
+                android:textStyle="bold"
+                android:textColor="@color/color_black"/>
+			</RelativeLayout>
+			
+            <TextView
+                android:id="@+id/enable_roaming_descrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:paddingBottom="18dip"
+            	android:paddingTop="9dip"
+                android:text="@string/roaming_descrition"
+                android:textSize="24sp" 
+                android:textColor="@color/color_grey"/>
+	  	</LinearLayout>
+	  </LinearLayout>
+   </ScrollView>
+</RelativeLayout>

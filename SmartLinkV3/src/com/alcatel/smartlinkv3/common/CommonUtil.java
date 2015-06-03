@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.common;
 import java.math.BigDecimal;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.model.UsageDataMode;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,26 @@ public class CommonUtil {
 		}else{
 			return trafficMB + context.getResources().getString(R.string.home_MB);
 		}
+	}
+	
+	public static UsageDataMode ConvertTrafficToUsageModelFromMB(long traffic){
+		BigDecimal trafficMB;
+		BigDecimal trafficGB;
+		
+		UsageDataMode usageDataMode = new UsageDataMode();
+		BigDecimal temp = new BigDecimal(traffic);
+		BigDecimal divide = new BigDecimal(1024);
+		BigDecimal divideM = new BigDecimal(1024l * 1024l);
+		trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
+		if(trafficMB.compareTo(divide) >= 0){
+			trafficGB = trafficMB.divide(divide,2,BigDecimal.ROUND_HALF_UP);
+			usageDataMode.setUsageData(trafficGB.doubleValue());
+			usageDataMode.setUsageUnit(1);
+		}else{
+			usageDataMode.setUsageData(trafficMB.doubleValue());
+			usageDataMode.setUsageUnit(0);
+		}
+		return usageDataMode;
 	}
 	
 	/*public static String ConvertTrafficToString(Context context,long traffic){

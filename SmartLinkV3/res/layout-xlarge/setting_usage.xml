@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/usage_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="9dip" >
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:paddingBottom="9dip"
+            android:paddingTop="9dip" >
+        	<TextView
+		        android:id="@+id/usage_title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:text="@string/usage_setting_usage"
+		        android:textSize="27sp"
+		        android:textStyle="bold" 
+		        android:textColor="@color/color_black"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:paddingBottom="9dip"
+            android:paddingTop="9dip" >
+
+            <TextView
+                android:id="@+id/billing_plan_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_billingday"
+                android:textSize="24sp"
+                android:textColor="@color/color_black" />
+
+            <TextView
+                android:id="@+id/billing_plan_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_dayunit"
+                android:textSize="24sp"
+                android:textColor="@color/color_black" />
+            
+            <EditText
+                android:id="@+id/billing_plan_value"
+                android:layout_width="98dip"
+                android:layout_height="45dip"
+                android:layout_marginRight="2dip"
+                android:layout_toLeftOf="@+id/billing_plan_unit"
+                android:background="@drawable/selector_edit_bg"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:width="98dip" />        
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_divider" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:paddingBottom="9dip"
+            android:paddingTop="9dip">
+
+            <TextView
+                android:id="@+id/monthly_plan_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_monthlysataplan"
+                android:textSize="24sp"
+                android:textColor="@color/color_black" />
+            
+            <TextView
+                android:id="@+id/monthly_plan_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_monthlyunit"
+                android:textSize="24sp"
+                android:textColor="@color/color_black" />
+
+            <EditText
+                android:id="@+id/monthly_plan_value"
+                android:layout_width="98dip"
+                android:layout_height="45dip"
+                android:layout_marginRight="2dip"
+                android:layout_toLeftOf="@+id/monthly_plan_unit"
+                android:background="@drawable/selector_edit_bg"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:width="98dip" />
+        </RelativeLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="15dip"
+            	android:layout_marginRight="15dip"
+            	android:paddingTop="9dip"
+	            android:paddingBottom="18dip">
+
+                <TextView
+                    android:id="@+id/usage_consumption_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/usage_setting_dataconsunption"
+                    android:textSize="24sp"
+                    android:textColor="@color/color_grey" />
+
+                <TextView
+                    android:id="@+id/consumption_value_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:textSize="24sp" 
+                    android:textColor="@color/color_grey"/>
+            </RelativeLayout>
+        </LinearLayout>
+        
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_divider" />
+        
+        <LinearLayout
+            android:id="@+id/frame_auto_disconnected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dip"
+           	android:layout_marginRight="15dip"
+           	android:paddingTop="9dip"
+            android:paddingBottom="18dip" >
+            <Button
+                android:id="@+id/enable_auto_disconnected_btn"
+                android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/switch_off"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enable_auto_disconnected_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/enable_auto_disconnected_btn"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="@string/usage_setting_autodisconnected"
+                android:textSize="27sp" 
+                android:textStyle="bold"
+                android:textColor="@color/color_black"/>
+			</RelativeLayout>   
+			<TextView
+                android:id="@+id/enable_disconnected_descrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:paddingBottom="18dip"
+                android:text="@string/disconnected_descrition"
+                android:textSize="24sp" 
+                android:textColor="@color/color_grey"/>
+	  </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

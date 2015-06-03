@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/usage_time_limit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="6dip"
+    android:background="@color/color_white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:paddingBottom="9dip"
+            android:paddingTop="9dip">
+            <Button
+                android:id="@+id/enable_time_limit_btn"
+                android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/switch_off"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enable_time_limit_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/enable_time_limit_btn"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="@string/usage_setting_timelimit"
+                android:textSize="27sp" 
+                android:textStyle="bold"
+                android:textColor="@color/color_black"/>
+		</RelativeLayout>
+		
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:paddingBottom="18dip"
+            android:paddingTop="9dip" >
+
+            <TextView
+                android:id="@+id/set_time_limit_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_settimelimit"
+                android:textSize="24sp" 
+                android:textColor="@color/color_black"/>
+            
+            <TextView
+                android:id="@+id/set_time_limit_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_timeunit"
+                android:textSize="24sp" 
+                android:textColor="@color/color_black"/>
+            
+            <EditText
+                android:id="@+id/set_time_limit_value"
+                android:layout_width="wrap_content"
+                android:layout_height="45dip"
+                android:layout_marginRight="3dip"
+                android:layout_toLeftOf="@+id/set_time_limit_unit"
+                android:background="@drawable/selector_edit_bg"
+                android:inputType="number"
+                android:maxLength="6"
+                android:imeOptions="actionDone"
+                android:width="98dip" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
