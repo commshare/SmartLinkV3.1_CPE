@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/rl_check_firmware"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <!-- center position -->
+
+            <ImageView
+                android:id="@+id/iv_upgrade_center_position_up"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/setting_upgrade" />
+
+            <TextView
+                android:id="@+id/tv_new_firmware_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/iv_upgrade_center_position_up"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/setting_upgrade_new_app_version"
+                android:textColor="@color/color_black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_check_firmware"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/tv_new_firmware_version"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/setting_upgrade_device_version"
+                android:textColor="@color/color_black"
+                android:textSize="24sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_upgrade_center_position_up"
+                android:layout_marginTop="30dp" >
+
+                <Button
+                    android:id="@+id/btn_check_firmware"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_common_button"
+                    android:gravity="center"
+                    android:text="@string/setting_upgrade_btn_check"
+                    android:textColor="@drawable/common_button_text"
+                    android:padding="5dp"
+                    android:textSize="24sp" />
+
+                <ProgressBar
+                    android:id="@+id/check_firmware_waiting_progress"
+                    android:layout_width="45dip"
+                    android:layout_height="45dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:layout_toRightOf="@id/btn_check_firmware"
+                    android:indeterminateDrawable="@drawable/progerss_blue"
+                    android:padding="8dip"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_upgrade" />
+
+        <RelativeLayout
+            android:id="@+id/rl_upgrade_app"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <!-- center position -->
+
+            <ImageView
+                android:id="@+id/iv_upgrade_center_position_down"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/setting_upgrade" />
+
+            <TextView
+                android:id="@+id/tv_new_app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/iv_upgrade_center_position_down"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginBottom="30dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/setting_upgrade_new_app_version"
+                android:textColor="@color/color_black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_current_app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/tv_new_app_version"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/setting_upgrade_current_app_version"
+                android:textColor="@color/color_black"
+                android:textSize="24sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_upgrade_center_position_down"
+                android:layout_marginTop="30dp" >
+
+                <Button
+                    android:padding="5dp"
+                    android:id="@+id/btn_app_upgrade"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/selector_common_button"
+                    android:gravity="center"
+                    android:text="@string/setting_upgrade_btn_check"
+                    android:textColor="@drawable/common_button_text"
+                    android:textSize="24sp" />
+
+                <ProgressBar
+                    android:id="@+id/check_app_waiting_progress"
+                    android:layout_width="45dip"
+                    android:layout_height="45dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:layout_toRightOf="@id/btn_app_upgrade"
+                    android:indeterminateDrawable="@drawable/progerss_blue"
+                    android:padding="8dip"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_upgrade_waiting"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ProgressBar
+            android:id="@+id/pb_upgrade_waiting_progress"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="3dp"
+            android:indeterminateDrawable="@drawable/progerss_blue"
+            android:visibility="gone" />
+        <TextView 
+            android:id="@+id/tv_progress_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@color/color_black"
+            android:layout_toRightOf="@id/pb_upgrade_waiting_progress"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:visibility="gone"/>
+        <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
+    </RelativeLayout>
+
+</FrameLayout>
