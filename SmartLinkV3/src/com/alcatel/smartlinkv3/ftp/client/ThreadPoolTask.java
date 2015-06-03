@@ -27,11 +27,14 @@ public class ThreadPoolTask implements Runnable {
 	@Override
 	public void run() {
 		// String name=Thread.currentThread().getName();
-	/*	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
+		if (true) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		System.out.println("ftp-" + name + " executed OK!");
 		mOnCallResponse.taskCallResponse(null);
 	}

@@ -25,9 +25,9 @@ import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask.TaskPoolOnCallResponse;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTaskManager;
+import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTaskManagerThread;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
 import com.alcatel.smartlinkv3.samba.SmbHttpServer;
-
 
 //TODO: CallBack
 public class FtpFileCommandTask {
@@ -48,6 +48,7 @@ public class FtpFileCommandTask {
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
 	private static final int MSG_SHARE_FILE = 2;
+	private static final int MSG_DOWNLOAD = 3;
 	private static final int MSG_REFRESH_UI = 10;
 
 	private FtpCommandProc ftpTask = new FtpCommandProc();
@@ -67,6 +68,11 @@ public class FtpFileCommandTask {
 	private ArrayList<ShareFileInfo> mShareFiles = new ArrayList<ShareFileInfo>();
 
 	private OnCallResponse mOnCallResponse;
+
+	public class TransferTracker {
+		String filePath;
+		long process;
+	}
 
 	public void setOnCallResponse(OnCallResponse response) {
 		this.mOnCallResponse = response;
@@ -89,8 +95,7 @@ public class FtpFileCommandTask {
 		this.m_FtpCommandListener = listener;
 	}
 
-	public void setFtpTransferListener(
-			FtpTransferIRetrieveListener listener) {
+	public void setFtpTransferListener(FtpTransferIRetrieveListener listener) {
 		ftp.setTransferFtpListener(listener);
 	}
 
@@ -115,7 +120,7 @@ public class FtpFileCommandTask {
 		logger.v("ftp init success!");
 
 		// if download or upload,this is provide transfer status
-		//ftp.setTransferFtpListener(TransferListener);
+		ftp.setTransferFtpListener(TransferListener);
 
 		// ftp operatetion status
 		ftp.setFtpManagerListener(FtpManagerListener);
@@ -135,6 +140,11 @@ public class FtpFileCommandTask {
 
 		ftp.setConfig(mContext, m_ftp);
 		thread = new Thread(ftpTask);
+
+		// init thread pool
+		ThreadPoolTaskManager.getInstance();
+		ThreadPoolTaskManagerThread downloadTaskManagerThread = new ThreadPoolTaskManagerThread();
+		new Thread(downloadTaskManagerThread).start();
 
 		this.isInit = true;
 		return true;
@@ -291,8 +301,8 @@ public class FtpFileCommandTask {
 				break;
 			case DOWNLOAD:
 				// TODO: need a thread pool
-				
-				if(true){
+
+				if (false) {
 					if (remoteFiles.size() == 0) {
 						logger.w("download fail,file size is 0 on task");
 						CMD = -1;
@@ -308,30 +318,30 @@ public class FtpFileCommandTask {
 					logger.i("on downloanning...");
 					downloadFiles(remoteFiles);
 				}
-				
-				
-				if (false) {
+
+				if (true) {
 					if (remoteFiles.size() == 0) {
 						logger.w("download fail,file size is 0 on task");
 						CMD = -1;
 						break;
 					}
-					
+
 					ThreadPoolTaskManager downloadTaskMananger = ThreadPoolTaskManager
 							.getInstance();
-					
-					TaskPoolOnCallResponse onCallResponse = new TaskPoolOnCallResponse(){
+
+					TaskPoolOnCallResponse onCallResponse = new TaskPoolOnCallResponse() {
 						@Override
 						public void taskCallResponse(Object obj) {
 							// TODO Auto-generated method stub
-							logger.i("taskCallResponse()...");
 							downloadFiles(remoteFiles);
 						}
 					};
-				
-					downloadTaskMananger.addDownloadTask(new ThreadPoolTask("ftp", onCallResponse));
+					
+					downloadTaskMananger.addDownloadTask(new ThreadPoolTask(
+							remoteFiles.get(0).fileName, onCallResponse));
+					logger.i("add download thread pool success!");
 				}
-				
+
 				CMD = -1;
 				break;
 			case UPLOAD:
@@ -440,9 +450,15 @@ public class FtpFileCommandTask {
 
 	FtpTransferIRetrieveListener TransferListener = new FtpTransferIRetrieveListener() {
 		@Override
-		public void onTrack(long now) {
+		public void onTrack(String filePath, long now) {
 			// changeProgressText((int) now);
-			logger.i("transfer progress: " + now);
+			//logger.i("[" + filePath + "] transfer progress: " + now);
+			
+			TransferTracker transfer = new TransferTracker();
+			transfer.filePath = filePath;
+			transfer.process = now;
+			
+			sendMsg(MSG_DOWNLOAD, transfer);
 		}
 
 		@Override

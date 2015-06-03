@@ -65,6 +65,7 @@ import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity.OnBackPre
 
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.FtpCommandListener;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.OnCallResponse;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.TransferTracker;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.UICmd;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.uiCommandListener;
@@ -242,49 +243,6 @@ public class FtpFileViewFragment extends Fragment implements
 
 	};
 
-	volatile long every = 0;
-
-	FtpTransferIRetrieveListener TransferListener = new FtpTransferIRetrieveListener(){
-
-		@Override
-		public void onStart(String filePath) {
-			// TODO Auto-generated method stub
-			logger.i("onStart...............");
-			logger.i("transfer process filePath =  " + filePath);
-		}
-
-		@Override
-		public void onTrack(long nowOffset) {
-			// TODO Auto-generated method stub
-			/*
-			 * long per = now / every; changeProgressText((int) per);
-			 */
-			// changeProgressText((int) now);
-			logger.i("transfer process: " + nowOffset);
-		}
-
-		@Override
-		public void onError(Object obj, int type) {
-			// TODO Auto-generated method stub
-			logger.i("onError...............");
-		}
-
-		@Override
-		public void onCancel(Object obj) {
-			// TODO Auto-generated method stub
-			logger.i("onCancel.............");
-		}
-
-		@Override
-		public void onDone() {
-			// TODO Auto-generated method stub
-			logger.i("onDone...............");
-			// changeProgressText(100);
-		}
-		
-	};
-	
-	
 	FtpManagerIRetrieveListener FtpManagerListener = new FtpManagerIRetrieveListener() {
 		@Override
 		public void onTrack(long now) {
@@ -317,6 +275,7 @@ public class FtpFileViewFragment extends Fragment implements
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
 	private static final int MSG_SHARE_FILE = 2;
+	private static final int MSG_DOWNLOAD = 3;
 	private static final int PAUSE_DOWNLOAD = 9;
 	private static final int MSG_REFRESH_UI = 10;
 
@@ -336,7 +295,10 @@ public class FtpFileViewFragment extends Fragment implements
 				break;
 			case MSG_SHARE_FILE:
 				ArrayList<ShareFileInfo> shareFiles = (ArrayList<ShareFileInfo>) msg.obj;
-
+				break;
+			case MSG_DOWNLOAD:
+				TransferTracker track = (TransferTracker) msg.obj;
+				logger.i("download file [" + track.filePath + "],process = :" + track.process);
 				break;
 			case 5:
 				// progressText.setText(msg.obj + "%");
@@ -431,7 +393,6 @@ public class FtpFileViewFragment extends Fragment implements
 		cmdTask = new FtpFileCommandTask();
 		cmdTask.init(getActivity());
 		cmdTask.setFtpCommandListener(ftpCommandListener);
-		cmdTask.setFtpTransferListener(TransferListener);
 		cmdTask.start();
 
 		mActivity = getActivity();
