@@ -332,7 +332,7 @@
                     android:text="@string/setting_wifi_password_wpa_psw_tip"
                     android:textColor="@color/color_black"
                     android:textSize="20sp"
-                    android:layout_weight="10" 
+                    android:layout_weight="8" 
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
                      android:background="@color/color_white"/>

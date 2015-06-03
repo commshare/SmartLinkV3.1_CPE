@@ -13,7 +13,10 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
 
 import android.content.Context;
 import android.content.Intent;
@@ -97,6 +100,7 @@ implements OnClickListener{
 	private TextView m_encription_mode;
 	
 	private boolean m_isTypeSelecttionShown;
+//	private boolean m_continue_to_change_to_5g;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -129,6 +133,7 @@ implements OnClickListener{
 	}
 
 	private void createControls(){
+//		m_continue_to_change_to_5g = false;
 		m_isTypeSelecttionShown = false;
 		m_et_ssid = (EditText)findViewById(R.id.edit_ssid);
 		m_et_password = (EditText)findViewById(R.id.edit_password);
@@ -241,8 +246,26 @@ implements OnClickListener{
 			break;
 			
 		case R.id.rb_2point4G_wifi:
-		case R.id.rb_5G_wifi:
 			onWifModeChanged();
+			break;
+		case R.id.rb_5G_wifi:
+			if(m_nPreWlanAPMode == WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ)){
+				popInquireyDialog();
+			}
+//			if(!m_continue_to_change_to_5g){
+//				if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nPreWlanAPMode) {
+//					m_rb_2point4G_wifi.setChecked(true);
+//					m_rb_5G_wifi.setChecked(false);
+//				}else{
+//					m_rb_5G_wifi.setChecked(true);
+//					m_rb_2point4G_wifi.setChecked(false);
+//				}
+//				break;
+//			}
+//			else{
+//				m_continue_to_change_to_5g = false;
+//			}
+//			onWifModeChanged();
 			break;
 		case R.id.set_wifi_security_mode:
 			goToWifiSettingFragment();
@@ -261,6 +284,39 @@ implements OnClickListener{
 		super.onBackPressed();
 		revertWifiModeSetting();
 	}
+	
+	private void popInquireyDialog(){
+		final InquireReplaceDialog inquireDlg = new InquireReplaceDialog(
+				SettingWifiActivity.this);
+		inquireDlg.m_titleTextView.setText(R.string.dialog_change_to_5g);
+		inquireDlg.m_contentTextView
+				.setText(R.string.dialog_warning_5g);
+		inquireDlg.m_confirmBtn.setText(R.string.continue_anyway);
+		inquireDlg.showDialog(new OnInquireApply(){
+
+			@Override
+			public void onInquireApply() {
+				// TODO Auto-generated method stub
+				onWifModeChanged();
+				inquireDlg.closeDialog();
+			}
+			}, new OnInquireCancle(){
+
+				@Override
+				public void onInquireCancel() {
+					// TODO Auto-generated method stub
+					if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nPreWlanAPMode) {
+						m_rb_2point4G_wifi.setChecked(true);
+						m_rb_5G_wifi.setChecked(false);
+					}else{
+						m_rb_5G_wifi.setChecked(true);
+						m_rb_2point4G_wifi.setChecked(false);
+					}
+					inquireDlg.closeDialog();
+				}
+				
+			});
+		}
 	
 	private void goToWifiSettingFragment(){
 		setContentVisibility(View.GONE);
