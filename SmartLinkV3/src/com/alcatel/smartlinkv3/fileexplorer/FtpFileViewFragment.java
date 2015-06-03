@@ -254,12 +254,6 @@ public class FtpFileViewFragment extends Fragment implements
 		}
 
 		@Override
-		public void onStart() {
-			Log.d("", "onStart.............");
-			// getEVE();
-		}
-
-		@Override
 		public void onError(Object obj, int type) {
 			// sendMsg(obj + "");
 		}
@@ -271,6 +265,12 @@ public class FtpFileViewFragment extends Fragment implements
 		@Override
 		public void onCancel(Object obj) {
 			Log.d("", "onCancel...............");
+		}
+
+		@Override
+		public void onStart(String filePath) {
+			// TODO Auto-generated method stub
+			
 		}
 	};
 

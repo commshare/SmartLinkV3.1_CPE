@@ -222,7 +222,7 @@ public class FtpClientProxy {
 		}
 		return true;
 	}
-	
+
 	public String getParentPathFromURL(String remoteURL) {
 		String parentPath = "";
 		// get file name from the path
@@ -358,7 +358,7 @@ public class FtpClientProxy {
 	public FtpDownloadStatus download(String local, String remote)
 			throws IOException {
 		FtpDownloadStatus result;
-		listener.onStart();
+		listener.onStart(remote);
 
 		FTPFile[] files = this.getFTPFiles(remote);
 
@@ -380,7 +380,7 @@ public class FtpClientProxy {
 		if (f.exists()) {
 			long localSize = f.length();
 			if (localSize >= lRemoteSize) {
-				//logger.i("fail,the size of local file is bigger then remote file!");
+				// logger.i("fail,the size of local file is bigger then remote file!");
 				listener.onError("local has the file yet!", 0);
 				// TODO
 				return FtpDownloadStatus.Download_From_Break_Success;
@@ -628,8 +628,7 @@ public class FtpClientProxy {
 		return success;
 	}
 
-	public FtpUploadStatus createFtpDirecroty(String remote)
-			throws IOException {
+	public FtpUploadStatus createFtpDirecroty(String remote) throws IOException {
 
 		FtpUploadStatus status = FtpUploadStatus.Create_Directory_Success;
 		String directory = remote.substring(0, remote.lastIndexOf("/") + 1);
