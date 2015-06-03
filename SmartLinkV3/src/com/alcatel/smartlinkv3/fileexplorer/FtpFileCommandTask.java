@@ -431,9 +431,9 @@ public class FtpFileCommandTask {
 		}
 
 		@Override
-		public void onStart(String fileName, String filePath) {
+		public void onStart(String filePath) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	};
 
