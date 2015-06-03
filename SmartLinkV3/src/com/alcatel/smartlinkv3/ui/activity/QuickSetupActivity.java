@@ -608,7 +608,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       if(mSkipSetup == false) {
         //setWiFiConfigure(mWiFiSSID, mEnterText.getText().toString());
         String enter = mEnterText.getText().toString();
-        if (enter.equals(mWiFiPasswd)) {
+        if (!enter.equals(mWiFiPasswd)) {
           mWiFiPasswd = enter;
           mSendRequest = true;
         }
