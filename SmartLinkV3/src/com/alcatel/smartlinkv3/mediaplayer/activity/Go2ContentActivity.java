@@ -124,6 +124,8 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
     	updateSelDevUI(this.getIntent().getStringExtra("title"));
     	
     	mBrocastFactory.registerListener(this);
+    	
+    	
     }
 	
 	private void setContentlist(List<MediaItem> list)

@@ -23,7 +23,7 @@ import com.alcatel.smartlinkv3.mediaplayer.util.FileHelper;
 import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 
 public class PicturePlayerActivity extends BaseActivity implements DownLoadHelper.IDownLoadCallback,
-																		PictureUtil.IScalCallback{
+									PictureUtil.IScalCallback{
 	private static final CommonLog log = LogFactory.createLog();
 	
 	public static final String PLAY_INDEX = "player_index";
@@ -31,6 +31,7 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 	private UIManager mUIManager;
 	private DelCacheFileManager mDelCacheFileManager;
 	private PictureControlCenter mControlCenter;
+	
 	
 	private int mScreenWidth = 0;
 	private int mScreenHeight = 0;
@@ -64,13 +65,21 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		mControlCenter.init();
 		mControlCenter.setDownLoadCallback(this);
 		
+		/*pchong   start*/
+	//	mThumbnailControlCenter = new ThumbnailPictureControlCenter(this);
+	//	mThumbnailControlCenter.init();
+	//	mThumbnailControlCenter.setThumbnailDownLoadCallback(this);
+		
 		mScreenWidth =  CommonUtil.getScreenWidth(this);
 		mScreenHeight = CommonUtil.getScreenHeight(this);	
 	}
 	
 	private void unInitData(){
 		mDelCacheFileManager.start(FileManager.getSaveRootDir());
+		
+		/*pchong   start*/
 		mControlCenter.unInit();
+	//	mThumbnailControlCenter.unInit();
 	}
 
 	@Override
@@ -89,10 +98,16 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 			mUIManager.setTitle(mMediaInfo.title);
 		}
 		
-		mControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getPictureList());
+		/*pchong   start*/
+	//	mThumbnailControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getPictureList());
+	//	mThumbnailControlCenter.play(curIndex);
 		
+		
+		mControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getPictureList());
 		mControlCenter.play(curIndex);
 		mUIManager.showProgress(true);
+		
+		
 	}	
 	
 	class UIManager implements OnClickListener{
@@ -306,5 +321,5 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 	public void startDownLoad() {
 		mUIManager.showProgress(true);
 	}
-	
+
 }

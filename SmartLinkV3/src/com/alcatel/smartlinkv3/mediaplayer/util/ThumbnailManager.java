@@ -8,9 +8,9 @@ public class ThumbnailManager {
 
 	public static String getSavePictureRootDir() {
 		if (CommonUtil.hasSDCard()) {
-			return CommonUtil.getRootFilePath() + "sharing/picture/thumbnails/";
+			return CommonUtil.getRootFilePath() + "sharing/thumbnails/picture/";
 		} else {
-			return CommonUtil.getRootFilePath() + "smartlinkv3/sharing/picture/thumbnails/";
+			return CommonUtil.getRootFilePath() + "smartlinkv3/sharing/thumbnails/picture/";
 		}
 	}
 	

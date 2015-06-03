@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
+import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
 
 
 public class ContentAdapter extends BaseAdapter{
@@ -27,6 +28,9 @@ public class ContentAdapter extends BaseAdapter{
 	private  List<MediaItem> contentItem;
 	private LayoutInflater mInflater;
 	private Context mContext;
+	private String IThumbnailWH = "?width=80,height=80";  
+	private String requestUrl;
+	private ThumbnailLoader thumbnailLoader;
 	
 	
 	private Drawable foldIcon;
@@ -45,7 +49,11 @@ public class ContentAdapter extends BaseAdapter{
 		musicIcon = res.getDrawable(R.drawable.microsd_item_music);
 		picIcon = res.getDrawable(R.drawable.microsd_item_pictures);
 		videoIcon = res.getDrawable(R.drawable.microsd_item_videos);
+		
+		thumbnailLoader = new ThumbnailLoader(mContext);  
 	}
+	
+	
 	
 	public void refreshData(List<MediaItem>  contentItem)
 	{
@@ -57,6 +65,7 @@ public class ContentAdapter extends BaseAdapter{
 	{
 		if (contentItem != null){
 			contentItem.clear();
+			thumbnailLoader.threadshutdown();
 			notifyDataSetChanged();
 		}
 	}
@@ -110,16 +119,25 @@ public class ContentAdapter extends BaseAdapter{
 		
 		ImageView icon = (ImageView) convertView.findViewById(R.id.imageView);
 		if (UpnpUtil.isAudioItem(dataItem)){
-			icon.setBackgroundDrawable(musicIcon);
+			icon.setImageDrawable(musicIcon);
 		}else if (UpnpUtil.isVideoItem(dataItem)){
-			icon.setBackgroundDrawable(videoIcon);
+			icon.setImageDrawable(videoIcon);
 		}else if (UpnpUtil.isPictureItem(dataItem)){
-			icon.setBackgroundDrawable(picIcon);
+			setUrl(dataItem);
+			thumbnailLoader.DisplayImage(requestUrl, icon);
+			//icon.setImageDrawable(picIcon);
 		}else{
-			icon.setBackgroundDrawable(foldIcon);
+			icon.setImageDrawable(foldIcon);
 		}
 			
 
 		return convertView;
+	}
+	
+	public void setUrl(MediaItem mi)
+	{
+			requestUrl = mi.getRes();
+			requestUrl = requestUrl.replace("MediaItems", "Resized");
+			requestUrl = requestUrl+IThumbnailWH;
 	}
 }

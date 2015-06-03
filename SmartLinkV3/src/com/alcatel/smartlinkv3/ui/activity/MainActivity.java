@@ -68,6 +68,7 @@ import android.view.MotionEvent;
 
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
+import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
 public class MainActivity extends BaseActivity implements OnClickListener,IDeviceChangeListener{
@@ -123,6 +124,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	
 	private DMSDeviceBrocastFactory mBrocastFactory;
 	private AllShareProxy mAllShareProxy;
+	private ThumbnailLoader thumbnailLoader;
 	private static Device mDevice;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +191,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	mBrocastFactory.registerListener(this);
     
+    	thumbnailLoader = new ThumbnailLoader(this);  
   //  	showMicroView();
 
 	}
@@ -250,6 +253,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		
 		mBrocastFactory.unRegisterListener();
 		mAllShareProxy.exitSearch();
+		thumbnailLoader.clearCache();
 	}
 	
 	private void destroyDialogs(){
