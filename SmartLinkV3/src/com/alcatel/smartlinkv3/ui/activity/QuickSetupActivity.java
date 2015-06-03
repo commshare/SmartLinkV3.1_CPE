@@ -278,10 +278,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           if(mStateHandler == null || mEnterText.getText().length() > 0) {
             return;
           }  
-          if (mStateHandler.getState() == State.WIFI_SSID) {
-            mEnterText.setHint(mWiFiSSID);          
-          } else if (mStateHandler.getState() == State.WIFI_PASSWD) {
-            mEnterText.setHint(mWiFiPasswd);
+          if (mStateHandler.getState() == State.WIFI_SSID && mWiFiSSID != null) {
+            //mEnterText.setHint(mWiFiSSID);
+            mEnterText.setText(mWiFiSSID);
+          } else if (mStateHandler.getState() == State.WIFI_PASSWD && mWiFiPasswd != null) {
+            //mEnterText.setHint(mWiFiPasswd);
+            mEnterText.setText(mWiFiPasswd);
           }
         }
       } else if (action.equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)) {
@@ -551,8 +553,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mEnterText.setInputType(InputType.TYPE_CLASS_TEXT);
       mEnterText.getText().clear();
       mEnterText.addTextChangedListener(this);      
-      mEnterText.setHint(mWiFiSSID);
-        //mEnterText.setText(mWiFiSSID);      
+      //mEnterText.setHint(mWiFiSSID);
+      if (mWiFiSSID != null) {
+        mEnterText.setText(mWiFiSSID);
+      }
     }
 
     @Override
@@ -593,7 +597,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mEnterText.addTextChangedListener(this);
       mWiFiSSIDTextView.setVisibility(View.GONE);
       mWiFiPasswdTextView.setVisibility(View.GONE);      
-      mEnterText.setHint(mWiFiPasswd);      
+      //mEnterText.setHint(mWiFiPasswd);
+      if(mWiFiPasswd != null){
+        mEnterText.setText(mWiFiPasswd);
+      }
     }
 
     @Override
