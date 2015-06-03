@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import android.R.bool;
 import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
@@ -57,6 +58,7 @@ public class FtpFileCommandTask {
 	private FtpCommandListener m_FtpCommandListener;
 	// private Handler handler = null;
 	private boolean isLogin = false;
+	private boolean isInit = false;
 
 	private ArrayList<ShareFileInfo> mShareFiles = new ArrayList<ShareFileInfo>();
 
@@ -83,7 +85,16 @@ public class FtpFileCommandTask {
 		this.m_FtpCommandListener = listener;
 	}
 
+	public void setFtpTransferListener(
+			FtpTransferIRetrieveListener TransferListener) {
+		ftp.setTransferFtpListener(TransferListener);
+	}
+
 	public boolean init(Context mContext) {
+		if (isInit) {
+			return true;
+		}
+
 		ftp = new FtpManager();
 
 		this.mContext = mContext;
@@ -116,11 +127,12 @@ public class FtpFileCommandTask {
 				+ "/LinkApp";
 
 		logger.v("Local directory: " + m_ftp.localDir);
-		logger.v("Server ip is: " + m_ftp.host);
+		logger.v("Server ip: " + m_ftp.host);
 
 		ftp.setConfig(mContext, m_ftp);
 		thread = new Thread(ftpTask);
 
+		this.isInit = true;
 		return true;
 	}
 
@@ -274,6 +286,7 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 			case DOWNLOAD:
+				// TODO: need a thread pool
 				if (remoteFiles.size() == 0) {
 					logger.w("download fail,file size is 0 on task");
 					CMD = -1;
@@ -291,6 +304,7 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 			case UPLOAD:
+				// TODO: need a thread pool
 				if (true) {
 					if (localFiles.size() == 0) {
 						logger.w("upload fail,file size is 0 on task");
@@ -396,31 +410,30 @@ public class FtpFileCommandTask {
 	FtpTransferIRetrieveListener TransferListener = new FtpTransferIRetrieveListener() {
 		@Override
 		public void onTrack(long now) {
-			/*
-			 * long per = now / every; changeProgressText((int) per);
-			 */
 			// changeProgressText((int) now);
 			logger.i("transfer progress: " + now);
 		}
 
 		@Override
 		public void onStart() {
-			Log.d("", "onStart.............");
+			Log.d("", "transfer onStart.....");
 			// getEVE();
 		}
 
 		@Override
 		public void onError(Object obj, int type) {
+			logger.i("transfer error: " + obj);
 			// sendMsg(obj + "");
 		}
 
 		public void onDone() {
+			logger.i("transfer done......");
 			// changeProgressText(100);
 		}
 
 		@Override
 		public void onCancel(Object obj) {
-			Log.d("", "onCancel...............");
+			logger.i("transfer cancel.....");
 		}
 	};
 
@@ -437,7 +450,6 @@ public class FtpFileCommandTask {
 
 		@Override
 		public void onStatus(Object obj, int type) {
-			// TODO :test
 			/*
 			 * Toast.makeText(MainActivity.this, obj + "",
 			 * Toast.LENGTH_SHORT).show();
@@ -549,10 +561,11 @@ public class FtpFileCommandTask {
 
 		for (FileInfo f : fromFiles) {
 			String fromFile = f.filePath + File.separator + f.fileName;
-			String toFile =  remotePath + File.separator + f.fileName;
-			
-			logger.i("move fromFile = " + fromFile + ", move toFile = " + toFile);
-			
+			String toFile = remotePath + File.separator + f.fileName;
+
+			logger.i("move fromFile = " + fromFile + ", move toFile = "
+					+ toFile);
+
 			boolean result = ftp.move(fromFile, toFile);
 
 			if (result) {
@@ -578,7 +591,7 @@ public class FtpFileCommandTask {
 			logger.w("download fail,can't not find the local files!");
 			return;
 		}
-		// TODO
+
 		for (File f : local) {
 			String localPath = f.getPath();
 			result = ftp.upload(localPath,
@@ -633,17 +646,21 @@ public class FtpFileCommandTask {
 	}
 
 	private void showFiles(String path) {
-		if (isLogin) {
-			try {
-				FTPFile[] ftpFile = ftp.showListFile(path);
-				logger.v("ftp show files!");
-				sendMsg(MSG_REFRESH_UI, ftpFile);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				sendMsg(MSG_SHOW_TOAST, "Ftp File List Error:" + e);
-			}
+		if (!isLogin) {
+			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			return;
 		}
+
+		try {
+			FTPFile[] ftpFile = ftp.showListFile(path);
+			logger.v("ftp show files!");
+			sendMsg(MSG_REFRESH_UI, ftpFile);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendMsg(MSG_SHOW_TOAST, "Ftp File List Error:" + e);
+		}
+
 	}
 
 	private void shareFiles(ArrayList<FileInfo> remote) {
