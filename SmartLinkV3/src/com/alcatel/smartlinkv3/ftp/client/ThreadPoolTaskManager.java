@@ -30,6 +30,7 @@ public class ThreadPoolTaskManager {
 	public void addDownloadTask(ThreadPoolTask downloadTask) {
 		synchronized (downloadTasks) {
 			if (!isTaskRepeat(downloadTask.getFileId())) {
+				System.out.println("thread pool 1: add task name = " + downloadTask.getFileId());
 				downloadTasks.addLast(downloadTask);
 			}
 		}
@@ -41,7 +42,7 @@ public class ThreadPoolTaskManager {
 			if (taskIdSet.contains(fileId)) {
 				return true;
 			} else {
-				System.out.println("thread pool: add task name = " + fileId);
+				System.out.println("thread pool 2: add task name = " + fileId);
 				taskIdSet.add(fileId);
 				return false;
 			}

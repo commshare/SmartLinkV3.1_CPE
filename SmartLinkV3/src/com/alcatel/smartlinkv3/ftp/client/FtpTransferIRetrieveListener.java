@@ -3,7 +3,7 @@ package com.alcatel.smartlinkv3.ftp.client;
 public interface FtpTransferIRetrieveListener {
 	public void onStart(String filePath);
 
-	public void onTrack(long nowOffset);
+	public void onTrack(String filePath,long nowOffset);
 
 	public void onError(Object obj, int type);
 

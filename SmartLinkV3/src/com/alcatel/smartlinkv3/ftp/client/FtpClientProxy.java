@@ -382,6 +382,7 @@ public class FtpClientProxy {
 			if (localSize >= lRemoteSize) {
 				// logger.i("fail,the size of local file is bigger then remote file!");
 				listener.onError("local has the file yet!", 0);
+				listener.onDone();
 				// TODO
 				return FtpDownloadStatus.Download_From_Break_Success;
 			}
@@ -398,6 +399,15 @@ public class FtpClientProxy {
 			int c;
 
 			while ((c = in.read(bytes)) != -1) {
+				if (false) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
 				if (stopDownload) {
 					listener.onCancel("");
 					break;
@@ -410,7 +420,7 @@ public class FtpClientProxy {
 					process = nowProcess;
 					if (process % 10 == 0)
 						logger.v("Download Process:" + process);
-					listener.onTrack(process);
+					listener.onTrack(remote,process);
 					// TODO: update the process
 				}
 			}
@@ -447,7 +457,7 @@ public class FtpClientProxy {
 					process = nowProcess;
 					if (process % 10 == 0)
 						logger.v("Download Process:" + process);
-					listener.onTrack(process);
+					listener.onTrack(remote,process);
 					// TODO: update the process
 				}
 			}
