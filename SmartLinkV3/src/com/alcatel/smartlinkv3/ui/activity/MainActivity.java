@@ -70,11 +70,11 @@ import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
-public class MainActivity extends BaseActivity implements OnClickListener,
-															IDeviceChangeListener{
+public class MainActivity extends BaseActivity implements OnClickListener,IDeviceChangeListener{
 	private final int HOME_PAGE = 1;
 	private final int SMS_PAGE = 2;
 	private final int BATTERY_PAGE = 3;
+	private final int USAGE_PAGE = 4;
 	private int m_preButton = 0;
 	private int m_nNewCount = 0;
 
@@ -1224,6 +1224,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				widgetBatteryBtnClick();
 			}else if (nPage == HOME_PAGE) {
 				homeBtnClick();
+			}else if(nPage == USAGE_PAGE){
+			    	usageBtnClick();
 			}
 		}else {
 			Intent itent = new Intent(this, RefreshWifiActivity.class);
