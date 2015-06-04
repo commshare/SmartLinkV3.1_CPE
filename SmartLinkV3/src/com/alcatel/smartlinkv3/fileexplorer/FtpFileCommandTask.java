@@ -173,7 +173,7 @@ public class FtpFileCommandTask {
 		int time = 0;
 		while (!thread.isAlive()) {
 			try {
-				thread.sleep(10);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -207,6 +207,10 @@ public class FtpFileCommandTask {
 		ftpTask.awakenCMD(DOWNLOAD);
 	}
 
+	public void ftp_pause_download() {
+		ftpTask.awakenCMD(PAUSE_DOWNLOAD);
+	}
+	
 	public void ftp_upload(ArrayList<File> localFiles, String remotePath) {
 		ftpTask.setLocalFiles(localFiles);
 		ftpTask.setRemotePath(remotePath);
@@ -372,6 +376,10 @@ public class FtpFileCommandTask {
 
 				CMD = -1;
 				break;
+			case PAUSE_DOWNLOAD:
+				ftp.setFtpStopDownload();
+				CMD = -1;
+				break;
 			case UPLOAD:
 				// TODO: need a thread pool
 				if (true) {
@@ -453,6 +461,7 @@ public class FtpFileCommandTask {
 					e.printStackTrace();
 				}
 				CMD = -1;
+				isInit = false;
 				isLogin = false;
 				running = false;
 				break;
