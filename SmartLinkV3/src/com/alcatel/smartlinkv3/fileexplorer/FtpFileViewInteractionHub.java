@@ -21,8 +21,6 @@ package com.alcatel.smartlinkv3.fileexplorer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FileSortHelper.SortMethod;
@@ -67,7 +65,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -323,15 +320,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			case R.id.button_moving_cancel:
 				onOperationButtonCancel();
 				break;
-			// case R.id.path_pane_up_level:
-			// onOperationUpLevel();
-			// //ActionMode mode = ((FtpFileExplorerTabActivity) mContext)
-			// // .getActionMode();
-			// ActionMode mode = getActionMode();
-			// if (mode != null) {
-			// mode.finish();
-			// }
-			// break;
 			}
 		}
 
@@ -351,17 +339,17 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		onOperationFavorite(path);
 	}
 
-	private void onOperationSetting() {
-		Intent intent = new Intent(mActivity,
-				FileExplorerPreferenceActivity.class);
-		if (intent != null) {
-			try {
-				mActivity.startActivity(intent);
-			} catch (ActivityNotFoundException e) {
-				Log.e(LOG_TAG, "fail to start setting: " + e.toString());
-			}
-		}
-	}
+//	private void onOperationSetting() {
+//		Intent intent = new Intent(mActivity,
+//				FileExplorerPreferenceActivity.class);
+//		if (intent != null) {
+//			try {
+//				mActivity.startActivity(intent);
+//			} catch (ActivityNotFoundException e) {
+//				Log.e(LOG_TAG, "fail to start setting: " + e.toString());
+//			}
+//		}
+//	}
 
 	private void onOperationFavorite(String path) {
 		FavoriteDatabaseHelper databaseHelper = FavoriteDatabaseHelper
@@ -400,15 +388,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			f.Selected = true;
 			mCheckedFileNameList.add(f);
 		}
-		// FtpFileExplorerTabActivity fileExplorerTabActivity =
-		// (FtpFileExplorerTabActivity) mContext;
-		// ActionMode mode = fileExplorerTabActivity.getActionMode();
+
 		ActionMode mode = getActionMode();
 		if (mode == null) {
-			// mode = fileExplorerTabActivity.startActionMode(new ModeCallback(
-			// mContext, this));
 			mode = this.launchActionMode(new ModeCallback(mActivity, this));
-			// fileExplorerTabActivity.setActionMode(mode);
 			setActionMode(mode);
 			Util.updateActionModeTitle(mode, mActivity, getSelectedFileList()
 					.size());
@@ -1088,11 +1071,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			case GlobalConsts.MENU_FAVORITE:
 				onOperationFavorite();
 				break;
-			case MENU_SETTING:
-				onOperationSetting();
-				break;
 			case MENU_EXIT:
-				// ((FtpFileExplorerTabActivity) mActivity).finish();
 				mActivity.finish();
 				break;
 			// sort
@@ -1316,8 +1295,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 
 		if (isInSelection()) {
 			boolean selected = lFileInfo.Selected;
-			// ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-			// .getActionMode();
 			ActionMode actionMode = getActionMode();
 			ImageView checkBox = (ImageView) view
 					.findViewById(R.id.file_checkbox);
@@ -1353,8 +1330,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		}
 
 		mCurrentPath = getAbsoluteName(mCurrentPath, lFileInfo.fileName);
-		// ActionMode actionMode = ((FtpFileExplorerTabActivity) mContext)
-		// .getActionMode();
 		ActionMode actionMode = this.getActionMode();
 		if (actionMode != null) {
 			actionMode.finish();

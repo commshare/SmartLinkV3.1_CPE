@@ -355,22 +355,22 @@ public class Util {
 		return true;
 	}
 
-	public static ArrayList<FavoriteItem> getDefaultFavorites(Context context) {
-		ArrayList<FavoriteItem> list = new ArrayList<FavoriteItem>();
-		list.add(new FavoriteItem(context.getString(R.string.favorite_photo),
-				makePath(getSdDirectory(), "DCIM/Camera")));
-		list.add(new FavoriteItem(context.getString(R.string.favorite_sdcard),
-				getSdDirectory()));
-		// list.add(new FavoriteItem(context.getString(R.string.favorite_root),
-		// getSdDirectory()));
-		list.add(new FavoriteItem(context
-				.getString(R.string.favorite_screen_cap), makePath(
-				getSdDirectory(), "MIUI/screen_cap")));
-		list.add(new FavoriteItem(
-				context.getString(R.string.favorite_ringtone), makePath(
-						getSdDirectory(), "MIUI/ringtone")));
-		return list;
-	}
+//	public static ArrayList<FavoriteItem> getDefaultFavorites(Context context) {
+//		ArrayList<FavoriteItem> list = new ArrayList<FavoriteItem>();
+//		list.add(new FavoriteItem(context.getString(R.string.favorite_photo),
+//				makePath(getSdDirectory(), "DCIM/Camera")));
+//		list.add(new FavoriteItem(context.getString(R.string.favorite_sdcard),
+//				getSdDirectory()));
+//		// list.add(new FavoriteItem(context.getString(R.string.favorite_root),
+//		// getSdDirectory()));
+//		list.add(new FavoriteItem(context
+//				.getString(R.string.favorite_screen_cap), makePath(
+//				getSdDirectory(), "MIUI/screen_cap")));
+//		list.add(new FavoriteItem(
+//				context.getString(R.string.favorite_ringtone), makePath(
+//						getSdDirectory(), "MIUI/ringtone")));
+//		return list;
+//	}
 
 	public static boolean setText(View view, int id, String text) {
 		TextView textView = (TextView) view.findViewById(id);
@@ -417,45 +417,6 @@ public class Util {
 		public long total;
 
 		public long free;
-	}
-
-	public static SDCardInfo getSDCardInfo() {
-		String sDcString = android.os.Environment.getExternalStorageState();
-
-		if (sDcString.equals(android.os.Environment.MEDIA_MOUNTED)) {
-			File pathFile = android.os.Environment
-					.getExternalStorageDirectory();
-
-			try {
-				android.os.StatFs statfs = new android.os.StatFs(
-						pathFile.getPath());
-
-				// 获取SDCard上BLOCK总数
-				long nTotalBlocks = statfs.getBlockCount();
-
-				// 获取SDCard上每个block的SIZE
-				long nBlocSize = statfs.getBlockSize();
-
-				// 获取可供程序使用的Block的数量
-				long nAvailaBlock = statfs.getAvailableBlocks();
-
-				// 获取剩下的所有Block的数量(包括预留的一般程序无法使用的块)
-				long nFreeBlock = statfs.getFreeBlocks();
-
-				SDCardInfo info = new SDCardInfo();
-				// 计算SDCard 总容量大小MB
-				info.total = nTotalBlocks * nBlocSize;
-
-				// 计算 SDCard 剩余大小MB
-				info.free = nAvailaBlock * nBlocSize;
-
-				return info;
-			} catch (IllegalArgumentException e) {
-				Log.e(LOG_TAG, e.toString());
-			}
-		}
-
-		return null;
 	}
 
 	public static void showNotification(Context context, Intent intent,
