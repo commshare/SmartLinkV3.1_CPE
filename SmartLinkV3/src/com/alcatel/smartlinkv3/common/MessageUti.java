@@ -179,6 +179,10 @@ public class MessageUti {
 	public static String PROFILE_SET_DEFAULT_PROFILE_REQUEST = "com.alcatel.smartlinkv3.business.profile.setdefaultprofile";
 	/**************************profile message end*******************************************************************************/
 	
+	/**************************widget message end*******************************************************************************/
+	public static String WIDGET_GET_INTERNET_SWITCH = "com.alcatel.smartlinkv3.appwidget.smartLinkWidget";
+	/**************************widget message end*******************************************************************************/
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static Map<String, HttpMethodUti> httpMethods = new HashMap<String, HttpMethodUti>();
 	public static void intHttpMethods() {

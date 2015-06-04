@@ -266,6 +266,7 @@
                 <action android:name="com.alcatel.smartlinkv3.business.sms.getcontactlist" />
                 <action android:name="com.alcatel.smartlinkv3.business.wan.getconnectstatus" />
                 <action android:name="com.alcatel.smartlinkv3.business.statistics.getusagesettings"/>
+                <action android:name="com.alcatel.smartlinkv3.appwidget.smartLinkWidget"/>
             </intent-filter>
 
             <meta-data
