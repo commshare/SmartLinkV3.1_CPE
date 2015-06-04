@@ -147,4 +147,11 @@ public class CPEConfig {
 		   mSettings.setInitialLaunchedFlag();
 		}
 		
+		public boolean getQuickSetupFlag() {
+		  return mSettings.getQuickSetupFlag();
+		}
+		
+		public void setQuickSetupFlag(){
+		  mSettings.setQuickSetupFlag();
+		}
 }

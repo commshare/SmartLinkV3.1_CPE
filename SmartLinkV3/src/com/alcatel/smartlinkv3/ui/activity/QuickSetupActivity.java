@@ -90,6 +90,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     mReceiver = new QSBroadcastReceiver();
     
+    
+    
     setViewsVisibility(false, true);
     mLoginDialog = new LoginDialog(this);
     mLoginDialog.setCancelCallback(new CancelLoginListener() {
@@ -368,7 +370,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   
   private void finishQuickSetup(boolean setFlag){
     if(setFlag) {
-      CPEConfig.getInstance().setInitialLaunchedFlag();
+      CPEConfig.getInstance().setQuickSetupFlag();
     }
     Intent it = new Intent(mContext, MainActivity.class);
     startActivity(it);
@@ -638,7 +640,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override
     public boolean storeSetting() {
-      CPEConfig.getInstance().setInitialLaunchedFlag();
+      CPEConfig.getInstance().setQuickSetupFlag();
       if (mSendRequest) {
         setWiFiConfigure(mWiFiSSID, mWiFiPasswd);
       } else {

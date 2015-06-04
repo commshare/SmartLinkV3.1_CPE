@@ -114,6 +114,7 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 	      startBtn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
+	          CPEConfig.getInstance().setInitialLaunchedFlag();
 	          boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();	          	          
 	          Class<?> clazz = bCPEWifiConnected ? QuickSetupActivity.class : RefreshWifiActivity.class;
 	          Intent intent = new Intent(mActivity, clazz);
