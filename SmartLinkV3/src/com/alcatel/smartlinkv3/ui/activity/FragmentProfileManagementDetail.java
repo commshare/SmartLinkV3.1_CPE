@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -399,7 +400,46 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+				}
+			}
+			
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
 					
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+				}
+			}
+			
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.PROFILE_EDIT_PROFILE_REQUEST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+					
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 		}

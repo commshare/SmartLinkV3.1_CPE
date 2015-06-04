@@ -6,17 +6,21 @@ import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.DialogAutoDismiss;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -57,6 +61,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private boolean mSendRequest = false;//If user not change settings, do not send request.
   private ErrorDialog mPINErrorDialog = null;
   private LoginDialog mLoginDialog = null;
+  private AutoLoginProgressDialog mAutoLoginDialog = null;
   private CommonErrorInfoDialog mConfirmDialog = null;
   private Context mContext;
   private BusinessMannager mBusinessMgr;
@@ -90,9 +95,86 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     mReceiver = new QSBroadcastReceiver();
     
-    
+    UserLoginStatus status = mBusinessMgr.getLoginStatus(); 
+    /*When use login and back to launcher, we do not let user enter
+     * login password
+     */
+    if (LoginDialog.isLoginSwitchOff() || status == UserLoginStatus.login) {
+      buildStateHandlerChain(false);
+      return;
+    }
     
     setViewsVisibility(false, true);
+    if (status == UserLoginStatus.LoginTimeOut) {
+      handleLoginError(R.string.login_login_time_used_out_msg, false);
+    } else {
+      doLogin();
+    }
+  }
+  
+  private void handleLoginError(int messageId, final boolean timeout) {
+    if (mConfirmDialog != null) {
+      mConfirmDialog.destroyDialog();
+    }
+    mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
+    mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+
+      @Override
+      public void onConfirm() {
+        if(timeout) {
+          //If timeout, let user re-login
+          showLoginDialog();
+        } else {
+          //If other user enter, do not need setup
+          finishQuickSetup(true);
+        }
+      }
+    
+    });
+    mConfirmDialog.showDialog(
+        getString(R.string.other_login_warning_title),
+        getString(messageId));
+  }
+  
+  private void doLogin() {
+    mAutoLoginDialog = new AutoLoginProgressDialog(this);
+    mAutoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener() {
+      /*
+       * Auto login successfully.
+       * Scenario: user enter correct password, then exit activity by press home key,
+       * later launch smartlink again. 
+       */
+      public void onLoginSuccess()  {
+        buildStateHandlerChain(false);
+      }
+
+      public void onLoginFailed(String error_code) {
+        if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){
+          handleLoginError(R.string.login_other_user_logined_error_msg, false);
+        } else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
+          handleLoginError(R.string.login_login_time_used_out_msg, true);
+        } else {
+          ErrorDialog.getInstance(mContext).showDialog(
+              getString(R.string.login_psd_error_msg),
+              new OnClickBtnRetry() {
+                  @Override
+                  public void onRetry() {
+                    showLoginDialog();
+            }
+          });
+        }       
+      }
+
+      @Override
+      public void onFirstLogin(){
+        showLoginDialog();
+      }         
+    });  
+  }
+  /*
+   * A dialog that let use enter password.
+   */
+  private void showLoginDialog() {
     mLoginDialog = new LoginDialog(this);
     mLoginDialog.setCancelCallback(new CancelLoginListener() {
 
@@ -151,9 +233,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     if (sim.m_SIMState == SIMState.PinRequired) {
       //if SIMState.PinRequired, that means sim.m_nPinRemainingTimes > 0
       mStateHandler = new PinCodeHandler(sim.m_nPinRemainingTimes);
-      mStateHandler.addNextStateHandler(new WiFiSSIDHandler(true));
+      mStateHandler.addNextStateHandler(new WiFiSSIDHandler(false));
     } else {
-      mStateHandler = new WiFiSSIDHandler(false);
+      mStateHandler = new WiFiSSIDHandler(true);
    }        
 //TODO:: NEED TEST
       
@@ -254,6 +336,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mLoginDialog.destroyDialog();
     if (mConfirmDialog != null)
       mConfirmDialog.destroyDialog();
+    if (mAutoLoginDialog != null)
+      mAutoLoginDialog.destroyDialog();
+    mBusinessMgr = null;
   }
   
   class QSBroadcastReceiver extends BroadcastReceiver {
@@ -275,9 +360,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       } else if (action.equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
         if (BaseResponse.RESPONSE_OK == result && 0 == error.length()) {
           mWiFiSSID = mBusinessMgr.getSsid();
-          mWiFiPasswd = mBusinessMgr.getWifiPwd();
-
-          if(mStateHandler == null || mEnterText.getText().length() > 0) {
+          mWiFiPasswd = mBusinessMgr.getWifiPwd();           
+          
+          if(mStateHandler == null || mEnterText.getText().length() > 0 ||
+              mBusinessMgr.getLoginStatus() != UserLoginStatus.login) {
             return;
           }  
           if (mStateHandler.getState() == State.WIFI_SSID && mWiFiSSID != null) {
@@ -593,8 +679,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mNavigatorRight.setText(R.string.skip); 
       mNavigatorLeft.setVisibility(View.VISIBLE);
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
-      mEnterText.setVisibility(View.VISIBLE);  
-      mEnterText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+      mEnterText.setVisibility(View.VISIBLE);
+      //replace  TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+      mEnterText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
       mEnterText.getText().clear();
       mEnterText.addTextChangedListener(this);
       mWiFiSSIDTextView.setVisibility(View.GONE);

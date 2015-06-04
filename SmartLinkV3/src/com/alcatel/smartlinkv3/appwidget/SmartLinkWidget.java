@@ -4,16 +4,21 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.R.string;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageDataMode;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -28,9 +33,11 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class SmartLinkWidget extends AppWidgetProvider
 {
@@ -43,6 +50,7 @@ public class SmartLinkWidget extends AppWidgetProvider
     private final int BATTERY_PAGE = 3;
     private final int USAGE_PAGE = 4;
     private float scale;
+    private final String tagString = "smartlink.widget.smartLinkWidget";
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds)
@@ -71,8 +79,9 @@ public class SmartLinkWidget extends AppWidgetProvider
 	// TODO Auto-generated method stub
 	super.onReceive(context, intent);
 	scale = context.getResources().getDisplayMetrics().density;
-	if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)){ 
-		updateUIs(context);
+	if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE))
+	{
+	    updateUIs(context);
 	}
 	if (intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET))
 	{
@@ -98,14 +107,22 @@ public class SmartLinkWidget extends AppWidgetProvider
 	{
 	    updateUIs(context);
 	}
+	if (intent.getAction().equalsIgnoreCase(MessageUti.WIDGET_GET_INTERNET_SWITCH))
+	{
+	    switchInternetConnection(context);
+	}
 
 	if (intent.getAction().equalsIgnoreCase("android.intent.action.BOOT_COMPLETED"))
 	{
+
 	}
 
 	connectControls(context);
+	//Log.d(tagString, "action---------" + intent.getAction());
 
     }
+
+   
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
@@ -138,30 +155,28 @@ public class SmartLinkWidget extends AppWidgetProvider
 	pendingIntent = PendingIntent.getActivity(context, 3, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 	remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, pendingIntent);
 
-	// internet intent
-	intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
-	pendingIntent = PendingIntent.getActivity(context, 4, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-	remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
-
 	// usage plan
 	intent.putExtra("com.alcatel.smartlinkv3.business.openPage", USAGE_PAGE);
-	pendingIntent = PendingIntent.getActivity(context, 5, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+	pendingIntent = PendingIntent.getActivity(context, 4, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 	remoteViews.setOnClickPendingIntent(R.id.ib_widget_usage, pendingIntent);
 
-	// wifi control
-	/*
-	 * Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS); if
-	 * (android.os.Build.VERSION.SDK_INT > 10) { wifiIntent = new
-	 * Intent(android.provider.Settings.ACTION_WIFI_SETTINGS); } else {
-	 * wifiIntent = new Intent(); ComponentName component = new
-	 * ComponentName("com.android.settings",
-	 * "com.android.settings.WirelessSettings");
-	 * wifiIntent.setComponent(component);
-	 * wifiIntent.setAction("android.intent.action.VIEW"); } PendingIntent
-	 * wifiPendingIntent = PendingIntent.getActivity(context, 5, wifiIntent,
-	 * 0); remoteViews.setOnClickPendingIntent(R.id.ib_widget_wifi,
-	 * wifiPendingIntent);
-	 */
+	boolean m_blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+	UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+	if (m_blWifiConnected && status == UserLoginStatus.login)
+	{
+	    Intent localIntent = new Intent(MessageUti.WIDGET_GET_INTERNET_SWITCH);
+	    pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+	    remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
+	    //Log.d(tagString, "status----------------" + status+"--wifi disconnect:"+m_blWifiConnected);
+	} else
+	{
+	    intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
+	    pendingIntent = PendingIntent.getActivity(context, 5, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+	    remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
+	    //Log.d(tagString, "status----------------" + status+"--wifi connect:"+m_blWifiConnected);
+	}
+	
+	
 
 	appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
 	super.onUpdate(context, appWidgetManager, appWidgetIds);
@@ -169,7 +184,6 @@ public class SmartLinkWidget extends AppWidgetProvider
 
     private void updateUI(RemoteViews remoteViews, Context context)
     {
-	m_blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 	ConnectionStatus status = BusinessMannager.getInstance().getConnectStatus().m_connectionStatus;
 	m_blInternetConnected = false;
 	if (ConnectionStatus.Connected == status)
@@ -228,6 +242,9 @@ public class SmartLinkWidget extends AppWidgetProvider
 	} else
 	{
 	    remoteViews.setImageViewResource(R.id.ib_widget_internet, R.drawable.widget_internet_disconnected);
+	    
+	    //remoteViews.setImageViewResource(R.id.ib_widget_internet, R.drawable.widget_internet);
+	    
 	    // remoteViews.setViewVisibility(R.id.iv_widget_internet_off,
 	    // View.VISIBLE);
 	    // remoteViews.setViewVisibility(R.id.iv_widget_internet_on,
@@ -339,39 +356,33 @@ public class SmartLinkWidget extends AppWidgetProvider
 	pendingIntent = PendingIntent.getActivity(context, 3, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 	remoteViews.setOnClickPendingIntent(R.id.ib_widget_signal, pendingIntent);
 
-	// internet intent
-	intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
-	pendingIntent = PendingIntent.getActivity(context, 4, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-	remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
-
 	// usage plan
 	intent.putExtra("com.alcatel.smartlinkv3.business.openPage", USAGE_PAGE);
-	pendingIntent = PendingIntent.getActivity(context, 5, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+	pendingIntent = PendingIntent.getActivity(context, 4, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 	remoteViews.setOnClickPendingIntent(R.id.ib_widget_usage, pendingIntent);
 
-	// wifi control
-	// Intent wifiIntent = new Intent(Settings.Action.);
+	boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+	UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+	if (blCPEWifiConnected && status == UserLoginStatus.login)
+	{
+	    Intent localIntent = new Intent(MessageUti.WIDGET_GET_INTERNET_SWITCH);
+	    pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+	    remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
+	    //Log.d(tagString, "status----------------" + status+"--wifi disconnect:"+blCPEWifiConnected);
+	} else
+	{
+	    intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
+	    pendingIntent = PendingIntent.getActivity(context, 5, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+	    remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
+	    //Log.d(tagString, "status----------------" + status+"--wifi disconnect:"+blCPEWifiConnected);
+	}
 
-	/*
-	 * if (android.os.Build.VERSION.SDK_INT > 10)
-	 * 
-	 * { wifiIntent = new
-	 * Intent(android.provider.Settings.ACTION_WIFI_SETTINGS); } else {
-	 * wifiIntent = new Intent(); ComponentName component = new
-	 * ComponentName("com.android.settings",
-	 * "com.android.settings.WirelessSettings");
-	 * wifiIntent.setComponent(component);
-	 * wifiIntent.setAction("android.intent.action.VIEW"); } PendingIntent
-	 * wifiPendingIntent = PendingIntent.getActivity(context, 5, wifiIntent,
-	 * 0); remoteViews.setOnClickPendingIntent(R.id.ib_widget_wifi,
-	 * wifiPendingIntent);
-	 */
 	am.updateAppWidget(nIds, remoteViews);
     }
 
     private void updateUsage(RemoteViews remoteViews, Context context)
     {
-	
+
 	UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
 	UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 
@@ -383,20 +394,29 @@ public class SmartLinkWidget extends AppWidgetProvider
 	nFormat.setMaximumFractionDigits(2);
 	if (monthPlanUsageDataMode.getUsageUnit() > usedUsageDataMode.getUsageUnit())
 	{
-	    usedDataTmp =  (double) (Math.round((usedDataTmp / 1024)*100)/100.0);
+	    usedDataTmp = (double) (Math.round((usedDataTmp / 1024) * 100) / 100.0);
 	} else if (monthPlanUsageDataMode.getUsageUnit() < usedUsageDataMode.getUsageUnit() && monthPlanUsageDataMode.getUsageData() > 0)
 	{
-	    usedDataTmp = (double) (Math.round((usedDataTmp * 1024)*100)/100.0);
+	    usedDataTmp = (double) (Math.round((usedDataTmp * 1024) * 100) / 100.0);
 	}
-	Log.d("widget.HUseData.record", m_UsageRecordResult.HUseData + "-----------------");
-	Log.d("widget.HMonthlyPlan", statistic.HMonthlyPlan + "-----------------");
-	Log.d("widget.HUnit", statistic.HUnit + "-----------------");
-	Log.d("widget.HUsedData", statistic.HUsedData + "-----------------");
-	Log.d("widget.HBillingDay", statistic.HBillingDay + "-----------------");
-	Log.d("widget.usedDataTmp", usedDataTmp + "-----------------");
-	Log.d("widget.usedUsageDataMode.getUsageData()", usedUsageDataMode.getUsageData() + "-----------------");
-	Log.d("widget.monthPlanUsageDataMode.getUsageData()", monthPlanUsageDataMode.getUsageData() + "-----------------");
-	Log.d("widget.monthPlanUsageDataModegetUsageUnit()", monthPlanUsageDataMode.getUsageUnit() + "-----------------");
+	// Log.d(tagString,"widget.HUseData.record"+":"+m_UsageRecordResult.HUseData
+	// + "-----------------");
+	// Log.d(tagString,"widget.HMonthlyPlan"+":"+statistic.HMonthlyPlan +
+	// "-----------------");
+	// Log.d(tagString,"widget.HUnit"+":"+statistic.HUnit +
+	// "-----------------");
+	// Log.d(tagString,"widget.HUsedData"+":"+statistic.HUsedData +
+	// "-----------------");
+	// Log.d(tagString,"widget.HBillingDay"+":"+statistic.HBillingDay +
+	// "-----------------");
+	// Log.d(tagString,"widget.usedDataTmp"+":"+usedDataTmp +
+	// "-----------------");
+	// Log.d(tagString,"widget.usedUsageDataMode.getUsageData()"+":"+usedUsageDataMode.getUsageData()
+	// + "-----------------");
+	// Log.d(tagString,"widget.monthPlanUsageDataMode.getUsageData()"+":"+monthPlanUsageDataMode.getUsageData()
+	// + "-----------------");
+	// Log.d(tagString,"widget.monthPlanUsageDataModegetUsageUnit()"+":"+monthPlanUsageDataMode.getUsageUnit()
+	// + "-----------------");
 
 	String dataUnitString = "";
 	if (monthPlanUsageDataMode.getUsageData() == 0)
@@ -411,24 +431,24 @@ public class SmartLinkWidget extends AppWidgetProvider
 
     private Bitmap drawTrafficCircle(double monthDataPlan, double usedDataUsage, String dataUnitString)
     {
-	//monthDataPlan = 0;
-	//usedDataUsage = 0;
-	
+	// monthDataPlan = 0;
+	// usedDataUsage = 0;
+
 	int height = dipToPx(68);
 	int width = dipToPx(68);
 	float center = width / 2;
 	float ringWidth = dipToPx(16);
 	float innerCircle = dipToPx(20);
 
-	Log.d("innerCircle", innerCircle + "");
+	//Log.d(tagString, "innerCircle" + ":" + innerCircle + "");
 	Bitmap circleBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 	Canvas canvas = new Canvas(circleBitmap);
 	Paint paint = new Paint();
 	Rect bounds = new Rect();
 	Rect unitBounds = new Rect();
 	DecimalFormat transfToInteger = new DecimalFormat("0");
-	String dataPlanToaltUsage = ""+transfToInteger.format(monthDataPlan);
-	String dataUsedString = ""+transfToInteger.format(usedDataUsage);
+	String dataPlanToaltUsage = "" + transfToInteger.format(monthDataPlan);
+	String dataUsedString = "" + transfToInteger.format(usedDataUsage);
 	String dataPlanUnit = dataUnitString;
 	int dataUsedAngle = 0;
 	String usegeStatus = "Left";
@@ -438,48 +458,47 @@ public class SmartLinkWidget extends AppWidgetProvider
 
 	paint.setStyle(Style.STROKE);
 	RectF rectArc = new RectF(center - (innerCircle - 2 + ringWidth / 2), center - (innerCircle - 2 + ringWidth / 2), center + (innerCircle - 2 + ringWidth / 2), center + (innerCircle - 2 + ringWidth / 2));
-	
-	
+
 	if (monthDataPlan == 0)
 	{
 	    dataUsedAngle = 0;
 	    usegeStatus = "Used";
 	    dataPlanToaltUsage = dataUsedString;
-	    //grey
+	    // grey
 	    paint.setARGB(255, 188, 187, 190);
-	    canvas.drawArc(rectArc, 270, (360-dataUsedAngle), false, paint);
-	    //blue
+	    canvas.drawArc(rectArc, 270, (360 - dataUsedAngle), false, paint);
+	    // blue
 	    paint.setARGB(255, 0, 190, 245);
 	    canvas.drawArc(rectArc, 0, dataUsedAngle, false, paint);
-	    //text color
+	    // text color
 	    paint.setARGB(255, 5, 137, 207);
 	} else if (monthDataPlan >= usedDataUsage)
 	{
 	    dataUsedAngle = Integer.parseInt(transfToInteger.format(360 * usedDataUsage / monthDataPlan));
-	    //grey
+	    // grey
 	    paint.setARGB(255, 188, 187, 190);
-	    canvas.drawArc(rectArc, 270, (360-dataUsedAngle), false, paint);
-	    //blue
+	    canvas.drawArc(rectArc, 270, (360 - dataUsedAngle), false, paint);
+	    // blue
 	    paint.setARGB(255, 0, 190, 245);
 	    canvas.drawArc(rectArc, 270, -dataUsedAngle, false, paint);
-	  //text color
+	    // text color
 	    paint.setARGB(255, 5, 137, 207);
 	} else if (monthDataPlan < usedDataUsage)
 	{
-	    dataUsedAngle = Integer.parseInt(transfToInteger.format(360 * (usedDataUsage-monthDataPlan) / monthDataPlan));
+	    dataUsedAngle = Integer.parseInt(transfToInteger.format(360 * (usedDataUsage - monthDataPlan) / monthDataPlan));
 	    dataUsedAngle = dataUsedAngle > 360 ? 360 : dataUsedAngle;
-	    //grey
+	    // grey
 	    paint.setARGB(255, 188, 187, 190);
-	    canvas.drawArc(rectArc, 270, (360-dataUsedAngle), false, paint);
-	    //blue
-	    paint.setARGB(255,249, 19, 19);
+	    canvas.drawArc(rectArc, 270, (360 - dataUsedAngle), false, paint);
+	    // blue
+	    paint.setARGB(255, 249, 19, 19);
 	    canvas.drawArc(rectArc, 270, -dataUsedAngle, false, paint);
-	  //text color
-	   
+	    // text color
+
 	}
 
 	paint.setStyle(Style.FILL);
-	//float width = paint.measureText(text);
+	// float width = paint.measureText(text);
 	paint.getTextBounds(dataPlanToaltUsage, 0, dataPlanToaltUsage.length(), bounds);
 	paint.getTextBounds(dataPlanUnit, 0, dataPlanUnit.length(), unitBounds);
 	canvas.drawText(dataPlanToaltUsage, width / 2 - bounds.centerX() - unitBounds.width() / 2 + dipToPx(4), height / 2 - bounds.centerY() - bounds.height() / 2, paint);
@@ -489,6 +508,39 @@ public class SmartLinkWidget extends AppWidgetProvider
 	canvas.drawText(usegeStatus, width / 2 - bounds.centerX(), height / 2 - bounds.centerY() + bounds.height() * 3 / 4, paint);
 
 	return circleBitmap;
+    }
+    public void switchInternetConnection(Context context)
+    {
+	//Log.d(tagString+".switch:", "-------------action---------internet switch open");
+	UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
+	UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
+	ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+	if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting)
+	{
+	    if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0)
+	    {
+		if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan)
+		{
+		    // show warning dialog
+		    // m_connectWarningDialog.showDialog();
+		    String msgRes = context.getString(R.string.home_usage_over_redial_message);
+		    Toast.makeText(context, msgRes, Toast.LENGTH_LONG).show();
+		    return;
+		}
+	    }
+	}
+
+	if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting)
+	{
+	    //Log.d(tagString+".switch:", "switch---------disconnect");
+	    BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_DISCONNECT_REQUSET, null);
+	} else
+	{
+	    //Log.d(tagString+".switch:", "switch---------connect");
+	    BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET, null);
+	}
+	//RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.smart_link_app_widget);
+	//remoteViews.setImageViewResource(R.id.ib_widget_internet, R.drawable.widget_internet);
     }
 
     /**
