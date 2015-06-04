@@ -16,6 +16,9 @@ public class FtpFileDialog extends FileDialog {
     
     private static final String TAG = "Moveto";
     private static final int MSG_SHOW_TOAST = 1;
+    private static final int MSG_CREATE_FOLDER = 16;
+    private static final int SUCCESS = 0;
+    private static final int FAIL = -1;
     
     private static FtpFileCommandTask mCmdTask = new FtpFileCommandTask();
     private ArrayList<FileInfo> mInfos;
@@ -44,6 +47,10 @@ public class FtpFileDialog extends FileDialog {
                     switch(msg.what) {
                     case MSG_SHOW_TOAST :
                         //notifyDataChanged();
+                        break;
+                    case MSG_CREATE_FOLDER :
+                        if (((Integer) msg.obj).intValue() == SUCCESS)
+                            notifyDataChanged();
                         break;
                     }
                 }

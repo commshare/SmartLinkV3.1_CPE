@@ -305,7 +305,9 @@ class FileDialog extends Activity {
                     
                     @Override
                     public void onResult(ResultCode resultCode) {
-                        showMessage(resultCode.getStringByResult(), resultCode.getStringByCause());
+                        if (!resultCode.isSucceed())
+                            showMessage(resultCode.getStringByResult(), 
+                                    resultCode.getStringByCause());
                     }
                 });
     }
