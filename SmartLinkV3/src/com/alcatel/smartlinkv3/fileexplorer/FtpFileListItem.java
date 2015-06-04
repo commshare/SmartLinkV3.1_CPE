@@ -52,8 +52,9 @@ public class FtpFileListItem {
 		ImageView checkbox = (ImageView) view.findViewById(R.id.file_checkbox);
 		if (fileViewInteractionHub.getMode() == Mode.Pick) {
 			checkbox.setVisibility(View.GONE);
-		} if (fileViewInteractionHub.getMode() == Mode.Move) {
-		    checkbox.setVisibility(View.GONE);
+		}
+		if (fileViewInteractionHub.getMode() == Mode.Move) {
+			checkbox.setVisibility(View.GONE);
 		} else {
 			checkbox.setVisibility(fileViewInteractionHub.canShowCheckBox() ? View.VISIBLE
 					: View.GONE);
@@ -168,17 +169,19 @@ public class FtpFileListItem {
 		}
 
 		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {		    
-		 // TODO :
-		    boolean isVisible = (mFileViewInteractionHub.getSelectedFileList().size() == 1);
-		    mMenu.findItem(R.id.action_rename).setVisible(isVisible);
-		    mMenu.findItem(R.id.action_details).setVisible(isVisible);
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			// TODO :
+			boolean isVisible = (mFileViewInteractionHub.getSelectedFileList()
+					.size() == 1);
+			mMenu.findItem(R.id.action_rename).setVisible(isVisible);
+			mMenu.findItem(R.id.action_details).setVisible(isVisible);
 			return true;
 		}
 
 		// TODO : 被上面方法替代
-		@Deprecated 
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu, boolean _OLD_MARK) {
+		@Deprecated
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu,
+				boolean _OLD_MARK) {
 			mMenu.findItem(R.id.action_copy_path).setVisible(
 					mFileViewInteractionHub.getSelectedFileList().size() == 1);
 			mMenu.findItem(R.id.action_cancel).setVisible(
@@ -203,7 +206,7 @@ public class FtpFileListItem {
 				break;
 			case R.id.action_delete:
 				mFileViewInteractionHub.onOperationDelete();
-				//mFileViewInteractionHub.onFtpDelete();
+				// mFileViewInteractionHub.onFtpDelete();
 				mode.finish();
 				break;
 			case R.id.action_copy:
@@ -222,8 +225,8 @@ public class FtpFileListItem {
 				 * .moveToFile(mFileViewInteractionHub.getSelectedFileList());
 				 * mode.finish();
 				 */
-				//scrollToSDcardTab();
-			    mFileViewInteractionHub.onOperationMove();
+				// scrollToSDcardTab();
+				mFileViewInteractionHub.onOperationMove();
 				break;
 			case R.id.action_send:
 				mFileViewInteractionHub.onOperationSend();
@@ -246,16 +249,16 @@ public class FtpFileListItem {
 			// TODO : 添加的菜单项
 			case R.id.action_rename:
 				mFileViewInteractionHub.onOperationRename();
-				//mFileViewInteractionHub.onRename();
+				// mFileViewInteractionHub.onRename();
 				break;
 			case R.id.action_details:
 				mFileViewInteractionHub.onOperationInfo();
 				break;
-				
+
 			case R.id.action_move_to:
-                Log.d("Moveto", "atction move to.");
-                mFileViewInteractionHub.onOperationMoveTo();
-                break;	
+				Log.d("Moveto", "atction move to.");
+				mFileViewInteractionHub.onOperationMoveTo();
+				break;
 			}
 			Util.updateActionModeTitle(mode, mContext, mFileViewInteractionHub
 					.getSelectedFileList().size());

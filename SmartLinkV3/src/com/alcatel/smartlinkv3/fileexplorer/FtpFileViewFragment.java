@@ -31,9 +31,11 @@ import org.apache.commons.net.ftp.FTPFile;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -56,7 +58,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
@@ -288,6 +293,41 @@ public class FtpFileViewFragment extends Fragment implements
 	private static final int MSG_PAUSE_DOWNLOAD = 14;
 	private static final int MSG_ERROR_DOWNLOAD = 15;
 
+	private AlertDialog mDlDialog;
+	private TextView mDlProgressTv;
+	private TextView mDlPathTv;
+	private ProgressBar mDlProgressBar;
+
+	private void showDLDialog(String filePath) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+		LayoutInflater inflater = LayoutInflater.from(mActivity);
+		View view = inflater.inflate(R.layout.custom_progress_dialog, null);
+		builder.setView(view);
+
+		mDlProgressTv = (TextView) view.findViewById(R.id.download_progress_tv);
+		mDlPathTv = (TextView) view.findViewById(R.id.download_path_tv);
+		if (filePath != null) {
+			mDlPathTv.setText(filePath);
+		}
+		mDlProgressBar = (ProgressBar) view
+				.findViewById(R.id.download_progressbar);
+		mDlProgressBar.setMax(100);
+
+		builder.setNegativeButton(mActivity.getString(R.string.cancel),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						cmdTask.ftp_pause_download();
+						dialog.dismiss();
+					}
+				});
+		mDlDialog = builder.show();
+
+		mDlDialog.setCanceledOnTouchOutside(false);
+		Button negativeBtn = mDlDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+		negativeBtn.setTextColor(0xff0070c5);
+	}
+
 	FtpCommandListener ftpCommandListener = new FtpCommandListener() {
 
 		@Override
@@ -309,14 +349,22 @@ public class FtpFileViewFragment extends Fragment implements
 			case MSG_START_DOWNLOAD:
 				String filePath = (String) msg.obj;
 				logger.i("start download [" + filePath + "]");
+				showDLDialog(filePath);
 				break;
 			case MSG_ON_DOWNLOAD:
 				TransferTracker track = (TransferTracker) msg.obj;
 				logger.i("download file [" + track.filePath + "],process = :"
 						+ track.process);
+				if (mDlProgressTv != null) {
+					mDlProgressTv.setText(Long.toString(track.process));
+				}
+				if (mDlProgressBar != null) {
+					mDlProgressBar.setProgress((int) track.process);
+				}
 				break;
 			case MSG_END_DOWNLOAD:
 				logger.i("download success!");
+				mDlDialog.dismiss();
 				break;
 			case MSG_PAUSE_DOWNLOAD:
 				logger.i("download pause!");
@@ -788,18 +836,18 @@ public class FtpFileViewFragment extends Fragment implements
 	public void runOnUiThread(Runnable r) {
 		mActivity.runOnUiThread(r);
 	}
-	
+
 	@Override
 	public boolean onRequestResult(int reqCode, Uri uri) {
-	    boolean result = false;
-	    
-	    switch (reqCode) {
-        case IntentBuilder.REQUEST_EX :
-            String path = uri.getPath();
-            mFileViewInteractionHub.operationMoveTo(path);
-            break;
-        }
-	    
-	    return result;
+		boolean result = false;
+
+		switch (reqCode) {
+		case IntentBuilder.REQUEST_EX:
+			String path = uri.getPath();
+			mFileViewInteractionHub.operationMoveTo(path);
+			break;
+		}
+
+		return result;
 	}
 }
