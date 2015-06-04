@@ -679,8 +679,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mNavigatorRight.setText(R.string.skip); 
       mNavigatorLeft.setVisibility(View.VISIBLE);
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
-      mEnterText.setVisibility(View.VISIBLE);  
-      mEnterText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+      mEnterText.setVisibility(View.VISIBLE);
+      //replace  TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+      mEnterText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
       mEnterText.getText().clear();
       mEnterText.addTextChangedListener(this);
       mWiFiSSIDTextView.setVisibility(View.GONE);
