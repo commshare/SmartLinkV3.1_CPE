@@ -32,7 +32,7 @@ public class ThreadPoolTaskManager {
 	public boolean addDownloadTask(ThreadPoolTask downloadTask) {
 		synchronized (downloadTasks) {
 			if (!isTaskRepeat(downloadTask.getFileId())) {
-				System.out.println("ThreadPool 1: add task name = "
+				System.out.println("ThreadPool: add task name = "
 						+ downloadTask.getFileId());
 				downloadTasks.addLast(downloadTask);
 				return true;
