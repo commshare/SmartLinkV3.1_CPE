@@ -52,6 +52,7 @@
             android:name="com.alcatel.smartlinkv3.ui.activity.GuideActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
