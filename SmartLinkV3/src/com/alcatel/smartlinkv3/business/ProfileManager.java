@@ -114,7 +114,10 @@ public class ProfileManager extends BaseManager{
 //                	Log.v("AddOrEditProfile", "No");
                 }
                 startGetProfileList(null);
-                
+                Intent megIntent= new Intent(MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
 			}
 			
 		}));
@@ -158,6 +161,11 @@ public class ProfileManager extends BaseManager{
 //                	Log.v("AddOrEditProfile", "No");
                 }
                 startGetProfileList(null);
+                
+                Intent megIntent= new Intent(MessageUti.PROFILE_EDIT_PROFILE_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
                 
 			}
 			

@@ -401,6 +401,8 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
 					//Log
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -418,7 +420,8 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
-					
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
