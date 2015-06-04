@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -100,6 +101,9 @@ implements OnClickListener{
 	private TextView m_encription_mode;
 	
 	private boolean m_isTypeSelecttionShown;
+	
+	private LinearLayout m_ssid_broadcast_container;
+	private ImageView m_divider_under_ssid;
 //	private boolean m_continue_to_change_to_5g;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +180,13 @@ implements OnClickListener{
 		m_security_type.setOnClickListener(this);
 		m_encription_mode = (TextView)findViewById(R.id.set_wifi_security_encription_type);
 		m_encription_mode.setOnClickListener(this);
+		
+		m_ssid_broadcast_container = (LinearLayout) findViewById(R.id.ll_ssid_broadcast_status);
+		m_divider_under_ssid = (ImageView) findViewById(R.id.divider0);
+		
+		m_ssid_broadcast_container.setVisibility(View.GONE);
+		m_divider_under_ssid.setVisibility(View.GONE);
+		
 		initSpiners();
 	}
 
@@ -447,6 +458,9 @@ implements OnClickListener{
 		m_tv_done.setVisibility(View.VISIBLE);
 		m_ll_edit_ssid_broadcast.setEnabled(true);
 		
+		m_ssid_broadcast_container.setVisibility(View.VISIBLE);
+		m_divider_under_ssid.setVisibility(View.VISIBLE);
+		
 		m_tv_edit.setFocusable(false);
 		m_tv_edit.setFocusableInTouchMode(false);
 		m_tv_edit.setVisibility(View.GONE);
@@ -526,6 +540,9 @@ implements OnClickListener{
 				setWlanSettingItems();
 			}
 			m_ll_edit_ssid_broadcast.setEnabled(false);
+			
+			m_ssid_broadcast_container.setVisibility(View.GONE);
+			m_divider_under_ssid.setVisibility(View.GONE);
 			//
 			synchValues();
 			setControlsDoneStatus();
