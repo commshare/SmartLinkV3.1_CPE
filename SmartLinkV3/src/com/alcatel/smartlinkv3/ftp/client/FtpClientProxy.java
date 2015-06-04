@@ -358,7 +358,7 @@ public class FtpClientProxy {
 	public FtpDownloadStatus download(String local, String remote)
 			throws IOException {
 		FtpDownloadStatus result;
-		listener.onStart(remote);
+		listener.onStart(local);
 
 		FTPFile[] files = this.getFTPFiles(remote);
 

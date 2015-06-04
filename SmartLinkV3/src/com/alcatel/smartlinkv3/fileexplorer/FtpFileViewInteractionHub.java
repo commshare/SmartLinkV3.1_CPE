@@ -140,7 +140,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		void showfiles(ArrayList<FileInfo> remote);
 
 		void download(ArrayList<FileInfo> remote, String local);
-
+		void pause_download();
 		// TODO
 		void upload(ArrayList<File> local, String remote);
 

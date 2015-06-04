@@ -107,7 +107,6 @@ public class FtpFileViewFragment extends Fragment implements
 
 	private static final String sdDir = Util.getSdDirectory();
 
-	private FtpManager ftp = null;
 	private Thread thread = null;
 	private Context mContext = null;
 	private pubLog logger = pubLog.getLogger();
@@ -241,6 +240,12 @@ public class FtpFileViewFragment extends Fragment implements
 			cmdTask.ftp_create_folder(remote);
 		}
 
+		@Override
+		public void pause_download() {
+			// TODO Auto-generated method stub
+			cmdTask.ftp_pause_download();
+		}
+
 	};
 
 	FtpManagerIRetrieveListener FtpManagerListener = new FtpManagerIRetrieveListener() {
@@ -315,7 +320,7 @@ public class FtpFileViewFragment extends Fragment implements
 				break;
 			case MSG_PAUSE_DOWNLOAD:
 				logger.i("download pause!");
-				ftp.setFtpStopDownload();
+				cmdTask.ftp_pause_download();
 				break;
 			case MSG_ERROR_DOWNLOAD:
 				String error = (String) msg.obj;
