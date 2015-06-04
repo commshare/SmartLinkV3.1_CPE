@@ -350,7 +350,7 @@ public class MediaProvider extends ContentProvider {
     /**
      * Definition of the contract for the main table of our provider.
      */
-    public static final class MediaTable implements BaseColumns {
+    public static final class MediaTable implements android.provider.BaseColumns {
         // This class cannot be instantiated
         private MediaTable() {}
 
