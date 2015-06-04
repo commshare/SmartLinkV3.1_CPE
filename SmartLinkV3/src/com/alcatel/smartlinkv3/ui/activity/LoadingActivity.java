@@ -43,10 +43,13 @@ public class LoadingActivity extends Activity {
 			public void run() {
 		    if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
 		      goGuide();
-		    } else if (!checkConnectState())
+		    } else if (!checkConnectState()) {
 					searchTimeOut();
-				else
+		    } else if (!CPEConfig.getInstance().getQuickSetupFlag()) {
+		      startQuickSetupActivity();
+		    } else {		    
 					startMainActivity();
+		    }
 			}
 		};
 
@@ -71,6 +74,12 @@ public class LoadingActivity extends Activity {
 		finish();
 	}
 
+	 private void startQuickSetupActivity() {
+	    Intent it = new Intent(this, QuickSetupActivity.class);
+	    startActivity(it);
+	    finish();
+	  }
+	 
 	private void searchTimeOut() {
 		startRefreshWifiActivity();
 	}
