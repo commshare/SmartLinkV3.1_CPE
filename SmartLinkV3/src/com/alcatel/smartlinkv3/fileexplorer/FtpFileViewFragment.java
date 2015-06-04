@@ -417,8 +417,6 @@ public class FtpFileViewFragment extends Fragment implements
 		// getWindow().setFormat(android.graphics.PixelFormat.RGBA_8888);
 		mRootView = inflater.inflate(R.layout.ftp_file_explorer_list,
 				container, false);
-		ActivitiesManager.getInstance().registerActivity(
-				ActivitiesManager.ACTIVITY_FILE_VIEW, mActivity);
 
 		mFileCagetoryHelper = new FileCategoryHelper(mActivity);
 		mFileViewInteractionHub = new FtpFileViewInteractionHub(this);
