@@ -235,7 +235,8 @@ private class ProfileListAdapter extends BaseAdapter{
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
-					
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -254,11 +255,11 @@ private class ProfileListAdapter extends BaseAdapter{
 						m_adapter.notifyDataSetChanged();
 						m_progress_bar.setVisibility(View.GONE);
 					}
-					Log.v("GetProfileResultDELETE", "RECEIVE");
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
-					
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
