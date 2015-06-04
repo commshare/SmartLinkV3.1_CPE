@@ -276,7 +276,7 @@
     <string name="setting_confirm_password">Confirm Password:</string>
     <string name="setting_password_note">Note: The password should be 4&#8211;16 characters.</string>
     <string name="setting_network_mode">Network Mode</string>
-    <string name="setting_network_searching">NETWORK SEARCHING&#8211;</string>
+    <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>
     <string name="setting_network_selection">Network Selection</string>
     <string name="setting_network_wifi_network_title">WiFi Network</string>
     <string name="setting_network_profile_management">Profile Management</string>
