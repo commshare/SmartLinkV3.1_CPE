@@ -556,6 +556,16 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		// refresh to hide selected files
 		refreshFileList();
 	}
+	
+	public void onOperationMoveTo() {
+	    String title = getSelectedFileList().get(0).fileName;
+	    IntentBuilder.goExFileDialog(mActivity, title);
+	}
+	
+	public void operationMoveTo(String path) {
+        mUICmdListener.move(getSelectedFileList(), path);
+        clearSelection();
+	}
 
 	public void refreshFileList() {
 		clearSelection();
@@ -1349,6 +1359,10 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		if (actionMode != null) {
 			actionMode.finish();
 		}
+		
+		if (canEditCheckBox())
+            switchEditCheckBox();
+            
 		refreshFileList();
 	}
 	
@@ -1482,9 +1496,11 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	}
 
 	public boolean onBackPressed() {
-		if (isInSelection()) {
-			clearSelection();
-		} else if (!onOperationUpLevel()) {
+	    if (isInSelection()) {
+            clearSelection();
+        } else if (canEditCheckBox()) {
+		    switchEditCheckBox();
+		}  else if (!onOperationUpLevel()) {
 			return false;
 		}
 		return true;

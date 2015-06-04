@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 import com.alcatel.smartlinkv3.R;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -181,4 +180,14 @@ public class IntentBuilder {
 
         return mimeType != null ? mimeType : "*/*";
     }
+    
+    public static final int REQUEST_EX = 123100;
+    public static void goExFileDialog(Activity activity, String title) {
+        Intent intent = new Intent();
+        intent.putExtra("explorer_title", title);
+        intent.setDataAndType(Uri.fromFile(new File("/sdcard")), "*/*");
+        intent.setClass(activity, FtpFileDialog.class);
+        activity.startActivityForResult(intent, REQUEST_EX);
+    }
+    
 }

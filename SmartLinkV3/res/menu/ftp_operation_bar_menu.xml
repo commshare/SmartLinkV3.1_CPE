@@ -11,6 +11,11 @@
         android:title="@string/operation_move"
         android:showAsAction="never" />
     
+    <item android:id="@+id/action_move_to"
+        android:icon="@drawable/operation_button_move"
+        android:title="@string/operation_move_to"
+        android:showAsAction="never" />
+    
     <item android:id="@+id/action_download"
         android:icon="@drawable/operation_button_download"
         android:title="@string/operation_download"

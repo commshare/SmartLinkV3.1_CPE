@@ -172,7 +172,7 @@ public class FtpFileListItem {
 		 // TODO :
 		    boolean isVisible = (mFileViewInteractionHub.getSelectedFileList().size() == 1);
 		    mMenu.findItem(R.id.action_rename).setVisible(isVisible);
-		    mMenu.findItem(R.id.action_details).setVisible(isVisible);		   
+		    mMenu.findItem(R.id.action_details).setVisible(isVisible);
 			return true;
 		}
 
@@ -223,7 +223,6 @@ public class FtpFileListItem {
 				 * mode.finish();
 				 */
 				//scrollToSDcardTab();
-			    Toast.makeText(mContext, "Move to.", Toast.LENGTH_SHORT).show();
 			    mFileViewInteractionHub.onOperationMove();
 				break;
 			case R.id.action_send:
@@ -252,6 +251,11 @@ public class FtpFileListItem {
 			case R.id.action_details:
 				mFileViewInteractionHub.onOperationInfo();
 				break;
+				
+			case R.id.action_move_to:
+                Log.d("Moveto", "atction move to.");
+                mFileViewInteractionHub.onOperationMoveTo();
+                break;	
 			}
 			Util.updateActionModeTitle(mode, mContext, mFileViewInteractionHub
 					.getSelectedFileList().size());

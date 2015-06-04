@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/list_file_navigation_bar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/layout_border_normal"
+        android:orientation="horizontal" >
+
+	    <TextView
+	        android:id="@+id/text_navigation_directory"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:layout_weight="3"
+	        android:paddingLeft="@dimen/textview_horizontal_margin"
+	        android:text="@string/sdcard"
+	        android:textSize="20sp" />
+	
+	    <ImageView
+	        android:id="@+id/image_new_foler"
+	        android:layout_width="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="right|center_vertical"
+	        android:contentDescription="@string/new_foler"
+	        android:src="@drawable/ex_new_folder_normal" />
+
+    </LinearLayout>
+    
+    <ListView
+        android:id="@+id/list_file"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="8" />
+    
+    <LinearLayout
+        android:id="@+id/button_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="bottom"
+        android:background="@drawable/layout_border"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/button_choose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/choose"
+            style="?android:attr/buttonBarButtonStyle" />
+
+    </LinearLayout>
+
+</LinearLayout>

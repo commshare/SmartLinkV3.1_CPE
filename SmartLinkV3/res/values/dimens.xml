@@ -46,5 +46,7 @@
     <dimen name="path_indicator_button_padding_right">6.0dip</dimen>
     
     <dimen name="title_bar_height">35.0dip</dimen>
+    
+    <dimen name="textview_horizontal_margin">16dp</dimen>
 
 </resources>

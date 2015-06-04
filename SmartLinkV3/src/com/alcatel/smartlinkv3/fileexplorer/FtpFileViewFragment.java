@@ -76,7 +76,7 @@ import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
 
 public class FtpFileViewFragment extends Fragment implements
-		IFileInteractionListener, OnBackPressedListener {
+		IFileInteractionListener, OnBackPressedListener, OnRequestExListener {
 
 	public static final String EXT_FILTER_KEY = "ext_filter";
 
@@ -535,8 +535,7 @@ public class FtpFileViewFragment extends Fragment implements
 
 	@Override
 	public boolean onBack() {
-		if (mBackspaceExit || !Util.isSDCardReady()
-				|| mFileViewInteractionHub == null) {
+		if (mBackspaceExit || mFileViewInteractionHub == null) {
 			return false;
 		}
 		return mFileViewInteractionHub.onBackPressed();
@@ -773,5 +772,19 @@ public class FtpFileViewFragment extends Fragment implements
 	@Override
 	public void runOnUiThread(Runnable r) {
 		mActivity.runOnUiThread(r);
+	}
+	
+	@Override
+	public boolean onRequestResult(int reqCode, Uri uri) {
+	    boolean result = false;
+	    
+	    switch (reqCode) {
+        case IntentBuilder.REQUEST_EX :
+            String path = uri.getPath();
+            mFileViewInteractionHub.operationMoveTo(path);
+            break;
+        }
+	    
+	    return result;
 	}
 }

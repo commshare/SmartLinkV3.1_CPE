@@ -617,6 +617,7 @@
     <string name="operation_hide_sys">Hide hidden files</string>
     <string name="operation_info">Details</string>
     <string name="operation_move">Move</string>
+    <string name="operation_move_to">Move to</string>
     <string name="operation_moving">Moving...</string>
     <string name="operation_paste">Paste</string>
     <string name="operation_pasting">Pasting...</string>
@@ -669,6 +670,21 @@
     <string name="details_text_size">Size:</string>
     <string name="details_text_create_date">Create Date:</string>
     <string name="details_text_modified_date">Modified Date:</string>
+    
+    <string name="dialog_read_from_dir">Open from dir</string>
+    <string name="choose">Choose</string>
+    <string name="new_foler">New foler</string>
+    <string name="foler_name">foler name</string>
+    <string name="sdcard">Sd Card</string>
+    <string name="fail">Fail</string>
+    <string-array name="fail_cause">
+        <item>[cause 1] Foler is exists!</item>
+        <item>[cause 2] Failed to create the folder!</item>
+    </string-array> 
+    <string name="succeed">Succeed</string>
+    <string-array name="succeed_desc">
+        <item>Create folder successfully!</item>
+    </string-array>
     <!-- FTP FILE END -->
 
 

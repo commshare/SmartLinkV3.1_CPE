@@ -29,10 +29,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -135,7 +137,8 @@ public class FtpFileExplorerTabActivity extends Activity
 			try {	
 				Fragment fragment = Fragment.instantiate(this,
 						FtpFileViewFragment.class.getName(), savedInstanceState);
-				mBackPressedListener = (FtpFileViewFragment) fragment;		
+				mBackPressedListener = (FtpFileViewFragment) fragment;
+				mRequestExListener = (OnRequestExListener) fragment;
 		
 				FragmentManager fragmentManager = this.getFragmentManager();
 				FragmentTransaction fragmentTransaction = fragmentManager
@@ -158,19 +161,36 @@ public class FtpFileExplorerTabActivity extends Activity
 		}
 	}
 	
+	private OnRequestExListener mRequestExListener;
+	
 	@Override 
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
 	           
-        switch (reqCode) {
-        case (ExternalFileObtain.PICK_CONTACT) : 
-            if (resultCode == Activity.RESULT_OK)
+	    if (resultCode == Activity.RESULT_OK) {
+            switch (reqCode) {
+            
+            case ExternalFileObtain.PICK_CONTACT : 
                 ExternalFileObtain.getInstance(this).analysisFile(data);
-        break;
-        }
+                break;
+                
+            case IntentBuilder.REQUEST_EX :
+                Uri uri = data.getData();
+                Log.d("Moveto", uri.toString());
+                if (mRequestExListener != null)
+                    mRequestExListener.onRequestResult(reqCode, uri);
+                break;
+                
+            }
+	    }
+        
         
         super.onActivityResult(reqCode, resultCode, data);
-    } 
+    }
 
+}
+
+interface OnRequestExListener {
+    boolean onRequestResult(int reqCode, Uri uri);
 }
 
 // TODO 废弃

@@ -5,7 +5,7 @@
     android:versionName="3.1.1" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
     
      <supports-screens
@@ -249,24 +249,11 @@
             android:configChanges="screenSize|keyboardHidden"
             android:screenOrientation="sensor"
             android:theme="@style/Custom_ActionBar_Style" >
-            <intent-filter>
-                <action android:name="android.intent.action.PICK" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <action android:name="android.intent.action.MEDIA_MOUNTED" />
-                <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
-
-                <data android:scheme="file" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.GET_CONTENT" />
-
-                <category android:name="android.intent.category.OPENABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="*/*" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileDialog"
+            android:configChanges="screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
         </activity>
 
         <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >
