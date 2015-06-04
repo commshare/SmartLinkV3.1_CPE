@@ -46,9 +46,9 @@ public interface IFileInteractionListener {
      */
     public boolean onOperation(int id);
 
-    public String getDisplayPath(String path);
+    //public String getDisplayPath(String path);
 
-    public String getRealPath(String displayPath);
+    //public String getRealPath(String displayPath);
 
     public void runOnUiThread(Runnable r);
 

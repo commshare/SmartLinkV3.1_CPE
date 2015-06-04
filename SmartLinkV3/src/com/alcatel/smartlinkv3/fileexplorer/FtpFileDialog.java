@@ -1,12 +1,9 @@
 package com.alcatel.smartlinkv3.fileexplorer;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.net.ftp.FTPFile;
 
 import android.os.Bundle;
 import android.os.Message;
@@ -46,7 +43,7 @@ public class FtpFileDialog extends FileDialog {
                     Log.d(TAG, "at ftp msg handler" + msg.toString());
                     switch(msg.what) {
                     case MSG_SHOW_TOAST :
-                        notifyDataChanged();
+                        //notifyDataChanged();
                         break;
                     }
                 }

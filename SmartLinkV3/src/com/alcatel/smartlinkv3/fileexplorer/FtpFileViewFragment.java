@@ -20,13 +20,10 @@
 package com.alcatel.smartlinkv3.fileexplorer;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.logging.Logger;
 
-import org.apache.commons.net.ftp.FTPCmd;
 import org.apache.commons.net.ftp.FTPFile;
 
 import android.app.ActionBar;
@@ -38,24 +35,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
-import android.net.DhcpInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -74,10 +62,7 @@ import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.TransferTracker;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.UICmd;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.uiCommandListener;
-import com.alcatel.smartlinkv3.ftp.client.FtpClientModel;
-import com.alcatel.smartlinkv3.ftp.client.FtpManager;
 import com.alcatel.smartlinkv3.ftp.client.FtpManagerIRetrieveListener;
-import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
 
 public class FtpFileViewFragment extends Fragment implements
@@ -110,12 +95,12 @@ public class FtpFileViewFragment extends Fragment implements
 
 	private View mRootView;
 
-	private static final String sdDir = Util.getSdDirectory();
+	//private static final String sdDir = Util.getSdDirectory();
 
-	private Thread thread = null;
+	//private Thread thread = null;
 	private Context mContext = null;
 	private pubLog logger = pubLog.getLogger();
-	private FtpClientModel m_ftp = null;
+	//private FtpClientModel m_ftp = null;
 
 	FtpFileCommandTask cmdTask = null;
 
@@ -471,51 +456,8 @@ public class FtpFileViewFragment extends Fragment implements
 		mFileViewInteractionHub.setConnectdActionMode(mCommectedActionMode);
 		mFileViewInteractionHub.setUiCommandListener(mUiCmdListener);// test
 
-		Intent intent = mActivity.getIntent();
-		String action = intent.getAction();
+		mFileViewInteractionHub.setMode(Mode.View);
 
-		if (!TextUtils.isEmpty(action)
-				&& (action.equals(Intent.ACTION_PICK) || action
-						.equals(Intent.ACTION_GET_CONTENT))) {
-			mFileViewInteractionHub.setMode(Mode.Pick);
-
-			boolean pickFolder = intent.getBooleanExtra(PICK_FOLDER, false);
-			if (!pickFolder) {
-				String[] exts = intent.getStringArrayExtra(EXT_FILTER_KEY);
-				if (exts != null) {
-					mFileCagetoryHelper.setCustomCategory(exts);
-				}
-			} else {
-				mFileCagetoryHelper.setCustomCategory(new String[] {});
-				mRootView.findViewById(R.id.pick_operation_bar).setVisibility(
-						View.VISIBLE);
-
-				mRootView.findViewById(R.id.button_pick_confirm)
-						.setOnClickListener(new OnClickListener() {
-							public void onClick(View v) {
-								try {
-									Intent intent = Intent.parseUri(
-											mFileViewInteractionHub
-													.getCurrentPath(), 0);
-									mActivity.setResult(Activity.RESULT_OK,
-											intent);
-									mActivity.finish();
-								} catch (URISyntaxException e) {
-									e.printStackTrace();
-								}
-							}
-						});
-
-				mRootView.findViewById(R.id.button_pick_cancel)
-						.setOnClickListener(new OnClickListener() {
-							public void onClick(View v) {
-								mActivity.finish();
-							}
-						});
-			}
-		} else {
-			mFileViewInteractionHub.setMode(Mode.View);
-		}
 
 		mFileListView = (ListView) mRootView.findViewById(R.id.file_path_list);
 		mFileIconHelper = new FileIconHelper(mActivity);
@@ -523,46 +465,16 @@ public class FtpFileViewFragment extends Fragment implements
 				R.layout.ftp_file_browser_item, mFileNameList,
 				mFileViewInteractionHub, mFileIconHelper);
 
-		boolean baseSd = intent.getBooleanExtra(GlobalConsts.KEY_BASE_SD,
-				!FileExplorerPreferenceActivity.isReadRoot(mActivity));
-		Log.i(LOG_TAG, "baseSd = " + baseSd);
-		// TODO
-		String rootDir = intent.getStringExtra(ROOT_DIRECTORY);
-
-		/*
-		 * if (!TextUtils.isEmpty(rootDir)) { if (baseSd &&
-		 * this.sdDir.startsWith(rootDir)) { rootDir = this.sdDir; } } else {
-		 * rootDir = baseSd ? this.sdDir : GlobalConsts.ROOT_PATH; }
-		 */
-		rootDir = "/";
-		// TODO
+		String rootDir = "/";
 		mFileViewInteractionHub.setRootPath(rootDir);
-
-		// TODO
-		String currentDir = FileExplorerPreferenceActivity
-				.getPrimaryFolder(mActivity);
-
-		// TODO
-		Uri uri = intent.getData();
-		if (uri != null) {
-			// if (baseSd && this.sdDir.startsWith(uri.getPath())) {
-			// currentDir = this.sdDir;
-			// } else {
-			currentDir = uri.getPath();
-			// }
-		}
-		// TODO
-		currentDir = "/";
+		String currentDir = "/";
 		mFileViewInteractionHub.setCurrentPath(currentDir);
 		Log.i(LOG_TAG, "CurrentDir = " + currentDir);
 
 		mFileViewInteractionHub.setHostTag(cmdTask.getConfig().host
 				+ cmdTask.getConfig().port + "/");
 
-		mBackspaceExit = (uri != null)
-				&& (TextUtils.isEmpty(action) || (!action
-						.equals(Intent.ACTION_PICK) && !action
-						.equals(Intent.ACTION_GET_CONTENT)));
+		mBackspaceExit = false;
 
 		mFileListView.setAdapter(mAdapter);
 		mFileViewInteractionHub.refreshFileList();
@@ -725,27 +637,6 @@ public class FtpFileViewFragment extends Fragment implements
 	@Override
 	public boolean onOperation(int id) {
 		return false;
-	}
-
-	@Override
-	public String getDisplayPath(String path) {
-		if (path.startsWith(this.sdDir)
-				&& !FileExplorerPreferenceActivity.showRealPath(mActivity)) {
-			return getString(R.string.sd_folder)
-					+ path.substring(this.sdDir.length());
-		} else {
-			return path;
-		}
-	}
-
-	@Override
-	public String getRealPath(String displayPath) {
-		final String perfixName = getString(R.string.sd_folder);
-		if (displayPath.startsWith(perfixName)) {
-			return this.sdDir + displayPath.substring(perfixName.length());
-		} else {
-			return displayPath;
-		}
 	}
 
 	@Override
