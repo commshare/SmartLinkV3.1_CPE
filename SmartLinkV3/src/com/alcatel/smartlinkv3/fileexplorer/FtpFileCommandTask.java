@@ -9,6 +9,7 @@ import org.apache.commons.net.ftp.FTPFile;
 
 import android.R.bool;
 import android.content.Context;
+import android.content.res.Resources.Theme;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
@@ -36,6 +37,7 @@ public class FtpFileCommandTask {
 	private static final int SHOWFILES = 3;
 	private static final int DOWNLOAD = 4;
 	private static final int UPLOAD = 5;
+	private static final int LIST_FILES = 6;
 
 	private static final int DELETE = 8;
 	private static final int PAUSE_DOWNLOAD = 9;
@@ -48,8 +50,13 @@ public class FtpFileCommandTask {
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
 	private static final int MSG_SHARE_FILE = 2;
-	private static final int MSG_DOWNLOAD = 3;
 	private static final int MSG_REFRESH_UI = 10;
+
+	private static final int MSG_START_DOWNLOAD = 11;
+	private static final int MSG_ON_DOWNLOAD = 12;
+	private static final int MSG_END_DOWNLOAD = 13;
+	private static final int MSG_PAUSE_DOWNLOAD = 14;
+	private static final int MSG_ERROR_DOWNLOAD = 15;
 
 	private FtpCommandProc ftpTask = new FtpCommandProc();
 	private FtpManager ftp = null;
@@ -72,6 +79,7 @@ public class FtpFileCommandTask {
 	public class TransferTracker {
 		String filePath;
 		long process;
+		boolean isSuccess;
 	}
 
 	public void setOnCallResponse(OnCallResponse response) {
@@ -161,17 +169,28 @@ public class FtpFileCommandTask {
 	public void start() {
 		running = true;
 		thread.start();
-		ftp_connect();
+
+		int time = 0;
+		while (!thread.isAlive()) {
+			try {
+				thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (time >= 10) {
+				thread.start();
+			}
+			time++;
+		}
+
+		if (thread.isAlive()) {
+			ftp_connect();
+		}
 	}
 
 	public void stop() {
-		try {
-			ftp.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		running = false;
-		thread.stop();
+		ftp_close();
 	}
 
 	public void ftp_connect() {
@@ -299,9 +318,12 @@ public class FtpFileCommandTask {
 				showFiles(remoteRootPath);
 				CMD = -1;
 				break;
+			case LIST_FILES:
+				listFiles(remoteRootPath);
+				CMD = -1;
+				break;
 			case DOWNLOAD:
 				// TODO: need a thread pool
-
 				if (false) {
 					if (remoteFiles.size() == 0) {
 						logger.w("download fail,file size is 0 on task");
@@ -336,10 +358,16 @@ public class FtpFileCommandTask {
 							downloadFiles(remoteFiles);
 						}
 					};
-					
-					downloadTaskMananger.addDownloadTask(new ThreadPoolTask(
-							remoteFiles.get(0).fileName, onCallResponse));
-					logger.i("add download thread pool success!");
+
+					boolean result = downloadTaskMananger
+							.addDownloadTask(new ThreadPoolTask(remoteFiles
+									.get(0).fileName, onCallResponse));
+					if (result) {
+						logger.i("add download thread pool success!");
+					} else {
+						logger.i("add download thread pool fail!");
+					}
+
 				}
 
 				CMD = -1;
@@ -425,6 +453,7 @@ public class FtpFileCommandTask {
 					e.printStackTrace();
 				}
 				CMD = -1;
+				isLogin = false;
 				running = false;
 				break;
 
@@ -452,35 +481,38 @@ public class FtpFileCommandTask {
 		@Override
 		public void onTrack(String filePath, long now) {
 			// changeProgressText((int) now);
-			//logger.i("[" + filePath + "] transfer progress: " + now);
-			
+			// logger.i("[" + filePath + "] transfer progress: " + now);
+
 			TransferTracker transfer = new TransferTracker();
 			transfer.filePath = filePath;
 			transfer.process = now;
-			
-			sendMsg(MSG_DOWNLOAD, transfer);
+
+			sendMsg(MSG_ON_DOWNLOAD, transfer);
 		}
 
 		@Override
 		public void onError(Object obj, int type) {
 			logger.i("transfer error: " + obj);
+			sendMsg(MSG_ERROR_DOWNLOAD, obj);
 			// sendMsg(obj + "");
 		}
 
 		public void onDone() {
 			logger.i("transfer done......");
+			sendMsg(MSG_END_DOWNLOAD, "down load end!");
 			// changeProgressText(100);
 		}
 
 		@Override
 		public void onCancel(Object obj) {
+			sendMsg(MSG_PAUSE_DOWNLOAD, "down load cancel!");
 			logger.i("transfer cancel.....");
 		}
 
 		@Override
 		public void onStart(String filePath) {
 			// TODO Auto-generated method stub
-
+			sendMsg(MSG_START_DOWNLOAD, filePath);
 		}
 	};
 
@@ -707,6 +739,41 @@ public class FtpFileCommandTask {
 			sendMsg(MSG_SHOW_TOAST, "Ftp File List Error:" + e);
 		}
 
+	}
+
+	private void listFiles(String path) {
+		if (!isLogin) {
+			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			return;
+		}
+
+		try {
+			FTPFile[] ftpFile = ftp.showListFile(path);
+
+			ArrayList<FileInfo> fileList = new ArrayList<FileInfo>();
+
+			for (FTPFile child : ftpFile) {
+				FileInfo lFileInfo = Util.GetFtpFileInfo(child, path, null,
+						false);
+				if (lFileInfo != null) {
+					fileList.add(lFileInfo);
+				}
+			}
+
+			if (mOnCallResponse != null) {
+				mOnCallResponse.callResponse(fileList);
+				mOnCallResponse = null;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void ftp_list_files(String remotePath) {
+		ftpTask.setRemoteRootPath(remotePath);
+		ftpTask.awakenCMD(LIST_FILES);
 	}
 
 	private void shareFiles(ArrayList<FileInfo> remote) {

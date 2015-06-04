@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import android.R.bool;
+
 public class ThreadPoolTaskManager {
 	private static final String TAG = "DownloadTaskManager";
 
@@ -27,11 +29,17 @@ public class ThreadPoolTaskManager {
 		return downloadTaskMananger;
 	}
 
-	public void addDownloadTask(ThreadPoolTask downloadTask) {
+	public boolean addDownloadTask(ThreadPoolTask downloadTask) {
 		synchronized (downloadTasks) {
 			if (!isTaskRepeat(downloadTask.getFileId())) {
-				System.out.println("thread pool 1: add task name = " + downloadTask.getFileId());
+				System.out.println("ThreadPool 1: add task name = "
+						+ downloadTask.getFileId());
 				downloadTasks.addLast(downloadTask);
+				return true;
+			} else {
+				System.out.println("ThreadPool:task ["
+						+ downloadTask.getFileId() + "] is repeated");
+				return false;
 			}
 		}
 
@@ -42,7 +50,7 @@ public class ThreadPoolTaskManager {
 			if (taskIdSet.contains(fileId)) {
 				return true;
 			} else {
-				System.out.println("thread pool 2: add task name = " + fileId);
+				System.out.println("ThreadPool 2: add task name = " + fileId);
 				taskIdSet.add(fileId);
 				return false;
 			}

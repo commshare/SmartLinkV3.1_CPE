@@ -275,9 +275,13 @@ public class FtpFileViewFragment extends Fragment implements
 	// message type
 	private static final int MSG_SHOW_TOAST = 1;
 	private static final int MSG_SHARE_FILE = 2;
-	private static final int MSG_DOWNLOAD = 3;
-	private static final int PAUSE_DOWNLOAD = 9;
 	private static final int MSG_REFRESH_UI = 10;
+
+	private static final int MSG_START_DOWNLOAD = 11;
+	private static final int MSG_ON_DOWNLOAD = 12;
+	private static final int MSG_END_DOWNLOAD = 13;
+	private static final int MSG_PAUSE_DOWNLOAD = 14;
+	private static final int MSG_ERROR_DOWNLOAD = 15;
 
 	FtpCommandListener ftpCommandListener = new FtpCommandListener() {
 
@@ -286,31 +290,39 @@ public class FtpFileViewFragment extends Fragment implements
 			// TODO Auto-generated method stub
 			int what = msg.what;
 			switch (what) {
-			case -1:
-				break;
+			// message toast
 			case MSG_SHOW_TOAST:
 				Toast.makeText(mContext, msg.obj + "", Toast.LENGTH_SHORT)
 						.show();
 				mFileViewInteractionHub.refreshFileList();
 				break;
+			// share file lists
 			case MSG_SHARE_FILE:
 				ArrayList<ShareFileInfo> shareFiles = (ArrayList<ShareFileInfo>) msg.obj;
 				break;
-			case MSG_DOWNLOAD:
+			// download status
+			case MSG_START_DOWNLOAD:
+				String filePath = (String) msg.obj;
+				logger.i("start download [" + filePath + "]");
+				break;
+			case MSG_ON_DOWNLOAD:
 				TransferTracker track = (TransferTracker) msg.obj;
-				logger.i("download file [" + track.filePath + "],process = :" + track.process);
+				logger.i("download file [" + track.filePath + "],process = :"
+						+ track.process);
 				break;
-			case 5:
-				// progressText.setText(msg.obj + "%");
-				// progressBar.setProgress(Integer.parseInt(msg.obj + ""));
-				// if (("" + msg.obj).equals("100")) {
-				// fileListDialog.findViewById(R.id.getfileBtn).setEnabled(
-				// true);
-				// }
+			case MSG_END_DOWNLOAD:
+				logger.i("download success!");
 				break;
-			case PAUSE_DOWNLOAD:
+			case MSG_PAUSE_DOWNLOAD:
+				logger.i("download pause!");
 				ftp.setFtpStopDownload();
 				break;
+			case MSG_ERROR_DOWNLOAD:
+				String error = (String) msg.obj;
+				logger.i("downlaod error: " + error);
+				break;
+
+			// ui refresh
 			case MSG_REFRESH_UI:
 				FTPFile[] listFiles = (FTPFile[]) msg.obj;
 
