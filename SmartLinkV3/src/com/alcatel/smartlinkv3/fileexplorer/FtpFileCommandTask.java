@@ -32,6 +32,9 @@ import com.alcatel.smartlinkv3.samba.SmbHttpServer;
 
 //TODO: CallBack
 public class FtpFileCommandTask {
+	private static final int SUCCESS = 0;
+	private static final int FAIL = -1;
+	
 	// ftp command
 	private static final int CONNECT = 1;
 	private static final int SHOWFILES = 3;
@@ -57,6 +60,8 @@ public class FtpFileCommandTask {
 	private static final int MSG_END_DOWNLOAD = 13;
 	private static final int MSG_PAUSE_DOWNLOAD = 14;
 	private static final int MSG_ERROR_DOWNLOAD = 15;
+	// create folder
+	private static final int MSG_CREATE_FOLDER = 16;
 
 	private FtpCommandProc ftpTask = new FtpCommandProc();
 	private FtpManager ftp = null;
@@ -834,8 +839,10 @@ public class FtpFileCommandTask {
 
 		if (result) {
 			sendMsg(MSG_SHOW_TOAST, "create folder success!");
+			sendMsg(MSG_CREATE_FOLDER, SUCCESS);
 		} else {
 			sendMsg(MSG_SHOW_TOAST, "create folder fail: " + remoteFolder);
+			sendMsg(MSG_CREATE_FOLDER, FAIL);
 			logger.i("create folder fail: " + remoteFolder);
 		}
 

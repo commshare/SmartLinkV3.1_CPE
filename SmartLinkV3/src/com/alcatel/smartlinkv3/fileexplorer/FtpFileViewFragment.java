@@ -277,6 +277,8 @@ public class FtpFileViewFragment extends Fragment implements
 	private static final int MSG_END_DOWNLOAD = 13;
 	private static final int MSG_PAUSE_DOWNLOAD = 14;
 	private static final int MSG_ERROR_DOWNLOAD = 15;
+	// create folder
+	private static final int MSG_CREATE_FOLDER = 16;
 
 	private AlertDialog mDlDialog;
 	private TextView mDlProgressTv;
@@ -359,7 +361,10 @@ public class FtpFileViewFragment extends Fragment implements
 				String error = (String) msg.obj;
 				logger.i("downlaod error: " + error);
 				break;
-
+			case MSG_CREATE_FOLDER:
+				int result = (Integer) msg.obj;
+				logger.i("create folder: " + result);
+				break;
 			// ui refresh
 			case MSG_REFRESH_UI:
 				FTPFile[] listFiles = (FTPFile[]) msg.obj;
