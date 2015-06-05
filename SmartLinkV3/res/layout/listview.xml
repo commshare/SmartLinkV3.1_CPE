@@ -14,11 +14,12 @@
 		android:layout_height="wrap_content"
 		android:layout_margin="5dip">
 		
-		<TextView android:id="@+id/title"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textColor="#FFFFFFFF"
-			android:textSize="20sp" />
+		<TextView
+		    android:id="@+id/title"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:textColor="@color/color_black"
+		    android:textSize="20sp" />
 		
 		<RelativeLayout android:id="@+id/drawview" 
 		    android:layout_width="fill_parent"

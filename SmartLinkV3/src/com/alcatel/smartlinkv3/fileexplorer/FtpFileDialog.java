@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
@@ -22,14 +23,19 @@ public class FtpFileDialog extends FileDialog {
     
     private static FtpFileCommandTask mCmdTask = new FtpFileCommandTask();
     private ArrayList<FileInfo> mInfos;
+    private String fileName[];
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-         mCmdTask.init(this);
-         mCmdTask.setFtpCommandListener(ftpCommandListener);
-         mCmdTask.start();
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+        fileName = bundle.getStringArray("files_path");
+
+        mCmdTask.init(this);
+        mCmdTask.setFtpCommandListener(ftpCommandListener);
+        mCmdTask.start();
     }
     
     @Override
@@ -46,7 +52,6 @@ public class FtpFileDialog extends FileDialog {
                     Log.d(TAG, "at ftp msg handler" + msg.toString());
                     switch(msg.what) {
                     case MSG_SHOW_TOAST :
-                        //notifyDataChanged();
                         break;
                     case MSG_CREATE_FOLDER :
                         if (((Integer) msg.obj).intValue() == SUCCESS)
@@ -82,13 +87,20 @@ public class FtpFileDialog extends FileDialog {
         return list;
     }
     
+    private boolean filesContains(String[] files, String file) {
+        for (String f : files) {
+            if (f.equals(file)) return true;
+        }
+        return false;
+    }
+    
     private ArrayList<FileInfo> filter (ArrayList<FileInfo> infos) {
         String title = new String(getTitle().toString());
         
         ArrayList<FileInfo> list = new ArrayList<FileInfo>();
         for (FileInfo info : infos) {
             if (info.IsDir)
-            if (!info.fileName.equals(title))
+            if (!filesContains(fileName, Util.makePath(info.filePath, info.fileName)))
                 list.add(info);
         }
         return list;

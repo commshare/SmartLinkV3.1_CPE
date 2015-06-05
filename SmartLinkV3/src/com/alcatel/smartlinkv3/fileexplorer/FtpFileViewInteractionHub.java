@@ -541,8 +541,21 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	}
 	
 	public void onOperationMoveTo() {
-	    String title = getSelectedFileList().get(0).fileName;
-	    IntentBuilder.goExFileDialog(mActivity, title);
+	    if (getSelectedFileList().size() == 1) {
+	        String title = getSelectedFileList().get(0).fileName;
+	        String path = Util.makePath(getSelectedFileList().get(0).filePath, title);
+	        String files[] = new String[] {path};
+	        IntentBuilder.goExFileDialog(mActivity, title, files);
+	    } else if (getSelectedFileList().size() > 1) {
+	        String title = mActivity.getString(R.string.move_to_title);
+	        ArrayList<String> listFiles = new ArrayList<String>();
+	        for (FileInfo info : getSelectedFileList()) {
+	            String path = Util.makePath(info.filePath, info.fileName);
+	            listFiles.add(path);
+	        }
+	        String files[] = listFiles.toArray(new String[listFiles.size()]);
+	        IntentBuilder.goExFileDialog(mActivity, title, files);
+	    }
 	}
 	
 	public void operationMoveTo(String path) {
