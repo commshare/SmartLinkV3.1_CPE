@@ -1218,23 +1218,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	}
 	
 	private void OnResponseAppWidget(){
-		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blCPEWifiConnected) {
-			Intent it=getIntent();
-			int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-			if (nPage == SMS_PAGE) {
-				smsBtnClick();
-			}else if (nPage == BATTERY_PAGE) {
-				widgetBatteryBtnClick();
-			}else if (nPage == HOME_PAGE) {
-				homeBtnClick();
-			}else if(nPage == USAGE_PAGE){
-			    	usageBtnClick();
-			}
+		if (DataConnectManager.getInstance().getCPEWifiConnected() && CPEConfig.getInstance().getInitialLaunchedFlag() && CPEConfig.getInstance().getQuickSetupFlag()) {
+		    Intent it=getIntent();
+		    int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
+		    if (nPage == SMS_PAGE) {
+			smsBtnClick();
+		    }else if (nPage == BATTERY_PAGE) {
+			widgetBatteryBtnClick();
+		    }else if (nPage == HOME_PAGE) {
+			homeBtnClick();
+		    }else if(nPage == USAGE_PAGE){
+		   	usageBtnClick();
+		    }
 		}else {
-			Intent itent = new Intent(this, RefreshWifiActivity.class);
-			startActivity(itent);
-			this.finish();
+		    Intent itent = new Intent(this, LoadingActivity.class);
+		    startActivity(itent);
+		    this.finish();
 		}
 	}
 	
