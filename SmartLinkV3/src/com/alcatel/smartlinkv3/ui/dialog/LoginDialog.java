@@ -497,6 +497,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				&& keyCode == KeyEvent.KEYCODE_BACK) {
 			m_dlgLogin.dismiss();
 			m_bIsShow = false;
+      if (mCancelCallback != null){
+        mCancelCallback.onCancelLogin();
+      }
 		}
 
 		return false;

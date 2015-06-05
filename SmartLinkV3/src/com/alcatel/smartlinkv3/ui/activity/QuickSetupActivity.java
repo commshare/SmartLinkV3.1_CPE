@@ -106,13 +106,14 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     setViewsVisibility(false, true);
     if (status == UserLoginStatus.LoginTimeOut) {
-      handleLoginError(R.string.login_login_time_used_out_msg, false);
+      handleLoginError(R.string.other_login_warning_title, 
+          R.string.login_login_time_used_out_msg, false);
     } else {
       doLogin();
     }
   }
   
-  private void handleLoginError(int messageId, final boolean timeout) {
+  private void handleLoginError(int titleId, int messageId, final boolean login) {
     if (mConfirmDialog != null) {
       mConfirmDialog.destroyDialog();
     }
@@ -121,7 +122,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
       @Override
       public void onConfirm() {
-        if(timeout) {
+        if(login) {
           //If timeout, let user re-login
           showLoginDialog();
         } else {
@@ -132,7 +133,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     });
     mConfirmDialog.showDialog(
-        getString(R.string.other_login_warning_title),
+        getString(titleId),
         getString(messageId));
   }
   
@@ -150,9 +151,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
       public void onLoginFailed(String error_code) {
         if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){
-          handleLoginError(R.string.login_other_user_logined_error_msg, false);
+          handleLoginError(R.string.other_login_warning_title,
+              R.string.login_other_user_logined_error_msg, false);
         } else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
-          handleLoginError(R.string.login_login_time_used_out_msg, true);
+          handleLoginError(R.string.other_login_warning_title, 
+              R.string.login_login_time_used_out_msg, true);
         } else {
           ErrorDialog.getInstance(mContext).showDialog(
               getString(R.string.login_psd_error_msg),
@@ -180,7 +183,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
       @Override
       public void onCancelLogin() {
-        finishQuickSetup(true);        
+        //finishQuickSetup(true);
+        handleLoginError(R.string.qs_title, R.string.qs_exit_query, false);
       }
       
     });

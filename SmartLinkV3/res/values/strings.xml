@@ -23,6 +23,7 @@
 
     <!-- Qucik Setup -->
     <string name="qs_title">Quick Setup</string>
+    <string name="qs_exit_query">Exit Quick Setup</string>
     <string name="qs_item_pin_code">PIN Code</string>
     <string name="qs_pin_code_prompt">Please input the PIN code\nRemain: <xliff:g id="INPUTTIMES">%1$d</xliff:g> time(s)</string>
     <string name="qs_item_wifi_ssid">Wi-Fi Network Name (SSID)</string>
