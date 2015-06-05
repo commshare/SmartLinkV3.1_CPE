@@ -57,6 +57,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity.OnBackPressedListener;
 
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.FtpCommandListener;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.MSG_TYPE;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.OnCallResponse;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileCommandTask.TransferTracker;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
@@ -266,20 +267,7 @@ public class FtpFileViewFragment extends Fragment implements
 			Log.d("", "onCancel...............");
 		}
 	};
-
-	// message type
-	private static final int MSG_SHOW_TOAST = 1;
-	private static final int MSG_SHARE_FILE = 2;
-	private static final int MSG_REFRESH_UI = 10;
-
-	private static final int MSG_START_DOWNLOAD = 11;
-	private static final int MSG_ON_DOWNLOAD = 12;
-	private static final int MSG_END_DOWNLOAD = 13;
-	private static final int MSG_PAUSE_DOWNLOAD = 14;
-	private static final int MSG_ERROR_DOWNLOAD = 15;
-	// create folder
-	private static final int MSG_CREATE_FOLDER = 16;
-
+	
 	private AlertDialog mDlDialog;
 	private TextView mDlProgressTv;
 	private TextView mDlPathTv;
@@ -323,22 +311,22 @@ public class FtpFileViewFragment extends Fragment implements
 			int what = msg.what;
 			switch (what) {
 			// message toast
-			case MSG_SHOW_TOAST:
+			case MSG_TYPE.MSG_SHOW_TOAST:
 				Toast.makeText(mContext, msg.obj + "", Toast.LENGTH_SHORT)
 						.show();
 				mFileViewInteractionHub.refreshFileList();
 				break;
 			// share file lists
-			case MSG_SHARE_FILE:
+			case MSG_TYPE.MSG_SHARE_FILE:
 				ArrayList<ShareFileInfo> shareFiles = (ArrayList<ShareFileInfo>) msg.obj;
 				break;
 			// download status
-			case MSG_START_DOWNLOAD:
+			case MSG_TYPE.MSG_START_DOWNLOAD:
 				String filePath = (String) msg.obj;
 				logger.i("start download [" + filePath + "]");
 				showDLDialog(filePath);
 				break;
-			case MSG_ON_DOWNLOAD:
+			case MSG_TYPE.MSG_ON_DOWNLOAD:
 				TransferTracker track = (TransferTracker) msg.obj;
 				logger.i("download file [" + track.filePath + "],process = :"
 						+ track.process);
@@ -349,24 +337,24 @@ public class FtpFileViewFragment extends Fragment implements
 					mDlProgressBar.setProgress((int) track.process);
 				}
 				break;
-			case MSG_END_DOWNLOAD:
+			case MSG_TYPE.MSG_END_DOWNLOAD:
 				logger.i("download success!");
 				mDlDialog.dismiss();
 				break;
-			case MSG_PAUSE_DOWNLOAD:
+			case MSG_TYPE.MSG_PAUSE_DOWNLOAD:
 				logger.i("download pause!");
 				cmdTask.ftp_pause_download();
 				break;
-			case MSG_ERROR_DOWNLOAD:
+			case MSG_TYPE.MSG_ERROR_DOWNLOAD:
 				String error = (String) msg.obj;
 				logger.i("downlaod error: " + error);
 				break;
-			case MSG_CREATE_FOLDER:
+			case MSG_TYPE.MSG_CREATE_FOLDER:
 				int result = (Integer) msg.obj;
 				logger.i("create folder: " + result);
 				break;
 			// ui refresh
-			case MSG_REFRESH_UI:
+			case MSG_TYPE.MSG_REFRESH_UI:
 				FTPFile[] listFiles = (FTPFile[]) msg.obj;
 
 				if (listFiles == null) {
@@ -449,9 +437,9 @@ public class FtpFileViewFragment extends Fragment implements
 		cmdTask.init(getActivity());
 		cmdTask.setFtpCommandListener(ftpCommandListener);
 		cmdTask.start();
-
+		
 		mActivity = getActivity();
-
+		
 		// getWindow().setFormat(android.graphics.PixelFormat.RGBA_8888);
 		mRootView = inflater.inflate(R.layout.ftp_file_explorer_list,
 				container, false);

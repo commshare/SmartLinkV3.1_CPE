@@ -37,8 +37,10 @@ public class ThreadPoolTaskManager {
 				downloadTasks.addLast(downloadTask);
 				return true;
 			} else {
+				// TODO
 				System.out.println("ThreadPool:task ["
 						+ downloadTask.getFileId() + "] is repeated");
+				downloadTasks.addLast(downloadTask);
 				return false;
 			}
 		}

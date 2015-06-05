@@ -34,34 +34,6 @@ import com.alcatel.smartlinkv3.samba.SmbHttpServer;
 public class FtpFileCommandTask {
 	private static final int SUCCESS = 0;
 	private static final int FAIL = -1;
-	
-	// ftp command
-	private static final int CONNECT = 1;
-	private static final int SHOWFILES = 3;
-	private static final int DOWNLOAD = 4;
-	private static final int UPLOAD = 5;
-	private static final int LIST_FILES = 6;
-
-	private static final int DELETE = 8;
-	private static final int PAUSE_DOWNLOAD = 9;
-	private static final int CLOSE = -2;
-	private static final int MOVE = 10;
-	private static final int COPY = 11;
-	private static final int RENAME = 12;
-	private static final int SHARE = 13;
-	private static final int CREATE_FOLDER = 14;
-	// message type
-	private static final int MSG_SHOW_TOAST = 1;
-	private static final int MSG_SHARE_FILE = 2;
-	private static final int MSG_REFRESH_UI = 10;
-
-	private static final int MSG_START_DOWNLOAD = 11;
-	private static final int MSG_ON_DOWNLOAD = 12;
-	private static final int MSG_END_DOWNLOAD = 13;
-	private static final int MSG_PAUSE_DOWNLOAD = 14;
-	private static final int MSG_ERROR_DOWNLOAD = 15;
-	// create folder
-	private static final int MSG_CREATE_FOLDER = 16;
 
 	private FtpCommandProc ftpTask = new FtpCommandProc();
 	private FtpManager ftp = null;
@@ -73,13 +45,45 @@ public class FtpFileCommandTask {
 	private FtpClientModel m_ftp = null;
 
 	private FtpCommandListener m_FtpCommandListener;
-	// private Handler handler = null;
 	private boolean isLogin = false;
 	private boolean isInit = false;
 
 	private ArrayList<ShareFileInfo> mShareFiles = new ArrayList<ShareFileInfo>();
 
 	private OnCallResponse mOnCallResponse;
+
+	// ftp cmd
+	public class FTP_CMD {
+		private static final int CONNECT = 1;
+		private static final int SHOWFILES = 3;
+		private static final int DOWNLOAD = 4;
+		private static final int UPLOAD = 5;
+		private static final int LIST_FILES = 6;
+
+		private static final int DELETE = 8;
+		private static final int PAUSE_DOWNLOAD = 9;
+		private static final int CLOSE = -2;
+		private static final int MOVE = 10;
+		private static final int COPY = 11;
+		private static final int RENAME = 12;
+		private static final int SHARE = 13;
+		private static final int CREATE_FOLDER = 14;
+	}
+
+	// message type
+	public class MSG_TYPE {
+		public static final int MSG_SHOW_TOAST = 1;
+		public static final int MSG_SHARE_FILE = 2;
+		public static final int MSG_REFRESH_UI = 10;
+
+		public static final int MSG_START_DOWNLOAD = 11;
+		public static final int MSG_ON_DOWNLOAD = 12;
+		public static final int MSG_END_DOWNLOAD = 13;
+		public static final int MSG_PAUSE_DOWNLOAD = 14;
+		public static final int MSG_ERROR_DOWNLOAD = 15;
+		// create folder
+		public static final int MSG_CREATE_FOLDER = 16;
+	}
 
 	public class TransferTracker {
 		String filePath;
@@ -143,7 +147,7 @@ public class FtpFileCommandTask {
 		if (true) {
 			m_ftp.host = getServerAddress(mContext);
 			m_ftp.port = 21;
-		}else{
+		} else {
 			m_ftp.host = "192.168.1.103";
 			m_ftp.port = 2221;
 			m_ftp.username = "admin";
@@ -197,7 +201,7 @@ public class FtpFileCommandTask {
 		if (thread.isAlive()) {
 			ftp_connect();
 		}
-		
+
 		int n = 0;
 		while (!isLogin) {
 			try {
@@ -212,7 +216,7 @@ public class FtpFileCommandTask {
 			}
 			n++;
 		}
-		
+
 	}
 
 	public void stop() {
@@ -220,62 +224,67 @@ public class FtpFileCommandTask {
 	}
 
 	public void ftp_connect() {
-		ftpTask.awakenCMD(CONNECT);
+		ftpTask.awakenCMD(FTP_CMD.CONNECT);
 	}
 
 	public void ftp_showfiles(String remotePath) {
 		ftpTask.setRemoteRootPath(remotePath);
-		ftpTask.awakenCMD(SHOWFILES);
+		ftpTask.awakenCMD(FTP_CMD.SHOWFILES);
 	}
 
 	public void ftp_download(ArrayList<FileInfo> remoteFiles) {
 		ftpTask.setRemoteFiles(remoteFiles);
-		ftpTask.awakenCMD(DOWNLOAD);
+		ftpTask.awakenCMD(FTP_CMD.DOWNLOAD);
 	}
 
 	public void ftp_pause_download() {
-		ftpTask.awakenCMD(PAUSE_DOWNLOAD);
+		ftpTask.awakenCMD(FTP_CMD.PAUSE_DOWNLOAD);
 	}
-	
+
 	public void ftp_upload(ArrayList<File> localFiles, String remotePath) {
 		ftpTask.setLocalFiles(localFiles);
 		ftpTask.setRemotePath(remotePath);
-		ftpTask.awakenCMD(UPLOAD);
+		ftpTask.awakenCMD(FTP_CMD.UPLOAD);
 	}
 
 	public void ftp_delete(ArrayList<FileInfo> remoteFiles) {
 		ftpTask.setRemoteFiles(remoteFiles);
-		ftpTask.awakenCMD(DELETE);
+		ftpTask.awakenCMD(FTP_CMD.DELETE);
 	}
 
 	public void ftp_move(ArrayList<FileInfo> remoteFiles, String remotePath) {
 		ftpTask.setMoveFile(remoteFiles, remotePath);
-		ftpTask.awakenCMD(MOVE);
+		ftpTask.awakenCMD(FTP_CMD.MOVE);
 	}
 
 	public void ftp_create_folder(String remotePath) {
 		ftpTask.setRemotePath(remotePath);
-		ftpTask.awakenCMD(CREATE_FOLDER);
+		ftpTask.awakenCMD(FTP_CMD.CREATE_FOLDER);
 	}
 
 	public void ftp_copy(ArrayList<FileInfo> remoteFiles, String remotePath) {
 		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.setRemoteFiles(remoteFiles);
-		ftpTask.awakenCMD(COPY);
+		ftpTask.awakenCMD(FTP_CMD.COPY);
 	}
 
 	public void ftp_rename(String fromFile, String toFile) {
 		ftpTask.setRename(fromFile, toFile);
-		ftpTask.awakenCMD(RENAME);
+		ftpTask.awakenCMD(FTP_CMD.RENAME);
 	}
 
 	public void ftp_share(ArrayList<FileInfo> remoteFiles) {
 		ftpTask.setShareFiles(remoteFiles);
-		ftpTask.awakenCMD(SHARE);
+		ftpTask.awakenCMD(FTP_CMD.SHARE);
+	}
+
+	public void ftp_list_files(String remotePath) {
+		ftpTask.setRemoteRootPath(remotePath);
+		ftpTask.awakenCMD(FTP_CMD.LIST_FILES);
 	}
 
 	public void ftp_close() {
-		ftpTask.awakenCMD(CLOSE);
+		ftpTask.awakenCMD(FTP_CMD.CLOSE);
 	}
 
 	class FtpCommandProc implements Runnable {
@@ -335,7 +344,7 @@ public class FtpFileCommandTask {
 			}
 
 			switch (CMD) {
-			case CONNECT:
+			case FTP_CMD.CONNECT:
 				logger.v("ftp is connecting!....");
 				ftpConnect();
 				CMD = -1;
@@ -344,15 +353,15 @@ public class FtpFileCommandTask {
 				// ftpChangeDir();
 				CMD = -1;
 				break;
-			case SHOWFILES:
+			case FTP_CMD.SHOWFILES:
 				showFiles(remoteRootPath);
 				CMD = -1;
 				break;
-			case LIST_FILES:
+			case FTP_CMD.LIST_FILES:
 				listFiles(remoteRootPath);
 				CMD = -1;
 				break;
-			case DOWNLOAD:
+			case FTP_CMD.DOWNLOAD:
 				// TODO: need a thread pool
 				if (false) {
 					if (remoteFiles.size() == 0) {
@@ -402,11 +411,11 @@ public class FtpFileCommandTask {
 
 				CMD = -1;
 				break;
-			case PAUSE_DOWNLOAD:
+			case FTP_CMD.PAUSE_DOWNLOAD:
 				ftp.setFtpStopDownload();
 				CMD = -1;
 				break;
-			case UPLOAD:
+			case FTP_CMD.UPLOAD:
 				// TODO: need a thread pool
 				if (true) {
 					if (localFiles.size() == 0) {
@@ -414,7 +423,6 @@ public class FtpFileCommandTask {
 						CMD = -1;
 						break;
 					}
-
 					uploadFiles(localFiles, remotePath);
 				}
 
@@ -431,7 +439,7 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 
-			case DELETE:
+			case FTP_CMD.DELETE:
 				if (remoteFiles.size() == 0) {
 					logger.w("delete fail,file size is 0 on task");
 					CMD = -1;
@@ -447,7 +455,7 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 
-			case MOVE:
+			case FTP_CMD.MOVE:
 				if ((this.fromFiles != null) && (this.toFile != null)) {
 					moveFiles(this.fromFiles, this.toFile);
 				}
@@ -455,32 +463,32 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 
-			case COPY:
+			case FTP_CMD.COPY:
 				CMD = -1;
 				break;
 
-			case CREATE_FOLDER:
+			case FTP_CMD.CREATE_FOLDER:
 				if (this.remotePath != null) {
 					createFolder(this.remotePath);
 				}
 
 				CMD = -1;
 				break;
-			case RENAME:
+			case FTP_CMD.RENAME:
 				if ((this.fromFile != null) && (this.toFile != null)) {
 					renameFile(this.fromFile, this.toFile);
 				}
 
 				CMD = -1;
 				break;
-			case SHARE:
+			case FTP_CMD.SHARE:
 				if (this.shareFiles != null) {
 					shareFiles(this.shareFiles);
 				}
 
 				CMD = -1;
 				break;
-			case CLOSE:
+			case FTP_CMD.CLOSE:
 				try {
 					ftp.close();
 				} catch (Exception e) {
@@ -522,32 +530,32 @@ public class FtpFileCommandTask {
 			transfer.filePath = filePath;
 			transfer.process = now;
 
-			sendMsg(MSG_ON_DOWNLOAD, transfer);
+			sendMsg(MSG_TYPE.MSG_ON_DOWNLOAD, transfer);
 		}
 
 		@Override
 		public void onError(Object obj, int type) {
 			logger.i("transfer error: " + obj);
-			sendMsg(MSG_ERROR_DOWNLOAD, obj);
+			sendMsg(MSG_TYPE.MSG_ERROR_DOWNLOAD, obj);
 			// sendMsg(obj + "");
 		}
 
 		public void onDone() {
 			logger.i("transfer done......");
-			sendMsg(MSG_END_DOWNLOAD, "down load end!");
+			sendMsg(MSG_TYPE.MSG_END_DOWNLOAD, "down load end!");
 			// changeProgressText(100);
 		}
 
 		@Override
 		public void onCancel(Object obj) {
-			sendMsg(MSG_PAUSE_DOWNLOAD, "down load cancel!");
+			sendMsg(MSG_TYPE.MSG_PAUSE_DOWNLOAD, "down load cancel!");
 			logger.i("transfer cancel.....");
 		}
 
 		@Override
 		public void onStart(String filePath) {
 			// TODO Auto-generated method stub
-			sendMsg(MSG_START_DOWNLOAD, filePath);
+			sendMsg(MSG_TYPE.MSG_START_DOWNLOAD, filePath);
 		}
 	};
 
@@ -593,12 +601,12 @@ public class FtpFileCommandTask {
 		}
 
 		if (ftp.connectLogin()) {
-			sendMsg(MSG_SHOW_TOAST, "ftp login success!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login success!");
 			logger.v("ftp login success!");
 			isLogin = true;
 			handler.sendEmptyMessage(2);
 		} else {
-			sendMsg(MSG_SHOW_TOAST, "ftp login fail!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login fail!");
 		}
 	}
 
@@ -606,12 +614,12 @@ public class FtpFileCommandTask {
 		boolean result = false;
 
 		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			return;
 		}
 
 		if ((remote == null) || (remote.size() == 0)) {
-			sendMsg(MSG_SHOW_TOAST, "can not find the remote files!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not find the remote files!");
 			logger.w("delete fail,can't not find the remote file!");
 			return;
 		}
@@ -622,10 +630,10 @@ public class FtpFileCommandTask {
 			result = ftp.deleteFiles(remotePath);
 
 			if (result) {
-				sendMsg(MSG_SHOW_TOAST, "delete file [" + remotePath
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "delete file [" + remotePath
 						+ "] success!");
 			} else {
-				sendMsg(MSG_SHOW_TOAST, "delete file [" + remotePath
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "delete file [" + remotePath
 						+ "] fail!");
 			}
 		}
@@ -634,7 +642,7 @@ public class FtpFileCommandTask {
 
 	private void renameFile(String fromFile, String toFile) throws IOException {
 		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			return;
 		}
 		if (null == fromFile) {
@@ -650,9 +658,11 @@ public class FtpFileCommandTask {
 		boolean result = ftp.rename(fromFile, toFile);
 
 		if (result) {
-			sendMsg(MSG_SHOW_TOAST, "rename file [" + fromFile + "] success!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "rename file [" + fromFile
+					+ "] success!");
 		} else {
-			sendMsg(MSG_SHOW_TOAST, "rename file [" + fromFile + "] fail!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "rename file [" + fromFile
+					+ "] fail!");
 		}
 
 	}
@@ -660,7 +670,7 @@ public class FtpFileCommandTask {
 	private void moveFiles(ArrayList<FileInfo> fromFiles, String remotePath)
 			throws IOException {
 		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			return;
 		}
 		if (null == fromFiles) {
@@ -683,10 +693,13 @@ public class FtpFileCommandTask {
 			boolean result = ftp.move(fromFile, toFile);
 
 			if (result) {
-				sendMsg(MSG_SHOW_TOAST, "move file [" + fromFile + "] success!");
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "move file [" + fromFile
+						+ "] success!");
 			} else {
-				sendMsg(MSG_SHOW_TOAST, "move file [" + fromFile + "] fail!");
-				logger.w("move file fail fromFile = " + fromFile + ",toFile = " + toFile);
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "move file [" + fromFile
+						+ "] fail!");
+				logger.w("move file fail fromFile = " + fromFile + ",toFile = "
+						+ toFile);
 				print_reply_code();
 			}
 		}
@@ -698,12 +711,12 @@ public class FtpFileCommandTask {
 		boolean result = false;
 
 		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			return;
 		}
 
 		if ((local == null) || (local.size() == 0)) {
-			sendMsg(MSG_SHOW_TOAST, "can not find the local files!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not find the local files!");
 			logger.w("download fail,can't not find the local files!");
 			return;
 		}
@@ -713,29 +726,28 @@ public class FtpFileCommandTask {
 			result = ftp.upload(localPath,
 					remotePath + File.separator + f.getName());
 			if (!result) {
-				sendMsg(MSG_SHOW_TOAST,
-						"upload fail: localPath = " + localPath
-								+ ",remotePath = " + remotePath
-								+ File.separator + f.getName());
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "upload fail: localPath = "
+						+ localPath + ",remotePath = " + remotePath
+						+ File.separator + f.getName());
 				logger.w("upload fail: localPath = " + localPath
 						+ ",remotePath = " + remotePath + File.separator
 						+ f.getName());
 				return;
 			}
 		}
-		sendMsg(MSG_SHOW_TOAST, "upload success!");
+		sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "upload success!");
 	}
 
 	private boolean downloadFiles(ArrayList<FileInfo> remote) {
 		boolean result = false;
 
 		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			return false;
 		}
 
 		if ((remote == null) || (remote.size() == 0)) {
-			sendMsg(MSG_SHOW_TOAST, "can not find the remote files!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not find the remote files!");
 			logger.w("download fail,can't not find the remote file!");
 			return false;
 		}
@@ -751,36 +763,37 @@ public class FtpFileCommandTask {
 			result = ftp.download(localPath, remotePath);
 
 			if (!result) {
-				sendMsg(MSG_SHOW_TOAST, "download failure: " + remotePath);
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "download failure: "
+						+ remotePath);
 				return false;
 			}
 
 		}
-		sendMsg(MSG_SHOW_TOAST, "download success!");
+		sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "download success!");
 		result = true;
 		return result;
 	}
 
 	private void showFiles(String path) {
 		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			return;
 		}
 
 		try {
 			FTPFile[] ftpFile = ftp.showListFile(path);
-			sendMsg(MSG_REFRESH_UI, ftpFile);
+			sendMsg(MSG_TYPE.MSG_REFRESH_UI, ftpFile);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			sendMsg(MSG_SHOW_TOAST, "Ftp File List Error:" + e);
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "Ftp File List Error:" + e);
 		}
 
 	}
 
 	private void listFiles(String path) {
 		if (!isLogin) {
-			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			logger.i("listFiles fail,have not login!");
 			return;
 		}
@@ -809,11 +822,6 @@ public class FtpFileCommandTask {
 
 	}
 
-	public void ftp_list_files(String remotePath) {
-		ftpTask.setRemoteRootPath(remotePath);
-		ftpTask.awakenCMD(LIST_FILES);
-	}
-	
 	public void print_reply_code() {
 		logger.w("reply code: " + ftp.getReply());
 	}
@@ -826,7 +834,7 @@ public class FtpFileCommandTask {
 		}
 
 		if ((remote == null) || (remote.size() == 0)) {
-			sendMsg(MSG_SHOW_TOAST, "can not find the remote files!");
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not find the remote files!");
 			logger.w("download fail,can't not find the remote file!");
 			return;
 		}
@@ -841,7 +849,8 @@ public class FtpFileCommandTask {
 			result = ftp.download(localPath, remotePath);
 
 			if (!result) {
-				sendMsg(MSG_SHOW_TOAST, "download failure: " + remotePath);
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "download failure: "
+						+ remotePath);
 				return;
 			}
 
@@ -853,7 +862,7 @@ public class FtpFileCommandTask {
 		mOnCallResponse.callResponse(shareFiles);
 		// sendMsg(MSG_SHARE_FILE, shareFiles);
 
-		sendMsg(MSG_SHOW_TOAST, "Ftp file share success!");
+		sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "Ftp file share success!");
 	}
 
 	private void createFolder(String remoteFolder) throws IOException {
@@ -866,11 +875,12 @@ public class FtpFileCommandTask {
 		result = ftp.createFolder(remoteFolder);
 
 		if (result) {
-			sendMsg(MSG_SHOW_TOAST, "create folder success!");
-			sendMsg(MSG_CREATE_FOLDER, SUCCESS);
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "create folder success!");
+			sendMsg(MSG_TYPE.MSG_CREATE_FOLDER, SUCCESS);
 		} else {
-			sendMsg(MSG_SHOW_TOAST, "create folder fail: " + remoteFolder);
-			sendMsg(MSG_CREATE_FOLDER, FAIL);
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "create folder fail: "
+					+ remoteFolder);
+			sendMsg(MSG_TYPE.MSG_CREATE_FOLDER, FAIL);
 			logger.i("create folder fail: " + remoteFolder);
 			print_reply_code();
 		}
