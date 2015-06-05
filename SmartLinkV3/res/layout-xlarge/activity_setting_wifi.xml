@@ -388,7 +388,7 @@
                         android:contentDescription="@string/setting_wifi"
                         android:background="@android:color/transparent"
                         android:visibility="gone"                       
-                        android:textSize="20sp"/>
+                        android:layout_marginLeft="50dp"/>
                         
                         <ImageButton
                         android:id="@+id/ib_hide_password"
@@ -398,7 +398,8 @@
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/setting_wifi"
                         android:background="@android:color/transparent"
-                        android:visibility="visible"/>            
+                        android:visibility="visible"
+                        android:layout_marginLeft="50dp"/>            
                     </LinearLayout>
                 </LinearLayout>
                 <View

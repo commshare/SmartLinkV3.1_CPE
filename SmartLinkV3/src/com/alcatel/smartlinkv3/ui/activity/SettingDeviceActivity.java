@@ -56,6 +56,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private ErrorDialog m_dlgError = null;
 	
 	private TextView m_switch_button = null;
+	private TextView m_webversion_desc = null;
 	
 	private boolean isPinRequired;
 	
@@ -101,6 +102,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_pin_code.setOnClickListener(this);
 		m_web_version = (FrameLayout) findViewById(R.id.device_web_version);
 		m_web_version.setOnClickListener(this);
+		m_webversion_desc = (TextView)findViewById(R.id.device_web_version_desc);
+//		String webVersion = "Web Version " + BusinessMannager.getInstance().getSystemInfo().getWebUiVersion();
+//		m_webversion_desc.setText(webVersion);
 		m_restart = (FrameLayout) findViewById(R.id.device_restart);
 		m_restart.setOnClickListener(this);
 		m_power_off = (FrameLayout) findViewById(R.id.device_power_off);

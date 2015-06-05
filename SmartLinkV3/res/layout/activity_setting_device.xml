@@ -202,6 +202,7 @@
                android:padding="15dp"
                android:textColor="@color/color_black"
                android:textSize="20sp" 
+               android:id="@+id/device_web_version_desc"
                android:text="@string/setting_device_web_version"
                android:layout_gravity="start"
                />

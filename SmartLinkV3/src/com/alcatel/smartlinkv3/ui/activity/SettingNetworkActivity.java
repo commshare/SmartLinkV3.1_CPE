@@ -29,6 +29,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class SettingNetworkActivity extends BaseFragmentActivity implements OnClickListener{
@@ -569,6 +570,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
 					//Log
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -588,6 +591,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
 					//Log
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
