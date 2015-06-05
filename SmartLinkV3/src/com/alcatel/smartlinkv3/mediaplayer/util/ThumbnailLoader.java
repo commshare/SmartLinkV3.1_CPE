@@ -36,7 +36,7 @@ public class ThumbnailLoader {
 
 	public ThumbnailLoader(Context context) {
 		fileCache = new FileCache(context);
-		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		executorService = Executors.newFixedThreadPool(5);
 	}
 
 	//final int stub_id = R.drawable.microsd_item_pictures;
@@ -232,13 +232,13 @@ public class ThumbnailLoader {
 			{
 				cacheDir = new File(
 						android.os.Environment.getExternalStorageDirectory(),
-						"sharing/thumbnails/picture/");
+						"sharing/thumbnails/");
 			}
 			else{
 				//cacheDir = context.getCacheDir();
 				cacheDir = new File(
 						android.os.Environment.getDataDirectory(),
-						"smartlinkv3/sharing/thumbnails/picture/");
+						"smartlinkv3/sharing/thumbnails/");
 			}
 			if (!cacheDir.exists())
 				cacheDir.mkdirs();

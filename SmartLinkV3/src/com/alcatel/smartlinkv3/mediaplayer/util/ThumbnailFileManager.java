@@ -6,7 +6,7 @@ import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 
 public class ThumbnailFileManager {
 
-	public static String getSavePictureRootDir() {
+	public static String getSaveThumbnailRootDir() {
 		if (CommonUtil.hasSDCard()) {
 			return CommonUtil.getRootFilePath() + "sharing/thumbnails/";
 		} else {
@@ -15,7 +15,7 @@ public class ThumbnailFileManager {
 	}
 	
 	public static String getSaveThumbnailsFullPath(String uri) {
-		return getSavePictureRootDir() + String.valueOf(uri.hashCode());
+		return getSaveThumbnailRootDir() + String.valueOf(uri.hashCode());
 	}
 	
 }
