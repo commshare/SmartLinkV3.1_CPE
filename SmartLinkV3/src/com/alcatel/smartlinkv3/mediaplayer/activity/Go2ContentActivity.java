@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.mediaplayer.adapter.ContentAdapter;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
+import com.alcatel.smartlinkv3.mediaplayer.picture.FileManager;
 import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
@@ -33,6 +34,7 @@ import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
+import com.alcatel.smartlinkv3.mediaplayer.util.FileHelper;
 import com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity;
 import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
@@ -55,6 +57,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 	private List<MediaItem> mCurlistItems;	
 	private DMSDeviceBrocastFactory mBrocastFactory;
 	private String mCurrTitle;
+	private DelCacheFileManager mDelCacheFileManager;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		mContentManager.clear();
 		mContentManager.titleclear();
 		mBrocastFactory.unRegisterListener();
+		mDelCacheFileManager.start(FileManager.getSaveRootDir());
 		
 		super.onDestroy();
 	}
@@ -128,7 +132,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
     	updateSelDevUI(mCurrTitle);
     	
     	mBrocastFactory.registerListener(this);
-    	
+    	mDelCacheFileManager = new DelCacheFileManager();
     	
     }
 	
@@ -283,6 +287,46 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 			break;
 		}
 	}
-
-
+	
+	class DelCacheFileManager implements Runnable
+	{
+		private Thread mThread;
+		private String mFilePath;
+		
+		public DelCacheFileManager()
+		{
+			
+		}
+		
+		@Override
+		public void run() {
+			
+			long time = System.currentTimeMillis();
+			log.e("DelCacheFileManager run...");
+			try {
+				FileHelper.deleteDirectory(mFilePath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			long interval = System.currentTimeMillis() - time;
+			log.e("DelCacheFileManager del over, cost time = " + interval);
+		}
+		
+		public boolean start(String directory)
+		{		
+			if (mThread != null)
+			{
+				if (mThread.isAlive())
+				{
+					return false;
+				}			
+			}
+			mFilePath = directory;	
+			mThread = new Thread(this);			
+			mThread.start();	
+			
+			return true;
+		}
+		
+	}
 }
