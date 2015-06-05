@@ -54,6 +54,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 	
 	private List<MediaItem> mCurlistItems;	
 	private DMSDeviceBrocastFactory mBrocastFactory;
+	private String mCurrTitle;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		sendBroadcast(msdIntent);
 		
 		mContentManager.clear();
+		mContentManager.titleclear();
 		mBrocastFactory.unRegisterListener();
 		
 		super.onDestroy();
@@ -116,12 +118,14 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		ArrayList<MediaItem> mCurlistItems =  (ArrayList<MediaItem>) getIntent().getSerializableExtra(ViewMicroSD.LIST_KEY);
     	mContentAdapter = new ContentAdapter(this, mCurlistItems);
     	mContentListView.setAdapter(mContentAdapter);
+    	mCurrTitle = this.getIntent().getStringExtra("title");
     	
     	mContentManager.pushListItem(mCurlistItems);	
+    	mContentManager.pushTitle(mCurrTitle);
     	
     	mBrocastFactory = new DMSDeviceBrocastFactory(this);
     	
-    	updateSelDevUI(this.getIntent().getStringExtra("title"));
+    	updateSelDevUI(mCurrTitle);
     	
     	mBrocastFactory.registerListener(this);
     	
@@ -135,6 +139,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 			mContentAdapter.clear();
 		}else{
 			mContentAdapter.refreshData(list);
+			updateSelDevUI(mCurrTitle);
 		}
 	}
 	
@@ -187,7 +192,9 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 
 	private void back(){
 		mContentManager.popListItem();
+		mContentManager.popTitle();
 		List<MediaItem> list = mContentManager.peekListItem();
+		mCurrTitle = mContentManager.peekTitle();
 		if (list == null){
 			super.onBackPressed();
 		}else{
@@ -217,6 +224,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 			goPicturePlayerActivity(position, item);
 		}else{
 			BrowseDMSProxy.syncGetItems(Go2ContentActivity.this, item.getStringid(), Go2ContentActivity.this);
+			mCurrTitle = item.getTitle();
 		  	showProgress(true);
 		}
 		
@@ -245,7 +253,9 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 					return ;
 				}		
 				mContentManager.pushListItem(list);			
+				mContentManager.pushTitle(mCurrTitle);
 				setContentlist(list);
+				
 				
 			}
 		});

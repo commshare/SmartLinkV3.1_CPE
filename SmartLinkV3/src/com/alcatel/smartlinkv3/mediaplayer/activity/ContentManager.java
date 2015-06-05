@@ -16,6 +16,7 @@ public class ContentManager {
 	private static ContentManager mInstance = null;
 	
 	private Stack<List<MediaItem>> mStack;
+	private Stack<String> mStackTitle;
 	
 	public synchronized static ContentManager getInstance(){
 		if (mInstance == null){
@@ -28,6 +29,7 @@ public class ContentManager {
 	private ContentManager()
 	{
 		mStack = new Stack<List<MediaItem>>();
+		mStackTitle = new Stack<String>();
 	}
 	
 	public void pushListItem(List<MediaItem> dataList)
@@ -37,6 +39,14 @@ public class ContentManager {
 			mStack.add(dataList);
 		}
 	}
+	public void pushTitle(String title)
+	{
+		if (title != null){
+	//		log.e("mStack.add data.size = " + dataList.size());
+			mStackTitle.add(title);
+		}
+	}
+	
 	
 	public List<MediaItem> peekListItem()
 	{
@@ -46,6 +56,15 @@ public class ContentManager {
 		
 		return mStack.peek();
 	}
+	public String peekTitle()
+	{
+		if (mStackTitle.empty()){
+			return null;
+		}
+		
+		return mStackTitle.peek();
+	}
+	
 	
 	public List<MediaItem> popListItem()
 	{
@@ -55,11 +74,24 @@ public class ContentManager {
 		
 		return mStack.pop();
 	}
+	public String popTitle()
+	{
+		if (mStackTitle.empty()){
+			return null;
+		}
+		
+		return mStackTitle.pop();
+	}
+	
 	
 	public void clear()
 	{
 		mStack.clear();
 	}
 	
+	public void titleclear()
+	{
+		mStackTitle.clear();
+	}
 	
 }
