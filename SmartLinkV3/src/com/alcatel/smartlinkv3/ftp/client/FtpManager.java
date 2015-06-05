@@ -356,6 +356,10 @@ public class FtpManager {
 		return result;
 	}
 
+	public int getReply() {
+		return ftpProxy.getReply();
+	}
+	
 	public static class ERROR {
 		public static final int CONNECT_ERROR = 9001;
 		public static final int LOGIN_ERROR = 9002;

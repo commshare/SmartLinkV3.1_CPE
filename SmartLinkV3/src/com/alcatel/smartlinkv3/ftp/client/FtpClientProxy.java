@@ -47,7 +47,7 @@ public class FtpClientProxy {
 	}
 
 	public int getReply() {
-		return this.reply;
+		return ftpClient.getReplyCode();
 	}
 
 	public FtpClientModel getConfig() {

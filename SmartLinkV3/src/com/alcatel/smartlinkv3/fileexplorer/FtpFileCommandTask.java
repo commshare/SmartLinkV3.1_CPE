@@ -143,6 +143,11 @@ public class FtpFileCommandTask {
 		if (true) {
 			m_ftp.host = getServerAddress(mContext);
 			m_ftp.port = 21;
+		}else{
+			m_ftp.host = "192.168.1.103";
+			m_ftp.port = 2221;
+			m_ftp.username = "admin";
+			m_ftp.password = "admin";
 		}
 
 		m_ftp.localDir = Environment.getExternalStorageDirectory().getPath()
@@ -192,6 +197,22 @@ public class FtpFileCommandTask {
 		if (thread.isAlive()) {
 			ftp_connect();
 		}
+		
+		int n = 0;
+		while (!isLogin) {
+			try {
+				Thread.sleep(3);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (n >= 300) {
+				logger.w("ftp can not login!");
+				break;
+			}
+			n++;
+		}
+		
 	}
 
 	public void stop() {
@@ -665,6 +686,8 @@ public class FtpFileCommandTask {
 				sendMsg(MSG_SHOW_TOAST, "move file [" + fromFile + "] success!");
 			} else {
 				sendMsg(MSG_SHOW_TOAST, "move file [" + fromFile + "] fail!");
+				logger.w("move file fail fromFile = " + fromFile + ",toFile = " + toFile);
+				print_reply_code();
 			}
 		}
 
@@ -758,6 +781,7 @@ public class FtpFileCommandTask {
 	private void listFiles(String path) {
 		if (!isLogin) {
 			sendMsg(MSG_SHOW_TOAST, "no login yet!");
+			logger.i("listFiles fail,have not login!");
 			return;
 		}
 
@@ -788,6 +812,10 @@ public class FtpFileCommandTask {
 	public void ftp_list_files(String remotePath) {
 		ftpTask.setRemoteRootPath(remotePath);
 		ftpTask.awakenCMD(LIST_FILES);
+	}
+	
+	public void print_reply_code() {
+		logger.w("reply code: " + ftp.getReply());
 	}
 
 	private void shareFiles(ArrayList<FileInfo> remote) {
@@ -844,6 +872,7 @@ public class FtpFileCommandTask {
 			sendMsg(MSG_SHOW_TOAST, "create folder fail: " + remoteFolder);
 			sendMsg(MSG_CREATE_FOLDER, FAIL);
 			logger.i("create folder fail: " + remoteFolder);
+			print_reply_code();
 		}
 
 	}
