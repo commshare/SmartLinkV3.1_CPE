@@ -279,6 +279,8 @@
     <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>
     <string name="setting_network_selection">Network Selection</string>
     <string name="setting_network_wifi_network_title">WiFi Network</string>
+    <string name="setting_network_profile_list">Profile List     </string>
+    <string name="setting_network_add_profile">Add Profile</string>
     <string name="setting_network_profile_management">Profile Management</string>
     <string name="setting_network_profile_management_profile_name">*Profile Name</string>
     <string name="setting_network_profile_management_dial_number">*Dial Number</string>

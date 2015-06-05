@@ -90,7 +90,6 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 	
 	private void initUi(View rootView){
 		m_parent_activity = (SettingNetworkActivity) getActivity();
-		m_parent_activity.changeTitlebar(R.string.setting_network_profile_management_profile_detail);
 		
 		m_profile_receiver = new ProfileDetailReceiver();
 		m_set_default_profile_filter = new IntentFilter(MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST);
@@ -142,7 +141,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 	private void refreshInfo(){
 		
 		if(operation == m_parent_activity.TAG_OPERATION_EDIT_PROFILE){
-			
+			m_parent_activity.changeTitlebar(R.string.setting_network_profile_management_profile_detail);
 			m_default_switcher.setVisibility(View.VISIBLE);
 			
 			ProfileName = getArguments().getString(m_parent_activity.TAG_PROFILE_NAME);
@@ -197,7 +196,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			}
 		}
 		else{
-			
+			m_parent_activity.changeTitlebar(R.string.setting_network_add_profile);
 			m_default_switcher.setVisibility(View.GONE);
 			
 			ProfileName = "";

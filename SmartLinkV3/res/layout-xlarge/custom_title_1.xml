@@ -67,23 +67,25 @@
 
         <TextView
             android:id="@+id/tv_titlebar_add"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:layout_margin="12dp"
-            android:background="@drawable/title_bar_add"
+            android:background="@drawable/actionbar_plus_icon"
             android:text="        " />
         
         <TextView
             android:id="@+id/tv_titlebar_delete"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_margin="12dp"
             android:text="        " 
-            android:background="@drawable/title_bar_delete"/>
+            android:background="@drawable/btn_delete"/>
     </LinearLayout>
 
     <TextView
@@ -91,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical"
         android:paddingLeft="30dp"
         android:gravity="center"
         android:text="@string/setting_wifi"

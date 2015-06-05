@@ -26,6 +26,7 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -56,7 +57,6 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private ErrorDialog m_dlgError = null;
 	
 	private TextView m_switch_button = null;
-	private TextView m_webversion_desc = null;
 	
 	private boolean isPinRequired;
 	
@@ -64,6 +64,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private ENUM.PinState m_requested_pinState = ENUM.PinState.NotAvailable;
 	
 	private boolean m_blFirst=true;
+	private ImageView m_hiddable_divider = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +103,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_pin_code.setOnClickListener(this);
 		m_web_version = (FrameLayout) findViewById(R.id.device_web_version);
 		m_web_version.setOnClickListener(this);
-		m_webversion_desc = (TextView)findViewById(R.id.device_web_version_desc);
-//		String webVersion = "Web Version " + BusinessMannager.getInstance().getSystemInfo().getWebUiVersion();
+		m_hiddable_divider = (ImageView)findViewById(R.id.device_hidable_divider);
+		if(BusinessMannager.getInstance().getSystemInfo().getWebUiVersion().length() == 0){
+			m_hiddable_divider.setVisibility(View.GONE);
+			m_web_version.setVisibility(View.GONE);
+		}
 //		m_webversion_desc.setText(webVersion);
 		m_restart = (FrameLayout) findViewById(R.id.device_restart);
 		m_restart.setOnClickListener(this);

@@ -379,7 +379,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			String FragmentTag = m_fragment_tag_stack.peek();
 			
 			if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT)){
-				changeTitlebar(R.string.setting_network_profile_management);
+				changeTitlebar(R.string.setting_network_profile_list);
 				setAddAndDeleteVisibility(View.VISIBLE);
 			}
 			else if(FragmentTag.equals(TAG_FRAGMENT_NETWORK_SELECTION)){

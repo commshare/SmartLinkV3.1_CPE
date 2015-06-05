@@ -73,7 +73,7 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		m_parent_activity = (SettingNetworkActivity) getActivity();
 		m_parent_activity.setAddAndDeleteVisibility(View.VISIBLE);
 		
-		m_parent_activity.changeTitlebar(R.string.setting_network_profile_management);
+		m_parent_activity.changeTitlebar(R.string.setting_network_profile_list);
 		
 		m_progress_bar = (RelativeLayout) rootView.findViewById(R.id.waiting_loading_profile_progressbar);
 		m_progress_bar.setVisibility(View.VISIBLE);

@@ -62,27 +62,27 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <TextView
             android:id="@+id/tv_titlebar_add"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_margin="5dp"
-            android:background="@drawable/title_bar_add"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/actionbar_plus_icon"
             android:text="        " />
         
         <TextView
             android:id="@+id/tv_titlebar_delete"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_margin="5dp"
+            android:layout_gravity="center_vertical"
             android:text="        " 
-            android:background="@drawable/title_bar_delete"/>
+            android:background="@drawable/btn_delete"/>
     </LinearLayout>
 
     <TextView
