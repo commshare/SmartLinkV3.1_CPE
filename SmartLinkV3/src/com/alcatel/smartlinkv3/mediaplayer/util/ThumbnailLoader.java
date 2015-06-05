@@ -39,9 +39,14 @@ public class ThumbnailLoader {
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	}
 
-	final int stub_id = R.drawable.microsd_item_pictures;
+	//final int stub_id = R.drawable.microsd_item_pictures;
 
 	public void DisplayImage(String url, ImageView imageView) {
+		if("" == url||null == url)
+		{
+			return;
+		}
+		
 		imageViews.put(imageView, url);
 
 		Bitmap bitmap = memoryCache.get(url);
@@ -50,7 +55,7 @@ public class ThumbnailLoader {
 		}
 		else {
 			queuePhoto(url, imageView);
-			imageView.setImageResource(stub_id);
+			//imageView.setImageResource(stub_id);
 		}
 	}
 
@@ -185,7 +190,7 @@ public class ThumbnailLoader {
 			}
 			else
 			{
-				photoToLoad.imageView.setImageResource(stub_id);
+				//photoToLoad.imageView.setImageResource(stub_id);
 			}
 		}
 	}

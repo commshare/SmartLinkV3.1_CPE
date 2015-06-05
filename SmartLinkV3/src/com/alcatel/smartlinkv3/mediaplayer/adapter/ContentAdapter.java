@@ -118,14 +118,16 @@ public class ContentAdapter extends BaseAdapter{
 		tvContent.setText(dataItem.getTitle());
 		
 		ImageView icon = (ImageView) convertView.findViewById(R.id.imageView);
+		
 		if (UpnpUtil.isAudioItem(dataItem)){
+			thumbnailLoader.DisplayImage(dataItem.getAlbumUri(), icon);
 			icon.setImageDrawable(musicIcon);
 		}else if (UpnpUtil.isVideoItem(dataItem)){
 			icon.setImageDrawable(videoIcon);
 		}else if (UpnpUtil.isPictureItem(dataItem)){
 			setUrl(dataItem);
 			thumbnailLoader.DisplayImage(requestUrl, icon);
-			//icon.setImageDrawable(picIcon);
+			icon.setImageDrawable(picIcon);
 		}else{
 			icon.setImageDrawable(foldIcon);
 		}
