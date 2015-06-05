@@ -62,7 +62,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/tv_titlebar_add"
