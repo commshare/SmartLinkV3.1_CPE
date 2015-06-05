@@ -8,11 +8,15 @@ import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
 import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
 
@@ -162,7 +166,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	
 	
 	private void simRollRequest() {
-		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		final SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 
 		if (isPinRequired && sim.m_nPinRemainingTimes > 0) {
 			// close PUK dialog
@@ -196,33 +200,58 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			// close PIN dialog
 			if (null != m_dlgPin && PinStateDialog.m_isShow)
 				m_dlgPin.closeDialog();
+			
+			final InquireReplaceDialog inquireDlg = new InquireReplaceDialog(
+					SettingDeviceActivity.this);
+			inquireDlg.setCancelDisabled();
+			inquireDlg.m_titleTextView.setText(R.string.dialog_warning_title);
+			inquireDlg.m_contentTextView
+					.setText(R.string.dialog_warning_error_pin_code_error_3times);
+			inquireDlg.m_confirmBtn.setText(R.string.continue_anyway);
+			inquireDlg.showDialog(new OnInquireApply(){
 
-			// set the remain times
-			if (null != m_dlgPuk)
-				m_dlgPuk.updateRemainTimes(sim.m_nPukRemainingTimes);
+					@Override
+					public void onInquireApply() {
+						// TODO Auto-generated method stub
+						inquireDlg.closeDialog();
+						// set the remain times
+						if (null != m_dlgPuk)
+							m_dlgPuk.updateRemainTimes(sim.m_nPukRemainingTimes);
+	
+						if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
+							if (!PukDialog.m_isShow) {
+								m_dlgPuk.showDialog(sim.m_nPukRemainingTimes,
+										new OnPUKError() {
+	
+											@Override
+											public void onPukError() {
+												String strMsg = getString(R.string.puk_error_waring_title);
+												m_dlgError.showDialog(strMsg,
+														new OnClickBtnRetry() {
+	
+															@Override
+															public void onRetry() {
+																m_dlgPuk.showDialog();
+															}
+														});
+											}
+										});
+							} else {
+								m_dlgPuk.onSimStatusReady(sim);
+							}
+						}
+					}
+				}, new OnInquireCancle(){
 
-			if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
-				if (!PukDialog.m_isShow) {
-					m_dlgPuk.showDialog(sim.m_nPukRemainingTimes,
-							new OnPUKError() {
-
-								@Override
-								public void onPukError() {
-									String strMsg = getString(R.string.puk_error_waring_title);
-									m_dlgError.showDialog(strMsg,
-											new OnClickBtnRetry() {
-
-												@Override
-												public void onRetry() {
-													m_dlgPuk.showDialog();
-												}
-											});
-								}
-							});
-				} else {
-					m_dlgPuk.onSimStatusReady(sim);
-				}
-			}
+					@Override
+					public void onInquireCancel() {
+						// TODO Auto-generated method stub
+						inquireDlg.closeDialog();
+						closePinAndPukDialog();
+					}
+					
+				});
+			
 		} else {
 			closePinAndPukDialog();
 		}
@@ -251,10 +280,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		// set the remain times
 		if (null != m_dlgPin) {
 			m_dlgPin.updateRemainTimes(simStatus.m_nPinRemainingTimes);
-			Log.v("PINCHECK", "CLICK2");
 		}
 		if (null != m_dlgPin) {
-			Log.v("PINCHECK", "CLICK3");
 			if (!PinStateDialog.m_isShow) {
 				m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes,
 						new OnPINError() {
@@ -281,14 +308,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		if (null != m_dlgPin && PinStateDialog.m_isShow) {
 			m_dlgPin.closeDialog();
 		}
-
 		SimStatusModel simStatus = BusinessMannager.getInstance()
 				.getSimStatus();
 		// set the remain times
 		if (null != m_dlgPuk) {
 			m_dlgPuk.updateRemainTimes(simStatus.m_nPukRemainingTimes);
 		}
-		if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
+		if (null != m_dlgPuk) {
 			if (!PukDialog.m_isShow) {
 				m_dlgPuk.showDialog(simStatus.m_nPukRemainingTimes,
 						new OnPUKError() {
@@ -375,7 +401,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //			onDoneEditPincodeSetting();
 //			m_dlgPin.cancelUserClose();
 //			m_dlgPuk.cancelUserClose();
-			ShowPinDialog();
+			SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+			if(simStatus.m_nPinRemainingTimes == 0){
+				ShowPukDialog();
+			}
+			else if(simStatus.m_nPinRemainingTimes > 0){
+				ShowPinDialog();
+			}
 			break;
 		default:
 			break;

@@ -352,6 +352,8 @@
     <string name="dialog_delete_multi_sms_content">Delete this message(s)?</string>
     <string name="dialog_warning_5g">If your phone doses not supply 5G, you might not be able to use all 5G features.</string>
     <string name="dialog_change_to_5g">Change your WIFI to 5G</string>
+    <string name="dialog_warning_title">Warning</string>
+    <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, please enter the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly</string>
     <!-- Dialog end -->
 
 

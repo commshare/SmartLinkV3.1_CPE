@@ -299,6 +299,7 @@ implements OnClickListener{
 	private void popInquireyDialog(){
 		final InquireReplaceDialog inquireDlg = new InquireReplaceDialog(
 				SettingWifiActivity.this);
+		inquireDlg.setCancelDisabled();
 		inquireDlg.m_titleTextView.setText(R.string.dialog_change_to_5g);
 		inquireDlg.m_contentTextView
 				.setText(R.string.dialog_warning_5g);

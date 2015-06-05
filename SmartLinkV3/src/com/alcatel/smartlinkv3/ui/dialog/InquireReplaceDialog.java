@@ -117,5 +117,10 @@ public class InquireReplaceDialog implements OnClickListener, OnKeyListener{
 	{
 		public void onInquireCancel();
 	}
+	
+	public void setCancelDisabled(){
+		m_inquire_dialog.setCancelable(false);
+		m_inquire_dialog.setCanceledOnTouchOutside(false);
+	}
 
 }
