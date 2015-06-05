@@ -182,9 +182,10 @@ public class IntentBuilder {
     }
     
     public static final int REQUEST_EX = 123100;
-    public static void goExFileDialog(Activity activity, String title) {
+    public static void goExFileDialog(Activity activity, String title, String[] files) {
         Intent intent = new Intent();
         intent.putExtra("explorer_title", title);
+        intent.putExtra("files_path", files);
         intent.setDataAndType(Uri.fromFile(new File("/sdcard")), "*/*");
         intent.setClass(activity, FtpFileDialog.class);
         activity.startActivityForResult(intent, REQUEST_EX);
