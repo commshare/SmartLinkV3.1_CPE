@@ -1,16 +1,20 @@
 package com.alcatel.smartlinkv3.mediaplayer.picture;
 
+import java.io.File;
 import java.util.List;
 
 import org.cybergarage.util.CommonLog;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 
+import com.alcatel.smartlinkv3.mediaplayer.picture.DownLoadHelper.IDownLoadCallback;
 import com.alcatel.smartlinkv3.mediaplayer.player.AbstractTimer;
 import com.alcatel.smartlinkv3.mediaplayer.player.SingleSecondTimer;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
+import com.alcatel.smartlinkv3.mediaplayer.util.FileHelper;
 import com.alcatel.smartlinkv3.mediaplayer.util.LogFactory;
 
 public class PictureControlCenter implements  DownLoadHelper.IDownLoadCallback{
@@ -125,8 +129,19 @@ public class PictureControlCenter implements  DownLoadHelper.IDownLoadCallback{
 	
 	private void downLoad(int index){
 		String requestUrl = mPictureList.get(mCurIndex).getRes();
+		
+		if(FileHelper.fileIsExist(FileManager.getSaveFullPath(requestUrl)))
+		{
+			if (mCallback != null){
+				mCallback.downLoadComplete(true, FileManager.getSaveFullPath(requestUrl));
+			}
+			//startDownLoad();
+			
+		}else
+		{		
 		mDownLoadHelper.syncDownLoadFile(requestUrl, FileManager.getSaveFullPath(requestUrl), this);
 		startDownLoad();
+		}
 	}
 	
 	
@@ -185,7 +200,6 @@ public class PictureControlCenter implements  DownLoadHelper.IDownLoadCallback{
 			mCallback.downLoadComplete(isSuccess, savePath);
 		}
 	}
-	
 	
 	private  synchronized void setTaskCount(int count){
 		RunningTaskCount = count;

@@ -29,7 +29,7 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 	public static final String PLAY_INDEX = "player_index";
 	
 	private UIManager mUIManager;
-	private DelCacheFileManager mDelCacheFileManager;
+	//private DelCacheFileManager mDelCacheFileManager;
 	private PictureControlCenter mControlCenter;
 	
 	
@@ -55,7 +55,7 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 	
 	private void initView(){
 		mUIManager = new UIManager();
-		mDelCacheFileManager = new DelCacheFileManager();
+		//mDelCacheFileManager = new DelCacheFileManager();
 	}
 
 	
@@ -65,21 +65,14 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		mControlCenter.init();
 		mControlCenter.setDownLoadCallback(this);
 		
-		/*pchong   start*/
-	//	mThumbnailControlCenter = new ThumbnailPictureControlCenter(this);
-	//	mThumbnailControlCenter.init();
-	//	mThumbnailControlCenter.setThumbnailDownLoadCallback(this);
-		
 		mScreenWidth =  CommonUtil.getScreenWidth(this);
 		mScreenHeight = CommonUtil.getScreenHeight(this);	
 	}
 	
 	private void unInitData(){
-		mDelCacheFileManager.start(FileManager.getSaveRootDir());
+		//mDelCacheFileManager.start(FileManager.getSaveRootDir());
 		
-		/*pchong   start*/
 		mControlCenter.unInit();
-	//	mThumbnailControlCenter.unInit();
 	}
 
 	@Override
@@ -98,15 +91,10 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 			mUIManager.setTitle(mMediaInfo.title);
 		}
 		
-		/*pchong   start*/
-	//	mThumbnailControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getPictureList());
-	//	mThumbnailControlCenter.play(curIndex);
-		
 		
 		mControlCenter.updateMediaInfo(curIndex, MediaManager.getInstance().getPictureList());
-		mControlCenter.play(curIndex);
 		mUIManager.showProgress(true);
-		
+		mControlCenter.play(curIndex);
 		
 	}	
 	
