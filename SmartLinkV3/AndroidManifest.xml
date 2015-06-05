@@ -210,20 +210,15 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.alcatel.smartlinkv3.mediaplayer.activity.DMPActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.alcatel.smartlinkv3.mediaplayer.activity.ContentActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-        <activity
             android:name="com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity"
             android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
