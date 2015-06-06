@@ -107,13 +107,19 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     setViewsVisibility(false, true);
     if (status == UserLoginStatus.LoginTimeOut) {
       handleLoginError(R.string.other_login_warning_title, 
-          R.string.login_login_time_used_out_msg, false);
+          R.string.login_login_time_used_out_msg, true, true);
     } else {
       doLogin();
     }
   }
   
-  private void handleLoginError(int titleId, int messageId, final boolean login) {
+  private void handleLoginError(int titleId, int messageId, boolean showDialog, final boolean retryLogin) {
+    if (!retryLogin && !showDialog) {
+      mStateHandler = new LoginExceptionHandler(getString(titleId), getString(messageId)); 
+      mStateHandler.setupViews();
+      return;
+    }
+    
     if (mConfirmDialog != null) {
       mConfirmDialog.destroyDialog();
     }
@@ -122,7 +128,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
       @Override
       public void onConfirm() {
-        if(login) {
+        if(retryLogin) {
           //If timeout, let user re-login
           showLoginDialog();
         } else {
@@ -152,10 +158,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       public void onLoginFailed(String error_code) {
         if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){
           handleLoginError(R.string.other_login_warning_title,
-              R.string.login_other_user_logined_error_msg, false);
+              R.string.login_other_user_logined_error_msg, false, false);
         } else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
           handleLoginError(R.string.other_login_warning_title, 
-              R.string.login_login_time_used_out_msg, true);
+              R.string.login_login_time_used_out_msg, true, true);
         } else {
           ErrorDialog.getInstance(mContext).showDialog(
               getString(R.string.login_psd_error_msg),
@@ -184,7 +190,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       @Override
       public void onCancelLogin() {
         //finishQuickSetup(true);
-        handleLoginError(R.string.qs_title, R.string.qs_exit_query, false);
+        handleLoginError(R.string.qs_title, R.string.qs_exit_query, true, false);
       }
       
     });
@@ -468,7 +474,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   }
   
   enum State {
-    UNKNOW, PIN_CODE, WIFI_SSID, WIFI_PASSWD, SUMMARY, FINISH;    
+    LOGIN_ERROR, PIN_CODE, WIFI_SSID, WIFI_PASSWD, SUMMARY, FINISH;    
   }
   
   abstract class StateHandler implements TextWatcher{
@@ -573,6 +579,39 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     public int retryTimes(){return 0;}
     public boolean retryInput(){return true;}
+  }
+  
+  /*
+   * when other user login or login timeout
+   */
+  class LoginExceptionHandler extends StateHandler {
+    private final String mTitle;
+    private final String mMessage;
+    LoginExceptionHandler(String title, String message) {
+      super(State.LOGIN_ERROR, 0, 0);
+      mTitle = title;
+      mMessage = message;
+      mIsHead = true;
+    }
+
+    @Override
+    public void setupViews() {
+      mSetupTitle.setVisibility(View.VISIBLE);
+      mPromptText.setVisibility(View.VISIBLE);
+      mSetupTitle.setText(mTitle);
+      mPromptText.setText(mMessage);
+
+      mNavigatorRight.setText(R.string.skip);
+      mNavigatorRight.setVisibility(View.VISIBLE);
+      mNavigatorRight.setOnClickListener(new OnClickListener(){
+
+        @Override
+        public void onClick(View v) { 
+          finishQuickSetup(true);       
+        }
+        
+      });
+    }    
   }
   
   /*
