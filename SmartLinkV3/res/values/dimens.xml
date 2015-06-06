@@ -49,5 +49,7 @@
     <dimen name="title_bar_height">35.0dip</dimen>
     
     <dimen name="textview_horizontal_margin">16dp</dimen>
+    <dimen name="quick_setup_edittext_width">250dip</dimen>
+    <dimen name="quick_setup_edittext_height">30dip</dimen>
 
 </resources>
