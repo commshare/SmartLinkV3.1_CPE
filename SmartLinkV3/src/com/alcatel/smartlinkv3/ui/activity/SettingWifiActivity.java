@@ -685,9 +685,10 @@ implements OnClickListener{
 			m_ib_show_password.setVisibility(View.GONE);
 			m_ll_encryption.setVisibility(View.GONE);
 			m_ll_security.setVisibility(View.GONE);
-			m_ll_password_status.setVisibility(View.GONE);
+//			m_ll_password_status.setVisibility(View.GONE);
 			//m_tv_psd_type_title.setVisibility(View.GONE);
 			setAllDividerVisibility(View.GONE);
+			setOneDividerVisibility(View.VISIBLE);
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
 			return;
