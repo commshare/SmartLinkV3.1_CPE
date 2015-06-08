@@ -38,6 +38,7 @@ public class ThreadPoolTaskManagerThread implements Runnable {
 
 		}
 		if (isStop) {
+			// not destroy the thread,it forbid add the tasks
 			pool.shutdown();
 		}
 

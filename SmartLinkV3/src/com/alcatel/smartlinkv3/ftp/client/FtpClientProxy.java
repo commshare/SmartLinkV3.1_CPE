@@ -30,11 +30,11 @@ public class FtpClientProxy {
 
 	private FtpClientModel config;
 	public FtpTransferIRetrieveListener listener;
-	volatile boolean stopDownload = false;
+	private volatile boolean stopDownload = false;
 	private volatile int reply = 0;
 
 	public FtpClientProxy() {
-
+		this.stopDownload = false;
 	}
 
 	protected FtpClientProxy(FtpClientModel cfg) {
@@ -54,7 +54,7 @@ public class FtpClientProxy {
 		return config;
 	}
 
-	public void setConfig(FtpClientModel config) {
+	public synchronized void setConfig(FtpClientModel config) {
 		this.config = config;
 	}
 
@@ -62,16 +62,16 @@ public class FtpClientProxy {
 		return logger;
 	}
 
-	public void setFtpListener(FtpTransferIRetrieveListener listener) {
+	public synchronized void setFtpListener(FtpTransferIRetrieveListener listener) {
 		this.listener = listener;
 	}
 
-	public void setStopDownload() {
-		stopDownload = true;
+	public synchronized void setStopDownload() {
+		this.stopDownload = true;
 	}
 
-	public void setStartDownload() {
-		stopDownload = false;
+	public synchronized void setStartDownload() {
+		this.stopDownload = false;
 	}
 
 	public boolean connect() {
@@ -109,6 +109,7 @@ public class FtpClientProxy {
 			reply = ftpClient.getReplyCode();
 			// ftpClient.setControlEncoding("GBK");
 			ftpClient.setControlEncoding("UTF-8");
+			ftpClient.setListHiddenFiles(true);
 			// ftpClient.setControlEncoding("gb2312");
 			// ftpClient.setConnectTimeout(5000);
 			// ftpClient.enterLocalActiveMode();
@@ -153,7 +154,7 @@ public class FtpClientProxy {
 		return null;
 	}
 
-	public void setRestartOffset(long len) {
+	public synchronized void setRestartOffset(long len) {
 		// file offset position
 		ftpClient.setRestartOffset(len);
 	}
@@ -359,7 +360,8 @@ public class FtpClientProxy {
 			throws IOException {
 		FtpDownloadStatus result;
 		listener.onStart(local);
-
+		setStartDownload();
+		
 		FTPFile[] files = this.getFTPFiles(remote);
 
 		if (files.length != 1) {
@@ -374,8 +376,6 @@ public class FtpClientProxy {
 		if (!parentDir.exists()) {
 			parentDir.mkdir();
 		}
-
-		logger.i("new File :" + local);
 
 		if (f.exists()) {
 			long localSize = f.length();
@@ -399,16 +399,8 @@ public class FtpClientProxy {
 			int c;
 
 			while ((c = in.read(bytes)) != -1) {
-				if (false) {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				
 				if (stopDownload) {
+					setStartDownload();
 					listener.onCancel("");
 					break;
 				}
@@ -432,8 +424,10 @@ public class FtpClientProxy {
 
 			if (isDo) {
 				result = FtpDownloadStatus.Download_From_Break_Success;
+				listener.onDone();
 			} else {
 				result = FtpDownloadStatus.Download_From_Break_Failed;
+				listener.onError("download fail!", -1);
 			}
 		} else {
 			OutputStream out = new FileOutputStream(f);
@@ -446,6 +440,7 @@ public class FtpClientProxy {
 			int c;
 			while ((c = in.read(bytes)) != -1) {
 				if (stopDownload) {
+					setStartDownload();
 					listener.onCancel("");
 					break;
 				}
@@ -456,7 +451,7 @@ public class FtpClientProxy {
 				if (nowProcess > process) {
 					process = nowProcess;
 					if (process % 10 == 0)
-						logger.v("Download Process:" + process);
+						logger.i("Download Process:" + process);
 					listener.onTrack(remote,process);
 					// TODO: update the process
 				}
@@ -471,6 +466,7 @@ public class FtpClientProxy {
 				listener.onDone();
 			} else {
 				result = FtpDownloadStatus.Download_New_Failed;
+				listener.onError("download fail!", -1);
 			}
 		}
 

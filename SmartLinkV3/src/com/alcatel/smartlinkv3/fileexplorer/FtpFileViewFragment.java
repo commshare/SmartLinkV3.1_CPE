@@ -343,7 +343,6 @@ public class FtpFileViewFragment extends Fragment implements
 				break;
 			case MSG_TYPE.MSG_PAUSE_DOWNLOAD:
 				logger.i("download pause!");
-				cmdTask.ftp_pause_download();
 				break;
 			case MSG_TYPE.MSG_ERROR_DOWNLOAD:
 				String error = (String) msg.obj;

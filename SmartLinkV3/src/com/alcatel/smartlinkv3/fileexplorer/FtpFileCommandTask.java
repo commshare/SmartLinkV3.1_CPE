@@ -62,12 +62,12 @@ public class FtpFileCommandTask {
 
 		private static final int DELETE = 8;
 		private static final int PAUSE_DOWNLOAD = 9;
-		private static final int CLOSE = -2;
 		private static final int MOVE = 10;
 		private static final int COPY = 11;
 		private static final int RENAME = 12;
 		private static final int SHARE = 13;
 		private static final int CREATE_FOLDER = 14;
+		private static final int CLOSE = -2;
 	}
 
 	// message type
@@ -522,13 +522,13 @@ public class FtpFileCommandTask {
 
 	FtpTransferIRetrieveListener TransferListener = new FtpTransferIRetrieveListener() {
 		@Override
-		public void onTrack(String filePath, long now) {
+		public void onTrack(String filePath, long nowOffset) {
 			// changeProgressText((int) now);
 			// logger.i("[" + filePath + "] transfer progress: " + now);
 
 			TransferTracker transfer = new TransferTracker();
 			transfer.filePath = filePath;
-			transfer.process = now;
+			transfer.process = nowOffset;
 
 			sendMsg(MSG_TYPE.MSG_ON_DOWNLOAD, transfer);
 		}
