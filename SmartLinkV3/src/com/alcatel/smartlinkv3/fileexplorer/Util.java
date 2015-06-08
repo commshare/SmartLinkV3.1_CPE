@@ -28,9 +28,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.DhcpInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
@@ -185,7 +188,6 @@ public class Util {
 
 		lFileInfo.canRead = true;
 		lFileInfo.canWrite = true;
-		lFileInfo.isHidden = false;
 		lFileInfo.fileName = f.getName();
 		lFileInfo.ModifiedDate = f.getTimestamp().getTimeInMillis();
 		lFileInfo.IsDir = f.isDirectory();
@@ -197,6 +199,11 @@ public class Util {
 		    lFileInfo.isHidden = true;
 		} else {
 		    lFileInfo.isHidden = false;
+		}
+		
+		if (!showHidden)
+		if (lFileInfo.isHidden) {
+		    lFileInfo = null;
 		}
 
 		/*
@@ -531,5 +538,12 @@ public class Util {
                authority(hostIp).
                path(Util.makePath(info.filePath, info.fileName)).
                build();
+    }
+    
+    public static String getFtpServerAddress(Context ctx) {
+        WifiManager wifi_service = (WifiManager) ctx
+                .getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcpInfo = wifi_service.getDhcpInfo();
+        return Formatter.formatIpAddress(dhcpInfo.gateway);
     }
 }

@@ -20,8 +20,8 @@
 package com.alcatel.smartlinkv3.fileexplorer;
 
 public class Settings {
-    // whether show system and cache images, default not
-    private boolean mShowDotAndHiddenFiles;
+    // whether show system and cache images, default show
+    private boolean mShowDotAndHiddenFiles = true;
     private static Settings mInstance;
 
     private Settings() {

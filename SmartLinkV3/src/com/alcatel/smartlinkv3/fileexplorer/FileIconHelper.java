@@ -118,7 +118,8 @@ public class FileIconHelper {
             return;
         }
         
-        Uri uri = Util.uriFromFtpFile("192.168.1.1",fileInfo);
+        String hostIp = Util.getFtpServerAddress(fileImage.getContext());
+        Uri uri = Util.uriFromFtpFile(hostIp, fileInfo);
         Log.d("Icon", "ftp uri is " + uri.toString());
         final ImageView icon = fileImage;
         final ThumbnailLoader _loader = thumbnailLoader;

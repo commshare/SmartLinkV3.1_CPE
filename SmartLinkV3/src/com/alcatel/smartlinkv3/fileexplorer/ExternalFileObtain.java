@@ -53,7 +53,6 @@ class ExternalFileObtain {
     private void pickFile() {
         String type = "*/*";
         Intent intent = new Intent(Intent.ACTION_PICK);
-        //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);        
         intent.setType(type);
         mActivity.startActivityForResult(intent, PICK_CONTACT);
     }

@@ -21,6 +21,7 @@ package com.alcatel.smartlinkv3.fileexplorer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FileSortHelper.SortMethod;
@@ -30,6 +31,16 @@ import com.alcatel.smartlinkv3.fileexplorer.FtpFileOperationHelper.IOperationPro
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.IConnectedActionMode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.SelectFilesCallback;
 import com.alcatel.smartlinkv3.fileexplorer.TextInputDialog.OnFinishListener;
+import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
+import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
+import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.GetMetaDataProxy;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.MediaManager;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
+import com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity;
 import com.alcatel.smartlinkv3.ui.view.PathIndicator;
 import com.alcatel.smartlinkv3.ui.view.PathIndicator.OnPathChangeListener;
 
@@ -1211,8 +1222,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				R.drawable.btn_radio_on_normal);
 		// menu.getItem(MENU_SORT_NAME).setChecked(true);
 
-		addMenuItem(menu, GlobalConsts.MENU_SHOWHIDE, 2,
-				R.string.operation_show_sys, R.drawable.ic_menu_show_sys);
+		//addMenuItem(menu, GlobalConsts.MENU_SHOWHIDE, 2,
+		//		R.string.operation_show_sys, R.drawable.ic_menu_show_sys);
 
 		addMenuItem(menu, GlobalConsts.MENU_EDIT, 3, R.string.operation_edit,
 				R.drawable.storage_toolbar_rename_normal);
@@ -1279,9 +1290,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				mFileSortHelper.getSortMethod() == SortMethod.type);
 
 		MenuItem menuItem = menu.findItem(GlobalConsts.MENU_SHOWHIDE);
-		boolean isHidden = Settings.instance().getShowDotAndHiddenFiles();
-		menuItem.setTitle(isHidden ? R.string.operation_hide_sys
-				: R.string.operation_show_sys);
+		//boolean isHidden = Settings.instance().getShowDotAndHiddenFiles();
+		//menuItem.setTitle(isHidden ? R.string.operation_hide_sys
+		//		: R.string.operation_show_sys);
 
 	}
 
@@ -1337,7 +1348,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			} else {
 				// TODO : 
 				//viewFile(lFileInfo);
-				viewMediaFile(lFileInfo);
+				//viewMediaFile(lFileInfo);
+			    playMediaFile(lFileInfo);
 			}
 			return;
 		}
@@ -1445,6 +1457,54 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		} catch (ActivityNotFoundException e) {
 			Log.e(LOG_TAG, "fail to view file: " + e.toString());
 		}
+	}
+	
+	
+	private boolean goPlayerActivity(final MediaItem item) {
+	    List<MediaItem> list = new ArrayList<MediaItem>();
+	    MediaManager.getInstance().setMusicList(list);
+	    Intent intent = new Intent();
+	    
+	    if (UpnpUtil.isAudioItem(item)) {
+	        intent.setClass(this.mActivity, MusicPlayerActivity.class);
+        } else if (UpnpUtil.isVideoItem(item)){
+            intent.setClass(this.mActivity, VideoPlayerActivity.class);
+        } else if (UpnpUtil.isPictureItem(item)){
+            intent.setClass(this.mActivity, PicturePlayerActivity.class);
+        } else{
+            return false;
+        }
+	    
+	    intent.putExtra(MusicPlayerActivity.PLAY_INDEX, 0);
+	    MediaItemFactory.putItemToIntent(item, intent);
+	    this.mActivity.startActivity(intent);
+	    
+	    return true;
+	}
+	private void playMediaFile(FileInfo info) {
+	    
+	    if (!Util.isMediaFile(info.fileName))
+            return;
+	    
+	    String hostIp = Util.getFtpServerAddress(this.mActivity);
+	    Uri uriFile = Util.uriFromFtpFile(hostIp, info);
+	    Log.d("play", "play media file is "+ uriFile);
+	    final FileInfo _info = info;
+	    GetMetaDataProxy.syncGetMetaData(mActivity, uriFile.toString(), 
+	            new GetMetaDataProxy.GetMetaDataRequestCallback() {
+            @Override
+            public void onGetItemMetaData(MediaItem item) {
+                if(item != null) {
+                    Log.d("play", item.getShowString());
+                    if (!goPlayerActivity(item)) {
+                        viewMediaFile(_info);
+                    }
+                } else {
+                    Log.d("play", "GetMetaData failed!");
+                    viewMediaFile(_info);
+                }
+            }
+        });
 	}
 	
 	// TODO
