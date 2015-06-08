@@ -52,6 +52,9 @@ public class FragmentWifiSettingTypeSelection extends Fragment{
 		m_wifi_type_wpa_type = (RadioGroup)(view.findViewById(R.id.setting_network_wifi_wpa_type));
 		m_wifi_type_wep_type = (RadioGroup)(view.findViewById(R.id.setting_network_wifi_wep_type));
 		
+		m_wifi_type_wpa_type.setVisibility(View.GONE);
+		m_wifi_type_wep_type.setVisibility(View.GONE);
+		
 		m_wifi_type_selection.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override

@@ -627,8 +627,8 @@ implements OnClickListener{
 		m_strSsid = m_et_ssid.getText().toString();
 
 		if (m_blPasswordOpened) {
-//			m_nSecurityMode = m_securitySpinner.getSelectedItemPosition()+1;
-//			m_nType = m_encryptionSpinner.getSelectedItemPosition();
+			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.WEP);
+			m_nType = WEPEncryption.antiBuild(WEPEncryption.Open);
 			m_strKey = m_et_password.getText().toString();
 		}else {
 			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.Disable);
