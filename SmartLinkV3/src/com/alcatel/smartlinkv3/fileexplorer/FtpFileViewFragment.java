@@ -373,8 +373,10 @@ public class FtpFileViewFragment extends Fragment implements
 					FileInfo lFileInfo = Util.GetFtpFileInfo(child, path,
 							mFileCagetoryHelper.getFilter(), Settings
 									.instance().getShowDotAndHiddenFiles());
-
-					if (lFileInfo != null) {
+					    
+					if (lFileInfo != null)
+					if (! ".".equals(lFileInfo.fileName)) 
+					if (! "..".equals(lFileInfo.fileName)) {
 						fileList.add(lFileInfo);
 					}
 

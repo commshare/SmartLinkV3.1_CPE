@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
 
 
 
@@ -39,7 +40,9 @@ public class FtpFileListAdapter extends ArrayAdapter<FileInfo> {
     private FileIconHelper mFileIcon;
 
     private Context mContext;
-
+    
+    private ThumbnailLoader thumbnailLoader;
+    
     public FtpFileListAdapter(Context context, int resource,
             List<FileInfo> objects, FtpFileViewInteractionHub f,
             FileIconHelper fileIcon) {
@@ -48,6 +51,8 @@ public class FtpFileListAdapter extends ArrayAdapter<FileInfo> {
         mFileViewInteractionHub = f;
         mFileIcon = fileIcon;
         mContext = context;
+        
+        thumbnailLoader = new ThumbnailLoader(mContext);
     }
 
     @Override
@@ -61,7 +66,8 @@ public class FtpFileListAdapter extends ArrayAdapter<FileInfo> {
 
         FileInfo lFileInfo = mFileViewInteractionHub.getItem(position);
         FtpFileListItem.setupFileListItemInfo(mContext, view, lFileInfo,
-                mFileIcon, mFileViewInteractionHub);
+                mFileIcon, mFileViewInteractionHub,
+                thumbnailLoader);
         
      // TODO: 修改file checbox 可见度
         if (mFileViewInteractionHub.canEditCheckBox()) {

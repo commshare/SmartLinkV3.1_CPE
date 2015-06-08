@@ -95,12 +95,12 @@ public class FtpFileDialog extends FileDialog {
     }
     
     private ArrayList<FileInfo> filter (ArrayList<FileInfo> infos) {
-        String title = new String(getTitle().toString());
-        
         ArrayList<FileInfo> list = new ArrayList<FileInfo>();
         for (FileInfo info : infos) {
             if (info.IsDir)
             if (!filesContains(fileName, Util.makePath(info.filePath, info.fileName)))
+            if (! ".".equals(info.fileName))
+            if (! "..".equals(info.fileName))
                 list.add(info);
         }
         return list;

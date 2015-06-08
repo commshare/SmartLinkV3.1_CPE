@@ -28,6 +28,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -191,6 +192,12 @@ public class Util {
 		lFileInfo.fileSize = f.getSize(); // if fileSize==0,it's a directory
 		// TODO
 		lFileInfo.filePath = path;
+		
+		if (f.getName().charAt(0) == '.') {
+		    lFileInfo.isHidden = true;
+		} else {
+		    lFileInfo.isHidden = false;
+		}
 
 		/*
 		 * if (lFileInfo.IsDir) { int lCount = 0; FTPFile[] files =
@@ -475,7 +482,6 @@ public class Util {
 	
 	public static boolean isMediaFile(String filename) {
 	    String type = getMimeType(filename);
-        Log.d("view", "viewFile type : " + type);
         
         if (TextUtils.isEmpty(type))
             return false;
@@ -517,5 +523,13 @@ public class Util {
             return path.substring(0, index + 1);
         }
         return path.substring(0, index);
+    }
+    
+    public static Uri uriFromFtpFile(String hostIp, FileInfo info) {
+        return new Uri.Builder().
+               scheme("ftp").
+               authority(hostIp).
+               path(Util.makePath(info.filePath, info.fileName)).
+               build();
     }
 }

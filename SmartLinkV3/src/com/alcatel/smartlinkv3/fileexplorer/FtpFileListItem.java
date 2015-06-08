@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
+import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -41,7 +42,8 @@ import android.widget.Toast;
 public class FtpFileListItem {
 	public static void setupFileListItemInfo(Context context, View view,
 			FileInfo fileInfo, FileIconHelper fileIcon,
-			FtpFileViewInteractionHub fileViewInteractionHub) {
+			FtpFileViewInteractionHub fileViewInteractionHub,
+			ThumbnailLoader thumbnailLoader) {
 
 		// if in moving mode, show selected file always
 		if (fileViewInteractionHub.isMoveState()) {
@@ -76,13 +78,12 @@ public class FtpFileListItem {
 		ImageView lFileImageFrame = (ImageView) view
 				.findViewById(R.id.file_image_frame);
 
+		lFileImageFrame.setVisibility(View.GONE);
 		if (fileInfo.IsDir) {
-			lFileImageFrame.setVisibility(View.GONE);
-			// TODO : 修改文件夹图标
-			// lFileImage.setImageResource(R.drawable.folder);
 			lFileImage.setImageResource(R.drawable.microsd_item_folder);
 		} else {
-			fileIcon.setIcon(fileInfo, lFileImage, lFileImageFrame);
+			fileIcon.setIcon(fileInfo, lFileImage);
+		    //fileIcon.setIcon(fileInfo, lFileImage, lFileImageFrame, thumbnailLoader);
 		}
 	}
 

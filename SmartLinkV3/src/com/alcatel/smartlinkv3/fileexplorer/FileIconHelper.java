@@ -20,25 +20,25 @@
 package com.alcatel.smartlinkv3.fileexplorer;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.HashMap;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.fileexplorer.FileCategoryHelper.FileCategory;
-import com.alcatel.smartlinkv3.fileexplorer.FileIconLoader.IconLoadFinishListener;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.GetMetaDataProxy;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
+import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
 
-public class FileIconHelper implements IconLoadFinishListener {
+public class FileIconHelper {
 
     private static final String LOG_TAG = "FileIconHelper";
-
-    private static HashMap<ImageView, ImageView> imageFrames = new HashMap<ImageView, ImageView>();
-
     private static HashMap<String, Integer> fileExtToIcons = new HashMap<String, Integer>();
-
-    private FileIconLoader mIconLoader;
 
     static {
         addItem(new String[] {
@@ -80,7 +80,6 @@ public class FileIconHelper implements IconLoadFinishListener {
     }
 
     public FileIconHelper(Context context) {
-        mIconLoader = new FileIconLoader(context, this);
     }
 
     private static void addItem(String[] exts, int resId) {
@@ -98,54 +97,58 @@ public class FileIconHelper implements IconLoadFinishListener {
         } else {
             return R.drawable.file_icon_default;
         }
-
     }
 
-    public void setIcon(FileInfo fileInfo, ImageView fileImage, ImageView fileImageFrame) {
-        //String filePath = fileInfo.filePath;
+    public void setIcon(FileInfo fileInfo, ImageView fileImage) {
         String filename = fileInfo.fileName;
-        //long fileId = fileInfo.dbId;
         String extFromFilename = Util.getExtFromFilename(filename);
-        //FileCategory fc = FileCategoryHelper.getCategoryFromPath(filename);
-        fileImageFrame.setVisibility(View.GONE);
-        //boolean set = false;
         int id = getFileIcon(extFromFilename);
         fileImage.setImageResource(id);
-
-/*        mIconLoader.cancelRequest(fileImage);
-        switch (fc) {
-            case Apk:
-                set = mIconLoader.loadIcon(fileImage, filePath, fileId, fc);
-                break;
-            case Picture:
-            case Video:
-                set = mIconLoader.loadIcon(fileImage, filePath, fileId, fc);
-                if (set)
-                    fileImageFrame.setVisibility(View.VISIBLE);
-                else {
-                    fileImage.setImageResource(fc == FileCategory.Picture ? R.drawable.file_icon_picture
-                            : R.drawable.file_icon_video);
-                    imageFrames.put(fileImage, fileImageFrame);
-                    set = true;
-                }
-                break;
-            default:
-                set = true;
-                break;
-        }
-
-        if (!set)
-            fileImage.setImageResource(R.drawable.file_icon_default);
-*/            
     }
-
-    @Override
-    public void onIconLoadFinished(ImageView view) {
-        ImageView frame = imageFrames.get(view);
-        if (frame != null) {
-            frame.setVisibility(View.VISIBLE);
-            imageFrames.remove(view);
+    
+    public void setIcon(FileInfo fileInfo, ImageView fileImage, ImageView fileImageFrame,
+            ThumbnailLoader thumbnailLoader) {
+        String filename = fileInfo.fileName;
+        String extFromFilename = Util.getExtFromFilename(filename);
+        fileImageFrame.setVisibility(View.GONE);
+        int id = getFileIcon(extFromFilename);
+        fileImage.setImageResource(id);
+        
+        if (R.drawable.microsd_item_pictures != id) {
+            return;
         }
+        
+        Uri uri = Util.uriFromFtpFile("192.168.1.1",fileInfo);
+        Log.d("Icon", "ftp uri is " + uri.toString());
+        final ImageView icon = fileImage;
+        final ThumbnailLoader _loader = thumbnailLoader;
+        GetMetaDataProxy.syncGetMetaData(fileImage.getContext(), uri.toString(), 
+                new GetMetaDataProxy.GetMetaDataRequestCallback() {
+            @Override
+            public void onGetItemMetaData(MediaItem item) {
+                if(item != null) {
+                    Log.d("Icon", "item res is" + item.getRes());
+                    if (UpnpUtil.isPictureItem(item)){
+                        final String requestUrl = getRequestUrl(item);
+                        Activity activit = (Activity) icon.getContext();
+                        activit.runOnUiThread (new Runnable() {
+                            public void run() {
+                                _loader.DisplayImage(requestUrl, icon);
+                            }
+                        });
+                    }
+                } else
+                    Log.d("Icon", "GetMetaData failed!");
+            }
+        });
+    }
+    
+    private String getRequestUrl(MediaItem mi) {
+        String IThumbnailWH = "?width=80,height=80";
+        String requestUrl = mi.getRes();
+        requestUrl = requestUrl.replace("MediaItems", "Resized");
+        requestUrl = requestUrl+IThumbnailWH;
+        return requestUrl;
     }
 
 }
