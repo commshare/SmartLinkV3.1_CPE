@@ -1033,7 +1033,7 @@ implements OnClickListener{
 	}
 	
 	private void setOneDividerVisibility(final int visibility){
-		findViewById(R.id.divider1).setVisibility(visibility);
+		findViewById(R.id.divider3).setVisibility(visibility);
 	}
 	
 	public void setContentVisibility(final int visibility){
