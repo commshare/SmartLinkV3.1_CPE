@@ -745,7 +745,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   class PinCodeHandler extends StateHandler {
     private int mPINTryTimes;
     PinCodeHandler(int tryTimes) {
-      super(State.PIN_CODE, 8, 8);
+      super(State.PIN_CODE, 4, 8);
       mIsHead = true;
       mPINTryTimes = tryTimes;
     }
