@@ -47,6 +47,11 @@ import android.widget.Toast;
 
 public class QuickSetupActivity  extends Activity implements OnClickListener{
   private static final String TAG = "QuickSetupActivity";
+  private final static String BUNDLE_HANDLER_STATE = "State";
+  private final static String BUNDLE_WIFI_SSID = "WIFI-SSID";
+  private final static String BUNDLE_WIFI_PASSWD = "WIFI-PASSWD";
+  private final static String BUNDLE_LOGINERROR_TITLE = "LoginExceptTitle";
+  private final static String BUNDLE_LOGINERROR_MESSAGE = "LoginExceptMessage";
   protected BroadcastReceiver mReceiver;
   private TextView mNavigatorLeft;
   private TextView mNavigatorRight;
@@ -95,6 +100,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     mReceiver = new QSBroadcastReceiver();
     
+    if (restoreInstanceState(savedInstanceState))
+      return;
+    
     UserLoginStatus status = mBusinessMgr.getLoginStatus(); 
     /*When use login and back to launcher, we do not let user enter
      * login password
@@ -111,6 +119,79 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     } else {
       doLogin();
     }
+  }
+
+  /*
+   * if BUNDLE_HANDLER_STATE saved, it means that the screen orientation is 
+   * change, activity should restore previous instance state.
+   */
+  private boolean restoreInstanceState(Bundle savedInstanceState) {
+    if (savedInstanceState == null)
+      return false;
+    String stateName = savedInstanceState.getString(BUNDLE_HANDLER_STATE);
+    if (stateName == null)
+      return false;
+    State s = null;
+    try {
+      s = Enum.valueOf(State.class, stateName);
+    } catch (IllegalArgumentException ex) {
+      return false;
+    }
+    if (s == null){
+      return false;
+    } else if (s == State.LOGIN_ERROR) {
+      String title = savedInstanceState.getString(BUNDLE_LOGINERROR_TITLE);
+      String message = savedInstanceState.getString(BUNDLE_LOGINERROR_MESSAGE);
+      setViewsVisibility(false, true);
+      mStateHandler = new LoginExceptionHandler(title, message);
+      mStateHandler.setupViews();
+    } else {
+      StateHandler handler = null;
+      //onRestoreInstanceState is invoke after onCrate, so get these values here.
+      mWiFiSSID = savedInstanceState.getString(BUNDLE_WIFI_SSID);
+      mWiFiPasswd = savedInstanceState.getString(BUNDLE_WIFI_PASSWD);
+      buildStateHandlerChain(false);
+      if (mStateHandler != null)
+        handler = mStateHandler.getStateHandler(s);
+      if (handler != null) {
+        /*
+         * If the previous is the last summary, left navigator is invisible.
+         * And the left navigator is set in the second step. So do 
+         * handler.setupViews() is not enough. Let handlers between mStateHandler 
+         * and handler do setupViews().
+         */
+        mStateHandler.quickPlay(handler);
+        //handler.setupViews();
+        mStateHandler = handler;
+      } else {
+        Log.e(TAG, "can not get state " + s.name() + " handler");
+      }
+    }
+    return true;
+  }
+  
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if (mStateHandler != null) {
+      State s = mStateHandler.getState();
+      outState.putString(BUNDLE_HANDLER_STATE, s.name());
+      if (s == State.LOGIN_ERROR) {
+        outState.putString(BUNDLE_LOGINERROR_TITLE, mStateHandler.getTitleText());
+        outState.putString(BUNDLE_LOGINERROR_MESSAGE, mStateHandler.getMessageText());
+      }
+    }
+    
+    if (mWiFiSSID != null)
+      outState.putString(BUNDLE_WIFI_SSID, mWiFiSSID);
+    if (mWiFiPasswd != null)
+      outState.putString(BUNDLE_WIFI_PASSWD, mWiFiPasswd);
   }
   
   private void handleLoginError(int titleId, int messageId, boolean showDialog, final boolean retryLogin) {
@@ -531,10 +612,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     public StateHandler goTail() {
       StateHandler tail = this;
-      StateHandler prev = tail.mNextHandler;
-      while (prev != null) {
-        tail = prev;
-        prev = tail.mNextHandler;
+      StateHandler next = tail.mNextHandler;
+      while (next != null) {
+        tail = next;
+        next = tail.mNextHandler;
       }
       return tail;
     }
@@ -542,16 +623,53 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     public State getState() {
       return mState;
     }
-        
+    
+    /*
+     * get StateHandler to handle state
+     */
+    public StateHandler getStateHandler(State state){
+      StateHandler head = goHead();
+      while (head != null) {
+        if (head.mState == state)
+          return head;
+        head = head.mNextHandler;
+      }
+      return null;
+    }
+    
+    public void quickPlay(StateHandler handler) {
+      if (handler == null)
+        return;
+      /*
+       * check handler is after us in handler chain.
+       */
+      boolean after = false;
+      StateHandler cursor = this;
+      while (cursor != null) {
+        if (cursor == handler) {
+          after = true;
+          break;
+        }
+        cursor = cursor.mNextHandler;
+      }
+      
+      if (after == false)
+        return;
+      
+      cursor = this;
+      while (cursor != null) {
+        cursor.setupViews();
+        if (cursor == handler)
+          return;
+        cursor = cursor.mNextHandler;
+      }
+    }
+    
     @Override   
-    public void onTextChanged(CharSequence s, int start, int count, int after) {
-
-    }   
+    public void onTextChanged(CharSequence s, int start, int count, int after) {}   
    
     @Override   
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {   
-           
-    } 
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {} 
 
     @Override   
     public void afterTextChanged(Editable s) {
@@ -579,6 +697,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     public int retryTimes(){return 0;}
     public boolean retryInput(){return true;}
+    public String getTitleText() {return null;}
+    public String getMessageText() { return null;}
   }
   
   /*
@@ -612,6 +732,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         
       });
     }    
+
+    public String getTitleText() {return mTitle;}
+    public String getMessageText() { return mMessage;}
   }
   
   /*
