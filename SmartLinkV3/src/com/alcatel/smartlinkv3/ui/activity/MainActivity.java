@@ -896,25 +896,64 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		
 		if (LoginDialog.isLoginSwitchOff()) {
 			go2MicroSDView();
-		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance()				
-					.getLoginStatus();	
-			if (status == UserLoginStatus.Logout) {
-				if (CPEConfig.getInstance().getAutoLoginFlag()) {
-					go2MicroSDView();
-				}else{
-					m_loginDlg.showDialog(new OnLoginFinishedListener() {
-						@Override
-						public void onLoginFinished() {
-							go2MicroSDView();
+		} else{
+			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+
+			if (status == UserLoginStatus.Logout) 
+			{
+				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
+				{
+					public void onLoginSuccess() 				
+					{
+						go2MicroSDView();
+					}
+
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 						}
-					});
-				}
-			} else if (status == UserLoginStatus.login) {			
-				go2MicroSDView();		
-			} else {		
-				PromptUserLogined();	
-			}	
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
+						{
+							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
+						}
+						else
+						{
+							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+									new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									m_loginDlg.showDialog(new OnLoginFinishedListener() {
+										@Override
+										public void onLoginFinished() {
+											go2MicroSDView();
+										}
+									});
+								}
+							});
+						}				
+					}
+
+					@Override
+					public void onFirstLogin() 
+					{
+						m_loginDlg.showDialog(new OnLoginFinishedListener() {
+							@Override
+							public void onLoginFinished() {
+								go2MicroSDView();
+							}
+						});
+					}					
+				});					
+				
+			} else if (status == UserLoginStatus.login) {
+				go2MicroSDView();
+			} else {
+				PromptUserLogined();
+			}
 		}
 	}
 	
