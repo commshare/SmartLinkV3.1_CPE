@@ -48,6 +48,7 @@ import android.widget.Toast;
 public class QuickSetupActivity  extends Activity implements OnClickListener{
   private static final String TAG = "QuickSetupActivity";
   private final static String BUNDLE_HANDLER_STATE = "State";
+  private final static String BUNDLE_EDIT_TEXT = "EDIT-TEXT";
   private final static String BUNDLE_WIFI_SSID = "WIFI-SSID";
   private final static String BUNDLE_WIFI_PASSWD = "WIFI-PASSWD";
   private final static String BUNDLE_LOGINERROR_TITLE = "LoginExceptTitle";
@@ -63,7 +64,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   protected TextView mSetupTitle;
   private String mWiFiSSID;
   private String mWiFiPasswd;
-  private boolean mSendRequest = false;//If user not change settings, do not send request.
   private ErrorDialog mPINErrorDialog = null;
   private LoginDialog mLoginDialog = null;
   private AutoLoginProgressDialog mAutoLoginDialog = null;
@@ -163,6 +163,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         mStateHandler.quickPlay(handler);
         //handler.setupViews();
         mStateHandler = handler;
+        if (mEnterText.getVisibility() == View.VISIBLE) {
+          String editText = savedInstanceState.getString(BUNDLE_EDIT_TEXT);
+          mEnterText.setText(editText);
+        }
       } else {
         Log.e(TAG, "can not get state " + s.name() + " handler");
       }
@@ -192,6 +196,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       outState.putString(BUNDLE_WIFI_SSID, mWiFiSSID);
     if (mWiFiPasswd != null)
       outState.putString(BUNDLE_WIFI_PASSWD, mWiFiPasswd);
+    
+    if (mEnterText.getVisibility() == View.VISIBLE)
+      outState.putString(BUNDLE_EDIT_TEXT, mEnterText.getText().toString());
   }
   
   private void handleLoginError(int titleId, int messageId, boolean showDialog, final boolean retryLogin) {
@@ -450,6 +457,14 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         }
       } else if (action.equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
         if (BaseResponse.RESPONSE_OK == result && 0 == error.length()) {
+          /*
+           * Unfortunately, when orientation changes, activity will receive this message again.
+           * If user change the wifi ssid or password, they will override , especially in
+           * summary page, orientation changes may occur wifi ssid & password.
+           */
+          if (mWiFiSSID != null && mWiFiPasswd != null) {
+            return;
+          }
           mWiFiSSID = mBusinessMgr.getSsid();
           mWiFiPasswd = mBusinessMgr.getWifiPwd();           
           
@@ -820,9 +835,14 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         String enter = mEnterText.getText().toString();
         if (!enter.equals(mWiFiSSID)) {
           mWiFiSSID = enter;
-          mSendRequest = true;
         }
         //mWiFiSSID = null;
+      } else {
+        /*if user enter new ssid, goto summary, and back to ssid page,
+         * clear input, and skip. In this situtation, fetch the origin 
+         * SSID.
+         */
+        mWiFiSSID = mBusinessMgr.getSsid();
       }
 
       return true;
@@ -865,9 +885,14 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         String enter = mEnterText.getText().toString();
         if (!enter.equals(mWiFiPasswd)) {
           mWiFiPasswd = enter;
-          mSendRequest = true;
         }
         //mWiFiPasswd = null;
+      } else {
+        /*if user enter new ssid, goto summary, and back to ssid page,
+         * clear input, and skip. In this situtation, fetch the origin 
+         * SSID.
+         */
+        mWiFiPasswd = mBusinessMgr.getWifiPwd(); 
       }
 
       return true;
@@ -894,6 +919,15 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     @Override
     public boolean storeSetting() {
       CPEConfig.getInstance().setQuickSetupFlag();
+
+      boolean mSendRequest = false;//If user not change settings, do not send request.
+      
+      if (mWiFiSSID != null && mWiFiPasswd != null && 
+          (!mWiFiSSID.equals(mBusinessMgr.getSsid()) || 
+              !mWiFiPasswd.equals(mBusinessMgr.getWifiPwd()))) {
+        mSendRequest = true;
+      }
+      
       if (mSendRequest) {
         setWiFiConfigure(mWiFiSSID, mWiFiPasswd);
       } else {
