@@ -8,6 +8,7 @@
         android:id="@+id/main_layout_top"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
+	    android:minHeight="100dp"
 	    android:background="@color/main_title_background" >
 	
         <TextView
