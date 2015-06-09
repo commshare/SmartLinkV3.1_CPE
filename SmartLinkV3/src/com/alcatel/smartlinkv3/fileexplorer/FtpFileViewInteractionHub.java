@@ -1462,6 +1462,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	
 	private boolean goPlayerActivity(final MediaItem item) {
 	    List<MediaItem> list = new ArrayList<MediaItem>();
+	    list.add(item);
 	    MediaManager.getInstance().setMusicList(list);
 	    Intent intent = new Intent();
 	    
@@ -1482,29 +1483,15 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	    return true;
 	}
 	private void playMediaFile(FileInfo info) {
-	    
-	    if (!Util.isMediaFile(info.fileName))
+	    if (!FileIconHelper.isMediaFile(info.fileName))
             return;
 	    
-	    String hostIp = Util.getFtpServerAddress(this.mActivity);
-	    Uri uriFile = Util.uriFromFtpFile(hostIp, info);
-	    Log.d("play", "play media file is "+ uriFile);
-	    final FileInfo _info = info;
-	    GetMetaDataProxy.syncGetMetaData(mActivity, uriFile.toString(), 
-	            new GetMetaDataProxy.GetMetaDataRequestCallback() {
-            @Override
-            public void onGetItemMetaData(MediaItem item) {
-                if(item != null) {
-                    Log.d("play", item.getShowString());
-                    if (!goPlayerActivity(item)) {
-                        viewMediaFile(_info);
-                    }
-                } else {
-                    Log.d("play", "GetMetaData failed!");
-                    viewMediaFile(_info);
-                }
-            }
-        });
+	    if (info.item == null) {
+	        viewMediaFile(info);
+	        return;
+	    }
+	    
+	    goPlayerActivity(info.item);
 	}
 	
 	// TODO

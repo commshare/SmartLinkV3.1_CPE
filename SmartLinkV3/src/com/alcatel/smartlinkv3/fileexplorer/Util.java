@@ -19,6 +19,7 @@
 
 package com.alcatel.smartlinkv3.fileexplorer;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -53,6 +54,9 @@ import java.util.HashSet;
 import org.apache.commons.net.ftp.FTPFile;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.GetMetaDataProxy;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
 
 public class Util {
 	private static String ANDROID_SECURE = "/mnt/sdcard/.android_secure";
@@ -225,6 +229,11 @@ public class Util {
 		 */
 
 		return lFileInfo;
+	}
+	
+	public static void syncGetMetaData(ArrayList<FileInfo> fileList,
+	        Activity activity, Runnable action) {
+	    new SyncMetaData(fileList,activity,action).execute();
 	}
 
 	/*

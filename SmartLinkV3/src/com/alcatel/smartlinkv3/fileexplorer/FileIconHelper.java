@@ -79,7 +79,9 @@ public class FileIconHelper {
         }, R.drawable.file_icon_rar);
     }
 
-    public FileIconHelper(Context context) {
+    Activity mActivity;
+    public FileIconHelper(Activity activity) {
+        this.mActivity = activity;
     }
 
     private static void addItem(String[] exts, int resId) {
@@ -106,42 +108,23 @@ public class FileIconHelper {
         fileImage.setImageResource(id);
     }
     
-    public void setIcon(FileInfo fileInfo, ImageView fileImage, ImageView fileImageFrame,
+    public void setIcon(FileInfo fileInfo, ImageView fileImage, 
             ThumbnailLoader thumbnailLoader) {
         String filename = fileInfo.fileName;
         String extFromFilename = Util.getExtFromFilename(filename);
-        fileImageFrame.setVisibility(View.GONE);
         int id = getFileIcon(extFromFilename);
         fileImage.setImageResource(id);
         
-        if (R.drawable.microsd_item_pictures != id) {
+        if (fileInfo.item == null) {
             return;
         }
         
-        String hostIp = Util.getFtpServerAddress(fileImage.getContext());
-        Uri uri = Util.uriFromFtpFile(hostIp, fileInfo);
-        Log.d("Icon", "ftp uri is " + uri.toString());
-        final ImageView icon = fileImage;
-        final ThumbnailLoader _loader = thumbnailLoader;
-        GetMetaDataProxy.syncGetMetaData(fileImage.getContext(), uri.toString(), 
-                new GetMetaDataProxy.GetMetaDataRequestCallback() {
-            @Override
-            public void onGetItemMetaData(MediaItem item) {
-                if(item != null) {
-                    Log.d("Icon", "item res is" + item.getRes());
-                    if (UpnpUtil.isPictureItem(item)){
-                        final String requestUrl = getRequestUrl(item);
-                        Activity activit = (Activity) icon.getContext();
-                        activit.runOnUiThread (new Runnable() {
-                            public void run() {
-                                _loader.DisplayImage(requestUrl, icon);
-                            }
-                        });
-                    }
-                } else
-                    Log.d("Icon", "GetMetaData failed!");
-            }
-        });
+        if (!isPictureFile(filename)) {
+            return;
+        }
+        
+        String requestUrl = getRequestUrl(fileInfo.item);
+        thumbnailLoader.DisplayImage(requestUrl, fileImage);
     }
     
     private String getRequestUrl(MediaItem mi) {
@@ -152,4 +135,30 @@ public class FileIconHelper {
         return requestUrl;
     }
 
+    public static boolean isPictureFile(String filename) {
+        String extFromFilename = Util.getExtFromFilename(filename);
+        int id = getFileIcon(extFromFilename);
+        return id == R.drawable.microsd_item_pictures;
+    }
+    
+    public static boolean isVideoFile(String filename) {
+        String extFromFilename = Util.getExtFromFilename(filename);
+        int id = getFileIcon(extFromFilename);
+        return id == R.drawable.microsd_item_videos;
+    }
+    
+    public static boolean isMusicFile(String filename) {
+        String extFromFilename = Util.getExtFromFilename(filename);
+        int id = getFileIcon(extFromFilename);
+        return (id == R.drawable.microsd_item_music) || 
+                (id == R.drawable.file_icon_wma) || 
+                (id == R.drawable.file_icon_wav) ||
+                (id == R.drawable.file_icon_mid);
+    }
+    
+    public static boolean isMediaFile(String filename) {
+        return isPictureFile(filename) ||
+                isVideoFile(filename) ||
+                isMusicFile(filename);
+    }
 }

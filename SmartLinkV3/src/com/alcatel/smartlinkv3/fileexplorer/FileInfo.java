@@ -19,6 +19,8 @@
 
 package com.alcatel.smartlinkv3.fileexplorer;
 
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
+
 public class FileInfo {
 
     public String fileName;
@@ -44,5 +46,7 @@ public class FileInfo {
     public long dbId; // id in the database, if is from database
     
     public int fileType;
+    
+    public MediaItem item;
 
 }

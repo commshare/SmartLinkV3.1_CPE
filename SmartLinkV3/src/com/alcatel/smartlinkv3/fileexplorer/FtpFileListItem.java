@@ -82,8 +82,8 @@ public class FtpFileListItem {
 		if (fileInfo.IsDir) {
 			lFileImage.setImageResource(R.drawable.microsd_item_folder);
 		} else {
-			//fileIcon.setIcon(fileInfo, lFileImage);
-		    fileIcon.setIcon(fileInfo, lFileImage, lFileImageFrame, thumbnailLoader);
+//			fileIcon.setIcon(fileInfo, lFileImage);
+			fileIcon.setIcon(fileInfo, lFileImage, thumbnailLoader);
 		}
 	}
 
