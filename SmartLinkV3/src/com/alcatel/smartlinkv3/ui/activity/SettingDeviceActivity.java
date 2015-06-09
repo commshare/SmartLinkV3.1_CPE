@@ -408,11 +408,17 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //			m_dlgPin.cancelUserClose();
 //			m_dlgPuk.cancelUserClose();
 			SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
-			if(simStatus.m_nPinRemainingTimes == 0){
-				ShowPukDialog();
+			if(simStatus.m_SIMState != SIMState.Accessable){
+				if(simStatus.m_nPinRemainingTimes == 0){
+					ShowPukDialog();
+				}
+				else if(simStatus.m_nPinRemainingTimes > 0){
+					ShowPinDialog();
+				}
 			}
-			else if(simStatus.m_nPinRemainingTimes > 0){
-				ShowPinDialog();
+			else{
+				String strInfo = getString(R.string.home_sim_not_accessible);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			}
 			break;
 		default:
