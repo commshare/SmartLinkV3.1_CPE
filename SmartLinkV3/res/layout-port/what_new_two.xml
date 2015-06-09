@@ -9,23 +9,23 @@
         android:id="@+id/guide2_img"
         android:layout_width="wrap_content"
         android:layout_height="0sp"
-        android:layout_weight="5"
-        android:gravity="center"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
+        android:layout_weight="5"
         android:contentDescription="@null"
         android:focusable="true"
+        android:gravity="center"
         android:src="@drawable/guide2" />
 
     <TextView
         android:id="@+id/guide2_title"
         android:layout_width="match_parent"
         android:layout_height="0sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:gravity="center"
-    		android:layout_marginLeft="10dp"
-    		android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
         android:text="@string/guide2_title"
         android:textColor="#333333"
         android:textSize="25sp" />
@@ -34,15 +34,17 @@
         android:id="@+id/guide2_description"
         android:layout_width="match_parent"
         android:layout_height="0sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:gravity="center|top"
-    		android:layout_marginLeft="10dp"
-    		android:layout_marginRight="10dp"
         android:text="@string/guide2_description"
         android:textColor="#999999"
         android:textSize="20sp" />
-     <View
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_weight="3"/>
+        android:layout_weight="3" />
+
 </LinearLayout>

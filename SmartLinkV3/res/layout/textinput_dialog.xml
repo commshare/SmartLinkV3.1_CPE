@@ -37,10 +37,9 @@
 
         <EditText
             android:id="@+id/input_edit_text"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="8"
             android:background="@drawable/edit_normal"
             android:inputType="text"
             android:selectAllOnFocus="true" />
