@@ -440,6 +440,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	}
 	
 	private void onBtnPincodeSetting(){
+		if(BusinessMannager.getInstance().getSimStatus().m_SIMState != SIMState.Accessable){
+			String strInfo = getString(R.string.home_sim_not_accessible);
+			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		m_device_menu_container.setVisibility(View.GONE);
 		m_pincode_editor.setVisibility(View.VISIBLE);
 		if(BusinessMannager.getInstance().getSimStatus().m_nPinRemainingTimes <= 0){
