@@ -23,6 +23,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -354,7 +355,7 @@ public class FtpFileViewFragment extends Fragment implements
 				break;
 			// ui refresh
 			case MSG_TYPE.MSG_REFRESH_UI:
-				FTPFile[] listFiles = (FTPFile[]) msg.obj;
+				List<FTPFile> listFiles = (List<FTPFile>) msg.obj;
 
 				if (listFiles == null) {
 					break;

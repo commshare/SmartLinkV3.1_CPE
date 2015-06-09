@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -193,8 +194,8 @@ public class FtpManager {
 		ftpProxy.setStopDownload();
 	}
 
-	public FTPFile[] showListFile(String remoteDir) {
-		return ftpProxy.getFTPFiles(remoteDir);
+	public List<FTPFile> showListFile(String remoteDir) throws Exception {
+		return ftpProxy.getFileList(remoteDir);
 	}
 
 	public boolean connectLogin() {
@@ -285,7 +286,7 @@ public class FtpManager {
 	}
 
 	public boolean upload(String localFile, String remoteFile)
-			throws IOException {
+			throws Exception {
 		boolean iStatus = false;
 
 		if (!isLogin) {

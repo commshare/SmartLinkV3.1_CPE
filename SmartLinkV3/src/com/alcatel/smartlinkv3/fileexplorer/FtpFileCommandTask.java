@@ -26,7 +26,6 @@ import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask.TaskPoolOnCallResponse;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTaskManager;
-import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTaskManagerThread;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
 import com.alcatel.smartlinkv3.samba.SmbHttpServer;
 
@@ -51,7 +50,9 @@ public class FtpFileCommandTask {
 	private ArrayList<ShareFileInfo> mShareFiles = new ArrayList<ShareFileInfo>();
 
 	private OnCallResponse mOnCallResponse;
-
+	
+	private ThreadPoolTaskManager downloadThreadPool;
+	
 	// ftp cmd
 	public class FTP_CMD {
 		private static final int CONNECT = 1;
@@ -164,10 +165,14 @@ public class FtpFileCommandTask {
 		thread = new Thread(ftpTask);
 
 		// init thread pool
-		ThreadPoolTaskManager.getInstance();
-		ThreadPoolTaskManagerThread downloadTaskManagerThread = new ThreadPoolTaskManagerThread();
-		new Thread(downloadTaskManagerThread).start();
-
+		downloadThreadPool = new ThreadPoolTaskManager();
+		downloadThreadPool.start();
+		
+	/*	ThreadPoolTaskManager.getInstance();
+		ThreadPool downloadTaskManagerThread = new ThreadPool();
+		Thread threadPool = new Thread(downloadTaskManagerThread);
+		threadPool.start();*/
+		
 		this.isInit = true;
 		return true;
 	}
@@ -334,7 +339,7 @@ public class FtpFileCommandTask {
 			notifyAll();
 		}
 
-		private synchronized void runCmd() throws IOException {
+		private synchronized void runCmd() throws Exception {
 			while (CMD == -1) {
 				try {
 					wait();
@@ -387,8 +392,8 @@ public class FtpFileCommandTask {
 						break;
 					}
 
-					ThreadPoolTaskManager downloadTaskMananger = ThreadPoolTaskManager
-							.getInstance();
+					/*ThreadPoolTaskManager downloadTaskMananger = ThreadPoolTaskManager
+							.getInstance();*/
 
 					TaskPoolOnCallResponse onCallResponse = new TaskPoolOnCallResponse() {
 						@Override
@@ -398,9 +403,14 @@ public class FtpFileCommandTask {
 						}
 					};
 
-					boolean result = downloadTaskMananger
+					/*boolean result = downloadTaskMananger
 							.addDownloadTask(new ThreadPoolTask(remoteFiles
+									.get(0).fileName, onCallResponse));*/
+					
+					boolean result = downloadThreadPool
+							.addTask(new ThreadPoolTask(remoteFiles
 									.get(0).fileName, onCallResponse));
+					
 					if (result) {
 						logger.i("add download thread pool success!");
 					} else {
@@ -512,6 +522,9 @@ public class FtpFileCommandTask {
 				try {
 					runCmd();
 				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -700,14 +713,14 @@ public class FtpFileCommandTask {
 						+ "] fail!");
 				logger.w("move file fail fromFile = " + fromFile + ",toFile = "
 						+ toFile);
-				print_reply_code();
+				reply_code();
 			}
 		}
 
 	}
 
 	private void uploadFiles(ArrayList<File> local, String remotePath)
-			throws IOException {
+			throws Exception {
 		boolean result = false;
 
 		if (!isLogin) {
@@ -781,7 +794,7 @@ public class FtpFileCommandTask {
 		}
 
 		try {
-			FTPFile[] ftpFile = ftp.showListFile(path);
+			List<FTPFile> ftpFile = ftp.showListFile(path);
 			sendMsg(MSG_TYPE.MSG_REFRESH_UI, ftpFile);
 
 		} catch (Exception e) {
@@ -799,7 +812,7 @@ public class FtpFileCommandTask {
 		}
 
 		try {
-			FTPFile[] ftpFile = ftp.showListFile(path);
+			List<FTPFile> ftpFile = ftp.showListFile(path);
 
 			ArrayList<FileInfo> fileList = new ArrayList<FileInfo>();
 
@@ -822,8 +835,8 @@ public class FtpFileCommandTask {
 
 	}
 
-	public void print_reply_code() {
-		logger.w("reply code: " + ftp.getReply());
+	public void reply_code() {
+		logger.w("ftp reply code = " + ftp.getReply());
 	}
 
 	private void shareFiles(ArrayList<FileInfo> remote) {
@@ -882,12 +895,12 @@ public class FtpFileCommandTask {
 					+ remoteFolder);
 			sendMsg(MSG_TYPE.MSG_CREATE_FOLDER, FAIL);
 			logger.i("create folder fail: " + remoteFolder);
-			print_reply_code();
+			reply_code();
 		}
 
 	}
 
-	private String getServerAddress(Context ctx) {
+	public String getServerAddress(Context ctx) {
 		WifiManager wifi_service = (WifiManager) ctx
 				.getSystemService(Context.WIFI_SERVICE);
 

@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class FtpClientProxy {
 	}
 
 	public FtpClientModel getConfig() {
-		return config;
+		return this.config;
 	}
 
 	public synchronized void setConfig(FtpClientModel config) {
@@ -62,7 +63,8 @@ public class FtpClientProxy {
 		return logger;
 	}
 
-	public synchronized void setFtpListener(FtpTransferIRetrieveListener listener) {
+	public synchronized void setFtpListener(
+			FtpTransferIRetrieveListener listener) {
 		this.listener = listener;
 	}
 
@@ -95,41 +97,36 @@ public class FtpClientProxy {
 		return false;
 	}
 
+	public void ftpSetting() throws IOException {
+		ftpClient.setFileType(FTPClient.FILE_STRUCTURE);
+		ftpClient.enterLocalPassiveMode();
+		// ftpClient.setControlEncoding("GBK");
+		ftpClient.setControlEncoding("UTF-8");
+		ftpClient.setListHiddenFiles(true);
+		// ftpClient.setConnectTimeout(5000);
+		// ftpClient.enterLocalActiveMode();
+		// ftpClient.enterRemotePassiveMode();
+		// ftpClient.enterRemoteActiveMode(InetAddress.getByName(config.address),config.port);
+		ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+	}
+	
 	public boolean login() {
 		if (!ftpClient.isConnected()) {
 			return false;
 		}
 		try {
-			boolean b = ftpClient.login(config.username, config.password);
-			if (!b) {
+			boolean result = ftpClient.login(config.username, config.password);
+			if (!result) {
 				return false;
 			}
-			ftpClient.setFileType(FTPClient.FILE_STRUCTURE);
-			ftpClient.enterLocalPassiveMode();
-			reply = ftpClient.getReplyCode();
-			// ftpClient.setControlEncoding("GBK");
-			ftpClient.setControlEncoding("UTF-8");
-			ftpClient.setListHiddenFiles(true);
-			// ftpClient.setControlEncoding("gb2312");
-			// ftpClient.setConnectTimeout(5000);
-			// ftpClient.enterLocalActiveMode();
-			// ftpClient.enterRemotePassiveMode();
-			// ftpClient.enterRemoteActiveMode(InetAddress.getByName(config.address),config.port);
-			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-			return b;
+
+			ftpSetting();
+
+			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return false;
-	}
-
-	public FTPFile[] getFTPFiles(String remoteDir) {
-		try {
-			return ftpClient.listFiles(convertToUTF8(remoteDir));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public FTPFile getFTPFile(String remotePath) {
@@ -197,8 +194,9 @@ public class FtpClientProxy {
 		return false;
 	}
 
-	public FTPFile getFileByName(String remoteDir, String name) {
-		FTPFile[] files = this.getFTPFiles(remoteDir);
+	public FTPFile getFileByName(String remoteDir, String name)
+			throws Exception {
+		List<FTPFile> files = this.getFileList(remoteDir);
 		if (files != null) {
 			for (FTPFile f : files) {
 				if (name.equalsIgnoreCase(f.getName())) {
@@ -242,17 +240,22 @@ public class FtpClientProxy {
 		return fileName;
 	}
 
-	public FTPFile getFtpFileByPath(String remotePath) {
-		FTPFile[] parentFtp = null;
+	public FTPFile getFtpFileByPath(String remotePath) throws Exception {
 
 		String parentPath = this.getParentPathFromURL(remotePath);
 		String filename = getFileNameFromURL(remotePath);
 
-		parentFtp = this.getFTPFiles(parentPath);
+		List<FTPFile> parentFtp = this.getFileList(parentPath);
 		logger.i("parentPath: " + parentPath);
 		if (parentFtp != null) {
+			String name = "";
 			for (FTPFile f : parentFtp) {
-				if (filename.equalsIgnoreCase(f.getName())) {
+				name = f.getName();
+				if (name.equals(".") || name.equals("..")) {
+					// skip parent directory and the directory itself
+					continue;
+				}
+				if (filename.equalsIgnoreCase(name)) {
 					return f;
 				}
 			}
@@ -263,11 +266,11 @@ public class FtpClientProxy {
 	}
 
 	// TODO
-	public boolean isDirectory(String remote) throws IOException {
+	public boolean isDirectory(String remote) throws Exception {
 		FTPFile remoteFile = ftpClient.mlistFile(remote);
 
 		if (remoteFile == null) {
-			logger.w("remote file is not exist or have not permerssion!");
+			logger.i("remote file is not exist or have not permerssion!");
 			FTPFile ftpFile = this.getFtpFileByPath(remote);
 
 			if (ftpFile == null) {
@@ -357,19 +360,19 @@ public class FtpClientProxy {
 	}
 
 	public FtpDownloadStatus download(String local, String remote)
-			throws IOException {
+			throws Exception {
 		FtpDownloadStatus result;
 		listener.onStart(local);
 		setStartDownload();
-		
-		FTPFile[] files = this.getFTPFiles(remote);
 
-		if (files.length != 1) {
+		List<FTPFile> files = this.getFileList(remote);
+
+		if (files.size() != 1) {
 			logger.v("remote file" + remote + " is not exist!");
 			return FtpDownloadStatus.Remote_File_Noexist;
 		}
 
-		long lRemoteSize = files[0].getSize();
+		long lRemoteSize = files.get(0).getSize();
 		File f = new File(local);
 
 		File parentDir = f.getParentFile();
@@ -412,7 +415,7 @@ public class FtpClientProxy {
 					process = nowProcess;
 					if (process % 10 == 0)
 						logger.v("Download Process:" + process);
-					listener.onTrack(remote,process);
+					listener.onTrack(remote, process);
 					// TODO: update the process
 				}
 			}
@@ -452,7 +455,7 @@ public class FtpClientProxy {
 					process = nowProcess;
 					if (process % 10 == 0)
 						logger.i("Download Process:" + process);
-					listener.onTrack(remote,process);
+					listener.onTrack(remote, process);
 					// TODO: update the process
 				}
 			}
@@ -473,8 +476,7 @@ public class FtpClientProxy {
 		return result;
 	}
 
-	public FtpUploadStatus upload(String local, String remote)
-			throws IOException {
+	public FtpUploadStatus upload(String local, String remote) throws Exception {
 		FtpUploadStatus result;
 
 		String remoteFileName = remote;
@@ -491,10 +493,10 @@ public class FtpClientProxy {
 			}
 		}
 
-		FTPFile[] files = this.getFTPFiles(remoteFileName);
+		List<FTPFile> files = this.getFileList(remoteFileName);
 
-		if (files.length == 1) {
-			long remoteSize = files[0].getSize();
+		if (files.size() == 1) {
+			long remoteSize = files.get(0).getSize();
 			File f = new File(local);
 			long localSize = f.length();
 			if (remoteSize == localSize) {
@@ -519,7 +521,7 @@ public class FtpClientProxy {
 	}
 
 	public boolean uploadAndsubFiles(String local, String remote)
-			throws IOException {
+			throws Exception {
 		File localFile = new File(local);
 		boolean result = false;
 
@@ -570,7 +572,20 @@ public class FtpClientProxy {
 	public List<FTPFile> getFileList(String remotePath) throws Exception {
 		List<FTPFile> ftpfiles = Arrays.asList(ftpClient
 				.listFiles(convertToUTF8(remotePath)));
-		return ftpfiles;
+
+		// under linux,filter out parent directory and the directory itself
+		List<FTPFile> files = new ArrayList<FTPFile>();
+		String name = "";
+		for (FTPFile f : ftpfiles) {
+			name = f.getName();
+			if (name.equals(".") || name.equals("..")) {
+				// skip parent directory and the directory itself
+				continue;
+			}
+			files.add(f);
+		}
+
+		return files;
 	}
 
 	public Boolean deleteFtpServerFile(String remoteFilePath) throws Exception {
@@ -608,29 +623,28 @@ public class FtpClientProxy {
 
 		List<FTPFile> list = this.getFileList(remoteFoldPath);
 
-		if (list == null || list.size() == 0) {
-			logger.i("delete a empty directory: " + remoteFoldPath);
-			return deleteFold(remoteFoldPath);
-		}
-
 		for (FTPFile ftpFile : list) {
 			String name = ftpFile.getName();
 			String remoteFile = remoteFoldPath + "/" + name;
 
+			if (name.equals(".") || name.equals("..")) {
+				// skip parent directory and the directory itself
+				success = true;
+				continue;
+			}
+
 			if (ftpFile.isDirectory()) {
 				success = deleteFoldAndsubFiles(remoteFile);
 				if (!success)
-					break;
+					return success;
 			} else {
 				success = deleteFtpServerFile(remoteFile);
 				if (!success)
-					break;
+					return success;
 			}
 		}
 
-		if (!success)
-			return false;
-		success = deleteFold(convertToUTF8(remoteFoldPath));
+		success = deleteFold(remoteFoldPath);
 		return success;
 	}
 

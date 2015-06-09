@@ -3,50 +3,80 @@ package com.alcatel.smartlinkv3.ftp.client;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-
-import android.R.bool;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ThreadPoolTaskManager {
-	private static final String TAG = "DownloadTaskManager";
+	private static final String TAG = "ThreadPoolTaskManager";
 
-	private LinkedList<ThreadPoolTask> downloadTasks;
+	private LinkedList<ThreadPoolTask> taskList;
 
 	private Set<String> taskIdSet;
 
-	private static ThreadPoolTaskManager downloadTaskMananger;
+	private static ThreadPoolTaskManager s_TaskMananger;
 
-	private ThreadPoolTaskManager() {
+	private Thread poolThread;
 
-		downloadTasks = new LinkedList<ThreadPoolTask>();
+	private pubLog logger;
+
+	public ThreadPoolTaskManager() {
+		taskList = new LinkedList<ThreadPoolTask>();
 		taskIdSet = new HashSet<String>();
+		poolThread = new Thread(new ThreadPool());
+		logger = pubLog.getLogger();
+	}
 
+	public void start() {
+		poolThread.start();
+
+		int time = 0;
+		while (!poolThread.isAlive()) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (time >= 10) {
+				poolThread.start();
+			}
+			time++;
+		}
+	}
+
+	public void stop() {
+		if (!poolThread.isAlive()) {
+			return;
+		}
+		poolThread.stop();
 	}
 
 	public static synchronized ThreadPoolTaskManager getInstance() {
-		if (downloadTaskMananger == null) {
-			downloadTaskMananger = new ThreadPoolTaskManager();
+		if (s_TaskMananger == null) {
+			s_TaskMananger = new ThreadPoolTaskManager();
 		}
-		return downloadTaskMananger;
+		return s_TaskMananger;
 	}
 
-	public boolean addDownloadTask(ThreadPoolTask downloadTask) {
-		synchronized (downloadTasks) {
-			if (!isTaskRepeat(downloadTask.getFileId())) {
+	public synchronized boolean addTask(ThreadPoolTask task) {
+		synchronized (taskList) {
+			if (!isTaskRepeat(task.getFileId())) {
 				System.out.println("ThreadPool: add task name = "
-						+ downloadTask.getFileId());
-				downloadTasks.addLast(downloadTask);
+						+ task.getFileId());
+				taskList.addLast(task);
 				return true;
 			} else {
 				// TODO
-				System.out.println("ThreadPool:task ["
-						+ downloadTask.getFileId() + "] is repeated");
-				downloadTasks.addLast(downloadTask);
+				System.out.println("ThreadPool:task [" + task.getFileId()
+						+ "] is repeated");
+				taskList.addLast(task);
 				return false;
 			}
 		}
 
 	}
 
+	// TODO
 	public boolean isTaskRepeat(String fileId) {
 		synchronized (taskIdSet) {
 			if (taskIdSet.contains(fileId)) {
@@ -59,13 +89,69 @@ public class ThreadPoolTaskManager {
 		}
 	}
 
-	public ThreadPoolTask getDownloadTask() {
-		synchronized (downloadTasks) {
-			if (downloadTasks.size() > 0) {
-				ThreadPoolTask downloadTask = downloadTasks.removeFirst();
-				return downloadTask;
+	public ThreadPoolTask getTask() {
+		synchronized (taskList) {
+			if (taskList.size() > 0) {
+				ThreadPoolTask firstTask = taskList.removeFirst();
+				return firstTask;
 			}
 		}
 		return null;
+	}
+
+	private class ThreadPool implements Runnable {
+		private ExecutorService mPool;
+
+		private final int POOL_SIZE = 5;
+
+		private final int SLEEP_TIME = 1000;
+
+		private boolean isRun = true;
+
+		public ThreadPool() {
+			mPool = Executors.newFixedThreadPool(POOL_SIZE);
+		}
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			while (isRun) {
+				ThreadPoolTask task = getTask();
+				if (task != null) {
+					mPool.execute(task);
+				} else {
+					try {
+						Thread.sleep(SLEEP_TIME);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+			if (!isRun) {
+				// not destroy the thread,it forbid add the tasks
+				mPool.shutdown();
+			}
+
+		}
+
+		// immediately close the thread pool
+		public synchronized void shutdown() {
+			if (mPool != null && (!mPool.isShutdown() || mPool.isTerminated())) {
+				mPool.shutdownNow();
+				this.isRun = false;
+			}
+		}
+
+		// gently close the single task thread pool,but will ensure that all
+		// have to join the task will be completed before closing
+		public void stop() {
+			if (mPool != null && (!mPool.isShutdown() || mPool.isTerminated())) {
+				mPool.shutdown();
+				this.isRun = false;
+			}
+		}
+
 	}
 }
