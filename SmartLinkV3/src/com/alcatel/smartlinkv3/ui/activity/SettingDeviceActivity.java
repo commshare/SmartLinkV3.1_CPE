@@ -70,6 +70,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private boolean m_blFirst=true;
 	private ImageView m_hiddable_divider = null;
 	
+	private TextView m_pin_notice = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -144,6 +146,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
 			m_requested_pinState = ENUM.PinState.PinEnableVerified;
 		}
+		
+		m_pin_notice = (TextView) findViewById(R.id.setting_device_pincode_editor_notice);
+		m_pin_notice.setVisibility(View.GONE);
 	}
 	
 	private void ShowWaiting(boolean blShow){
@@ -198,6 +203,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			}
 		} else if (sim.m_SIMState == SIMState.PukRequired) {// puk
 			// close PIN dialog
+			m_pin_notice.setVisibility(View.VISIBLE);
 			if (null != m_dlgPin && PinStateDialog.m_isShow)
 				m_dlgPin.closeDialog();
 			
@@ -436,6 +442,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private void onBtnPincodeSetting(){
 		m_device_menu_container.setVisibility(View.GONE);
 		m_pincode_editor.setVisibility(View.VISIBLE);
+		if(BusinessMannager.getInstance().getSimStatus().m_nPinRemainingTimes <= 0){
+			m_pin_notice.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	private void onBtnPowerOff(){
@@ -576,6 +585,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
 				Log.v("PINCHECK", "PUK");
+				m_pin_notice.setVisibility(View.GONE);
 			}
 		}
 		

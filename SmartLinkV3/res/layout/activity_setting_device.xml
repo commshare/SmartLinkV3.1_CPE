@@ -300,12 +300,16 @@
      
     </ScrollView>
     
-	<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:id="@+id/setting_device_pincode_editor"
-        android:background="@color/color_white"
-        android:visibility="visible">
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical">
+		<FrameLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/setting_device_pincode_editor"
+	        android:background="@color/color_white"
+	        android:visibility="visible">
 
         <TextView
             android:layout_margin="15dp"
@@ -313,20 +317,31 @@
             android:layout_height="match_parent"
             android:text="@string/setting_device_pin_code_edit"
             android:textColor="@color/color_black"
-             android:textSize="20sp" />
+            android:textSize="20sp" />
 
 
-            <TextView
-                android:layout_margin="15dp"
-                android:id="@+id/btn_default_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end|center_vertical"
-                android:gravity="end"
-                android:background="@drawable/pwd_switcher_off"
-                android:visibility="visible" />
+          <TextView
+             android:layout_margin="15dp"
+             android:id="@+id/btn_default_switch"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_gravity="end|center_vertical"
+             android:gravity="end"
+             android:background="@drawable/pwd_switcher_off"
+             android:visibility="visible" />
             
-    </FrameLayout>
+    	</FrameLayout>
+    
+		<TextView
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:id="@+id/setting_device_pincode_editor_notice"
+		    android:text="@string/dialog_warning_error_pin_code_error_3times"
+		    android:textSize="16sp"
+		    android:textColor="@color/red"
+		    android:layout_marginLeft="15dp"
+		    android:visibility="gone"/>
+	</LinearLayout>
 	
     <RelativeLayout
             android:id="@+id/setting_device_waiting"
