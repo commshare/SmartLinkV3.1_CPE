@@ -21,7 +21,9 @@ import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
@@ -192,7 +194,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
     	mBrocastFactory.registerListener(this);
     
     	thumbnailLoader = new ThumbnailLoader(this);  
-  //  	showMicroView();
+    	//showMicroView();
 
 	}
 
@@ -449,6 +451,16 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		} else {
 			m_smsBtn.setEnabled(false);
 		}
+		
+//		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
+//		if(m_sdcardstatus.SDcardStatus > 0)
+//		{
+//			m_microsdBtn.setEnabled(true);
+//		}else
+//		{
+//			m_microsdBtn.setEnabled(false);
+//		}
+		
 	}
 
 	private void toPageHomeWhenPinSimNoOk() {
@@ -958,12 +970,20 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	}
 	
 	private void go2MicroSDView(){
-		mAllShareProxy.startSearch();
-		
-		setMainBtnStatus(R.id.main_microsd);
-		showView(ViewIndex.VIEW_MICROSD);
-		updateTitleUI(ViewIndex.VIEW_MICROSD);
-		pageIndex = ViewIndex.VIEW_MICROSD;
+//		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
+//		if(m_sdcardstatus.SDcardStatus > 0)
+//		{
+			mAllShareProxy.startSearch();
+			
+			setMainBtnStatus(R.id.main_microsd);
+			showView(ViewIndex.VIEW_MICROSD);
+			updateTitleUI(ViewIndex.VIEW_MICROSD);
+			pageIndex = ViewIndex.VIEW_MICROSD;
+//		}else
+//		{
+//			String strInfo = getString(R.string.microsd_no_sdcard);
+//			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+//		}
 	}
 
 	private void addView() {
@@ -1312,8 +1332,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	
 	public void showMicroView()
 	{
-		
-		boolean bSupport = true;//FeatureVersionManager.getInstance().isSupportModule("Sharing");
+		boolean bSupport = FeatureVersionManager.getInstance().isSupportModule("Sharing");
 		if(bSupport == true) {
 			m_microsdBtn.setVisibility(View.VISIBLE);
 		}else{

@@ -390,8 +390,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		
 		Intent intent = new Intent();
 		intent.setClass(this.m_context, FtpFileExplorerTabActivity.class);
-/*		intent.putExtra(LIST_KEY, (Serializable)mNextItems);
-		intent.putExtra("title", titlePosition);*/
 		m_context.startActivity(intent);
 	
 	}

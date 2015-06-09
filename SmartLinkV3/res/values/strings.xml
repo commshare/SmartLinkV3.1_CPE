@@ -163,6 +163,7 @@
     <string name="microsd_videos">Videos</string>
     <string name="microsd_music">Music</string>
     <string name="microsd_pictures">Pictures</string>
+    <string name="microsd_no_sdcard">No SD Card device</string>
     <!-- microsd end -->
 
 
