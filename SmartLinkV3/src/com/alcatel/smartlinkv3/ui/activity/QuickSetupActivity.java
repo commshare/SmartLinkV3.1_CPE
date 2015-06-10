@@ -575,8 +575,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   
   abstract class StateHandler implements TextWatcher{
     private State mState;
-    private StateHandler mPreviousHandler;
-    private StateHandler mNextHandler;
+    protected StateHandler mPreviousHandler;
+    protected StateHandler mNextHandler;
     protected boolean mSkipSetup;
     protected boolean mIsHead;
     protected int mInputMax;
@@ -601,6 +601,26 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     private void setPreviousStateHandler(StateHandler handler) {
       mPreviousHandler = handler;
     }
+    public void clearOtherTextListen(StateHandler handler) {
+    	if (handler == null) {
+				return;
+			}
+    	
+    	StateHandler head = handler;
+      StateHandler prev = head.mPreviousHandler;
+      while (prev != null) {
+      	mEnterText.removeTextChangedListener(prev);
+      	head = prev;
+        prev = head.mPreviousHandler;
+      }
+      head = handler;
+      StateHandler next = head.mNextHandler;
+      while (next != null) {
+      	mEnterText.removeTextChangedListener(next);
+      	head = next;
+      	next = head.mNextHandler;
+      }
+		}
     
     public StateHandler goBack(){
       return mPreviousHandler;
@@ -692,12 +712,25 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       if (len > mInputMax) {
         int nSelStart = mEnterText.getSelectionStart();
         int nSelEnd = mEnterText.getSelectionEnd();
-        s.delete(nSelStart - 1, nSelEnd);
-
-        mEnterText.setTextKeepState(s);// 保持光标原先的位置，而
-                                       // mEditText.setText(s)会让光标跑到最前面，
-                                       // 就算是再加mEditText.setSelection(nSelStart)
-                                       // 也不起作用
+        if ((len-1) <= mInputMax && nSelStart > 0) {
+        	s.delete(nSelStart - 1, nSelStart);
+				}else {
+					s.delete(mInputMax, len);
+				}
+       
+        // 保持光标原先的位置，而
+        // mEditText.setText(s)会让光标跑到最前面，
+        // 就算是再加mEditText.setSelection(nSelStart)
+        // 也不起作用
+        len = s.length();
+        if (nSelStart == 0 && len > 0) {
+        	mEnterText.setSelection(len);
+				}else {
+					mEnterText.setTextKeepState(s);
+				}
+        Log.d(TAG, " mEnterText.getSelectionStart():"+ mEnterText.getSelectionStart());
+        																
+       
       } else if ( (mInputMax == mInputMin && mInputMin == len) ||
           (mInputMax > mInputMin && len >= mInputMin)){
         mSkipSetup = false;
@@ -774,6 +807,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mNavigatorRight.setText(R.string.skip); 
       mEnterText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_PASSWORD);
       mEnterText.getText().clear();
+      clearOtherTextListen(this);
       mEnterText.addTextChangedListener(this);
     }
     
@@ -821,10 +855,18 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       }
       mEnterText.setInputType(InputType.TYPE_CLASS_TEXT);
       mEnterText.getText().clear();
+      clearOtherTextListen(this);
       mEnterText.addTextChangedListener(this);      
       //mEnterText.setHint(mWiFiSSID);
       if (mWiFiSSID != null) {
         mEnterText.setText(mWiFiSSID);
+        if (mEnterText.getSelectionStart() == 0 && mWiFiSSID.length() > 0) {
+        	mEnterText.setSelection(mWiFiSSID.length());
+				}else {
+					mEnterText.setTextKeepState(mWiFiSSID);
+				}
+        //Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
+        
       }
     }
 
@@ -869,12 +911,20 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       //replace  TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
       mEnterText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
       mEnterText.getText().clear();
+      clearOtherTextListen(this);
       mEnterText.addTextChangedListener(this);
       mWiFiSSIDTextView.setVisibility(View.GONE);
       mWiFiPasswdTextView.setVisibility(View.GONE);      
       //mEnterText.setHint(mWiFiPasswd);
       if(mWiFiPasswd != null){
         mEnterText.setText(mWiFiPasswd);
+        mEnterText.setText(mWiFiPasswd);
+        if (mEnterText.getSelectionStart() == 0 && mWiFiPasswd.length() > 0) {
+        	mEnterText.setSelection(mWiFiPasswd.length());
+				}else {
+					mEnterText.setTextKeepState(mWiFiPasswd);
+				}
+      	//Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
       }
     }
 
