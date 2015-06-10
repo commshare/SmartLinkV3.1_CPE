@@ -41,6 +41,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edit_normal"
+            android:imeOptions="flagNoFullscreen|flagNoExtractUi"
             android:inputType="text"
             android:selectAllOnFocus="true" />
 
