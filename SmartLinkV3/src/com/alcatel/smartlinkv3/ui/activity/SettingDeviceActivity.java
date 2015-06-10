@@ -575,6 +575,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
 				simRollRequest();
 			}
+			else{
+				closePinAndPukDialog();
+				String strTost = getString(R.string.unknown_error);
+				Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+			}
 		} else if (intent.getAction().equalsIgnoreCase(
 				MessageUti.SIM_CHANGE_PIN_STATE_REQUEST)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
