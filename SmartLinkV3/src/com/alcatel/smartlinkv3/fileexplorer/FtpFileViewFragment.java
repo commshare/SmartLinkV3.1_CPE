@@ -470,7 +470,7 @@ public class FtpFileViewFragment extends Fragment implements
 
 		String rootDir = "/";
 		mFileViewInteractionHub.setRootPath(rootDir);
-		String currentDir = "/";
+		String currentDir = (SaveState.CurrentDir != null) ? SaveState.CurrentDir : rootDir;
 		mFileViewInteractionHub.setCurrentPath(currentDir);
 		Log.i(LOG_TAG, "CurrentDir = " + currentDir);
 
@@ -516,7 +516,11 @@ public class FtpFileViewFragment extends Fragment implements
 		if (mBackspaceExit || mFileViewInteractionHub == null) {
 			return false;
 		}
-		return mFileViewInteractionHub.onBackPressed();
+		if (!mFileViewInteractionHub.onBackPressed()) {
+		    SaveState.CurrentDir = null;
+		    return false;
+		}
+		return true;
 	}
 
 	private class PathScrollPositionItem {
@@ -744,4 +748,13 @@ public class FtpFileViewFragment extends Fragment implements
 
 		return result;
 	}
+	
+	@Override
+    public void onSaveInstanceState(Bundle outState) {
+        SaveState.CurrentDir = mFileViewInteractionHub.getCurrentPath();
+    }
+    
+    public static class SaveState {
+        public static String CurrentDir = null;
+    }
 }
