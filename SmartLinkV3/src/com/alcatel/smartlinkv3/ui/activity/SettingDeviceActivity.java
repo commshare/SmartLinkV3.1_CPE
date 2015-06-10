@@ -260,6 +260,14 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			
 		} else {
 			closePinAndPukDialog();
+			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
+				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+				m_requested_pinState = ENUM.PinState.Disable;
+			}
+			else if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
+				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+				m_requested_pinState = ENUM.PinState.PinEnableVerified;
+			}
 		}
 	}
 	
@@ -566,7 +574,6 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
 				simRollRequest();
-				Log.v("PINCHECK", "ROLL");
 			}
 		} else if (intent.getAction().equalsIgnoreCase(
 				MessageUti.SIM_CHANGE_PIN_STATE_REQUEST)) {
@@ -577,20 +584,18 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if (BaseResponse.RESPONSE_OK == nResult
 					&& strErrorCode.length() == 0) {
 				m_dlgPin.onEnterPinResponse(true);
-				Log.v("PINCHECK", "TRUE");
-				if(m_requested_pinState == ENUM.PinState.Disable){
-					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
-					m_requested_pinState = ENUM.PinState.PinEnableVerified;
-				}
-				else if(m_requested_pinState == ENUM.PinState.PinEnableVerified){
-					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
-					m_requested_pinState = ENUM.PinState.Disable;
-				}
+//				if(m_requested_pinState == ENUM.PinState.Disable){
+//					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+//					m_requested_pinState = ENUM.PinState.PinEnableVerified;
+//				}
+//				else if(m_requested_pinState == ENUM.PinState.PinEnableVerified){
+//					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+//					m_requested_pinState = ENUM.PinState.Disable;
+//				}
 //				closePinAndPukDialog();
 				isPinRequired = false;
 			} else {
 				m_dlgPin.onEnterPinResponse(false);
-				Log.v("PINCHECK", "FALSE");
 				isPinRequired = true;
 			}
 		}
@@ -599,7 +604,6 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
-				Log.v("PINCHECK", "PUK");
 				m_pin_notice.setVisibility(View.GONE);
 			}
 		}
