@@ -1463,20 +1463,23 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	private boolean goPlayerActivity(final MediaItem item) {
 	    List<MediaItem> list = new ArrayList<MediaItem>();
 	    list.add(item);
-	    MediaManager.getInstance().setMusicList(list);
+	    
 	    Intent intent = new Intent();
 	    
 	    if (UpnpUtil.isAudioItem(item)) {
+	        MediaManager.getInstance().setMusicList(list);
 	        intent.setClass(this.mActivity, MusicPlayerActivity.class);
         } else if (UpnpUtil.isVideoItem(item)){
+            MediaManager.getInstance().setVideoList(list);
             intent.setClass(this.mActivity, VideoPlayerActivity.class);
         } else if (UpnpUtil.isPictureItem(item)){
+            MediaManager.getInstance().setPictureList(list);
             intent.setClass(this.mActivity, PicturePlayerActivity.class);
         } else{
             return false;
         }
 	    
-	    intent.putExtra(MusicPlayerActivity.PLAY_INDEX, 0);
+	    //intent.putExtra(MusicPlayerActivity.PLAY_INDEX, 0);
 	    MediaItemFactory.putItemToIntent(item, intent);
 	    this.mActivity.startActivity(intent);
 	    
