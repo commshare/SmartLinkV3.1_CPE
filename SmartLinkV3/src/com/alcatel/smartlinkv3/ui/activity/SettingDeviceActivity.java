@@ -446,7 +446,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	}
 	
 	private void onBtnPincodeSetting(){
-		if(BusinessMannager.getInstance().getSimStatus().m_SIMState != SIMState.Accessable){
+		if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.NoSim ||
+			BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.InvalidSim||
+			BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.SimCardIsIniting){
 			String strInfo = getString(R.string.home_sim_not_accessible);
 			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			return;
