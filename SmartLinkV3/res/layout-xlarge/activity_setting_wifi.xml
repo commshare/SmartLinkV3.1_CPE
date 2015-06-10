@@ -264,7 +264,7 @@
 	                android:paddingRight="25dip"
                      android:background="@color/color_white"/>
                     
-                    <LinearLayout
+                    <FrameLayout
                          android:layout_width="match_parent"
                         android:layout_height="match_parent"
                          android:layout_weight="7" 
@@ -290,23 +290,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/password_show"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="right|center_vertical"
                         android:contentDescription="@string/setting_wifi"
                         android:background="@android:color/transparent"
                         android:visibility="gone"                       
-                        android:layout_marginLeft="50dp"/>
+                        android:layout_marginRight="20dp"/>
                         
                         <ImageButton
                         android:id="@+id/ib_hide_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/password_hide"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="right|center_vertical"
                         android:contentDescription="@string/setting_wifi"
                         android:background="@android:color/transparent"
                         android:visibility="visible"
-                        android:layout_marginLeft="50dp"/>            
-                    </LinearLayout>
+                        android:layout_marginRight="20dp"/>            
+                    </FrameLayout>
                 </LinearLayout>
 
                 <ImageView

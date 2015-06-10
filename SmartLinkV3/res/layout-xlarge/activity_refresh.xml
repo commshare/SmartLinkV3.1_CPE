@@ -22,70 +22,77 @@
             android:textSize="@dimen/dimen_textsize_30sp"
             android:textStyle="bold" />
     </LinearLayout>
-	<ScrollView 
-	    android:id="@+id/ScrollView01"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:layout_below="@id/layout_top"
-	    android:layout_marginTop="40dip"
-		android:layout_marginBottom="30dp"
-	    android:overScrollMode="never" >
-        <RelativeLayout 
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content" >
-		    <ImageView
-		        android:id="@+id/image_connection"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_below="@id/layout_top"
-		        android:layout_centerHorizontal="true"
-		        android:layout_marginTop="90dip"
-		        android:layout_marginBottom="120dp"
-		        android:contentDescription="@null"
-		        android:background="@drawable/no_connection" />
-		
-		    <TextView
+     <LinearLayout 
+		   android:layout_width="match_parent"
+		   android:layout_height="match_parent"
+		   android:layout_below="@id/layout_top"
+		   android:orientation="vertical" >
+	   <LinearLayout
+	        android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical"
+		    android:layout_weight="0.8"
+		    android:gravity="bottom|center_horizontal" >
+		     <ImageView
+		       android:layout_gravity="center_horizontal"
+		       android:id="@+id/image_connection"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:layout_centerHorizontal="true"
+		       android:contentDescription="@null"
+		       android:background="@drawable/no_connection" />
+	   	</LinearLayout>
+	  
+		<LinearLayout
+	        android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical"
+		    android:layout_weight="1" 
+		    android:gravity="center" >
+		     <TextView
 		        android:id="@+id/textview_refresh_title"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_centerVertical="true"
-		        android:layout_below="@id/image_connection"
 		        android:layout_gravity="center"
 		        android:gravity="center"
 		        android:text="@string/refresh_wifi_title"
-		        android:textSize="@dimen/dimen_textsize_30sp"
+		        android:textSize="@dimen/dimen_textsize_24sp"
 		        android:textStyle="bold" 
 		        android:textColor="@color/color_black"/>
-		
+	
 		    <TextView
 		        android:id="@+id/textview_refresh_tip"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="15dip"
-			    android:layout_marginRight="15dip"
-		        android:layout_below="@id/textview_refresh_title"
-		        android:layout_marginTop="30dp"
+		        android:layout_marginTop="10dp"
 		        android:gravity="center"
 		        android:text="@string/refresh_wifi_tip"
-		        android:textSize="@dimen/dimen_textsize_30sp" 
+		        android:textSize="@dimen/dimen_textsize_24sp" 
 		        android:textStyle="bold"
 		        android:textColor="@color/color_black"/>
-		
+	    </LinearLayout>
+	   
+		<LinearLayout
+	        android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical"
+		    android:layout_weight="0.8" 
+		    android:gravity="top|center_horizontal" >
 		    <Button
+		        android:paddingTop="10dp"
+		        android:paddingBottom="10dp"
+		        android:layout_gravity="center_horizontal"
 		        android:id="@+id/btn_refresh"
 		        android:layout_width="180dip"
 		        android:layout_height="wrap_content"
-		        android:layout_below="@id/textview_refresh_tip"
 		        android:layout_centerHorizontal="true"
-		        android:layout_marginTop="120dp"
-		        android:padding="15dp"
 		        android:background="@drawable/selector_common_button"
 		        android:gravity="center"
 		        android:text="@string/refresh"
 		        android:textColor="@color/color_white"
 		        android:textStyle="bold" 
 		        android:textSize="@dimen/dimen_textsize_24sp" />
-
-        </RelativeLayout>
-	</ScrollView>
+	   </LinearLayout>
+     </LinearLayout>
 </RelativeLayout>
