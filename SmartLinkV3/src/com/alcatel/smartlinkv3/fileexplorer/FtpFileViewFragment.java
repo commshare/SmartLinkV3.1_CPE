@@ -363,7 +363,7 @@ public class FtpFileViewFragment extends Fragment implements
 
 				String path = mFileViewInteractionHub.getCurrentPath();
 
-				FileSortHelper sort = mFileViewInteractionHub.getCurrentSort();
+				final FileSortHelper sort = mFileViewInteractionHub.getCurrentSort();
 
 				final int pos = computeScrollPosition(path);
 				final ArrayList<FileInfo> fileList = mFileNameList;
@@ -383,7 +383,7 @@ public class FtpFileViewFragment extends Fragment implements
 
 				}
 
-				sortCurrentList(sort);
+//				sortCurrentList(sort);
 //				showEmptyView(fileList.size() == 0);
 //				mFileListView.post(new Runnable() {
 //					@Override
@@ -395,6 +395,7 @@ public class FtpFileViewFragment extends Fragment implements
 				Util.syncGetMetaData(fileList, mActivity, new Runnable() {
 				    @Override
 				    public void run() {
+				        sortCurrentList(sort);
 				        showEmptyView(fileList.size() == 0);
 				        mFileListView.setSelection(pos);
 				        }
