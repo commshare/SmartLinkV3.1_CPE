@@ -408,7 +408,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //			m_dlgPin.cancelUserClose();
 //			m_dlgPuk.cancelUserClose();
 			SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
-			if(simStatus.m_SIMState != SIMState.Accessable){
+			if(simStatus.m_SIMState == SIMState.Accessable || 
+				simStatus.m_SIMState == SIMState.PinRequired || 
+				simStatus.m_SIMState == SIMState.PukRequired){
 				if(simStatus.m_nPinRemainingTimes == 0){
 					ShowPukDialog();
 				}
