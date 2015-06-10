@@ -17,6 +17,7 @@ class SyncMetaData {
     private ArrayList<FileInfo> mFileList;
     private int count;
     private final int size;
+    private GetMetaDataProxy m_getmetadataproxy; 
     
     public SyncMetaData(ArrayList<FileInfo> fileList,
             Activity activity, Runnable action) {
@@ -25,6 +26,7 @@ class SyncMetaData {
         this.mFileList = fileList;
         this.count = 0;
         this.size = fileList.size();
+        m_getmetadataproxy = new GetMetaDataProxy();
     }
     
     private synchronized void incCount() {
@@ -44,7 +46,7 @@ class SyncMetaData {
             }
             
             String uriString = Util.makePath(info.filePath, info.fileName);
-            GetMetaDataProxy.syncGetMetaData(
+            m_getmetadataproxy.syncGetMetaData(
                     this.mActivity, uriString, new MediaItemCallBack(info));
         }
     }
