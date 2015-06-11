@@ -229,7 +229,7 @@ public class UserManager extends BaseManager {
 			return;
 		if(m_updateLoginTimeTask == null) {
 			m_updateLoginTimeTask = new UpdateLoginTimeTask();
-			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 30000);
+			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 25000);
 		}
 	}
 	
