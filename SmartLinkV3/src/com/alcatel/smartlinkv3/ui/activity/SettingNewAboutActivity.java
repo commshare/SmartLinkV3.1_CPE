@@ -109,7 +109,7 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 	
 	@Override
 	protected void onResume(){
-		m_bNeedBack = false;
+//		m_bNeedBack = false;
 		super.onResume();
 	}
 

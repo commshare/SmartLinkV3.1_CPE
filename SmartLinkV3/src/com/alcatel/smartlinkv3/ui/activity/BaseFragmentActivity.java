@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
@@ -17,7 +18,9 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -94,7 +97,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 		}else if(intent.getAction().equals(MessageUti.USER_LOGOUT_REQUEST)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0
+					&& isBackground(BaseFragmentActivity.this)
+					) {
 				backMainActivity(context);
 			}
 		}
@@ -109,8 +114,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 	}
 	
 	private void back2MainActivity(Context context) {
+		Log.v("CHECKLOG", "RESUME1");
 		if(m_bNeedBack == false) 
 			return;
+		Log.v("CHECKLOG", "RESUME2");
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 		
@@ -123,6 +130,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 				context.startActivity(intent);
 				finish();
 			}
+		}
+		else{
+			backMainActivity(BaseFragmentActivity.this);
 		}
 	}
 	
@@ -161,6 +171,22 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 			context.startActivity(intent);	
 			finish();
 		}	
+	}
+	
+	public boolean isBackground(Context context) {
+
+	    ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+	    List<RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+	    for (RunningAppProcessInfo appProcess : appProcesses) {
+	         if (appProcess.processName.equals(context.getPackageName())) {
+	                if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+	                          return true;
+	                }else{
+	                          return false;
+	                }
+	           }
+	    }
+	    return false;
 	}
 
 //	private void checkLogin()

@@ -204,7 +204,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	
 	@Override
 	protected void onResume(){
-		m_bNeedBack = false;
+//		m_bNeedBack = false;
 		super.onResume();
 		registerReceiver(m_password_change_receiver, m_change_password_filter);  
 	}

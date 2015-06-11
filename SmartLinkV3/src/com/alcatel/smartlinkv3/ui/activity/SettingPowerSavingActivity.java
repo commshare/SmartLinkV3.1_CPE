@@ -230,7 +230,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		m_bNeedBack = false;
+//		m_bNeedBack = false;
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.POWER_SET_POWER_SAVING_MODE));
