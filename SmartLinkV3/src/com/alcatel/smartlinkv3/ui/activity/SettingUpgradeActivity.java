@@ -275,7 +275,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-//		m_bNeedBack = false;
+		m_bNeedBack = false;
 		super.onResume();
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION));

@@ -91,7 +91,7 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-//		m_bNeedBack = false;
+		m_bNeedBack = false;
 		super.onResume();
 	}
 }

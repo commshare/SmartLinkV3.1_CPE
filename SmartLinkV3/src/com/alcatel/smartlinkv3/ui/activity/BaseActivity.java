@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
@@ -20,7 +19,6 @@ import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -97,9 +95,7 @@ public abstract class BaseActivity extends Activity{
 		}else if(intent.getAction().equals(MessageUti.USER_LOGOUT_REQUEST)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0
-					&& isForeground(BaseActivity.this)
-					) {
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				backMainActivity(context);
 			}
 		}
@@ -114,10 +110,8 @@ public abstract class BaseActivity extends Activity{
 	}
 	
 	private void back2MainActivity(Context context) {
-		Log.v("CHECKLOG", "RESUME1");
 		if(m_bNeedBack == false) 
 			return;
-		Log.v("CHECKLOG", "RESUME2");
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 		
@@ -130,9 +124,6 @@ public abstract class BaseActivity extends Activity{
 				context.startActivity(intent);
 				finish();
 			}
-		}
-		else{
-			backMainActivity(BaseActivity.this);
 		}
 	}
 	
@@ -171,22 +162,6 @@ public abstract class BaseActivity extends Activity{
 			context.startActivity(intent);	
 			finish();
 		}	
-	}
-	
-	public boolean isForeground(Context context) {
-
-	    ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-	    List<RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-	    for (RunningAppProcessInfo appProcess : appProcesses) {
-	         if (appProcess.processName.equals(context.getPackageName())) {
-	                if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-	                	return true;
-	                }else{
-	                    return false;
-	                }
-	           }
-	    }
-	    return false;
 	}
 
 //	private void checkLogin()
