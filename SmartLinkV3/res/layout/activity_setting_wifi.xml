@@ -118,6 +118,7 @@
                         android:inputType="text"
                         android:textSize="20sp" 
                         android:visibility="gone"
+                        android:imeOptions="flagNoExtractUi"
                         android:gravity="end" />
 
                     <TextView
@@ -269,14 +270,16 @@
                         android:layout_height="match_parent"
                         android:inputType="text"
                         android:textSize="20sp" 
-                        android:background="@color/color_white"/>
+                        android:background="@color/color_white"
+                        android:layout_marginRight="65dp"
+                        android:imeOptions="flagNoExtractUi"/>
 
                         
                         <ImageButton
                         android:id="@+id/ib_show_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="5dp"
                         android:src="@drawable/password_show"
                         android:layout_gravity="right|center_vertical"
                         android:contentDescription="@string/setting_wifi"
@@ -288,7 +291,7 @@
                         android:id="@+id/ib_hide_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="5dp"
                         android:src="@drawable/password_hide"
                         android:layout_gravity="right|center_vertical"
                         android:contentDescription="@string/setting_wifi"
