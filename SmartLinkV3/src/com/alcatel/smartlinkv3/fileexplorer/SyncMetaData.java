@@ -29,11 +29,15 @@ class SyncMetaData {
         m_getmetadataproxy = new GetMetaDataProxy();
     }
     
-    private synchronized void incCount() {
-        this.count++;
-        if (this.count >= this.size) {
-            mActivity.runOnUiThread(mAction);
+    private void actionRun() {
+        boolean result;
+        synchronized (this) {
+            this.count++;
+            result = (this.count >= this.size);
         }
+        
+        if (result)
+            mActivity.runOnUiThread(mAction);
     }
     
     public void execute() {
@@ -41,13 +45,17 @@ class SyncMetaData {
         for (int i = 0; i < this.size; i++) {
             FileInfo info = mFileList.get(i);
             if (!FileIconHelper.isMediaFile(info.fileName)) {
-                incCount();
+                actionRun();
                 continue;
             }
             
             String uriString = Util.makePath(info.filePath, info.fileName);
             m_getmetadataproxy.syncGetMetaData(
                     this.mActivity, uriString, new MediaItemCallBack(info));
+        }
+        
+        if (this.size == 0) {
+            actionRun();
         }
     }
     
@@ -65,7 +73,7 @@ class SyncMetaData {
                 mInfo.item = item;
             } else
                 Log.d(TAG, "GetMetaData failed!");
-            incCount();
+            actionRun();
         }
     }
 }
