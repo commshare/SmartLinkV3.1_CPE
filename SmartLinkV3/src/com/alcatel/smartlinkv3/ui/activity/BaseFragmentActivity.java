@@ -56,7 +56,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
     	
     	showActivity(this);
-//    	backMainActivityOnResume(this);
+    	backMainActivityOnResume(this);
 	}
 	
 	@Override
