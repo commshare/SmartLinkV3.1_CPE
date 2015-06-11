@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
@@ -19,6 +20,7 @@ import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -54,7 +56,7 @@ public abstract class BaseActivity extends Activity{
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
     	
     	showActivity(this);
-    	back2MainActivity(this);
+    	backMainActivityOnResume(this);
 	}
 	
 	@Override
@@ -95,7 +97,7 @@ public abstract class BaseActivity extends Activity{
 		}else if(intent.getAction().equals(MessageUti.USER_LOGOUT_REQUEST)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0 && isForeground(this)) {
 				backMainActivity(context);
 			}
 		}
@@ -123,6 +125,22 @@ public abstract class BaseActivity extends Activity{
 				Intent intent = new Intent(context, MainActivity.class);	
 				context.startActivity(intent);
 				finish();
+			}
+		}
+	}
+	
+	private void backMainActivityOnResume(Context context) {
+		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		
+		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
+			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+				Intent intent = new Intent(context, MainActivity.class);	
+				context.startActivity(intent);
+				finish();
+			}else {
+				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+				context.sendBroadcast(intent2);
 			}
 		}
 	}
@@ -162,6 +180,22 @@ public abstract class BaseActivity extends Activity{
 			context.startActivity(intent);	
 			finish();
 		}	
+	}
+	
+	public boolean isForeground(Context context) {
+
+	    ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+	    List<RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+	    for (RunningAppProcessInfo appProcess : appProcesses) {
+	         if (appProcess.processName.equals(context.getPackageName())) {
+	                if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+	                	return true;
+	                }else{
+	                    return false;
+	                }
+	           }
+	    }
+	    return false;
 	}
 
 //	private void checkLogin()
