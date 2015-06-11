@@ -240,13 +240,12 @@
 
         <activity
             android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity"
-            android:configChanges="screenSize|keyboardHidden"
-            android:screenOrientation="sensor"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/Custom_ActionBar_Style" >
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileDialog"
-            android:configChanges="screenSize|keyboardHidden"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Holo.Light.Dialog" >
         </activity>
 
