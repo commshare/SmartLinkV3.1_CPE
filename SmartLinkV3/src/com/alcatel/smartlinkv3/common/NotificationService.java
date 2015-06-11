@@ -16,6 +16,7 @@ import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 
@@ -39,9 +40,14 @@ public class NotificationService extends Service {
 	}
 
 	private boolean m_isNeedToAlertUsageLimit = true;
+	private boolean m_AlertUsageLimitOneTime = true;
+	
 	private boolean m_isNeedToAlertBatteryLimit = true;
-	private boolean m_isNeedToAlertNewMessage = true;
+	private boolean m_AlertBatteryLimit2OneTime = true;
+	private boolean m_AlertBatteryLimit1OneTime = true;
+	
 	private boolean m_isNeedToAlertUpgrade = true;
+	private boolean m_AlertUpgradeOneTime = true;
 	
 	
 	private NotificationManager m_nm ;
@@ -105,7 +111,6 @@ public class NotificationService extends Service {
 							.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if (nResult == BaseResponse.RESPONSE_OK
 							&& strErrorCode.length() == 0) {
-						
 		    			m_isNeedToAlertUsageLimit = true;					
 						m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 		    		}
@@ -118,7 +123,6 @@ public class NotificationService extends Service {
 						SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 						if(simStatus.m_SIMState != ENUM.SIMState.Accessable) {
 							m_isNeedToAlertUsageLimit = true;
-							m_isNeedToAlertNewMessage = true;
 							m_nm.cancelAll();
 						}
 					}
@@ -128,25 +132,25 @@ public class NotificationService extends Service {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+						BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
+						if(batteryinfo.getChargeState() == ConstValue.CHARGE_STATE_CHARGING)
+						{
+							m_isNeedToAlertBatteryLimit = false;
+							m_AlertBatteryLimit2OneTime = true;
+							m_AlertBatteryLimit1OneTime = true;
+						}else
+						{
 							m_isNeedToAlertBatteryLimit = true;
+						}
 							m_nm.cancelAll();
 						}
 					}
-//sms
-				if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)) {
-					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-						m_isNeedToAlertNewMessage = true;
-							m_nm.cancelAll();
-					}
-				}
 //upgrade
 				if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-						m_isNeedToAlertNewMessage = true;
+						m_isNeedToAlertUpgrade = true;
 							m_nm.cancelAll();
 					}
 				}
@@ -154,7 +158,6 @@ public class NotificationService extends Service {
 			} else {
 				m_isNeedToAlertUsageLimit = true;
 				m_isNeedToAlertBatteryLimit = true;
-				m_isNeedToAlertNewMessage = true;
 				m_isNeedToAlertUpgrade = true;
 				m_nm.cancelAll();			
 			}
@@ -266,7 +269,7 @@ public class NotificationService extends Service {
 				.GetBillingMonthTotalUsage();
 
 		BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
-		int newSmsNumber = BusinessMannager.getInstance().getNewSmsNumber();	
+		
 		DeviceNewVersionInfo newVersioninfo = BusinessMannager.getInstance().getNewFirmwareInfo();
 		
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
@@ -282,34 +285,49 @@ public class NotificationService extends Service {
 			showNotification(ALERT_TYPE.UsageLimit, lTotalUsedUsage);
 			m_isNeedToAlertUsageLimit = false;
 			
-		} else if (newSmsNumber > 0
-						&& m_isNeedToAlertNewMessage == true ) {
-			Log.e("alert", "message alert");
-			showNotification(ALERT_TYPE.NewMessage, newSmsNumber);
-			m_isNeedToAlertNewMessage = false;
-
-		} else if (isOverBattery(batteryinfo.getBatterLevel())
-						&& m_isNeedToAlertBatteryLimit == true) {
-			Log.e("alert", "battery alert");
-			showNotification(ALERT_TYPE.BatteryLimit, batteryinfo.getBatterLevel());
-			m_isNeedToAlertBatteryLimit = false;
-			
+		} else if ( m_isNeedToAlertBatteryLimit == true ) {
+			if(m_AlertBatteryLimit2OneTime == true)
+			{
+				if(isOverBattery2(batteryinfo.getBatterLevel()))
+				{
+					showNotification(ALERT_TYPE.BatteryLimit, batteryinfo.getBatterLevel());
+					m_isNeedToAlertBatteryLimit = false;
+					m_AlertBatteryLimit2OneTime = false;
+				}
+			}else if(m_AlertBatteryLimit1OneTime == true)
+			{
+				if(isOverBattery1(batteryinfo.getBatterLevel()))
+				{
+					showNotification(ALERT_TYPE.BatteryLimit, batteryinfo.getBatterLevel());
+					m_isNeedToAlertBatteryLimit = false;
+					m_AlertBatteryLimit1OneTime = false;
+				}
+			}
 		} else if(isHaveNewVersion(newVersioninfo.getState())
-						&& m_isNeedToAlertUpgrade == true){
+						&& m_isNeedToAlertUpgrade == true&&m_AlertUpgradeOneTime == true){
 			Log.e("alert", "upgrade alert");
 			showNotification(ALERT_TYPE.Upgrade, newVersioninfo.getState());
 			m_isNeedToAlertUpgrade = false;
+			m_AlertUpgradeOneTime = false;
 		}
 	}
-
-	private boolean isOverBattery(int BatteryLevel) {
+	
+	private boolean isOverBattery2(int BatteryLevel) {
 		boolean bOverBattery = false;
-		if (BatteryLevel <= 20) {
+		if (BatteryLevel <= 20 && BatteryLevel>=10) {
 			bOverBattery = true;
 		}
 		return bOverBattery;
 	}
 
+	private boolean isOverBattery1(int BatteryLevel) {
+		boolean bOverBattery = false;
+		if (BatteryLevel <= 10 && BatteryLevel > 0) {
+			bOverBattery = true;
+		}
+		return bOverBattery;
+	}
+	
 	private boolean isHaveNewVersion(int istate) {
 		boolean bnewVersion = false;
 		if (1 == istate) {
@@ -351,10 +369,6 @@ public class NotificationService extends Service {
 			strTitle = this.getResources().getString(R.string.battery_limit_notification_title);
 			break;
 		
-		case NewMessage:
-			strTitle = this.getResources().getString(R.string.new_message_notification_title);
-			break;
-		
 		case Upgrade:
 			strTitle = this.getResources().getString(R.string.upgrade_notification_title);
 			break;
@@ -373,12 +387,14 @@ public class NotificationService extends Service {
 			break;	
 			
 		case BatteryLimit:	
-			strContent= this.getResources().getString(R.string.battery_limit_notification_content);
+			if(used <= 10)
+			{
+				strContent= this.getResources().getString(R.string.battery_limit_notification_content1);
+			}else
+			{
+				strContent= this.getResources().getString(R.string.battery_limit_notification_content2);
+			}
 		break;
-		
-		case NewMessage:
-			strContent= this.getResources().getString(R.string.new_message_notification_content);
-			break;
 			
 		case Upgrade:
 			strContent= this.getResources().getString(R.string.upgrade_notification_content);
