@@ -129,6 +129,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     if (savedInstanceState == null)
       return false;
     String stateName = savedInstanceState.getString(BUNDLE_HANDLER_STATE);
+    //Log.d(TAG, "stateName:"+stateName);
     if (stateName == null)
       return false;
     State s = null;
@@ -160,8 +161,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
          * handler.setupViews() is not enough. Let handlers between mStateHandler 
          * and handler do setupViews().
          */
-        mStateHandler.quickPlay(handler);
-        //handler.setupViews();
+        //mStateHandler.quickPlay(handler);
+        handler.setupViews();
         mStateHandler = handler;
         if (mEnterText.getVisibility() == View.VISIBLE) {
           String editText = savedInstanceState.getString(BUNDLE_EDIT_TEXT);
@@ -285,7 +286,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mLoginDialog.showDialog(new OnLoginFinishedListener() {
       @Override
       public void onLoginFinished() {
-        buildStateHandlerChain(false);
+      //  buildStateHandlerChain(false);
       }
     });  
   }
@@ -351,7 +352,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     int visibility = v.getVisibility();
     if ( visibility == View.GONE || visibility == View.INVISIBLE)
       return;
-    
+    //Log.d(TAG, "click Tag:"+v.getTag());
     if (v == mNavigatorRight) {
       nextSetting(true);
     } else if (v == mNavigatorLeft) {
@@ -605,7 +606,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     	if (handler == null) {
 				return;
 			}
-    	
+    	mEnterText.removeTextChangedListener(this);
     	StateHandler head = handler;
       StateHandler prev = head.mPreviousHandler;
       while (prev != null) {
@@ -708,6 +709,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override   
     public void afterTextChanged(Editable s) {
+    	//Log.d(TAG, "getState():"+this.getState());
       int len = s.length();
       if (len > mInputMax) {
         int nSelStart = mEnterText.getSelectionStart();
@@ -962,8 +964,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mEnterText.setVisibility(View.GONE);
       mWiFiSSIDTextView.setVisibility(View.VISIBLE);
       mWiFiPasswdTextView.setVisibility(View.VISIBLE); 
+      mNavigatorLeft.setVisibility(View.VISIBLE);
+      mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       mWiFiSSIDTextView.setText(getString(R.string.qs_wifi_ssid, mWiFiSSID));
       mWiFiPasswdTextView.setText(getString(R.string.qs_wifi_passwd, mWiFiPasswd)); 
+      clearOtherTextListen(this);
     }
 
     @Override

@@ -698,6 +698,12 @@
     <string name="download_text_dling">Downloading...</string>
     <string name="download_text_path">Path: </string>
     <!-- FTP FILE END -->
+    
+    <!-- SMART WIDGET START -->
+    <string name="widget_usage_left">Left</string>
+    <string name="widget_usage_used">Used</string>
+    <!-- SMART WIDGET END -->
+    
 
 
     <!-- Welcome Guide -->

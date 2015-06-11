@@ -420,11 +420,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
     remoteViews.setImageViewBitmap(R.id.ib_widget_usage,
             drawTrafficCircle(monthPlanUsageDataMode.getUsageData(),
             usedDataTmp,
-            dataUnitString));
+            dataUnitString,context));
   }
 
   private Bitmap drawTrafficCircle(double monthDataPlan, double usedDataUsage,
-      String dataUnitString) {
+      String dataUnitString,Context context) {
     // monthDataPlan = 0;
     // usedDataUsage = 0;
 
@@ -441,11 +441,13 @@ public class SmartLinkWidget extends AppWidgetProvider {
     Rect bounds = new Rect();
     Rect unitBounds = new Rect();
     DecimalFormat transfToInteger = new DecimalFormat("0");
+    String dataLeft = "" +  transfToInteger.format(Math.abs(monthDataPlan - usedDataUsage));
     String dataPlanToaltUsage = "" + transfToInteger.format(monthDataPlan);
-    String dataUsedString = "" + transfToInteger.format(usedDataUsage);
+    String dataUsed = "" + transfToInteger.format(usedDataUsage);
+    String dataUsageShowStr = dataLeft;
     String dataPlanUnit = dataUnitString;
     int dataUsedAngle = 0;
-    String usegeStatus = "Left";
+    String usegeStatus = context.getResources().getString(R.string.widget_usage_left);
     paint.setAntiAlias(true);
     paint.setStrokeWidth(dipToPx(8));
     paint.setTextSize(14);
@@ -458,8 +460,8 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
     if (monthDataPlan == 0) {
       dataUsedAngle = 0;
-      usegeStatus = "Used";
-      dataPlanToaltUsage = dataUsedString;
+      usegeStatus =  context.getResources().getString(R.string.widget_usage_used);;
+      dataUsageShowStr = dataUsed;
       // grey
       paint.setARGB(255, 188, 187, 190);
       canvas.drawArc(rectArc, 270, (360 - dataUsedAngle), false, paint);
@@ -495,9 +497,9 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
     paint.setStyle(Style.FILL);
     // float width = paint.measureText(text);
-    paint.getTextBounds(dataPlanToaltUsage, 0, dataPlanToaltUsage.length(), bounds);
+    paint.getTextBounds(dataUsageShowStr, 0, dataUsageShowStr.length(), bounds);
     paint.getTextBounds(dataPlanUnit, 0, dataPlanUnit.length(), unitBounds);
-    canvas.drawText(dataPlanToaltUsage,
+    canvas.drawText(dataUsageShowStr,
         width / 2 - bounds.centerX() - unitBounds.width() / 2 + dipToPx(4),
         height / 2 - bounds.centerY() - bounds.height() / 2, 
         paint);
