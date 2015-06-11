@@ -469,9 +469,9 @@ public class FtpFileViewFragment extends Fragment implements
 				R.layout.ftp_file_browser_item, mFileNameList,
 				mFileViewInteractionHub, mFileIconHelper);
 
-		String rootDir = "/";
+		String rootDir = "/sdcard";
 		mFileViewInteractionHub.setRootPath(rootDir);
-		String currentDir = (SaveState.CurrentDir != null) ? SaveState.CurrentDir : rootDir;
+		String currentDir = rootDir;
 		mFileViewInteractionHub.setCurrentPath(currentDir);
 		Log.i(LOG_TAG, "CurrentDir = " + currentDir);
 
@@ -518,7 +518,7 @@ public class FtpFileViewFragment extends Fragment implements
 			return false;
 		}
 		if (!mFileViewInteractionHub.onBackPressed()) {
-		    SaveState.CurrentDir = null;
+//		    SaveState.CurrentDir = null;
 		    return false;
 		}
 		return true;
@@ -750,12 +750,4 @@ public class FtpFileViewFragment extends Fragment implements
 		return result;
 	}
 	
-	@Override
-    public void onSaveInstanceState(Bundle outState) {
-        SaveState.CurrentDir = mFileViewInteractionHub.getCurrentPath();
-    }
-    
-    public static class SaveState {
-        public static String CurrentDir = null;
-    }
 }

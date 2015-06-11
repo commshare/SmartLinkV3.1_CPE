@@ -38,7 +38,6 @@ import java.lang.reflect.Field;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.SaveState;
 
 public class FtpFileExplorerTabActivity extends Activity 
 	implements FtpFileViewFragment.IConnectedActionMode {
@@ -94,7 +93,6 @@ public class FtpFileExplorerTabActivity extends Activity
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-					    FtpFileViewFragment.SaveState.CurrentDir = null;
 						_activity.finish();
 					}
 				});
@@ -102,7 +100,6 @@ public class FtpFileExplorerTabActivity extends Activity
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-					    FtpFileViewFragment.SaveState.CurrentDir = null;
 						_activity.finish();
 					}
 				});
