@@ -97,12 +97,12 @@ public class FtpFileViewFragment extends Fragment implements
 
 	private View mRootView;
 
-	//private static final String sdDir = Util.getSdDirectory();
+	// private static final String sdDir = Util.getSdDirectory();
 
-	//private Thread thread = null;
+	// private Thread thread = null;
 	private Context mContext = null;
 	private pubLog logger = pubLog.getLogger();
-	//private FtpClientModel m_ftp = null;
+	// private FtpClientModel m_ftp = null;
 
 	FtpFileCommandTask cmdTask = null;
 
@@ -268,7 +268,7 @@ public class FtpFileViewFragment extends Fragment implements
 			Log.d("", "onCancel...............");
 		}
 	};
-	
+
 	private AlertDialog mDlDialog;
 	private TextView mDlProgressTv;
 	private TextView mDlPathTv;
@@ -332,7 +332,7 @@ public class FtpFileViewFragment extends Fragment implements
 				logger.i("download file [" + track.filePath + "],process = :"
 						+ track.process);
 				if (mDlProgressTv != null) {
-					mDlProgressTv.setText(Long.toString(track.process));
+					mDlProgressTv.setText(Long.toString(track.process) + "%");
 				}
 				if (mDlProgressBar != null) {
 					mDlProgressBar.setProgress((int) track.process);
@@ -363,7 +363,8 @@ public class FtpFileViewFragment extends Fragment implements
 
 				String path = mFileViewInteractionHub.getCurrentPath();
 
-				final FileSortHelper sort = mFileViewInteractionHub.getCurrentSort();
+				final FileSortHelper sort = mFileViewInteractionHub
+						.getCurrentSort();
 
 				final int pos = computeScrollPosition(path);
 				final ArrayList<FileInfo> fileList = mFileNameList;
@@ -374,31 +375,31 @@ public class FtpFileViewFragment extends Fragment implements
 					FileInfo lFileInfo = Util.GetFtpFileInfo(child, path,
 							mFileCagetoryHelper.getFilter(), Settings
 									.instance().getShowDotAndHiddenFiles());
-					    
+
 					if (lFileInfo != null)
-					if (! ".".equals(lFileInfo.fileName)) 
-					if (! "..".equals(lFileInfo.fileName)) {
-						fileList.add(lFileInfo);
-					}
+						if (!".".equals(lFileInfo.fileName))
+							if (!"..".equals(lFileInfo.fileName)) {
+								fileList.add(lFileInfo);
+							}
 
 				}
 
-//				sortCurrentList(sort);
-//				showEmptyView(fileList.size() == 0);
-//				mFileListView.post(new Runnable() {
-//					@Override
-//					public void run() {
-//						mFileListView.setSelection(pos);
-//					}
-//				});
-				
+				// sortCurrentList(sort);
+				// showEmptyView(fileList.size() == 0);
+				// mFileListView.post(new Runnable() {
+				// @Override
+				// public void run() {
+				// mFileListView.setSelection(pos);
+				// }
+				// });
+
 				Util.syncGetMetaData(fileList, mActivity, new Runnable() {
-				    @Override
-				    public void run() {
-				        sortCurrentList(sort);
-				        showEmptyView(fileList.size() == 0);
-				        mFileListView.setSelection(pos);
-				        }
+					@Override
+					public void run() {
+						sortCurrentList(sort);
+						showEmptyView(fileList.size() == 0);
+						mFileListView.setSelection(pos);
+					}
 				});
 
 				break;
@@ -448,9 +449,9 @@ public class FtpFileViewFragment extends Fragment implements
 		cmdTask.init(getActivity());
 		cmdTask.setFtpCommandListener(ftpCommandListener);
 		cmdTask.start();
-		
+
 		mActivity = getActivity();
-		
+
 		// getWindow().setFormat(android.graphics.PixelFormat.RGBA_8888);
 		mRootView = inflater.inflate(R.layout.ftp_file_explorer_list,
 				container, false);
@@ -461,7 +462,6 @@ public class FtpFileViewFragment extends Fragment implements
 		mFileViewInteractionHub.setUiCommandListener(mUiCmdListener);// test
 
 		mFileViewInteractionHub.setMode(Mode.View);
-
 
 		mFileListView = (ListView) mRootView.findViewById(R.id.file_path_list);
 		mFileIconHelper = new FileIconHelper(mActivity);
@@ -518,8 +518,8 @@ public class FtpFileViewFragment extends Fragment implements
 			return false;
 		}
 		if (!mFileViewInteractionHub.onBackPressed()) {
-//		    SaveState.CurrentDir = null;
-		    return false;
+			// SaveState.CurrentDir = null;
+			return false;
 		}
 		return true;
 	}
@@ -749,5 +749,5 @@ public class FtpFileViewFragment extends Fragment implements
 
 		return result;
 	}
-	
+
 }
