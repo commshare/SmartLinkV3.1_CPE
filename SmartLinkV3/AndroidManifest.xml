@@ -245,7 +245,7 @@
         </activity>
         <activity
             android:name="com.alcatel.smartlinkv3.fileexplorer.FtpFileDialog"
-            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:configChanges="screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Holo.Light.Dialog" >
         </activity>
 
