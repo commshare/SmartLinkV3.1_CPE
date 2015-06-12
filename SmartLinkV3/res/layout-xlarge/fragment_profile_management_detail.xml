@@ -6,7 +6,9 @@
     android:layout_marginTop="30dp"
     android:background="@color/setting_background_color">
     
-    
+    <ScrollView
+	    android:layout_height="match_parent"
+	    android:layout_width="match_parent">
     <LinearLayout
         android:id="@+id/profile_detail_container"
         android:layout_width="match_parent"
@@ -270,6 +272,7 @@
            </FrameLayout>
 
 	</LinearLayout>
+	</ScrollView>
 		
     <RadioGroup
                 android:id="@+id/profile_protocol_selection"
