@@ -19,18 +19,22 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:textColor="@color/color_black"
-		    android:textSize="20sp" />
+		    android:textSize="20sp"
+		    android:singleLine="true"
+		    android:ellipsize="end" />
 		
 		<RelativeLayout android:id="@+id/drawview" 
 		    android:layout_width="fill_parent"
 			android:layout_height="wrap_content">
 			
-			<TextView android:id="@+id/info"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textColor="#FFaaaaaa"
-				android:textSize="16sp"
-				android:layout_alignParentRight="true" />
+			<TextView
+			    android:id="@+id/info"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true"
+			    android:textColor="#FFaaaaaa"
+			    android:textSize="16sp"
+			    android:visibility="gone" />
 			
 		</RelativeLayout>
 		

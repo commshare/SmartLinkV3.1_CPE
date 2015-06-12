@@ -678,7 +678,7 @@
     <string name="details_text_create_date">Create Date:</string>
     <string name="details_text_modified_date">Modified Date:</string>
     <string name="dialog_read_from_dir">Open from dir</string>
-    <string name="choose">Choose</string>
+    <string name="choose">Choose folder</string>
     <string name="new_foler">New foler</string>
     <string name="foler_name">foler name</string>
     <string name="sdcard">Sd Card</string>
