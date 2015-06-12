@@ -158,10 +158,10 @@ public class HttpAutoEnterPinState {
 	        	setState.put("State", m_nState);
 	        	setState.put("Pin", m_strPin);
 	        	if(m_nState == 0){
-	        		Log.v("PINCHECK", "REQUESTDISABLE");
+//	        		Log.v("PINCHECK", "REQUESTDISABLE");
 	        	}
 	        	else{
-	        		Log.v("PINCHECK", "REQUESTENABLE");
+//	        		Log.v("PINCHECK", "REQUESTENABLE");
 	        	}
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, setState);

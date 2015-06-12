@@ -72,6 +72,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	
 	private TextView m_pin_notice = null;
 	
+	private ENUM.PinState m_PrePinState = ENUM.PinState.NotAvailable;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -146,6 +148,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
 			m_requested_pinState = ENUM.PinState.PinEnableVerified;
 		}
+		m_PrePinState = BusinessMannager.getInstance().getSimStatus().m_PinState;
 		
 		m_pin_notice = (TextView) findViewById(R.id.setting_device_pincode_editor_notice);
 		m_pin_notice.setVisibility(View.GONE);
@@ -173,6 +176,19 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private void simRollRequest() {
 		final SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 
+		if(sim.m_PinState != m_PrePinState && sim.m_PinState != ENUM.PinState.RequirePUK){
+			m_PrePinState = sim.m_PinState;
+			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
+				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+				m_requested_pinState = ENUM.PinState.Disable;
+			}
+			else if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
+				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+				m_requested_pinState = ENUM.PinState.PinEnableVerified;
+			}
+			closePinAndPukDialog();
+			return;
+		}
 		if (isPinRequired && sim.m_nPinRemainingTimes > 0) {
 			// close PUK dialog
 			if (null != m_dlgPuk && PukDialog.m_isShow)
@@ -589,15 +605,6 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if (BaseResponse.RESPONSE_OK == nResult
 					&& strErrorCode.length() == 0) {
 				m_dlgPin.onEnterPinResponse(true);
-//				if(m_requested_pinState == ENUM.PinState.Disable){
-//					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
-//					m_requested_pinState = ENUM.PinState.PinEnableVerified;
-//				}
-//				else if(m_requested_pinState == ENUM.PinState.PinEnableVerified){
-//					m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
-//					m_requested_pinState = ENUM.PinState.Disable;
-//				}
-//				closePinAndPukDialog();
 				isPinRequired = false;
 			} else {
 				m_dlgPin.onEnterPinResponse(false);
