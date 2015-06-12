@@ -464,6 +464,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		m_network_profile_management.setEnabled(false);
 	}
 	
+	public void setDeleteProfle(boolean enable){
+		m_delete_menu = enable;
+	}
+	
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub

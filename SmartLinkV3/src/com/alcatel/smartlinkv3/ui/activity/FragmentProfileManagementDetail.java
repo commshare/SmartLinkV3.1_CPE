@@ -239,6 +239,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 		case R.id.profile_protocal:
 			m_profile_detail_container.setVisibility(View.GONE);
 			m_protocol_list.setVisibility(View.VISIBLE);
+			m_parent_activity.setEditOrDoneVisibility(View.GONE);
 			break;
 		case R.id.profile_set_default:
 			if(m_is_default == false){
@@ -291,6 +292,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			
 			m_protocol_list.setVisibility(View.GONE);
 			m_profile_detail_container.setVisibility(View.VISIBLE);
+			m_parent_activity.setEditOrDoneVisibility(View.VISIBLE);
 		}
 	}
 	

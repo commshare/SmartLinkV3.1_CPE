@@ -6,13 +6,15 @@
     android:layout_marginTop="20dp"
     android:background="@color/setting_background_color">
     
-    
-    <LinearLayout
-        android:id="@+id/profile_detail_container"
+    <ScrollView 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="match_parent">
+    	<LinearLayout
+	        android:id="@+id/profile_detail_container"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:visibility="visible">
         
         <ImageView
                 android:layout_width="match_parent"
@@ -43,7 +45,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="20sp" 
-                    android:gravity="end" />
+                    android:gravity="end" 
+                    android:imeOptions="flagNoExtractUi"/>
         </LinearLayout>
         
 		<ImageView
@@ -79,7 +82,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="20sp" 
-                    android:gravity="end" />
+                    android:gravity="end" 
+                    android:imeOptions="flagNoExtractUi"/>
         </LinearLayout>
         
 		<ImageView
@@ -113,7 +117,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="20sp" 
-                    android:gravity="end" />
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi" />
         </LinearLayout>
         
 		<ImageView
@@ -147,7 +152,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="20sp" 
-                    android:gravity="end" />    
+                    android:gravity="end" 
+                    android:imeOptions="flagNoExtractUi"/>    
                 
         </LinearLayout>
         
@@ -182,7 +188,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="20sp" 
-                    android:gravity="end" />       
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi" />       
                 
         </LinearLayout>
             
@@ -261,7 +268,8 @@
                             android:visibility="visible" />
            </FrameLayout>
 
-	</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
 		
     <RadioGroup
                 android:id="@+id/profile_protocol_selection"

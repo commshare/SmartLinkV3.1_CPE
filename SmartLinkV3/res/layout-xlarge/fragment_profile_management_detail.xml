@@ -43,7 +43,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="30sp" 
-                    android:gravity="end" />
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi" />
         </LinearLayout>
         
 		<ImageView
@@ -79,7 +80,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="30sp" 
-                    android:gravity="end" />
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi" />
         </LinearLayout>
         
 		<ImageView
@@ -113,7 +115,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="30sp" 
-                    android:gravity="end" />
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi" />
         </LinearLayout>
         
 		<ImageView
@@ -147,7 +150,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="30sp" 
-                    android:gravity="end" />    
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi" />    
                 
         </LinearLayout>
         
@@ -182,7 +186,8 @@
                     android:layout_weight="1"
                     android:inputType="text"
                      android:textSize="30sp" 
-                    android:gravity="end" />       
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi" />       
                 
         </LinearLayout>
             

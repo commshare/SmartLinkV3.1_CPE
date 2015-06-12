@@ -271,6 +271,7 @@ private class ProfileListAdapter extends BaseAdapter{
 	public void onDestroyView(){
 		super.onDestroyView();
 		try {
+			m_parent_activity.setDeleteProfle(false);
 			getActivity().unregisterReceiver(m_fragment_get_profile_list_request_receiver);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
