@@ -176,6 +176,7 @@ public class FtpFileListItem {
 					.size() == 1);
 			mMenu.findItem(R.id.action_rename).setVisible(isVisible);
 			mMenu.findItem(R.id.action_details).setVisible(isVisible);
+			mMenu.findItem(R.id.action_move).setVisible(false);
 			return true;
 		}
 

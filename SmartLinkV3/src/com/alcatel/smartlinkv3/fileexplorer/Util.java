@@ -50,6 +50,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.concurrent.Executor;
 
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -233,7 +234,8 @@ public class Util {
 	
 	public static void syncGetMetaData(ArrayList<FileInfo> fileList,
 	        Activity activity, Runnable action) {
-	    new SyncMetaData(fileList,activity,action).execute();
+	    Executor exec = new SyncMetaDataExecutor(fileList,activity);
+	    exec.execute(action);
 	}
 
 	/*
