@@ -34,6 +34,11 @@
     <string name="qs_summary">Your device is ready to use.</string>
     <string name="qs_wifi_ssid">Wi-Fi Network Name (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>
     <string name="qs_wifi_passwd">Wi-Fi Password: <xliff:g id="PASSWD">%1$s</xliff:g></string>
+    <string name="qs_puk_code_title">PUK Code </string>
+    <string name="qs_puk_code_prompt">Please input the PUK code\nRemain: <xliff:g id="INPUTTIMES">%1$d</xliff:g> time(s)</string>
+    <string name="qs_puk_code">PUK Code: </string>
+    <string name="qs_pin_code_new">New PIN: </string>
+    <string name="qs_pin_code_confirm">Confirm PIN: </string>
     <!-- Quick Setup End -->
 
 

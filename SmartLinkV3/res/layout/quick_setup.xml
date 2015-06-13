@@ -10,8 +10,8 @@
         android:layout_height="0dp"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="20sp"
-        android:layout_marginLeft="30dip"
-        android:layout_marginRight="30dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical" >
@@ -35,9 +35,99 @@
             android:layout_marginBottom="20sp"
             android:gravity="center"
             android:text="@string/qs_pin_code_prompt"
-            android:textColor="@color/color_light_gray" />
-
-        <com.alcatel.smartlinkv3.ui.view.ClearEditText
+            android:textColor="@color/color_light_gray"/>
+        
+		<LinearLayout
+			android:id="@+id/qs_puk_linear1"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/dimen_30dip"
+	        android:layout_gravity="center_vertical"
+	     	android:layout_marginBottom="20sp"
+	        android:gravity="center"
+	        android:orientation="horizontal" 
+	        android:visibility="gone">
+		    <TextView
+	            android:id="@+id/qs_item_puk_prompt"
+	            android:layout_width="@dimen/quick_setup_puk_textview_width"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
+	            android:gravity="center_vertical"
+	            android:text="@string/qs_puk_code"
+	            android:textColor="@color/color_black" />
+		     
+		    <com.alcatel.smartlinkv3.ui.view.ClearEditText
+	            android:id="@+id/puk_code"
+	            android:layout_width="@dimen/quick_setup_puk_edittext_width"
+	            android:layout_height="@dimen/quick_setup_edittext_height"
+	            android:layout_gravity="center"
+	            android:background="@drawable/selector_edit_bg"
+	            android:gravity="center_vertical"
+	            android:imeOptions="flagNoFullscreen|flagNoExtractUi"
+	            android:inputType="textPassword"
+	            android:textAppearance="?android:attr/textAppearanceMedium" >
+       		</com.alcatel.smartlinkv3.ui.view.ClearEditText> 
+		</LinearLayout>
+		
+		<LinearLayout
+			android:id="@+id/qs_puk_linear2"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/dimen_30dip"
+	        android:layout_gravity="center_vertical"
+	        android:gravity="center"
+	        android:layout_marginBottom="20sp"
+	        android:orientation="horizontal" 
+	        android:visibility="gone">
+		    <TextView
+	            android:id="@+id/qs_item_new_pin_prompt"
+	            android:layout_width="@dimen/quick_setup_puk_textview_width"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
+	            android:gravity="center_vertical"
+	            android:text="@string/qs_pin_code_new"
+	            android:textColor="@color/color_black" />
+		    <com.alcatel.smartlinkv3.ui.view.ClearEditText
+	            android:id="@+id/new_pin_code"
+	            android:layout_width="@dimen/quick_setup_puk_edittext_width"
+	            android:layout_height="@dimen/quick_setup_edittext_height"
+	            android:layout_gravity="center"
+	            android:background="@drawable/selector_edit_bg"
+	            android:gravity="center_vertical"
+	            android:imeOptions="flagNoFullscreen|flagNoExtractUi"
+	            android:inputType="textPassword"
+	            android:textAppearance="?android:attr/textAppearanceMedium" >
+       		</com.alcatel.smartlinkv3.ui.view.ClearEditText> 
+		</LinearLayout>
+		
+		<LinearLayout
+			android:id="@+id/qs_puk_linear3"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/dimen_30dip"
+	        android:layout_gravity="center_vertical"
+	        android:layout_marginBottom="20sp"
+	        android:gravity="center"
+	        android:orientation="horizontal" 
+	        android:visibility="gone">
+		    <TextView
+	            android:id="@+id/qs_item_pin_confirm_prompt"
+	            android:layout_width="@dimen/quick_setup_puk_textview_width"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
+	            android:gravity="center_vertical"
+	            android:text="@string/qs_pin_code_confirm"
+	            android:textColor="@color/color_black" />
+		    <com.alcatel.smartlinkv3.ui.view.ClearEditText
+	            android:id="@+id/confirm_pin_code"
+	            android:layout_width="@dimen/quick_setup_puk_edittext_width"
+	            android:layout_height="@dimen/quick_setup_edittext_height"
+	            android:layout_gravity="center"
+	            android:background="@drawable/selector_edit_bg"
+	            android:gravity="center_vertical"
+	            android:imeOptions="flagNoFullscreen|flagNoExtractUi"
+	            android:inputType="textPassword"
+	            android:textAppearance="?android:attr/textAppearanceMedium" >
+       		</com.alcatel.smartlinkv3.ui.view.ClearEditText> 
+		</LinearLayout>
+		<com.alcatel.smartlinkv3.ui.view.ClearEditText
             android:id="@+id/password"
             android:layout_width="@dimen/quick_setup_edittext_width"
             android:layout_height="@dimen/quick_setup_edittext_height"
@@ -47,7 +137,8 @@
             android:gravity="center_vertical"
             android:imeOptions="flagNoFullscreen|flagNoExtractUi"
             android:inputType="textPassword"
-            android:textAppearance="?android:attr/textAppearanceMedium" >
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            android:visibility="invisible">
         </com.alcatel.smartlinkv3.ui.view.ClearEditText>
 
         <TextView

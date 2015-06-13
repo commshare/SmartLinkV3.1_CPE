@@ -50,6 +50,8 @@
     
     <dimen name="textview_horizontal_margin">16dp</dimen>
     <dimen name="quick_setup_edittext_width">250dip</dimen>
+    <dimen name="quick_setup_puk_edittext_width">180dip</dimen>
+    <dimen name="quick_setup_puk_textview_width">90dip</dimen>
     <dimen name="quick_setup_edittext_height">30dip</dimen>
 
 </resources>
