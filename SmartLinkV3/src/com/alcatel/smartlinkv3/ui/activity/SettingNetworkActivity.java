@@ -336,7 +336,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)){
 					m_fragment_profile_management_detail.AddOrDeleteProfile();
 //					Log.v("AddOrEditProfile", "TEST");
-					this.onBackPressed();
+//					this.onBackPressed();
 				}
 				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT)){
 					m_edit_or_done_container.setVisibility(View.INVISIBLE);

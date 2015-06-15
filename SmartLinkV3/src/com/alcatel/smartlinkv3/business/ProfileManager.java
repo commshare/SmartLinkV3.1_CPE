@@ -84,12 +84,13 @@ public class ProfileManager extends BaseManager{
 		}
 		
 		String ProfileName = (String) data.getParamByKey("profile_name");
+		String DialNumber = (String) data.getParamByKey("dial_number");
 		String APN = (String) data.getParamByKey("apn");
 		String UserName = (String) data.getParamByKey("user_name");
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile("15.2", ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile("15.2", ProfileName, DialNumber, APN, UserName, Password, AuthType, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -131,12 +132,13 @@ public class ProfileManager extends BaseManager{
 		
 		int profileID = (Integer) data.getParamByKey("profile_id");
 		String ProfileName = (String) data.getParamByKey("profile_name");
+		String DialNumber = (String) data.getParamByKey("dial_number");
 		String APN = (String) data.getParamByKey("apn");
 		String UserName = (String) data.getParamByKey("user_name");
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpEditProfile.EditProfile("15.3", profileID, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpEditProfile.EditProfile("15.3", profileID, DialNumber, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {

@@ -19,9 +19,9 @@ public class HttpEditProfile {
 		private String m_strUserName = new String();
 		private String m_strPassword = new String();
 		private int m_intAuthType = -1;
-		private final String m_strDialNumber = "*99#";
+		private String m_strDialNumber = "*99#";
 		
-		public EditProfile(String strId, int profileID, String profileName, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
+		public EditProfile(String strId, int profileID, String dialNumber, String profileName, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
 			super(callback);
 			m_strId = strId;
 			m_intProfileID = profileID;
@@ -30,6 +30,7 @@ public class HttpEditProfile {
 			m_strUserName = userName;
 			m_strPassword = passWord;
 			m_intAuthType = authType;
+			m_strDialNumber = dialNumber;
 			// TODO Auto-generated constructor stub
 		}
 		@Override
@@ -48,7 +49,6 @@ public class HttpEditProfile {
 	        	profileInfo.put("AuthType", m_intAuthType);
 	        	profileInfo.put("DailNumber", m_strDialNumber);
 	        	profileInfo.put("IPAdrress", "");
-	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, profileInfo);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
         	} catch (JSONException e) {

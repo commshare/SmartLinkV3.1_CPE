@@ -18,9 +18,9 @@ public class HttpAddNewProfile {
 		private String m_strUserName = new String();
 		private String m_strPassword = new String();
 		private int m_intAuthType = -1;
-		private final String m_strDialNumber = "*99#";
+		private String m_strDialNumber = "*99#";
 		
-		public AddNewProfile(String strId, String profileName, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
+		public AddNewProfile(String strId, String profileName, String dialNumber, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
 			super(callback);
 			m_strId = strId;
 			m_strProfileName = profileName;
@@ -28,6 +28,7 @@ public class HttpAddNewProfile {
 			m_strUserName = userName;
 			m_strPassword = passWord;
 			m_intAuthType = authType;
+			m_strDialNumber = dialNumber;
 			// TODO Auto-generated constructor stub
 		}
 
@@ -46,8 +47,6 @@ public class HttpAddNewProfile {
 	        	profileInfo.put("AuthType", m_intAuthType);
 	        	profileInfo.put("DailNumber", m_strDialNumber);
 	        	profileInfo.put("IPAdrress", "");
-	        	
-	        	Log.v("GetProfileResultADD", "Start");
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, profileInfo);
 	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);

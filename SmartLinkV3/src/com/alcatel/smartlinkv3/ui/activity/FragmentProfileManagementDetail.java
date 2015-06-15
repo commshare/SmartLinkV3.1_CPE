@@ -158,7 +158,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			m_edit_profile_name.setText(ProfileName.toCharArray() , 0, ProfileName.length());
 			m_edit_dial_number.setHint(DailNumber);
 			m_edit_dial_number.setText(DailNumber.toCharArray(), 0, DailNumber.length());
-			m_edit_dial_number.setEnabled(false);
+//			m_edit_dial_number.setEnabled(false);
 			m_edit_apn.setHint(APN);
 			m_edit_apn.setText(APN.toCharArray(), 0, APN.length());
 			m_edit_user_name.setHint(UserName);
@@ -210,7 +210,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			DailNumber = "*99#";
 			
 			m_edit_dial_number.setText(DailNumber.toCharArray(), 0, DailNumber.length());
-			m_edit_dial_number.setEnabled(false);
+//			m_edit_dial_number.setEnabled(false);
 			
 			m_edit_profile_name.setHint("Profile Name");
 			m_edit_profile_name.setText(ProfileName);
@@ -296,7 +296,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 		}
 	}
 	
-	private boolean isChanged(String t_ProfileName, String t_APN, String t_UserName, String t_Password, int t_AuthType){
+	private boolean isChanged(String t_ProfileName, String DialNumber, String t_APN, String t_UserName, String t_Password, int t_AuthType){
 		if(!t_ProfileName.equals(ProfileName))
 			return true;
 		if(!t_APN.equals(APN))
@@ -307,6 +307,8 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			return true;
 		if(t_AuthType != AuthType && NewAuthType != -1)
 			return true;
+		if(!DialNumber.equalsIgnoreCase(DailNumber))
+			return true;
 		
 		return false;
 	}
@@ -316,6 +318,22 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			String profileName = m_edit_profile_name.getText().toString();
 			if(profileName.length() == 0){
 //				Log.v("AddOrEditProfile", "empty");
+				String strInfo = getString(R.string.setting_network_profile_input_profile_name);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if(profileName.contains(Character.toString('/')) || profileName.contains(Character.toString('\\')) ||profileName.contains(Character.toString(':')) ||profileName.contains(Character.toString('*')) ||profileName.contains(Character.toString('?')) ||
+				profileName.contains(Character.toString('"')) ||profileName.contains(Character.toString('[')) ||profileName.contains(Character.toString(']')) ||profileName.contains(Character.toString('(')) ||profileName.contains(Character.toString(')')) ||
+				profileName.contains(Character.toString('<')) ||profileName.contains(Character.toString('>')) ||profileName.contains(Character.toString('|')) ||profileName.contains(Character.toString('{')) ||profileName.contains(Character.toString('}')) ||
+				profileName.contains(Character.toString(';')) ||profileName.contains(Character.toString('\'')) ||profileName.contains(Character.toString(',')) ||profileName.contains(Character.toString('.')) ||profileName.contains(Character.toString('~')) ||profileName.contains(Character.toString('`')) ){
+				String strInfo = getString(R.string.setting_network_profile_error_profile_name);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			String dialNumber = m_edit_dial_number.getText().toString();
+			if(dialNumber.length() >24){
+				String strInfo = getString(R.string.setting_network_profile_dial_number_wrong);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
 				return;
 			}
 			String APN = m_edit_apn.getText().toString();
@@ -339,6 +357,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			data.addParam("user_name", userName);
 			data.addParam("password", passWord);
 			data.addParam("auth_type", auth_type);
+			data.addParam("dial_number", dialNumber);
 			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(data);
 		}
 		else if(operation == m_parent_activity.TAG_OPERATION_EDIT_PROFILE){
@@ -347,7 +366,22 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				return;
 			String profileName = m_edit_profile_name.getText().toString();
 			if(profileName.length() == 0){
-				Log.v("AddOrEditProfile", "empty");
+				String strInfo = getString(R.string.setting_network_profile_input_profile_name);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if(profileName.contains(Character.toString('/')) || profileName.contains(Character.toString('\\')) ||profileName.contains(Character.toString(':')) ||profileName.contains(Character.toString('*')) ||profileName.contains(Character.toString('?')) ||
+				profileName.contains(Character.toString('"')) ||profileName.contains(Character.toString('[')) ||profileName.contains(Character.toString(']')) ||profileName.contains(Character.toString('(')) ||profileName.contains(Character.toString(')')) ||
+				profileName.contains(Character.toString('<')) ||profileName.contains(Character.toString('>')) ||profileName.contains(Character.toString('|')) ||profileName.contains(Character.toString('{')) ||profileName.contains(Character.toString('}')) ||
+				profileName.contains(Character.toString(';')) ||profileName.contains(Character.toString('\'')) ||profileName.contains(Character.toString(',')) ||profileName.contains(Character.toString('.')) ||profileName.contains(Character.toString('~')) ||profileName.contains(Character.toString('`')) ){
+				String strInfo = getString(R.string.setting_network_profile_error_profile_name);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			String dialNumber = m_edit_dial_number.getText().toString();
+			if(dialNumber.length() >24){
+				String strInfo = getString(R.string.setting_network_profile_dial_number_wrong);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
 				return;
 			}
 			String APN = m_edit_apn.getText().toString();
@@ -365,7 +399,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			int auth_type = NewAuthType == -1 ? 0 : NewAuthType;
 //			Log.v("AddOrEditProfile", Integer.toString(auth_type));
 			
-			if(isChanged(profileName, APN, userName, passWord, auth_type)){
+			if(isChanged(profileName, dialNumber, APN, userName, passWord, auth_type)){
 				DataValue data = new DataValue();
 				data.addParam("profile_id", profileID);
 				data.addParam("profile_name", profileName);
@@ -373,9 +407,11 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				data.addParam("user_name", userName);
 				data.addParam("password", passWord);
 				data.addParam("auth_type", auth_type);
+				data.addParam("dial_number", dialNumber);
 				BusinessMannager.getInstance().getProfileManager().startEditProfile(data);
 			}
 		}
+		m_parent_activity.onBackPressed();
 		
 	}
 	
