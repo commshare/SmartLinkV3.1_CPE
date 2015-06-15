@@ -21,7 +21,6 @@ import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.DialogAutoDismiss;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
@@ -42,8 +41,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class QuickSetupActivity  extends Activity implements OnClickListener{
   private static final String TAG = "QuickSetupActivity";
@@ -61,15 +60,23 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private TextView mWiFiPasswdTextView;
   private StateHandler mStateHandler;
   private ClearEditText mEnterText;  
+  private LinearLayout pukLinearLayout1;
+  private LinearLayout pukLinearLayout2;
+  private LinearLayout pukLinearLayout3;
+  private ClearEditText pukCodeText;
+  private ClearEditText newPinCodeText;
+  private ClearEditText confirmPinCodeText;
   protected TextView mSetupTitle;
   private String mWiFiSSID;
   private String mWiFiPasswd;
   private ErrorDialog mPINErrorDialog = null;
+  private ErrorDialog mPUKErrorDialog = null;
   private LoginDialog mLoginDialog = null;
   private AutoLoginProgressDialog mAutoLoginDialog = null;
   private CommonErrorInfoDialog mConfirmDialog = null;
   private Context mContext;
   private BusinessMannager mBusinessMgr;
+  private boolean pukValState,newPinValState,confirmPinState;
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +104,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mEnterText = (ClearEditText)findViewById(R.id.password);
     mWiFiSSIDTextView = (TextView)findViewById(R.id.qs_detail_wifissid);
     mWiFiPasswdTextView = (TextView)findViewById(R.id.qs_detail_wifipasswd);   
+    pukCodeText = (ClearEditText) findViewById(R.id.puk_code);
+    newPinCodeText = (ClearEditText) findViewById(R.id.new_pin_code);
+    confirmPinCodeText = (ClearEditText) findViewById(R.id.confirm_pin_code);
+    pukLinearLayout1 = (LinearLayout) findViewById(R.id.qs_puk_linear1);
+    pukLinearLayout2 = (LinearLayout) findViewById(R.id.qs_puk_linear2);
+    pukLinearLayout3 = (LinearLayout) findViewById(R.id.qs_puk_linear3);
     
     mReceiver = new QSBroadcastReceiver();
     
@@ -112,7 +125,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       return;
     }
     
-    setViewsVisibility(false, true);
     if (status == UserLoginStatus.LoginTimeOut) {
       handleLoginError(R.string.other_login_warning_title, 
           R.string.login_login_time_used_out_msg, true, true);
@@ -143,7 +155,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     } else if (s == State.LOGIN_ERROR) {
       String title = savedInstanceState.getString(BUNDLE_LOGINERROR_TITLE);
       String message = savedInstanceState.getString(BUNDLE_LOGINERROR_MESSAGE);
-      setViewsVisibility(false, true);
       mStateHandler = new LoginExceptionHandler(title, message);
       mStateHandler.setupViews();
     } else {
@@ -291,15 +302,38 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     });  
   }
   
-  private void setViewsVisibility(boolean visible, boolean all) {
-    int visibility = visible ? View.VISIBLE : View.INVISIBLE;
+  private void setViewsVisibility(boolean prompt_title_right_show, boolean leftShow,boolean pukShow,boolean mTextShow,boolean summShow) {
+    int visibility = prompt_title_right_show ? View.VISIBLE : View.INVISIBLE;
     mSetupTitle.setVisibility(visibility);
     mPromptText.setVisibility(visibility);
-    mEnterText.setVisibility(visibility);
     mNavigatorRight.setVisibility(visibility);
-    if (all) {
-      mNavigatorLeft.setVisibility(visibility);
-    }
+    if (mTextShow) {
+    	mEnterText.setVisibility(View.VISIBLE);
+		}else {
+			mEnterText.setVisibility(View.GONE);
+		}
+    if (pukShow) {
+      pukLinearLayout1.setVisibility(View.VISIBLE);
+      pukLinearLayout2.setVisibility(View.VISIBLE);
+      pukLinearLayout3.setVisibility(View.VISIBLE);
+		}else {
+			pukLinearLayout1.setVisibility(View.GONE);
+	    pukLinearLayout2.setVisibility(View.GONE);
+	    pukLinearLayout3.setVisibility(View.GONE);
+		}
+   
+    if (leftShow) {
+      mNavigatorLeft.setVisibility(View.VISIBLE);
+    }else {
+    	mNavigatorLeft.setVisibility(View.INVISIBLE);
+		}
+    if (summShow) {
+    	 mWiFiSSIDTextView.setVisibility(View.VISIBLE);
+       mWiFiPasswdTextView.setVisibility(View.VISIBLE); 
+		}else {
+			mWiFiSSIDTextView.setVisibility(View.GONE);
+      mWiFiPasswdTextView.setVisibility(View.GONE); 
+		}
   }
   
   /*
@@ -313,6 +347,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
     
     if (clear && mStateHandler != null) {
+    	mStateHandler.clearOtherTextListen(mStateHandler);
       StateHandler head = mStateHandler.goHead();
       StateHandler next;
       for(;head != null;){
@@ -323,20 +358,25 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       }
     }
     
-    setViewsVisibility(true, false);
+   
     /*
      * refer to MainActivity.simRollRequest() to handle SIM/PIN state
      */
     //if(sim.m_SIMState == SIMState.NoSim ||
     //    sim.m_SIMState != SIMState.PinRequired && sim.m_PinState == PinState.PinEnableVerified){
-    if (sim.m_SIMState == SIMState.PinRequired) {
+    if (sim.m_SIMState == SIMState.PinRequired && sim.m_PinState != PinState.RequirePUK) {
       //if SIMState.PinRequired, that means sim.m_nPinRemainingTimes > 0
       mStateHandler = new PinCodeHandler(sim.m_nPinRemainingTimes);
       mStateHandler.addNextStateHandler(new WiFiSSIDHandler(false));
-    } else {
+    }else if (sim.m_SIMState == SIMState.PukRequired || sim.m_PinState == PinState.RequirePUK) {
+    	if (mStateHandler != null) {
+				mStateHandler = null;
+			}
+			mStateHandler = new PukCodeHandler(sim.m_nPukRemainingTimes);
+			mStateHandler.addNextStateHandler(new WiFiSSIDHandler(false));
+		} else {
       mStateHandler = new WiFiSSIDHandler(true);
    }        
-//TODO:: NEED TEST
       
     mStateHandler.goTail().addNextStateHandler(new WiFiPasswdHandler()).
     addNextStateHandler(new SetupSummaryHandler());
@@ -386,13 +426,15 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
    * When user enter correct PIN, or he/she enter 3 error codes, 
    * disable PIN code setting. 
    */
-  private void removePINCodeSetting() {
+  private void removePINCodePUKCodeSetting() {
+  	
     StateHandler handler = mStateHandler;
-    if (handler == null || handler.mIsHead == false || handler.mState != State.PIN_CODE) {
+    
+    if (handler == null || handler.mIsHead == false || (handler.mState != State.PIN_CODE && handler.mState != State.PUK_CODE)) {
       Log.e(TAG, "Current state is not PIN code or it is not the head sate.");
       return;
     }
-
+    mStateHandler.clearOtherTextListen(mStateHandler);
     handler.mPreviousHandler = null;
     mStateHandler = handler.mNextHandler;
     handler.mNextHandler = null;
@@ -401,6 +443,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mStateHandler.mPreviousHandler = null;
       mStateHandler.mIsHead = true;
       mStateHandler.setupViews();
+      //Log.d(TAG, "removePINCodePUKCodeSetting:"+ mStateHandler.mIsHead);
     }
   }
   
@@ -410,6 +453,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     registerReceiver(mReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
     registerReceiver(mReceiver, new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
     registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
+    registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
     registerReceiver(mReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));  
     registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
       
@@ -431,6 +475,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     super.onDestroy();
     if (mPINErrorDialog != null)
       mPINErrorDialog.destroyDialog();
+    if (mPUKErrorDialog != null) 
+    	mPUKErrorDialog.destroyDialog();
     if (mLoginDialog != null)
       mLoginDialog.destroyDialog();
     if (mConfirmDialog != null)
@@ -504,7 +550,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         } 
         if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
           //actually, if user enter correct PIN, it never need go back PIN enter interface.
-          removePINCodeSetting();
+          removePINCodePUKCodeSetting();
           //nextSetting(false);
         } else {
           //PIN unlock
@@ -526,8 +572,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
               @Override
               public void onConfirm() {
-                removePINCodeSetting();
+                //removePINCodePUKCodeSetting();
                 //finishQuickSetup(true);                
+              	buildStateHandlerChain(true);
               }
             
             });
@@ -535,7 +582,41 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
                     getString(R.string.pin_error_waring_title));
           }
         }
-      }
+      }else if (action.equals(MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
+      	 if(mStateHandler == null) {
+           return;
+         } 
+         if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
+           removePINCodePUKCodeSetting();
+         } else {
+           //PUK unlock
+           if (mStateHandler.retryTimes() > 0) {
+             mPUKErrorDialog = ErrorDialog.getInstance(mContext);
+
+             mPUKErrorDialog.showDialog(getString(R.string.puk_error_waring_title),
+                 new OnClickBtnRetry() {
+
+                   @Override
+                   public void onRetry() {
+                     mStateHandler.retryInput();
+                   }
+                 });
+           } else {
+             // PUK LOCK
+             mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
+             mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+               @Override
+               public void onConfirm() {
+                 removePINCodePUKCodeSetting();
+                 //finishQuickSetup(true);                
+               }
+             });
+             mConfirmDialog.showDialog(getString(R.string.qs_puk_code_title), 
+                     getString(R.string.puk_error_waring_title));
+           }
+         }
+				
+			}
     }
   }  
   
@@ -571,7 +652,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   }
   
   enum State {
-    LOGIN_ERROR, PIN_CODE, WIFI_SSID, WIFI_PASSWD, SUMMARY, FINISH;    
+    LOGIN_ERROR, PIN_CODE, PUK_CODE, WIFI_SSID, WIFI_PASSWD, SUMMARY, FINISH;    
   }
   
   abstract class StateHandler implements TextWatcher{
@@ -709,15 +790,48 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override   
     public void afterTextChanged(Editable s) {
-    	//Log.d(TAG, "getState():"+this.getState());
+    	if(this instanceof WiFiSSIDHandler || this instanceof PinCodeHandler || this instanceof WiFiPasswdHandler){
+    		Log.d(TAG, "afterTextChanged:"+s.toString());
+    		boolean isNext = textChangeAction(s, this.mInputMax, this.mInputMin, mEnterText);
+    		if (isNext) {
+    			mSkipSetup = false;
+          mNavigatorRight.setText(R.string.next);
+				}else{
+					mSkipSetup = true;
+	        mNavigatorRight.setText(R.string.skip);
+				}
+    	}else if (this instanceof PukCodeHandler || this instanceof PinCodeNew || this instanceof PinCodeConfirm) {
+    		if (this instanceof PukCodeHandler) {
+    			pukValState = textChangeAction(s, this.mInputMax, this.mInputMin, pukCodeText);
+    			mSkipSetup = pukValState ? false : true;
+				}else if (this instanceof PinCodeNew) {
+					newPinValState = textChangeAction(s, this.mInputMax, this.mInputMin, newPinCodeText);
+					mSkipSetup = newPinValState ? false : true;
+				}else if ( this instanceof PinCodeConfirm) {
+					confirmPinState = textChangeAction(s, this.mInputMax, this.mInputMin, confirmPinCodeText);
+					mSkipSetup = confirmPinState ? false : true;
+				}
+    		
+    		Log.d(TAG, "pukTextValSate:"+confirmPinState + newPinValState + pukValState);
+    		if (confirmPinState && newPinValState && pukValState) {
+          mNavigatorRight.setText(R.string.next);
+				}else {
+	        mNavigatorRight.setText(R.string.skip);
+				}
+    		Log.d(TAG, "this.mSkipSetup:"+mSkipSetup);
+			}
+    }
+    
+    protected boolean textChangeAction(Editable s,int iptMax,int iptMin,ClearEditText editText){
+    	Log.d(TAG, "getState():"+this.getState());
       int len = s.length();
-      if (len > mInputMax) {
-        int nSelStart = mEnterText.getSelectionStart();
-        int nSelEnd = mEnterText.getSelectionEnd();
-        if ((len-1) <= mInputMax && nSelStart > 0) {
+      if (len > iptMax) {
+        int nSelStart = editText.getSelectionStart();
+        int nSelEnd = editText.getSelectionEnd();
+        if ((len-1) <= iptMax && nSelStart > 0) {
         	s.delete(nSelStart - 1, nSelStart);
 				}else {
-					s.delete(mInputMax, len);
+					s.delete(iptMax, len);
 				}
        
         // 保持光标原先的位置，而
@@ -726,20 +840,17 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         // 也不起作用
         len = s.length();
         if (nSelStart == 0 && len > 0) {
-        	mEnterText.setSelection(len);
+        	editText.setSelection(len);
 				}else {
-					mEnterText.setTextKeepState(s);
+					editText.setTextKeepState(s);
 				}
-        Log.d(TAG, " mEnterText.getSelectionStart():"+ mEnterText.getSelectionStart());
+        Log.d(TAG, " mEnterText.getSelectionStart():"+ editText.getSelectionStart());
         																
-       
-      } else if ( (mInputMax == mInputMin && mInputMin == len) ||
-          (mInputMax > mInputMin && len >= mInputMin)){
-        mSkipSetup = false;
-        mNavigatorRight.setText(R.string.next);
+        return true;
+      } else if ( (len >= iptMin && iptMax > iptMin) || (iptMax == iptMin && iptMin == len)){
+      	return true;
       } else {
-        mSkipSetup = true;
-        mNavigatorRight.setText(R.string.skip);
+        return false;
       }
     }
     abstract public void setupViews();
@@ -750,7 +861,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     public String getTitleText() {return null;}
     public String getMessageText() { return null;}
   }
-  
+ 
   /*
    * when other user login or login timeout
    */
@@ -766,13 +877,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override
     public void setupViews() {
-      mSetupTitle.setVisibility(View.VISIBLE);
-      mPromptText.setVisibility(View.VISIBLE);
+    	setViewsVisibility(true, false, false, false, false);
       mSetupTitle.setText(mTitle);
       mPromptText.setText(mMessage);
 
       mNavigatorRight.setText(R.string.skip);
-      mNavigatorRight.setVisibility(View.VISIBLE);
       mNavigatorRight.setOnClickListener(new OnClickListener(){
 
         @Override
@@ -802,9 +911,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override
     public void setupViews() {
+    	setViewsVisibility(true, false, false, true, false);
       mSetupTitle.setText(getString(R.string.qs_item_pin_code));
       mPromptText.setText(getString(R.string.qs_pin_code_prompt, mPINTryTimes));
-      mNavigatorLeft.setVisibility(View.INVISIBLE);
       mNavigatorLeft.setClickable(false);
       mNavigatorRight.setText(R.string.skip); 
       mEnterText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_PASSWORD);
@@ -816,7 +925,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     public int retryTimes(){return mPINTryTimes;}
     
     public boolean retryInput(){
-      mPINTryTimes--;
+	//will add a timeout later
+    	SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+      mPINTryTimes = sim.m_nPinRemainingTimes;
       mEnterText.getText().clear();
       mPromptText.setText(getString(R.string.qs_pin_code_prompt, mPINTryTimes));
       mNavigatorRight.setText(R.string.skip);
@@ -834,6 +945,95 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
       return false;
     }
+
+  }
+  
+  class PukCodeHandler extends StateHandler {
+    private int mPUKTryTimes;
+    PukCodeHandler(int tryTimes) {
+      super(State.PUK_CODE, 8,8);
+      mIsHead = true;
+      mPUKTryTimes = tryTimes;
+    }
+
+    @Override
+    public void setupViews() {
+    	setViewsVisibility(true, false, true,false, false);
+      mSetupTitle.setText(getString(R.string.qs_puk_code_title));
+      mPromptText.setText(getString(R.string.qs_puk_code_prompt, mPUKTryTimes));
+      mNavigatorLeft.setClickable(false);
+      mNavigatorRight.setText(R.string.skip); 
+      pukCodeText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+      newPinCodeText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+      confirmPinCodeText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+      pukCodeText.getText().clear();
+      newPinCodeText.getText().clear();
+      confirmPinCodeText.getText().clear();
+      clearOtherTextListen(this);
+      pukCodeText.addTextChangedListener(this);
+      newPinCodeText.addTextChangedListener(new PinCodeNew(State.PUK_CODE, 4, 8));
+      confirmPinCodeText.addTextChangedListener(new PinCodeConfirm(State.PUK_CODE, 4, 8));
+    }
+    
+    public int retryTimes(){return mPUKTryTimes;}
+    
+    public boolean retryInput(){
+    	SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+    	mPUKTryTimes = sim.m_nPukRemainingTimes;
+      mEnterText.getText().clear();
+      mPromptText.setText(getString(R.string.qs_pin_code_prompt, mPUKTryTimes));
+      mNavigatorRight.setText(R.string.skip);
+      mSkipSetup = true;
+      return true;
+    }
+
+    @Override
+    public boolean storeSetting() {
+    	 Log.d(TAG, "mSkipSetup:"+mSkipSetup);
+      if(mSkipSetup)
+        return true;
+
+      DataValue data = new DataValue();
+      data.addParam("puk", pukCodeText.getText().toString());
+      data.addParam("pin", newPinCodeText.getText().toString());
+      data.addParam("confirmPin", confirmPinCodeText.getText().toString());
+      Log.d(TAG, "pin == confirmPIN:"+data.getParamByKey("pin").equals(data.getParamByKey("confirmPin")));
+      if (data.getParamByKey("pin").equals(data.getParamByKey("confirmPin"))) {
+      	mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PUK_REQUEST, data);
+			}else {
+				mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
+        mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+        @Override
+        public void onConfirm() {
+           //removePINCodePUKCodeSetting();
+           //finishQuickSetup(true);                
+         }
+       });
+       mConfirmDialog.showDialog(getString(R.string.qs_puk_code_title), 
+               getString(R.string.puk_prompt_str));
+			}
+      
+      return false;
+    }
+  }
+  class PinCodeNew extends StateHandler{
+
+  	PinCodeNew(State state, int inputMin, int inputMax) {
+			super(state, inputMin, inputMax);
+		}
+
+		@Override
+		public void setupViews() {
+		}
+  }
+  class PinCodeConfirm extends StateHandler{
+
+		PinCodeConfirm(State state, int inputMin, int inputMax) {
+			super(state, inputMin, inputMax);
+		}
+
+		@Override
+		public void setupViews() {}
   }
   
   class WiFiSSIDHandler extends StateHandler {
@@ -844,10 +1044,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override
     public void setupViews() {
+    	setViewsVisibility(true, false, false, true, false);
       mSetupTitle.setText(getString(R.string.qs_item_wifi_ssid));
       mPromptText.setText(getString(R.string.qs_wifi_ssid_prompt));
       mNavigatorRight.setText(R.string.skip);
-      mNavigatorLeft.setVisibility(mIsHead ? View.VISIBLE : View.GONE);
       if (mIsHead) {
         mNavigatorLeft.setVisibility(View.INVISIBLE);
         mNavigatorLeft.setClickable(false);
@@ -894,7 +1094,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     @Override   
     public void onTextChanged(CharSequence s, int start, int count, int after) {
-    } 
+    }
   }
   
   class WiFiPasswdHandler extends StateHandler {
@@ -904,19 +1104,16 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override
     public void setupViews() {
+    	setViewsVisibility(true,true,false,true,false);
       mSetupTitle.setText(getString(R.string.qs_item_wifi_passwd));
       mPromptText.setText(getString(R.string.qs_wifi_passwd_prompt));
       mNavigatorRight.setText(R.string.skip); 
-      mNavigatorLeft.setVisibility(View.VISIBLE);
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
-      mEnterText.setVisibility(View.VISIBLE);
       //replace  TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
       mEnterText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
       mEnterText.getText().clear();
       clearOtherTextListen(this);
       mEnterText.addTextChangedListener(this);
-      mWiFiSSIDTextView.setVisibility(View.GONE);
-      mWiFiPasswdTextView.setVisibility(View.GONE);      
       //mEnterText.setHint(mWiFiPasswd);
       if(mWiFiPasswd != null){
         mEnterText.setText(mWiFiPasswd);
@@ -958,13 +1155,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override
     public void setupViews() {
-      mSetupTitle.setText(getString(R.string.qs_completed));
-      mPromptText.setText(getString(R.string.qs_summary));
+    	setViewsVisibility(true,true,false,false,true);
       mNavigatorRight.setText(R.string.finish);
-      mEnterText.setVisibility(View.GONE);
-      mWiFiSSIDTextView.setVisibility(View.VISIBLE);
-      mWiFiPasswdTextView.setVisibility(View.VISIBLE); 
-      mNavigatorLeft.setVisibility(View.VISIBLE);
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       mWiFiSSIDTextView.setText(getString(R.string.qs_wifi_ssid, mWiFiSSID));
       mWiFiPasswdTextView.setText(getString(R.string.qs_wifi_passwd, mWiFiPasswd)); 
