@@ -232,6 +232,7 @@
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_device" />
 
+            <!-- 
             <RelativeLayout
                 android:id="@+id/rl_device_control"
                 android:layout_width="match_parent"
@@ -275,8 +276,10 @@
                     android:textColor="@drawable/common_button_text"
                     android:textSize="15sp" />
             </RelativeLayout>
+             -->
         </LinearLayout>
 
+        <!-- 
         <RelativeLayout
             android:id="@+id/rl_device_waiting"
             android:layout_width="fill_parent"
@@ -289,8 +292,8 @@
                 android:layout_centerInParent="true"
                 android:indeterminateDrawable="@drawable/progerss_blue"
                 android:visibility="gone" />
-            <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
         </RelativeLayout>
+         -->
     </FrameLayout>
 
 </ScrollView>

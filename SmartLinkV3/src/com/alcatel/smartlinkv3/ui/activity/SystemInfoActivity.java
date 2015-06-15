@@ -31,10 +31,10 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 	private TextView m_tv_mac_value=null;
 	private TextView m_tv_ip_value=null;
 	private TextView m_tv_subnet_value=null;
-	private Button m_btn_PowerOff=null;
-	private Button m_btn_reboot=null;
-	private Button m_btn_reset=null;
-	private ProgressBar m_pb_waiting=null;
+//	private Button m_btn_PowerOff=null;
+//	private Button m_btn_reboot=null;
+//	private Button m_btn_reset=null;
+//	private ProgressBar m_pb_waiting=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -47,7 +47,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		controlTitlebar();
 		//create controls
 		createControls();
-		ShowWaiting(false);
+//		ShowWaiting(false);
 		//set system information
 		setSystemInfo();
 	}
@@ -72,28 +72,28 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		m_tv_ip_value = (TextView)findViewById(R.id.tv_ip_address_info);
 		m_tv_subnet_value = (TextView)findViewById(R.id.tv_subnet_mask_info);
 		//buttons
-		m_btn_PowerOff = (Button)findViewById(R.id.btn_power_off);
-		m_btn_reboot = (Button)findViewById(R.id.btn_reboot);
-		m_btn_reset = (Button)findViewById(R.id.btn_reset);
-		m_btn_PowerOff.setOnClickListener(this);
-		m_btn_reboot.setOnClickListener(this);
-		m_btn_reset.setOnClickListener(this);
+//		m_btn_PowerOff = (Button)findViewById(R.id.btn_power_off);
+//		m_btn_reboot = (Button)findViewById(R.id.btn_reboot);
+//		m_btn_reset = (Button)findViewById(R.id.btn_reset);
+//		m_btn_PowerOff.setOnClickListener(this);
+//		m_btn_reboot.setOnClickListener(this);
+//		m_btn_reset.setOnClickListener(this);
 		//
-		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
+//		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
 	}
 
-	private void ShowWaiting(boolean blShow){
-		if (blShow) {
-			m_pb_waiting.setVisibility(View.VISIBLE);
-		}else {
-			m_pb_waiting.setVisibility(View.GONE);
-		}
-		m_btn_PowerOff.setEnabled(!blShow);
-		m_btn_reboot.setEnabled(!blShow);
-		m_btn_reset.setEnabled(!blShow);
-		m_ib_back.setEnabled(!blShow);
-		m_tv_back.setEnabled(!blShow);
-	}
+//	private void ShowWaiting(boolean blShow){
+//		if (blShow) {
+//			m_pb_waiting.setVisibility(View.VISIBLE);
+//		}else {
+//			m_pb_waiting.setVisibility(View.GONE);
+//		}
+//		m_btn_PowerOff.setEnabled(!blShow);
+//		m_btn_reboot.setEnabled(!blShow);
+//		m_btn_reset.setEnabled(!blShow);
+//		m_ib_back.setEnabled(!blShow);
+//		m_tv_back.setEnabled(!blShow);
+//	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -104,38 +104,38 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 			SystemInfoActivity.this.finish();
 			break;
 
-		case R.id.btn_power_off:
-			onBtnPowerOff();
-			ShowWaiting(true);
-			break;
-		case R.id.btn_reboot:
-			onBtnReboot();
-			ShowWaiting(true);
-			break;
-		case R.id.btn_reset:
-			onBtnReset();
-			ShowWaiting(true);
-			break;
+//		case R.id.btn_power_off:
+//			onBtnPowerOff();
+//			ShowWaiting(true);
+//			break;
+//		case R.id.btn_reboot:
+//			onBtnReboot();
+//			ShowWaiting(true);
+//			break;
+//		case R.id.btn_reset:
+//			onBtnReset();
+//			ShowWaiting(true);
+//			break;
 
 		default:
 			break;
 		}
 	}
 
-	private void onBtnPowerOff(){
-		BusinessMannager.getInstance().
-		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF, null);
-	}
-	
-	private void onBtnReboot(){
-		BusinessMannager.getInstance().
-		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_REBOOT, null);
-	}
-	
-	private void onBtnReset(){
-		BusinessMannager.getInstance().
-		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESET, null);
-	}
+//	private void onBtnPowerOff(){
+//		BusinessMannager.getInstance().
+//		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF, null);
+//	}
+//	
+//	private void onBtnReboot(){
+//		BusinessMannager.getInstance().
+//		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_REBOOT, null);
+//	}
+//	
+//	private void onBtnReset(){
+//		BusinessMannager.getInstance().
+//		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESET, null);
+//	}
 	
 	private void setSystemInfo(){
 		SystemInfoModel systemInfo = BusinessMannager.getInstance().getSystemInfoModel();
@@ -163,7 +163,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
 		
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
-		ShowWaiting(true);
+//		ShowWaiting(true);
 	}
 
 	@Override
@@ -172,48 +172,48 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		super.onPause();
 	}
 
-	@Override
-	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
-		super.onBroadcastReceive(context, intent);
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_REBOOT)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_reboot_failed);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_reboot_success);
-			}
-			ShowWaiting(false);
-			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-		}
-		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
-			ShowWaiting(false);
-			setSystemInfo();
-		}
-		
-		
-		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESET)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_reset_failed);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_reset_success);
-			}
-			ShowWaiting(false);
-			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-		}
-		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_power_off_failed);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_power_off_success);
-			}
-			ShowWaiting(false);
-			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-		}
-	}
+//	@Override
+//	protected void onBroadcastReceive(Context context, Intent intent) {
+//		// TODO Auto-generated method stub
+//		super.onBroadcastReceive(context, intent);
+//		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_REBOOT)){
+//			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+//			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+//			String strTost = getString(R.string.setting_reboot_failed);
+//			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+//				strTost = getString(R.string.setting_reboot_success);
+//			}
+//			ShowWaiting(false);
+//			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+//		}
+//		
+//		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
+//			ShowWaiting(false);
+//			setSystemInfo();
+//		}
+//		
+//		
+//		
+//		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESET)){
+//			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+//			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+//			String strTost = getString(R.string.setting_reset_failed);
+//			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+//				strTost = getString(R.string.setting_reset_success);
+//			}
+//			ShowWaiting(false);
+//			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+//		}
+//		
+//		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF)){
+//			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+//			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+//			String strTost = getString(R.string.setting_power_off_failed);
+//			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+//				strTost = getString(R.string.setting_power_off_success);
+//			}
+//			ShowWaiting(false);
+//			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+//		}
+//	}
 }
