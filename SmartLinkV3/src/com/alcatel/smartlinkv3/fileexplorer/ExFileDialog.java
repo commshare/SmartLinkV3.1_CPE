@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources.NotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -77,14 +78,32 @@ class FileDialog extends Activity {
 		WindowManager m = getWindowManager();
 		Display d = m.getDefaultDisplay();
 		LayoutParams p = getWindow().getAttributes();
-		p.height = (int) (d.getHeight() * 0.64);
-		p.width = (int) (d.getWidth() * 0.76);
+        if (isScreenChange()) {
+            p.height = (int) (d.getHeight() * 0.8);
+            p.width = (int) (d.getWidth() * 0.76);
+        } else {
+            p.height = (int) (d.getHeight() * 0.64);
+            p.width = (int) (d.getWidth() * 0.76);
+        }
 		getWindow().setAttributes(p);
 
 		setResultCodeBuilder();
 
 	}
-
+    
+    private boolean isScreenChange() {
+        boolean result = false;
+        Configuration mConfiguration = getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation ; //获取屏幕方向
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {//横屏
+            result = true;
+        } else if (ori == Configuration.ORIENTATION_PORTRAIT) {//竖屏
+            result = false;
+        }
+        return result;
+   }
+    
+    
 	@Override
 	protected void onResume() {
 		super.onResume();
