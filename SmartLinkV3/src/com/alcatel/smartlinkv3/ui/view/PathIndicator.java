@@ -125,7 +125,16 @@ public class PathIndicator extends HorizontalScrollView
     View divider = view.findViewById(R.id.path_indicator_divider);
     ViewHolder vh = new ViewHolder(view, folderButton, divider);
     view.setId(index + 1);
+    //TODO:: 
+    ViewGroup.LayoutParams layoutParams = folderButton.getLayoutParams();
+    if (folderName.length() >= 20) {
+        layoutParams.width =res.getDimensionPixelSize(R.dimen.path_indicator_button_width);
+    } else {
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+    }
+    folderButton.setLayoutParams(layoutParams);
     folderButton.setText(folderName);
+    
     folderButton.setOnClickListener(mFolderButtonClickListener);
     view.setOnKeyListener(mFolderButtonKeyListener);
 

@@ -45,6 +45,7 @@
     <dimen name="path_indicator_first_button_padding_left">6.0dip</dimen>
     <dimen name="path_indicator_button_padding_left">6.0dip</dimen>
     <dimen name="path_indicator_button_padding_right">6.0dip</dimen>
+    <dimen name="path_indicator_button_width">100dp</dimen>
     
     <dimen name="title_bar_height">35.0dip</dimen>
     
