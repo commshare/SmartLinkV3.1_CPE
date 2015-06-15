@@ -23,6 +23,7 @@ import com.alcatel.smartlinkv3.ftp.client.FtpClientModel;
 import com.alcatel.smartlinkv3.ftp.client.FtpManager;
 import com.alcatel.smartlinkv3.ftp.client.FtpManagerIRetrieveListener;
 import com.alcatel.smartlinkv3.ftp.client.FtpTransferIRetrieveListener;
+import com.alcatel.smartlinkv3.ftp.client.ListQueue;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask.TaskPoolOnCallResponse;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTaskManager;
@@ -34,25 +35,33 @@ public class FtpFileCommandTask {
 	private static final int SUCCESS = 0;
 	private static final int FAIL = -1;
 
-	private FtpCommandProc ftpTask = new FtpCommandProc();
-	private FtpManager ftp = null;
-	private Thread thread = null;
-	private boolean running = false;
+	private ListQueue mCmdQueue;
+	private FtpCommandHandler ftpCommandHandler;
 
-	private Context mContext = null;
-	private pubLog logger = null;
-	private FtpClientModel m_ftp = null;
+	private FtpManager ftp;
+	private Thread threadHandler;
+	private boolean running;
+
+	private Context mContext;
+	private pubLog logger;
+	private FtpClientModel m_ftp;
 
 	private FtpCommandListener m_FtpCommandListener;
 	private boolean isLogin = false;
 	private boolean isInit = false;
 
-	private ArrayList<ShareFileInfo> mShareFiles = new ArrayList<ShareFileInfo>();
+	private ArrayList<ShareFileInfo> mShareFiles;
 
 	private OnCallResponse mOnCallResponse;
-	
+
 	private ThreadPoolTaskManager downloadThreadPool;
-	
+
+	public FtpFileCommandTask() {
+		mCmdQueue = new ListQueue();
+		ftpCommandHandler = new FtpCommandHandler();
+		mShareFiles = new ArrayList<ShareFileInfo>();
+	}
+
 	// ftp cmd
 	public class FTP_CMD {
 		private static final int CONNECT = 1;
@@ -82,8 +91,13 @@ public class FtpFileCommandTask {
 		public static final int MSG_END_DOWNLOAD = 13;
 		public static final int MSG_PAUSE_DOWNLOAD = 14;
 		public static final int MSG_ERROR_DOWNLOAD = 15;
-		// create folder
 		public static final int MSG_CREATE_FOLDER = 16;
+	}
+
+	class FtpCommandFormat {
+		int cmd;
+		Object arg1;
+		Object arg2;
 	}
 
 	public class TransferTracker {
@@ -162,17 +176,18 @@ public class FtpFileCommandTask {
 		logger.v("Server ip: " + m_ftp.host);
 
 		ftp.setConfig(mContext, m_ftp);
-		thread = new Thread(ftpTask);
+		threadHandler = new Thread(ftpCommandHandler);
 
 		// init thread pool
 		downloadThreadPool = new ThreadPoolTaskManager();
 		downloadThreadPool.start();
-		
-	/*	ThreadPoolTaskManager.getInstance();
-		ThreadPool downloadTaskManagerThread = new ThreadPool();
-		Thread threadPool = new Thread(downloadTaskManagerThread);
-		threadPool.start();*/
-		
+
+		/*
+		 * ThreadPoolTaskManager.getInstance(); ThreadPool
+		 * downloadTaskManagerThread = new ThreadPool(); Thread threadPool = new
+		 * Thread(downloadTaskManagerThread); threadPool.start();
+		 */
+
 		this.isInit = true;
 		return true;
 	}
@@ -187,10 +202,11 @@ public class FtpFileCommandTask {
 
 	public void start() {
 		running = true;
-		thread.start();
+
+		threadHandler.start();
 
 		int time = 0;
-		while (!thread.isAlive()) {
+		while (!threadHandler.isAlive()) {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -198,12 +214,12 @@ public class FtpFileCommandTask {
 				e.printStackTrace();
 			}
 			if (time >= 10) {
-				thread.start();
+				threadHandler.start();
 			}
 			time++;
 		}
 
-		if (thread.isAlive()) {
+		if (threadHandler.isAlive()) {
 			ftp_connect();
 		}
 
@@ -229,124 +245,154 @@ public class FtpFileCommandTask {
 	}
 
 	public void ftp_connect() {
-		ftpTask.awakenCMD(FTP_CMD.CONNECT);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.CONNECT;
+		cmdTask.arg1 = null;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_showfiles(String remotePath) {
-		ftpTask.setRemoteRootPath(remotePath);
-		ftpTask.awakenCMD(FTP_CMD.SHOWFILES);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.SHOWFILES;
+		cmdTask.arg1 = remotePath;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_download(ArrayList<FileInfo> remoteFiles) {
-		ftpTask.setRemoteFiles(remoteFiles);
-		ftpTask.awakenCMD(FTP_CMD.DOWNLOAD);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.DOWNLOAD;
+		cmdTask.arg1 = remoteFiles;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_pause_download() {
-		ftpTask.awakenCMD(FTP_CMD.PAUSE_DOWNLOAD);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.PAUSE_DOWNLOAD;
+		cmdTask.arg1 = null;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_upload(ArrayList<File> localFiles, String remotePath) {
-		ftpTask.setLocalFiles(localFiles);
-		ftpTask.setRemotePath(remotePath);
-		ftpTask.awakenCMD(FTP_CMD.UPLOAD);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.UPLOAD;
+		cmdTask.arg1 = localFiles;
+		cmdTask.arg2 = remotePath;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_delete(ArrayList<FileInfo> remoteFiles) {
-		ftpTask.setRemoteFiles(remoteFiles);
-		ftpTask.awakenCMD(FTP_CMD.DELETE);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.DELETE;
+		cmdTask.arg1 = remoteFiles;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_move(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		ftpTask.setMoveFile(remoteFiles, remotePath);
-		ftpTask.awakenCMD(FTP_CMD.MOVE);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.MOVE;
+		cmdTask.arg1 = remoteFiles;
+		cmdTask.arg2 = remotePath;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_create_folder(String remotePath) {
-		ftpTask.setRemotePath(remotePath);
-		ftpTask.awakenCMD(FTP_CMD.CREATE_FOLDER);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.CREATE_FOLDER;
+		cmdTask.arg1 = remotePath;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_copy(ArrayList<FileInfo> remoteFiles, String remotePath) {
-		ftpTask.setRemoteRootPath(remotePath);
-		ftpTask.setRemoteFiles(remoteFiles);
-		ftpTask.awakenCMD(FTP_CMD.COPY);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.COPY;
+		cmdTask.arg1 = remoteFiles;
+		cmdTask.arg2 = remotePath;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_rename(String fromFile, String toFile) {
-		ftpTask.setRename(fromFile, toFile);
-		ftpTask.awakenCMD(FTP_CMD.RENAME);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.RENAME;
+		cmdTask.arg1 = fromFile;
+		cmdTask.arg2 = toFile;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_share(ArrayList<FileInfo> remoteFiles) {
-		ftpTask.setShareFiles(remoteFiles);
-		ftpTask.awakenCMD(FTP_CMD.SHARE);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.SHARE;
+		cmdTask.arg1 = remoteFiles;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_list_files(String remotePath) {
-		ftpTask.setRemoteRootPath(remotePath);
-		ftpTask.awakenCMD(FTP_CMD.LIST_FILES);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.LIST_FILES;
+		cmdTask.arg1 = remotePath;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
 	public void ftp_close() {
-		ftpTask.awakenCMD(FTP_CMD.CLOSE);
+		FtpCommandFormat cmdTask = new FtpCommandFormat();
+		cmdTask.cmd = FTP_CMD.CLOSE;
+		cmdTask.arg1 = null;
+		cmdTask.arg2 = null;
+		addCommandTaskToLists(cmdTask);
 	}
 
-	class FtpCommandProc implements Runnable {
+	public synchronized boolean addCommandTaskToLists(Object obj) {
+		synchronized (mCmdQueue) {
+			if (obj != null) {
+				mCmdQueue.addQueue((Object) obj);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	class FtpCommandHandler implements Runnable {
 		public int CMD = -1;
-		private String remoteRootPath = "/";
-		private String remotePath = "/";
-		private ArrayList<FileInfo> remoteFiles = new ArrayList<FileInfo>();
-		private ArrayList<File> localFiles = new ArrayList<File>();
-		private ArrayList<FileInfo> shareFiles = new ArrayList<FileInfo>();
-		// TODO
-		private ArrayList<FileInfo> fromFiles = null;
-		private String fromFile = null;
-		private String toFile = null;
 
-		public void setRemoteRootPath(String remoteRootPath) {
-			this.remoteRootPath = remoteRootPath;
-		}
+		@Override
+		public void run() {
+			while (running) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if (mCmdQueue == null) {
+					continue;
+				}
 
-		public void setRemotePath(String remotePath) {
-			this.remotePath = remotePath;
-		}
+				if (mCmdQueue.QueueEmpty()) {
+					continue;
+				}
+				
+				try {
+					runCmd();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-		public void setRemoteFiles(ArrayList<FileInfo> remoteFiles) {
-			this.remoteFiles = remoteFiles;
-		}
-
-		public void setShareFiles(ArrayList<FileInfo> shareFiles) {
-			this.shareFiles = shareFiles;
-		}
-
-		public void setLocalFiles(ArrayList<File> localFiles) {
-			this.localFiles = localFiles;
-		}
-
-		public void setRename(String fromFile, String toFile) {
-			this.fromFile = fromFile;
-			this.toFile = toFile;
-		}
-
-		public void setMoveFile(ArrayList<FileInfo> fromFiles, String toFile) {
-			this.fromFiles = fromFiles;
-			this.toFile = toFile;
-		}
-
-		public synchronized void awakenCMD(int cmd) {
-			this.CMD = cmd;
-			notifyAll();
+			}
 		}
 
 		private synchronized void runCmd() throws Exception {
-			while (CMD == -1) {
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+			FtpCommandFormat ftpCommand = (FtpCommandFormat) mCmdQueue
+					.getQueue();
+			CMD = ftpCommand.cmd;
 
 			switch (CMD) {
 			case FTP_CMD.CONNECT:
@@ -354,69 +400,46 @@ public class FtpFileCommandTask {
 				ftpConnect();
 				CMD = -1;
 				break;
-			case 2:
-				// ftpChangeDir();
-				CMD = -1;
-				break;
 			case FTP_CMD.SHOWFILES:
-				showFiles(remoteRootPath);
+				String showFiles = (String) ftpCommand.arg1;
+				if (showFiles != null) {
+					showFiles(showFiles);
+				}
+
 				CMD = -1;
 				break;
 			case FTP_CMD.LIST_FILES:
-				listFiles(remoteRootPath);
+				String listFiles = (String) ftpCommand.arg1;
+				if (listFiles != null) {
+					listFiles((String) ftpCommand.arg1);
+				}
+
 				CMD = -1;
 				break;
 			case FTP_CMD.DOWNLOAD:
-				// TODO: need a thread pool
-				if (false) {
-					if (remoteFiles.size() == 0) {
-						logger.w("download fail,file size is 0 on task");
-						CMD = -1;
-						break;
-					}
+				final ArrayList<FileInfo> downloadFiles = (ArrayList<FileInfo>) ftpCommand.arg1;
 
-					logger.i("download file size: " + remoteFiles.size());
-
-					for (FileInfo f : remoteFiles) {
-						logger.i("download file lists: " + f.fileName);
-					}
-
-					logger.i("on downloanning...");
-					downloadFiles(remoteFiles);
+				if (downloadFiles.size() == 0) {
+					logger.w("download fail,file size is 0 on task");
+					CMD = -1;
+					break;
 				}
 
-				if (true) {
-					if (remoteFiles.size() == 0) {
-						logger.w("download fail,file size is 0 on task");
-						CMD = -1;
-						break;
+				TaskPoolOnCallResponse onCallResponse = new TaskPoolOnCallResponse() {
+					@Override
+					public void taskCallResponse(Object obj) {
+						// TODO Auto-generated method stub
+						downloadFiles(downloadFiles);
 					}
+				};
 
-					/*ThreadPoolTaskManager downloadTaskMananger = ThreadPoolTaskManager
-							.getInstance();*/
+				boolean result = downloadThreadPool.addTask(new ThreadPoolTask(
+						downloadFiles.get(0).fileName, onCallResponse));
 
-					TaskPoolOnCallResponse onCallResponse = new TaskPoolOnCallResponse() {
-						@Override
-						public void taskCallResponse(Object obj) {
-							// TODO Auto-generated method stub
-							downloadFiles(remoteFiles);
-						}
-					};
-
-					/*boolean result = downloadTaskMananger
-							.addDownloadTask(new ThreadPoolTask(remoteFiles
-									.get(0).fileName, onCallResponse));*/
-					
-					boolean result = downloadThreadPool
-							.addTask(new ThreadPoolTask(remoteFiles
-									.get(0).fileName, onCallResponse));
-					
-					if (result) {
-						logger.i("add download thread pool success!");
-					} else {
-						logger.i("add download thread pool fail!");
-					}
-
+				if (result) {
+					logger.i("add download thread pool success!");
+				} else {
+					logger.i("add download thread pool fail!");
 				}
 
 				CMD = -1;
@@ -426,74 +449,74 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 			case FTP_CMD.UPLOAD:
+				ArrayList<File> uploadFiles = (ArrayList<File>) ftpCommand.arg1;
+				String uploadPath = (String) ftpCommand.arg2;
+
 				// TODO: need a thread pool
-				if (true) {
-					if (localFiles.size() == 0) {
-						logger.w("upload fail,file size is 0 on task");
-						CMD = -1;
-						break;
-					}
-					uploadFiles(localFiles, remotePath);
+				if (uploadFiles.size() == 0) {
+					logger.w("upload fail,file size is 0 on task");
+					CMD = -1;
+					break;
 				}
 
-				// test
-				if (false) {
-					try {
-						ftp.upload("/mnt/sdcard/LinkApp/test", "/sdcard/test");
-					} catch (IOException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-				}
+				uploadFiles(uploadFiles, uploadPath);
 
 				CMD = -1;
 				break;
-
 			case FTP_CMD.DELETE:
-				if (remoteFiles.size() == 0) {
+				ArrayList<FileInfo> deleteFiles = (ArrayList<FileInfo>) ftpCommand.arg1;
+				if (deleteFiles.size() == 0) {
 					logger.w("delete fail,file size is 0 on task");
 					CMD = -1;
 					break;
 				}
 
-				logger.i("delete file size: " + remoteFiles.size());
+				logger.i("delete file size: " + deleteFiles.size());
 
-				for (FileInfo f : remoteFiles) {
+				for (FileInfo f : deleteFiles) {
 					logger.i("delete file lists: " + f.fileName);
 				}
-				deleteFiles(remoteFiles);
+				deleteFiles(deleteFiles);
 				CMD = -1;
 				break;
 
 			case FTP_CMD.MOVE:
-				if ((this.fromFiles != null) && (this.toFile != null)) {
-					moveFiles(this.fromFiles, this.toFile);
+				ArrayList<FileInfo> moveFiles = (ArrayList<FileInfo>) ftpCommand.arg1;
+				String movePath = (String) ftpCommand.arg2;
+
+				if ((moveFiles != null) && (movePath != null)) {
+					moveFiles(moveFiles, movePath);
 				}
 
 				CMD = -1;
 				break;
-
 			case FTP_CMD.COPY:
 				CMD = -1;
 				break;
-
 			case FTP_CMD.CREATE_FOLDER:
-				if (this.remotePath != null) {
-					createFolder(this.remotePath);
+				String createFolder = (String) ftpCommand.arg1;
+				logger.i("FTP_CMD.CREATE_FOLDER");
+				if (createFolder != null) {
+					createFolder(createFolder);
 				}
-
+				logger.i("FTP_CMD.CREATE_FOLDER = " + createFolder);
 				CMD = -1;
 				break;
 			case FTP_CMD.RENAME:
-				if ((this.fromFile != null) && (this.toFile != null)) {
-					renameFile(this.fromFile, this.toFile);
+				String fromRename = (String) ftpCommand.arg1;
+				String toRename = (String) ftpCommand.arg1;
+
+				if ((fromRename != null) && (toRename != null)) {
+					renameFile(fromRename, toRename);
 				}
 
 				CMD = -1;
 				break;
 			case FTP_CMD.SHARE:
-				if (this.shareFiles != null) {
-					shareFiles(this.shareFiles);
+				ArrayList<FileInfo> shareFiles = (ArrayList<FileInfo>) ftpCommand.arg1;
+
+				if (shareFiles != null) {
+					shareFiles(shareFiles);
 				}
 
 				CMD = -1;
@@ -504,30 +527,13 @@ public class FtpFileCommandTask {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				CMD = -1;
 				isInit = false;
 				isLogin = false;
 				running = false;
+				CMD = -1;
 				break;
-
 			default:
 				break;
-			}
-		}
-
-		@Override
-		public void run() {
-			logger.v("enter runnable...");
-			while (running) {
-				try {
-					runCmd();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		}
 
@@ -795,6 +801,13 @@ public class FtpFileCommandTask {
 
 		try {
 			List<FTPFile> ftpFile = ftp.showListFile(path);
+
+			if (false) {
+				for (FTPFile file : ftpFile) {
+					logger.i("filename = " + file.getName());
+				}
+			}
+
 			sendMsg(MSG_TYPE.MSG_REFRESH_UI, ftpFile);
 
 		} catch (Exception e) {
@@ -888,9 +901,11 @@ public class FtpFileCommandTask {
 		result = ftp.createFolder(remoteFolder);
 
 		if (result) {
+			logger.i("create folder suceess: " + remoteFolder);
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "create folder success!");
 			sendMsg(MSG_TYPE.MSG_CREATE_FOLDER, SUCCESS);
 		} else {
+			logger.i("create folder fail: " + remoteFolder);
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "create folder fail: "
 					+ remoteFolder);
 			sendMsg(MSG_TYPE.MSG_CREATE_FOLDER, FAIL);

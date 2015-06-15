@@ -6,9 +6,12 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.R.bool;
+
 public class ThreadPoolTaskManager {
 	private static final String TAG = "ThreadPoolTaskManager";
 
+	// task lists
 	private LinkedList<ThreadPoolTask> taskList;
 
 	private Set<String> taskIdSet;
@@ -18,11 +21,14 @@ public class ThreadPoolTaskManager {
 	private Thread poolThread;
 
 	private pubLog logger;
+	
+	private ThreadPool pool;
 
 	public ThreadPoolTaskManager() {
 		taskList = new LinkedList<ThreadPoolTask>();
 		taskIdSet = new HashSet<String>();
-		poolThread = new Thread(new ThreadPool());
+		pool = new ThreadPool();
+		poolThread = new Thread(pool);
 		logger = pubLog.getLogger();
 	}
 
@@ -46,8 +52,10 @@ public class ThreadPoolTaskManager {
 
 	public void stop() {
 		if (!poolThread.isAlive()) {
+			pool.isRun = false;
 			return;
 		}
+		pool.isRun = false;
 		poolThread.stop();
 	}
 
@@ -74,6 +82,20 @@ public class ThreadPoolTaskManager {
 			}
 		}
 
+	}
+	
+	public synchronized boolean removeTask(ThreadPoolTask task) {
+		synchronized (taskList) {
+			if (task == null) {
+				return false;
+			}
+
+			if (taskList.contains(task)) {
+				taskList.remove(task);
+			}
+
+		}
+		return false;
 	}
 
 	// TODO
