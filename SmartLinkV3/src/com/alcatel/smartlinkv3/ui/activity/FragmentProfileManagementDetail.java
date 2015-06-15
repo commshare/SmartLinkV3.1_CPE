@@ -330,7 +330,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			if(passWord.length() == 0){
 				passWord = "";
 			}
-			int auth_type = AuthType == -1 ? 0 : AuthType;
+			int auth_type = NewAuthType == -1 ? 0 : NewAuthType;
 //			Log.v("AddOrEditProfile", Integer.toString(auth_type));
 			
 			DataValue data = new DataValue();
