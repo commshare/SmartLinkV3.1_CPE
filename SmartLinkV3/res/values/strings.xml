@@ -643,6 +643,7 @@
     <string name="operation_share">Share</string>
     <string name="operation_show_sys">Show hidden files</string>
     <string name="operation_edit">Edit</string>
+    <string name="operation_cancel_edit">Cancel edit</string>
     <string name="operation_add_file">Add file</string>
     <string name="operation_unfavorite">Remove from Favorites</string>
     <string name="removed_favorite">Removed from Favorites</string>

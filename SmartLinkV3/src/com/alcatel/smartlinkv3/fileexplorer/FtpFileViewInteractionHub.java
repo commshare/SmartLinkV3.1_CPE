@@ -1293,6 +1293,8 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		//boolean isHidden = Settings.instance().getShowDotAndHiddenFiles();
 		//menuItem.setTitle(isHidden ? R.string.operation_hide_sys
 		//		: R.string.operation_show_sys);
+		menu.findItem(GlobalConsts.MENU_EDIT).setTitle(
+		        canEditCheckBox() ? R.string.operation_cancel_edit : R.string.operation_edit);
 
 	}
 
