@@ -12,10 +12,7 @@ import com.alcatel.smartlinkv3.fileexplorer.TextInputDialog.OnFinishListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources.NotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -78,31 +74,18 @@ class FileDialog extends Activity {
 		WindowManager m = getWindowManager();
 		Display d = m.getDefaultDisplay();
 		LayoutParams p = getWindow().getAttributes();
-        if (isScreenChange()) {
-            p.height = (int) (d.getHeight() * 0.8);
-            p.width = (int) (d.getWidth() * 0.76);
-        } else {
-            p.height = (int) (d.getHeight() * 0.64);
-            p.width = (int) (d.getWidth() * 0.76);
-        }
+        int minv = min(d.getHeight(),d.getWidth());
+        p.height = (int)(minv * 0.84);
+        p.width = (int) (minv * 0.76);
 		getWindow().setAttributes(p);
 
 		setResultCodeBuilder();
 
 	}
-    
-    private boolean isScreenChange() {
-        boolean result = false;
-        Configuration mConfiguration = getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation ; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {//横屏
-            result = true;
-        } else if (ori == Configuration.ORIENTATION_PORTRAIT) {//竖屏
-            result = false;
-        }
-        return result;
-   }
-    
+	
+	private int min(int v1, int v2) { 
+	    return (v1 < v2) ? v1 : v2;
+	}
     
 	@Override
 	protected void onResume() {
