@@ -428,6 +428,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		Drawable d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_smsTextView.setCompoundDrawables(null, d, null, null);
+		int nTextColor = nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.color.color_blue
+				: R.color.color_grey;
+		m_smsTextView.setTextColor(this.getResources().getColor(nTextColor));
 		
 		if (nNewSmsCount <= 0) {
 			m_newSmsTextView.setVisibility(View.GONE);
