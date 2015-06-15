@@ -1127,7 +1127,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mNavigatorRight.setText(R.string.skip); 
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       //replace  TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-      mEnterText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+      mEnterText.setInputType(InputType.TYPE_CLASS_TEXT);
       mEnterText.getText().clear();
       clearOtherTextListen(this);
       mEnterText.addTextChangedListener(this);
