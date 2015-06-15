@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
@@ -29,6 +30,7 @@ import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.view.ClearEditText;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +45,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 
 public class QuickSetupActivity  extends Activity implements OnClickListener{
   private static final String TAG = "QuickSetupActivity";
@@ -77,6 +80,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private Context mContext;
   private BusinessMannager mBusinessMgr;
   private boolean pukValState,newPinValState,confirmPinState;
+  private ProgressDialog m_progress_dialog = null;
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +114,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     pukLinearLayout1 = (LinearLayout) findViewById(R.id.qs_puk_linear1);
     pukLinearLayout2 = (LinearLayout) findViewById(R.id.qs_puk_linear2);
     pukLinearLayout3 = (LinearLayout) findViewById(R.id.qs_puk_linear3);
+    setViewsVisibility(false, false, false, false, false);
     
     mReceiver = new QSBroadcastReceiver();
     
@@ -344,8 +349,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private void buildStateHandlerChain(boolean clear) {
     //SimManager poll SIM_GET_SIM_STATUS_ROLL_REQUSET in task, but it do not always 
     //broadcaset SIM request.
+  
     SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
-    
+   
+		if(m_progress_dialog != null && m_progress_dialog.isShowing() && sim.m_SIMState != SIMState.SimCardIsIniting){
+  		m_progress_dialog.dismiss();
+  	}
     if (clear && mStateHandler != null) {
     	mStateHandler.clearOtherTextListen(mStateHandler);
       StateHandler head = mStateHandler.goHead();
@@ -368,7 +377,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       //if SIMState.PinRequired, that means sim.m_nPinRemainingTimes > 0
       mStateHandler = new PinCodeHandler(sim.m_nPinRemainingTimes);
       mStateHandler.addNextStateHandler(new WiFiSSIDHandler(false));
-    }else if (sim.m_SIMState == SIMState.PukRequired || sim.m_PinState == PinState.RequirePUK) {
+    }else if ((sim.m_SIMState == SIMState.PukRequired || sim.m_PinState == PinState.RequirePUK) && sim.m_SIMState != SIMState.PukTimesUsedOut ) {
     	if (mStateHandler != null) {
 				mStateHandler = null;
 			}
@@ -943,6 +952,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       DataValue data = new DataValue();
       data.addParam("pin", mEnterText.getText().toString());
       mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
+      String strTitle = mContext.getString(R.string.IDS_PIN_LOCKED);
+  		String strMsg = mContext.getString(R.string.IDS_PIN_CHECK_PIN_PROGRESS);
+  		strMsg += "...";
+	    m_progress_dialog = ProgressDialog.show(mContext, strTitle, strMsg, true, false);  
       return false;
     }
 
@@ -1000,6 +1013,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       Log.d(TAG, "pin == confirmPIN:"+data.getParamByKey("pin").equals(data.getParamByKey("confirmPin")));
       if (data.getParamByKey("pin").equals(data.getParamByKey("confirmPin"))) {
       	mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PUK_REQUEST, data);
+				String strTitle = mContext.getString(R.string.IDS_PUK_LOCKED);
+		    String strMsg = mContext.getString(R.string.IDS_PIN_CHECK_PUK_PROGRESS);
+		    strMsg += "...";
+		    m_progress_dialog = ProgressDialog.show(mContext, strTitle, strMsg, true, false);  
 			}else {
 				mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
         mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
