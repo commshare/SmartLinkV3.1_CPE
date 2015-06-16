@@ -194,6 +194,16 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			default:
 				break;
 			}
+			
+			if(IsPredefine == 0 || Default == 1){
+				m_edit_profile_name.setEnabled(false);
+				m_edit_dial_number.setEnabled(false);
+				m_edit_apn.setEnabled(false);
+				m_edit_user_name.setEnabled(false);
+				m_edit_password.setEnabled(false);
+				m_protocol_selection.setEnabled(false);
+//				m_default_switcher.setEnabled(false);
+			}
 		}
 		else{
 			m_parent_activity.changeTitlebar(R.string.setting_network_add_profile);
@@ -433,6 +443,12 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 					m_is_default = true;
 					Default = 1;
 					m_switch_icon.setBackgroundResource(R.drawable.pwd_switcher_on);
+					m_edit_profile_name.setEnabled(false);
+					m_edit_dial_number.setEnabled(false);
+					m_edit_apn.setEnabled(false);
+					m_edit_user_name.setEnabled(false);
+					m_edit_password.setEnabled(false);
+					m_protocol_selection.setEnabled(false);
 					m_progress_bar.setVisibility(View.GONE);
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
