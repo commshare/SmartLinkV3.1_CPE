@@ -3,7 +3,7 @@ if [ -n "$1" ]
 then
 	versions=$1
 fi
-android update project -p . -n SmartLinkV3.1 -t android-21
+android update project -p . -n SmartLinkV3.1 -t android-16
 rm -rf ./gen
 rm -rf ./bin
 ant release
