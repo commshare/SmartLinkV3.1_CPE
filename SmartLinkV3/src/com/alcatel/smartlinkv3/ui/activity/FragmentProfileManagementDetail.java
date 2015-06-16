@@ -260,9 +260,8 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				BusinessMannager.getInstance().getProfileManager().startSetDefaultProfile(data);
 			}
 			else if(m_is_default == true){
-				//m_switch_icon.setBackground(getResources().getDrawable(R.drawable.pwd_switcher_off));
-//				m_switch_icon.setBackgroundResource(R.drawable.pwd_switcher_off);
-//				m_is_default = false;
+				String strInfo = getString(R.string.setting_network_profile_management_already_default);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
 			}
 			break;
 		default:
