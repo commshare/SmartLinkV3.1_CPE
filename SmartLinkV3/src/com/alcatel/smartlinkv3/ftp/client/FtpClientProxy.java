@@ -97,6 +97,10 @@ public class FtpClientProxy {
 		return false;
 	}
 
+	public boolean isFtpConnected() throws IOException {
+		return ftpClient.isConnected();
+	}
+
 	public void ftpSetting() throws IOException {
 		ftpClient.setFileType(FTPClient.FILE_STRUCTURE);
 		ftpClient.enterLocalPassiveMode();

@@ -10,7 +10,9 @@ import org.apache.commons.net.ftp.FTPFile;
 import android.R.bool;
 import android.content.Context;
 import android.content.res.Resources.Theme;
+import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.os.Handler;
@@ -84,6 +86,7 @@ public class FtpFileCommandTask {
 	public class MSG_TYPE {
 		public static final int MSG_SHOW_TOAST = 1;
 		public static final int MSG_SHARE_FILE = 2;
+		public static final int MSG_REFRESH_UI_CMD = 9;
 		public static final int MSG_REFRESH_UI = 10;
 
 		public static final int MSG_START_DOWNLOAD = 11;
@@ -93,6 +96,12 @@ public class FtpFileCommandTask {
 		public static final int MSG_ERROR_DOWNLOAD = 15;
 		public static final int MSG_CREATE_FOLDER = 16;
 	}
+
+	private enum FTP_STATE {
+		Initialized, UnInitiailized, Connecting, Connected, DisConnected, Logining, Logined, UnLogined, Operating, Exit,
+	}
+
+	private FTP_STATE mState = FTP_STATE.UnInitiailized;
 
 	class FtpCommandFormat {
 		int cmd;
@@ -189,15 +198,8 @@ public class FtpFileCommandTask {
 		 */
 
 		this.isInit = true;
+		mState = FTP_STATE.Initialized;
 		return true;
-	}
-
-	public void setConfig(FtpClientModel m_ftp) {
-		this.m_ftp = m_ftp;
-	}
-
-	public FtpClientModel getConfig() {
-		return this.m_ftp;
 	}
 
 	public void start() {
@@ -219,10 +221,6 @@ public class FtpFileCommandTask {
 			time++;
 		}
 
-		if (threadHandler.isAlive()) {
-			ftp_connect();
-		}
-
 		int n = 0;
 		while (!isLogin) {
 			try {
@@ -238,6 +236,14 @@ public class FtpFileCommandTask {
 			n++;
 		}
 
+	}
+
+	public void setConfig(FtpClientModel m_ftp) {
+		this.m_ftp = m_ftp;
+	}
+
+	public FtpClientModel getConfig() {
+		return this.m_ftp;
 	}
 
 	public void stop() {
@@ -348,8 +354,17 @@ public class FtpFileCommandTask {
 		addCommandTaskToLists(cmdTask);
 	}
 
+	
 	public synchronized boolean addCommandTaskToLists(Object obj) {
 		synchronized (mCmdQueue) {
+			if (!isNetworkConnected(mContext)) {
+				logger.i("can not connect the network!");
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST,
+						"can not connect the network! cmd = "
+								+ ((FtpCommandFormat) obj).cmd);
+				return false;
+			}
+
 			if (obj != null) {
 				mCmdQueue.addQueue((Object) obj);
 				return true;
@@ -358,8 +373,16 @@ public class FtpFileCommandTask {
 		return false;
 	}
 
+	public static boolean isNetworkConnected(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(context.CONNECTIVITY_SERVICE);
+		NetworkInfo info = cm.getActiveNetworkInfo();
+		return info != null && info.isConnected();
+	}
+
 	class FtpCommandHandler implements Runnable {
 		public int CMD = -1;
+		boolean iRet = false;
 
 		@Override
 		public void run() {
@@ -370,34 +393,181 @@ public class FtpFileCommandTask {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				if (mCmdQueue == null) {
-					continue;
-				}
 
-				if (mCmdQueue.QueueEmpty()) {
-					continue;
-				}
-				
-				try {
-					runCmd();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				switch (mState) {
+				case Initialized:
+					mState = FTP_STATE.Connecting;
+					break;
+				case UnInitiailized:
+					break;
+				case Connecting:
+					if (!isNetworkConnected(mContext)) {
+						mState = FTP_STATE.Exit;
+					}
+
+					iRet = ftpConnect();
+
+					if (iRet) {
+						mState = FTP_STATE.Connected;
+					} else {
+						mState = FTP_STATE.DisConnected;
+					}
+
+					break;
+				case Connected:
+					mState = FTP_STATE.Logining;
+					break;
+				case DisConnected:
+					if (isNetworkConnected(mContext)) {
+						mState = FTP_STATE.Connecting;
+					} else {
+						mState = FTP_STATE.Exit;
+					}
+
+					break;
+				case Logining:
+					if (!isNetworkConnected(mContext)) {
+						mState = FTP_STATE.Exit;
+					}
+
+					try {
+						iRet = ftp.isFtpConnected();
+						if (iRet) {
+							if (ftpLogin()) {
+								mState = FTP_STATE.Logined;
+								isLogin = true;
+							} else {
+								mState = FTP_STATE.UnLogined;
+								isLogin = false;
+							}
+						} else {
+							mState = FTP_STATE.DisConnected;
+						}
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+
+					break;
+				case Logined:
+					if (isInit && isLogin) {
+						mState = FTP_STATE.Operating;
+					}
+
+					break;
+				case UnLogined:
+					try {
+						iRet = ftp.isFtpConnected();
+						if (iRet) {
+							mState = FTP_STATE.Connecting;
+						} else {
+							ftp_close();
+							running = false;
+							logger.i("can not connect the network!");
+							sendMsg(MSG_TYPE.MSG_SHOW_TOAST,
+									"can not connect the network!");
+						}
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					break;
+				case Operating:
+					while (mState == FTP_STATE.Operating) {
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						if (!isNetworkConnected(mContext)) {
+							mState = FTP_STATE.Exit;
+						}
+
+						try {
+							boolean isConn = ftp.isFtpConnected();
+							if (!isConn) {
+								mState = FTP_STATE.DisConnected;
+								logger.i("ftp is not connected!....");
+							}
+						} catch (IOException e1) { // TODO Auto-generated catch
+													// block
+							e1.printStackTrace();
+						}
+
+						if (mCmdQueue == null) {
+							continue;
+						}
+
+						if (mCmdQueue.QueueEmpty()) {
+							continue;
+						}
+
+						int times = 0;
+						while (!isLogin) {
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							if (times >= 10000) {
+								mState = FTP_STATE.DisConnected;
+								logger.i("relogin again!");
+								break;
+							}
+							times++;
+						}
+
+						try {
+							runCmd();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					break;
+				case Exit:
+					ftp_close();
+					running = false;
+					if (!isNetworkConnected(mContext)) {
+						logger.i("can not connect the network!");
+						sendMsg(MSG_TYPE.MSG_SHOW_TOAST,
+								"can not connect the network!");
+					}
+					
+					break;
+				default:
+					mState = FTP_STATE.UnInitiailized;
+					break;
 				}
 
 			}
 		}
 
 		private synchronized void runCmd() throws Exception {
+			if (!isNetworkConnected(mContext)) {
+				return;
+			}
+
+			if (!ftp.isFtpConnected()) {
+				return;
+			}
+
+			if (!isLogin) {
+				return;
+			}
+
 			FtpCommandFormat ftpCommand = (FtpCommandFormat) mCmdQueue
 					.getQueue();
 			CMD = ftpCommand.cmd;
 
 			switch (CMD) {
 			case FTP_CMD.CONNECT:
-				logger.v("ftp is connecting!....");
-				ftpConnect();
+				// logger.v("ftp is connecting!....");
+				ftpConnectLogin();
 				CMD = -1;
 				break;
 			case FTP_CMD.SHOWFILES:
@@ -504,7 +674,7 @@ public class FtpFileCommandTask {
 				break;
 			case FTP_CMD.RENAME:
 				String fromRename = (String) ftpCommand.arg1;
-				String toRename = (String) ftpCommand.arg1;
+				String toRename = (String) ftpCommand.arg2;
 
 				if ((fromRename != null) && (toRename != null)) {
 					renameFile(fromRename, toRename);
@@ -533,6 +703,7 @@ public class FtpFileCommandTask {
 				CMD = -1;
 				break;
 			default:
+				CMD = -1;
 				break;
 			}
 		}
@@ -614,19 +785,74 @@ public class FtpFileCommandTask {
 		handler.sendMessage(msg);
 	}
 
-	private void ftpConnect() {
-		if (isLogin) {
+	boolean ftpConnect() {
+		boolean iRet = false;
+
+		if (mState == FTP_STATE.Connected) {
+			return true;
+		}
+
+		iRet = ftp.ftpConnect();
+
+		if (iRet) {
+			mState = FTP_STATE.Connected;
+			return true;
+		} else {
+			mState = FTP_STATE.DisConnected;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp connect fail!");
+			return false;
+		}
+
+	}
+
+	boolean ftpLogin() {
+		boolean iRet = false;
+
+		if (mState == FTP_STATE.Logined) {
+			return true;
+		}
+
+		iRet = ftp.ftpLogin();
+
+		if (iRet) {
+			mState = FTP_STATE.Logined;
+			isLogin = true;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login Success!");
+			return true;
+		} else {
+			mState = FTP_STATE.UnLogined;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login fail!");
+			return false;
+		}
+	}
+
+	private void ftpConnectLogin() {
+		boolean iRet = false;
+
+		if (mState == FTP_STATE.Logined) {
 			return;
 		}
 
-		if (ftp.connectLogin()) {
-			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login success!");
-			logger.v("ftp login success!");
-			isLogin = true;
-			handler.sendEmptyMessage(2);
+		iRet = ftp.ftpConnect();
+
+		if (iRet) {
+			mState = FTP_STATE.Connected;
 		} else {
+			mState = FTP_STATE.DisConnected;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp connect fail!");
+		}
+
+		iRet = ftp.ftpLogin();
+
+		if (iRet) {
+			mState = FTP_STATE.Logined;
+			isLogin = true;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login Success!");
+		} else {
+			mState = FTP_STATE.UnLogined;
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login fail!");
 		}
+
 	}
 
 	private void deleteFiles(ArrayList<FileInfo> remote) {
@@ -649,6 +875,7 @@ public class FtpFileCommandTask {
 			result = ftp.deleteFiles(remotePath);
 
 			if (result) {
+				sendMsg(MSG_TYPE.MSG_REFRESH_UI_CMD, "delete success");
 				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "delete file [" + remotePath
 						+ "] success!");
 			} else {
@@ -677,6 +904,7 @@ public class FtpFileCommandTask {
 		boolean result = ftp.rename(fromFile, toFile);
 
 		if (result) {
+			sendMsg(MSG_TYPE.MSG_REFRESH_UI_CMD, "rename success");
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "rename file [" + fromFile
 					+ "] success!");
 		} else {
@@ -712,6 +940,7 @@ public class FtpFileCommandTask {
 			boolean result = ftp.move(fromFile, toFile);
 
 			if (result) {
+				sendMsg(MSG_TYPE.MSG_REFRESH_UI_CMD, "move success");
 				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "move file [" + fromFile
 						+ "] success!");
 			} else {
@@ -754,6 +983,7 @@ public class FtpFileCommandTask {
 				return;
 			}
 		}
+		sendMsg(MSG_TYPE.MSG_REFRESH_UI_CMD, "upload success");
 		sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "upload success!");
 	}
 
@@ -902,6 +1132,7 @@ public class FtpFileCommandTask {
 
 		if (result) {
 			logger.i("create folder suceess: " + remoteFolder);
+			sendMsg(MSG_TYPE.MSG_REFRESH_UI_CMD, "create folder success");
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "create folder success!");
 			sendMsg(MSG_TYPE.MSG_CREATE_FOLDER, SUCCESS);
 		} else {

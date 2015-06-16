@@ -315,7 +315,7 @@ public class FtpFileViewFragment extends Fragment implements
 			case MSG_TYPE.MSG_SHOW_TOAST:
 				Toast.makeText(mContext, msg.obj + "", Toast.LENGTH_SHORT)
 						.show();
-				mFileViewInteractionHub.refreshFileList();
+				//mFileViewInteractionHub.refreshFileList();
 				break;
 			// share file lists
 			case MSG_TYPE.MSG_SHARE_FILE:
@@ -352,6 +352,9 @@ public class FtpFileViewFragment extends Fragment implements
 			case MSG_TYPE.MSG_CREATE_FOLDER:
 				int result = (Integer) msg.obj;
 				logger.i("create folder: " + result);
+				break;
+			case MSG_TYPE.MSG_REFRESH_UI_CMD:
+				mFileViewInteractionHub.refreshFileList();
 				break;
 			// ui refresh
 			case MSG_TYPE.MSG_REFRESH_UI:
@@ -401,7 +404,7 @@ public class FtpFileViewFragment extends Fragment implements
 						mFileListView.setSelection(pos);
 					}
 				});
-
+				
 				break;
 
 			default:

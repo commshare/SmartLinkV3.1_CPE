@@ -95,6 +95,10 @@ public class FtpManager {
 		return 0;
 	}
 
+	public boolean isFtpConnected() throws IOException {
+		return ftpProxy.isFtpConnected();
+	}
+	
 	public boolean setFtpConfigToFile(Context mContext,
 			FtpClientModel m_FtpClient) {
 
@@ -198,6 +202,34 @@ public class FtpManager {
 		return ftpProxy.getFileList(remoteDir);
 	}
 
+	public boolean ftpConnect() {
+		boolean iRet = false;
+		
+		iRet = ftpProxy.connect();
+		
+		if(iRet){
+			isConnect = true;
+			return true;
+		}else{
+			isConnect = false;
+			return false;
+		}
+	}
+
+	public boolean ftpLogin() {
+		boolean iRet = false;
+
+		iRet = ftpProxy.login();
+
+		if (iRet) {
+			isLogin = true;
+			return true;
+		} else {
+			isLogin = false;
+			return false;
+		}
+	}
+	
 	public boolean connectLogin() {
 		boolean iRet = false;
 
