@@ -176,7 +176,7 @@ private class ProfileListAdapter extends BaseAdapter{
 					else{
 //						Log.v("GetProfileResultDELETEPOSITION", "" + position);
 //						Log.v("GetProfileResultDELETEID", "" + m_profile_list_data.get(position).ProfileID);
-						if(m_profile_list_data.get(position).IsPredefine == 1){
+						if(m_profile_list_data.get(position).IsPredefine == 1 && m_profile_list_data.get(position).Default == 0){
 							m_progress_bar.setVisibility(View.VISIBLE);
 							selected_deleted_position = position;
 							int ProfileId = m_profile_list_data.get(position).ProfileID;
@@ -186,6 +186,10 @@ private class ProfileListAdapter extends BaseAdapter{
 						}
 						else if(m_profile_list_data.get(position).IsPredefine == 0){
 							String strInfo = getString(R.string.setting_network_profile_management_cannot_delete_predefined_profile);
+							Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
+						}
+						else if(m_profile_list_data.get(position).Default == 1){
+							String strInfo = getString(R.string.setting_network_profile_management_cannot_delete_default_profile);
 							Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
 						}
 					}
