@@ -229,7 +229,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			inquireDlg.m_titleTextView.setText(R.string.dialog_warning_title);
 			inquireDlg.m_contentTextView
 					.setText(R.string.dialog_warning_error_pin_code_error_3times);
-			inquireDlg.m_confirmBtn.setText(R.string.continue_anyway);
+			inquireDlg.m_confirmBtn.setText(R.string.confirm);
 			inquireDlg.showDialog(new OnInquireApply(){
 
 					@Override
