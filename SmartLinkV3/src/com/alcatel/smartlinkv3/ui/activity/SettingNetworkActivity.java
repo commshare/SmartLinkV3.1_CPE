@@ -5,9 +5,11 @@ import java.util.Stack;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BaseManager;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.HttpMethodUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.os.Bundle;
@@ -294,6 +296,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		int nID = v.getId();
+		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
 		switch (nID) {
 		case R.id.tv_title_back:
 		case R.id.ib_title_back:
@@ -303,13 +306,40 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 //			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
 //			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(null);
 //			BusinessMannager.getInstance().getProfileManager().startDeleteProfile(null);
-			m_network_mode_radiogroup.setVisibility(View.VISIBLE);
+			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
+				m_network_mode_radiogroup.setVisibility(View.VISIBLE);
+			else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
+				String strInfo = getString(R.string.setting_network_try_again);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			}
+			else{
+				String strInfo = getString(R.string.setting_network_disconnect_first);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.network_selection:
-			showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
+			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
+				showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
+			else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
+				String strInfo = getString(R.string.setting_network_try_again);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			}
+			else{
+				String strInfo = getString(R.string.setting_network_disconnect_first);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.network_profile_management:
-			showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
+			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
+				showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
+			else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
+				String strInfo = getString(R.string.setting_network_try_again);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			}
+			else{
+				String strInfo = getString(R.string.setting_network_disconnect_first);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.tv_titlebar_add:
 			if(m_fragment_tag_stack.size() > 0){
