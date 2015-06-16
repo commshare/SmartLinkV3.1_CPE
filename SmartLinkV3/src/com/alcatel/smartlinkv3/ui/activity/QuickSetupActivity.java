@@ -302,7 +302,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mLoginDialog.showDialog(new OnLoginFinishedListener() {
       @Override
       public void onLoginFinished() {
-      //  buildStateHandlerChain(false);
+        buildStateHandlerChain(true);
       }
     });  
   }
@@ -502,7 +502,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       int result = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
                                      BaseResponse.RESPONSE_OK);
       String error = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-
+      if (error == null) {
+				error = "Error";
+			}
       Log.d(TAG, "Quick Setup receive broadcase " + action);
       boolean ok = BaseResponse.RESPONSE_OK == result && 0 == error.length();
       if (action.equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
