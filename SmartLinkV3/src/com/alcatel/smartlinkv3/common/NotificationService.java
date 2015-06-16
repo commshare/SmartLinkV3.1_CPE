@@ -404,7 +404,7 @@ public class NotificationService extends Service {
 				strContent = this.getResources().getString(R.string.usage_limit_over_notification_content);
 			}else
 			{
-				strContent = this.getResources().getString(R.string.usage_limit_notification_content);
+				strContent = this.getResources().getString(R.string.usage_limit_less_notification_content);
 			}
 			break;	
 			
