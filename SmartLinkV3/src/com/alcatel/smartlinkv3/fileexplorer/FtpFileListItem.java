@@ -19,17 +19,13 @@
 
 package com.alcatel.smartlinkv3.fileexplorer;
 
-import java.util.logging.Logger;
-
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub.Mode;
-import com.alcatel.smartlinkv3.ftp.client.pubLog;
 import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class FtpFileListItem {
 	public static void setupFileListItemInfo(Context context, View view,
@@ -258,9 +253,12 @@ public class FtpFileListItem {
 				break;
 
 			case R.id.action_move_to:
-				Log.d("Moveto", "atction move to.");
 				mFileViewInteractionHub.onOperationMoveTo();
 				break;
+				
+			case R.id.action_cancel_edit :
+			    mFileViewInteractionHub.switchEditCheckBox();
+			    break;
 			}
 			Util.updateActionModeTitle(mode, mContext, mFileViewInteractionHub
 					.getSelectedFileList().size());

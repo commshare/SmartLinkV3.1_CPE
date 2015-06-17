@@ -34,5 +34,7 @@
         android:title="@string/operation_info"
         android:showAsAction="never" />
     
-	
+	<item android:id="@+id/action_cancel_edit"
+        android:title="@string/operation_cancel_edit"
+        android:showAsAction="never" />
 </menu>

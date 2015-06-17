@@ -31,11 +31,8 @@ import com.alcatel.smartlinkv3.fileexplorer.FtpFileOperationHelper.IOperationPro
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.IConnectedActionMode;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment.SelectFilesCallback;
 import com.alcatel.smartlinkv3.fileexplorer.TextInputDialog.OnFinishListener;
-import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.GetMetaDataProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.MediaManager;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
@@ -466,6 +463,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	}
 
 	// TODO 修改，添加参数标记_OLD_MARK,为重用方法，被修改方法替代
+	@Deprecated
 	private boolean doCreateFolder(String text, boolean OLD_MRAK) {
 		if (TextUtils.isEmpty(text))
 			return false;
@@ -1044,7 +1042,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		return this.makrEditCheckBox;
 	}
 
-	private void switchEditCheckBox() {
+	public void switchEditCheckBox() {
 		this.makrEditCheckBox = !this.makrEditCheckBox;
 		if (!canEditCheckBox()) {
 		    clearSelection();
