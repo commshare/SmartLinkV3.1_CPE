@@ -617,6 +617,10 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
 				m_pin_notice.setVisibility(View.GONE);
+				m_dlgPuk.onEnterPukResponse(true);
+			}
+			else{
+				m_dlgPuk.onEnterPukResponse(false);
 			}
 		}
 		
