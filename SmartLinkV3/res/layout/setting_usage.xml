@@ -68,7 +68,7 @@
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:maxLength="8"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionDone|flagNoExtractUi"
                 android:width="65dip" />        
         </RelativeLayout>
 
@@ -116,7 +116,7 @@
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:maxLength="8"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionDone|flagNoExtractUi"
                 android:width="65dip" />
         </RelativeLayout>
         

@@ -82,7 +82,7 @@
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:maxLength="4"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionDone|flagNoExtractUi"
                 android:width="65dip" />
         </RelativeLayout>
     </LinearLayout>

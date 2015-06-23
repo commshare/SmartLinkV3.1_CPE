@@ -67,7 +67,7 @@
                 android:layout_toLeftOf="@+id/billing_plan_unit"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionDone|flagNoExtractUi"
                 android:width="98dip" />        
         </RelativeLayout>
 
@@ -114,7 +114,7 @@
                 android:layout_toLeftOf="@+id/monthly_plan_unit"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionDone|flagNoExtractUi"
                 android:width="98dip" />
         </RelativeLayout>
         

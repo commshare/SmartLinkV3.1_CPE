@@ -104,6 +104,7 @@
 			        android:layout_toRightOf="@id/sms_to_view"
 			        android:inputType="none"
 			        android:scrollbarStyle="outsideOverlay"
+			        android:imeOptions="flagNoExtractUi"
 			        android:scrollbars="vertical"
 			        android:textSize="30sp" />
 			</RelativeLayout>
@@ -161,6 +162,7 @@
 			        android:inputType="none"
 			        android:maxLength="1600"
 			        android:scrollbarStyle="outsideOverlay"
+			        android:imeOptions="flagNoExtractUi"
 			        android:scrollbars="vertical"
 			        android:textSize="30sp" />
 			</RelativeLayout>
