@@ -21,9 +21,13 @@ package com.alcatel.smartlinkv3.fileexplorer;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+//import android.app.Fragment;
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,8 +42,9 @@ import java.lang.reflect.Field;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
+import com.alcatel.smartlinkv3.ui.activity.BaseFragmentActivity;
 
-public class FtpFileExplorerTabActivity extends Activity 
+public class FtpFileExplorerTabActivity extends BaseFragmentActivity 
 	implements FtpFileViewFragment.IConnectedActionMode {
 	private ActionMode mActionMode;
 
@@ -130,7 +135,7 @@ public class FtpFileExplorerTabActivity extends Activity
 				mBackPressedListener = (FtpFileViewFragment) fragment;
 				mRequestExListener = (OnRequestExListener) fragment;
 		
-				FragmentManager fragmentManager = this.getFragmentManager();
+				FragmentManager fragmentManager = this.getSupportFragmentManager();
 				FragmentTransaction fragmentTransaction = fragmentManager
 						.beginTransaction();
 				fragmentTransaction.replace(android.R.id.content, fragment);
