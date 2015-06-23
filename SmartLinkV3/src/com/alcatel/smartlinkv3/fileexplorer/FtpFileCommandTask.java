@@ -66,7 +66,7 @@ public class FtpFileCommandTask {
 
 	// ftp cmd
 	public class FTP_CMD {
-		private static final int CONNECT = 1;
+		private static final int LOGIN = 1;
 		private static final int SHOWFILES = 3;
 		private static final int DOWNLOAD = 4;
 		private static final int UPLOAD = 5;
@@ -101,7 +101,7 @@ public class FtpFileCommandTask {
 		Initialized, UnInitiailized, Connecting, Connected, DisConnected, Logining, Logined, UnLogined, Operating, Exit,
 	}
 
-	private FTP_STATE mState = FTP_STATE.UnInitiailized;
+	private volatile FTP_STATE mState = FTP_STATE.UnInitiailized;
 
 	class FtpCommandFormat {
 		int cmd;
@@ -252,7 +252,7 @@ public class FtpFileCommandTask {
 
 	public void ftp_connect() {
 		FtpCommandFormat cmdTask = new FtpCommandFormat();
-		cmdTask.cmd = FTP_CMD.CONNECT;
+		cmdTask.cmd = FTP_CMD.LOGIN;
 		cmdTask.arg1 = null;
 		cmdTask.arg2 = null;
 		addCommandTaskToLists(cmdTask);
@@ -354,15 +354,33 @@ public class FtpFileCommandTask {
 		addCommandTaskToLists(cmdTask);
 	}
 
-	
 	public synchronized boolean addCommandTaskToLists(Object obj) {
 		synchronized (mCmdQueue) {
 			if (!isNetworkConnected(mContext)) {
+				mState = FTP_STATE.Exit;
 				logger.i("can not connect the network!");
 				sendMsg(MSG_TYPE.MSG_SHOW_TOAST,
 						"can not connect the network! cmd = "
 								+ ((FtpCommandFormat) obj).cmd);
+				// ftp_close();
 				return false;
+			}
+
+			try {
+				boolean isConn = false;
+				isConn = ftp.isFtpConnected();
+				if (!isConn) {
+					mState = FTP_STATE.DisConnected;
+					logger.i("ftp is not connected!....");
+					sendMsg(MSG_TYPE.MSG_SHOW_TOAST,
+							"can not connect ftp server! cmd = "
+									+ ((FtpCommandFormat) obj).cmd);
+					//ftp_close();
+					return false;
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			if (obj != null) {
@@ -401,16 +419,16 @@ public class FtpFileCommandTask {
 				case UnInitiailized:
 					break;
 				case Connecting:
-					if (!isNetworkConnected(mContext)) {
-						mState = FTP_STATE.Exit;
-					}
+					if (isNetworkConnected(mContext)) {
+						iRet = ftpConnect();
 
-					iRet = ftpConnect();
-
-					if (iRet) {
-						mState = FTP_STATE.Connected;
+						if (iRet) {
+							mState = FTP_STATE.Connected;
+						} else {
+							mState = FTP_STATE.DisConnected;
+						}
 					} else {
-						mState = FTP_STATE.DisConnected;
+						mState = FTP_STATE.Exit;
 					}
 
 					break;
@@ -419,7 +437,18 @@ public class FtpFileCommandTask {
 					break;
 				case DisConnected:
 					if (isNetworkConnected(mContext)) {
-						mState = FTP_STATE.Connecting;
+						try {
+							iRet = ftp.isFtpConnected();
+							if (iRet) {
+								mState = FTP_STATE.Connecting;
+							} else {
+								mState = FTP_STATE.Exit;
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
 					} else {
 						mState = FTP_STATE.Exit;
 					}
@@ -462,6 +491,7 @@ public class FtpFileCommandTask {
 							mState = FTP_STATE.Connecting;
 						} else {
 							ftp_close();
+							isLogin = false;
 							running = false;
 							logger.i("can not connect the network!");
 							sendMsg(MSG_TYPE.MSG_SHOW_TOAST,
@@ -532,6 +562,8 @@ public class FtpFileCommandTask {
 				case Exit:
 					ftp_close();
 					running = false;
+					isLogin = false;
+					mState = FTP_STATE.UnInitiailized;
 					if (!isNetworkConnected(mContext)) {
 						logger.i("can not connect the network!");
 						sendMsg(MSG_TYPE.MSG_SHOW_TOAST,
@@ -548,24 +580,27 @@ public class FtpFileCommandTask {
 		}
 
 		private synchronized void runCmd() throws Exception {
-			if (!isNetworkConnected(mContext)) {
-				return;
-			}
-
-			if (!ftp.isFtpConnected()) {
-				return;
-			}
-
-			if (!isLogin) {
-				return;
-			}
-
 			FtpCommandFormat ftpCommand = (FtpCommandFormat) mCmdQueue
 					.getQueue();
 			CMD = ftpCommand.cmd;
 
+			if (!isNetworkConnected(mContext)) {
+				mState = FTP_STATE.DisConnected;
+				return;
+			}
+
+			if (!ftp.isFtpConnected()) {
+				mState = FTP_STATE.DisConnected;
+				return;
+			}
+
+			if (!isLogin) {
+				mState = FTP_STATE.UnLogined;
+				return;
+			}
+
 			switch (CMD) {
-			case FTP_CMD.CONNECT:
+			case FTP_CMD.LOGIN:
 				// logger.v("ftp is connecting!....");
 				ftpConnectLogin();
 				CMD = -1;
@@ -787,9 +822,17 @@ public class FtpFileCommandTask {
 
 	boolean ftpConnect() {
 		boolean iRet = false;
-
+		
 		if (mState == FTP_STATE.Connected) {
 			return true;
+		}
+		
+		if (!isNetworkConnected(mContext)) {
+			logger.i("can not connect the network!");
+			mState = FTP_STATE.DisConnected;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not connect network!");
+			// ftp_close();
+			return false;
 		}
 
 		iRet = ftp.ftpConnect();
@@ -810,6 +853,29 @@ public class FtpFileCommandTask {
 
 		if (mState == FTP_STATE.Logined) {
 			return true;
+		}
+		
+		if (!isNetworkConnected(mContext)) {
+			logger.i("can not connect the network!");
+			mState = FTP_STATE.DisConnected;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not connect network!");
+			// ftp_close();
+			return false;
+		}
+
+		try {
+			boolean isConn = false;
+			isConn = ftp.isFtpConnected();
+			if (!isConn) {
+				mState = FTP_STATE.DisConnected;
+				logger.i("ftp is not connected!....");
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not connect ftp server!");
+				// ftp_close();
+				return false;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		iRet = ftp.ftpLogin();
@@ -833,15 +899,39 @@ public class FtpFileCommandTask {
 			return;
 		}
 
+		if (!isNetworkConnected(mContext)) {
+			logger.i("can not connect the network!");
+			mState = FTP_STATE.DisConnected;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not connect network!");
+			// ftp_close();
+			return;
+		}
+
 		iRet = ftp.ftpConnect();
 
 		if (iRet) {
-			mState = FTP_STATE.Connected;
+			//mState = FTP_STATE.Connected;
 		} else {
-			mState = FTP_STATE.DisConnected;
+			//mState = FTP_STATE.DisConnected;
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp connect fail!");
+			return;
 		}
 
+		try {
+			boolean isConn = false;
+			isConn = ftp.isFtpConnected();
+			if (!isConn) {
+				mState = FTP_STATE.DisConnected;
+				logger.i("ftp is not connected!....");
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not connect ftp server!");
+				// ftp_close();
+				return;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		iRet = ftp.ftpLogin();
 
 		if (iRet) {
@@ -850,6 +940,7 @@ public class FtpFileCommandTask {
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login Success!");
 		} else {
 			mState = FTP_STATE.UnLogined;
+			isLogin = false;
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp login fail!");
 		}
 
@@ -1024,6 +1115,29 @@ public class FtpFileCommandTask {
 	}
 
 	private void showFiles(String path) {
+		if (!isNetworkConnected(mContext)) {
+			logger.i("can not connect the network!");
+			mState = FTP_STATE.DisConnected;
+			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not connect network!");
+			// ftp_close();
+			return;
+		}
+
+		try {
+			boolean isConn = false;
+			isConn = ftp.isFtpConnected();
+			if (!isConn) {
+				mState = FTP_STATE.DisConnected;
+				logger.i("ftp is not connected!....");
+				sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "can not connect ftp server!");
+				// ftp_close();
+				return;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		if (!isLogin) {
 			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "no login yet!");
 			return;
@@ -1042,7 +1156,7 @@ public class FtpFileCommandTask {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "Ftp File List Error:" + e);
+			// sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "Ftp File List Error:" + e);
 		}
 
 	}
@@ -1079,6 +1193,27 @@ public class FtpFileCommandTask {
 	}
 
 	public void reply_code() {
+		if (!isNetworkConnected(mContext)) {
+			logger.i("can not connect the network!");
+			mState = FTP_STATE.DisConnected;
+			// ftp_close();
+			return;
+		}
+
+		try {
+			boolean isConn = false;
+			isConn = ftp.isFtpConnected();
+			if (!isConn) {
+				mState = FTP_STATE.DisConnected;
+				logger.i("ftp is not connected!....");
+				// ftp_close();
+				return;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		logger.w("ftp reply code = " + ftp.getReply());
 	}
 

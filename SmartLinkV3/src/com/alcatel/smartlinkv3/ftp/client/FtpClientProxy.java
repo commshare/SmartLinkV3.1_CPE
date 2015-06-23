@@ -80,14 +80,21 @@ public class FtpClientProxy {
 		try {
 			FTPClientConfig ftpClientConfig = new FTPClientConfig(
 					FTPClientConfig.SYST_UNIX);
+
 			ftpClientConfig.setLenientFutureDates(true);
+
 			ftpClient.configure(ftpClientConfig);
+
 			logger.i("connect host = " + config.host + ",port = " + config.port);
+
 			ftpClient.connect(config.host, config.port);
+
 			int reply = this.ftpClient.getReplyCode();
+
 			if (!FTPReply.isPositiveCompletion(reply)) {
 				return false;
 			}
+
 			return true;
 		} catch (SocketException e) {
 			e.printStackTrace();
