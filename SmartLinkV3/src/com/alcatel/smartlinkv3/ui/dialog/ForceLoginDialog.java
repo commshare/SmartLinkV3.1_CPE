@@ -12,12 +12,10 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog.OnForceLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -45,14 +43,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher {
+public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWatcher {
 	private Context m_context;
 	private static final String REG_STR = "[^a-zA-Z0-9-\\+!@\\$#\\^&\\*]";
 	public boolean m_bIsShow = false;
 	public boolean m_bIsApply = false;
-	private Dialog m_dlgLogin = null;
+	private Dialog m_dlgForceLogin = null;
 	private ProgressDialog m_dlgProgress = null;
-	private View m_vLogin = null;
+	private View m_vForceLogin = null;
 	private EditText m_etPassword;
 	private Button m_btnApply;
 	private TextView m_tvPasswordError;
@@ -61,46 +59,26 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	// private static LoginDialog m_instance;
 	private String m_strMsgInvalidPassword;
 	private String m_strMsgWrongPassword;
-	private String m_strMsgOtherUserLogined;
 	private String m_strMsgLoginTimeUsedOut;
 	private AuthenficationBroadcastReviever m_auReceiver;
-	private static OnLoginFinishedListener m_loginCallback;
-	private CancelLoginListener mCancelCallback=null;
-	private boolean m_bOtherUserLoginError = false;
-	private boolean m_bLoginTimeUsedOutError = false;
-	private boolean m_bLoginPasswordError = false;
-	private ForceLoginDialog m_ForceloginDlg = null;
+	private static OnForceLoginFinishedListener m_forceloginCallback;
+	private CancelForceLoginListener mCancelCallback=null;
+	private boolean m_bForceLoginTimeUsedOutError = false;
+	private boolean m_bForceLoginPasswordError = false;
 	
-	private static String m_password = CPEConfig.getInstance().getLoginPassword();
+	private String m_forcelogin_password;
 
 	// just for test
-	public static final String USER_NAME = "admin";
+	public String USER_NAME = "admin";
 	private CommonErrorInfoDialog m_dialog_err_info;
 	
-//	private CommonErrorInfoSelectDialog m_dialog_err_selece;
-	
-	
-/*	private static boolean m_bAlreadyLogin = false;
-	
-	public static void  setAlreadyLogin(boolean bAlreadyLogin) {
-		m_bAlreadyLogin = bAlreadyLogin;
-	}
-	
-	public static boolean getAlreadyLogin() {
-		return m_bAlreadyLogin;
-	}*/
 
-	public LoginDialog(Context context) {
+	public ForceLoginDialog(Context context) {
 		m_context = context;
 		m_auReceiver = new AuthenficationBroadcastReviever();
 
 		if (null == m_dialog_err_info) {
 			m_dialog_err_info = CommonErrorInfoDialog.getInstance(m_context);
-		}
-		
-		if(null == m_ForceloginDlg)
-		{
-			m_ForceloginDlg = new ForceLoginDialog(m_context);
 		}
 		createDialog();
 	}
@@ -118,9 +96,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					closeDialog();
 				}
 			} else if (arg1.getAction().equalsIgnoreCase(
-					MessageUti.USER_LOGIN_REQUEST)) {
+					MessageUti.USER_FORCE_LOGIN_REQUEST)) {
 				m_bIsApply = false;
-				if(!m_dlgLogin.isShowing())
+				if(!m_dlgForceLogin.isShowing())
 					return;
 				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
 				String strErrorCode = arg1
@@ -128,54 +106,22 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				if (BaseResponse.RESPONSE_OK == nRet
 						&& strErrorCode.length() == 0) {
 
-					CPEConfig.getInstance().setLoginPassword(m_password);
+					CPEConfig.getInstance().setLoginPassword(m_forcelogin_password);
 					CPEConfig.getInstance().setLoginUsername(USER_NAME);
 					//setAlreadyLogin(true);
-					m_bOtherUserLoginError = false;
-					m_bLoginTimeUsedOutError = false;
-					m_bLoginPasswordError = false;
+					m_bForceLoginTimeUsedOutError = false;
+					m_bForceLoginPasswordError = false;
 					closeDialog();
-					if (null != m_loginCallback) {
-						m_loginCallback.onLoginFinished();
-						m_loginCallback = null;
+					if (null != m_forceloginCallback) {
+						m_forceloginCallback.onForceLoginFinished();
+						m_forceloginCallback = null;
 					}
 
 				} else if (BaseResponse.RESPONSE_OK == nRet
 						&& strErrorCode
-								.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
-					m_bOtherUserLoginError = true;
-					m_bLoginTimeUsedOutError = false;
-					m_bLoginPasswordError=false;
-//					m_dialog_err_info.showDialog(
-//							m_context.getString(R.string.other_login_warning_title),
-//							m_strMsgOtherUserLogined);
-
-
-					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_msg),
-							new OnClickConfirmBotton() 
-					{
-						public void onConfirm() 
-						{
-							m_ForceloginDlg.showDialog();
-						}
-					});
-				
-				
-					
-					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {
-						m_dlgProgress.dismiss();
-					}
-					closeDialog();
-//					SetErrorMsg(nRet, strErrorCode);
-//					m_vLogin.startAnimation(m_shake);
-					//setAlreadyLogin(false);
-
-				} else if (BaseResponse.RESPONSE_OK == nRet
-						&& strErrorCode
-						.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
-					m_bLoginTimeUsedOutError = true;
-					m_bOtherUserLoginError = false;
-					m_bLoginPasswordError = false;
+						.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+					m_bForceLoginTimeUsedOutError = true;
+					m_bForceLoginPasswordError = false;
 					m_dialog_err_info.showDialog(
 							m_context.getString(R.string.other_login_warning_title),
 							m_strMsgLoginTimeUsedOut);
@@ -188,107 +134,40 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					//setAlreadyLogin(false);
 
 				}else {
-					m_bLoginPasswordError = true;
-					m_bOtherUserLoginError = false;
-					m_bLoginTimeUsedOutError = false;
+					m_bForceLoginPasswordError = true;
+					m_bForceLoginTimeUsedOutError = false;
 					//SetErrorMsg(nRet, strErrorCode);
-					if(CPEConfig.getInstance().getAutoLoginFlag())
-					{
-						// Show error dialog
-						String strTitle = "";
-						if (m_bOtherUserLoginError) {
-							strTitle = m_strMsgOtherUserLogined;
-						} else if(m_bLoginTimeUsedOutError){
-							strTitle = m_strMsgLoginTimeUsedOut;
-						}else{
-							strTitle = m_context
-									.getString(R.string.login_psd_error_msg);
-						}
-						if (m_dlgProgress != null && m_dlgProgress.isShowing())
-							m_dlgProgress.dismiss();
-						ErrorDialog.getInstance(m_context).showDialog(strTitle,
-								new OnClickBtnRetry() {
+					m_vForceLogin.startAnimation(m_shake);
 
-									@Override
-									public void onRetry() {
-										showDialog();
-									}
-								});
-					}else{
-						m_vLogin.startAnimation(m_shake);
-					}
 					//setAlreadyLogin(false);
 				}
 			}
 		}
 	}
 	
-	public boolean getOtherUserLoginErrorStatus()
-	{
-		if(m_bOtherUserLoginError){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
-	public String getOtherUserLoginString()
-	{
-		return m_strMsgOtherUserLogined;
-	}
-	
-
-	public boolean getLoginTimeUsedOutErrorStatus()
-	{
-		if(m_bLoginTimeUsedOutError){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
-	public String getLoginTimeUsedOutString()
-	{
-		return m_strMsgLoginTimeUsedOut;
-	}
-	
-	public boolean getLoginPasswordErrorStatus()
-	{
-		if(m_bLoginPasswordError){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
-	public String getLoginPasswordErrorString()
-	{
-		return m_strMsgWrongPassword;
-	}
-	
-	public CommonErrorInfoDialog getCommonErrorInfoDialog()
-	{
-			return m_dialog_err_info;
-	}
+//	public CommonErrorInfoDialog getCommonErrorInfoDialog()
+//	{
+//			return m_dialog_err_info;
+//	}
 	
 	
 	
-	public void showDialog(OnLoginFinishedListener callback) {
-		m_loginCallback = callback;
+	public void showDialog(OnForceLoginFinishedListener callback) {
+		m_forceloginCallback = callback;
 	/*	if (getAlreadyLogin()) {
 			m_callback.onLoginFinished();
 		} else {*/
 
-			if (m_dlgLogin != null) {
+			if (m_dlgForceLogin != null) {
 				m_tvPasswordError.setVisibility(View.GONE);
 				m_btnApply.setEnabled(false);
 				m_etPassword.setText("");
 				m_etPassword.requestFocus();
-				m_dlgLogin.show();
+				m_dlgForceLogin.show();
 				m_bIsShow = true;
 				m_bIsApply = false;
 			}
-			m_vLogin.clearAnimation();
+			m_vForceLogin.clearAnimation();
 		//}
 	}
 
@@ -297,13 +176,10 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			m_dlgProgress.dismiss();
 		}
 
-		if (m_dlgLogin != null) {
+		if (m_dlgForceLogin != null) {
 			m_tvPasswordError.setVisibility(View.VISIBLE);
-			if (BaseResponse.RESPONSE_OK == nResponseResult
-					&& err.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
-				m_tvPasswordError.setText(m_strMsgOtherUserLogined);
-			} else if(BaseResponse.RESPONSE_OK == nResponseResult
-					&& err.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)){
+			if(BaseResponse.RESPONSE_OK == nResponseResult
+					&& err.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)){
 				m_tvPasswordError.setText(m_strMsgLoginTimeUsedOut);
 			}else {
 				m_tvPasswordError.setText(m_strMsgWrongPassword);
@@ -319,30 +195,30 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			m_dlgProgress.dismiss();
 		}
 
-		if (m_dlgLogin != null) {		
+		if (m_dlgForceLogin != null) {		
 			m_btnApply.setEnabled(false);
 			m_etPassword.setText("");
 			m_etPassword.requestFocus();
 			m_tvPasswordError.setText("");			
 			if (!m_bIsShow) {
-				m_dlgLogin.show();
+				m_dlgForceLogin.show();
 			}
 			m_bIsShow = true;
 			m_bIsApply = false;
 		}
-		m_vLogin.clearAnimation();
+		m_vForceLogin.clearAnimation();
 	}
 
 	public void closeDialog() {
 		InputMethodManager imm = (InputMethodManager) m_context
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(m_vLogin.getWindowToken(), 0);
+		imm.hideSoftInputFromWindow(m_vForceLogin.getWindowToken(), 0);
 
 		if (m_dlgProgress != null && m_dlgProgress.isShowing())
 			m_dlgProgress.dismiss();
 
-		if (m_dlgLogin.isShowing()) {
-			m_dlgLogin.dismiss();
+		if (m_dlgForceLogin.isShowing()) {
+			m_dlgForceLogin.dismiss();
 		}
 
 		m_bIsShow = false;
@@ -352,7 +228,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	public void destroyDialog() {
 		closeDialog();
 		m_dialog_err_info.closeDialog();
-		m_ForceloginDlg.closeDialog();
 		try {
 			m_context.unregisterReceiver(m_auReceiver);
 		} catch (Exception e) {
@@ -365,43 +240,41 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				R.string.login_invalid_password);
 		m_strMsgWrongPassword = m_context.getResources().getString(
 				R.string.login_prompt_str);
-		m_strMsgOtherUserLogined = m_context.getResources().getString(
-				R.string.login_other_user_logined_error_msg);
 		m_strMsgLoginTimeUsedOut = m_context.getResources().getString(
 				R.string.login_login_time_used_out_msg);
 
 		LayoutInflater factory = LayoutInflater.from(m_context);
-		m_vLogin = factory.inflate(R.layout.login_view, null);
+		m_vForceLogin = factory.inflate(R.layout.login_view, null);
 
-		m_vLogin.setOnKeyListener(this);
-		m_dlgLogin = new Dialog(m_context, R.style.dialog);
-		Window window = m_dlgLogin.getWindow();
+		m_vForceLogin.setOnKeyListener(this);
+		m_dlgForceLogin = new Dialog(m_context, R.style.dialog);
+		Window window = m_dlgForceLogin.getWindow();
 		window.setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		m_dlgLogin.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		m_dlgLogin.setContentView(m_vLogin);
-		m_dlgLogin.setFeatureDrawableAlpha(Window.FEATURE_OPTIONS_PANEL, 0);
+		m_dlgForceLogin.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		m_dlgForceLogin.setContentView(m_vForceLogin);
+		m_dlgForceLogin.setFeatureDrawableAlpha(Window.FEATURE_OPTIONS_PANEL, 0);
 
-		m_tvPasswordError = (TextView) m_vLogin
+		m_tvPasswordError = (TextView) m_vForceLogin
 				.findViewById(R.id.login_label_prompt);
 
-		m_etPassword = (EditText) m_vLogin.findViewById(R.id.login_edit_view);
+		m_etPassword = (EditText) m_vForceLogin.findViewById(R.id.login_edit_view);
 		m_etPassword.setOnKeyListener(this);
 		m_etPassword.addTextChangedListener(this);
 
-		m_btnApply = (Button) m_vLogin.findViewById(R.id.login_apply_btn);
+		m_btnApply = (Button) m_vForceLogin.findViewById(R.id.login_apply_btn);
 		m_btnApply.setOnClickListener(this);
 
-		Button closeBtn = (Button) m_vLogin
+		Button closeBtn = (Button) m_vForceLogin
 				.findViewById(R.id.login_close_btn);
 		closeBtn.setOnClickListener(this);
 
-		m_dlgLogin.setCancelable(false);
+		m_dlgForceLogin.setCancelable(false);
 
 		m_context.registerReceiver(m_auReceiver, new IntentFilter(
-				MessageUti.USER_LOGIN_REQUEST));
+				MessageUti.USER_FORCE_LOGIN_REQUEST));
 		m_context.registerReceiver(m_auReceiver, new IntentFilter(
 				MessageUti.CPE_WIFI_CONNECT_CHANGE));
 
@@ -422,14 +295,12 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			public void onAnimationEnd(Animation animation) {
 				// Hide admin dialog
 				if (m_bIsShow) {
-					m_dlgLogin.dismiss();
+					m_dlgForceLogin.dismiss();
 				}
 				m_bIsShow = false;
 				// Show error dialog
 				String strTitle = "";
-				if (m_bOtherUserLoginError) {
-					strTitle = m_strMsgOtherUserLogined;
-				} else if(m_bLoginTimeUsedOutError){
+				if(m_bForceLoginTimeUsedOutError){
 					strTitle = m_strMsgLoginTimeUsedOut;
 				}else{
 					strTitle = m_context
@@ -444,7 +315,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
             @Override
             public void onCancel() {
-              mCancelCallback.onCancelLogin();
+              mCancelCallback.onCancelForceLogin();
             }
 
           });
@@ -466,9 +337,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		if(m_bIsApply)
 			return;
 		
-		m_password = m_etPassword.getText().toString();
+		m_forcelogin_password = m_etPassword.getText().toString();
 		Pattern pattern = Pattern.compile(REG_STR);
-		Matcher matcher = pattern.matcher(m_password);
+		Matcher matcher = pattern.matcher(m_forcelogin_password);
 		if (matcher.find()) {
 			m_tvPasswordError.setText(m_strMsgInvalidPassword);
 			m_tvPasswordError.setVisibility(View.VISIBLE);
@@ -477,7 +348,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 		InputMethodManager imm = (InputMethodManager) m_context
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(m_vLogin.getWindowToken(), 0);
+		imm.hideSoftInputFromWindow(m_vForceLogin.getWindowToken(), 0);
 
 		String strTitle = m_context
 				.getString(R.string.login_check_dialog_title);
@@ -490,9 +361,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 		DataValue data = new DataValue();
 		data.addParam("user_name", USER_NAME);
-		data.addParam("password", m_password);
+		data.addParam("password", m_forcelogin_password);
 		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.USER_LOGIN_REQUEST, data);
+				MessageUti.USER_FORCE_LOGIN_REQUEST, data);
 		m_bIsApply = true;
 	}
 
@@ -520,17 +391,17 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		if (event.getAction() == KeyEvent.ACTION_DOWN
 				&& keyCode == KeyEvent.KEYCODE_BACK) {
-			m_dlgLogin.dismiss();
+			m_dlgForceLogin.dismiss();
 			m_bIsShow = false;
       if (mCancelCallback != null){
-        mCancelCallback.onCancelLogin();
+        mCancelCallback.onCancelForceLogin();
       }
 		}
 
 		return false;
 	}
 	
-	public void setCancelCallback(CancelLoginListener l) {
+	public void setCancelCallback(CancelForceLoginListener l) {
 	  mCancelCallback = l;
 	}
 
@@ -544,26 +415,27 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		case R.id.login_close_btn:
 			closeDialog();
 			if (mCancelCallback != null){
-			  mCancelCallback.onCancelLogin();
+			  mCancelCallback.onCancelForceLogin();
 			}
 			break;
 		}
 	}
 
 	//
-	public interface OnLoginFinishedListener {
-		public void onLoginFinished();
+	public interface OnForceLoginFinishedListener {
+		public void onForceLoginFinished();
 	}
 	
-	public interface CancelLoginListener {
-	  public void onCancelLogin();
+	public interface CancelForceLoginListener {
+	  public void onCancelForceLogin();
 	}
 
-	public static boolean isLoginSwitchOff() {
-		String strLoginFile = Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + "/CPE/LoginDisable";
-		File f = new File(strLoginFile);
-		return f.exists();
-	}
+//	public static boolean isLoginSwitchOff() {
+//		String strLoginFile = Environment.getExternalStorageDirectory()
+//				.getAbsolutePath() + "/CPE/LoginDisable";
+//		File f = new File(strLoginFile);
+//		return f.exists();
+//	}
+
 
 }

@@ -7,8 +7,12 @@ import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog.OnForceLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -36,6 +40,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
+import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -113,6 +118,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private LoginDialog m_loginDialog = null;
 	private AutoLoginProgressDialog	m_autoLoginDialog = null;
+	private ForceLoginDialog m_ForceloginDlg = null;
 	
 	private String home_connected_duration = null;
 	private String home_connected_zero_duration = null;
@@ -247,6 +253,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		m_loginDialog = new LoginDialog(this.m_context);
 		m_autoLoginDialog = new AutoLoginProgressDialog(this.m_context);
+		m_ForceloginDlg = new ForceLoginDialog(this.m_context);
 		
 		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
 		home_connected_zero_duration = this.getView().getResources().getString(R.string.Home_zero_data);
@@ -296,6 +303,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	public void onDestroy() {
 		m_loginDialog.destroyDialog();
 		m_autoLoginDialog.destroyDialog();
+		m_ForceloginDlg.destroyDialog();
 	}
 
 	@Override
@@ -533,7 +541,19 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getOtherUserLoginString());
+							ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_msg),
+									new OnClickConfirmBotton() 
+							{
+								public void onConfirm() 
+								{
+									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+										@Override
+										public void onForceLoginFinished() {
+											connect();
+										}
+									});
+								}
+							});
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{
@@ -559,7 +579,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 						m_loginDialog.showDialog(new OnLoginFinishedListener() {
 							@Override
 							public void onLoginFinished() {
-								connect();;								
+								connect();								
 							}
 						});						
 					}					

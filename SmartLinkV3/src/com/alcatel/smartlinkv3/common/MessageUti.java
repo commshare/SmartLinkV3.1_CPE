@@ -31,8 +31,11 @@ public class MessageUti {
 	
 	/**************************User message start*********************************************************************************/
 	public static String USER_LOGIN_REQUEST = "com.alcatel.smartlinkv3.business.user.login";
+	public static String USER_FORCE_LOGIN_REQUEST = "com.alcatel.smartlinkv3.business.user.forcelogin";
 	public static String USER_LOGOUT_REQUEST = "com.alcatel.smartlinkv3.business.user.logout";
+	public static String USER_HEARTBEAT_REQUEST = "com.alcatel.smartlinkv3.business.user.heartbeat";
 	public static String USER_CHANGE_PASSWORD_REQUEST = "com.alcatel.smartlinkv3.business.user.changepassword";
+	public static String USER_COMMON_ERROR_32604_REQUEST = "com.alcatel.smartlinkv3.business.common.error.32604";
 	/**************************User message end*********************************************************************************/
 	
 	/**************************System message start*********************************************************************************/
@@ -207,6 +210,7 @@ public class MessageUti {
 		
 		/********************User method start**********************/
 		httpMethods.put(USER_LOGIN_REQUEST, new HttpMethodUti(UserManager.class, "login"));
+		httpMethods.put(USER_FORCE_LOGIN_REQUEST, new HttpMethodUti(UserManager.class, "forcelogin"));
 		httpMethods.put(USER_LOGOUT_REQUEST, new HttpMethodUti(UserManager.class, "logout"));
 		httpMethods.put(USER_CHANGE_PASSWORD_REQUEST, new HttpMethodUti(UserManager.class, "changepassword"));
 		/********************User method end**********************/

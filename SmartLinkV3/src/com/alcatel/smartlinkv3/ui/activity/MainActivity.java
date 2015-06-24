@@ -12,6 +12,10 @@ import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog.OnForceLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
@@ -112,11 +116,13 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	private PukDialog m_dlgPuk = null;
 	private ErrorDialog m_dlgError = null;
 	private LoginDialog m_loginDlg = null;
+	private ForceLoginDialog m_ForceloginDlg = null;
 	private AutoLoginProgressDialog	m_autoLoginDialog = null;
 
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
 	private static boolean m_blLogout = false;
+	private static boolean m_blkickoff_Logout = false;
 	
 	private CommonErrorInfoDialog m_dialog_timeout_info;
 	
@@ -180,6 +186,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		m_dlgPuk = PukDialog.getInstance(this);
 		m_dlgError = ErrorDialog.getInstance(this);
 		m_loginDlg = new LoginDialog(this);
+		m_ForceloginDlg = new ForceLoginDialog(this);
 		m_autoLoginDialog = new AutoLoginProgressDialog(this);		
 		m_unlockSimBtn = (Button) m_homeView.getView().findViewById(
 				R.id.unlock_sim_button);
@@ -263,6 +270,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		m_dlgPuk.destroyDialog();
 		m_dlgError.destroyDialog();
 		m_loginDlg.destroyDialog();
+		m_ForceloginDlg.destroyDialog();
 		m_autoLoginDialog.destroyDialog();
 	}
 	
@@ -315,7 +323,13 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					String strInfo = getString(R.string.login_logout_successful);
 					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();					
 				}
+				
+				if (m_blkickoff_Logout) {
+					String strInfo = getString(R.string.login_kickoff_logout_successful);
+					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();					
+				}
 				m_blLogout = false;
+				m_blkickoff_Logout = false;
 			}
 		}
 		
@@ -527,7 +541,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 							{
-								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+								//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+
+								ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
+										new OnClickConfirmBotton() 
+								{
+									public void onConfirm() 
+									{
+										m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+											@Override
+											public void onForceLoginFinished() {
+												go2UsageView();
+											}
+										});
+									}
+								});
+							
 							}
 							else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 							{
@@ -608,7 +637,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+
+							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
+									new OnClickConfirmBotton() 
+							{
+								public void onConfirm() 
+								{
+									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+										@Override
+										public void onForceLoginFinished() {
+											go2UsageView();
+										}
+									});
+								}
+							});
+						
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{
@@ -696,7 +740,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+
+							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
+									new OnClickConfirmBotton() 
+							{
+								public void onConfirm() 
+								{
+									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+										@Override
+										public void onForceLoginFinished() {
+											go2UsageView();
+										}
+									});
+								}
+							});
+						
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{
@@ -775,7 +834,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+
+							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
+									new OnClickConfirmBotton() 
+							{
+								public void onConfirm() 
+								{
+									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+										@Override
+										public void onForceLoginFinished() {
+											go2UsageView();
+										}
+									});
+								}
+							});
+						
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{
@@ -852,7 +926,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+
+							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
+									new OnClickConfirmBotton() 
+							{
+								public void onConfirm() 
+								{
+									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+										@Override
+										public void onForceLoginFinished() {
+											go2UsageView();
+										}
+									});
+								}
+							});
+						
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{
@@ -927,7 +1016,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+
+							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
+									new OnClickConfirmBotton() 
+							{
+								public void onConfirm() 
+								{
+									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+										@Override
+										public void onForceLoginFinished() {
+											go2UsageView();
+										}
+									});
+								}
+							});
+						
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{
@@ -1092,6 +1196,11 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	public static void setLogoutFlag(boolean blLogout){
 		m_blLogout = blLogout;
 	}
+	
+	public static void setKickoffLogoutFlag(boolean blLogout){
+		m_blkickoff_Logout = blLogout;
+	}
+	
 	private void moreBtnClick(){
 		MorePopWindow morePopWindow = new MorePopWindow(MainActivity.this);
 		morePopWindow.showPopupWindow(m_Btnbar);
@@ -1219,7 +1328,22 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
+
+							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
+									new OnClickConfirmBotton() 
+							{
+								public void onConfirm() 
+								{
+									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
+										@Override
+										public void onForceLoginFinished() {
+											go2UsageView();
+										}
+									});
+								}
+							});
+						
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{

@@ -71,6 +71,66 @@ public class HttpUser {
 			return null;
 		}
     }
+	
+	/********************  ForceLogin  **************************************************************************************/	
+	public static class ForceLogin extends BaseRequest
+    {	
+		String m_strUserName = new String();
+		String m_strPsw = new String();
+		
+        public ForceLogin(String strId,String strUserName,String strPsw,IHttpFinishListener callback) 
+        {
+        	super(callback);  
+        	m_strUserName = strUserName;
+        	m_strPsw = strPsw;
+        	m_strId = strId;
+        }
+
+        @Override
+        protected void buildHttpParamJson() 
+        {
+        	try {
+				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ForceLogin");
+	        	
+	        	JSONObject userInfo = new JSONObject();
+	        	userInfo.put("UserName", m_strUserName);
+	        	userInfo.put("Password", m_strPsw);
+	        	
+	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
+	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+        	} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
+        @Override
+        public BaseResponse createResponseObject() 
+        {            
+            return new ForceLoginResponse(m_finsishCallback);
+        }
+        
+    }
+	
+	public static class ForceLoginResponse extends BaseResponse
+    {
+        
+        public ForceLoginResponse(IHttpFinishListener callback) 
+        {
+            super(callback);            
+        }
+
+        @Override
+		protected void parseContent(String strJsonResult) {			
+		}
+
+		@Override
+		public <T> T getModelResult() {		
+			return null;
+		}
+    }
+	
 /********************  Logout  **************************************************************************************/	
 	public static class Logout extends BaseRequest
     {	

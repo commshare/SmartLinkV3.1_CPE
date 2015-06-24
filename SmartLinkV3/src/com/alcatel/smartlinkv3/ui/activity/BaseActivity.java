@@ -54,6 +54,7 @@ public abstract class BaseActivity extends Activity{
     	
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
+    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_HEARTBEAT_REQUEST));
     	
     	showActivity(this);
     	backMainActivityOnResume(this);
@@ -99,6 +100,12 @@ public abstract class BaseActivity extends Activity{
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0 && isForeground(this)) {
 				backMainActivity(context);
+			}
+		}else if(intent.getAction().equals(MessageUti.USER_HEARTBEAT_REQUEST)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+				kickoffLogout();
 			}
 		}
 	}
@@ -196,6 +203,15 @@ public abstract class BaseActivity extends Activity{
 	           }
 	    }
 	    return false;
+	}
+	
+	public void kickoffLogout() {
+		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
+			MainActivity.setKickoffLogoutFlag(true);
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.USER_LOGOUT_REQUEST, null);
+		}
 	}
 
 //	private void checkLogin()

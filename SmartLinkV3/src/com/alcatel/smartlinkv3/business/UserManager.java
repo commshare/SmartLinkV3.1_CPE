@@ -116,6 +116,48 @@ public class UserManager extends BaseManager {
             }
         }));
     } 
+	
+//Login  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+	public void forcelogin(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+			return;
+		
+		String strUserName = (String) data.getParamByKey("user_name");
+    	String strPsw = (String) data.getParamByKey("password");
+    	
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ForceLogin("1.6",strUserName, strPsw, new IHttpFinishListener() {           
+            @Override
+			public void onHttpRequestFinish(BaseResponse response) 
+            {   
+            	String strErrcode = new String();
+                int ret = response.getResultCode();
+                if(ret == BaseResponse.RESPONSE_OK) {
+                	strErrcode = response.getErrorCode();
+                	if(strErrcode.length() == 0) { 
+                		startUpdateLoginTimeTask();
+                		m_loginStatus = UserLoginStatus.login;
+                		
+                	}else{
+                		if(null != m_updateLoginTimeTask) {
+                			m_updateLoginTimeTask.cancel();
+                			m_updateLoginTimeTask = null;
+                		}
+                	}
+                }else{
+            		if(null != m_updateLoginTimeTask) {
+            			m_updateLoginTimeTask.cancel();
+            			m_updateLoginTimeTask = null;
+            		}
+                }
+ 
+                Intent megIntent= new Intent(MessageUti.USER_FORCE_LOGIN_REQUEST);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+            }
+        }));
+    } 
+		
 //Logout  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void logout(DataValue data) {		
 	
@@ -207,17 +249,25 @@ public class UserManager extends BaseManager {
                 { 
                 	String strErrcode = new String();
                     int ret = response.getResultCode();                 
-                    if(ret == BaseResponse.RESPONSE_OK && strErrcode.length() == 0) {
+                    if(ret == BaseResponse.RESPONSE_OK ) {
+                    	strErrcode = response.getErrorCode();
+                    	if(strErrcode.length() == 0) {
                     	
+                    	}else{
+                    		
+                    	}
                     }
-                    else{    
-
+                    else{
                 		if(null != m_getLoginStateTask) {
                 			m_getLoginStateTask.cancel();
                 			m_getLoginStateTask = null;
                 		}
                     }      
                     
+                    Intent megIntent= new Intent(MessageUti.USER_HEARTBEAT_REQUEST);
+                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+        			m_context.sendBroadcast(megIntent);
                 }               	
             }));
         	}        
@@ -229,7 +279,7 @@ public class UserManager extends BaseManager {
 			return;
 		if(m_updateLoginTimeTask == null) {
 			m_updateLoginTimeTask = new UpdateLoginTimeTask();
-			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 25000);
+			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 10000);
 		}
 	}
 	

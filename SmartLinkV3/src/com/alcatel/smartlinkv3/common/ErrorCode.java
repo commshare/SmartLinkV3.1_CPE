@@ -6,6 +6,11 @@ public class ErrorCode {
 	public static final String ERR_USER_OTHER_USER_LOGINED = "010102";
 	public static final String ERR_LOGIN_TIMES_USED_OUT = "010103";
 	public static final String ERR_USERNAME_OR_PASSWORD = "010101";
+	public static final String ERR_FORCE_LOGIN_TIMES_USED_OUT = "010602";
+	public static final String ERR_FORCE_USERNAME_OR_PASSWORD = "010601";
+	public static final String ERR_HEARTBEAT_METHOD_IS_WRONG = "010501";
+	public static final String ERR_HEARTBEAT_OTHER_USER_LOGIN = "010502";
+	public static final String ERR_COMMON_ERROR_32604 = "-32604";
 	/********************User ErrorCode end**********************/
 	
 	/********************SMS ErrorCode start**********************/
