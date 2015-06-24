@@ -12,11 +12,9 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog.OnForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickConfirmBotton;
 
 import android.app.Dialog;
@@ -69,7 +67,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private boolean m_bOtherUserLoginError = false;
 	private boolean m_bLoginTimeUsedOutError = false;
 	private boolean m_bLoginPasswordError = false;
-	private ForceLoginDialog m_ForceloginDlg = null;
+	private AutoForceLoginProgressDialog m_ForceloginDlg = null;
 	
 	private static String m_password = CPEConfig.getInstance().getLoginPassword();
 
@@ -100,7 +98,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		
 		if(null == m_ForceloginDlg)
 		{
-			m_ForceloginDlg = new ForceLoginDialog(m_context);
+			m_ForceloginDlg = new AutoForceLoginProgressDialog(m_context);
 		}
 		createDialog();
 	}
@@ -156,7 +154,34 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					{
 						public void onConfirm() 
 						{
-							m_ForceloginDlg.showDialog();
+							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+								public void onLoginSuccess() 				
+								{
+									CPEConfig.getInstance().setLoginPassword(m_password);
+									CPEConfig.getInstance().setLoginUsername(USER_NAME);
+									closeDialog();
+									//go2SettingPowerSavingActivity();
+								}
+
+								public void onLoginFailed(String error_code)
+								{
+									if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
+									{
+										ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+												new OnClickBtnRetry() 
+										{
+											@Override
+											public void onRetry() 
+											{
+												showDialog();
+											}
+										});
+									}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
+									{
+										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
+									}
+								}
+							});
 						}
 					});
 				

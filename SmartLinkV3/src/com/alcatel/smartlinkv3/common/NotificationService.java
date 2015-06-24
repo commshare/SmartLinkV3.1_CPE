@@ -67,6 +67,9 @@ public class NotificationService extends Service {
 						boolean bCalibrationValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_MONTHLY_PLAN_CHANGE,false);
 						if (bCalibrationValueChange) {
 							m_isNeedToAlertUsageLimit = true;		
+							m_isNeedToAlertBatteryLimit  = false;
+							m_isNeedToAlertUpgrade = false;
+							
 							m_AlertUsageLimitLessOneTime = true;
 							m_AlertUsageLimitOverOneTime = true;
 							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
@@ -104,7 +107,10 @@ public class NotificationService extends Service {
 							.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if (nResult == BaseResponse.RESPONSE_OK
 							&& strErrorCode.length() == 0) {
-		    			m_isNeedToAlertUsageLimit = true;					
+		    			m_isNeedToAlertUsageLimit = true;	
+						m_isNeedToAlertBatteryLimit  = false;
+						m_isNeedToAlertUpgrade = false;
+						
 						m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 		    		}
 		    	}
@@ -115,7 +121,10 @@ public class NotificationService extends Service {
 					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 						SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 						if(simStatus.m_SIMState != ENUM.SIMState.Accessable) {
-							m_isNeedToAlertUsageLimit = true;
+							m_isNeedToAlertUsageLimit = true;	
+							m_isNeedToAlertBatteryLimit  = false;
+							m_isNeedToAlertUpgrade = false;
+							
 							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 						}
 					}
@@ -128,13 +137,18 @@ public class NotificationService extends Service {
 						BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
 						if(batteryinfo.getChargeState() == ConstValue.CHARGE_STATE_CHARGING)
 						{
-							m_isNeedToAlertBatteryLimit = false;
+							m_isNeedToAlertBatteryLimit = false;	
+							m_isNeedToAlertBatteryLimit  = false;
+							m_isNeedToAlertUpgrade = false;
+							
 							m_AlertBatteryLimit2OneTime = true;
 							m_AlertBatteryLimit1OneTime = true;
 							m_nm.cancel(ALERT_TYPE.BatteryLimit.ordinal());
 						}else
 						{
 							m_isNeedToAlertBatteryLimit = true;
+							m_isNeedToAlertUsageLimit = false;
+							m_isNeedToAlertUpgrade = false;
 //							if(m_AlertBatteryLimit1OneTime || m_AlertBatteryLimit2OneTime)
 //							{
 //								m_nm.cancel(ALERT_TYPE.BatteryLimit.ordinal());
@@ -148,6 +162,9 @@ public class NotificationService extends Service {
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 						m_isNeedToAlertUpgrade = true;
+						m_isNeedToAlertBatteryLimit = false;
+						m_isNeedToAlertUsageLimit = false;
+						
 						if(m_AlertUpgradeOneTime)
 						{
 							m_nm.cancel(ALERT_TYPE.Upgrade.ordinal());
@@ -263,11 +280,12 @@ public class NotificationService extends Service {
 		DeviceNewVersionInfo newVersioninfo = BusinessMannager.getInstance().getNewFirmwareInfo();
 		
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-		if (simState.m_SIMState != SIMState.Accessable) 
-			return;
+		
 
 		if (settings.HMonthlyPlan > 0
 				&& m_isNeedToAlertUsageLimit == true) {
+//			if (simState.m_SIMState != SIMState.Accessable) 
+//				return;
 			
 			if(settings.HUsedData >= settings.HMonthlyPlan)
 			{
@@ -320,8 +338,8 @@ public class NotificationService extends Service {
 	private boolean isOverMonthlyPlan(UsageSettingModel usagesetting)
 	{
 		boolean bOverPlan = false;
-		double standard = 0.1;
-		double ft =( usagesetting.HMonthlyPlan - usagesetting.HUsedData ) / usagesetting.HMonthlyPlan;
+		double standard = usagesetting.HMonthlyPlan/10;
+		double ft =( usagesetting.HMonthlyPlan - usagesetting.HUsedData );
 		if (ft <= standard) {
 			bOverPlan = true;
 		}

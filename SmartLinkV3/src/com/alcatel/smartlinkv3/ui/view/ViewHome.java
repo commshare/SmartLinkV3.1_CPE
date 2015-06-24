@@ -3,15 +3,15 @@ package com.alcatel.smartlinkv3.ui.view;
 
 import java.util.ArrayList;
 
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginDialog.OnForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
@@ -118,7 +118,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private LoginDialog m_loginDialog = null;
 	private AutoLoginProgressDialog	m_autoLoginDialog = null;
-	private ForceLoginDialog m_ForceloginDlg = null;
+	private AutoForceLoginProgressDialog m_ForceloginDlg = null;
 	
 	private String home_connected_duration = null;
 	private String home_connected_zero_duration = null;
@@ -253,7 +253,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		m_loginDialog = new LoginDialog(this.m_context);
 		m_autoLoginDialog = new AutoLoginProgressDialog(this.m_context);
-		m_ForceloginDlg = new ForceLoginDialog(this.m_context);
+		m_ForceloginDlg = new AutoForceLoginProgressDialog(this.m_context);
 		
 		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
 		home_connected_zero_duration = this.getView().getResources().getString(R.string.Home_zero_data);
@@ -546,10 +546,34 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 							{
 								public void onConfirm() 
 								{
-									m_ForceloginDlg.showDialog(new OnForceLoginFinishedListener() {
-										@Override
-										public void onForceLoginFinished() {
+									m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+										public void onLoginSuccess() 				
+										{
 											connect();
+										}
+
+										public void onLoginFailed(String error_code)
+										{
+											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
+											{
+												ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+														new OnClickBtnRetry() 
+												{
+													@Override
+													public void onRetry() 
+													{
+														m_loginDialog.showDialog(new OnLoginFinishedListener() {
+															@Override
+															public void onLoginFinished() {
+																connect();
+															}
+														});
+													}
+												});
+											}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
+											{
+												m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
+											}
 										}
 									});
 								}
