@@ -249,14 +249,7 @@
                android:text="@string/setting_device_btn_restart"
                android:layout_gravity="start"
                />
-            
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
-		        android:layout_gravity="center|end"/>
+
         </FrameLayout>
         
         <ImageView
@@ -280,14 +273,7 @@
                android:text="@string/setting_device_btn_power_off"
                android:layout_gravity="start"
                />
-            
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
-		        android:layout_gravity="center|end"/>
+
         </FrameLayout>
         
        <ImageView
