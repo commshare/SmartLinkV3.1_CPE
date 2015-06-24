@@ -181,7 +181,7 @@ public class IntentBuilder {
         return mimeType != null ? mimeType : "*/*";
     }
     
-    public static final int REQUEST_EX = 123100;
+    public static final int REQUEST_EX = 123100 & 0x0000ffff;
     public static void goExFileDialog(Activity activity, String title, String[] files) {
         Intent intent = new Intent();
         intent.putExtra("explorer_title", title);
