@@ -55,6 +55,7 @@ public abstract class BaseActivity extends Activity{
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_HEARTBEAT_REQUEST));
+    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
     	
     	showActivity(this);
     	backMainActivityOnResume(this);
@@ -105,6 +106,13 @@ public abstract class BaseActivity extends Activity{
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+				backMainActivity(context);
+				kickoffLogout();
+			}
+		}else if(intent.getAction().equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)){
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(strErrorCode.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+				backMainActivity(context);
 				kickoffLogout();
 			}
 		}
