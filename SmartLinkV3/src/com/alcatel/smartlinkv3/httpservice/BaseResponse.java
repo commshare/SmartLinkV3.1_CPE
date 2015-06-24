@@ -3,8 +3,12 @@ package com.alcatel.smartlinkv3.httpservice;
 import org.json.JSONObject;
 
 import com.alcatel.smartlinkv3.common.DataUti;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 public abstract class BaseResponse
@@ -48,7 +52,7 @@ public abstract class BaseResponse
 	protected abstract void parseContent(String strJsonResult);
 	
 	
-	public int parseResult(JSONObject jsonResult)
+	public int parseResult(Context context, JSONObject jsonResult)
 	{
 	    if(jsonResult != null)
 	    {
@@ -66,6 +70,13 @@ public abstract class BaseResponse
             		 }
             	 }else{
             		 parseContent(resultObj.toString());
+            	 }
+            	 
+            	 if(m_strErrorCode.equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604))
+            	 {
+	            	 Intent megIntent= new Intent(MessageUti.USER_COMMON_ERROR_32604_REQUEST);
+	                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, m_strErrorCode);
+	                 context.sendBroadcast(megIntent);
             	 }
             	 
             	 m_strId = DataUti.parseString(jsonResult.optString(ConstValue.JSON_ID));

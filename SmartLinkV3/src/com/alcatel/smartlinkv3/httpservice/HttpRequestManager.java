@@ -311,7 +311,7 @@ public class HttpRequestManager {
 					Log.d("HttpRequestManger response: ", response);
 					HttpAccessLog.getInstance().writeLogToFile(
 							"Response:" + response);
-					response_obj.parseResult(responseJson);
+					response_obj.parseResult(SmartLinkV3App.getInstance().getApplicationContext(),responseJson);
 				} else {
 					// request error
 					Log.d("HttpRequestManager", "ERROR: body(" + body + ")"
