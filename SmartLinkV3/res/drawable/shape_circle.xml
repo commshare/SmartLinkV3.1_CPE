@@ -6,11 +6,11 @@
     <solid android:color="@color/white" />
 
     <stroke
-        android:width="16dp"
+        android:width="0dp"
         android:color="@color/white" />
 
     <size
-        android:height="68dp"
-        android:width="68dp" />
+        android:height="64dp"
+        android:width="64dp" />
 
 </shape>

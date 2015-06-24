@@ -1066,7 +1066,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     	setViewsVisibility(true, false, false, true, false);
       mSetupTitle.setText(getString(R.string.qs_item_wifi_ssid));
       mPromptText.setText(getString(R.string.qs_wifi_ssid_prompt));
-      mNavigatorRight.setText(R.string.skip);
       if (mIsHead) {
         mNavigatorLeft.setVisibility(View.INVISIBLE);
         mNavigatorLeft.setClickable(false);
@@ -1087,8 +1086,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 					mEnterText.setTextKeepState(mWiFiSSID);
 				}
         //Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
-        
       }
+      mNavigatorRight.setText(R.string.skip);
     }
 
     @Override
@@ -1126,7 +1125,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     	setViewsVisibility(true,true,false,true,false);
       mSetupTitle.setText(getString(R.string.qs_item_wifi_passwd));
       mPromptText.setText(getString(R.string.qs_wifi_passwd_prompt));
-      mNavigatorRight.setText(R.string.skip); 
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       //replace  TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
       mEnterText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -1144,6 +1142,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 				}
       	//Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
       }
+      mNavigatorRight.setText(R.string.skip); 
     }
 
     @Override

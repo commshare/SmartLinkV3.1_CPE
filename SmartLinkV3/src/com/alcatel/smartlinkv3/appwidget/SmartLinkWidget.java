@@ -49,6 +49,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
   private final int BATTERY_PAGE = 3;
   private final int USAGE_PAGE = 4;
   private float scale;
+  private float fontScale;
   private final String tagString = "smartlink.widget.smartLinkWidget";
 
   @Override
@@ -74,6 +75,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     // TODO Auto-generated method stub
     super.onReceive(context, intent);
     scale = context.getResources().getDisplayMetrics().density;
+    fontScale = context.getResources().getDisplayMetrics().scaledDensity; 
     if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
       updateUIs(context);
     }
@@ -120,6 +122,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     // for(int i = 0; i < appWidgetIds.length; i++){
     // create remote view
     scale = context.getResources().getDisplayMetrics().density;
+    fontScale = context.getResources().getDisplayMetrics().scaledDensity; 
     RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
         R.layout.smart_link_app_widget);
     updateUI(remoteViews, context);
@@ -388,24 +391,6 @@ public class SmartLinkWidget extends AppWidgetProvider {
         && monthPlanUsageDataMode.getUsageData() > 0) {
       usedDataTmp = (double) (Math.round((usedDataTmp * 1024) * 100) / 100.0);
     }
-    // Log.d(tagString,"widget.HUseData.record"+":"+m_UsageRecordResult.HUseData
-    // + "-----------------");
-    // Log.d(tagString,"widget.HMonthlyPlan"+":"+statistic.HMonthlyPlan +
-    // "-----------------");
-    // Log.d(tagString,"widget.HUnit"+":"+statistic.HUnit +
-    // "-----------------");
-    // Log.d(tagString,"widget.HUsedData"+":"+statistic.HUsedData +
-    // "-----------------");
-    // Log.d(tagString,"widget.HBillingDay"+":"+statistic.HBillingDay +
-    // "-----------------");
-    // Log.d(tagString,"widget.usedDataTmp"+":"+usedDataTmp +
-    // "-----------------");
-    // Log.d(tagString,"widget.usedUsageDataMode.getUsageData()"+":"+usedUsageDataMode.getUsageData()
-    // + "-----------------");
-    // Log.d(tagString,"widget.monthPlanUsageDataMode.getUsageData()"+":"+monthPlanUsageDataMode.getUsageData()
-    // + "-----------------");
-    // Log.d(tagString,"widget.monthPlanUsageDataModegetUsageUnit()"+":"+monthPlanUsageDataMode.getUsageUnit()
-    // + "-----------------");
 
     String dataUnitString = "";
     if (monthPlanUsageDataMode.getUsageData() == 0) {
@@ -428,11 +413,13 @@ public class SmartLinkWidget extends AppWidgetProvider {
     // monthDataPlan = 0;
     // usedDataUsage = 0;
 
-    int height = dipToPx(68);
-    int width = dipToPx(68);
+    int height = dipToPx(64);
+    int width = dipToPx(64);
     float center = width / 2;
-    float ringWidth = dipToPx(16);
-    float innerCircle = dipToPx(20);
+    float borderRingWidth = dipToPx(3);
+    float ringWidth = dipToPx(7);
+    //float innerCircle = height/2 - ringWidth/2 - maxRingWidth/2;
+    
 
     // Log.d(tagString, "innerCircle" + ":" + innerCircle + "");
     Bitmap circleBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
@@ -449,14 +436,12 @@ public class SmartLinkWidget extends AppWidgetProvider {
     int dataUsedAngle = 0;
     String usegeStatus = context.getResources().getString(R.string.widget_usage_left);
     paint.setAntiAlias(true);
-    paint.setStrokeWidth(dipToPx(8));
-    paint.setTextSize(14);
+    paint.setStrokeWidth(ringWidth);
+    paint.setTextSize(spTopx(13));
 
     paint.setStyle(Style.STROKE);
-    RectF rectArc = new RectF(center - (innerCircle - 2 + ringWidth / 2),
-            center - (innerCircle - 2 + ringWidth / 2),
-            center + (innerCircle - 2 + ringWidth / 2),
-            center + (innerCircle - 2 + ringWidth / 2));
+    //StrokeWidth will  overstep ringwidth/2
+    RectF rectArc = new RectF(0 + ringWidth/2 + borderRingWidth,0 + ringWidth/2 + borderRingWidth,width - ringWidth/2 - borderRingWidth,width - ringWidth/2 - borderRingWidth);
 
     if (monthDataPlan == 0) {
       dataUsedAngle = 0;
@@ -503,7 +488,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
         width / 2 - bounds.centerX() - unitBounds.width() / 2 + dipToPx(4),
         height / 2 - bounds.centerY() - bounds.height() / 2, 
         paint);
-    paint.setTextSize(9);
+    paint.setTextSize(spTopx(8));
     canvas.drawText(dataPlanUnit, 
             width / 2 - unitBounds.centerX() + bounds.width() / 2 + dipToPx(5),
             height / 2 - unitBounds.centerY() - bounds.height() / 2, 
@@ -566,4 +551,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
   private int pxToDip(float pxValue) {
     return (int) (pxValue / scale + 0.5f);
   }
+  
+  private int pxToSp(float pxValue){
+  	return (int) (pxValue / fontScale + 0.5f); 
+  }
+  public  int spTopx(float spValue) { 
+    return (int) (spValue * fontScale + 0.5f); 
+  } 
 }
