@@ -384,10 +384,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		m_context.startActivity(intent);
 	}
 
-	private void goToFilePage(){
-		// TODO: add ftp client module
-		CommonUtil.showToask(this.m_context, "goToFilePage!");
-		
+	private void goToFilePage(){	
 		Intent intent = new Intent();
 		intent.setClass(this.m_context, FtpFileExplorerTabActivity.class);
 		m_context.startActivity(intent);
