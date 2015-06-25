@@ -12,6 +12,7 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
@@ -26,6 +27,7 @@ import android.content.IntentFilter;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,6 +120,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			} else if (arg1.getAction().equalsIgnoreCase(
 					MessageUti.USER_LOGIN_REQUEST)) {
 				m_bIsApply = false;
+				boolean isshow = m_dlgLogin.isShowing();
+				Log.v("pchong", "show auto  LoginDialog    isshow = "+isshow);
 				if(!m_dlgLogin.isShowing())
 					return;
 				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
@@ -128,6 +132,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 					CPEConfig.getInstance().setLoginPassword(m_password);
 					CPEConfig.getInstance().setLoginUsername(USER_NAME);
+					SmartLinkV3App.getInstance().setLoginPassword("");;
+					SmartLinkV3App.getInstance().setLoginUsername("");
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
 					m_bLoginTimeUsedOutError = false;
@@ -148,15 +154,17 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 //							m_context.getString(R.string.other_login_warning_title),
 //							m_strMsgOtherUserLogined);
 
-
+					Log.v("pchong", "show auto  LoginDialog1");
 					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_msg),
 							new OnClickBottonConfirm() 
 					{
 						public void onConfirm() 
 						{
+							
 							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
 								public void onLoginSuccess() 				
 								{
+									Log.v("pchong", "show auto  LoginDialog3");
 									CPEConfig.getInstance().setLoginPassword(m_password);
 									CPEConfig.getInstance().setLoginUsername(USER_NAME);
 									closeDialog();
@@ -181,7 +189,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
 									}
 								}
-							}, m_password, USER_NAME );
+							}, SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
 						}
 					});
 				
@@ -492,6 +500,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			return;
 		
 		m_password = m_etPassword.getText().toString();
+		SmartLinkV3App.getInstance().setLoginPassword(m_password);
+		SmartLinkV3App.getInstance().setLoginUsername(USER_NAME);
 		Pattern pattern = Pattern.compile(REG_STR);
 		Matcher matcher = pattern.matcher(m_password);
 		if (matcher.find()) {
@@ -519,6 +529,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.USER_LOGIN_REQUEST, data);
 		m_bIsApply = true;
+		Log.v("pchong", "show auto  LoginDialog    apply  login");
 	}
 
 	@Override

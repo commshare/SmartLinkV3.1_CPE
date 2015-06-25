@@ -7,13 +7,14 @@ import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 public class AutoForceLoginProgressDialog 
 {
@@ -48,12 +49,14 @@ public class AutoForceLoginProgressDialog
 			
 			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
 			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
+			Log.v("pchong", "show auto  LoginDialog    forceauto  login1");
 
 		}
 		else
 		{
 			data.addParam("user_name", username);
 			data.addParam("password", password);
+			Log.v("pchong", "show auto  LoginDialog    forceauto  login2");
 		}
 		
 		BusinessMannager.getInstance().sendRequestMessage(
@@ -103,6 +106,8 @@ public class AutoForceLoginProgressDialog
 			else if (arg1.getAction().equalsIgnoreCase(
 					MessageUti.USER_FORCE_LOGIN_REQUEST)) 
 			{
+				SmartLinkV3App.getInstance().setLoginPassword("");;
+				SmartLinkV3App.getInstance().setLoginUsername("");
 				if(m_dlgProgress != null && !m_dlgProgress.isShowing())
 					return;
 				closeDialog();

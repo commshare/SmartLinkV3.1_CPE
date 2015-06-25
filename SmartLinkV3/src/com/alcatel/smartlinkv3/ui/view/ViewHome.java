@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.ui.view;
 
 import java.util.ArrayList;
 
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
@@ -567,7 +568,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 												m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
 											}
 										}
-									},"","");
+									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
 								}
 							});
 						}
