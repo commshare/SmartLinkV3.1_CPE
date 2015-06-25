@@ -127,7 +127,8 @@
 			        android:maxLength="1600"
 			        android:scrollbarStyle="outsideOverlay"
 			        android:scrollbars="vertical"
-			        android:textSize="20sp" />
+			        android:textSize="20sp" 
+			        android:imeOptions="flagNoExtractUi"/>
 			</RelativeLayout>
 		</LinearLayout>
 	
