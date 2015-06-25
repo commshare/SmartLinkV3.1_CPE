@@ -38,23 +38,26 @@ public class AutoForceLoginProgressDialog
 				MessageUti.CPE_WIFI_CONNECT_CHANGE));
 	}
 	
-	public void autoForceLoginAndShowDialog(OnAutoForceLoginFinishedListener callback)
+	public void autoForceLoginAndShowDialog(OnAutoForceLoginFinishedListener callback ,String password ,String username)
 	{
 		s_callback = callback;		
+		DataValue data = new DataValue();
 		
 		if(CPEConfig.getInstance().getAutoLoginFlag())
 		{
-			DataValue data = new DataValue();
+			
 			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
 			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.USER_FORCE_LOGIN_REQUEST, data);
+
 		}
-		else if(s_callback != null)
+		else
 		{
-//			s_callback.onFirstLogin();
-			return;
+			data.addParam("user_name", username);
+			data.addParam("password", password);
 		}
+		
+		BusinessMannager.getInstance().sendRequestMessage(
+				MessageUti.USER_FORCE_LOGIN_REQUEST, data);
 		
 		if(m_dlgProgress != null && m_dlgProgress.isShowing())
 			return;

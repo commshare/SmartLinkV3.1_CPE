@@ -24,7 +24,7 @@ public class ForceLoginSelectDialog implements OnClickListener{
 	private TextView m_tvTitle = null;
 	private TextView m_tvErrorInfo=null;
 	public static boolean m_bIsShow = false;
-  private OnClickConfirmBotton mConfirmCallback=null;
+  private OnClickBottonConfirm mConfirmCallback=null;
   private OnClickBtnCancel mCancleCallback=null;
 	
 	public static ForceLoginSelectDialog getInstance(Context context)
@@ -107,7 +107,7 @@ public class ForceLoginSelectDialog implements OnClickListener{
 		}
 	}
 	
-	public void showDialog(String strTitle, String strMessage, OnClickConfirmBotton cb){
+	public void showDialog(String strTitle, String strMessage, OnClickBottonConfirm cb){
 		
 		if(m_dlgError != null)
 		{
@@ -121,7 +121,7 @@ public class ForceLoginSelectDialog implements OnClickListener{
 		}
 	}
 
-	 public interface OnClickConfirmBotton {	 
+	 public interface OnClickBottonConfirm {	 
 	    public void onConfirm();
 	 }
 	 

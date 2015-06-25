@@ -14,7 +14,7 @@ import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
@@ -531,7 +531,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 								//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 
 								ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
-										new OnClickConfirmBotton() 
+										new OnClickBottonConfirm() 
 								{
 									public void onConfirm() 
 									{
@@ -564,7 +564,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 													m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 												}
 											}
-										});
+										},"","");
 									}
 								});
 							}
@@ -650,7 +650,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 
 							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
-									new OnClickConfirmBotton() 
+									new OnClickBottonConfirm() 
 							{
 								public void onConfirm() 
 								{
@@ -683,7 +683,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									});
+									},"","");
 								}
 							});
 						
@@ -777,7 +777,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 
 							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
-									new OnClickConfirmBotton() 
+									new OnClickBottonConfirm() 
 							{
 								public void onConfirm() 
 								{
@@ -810,7 +810,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									});
+									},"","");
 								}
 							});
 						
@@ -895,7 +895,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 
 							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
-									new OnClickConfirmBotton() 
+									new OnClickBottonConfirm() 
 							{
 								public void onConfirm() 
 								{
@@ -928,7 +928,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									});
+									},"","");
 								}
 							});
 						
@@ -1011,7 +1011,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 
 							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
-									new OnClickConfirmBotton() 
+									new OnClickBottonConfirm() 
 							{
 								public void onConfirm() 
 								{
@@ -1044,7 +1044,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									});
+									},"","");
 								}
 							});
 						
@@ -1125,7 +1125,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 
 							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
-									new OnClickConfirmBotton() 
+									new OnClickBottonConfirm() 
 							{
 								public void onConfirm() 
 								{
@@ -1158,7 +1158,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									});
+									},"","");
 								}
 							});
 						
@@ -1461,7 +1461,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 
 							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
-									new OnClickConfirmBotton() 
+									new OnClickBottonConfirm() 
 							{
 								public void onConfirm() 
 								{
@@ -1494,7 +1494,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									});
+									},"","");
 								}
 							});
 						

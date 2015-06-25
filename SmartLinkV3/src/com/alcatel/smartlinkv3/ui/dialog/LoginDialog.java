@@ -15,7 +15,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -150,7 +150,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 
 					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_msg),
-							new OnClickConfirmBotton() 
+							new OnClickBottonConfirm() 
 					{
 						public void onConfirm() 
 						{
@@ -181,7 +181,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
 									}
 								}
-							});
+							}, m_password, USER_NAME );
 						}
 					});
 				
