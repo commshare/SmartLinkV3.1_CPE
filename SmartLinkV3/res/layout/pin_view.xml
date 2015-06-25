@@ -65,6 +65,7 @@
             android:inputType="numberPassword"
             android:maxLength="8"
             android:password="true"
+            android:imeOptions="flagNoExtractUi"
             android:textSize="@dimen/dimen_textsize_12sp" />
 
         <TextView

@@ -59,6 +59,7 @@
             android:layout_toRightOf="@id/puk_code_tv"
             android:background="@drawable/selector_edit_bg"
             android:inputType="numberPassword"
+            android:imeOptions="flagNoExtractUi"
             android:maxLength="8" />
 
         <TextView
@@ -93,6 +94,7 @@
             android:layout_marginTop="30dip"
             android:layout_toRightOf="@id/puk_code_tv"
             android:background="@drawable/selector_edit_bg"
+            android:imeOptions="flagNoExtractUi"
             android:inputType="numberPassword"
             android:maxLength="8" />
 
@@ -116,6 +118,7 @@
             android:layout_marginTop="20dip"
             android:layout_toRightOf="@id/puk_code_tv"
             android:background="@drawable/selector_edit_bg"
+            android:imeOptions="flagNoExtractUi"
             android:inputType="numberPassword"
             android:maxLength="8" />
     </RelativeLayout>
