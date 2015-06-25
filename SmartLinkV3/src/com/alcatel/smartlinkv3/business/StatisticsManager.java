@@ -25,6 +25,7 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 public class StatisticsManager extends BaseManager {
 	private UsageSettingModel m_usageSettings = new UsageSettingModel();
@@ -299,7 +300,45 @@ public class StatisticsManager extends BaseManager {
     			m_context.sendBroadcast(megIntent);
             }
         }));
-    } 
+    }
+	
+	//SetUnit  Request ////////////////////////////////////////////////////////////////////////////////////////// 
+		public void setUnit(DataValue data) {
+			if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
+				return;
+			
+			final int nUnit = (Integer) data.getParamByKey("unit");
+			final int nPreUnit = m_usageSettings.HUnit;
+			final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+			nUsageSettings.clone(m_usageSettings);
+			nUsageSettings.Unit = nUnit;
+	    	
+			HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+	            @Override
+				public void onHttpRequestFinish(BaseResponse response) 
+	            {   
+	            	String strErrcode = new String();
+	                int ret = response.getResultCode();
+	                if(ret == BaseResponse.RESPONSE_OK) {
+	                	strErrcode = response.getErrorCode();
+	                	if(strErrcode.length() == 0) {
+	                		m_usageSettings.setValue(nUsageSettings);
+	                		Log.v("CHECKUNIT", "Monthly Plan: " + m_usageSettings.HMonthlyPlan);
+	                	}else{
+
+	                	}
+	                }else{
+
+	                }
+	 
+	                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_UNIT_REQUSET);
+	                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+	                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+	                megIntent.putExtra(IS_CHANGED, nPreUnit != m_usageSettings.HUnit);
+	    			m_context.sendBroadcast(megIntent);
+	            }
+	        }));
+	    }
 	
 	//setMonthlyPlan  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setMonthlyPlan(DataValue data) {

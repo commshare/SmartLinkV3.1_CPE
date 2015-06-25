@@ -1,6 +1,8 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import java.text.DecimalFormat;
+
 import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
@@ -28,9 +30,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +46,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 	private UsageSettingReceiver m_usettingreceiver = new UsageSettingReceiver();
 	
-	private final static int MONTHLY_MAX_VALUE = 99999999; // megabyte
+	private final static int MONTHLY_MAX_VALUE = 1000000; // megabyte
 	private final static int BILLING_MAX_VALUE = 31; // megabyte
 	private final static int MAX_DISCONNECT_TIME_VALUE = 9999;
 	
@@ -65,6 +71,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private boolean m_bIsRoamingDisconnectedEdit = false;
 	private Button m_usageAutoDisconnectBtn;
 	private boolean m_bIsAutoDisconnectedEdit = false;
+	
+	private boolean m_isFirstSelection = true;
+	
+	private Spinner m_unit_selector;
 	
 
 	private class UsageSettingReceiver extends BroadcastReceiver {
@@ -471,6 +481,38 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			}
 
 		});
+		
+		m_unit_selector = (Spinner) this.findViewById(R.id.unit_selector);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		        R.array.usage_unit, R.layout.unit_display_item);
+		adapter.setDropDownViewResource(R.layout.unit_selection_item);
+		m_unit_selector.setAdapter(adapter);
+		m_unit_selector.setSelection(BusinessMannager.getInstance().getUsageSettings().HUnit);
+		m_unit_selector.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				if(m_isFirstSelection){
+					m_isFirstSelection = false;
+				}
+				else{
+					Log.v("CHECKUNIT", "selected: " + position);
+					DataValue data = new DataValue();
+					data.addParam("unit", position);
+					BusinessMannager.getInstance().sendRequestMessage(
+							MessageUti.STATISTICS_SET_UNIT_REQUSET, data);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
 	private void showSettingMonthly() {
@@ -484,8 +526,15 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_monthlyValue.setEnabled(true);
 			m_monthlyVal = statistic.HMonthlyPlan;
 			if (m_monthlyVal > 0) {
-				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
-					m_monthlyValue.setText("" + byte2megabyte(m_monthlyVal));
+				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true)){
+					if(statistic.HUnit == 0){
+						m_monthlyValue.setText("" + byte2megabyte(m_monthlyVal));
+					}
+					else{
+						m_monthlyValue.setText("" + new DecimalFormat("0.###").format(byte2gegabyte(m_monthlyVal)));
+					}
+				}
+					
 			} else {
 				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
 					m_monthlyValue.setText("");
@@ -500,19 +549,32 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void setSettingMonthly() {
-		long usage = 0;
+		double usage = 0;
 
 		if (m_monthlyValue.getText().toString().length() > 0) {
-			usage = (int) Long.parseLong(m_monthlyValue.getText().toString());
+			usage =  Double.parseDouble(m_monthlyValue.getText().toString());
 		}
 		
 		if (usage != this.byte2megabyte(m_monthlyVal)) {
-			if (usage > MONTHLY_MAX_VALUE) {
-				usage = MONTHLY_MAX_VALUE;
-			}
+			
 			UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
-			if(usage == staticSetting.HMonthlyPlan)
+			if((long)usage == staticSetting.HMonthlyPlan)
 				return;
+			
+			if(staticSetting.HUnit == 0){
+				if (usage > MONTHLY_MAX_VALUE) {
+					usage = MONTHLY_MAX_VALUE;
+					String strInfo = getString(R.string.usage_maximum_monthly_plan_notice) + "1000000 MB";
+					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+				}
+			}
+			else{
+				if (usage > MONTHLY_MAX_VALUE/1000) {
+					usage = MONTHLY_MAX_VALUE/1000;
+					String strInfo = getString(R.string.usage_maximum_monthly_plan_notice) + "1000 GB";
+					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+				}
+			}
 			
 			m_bIsMonthlyValueEdit = true;
 			DataValue usageData = new DataValue();
@@ -523,8 +585,16 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				m_usageAutoDisconnectBtn
 						.setBackgroundResource(R.drawable.switch_off);
 			}
-			usageData.addParam("monthly_plan", megabyte2byte(usage));
-			m_monthlyVal = megabyte2byte(usage);
+			if(staticSetting.HUnit == 0){
+				usageData.addParam("monthly_plan", megabyte2byte((long) usage));
+				m_monthlyVal = megabyte2byte((long) usage);
+			}
+			else{
+				usageData.addParam("monthly_plan", gegabyte2byte(usage));
+				m_monthlyVal = gegabyte2byte(usage);
+			}
+			
+			
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET, usageData);
 		} else {
@@ -536,9 +606,17 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private long megabyte2byte(long megabyte) {
 		return megabyte * 1024 * 1024;
 	}
+	
+	private long gegabyte2byte(double gegabyte) {
+		return (long) (gegabyte * 1024 * 1024 * 1024);
+	}
 
 	private long byte2megabyte(long byteV) {
 		return byteV / (1024 * 1024);
+	}
+	
+	private float byte2gegabyte(long byteV) {
+		return (float)byte2megabyte(byteV) / (float)1024;
 	}
 	
 	

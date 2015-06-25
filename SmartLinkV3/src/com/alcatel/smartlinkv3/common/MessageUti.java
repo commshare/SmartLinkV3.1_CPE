@@ -73,6 +73,7 @@ public class MessageUti {
 	public static String STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET = "com.alcatel.smartlinkv3.business.statistics.settimelimittimes";
 	public static String STATISTICS_SET_USED_TIMES_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setusedtimes";
 	public static String STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setautodisconnflag";
+	public static String STATISTICS_SET_UNIT_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setunit";
 	public static String STATISTICS_CLEAR_ALL_RECORDS_REQUSET = "com.alcatel.smartlinkv3.business.statistics.clearallrecords";
 	public static String STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET = "com.alcatel.smartlinkv3.business.statistics.getUsageRecord";
 	/**************************Statistics message end*********************************************************************************/
@@ -229,6 +230,7 @@ public class MessageUti {
 		httpMethods.put(STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET, new HttpMethodUti(StatisticsManager.class, "setTimeLimitTimes"));
 		httpMethods.put(STATISTICS_SET_USED_TIMES_REQUSET, new HttpMethodUti(StatisticsManager.class, "setUsedTimes"));
 		httpMethods.put(STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET, new HttpMethodUti(StatisticsManager.class, "setAutoDisconnFlag"));	
+		httpMethods.put(STATISTICS_SET_UNIT_REQUSET, new HttpMethodUti(StatisticsManager.class, "setUnit"));	
 		httpMethods.put(STATISTICS_CLEAR_ALL_RECORDS_REQUSET, new HttpMethodUti(StatisticsManager.class, "clearAllRecords"));		
 		/********************Statistics method end**********************/
 		

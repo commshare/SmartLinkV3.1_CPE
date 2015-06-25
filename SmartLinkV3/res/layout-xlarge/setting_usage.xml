@@ -51,10 +51,11 @@
 
             <TextView
                 android:id="@+id/billing_plan_unit"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:gravity="center"
                 android:text="@string/usage_setting_dayunit"
                 android:textSize="24sp"
                 android:textColor="@color/color_black" />
@@ -104,14 +105,25 @@
                 android:layout_centerVertical="true"
                 android:text="@string/usage_setting_monthlyunit"
                 android:textSize="24sp"
+                android:visibility="gone"
                 android:textColor="@color/color_black" />
 
+            <Spinner
+                android:id="@+id/unit_selector"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_alignBottom="@+id/monthly_plan_value" 
+                android:layout_alignParentRight="true"
+                android:background="@drawable/unit_selector"
+                android:spinnerMode="dialog"/>
+            
             <EditText
                 android:id="@+id/monthly_plan_value"
                 android:layout_width="98dip"
                 android:layout_height="45dip"
                 android:layout_marginRight="2dip"
-                android:layout_toLeftOf="@+id/monthly_plan_unit"
+                android:layout_toLeftOf="@+id/unit_selector"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:imeOptions="actionDone|flagNoExtractUi"

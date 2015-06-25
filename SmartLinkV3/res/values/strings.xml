@@ -335,6 +335,7 @@
     <string name="usage_limit_notification_title">Data usage warning</string>
     <string name="usage_limit_over_notification_content">Data usage reaches Monthly Data Plan.</string>
     <string name="usage_limit_less_notification_content">Your usage has less than 10%.</string>
+    <string name="usage_maximum_monthly_plan_notice">The maximum monthly plan is </string>
     <string name="battery_limit_notification_title">Battery warning</string>
     <string name="battery_limit_notification_content1">Battery is low, less than 10% reminding.</string>
     <string name="battery_limit_notification_content2">Battery is low, less than 20% reminding.</string>
@@ -730,5 +731,10 @@
     <string name="guide3_description">Pictures, music, video, Documents</string>
     <string name="what_new_btn_text">Start</string>
     <!-- Welcome Guide End -->
+    
+    <string-array name="usage_unit">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
 
 </resources>
