@@ -631,9 +631,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			}
 		}
 
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+//		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		//if (simState.m_SIMState == SIMState.Accessable) {
-			m_timeLimit.setEnabled(true);
+//			m_timeLimit.setEnabled(true);
 			if(m_bIsTimeLimitStatusEdit == false) {
 				if (setting.HTimeLimitTimes > 0) {
 					m_timeLimitDisconnectBtn.setEnabled(true);
@@ -788,11 +788,13 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (usageSetting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
 			m_timeLimitDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_on);
+			m_timeLimit.setEnabled(true);
 			data.addParam("time_limit_flag", OVER_TIME_STATE.Enable);
 		} else {
 			// on
 			m_timeLimitDisconnectBtn
 					.setBackgroundResource(R.drawable.switch_off);
+			m_timeLimit.setEnabled(false);
 			data.addParam("time_limit_flag", OVER_TIME_STATE.Disable);
 		}
 		BusinessMannager.getInstance().sendRequestMessage(

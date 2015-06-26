@@ -224,8 +224,8 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			
 			m_edit_profile_name.setHint("Profile Name");
 			m_edit_profile_name.setText(ProfileName);
-			m_edit_apn.setHint(DailNumber);
-			m_edit_apn.setText(APN.toCharArray(), 0, APN.length());
+//			m_edit_apn.setHint(APN);
+			m_edit_apn.setText(null);
 			m_edit_user_name.setHint("User Name");
 			m_edit_user_name.setText(UserName.toCharArray(), 0, UserName.length());
 			m_edit_password.setHint("Password");
