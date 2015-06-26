@@ -111,7 +111,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 			}
 		}else if(intent.getAction().equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)){
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(strErrorCode.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+			if(strErrorCode.equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604)) {
 				backMainActivity(context);
 				kickoffLogout();
 			}
@@ -216,9 +216,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 	public void kickoffLogout() {
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
-			MainActivity.setKickoffLogoutFlag(true);
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.USER_LOGOUT_REQUEST, null);
+//			MainActivity.setKickoffLogoutFlag(true);
+			String strInfo = getString(R.string.login_kickoff_logout_successful);
+			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();	
 		}
 	}
 	

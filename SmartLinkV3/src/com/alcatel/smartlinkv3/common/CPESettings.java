@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.common;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class CPESettings {
 	private static final String SETTING_FILE = "CPESetting";
@@ -146,6 +147,7 @@ public class CPESettings {
 //	}
 	
 	public  boolean getAutoLoginFlag( ){
+		Log.v("pchong", "setLoginDialog2    password  username   m_password= "+m_password+"username = "+m_username);
 		if(m_username != "" && m_password != "")
 		{
 			return true;			

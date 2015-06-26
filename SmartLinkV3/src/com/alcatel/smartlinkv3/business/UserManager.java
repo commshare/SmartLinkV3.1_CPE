@@ -251,8 +251,12 @@ public class UserManager extends BaseManager {
                     int ret = response.getResultCode();                 
                     if(ret == BaseResponse.RESPONSE_OK ) {
                     	strErrcode = response.getErrorCode();
-                    	if(strErrcode.length() == 0) {
-                    	
+                    	if(strErrcode.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+                    		if(null != m_updateLoginTimeTask) {
+                    			m_updateLoginTimeTask.cancel();
+                    			m_updateLoginTimeTask = null;
+                    		}
+                    		m_loginStatus = UserLoginStatus.Logout;
                     	}else{
                     		
                     	}
