@@ -568,7 +568,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 												m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
 											}
 										}
-									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+									});
 								}
 							});
 						}

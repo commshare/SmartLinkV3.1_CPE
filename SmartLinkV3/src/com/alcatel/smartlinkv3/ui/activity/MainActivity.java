@@ -565,7 +565,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 													m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 												}
 											}
-										},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+										});
 									}
 								});
 							}
@@ -684,7 +684,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+									});
 								}
 							});
 						
@@ -811,7 +811,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+									});
 									Log.v("pchong", "auto  LoginDialog    m_password = "+""+"USER_NAME = "+"");
 								}
 							});
@@ -930,7 +930,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+									});
 								}
 							});
 						
@@ -1046,7 +1046,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+									});
 								}
 							});
 						
@@ -1162,7 +1162,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+									});
 								}
 							});
 						
@@ -1498,7 +1498,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 												m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 											}
 										}
-									},SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+									});
 								}
 							});
 						

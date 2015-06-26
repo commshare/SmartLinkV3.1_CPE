@@ -24,6 +24,7 @@ public class AutoForceLoginProgressDialog
 	private String loginCheckDialogTitle;
 	private String loginCheckDialogContent;
 	private AuthenficationBroadcastReviever m_auReceiver;
+	private static boolean m_isUserFirstLogin =false;
 	
 	public AutoForceLoginProgressDialog(Context context) 
 	{
@@ -39,7 +40,7 @@ public class AutoForceLoginProgressDialog
 				MessageUti.CPE_WIFI_CONNECT_CHANGE));
 	}
 	
-	public void autoForceLoginAndShowDialog(OnAutoForceLoginFinishedListener callback ,String password ,String username)
+	public void autoForceLoginAndShowDialog(OnAutoForceLoginFinishedListener callback)
 	{
 		s_callback = callback;		
 		DataValue data = new DataValue();
@@ -54,9 +55,9 @@ public class AutoForceLoginProgressDialog
 		}
 		else
 		{
-			data.addParam("user_name", username);
-			data.addParam("password", password);
-			Log.v("pchong", "show auto  LoginDialog    forceauto  login2");
+			m_isUserFirstLogin = true;
+			data.addParam("user_name", SmartLinkV3App.getInstance().getLoginUsername());
+			data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
 		}
 		
 		BusinessMannager.getInstance().sendRequestMessage(
@@ -106,8 +107,7 @@ public class AutoForceLoginProgressDialog
 			else if (arg1.getAction().equalsIgnoreCase(
 					MessageUti.USER_FORCE_LOGIN_REQUEST)) 
 			{
-				SmartLinkV3App.getInstance().setLoginPassword("");
-				SmartLinkV3App.getInstance().setLoginUsername("");
+				
 				if(m_dlgProgress != null && !m_dlgProgress.isShowing())
 					return;
 				closeDialog();
@@ -117,6 +117,14 @@ public class AutoForceLoginProgressDialog
 				{
 					if(BaseResponse.RESPONSE_OK == nRet && strErrorCode.length() == 0 )
 					{
+						if(m_isUserFirstLogin)
+						{
+							CPEConfig.getInstance().setLoginPassword(SmartLinkV3App.getInstance().getLoginPassword());
+							CPEConfig.getInstance().setLoginUsername(SmartLinkV3App.getInstance().getLoginUsername());
+							SmartLinkV3App.getInstance().setLoginPassword("");;
+							SmartLinkV3App.getInstance().setLoginUsername("");
+							m_isUserFirstLogin = false;
+						}
 						s_callback.onLoginSuccess();					
 					}
 					else

@@ -165,8 +165,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 								public void onLoginSuccess() 				
 								{
 									Log.v("pchong", "show auto  LoginDialog3");
-									CPEConfig.getInstance().setLoginPassword(m_password);
-									CPEConfig.getInstance().setLoginUsername(USER_NAME);
+//									CPEConfig.getInstance().setLoginPassword(m_password);
+//									CPEConfig.getInstance().setLoginUsername(USER_NAME);
 									closeDialog();
 									//go2SettingPowerSavingActivity();
 								}
@@ -189,7 +189,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
 									}
 								}
-							}, SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername());
+							});
 						}
 					});
 				

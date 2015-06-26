@@ -316,7 +316,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
                                           R.string.login_login_time_used_out_msg, true, true); 
                             } 
                         } 
-                    },SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername()); 
+                    }); 
                 } 
                 
                 
