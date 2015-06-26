@@ -324,6 +324,20 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			m_vLogin.clearAnimation();
 		//}
 	}
+	
+	public void showDialogDoLogin() {
+			if (m_dlgLogin != null) {
+				m_tvPasswordError.setVisibility(View.GONE);
+				m_btnApply.setEnabled(false);
+				m_etPassword.setText("");
+				m_etPassword.requestFocus();
+				m_dlgLogin.show();
+				m_bIsShow = true;
+				m_bIsApply = false;
+			}
+			m_vLogin.clearAnimation();
+		
+	}
 
 	private void SetErrorMsg(int nResponseResult, String err) {
 		if (null != m_dlgProgress && m_dlgProgress.isShowing()) {

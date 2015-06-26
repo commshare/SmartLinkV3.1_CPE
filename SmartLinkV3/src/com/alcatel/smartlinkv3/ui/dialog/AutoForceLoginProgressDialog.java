@@ -106,7 +106,7 @@ public class AutoForceLoginProgressDialog
 			else if (arg1.getAction().equalsIgnoreCase(
 					MessageUti.USER_FORCE_LOGIN_REQUEST)) 
 			{
-				SmartLinkV3App.getInstance().setLoginPassword("");;
+				SmartLinkV3App.getInstance().setLoginPassword("");
 				SmartLinkV3App.getInstance().setLoginUsername("");
 				if(m_dlgProgress != null && !m_dlgProgress.isShowing())
 					return;

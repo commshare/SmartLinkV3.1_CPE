@@ -109,8 +109,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 
 	private Button m_unlockSimBtn = null;
 	private int pageIndex = 0;
-	private static boolean m_blLogout = false;
-	private static boolean m_blkickoff_Logout = false;
+	static boolean m_blLogout = false;
+	static boolean m_blkickoff_Logout = false;
 	
 	private CommonErrorInfoDialog m_dialog_timeout_info;
 	

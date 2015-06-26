@@ -84,6 +84,7 @@ public class ForceLoginSelectDialog implements OnClickListener{
 		case R.id.ID_BUTTON_CANCLE:
 			closeDialog();
 			if (mCancleCallback != null){
+				mCancleCallback.onCancle();
 				mCancleCallback = null;
 			}
 			break;	
@@ -112,6 +113,20 @@ public class ForceLoginSelectDialog implements OnClickListener{
 		if(m_dlgError != null)
 		{
 			mConfirmCallback = cb;
+			m_tvTitle.setText(strTitle);
+			m_tvErrorInfo.setText(strMessage);
+			if(!m_bIsShow){
+				m_dlgError.show();
+			}
+			m_bIsShow = true;
+		}
+	}
+public void showDialogAndCancel(String strTitle, String strMessage, OnClickBottonConfirm cb,OnClickBtnCancel cc){
+		
+		if(m_dlgError != null)
+		{
+			mConfirmCallback = cb;
+			mCancleCallback = cc;
 			m_tvTitle.setText(strTitle);
 			m_tvErrorInfo.setText(strMessage);
 			if(!m_bIsShow){

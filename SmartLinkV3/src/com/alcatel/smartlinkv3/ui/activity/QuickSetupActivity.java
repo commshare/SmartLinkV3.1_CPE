@@ -18,11 +18,16 @@ import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.CancelLoginListener;
@@ -35,6 +40,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -45,6 +51,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class QuickSetupActivity  extends Activity implements OnClickListener{
@@ -72,8 +79,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   protected TextView mSetupTitle;
   private String mWiFiSSID;
   private String mWiFiPasswd;
+  private SecurityMode mSecurityMode;
   private ErrorDialog mPINErrorDialog = null;
   private ErrorDialog mPUKErrorDialog = null;
+  private AutoForceLoginProgressDialog m_ForceloginDlg = null;
   private LoginDialog mLoginDialog = null;
   private AutoLoginProgressDialog mAutoLoginDialog = null;
   private CommonErrorInfoDialog mConfirmDialog = null;
@@ -81,6 +90,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private BusinessMannager mBusinessMgr;
   private boolean pukValState,newPinValState,confirmPinState;
   private ProgressDialog m_progress_dialog = null;
+  private int wifiPasswordFirstFlag;
+  //private int restoreLoginState = 0;//0:password输入框无操作。1：password输入框有操作。2.密码输入错误，弹出retry dialog。3
+
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +127,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     pukLinearLayout2 = (LinearLayout) findViewById(R.id.qs_puk_linear2);
     pukLinearLayout3 = (LinearLayout) findViewById(R.id.qs_puk_linear3);
     setViewsVisibility(false, false, false, false, false);
+    wifiPasswordFirstFlag = 0;
     
     mReceiver = new QSBroadcastReceiver();
     
-    if (restoreInstanceState(savedInstanceState))
-      return;
+//    if (restoreInstanceState(savedInstanceState))
+//      return;
     
     UserLoginStatus status = mBusinessMgr.getLoginStatus(); 
     /*When use login and back to launcher, we do not let user enter
@@ -138,85 +151,90 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     }
   }
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+
   /*
    * if BUNDLE_HANDLER_STATE saved, it means that the screen orientation is 
    * change, activity should restore previous instance state.
    */
-  private boolean restoreInstanceState(Bundle savedInstanceState) {
-    if (savedInstanceState == null)
-      return false;
-    String stateName = savedInstanceState.getString(BUNDLE_HANDLER_STATE);
-    //Log.d(TAG, "stateName:"+stateName);
-    if (stateName == null)
-      return false;
-    State s = null;
-    try {
-      s = Enum.valueOf(State.class, stateName);
-    } catch (IllegalArgumentException ex) {
-      return false;
-    }
-    if (s == null){
-      return false;
-    } else if (s == State.LOGIN_ERROR) {
-      String title = savedInstanceState.getString(BUNDLE_LOGINERROR_TITLE);
-      String message = savedInstanceState.getString(BUNDLE_LOGINERROR_MESSAGE);
-      mStateHandler = new LoginExceptionHandler(title, message);
-      mStateHandler.setupViews();
-    } else {
-      StateHandler handler = null;
-      //onRestoreInstanceState is invoke after onCrate, so get these values here.
-      mWiFiSSID = savedInstanceState.getString(BUNDLE_WIFI_SSID);
-      mWiFiPasswd = savedInstanceState.getString(BUNDLE_WIFI_PASSWD);
-      buildStateHandlerChain(false);
-      if (mStateHandler != null)
-        handler = mStateHandler.getStateHandler(s);
-      if (handler != null) {
-        /*
-         * If the previous is the last summary, left navigator is invisible.
-         * And the left navigator is set in the second step. So do 
-         * handler.setupViews() is not enough. Let handlers between mStateHandler 
-         * and handler do setupViews().
-         */
-        //mStateHandler.quickPlay(handler);
-        handler.setupViews();
-        mStateHandler = handler;
-        if (mEnterText.getVisibility() == View.VISIBLE) {
-          String editText = savedInstanceState.getString(BUNDLE_EDIT_TEXT);
-          mEnterText.setText(editText);
-        }
-      } else {
-        Log.e(TAG, "can not get state " + s.name() + " handler");
-      }
-    }
-    return true;
-  }
+//  private boolean restoreInstanceState(Bundle savedInstanceState) {
+//    if (savedInstanceState == null)
+//      return false;
+//    String stateName = savedInstanceState.getString(BUNDLE_HANDLER_STATE);
+//    //Log.d(TAG, "stateName:"+stateName);
+//    if (stateName == null)
+//      return false;
+//    State s = null;
+//    try {
+//      s = Enum.valueOf(State.class, stateName);
+//    } catch (IllegalArgumentException ex) {
+//      return false;
+//    }
+//    if (s == null){
+//      return false;
+//    } else if (s == State.LOGIN_ERROR) {
+//      String title = savedInstanceState.getString(BUNDLE_LOGINERROR_TITLE);
+//      String message = savedInstanceState.getString(BUNDLE_LOGINERROR_MESSAGE);
+//      mStateHandler = new LoginExceptionHandler(title, message);
+//      mStateHandler.setupViews();
+//    } else {
+//      StateHandler handler = null;
+//      //onRestoreInstanceState is invoke after onCrate, so get these values here.
+//      mWiFiSSID = savedInstanceState.getString(BUNDLE_WIFI_SSID);
+//      mWiFiPasswd = savedInstanceState.getString(BUNDLE_WIFI_PASSWD);
+//      buildStateHandlerChain(false);
+//      if (mStateHandler != null)
+//        handler = mStateHandler.getStateHandler(s);
+//      if (handler != null) {
+//        /*
+//         * If the previous is the last summary, left navigator is invisible.
+//         * And the left navigator is set in the second step. So do 
+//         * handler.setupViews() is not enough. Let handlers between mStateHandler 
+//         * and handler do setupViews().
+//         */
+//        //mStateHandler.quickPlay(handler);
+//        handler.setupViews();
+//        mStateHandler = handler;
+//        if (mEnterText.getVisibility() == View.VISIBLE) {
+//          String editText = savedInstanceState.getString(BUNDLE_EDIT_TEXT);
+//          mEnterText.setText(editText);
+//        }
+//      } else {
+//        Log.e(TAG, "can not get state " + s.name() + " handler");
+//      }
+//    }
+//    return true;
+//  }
   
-  @Override
-  protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    super.onRestoreInstanceState(savedInstanceState);
-    
-  }
+//  @Override
+//  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//    super.onRestoreInstanceState(savedInstanceState);
+//    
+//  }
 
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    if (mStateHandler != null) {
-      State s = mStateHandler.getState();
-      outState.putString(BUNDLE_HANDLER_STATE, s.name());
-      if (s == State.LOGIN_ERROR) {
-        outState.putString(BUNDLE_LOGINERROR_TITLE, mStateHandler.getTitleText());
-        outState.putString(BUNDLE_LOGINERROR_MESSAGE, mStateHandler.getMessageText());
-      }
-    }
-    
-    if (mWiFiSSID != null)
-      outState.putString(BUNDLE_WIFI_SSID, mWiFiSSID);
-    if (mWiFiPasswd != null)
-      outState.putString(BUNDLE_WIFI_PASSWD, mWiFiPasswd);
-    
-    if (mEnterText.getVisibility() == View.VISIBLE)
-      outState.putString(BUNDLE_EDIT_TEXT, mEnterText.getText().toString());
-  }
+//  @Override
+//  protected void onSaveInstanceState(Bundle outState) {
+//    super.onSaveInstanceState(outState);
+//    if (mStateHandler != null) {
+//      State s = mStateHandler.getState();
+//      outState.putString(BUNDLE_HANDLER_STATE, s.name());
+//      if (s == State.LOGIN_ERROR) {
+//        outState.putString(BUNDLE_LOGINERROR_TITLE, mStateHandler.getTitleText());
+//        outState.putString(BUNDLE_LOGINERROR_MESSAGE, mStateHandler.getMessageText());
+//      }
+//    }
+//    
+//    if (mWiFiSSID != null)
+//      outState.putString(BUNDLE_WIFI_SSID, mWiFiSSID);
+//    if (mWiFiPasswd != null)
+//      outState.putString(BUNDLE_WIFI_PASSWD, mWiFiPasswd);
+//    
+//    if (mEnterText.getVisibility() == View.VISIBLE)
+//      outState.putString(BUNDLE_EDIT_TEXT, mEnterText.getText().toString());
+//  }
   
   private void handleLoginError(int titleId, int messageId, boolean showDialog, final boolean retryLogin) {
     if (!retryLogin && !showDialog) {
@@ -235,7 +253,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       public void onConfirm() {
         if(retryLogin) {
           //If timeout, let user re-login
-          showLoginDialog();
+          //showLoginDialog();
+        	doLogin();
         } else {
           //If other user enter, do not need setup
           finishQuickSetup(true);
@@ -248,42 +267,88 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         getString(messageId));
   }
   
-  private void doLogin() {
-    mAutoLoginDialog = new AutoLoginProgressDialog(this);
-    mAutoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener() {
-      /*
-       * Auto login successfully.
-       * Scenario: user enter correct password, then exit activity by press home key,
-       * later launch smartlink again. 
-       */
-      public void onLoginSuccess()  {
-        buildStateHandlerChain(false);
-      }
+  private void doLogin() { 
+  	m_ForceloginDlg = new AutoForceLoginProgressDialog(this); 
+    mAutoLoginDialog = new AutoLoginProgressDialog(this); 
+    mAutoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener() { 
+      /* 
+       * Auto login successfully. 
+       * Scenario: user enter correct password, then exit activity by press home key, 
+       * later launch smartlink again.  
+       */ 
+      public void onLoginSuccess()  { 
+        buildStateHandlerChain(false); 
+      } 
+ 
+      public void onLoginFailed(String error_code) { 
+        if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){ 
+//          handleLoginError(R.string.other_login_warning_title, 
+//              R.string.login_other_user_logined_error_msg, false, false); 
+            ForceLoginSelectDialog.getInstance(mContext).showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg), 
+            		new OnClickBottonConfirm()  
+            { 
+                public void onConfirm()  
+                { 
+                    	m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() { 
+                        public void onLoginSuccess()                  
+                        { 
+                            buildStateHandlerChain(false); 
+                        } 
+ 
+                        public void onLoginFailed(String error_code) 
+                        { 
+                            if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) 
+                            { 
+                                ErrorDialog.getInstance(mContext).showDialog(getString(R.string.login_psd_error_msg), 
+                                        new OnClickBtnRetry()  
+                                { 
+                                    @Override 
+                                    public void onRetry()  
+                                    { 
+                                        //showLoginDialog(); 
+                                    		doLogin();
+                                    } 
+                                }); 
+                            }else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) 
+                            { 
+                                //m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),    m_loginDlg.getLoginTimeUsedOutString()); 
+                                handleLoginError(R.string.other_login_warning_title,  
+                                          R.string.login_login_time_used_out_msg, true, true); 
+                            } 
+                        } 
+                    },SmartLinkV3App.getInstance().getLoginPassword(),SmartLinkV3App.getInstance().getLoginUsername()); 
+                } 
+                
+                
+            },new OnClickBtnCancel(){
 
-      public void onLoginFailed(String error_code) {
-        if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){
-          handleLoginError(R.string.other_login_warning_title,
-              R.string.login_other_user_logined_error_msg, false, false);
-        } else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
-          handleLoginError(R.string.other_login_warning_title, 
-              R.string.login_login_time_used_out_msg, true, true);
-        } else {
-          ErrorDialog.getInstance(mContext).showDialog(
-              getString(R.string.login_psd_error_msg),
-              new OnClickBtnRetry() {
-                  @Override
-                  public void onRetry() {
-                    showLoginDialog();
-            }
-          });
-        }       
-      }
-
-      @Override
-      public void onFirstLogin(){
-        showLoginDialog();
-      }         
-    });  
+							@Override
+							public void onCancle() {
+								 handleLoginError(R.string.qs_title, R.string.qs_exit_query, true, false);
+							}}); 
+         
+         
+        } else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) { 
+          handleLoginError(R.string.other_login_warning_title,  
+              R.string.login_login_time_used_out_msg, true, true); 
+        } else { 
+          ErrorDialog.getInstance(mContext).showDialog( 
+              getString(R.string.login_psd_error_msg), 
+              new OnClickBtnRetry() { 
+                  @Override 
+                  public void onRetry() { 
+                    //showLoginDialog(); 
+                  	doLogin();
+            } 
+          }); 
+        }        
+      } 
+ 
+      @Override 
+      public void onFirstLogin(){ 
+        showLoginDialog(); 
+      }          
+    });   
   }
   /*
    * A dialog that let use enter password.
@@ -299,12 +364,13 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       }
       
     });
-    mLoginDialog.showDialog(new OnLoginFinishedListener() {
-      @Override
-      public void onLoginFinished() {
-        buildStateHandlerChain(true);
-      }
-    });  
+    mLoginDialog.showDialogDoLogin();  
+//    mLoginDialog.showDialog(new OnLoginFinishedListener() {
+//      @Override
+//      public void onLoginFinished() {
+//       // buildStateHandlerChain(true);
+//      }
+//    });  
   }
   
   private void setViewsVisibility(boolean prompt_title_right_show, boolean leftShow,boolean pukShow,boolean mTextShow,boolean summShow) {
@@ -312,6 +378,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mSetupTitle.setVisibility(visibility);
     mPromptText.setVisibility(visibility);
     mNavigatorRight.setVisibility(visibility);
+//    mEnterText.setEnabled(true);
+//    mEnterText.setClearIconVisible(true);
     if (mTextShow) {
     	mEnterText.setVisibility(View.VISIBLE);
 		}else {
@@ -465,6 +533,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
     registerReceiver(mReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));  
     registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
+    registerReceiver(mReceiver, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
+    registerReceiver(mReceiver, new IntentFilter(MessageUti.USER_HEARTBEAT_REQUEST));
+  	registerReceiver(mReceiver, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
       
     mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);   
   }
@@ -513,7 +584,17 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           context.startActivity(new Intent(context, RefreshWifiActivity.class));
           // finish();
         }
-      } else if (action.equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
+      } else if (action.equals(MessageUti.USER_HEARTBEAT_REQUEST) || action.equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)) {
+      	if (result == BaseResponse.RESPONSE_OK && error.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+      		kickoffLogout();
+				}
+			}else if (action.equals(MessageUti.USER_LOGOUT_REQUEST)) {
+  			if (BaseResponse.RESPONSE_OK == result && error.length() == 0){
+  				MainActivity.m_blLogout = false;
+  				MainActivity.m_blkickoff_Logout = false;
+  			}
+  			handleLoginError(R.string.qs_title, R.string.login_kickoff_logout_successful, true, false);
+			}else if (action.equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
         if (BaseResponse.RESPONSE_OK == result && 0 == error.length()) {
           /*
            * Unfortunately, when orientation changes, activity will receive this message again.
@@ -524,7 +605,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
             return;
           }
           mWiFiSSID = mBusinessMgr.getSsid();
-          mWiFiPasswd = mBusinessMgr.getWifiPwd();           
+          mWiFiPasswd = mBusinessMgr.getWifiPwd();        
+          mSecurityMode = mBusinessMgr.getSecurityMode();
           
           if(mStateHandler == null || mEnterText.getText().length() > 0 ||
               mBusinessMgr.getLoginStatus() != UserLoginStatus.login) {
@@ -535,7 +617,13 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
             mEnterText.setText(mWiFiSSID);
           } else if (mStateHandler.getState() == State.WIFI_PASSWD && mWiFiPasswd != null) {
             //mEnterText.setHint(mWiFiPasswd);
-            mEnterText.setText(mWiFiPasswd);
+//          	if (mSecurityMode == SecurityMode.Disable) {
+//          		//mWiFiPasswd = "";
+//          		mEnterText.setEnabled(false);
+//						}else {
+//							mEnterText.setEnabled(true);
+//						}
+          	mEnterText.setText(mWiFiPasswd);
           }
         }
       } else if (action.equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)) {
@@ -630,6 +718,15 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 			}
     }
   }  
+  
+  public void kickoffLogout() {
+		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
+			MainActivity.setKickoffLogoutFlag(true);
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.USER_LOGOUT_REQUEST, null);
+		}
+	}
   
   private void setWiFiConfigure(String ssid, String passwd){
     DataValue data = new DataValue();
@@ -1133,21 +1230,32 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mEnterText.addTextChangedListener(this);
       //mEnterText.setHint(mWiFiPasswd);
       if(mWiFiPasswd != null){
+      	if (wifiPasswordFirstFlag == 0) {
+					wifiPasswordFirstFlag = 1;
+					mWiFiPasswd = "";
+				}
         mEnterText.setText(mWiFiPasswd);
-        mEnterText.setText(mWiFiPasswd);
+  //      mEnterText.setHint(mWiFiPasswd);
         if (mEnterText.getSelectionStart() == 0 && mWiFiPasswd.length() > 0) {
         	mEnterText.setSelection(mWiFiPasswd.length());
-				}else {
-					mEnterText.setTextKeepState(mWiFiPasswd);
-				}
-      	//Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
+  			}else {
+  				mEnterText.setTextKeepState(mWiFiPasswd);
+  			}
       }
+    	//Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
+//      if(mSecurityMode == SecurityMode.Disable){
+//      	mEnterText.setEnabled(false);
+//      	mEnterText.setClearIconVisible(false);
+//      }else {
+//				mEnterText.setEnabled(true);
+//				mEnterText.setClearIconVisible(true);
+//			}
       mNavigatorRight.setText(R.string.skip); 
     }
 
     @Override
     public boolean storeSetting() {
-      if(mSkipSetup == false) {
+      if(mSkipSetup == false || wifiPasswordFirstFlag == 1) {
         //setWiFiConfigure(mWiFiSSID, mEnterText.getText().toString());
         String enter = mEnterText.getText().toString();
         if (!enter.equals(mWiFiPasswd)) {

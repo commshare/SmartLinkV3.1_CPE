@@ -67,6 +67,7 @@
         </activity>
         <activity
             android:name=".ui.activity.QuickSetupActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:noHistory="true"
