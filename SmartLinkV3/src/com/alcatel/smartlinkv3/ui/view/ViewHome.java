@@ -505,7 +505,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		}
 		
 		String strConnDuration = String.format(home_connected_duration, statictime/3600, (statictime%3600)/60);
-		Log.v("time", "pccccc home_connected_duration="+statictime);
 		m_timestatusTextView.setText(strConnDuration);
 		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));
 	

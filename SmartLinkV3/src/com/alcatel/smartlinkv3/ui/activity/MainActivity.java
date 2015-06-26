@@ -812,7 +812,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 											}
 										}
 									});
-									Log.v("pchong", "auto  LoginDialog    m_password = "+""+"USER_NAME = "+"");
 								}
 							});
 						
@@ -1125,7 +1124,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
 							//m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
-							Log.v("pchong", "show auto  LoginDialog2");
 							
 							ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg),
 									new OnClickBottonConfirm() 
@@ -1136,7 +1134,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 										public void onLoginSuccess() 				
 										{
 											go2MicroSDView();
-											Log.v("pchong", "show auto  LoginDialog4");
 										}
 
 										public void onLoginFailed(String error_code)

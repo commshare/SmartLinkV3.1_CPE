@@ -50,7 +50,6 @@ public class AutoForceLoginProgressDialog
 			
 			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
 			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
-			Log.v("pchong", "show auto  LoginDialog    forceauto  login1");
 
 		}
 		else

@@ -120,8 +120,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			} else if (arg1.getAction().equalsIgnoreCase(
 					MessageUti.USER_LOGIN_REQUEST)) {
 				m_bIsApply = false;
-				boolean isshow = m_dlgLogin.isShowing();
-				Log.v("pchong", "show auto  LoginDialog    isshow = "+isshow);
 				if(!m_dlgLogin.isShowing())
 					return;
 				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
@@ -154,7 +152,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 //							m_context.getString(R.string.other_login_warning_title),
 //							m_strMsgOtherUserLogined);
 
-					Log.v("pchong", "show auto  LoginDialog1");
 					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_msg),
 							new OnClickBottonConfirm() 
 					{
@@ -164,7 +161,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
 								public void onLoginSuccess() 				
 								{
-									Log.v("pchong", "show auto  LoginDialog3");
 //									CPEConfig.getInstance().setLoginPassword(m_password);
 //									CPEConfig.getInstance().setLoginUsername(USER_NAME);
 									closeDialog();
@@ -543,7 +539,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.USER_LOGIN_REQUEST, data);
 		m_bIsApply = true;
-		Log.v("pchong", "show auto  LoginDialog    apply  login");
 	}
 
 	@Override

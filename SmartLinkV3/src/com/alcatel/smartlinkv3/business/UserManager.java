@@ -283,7 +283,7 @@ public class UserManager extends BaseManager {
 			return;
 		if(m_updateLoginTimeTask == null) {
 			m_updateLoginTimeTask = new UpdateLoginTimeTask();
-			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 10000);
+			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 6000);
 		}
 	}
 	
@@ -296,7 +296,6 @@ public class UserManager extends BaseManager {
     	String strCurrPsw = (String) data.getParamByKey("current_password");
     	String strNewPsw = (String) data.getParamByKey("new_password");
     	
-    	Log.v("PassWordChanged", "Status1");
     	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ChangePassword("1.4", strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
 
 			@Override
@@ -311,7 +310,6 @@ public class UserManager extends BaseManager {
                 else{
                 	strErrcode = ErrorCode.UNKNOWN_ERROR;
                 }
-                Log.v("PassWordChanged", "Status2");
                 Intent megIntent= new Intent(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
                 megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                 megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);

@@ -49,7 +49,6 @@ public class AutoLoginProgressDialog
 			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGIN_REQUEST, data);
-			Log.v("pchong", "show auto  LoginDialog    auto  login");
 		}
 		else if(s_callback != null)
 		{

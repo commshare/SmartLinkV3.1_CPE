@@ -147,7 +147,6 @@ public class CPESettings {
 //	}
 	
 	public  boolean getAutoLoginFlag( ){
-		Log.v("pchong", "setLoginDialog2    password  username   m_password= "+m_password+"username = "+m_username);
 		if(m_username != "" && m_password != "")
 		{
 			return true;			
