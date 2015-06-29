@@ -101,8 +101,7 @@ public class NotificationService extends Service {
 					m_isNeedToAlertUpgrade = false;
 					
 					m_AlertUsageLimitLessOneTime = true;
-	//				m_AlertUsageLimitOverOneTime = true;
-					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());			
+	//				m_AlertUsageLimitOverOneTime = true;	
 					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 				}
 				

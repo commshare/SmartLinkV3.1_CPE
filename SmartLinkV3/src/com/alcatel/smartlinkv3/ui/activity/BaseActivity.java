@@ -111,7 +111,7 @@ public abstract class BaseActivity extends Activity{
 			}
 		}else if(intent.getAction().equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)){
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(strErrorCode.equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604)) {
+			if(strErrorCode.equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604) && isForeground(this)) {
 				backMainActivity(context);
 				kickoffLogout();
 			}
