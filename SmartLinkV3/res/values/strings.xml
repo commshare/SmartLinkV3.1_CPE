@@ -714,24 +714,24 @@
     <string name="download_text_dling">Downloading...</string>
     <string name="download_text_path">Path: </string>
     <!-- FTP FILE END -->
-    
+
+
     <!-- SMART WIDGET START -->
     <string name="widget_usage_left">Left</string>
     <string name="widget_usage_used">Used</string>
     <!-- SMART WIDGET END -->
-    
 
 
     <!-- Welcome Guide -->
-    <string name="guide1_title">Our family</string>
-    <string name="guide1_description">You can use this app to control our products</string>
-    <string name="guide2_title">View usage in real time</string>
-    <string name="guide2_description">Usage Plan, Usage Alert, Time Limit, Control Connecter</string>
-    <string name="guide3_title">Sharing</string>
-    <string name="guide3_description">Pictures, music, video, Documents</string>
+    <string name="guide1_title">REMOTE CONTROL</string>
+    <string name="guide1_description">Link APP is compatible with all ALCATEL ONETOUCH mobile WiFi supporting 4G LTE High Speed. Thanks to this app you can easily manage your mobile WiFi directly from smartphone or tablet.</string>
+    <string name="guide2_title">ALWAYS UP TO DATE</string>
+    <string name="guide2_description">LINK APP displays in real time the status of the connection and data speeds, battery life and SMS. Through the app you can set monthly data usage plan and you\'ll be automatically disconnected once you reach preset limit.</string>
+    <string name="guide3_title">SECURITY MANAGER</string>
+    <string name="guide3_description">Through LINK APP you can block any device trying to connect to your WiFi hotspot with no permission. And you\'ll also be free to edit user\'s name to easily recognize them.</string>
     <string name="what_new_btn_text">Start</string>
     <!-- Welcome Guide End -->
-    
+
     <string-array name="usage_unit">
         <item>MB</item>
         <item>GB</item>

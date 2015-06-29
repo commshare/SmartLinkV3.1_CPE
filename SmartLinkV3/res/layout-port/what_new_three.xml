@@ -2,64 +2,85 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#388e3c"
     android:orientation="vertical" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <ImageView
-        android:id="@+id/guide3_img"
         android:layout_width="wrap_content"
-        android:layout_height="0sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
-        android:layout_weight="5"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="4.5"
         android:contentDescription="@null"
-        android:focusable="true"
-        android:gravity="center"
+        android:scaleType="centerInside"
         android:src="@drawable/guide3" />
 
-    <TextView
-        android:id="@+id/guide3_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
         android:gravity="center"
-        android:text="@string/guide3_title"
-        android:textColor="#333333"
-        android:textSize="25sp" />
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/guide3_description"
+        <TextView
+            android:id="@+id/guide3_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:text="@string/guide3_title"
+            android:textColor="#F9FBF9"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/guide3_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:gravity="left"
+                android:text="@string/guide3_description"
+                android:textColor="#D9E3D9" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center|top"
-        android:text="@string/guide3_description"
-        android:textColor="#999999"
-        android:textSize="20sp" />
+        android:gravity="center_horizontal|bottom" >
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="wrap_content"
-        android:layout_height="0sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/what_new_start_btn"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:text="@string/what_new_btn_text"
-        android:textColor="#0089CF"
-        android:textSize="30sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_weight="2" />
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/what_new_start_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/what_new_btn_text"
+            android:textColor="#388e3c" />
+    </LinearLayout>
 
 </LinearLayout>

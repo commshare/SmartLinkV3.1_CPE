@@ -22,7 +22,10 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="@null"
-            android:padding="15.0dip"
+            android:paddingBottom="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
             android:src="@drawable/selector_dot_guide" />
 
         <ImageView
@@ -30,7 +33,10 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="@null"
-            android:padding="15.0dip"
+            android:paddingBottom="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
             android:src="@drawable/selector_dot_guide" />
 
         <ImageView
@@ -38,7 +44,10 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="@null"
-            android:padding="15.0dip"
+            android:paddingBottom="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
             android:src="@drawable/selector_dot_guide" />
     </LinearLayout>
 

@@ -2,49 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#d53939"
     android:orientation="vertical" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5" />
+
     <ImageView
-        android:id="@+id/guide2_img"
         android:layout_width="wrap_content"
-        android:layout_height="0sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
-        android:layout_weight="5"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="4"
         android:contentDescription="@null"
-        android:focusable="true"
-        android:gravity="center"
+        android:scaleType="centerInside"
         android:src="@drawable/guide2" />
 
-    <TextView
-        android:id="@+id/guide2_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
         android:gravity="center"
-        android:text="@string/guide2_title"
-        android:textColor="#333333"
-        android:textSize="25sp" />
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/guide2_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:text="@string/guide2_title"
+            android:textColor="#F9FBF9"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/guide2_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:gravity="left"
+                android:singleLine="false"
+                android:text="@string/guide2_description"
+                android:textColor="#D9E3D9" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/guide2_description"
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="1"
-        android:gravity="center|top"
-        android:text="@string/guide2_description"
-        android:textColor="#999999"
-        android:textSize="20sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_weight="3" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>

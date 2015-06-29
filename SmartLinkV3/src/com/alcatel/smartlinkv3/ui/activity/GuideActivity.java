@@ -27,6 +27,7 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 	private List<View> mViews;
 	private ImageView[] mDots;
 	private int mCurrentIndex;
+	private LinearLayout mLL;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 		mVP = (ViewPager) findViewById(R.id.viewpager);
 		mVP.setAdapter(mVPAdapter);
 		mVP.setOnPageChangeListener(this);
+
+		mLL = (LinearLayout) findViewById(R.id.ll);
 	}
 
 	private void initDots() {
@@ -80,6 +83,19 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 
 	@Override
 	public void onPageSelected(int arg0) {
+		switch (arg0) {
+		case 0:
+		case 1:
+			mLL.setVisibility(View.VISIBLE);
+			break;
+
+		case 2:
+			mLL.setVisibility(View.GONE);
+
+		default:
+			break;
+		}
+
 		setCurrentDot(arg0);
 	}
 
@@ -108,8 +124,9 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 			container.addView(mViews.get(position), 0);
+
 			if (position == (mViews.size() - 1)) {
-				Button startBtn = (Button) container
+				Button startBtn = (Button) mActivity
 						.findViewById(R.id.btn_start);
 				startBtn.setOnClickListener(new OnClickListener() {
 					@Override
@@ -125,6 +142,7 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 					}
 				});
 			}
+
 			return mViews.get(position);
 		}
 
