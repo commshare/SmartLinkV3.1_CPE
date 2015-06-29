@@ -41,7 +41,7 @@ public class NotificationService extends Service {
 
 	private boolean m_isNeedToAlertUsageLimit = true;
 	private boolean m_AlertUsageLimitLessOneTime = true;
-	private boolean m_AlertUsageLimitOverOneTime = true;
+	private boolean m_AlertUsageLimitOverOneTime = false;
 	
 	private boolean m_isNeedToAlertBatteryLimit = true;
 	private boolean m_AlertBatteryLimit2OneTime = true;
@@ -71,7 +71,7 @@ public class NotificationService extends Service {
 							m_isNeedToAlertUpgrade = false;
 							
 							m_AlertUsageLimitLessOneTime = true;
-							m_AlertUsageLimitOverOneTime = true;
+//							m_AlertUsageLimitOverOneTime = true;
 							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 						} 
 					}
@@ -95,10 +95,16 @@ public class NotificationService extends Service {
 //					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 //				}
 				
-//				if(intent.getAction().equals(MessageUti.CPE_CHANGED_BILLING_MONTH)) {
-//					m_isNeedToAlertUsageLimit = true;						
-//					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
-//				}
+				if(intent.getAction().equals(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET)) {
+					m_isNeedToAlertUsageLimit = true;		
+					m_isNeedToAlertBatteryLimit  = false;
+					m_isNeedToAlertUpgrade = false;
+					
+					m_AlertUsageLimitLessOneTime = true;
+	//				m_AlertUsageLimitOverOneTime = true;
+					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());			
+					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
+				}
 				
 				if(intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
 					int nResult = intent.getIntExtra(
@@ -111,6 +117,7 @@ public class NotificationService extends Service {
 						m_isNeedToAlertBatteryLimit  = false;
 						m_isNeedToAlertUpgrade = false;
 						
+						m_AlertUsageLimitLessOneTime = true;
 						m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 		    		}
 		    	}
