@@ -41,9 +41,10 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
                android:padding="15dp"
-               android:textColor="@color/color_black"
+               android:textColor="@color/color_red"
                android:textSize="20sp" 
                android:text="@string/setting_log_out"
+               android:gravity="center"
                />
             
             <ImageView

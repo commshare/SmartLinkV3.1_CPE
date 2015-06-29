@@ -41,8 +41,9 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
                android:padding="25dp"
-               android:textColor="@color/color_black"
+               android:textColor="@color/color_red"
                android:textSize="30sp" 
+               android:gravity="center"
                android:text="@string/setting_log_out"
                />
             
