@@ -116,13 +116,14 @@ public class AutoForceLoginProgressDialog
 				{
 					if(BaseResponse.RESPONSE_OK == nRet && strErrorCode.length() == 0 )
 					{
-						if(m_isUserFirstLogin)
+						if(m_isUserFirstLogin||SmartLinkV3App.getInstance().getIsforcesLogin())
 						{
 							CPEConfig.getInstance().setLoginPassword(SmartLinkV3App.getInstance().getLoginPassword());
 							CPEConfig.getInstance().setLoginUsername(SmartLinkV3App.getInstance().getLoginUsername());
 							SmartLinkV3App.getInstance().setLoginPassword("");;
 							SmartLinkV3App.getInstance().setLoginUsername("");
 							m_isUserFirstLogin = false;
+							SmartLinkV3App.getInstance().setIsforcesLogin(false);
 						}
 						s_callback.onLoginSuccess();					
 					}

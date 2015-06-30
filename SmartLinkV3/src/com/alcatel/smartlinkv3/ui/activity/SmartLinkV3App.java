@@ -21,7 +21,8 @@ public class SmartLinkV3App extends Application {
 	
 	private String mapp_password = new String();
 	private String mapp_username = new String();
-	  
+	private boolean mapp_changeisforce = false;;  
+	
     public static SmartLinkV3App getInstance() {  
         return m_instance;  
     }  
@@ -66,5 +67,15 @@ public class SmartLinkV3App extends Application {
 
 	public void setLoginUsername(String username) {
 		mapp_username = username;
+	}
+	
+	//first is forcelogin
+//	
+	public boolean getIsforcesLogin() {
+		return mapp_changeisforce;
+	}
+
+	public void setIsforcesLogin(boolean istrue) {
+		mapp_changeisforce = istrue;
 	}
 }

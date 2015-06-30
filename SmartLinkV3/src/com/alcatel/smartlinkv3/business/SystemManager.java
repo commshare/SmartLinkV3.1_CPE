@@ -20,6 +20,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Handler;
+import android.util.Log;
 
 public class SystemManager extends BaseManager {
 	private Features m_features = new Features();
@@ -286,6 +287,7 @@ public class SystemManager extends BaseManager {
 										&& strErrcode.length() == 0) {
 									m_systemStatus = response
 											.getModelResult();
+									Log.v("pchong", " m_systemStatus " + m_systemStatus.getBarreryStatus(m_systemInfo.getDeviceName()));
 								} else {
 //									new Handler().postDelayed(
 //											new Runnable() {

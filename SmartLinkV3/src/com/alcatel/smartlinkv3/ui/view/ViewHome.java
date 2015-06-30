@@ -548,6 +548,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 										{
 											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 											{
+												SmartLinkV3App.getInstance().setIsforcesLogin(true);
 												ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
 														new OnClickBtnRetry() 
 												{
