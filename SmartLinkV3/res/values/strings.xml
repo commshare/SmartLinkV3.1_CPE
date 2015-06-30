@@ -29,7 +29,8 @@
     <string name="qs_item_wifi_ssid">Wi-Fi Network Name (SSID)</string>
     <string name="qs_wifi_ssid_prompt">The SSID should be 1&#8211;32 characters.</string>
     <string name="qs_item_wifi_passwd">Wi-Fi Password</string>
-    <string name="qs_wifi_passwd_prompt">The password should be 8&#8211;83 characters.</string>
+    <string name="qs_wifi_passwd_prompt">The password should be 8&#8211;63 characters.</string>
+    <string name="qs_wifi_wep_passwd_prompt">The password should be 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits</string>
     <string name="qs_completed">Setup Completed</string>
     <string name="qs_summary">Your device is ready to use.</string>
     <string name="qs_wifi_ssid">Wi-Fi Network Name (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>

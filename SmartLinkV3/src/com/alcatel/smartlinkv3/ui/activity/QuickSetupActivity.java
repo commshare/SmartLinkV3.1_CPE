@@ -90,7 +90,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private BusinessMannager mBusinessMgr;
   private boolean pukValState,newPinValState,confirmPinState;
   private ProgressDialog m_progress_dialog = null;
-  private int wifiPasswordFirstFlag;
   //private int restoreLoginState = 0;//0:password输入框无操作。1：password输入框有操作。2.密码输入错误，弹出retry dialog。3
 
   
@@ -127,7 +126,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     pukLinearLayout2 = (LinearLayout) findViewById(R.id.qs_puk_linear2);
     pukLinearLayout3 = (LinearLayout) findViewById(R.id.qs_puk_linear3);
     setViewsVisibility(false, false, false, false, false);
-    wifiPasswordFirstFlag = 0;
     
     mReceiver = new QSBroadcastReceiver();
     
@@ -733,7 +731,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     SecurityMode mode = mBusinessMgr.getSecurityMode();
     int encrypt;
     if (SecurityMode.Disable == mode) {
-      encrypt = -1;
+    	// wpa/wpa2 : 4,	encrypt auto:2
+      encrypt = 2;
+      mode = SecurityMode.WPA_WPA2;
     } else if (SecurityMode.WEP == mode) {
       encrypt = WEPEncryption.antiBuild(
           BusinessMannager.getInstance().getWEPEncryption());
@@ -898,7 +898,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override   
     public void afterTextChanged(Editable s) {
-    	if(this instanceof WiFiSSIDHandler || this instanceof PinCodeHandler || this instanceof WiFiPasswdHandler){
+    	if(this instanceof WiFiSSIDHandler || this instanceof PinCodeHandler){
     		Log.d(TAG, "afterTextChanged:"+s.toString());
     		boolean isNext = textChangeAction(s, this.mInputMax, this.mInputMin, mEnterText);
     		if (isNext) {
@@ -927,8 +927,74 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 	        mNavigatorRight.setText(R.string.skip);
 				}
     		Log.d(TAG, "this.mSkipSetup:"+mSkipSetup);
-			}
+			}else if(this instanceof WiFiPasswdHandler){
+					boolean isNext = textChangeAction(s, this.mInputMax, this.mInputMin, mEnterText);
+					boolean isVal = checkPassword(s.toString());
+				//	Log.d(TAG, "------------------s:"+s.toString());
+	    		if (isNext && isVal) {
+	    			mSkipSetup = false;
+	          mNavigatorRight.setText(R.string.next);
+					}else{
+						mSkipSetup = true;
+		        mNavigatorRight.setText(R.string.skip);
+					}
+				}
     }
+    
+  	protected boolean checkPassword(String strPsw) {
+  		int nLength = strPsw.length();
+  		boolean bCorrect = true;
+  		if(mSecurityMode == SecurityMode.WEP) {
+  			if(strPsw == null || !(nLength == 5 || nLength == 13 || nLength == 10 || nLength == 26)) {
+  				bCorrect = false;
+  			}else{
+  				if(nLength == 5 || nLength == 13) {
+  					for(int i = 0;i < nLength;i++) {
+  						char c = strPsw.charAt(i);
+  						if(!(c > 32 && c < 127 && c != 34 &&  c != 38 &&  c != 58 &&  c != 59 &&  c != 92)) {
+  							bCorrect = false;
+  							break;
+  						}
+  					}
+  				}
+
+  				if(nLength == 10 || nLength == 26) {
+  					for(int i = 0;i < nLength;i++) {
+  						char c = strPsw.charAt(i);
+  						if(!(c >= '0' && c <= '9' || c >= 'a' &&  c <= 'z' ||  c >= 'A' &&  c <= 'Z')) {
+  							bCorrect = false;
+  							break;
+  						}
+  					}
+  				}
+  			}
+  			if(bCorrect == true){
+  				return true;
+  			}else{
+  				//m_strErrorInfo = getString(R.string.setting_wep_password_error_prompt);
+  				return false;
+  			}
+  		}else{
+  			if(strPsw == null || !(nLength > 7 && nLength < 64)) {
+  				bCorrect = false;
+  			}else{
+  				for(int i = 0;i < nLength;i++) {
+  					char c = strPsw.charAt(i);
+  					if(!(c > 32 && c < 127 && c != 34 &&  c != 38 &&  c != 58 &&  c != 59 &&  c != 92)) {
+  						bCorrect = false;
+  						break;
+  					}
+  				}
+  			}
+
+  			if(bCorrect == true){
+  				return true;
+  			}else{
+  				//m_strErrorInfo = getString(R.string.setting_wpa_password_error_prompt);
+  				return false;
+  			}
+  		}
+  	}
     
     protected boolean textChangeAction(Editable s,int iptMax,int iptMin,ClearEditText editText){
     	Log.d(TAG, "getState():"+this.getState());
@@ -1213,15 +1279,23 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   }
   
   class WiFiPasswdHandler extends StateHandler {
+  	//wpa 
     WiFiPasswdHandler(){
-      super(State.WIFI_PASSWD, 8, 63);      
+      super(State.WIFI_PASSWD, 8, 63);   
     }
 
     @Override
     public void setupViews() {
     	setViewsVisibility(true,true,false,true,false);
+    //	Log.d(TAG, "mSecurityMode:---"+mSecurityMode);
+    	 if(mSecurityMode == SecurityMode.WEP){
+    		 mPromptText.setText(getString(R.string.qs_wifi_wep_passwd_prompt));
+    		 mInputMax = 26;
+    		 mInputMin = 5;
+    	 }else {
+    		 mPromptText.setText(getString(R.string.qs_wifi_passwd_prompt));
+			}
       mSetupTitle.setText(getString(R.string.qs_item_wifi_passwd));
-      mPromptText.setText(getString(R.string.qs_wifi_passwd_prompt));
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       //replace  TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
       mEnterText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -1230,10 +1304,6 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mEnterText.addTextChangedListener(this);
       //mEnterText.setHint(mWiFiPasswd);
       if(mWiFiPasswd != null){
-      	if (wifiPasswordFirstFlag == 0) {
-					wifiPasswordFirstFlag = 1;
-					mWiFiPasswd = "";
-				}
         mEnterText.setText(mWiFiPasswd);
   //      mEnterText.setHint(mWiFiPasswd);
         if (mEnterText.getSelectionStart() == 0 && mWiFiPasswd.length() > 0) {
@@ -1255,7 +1325,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 
     @Override
     public boolean storeSetting() {
-      if(mSkipSetup == false || wifiPasswordFirstFlag == 1) {
+      if(mSkipSetup == false) {
         //setWiFiConfigure(mWiFiSSID, mEnterText.getText().toString());
         String enter = mEnterText.getText().toString();
         if (!enter.equals(mWiFiPasswd)) {
