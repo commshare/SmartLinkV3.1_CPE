@@ -86,6 +86,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private LoginDialog mLoginDialog = null;
   private AutoLoginProgressDialog mAutoLoginDialog = null;
   private CommonErrorInfoDialog mConfirmDialog = null;
+  private ForceLoginSelectDialog forceLoginSelectDialog = null;
   private Context mContext;
   private BusinessMannager mBusinessMgr;
   private boolean pukValState,newPinValState,confirmPinState;
@@ -282,7 +283,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){ 
 //          handleLoginError(R.string.other_login_warning_title, 
 //              R.string.login_other_user_logined_error_msg, false, false); 
-            ForceLoginSelectDialog.getInstance(mContext).showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg), 
+          forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(mContext);
+          forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg), 
             		new OnClickBottonConfirm()  
             { 
                 public void onConfirm()  
@@ -561,6 +563,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mConfirmDialog.destroyDialog();
     if (mAutoLoginDialog != null)
       mAutoLoginDialog.destroyDialog();
+    if (forceLoginSelectDialog != null) {
+			forceLoginSelectDialog.destroyDialog();
+		}
     mBusinessMgr = null;
   }
   
