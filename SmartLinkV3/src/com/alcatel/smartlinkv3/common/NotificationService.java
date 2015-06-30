@@ -41,7 +41,7 @@ public class NotificationService extends Service {
 
 	private boolean m_isNeedToAlertUsageLimit = true;
 	private boolean m_AlertUsageLimitLessOneTime = true;
-	private boolean m_AlertUsageLimitOverOneTime = false;
+	private boolean m_AlertUsageLimitOverOneTime = true;
 	
 	private boolean m_isNeedToAlertBatteryLimit = true;
 	private boolean m_AlertBatteryLimit2OneTime = true;
@@ -67,11 +67,11 @@ public class NotificationService extends Service {
 						boolean bCalibrationValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_MONTHLY_PLAN_CHANGE,false);
 						if (bCalibrationValueChange) {
 							m_isNeedToAlertUsageLimit = true;		
-							m_isNeedToAlertBatteryLimit  = false;
-							m_isNeedToAlertUpgrade = false;
+//							m_isNeedToAlertBatteryLimit  = false;
+//							m_isNeedToAlertUpgrade = false;
 							
 							m_AlertUsageLimitLessOneTime = true;
-//							m_AlertUsageLimitOverOneTime = true;
+							m_AlertUsageLimitOverOneTime = true;
 							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 						} 
 					}
@@ -96,13 +96,19 @@ public class NotificationService extends Service {
 //				}
 				
 				if(intent.getAction().equals(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET)) {
+					int nResult = intent.getIntExtra(
+							MessageUti.RESPONSE_RESULT, 0);
+					String strErrorCode = intent
+							.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+					if (nResult == BaseResponse.RESPONSE_OK
+							&& strErrorCode.length() == 0) {
 					m_isNeedToAlertUsageLimit = true;		
-					m_isNeedToAlertBatteryLimit  = false;
-					m_isNeedToAlertUpgrade = false;
+//					m_isNeedToAlertBatteryLimit  = false;
+//					m_isNeedToAlertUpgrade = false;
 					
 					m_AlertUsageLimitLessOneTime = true;
-	//				m_AlertUsageLimitOverOneTime = true;	
-					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
+					m_AlertUsageLimitOverOneTime = true;	
+					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());}
 				}
 				
 				if(intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
@@ -117,6 +123,7 @@ public class NotificationService extends Service {
 						m_isNeedToAlertUpgrade = false;
 						
 						m_AlertUsageLimitLessOneTime = true;
+						m_AlertUsageLimitOverOneTime = true;
 						m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 		    		}
 		    	}
@@ -128,8 +135,8 @@ public class NotificationService extends Service {
 						SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 						if(simStatus.m_SIMState != ENUM.SIMState.Accessable) {
 							m_isNeedToAlertUsageLimit = true;	
-							m_isNeedToAlertBatteryLimit  = false;
-							m_isNeedToAlertUpgrade = false;
+							m_isNeedToAlertBatteryLimit  = true;
+							m_isNeedToAlertUpgrade = true;
 							
 							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 						}
@@ -144,8 +151,8 @@ public class NotificationService extends Service {
 						if(batteryinfo.getChargeState() == ConstValue.CHARGE_STATE_CHARGING)
 						{
 							m_isNeedToAlertBatteryLimit = false;	
-							m_isNeedToAlertBatteryLimit  = false;
-							m_isNeedToAlertUpgrade = false;
+//							m_isNeedToAlertUsageLimit  = false;
+//							m_isNeedToAlertUpgrade = false;
 							
 							m_AlertBatteryLimit2OneTime = true;
 							m_AlertBatteryLimit1OneTime = true;
@@ -153,8 +160,8 @@ public class NotificationService extends Service {
 						}else
 						{
 							m_isNeedToAlertBatteryLimit = true;
-							m_isNeedToAlertUsageLimit = false;
-							m_isNeedToAlertUpgrade = false;
+//							m_isNeedToAlertUsageLimit = false;
+//							m_isNeedToAlertUpgrade = false;
 //							if(m_AlertBatteryLimit1OneTime || m_AlertBatteryLimit2OneTime)
 //							{
 //								m_nm.cancel(ALERT_TYPE.BatteryLimit.ordinal());
@@ -168,8 +175,8 @@ public class NotificationService extends Service {
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 						m_isNeedToAlertUpgrade = true;
-						m_isNeedToAlertBatteryLimit = false;
-						m_isNeedToAlertUsageLimit = false;
+//						m_isNeedToAlertBatteryLimit = false;
+//						m_isNeedToAlertUsageLimit = false;
 						
 						if(m_AlertUpgradeOneTime)
 						{
@@ -275,11 +282,8 @@ public class NotificationService extends Service {
 	}
 
 	private void alert() {
-		Log.d("NotificationService", "pchong  startNotificationService");
 		UsageSettingModel settings = BusinessMannager.getInstance()
 				.getUsageSettings();
-//		long lTotalUsedUsage = BusinessMannager.getInstance()
-//				.GetBillingMonthTotalUsage();
 
 		BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
 		
@@ -289,20 +293,22 @@ public class NotificationService extends Service {
 		
 
 		if (settings.HMonthlyPlan > 0
-				&& m_isNeedToAlertUsageLimit == true) {
+				&& m_isNeedToAlertUsageLimit == true
+				&&(((settings.HUsedData >= settings.HMonthlyPlan)&&m_AlertUsageLimitOverOneTime == true)
+						||(settings.HUsedData <= settings.HMonthlyPlan&&isOverMonthlyPlan(settings) && (m_AlertUsageLimitLessOneTime==true)))) {
 //			if (simState.m_SIMState != SIMState.Accessable) 
 //				return;
 			
 			if(settings.HUsedData >= settings.HMonthlyPlan)
 			{
-				if(m_AlertUsageLimitOverOneTime)
+				if(m_AlertUsageLimitOverOneTime == true)
 				{
 					showNotification(ALERT_TYPE.UsageLimit, settings.HUsedData/settings.HMonthlyPlan);
 					Log.d("NotificationService", "pchong   usage alert  over");
 					m_isNeedToAlertUsageLimit = false;
 					m_AlertUsageLimitOverOneTime = false;
 				}
-			}else
+			}else if(m_AlertUsageLimitLessOneTime == true)
 			{
 				if(isOverMonthlyPlan(settings) && m_AlertUsageLimitLessOneTime)
 				{
@@ -312,7 +318,10 @@ public class NotificationService extends Service {
 					m_AlertUsageLimitLessOneTime = false;
 				}
 			}
-		}else if ( m_isNeedToAlertBatteryLimit == true ) {
+		}else if ( m_isNeedToAlertBatteryLimit == true &&((isOverBattery2(batteryinfo.getBatterLevel())&&m_AlertBatteryLimit2OneTime == true)
+				||((isOverBattery1(batteryinfo.getBatterLevel()))&&(m_AlertBatteryLimit1OneTime == true)))
+																			)
+					{
 				if(isOverBattery2(batteryinfo.getBatterLevel()))
 				{
 					if(m_AlertBatteryLimit2OneTime == true)
@@ -345,7 +354,7 @@ public class NotificationService extends Service {
 	{
 		boolean bOverPlan = false;
 		double standard = usagesetting.HMonthlyPlan/10;
-		double ft =( usagesetting.HMonthlyPlan - usagesetting.HUsedData );
+		double ft = usagesetting.HMonthlyPlan - usagesetting.HUsedData;
 		if (ft <= standard) {
 			bOverPlan = true;
 		}
