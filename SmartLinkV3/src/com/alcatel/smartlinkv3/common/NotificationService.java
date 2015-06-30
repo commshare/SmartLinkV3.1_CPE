@@ -359,7 +359,7 @@ public class NotificationService extends Service {
 	
 	private boolean isOverBattery2(int BatteryLevel) {
 		boolean bOverBattery = false;
-		if (BatteryLevel <= 20 && BatteryLevel>=10) {
+		if (BatteryLevel <= 20 && BatteryLevel>10) {
 			bOverBattery = true;
 		}
 		return bOverBattery;
