@@ -10,6 +10,7 @@ import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
@@ -253,15 +254,12 @@ public class NotificationService extends Service {
 
 	public static void startService() {
 		Context context = SmartLinkV3App.getInstance().getApplicationContext();
-		Log.d("NotificationService", "pchong   start  startService");
 		if (!isServiceRunning(context)) {
-			Log.d("NotificationService", "pchong  startService");
 			startHttpService(context);
 		}
 	}
 
 	private static void startHttpService(Context context) {
-		Log.d("NotificationService", "pchong  startNotificationService");
 		Intent Intent = new Intent(context, NotificationService.class);
 		context.startService(Intent);
 	}
@@ -285,32 +283,31 @@ public class NotificationService extends Service {
 	private void alert() {
 		UsageSettingModel settings = BusinessMannager.getInstance()
 				.getUsageSettings();
+		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 
 		BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
 		
 		DeviceNewVersionInfo newVersioninfo = BusinessMannager.getInstance().getNewFirmwareInfo();
 		
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		//SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		
 
 		if (settings.HMonthlyPlan > 0
 				&& m_isNeedToAlertUsageLimit == true
-				&&(((settings.HUsedData >= settings.HMonthlyPlan)&&m_AlertUsageLimitOverOneTime == true)
-						||(settings.HUsedData < settings.HMonthlyPlan&&isOverMonthlyPlan(settings) && (m_AlertUsageLimitLessOneTime==true)))) {
+				&&(((m_UsageRecordResult.HUseData >= settings.HMonthlyPlan)&&m_AlertUsageLimitOverOneTime == true)
+						||(m_UsageRecordResult.HUseData < settings.HMonthlyPlan&&isOverMonthlyPlan(settings,m_UsageRecordResult) && (m_AlertUsageLimitLessOneTime==true)))) {
 //			if (simState.m_SIMState != SIMState.Accessable) 
 //				return;
 			
-			if((settings.HUsedData >= settings.HMonthlyPlan) && m_AlertUsageLimitOverOneTime == true)
+			if((m_UsageRecordResult.HUseData >= settings.HMonthlyPlan) && m_AlertUsageLimitOverOneTime == true)
 			{
-					showNotification(ALERT_TYPE.UsageLimit, settings.HUsedData/settings.HMonthlyPlan);
-					Log.d("NotificationService", "pchong   usage alert  over");
+					showNotification(ALERT_TYPE.UsageLimit, m_UsageRecordResult.HUseData/settings.HMonthlyPlan);
 					m_isNeedToAlertUsageLimit = false;
 					m_AlertUsageLimitOverOneTime = false;
 					
-			}else if((m_AlertUsageLimitLessOneTime == true)&&isOverMonthlyPlan(settings) &&(m_AlertUsageLimitLessOneTime = true))
+			}else if((m_AlertUsageLimitLessOneTime == true)&&isOverMonthlyPlan(settings,m_UsageRecordResult) &&(m_AlertUsageLimitLessOneTime = true))
 			{
-					showNotification(ALERT_TYPE.UsageLimit, settings.HUsedData/settings.HMonthlyPlan);
-					Log.d("NotificationService", "pchong   usage alert  Less");
+					showNotification(ALERT_TYPE.UsageLimit, m_UsageRecordResult.HUseData/settings.HMonthlyPlan);
 					m_isNeedToAlertUsageLimit = false;
 					m_AlertUsageLimitLessOneTime = false;
 			}
@@ -322,7 +319,6 @@ public class NotificationService extends Service {
 					if(m_AlertBatteryLimit2OneTime == true)
 					{
 						showNotification(ALERT_TYPE.BatteryLimit, batteryinfo.getBatterLevel());
-						Log.d("NotificationService", "pchong   BatteryLimit alert <20");
 						m_isNeedToAlertBatteryLimit = false;
 						m_AlertBatteryLimit2OneTime = false;
 					}
@@ -331,7 +327,6 @@ public class NotificationService extends Service {
 					if(m_AlertBatteryLimit1OneTime == true)
 					{
 						showNotification(ALERT_TYPE.BatteryLimit, batteryinfo.getBatterLevel());
-						Log.d("NotificationService", "pchong   BatteryLimit alert  <10");
 						m_isNeedToAlertBatteryLimit = false;
 						m_AlertBatteryLimit1OneTime = false;
 					}
@@ -339,17 +334,16 @@ public class NotificationService extends Service {
 			}else if(isHaveNewVersion(newVersioninfo.getState())
 						&& m_isNeedToAlertUpgrade == true&&m_AlertUpgradeOneTime == true){
 			showNotification(ALERT_TYPE.Upgrade, newVersioninfo.getState());
-			Log.d("NotificationService", "pchong  upgrade alert");
 			m_isNeedToAlertUpgrade = false;
 			m_AlertUpgradeOneTime = false;
 		}
 	}
 	
-	private boolean isOverMonthlyPlan(UsageSettingModel usagesetting)
+	private boolean isOverMonthlyPlan(UsageSettingModel usagesetting ,UsageRecordResult m_UsageRecordResult)
 	{
 		boolean bOverPlan = false;
 		double standard = usagesetting.HMonthlyPlan/10;
-		double ft = usagesetting.HMonthlyPlan - usagesetting.HUsedData;
+		double ft = usagesetting.HMonthlyPlan - m_UsageRecordResult.HUseData;
 		if (ft <= standard) {
 			bOverPlan = true;
 		}
