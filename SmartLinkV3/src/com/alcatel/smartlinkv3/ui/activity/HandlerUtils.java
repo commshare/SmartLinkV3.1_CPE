@@ -52,12 +52,12 @@ public class HandlerUtils {
 		    	ActivityManager am = (ActivityManager)SmartLinkV3App.getInstance().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);    	
 		    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
 		    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.smartlinkv3")) {
-//		    		userLogout();
+		    		userLogout();
 		    	}				
 				break;
 			//SLEEPING(power)	
 			case 137:			
-//				userLogout();
+				userLogout();
 				break;
 			}
 		

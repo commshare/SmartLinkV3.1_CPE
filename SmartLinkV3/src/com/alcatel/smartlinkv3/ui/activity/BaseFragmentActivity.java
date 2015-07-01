@@ -53,12 +53,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
     	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)); 
     	
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
-    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
+//    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_HEARTBEAT_REQUEST));
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
     	
     	showActivity(this);
-    	backMainActivityOnResume(this);
+//    	backMainActivityOnResume(this);
 	}
 	
 	@Override

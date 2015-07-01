@@ -178,6 +178,9 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 			MainActivity.setLogoutFlag(true);
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
+			Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+			this.sendBroadcast(intent2);
+			this.finish();
 		}
 	}
 	
