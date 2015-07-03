@@ -4,6 +4,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -281,10 +282,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
  
       public void onLoginFailed(String error_code) { 
         if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){ 
-//          handleLoginError(R.string.other_login_warning_title, 
-//              R.string.login_other_user_logined_error_msg, false, false); 
+        	//Log.d(TAG, "ForceLogin.status:"+FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"));
+        	if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") == true){
           forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(mContext);
-          forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_msg), 
+          forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg), 
             		new OnClickBottonConfirm()  
             { 
                 public void onConfirm()  
@@ -327,7 +328,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 								 handleLoginError(R.string.qs_title, R.string.qs_exit_query, true, false);
 							}}); 
          
-         
+        	}else{
+        	  handleLoginError(R.string.other_login_warning_title,  R.string.login_other_user_logined_error_msg, false, false); 
+        	}
         } else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) { 
           handleLoginError(R.string.other_login_warning_title,  
               R.string.login_login_time_used_out_msg, true, true); 
