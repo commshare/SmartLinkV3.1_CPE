@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
@@ -148,11 +149,15 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					m_bOtherUserLoginError = true;
 					m_bLoginTimeUsedOutError = false;
 					m_bLoginPasswordError=false;
-//					m_dialog_err_info.showDialog(
-//							m_context.getString(R.string.other_login_warning_title),
-//							m_strMsgOtherUserLogined);
-
-					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_msg),
+					if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+					{
+					m_dialog_err_info.showDialog(
+							m_context.getString(R.string.other_login_warning_title),
+							m_strMsgOtherUserLogined);
+					}
+					else
+					{
+					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
 							new OnClickBottonConfirm() 
 					{
 						public void onConfirm() 
@@ -161,10 +166,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
 								public void onLoginSuccess() 				
 								{
-//									CPEConfig.getInstance().setLoginPassword(m_password);
-//									CPEConfig.getInstance().setLoginUsername(USER_NAME);
 									closeDialog();
-									//go2SettingPowerSavingActivity();
 								}
 
 								public void onLoginFailed(String error_code)
@@ -188,7 +190,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 							});
 						}
 					});
-				
+					}
 				
 					
 					if (null != m_dlgProgress && m_dlgProgress.isShowing()) {

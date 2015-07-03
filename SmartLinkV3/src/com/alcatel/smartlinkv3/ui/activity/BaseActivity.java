@@ -21,6 +21,7 @@ import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -53,12 +54,18 @@ public abstract class BaseActivity extends Activity{
     	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)); 
     	
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
-//    	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
+    	if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+		{
+    		this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
+		}
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_HEARTBEAT_REQUEST));
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
     	
     	showActivity(this);
-//    	backMainActivityOnResume(this);
+    	if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+		{
+    		backMainActivityOnResume(this);
+		}
 	}
 	
 	@Override

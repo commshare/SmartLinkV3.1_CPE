@@ -23,6 +23,7 @@ import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
@@ -533,7 +534,12 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_msg),
+							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							{
+								m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getOtherUserLoginString());
+							}else
+							{
+							ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
 									new OnClickBottonConfirm() 
 							{
 								public void onConfirm() 
@@ -571,6 +577,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 									});
 								}
 							});
+							}
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{

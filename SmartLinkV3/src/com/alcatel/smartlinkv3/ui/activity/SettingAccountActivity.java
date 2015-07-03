@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
@@ -178,9 +179,12 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 			MainActivity.setLogoutFlag(true);
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
-			Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
-			this.sendBroadcast(intent2);
-			this.finish();
+			if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") == true)
+			{
+				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+				this.sendBroadcast(intent2);
+				this.finish();
+			}
 		}
 	}
 	
