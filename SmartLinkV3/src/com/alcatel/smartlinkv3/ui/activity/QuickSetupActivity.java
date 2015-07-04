@@ -92,6 +92,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private BusinessMannager mBusinessMgr;
   private boolean pukValState,newPinValState,confirmPinState;
   private ProgressDialog m_progress_dialog = null;
+  
+  public static String pageName;
   //private int restoreLoginState = 0;//0:password输入框无操作。1：password输入框有操作。2.密码输入错误，弹出retry dialog。3
 
   
@@ -102,6 +104,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
      * DO NOT CLAIN 'android:theme="@android:style/Theme.Black.NoTitleBar"' 
      * in AndroidManifest.xml
      */
+    pageName = "QuickSetupActivity";
     mContext = this;
     mBusinessMgr = BusinessMannager.getInstance();
     requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -541,11 +544,13 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   	registerReceiver(mReceiver, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
       
     mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);   
+    pageName = "QuickSetupActivity";
   }
   
   @Override
   protected void onPause() {
     super.onDestroy();
+    pageName = "";
     try {
         this.unregisterReceiver(mReceiver); 
       }catch(Exception e) {
@@ -570,6 +575,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 			forceLoginSelectDialog.destroyDialog();
 		}
     mBusinessMgr = null;
+    pageName = "";
   }
   
   class QSBroadcastReceiver extends BroadcastReceiver {

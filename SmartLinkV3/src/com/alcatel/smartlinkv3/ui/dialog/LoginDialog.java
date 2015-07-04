@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.QuickSetupActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
@@ -149,47 +150,50 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					m_bOtherUserLoginError = true;
 					m_bLoginTimeUsedOutError = false;
 					m_bLoginPasswordError=false;
-					if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+					if (!"QuickSetupActivity".equals(QuickSetupActivity.pageName))
 					{
-					m_dialog_err_info.showDialog(
-							m_context.getString(R.string.other_login_warning_title),
-							m_strMsgOtherUserLogined);
-					}
-					else
-					{
-					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
-							new OnClickBottonConfirm() 
-					{
-						public void onConfirm() 
-						{
-							
-							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-								public void onLoginSuccess() 				
-								{
-									closeDialog();
-								}
-
-								public void onLoginFailed(String error_code)
-								{
-									if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
-									{
-										ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
-												new OnClickBtnRetry() 
-										{
-											@Override
-											public void onRetry() 
-											{
-												showDialog();
-											}
-										});
-									}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
-									{
-										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
-									}
-								}
-							});
-						}
-					});
+  					if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+  					{
+  					m_dialog_err_info.showDialog(
+  							m_context.getString(R.string.other_login_warning_title),
+  							m_strMsgOtherUserLogined);
+  					}
+  					else
+  					{
+  					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
+  							new OnClickBottonConfirm() 
+  					{
+  						public void onConfirm() 
+  						{
+  							
+  							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+  								public void onLoginSuccess() 				
+  								{
+  									closeDialog();
+  								}
+  
+  								public void onLoginFailed(String error_code)
+  								{
+  									if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
+  									{
+  										ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+  												new OnClickBtnRetry() 
+  										{
+  											@Override
+  											public void onRetry() 
+  											{
+  												showDialog();
+  											}
+  										});
+  									}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
+  									{
+  										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
+  									}
+  								}
+  							});
+  						}
+  					});
+  					}
 					}
 				
 					
