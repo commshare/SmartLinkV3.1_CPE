@@ -195,6 +195,18 @@
             android:progress="0"
             android:progressDrawable="@drawable/battery_progress_status_3"
             android:visibility="visible" />
+        
+        <ProgressBar
+            android:id="@+id/pb_widget_battery_low"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="26dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/widget_battery_empty"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/battery_progress_status_4"
+            android:visibility="invisible" />
 
         <ImageButton
             android:id="@+id/ib_widget_charge"
@@ -202,6 +214,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/widget_battery_charge"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone" />
+        <ImageButton
+            android:id="@+id/ib_widget_charge_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/widget_battery_charge_front"
             android:contentDescription="@string/app_name"
             android:visibility="gone" />
     </RelativeLayout>

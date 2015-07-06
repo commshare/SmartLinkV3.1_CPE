@@ -282,18 +282,30 @@ public class SmartLinkWidget extends AppWidgetProvider {
       int nProgress = BusinessMannager.getInstance().getBatteryInfo().getBatterLevel();
       int nState = BusinessMannager.getInstance().getBatteryInfo().getChargeState();
       if (0 != nState) {
-        remoteViews.setProgressBar(R.id.pb_widget_battery, 100, nProgress, false);
-        remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
-        remoteViews.setViewVisibility(R.id.ib_widget_charge, View.GONE);
+      	if (nProgress > 20)
+				{
+      		remoteViews.setProgressBar(R.id.pb_widget_battery, 100, nProgress, false);
+      		remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
+      		remoteViews.setViewVisibility(R.id.pb_widget_battery_low, View.GONE);
+      		remoteViews.setViewVisibility(R.id.ib_widget_charge, View.GONE);
+				}else {
+					remoteViews.setProgressBar(R.id.pb_widget_battery_low, 100, nProgress, false);
+					remoteViews.setViewVisibility(R.id.pb_widget_battery_low, View.VISIBLE);
+      		remoteViews.setViewVisibility(R.id.pb_widget_battery, View.GONE);
+      		remoteViews.setViewVisibility(R.id.ib_widget_charge, View.GONE);
+				}
       } else {
-        remoteViews.setProgressBar(R.id.pb_widget_battery, 100, nProgress, false);
-        remoteViews.setViewVisibility(R.id.pb_widget_battery, View.GONE);
-        remoteViews.setViewVisibility(R.id.ib_widget_charge, View.VISIBLE);
+        remoteViews.setProgressBar(R.id.pb_widget_battery, 100, 0, false);
+        remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
+      	remoteViews.setViewVisibility(R.id.pb_widget_battery_low, View.GONE);
+      	remoteViews.setViewVisibility(R.id.ib_widget_charge, View.VISIBLE);
+//      	remoteViews.setViewVisibility(R.id.ib_widget_charge_front, View.VISIBLE);
       }
     } else {
       remoteViews.setProgressBar(R.id.pb_widget_battery, 100, 0, false);
       remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
       remoteViews.setViewVisibility(R.id.ib_widget_charge, View.GONE);
+    	remoteViews.setViewVisibility(R.id.pb_widget_battery_low, View.GONE);
     }
   }
 
