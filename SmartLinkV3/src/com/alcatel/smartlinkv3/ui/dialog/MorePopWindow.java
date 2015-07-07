@@ -3,20 +3,6 @@ package com.alcatel.smartlinkv3.ui.dialog;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.common.Const;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.ui.activity.SdSharingActivity;
-import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
-import com.alcatel.smartlinkv3.ui.activity.WpsMainActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +14,15 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
 
 public class MorePopWindow extends PopupWindow implements OnClickListener{
 	private View conentView;

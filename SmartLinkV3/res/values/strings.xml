@@ -90,9 +90,6 @@
 
 
     <!-- pop dialog start -->
-    <string name="add_dialog_sdsharing">SD Sharing</string>
-    <string name="add_dialog_wps">WPS</string>
-    <string name="add_dialog_logout">Logout</string>
     <string name="pop_dialog_usagesetting">Usage Setting</string>
     <string name="pop_dialog_clearhistory">Clear History</string>
     <!-- pop dialog end -->
@@ -346,20 +343,6 @@
     <string name="upgrade_notification_content">There is a new version..</string>
     <!-- notification end -->
 
-
-    <!-- samba errors -->
-    <string name="list_samba_files_failed">List samba files failed!</string>
-    <string name="search_samba_files_failed">Search samba files failed!</string>
-    <string name="smb_move_files_failed">Move file(s) failed.</string>
-    <string name="smb_open_file_error_no_app">No application to open the file.</string>
-    <string name="smb_upload_file_failed">\"%1$s\" failed to upload.</string>
-    <string name="smb_download_file_failed">\"%1$s\" failed to download.</string>
-    <string name="smb_error_disk_full">The disk is full.</string>
-    <string name="smb_error_logon_failure">Logon failure: unknown user name or bad password.</string>
-    <string name="smb_error_open_unknown_file">This file can not be displayed via samba, you can download it and open it with another app.</string>
-    <!-- samba errors -->
-
-
     <!-- Dialog start -->
     <string name="dialog_delete_title">Confirm Deletion</string>
     <string name="dialog_delete_content">Confirm deletion of this chat\'s history</string>
@@ -372,138 +355,6 @@
     <string name="dialog_warning_title">Warning</string>
     <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, please enter the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly.</string>
     <!-- Dialog end -->
-
-
-    <!-- new folder dialog start -->
-    <string name="new_folder_dialog_title">Build a new folder</string>
-    <string name="new_folder_prompt">Folder Name</string>
-    <string name="directory_is_exist">The folder already exists.</string>
-    <string name="new_folder_failed">New folder failed!</string>
-    <!-- new folder dialog end -->
-
-
-    <!-- rename folder dialog start -->
-    <string name="rename_dialog_title">Rename</string>
-    <string name="rename_prompt">New Name:</string>
-    <string name="rename_is_exist">The name already exists.</string>
-    <string name="rename_failed">Rename failed!</string>
-    <string name="file_name_error">You have input invalide character</string>
-    <string name="file_name_start_with_space">File or folder name can not start with a space</string>
-    <!-- rename folder dialog end -->
-
-
-    <!-- replace folder dialog start -->
-    <string name="confirm_folder_replace">confirm replace</string>
-    <string name="confirm_folder_content">There is already a file with the same name in this location.</string>
-    <!-- replace folder dialog end -->
-
-
-    <!-- storage delete dialog start -->
-    <string name="delete_file_title">Delete item(s)?</string>
-    <string name="delete_file_content">Are you sure you want to delete the file(s) or folder(s)?</string>
-    <string name="delete_file_fail1">Delete failed!</string>
-    <string name="delete_file_fail2">Delete %1$d successed, %2$d failed!</string>
-    <!-- storage delete dialog end -->
-
-
-    <!-- storage search activity start -->
-    <string name="search_number">%1$d Result(s) for \"%2$s\"</string>
-    <!-- storage search activity end -->
-
-
-    <!-- storage edit activity start -->
-    <string name="toolbar_download">Download</string>
-    <string name="toolbar_move">Move</string>
-    <string name="toolbar_rename">Rename</string>
-    <string name="toolbar_delete">Delete</string>
-    <string name="toolbar_select_all">All</string>
-    <!-- storage edit activity end -->
-
-
-    <!-- storage move to activity start -->
-    <string name="move_to_title">Move To</string>
-    <string name="move_to_to_here">To Here</string>
-    <string name="move_to_is_subfolder_fail">The destination folder(%1$s) is a subfolder of the source folder(%2$s).</string>
-    <string name="move_to_file_move_fail">Move %1$s failed.</string>
-    <string name="move_to_file_already_exist_fail">%1$s already existed.</string>
-    <!-- storage move to activity end -->
-
-
-    <!-- storage download activity start -->
-    <string name="download_files_tip">Your selection is downloading now, you can check it in Local Storage.</string>
-    <!-- storage download activity end -->
-
-
-    <!-- storage upload activity start -->
-    <string name="upload_title">Upload</string>
-    <string name="check_off_prompt">Former selection has been unchecked!</string>
-    <!-- storage upload activity end -->
-
-
-    <!-- set default local storage start -->
-    <string name="set_default_storage_title">Set Default Folder</string>
-    <string name="set_default_storage_select_btn">Select</string>
-    <!-- set default local storage end -->
-
-
-    <!-- sdcard start -->
-    <string name="edit">Edit</string>
-    <string name="new_folder">New Folder</string>
-    <string name="search">Search</string>
-    <string name="no_file">No File</string>
-    <string name="storage_main_title">Storage</string>
-    <string name="storage_main_hard_disc">SD Card</string>
-    <string name="storage_main_no_external_storage">No external storage</string>
-    <string name="storage_main_local_storage">Local Storage</string>
-    <string name="storage_main_samba_service">Samba Service</string>
-    <string name="storage_main_samba_service_disabled">Samba service is disabled</string>
-    <string name="storage_main_samba_service_disabled_description">To access sd card connected to %1$s, you need to switch on Samba Service below.</string>
-    <string name="loading_pecent">%1$d%%</string>
-    <string name="downloading_prompt">\"%1$s\" is downloading...</string>
-    <string name="uploading_prompt">\"%1$s\" is uploading...</string>
-    <!-- sdcard end -->
-
-    <string name="title_cancel_uploading">Stop the Upload?</string>
-    <string name="content_cancel_uploading">Do you want to stop uploading \"%1$s\"?</string>
-    <string name="title_cancel_downloading">Stop the Download?</string>
-    <string name="content_cancel_downloading">Do you want to stop downloading \"%1$s\"?</string>
-
-    <!-- sd sharing start -->
-    <string name="dlna_name">Server Name: %1$s Media Server.</string>
-    <string name="dlna_description">Turning on DLNA/SAMBA makes the media content on the micro SD card available to connected devices.</string>
-    <string name="sd_card_sharing">SD Card Sharing</string>
-    <string name="sd_sharing">SD Sharing</string>
-    <string name="dlna">DLNA</string>
-    <string name="samba">SAMBA</string>
-    <string name="sdcard_usage">%1$s GB of %2$s GB used.</string>
-    <string name="storage">Storage</string>
-    <string name="not_available">Not Available</string>
-    <string name="dlna_set_failed">Set failed!</string>
-    <string name="samba_set_failed">Set failed!</string>
-    <!-- sd sharing end -->
-
-
-    <!-- wps start -->
-    <string name="wps_title">WPS</string>
-    <string name="wps_pbc_bt_disc">PBC(Push Button Configuration)</string>
-    <string name="wps_pin_bt_disc">WPS PIN</string>
-    <string name="wps_pbc_bt">Push Button Configuration</string>
-    <string name="wps_pin_tv">WPS PIN:</string>
-    <string name="wps_pin_bt">Save</string>
-    <string name="wps_pin_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
-    <string name="wps_pin_text2">2. On the Client(eg PC), open the Wi-Fi access utility and select the PIN method, then a 8 digits PIN code will be generated;</string>
-    <string name="wps_pin_text3">3. Enable PIN and entered the 8 digits PIN code;</string>
-    <string name="pbc_text1">1. Press WPS button of this device until WPS appears on the screen;</string>
-    <string name="pbc_text2">2. On the Client (eg PC), open the Wi-Fi access utility and select the PBC;</string>
-    <string name="pbc_text3">3. Click the icon on the top;</string>
-    <string name="wps_setpbcfailed">Set PBC failed</string>
-    <string name="wps_setpbcsuccess">Set PBC successed</string>
-    <string name="wps_setwpspinmodefailed">Set WPS PIN mode failed.</string>
-    <string name="wps_setwpspinnotsupport">WPS PIN not support in  WEP, WPA, WPA2 SKIP mode.</string>
-    <string name="wps_setwpspinisworking">WPS is active</string>
-    <string name="wps_setwpspinfailed">Set WPS Pin failed</string>
-    <string name="wps_setwpspinsuccess">Set WPS Pin successed</string>
-    <!-- wps end -->
 
 
     <!-- PIN start -->
@@ -562,8 +413,6 @@
 
 
     <!-- temp pad start -->
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
     <string name="second">S</string>
     <string name="separate"> / </string>
     <string name="init_time">00:00</string>
