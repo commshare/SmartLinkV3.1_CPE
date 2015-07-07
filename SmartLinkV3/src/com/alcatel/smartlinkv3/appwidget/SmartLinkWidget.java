@@ -134,6 +134,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
         PendingIntent.FLAG_CANCEL_CURRENT);
     remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
+    remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery_low, pendingIntent);
     // Intent ibBatteryintent = new Intent(context, MainActivity.class);
 
     // create a pending intent
@@ -296,7 +297,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 				}
       } else {
         remoteViews.setProgressBar(R.id.pb_widget_battery, 100, 0, false);
-        remoteViews.setViewVisibility(R.id.pb_widget_battery, View.VISIBLE);
+        remoteViews.setViewVisibility(R.id.pb_widget_battery, View.GONE);
       	remoteViews.setViewVisibility(R.id.pb_widget_battery_low, View.GONE);
       	remoteViews.setViewVisibility(R.id.ib_widget_charge, View.VISIBLE);
 //      	remoteViews.setViewVisibility(R.id.ib_widget_charge_front, View.VISIBLE);
@@ -340,6 +341,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
         PendingIntent.FLAG_CANCEL_CURRENT);
     remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery, pendingIntent);
+    remoteViews.setOnClickPendingIntent(R.id.pb_widget_battery_low, pendingIntent);
     intent.putExtra("com.alcatel.smartlinkv3.business.openPage", BATTERY_PAGE);
     // create a pending intent
     pendingIntent = PendingIntent.getActivity(context, 1, intent,
