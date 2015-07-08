@@ -176,6 +176,8 @@
     <string name="setting_network">Network</string>
     <string name="setting_power">Power Saving</string>
     <string name="setting_sharing">FTP&amp;DLNA</string>
+    <string name="setting_sharing_ftp">FTP</string>
+    <string name="setting_sharing_dlna">DLNA</string>
     <string name="setting_upgrade">Upgrade</string>
     <string name="setting_device">Device</string>
     <string name="setting_about">About</string>

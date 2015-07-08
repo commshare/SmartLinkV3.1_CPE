@@ -15,6 +15,7 @@ import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingNewAboutActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
 import com.alcatel.smartlinkv3.ui.activity.SystemInfoActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingNetworkActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
@@ -105,6 +106,7 @@ public class ViewSetting extends BaseViewImpl{
 						goToNetworkSettingPage();
 						break;
 					case ITEM_SHARE_SETTING:
+						goToShareSettingPage();
 						break;
 					case ITEM_DEVICE_SETTING2:
 						goToDeviceSettingPage();
@@ -244,6 +246,11 @@ public class ViewSetting extends BaseViewImpl{
 	
 	private void goToWifiSettingPage(){
 		Intent intent = new Intent(m_context, SettingWifiActivity.class);
+		m_context.startActivity(intent);
+	}
+	
+	private void goToShareSettingPage(){
+		Intent intent = new Intent(m_context, SettingShareActivity.class);
 		m_context.startActivity(intent);
 	}
 	
