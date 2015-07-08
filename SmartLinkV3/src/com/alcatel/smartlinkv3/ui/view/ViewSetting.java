@@ -41,11 +41,20 @@ import android.widget.Toast;
 public class ViewSetting extends BaseViewImpl{
 	
 	
-	private final int ITEM_WIFI_SETTING = 0;
-	private final int ITEM_ACCOUNT_SETTING = 1;
-	private final int ITEM_NETWORK_SETTING = 2;
-	private final int ITEM_DEVICE_SETTING =3;
-	private final int ITEM_ABOUT_SETTING = 4;
+	private final int ITEM_WIFI_SETTING1 = 0;
+	private final int ITEM_ACCOUNT_SETTING1 = 1;
+	private final int ITEM_NETWORK_SETTING1 = 2;
+	private final int ITEM_DEVICE_SETTING1 =3;
+	private final int ITEM_ABOUT_SETTING1 = 4;
+	
+	private final int ITEM_WIFI_SETTING2 = 0;
+	private final int ITEM_ACCOUNT_SETTING2 = 1;
+	private final int ITEM_NETWORK_SETTING2 = 2;
+	private final int ITEM_SHARE_SETTING = 3;
+	private final int ITEM_DEVICE_SETTING2 = 4;
+	private final int ITEM_ABOUT_SETTING2 = 5;
+	
+	private boolean isSharingSupported = false;
 	//Previous upgrade setting was 3, device was 4, about was 5, power was 1, backup was 2.
 //	private final int ITEM_UPGRADE_SETTING = 5;
 //	private final int ITEM_POWER_SETTING = 6;
@@ -61,6 +70,10 @@ public class ViewSetting extends BaseViewImpl{
 		m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE));
 		m_context.registerReceiver(m_receiver, 
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION));
+		m_context.registerReceiver(m_receiver, 
+				new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
+		m_context.registerReceiver(m_receiver, 
+				new IntentFilter(MessageUti.SHARING_GET_FTP_SETTING_REQUSET));
 	}
 
 	public ViewSetting(Context context) {
@@ -68,58 +81,105 @@ public class ViewSetting extends BaseViewImpl{
 		init();
 		m_receiver = new settingBroadcast();
 	}
+	
+	private void initUI(){
+		list = getData(m_context);
+		adapter = new UprgadeAdapter(m_context, list);
+		
+		m_lvSettingListView.setAdapter(adapter);
+		if(isSharingSupported){
+			m_lvSettingListView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+						long arg3) {
+					// TODO Auto-generated method stub
+					switch(arg2){
+					case ITEM_WIFI_SETTING2:
+						goToWifiSettingPage();
+						break;
+					case ITEM_ACCOUNT_SETTING2:
+						goToAccountSettingPage();
+						break;
+					case ITEM_NETWORK_SETTING2:
+						goToNetworkSettingPage();
+						break;
+					case ITEM_SHARE_SETTING:
+						break;
+					case ITEM_DEVICE_SETTING2:
+						goToDeviceSettingPage();
+						break;
+					case ITEM_ABOUT_SETTING2:
+						goToAboutSettingPage();
+						break;
+//					case ITEM_POWER_SETTING:
+//						goToPowerSettingPage();
+//						break;
+//					case ITEM_BACKUP_SETTING:
+//						goToBackupSettingPage();
+//						break;
+//					case ITEM_UPGRADE_SETTING:
+//						goToUpgradeSettingPage();
+//						break;
+					default:
+						break;
+					}
+				}
+			});
+		}
+		else{
+			m_lvSettingListView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+						long arg3) {
+					// TODO Auto-generated method stub
+					switch(arg2){
+					case ITEM_WIFI_SETTING1:
+						goToWifiSettingPage();
+						break;
+					case ITEM_ACCOUNT_SETTING1:
+						goToAccountSettingPage();
+						break;
+					case ITEM_NETWORK_SETTING1:
+						goToNetworkSettingPage();
+						break;
+					case ITEM_DEVICE_SETTING1:
+						goToDeviceSettingPage();
+						break;
+					case ITEM_ABOUT_SETTING1:
+						goToAboutSettingPage();
+						break;
+//					case ITEM_POWER_SETTING:
+//						goToPowerSettingPage();
+//						break;
+//					case ITEM_BACKUP_SETTING:
+//						goToBackupSettingPage();
+//						break;
+//					case ITEM_UPGRADE_SETTING:
+//						goToUpgradeSettingPage();
+//						break;
+					default:
+						break;
+					}
+				}
+			});
+		}
+	}
 
 	@Override
 	protected void init() {
 		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_setting,
 				null);
 		m_lvSettingListView = (ListView)m_view.findViewById(R.id.settingList);
-		list = getData(m_context);
-		adapter = new UprgadeAdapter(m_context, list);
-		
-		m_lvSettingListView.setAdapter(adapter);
-		m_lvSettingListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				switch(arg2){
-				case ITEM_WIFI_SETTING:
-					goToWifiSettingPage();
-					break;
-				case ITEM_ACCOUNT_SETTING:
-					goToAccountSettingPage();
-					break;
-				case ITEM_NETWORK_SETTING:
-					goToNetworkSettingPage();
-					break;
-				case ITEM_DEVICE_SETTING:
-					goToDeviceSettingPage();
-					break;
-				case ITEM_ABOUT_SETTING:
-					goToAboutSettingPage();
-					break;
-//				case ITEM_POWER_SETTING:
-//					goToPowerSettingPage();
-//					break;
-//				case ITEM_BACKUP_SETTING:
-//					goToBackupSettingPage();
-//					break;
-//				case ITEM_UPGRADE_SETTING:
-//					goToUpgradeSettingPage();
-//					break;
-				default:
-					break;
-				}
-			}
-		});
 	}
 
 	@Override
 	public void onResume() {
 		registerReceiver();
 		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
 			m_blFirst = false;
 //			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
@@ -152,6 +212,11 @@ public class ViewSetting extends BaseViewImpl{
 		
 		item = new SettingItem(context.getString(R.string.setting_network), false);
 		list.add(item);
+		
+		if(isSharingSupported){
+			item = new SettingItem(context.getString(R.string.setting_sharing), false);
+			list.add(item);
+		}
 		
 		item = new SettingItem(context.getString(R.string.setting_device), false);
 		list.add(item);
@@ -330,6 +395,34 @@ public class ViewSetting extends BaseViewImpl{
 //						changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
 					}
 				}
+			}
+			
+			if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				boolean isFtpSupported = false;
+				boolean isDlnaSupported = false;
+				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
+						Log.v("CHECKING_SHARING", "FTP");
+						isFtpSupported = true;
+					}
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
+						Log.v("CHECKING_SHARING", "DLNA");
+						isDlnaSupported = true;
+					}
+				}else {
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
+						Log.v("CHECKING_SHARING", "NOFTP");
+						isFtpSupported = false;
+					}
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
+						Log.v("CHECKING_SHARING", "NODLNA");
+						isFtpSupported = false;
+					}
+				}
+				isSharingSupported = isFtpSupported || isDlnaSupported;
+				initUI();
 			}
 		}
 		

@@ -2,10 +2,12 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
@@ -431,6 +433,19 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //			onDoneEditPincodeSetting();
 //			m_dlgPin.cancelUserClose();
 //			m_dlgPuk.cancelUserClose();
+			ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+			if(internetConnState.m_connectionStatus != ConnectionStatus.Disconnected){
+				if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
+					String strInfo = getString(R.string.setting_network_try_again);
+					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+					return;
+				}
+				else{
+					String strInfo = getString(R.string.setting_network_disconnect_first);
+					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+					return;
+				}
+			}
 			SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 			if(simStatus.m_SIMState == SIMState.Accessable || 
 				simStatus.m_SIMState == SIMState.PinRequired || 

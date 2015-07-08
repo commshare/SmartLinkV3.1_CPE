@@ -175,6 +175,7 @@
     <string name="setting_account">Account</string>
     <string name="setting_network">Network</string>
     <string name="setting_power">Power Saving</string>
+    <string name="setting_sharing">FTP&amp;DLNA</string>
     <string name="setting_upgrade">Upgrade</string>
     <string name="setting_device">Device</string>
     <string name="setting_about">About</string>

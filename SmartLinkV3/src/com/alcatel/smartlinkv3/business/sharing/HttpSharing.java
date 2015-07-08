@@ -11,7 +11,110 @@ import com.google.gson.Gson;
 
 public class HttpSharing {
 
+	/********************set ftp setting******************************************************************************************/
+	public static class SetFtpSetting extends BaseRequest {
+		private int m_nStatus = 0;
 
+		public SetFtpSetting(String strId, int nStatus, IHttpFinishListener callback) {
+			super(callback);
+			m_strId = strId;
+			m_nStatus = nStatus;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"SetFtpStatus");
+
+				JSONObject settings = new JSONObject();
+				settings.put("FtpStatus", m_nStatus);
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, settings);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			return new SetFtpSettingResponse(m_finsishCallback);
+		}
+
+	}
+
+	public static class SetFtpSettingResponse extends BaseResponse {
+
+		public SetFtpSettingResponse(IHttpFinishListener callback) {
+			super(callback);
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+
+		}
+
+		@Override
+		public <T> T getModelResult() {
+			return null;
+		}
+	}
+	/*******************get ftp setting******************************************************************************************/
+	public static class GetFtpSetting extends BaseRequest {	
+
+		public GetFtpSetting(String strId, IHttpFinishListener callback) {
+			super(callback);
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"GetFtpStatus");			
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, null);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			return new GetFtpSettingResponse(m_finsishCallback);
+		}
+
+	}
+
+	public static class GetFtpSettingResponse extends BaseResponse {
+
+		private FtpSettings m_result = new FtpSettings();
+		public GetFtpSettingResponse(IHttpFinishListener callback) {
+			super(callback);
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			Gson gson = new Gson();
+			m_result = gson.fromJson(strJsonResult, FtpSettings.class);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public FtpSettings getModelResult() {
+			return m_result;
+		}
+	}
+	
+	
 	/******************** set samba setting **************************************************************************************/
 	public static class SetSambaSetting extends BaseRequest {
 		private int m_nStatus = 0;

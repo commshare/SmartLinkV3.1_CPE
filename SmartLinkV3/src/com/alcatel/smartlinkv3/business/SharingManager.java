@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
+import com.alcatel.smartlinkv3.business.sharing.FtpSettings;
 import com.alcatel.smartlinkv3.business.sharing.HttpSharing;
 import com.alcatel.smartlinkv3.business.sharing.SDCardSpace;
 import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
@@ -23,6 +24,7 @@ public class SharingManager extends BaseManager {
 	private SambaSettings m_sambaSettings = new SambaSettings();
 	private SDCardSpace m_sdcardSpace = new SDCardSpace();
 	private SDcardStatus m_sdcardStatus = new SDcardStatus();
+	private FtpSettings m_ftpSettings = new FtpSettings();
 	
 	private Timer m_getSDCardTimer = new Timer();
 	private GetSDcardStatusTask m_getSDCardTask = null;
@@ -73,6 +75,99 @@ public class SharingManager extends BaseManager {
 	public SDcardStatus getSDCardStatus()	{
 		return m_sdcardStatus;
 	}
+	
+	public FtpSettings getFtpSettings(){
+		return m_ftpSettings;
+	}
+	
+	// SetSambaSetting
+		// //////////////////////////////////////////////////////////////////////////////////////////
+		public void setFtpSetting(DataValue data) {
+			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+					"SetFtpStatus") != true)
+				return;
+
+			int status = (Integer) data.getParamByKey("FtpStatus");
+			final int nPreStatus = m_ftpSettings.FtpStatus;
+			m_ftpSettings.FtpStatus = status;
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSharing.SetFtpSetting("14.6", status,
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									String strErrcode = new String();
+									int ret = response.getResultCode();
+									if (ret == BaseResponse.RESPONSE_OK) {
+										strErrcode = response.getErrorCode();
+										if (strErrcode.length() == 0) {
+
+										} else {
+											m_ftpSettings.FtpStatus = nPreStatus;
+										}
+									} else {
+										m_ftpSettings.FtpStatus = nPreStatus;
+									}
+
+									Intent megIntent = new Intent(
+											MessageUti.SHARING_SET_FTP_SETTING_REQUSET);
+									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+											ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
+
+		// GetSambaSetting
+		// //////////////////////////////////////////////////////////////////////////////////////////
+		public void getFtpSetting(DataValue data) {
+			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+					"GetFtpStatus") != true){
+				Intent megIntent = new Intent(
+						MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
+				megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+						"Noresult");
+				megIntent.putExtra(
+						MessageUti.RESPONSE_ERROR_CODE,
+						"Error");
+				m_context.sendBroadcast(megIntent);
+				return;
+			}
+				
+
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSharing.GetFtpSetting("14.5",
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									String strErrcode = new String();
+									int ret = response.getResultCode();
+									if (ret == BaseResponse.RESPONSE_OK) {
+										strErrcode = response.getErrorCode();
+										if (strErrcode.length() == 0) {
+											m_ftpSettings = response
+													.getModelResult();
+										} else {
+											m_ftpSettings.clear();
+										}
+									} else {
+										m_ftpSettings.clear();
+									}
+									Intent megIntent = new Intent(
+											MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
+									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+											ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
 	
 	
 	// SetSambaSetting
@@ -158,8 +253,17 @@ public class SharingManager extends BaseManager {
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setDlnaSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true)
+				"SetDLNASettings") != true){
+			Intent megIntent = new Intent(
+					MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
+			megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+					"Noresult");
+			megIntent.putExtra(
+					MessageUti.RESPONSE_ERROR_CODE,
+					"Error");
+			m_context.sendBroadcast(megIntent);
 			return;
+		}
 
 		int status = (Integer) data.getParamByKey("DlnaStatus");
 		String name = (String) data.getParamByKey("DlnaName");
