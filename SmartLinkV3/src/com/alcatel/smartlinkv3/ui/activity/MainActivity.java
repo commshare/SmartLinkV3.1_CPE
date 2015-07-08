@@ -579,7 +579,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 							}
-							else
+							else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 							{
 								ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 										new OnClickBtnRetry() 
@@ -595,7 +595,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 										});
 									}
 								});
-							}				
+							}else{}				
 						}
 
 						@Override
@@ -704,7 +704,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 						}
-						else
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 									new OnClickBtnRetry() 
@@ -720,7 +720,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}				
+						}else{}				
 					}
 
 					@Override
@@ -835,7 +835,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 						}
-						else
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 									new OnClickBtnRetry() 
@@ -851,7 +851,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}				
+						}else
+						{}
 					}
 
 					@Override
@@ -957,7 +958,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 						}
-						else
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 									new OnClickBtnRetry() 
@@ -973,7 +974,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}				
+						}else{}				
 					}
 
 					@Override
@@ -1077,7 +1078,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 						}
-						else
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 									new OnClickBtnRetry() 
@@ -1093,7 +1094,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}				
+						}else{}				
 					}
 
 					@Override
@@ -1195,7 +1196,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 						}
-						else
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 									new OnClickBtnRetry() 
@@ -1211,7 +1212,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}				
+						}else{}				
 					}
 
 					@Override
@@ -1535,7 +1536,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getLoginTimeUsedOutString());
 						}
-						else
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 									new OnClickBtnRetry() 
@@ -1551,7 +1552,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}				
+						}else{}				
 					}
 
 					@Override
