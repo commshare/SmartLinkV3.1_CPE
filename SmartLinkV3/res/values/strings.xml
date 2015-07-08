@@ -336,8 +336,8 @@
     <string name="usage_limit_less_notification_content">Your usage has less than 10%.</string>
     <string name="usage_maximum_monthly_plan_notice">The maximum monthly plan is </string>
     <string name="battery_limit_notification_title">Battery warning</string>
-    <string name="battery_limit_notification_content1">Low battery, 10% of battery remaining.</string>
-    <string name="battery_limit_notification_content2">Low battery, 20% of battery remaining.</string>
+    <string name="battery_limit_notification_content1">Low battery, %d%% of battery remaining.</string>
+    <string name="battery_limit_notification_content2">Low battery, %d%% of battery remaining.</string>
     <string name="new_message_notification_title">New Message</string>
     <string name="new_message_notification_content">There is a new message..</string>
     <string name="upgrade_notification_title">Upgrade </string>

@@ -433,10 +433,10 @@ public class NotificationService extends Service {
 		case BatteryLimit:	
 			if(used <= 10)
 			{
-				strContent= this.getResources().getString(R.string.battery_limit_notification_content1);
+				strContent = String.format(this.getResources().getString(R.string.battery_limit_notification_content1), used);
 			}else
 			{
-				strContent= this.getResources().getString(R.string.battery_limit_notification_content2);
+				strContent = String.format(this.getResources().getString(R.string.battery_limit_notification_content2), used);
 			}
 		break;
 			
