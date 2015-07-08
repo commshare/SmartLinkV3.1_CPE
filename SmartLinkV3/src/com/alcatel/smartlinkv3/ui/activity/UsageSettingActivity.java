@@ -554,10 +554,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (m_monthlyValue.getText().toString().length() > 0) {
 			usage =  Double.parseDouble(m_monthlyValue.getText().toString());
 		}
-		
-		if (usage != this.byte2megabyte(m_monthlyVal)) {
-			
-			UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
+		UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
+		if ((usage != this.byte2megabyte(m_monthlyVal)&&staticSetting.HUnit == 0) || 
+			 (usage != this.byte2gegabyte(m_monthlyVal)&&staticSetting.HUnit == 1)) {
 			if((long)usage == staticSetting.HMonthlyPlan)
 				return;
 			

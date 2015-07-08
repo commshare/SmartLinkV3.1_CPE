@@ -447,6 +447,7 @@ implements OnClickListener{
 			m_ll_encryption.setVisibility(View.VISIBLE);
 			setAllDividerVisibility(View.VISIBLE);
 			//m_tv_psd_type_title.setVisibility(View.VISIBLE);
+			setDefaultSecurityType();
 		}
 		//
 		if(!m_ib_show_password.isShown()){
@@ -627,8 +628,8 @@ implements OnClickListener{
 		m_strSsid = m_et_ssid.getText().toString();
 
 		if (m_blPasswordOpened) {
-			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.WEP);
-			m_nType = WEPEncryption.antiBuild(WEPEncryption.Open);
+//			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.WEP);
+//			m_nType = WEPEncryption.antiBuild(WEPEncryption.Open);
 			m_strKey = m_et_password.getText().toString();
 		}else {
 			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.Disable);
@@ -668,6 +669,12 @@ implements OnClickListener{
 	}
 
 	private void initSpinersUI() {
+		if(m_ssid_status.equals(SsidHiddenEnum.SsidHidden_Disable)){
+			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
+		}
+		else if(m_ssid_status.equals(SsidHiddenEnum.SsidHidden_Enable)){
+			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
+		}
 		SecurityMode securityMode = SecurityMode.build(m_nPreSecurityMode);
 		m_et_ssid.setText(m_strPreSsid);
 		if(securityMode == SecurityMode.Disable) {
@@ -874,7 +881,7 @@ implements OnClickListener{
 
 		initValues();
 		//init controls state
-		initSpinersUI();
+//		initSpinersUI();
 		setControlsDoneStatus();
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
@@ -1114,5 +1121,13 @@ implements OnClickListener{
 		default:
 			break;
 		}
+	}
+	
+	private void setDefaultSecurityType(){
+		m_nSecurityMode = 1;
+		m_security_type.setText(R.string.setting_wifi_wep);
+		
+		m_nType = 0;
+		m_encription_mode.setText(R.string.setting_wifi_open);
 	}
 }

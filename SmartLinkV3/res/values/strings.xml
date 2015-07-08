@@ -302,6 +302,7 @@
     <string name="setting_network_profile_management_profile_detail">Profile Detail</string>
     <string name="setting_network_profile_management_delete_profile">Delete Profile</string>
     <string name="setting_network_profile_dial_number_wrong">The length of your dial number can not be larger than 24</string>
+    <string name="setting_network_profile_dial_number_empty">Dial number can not be empty</string>
     <string name="setting_network_profile_input_profile_name">Profile name can not be empty</string>
     <string name="setting_network_profile_error_profile_name">Profile name can not inlude some special tokens</string>
     <string name="setting_network_mode_auto">Auto</string>

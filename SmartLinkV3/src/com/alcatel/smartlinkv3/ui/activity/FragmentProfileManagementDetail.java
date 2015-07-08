@@ -345,6 +345,11 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
 				return;
 			}
+			if(dialNumber.length() == 0){
+				String strInfo = getString(R.string.setting_network_profile_dial_number_empty);
+				Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
+				return;
+			}
 			String APN = m_edit_apn.getText().toString();
 			if(APN.length() == 0){
 				APN = "3GNET";
