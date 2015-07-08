@@ -583,7 +583,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 						{
 							m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
 						}
-						else
+						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
 									new OnClickBtnRetry() 
@@ -594,7 +594,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 									m_loginDialog.showDialog();
 								}
 							});
-						}				
+						}else{}				
 					}
 
 					@Override
