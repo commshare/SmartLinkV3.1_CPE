@@ -20,6 +20,7 @@ import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
+import com.alcatel.smartlinkv3.business.sharing.FtpSettings;
 import com.alcatel.smartlinkv3.business.sharing.SDCardSpace;
 import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
 import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
@@ -437,6 +438,10 @@ public class BusinessMannager {
     /********************sharing manager method start**********************/
 	public DlnaSettings getDlnaSettings() {
 		return m_sharingManager.getDlnaSettings();
+	}
+	
+	public FtpSettings getFtpSettings(){
+		return m_sharingManager.getFtpSettings();
 	}
 	
 	public SambaSettings getSambaSettings() {

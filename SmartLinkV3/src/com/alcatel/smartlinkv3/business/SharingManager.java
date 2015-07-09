@@ -254,14 +254,6 @@ public class SharingManager extends BaseManager {
 	public void setDlnaSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
 				"SetDLNASettings") != true){
-			Intent megIntent = new Intent(
-					MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
-			megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-					"Noresult");
-			megIntent.putExtra(
-					MessageUti.RESPONSE_ERROR_CODE,
-					"Error");
-			m_context.sendBroadcast(megIntent);
 			return;
 		}
 
@@ -304,8 +296,15 @@ public class SharingManager extends BaseManager {
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void getDlnaSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") != true)
+				"GetDLNASettings") != true){
+			Intent megIntent = new Intent(
+			MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
+				megIntent.putExtra(MessageUti.RESPONSE_RESULT, "Noresult");
+					megIntent.putExtra(
+			MessageUti.RESPONSE_ERROR_CODE, "Error");
+			m_context.sendBroadcast(megIntent);
 			return;
+		}
 
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpSharing.GetDlnaSetting("14.1",

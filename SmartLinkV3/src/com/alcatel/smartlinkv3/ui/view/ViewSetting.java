@@ -26,6 +26,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,8 @@ public class ViewSetting extends BaseViewImpl{
 	private final int ITEM_DEVICE_SETTING2 = 4;
 	private final int ITEM_ABOUT_SETTING2 = 5;
 	
+	boolean isFtpSupported = false;
+	boolean isDlnaSupported = false;
 	private boolean isSharingSupported = false;
 	//Previous upgrade setting was 3, device was 4, about was 5, power was 1, backup was 2.
 //	private final int ITEM_UPGRADE_SETTING = 5;
@@ -251,6 +254,10 @@ public class ViewSetting extends BaseViewImpl{
 	
 	private void goToShareSettingPage(){
 		Intent intent = new Intent(m_context, SettingShareActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("FtpSupport", isFtpSupported);
+		bundle.putBoolean("DlnaSupport", isDlnaSupported);
+		intent.putExtra("Sharing", bundle);
 		m_context.startActivity(intent);
 	}
 	
@@ -407,24 +414,22 @@ public class ViewSetting extends BaseViewImpl{
 			if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				boolean isFtpSupported = false;
-				boolean isDlnaSupported = false;
 				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
 					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
-						Log.v("CHECKING_SHARING", "FTP");
+//						Log.v("CHECKING_SHARING", "FTP");
 						isFtpSupported = true;
 					}
 					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
-						Log.v("CHECKING_SHARING", "DLNA");
+//						Log.v("CHECKING_SHARING", "DLNA");
 						isDlnaSupported = true;
 					}
 				}else {
 					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
-						Log.v("CHECKING_SHARING", "NOFTP");
+//						Log.v("CHECKING_SHARING", "NOFTP");
 						isFtpSupported = false;
 					}
 					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
-						Log.v("CHECKING_SHARING", "NODLNA");
+//						Log.v("CHECKING_SHARING", "NODLNA");
 						isFtpSupported = false;
 					}
 				}
