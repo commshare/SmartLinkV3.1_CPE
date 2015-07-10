@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.business;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.alcatel.smartlinkv3.business.SystemManager.GetSystemStatusTask;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.business.sharing.FtpSettings;
 import com.alcatel.smartlinkv3.business.sharing.HttpSharing;
@@ -29,6 +30,11 @@ public class SharingManager extends BaseManager {
 	private Timer m_getSDCardTimer = new Timer();
 	private GetSDcardStatusTask m_getSDCardTask = null;
 	
+	private GetFtpStatusTask m_ftp_task = null;
+	private GetDlnaStatusTask m_dlna_task = null;
+	
+	private Timer m_getShareStatusTimer = new Timer();
+	
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
@@ -53,10 +59,18 @@ public class SharingManager extends BaseManager {
 	}
 	
 	@Override
-	protected void stopRollTimer() {
+	public void stopRollTimer() {
 		if (null != m_getSDCardTask) {
 			m_getSDCardTask.cancel();
 			m_getSDCardTask = null;
+		}
+		if (null != m_ftp_task) {
+			m_ftp_task.cancel();
+			m_ftp_task = null;
+		}
+		if (null != m_dlna_task) {
+			m_dlna_task.cancel();
+			m_dlna_task = null;
 		}		
 	}
 
@@ -427,6 +441,106 @@ public class SharingManager extends BaseManager {
 								m_context.sendBroadcast(megIntent);
 							}
 						}));
+	}
+	
+	class GetFtpStatusTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSharing.GetFtpSetting("14.5",
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									String strErrcode = new String();
+									int ret = response.getResultCode();
+									if (ret == BaseResponse.RESPONSE_OK) {
+										strErrcode = response.getErrorCode();
+										if (strErrcode.length() == 0) {
+											m_ftpSettings = response
+													.getModelResult();
+										} else {
+											m_ftpSettings.clear();
+										}
+									} else {
+										m_ftpSettings.clear();
+									}
+									Intent megIntent = new Intent(
+											MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
+									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+											ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
+		
+	}
+	
+	class GetDlnaStatusTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSharing.GetDlnaSetting("14.1",
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									String strErrcode = new String();
+									int ret = response.getResultCode();
+									if (ret == BaseResponse.RESPONSE_OK) {
+										strErrcode = response.getErrorCode();
+										if (strErrcode.length() == 0) {
+											m_dlnaSettings = response
+													.getModelResult();
+										} else {
+											m_dlnaSettings.clear();
+										}
+									} else {
+										m_dlnaSettings.clear();
+									}
+									Intent megIntent = new Intent(
+											MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
+									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+											ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
+		
+	}
+	
+	public void startGetFtpStatus(){
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetFtpStatus") != true){
+			return;
+		}
+		
+		if(m_ftp_task == null) {
+			m_ftp_task = new GetFtpStatusTask();
+			m_getShareStatusTimer.scheduleAtFixedRate(m_ftp_task, 0, 5 * 1000);
+		}
+	}
+	
+	public void startGetDlnaStatus(){
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") != true){
+			return;
+		}
+		
+		if(m_dlna_task == null) {
+			m_dlna_task = new GetDlnaStatusTask();
+			m_getShareStatusTimer.scheduleAtFixedRate(m_dlna_task, 0, 5 * 1000);
+		}
 	}
 
 }

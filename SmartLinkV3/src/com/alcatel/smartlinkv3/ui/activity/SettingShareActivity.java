@@ -66,6 +66,13 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 					new IntentFilter(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET));
 			registerReceiver(m_msgReceiver, 
 					new IntentFilter(MessageUti.SHARING_SET_FTP_SETTING_REQUSET));
+			BusinessMannager.getInstance().StartRefreshingSharingStatus();
+		}
+		
+		@Override
+		protected void onDestroy(){
+			super.onDestroy();
+			BusinessMannager.getInstance().StopRefreshingSharingStatus();
 		}
 		
 		private void controlTitlebar(){
@@ -209,7 +216,7 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-					
+					updateUI();
 				}
 			}
 			
@@ -217,7 +224,7 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-					
+					updateUI();
 				}
 			}
 		}

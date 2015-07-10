@@ -444,6 +444,14 @@ public class BusinessMannager {
 		return m_sharingManager.getFtpSettings();
 	}
 	
+	public void StartRefreshingSharingStatus(){
+		m_sharingManager.startGetDlnaStatus();
+		m_sharingManager.startGetFtpStatus();
+	}
+	public void StopRefreshingSharingStatus(){
+		m_sharingManager.stopRollTimer();
+	}
+	
 	public SambaSettings getSambaSettings() {
 		return m_sharingManager.getSambaSettings();
 	}	
