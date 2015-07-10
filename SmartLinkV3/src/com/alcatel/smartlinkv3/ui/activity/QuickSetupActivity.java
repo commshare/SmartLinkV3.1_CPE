@@ -831,7 +831,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     }
     
     public StateHandler goNext() {
-      storeSetting();
+      //storeSetting();
       return mNextHandler;
     }
     
@@ -1367,6 +1367,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     public void setupViews() {
     	setViewsVisibility(true,true,false,false,true);
       mNavigatorRight.setText(R.string.finish);
+      mPromptText.setText(getString(R.string.qs_summary));
+ 	  mSetupTitle.setText(getString(R.string.qs_completed));
       mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
       mWiFiSSIDTextView.setText(getString(R.string.qs_wifi_ssid, mWiFiSSID));
       mWiFiPasswdTextView.setText(getString(R.string.qs_wifi_passwd, mWiFiPasswd)); 
@@ -1390,7 +1392,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       } else {
         finishQuickSetup(false);
       }
-      return true;
+      return false;
     }
   }
 }
