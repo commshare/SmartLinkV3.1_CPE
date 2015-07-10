@@ -7,8 +7,13 @@ import java.util.List;
 import org.cybergarage.upnp.Device;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
@@ -38,6 +43,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,BrowseRequestCallback{
@@ -58,6 +64,9 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	private Handler mHandler;
 	private Boolean filetag = false;
 	private String titlePosition=null;
+	
+	public boolean isFtpSupported = false;
+	public boolean isDlnaSupported = false;
 	
 	private ViewMicroSDBroadcastReceiver m_viewMicroSDMsgReceiver;
 	public static String DLNA_DEVICES_SUCCESS = "com.alcatel.smartlinkv3.dlna.device_success";
@@ -97,15 +106,73 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	public ViewMicroSD(Context context) {
 		super(context);
 		init();
+		m_viewMicroSDMsgReceiver = new ViewMicroSDBroadcastReceiver();
 		// TODO Auto-generated constructor stub
 	}
 
+	private void registerReceiver() {
+		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_SUCCESS));
+		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
+		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_FTP_SETTING_REQUSET));
+	}
+	
+	private class settingBroadcast extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
+						if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() > 0)
+						{
+							isFtpSupported = true;
+						}else
+						{
+							isFtpSupported = false;
+						}
+					}
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
+						if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
+						{
+							isDlnaSupported = true;
+						}else
+						{
+							isDlnaSupported = false;
+						}
+					}
+				}else {
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
+						if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() > 0)
+						{
+							isFtpSupported = true;
+						}else
+						{
+							isFtpSupported = false;
+						}
+					}
+					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
+						if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
+						{
+							isDlnaSupported = true;
+						}else
+						{
+							isDlnaSupported = false;
+						}
+					}
+				}
+			}
+		}
+	}
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
-		Log.v("pchong", "ViewMicroSD onResume");
-		m_viewMicroSDMsgReceiver = new ViewMicroSDBroadcastReceiver();
-		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_SUCCESS));
+		registerReceiver();
+
+//		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
+//		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 	}
 
 	@Override
@@ -113,7 +180,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		// TODO Auto-generated method stub
 		try {
 //			mAllShareProxy.exitSearch();
-			Log.v("pchong", "ViewMicroSD onPause");
 			m_context.unregisterReceiver(m_viewMicroSDMsgReceiver);
 		} catch (Exception e) {
 
@@ -128,18 +194,45 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	
 	private List<MicrosdItem> getData(Context context){
 		List<MicrosdItem> list = new ArrayList<MicrosdItem>();
+		MicrosdItem item;
 		
-		MicrosdItem item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
-		list.add(item);
+		if ((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
+				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") == true))
+		{
+			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
+			list.add(item);
 		
-		item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
-		list.add(item);
-		
-		item = new MicrosdItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), false);
-		list.add(item);
-		
-		item = new MicrosdItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), false);
-		list.add(item);
+			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
+			list.add(item);
+			
+			item = new MicrosdItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), false);
+			list.add(item);
+			
+			item = new MicrosdItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), false);
+			list.add(item);
+		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") != true) 
+				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") == true))
+		{
+			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
+			list.add(item);
+			
+			item = new MicrosdItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), false);
+			list.add(item);
+			
+			item = new MicrosdItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), false);
+			list.add(item);
+		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
+				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") != true))
+		{
+			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
+			list.add(item);
+		}else
+		{
+			
+		}
 		return list;
 	}
 	
@@ -331,25 +424,61 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Log.v("pchong", "item 22222");
-		
-		switch(position){
-		case ITEM_FILE:
-			goToFilePage();
-			break;
-		case ITEM_MUSIC:
-			onGetItemList(ITEM_MUSIC);
-			break;
-		case ITEM_PICTURES:
-			onGetItemList(ITEM_PICTURES);
-			break;
-		case ITEM_VIDEO:
-			onGetItemList(ITEM_VIDEO);
-			break;
+		if ((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
+				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") == true))
+		{	
+			switch(position){
+			case 0:
+				goToFilePage();
+				break;
+			case 1:
+				onGetItemList(ITEM_MUSIC);
+				break;
+			case 2:
+				onGetItemList(ITEM_PICTURES);
+				break;
+			case 3:
+				onGetItemList(ITEM_VIDEO);
+				break;
+			}
+		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") != true) 
+				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") == true))
+		{
+			switch(position){
+			case 0:
+				onGetItemList(ITEM_MUSIC);
+				break;
+			case 1:
+				onGetItemList(ITEM_PICTURES);
+				break;
+			case 2:
+				onGetItemList(ITEM_VIDEO);
+				break;
+			}
+		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
+				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"GetDLNASettings") != true))
+		{
+			switch(position){
+			case 0:
+				onGetItemList(ITEM_MUSIC);
+				break;
+			}
+		}else
+		{
+			
 		}
 	}
 	
 	public void onGetItemList(int position) {
+		if(isDlnaSupported != true)
+		{
+			String strInfo = m_context.getString(R.string.dlna_not_open);
+			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		
 		Device selDevice = mAllShareProxy.getDMSSelectedDevice();
     	if (selDevice == null){
@@ -385,9 +514,16 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	}
 
 	private void goToFilePage(){	
+		
+		if(isFtpSupported != true)
+		{
+			String strInfo = m_context.getString(R.string.ftp_not_open);
+			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		Intent intent = new Intent();
 		intent.setClass(this.m_context, FtpFileExplorerTabActivity.class);
 		m_context.startActivity(intent);
-	
 	}
 }

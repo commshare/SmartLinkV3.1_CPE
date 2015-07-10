@@ -416,7 +416,7 @@
     <!-- Refresh WIFI end -->
 
 
-    <!-- temp pad start -->
+    <!-- DLNA start -->
     <string name="second">S</string>
     <string name="separate"> / </string>
     <string name="init_time">00:00</string>
@@ -431,7 +431,10 @@
     <string name="mp_unknown_album">Unknow Album</string>
     <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be reference&#160;&#160;&#160;***</string>
-    <!-- temp pad end -->
+    <string name="ftp_not_open">Please open the FTP!</string>
+    <string name="dlna_not_open">Please open the DLNA!</string>
+     
+    <!-- DLNA end -->
 
 
     <!-- FTP FILE EXPLORER -->

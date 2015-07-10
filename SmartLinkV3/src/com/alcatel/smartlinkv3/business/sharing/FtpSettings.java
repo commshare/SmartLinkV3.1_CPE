@@ -12,4 +12,7 @@ public class FtpSettings extends BaseResult{
 		FtpStatus = 0;
 	}
 
+	public int getFtpStatus(){
+		return FtpStatus;
+	}
 }

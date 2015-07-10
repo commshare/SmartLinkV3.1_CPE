@@ -24,6 +24,7 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
@@ -189,7 +190,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
     	mBrocastFactory.registerListener(this);
     
     	thumbnailLoader = new ThumbnailLoader(this);  
-    	//showMicroView();
+    	showMicroView();
 
 	}
 
@@ -206,6 +207,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		
 		this.registerReceiver(m_msgReceiver2, new IntentFilter(
 				PAGE_TO_VIEW_HOME));
+		this.registerReceiver(m_msgReceiver2, new IntentFilter(
+				MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
 
 		m_homeView.onResume();
 		m_usageView.onResume();
@@ -325,6 +328,17 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 			homeBtnClick();
 		}
 		
+		if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+				if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
+				{
+					mAllShareProxy.startSearch();
+				}
+				
+			}
+		}
 	}
 	
 	private void simRollRequest() {
@@ -1236,20 +1250,30 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	}
 	
 	private void go2MicroSDView(){
-//		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
-//		if(m_sdcardstatus.SDcardStatus > 0)
-//		{
-			mAllShareProxy.startSearch();
+		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
+		if(m_sdcardstatus.SDcardStatus > 0)
+		{
+			if((FeatureVersionManager.getInstance().isSupportApi("Sharing",
+					"GetDLNASettings") == true)|| (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900")))
+			{
+				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
+			}
 			
+			if(FeatureVersionManager.getInstance().isSupportApi("Sharing",
+					"GetFtpStatus") == true)
+			{
+				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
+			}
+
 			setMainBtnStatus(R.id.main_microsd);
 			showView(ViewIndex.VIEW_MICROSD);
 			updateTitleUI(ViewIndex.VIEW_MICROSD);
 			pageIndex = ViewIndex.VIEW_MICROSD;
-//		}else
-//		{
-//			String strInfo = getString(R.string.microsd_no_sdcard);
-//			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
-//		}
+		}else
+		{
+			String strInfo = getString(R.string.microsd_no_sdcard);
+			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void addView() {
@@ -1646,9 +1670,26 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	
 	public void showMicroView()
 	{
+		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
+		{
+			m_microsdBtn.setVisibility(View.VISIBLE);
+			return;
+		}
+		
+		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y858"))
+		{
+			m_microsdBtn.setVisibility(View.GONE);
+			return;
+		}
+		
 		boolean bSupport = FeatureVersionManager.getInstance().isSupportModule("Sharing");
 		if(bSupport == true) {
-			m_microsdBtn.setVisibility(View.VISIBLE);
+			if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
+					|| (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+							"GetDLNASettings") == true))
+			{
+				m_microsdBtn.setVisibility(View.VISIBLE);
+			}
 		}else{
 			m_microsdBtn.setVisibility(View.GONE);
 		}

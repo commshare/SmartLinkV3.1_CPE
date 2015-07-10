@@ -13,4 +13,8 @@ public class DlnaSettings extends BaseResult{
 		DlnaStatus = 0;
 		DlnaName = "";		
 	}
+	
+	public int getDlnaStatus(){
+		return DlnaStatus;
+	}
 }
