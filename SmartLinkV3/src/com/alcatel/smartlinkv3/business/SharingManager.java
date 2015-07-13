@@ -267,7 +267,7 @@ public class SharingManager extends BaseManager {
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setDlnaSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true){
+				"SetDLNASettings") != true && BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
 			return;
 		}
 
