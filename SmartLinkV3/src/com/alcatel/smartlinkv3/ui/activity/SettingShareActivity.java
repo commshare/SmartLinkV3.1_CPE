@@ -162,6 +162,8 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			else
 				data.addParam("DlnaStatus", 1);
 			data.addParam("DlnaName", m_dlnaDeviceName);
+			
+			m_waiting.setVisibility(View.VISIBLE);
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
 		}
