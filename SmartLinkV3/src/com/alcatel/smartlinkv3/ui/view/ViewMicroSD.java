@@ -81,45 +81,8 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		    	mHandler.postDelayed(new RequestDirectoryRunnable(), 100);
 		    	Log.v("pchong", "item 11111");
 	    	}
-		}
-	}
-	
-	@Override
-	protected void init(){
-		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_microsd,
-				null);
-		
-		m_MicrosdListView = (ListView)m_view.findViewById(R.id.microsdList);
-		list = getData(m_context);
-		adapter = new UpitemAdapter(m_context, list);
-		
-		m_MicrosdListView.setAdapter(adapter);
-		m_MicrosdListView.setOnItemClickListener(this);
-		
-		mAllShareProxy = AllShareProxy.getInstance(this.m_context);
-		//mBrocastFactory = new DMSDeviceBrocastFactory(this.m_context);
-		mCurItems = new ArrayList<MediaItem>();
-		mNextItems = new ArrayList<MediaItem>();
-    	//mBrocastFactory.registerListener(this);	
-	}
-	
-	public ViewMicroSD(Context context) {
-		super(context);
-		init();
-		m_viewMicroSDMsgReceiver = new ViewMicroSDBroadcastReceiver();
-		// TODO Auto-generated constructor stub
-	}
+			
 
-	private void registerReceiver() {
-		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_SUCCESS));
-		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
-		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_FTP_SETTING_REQUSET));
-	}
-	
-	private class settingBroadcast extends BroadcastReceiver{
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
 			if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
@@ -164,8 +127,43 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 					}
 				}
 			}
+		
 		}
 	}
+	
+	@Override
+	protected void init(){
+		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_microsd,
+				null);
+		
+		m_MicrosdListView = (ListView)m_view.findViewById(R.id.microsdList);
+		list = getData(m_context);
+		adapter = new UpitemAdapter(m_context, list);
+		
+		m_MicrosdListView.setAdapter(adapter);
+		m_MicrosdListView.setOnItemClickListener(this);
+		
+		mAllShareProxy = AllShareProxy.getInstance(this.m_context);
+		//mBrocastFactory = new DMSDeviceBrocastFactory(this.m_context);
+		mCurItems = new ArrayList<MediaItem>();
+		mNextItems = new ArrayList<MediaItem>();
+    	//mBrocastFactory.registerListener(this);	
+	}
+	
+	public ViewMicroSD(Context context) {
+		super(context);
+		init();
+		m_viewMicroSDMsgReceiver = new ViewMicroSDBroadcastReceiver();
+		// TODO Auto-generated constructor stub
+	}
+
+	private void registerReceiver() {
+		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_SUCCESS));
+		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
+		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_FTP_SETTING_REQUSET));
+	}
+	
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
@@ -229,9 +227,16 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		{
 			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
 			list.add(item);
-		}else
+		}else if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
+			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
+			list.add(item);
 			
+			item = new MicrosdItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), false);
+			list.add(item);
+			
+			item = new MicrosdItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), false);
+			list.add(item);
 		}
 		return list;
 	}
@@ -464,6 +469,19 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 			switch(position){
 			case 0:
 				onGetItemList(ITEM_MUSIC);
+				break;
+			}
+		}else if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
+		{
+			switch(position){
+			case 0:
+				onGetItemList(ITEM_MUSIC);
+				break;
+			case 1:
+				onGetItemList(ITEM_PICTURES);
+				break;
+			case 2:
+				onGetItemList(ITEM_VIDEO);
 				break;
 			}
 		}else

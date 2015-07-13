@@ -218,6 +218,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
+		showMicroView();
 	}
 
 	@Override

@@ -309,15 +309,18 @@ public class SharingManager extends BaseManager {
 	// GetDlnaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void getDlnaSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") != true){
-			Intent megIntent = new Intent(
-			MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
-				megIntent.putExtra(MessageUti.RESPONSE_RESULT, "Noresult");
-					megIntent.putExtra(
-			MessageUti.RESPONSE_ERROR_CODE, "Error");
-			m_context.sendBroadcast(megIntent);
-			return;
+		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
+		{
+			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+					"GetDLNASettings") != true){
+				Intent megIntent = new Intent(
+				MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
+					megIntent.putExtra(MessageUti.RESPONSE_RESULT, "Noresult");
+						megIntent.putExtra(
+				MessageUti.RESPONSE_ERROR_CODE, "Error");
+				m_context.sendBroadcast(megIntent);
+				return;
+			}
 		}
 
 		HttpRequestManager.GetInstance().sendPostRequest(
@@ -408,9 +411,9 @@ public class SharingManager extends BaseManager {
 	}
 	
 	public void getSDcardStatus(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetSDcardStatus") != true)
-			return;
+//		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+//				"GetSDcardStatus") != true)
+//			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
 				new HttpSharing.GetSDcardStatus("14.9",
@@ -532,9 +535,12 @@ public class SharingManager extends BaseManager {
 	}
 	
 	public void startGetDlnaStatus(){
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") != true){
-			return;
+		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
+		{
+			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+					"GetDLNASettings") != true){
+				return;
+			}
 		}
 		
 		if(m_dlna_task == null) {
