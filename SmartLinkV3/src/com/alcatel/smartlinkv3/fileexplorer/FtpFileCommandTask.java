@@ -393,7 +393,8 @@ public class FtpFileCommandTask {
 	class FtpCommandHandler implements Runnable {
 		public int CMD = -1;
 		boolean iRet = false;
-
+		private int connTimes = 0;
+		
 		@Override
 		public void run() {
 			while (isRunning) {
@@ -411,13 +412,19 @@ public class FtpFileCommandTask {
 				case UnInitiailized:
 					break;
 				case Connecting:
+					/*if (connTimes >= 10) {
+						mState = FTP_STATE.Exit;
+						break;
+					}*/
+					
 					if (isNetworkConnected(mContext)) {
 						iRet = ftpConnect();
 
 						if (iRet) {
 							mState = FTP_STATE.Connected;
 						} else {
-							mState = FTP_STATE.DisConnected;
+							mState = FTP_STATE.Exit;
+							//connTimes++;
 						}
 					} else {
 						mState = FTP_STATE.Exit;
@@ -899,7 +906,7 @@ public class FtpFileCommandTask {
 			//mState = FTP_STATE.Connected;
 		} else {
 			//mState = FTP_STATE.DisConnected;
-			sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp connect fail!");
+			//sendMsg(MSG_TYPE.MSG_SHOW_TOAST, "ftp connect fail!");
 			return;
 		}
 
