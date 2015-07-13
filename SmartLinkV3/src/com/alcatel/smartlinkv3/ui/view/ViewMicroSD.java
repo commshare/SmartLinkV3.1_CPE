@@ -64,9 +64,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	private Handler mHandler;
 	private Boolean filetag = false;
 	private String titlePosition=null;
-	
-	public boolean isFtpSupported = false;
-	public boolean isDlnaSupported = false;
+
 	
 	private ViewMicroSDBroadcastReceiver m_viewMicroSDMsgReceiver;
 	public static String DLNA_DEVICES_SUCCESS = "com.alcatel.smartlinkv3.dlna.device_success";
@@ -79,54 +77,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 				filetag = true;
 				mHandler = new Handler();
 		    	mHandler.postDelayed(new RequestDirectoryRunnable(), 100);
-		    	Log.v("pchong", "item 11111");
 	    	}
-			
-
-			// TODO Auto-generated method stub
-			if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
-					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
-						if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() > 0)
-						{
-							isFtpSupported = true;
-						}else
-						{
-							isFtpSupported = false;
-						}
-					}
-					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
-						if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
-						{
-							isDlnaSupported = true;
-						}else
-						{
-							isDlnaSupported = false;
-						}
-					}
-				}else {
-					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) ){
-						if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() > 0)
-						{
-							isFtpSupported = true;
-						}else
-						{
-							isFtpSupported = false;
-						}
-					}
-					if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET) ){
-						if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
-						{
-							isDlnaSupported = true;
-						}else
-						{
-							isDlnaSupported = false;
-						}
-					}
-				}
-			}
 		
 		}
 	}
@@ -159,8 +110,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 
 	private void registerReceiver() {
 		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(DLNA_DEVICES_SUCCESS));
-		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
-		m_context.registerReceiver(m_viewMicroSDMsgReceiver, new IntentFilter(MessageUti.SHARING_GET_FTP_SETTING_REQUSET));
 	}
 	
 
@@ -168,9 +117,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	public void onResume() {
 		// TODO Auto-generated method stub
 		registerReceiver();
-
-//		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
-//		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 	}
 
 	@Override
@@ -187,7 +133,6 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		Log.v("pchong", "ViewMicroSD onDestroy");
 	}
 	
 	private List<MicrosdItem> getData(Context context){
@@ -491,7 +436,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	}
 	
 	public void onGetItemList(int position) {
-		if(isDlnaSupported != true)
+		if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus()  <= 0)
 		{
 			String strInfo = m_context.getString(R.string.dlna_not_open);
 			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
@@ -533,7 +478,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 
 	private void goToFilePage(){	
 		
-		if(isFtpSupported != true)
+		if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() <= 0)
 		{
 			String strInfo = m_context.getString(R.string.ftp_not_open);
 			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
