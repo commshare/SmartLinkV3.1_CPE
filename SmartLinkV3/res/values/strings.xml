@@ -64,7 +64,6 @@
     <string name="Home_PukTimes_UsedOut">Puk Times Used Out</string>
     <string name="Home_SimLock_Required">SIM Lock required</string>
     <string name="Home_SimCard_Detected">SIM Card detected</string>
-    <string name="Home_unknown">unknown</string>
     <string name="Home_zero_time">0Hrs 0Mins</string>
     <string name="Home_zero_data">%1$sMB</string>
     <string name="home_no_service">No Service</string>
@@ -202,7 +201,6 @@
     <string name="setting_disable_password_error_prompt">Disable Wifi Password failed!</string>
     <string name="setting_titlebar_text_edit">Edit</string>
     <string name="setting_titlebar_text_done">Done</string>
-    <string name="setting_title_wifi">WiFi Settings</string>
     <string name="setting_title_power">Power Saving</string>
     <string name="setting_title_backup">Backup&amp;Restore</string>
     <string name="setting_title_upgrade">Upgrade</string>
@@ -216,11 +214,6 @@
     <string name="setting_restore_description">Restore the configuration.</string>
     <string name="setting_restore_btn_restore">Restore</string>
     <string name="setting_about_version">Version</string>
-    <string name="setting_about_feedback">Feedback</string>
-    <string name="setting_about_feedback_comment_hint">Thank you for your comments &#8230;</string>
-    <string name="setting_about_feedback_contact_title">Your Contact (Optional)</string>
-    <string name="setting_about_feedback_contact">Your Phone Number, Email</string>
-    <string name="setting_about_feedback_contact_add_photo">+</string>
     <string name="setting_about_official_website">Official website</string>
     <string name="setting_about_management_page">Management page</string>
     <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. All right reserved.</string>
@@ -365,9 +358,7 @@
     <string name="puk_prompt_str">The comfirmed PIN code should be the same as new PIN code.</string>
     <string name="pin_title">Please input the PIN code!</string>
     <string name="pin_code_label">PIN Code:</string>
-    <string name="pin_remain_three_times">Remain: 3 times</string>
     <string name="pin_error_waring_title">Sorry, the PIN code is wrong!</string>
-    <string name="image_view_close_button">close button</string>
     <string name="puk_title">Please input the PUK code!</string>
     <string name="puk_code_label">PUK Code:</string>
     <string name="puk_remain_three_times">Remain: 3 times</string>
@@ -479,8 +470,6 @@
     <string name="new_folder_name">New folder</string>
     <string name="no">No</string>
     <string name="ftpfile_no_file">No files</string>
-    <string name="no_wifi">No Wi-Fi network</string>
-    <string name="no_wifi_hint">No Wi-Fi network, press to check WiFi settings</string>
     <string name="notif_server_starting">FTP Server started</string>
     <string name="notif_title">FTP Server</string>
     <string name="operation_cancel">Cancel</string>
@@ -524,7 +513,6 @@
     <string name="tab_ftp_client">Ftp Client</string>
     <string name="tab_remote">FTP</string>
     <string name="tab_sd">File</string>
-    <string name="wifi_state">WLAN Status</string>
     <string name="ftpfile_yes">Yes</string>
     <string name="dialog_select_type">Select file type</string>
     <string name="dialog_type_text">Text</string>
