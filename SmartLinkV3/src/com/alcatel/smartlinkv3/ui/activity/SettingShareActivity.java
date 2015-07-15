@@ -42,6 +42,9 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 		private String m_dlnaDeviceName;
 		private ImageView m_divider;
 		
+		private boolean m_dlna_response = false;
+		private boolean m_usb_response = false;
+		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			// TODO Auto-generated method stub
@@ -66,6 +69,10 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 					new IntentFilter(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET));
 			registerReceiver(m_msgReceiver, 
 					new IntentFilter(MessageUti.SHARING_SET_FTP_SETTING_REQUSET));
+			registerReceiver(m_msgReceiver, 
+					new IntentFilter(MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET));
+			registerReceiver(m_msgReceiver, 
+					new IntentFilter(MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET));
 			BusinessMannager.getInstance().StartRefreshingSharingStatus();
 		}
 		
@@ -135,12 +142,16 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 				m_dlna_button.setBackgroundResource(R.drawable.pwd_switcher_off);
 			}
 			m_waiting.setVisibility(View.GONE);
+			m_dlna_response = false;
+			m_usb_response = false;
 		}
 		
 		private void setFailed(){
 			String strInfo = getString(R.string.unknown_error);
 			Toast.makeText(SettingShareActivity.this, strInfo, Toast.LENGTH_SHORT).show();
 			m_waiting.setVisibility(View.GONE);
+			m_dlna_response = false;
+			m_usb_response = false;
 		}
 		
 		private void changeFtpSetting(){
@@ -156,16 +167,16 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 		}
 		
 		private void changeDlnaSetting(){
-			DataValue data = new DataValue();
+//			DataValue data = new DataValue();
 			if(m_dlna_enabled)
-				data.addParam("DlnaStatus", 0);
+				BusinessMannager.getInstance().getSharingManager().switchOffDlna();
 			else
-				data.addParam("DlnaStatus", 1);
-			data.addParam("DlnaName", m_dlnaDeviceName);
+				BusinessMannager.getInstance().getSharingManager().switchOnDlna();
+//			data.addParam("DlnaName", m_dlnaDeviceName);
 			
 			m_waiting.setVisibility(View.VISIBLE);
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
+//			BusinessMannager.getInstance().sendRequestMessage(
+//					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
 		}
 
 		@Override
@@ -208,6 +219,32 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 					updateUI();
+				}
+				else{
+					setFailed();
+				}
+			}
+			
+			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET)){
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+					m_dlna_response = true;
+					if(m_usb_response)
+						updateUI();
+				}
+				else{
+					setFailed();
+				}
+			}
+			
+			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET)){
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+					m_usb_response = true;
+					if(m_dlna_response)
+						updateUI();
 				}
 				else{
 					setFailed();

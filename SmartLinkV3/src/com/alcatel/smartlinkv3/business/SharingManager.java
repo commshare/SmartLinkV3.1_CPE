@@ -18,6 +18,7 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 public class SharingManager extends BaseManager {
 
@@ -92,6 +93,193 @@ public class SharingManager extends BaseManager {
 	
 	public FtpSettings getFtpSettings(){
 		return m_ftpSettings;
+	}
+	
+	//SetUSBcardSetting//////////////////////////////////
+	
+	public void switchOnDlna(){
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"SetDLNASettings") != true && BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+			DataValue data = new DataValue();
+			data.addParam("DlnaStatus", 1);
+			data.addParam("DlnaName", m_dlnaSettings.DlnaName);
+			
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
+		}
+		else{
+		
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSharing.SetUSBcardSetting("14.11", 0,
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									String strErrcode = new String();
+									int ret = response.getResultCode();
+									if (ret == BaseResponse.RESPONSE_OK) {
+										strErrcode = response.getErrorCode();
+										if (strErrcode.length() == 0) {
+	
+											final int nPreStatus = m_dlnaSettings.DlnaStatus;
+											m_dlnaSettings.DlnaStatus = 1;
+											HttpRequestManager.GetInstance().sendPostRequest(
+													new HttpSharing.SetDlnaSetting("14.2", 1, m_dlnaSettings.DlnaName,
+															new IHttpFinishListener() {
+																@Override
+																public void onHttpRequestFinish(
+																		BaseResponse response) {
+																	String strErrcode = new String();
+																	int ret = response.getResultCode();
+																	if (ret == BaseResponse.RESPONSE_OK) {
+																		strErrcode = response.getErrorCode();
+																		if (strErrcode.length() == 0) {
+																			
+																		} else {
+																			m_dlnaSettings.DlnaStatus = nPreStatus;
+																		}
+																	} else {
+																		m_dlnaSettings.DlnaStatus = nPreStatus;
+																	}
+	
+																	Intent megIntent = new Intent(
+																			MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET);
+																	megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+																			ret);
+																	megIntent.putExtra(
+																			MessageUti.RESPONSE_ERROR_CODE,
+																			strErrcode);
+																	m_context.sendBroadcast(megIntent);
+																}
+															}));
+											
+										} else {
+											
+										}
+									} else {
+										
+									}
+	
+									Intent megIntent = new Intent(
+											MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
+									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+											ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
+	}
+	
+	public void switchOffDlna(){
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
+				"SetDLNASettings") != true && BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+			DataValue data = new DataValue();
+			data.addParam("DlnaStatus", 0);
+			data.addParam("DlnaName", m_dlnaSettings.DlnaName);
+			
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
+		}
+		else{
+		
+			final int nPreStatus = m_dlnaSettings.DlnaStatus;
+			m_dlnaSettings.DlnaStatus = 0;
+			HttpRequestManager.GetInstance().sendPostRequest(
+					new HttpSharing.SetDlnaSetting("14.2", 0, m_dlnaSettings.DlnaName,
+							new IHttpFinishListener() {
+								@Override
+								public void onHttpRequestFinish(
+										BaseResponse response) {
+									String strErrcode = new String();
+									int ret = response.getResultCode();
+									if (ret == BaseResponse.RESPONSE_OK) {
+										strErrcode = response.getErrorCode();
+										if (strErrcode.length() == 0) {
+											
+											HttpRequestManager.GetInstance().sendPostRequest(
+													new HttpSharing.SetUSBcardSetting("14.11", 1,
+															new IHttpFinishListener() {
+																@Override
+																public void onHttpRequestFinish(
+																		BaseResponse response) {
+																	String strErrcode = new String();
+																	int ret = response.getResultCode();
+																	if (ret == BaseResponse.RESPONSE_OK) {
+																		strErrcode = response.getErrorCode();
+																		if (strErrcode.length() == 0) {
+	
+																		} else {
+																			
+																		}
+																	} else {
+																		
+																	}
+	
+																	Intent megIntent = new Intent(
+																			MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
+																	megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+																			ret);
+																	megIntent.putExtra(
+																			MessageUti.RESPONSE_ERROR_CODE,
+																			strErrcode);
+																	m_context.sendBroadcast(megIntent);
+																}
+															}));
+											
+										} else {
+											m_dlnaSettings.DlnaStatus = nPreStatus;
+										}
+									} else {
+										m_dlnaSettings.DlnaStatus = nPreStatus;
+									}
+	
+									Intent megIntent = new Intent(
+											MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET);
+									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+											ret);
+									megIntent.putExtra(
+											MessageUti.RESPONSE_ERROR_CODE,
+											strErrcode);
+									m_context.sendBroadcast(megIntent);
+								}
+							}));
+		}
+	}
+	
+	public void setUSBcardSetting(DataValue data){
+		int status = (Integer) data.getParamByKey("USBcardStatus");
+		HttpRequestManager.GetInstance().sendPostRequest(
+				new HttpSharing.SetUSBcardSetting("14.11", status,
+						new IHttpFinishListener() {
+							@Override
+							public void onHttpRequestFinish(
+									BaseResponse response) {
+								String strErrcode = new String();
+								int ret = response.getResultCode();
+								if (ret == BaseResponse.RESPONSE_OK) {
+									strErrcode = response.getErrorCode();
+									if (strErrcode.length() == 0) {
+
+									} else {
+										
+									}
+								} else {
+									
+								}
+
+								Intent megIntent = new Intent(
+										MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
+								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
+										ret);
+								megIntent.putExtra(
+										MessageUti.RESPONSE_ERROR_CODE,
+										strErrcode);
+								m_context.sendBroadcast(megIntent);
+							}
+						}));
 	}
 	
 	// SetSambaSetting
@@ -286,7 +474,7 @@ public class SharingManager extends BaseManager {
 								if (ret == BaseResponse.RESPONSE_OK) {
 									strErrcode = response.getErrorCode();
 									if (strErrcode.length() == 0) {
-
+										
 									} else {
 										m_dlnaSettings.DlnaStatus = nPreStatus;
 									}

@@ -335,6 +335,12 @@ public class BusinessMannager {
     }
     /********************profile manager method end*************************/
     
+    /********************sharing manager method end*************************/
+    public SharingManager getSharingManager(){
+		return m_sharingManager;
+    }
+    /********************sharing manager method end*************************/
+    
     /********************sms manager Data start**********************/
     public SMSInit getSMSInit() {
 		return m_smsManager.getSMSInit();
