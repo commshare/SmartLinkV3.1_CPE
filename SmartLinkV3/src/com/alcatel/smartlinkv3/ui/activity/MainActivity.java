@@ -336,6 +336,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 				if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
 				{
 					mAllShareProxy.startSearch();
+				}else
+				{
+					mAllShareProxy.exitSearch();
 				}
 				
 			}
