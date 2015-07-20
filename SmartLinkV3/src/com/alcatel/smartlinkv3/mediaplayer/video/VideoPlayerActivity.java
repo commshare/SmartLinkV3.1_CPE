@@ -501,6 +501,8 @@ public static final String PLAY_INDEX = "player_index";
 			{
 				case R.id.btn_back:
 				case R.id.Back:
+					mVideoControlCenter.pause();
+					//mVideoControlCenter.exit();
 					finish();
 					break;
 				case R.id.btn_play:
