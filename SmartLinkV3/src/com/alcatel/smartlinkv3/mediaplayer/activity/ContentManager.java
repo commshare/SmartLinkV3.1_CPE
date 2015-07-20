@@ -94,4 +94,13 @@ public class ContentManager {
 		mStackTitle.clear();
 	}
 	
+	public int Stacksize()
+	{
+		return mStack.size();
+	}
+	
+	public int mStackTitlesize()
+	{
+		return mStackTitle.size();
+	}
 }

@@ -109,10 +109,10 @@ public class VideoPlayEngineImpl extends AbstractMediaPlayEngine implements OnIn
 		log.e("onInfo --> what = " + what);
 		switch (what) {
 		case 701:
-			CommonUtil.showToask(mContext, "onInfo 701 --> MEDIA_INFO_BUFFERING_START");
+			//CommonUtil.showToask(mContext, "onInfo 701 --> MEDIA_INFO_BUFFERING_START");
 			break;
 		case 702:
-			CommonUtil.showToask(mContext, "onInfo 702 --> MEDIA_INFO_BUFFERING_END");
+			//CommonUtil.showToask(mContext, "onInfo 702 --> MEDIA_INFO_BUFFERING_END");
 			break;
 		default:
 			break;

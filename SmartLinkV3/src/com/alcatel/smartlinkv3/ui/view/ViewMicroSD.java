@@ -174,6 +174,9 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 			list.add(item);
 		}else if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
+			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
+			list.add(item);
+			
 			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
 			list.add(item);
 			
@@ -420,12 +423,15 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		{
 			switch(position){
 			case 0:
-				onGetItemList(ITEM_MUSIC);
+				goToFilePage();
 				break;
 			case 1:
-				onGetItemList(ITEM_PICTURES);
+				onGetItemList(ITEM_MUSIC);
 				break;
 			case 2:
+				onGetItemList(ITEM_PICTURES);
+				break;
+			case 3:
 				onGetItemList(ITEM_VIDEO);
 				break;
 			}
@@ -478,12 +484,12 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 
 	private void goToFilePage(){	
 		
-		if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() <= 0)
-		{
-			String strInfo = m_context.getString(R.string.ftp_not_open);
-			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
-			return;
-		}
+//		if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() <= 0)
+//		{
+//			String strInfo = m_context.getString(R.string.ftp_not_open);
+//			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
+//			return;
+//		}
 		
 		Intent intent = new Intent();
 		intent.setClass(this.m_context, FtpFileExplorerTabActivity.class);

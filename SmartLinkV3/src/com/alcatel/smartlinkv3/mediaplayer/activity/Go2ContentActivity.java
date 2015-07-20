@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewInteractionHub;
 import com.alcatel.smartlinkv3.mediaplayer.adapter.ContentAdapter;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.picture.FileManager;
@@ -37,6 +38,8 @@ import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.FileHelper;
 import com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity;
 import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
+import com.alcatel.smartlinkv3.ui.view.PathIndicatorDlna;
+import com.alcatel.smartlinkv3.ui.view.PathIndicatorDlna.OnPathChangeListener;
 import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
 
 public class Go2ContentActivity extends BaseActivity implements OnItemClickListener, IDeviceChangeListener, 
@@ -56,8 +59,14 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 	
 	private List<MediaItem> mCurlistItems;	
 	private DMSDeviceBrocastFactory mBrocastFactory;
+	private String mRootTitle;
 	private String mCurrTitle;
 	private DelCacheFileManager mDelCacheFileManager;
+	
+	private PathIndicatorDlna mPathIndicatorDlna;
+	private String mCurrentDlnaPath;
+	
+	private int addpathtag = -1;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,16 +111,35 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
     {
     	
     	mTVSelDeV = (TextView) findViewById(R.id.title);
-    	mContentListView = (ListView) findViewById(R.id.content_list);
-    	mContentListView.setOnItemClickListener(this);
     	mBtnBack = (ImageButton) findViewById(R.id.btn_back);
     	mBtnBack.setOnClickListener(this);
     	tvback = (TextView) this.findViewById(R.id.Back);
 		tvback.setOnClickListener(this);
+		
+		mPathIndicatorDlna = (PathIndicatorDlna) this
+				.findViewById(R.id.path_indicator_dlna);
+		mPathIndicatorDlna.setOnPathChangeListener(new OnPathChangeListener() {
+			@Override
+			public void onPathSelected(int targetFolderID,
+					int targetFolderPathIndex) {
+					
+				mCurrentDlnaPath = mRootTitle;
+				refreshContentList(targetFolderPathIndex);
+				refreshFileList(targetFolderPathIndex);
+			}
+
+		});
+		
+    	mContentListView = (ListView) findViewById(R.id.content_list);
+    	mContentListView.setOnItemClickListener(this);
     	
     	mProgressDialog = new ProgressDialog(this);   	
     	mProgressDialog.setMessage("Loading...");
     }
+	
+	public void refreshFileList(int index) {
+		mPathIndicatorDlna.setPath(mCurrentDlnaPath, index);
+	}
 
     private void initData()
     {
@@ -122,7 +150,8 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		ArrayList<MediaItem> mCurlistItems =  (ArrayList<MediaItem>) getIntent().getSerializableExtra(ViewMicroSD.LIST_KEY);
     	mContentAdapter = new ContentAdapter(this, mCurlistItems);
     	mContentListView.setAdapter(mContentAdapter);
-    	mCurrTitle = this.getIntent().getStringExtra("title");
+    	mRootTitle = this.getIntent().getStringExtra("title");
+    	mCurrTitle = mRootTitle; 
     	
     	mContentManager.pushListItem(mCurlistItems);	
     	mContentManager.pushTitle(mCurrTitle);
@@ -134,6 +163,8 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
     	mBrocastFactory.registerListener(this);
     	mDelCacheFileManager = new DelCacheFileManager();
     	
+		refreshFileList(addpathtag);
+		
     }
 	
 	private void setContentlist(List<MediaItem> list)
@@ -142,9 +173,11 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		if (list == null){
 			mContentAdapter.clear();
 		}else{
-			mContentAdapter.refreshData(list);
+			mContentAdapter.refreshData(list);		
 			updateSelDevUI(mCurrTitle);
 		}
+		
+		refreshFileList(addpathtag);
 	}
 	
 	
@@ -193,24 +226,37 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		Go2ContentActivity.this.startActivity(intent);
 	}
 	
-
-	private void back(){
-		mContentManager.popListItem();
-		mContentManager.popTitle();
+	private void refreshContentList(int index)
+	{
+		while(mContentManager.Stacksize() > index+1)
+		{
+			mContentManager.popListItem();
+			mContentManager.popTitle();
+		}
+		
 		List<MediaItem> list = mContentManager.peekListItem();
 		mCurrTitle = mContentManager.peekTitle();
 		if (list == null){
 			super.onBackPressed();
 		}else{
-			setContentlist(list);
-		}	
-		
+			mCurlistItems = list;
+			if (list == null){
+				mContentAdapter.clear();
+			}else{
+				mContentAdapter.refreshData(list);		
+				updateSelDevUI(mCurrTitle);
+			}
+		}
+	}
+	
+	private void back(){
+		super.onBackPressed();
 	}
 
-	@Override
-	public void onBackPressed() {
-		back();	
-	}
+//	@Override
+//	public void onBackPressed() {
+//		back();	
+//	}
 	
 	
 	@Override
@@ -260,7 +306,6 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 				mContentManager.pushTitle(mCurrTitle);
 				setContentlist(list);
 				
-				
 			}
 		});
 	}
@@ -275,6 +320,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 			mTVSelDeV.setText(title);
 		}
 		
+		mCurrentDlnaPath = title;
 	}
 
 	@Override

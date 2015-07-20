@@ -418,6 +418,7 @@ public class NotificationService extends Service {
 	private String getNotificationContent(ALERT_TYPE type, long used)
 	{
 		String strContent = "";
+		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
 		switch(type)
 		{
 		case UsageLimit:
@@ -426,7 +427,7 @@ public class NotificationService extends Service {
 				strContent = this.getResources().getString(R.string.usage_limit_over_notification_content);
 			}else
 			{
-				strContent = this.getResources().getString(R.string.usage_limit_less_notification_content);
+				strContent = String.format(this.getResources().getString(R.string.usage_limit_less_notification_content), CommonUtil.ConvertTrafficToStringFromMB(this, (long)(settings.HMonthlyPlan/10)));
 			}
 			break;	
 			
