@@ -420,8 +420,8 @@
     <string name="mp_unknown_album">Unknow Album</string>
     <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be reference&#160;&#160;&#160;***</string>
-    <string name="ftp_not_open">Please open the FTP!</string>
-    <string name="dlna_not_open">Please open the DLNA!</string>
+    <string name="ftp_not_open">Please open FTP function in settings!</string>
+    <string name="dlna_not_open">Please open DLNA function in settings!</string>
      
     <!-- DLNA end -->
 

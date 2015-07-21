@@ -484,12 +484,12 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 
 	private void goToFilePage(){	
 		
-//		if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() <= 0)
-//		{
-//			String strInfo = m_context.getString(R.string.ftp_not_open);
-//			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
-//			return;
-//		}
+		if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() <= 0)
+		{
+			String strInfo = m_context.getString(R.string.ftp_not_open);
+			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		
 		Intent intent = new Intent();
 		intent.setClass(this.m_context, FtpFileExplorerTabActivity.class);
