@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">LINK APP</string>
 
     <!-- common start -->
-    <string name="cancel">Annulla</string>
+    <string name="cancel">Annulla modifica</string>
     <string name="ok">OK</string>
     <string name="done">Fine</string>
     <string name="back">Indietro</string>
     <string name="delete">Elimina</string>
     <string name="upload">Carica</string>
-    <string name="deleting">Eliminazione</string>
+    <string name="deleting">Deleting</string>
     <string name="yes">Sì</string>
     <string name="sending">Invio in corso</string>
     <string name="apply">Applica</string>
+    <string name="skip">Salta</string>
+    <string name="next">Avanti</string>
+    <string name="finish">Fine</string>
+    <string name="continue_anyway">Continua</string>
     <!-- common end -->
 
+	<!-- Qucik Setup -->
+    <string name="qs_title">Configurazione rapida</string>
+    <string name="qs_exit_query">Esci da Configurazione rapida</string>
+    <string name="qs_item_pin_code">Codice PIN</string>
+    <string name="qs_pin_code_prompt">Immettere il codice PIN.\nTentativi rimanenti: <xliff:g id="INPUTTIMES">%1$d</xliff:g> volta/e</string>
+    <string name="qs_item_wifi_ssid">Nome rete Wi-Fi (SSID)</string>
+    <string name="qs_wifi_ssid_prompt">Il SSID deve avere 1&#8211;32 caratteri.</string>
+    <string name="qs_item_wifi_passwd">Password Wi-Fi</string>
+    <string name="qs_wifi_passwd_prompt">La password deve avere 8&#8211;63 caratteri.</string>
+    <string name="qs_wifi_wep_passwd_prompt">La password deve avere 5 o 13 caratteri ASCII, oppure 10 o 26 cifre esadecimali</string>
+    <string name="qs_completed">Configurazione completata</string>
+    <string name="qs_summary">Il dispositivo è pronto per l\'uso.</string>
+    <string name="qs_wifi_ssid">Nome rete Wi-Fi (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>
+    <string name="qs_wifi_passwd">Password Wi-Fi: <xliff:g id="PASSWD">%1$s</xliff:g></string>
+    <string name="qs_puk_code_title">Codice PUK </string>
+    <string name="qs_puk_code_prompt">Immettere il codice PUK.\nTentativi rimanenti: <xliff:g id="INPUTTIMES">%1$d</xliff:g> volta/e</string>
+    <string name="qs_puk_code">Codice PUK: </string>
+    <string name="qs_pin_code_new">Nuovo PIN: </string>
+    <string name="qs_pin_code_confirm">Conferma PIN: </string>
+    <!-- Quick Setup End -->
 
     <!-- main fram start -->
-    <string name="main_home">Home</string>
-    <string name="main_usage">Utilizzo</string>
+    <string name="main_home">Casa</string>
+    <string name="main_sdsharing">Condivisione SD</string>
+    <string name="main_usage">Aggiorna</string>
     <string name="main_setting">Impostazioni</string>
     <string name="main_sms">SMS</string>
 
@@ -37,13 +62,12 @@
     <string name="Home_PukTimes_UsedOut">Tentativi PUK terminati</string>
     <string name="Home_SimLock_Required">Blocco SIM richiesto</string>
     <string name="Home_SimCard_Detected">Scheda SIM rilevata</string>
-    <string name="Home_unknown">sconosciuto</string>
-    <string name="Home_zero_time">0 H 0 Min</string>
-    <string name="Home_zero_data">%1$s MB</string>
+    <string name="Home_zero_time">0Hrs 0Mins</string>
+    <string name="Home_zero_data">%1$sMB</string>
     <string name="home_no_service">Nessun servizio</string>
-    <string name="home_initializing">Inizializzazione</string>
-    <string name="home_disconnected_to">Scollegato</string>
-    <string name="home_connected_to">Collegato</string>
+    <string name="home_initializing">Inizializzazione in corso</string>
+    <string name="home_disconnected_to">Disconnesso</string>
+    <string name="home_connected_to">Connesso</string>
     <string name="home_connecting_to">Connessione in corso</string>
     <string name="home_disconnecting_to">Disconnessione in corso</string>
     <string name="home_network_type_2g">2G</string>
@@ -52,10 +76,11 @@
     <string name="home_network_type_4g">4G</string>
     <string name="home_battery_ischarging">In carica</string>
     <string name="home_battery_completed">Ricarica completata</string>
-    <string name="home_connected_duration">%1$sH %2$sMin</string>
+    <string name="home_connected_duration">%1$sHrs %2$sMins</string>
     <string name="access_lable">connesso</string>
     <string name="home_sim_loched">Scheda SIM bloccata</string>
-    <string name="home_no_sim">nessuna scheda SIM</string>
+    <string name="home_no_sim">Nessuna scheda SIM</string>
+    <string name="home_sim_not_accessible">Scheda SIM non accessibile</string>
     <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Il piano dati mensile è stato esaurito. Se si desidera ricomporre, modificare i valori mensili o reimpostare il consumo.</string>
     <!-- Home view end -->
@@ -71,27 +96,27 @@
 
 
     <!-- Usage view end -->
-    <string name="usage_view_home">Home</string>
+    <string name="usage_view_home">Casa</string>
     <string name="usage_view_duration">Durata</string>
-    <string name="bt_set_monthlydata">Imposta programma dati mensili</string>
+    <string name="bt_set_monthlydata">Imposta piano dati mensile</string>
     <string name="usage_status_des">Nessun piano dati impostato al momento</string>
-    <string name="usage_duration">%1$sH %2$sMin</string>
+    <string name="usage_duration">%1$sHrs %2$sMins</string>
     <string name="disconnected_descrition">Quando l\'utilizzo dei dati raggiunge il piano dati mensile.</string>
-    <string name="usage_clear_history_success">Cancellazione cronologia utilizzo completata.</string>
-    <string name="usage_clear_history_fail">Cancellazione cronologia utilizzo non completata.</string>
+    <string name="usage_clear_history_success">Cancellazione della cronologia di utilizzo riuscita!</string>
+    <string name="usage_clear_history_fail">Cancellazione della cronologia di utilizzo non riuscita!</string>
     <string name="usage_comsumptionexplain_label">Per abilitare la funzione di cancellazione, occorre prima scollegarsi.</string>
     <!-- Usage view end -->
 
 
     <!-- Usage setting start -->
-    <string name="usage_setting_title">Impostazioni</string>
+    <string name="usage_setting_title">Impostazioni utilizzo</string>
     <string name="usage_setting_timelimit">Limite orario</string>
     <string name="usage_setting_settimelimit">Imposta limite orario:</string>
     <string name="usage_setting_timeunit">min</string>
-    <string name="usage_setting_usage">Utilizzo</string>
+    <string name="usage_setting_usage">Usage</string>
     <string name="usage_setting_billingday">Giorno fatturazione:</string>
     <string name="usage_setting_dayunit">giorno</string>
-    <string name="usage_setting_monthlysataplan">Programma dati mensili:</string>
+    <string name="usage_setting_monthlysataplan">Piano dati mensile:</string>
     <string name="usage_setting_monthlyunit">MB</string>
     <string name="usage_setting_dataconsunption">Consumo dati:</string>
     <string name="usage_setting_roaming">Roaming</string>
@@ -109,31 +134,39 @@
     <string name="sms_report_message">Messaggio consegnato.</string>
     <string name="sms_to">A:</string>
     <string name="sms_new_title">Messaggio</string>
-    <string name="sms_error_send_error">Errore invio SMS.</string>
-    <string name="sms_send_success">SMS inviato correttamente.</string>
-    <string name="sms_error_message_full_storage">La casella SMS è piena. Eliminare alcuni SMS per inviarne/salvarne di nuovi.</string>
-    <string name="sms_delete_multi_success">Eliminazione della conversazione completata.</string>
-    <string name="sms_delete_multi_error">Eliminazione della conversazione non riuscita!</string>
-    <string name="sms_delete_error">Errore eliminazione SMS.</string>
-    <string name="sms_delete_success">SMS eliminato correttamente.</string>
-    <string name="sms_number_invalid">Errore Sono consentiti solo 3 numeri di telefono.</string>
+    <string name="sms_error_send_error">Errore di invio dell\'SMS.</string>
+    <string name="sms_send_success">Invio dell\'SMS riuscito.</string>
+    <string name="sms_error_message_full_storage">La casella SMS è piena. Eliminare alcuni SMS per poterne inviare o salvare di nuovi.</string>
+    <string name="sms_delete_multi_success">Eliminazione della conversazione riuscita.</string>
+    <string name="sms_delete_multi_error">Eliminazione della conversazione non riuscita.</string>
+    <string name="sms_delete_error">Errore di eliminazione SMS.</string>
+    <string name="sms_delete_success">Eliminazione dell\'SMS riuscita.</string>
+    <string name="sms_number_invalid">Errore. Sono consentiti solo 3 numeri di telefono.</string>
     <string name="sms_save_success">SMS salvato come bozza.</string>
-    <string name="sms_save_error">Salvataggio SMS non riuscito.</string>
+    <string name="sms_save_error">Salvataggio dell\'SMS non riuscito.</string>
     <!-- sms end -->
 
 
     <!-- connect device start -->
     <string name="device_manage_title">Dispositivi</string>
-    <string name="device_manage_connected">Dispositivi collegati (%1$d)</string>
+    <string name="device_manage_connected">Connected Devices (%1$d)</string>
     <string name="device_manage_block">Blocca dispositivi (%1$d)</string>
     <string name="device_manage_block_btn">Blocca</string>
     <string name="device_manage_unblock_btn">Sblocca</string>
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
-    <string name="device_manage_name_empty">Nome del dispositivo non è valido.</string>
-    <string name="device_manage_set_name_failed">Imposta fallito!</string>
-    
+    <string name="device_manage_set_name_failed">Impostazione non riuscita</string>
+	<string name="device_manage_name_empty">Nome del dispositivo non è valido.</string>
     <!-- connect device end -->
+
+
+    <!-- microsd start -->
+    <string name="microsd_file">File</string>
+    <string name="microsd_videos">Video</string>
+    <string name="microsd_music">Musica</string>
+    <string name="microsd_pictures">Immagini </string>
+    <string name="microsd_no_sdcard">Nessun dispositivo con scheda SD</string>
+    <!-- microsd end -->
 
 
     <!-- setting start -->
@@ -231,11 +264,16 @@
 
     <!-- notification start -->
     <string name="usage_limit_notification_title">Avviso sull\'utilizzo dei dati</string>
-    <string name="usage_limit_notification_content">È stato utilizzato il %1$s di traffico.</string>
-    <string name="time_limit_notification_title">Avviso sul limite di tempo</string>
-    <string name="time_limit_notification_content">Il limite di tempo è stato quasi raggiunto. La rete verrà disconnessa.</string>
-    <string name="overflow_notification_title">Avviso sul limite di utilizzo</string>
-    <string name="overflow_notification_content">Il piano dati mensile è stato esaurito.</string>
+    <string name="usage_limit_over_notification_content">L\'utilizzo dei dati raggiunge il piano dati mensile</string>
+    <string name="usage_limit_less_notification_content">Utilizzo inferiore al %1$s.</string>
+    <string name="usage_maximum_monthly_plan_notice">Il piano mensile massimo è </string>
+    <string name="battery_limit_notification_title">Allarme batteria</string>
+    <string name="battery_limit_notification_content1">Batteria in esaurimento. %d%% della batteria rimanente.</string>
+    <string name="battery_limit_notification_content2">Batteria in esaurimento. %d%% della batteria rimanente.</string>
+    <string name="new_message_notification_title">Nuovo messaggio</string>
+    <string name="new_message_notification_content">Nuovo messaggio ricevuto.</string>
+    <string name="upgrade_notification_title">Aggiorna </string>
+    <string name="upgrade_notification_content">Nuova versione disponibile.</string>
     <!-- notification end -->
 
 
@@ -259,6 +297,10 @@
     <string name="dialog_delete_button">Elimina cronologia chat</string>
     <string name="dialog_delete_single_sms_content">Eliminare questo messaggio?</string>
     <string name="dialog_delete_multi_sms_content">Eliminare questi messaggi?</string>
+    <string name="dialog_warning_5g">Se il telefono non è compatibile con la rete 5G, è possibile che non tutte le funzioni 5G siano utilizzabili.</string>
+    <string name="dialog_change_to_5g">Modificare il Wi-Fi in 5G</string>
+    <string name="dialog_warning_title">Avviso</string>
+    <string name="dialog_warning_error_pin_code_error_3times">È stato inserito per 3 volte un codice PIN errato. Immettere il codice di sblocco del prodotto (PUK). Se si immette per 10 volte un codice PUK errato, questa scheda SIM sarà disabilitata permanentemente.</string>
     <!-- Dialog end -->
 
 
@@ -419,17 +461,26 @@
 
 
     <!-- Login view start -->
-    <string name="login_title">Immettere la password amministratore.</string>
-    <string name="login_prompt_str">Password errata.</string>
+    <string name="login_title">Please Input Admin Password!</string>
+    <string name="login_prompt_str">Your password is wrong!</string>
     <string name="login_user_name">admin</string>
-    <string name="login_psd_error_msg">Password errata.</string>
-    <string name="login_check_dialog_title">Accesso</string>
-    <string name="login_check_dialog_content">Accesso</string>
-    <string name="login_invalid_password">Password non valida. La password può contenere solo i seguenti caratteri 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
-    <string name="login_other_user_logined_error_msg">Un altro utente sta effettuando l\'accesso. Riprovare ad accedere tra un momento.</string>
-    <string name="login_login_time_used_out_msg">Tempi di accesso viene utilizzato fuori, è possibile accedere fino al riavvio del dispositivo.</string>
-    <string name="login_warning">Avviso sull\'accesso</string>
-    <string name="login_logout_successful">Logout eseguito correttamente</string>
+    <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
+    <string name="login_check_dialog_title">Login</string>
+    <string name="login_check_dialog_content">Login</string>
+    <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
+    <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg"> Other user already logined, do you still want to login? This will kick other user off.</string>
+    <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.</string>
+    <string name="login_warning">Login warning</string>
+    <string name="login_logout_successful">Logout successfully!</string>
+    <string name="login_kickoff_logout_successful">Sorry, you are kicked off!</string>
+    <string name="change_password_successful">Change password successfully!</string>
+    <string name="wrong_current_password">The current password is wrong!</string>
+    <string name="change_password_failed">Change password failed!</string>
+    <string name="inconsistent_new_password">Inconsistent new pass word!</string>
+    <string name="input_current_password">Please Input Your Current Password!</string>
+    <string name="change_passowrd_invalid_password">Password can not be empty or too short!</string>
+    <string name="unknown_error">Unknown error!</string>
     <!-- Login view end -->
 
 
@@ -438,5 +489,151 @@
     <string name="refresh_wifi_tip">Prima collegare l\'hotspot mobile.</string>
     <string name="refresh">Aggiorna</string>
     <!-- Refresh WIFI end -->
+    
+    <!-- DLNA start -->
+    <string name="second">S</string>
+    <string name="separate"> / </string>
+    <string name="init_time">00:00</string>
+    <string name="load_image_fail">"image load fail"</string>
+    <string name="parse_image_fail">"image parse fail"</string>
+    <string name="toast_musicplay_fail">music play error</string>
+    <string name="toast_videoplay_fail">video play error</string>
+    <string name="video_loading">Loading…</string>
+    <string name="video_speed_unit_second">S</string>
+    <string name="buffering">Loading…</string>
+    <string name="mp_unknown_artist">Unknow Artist</string>
+    <string name="mp_unknown_album">Unknow Album</string>
+    <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
+    <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be reference&#160;&#160;&#160;***</string>
+    <string name="ftp_not_open">Please open FTP function in settings!</string>
+    <string name="dlna_not_open">Please open DLNA function in settings!</string>
+     
+    <!-- DLNA end -->
+
+
+    <!-- FTP FILE EXPLORER -->
+    <string name="ftpfile_app_name">File Explorer</string>
+    <string name="ftpfile_cancel">Cancel</string>
+    <string name="category_all">All</string>
+    <string name="category_apk">APKs</string>
+    <string name="category_document">Docs</string>
+    <string name="category_music">Music</string>
+    <string name="category_other">Misc</string>
+    <string name="category_picture">Pics</string>
+    <string name="category_theme">Themes</string>
+    <string name="category_video">Videos</string>
+    <string name="category_zip">Zips</string>
+    <string name="confirm">OK</string>
+    <string name="confirm_know">OK</string>
+    <string name="error_info_cant_send_folder">Unable to send the folder</string>
+    <string name="fail_to_create_folder">Failed:The folder already exists or Ftp failed.</string>
+    <string name="fail_to_rename">Failed to rename the file or folder as it already exists</string>
+    <string name="file_info_canread">Readable:</string>
+    <string name="file_info_location">Path:</string>
+    <string name="file_info_size">Size:</string>
+    <string name="file_size">%d Bytes</string>
+    <string name="instruction">Enter the following address into your FTP Client:</string>
+    <string name="menu_item_search">Search</string>
+    <string name="menu_item_sort">Sort by</string>
+    <string name="menu_item_sort_date">Date</string>
+    <string name="menu_item_sort_name">Name</string>
+    <string name="menu_item_sort_size">Size</string>
+    <string name="menu_item_sort_type">Type</string>
+    <string name="menu_item_sort_by_name">Sort by name</string>
+    <string name="menu_item_sort_by_type">Sort by type</string>
+    <string name="new_folder_name">New folder</string>
+    <string name="no">No</string>
+    <string name="notif_server_starting">FTP Server started</string>
+    <string name="notif_title">FTP Server</string>
+    <string name="operation_cancel">Cancel</string>
+    <string name="operation_copy">Copy</string>
+    <string name="operation_copy_path">Copy file path</string>
+    <string name="operation_create_folder">New folder</string>
+    <string name="operation_create_folder_message">Enter the name of folder</string>
+    <string name="operation_download">Download</string>
+    <string name="operation_delete">Delete</string>
+    <string name="operation_delete_confirm_message">Confirm Deletion?</string>
+    <string name="operation_deleting">Deleting...</string>
+    <string name="operation_info">Details</string>
+    <string name="operation_move">Move</string>
+    <string name="operation_move_to">Move to</string>
+    <string name="operation_moving">Moving...</string>
+    <string name="operation_paste">Paste</string>
+    <string name="operation_pasting">Pasting...</string>
+    <string name="operation_refresh">Refresh</string>
+    <string name="operation_rename">Rename</string>
+    <string name="operation_rename_message">Enter a new name</string>
+    <string name="operation_upload">Upload</string>
+    <string name="operation_selectall">Select All</string>
+    <string name="operation_send">Send</string>
+    <string name="operation_share">Share</string>
+    <string name="operation_show_sys">Show hidden files</string>
+    <string name="operation_edit">Edit</string>
+    <string name="operation_cancel_edit">Cancel edit</string>
+    <string name="operation_add_file">Add file</string>
+    <string name="sd_folder">SD card</string>
+    <string name="tab_ftp_client">Ftp Client</string>
+    <string name="tab_remote">FTP</string>
+    <string name="tab_sd">File</string>
+    <string name="ftpfile_yes">Yes</string>
+    <string name="dialog_select_type">Select file type</string>
+    <string name="dialog_type_text">Text</string>
+    <string name="dialog_type_audio">Audio</string>
+    <string name="dialog_type_video">Video</string>
+    <string name="dialog_type_image">Image</string>
+    <string name="favorite_photo">Photo</string>
+    <string name="favorite_sdcard">SD Card</string>
+    <string name="menu_exit">Exit</string>
+    <string name="pref_primary_folder">Home folder</string>
+    <string name="pref_read_root">Read root</string>
+    <string name="default_primary_folder">/mnt/sdcard</string>
+    <string name="pref_primary_folder_summary">The folder that appears when the app starts, and current value is <xliff:g id="string">%1$s</xliff:g></string>
+    <string name="custom_delete_dlg_text1">Delete</string>
+    <string name="custom_delete_dlg_text2">Selected file will be deleted?</string>
+    <string name="details_text_size">Size:</string>
+    <string name="details_text_create_date">Create Date:</string>
+    <string name="details_text_modified_date">Modified Date:</string>
+    <string name="choose">Choose folder</string>
+    <string name="new_foler">New foler</string>
+    <string name="foler_name">foler name</string>
+    <string name="sdcard">Sd Card</string>
+    <string name="fail">Fail</string>
+
+    <string-array name="fail_cause">
+        <item>[cause 1] Foler is exists!</item>
+        <item>[cause 2] Failed to create the folder!</item>
+    </string-array>
+
+    <string name="succeed">Succeed</string>
+
+    <string-array name="succeed_desc">
+        <item>Create folder successfully!</item>
+    </string-array>
+
+    <string name="download_text_dling">Downloading...</string>
+    <string name="download_text_path">Path: </string>
+    <!-- FTP FILE END -->
+
+
+    <!-- SMART WIDGET START -->
+    <string name="widget_usage_left">Left</string>
+    <string name="widget_usage_used">Used</string>
+    <!-- SMART WIDGET END -->
+
+
+    <!-- Welcome Guide -->
+    <string name="guide1_title">REMOTE CONTROL</string>
+    <string name="guide1_description">Link APP is compatible with all ALCATEL ONETOUCH mobile WiFi supporting 4G LTE High Speed. Thanks to this app you can easily manage your mobile WiFi directly from smartphone or tablet.</string>
+    <string name="guide2_title">ALWAYS UP TO DATE</string>
+    <string name="guide2_description">LINK APP displays in real time the status of the connection and data speeds, battery life and SMS. Through the app you can set monthly data usage plan and you\'ll be automatically disconnected once you reach preset limit.</string>
+    <string name="guide3_title">SECURITY MANAGER</string>
+    <string name="guide3_description">Through LINK APP you can block any device trying to connect to your WiFi hotspot with no permission. And you\'ll also be free to edit user\'s name to easily recognize them.</string>
+    <string name="what_new_btn_text">Start</string>
+    <!-- Welcome Guide End -->
+
+    <string-array name="usage_unit">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
 
 </resources>
