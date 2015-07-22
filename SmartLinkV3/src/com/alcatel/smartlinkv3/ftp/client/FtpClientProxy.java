@@ -120,7 +120,7 @@ public class FtpClientProxy {
 		// ftpClient.enterRemoteActiveMode(InetAddress.getByName(config.address),config.port);
 		ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 	}
-	
+
 	public boolean login() {
 		if (!ftpClient.isConnected()) {
 			return false;
@@ -407,9 +407,8 @@ public class FtpClientProxy {
 					.getBytes("UTF-8"), "iso-8859-1"));
 
 			byte[] bytes = new byte[config.bufferSize];
-
 			long step = lRemoteSize / 100;
-			long process = localSize / step;
+			long localNewSize = localSize;
 			int c;
 
 			while ((c = in.read(bytes)) != -1) {
@@ -420,15 +419,20 @@ public class FtpClientProxy {
 				}
 
 				out.write(bytes, 0, c);
-				localSize += c;
-				long nowProcess = localSize / step;
-				if (nowProcess > process) {
-					process = nowProcess;
-					if (process % 10 == 0)
-						logger.v("Download Process:" + process);
-					listener.onTrack(remote, process);
-					// TODO: update the process
+				localNewSize += c;
+
+				if (step != 0) {
+					long lastProcess = localSize / step;
+					long nowProcess = localNewSize / step;
+
+					if (nowProcess >= lastProcess) {
+						if (nowProcess % 10 == 0)
+							logger.i("Download Process:" + nowProcess);
+						listener.onTrack(remote, nowProcess);
+						// TODO: update the process
+					}
 				}
+
 			}
 
 			in.close();
@@ -461,14 +465,18 @@ public class FtpClientProxy {
 
 				out.write(bytes, 0, c);
 				localSize += c;
-				long nowProcess = localSize / step;
-				if (nowProcess > process) {
-					process = nowProcess;
-					if (process % 10 == 0)
-						logger.i("Download Process:" + process);
-					listener.onTrack(remote, process);
-					// TODO: update the process
+
+				if (step != 0) {
+					int nowProcess = (int) (localSize / step);
+					if (nowProcess > 0) {
+						process = nowProcess;
+						if (process % 10 == 0)
+							logger.i("Download Process:" + process);
+						listener.onTrack(remote, process);
+						// TODO: update the process
+					}
 				}
+
 			}
 
 			in.close();

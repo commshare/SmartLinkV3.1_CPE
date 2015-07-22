@@ -274,6 +274,8 @@ public class FtpManager {
 		if (!isLogin) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_ERROR,
 					ERROR.FILE_DOWNLOAD_ERROR);
+			logger.w("download failure,not login yet!");
+			return false;
 		}
 
 		try {
