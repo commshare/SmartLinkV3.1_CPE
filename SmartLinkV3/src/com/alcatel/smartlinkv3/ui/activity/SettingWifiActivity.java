@@ -1080,6 +1080,7 @@ implements OnClickListener{
 		m_nSecurityMode = m_nPreSecurityMode;
 		m_nType = m_nPreType;
 		setWifiMode(m_nSecurityMode, m_nType);
+		m_et_password.setText(m_strPreKey);
 	}
 	
 	public void setWifiMode(int SecurityMode, int Type){
