@@ -65,6 +65,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private TextView m_switch_button = null;
 	
 	private boolean isPinRequired;
+	private boolean m_edit_pin_showing = false;
 	
 	private boolean m_pin_state;
 	private ENUM.PinState m_requested_pinState = ENUM.PinState.NotAvailable;
@@ -487,6 +488,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	}
 	
 	private void onBtnPincodeSetting(){
+		m_edit_pin_showing = true;
 		if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.NoSim ||
 			BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.InvalidSim||
 			BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.SimCardIsIniting){
@@ -514,6 +516,18 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private void onBtnReset(){
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESET, null);
+	}
+	
+	@Override
+	public void onBackPressed(){
+		if(!m_edit_pin_showing){
+			super.onBackPressed();
+		}
+		else{
+			m_device_menu_container.setVisibility(View.VISIBLE);
+			m_pincode_editor.setVisibility(View.GONE);
+			m_edit_pin_showing = false;
+		}
 	}
 	
 	@Override
