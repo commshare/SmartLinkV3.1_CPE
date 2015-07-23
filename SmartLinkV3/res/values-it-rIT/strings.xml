@@ -461,26 +461,26 @@
 
 
     <!-- Login view start -->
-    <string name="login_title">Please Input Admin Password!</string>
-    <string name="login_prompt_str">Your password is wrong!</string>
+    <string name="login_title">Immettere la password da amministratore.</string>
+    <string name="login_prompt_str">Password errata.</string>
     <string name="login_user_name">admin</string>
-    <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
-    <string name="login_check_dialog_title">Login</string>
-    <string name="login_check_dialog_content">Login</string>
-    <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
-    <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!.</string>
-    <string name="login_other_user_logined_error_forcelogin_msg"> Other user already logined, do you still want to login? This will kick other user off.</string>
-    <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.</string>
-    <string name="login_warning">Login warning</string>
-    <string name="login_logout_successful">Logout successfully!</string>
-    <string name="login_kickoff_logout_successful">Sorry, you are kicked off!</string>
-    <string name="change_password_successful">Change password successfully!</string>
-    <string name="wrong_current_password">The current password is wrong!</string>
-    <string name="change_password_failed">Change password failed!</string>
-    <string name="inconsistent_new_password">Inconsistent new pass word!</string>
-    <string name="input_current_password">Please Input Your Current Password!</string>
+    <string name="login_psd_error_msg">Password errata.</string>
+    <string name="login_check_dialog_title">Accedi</string>
+    <string name="login_check_dialog_content">Accedi</string>
+    <string name="login_invalid_password">Password non valida. La password può contenere solo i seguenti caratteri 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
+    <string name="login_other_user_logined_error_msg"> Un altro utente sta effettuando l\'accesso. Riprovare ad accedere tra un momento.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg"> Un altro utente ha già effettuato l\'accesso. Accedere comunque? Questa operazione disconnetterà l\'altro utente.</string>
+    <string name="login_login_time_used_out_msg">Tentativi di accesso esauriti. Non sarà possibile riprovare l\'accesso fino al riavvio del dispositivo.</string>
+    <string name="login_warning">Avviso sull\'accesso</string>
+    <string name="login_logout_successful">Logout eseguito correttamente.</string>
+    <string name="login_kickoff_logout_successful">La connessione è stata terminata.</string>
+    <string name="change_password_successful">Modifica della password riuscita.</string>
+    <string name="wrong_current_password">La password corrente è errata.</string>
+    <string name="change_password_failed">Modifica della password non riuscita.</string>
+    <string name="inconsistent_new_password">Nuova password non corrispondente.</string>
+    <string name="input_current_password">Immettere la password corrente.</string>
     <string name="change_passowrd_invalid_password">Password can not be empty or too short!</string>
-    <string name="unknown_error">Unknown error!</string>
+    <string name="unknown_error">Errore sconosciuto. </string>
     <!-- Login view end -->
 
 
@@ -494,17 +494,17 @@
     <string name="second">S</string>
     <string name="separate"> / </string>
     <string name="init_time">00:00</string>
-    <string name="load_image_fail">"image load fail"</string>
-    <string name="parse_image_fail">"image parse fail"</string>
-    <string name="toast_musicplay_fail">music play error</string>
-    <string name="toast_videoplay_fail">video play error</string>
-    <string name="video_loading">Loading…</string>
+    <string name="load_image_fail">caricamento dell\'immagine non riuscito</string>
+    <string name="parse_image_fail">analisi dell\'immagine non riuscita</string>
+    <string name="toast_musicplay_fail">errore di riproduzione della musica</string>
+    <string name="toast_videoplay_fail">Errore di riproduzione del video</string>
+    <string name="video_loading">Caricamento in corso...</string>
     <string name="video_speed_unit_second">S</string>
-    <string name="buffering">Loading…</string>
-    <string name="mp_unknown_artist">Unknow Artist</string>
-    <string name="mp_unknown_album">Unknow Album</string>
-    <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
-    <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be reference&#160;&#160;&#160;***</string>
+    <string name="buffering">Caricamento in corso...</string>
+    <string name="mp_unknown_artist">Artista sconosciuto </string>
+    <string name="mp_unknown_album">Album sconosciuto </string>
+    <string name="mp_cant_find_lyrics">Impossibile trovare il testo </string>
+    <string name="mp_lyrics_tips">***&#160;&#160;&#160;Testo recuperato su Internet. Solo per riferimento&#160;&#160;&#160;***</string>
     <string name="ftp_not_open">Please open FTP function in settings!</string>
     <string name="dlna_not_open">Please open DLNA function in settings!</string>
      
@@ -512,123 +512,123 @@
 
 
     <!-- FTP FILE EXPLORER -->
-    <string name="ftpfile_app_name">File Explorer</string>
-    <string name="ftpfile_cancel">Cancel</string>
-    <string name="category_all">All</string>
+    <string name="ftpfile_app_name">Gestione file</string>
+    <string name="ftpfile_cancel">Annulla modifica</string>
+    <string name="category_all">Tutto</string>
     <string name="category_apk">APKs</string>
-    <string name="category_document">Docs</string>
-    <string name="category_music">Music</string>
-    <string name="category_other">Misc</string>
-    <string name="category_picture">Pics</string>
-    <string name="category_theme">Themes</string>
-    <string name="category_video">Videos</string>
-    <string name="category_zip">Zips</string>
+    <string name="category_document">Documenti</string>
+    <string name="category_music">Musica</string>
+    <string name="category_other">Vari</string>
+    <string name="category_picture">Immagini </string>
+    <string name="category_theme">Temi</string>
+    <string name="category_video">Video</string>
+    <string name="category_zip">ZIP</string>
     <string name="confirm">OK</string>
     <string name="confirm_know">OK</string>
-    <string name="error_info_cant_send_folder">Unable to send the folder</string>
-    <string name="fail_to_create_folder">Failed:The folder already exists or Ftp failed.</string>
-    <string name="fail_to_rename">Failed to rename the file or folder as it already exists</string>
-    <string name="file_info_canread">Readable:</string>
-    <string name="file_info_location">Path:</string>
-    <string name="file_info_size">Size:</string>
+    <string name="error_info_cant_send_folder">Impossibile inviare la cartella</string>
+    <string name="fail_to_create_folder">Operazione non riuscita: Cartella già esistente o errore FTP.</string>
+    <string name="fail_to_rename">Impossibile rinominare il file o la cartella perché il nome già esiste.</string>
+    <string name="file_info_canread">Leggibile:</string>
+    <string name="file_info_location">Percorso :</string>
+    <string name="file_info_size">Dimensioni:</string>
     <string name="file_size">%d Bytes</string>
-    <string name="instruction">Enter the following address into your FTP Client:</string>
-    <string name="menu_item_search">Search</string>
-    <string name="menu_item_sort">Sort by</string>
-    <string name="menu_item_sort_date">Date</string>
-    <string name="menu_item_sort_name">Name</string>
-    <string name="menu_item_sort_size">Size</string>
-    <string name="menu_item_sort_type">Type</string>
-    <string name="menu_item_sort_by_name">Sort by name</string>
-    <string name="menu_item_sort_by_type">Sort by type</string>
-    <string name="new_folder_name">New folder</string>
+    <string name="instruction">Immettere il seguente indirizzo nel client FTP:</string>
+    <string name="menu_item_search">Cerca</string>
+    <string name="menu_item_sort">Ordina per</string>
+    <string name="menu_item_sort_date">Data</string>
+    <string name="menu_item_sort_name">nome</string>
+    <string name="menu_item_sort_size">Dimensioni</string>
+    <string name="menu_item_sort_type">Tipo </string>
+    <string name="menu_item_sort_by_name">Ordina per nome</string>
+    <string name="menu_item_sort_by_type">Ordina per tipo</string>
+    <string name="new_folder_name">Nuova cartella</string>
     <string name="no">No</string>
-    <string name="notif_server_starting">FTP Server started</string>
-    <string name="notif_title">FTP Server</string>
-    <string name="operation_cancel">Cancel</string>
-    <string name="operation_copy">Copy</string>
-    <string name="operation_copy_path">Copy file path</string>
-    <string name="operation_create_folder">New folder</string>
-    <string name="operation_create_folder_message">Enter the name of folder</string>
-    <string name="operation_download">Download</string>
-    <string name="operation_delete">Delete</string>
-    <string name="operation_delete_confirm_message">Confirm Deletion?</string>
+    <string name="notif_server_starting">Server FTP avviato</string>
+    <string name="notif_title">Server FTP</string>
+    <string name="operation_cancel">Annulla modifica</string>
+    <string name="operation_copy">Copia</string>
+    <string name="operation_copy_path">Copia percorso del file</string>
+    <string name="operation_create_folder">Nuova cartella</string>
+    <string name="operation_create_folder_message">Immettere il nome della cartella</string>
+    <string name="operation_download">Scarica</string>
+    <string name="operation_delete">Elimina</string>
+    <string name="operation_delete_confirm_message">Confermare l\'eliminazione?</string>
     <string name="operation_deleting">Deleting...</string>
-    <string name="operation_info">Details</string>
-    <string name="operation_move">Move</string>
-    <string name="operation_move_to">Move to</string>
-    <string name="operation_moving">Moving...</string>
-    <string name="operation_paste">Paste</string>
-    <string name="operation_pasting">Pasting...</string>
-    <string name="operation_refresh">Refresh</string>
-    <string name="operation_rename">Rename</string>
-    <string name="operation_rename_message">Enter a new name</string>
-    <string name="operation_upload">Upload</string>
-    <string name="operation_selectall">Select All</string>
-    <string name="operation_send">Send</string>
-    <string name="operation_share">Share</string>
-    <string name="operation_show_sys">Show hidden files</string>
-    <string name="operation_edit">Edit</string>
-    <string name="operation_cancel_edit">Cancel edit</string>
-    <string name="operation_add_file">Add file</string>
-    <string name="sd_folder">SD card</string>
-    <string name="tab_ftp_client">Ftp Client</string>
+    <string name="operation_info">Dettagli</string>
+    <string name="operation_move">Sposta</string>
+    <string name="operation_move_to">Sposta in</string>
+    <string name="operation_moving">Spostamento in corso...</string>
+    <string name="operation_paste">Incolla </string>
+    <string name="operation_pasting">Operazione Incolla in corso</string>
+    <string name="operation_refresh">Aggiorna</string>
+    <string name="operation_rename">Rinomina</string>
+    <string name="operation_rename_message">Immettere un nuovo nome</string>
+    <string name="operation_upload">Carica</string>
+    <string name="operation_selectall">Seleziona tutto</string>
+    <string name="operation_send">Invia</string>
+    <string name="operation_share">Condividi</string>
+    <string name="operation_show_sys">Mostra file nascosti</string>
+    <string name="operation_edit">Modifica</string>
+    <string name="operation_cancel_edit">Annulla modifica</string>
+    <string name="operation_add_file">Aggiungi file</string>
+    <string name="sd_folder">Scheda SD</string>
+    <string name="tab_ftp_client">Client FTP</string>
     <string name="tab_remote">FTP</string>
     <string name="tab_sd">File</string>
-    <string name="ftpfile_yes">Yes</string>
-    <string name="dialog_select_type">Select file type</string>
-    <string name="dialog_type_text">Text</string>
+    <string name="ftpfile_yes">Sì</string>
+    <string name="dialog_select_type">Selezionare il tipo di file</string>
+    <string name="dialog_type_text">Testo</string>
     <string name="dialog_type_audio">Audio</string>
     <string name="dialog_type_video">Video</string>
-    <string name="dialog_type_image">Image</string>
-    <string name="favorite_photo">Photo</string>
-    <string name="favorite_sdcard">SD Card</string>
-    <string name="menu_exit">Exit</string>
-    <string name="pref_primary_folder">Home folder</string>
-    <string name="pref_read_root">Read root</string>
-    <string name="default_primary_folder">/mnt/sdcard</string>
-    <string name="pref_primary_folder_summary">The folder that appears when the app starts, and current value is <xliff:g id="string">%1$s</xliff:g></string>
-    <string name="custom_delete_dlg_text1">Delete</string>
-    <string name="custom_delete_dlg_text2">Selected file will be deleted?</string>
-    <string name="details_text_size">Size:</string>
-    <string name="details_text_create_date">Create Date:</string>
-    <string name="details_text_modified_date">Modified Date:</string>
-    <string name="choose">Choose folder</string>
-    <string name="new_foler">New foler</string>
-    <string name="foler_name">foler name</string>
-    <string name="sdcard">Sd Card</string>
-    <string name="fail">Fail</string>
+    <string name="dialog_type_image">Immagine</string>
+    <string name="favorite_photo">Foto </string>
+    <string name="favorite_sdcard">Scheda SD</string>
+    <string name="menu_exit">Esci</string>
+    <string name="pref_primary_folder">Casa</string>
+    <string name="pref_read_root">Leggi root</string>
+    <string name="default_primary_folder">/mnt/Scheda SD</string>
+    <string name="pref_primary_folder_summary">Cartella visualizzata all\'avvio dell\'applicazione. Valore corrente<xliff:g id="string">%1$s</xliff:g></string>
+    <string name="custom_delete_dlg_text1">Elimina</string>
+    <string name="custom_delete_dlg_text2">Il file selezionato verrà eliminato?</string>
+    <string name="details_text_size">Dimensioni:</string>
+    <string name="details_text_create_date">Data di creazione:</string>
+    <string name="details_text_modified_date">Data di modifica:</string>
+    <string name="choose">Scegli cartella</string>
+    <string name="new_foler">Nuova cartella</string>
+    <string name="foler_name">nome cartella</string>
+    <string name="sdcard">Scheda SD</string>
+    <string name="fail">Errore</string>
 
     <string-array name="fail_cause">
-        <item>[cause 1] Foler is exists!</item>
-        <item>[cause 2] Failed to create the folder!</item>
+        <item>[cause 1] La cartella esiste già.</item>
+        <item>[cause 2] Creazione della cartella non riuscita.</item>
     </string-array>
 
-    <string name="succeed">Succeed</string>
+    <string name="succeed">Operazione completata</string>
 
     <string-array name="succeed_desc">
-        <item>Create folder successfully!</item>
+        <item>Creazione della cartella riuscita. </item>
     </string-array>
 
-    <string name="download_text_dling">Downloading...</string>
-    <string name="download_text_path">Path: </string>
+    <string name="download_text_dling">Download in corso...</string>
+    <string name="download_text_path">Percorso: </string>
     <!-- FTP FILE END -->
 
 
     <!-- SMART WIDGET START -->
-    <string name="widget_usage_left">Left</string>
-    <string name="widget_usage_used">Used</string>
+    <string name="widget_usage_left">A sinistra</string>
+    <string name="widget_usage_used">Utilizzato</string>
     <!-- SMART WIDGET END -->
 
 
     <!-- Welcome Guide -->
-    <string name="guide1_title">REMOTE CONTROL</string>
-    <string name="guide1_description">Link APP is compatible with all ALCATEL ONETOUCH mobile WiFi supporting 4G LTE High Speed. Thanks to this app you can easily manage your mobile WiFi directly from smartphone or tablet.</string>
-    <string name="guide2_title">ALWAYS UP TO DATE</string>
-    <string name="guide2_description">LINK APP displays in real time the status of the connection and data speeds, battery life and SMS. Through the app you can set monthly data usage plan and you\'ll be automatically disconnected once you reach preset limit.</string>
-    <string name="guide3_title">SECURITY MANAGER</string>
-    <string name="guide3_description">Through LINK APP you can block any device trying to connect to your WiFi hotspot with no permission. And you\'ll also be free to edit user\'s name to easily recognize them.</string>
-    <string name="what_new_btn_text">Start</string>
+    <string name="guide1_title">CONTROLLO REMOTO</string>
+    <string name="guide1_description">LINK APP è compatibile con il Wi-Fi mobile di ALCATEL ONETOUCH che supporta il 4G LTE High Speed. Grazie a questa applicazione è possibile gestire con facilità il Wi-Fi mobile direttamente dallo smartphone o dal tablet.</string>
+    <string name="guide2_title">SEMPRE AGGIORNATO</string>
+    <string name="guide2_description">LINK APP visualizza in tempo reale lo stato della connessione e le velocità di trasmissione dati, la durata della batteria e gli SMS. Grazie all\'applicazione è possibile impostare un piano di utilizzo dati mensile per disconnettersi automaticamente una volta raggiunto il limite preimpostato.</string>
+    <string name="guide3_title">GESTIONE SICUREZZA</string>
+    <string name="guide3_description">Grazie a LINK APP è possibile bloccare il tentativo di connessione senza autorizzazione al proprio hotspot Wi-Fi da parte di qualsiasi dispositivo. Sarà inoltre possibile modificare il nome utente per agevolarne il riconoscimento.</string>
+    <string name="what_new_btn_text">Avvia</string>
     <!-- Welcome Guide End -->
 
     <string-array name="usage_unit">

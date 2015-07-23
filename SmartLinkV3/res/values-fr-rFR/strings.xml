@@ -375,33 +375,33 @@
 
 
     <!-- Login view start -->
-    <string name="login_title">Please Input Admin Password!</string>
-    <string name="login_prompt_str">Your password is wrong!</string>
+    <string name="login_title">Saisissez le mot de passe administrateur.</string>
+    <string name="login_prompt_str">Mot de passe incorrect !</string>
     <string name="login_user_name">admin</string>
-    <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
-    <string name="login_check_dialog_title">Login</string>
-    <string name="login_check_dialog_content">Login</string>
-    <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
-    <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!.</string>
-    <string name="login_other_user_logined_error_forcelogin_msg"> Other user already logined, do you still want to login? This will kick other user off.</string>
-    <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.</string>
-    <string name="login_warning">Login warning</string>
-    <string name="login_logout_successful">Logout successfully!</string>
-    <string name="login_kickoff_logout_successful">Sorry, you are kicked off!</string>
-    <string name="change_password_successful">Change password successfully!</string>
-    <string name="wrong_current_password">The current password is wrong!</string>
-    <string name="change_password_failed">Change password failed!</string>
-    <string name="inconsistent_new_password">Inconsistent new pass word!</string>
-    <string name="input_current_password">Please Input Your Current Password!</string>
+    <string name="login_psd_error_msg">Mot de passe incorrect !</string>
+    <string name="login_check_dialog_title">Connexion</string>
+    <string name="login_check_dialog_content">Connexion</string>
+    <string name="login_invalid_password">Mot de passe non valide ! Il ne peut inclure que les caractères 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
+    <string name="login_other_user_logined_error_msg"> Un autre utilisateur ouvre une session en ce moment. Reconnectez-vous un peu plus tard.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg"> Un autre utilisateur a déjà une session ouverte. Vous connecter déboutera l’autre utilisateur. Voulez-vous néanmoins vous connecter ?</string>
+    <string name="login_login_time_used_out_msg">Le nombre de connexions maximal est atteint. Vous devez redémarrer l’appareil pour retenter la connexion.</string>
+    <string name="login_warning">Avertissement de connexion</string>
+    <string name="login_logout_successful">Déconnexion effectuée</string>
+    <string name="login_kickoff_logout_successful">Désolé, vous venez de vous faire déconnecter !</string>
+    <string name="change_password_successful">Changement de mot de passe effectué</string>
+    <string name="wrong_current_password">Le mot de passe est incorrect !</string>
+    <string name="change_password_failed">Échec de changement de mot de passe !</string>
+    <string name="inconsistent_new_password">Nouveau mot de passe différent !</string>
+    <string name="input_current_password">Saisissez votre mot de passe !</string>
     <string name="change_passowrd_invalid_password">Password can not be empty or too short!</string>
-    <string name="unknown_error">Unknown error!</string>
+    <string name="unknown_error">Erreur non répertoriée ! </string>
     <!-- Login view end -->
 
 
     <!-- Refresh WIFI start -->
-    <string name="refresh_wifi_title">No Wi-Fi Connected</string>
-    <string name="refresh_wifi_tip">Please connect the mobile hotspot first!</string>
-    <string name="refresh">Refresh</string>
+    <string name="refresh_wifi_title">Aucune connexion Wi-Fi</string>
+    <string name="refresh_wifi_tip">Connectez-vous au point d’accès mobile.</string>
+    <string name="refresh">Actualiser</string>
     <!-- Refresh WIFI end -->
 
 
@@ -409,17 +409,17 @@
     <string name="second">S</string>
     <string name="separate"> / </string>
     <string name="init_time">00:00</string>
-    <string name="load_image_fail">"image load fail"</string>
-    <string name="parse_image_fail">"image parse fail"</string>
-    <string name="toast_musicplay_fail">music play error</string>
-    <string name="toast_videoplay_fail">video play error</string>
-    <string name="video_loading">Loading…</string>
+    <string name="load_image_fail">Échec de chargement de l’image</string>
+    <string name="parse_image_fail">Échec d’analyse de l’image</string>
+    <string name="toast_musicplay_fail">erreur de lecture de musique</string>
+    <string name="toast_videoplay_fail">Erreur de reproduction vidéo</string>
+    <string name="video_loading">Chargement en cours…</string>
     <string name="video_speed_unit_second">S</string>
-    <string name="buffering">Loading…</string>
-    <string name="mp_unknown_artist">Unknow Artist</string>
-    <string name="mp_unknown_album">Unknow Album</string>
-    <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
-    <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be reference&#160;&#160;&#160;***</string>
+    <string name="buffering">Chargement en cours…</string>
+    <string name="mp_unknown_artist">Artiste inconnu </string>
+    <string name="mp_unknown_album">Album inconnu </string>
+    <string name="mp_cant_find_lyrics">LRC introuvable </string>
+    <string name="mp_lyrics_tips">***&#160;&#160;&#160;Le LRC est téléchargé d’Internet et n’est qu’une simple référence.&#160;&#160;&#160;***</string>
     <string name="ftp_not_open">Please open FTP function in settings!</string>
     <string name="dlna_not_open">Please open DLNA function in settings!</string>
      
@@ -427,123 +427,123 @@
 
 
     <!-- FTP FILE EXPLORER -->
-    <string name="ftpfile_app_name">File Explorer</string>
-    <string name="ftpfile_cancel">Cancel</string>
-    <string name="category_all">All</string>
+    <string name="ftpfile_app_name">Explorateur de fichiers</string>
+    <string name="ftpfile_cancel">Annuler</string>
+    <string name="category_all">Tout</string>
     <string name="category_apk">APKs</string>
     <string name="category_document">Docs</string>
-    <string name="category_music">Music</string>
-    <string name="category_other">Misc</string>
-    <string name="category_picture">Pics</string>
-    <string name="category_theme">Themes</string>
-    <string name="category_video">Videos</string>
-    <string name="category_zip">Zips</string>
+    <string name="category_music">Musique</string>
+    <string name="category_other">Divers</string>
+    <string name="category_picture">Images </string>
+    <string name="category_theme">Ambiances</string>
+    <string name="category_video">Vidéos</string>
+    <string name="category_zip">Codes postaux</string>
     <string name="confirm">OK</string>
     <string name="confirm_know">OK</string>
-    <string name="error_info_cant_send_folder">Unable to send the folder</string>
-    <string name="fail_to_create_folder">Failed:The folder already exists or Ftp failed.</string>
-    <string name="fail_to_rename">Failed to rename the file or folder as it already exists</string>
-    <string name="file_info_canread">Readable:</string>
-    <string name="file_info_location">Path:</string>
-    <string name="file_info_size">Size:</string>
+    <string name="error_info_cant_send_folder">Envoi du dossier impossible</string>
+    <string name="fail_to_create_folder">Échec : le dossier existe déjà ou la connexion FTP a échoué.</string>
+    <string name="fail_to_rename">Nom du fichier ou dossier déjà existante</string>
+    <string name="file_info_canread">Lisible :</string>
+    <string name="file_info_location">Chemin :</string>
+    <string name="file_info_size">Taille :</string>
     <string name="file_size">%d Bytes</string>
-    <string name="instruction">Enter the following address into your FTP Client:</string>
-    <string name="menu_item_search">Search</string>
-    <string name="menu_item_sort">Sort by</string>
+    <string name="instruction">Saisissez l’adresse suivante dans votre client FTP :</string>
+    <string name="menu_item_search">Rechercher</string>
+    <string name="menu_item_sort">Trier par</string>
     <string name="menu_item_sort_date">Date</string>
-    <string name="menu_item_sort_name">Name</string>
-    <string name="menu_item_sort_size">Size</string>
-    <string name="menu_item_sort_type">Type</string>
-    <string name="menu_item_sort_by_name">Sort by name</string>
-    <string name="menu_item_sort_by_type">Sort by type</string>
-    <string name="new_folder_name">New folder</string>
-    <string name="no">No</string>
-    <string name="notif_server_starting">FTP Server started</string>
-    <string name="notif_title">FTP Server</string>
-    <string name="operation_cancel">Cancel</string>
-    <string name="operation_copy">Copy</string>
-    <string name="operation_copy_path">Copy file path</string>
-    <string name="operation_create_folder">New folder</string>
-    <string name="operation_create_folder_message">Enter the name of folder</string>
-    <string name="operation_download">Download</string>
-    <string name="operation_delete">Delete</string>
-    <string name="operation_delete_confirm_message">Confirm Deletion?</string>
+    <string name="menu_item_sort_name">nom</string>
+    <string name="menu_item_sort_size">Taille</string>
+    <string name="menu_item_sort_type">Type </string>
+    <string name="menu_item_sort_by_name">Trier par nom</string>
+    <string name="menu_item_sort_by_type">Trier par type</string>
+    <string name="new_folder_name">Nouveau dossier</string>
+    <string name="no">Non</string>
+    <string name="notif_server_starting">Serveur FTP démarré</string>
+    <string name="notif_title">Serveur FTP</string>
+    <string name="operation_cancel">Annuler</string>
+    <string name="operation_copy">Copier</string>
+    <string name="operation_copy_path">Copier le chemin d’accès</string>
+    <string name="operation_create_folder">Nouveau dossier</string>
+    <string name="operation_create_folder_message">Saisir le nom du dossier</string>
+    <string name="operation_download">Télécharger</string>
+    <string name="operation_delete">Supprimer</string>
+    <string name="operation_delete_confirm_message">Confirmer la suppression ?</string>
     <string name="operation_deleting">Deleting...</string>
-    <string name="operation_info">Details</string>
-    <string name="operation_move">Move</string>
-    <string name="operation_move_to">Move to</string>
-    <string name="operation_moving">Moving...</string>
-    <string name="operation_paste">Paste</string>
-    <string name="operation_pasting">Pasting...</string>
-    <string name="operation_refresh">Refresh</string>
-    <string name="operation_rename">Rename</string>
-    <string name="operation_rename_message">Enter a new name</string>
-    <string name="operation_upload">Upload</string>
-    <string name="operation_selectall">Select All</string>
-    <string name="operation_send">Send</string>
-    <string name="operation_share">Share</string>
-    <string name="operation_show_sys">Show hidden files</string>
-    <string name="operation_edit">Edit</string>
-    <string name="operation_cancel_edit">Cancel edit</string>
-    <string name="operation_add_file">Add file</string>
-    <string name="sd_folder">SD card</string>
-    <string name="tab_ftp_client">Ftp Client</string>
+    <string name="operation_info">Infos</string>
+    <string name="operation_move">Déplacer</string>
+    <string name="operation_move_to">Déplacer vers</string>
+    <string name="operation_moving">Déplacement…</string>
+    <string name="operation_paste">Coller </string>
+    <string name="operation_pasting">Collage…</string>
+    <string name="operation_refresh">Actualiser</string>
+    <string name="operation_rename">Renommer</string>
+    <string name="operation_rename_message">Indiquer un nouveau nom</string>
+    <string name="operation_upload">Transférer</string>
+    <string name="operation_selectall">Tout sélectionner</string>
+    <string name="operation_send">Envoyer</string>
+    <string name="operation_share">Partager</string>
+    <string name="operation_show_sys">Afficher les fichiers cachés</string>
+    <string name="operation_edit">Modifier</string>
+    <string name="operation_cancel_edit">Annuler la modification</string>
+    <string name="operation_add_file">Ajouter un fichier</string>
+    <string name="sd_folder">Carte SD</string>
+    <string name="tab_ftp_client">Client FTP</string>
     <string name="tab_remote">FTP</string>
-    <string name="tab_sd">File</string>
-    <string name="ftpfile_yes">Yes</string>
-    <string name="dialog_select_type">Select file type</string>
-    <string name="dialog_type_text">Text</string>
+    <string name="tab_sd">Fichier</string>
+    <string name="ftpfile_yes">Oui</string>
+    <string name="dialog_select_type">Choisir le type de fichier</string>
+    <string name="dialog_type_text">Texte</string>
     <string name="dialog_type_audio">Audio</string>
-    <string name="dialog_type_video">Video</string>
+    <string name="dialog_type_video">Vidéo</string>
     <string name="dialog_type_image">Image</string>
     <string name="favorite_photo">Photo</string>
-    <string name="favorite_sdcard">SD Card</string>
-    <string name="menu_exit">Exit</string>
-    <string name="pref_primary_folder">Home folder</string>
-    <string name="pref_read_root">Read root</string>
-    <string name="default_primary_folder">/mnt/sdcard</string>
-    <string name="pref_primary_folder_summary">The folder that appears when the app starts, and current value is <xliff:g id="string">%1$s</xliff:g></string>
-    <string name="custom_delete_dlg_text1">Delete</string>
-    <string name="custom_delete_dlg_text2">Selected file will be deleted?</string>
-    <string name="details_text_size">Size:</string>
-    <string name="details_text_create_date">Create Date:</string>
-    <string name="details_text_modified_date">Modified Date:</string>
-    <string name="choose">Choose folder</string>
-    <string name="new_foler">New foler</string>
-    <string name="foler_name">foler name</string>
-    <string name="sdcard">Sd Card</string>
-    <string name="fail">Fail</string>
+    <string name="favorite_sdcard">Carte SD</string>
+    <string name="menu_exit">Fermer</string>
+    <string name="pref_primary_folder">Accueil</string>
+    <string name="pref_read_root">Lire l’utilisateur root</string>
+    <string name="default_primary_folder">/mnt/Carte SD</string>
+    <string name="pref_primary_folder_summary">Dossier qui s’affiche au lancement de l’application :<xliff:g id="string">%1$s</xliff:g></string>
+    <string name="custom_delete_dlg_text1">Supprimer</string>
+    <string name="custom_delete_dlg_text2">Le fichier sélectionné va être supprimé ?</string>
+    <string name="details_text_size">Taille :</string>
+    <string name="details_text_create_date">Date de création :</string>
+    <string name="details_text_modified_date">Date de modification :</string>
+    <string name="choose">Choisir le dossier</string>
+    <string name="new_foler">Nouveau dossier</string>
+    <string name="foler_name">nom du dossier</string>
+    <string name="sdcard">Carte SD</string>
+    <string name="fail">Échec</string>
 
     <string-array name="fail_cause">
-        <item>[cause 1] Foler is exists!</item>
-        <item>[cause 2] Failed to create the folder!</item>
+        <item>[cause 1] Dossier déjà existant !</item>
+        <item>[cause 2] Échec de création du dossier !</item>
     </string-array>
 
-    <string name="succeed">Succeed</string>
+    <string name="succeed">Opération effectuée</string>
 
     <string-array name="succeed_desc">
-        <item>Create folder successfully!</item>
+        <item>Création du dossier effectuée ! </item>
     </string-array>
 
-    <string name="download_text_dling">Downloading...</string>
-    <string name="download_text_path">Path: </string>
+    <string name="download_text_dling">Téléchargement…</string>
+    <string name="download_text_path">Chemin : </string>
     <!-- FTP FILE END -->
 
 
     <!-- SMART WIDGET START -->
-    <string name="widget_usage_left">Left</string>
-    <string name="widget_usage_used">Used</string>
+    <string name="widget_usage_left">À gauche</string>
+    <string name="widget_usage_used">Utilisé</string>
     <!-- SMART WIDGET END -->
 
 
     <!-- Welcome Guide -->
-    <string name="guide1_title">REMOTE CONTROL</string>
-    <string name="guide1_description">Link APP is compatible with all ALCATEL ONETOUCH mobile WiFi supporting 4G LTE High Speed. Thanks to this app you can easily manage your mobile WiFi directly from smartphone or tablet.</string>
-    <string name="guide2_title">ALWAYS UP TO DATE</string>
-    <string name="guide2_description">LINK APP displays in real time the status of the connection and data speeds, battery life and SMS. Through the app you can set monthly data usage plan and you\'ll be automatically disconnected once you reach preset limit.</string>
-    <string name="guide3_title">SECURITY MANAGER</string>
-    <string name="guide3_description">Through LINK APP you can block any device trying to connect to your WiFi hotspot with no permission. And you\'ll also be free to edit user\'s name to easily recognize them.</string>
-    <string name="what_new_btn_text">Start</string>
+    <string name="guide1_title">TÉLÉCOMMANDE</string>
+    <string name="guide1_description">LINK APP est compatible avec tous les dispositifs Wi-Fi portables ALCATEL ONETOUCH prenant en charge le haut débit 4G/LTE. L’application vous permet de gérer facilement votre connexion Wi-Fi mobile directement depuis un smartphone ou une tablette.</string>
+    <string name="guide2_title">TOUJOURS À JOUR</string>
+    <string name="guide2_description">LINK APP affiche en temps réel l’état de la connexion, les débits de données, l’autonomie de la batterie et les SMS. L’application vous permet de définir un forfait d’usage des données mensuel pour vous déconnecter automatiquement lorsque vous atteignez la limite prédéfinie.</string>
+    <string name="guide3_title">GESTIONNAIRE DE SÉCURITÉ</string>
+    <string name="guide3_description">LINK APP vous permet de bloquer tout appareil tentant de se connecter à votre point d’accès Wi-Fi sans autorisation. Vous pourrez en outre modifier le nom des utilisateurs pour les reconnaître facilement.</string>
+    <string name="what_new_btn_text">Démarrer</string>
     <!-- Welcome Guide End -->
 
     <string-array name="usage_unit">
