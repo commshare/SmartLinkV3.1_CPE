@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
@@ -534,6 +535,15 @@ implements OnClickListener{
 				if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
 					boolean blCheckPsd = checkPassword(m_strKey);
 					if (!blCheckPsd) {
+						m_err_dialog.setCancelCallback(new OnClickConfirmBotton(){
+
+							@Override
+							public void onConfirm() {
+								// TODO Auto-generated method stub
+								revertWifiModeSetting();
+							}
+							
+						});
 						m_err_dialog.showDialog(
 								getString(R.string.setting_wifi_error_title), m_strErrorInfo);
 						return;
