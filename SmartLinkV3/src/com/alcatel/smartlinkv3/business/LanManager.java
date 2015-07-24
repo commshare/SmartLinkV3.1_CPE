@@ -10,6 +10,7 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class LanManager extends BaseManager {
 
@@ -76,6 +77,11 @@ public class LanManager extends BaseManager {
 								BusinessMannager.getInstance().getSystemInfoModel().
 								setMacAddress(m_lanInfo.getMacAddress());
 							}
+							
+							Intent megIntent= new Intent(MessageUti.LAN_GET_LAN_SETTINGS);
+			                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+			                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+			    			m_context.sendBroadcast(megIntent);
 						}
 					}));
 		}

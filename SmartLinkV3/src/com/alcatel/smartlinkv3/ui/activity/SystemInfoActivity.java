@@ -34,7 +34,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 //	private Button m_btn_PowerOff=null;
 //	private Button m_btn_reboot=null;
 //	private Button m_btn_reset=null;
-//	private ProgressBar m_pb_waiting=null;
+	private ProgressBar m_pb_waiting=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -79,21 +79,21 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 //		m_btn_reboot.setOnClickListener(this);
 //		m_btn_reset.setOnClickListener(this);
 		//
-//		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
+		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
 	}
 
-//	private void ShowWaiting(boolean blShow){
-//		if (blShow) {
-//			m_pb_waiting.setVisibility(View.VISIBLE);
-//		}else {
-//			m_pb_waiting.setVisibility(View.GONE);
-//		}
+	private void ShowWaiting(boolean blShow){
+		if (blShow) {
+			m_pb_waiting.setVisibility(View.VISIBLE);
+		}else {
+			m_pb_waiting.setVisibility(View.GONE);
+		}
 //		m_btn_PowerOff.setEnabled(!blShow);
 //		m_btn_reboot.setEnabled(!blShow);
 //		m_btn_reset.setEnabled(!blShow);
-//		m_ib_back.setEnabled(!blShow);
-//		m_tv_back.setEnabled(!blShow);
-//	}
+		m_ib_back.setEnabled(!blShow);
+		m_tv_back.setEnabled(!blShow);
+	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -142,10 +142,10 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		m_tv_swVersion_value.setText(systemInfo.getSwVersion());
 		m_tv_hwVersion_value.setText(systemInfo.getHwVersion());
 		m_tv_device_name_value.setText(systemInfo.getDeviceName());
-		m_tv_imei_value.setText(systemInfo.getIMEI());
-		m_tv_mac_value.setText(systemInfo.getMacAddress());
-		m_tv_ip_value.setText(systemInfo.getIP());
-		m_tv_subnet_value.setText(systemInfo.getSubnet());
+//		m_tv_imei_value.setText(systemInfo.getIMEI());
+//		m_tv_mac_value.setText(systemInfo.getMacAddress());
+//		m_tv_ip_value.setText(systemInfo.getIP());
+//		m_tv_subnet_value.setText(systemInfo.getSubnet());
 	}
 
 	@Override
@@ -161,9 +161,12 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.LAN_GET_LAN_SETTINGS));
 		
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
-//		ShowWaiting(true);
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.LAN_GET_LAN_SETTINGS, null);
+		ShowWaiting(true);
 	}
 
 	@Override
@@ -172,20 +175,27 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		super.onPause();
 	}
 
-//	@Override
-//	protected void onBroadcastReceive(Context context, Intent intent) {
-//		// TODO Auto-generated method stub
-//		super.onBroadcastReceive(context, intent);
-//		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_REBOOT)){
-//			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-//			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-//			String strTost = getString(R.string.setting_reboot_failed);
-//			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-//				strTost = getString(R.string.setting_reboot_success);
-//			}
-//			ShowWaiting(false);
-//			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-//		}
+	@Override
+	protected void onBroadcastReceive(Context context, Intent intent) {
+		// TODO Auto-generated method stub
+		super.onBroadcastReceive(context, intent);
+		if(intent.getAction().equalsIgnoreCase(MessageUti.LAN_GET_LAN_SETTINGS)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String strTost = getString(R.string.unknown_error);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				m_tv_ip_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getIP());
+				m_tv_subnet_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getSubnet());
+				m_tv_imei_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getIMEI());
+				m_tv_mac_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getMacAddress());
+			}
+			else{
+				Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
+			}
+			ShowWaiting(false);
+		}
+		
+	}
 //		
 //		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
 //			ShowWaiting(false);

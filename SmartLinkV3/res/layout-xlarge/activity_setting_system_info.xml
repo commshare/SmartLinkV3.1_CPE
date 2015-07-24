@@ -279,7 +279,7 @@
              -->
         </LinearLayout>
 
-        <!-- 
+        
         <RelativeLayout
             android:id="@+id/rl_device_waiting"
             android:layout_width="fill_parent"
@@ -293,7 +293,7 @@
                 android:indeterminateDrawable="@drawable/progerss_blue"
                 android:visibility="gone" />
         </RelativeLayout>
-         -->
+        
     </FrameLayout>
 
 </ScrollView>
