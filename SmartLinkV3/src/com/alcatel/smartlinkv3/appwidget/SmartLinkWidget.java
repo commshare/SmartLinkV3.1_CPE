@@ -442,9 +442,10 @@ public class SmartLinkWidget extends AppWidgetProvider {
     Rect bounds = new Rect();
     Rect unitBounds = new Rect();
     DecimalFormat transfToInteger = new DecimalFormat("0");
-    String dataLeft = "" +  transfToInteger.format(Math.abs(monthDataPlan - usedDataUsage));
+    DecimalFormat transfToDouble = new DecimalFormat("0.0");
+    String dataLeft = "" +  transfToDouble.format(Math.abs(monthDataPlan - usedDataUsage));
     String dataPlanToaltUsage = "" + transfToInteger.format(monthDataPlan);
-    String dataUsed = "" + transfToInteger.format(usedDataUsage);
+    String dataUsed = "" + transfToDouble.format(usedDataUsage);
     String dataUsageShowStr = dataLeft;
     String dataPlanUnit = dataUnitString;
     int dataUsedAngle = 0;
