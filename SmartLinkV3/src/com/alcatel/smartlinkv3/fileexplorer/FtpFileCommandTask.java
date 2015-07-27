@@ -30,7 +30,6 @@ import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTask.TaskPoolOnCallResponse;
 import com.alcatel.smartlinkv3.ftp.client.ThreadPoolTaskManager;
 import com.alcatel.smartlinkv3.ftp.client.pubLog;
-import com.alcatel.smartlinkv3.samba.SmbHttpServer;
 
 //TODO: CallBack
 public class FtpFileCommandTask {
