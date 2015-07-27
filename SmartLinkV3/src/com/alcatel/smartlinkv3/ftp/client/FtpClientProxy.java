@@ -323,7 +323,8 @@ public class FtpClientProxy {
 			return success;
 		}
 
-		FTPFile[] list = ftpClient.listFiles(remote);
+		logger.i("remoteFile = " + remote);
+		FTPFile[] list = ftpClient.listFiles(convertToUTF8(remote));
 
 		if (list == null || list.length == 0) {
 			logger.w("getFileList() return null!");
