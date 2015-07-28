@@ -76,7 +76,6 @@
             android:layout_marginTop="6dip"
             android:layout_marginLeft="7dip"
             android:layout_toRightOf="@id/pin_code_tv"
-            android:text="@string/pin_remain_three_times"
             android:textColor="@color/error_font_color" />
     </RelativeLayout>
 

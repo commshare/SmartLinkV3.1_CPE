@@ -155,7 +155,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Set failed!</string>
-
+	<string name="device_manage_name_empty">Device name is invalid.</string>
     <!-- connect device end -->
 
 
@@ -230,6 +230,7 @@
     <string name="setting_upgrade_not_start">Upgrade not start</string>
     <string name="setting_upgrade_complete">Download complete, please wait until upgrading finished</string>
     <string name="setting_upgrade_stop_error">Upgrade stop error</string>
+    <string name="setting_upgrade_not_available">Service not available</string>
     <string name="setting_upgrade_get_update_state_failed">Get device update state failed.</string>
     <string name="setting_upgrade_start_update_failed">Device start update failed.</string>
     <string name="setting_upgrade_check_firmware_failed">Get New version failed.</string>
@@ -350,6 +351,11 @@
     <string name="dialog_warning_title">Warning</string>
     <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, please enter the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly.</string>
     <!-- Dialog end -->
+
+    <!-- replace folder dialog start -->
+    <string name="confirm_folder_replace">confirm replace</string>
+    <string name="confirm_folder_content">There is already a file with the same name in this location.</string>
+    <!-- replace folder dialog end -->
 
 
     <!-- PIN start -->

@@ -54,6 +54,13 @@
             android:layout_height="43dip" 
             android:layout_centerHorizontal="true" 
             android:layout_below="@id/ID_ERROR_DIALOG_IMAGE_LAYOUT">
+        
+        	<TextView 
+		        android:id="@+id/txtHide" 
+		        android:layout_width="25dip" 
+		        android:layout_height="1dip"  
+	           	android:layout_centerHorizontal="true" />
+        
 		    <Button
 		        android:id="@+id/ID_BUTTON_RETRY"
 		        android:layout_width="80dip"
@@ -64,11 +71,7 @@
 		        android:text="@string/btn_reply"
 		        android:textColor="@drawable/common_button_text"/>  
 	        
-		    <TextView 
-		        android:id="@+id/txtHide" 
-		        android:layout_width="25dip" 
-		        android:layout_height="1dip"  
-	           	android:layout_centerHorizontal="true" />
+		    
 	    	    
 	        <Button
 	            android:id="@+id/error_dialog_close_btn"
