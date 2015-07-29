@@ -64,18 +64,7 @@ public class NotificationService extends Service {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-						//boolean bBillingDayChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_BILLING_DAY_CHANGE,false);
-						boolean bCalibrationValueChange = intent.getBooleanExtra(StatisticsManager.USAGE_SETTING_MONTHLY_PLAN_CHANGE,false);
-						Log.v("pchong", "GetUsageSettingsTask NotificationService = " + bCalibrationValueChange);
-						if (bCalibrationValueChange) {
-							m_isNeedToAlertUsageLimit = true;		
-//							m_isNeedToAlertBatteryLimit  = false;
-//							m_isNeedToAlertUpgrade = false;
-							
-							m_AlertUsageLimitLessOneTime = true;
-							m_AlertUsageLimitOverOneTime = true;
 							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
-						} 
 					}
 				}
 				

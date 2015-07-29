@@ -114,6 +114,7 @@ public class StatisticsManager extends BaseManager {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				m_usageRecord.clear();
 				getUsageHistorySingle();
 			}
 		}

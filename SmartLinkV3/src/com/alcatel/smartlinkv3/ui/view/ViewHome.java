@@ -94,6 +94,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	/*sigel_panel  end*/
 	
 	/*battery_panel  start*/
+	private RelativeLayout m_batteryPanelView;
 	private TextView m_batteryscaleTextView;
 	private ProgressBar m_batteryProgress = null;
 	private ImageView m_batterychargingImageView = null;
@@ -233,6 +234,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_networkRoamImageView = (ImageView) m_view.findViewById(R.id.connect_roam);
 		m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);
 		
+		
+		m_batteryPanelView = (RelativeLayout) m_view.findViewById(R.id.battery_panel);
 		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
 		m_batteryProgress = (ProgressBar) m_view.findViewById(R.id.battery_progress);
 		m_batterychargingImageView = (ImageView) m_view.findViewById(R.id.connct_charging);
@@ -746,6 +749,12 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 		
 	private void showBatteryState(){
+		
+//		if(!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState"))
+//		{
+//			m_batteryPanelView.setVisibility(View.GONE);
+//			return;
+//		}
 		int nProgress =0;
 		BatteryInfo batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
 		if(ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()){
