@@ -520,7 +520,7 @@
     <string name="foler_name">foler name</string>
     <string name="sdcard">Sd Card</string>
     <string name="fail">Fail</string>
-
+	<string name="no_file">Empty directory</string>
     <string-array name="fail_cause">
         <item>[cause 1] Foler is exists!</item>
         <item>[cause 2] Failed to create the folder!</item>
