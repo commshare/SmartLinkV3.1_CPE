@@ -750,11 +750,11 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 	private void showBatteryState(){
 		
-//		if(!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState"))
-//		{
-//			m_batteryPanelView.setVisibility(View.GONE);
-//			return;
-//		}
+		if(!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState"))
+		{
+			m_batteryPanelView.setVisibility(View.GONE);
+			return;
+		}
 		int nProgress =0;
 		BatteryInfo batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
 		if(ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()){
