@@ -108,6 +108,8 @@
     <color name="path_indicator_button_text_enabled">#ff0089cf</color>
     <color name="path_indicator_button_text_disabled">#ff000000</color>
     <color name="path_indicator_button_text_shadow_color">#ff000000</color>
+    
+    <color name="transparent">#0000</color>
     <!-- FTP FILE END -->
     <!-- DLNA start -->
     <color name="setting_background_color">#efeff4</color>

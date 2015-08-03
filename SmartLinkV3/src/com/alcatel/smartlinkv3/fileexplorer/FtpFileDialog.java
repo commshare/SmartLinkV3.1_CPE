@@ -21,9 +21,11 @@ public class FtpFileDialog extends FileDialog {
     private static final int SUCCESS = 0;
     private static final int FAIL = -1;
     
-	private FtpFileCommandTask mCmdTask = new FtpFileCommandTask();
+    private FtpFileCommandTask mCmdTask = new FtpFileCommandTask();
     private ArrayList<FileInfo> mInfos;
     private String fileName[];
+    
+    TransparentWaitDialog mWaitDialog;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,9 @@ public class FtpFileDialog extends FileDialog {
         mCmdTask.init(this);
         mCmdTask.setFtpCommandListener(ftpCommandListener);
         mCmdTask.start();
+        
+        mWaitDialog = new TransparentWaitDialog(this);
+        mWaitDialog.show();
     }
     
     @Override
@@ -112,6 +117,11 @@ public class FtpFileDialog extends FileDialog {
             @Override
             public void callResponse(Object obj) {
                 try {
+                    if (mWaitDialog != null) {
+                        mWaitDialog.dismiss();
+                        mWaitDialog = null;
+                    }
+                    
                     mInfos = (ArrayList<FileInfo>) obj;
                     FtpFileDialog.this.runOnUiThread(new Runnable() {
                         public void run() {
