@@ -10,7 +10,7 @@
     <string name="back">Retour</string>
     <string name="delete">Supprimer</string>
     <string name="upload">Transférer</string>
-    <string name="deleting">Deleting</string>
+    <string name="deleting">Suppression</string>
     <string name="yes">Oui</string>
     <string name="sending">Envoi</string>
     <string name="apply">Appliquer</string>
@@ -155,7 +155,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Échec de paramétrage</string>
-
+	<string name="device_manage_name_empty">Le nom du dispositif n’est pas valide.</string>
     <!-- connect device end -->
 
 
@@ -164,7 +164,7 @@
     <string name="microsd_videos">Vidéos</string>
     <string name="microsd_music">Musique</string>
     <string name="microsd_pictures">Images </string>
-    <string name="microsd_no_sdcard">Carte SD absente</string>
+    <string name="microsd_no_sdcard">Insérez une carte SD !</string>
     <!-- microsd end -->
 
 
@@ -230,6 +230,7 @@
     <string name="setting_upgrade_not_start">Mise à niveau non commencée</string>
     <string name="setting_upgrade_complete">Téléchargement terminé. Patientez pendant la mise à niveau.</string>
     <string name="setting_upgrade_stop_error">Erreur d’arrêt de la mise à niveau</string>
+    <string name="setting_upgrade_not_available">Service indisponible</string>
     <string name="setting_upgrade_get_update_state_failed">Échec de détermination de l’état de mise à jour de l’appareil</string>
     <string name="setting_upgrade_start_update_failed">Échec de mise à jour du démarrage de l’appareil !</string>
     <string name="setting_upgrade_check_firmware_failed">Échec de récupération de la nouvelle version</string>
@@ -318,7 +319,7 @@
     <string name="setting_wifi_wpa_or_wpa2">WPA&#047;WPA2</string>
     <string name="setting_wifi_aes">AES</string>
     <string name="setting_wifi_tkip">TKIP</string>
-    <string name="setting_wifi_open">Open</string>
+    <string name="setting_wifi_open">Ouvrir</string>
     <string name="setting_wifi_share">Partager</string>
     <string name="setting_wifi_ssid_can_not_be_empty">SSID obligatoire</string>
     <!-- setting end -->
@@ -420,8 +421,8 @@
     <string name="mp_unknown_album">Album inconnu </string>
     <string name="mp_cant_find_lyrics">LRC introuvable </string>
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;Le LRC est téléchargé d’Internet et n’est qu’une simple référence.&#160;&#160;&#160;***</string>
-    <string name="ftp_not_open">Please open FTP function in settings!</string>
-    <string name="dlna_not_open">Please open DLNA function in settings!</string>
+    <string name="ftp_not_open">Ouvrez la fonction FTP dans les paramètres.</string>
+    <string name="dlna_not_open">Ouvrez la fonction DLNA dans les paramètres.</string>
      
     <!-- DLNA end -->
 
@@ -456,6 +457,7 @@
     <string name="menu_item_sort_type">Type </string>
     <string name="menu_item_sort_by_name">Trier par nom</string>
     <string name="menu_item_sort_by_type">Trier par type</string>
+    <string name="multi_select_title"><xliff:g id="number">%1$s</xliff:g> élément sélectionné</string>
     <string name="new_folder_name">Nouveau dossier</string>
     <string name="no">Non</string>
     <string name="notif_server_starting">Serveur FTP démarré</string>
@@ -531,7 +533,7 @@
 
 
     <!-- SMART WIDGET START -->
-    <string name="widget_usage_left">À gauche</string>
+    <string name="widget_usage_left">Restant</string>
     <string name="widget_usage_used">Utilisé</string>
     <!-- SMART WIDGET END -->
 
@@ -550,5 +552,5 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-
+	<string name="enable_sd_card">Enable SD card</string>
 </resources>

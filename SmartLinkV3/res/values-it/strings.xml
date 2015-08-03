@@ -10,7 +10,7 @@
     <string name="back">Indietro</string>
     <string name="delete">Elimina</string>
     <string name="upload">Carica</string>
-    <string name="deleting">Deleting</string>
+    <string name="deleting">Eliminazione</string>
     <string name="yes">Sì</string>
     <string name="sending">Invio in corso</string>
     <string name="apply">Applica</string>
@@ -86,15 +86,6 @@
     <!-- Home view end -->
 
 
-    <!-- pop dialog start -->
-    <string name="add_dialog_sdsharing">Condivisione SD</string>
-    <string name="add_dialog_wps">WPS</string>
-    <string name="add_dialog_logout">Esci</string>
-    <string name="pop_dialog_usagesetting">Impostazione utilizzo</string>
-    <string name="pop_dialog_clearhistory">Cancella cronologia</string>
-    <!-- pop dialog end -->
-
-
     <!-- Usage view end -->
     <string name="usage_view_home">Casa</string>
     <string name="usage_view_duration">Durata</string>
@@ -165,72 +156,78 @@
     <string name="microsd_videos">Video</string>
     <string name="microsd_music">Musica</string>
     <string name="microsd_pictures">Immagini </string>
-    <string name="microsd_no_sdcard">Nessun dispositivo con scheda SD</string>
+    <string name="microsd_no_sdcard">Inserire scheda SD.</string>
     <!-- microsd end -->
 
 
     <!-- setting start -->
-    <string name="setting_wifi">Impostazioni Wi-Fi</string>
+    <string name="setting_wifi">WiFi</string>
+    <string name="setting_account">Account</string>
+    <string name="setting_network">Rete</string>
     <string name="setting_power">Risparmio energetico</string>
+    <string name="setting_sharing">FTP&amp;DLNA</string>
+    <string name="setting_sharing_ftp">FTP</string>
+    <string name="setting_sharing_dlna">DLNA</string>
     <string name="setting_upgrade">Aggiorna</string>
-    <string name="setting_device">Dispositivo</string>
+    <string name="setting_device">Dispositivi</string>
     <string name="setting_about">Informazioni</string>
-    <string name="setting_backup">Backup&amp;Ripristino</string>
-    <string name="setting_text_2point4G_wifi">Wi-Fi 2.4G</string>
-    <string name="setting_text_5G_wifi">Wi-Fi 5G</string>
+    <string name="setting_backup">Backup e ripristino</string>
+    <string name="setting_text_2point4G_wifi">2.4G WiFi</string>
+    <string name="setting_text_5G_wifi">5G WiFi</string>
     <string name="setting_text_ssid">SSID:</string>
+    <string name="setting_text_ssid_broadcast">Trasmissione SSID</string>
     <string name="setting_text_passwrod">Password:</string>
-    <string name="setting_text_no_passwrod">Nessuna password:</string>
-    <string name="setting_wifi_set_success">Modifica Impostazioni Wifi con successo!</string>
-    <string name="setting_wifi_set_failed">Cambia impostazioni Wifi fallito!</string>
-    <string name="setting_wifi_password_security_tip">Sicurezza:</string>
-    <string name="setting_wifi_password_wpa_encryption_tip">Codifica WPA:</string>
-    <string name="setting_wifi_password_wpa_psw_tip">WPA-PSK:</string>
-    <string name="setting_wifi_password_wep_encryption_tip">Codifica WEP:</string>
-    <string name="setting_wifi_password_wep_psw_tip">Chiave-WEP:</string>
+    <string name="setting_set_default">Predefinito</string>
+    <string name="setting_text_no_passwrod">Nessuna password</string>
+    <string name="setting_wifi_set_success">Modifica delle impostazioni Wi-Fi riuscita.</string>
+    <string name="setting_wifi_set_failed">Modifica delle impostazioni Wi-Fi non riuscita.</string>
+    <string name="setting_wifi_password_security_tip">Tipo di sicurezza:</string>
+    <string name="setting_wifi_password_wpa_encryption_tip">Tipo di codifica:</string>
+    <string name="setting_wifi_password_wpa_psw_tip">Password Wi-Fi:</string>
+    <string name="setting_wifi_password_wep_encryption_tip">Tipo di codifica:</string>
+    <string name="setting_wifi_password_wep_psw_tip">Password Wi-Fi:</string>
     <string name="setting_wep_password_error_prompt">La chiave Wep deve essere composta da 5 o 13 caratteri ASCII oppure da 10 o 26 cifre esadecimali; la chiave WEP deve essere composta da 32-127 caratteri ASCII, ad eccezione di: , \" : ; &#038; \\.</string>
     <string name="setting_wpa_password_error_prompt">La chiave WPA precondivisa (PSK) deve essere composta da 8-63 caratteri ASCII; la chiave WPA PSK deve essere composta da 32-127 caratteri ASCII, ad eccezione di: , \" : ; &#038; \\.</string>
-    <string name="setting_password_error_prompt">Errore modifica password Wi-Fi. Riprovare tra un minuto.</string>
-    <string name="setting_disable_password_error_prompt">Disattivazione password Wi-Fi non riuscita.</string>
+    <string name="setting_password_error_prompt">Errore di modifica della password Wi-Fi. Riprovare tra un minuto.</string>
+    <string name="setting_disable_password_error_prompt">Disattivazione della password Wi-Fi non riuscita. </string>
     <string name="setting_titlebar_text_edit">Modifica</string>
     <string name="setting_titlebar_text_done">Fine</string>
-    <string name="setting_title_wifi">Impostazioni Wi-Fi</string>
     <string name="setting_title_power">Risparmio energetico</string>
-    <string name="setting_title_backup">Backup&amp;Ripristino</string>
+    <string name="setting_title_backup">Backup e ripristino</string>
     <string name="setting_title_upgrade">Aggiorna</string>
     <string name="setting_title_device">Dispositivo</string>
     <string name="setting_title_about">Informazioni</string>
     <string name="setting_power_smart">Smart</string>
-    <string name="setting_power_wifi">WiFi sonno</string>
-    <string name="setting_power_wifi_description">Wi-Fi si spegne automaticamente se la connessione è inattiva per 30 minuti, premere un tasto qualsiasi per svegliarsi.</string>
-    <string name="setting_backup_description">Esegui backup configurazione.</string>
+    <string name="setting_power_wifi">Disattivazione Wi-Fi</string>
+    <string name="setting_power_wifi_description">Il Wi-Fi sarà disattivato automaticamente se la connessione resta inattiva per 30 minuti. Premere qualsiasi tasto per riattivarla.</string>
+    <string name="setting_backup_description">Eseguire il backup della configurazione.</string>
     <string name="setting_backup_btn_backup">Backup</string>
-    <string name="setting_restore_description">Ripristina configurazione.</string>
+    <string name="setting_restore_description">Ripristinare la configurazione.</string>
     <string name="setting_restore_btn_restore">Ripristina</string>
     <string name="setting_about_version">Versione</string>
     <string name="setting_about_official_website">Sito Web ufficiale</string>
     <string name="setting_about_management_page">Pagina gestione</string>
     <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. Tutti i diritti riservati.</string>
     <string name="setting_upgrade_device_version">Dispositivo: Versione corrente </string>
-    <string name="setting_upgrade_new_device_version">Trova nuova versione </string>
-    <string name="setting_upgrade_btn_check">Controlla</string>
+    <string name="setting_upgrade_new_device_version">Trova nuova versione</string>
+    <string name="setting_upgrade_btn_check">Verifica</string>
     <string name="setting_upgrade_current_app_version">Applicazioni telefono cellulare: Versione corrente v</string>
     <string name="setting_upgrade_new_app_version">Trova nuova versione v</string>
     <string name="setting_upgrade_check_failed">Verifica non riuscita</string>
     <string name="setting_upgrade_no_new_version">Nessuna nuova versione</string>
-    <string name="setting_upgrade_no_connection">NESSUNA connessione</string>
+    <string name="setting_upgrade_no_connection">Nessuna connessione</string>
     <string name="setting_upgrade_firmware_warning">Il processo di aggiornamento proseguirà per alcuni minuti. Non spegnere. Aggiornare il sistema?</string>
-    <string name="setting_upgrade_not_available">Servizio non disponibile</string>
     <string name="setting_upgrade_check_error">Verifica errore</string>
     <string name="setting_upgrade_btn_upgrade">Aggiorna</string>
-    <string name="setting_upgrade_not_start">Sali di non avviare</string>
-    <string name="setting_upgrade_complete">Scarica completo, si prega di attendere fino a quando l\'aggiornamento finito</string>
-    <string name="setting_upgrade_stop_error">Errore stop Aggiornamento</string>
-    <string name="setting_upgrade_get_update_state_failed">Ottenere lo stato di aggiornamento del dispositivo non è riuscita.</string>
-    <string name="setting_upgrade_start_update_failed">Avvia aggiornamento del dispositivo non è riuscita.</string>
-    <string name="setting_upgrade_check_firmware_failed">Ottenere Nuova versione fallito.</string>
-    <string name="setting_upgrade_set_check_new_version_failed">Controllare dispositivo nuova versione non è riuscita.</string>
-    <string name="setting_upgrade_config_google_play">Si prega di config Google Play App.</string>
+    <string name="setting_upgrade_not_start">Aggiornamento non avviato</string>
+    <string name="setting_upgrade_complete">Download completato. Attendere il termine dell\'aggiornamento</string>
+    <string name="setting_upgrade_stop_error">Errore di arresto dell\'aggiornamento</string>
+    <string name="setting_upgrade_not_available">Servizio non disponibile</string>
+    <string name="setting_upgrade_get_update_state_failed">Impossibile ottenere lo stato di aggiornamento del dispositivo.</string>
+    <string name="setting_upgrade_start_update_failed">Aggiornamento di avvio del dispositivo non riuscito.</string>
+    <string name="setting_upgrade_check_firmware_failed">Impossibile ottenere la nuova versione.</string>
+    <string name="setting_upgrade_set_check_new_version_failed">Verifica della nuova versione del dispositivo non riuscita.</string>
+    <string name="setting_upgrade_config_google_play">Configurare l\'applicazione Google Play. </string>
     <string name="setting_device_title">Informazioni sistema</string>
     <string name="setting_device_software_version">Versione Software:</string>
     <string name="setting_device_hadrware_version">Versione Hardware:</string>
@@ -241,24 +238,82 @@
     <string name="setting_device_subnet">Maschera di sottorete:</string>
     <string name="setting_device_btn_power_off">Spegni</string>
     <string name="setting_device_btn_reboot">Riavvia</string>
+    <string name="setting_device_btn_restart">Riavvia</string>
     <string name="setting_device_btn_reset">Reimposta</string>
+    <string name="setting_device_upgrade_system">Aggiorna sistema</string>
+    <string name="setting_device_backup_and_reset">Backup e ripristino</string>
+    <string name="setting_device_pin_code">Codice PIN</string>
+    <string name="setting_device_web_version">Versione Web</string>
+    <string name="setting_device_pin_code_edit">PIN abilitato</string>
     <string name="setting_about_app_name">ALCATELONETOUCH</string>
-    <string name="setting_success">Operazione riuscita</string>
+    <string name="setting_success">Operazione completata</string>
     <string name="setting_failed">Operazione non riuscita</string>
-    <string name="setting_backup_failed">Impostazione backup dispositivo non riuscita.</string>
-    <string name="setting_backup_success">Impostazione backup dispositivo riuscita.</string>
+    <string name="setting_backup_failed">Impostazione di backup del dispositivo non riuscita.</string>
+    <string name="setting_backup_success">Impostazione di backup del dispositivo riuscita.</string>
     <string name="setting_restore_failed">Ripristino non riuscito.</string>
-    <string name="setting_restore_success">Ripristino avvenuto correttamente, il dispositivo si riavvierà immediatamente.</string>
+    <string name="setting_restore_success">Ripristino riuscito. Il dispositivo sarà riavviato immediatamente.</string>
     <string name="setting_restore_no_backup_file">Nessun file di backup.</string>
     <string name="setting_reboot_failed">Riavvio non riuscito.</string>
-    <string name="setting_reboot_success">Impostare con successo, il dispositivo si riavvierà immediatamente.</string>
+    <string name="setting_reboot_success">Impostazione riuscita. Il dispositivo si riavvierà immediatamente.</string>
     <string name="setting_reset_failed">Reimpostazione non riuscita.</string>
-    <string name="setting_reset_success">Impostare con successo, il dispositivo si resetta immediatamente.</string>
+    <string name="setting_reset_success">Impostazione riuscita. Il dispositivo si ripristinerà immediatamente.</string>
     <string name="setting_power_off_failed">Spegnimento non riuscito.</string>
-    <string name="setting_power_off_success">Impostare con successo, il dispositivo si spegne immediatamente.</string>
+    <string name="setting_power_off_success">Impostazione riuscita. Il dispositivo si spegnerà immediatamente.</string>
     <string name="setting_ssid_invalid">Il SSID deve essere composto da caratteri ASCII ma non può comprendere alcuno dei seguenti caratteri: /,\',=,\",\\,&#038;.</string>
     <string name="setting_wifi_error_title">Cambia password</string>
+    <string name="setting_change_login_password">Modifica password di accesso</string>
+    <string name="setting_log_out">Esci</string>
+    <string name="setting_current_password">Password corrente:</string>
+    <string name="setting_new_password">Nuova password:</string>
+    <string name="setting_confirm_password">Conferma password:</string>
+    <string name="setting_password_note">Nota: La password deve avere 4&#8211;16 caratteri.</string>
+    <string name="setting_network_mode">Modalità rete</string>
+    <string name="setting_network_searching">RICERCA DELLA RETE IN CORSO&#8230;</string>
+    <string name="setting_network_selection">Selezione rete</string>
+    <string name="setting_network_wifi_network_title">Rete Wi-Fi</string>
+    <string name="setting_network_profile_list">Elenco profili</string>
+    <string name="setting_network_add_profile">Aggiungi profilo</string>
+    <string name="setting_network_disconnect_first">Prima disconnettersi dalla rete.</string>
+    <string name="setting_network_try_again">Disconnessione in corso. Riprovare più tardi</string>
+    <string name="setting_network_profile_management">Gestione profili</string>
+    <string name="setting_network_profile_management_profile_name">*Nome profilo</string>
+    <string name="setting_network_profile_management_dial_number">*Componi numero</string>
+    <string name="setting_network_profile_management_apn">APN</string>
+    <string name="setting_network_profile_management_user_name">Nome utente</string>
+    <string name="setting_network_profile_management_password">Password</string>
+    <string name="setting_network_profile_management_protocol">Protocollo</string>
+    <string name="setting_network_profile_management_protocol_none">Nessuno</string>
+    <string name="setting_network_profile_management_protocol_tcp">TCP</string>
+    <string name="setting_network_profile_management_protocol_udp">UDP</string>
+    <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
+    <string name="setting_network_profile_management_profile_detail">Dettaglio profilo</string>
+    <string name="setting_network_profile_management_delete_profile">Elimina profilo</string>
+    <string name="setting_network_profile_dial_number_wrong">La lunghezza del numero composto non può essere superiore a 24 </string>
+    <string name="setting_network_profile_dial_number_empty">Componi numero non può essere vuoto</string>
+    <string name="setting_network_profile_input_profile_name">Il nome del profilo non può essere vuoto</string>
+    <string name="setting_network_profile_error_profile_name">Il nome del profilo non può contenere caratteri speciali</string>
+    <string name="setting_network_mode_auto">Auto</string>
+    <string name="setting_network_mode_manual">Manuale</string>
+    <string name="setting_network_mode_2G_only">2G Only</string>
+    <string name="setting_network_mode_3G_only">3G Only</string>
+    <string name="setting_network_mode_4G_only">4G Only</string>
+    <string name="setting_network_mode_LTE_only">4G Only</string>
     <string name="other_login_warning_title">Avviso sull\'accesso</string>
+    <string name="setting_network_profile_management_auth_type_pap">PAP</string>
+    <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
+    <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&#038;CHAP</string>
+    <string name="setting_network_profile_management_cannot_delete_predefined_profile">Impossibile eliminare il profilo predefinito</string>
+    <string name="setting_network_profile_management_cannot_delete_default_profile">Impossibile eliminare il profilo predefinito</string>
+    <string name="setting_network_profile_management_already_default">Profilo già impostato come predefinito</string>
+    <string name="setting_wifi_wep">WEP</string>
+    <string name="setting_wifi_wpa">WPA</string>
+    <string name="setting_wifi_wpa2">WPA2</string>
+    <string name="setting_wifi_wpa_or_wpa2">WPA&#047;WPA2</string>
+    <string name="setting_wifi_aes">AES</string>
+    <string name="setting_wifi_tkip">TKIP</string>
+    <string name="setting_wifi_open">Apri</string>
+    <string name="setting_wifi_share">Condividi</string>
+    <string name="setting_wifi_ssid_can_not_be_empty">Il SSID non può essere vuoto.</string>
     <!-- setting end -->
 
 
@@ -295,9 +350,7 @@
     <string name="puk_prompt_str">Il codice PIN di conferma deve essere uguale al nuovo codice PIN.</string>
     <string name="pin_title">Immettere il codice PIN.</string>
     <string name="pin_code_label">Codice PIN:</string>
-    <string name="pin_remain_three_times">Rimasti: 3 tentativi</string>
     <string name="pin_error_waring_title">Il codice PIN è errato.</string>
-    <string name="image_view_close_button">tasto Chiudi</string>
     <string name="puk_title">Immettere il codice PUK.</string>
     <string name="puk_code_label">Codice PUK:</string>
     <string name="puk_remain_three_times">Rimasti: 3 tentativi</string>
@@ -360,8 +413,8 @@
     <string name="mp_unknown_album">Album sconosciuto </string>
     <string name="mp_cant_find_lyrics">Impossibile trovare il testo </string>
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;Testo recuperato su Internet. Solo per riferimento&#160;&#160;&#160;***</string>
-    <string name="ftp_not_open">Please open FTP function in settings!</string>
-    <string name="dlna_not_open">Please open DLNA function in settings!</string>
+    <string name="ftp_not_open">Aprire la funzione FTP nelle impostazioni.</string>
+    <string name="dlna_not_open">Aprire la funzione DLNA nelle impostazioni.</string>
      
     <!-- DLNA end -->
 
@@ -397,6 +450,7 @@
     <string name="menu_item_sort_by_name">Ordina per nome</string>
     <string name="menu_item_sort_by_type">Ordina per tipo</string>
     <string name="new_folder_name">Nuova cartella</string>
+    <string name="multi_select_title"><xliff:g id="number">%1$s</xliff:g> elementi selezionati</string>
     <string name="no">No</string>
     <string name="notif_server_starting">Server FTP avviato</string>
     <string name="notif_title">Server FTP</string>
@@ -471,7 +525,7 @@
 
 
     <!-- SMART WIDGET START -->
-    <string name="widget_usage_left">A sinistra</string>
+    <string name="widget_usage_left">Residuo</string>
     <string name="widget_usage_used">Utilizzato</string>
     <!-- SMART WIDGET END -->
 
@@ -490,5 +544,5 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-
+	<string name="enable_sd_card">Enable SD card</string>
 </resources>

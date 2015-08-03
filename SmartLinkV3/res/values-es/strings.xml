@@ -17,6 +17,7 @@
     <string name="next">Siguiente</string>
     <string name="finish">Finalizar</string>
     <string name="continue_anyway">Continuar</string>
+    <string name="deleting">Eliminando</string>
     <!-- common end -->
 
 
@@ -154,7 +155,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Error en el ajuste</string>
-
+	<string name="device_manage_name_empty">El nombre del dispositivo no es válido.</string>
     <!-- connect device end -->
 
 
@@ -163,7 +164,7 @@
     <string name="microsd_videos">Vídeo</string>
     <string name="microsd_music">Música</string>
     <string name="microsd_pictures">Imágenes </string>
-    <string name="microsd_no_sdcard">No hay ninguna tarjeta SD</string>
+    <string name="microsd_no_sdcard">Inserte una tarjeta SD.</string>
     <!-- microsd end -->
 
 
@@ -204,7 +205,7 @@
     <string name="setting_title_upgrade">Actualizar</string>
     <string name="setting_title_device">Dispositivo</string>
     <string name="setting_title_about">Acerca de</string>
-    <string name="setting_power_smart">Smart</string>
+    <string name="setting_power_smart">Predictivo</string>
     <string name="setting_power_wifi">Wi-Fi en espera</string>
     <string name="setting_power_wifi_description">Se apagará automáticamente el Wi-Fi si la conexión está inactiva durante 30 minutos; pulse cualquier tecla para activarlo.</string>
     <string name="setting_backup_description">Hacer copia de seguridad de la configuración.</string>
@@ -230,6 +231,7 @@
     <string name="setting_upgrade_complete">Descarga completada, espere hasta que termine la descarga</string>
     <string name="setting_upgrade_stop_error">Error al detener la actualización</string>
     <string name="setting_upgrade_get_update_state_failed">Error al obtener el estado de actualización del dispositivo.</string>
+    <string name="setting_upgrade_not_available">Servicio no disponible</string>
     <string name="setting_upgrade_start_update_failed">Error al iniciar actualización de dispositivo.</string>
     <string name="setting_upgrade_check_firmware_failed">No se ha podido obtener la nueva versión.</string>
     <string name="setting_upgrade_set_check_new_version_failed">Comprobar si hay una nueva versión del dispositivo.</string>
@@ -317,7 +319,7 @@
     <string name="setting_wifi_wpa_or_wpa2">WPA&#047;WPA2</string>
     <string name="setting_wifi_aes">AES</string>
     <string name="setting_wifi_tkip">TKIP</string>
-    <string name="setting_wifi_open">Open</string>
+    <string name="setting_wifi_open">Abrir</string>
     <string name="setting_wifi_share">Compartir</string>
     <string name="setting_wifi_ssid_can_not_be_empty">El SSID no puede quedar vacío.</string>
     <!-- setting end -->
@@ -419,8 +421,8 @@
     <string name="mp_unknown_album">Álbum desconocido </string>
     <string name="mp_cant_find_lyrics">No se encuentra el IRC </string>
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;Como referencia, el IRC procede de Internet&#160;&#160;&#160;***</string>
-    <string name="ftp_not_open">Please open FTP function in settings!</string>
-    <string name="dlna_not_open">Please open DLNA function in settings!</string>
+    <string name="ftp_not_open">Abra la función FTP en los ajustes.</string>
+    <string name="dlna_not_open">Abra la función DLNA en los ajustes.</string>
      
     <!-- DLNA end -->
 
@@ -530,7 +532,7 @@
 
 
     <!-- SMART WIDGET START -->
-    <string name="widget_usage_left">Izquierda</string>
+    <string name="widget_usage_left">Sobrante</string>
     <string name="widget_usage_used">Utilizado</string>
     <!-- SMART WIDGET END -->
 
@@ -567,7 +569,7 @@
     <string name="operation_hide_sys">Esconder archivos ocultos</string>
     <string name="operation_unfavorite">Eliminar de favoritos</string>
     <string name="removed_favorite">Eliminado de favoritos</string>
-    <string name="sd_card_available">Espacio disponible:<xliff:g id="available_size">%1$s</xliff:g></string>
+    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g> elemento seleccionado</string>
     <string name="sd_card_size">Tarjeta SD:<xliff:g id="total_size">%1$s</xliff:g></string>
     <string name="search_hint">Buscar archivos</string>
     <string name="search_title">Buscar archivos</string>

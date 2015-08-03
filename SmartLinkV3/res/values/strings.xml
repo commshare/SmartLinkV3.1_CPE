@@ -164,7 +164,7 @@
     <string name="microsd_videos">Videos</string>
     <string name="microsd_music">Music</string>
     <string name="microsd_pictures">Pictures</string>
-    <string name="microsd_no_sdcard">No SD Card device</string>
+    <string name="microsd_no_sdcard">Insert SD card!</string>
     <!-- microsd end -->
 
 
@@ -354,7 +354,7 @@
 
     <!-- replace folder dialog start -->
     <string name="confirm_folder_replace">confirm replace</string>
-    <string name="confirm_folder_content">There is already a file with the same name in this location.</string>
+    <string name="confirm_folder_content">File name already exists!</string>
     <!-- replace folder dialog end -->
 
 
@@ -426,8 +426,8 @@
     <string name="mp_unknown_album">Unknow Album</string>
     <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be reference&#160;&#160;&#160;***</string>
-    <string name="ftp_not_open">Please open FTP function in settings!</string>
-    <string name="dlna_not_open">Please open DLNA function in settings!</string>
+    <string name="ftp_not_open">Open FTP function in settings!</string>
+    <string name="dlna_not_open">Open DLNA function in settings!</string>
      
     <!-- DLNA end -->
 
@@ -557,5 +557,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
+    <string name="enable_sd_card">Enable SD card</string>
+    <string name="category_favorite">Favorite</string>
 
 </resources>
