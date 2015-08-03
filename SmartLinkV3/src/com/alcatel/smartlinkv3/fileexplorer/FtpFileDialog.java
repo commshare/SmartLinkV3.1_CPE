@@ -21,7 +21,7 @@ public class FtpFileDialog extends FileDialog {
     private static final int SUCCESS = 0;
     private static final int FAIL = -1;
     
-    private static FtpFileCommandTask mCmdTask = new FtpFileCommandTask();
+	private FtpFileCommandTask mCmdTask = new FtpFileCommandTask();
     private ArrayList<FileInfo> mInfos;
     private String fileName[];
     
