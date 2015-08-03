@@ -119,7 +119,6 @@ public class FtpFileDialog extends FileDialog {
                 try {
                     if (mWaitDialog != null) {
                         mWaitDialog.dismiss();
-                        mWaitDialog = null;
                     }
                     
                     mInfos = (ArrayList<FileInfo>) obj;
@@ -138,6 +137,8 @@ public class FtpFileDialog extends FileDialog {
             }
         });
         mCmdTask.ftp_list_files(this.mDir);
+
+        mWaitDialog.show();
     }
     
     @Override

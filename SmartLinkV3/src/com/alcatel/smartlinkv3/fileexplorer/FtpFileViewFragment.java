@@ -274,6 +274,8 @@ public class FtpFileViewFragment extends Fragment implements
 	private TextView mDlProgressTv;
 	private TextView mDlPathTv;
 	private ProgressBar mDlProgressBar;
+	
+	private TransparentWaitDialog mWaitDialog;
 
 	private void showDLDialog(String filePath) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
@@ -483,7 +485,8 @@ public class FtpFileViewFragment extends Fragment implements
 				+ cmdTask.getConfig().port + "/");
 
 		mBackspaceExit = false;
-
+		
+		this.mWaitDialog = new TransparentWaitDialog(mContext);
 		mFileListView.setAdapter(mAdapter);
 		mFileViewInteractionHub.refreshFileList();
 
@@ -588,6 +591,7 @@ public class FtpFileViewFragment extends Fragment implements
 
 	public boolean onRefreshFileList(String path, FileSortHelper sort) {
 		cmdTask.ftp_showfiles(path);
+		this.mWaitDialog.show();
 		return true;
 	}
 
@@ -620,6 +624,9 @@ public class FtpFileViewFragment extends Fragment implements
 
 			@Override
 			public void run() {
+			    if (mWaitDialog != null) {
+			        mWaitDialog.dismiss();
+			    }
 				mAdapter.notifyDataSetChanged();
 			}
 
