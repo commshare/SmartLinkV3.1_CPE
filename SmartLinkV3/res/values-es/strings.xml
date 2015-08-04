@@ -321,6 +321,7 @@
     <string name="setting_wifi_tkip">TKIP</string>
     <string name="setting_wifi_open">Abrir</string>
     <string name="setting_wifi_share">Compartir</string>
+    <string name="setting_wifi_save">Guardar</string>
     <string name="setting_wifi_ssid_can_not_be_empty">El SSID no puede quedar vacío.</string>
     <!-- setting end -->
 

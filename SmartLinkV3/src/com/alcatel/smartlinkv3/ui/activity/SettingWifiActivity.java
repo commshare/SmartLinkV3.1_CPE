@@ -246,6 +246,7 @@ implements OnClickListener{
 			onBtnEdit();
 			break;
 		case R.id.tv_titlebar_done:
+			m_tv_done.setText(R.string.done);
 			onBtnDone();
 			break;
 
@@ -281,9 +282,11 @@ implements OnClickListener{
 			break;
 		case R.id.set_wifi_security_mode:
 			goToWifiSettingFragment();
+			m_tv_done.setText(R.string.setting_wifi_save);
 			break;
 		case R.id.set_wifi_security_encription_type:
 			goToWifiSettingFragment();
+			m_tv_done.setText(R.string.setting_wifi_save);
 			break;
 		default:
 			break;
