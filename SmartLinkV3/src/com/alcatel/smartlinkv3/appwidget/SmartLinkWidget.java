@@ -452,7 +452,12 @@ public class SmartLinkWidget extends AppWidgetProvider {
     String usegeStatus = context.getResources().getString(R.string.widget_usage_left);
     paint.setAntiAlias(true);
     paint.setStrokeWidth(ringWidth);
-    paint.setTextSize(spTopx(13));
+    paint.setTextSize(spTopx(12));
+    if (dataUsageShowStr.length() > 5)
+		{
+    	 paint.setTextSize(spTopx(10));
+		}
+
 
     paint.setStyle(Style.STROKE);
     //StrokeWidth will  overstep ringwidth/2
@@ -462,6 +467,10 @@ public class SmartLinkWidget extends AppWidgetProvider {
       dataUsedAngle = 0;
       usegeStatus =  context.getResources().getString(R.string.widget_usage_used);;
       dataUsageShowStr = dataUsed;
+      if (dataUsageShowStr.length() > 5)
+  		{
+      	 paint.setTextSize(spTopx(10));
+  		}
       // grey
       paint.setARGB(255, 188, 187, 190);
       canvas.drawArc(rectArc, 270, (360 - dataUsedAngle), false, paint);
@@ -500,12 +509,12 @@ public class SmartLinkWidget extends AppWidgetProvider {
     paint.getTextBounds(dataUsageShowStr, 0, dataUsageShowStr.length(), bounds);
     paint.getTextBounds(dataPlanUnit, 0, dataPlanUnit.length(), unitBounds);
     canvas.drawText(dataUsageShowStr,
-        width / 2 - bounds.centerX() - unitBounds.width() / 2 + dipToPx(4),
+        width / 2 - bounds.centerX() - unitBounds.width() / 2 + dipToPx(2),
         height / 2 - bounds.centerY() - bounds.height() / 2, 
         paint);
     paint.setTextSize(spTopx(8));
     canvas.drawText(dataPlanUnit, 
-            width / 2 - unitBounds.centerX() + bounds.width() / 2 + dipToPx(5),
+            width / 2 - unitBounds.centerX() + bounds.width() / 2 + dipToPx(3),
             height / 2 - unitBounds.centerY() - bounds.height() / 2, 
             paint);
     paint.getTextBounds(usegeStatus, 0, usegeStatus.length(), bounds);
@@ -556,7 +565,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
   /**
    * change dp to px
    */
-  private int dipToPx(float dpValue) {
+  private int dipToPx(double dpValue) {
     return (int) (dpValue * scale + 0.5f);
   }
 
