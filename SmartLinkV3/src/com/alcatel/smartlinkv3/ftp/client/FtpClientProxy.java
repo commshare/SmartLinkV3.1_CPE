@@ -278,7 +278,7 @@ public class FtpClientProxy {
 
 	// TODO
 	public boolean isDirectory(String remote) throws Exception {
-		FTPFile remoteFile = ftpClient.mlistFile(remote);
+		FTPFile remoteFile = ftpClient.mlistFile(convertToUTF8(remote));
 
 		if (remoteFile == null) {
 			logger.i("remote file is not exist or have not permerssion!");
