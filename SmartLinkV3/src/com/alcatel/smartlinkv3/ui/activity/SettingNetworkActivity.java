@@ -1,11 +1,13 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import java.util.List;
 import java.util.Stack;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BaseManager;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.HttpMethodUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -79,6 +81,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	
 	private TextView m_add_profile;
 	private TextView m_delete_profile;
+	private List<ProfileItem> m_profile_list_data = null;
 	
 	private FragmentManager m_fragment_manager;
 	private FragmentTransaction m_transaction;
@@ -86,6 +89,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	private RelativeLayout m_waiting_circle;
 	private TextView m_mode_desc;
 	private TextView m_selection_desc;
+	private TextView m_selected_profile;
 	
 	private IntentFilter m_get_network_setting_filter;
 	private IntentFilter m_set_network_setting_filter;
@@ -147,6 +151,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		m_network_mode_container = (FrameLayout) findViewById(R.id.network_mode);
 		m_network_selection_container = (FrameLayout) findViewById(R.id.network_selection);
 		m_network_profile_management = (FrameLayout) findViewById(R.id.network_profile_management);
+		m_selected_profile = (TextView)findViewById(R.id.network_selected_profile);
 		
 		m_mode_desc = (TextView)findViewById(R.id.network_mode_desc);
 		m_selection_desc = (TextView)findViewById(R.id.network_selection_desc);
@@ -521,8 +526,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
-		
 		super.onResume();
+		this.registerReceiver(m_network_setting_receiver, new IntentFilter(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST));  
+		BusinessMannager.getInstance().getProfileManager().startGetProfileList(null);
 	}
 	
 	@Override
@@ -629,6 +635,33 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
+			
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+//					m_network_search_result_list = BusinessMannager.getInstance().getNetworkManager().getNetworkList();
+					m_profile_list_data = BusinessMannager.getInstance().getProfileManager().GetProfileListData();
+					for(ProfileItem a : m_profile_list_data){
+						if(a.Default == 1){
+							m_selected_profile.setText(a.ProfileName);
+							break;
+						}
+					}
+				}
+				else if(BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() > 0){
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+				}
+			}
+			
 		}
 	}
 	
