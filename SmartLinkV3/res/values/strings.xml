@@ -585,7 +585,6 @@
     <string name="tab_category">Browse</string>
     <string name="wifi_state">WLAN Status</string>
     <string name="favourite_root">Root</string>
-    <string name="favorite_screen_cap">MIUI Screen Shot</string>
     <string name="favorite_ringtone">Ringtone</string>
     <string name="menu_setting">Preferences</string>
     <string name="preference_title">General Settings</string>

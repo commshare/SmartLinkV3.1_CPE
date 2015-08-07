@@ -580,7 +580,6 @@
     <string name="tab_category">Buscar</string>
     <string name="wifi_state">Status WLAN</string>
     <string name="favourite_root">Carpeta raíz</string>
-    <string name="favorite_screen_cap">Captura de pantalla MIUI</string>
     <string name="favorite_ringtone">Tono de llamada</string>
     <string name="multi_select_title">Selección <xliff:g id="number">%1$s</xliff:g> item(s)</string>
     <string name="menu_setting">Preferencias</string>
