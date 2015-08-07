@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/setting_background_color">
+    
+	    <LinearLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical" >
+           
+           <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+           
+           <FrameLayout 
+               android:id="@+id/setting_ftp_container"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal" 
+			    android:background="@color/white">
+               <TextView
+	               android:id="@+id/setting_change_ftp"
+	               android:layout_width="wrap_content"
+	               android:layout_height="wrap_content" 
+	               android:padding="25dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="30sp" 
+	               android:text="@string/setting_sharing_ftp"
+	               />
+           
+	           <TextView
+		             android:layout_margin="15dp"
+		             android:id="@+id/btn_ftp_switch"
+		             android:layout_width="wrap_content"
+		             android:layout_height="match_parent"
+		             android:layout_gravity="end|center_vertical"
+		             android:gravity="end"
+		             android:background="@drawable/pwd_switcher_off"
+		             android:visibility="visible" />
+           </FrameLayout>
+           
+
+           <ImageView
+               android:id="@+id/setting_sharing_divider"
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+           
+           <FrameLayout 
+               android:id="@+id/setting_dlna_container"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal" 
+			    android:background="@color/white">
+	           <TextView
+                   android:id="@+id/setting_change_dlna"
+	               android:layout_width="wrap_content"
+	               android:layout_height="wrap_content" 
+	               android:padding="25dp"
+	               android:textSize="30sp" 
+	               android:textColor="@color/color_black"
+	               android:text="@string/setting_sharing_dlna"
+               />
+	           
+	           <TextView
+		             android:layout_margin="15dp"
+		             android:id="@+id/btn_dlna_switch"
+		             android:layout_width="wrap_content"
+		             android:layout_height="match_parent"
+		             android:layout_gravity="end|center_vertical"
+		             android:gravity="end"
+		             android:background="@drawable/pwd_switcher_off"
+		             android:visibility="visible" />
+           </FrameLayout>
+           
+            
+            
+            <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+            
+        </LinearLayout>
+        
+	    <RelativeLayout
+	            android:id="@+id/setting_sharing_waiting"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent" >
+
+	            <ProgressBar
+	                android:id="@+id/pb_device_waiting_progress"
+	                android:layout_width="60dip"
+	                android:layout_height="60dip"
+	                android:layout_centerInParent="true"
+	                android:indeterminateDrawable="@drawable/progerss_blue"
+	                android:visibility="visible" />
+	            <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
+        	</RelativeLayout>
+
+</FrameLayout>

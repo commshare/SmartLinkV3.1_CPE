@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/setting_background_color">
+
+    <LinearLayout
+           android:id="@+id/logout_and_change_password"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" 
+           android:background="@color/color_white"
+           android:visibility="visible"
+           android:layout_marginTop="30dp">
+           
+           <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+           
+           <TextView
+               android:id="@+id/setting_change_password"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="25dp"
+               android:textColor="@color/color_black"
+               android:textSize="30sp" 
+               android:text="@string/setting_change_login_password"
+               />
+
+           <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+           
+            <TextView
+                android:id="@+id/setting_logout"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:padding="25dp"
+               android:textColor="@color/color_red"
+               android:textSize="30sp" 
+               android:gravity="center"
+               android:text="@string/setting_log_out"
+               />
+            
+            <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+     </LinearLayout>
+     
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+           android:id="@+id/input_password"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" 
+           android:background="@color/color_white"
+           android:layout_marginTop="30dp"
+           android:visibility="visible">
+           
+          <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+        	<LinearLayout 
+        	   android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="horizontal"  >
+               <TextView
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="25dp"
+	               android:paddingBottom="25dp"
+	               android:paddingLeft="25dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="30sp" 
+	               android:text="@string/setting_current_password"
+	               android:layout_weight="1"
+               />
+        	    <EditText
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="25dp"
+	               android:paddingBottom="25dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="30sp" 
+	               android:id="@+id/current_password"
+	               android:inputType="textPassword"
+	               android:background="@null"
+	               android:layout_weight="1"
+	               android:imeOptions="flagNoExtractUi"
+               />
+        	</LinearLayout>
+
+           <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+           
+           <LinearLayout 
+        	   android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="horizontal"  >
+               <TextView
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="25dp"
+	               android:paddingBottom="25dp"
+	               android:paddingLeft="25dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="30sp" 
+	               android:text="@string/setting_new_password"
+	               android:layout_weight="1"
+              	 />
+               <EditText
+	               android:background="@null"
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="25dp"
+	               android:paddingBottom="25dp"
+	               android:textColor="@color/color_black"
+	               android:id="@+id/new_password"
+	               android:textSize="30sp" 
+	               android:inputType="textPassword"
+	               android:layout_weight="1"
+	               android:imeOptions="flagNoExtractUi"
+               	/>
+            </LinearLayout>
+            
+            <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+            
+            <LinearLayout 
+        	   android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="horizontal"  >
+               <TextView
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="25dp"
+	               android:paddingBottom="25dp"
+	               android:paddingLeft="25dp"
+	               android:textColor="@color/color_black"
+	               android:textSize="30sp" 
+	               android:text="@string/setting_confirm_password"
+	               android:layout_weight="1"
+              	 />
+               
+               <EditText
+	               android:background="@null"
+	               android:layout_width="match_parent"
+	               android:layout_height="match_parent" 
+	               android:paddingTop="25dp"
+	               android:paddingBottom="25dp"
+	               android:textColor="@color/color_black"
+	               android:id="@+id/confirm_password"
+	               android:inputType="textPassword"
+	               android:textSize="30sp" 
+	               android:layout_weight="1"
+	               android:imeOptions="flagNoExtractUi"
+	               />
+             </LinearLayout>
+             <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/main_bottom_divider"
+	            android:contentDescription="@string/setting_account" />
+            
+     </LinearLayout>
+    </ScrollView>
+    
+     <TextView
+         	   android:id="@+id/password_notice"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+               android:textColor="@color/color_deep_grey"
+               android:textSize="18sp" 
+               android:text="@string/setting_password_note"
+               android:layout_marginLeft="30dp"
+           	   android:layout_marginRight="30dp"
+           	   android:layout_marginTop="10dp"
+               />
+
+</LinearLayout>

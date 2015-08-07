@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <CheckBox
+        android:id="@+id/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:button="@null"
+        android:layout_marginRight="10dip"
+        android:layout_marginLeft="5dip"
+        android:background="@drawable/selector_checkbox" />
+	<LinearLayout 
+	    android:id="@+id/content"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_toLeftOf="@id/select"
+	    android:orientation="vertical" >
+	    <RelativeLayout
+	        android:id="@+id/row_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="5dip"
+	        android:layout_marginTop="5dip" >
+	
+	        <TextView
+	            android:id="@+id/sms_item_number"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:layout_centerVertical="true"
+	            android:layout_alignParentLeft="true"
+	            android:layout_marginLeft="10dip"
+	            android:ellipsize="end"
+	            android:singleLine="true"
+	            android:textStyle="bold" 
+	            android:text="13472479059"
+	            android:textSize="18sp"
+	            android:textColor="@color/color_black"/>
+	        <FrameLayout 
+	            android:id="@+id/sms_item_count_layout"
+			    android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dip"
+		       	android:layout_toRightOf="@id/sms_item_number"
+		        android:layout_alignBottom="@id/sms_item_number" >
+		        <TextView
+		            android:id="@+id/sms_item_count"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:singleLine="true"
+		            android:textSize="16sp"
+		            android:layout_gravity="bottom"
+		            android:text="56"    
+		            android:textColor="@color/color_black" />
+		        <ImageView
+		            android:id="@+id/sms_item_send_failed"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:visibility="gone"
+		            android:layout_marginBottom="3dip"
+	            	android:background="@drawable/warning_blue_bg"
+		            android:layout_gravity="bottom"
+		            android:contentDescription="@null" />
+	        </FrameLayout>
+	        <TextView
+	            android:id="@+id/sms_item_time"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:layout_alignBottom="@id/sms_item_number"
+	            android:layout_toRightOf="@id/sms_item_count_layout"
+	            android:layout_alignParentRight="true"
+	            android:ellipsize="end"
+	            android:singleLine="true"
+	            android:text="2014-8-12 12:15"
+	            android:gravity="right"
+	            android:textSize="16sp"
+	            android:textColor="@color/color_grey"/>
+	    </RelativeLayout>
+	
+	    <RelativeLayout
+	        android:id="@+id/sms_item_content_row_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dip" >
+		    <TextView
+		        android:id="@+id/sms_item_content"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textSize="16sp"
+		        android:text="Dddddddddddddddddddddddddddddddddddd43247324723472304723"
+		        android:textColor="@color/color_grey"/>
+		    
+	    </RelativeLayout>
+	</LinearLayout>
+	<View android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_below="@id/content"
+        android:background="@color/color_divider"/>
+</RelativeLayout>

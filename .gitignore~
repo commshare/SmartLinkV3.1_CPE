@@ -1,0 +1,8 @@
+SmartLinkV3/bin/*
+SmartLinkV3/gen/*
+SmartLinkV3/.settings
+SmartLinkV3/.classpath
+SmartLinkV3/project.properties
+SmartLinkV3/build.xml
+SmartLinkV3/local.properties
+Thumbs.db

@@ -5,4 +5,11 @@ SmartLinkV3/.classpath
 SmartLinkV3/project.properties
 SmartLinkV3/build.xml
 SmartLinkV3/local.properties
+SmartLinkV3.1/bin/*
+SmartLinkV3.1/gen/*
+SmartLinkV3.1/.settings
+SmartLinkV3.1/.classpath
+SmartLinkV3.1/project.properties
+SmartLinkV3.1/build.xml
+SmartLinkV3.1/local.properties
 Thumbs.db
