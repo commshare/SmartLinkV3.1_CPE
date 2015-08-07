@@ -270,7 +270,7 @@
                         android:layout_height="match_parent"
                         android:inputType="text"
                         android:textSize="20sp" 
-                        android:background="@color/color_white"
+                        android:background="@null"
                         android:layout_marginRight="65dp"
                         android:imeOptions="flagNoExtractUi"/>
 
