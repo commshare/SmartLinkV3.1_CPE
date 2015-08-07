@@ -16,6 +16,7 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import android.app.ActivityManager;

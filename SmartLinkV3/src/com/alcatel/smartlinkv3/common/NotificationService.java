@@ -182,7 +182,11 @@ public class NotificationService extends Service {
 				alert();
 			} else {
 				m_isNeedToAlertUsageLimit = true;
+				m_AlertUsageLimitLessOneTime = true;
+				m_AlertUsageLimitOverOneTime = true;	
 				m_isNeedToAlertBatteryLimit = true;
+				m_AlertBatteryLimit2OneTime = true;
+				m_AlertBatteryLimit1OneTime = true;
 				m_isNeedToAlertUpgrade = true;
 				m_nm.cancelAll();			
 			}

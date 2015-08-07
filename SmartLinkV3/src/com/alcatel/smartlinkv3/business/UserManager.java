@@ -11,6 +11,7 @@ import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
@@ -178,7 +179,6 @@ public class UserManager extends BaseManager {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) {
                 		m_loginStatus = UserLoginStatus.Logout;
-                		Log.v("login logout", "pccccc logout m_loginStatus"+m_loginStatus);
                 	
                 	}else{
                 		
@@ -267,7 +267,6 @@ public class UserManager extends BaseManager {
                 			m_getLoginStateTask = null;
                 		}
                     }      
-                    
                     Intent megIntent= new Intent(MessageUti.USER_HEARTBEAT_REQUEST);
                     megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
                     megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);

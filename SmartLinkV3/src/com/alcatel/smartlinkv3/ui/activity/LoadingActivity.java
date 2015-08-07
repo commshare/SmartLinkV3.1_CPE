@@ -6,6 +6,7 @@ import com.alcatel.smartlinkv3.common.CPEConfig;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -85,6 +86,7 @@ public class LoadingActivity extends Activity {
 	}
 
 	private boolean checkConnectState() {
+		Log.v("pchong", "p11111  checkConnectState m_bCPEWifiConnected = " + DataConnectManager.getInstance().getCPEWifiConnected());
 		return DataConnectManager.getInstance().getCPEWifiConnected();
 	}
 }

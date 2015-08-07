@@ -5,6 +5,7 @@ import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class DataConnectManager {
 	private Context m_context = null;
@@ -122,6 +123,8 @@ public class DataConnectManager {
 						"CPE WIFI error:setCPEWifiConnected(false)");
 			Intent intent = new Intent(MessageUti.CPE_WIFI_CONNECT_CHANGE);
 			m_context.sendBroadcast(intent);
+			
+			
 		}
 	}
 

@@ -147,7 +147,7 @@ public class SystemManager extends BaseManager {
 			if (m_getFeaturesTask == null) {
 				m_getFeaturesTask = new GetFeaturesTask();
 				m_getFeaturesTimer.scheduleAtFixedRate(m_getFeaturesTask, 0,
-						5000);
+						10*1000);
 			}
 		}
 	}
