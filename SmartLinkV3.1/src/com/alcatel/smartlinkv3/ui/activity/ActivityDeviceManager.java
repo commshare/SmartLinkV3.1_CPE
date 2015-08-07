@@ -132,6 +132,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.device_manage_view);
+		getWindow().setBackgroundDrawable(null);
 		m_bNeedBack = false;
 		
 		m_back = (LinearLayout) this.findViewById(R.id.back_layout);

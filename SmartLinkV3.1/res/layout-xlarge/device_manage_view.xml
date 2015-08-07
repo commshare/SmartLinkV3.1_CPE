@@ -7,9 +7,7 @@
         android:id="@+id/top_layout"
         android:background="@color/color_blue"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:layout_height="wrap_content">
         <LinearLayout android:id="@+id/back_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,7 +15,9 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:orientation="horizontal"
-            android:layout_marginLeft="15dip" >
+            android:layout_marginLeft="15dip"
+            android:paddingTop="25dp"
+            android:paddingBottom="25dp" >
 	         <ImageView
 	             android:id="@+id/back_button"
 	             android:layout_width="wrap_content"
@@ -59,8 +59,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/top_layout"
 	        android:layout_alignParentBottom="true"
-	        android:orientation="vertical" 
-	        android:background="@color/color_white">
+	        android:orientation="vertical" >
 	        <RelativeLayout
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"

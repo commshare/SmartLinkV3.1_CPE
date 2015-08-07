@@ -76,6 +76,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		//set titlebar
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_setting_upgrade);
+		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		//control title
 		controlTitle();

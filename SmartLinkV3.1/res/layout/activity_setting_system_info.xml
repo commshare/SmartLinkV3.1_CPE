@@ -4,15 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/color_white" >
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white" >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_white"
             android:orientation="vertical" >
 
             <TextView
@@ -278,7 +272,7 @@
             -->
         </LinearLayout>
 
-        <RelativeLayout
+        <!-- <RelativeLayout
             android:id="@+id/rl_device_waiting"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
@@ -290,7 +284,6 @@
                 android:layout_centerInParent="true"
                 android:indeterminateDrawable="@drawable/progerss_blue"
                 android:visibility="gone" />
-        </RelativeLayout>
-    </FrameLayout>
+        </RelativeLayout> -->
 
 </ScrollView>

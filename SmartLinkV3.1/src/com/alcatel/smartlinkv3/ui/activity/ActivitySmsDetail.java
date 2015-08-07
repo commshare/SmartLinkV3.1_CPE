@@ -96,6 +96,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms_details_view);
+		getWindow().setBackgroundDrawable(null);
 		// Edit Text
 		m_etContent = (EditText) this
 				.findViewById(R.id.ID_SMS_DETAIL_EDIT_CONTENT);

@@ -84,6 +84,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_setting_device);
+		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		
 		controlTitlebar();

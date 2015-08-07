@@ -36,6 +36,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_refresh);
+		getWindow().setBackgroundDrawable(null);
 		m_connectImage = (ImageView)this.findViewById(R.id.image_connection);
 		m_connectTitle = (TextView)this.findViewById(R.id.textview_refresh_title);
 		m_connectTip = (TextView)this.findViewById(R.id.textview_refresh_tip);

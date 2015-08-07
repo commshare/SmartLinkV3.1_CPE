@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@color/white">
 	<FrameLayout 
 	    android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -23,7 +24,7 @@
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
             android:drawableTop="@drawable/sms_empty"
-            android:drawablePadding="10dip"
+            android:drawablePadding="15dip"
             android:textColor="@color/color_grey"
             android:gravity="center"
             android:textSize="24sp"

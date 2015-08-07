@@ -39,6 +39,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_setting_backup);
+		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_3);
 		prepareTitlebar();
 		createControls();

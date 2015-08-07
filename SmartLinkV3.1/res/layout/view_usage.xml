@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:overScrollMode="never" >
+    android:overScrollMode="never"
+    android:background="@color/white" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +122,8 @@
                         android:layout_alignParentLeft="true"
                         android:contentDescription="@null"
                         android:visibility="visible"
-                        android:background="@drawable/usage_data_down" />
+                        android:background="@drawable/usage_data_down" 
+                        android:layout_marginLeft="12dp"/>
                     <TextView
                         android:id="@+id/home_data_down_status"
                         android:layout_width="wrap_content"
@@ -141,6 +143,7 @@
                         android:layout_alignParentRight="true"
                         android:paddingLeft="10dip"
                         android:paddingRight="10dip"
+                        android:layout_marginRight="12dp"
                         android:layout_centerVertical="true"
                         android:ellipsize="end"
                         android:singleLine="true"
@@ -227,6 +230,7 @@
                         android:id="@+id/roaming_data_down"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
                         android:layout_centerVertical="true"
                         android:contentDescription="@null"
                         android:layout_alignParentLeft="true"
@@ -252,6 +256,7 @@
                         android:layout_centerVertical="true"
                         android:paddingLeft="10dip"
                         android:paddingRight="10dip"
+                        android:layout_marginRight="12dp"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:textColor="@color/color_black"
@@ -341,6 +346,7 @@
                         android:layout_centerVertical="true"
                         android:contentDescription="@null"
                         android:visibility="visible"
+                        android:layout_marginLeft="12dp"
                         android:background="@drawable/usage_timing" />
                     <TextView
                         android:id="@+id/duration_time_status"

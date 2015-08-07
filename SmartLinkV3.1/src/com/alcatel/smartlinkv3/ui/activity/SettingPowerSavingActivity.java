@@ -49,6 +49,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_setting_power);
+		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_2);
 		//control title bar
 		controlTitlebar();

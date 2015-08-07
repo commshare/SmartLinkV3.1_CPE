@@ -31,6 +31,7 @@ public class ContentAdapter extends BaseAdapter{
 	private String IThumbnailWH = "?width=80,height=80";  
 	private String requestUrl;
 	private ThumbnailLoader thumbnailLoader;
+	private ViewHolder holder;
 	
 	
 	private Drawable foldIcon;
@@ -109,30 +110,53 @@ public class ContentAdapter extends BaseAdapter{
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 
+		
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.content_list_item, null);
+			holder = new ViewHolder();
+			holder.divider =  (View)convertView.findViewById(R.id.content_divider);
+			holder.img = (ImageView) convertView.findViewById(R.id.imageView);
+			holder.tv = (TextView)convertView.findViewById(R.id.tv_content);
+			convertView.setTag(holder);
+		}
+		else{
+			holder = (ViewHolder) convertView.getTag();
 		}
 		
 		MediaItem dataItem = (MediaItem) getItem(position);
-		TextView tvContent = (TextView)convertView.findViewById(R.id.tv_content);
-		tvContent.setText(dataItem.getTitle());
+//		TextView tvContent = (TextView)convertView.findViewById(R.id.tv_content);
+//		tvContent.setText(dataItem.getTitle());
 		
-		ImageView icon = (ImageView) convertView.findViewById(R.id.imageView);
+//		ImageView icon = (ImageView) convertView.findViewById(R.id.imageView);
 		
+//		if (UpnpUtil.isAudioItem(dataItem)){
+//			icon.setImageDrawable(musicIcon);
+//			thumbnailLoader.DisplayImage(dataItem.getAlbumUri(), icon);
+//		}else if (UpnpUtil.isVideoItem(dataItem)){
+//			icon.setImageDrawable(videoIcon);
+//		}else if (UpnpUtil.isPictureItem(dataItem)){
+//			icon.setImageDrawable(picIcon);
+//			setUrl(dataItem);
+//			thumbnailLoader.DisplayImage(requestUrl, icon);	
+//		}else{
+//			icon.setImageDrawable(foldIcon);
+//		}
+		
+		holder.tv.setText(dataItem.getTitle());
 		if (UpnpUtil.isAudioItem(dataItem)){
-			icon.setImageDrawable(musicIcon);
-			thumbnailLoader.DisplayImage(dataItem.getAlbumUri(), icon);
+			holder.img.setImageDrawable(musicIcon);
+			thumbnailLoader.DisplayImage(dataItem.getAlbumUri(), holder.img);
 		}else if (UpnpUtil.isVideoItem(dataItem)){
-			icon.setImageDrawable(videoIcon);
+			holder.img.setImageDrawable(videoIcon);
 		}else if (UpnpUtil.isPictureItem(dataItem)){
-			icon.setImageDrawable(picIcon);
+			holder.img.setImageDrawable(picIcon);
 			setUrl(dataItem);
-			thumbnailLoader.DisplayImage(requestUrl, icon);	
+			thumbnailLoader.DisplayImage(requestUrl, holder.img);	
 		}else{
-			icon.setImageDrawable(foldIcon);
+			holder.img.setImageDrawable(foldIcon);
 		}
 			
-
+		
 		return convertView;
 	}
 	
@@ -141,5 +165,11 @@ public class ContentAdapter extends BaseAdapter{
 			requestUrl = mi.getRes();
 			requestUrl = requestUrl.replace("MediaItems", "Resized");
 			requestUrl = requestUrl+IThumbnailWH;
+	}
+	
+	private class ViewHolder{
+		View divider;
+		ImageView img;
+		TextView tv;
 	}
 }

@@ -51,6 +51,7 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			super.onCreate(savedInstanceState);
 			requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 			setContentView(R.layout.activity_setting_share);
+			getWindow().setBackgroundDrawable(null);
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 			controlTitlebar();
 			initUI();

@@ -72,7 +72,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_layout);
-        
+        getWindow().setBackgroundDrawable(null);
         m_bNeedBack = false;
         initView();   
         initData();

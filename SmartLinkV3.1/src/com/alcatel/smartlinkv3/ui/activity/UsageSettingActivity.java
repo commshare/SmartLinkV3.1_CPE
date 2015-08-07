@@ -240,7 +240,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.usage_setting_view);
-		
+		getWindow().setBackgroundDrawable(null);
 		ImageButton bnBack = (ImageButton) this.findViewById(R.id.btn_back);
 		bnBack.setOnClickListener(this);
 		tvback = (TextView) this.findViewById(R.id.Back);

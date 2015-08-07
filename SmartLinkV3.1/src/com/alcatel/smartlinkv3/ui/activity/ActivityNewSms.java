@@ -55,7 +55,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms_new_view);
-
+		getWindow().setBackgroundDrawable(null);
 		// get controls
 		m_btnCancel = (TextView) findViewById(R.id.cancel);
 		m_btnCancel.setOnClickListener(this);

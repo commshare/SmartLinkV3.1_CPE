@@ -37,6 +37,7 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_setting_about_new);
+		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		//control title bar
 		controlTitlebar();

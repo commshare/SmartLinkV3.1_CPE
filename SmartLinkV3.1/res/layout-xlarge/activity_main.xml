@@ -2,13 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_main"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/color_white" >
+    android:layout_height="fill_parent">
     <RelativeLayout
         android:id="@+id/main_layout_top"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:minHeight="100dp"
 	    android:background="@color/main_title_background" >
 	
         <TextView
@@ -28,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dip"
+            android:layout_marginRight="8dip"
             android:visibility="gone"
             android:background="@drawable/actionbar_plus_icon" />         
 	</RelativeLayout>
@@ -54,11 +52,11 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="3dip"
+            android:drawablePadding="5dip"
             android:gravity="center_horizontal"
             android:text="@string/main_home"
             android:textColor="@color/color_grey"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/main_usage"
@@ -67,11 +65,11 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="3dip"
+            android:drawablePadding="5dip"
             android:gravity="center_horizontal"
             android:text="@string/main_usage"
             android:textColor="@color/color_grey"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
                 
         <TextView
             android:id="@+id/main_microsd"
@@ -80,11 +78,11 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="3dip"
+            android:drawablePadding="5dip"
             android:gravity="center_horizontal"
             android:text="@string/main_sdsharing"
             android:textColor="@color/color_grey"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
         
         <RelativeLayout
             android:id="@+id/tab_sms_layout"
@@ -98,11 +96,11 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_centerInParent="true"
-	            android:drawablePadding="3dip"
+	            android:drawablePadding="5dip"
 	            android:gravity="center_horizontal"
 	            android:text="@string/main_sms"
 	            android:textColor="@color/color_grey"
-	            android:textSize="16sp" />
+	            android:textSize="18sp" />
 
             <TextView
 	            android:id="@+id/new_sms_count"
@@ -110,10 +108,10 @@
 	            android:layout_height="wrap_content"
 	            android:layout_toRightOf="@id/main_sms"
 	            android:gravity="center_horizontal"
-	            android:layout_marginTop="3dip"
+	            android:layout_marginTop="5dip"
 	            android:text="@string/main_sms"
 	            android:textColor="@color/color_white"
-	            android:textSize="16sp" />
+	            android:textSize="18sp" />
         </RelativeLayout>
 
         <TextView
@@ -123,11 +121,11 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="3dip"
+            android:drawablePadding="5dip"
             android:gravity="center_horizontal"
             android:text="@string/main_setting"
             android:textColor="@color/color_grey"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     	</LinearLayout>
     	<View
         	android:id="@+id/layout_bottom_divider"

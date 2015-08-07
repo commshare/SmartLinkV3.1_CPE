@@ -37,7 +37,7 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms_delete_list_view);
-		
+		getWindow().setBackgroundDrawable(null);
 		m_smsSummaryList = (ListView)this.findViewById(R.id.sms_list_view);
 		m_smsSummaryList.setOnItemClickListener(this);
 		SmsAdapter smsAdapter = new SmsAdapter(this);

@@ -120,6 +120,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		getWindow().setBackgroundDrawable(null);
 		setContentView(R.layout.activity_setting_network);
+		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		
 		controlTitlebar();

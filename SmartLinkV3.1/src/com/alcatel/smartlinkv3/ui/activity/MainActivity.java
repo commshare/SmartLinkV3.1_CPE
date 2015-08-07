@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		getWindow().setBackgroundDrawable(null);
 		this.getWindowManager().getDefaultDisplay()
 				.getMetrics(m_displayMetrics);
 		rl_top = (RelativeLayout)findViewById(R.id.main_layout_top);
@@ -641,7 +641,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 			break;	
 		case R.id.access_num_layout:
 			accessDeviceLayoutClick();
-			break;	
+			break;
+		default:
+			break;
 		}
 	}
 	
