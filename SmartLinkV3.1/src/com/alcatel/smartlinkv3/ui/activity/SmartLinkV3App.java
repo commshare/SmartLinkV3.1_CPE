@@ -35,6 +35,8 @@ public class SmartLinkV3App extends Application {
 		crashHandler.init(getApplicationContext());	
 		m_instance = this;
 		Log.d("HttpService", "Application onCreate ");
+		BusinessMannager.getInstance();
+		
 		NotificationService.startService();
 		
 		HandlerUtils.replaceHandler();
