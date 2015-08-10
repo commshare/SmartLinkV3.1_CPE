@@ -70,7 +70,7 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 		case R.id.clear_history_layout:
 			SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 			ConnectStatusModel connectStatus = BusinessMannager.getInstance().getConnectStatus();
-			if (connectStatus.m_connectionStatus == ConnectionStatus.Disconnected) {
+//			if (connectStatus.m_connectionStatus == ConnectionStatus.Disconnected) {
 				DataValue data = new DataValue();
 				SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date now = new Date();
@@ -78,10 +78,10 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
 				data.addParam("clear_time", strDate);
 				BusinessMannager.getInstance().sendRequestMessage(
 						MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET, data);
-			}else {
-				msgRes = v.getContext().getString(R.string.usage_comsumptionexplain_label);
-				Toast.makeText(v.getContext(), msgRes,Toast.LENGTH_SHORT).show();
-			}
+//			}else {
+//				msgRes = v.getContext().getString(R.string.usage_comsumptionexplain_label);
+//				Toast.makeText(v.getContext(), msgRes,Toast.LENGTH_SHORT).show();
+//			}
 			this.dismiss();
 			break;	
 		}
