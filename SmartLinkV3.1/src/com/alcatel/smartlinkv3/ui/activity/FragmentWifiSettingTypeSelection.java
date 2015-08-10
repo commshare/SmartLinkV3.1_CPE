@@ -65,29 +65,34 @@ public class FragmentWifiSettingTypeSelection extends Fragment{
 					m_wifi_type_wep_type.setVisibility(View.VISIBLE);
 					m_wifi_type_wpa_type.setVisibility(View.GONE);
 					m_security_mode = SecurityMode.antiBuild(SecurityMode.WEP);
-					if(m_mode_type > 1){
-						m_wifi_type_wep_type.clearCheck();
-						m_mode_type = 0;
-					}
-					m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+//					if(m_mode_type > 1){
+//						m_wifi_type_wep_type.clearCheck();
+//						m_mode_type = 0;
+//					}
+					m_wifi_type_wep_type.clearCheck();
+					m_mode_type = 0;
+					m_parent_activity.setWifiMode(m_security_mode, -1);
 					break;
 				case R.id.setting_network_wifi_type_wpa:
+					m_wifi_type_wpa_type.clearCheck();
 					m_wifi_type_wep_type.setVisibility(View.GONE);
 					m_wifi_type_wpa_type.setVisibility(View.VISIBLE);
 					m_security_mode = SecurityMode.antiBuild(SecurityMode.WPA);
-					m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+					m_parent_activity.setWifiMode(m_security_mode, -1);
 					break;
 				case R.id.setting_network_wifi_type_wpa2:
+					m_wifi_type_wpa_type.clearCheck();
 					m_wifi_type_wep_type.setVisibility(View.GONE);
 					m_wifi_type_wpa_type.setVisibility(View.VISIBLE);
 					m_security_mode = SecurityMode.antiBuild(SecurityMode.WPA2);
-					m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+					m_parent_activity.setWifiMode(m_security_mode, -1);
 					break;
 				case R.id.setting_network_wifi_type_wpa_or_wpa2:
+					m_wifi_type_wpa_type.clearCheck();
 					m_wifi_type_wep_type.setVisibility(View.GONE);
 					m_wifi_type_wpa_type.setVisibility(View.VISIBLE);
 					m_security_mode = SecurityMode.antiBuild(SecurityMode.WPA_WPA2);
-					m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+					m_parent_activity.setWifiMode(m_security_mode, -1);
 					break;
 				default:
 					break;

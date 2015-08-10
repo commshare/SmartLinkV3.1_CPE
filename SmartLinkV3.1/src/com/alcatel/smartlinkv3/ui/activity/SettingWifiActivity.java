@@ -1091,7 +1091,10 @@ implements OnClickListener{
 		m_nSecurityMode = SecurityMode;
 		m_nType = Type;
 		if(m_nType < 0){
-			m_nType = 0;
+			if(m_nSecurityMode == 1)
+				m_nType = 0;
+			else
+				m_nType = 2;
 		}
 		switch(m_nSecurityMode){
 		case 1:
