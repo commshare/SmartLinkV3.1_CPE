@@ -875,15 +875,17 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 				int nContentLayoutBg = R.drawable.selector_sms_detail_receive;
 				holder.smsContentLayout.setVisibility(View.VISIBLE);
 				switch (type) {
+				case Report:
+					holder.smsContent.setText(R.string.sms_report_message);
 				case Read:
 				case Unread:
-				case Report:
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
 							R.id.sms_layout);
 					nContentLayoutBg = R.drawable.selector_sms_detail_receive;
 					contentLayout.setMargins(30, 10, 80, 10);
 					holder.smsContent.setTextColor(ActivitySmsDetail.this
 							.getResources().getColor(R.color.color_black));
+					
 					holder.smsDate.setTextColor(ActivitySmsDetail.this
 							.getResources().getColor(R.color.color_grey));
 					holder.sendFailText.setTextColor(ActivitySmsDetail.this
