@@ -130,7 +130,7 @@
     <string name="sms_init">SMS no disponibles</string>
     <string name="sms_list_view_draft">%1$d,borrador</string>
     <string name="sms_send_fail">Error</string>
-    <string name="sms_report_message">Message delivered!</string>
+    <string name="sms_report_message">delivered!</string>
     <string name="sms_to">To:</string>
     <string name="sms_new_title">Message</string>
     <string name="sms_error_send_error">Mensaje entregado.</string>

@@ -130,7 +130,7 @@
     <string name="sms_init">SMS indisponible</string>
     <string name="sms_list_view_draft">%1$d,brouillon</string>
     <string name="sms_send_fail">Échec</string>
-    <string name="sms_report_message">Message remis !</string>
+    <string name="sms_report_message">remis !</string>
     <string name="sms_to">À:</string>
     <string name="sms_new_title">Message</string>
     <string name="sms_error_send_error">Erreur d’envoi du SMS.</string>

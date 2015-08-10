@@ -122,7 +122,7 @@
     <string name="sms_init">SMS non disponibile</string>
     <string name="sms_list_view_draft">%1$d,bozza</string>
     <string name="sms_send_fail">Errore</string>
-    <string name="sms_report_message">Messaggio consegnato.</string>
+    <string name="sms_report_message">consegnato.</string>
     <string name="sms_to">A:</string>
     <string name="sms_new_title">Messaggio</string>
     <string name="sms_error_send_error">Errore di invio dell\'SMS.</string>
