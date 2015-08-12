@@ -129,6 +129,68 @@ public class HttpUpdate {
 		
 	}
 	
+	/*FOTA start to update device*/
+	public static class setFOTAStartDownload extends BaseRequest{
+
+		public setFOTAStartDownload(String strId, IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson() {
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"SetFOTAStartDownload");
+
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, null);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() {
+			// TODO Auto-generated method stub
+			return new setFOTAStartDownloadResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	public static class setFOTAStartDownloadResponse extends BaseResponse{
+
+		private Boolean m_blRes = false;
+		public setFOTAStartDownloadResponse(IHttpFinishListener callback) {
+			super(callback);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void parseContent(String strJsonResult) {
+			// TODO Auto-generated method stub
+			if (strJsonResult.length() != 0) {
+				m_blRes = true;
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Boolean getModelResult() {
+			// TODO Auto-generated method stub
+			return m_blRes;
+		}
+		
+	}
+	
+	
+	
 	/*upgrade status*/
 	public static class getDeviceUpgradeStatusRequest extends BaseRequest{
 
