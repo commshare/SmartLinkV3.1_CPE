@@ -34,7 +34,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 //	private Button m_btn_PowerOff=null;
 //	private Button m_btn_reboot=null;
 //	private Button m_btn_reset=null;
-	private ProgressBar m_pb_waiting=null;
+//	private ProgressBar m_pb_waiting=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -80,21 +80,21 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 //		m_btn_reboot.setOnClickListener(this);
 //		m_btn_reset.setOnClickListener(this);
 		//
-		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
+//		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
 	}
 
-	private void ShowWaiting(boolean blShow){
-		if (blShow) {
-			m_pb_waiting.setVisibility(View.VISIBLE);
-		}else {
-			m_pb_waiting.setVisibility(View.GONE);
-		}
-//		m_btn_PowerOff.setEnabled(!blShow);
-//		m_btn_reboot.setEnabled(!blShow);
-//		m_btn_reset.setEnabled(!blShow);
-		m_ib_back.setEnabled(!blShow);
-		m_tv_back.setEnabled(!blShow);
-	}
+//	private void ShowWaiting(boolean blShow){
+//		if (blShow) {
+//			m_pb_waiting.setVisibility(View.VISIBLE);
+//		}else {
+//			m_pb_waiting.setVisibility(View.GONE);
+//		}
+////		m_btn_PowerOff.setEnabled(!blShow);
+////		m_btn_reboot.setEnabled(!blShow);
+////		m_btn_reset.setEnabled(!blShow);
+//		m_ib_back.setEnabled(!blShow);
+//		m_tv_back.setEnabled(!blShow);
+//	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -167,7 +167,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.LAN_GET_LAN_SETTINGS, null);
-		ShowWaiting(true);
+//		ShowWaiting(true);
 	}
 
 	@Override
@@ -193,7 +193,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 			else{
 				Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
 			}
-			ShowWaiting(false);
+//			ShowWaiting(false);
 		}
 		
 	}
