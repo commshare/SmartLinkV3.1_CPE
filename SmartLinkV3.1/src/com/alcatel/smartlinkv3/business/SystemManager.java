@@ -287,7 +287,6 @@ public class SystemManager extends BaseManager {
 										&& strErrcode.length() == 0) {
 									m_systemStatus = response
 											.getModelResult();
-									Log.v("pchong", " m_systemStatus " + m_systemStatus.getBarreryStatus(m_systemInfo.getDeviceName()));
 								} else {
 //									new Handler().postDelayed(
 //											new Runnable() {

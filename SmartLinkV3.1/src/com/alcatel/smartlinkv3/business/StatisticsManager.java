@@ -214,8 +214,6 @@ public class StatisticsManager extends BaseManager {
                     	strErrcode = response.getErrorCode();
                     	if(strErrcode.length() == 0) {
                     		UsageSettingsResult usageSettingResult = response.getModelResult();
-                    		Log.v("pchong", "GetUsageSettingsTask nowbHMonthlyPlanChange = " + usageSettingResult.MonthlyPlan);
-                    		Log.v("pchong", "GetUsageSettingsTask prebHMonthlyPlanChange = " + m_usageSettings.HMonthlyPlan);
                     		UsageSettingModel pre = new UsageSettingModel();
                     		pre.clone(m_usageSettings);
                     		m_usageSettings.setValue(usageSettingResult);
@@ -239,8 +237,6 @@ public class StatisticsManager extends BaseManager {
                     		
                     		if(pre.HAutoDisconnFlag != m_usageSettings.HAutoDisconnFlag)
                     			bHAutoDisconnFlagChange = true;
-                    		
-                    		Log.v("pchong", "GetUsageSettingsTask bHMonthlyPlanChange = " + bHMonthlyPlanChange);
                     		
                     	}else{
                     		
