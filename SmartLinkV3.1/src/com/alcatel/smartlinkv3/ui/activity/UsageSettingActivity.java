@@ -201,6 +201,16 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 					showRoamingAutoDisconnectBtn();
 				}
 			}
+			
+			else if (intent.getAction().equals(
+					MessageUti.STATISTICS_SET_UNIT_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					setSettingMonthly();
+				}
+			}
 		}
 	}
 	private void registerReceiver() {
@@ -232,6 +242,8 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.STATISTICS_SET_UNIT_REQUSET));
 
 	}
 	
@@ -371,7 +383,6 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			public boolean onEditorAction(TextView v, int actionId,
 					KeyEvent event) {
 
-				Log.v("test", "pchong  onEditorAction");
 				// EditorInfo.IME_ACTION_UNSPECIFIED use for 3-rd input
 				if (actionId == EditorInfo.IME_ACTION_DONE
 						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
