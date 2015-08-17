@@ -563,14 +563,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			if(staticSetting.HUnit == 0){
 				if (usage > MONTHLY_MAX_VALUE) {
 					usage = MONTHLY_MAX_VALUE;
-					String strInfo = getString(R.string.usage_maximum_monthly_plan_notice) + "1000000 MB";
+					String strInfo = getString(R.string.usage_maximum_monthly_plan_notice) + "1048576 MB";
 					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			else{
-				if (usage > MONTHLY_MAX_VALUE/1000) {
-					usage = MONTHLY_MAX_VALUE/1000;
-					String strInfo = getString(R.string.usage_maximum_monthly_plan_notice) + "1000 GB";
+				if (usage > MONTHLY_MAX_VALUE/1024) {
+					usage = MONTHLY_MAX_VALUE/1024;
+					String strInfo = getString(R.string.usage_maximum_monthly_plan_notice) + "1024 GB";
 					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
