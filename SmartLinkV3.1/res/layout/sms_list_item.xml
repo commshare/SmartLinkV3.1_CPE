@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textStyle="bold" 
-            android:text="134724790592"
+            android:text="13112345678"
             android:maxWidth="120dip"
             android:gravity="bottom"
             android:layout_alignParentBottom="true"
@@ -62,6 +62,21 @@
 	            android:layout_marginBottom="2dip"
 	            android:contentDescription="@null" />
         </FrameLayout>
+        
+        <TextView
+            android:id="@+id/sms_item_totalcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/sms_item_count_layout"
+            android:layout_marginLeft="8dip"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="6"
+            android:gravity="right|bottom"
+            android:textSize="16sp"
+            android:textColor="@color/color_grey"/>
+        
         <ImageView
             android:id="@+id/sms_item_arrow"
             android:layout_width="wrap_content"
@@ -77,15 +92,16 @@
             android:id="@+id/sms_item_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/sms_item_count_layout"
+            android:layout_toRightOf="@id/sms_item_totalcount"
             android:layout_toLeftOf="@id/sms_item_arrow"
             android:layout_alignParentBottom="true"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="2014-8-12 12:15"
+            android:text="2014-8-12"
             android:gravity="right|bottom"
             android:textSize="16sp"
             android:textColor="@color/color_grey"/>
+        
     </RelativeLayout>
 
     <RelativeLayout

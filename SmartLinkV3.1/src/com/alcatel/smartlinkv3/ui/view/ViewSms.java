@@ -257,6 +257,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			public TextView number;
 			public ImageView sentFailedImage;
 			public TextView count;
+			public TextView totalcount;
 			public TextView content;
 			public TextView time;
 		}
@@ -271,6 +272,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				holder.number = (TextView)convertView.findViewById(R.id.sms_item_number);
 				holder.sentFailedImage = (ImageView)convertView.findViewById(R.id.sms_item_send_failed);
 				holder.count = (TextView)convertView.findViewById(R.id.sms_item_count);
+				holder.totalcount = (TextView)convertView.findViewById(R.id.sms_item_totalcount);
 				holder.content = (TextView)convertView.findViewById(R.id.sms_item_content);
 				holder.time = (TextView)convertView.findViewById(R.id.sms_item_time);
 				convertView.setTag(holder);	
@@ -325,20 +327,24 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				holder.sentFailedImage.setVisibility(View.VISIBLE);
 				break;
 			case Draft:
-				holder.count.setVisibility(View.VISIBLE);
+				holder.totalcount.setVisibility(View.VISIBLE);
+				holder.count.setVisibility(View.INVISIBLE);
 				holder.sentFailedImage.setVisibility(View.INVISIBLE);
-				holder.count.setTextColor(m_context.getResources().getColor(R.color.color_grey));
-				holder.count.setText(String.format(m_context.getString(R.string.sms_list_view_draft),  smsItem.nCount));
+				holder.totalcount.setTextColor(m_context.getResources().getColor(R.color.color_grey));
+				holder.totalcount.setText(String.format(m_context.getString(R.string.sms_list_view_draft),  smsItem.nCount));
 				break;
 			default:
 				holder.sentFailedImage.setVisibility(View.INVISIBLE);
 				holder.count.setVisibility(View.VISIBLE);
 				if(nUnreadNum == 0) {
-					holder.count.setTextColor(m_context.getResources().getColor(R.color.color_grey));
+					holder.count.setVisibility(View.INVISIBLE);
+					holder.totalcount.setVisibility(View.INVISIBLE);
+					holder.totalcount.setText(String.valueOf(smsItem.nCount));
 				}else{
 					holder.count.setTextColor(m_context.getResources().getColor(R.color.color_black));
+					holder.totalcount.setVisibility(View.INVISIBLE);
 				}
-				holder.count.setText(String.valueOf(smsItem.nCount));
+				holder.count.setText(String.valueOf(smsItem.nUnreadNumber));
 				break;
 			}
 			
