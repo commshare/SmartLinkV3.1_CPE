@@ -6,6 +6,7 @@ import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM;
+import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
@@ -417,6 +418,12 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			goToPowerSettingPage();
 			break;
 		case R.id.device_pin_code:
+			SimStatusModel simStatus0 = BusinessMannager.getInstance().getSimStatus();
+			if(simStatus0.m_PinState == PinState.EnableButNotVerified){
+				String strInfo = getString(R.string.home_pin_locked_notice);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+				return;
+			}
 			onBtnPincodeSetting();
 			break;
 		case R.id.device_web_version:
@@ -449,19 +456,26 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 				}
 			}
 			SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
-			if(simStatus.m_SIMState == SIMState.Accessable || 
-				simStatus.m_SIMState == SIMState.PinRequired || 
-				simStatus.m_SIMState == SIMState.PukRequired){
-				if(simStatus.m_nPinRemainingTimes == 0){
-					ShowPukDialog();
-				}
-				else if(simStatus.m_nPinRemainingTimes > 0){
-					ShowPinDialog();
-				}
+			if(simStatus.m_PinState == PinState.EnableButNotVerified){
+				String strInfo = getString(R.string.home_pin_locked_notice);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+				return;
 			}
 			else{
-				String strInfo = getString(R.string.home_sim_not_accessible);
-				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+				if(simStatus.m_SIMState == SIMState.Accessable || 
+						simStatus.m_SIMState == SIMState.PinRequired || 
+						simStatus.m_SIMState == SIMState.PukRequired){
+						if(simStatus.m_nPinRemainingTimes == 0){
+							ShowPukDialog();
+						}
+						else if(simStatus.m_nPinRemainingTimes > 0){
+							ShowPinDialog();
+						}
+					}
+					else{
+						String strInfo = getString(R.string.home_sim_not_accessible);
+						Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+					}
 			}
 			break;
 		default:
@@ -528,6 +542,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			m_device_menu_container.setVisibility(View.VISIBLE);
 			m_pincode_editor.setVisibility(View.GONE);
 			m_edit_pin_showing = false;
+			m_pin_notice.setVisibility(View.GONE);
 		}
 	}
 	

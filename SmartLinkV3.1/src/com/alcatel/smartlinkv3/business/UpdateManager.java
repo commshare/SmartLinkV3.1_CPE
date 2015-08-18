@@ -182,11 +182,11 @@ public class UpdateManager extends BaseManager {
 
 	//start update firmware
 	public void startUpdate(DataValue data){
-		if (FeatureVersionManager.getInstance().isSupportApi("Update", "SetDeviceStartUpdate")) {
+		if(FeatureVersionManager.getInstance().isSupportApi("Update", "SetFOTAStartDownload")){
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
 				HttpRequestManager.GetInstance().sendPostRequest(
-						new HttpUpdate.setDeviceStartUpdateRequest("9.2", 
+						new HttpUpdate.setFOTAStartDownload("9.2", 
 								new IHttpFinishListener() {
 
 							@Override
@@ -204,11 +204,11 @@ public class UpdateManager extends BaseManager {
 						}));
 			}
 		}
-		else if(FeatureVersionManager.getInstance().isSupportApi("Update", "SetFOTAStartDownload")){
+		else if (FeatureVersionManager.getInstance().isSupportApi("Update", "SetDeviceStartUpdate")) {
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
 				HttpRequestManager.GetInstance().sendPostRequest(
-						new HttpUpdate.setFOTAStartDownload("9.2", 
+						new HttpUpdate.setDeviceStartUpdateRequest("9.2", 
 								new IHttpFinishListener() {
 
 							@Override

@@ -81,6 +81,7 @@
     <string name="home_connected_duration">%1$sHrs %2$sMins</string>
     <string name="access_lable">connected</string>
     <string name="home_sim_loched">Sim Card Locked</string>
+    <string name="home_pin_locked_notice">Please verify your PIN code at the home menu first.</string>
     <string name="home_no_sim">no sim card</string>
     <string name="home_sim_not_accessible">Sim card is not accessible</string>
     <string name="home_battery_unit">%</string>

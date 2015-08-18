@@ -9,6 +9,7 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.HttpMethodUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
@@ -324,16 +325,30 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			}
 			break;
 		case R.id.network_selection:
-			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
-				showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
-			else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
-				String strInfo = getString(R.string.setting_network_try_again);
+			 if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.Accessable){
+				 if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
+						showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
+					else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
+						String strInfo = getString(R.string.setting_network_try_again);
+						Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+					}
+					else{
+						String strInfo = getString(R.string.setting_network_disconnect_first);
+						Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+					}
+			 }
+			 else if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.PinRequired){
+			 	String strInfo = getString(R.string.home_sim_loched);
 				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
-			}
-			else{
-				String strInfo = getString(R.string.setting_network_disconnect_first);
+			 }
+			 else if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.PukRequired){
+			 	String strInfo = getString(R.string.home_sim_loched);
 				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
-			}
+			 }
+			 else{
+			 	String strInfo = getString(R.string.home_sim_not_accessible);
+				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			 }
 			break;
 		case R.id.network_profile_management:
 			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
