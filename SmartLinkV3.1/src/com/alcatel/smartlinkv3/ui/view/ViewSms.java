@@ -338,7 +338,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 				holder.count.setVisibility(View.VISIBLE);
 				if(nUnreadNum == 0) {
 					holder.count.setVisibility(View.INVISIBLE);
-					holder.totalcount.setVisibility(View.INVISIBLE);
+					holder.totalcount.setVisibility(View.VISIBLE);
 					holder.totalcount.setText(String.valueOf(smsItem.nCount));
 				}else{
 					holder.count.setTextColor(m_context.getResources().getColor(R.color.color_black));
