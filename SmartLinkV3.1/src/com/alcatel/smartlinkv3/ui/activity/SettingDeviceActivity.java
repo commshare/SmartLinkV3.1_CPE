@@ -145,7 +145,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		ShowWaiting(false);
 		
 		isPinRequired = false;
-		if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
+		if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
+				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
+				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK){
 			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
 			m_requested_pinState = ENUM.PinState.Disable;
 		}
@@ -183,7 +185,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
 		if(sim.m_PinState != m_PrePinState && sim.m_PinState != ENUM.PinState.RequirePUK){
 			m_PrePinState = sim.m_PinState;
-			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
+			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
+				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
+				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK){
 				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
 				m_requested_pinState = ENUM.PinState.Disable;
 			}
@@ -281,7 +285,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			
 		} else {
 			closePinAndPukDialog();
-			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
+			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
+			||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
+			||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK){
 				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
 				m_requested_pinState = ENUM.PinState.Disable;
 			}
