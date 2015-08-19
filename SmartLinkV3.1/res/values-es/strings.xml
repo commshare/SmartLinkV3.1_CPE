@@ -395,7 +395,7 @@
     <string name="change_password_failed">Error al cambiar contraseña.</string>
     <string name="inconsistent_new_password">La nueva contraseña no es correcta.</string>
     <string name="input_current_password">Introduzca su contraseña actual.</string>
-    <string name="change_passowrd_invalid_password">La contraseña no puede estar vacía o ser tan corta.</string>
+    <string name="change_passowrd_invalid_password">La contraseña debería tener 4&#8211;16 caracteres.</string>
     <string name="unknown_error">Error desconocido</string>
     <!-- Login view end -->
 

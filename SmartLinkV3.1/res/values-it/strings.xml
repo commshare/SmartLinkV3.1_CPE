@@ -388,7 +388,7 @@
     <string name="change_password_failed">Modifica della password non riuscita.</string>
     <string name="inconsistent_new_password">Nuova password non corrispondente.</string>
     <string name="input_current_password">Immettere la password corrente.</string>
-    <string name="change_passowrd_invalid_password">Password can not be empty or too short!</string>
+    <string name="change_passowrd_invalid_password">La password deve avere 4&#8211;16 caratteri.</string>
     <string name="unknown_error">Errore sconosciuto. </string>
     <!-- Login view end -->
 

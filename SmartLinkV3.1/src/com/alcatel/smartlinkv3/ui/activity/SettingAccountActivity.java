@@ -131,7 +131,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if(confirmPwd.length() < 4){
+		if(confirmPwd.length() < 4 || confirmPwd.length() > 16){
 			String strInfo = getString(R.string.change_passowrd_invalid_password);
 			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			return;

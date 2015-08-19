@@ -401,7 +401,7 @@
     <string name="change_password_failed">Change password failed!</string>
     <string name="inconsistent_new_password">Inconsistent new pass word!</string>
     <string name="input_current_password">Please Input Your Current Password!</string>
-    <string name="change_passowrd_invalid_password">Password can not be empty or too short!</string>
+    <string name="change_passowrd_invalid_password">The password should be 4&#8211;16 characters</string>
     <string name="unknown_error">Unknown error!</string>
     <!-- Login view end -->
 

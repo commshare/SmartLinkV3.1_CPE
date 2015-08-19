@@ -395,7 +395,7 @@
     <string name="change_password_failed">Échec de changement de mot de passe !</string>
     <string name="inconsistent_new_password">Nouveau mot de passe différent !</string>
     <string name="input_current_password">Saisissez votre mot de passe !</string>
-    <string name="change_passowrd_invalid_password">Password can not be empty or too short!</string>
+    <string name="change_passowrd_invalid_password">Le mot de passe doit être de 4&#8211;16 caractères.</string>
     <string name="unknown_error">Erreur non répertoriée ! </string>
     <!-- Login view end -->
 
