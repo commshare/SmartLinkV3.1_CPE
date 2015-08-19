@@ -359,7 +359,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				}
 			}else {
 				ShowWaiting(false);
-				Toast.makeText(this, R.string.setting_upgrade_get_update_state_failed, Toast.LENGTH_SHORT).show();
+//				Toast.makeText(this, R.string.setting_upgrade_get_update_state_failed, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
