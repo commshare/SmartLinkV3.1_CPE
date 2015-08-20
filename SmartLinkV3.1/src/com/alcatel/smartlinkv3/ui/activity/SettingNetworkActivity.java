@@ -629,6 +629,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
+				m_waiting_circle.setVisibility(View.GONE);
 			}
 			
 			if (intent.getAction().equalsIgnoreCase(
@@ -650,6 +651,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
+				m_waiting_circle.setVisibility(View.GONE);
 			}
 			
 			if (intent.getAction().equalsIgnoreCase(
@@ -676,6 +678,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
+				m_waiting_circle.setVisibility(View.GONE);
 			}
 			
 		}
