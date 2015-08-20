@@ -121,7 +121,7 @@ public class UpdateManager extends BaseManager {
 	private void startGetDeviceUpgradeStatusTask() {
 		if(m_taskGetDeviceUpgradeStatus == null) {
 			m_taskGetDeviceUpgradeStatus = new GetDeviceUpgradeStatusTask();
-			m_getDeviceUpgradeStatus.scheduleAtFixedRate(m_taskGetDeviceUpgradeStatus, 0, 5 * 1000);
+			m_getDeviceUpgradeStatus.scheduleAtFixedRate(m_taskGetDeviceUpgradeStatus, 0, 10 * 1000);
 		}
 	}
 	
