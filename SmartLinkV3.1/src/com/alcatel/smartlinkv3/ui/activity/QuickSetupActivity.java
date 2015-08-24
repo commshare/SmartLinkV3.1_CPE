@@ -1386,6 +1386,9 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
               !mWiFiPasswd.equals(mBusinessMgr.getWifiPwd()))) {
         mSendRequest = true;
       }
+      if(mWiFiSSID != null && mWiFiPasswd != null && mSecurityMode == SecurityMode.Disable){
+      	 mSendRequest = true;
+      }
       
       if (mSendRequest) {
         setWiFiConfigure(mWiFiSSID, mWiFiPasswd);
