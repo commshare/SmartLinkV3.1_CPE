@@ -62,6 +62,21 @@
 	            android:layout_marginBottom="3dip"
 	            android:contentDescription="@null" />
         </FrameLayout>
+        
+        <TextView
+            android:id="@+id/sms_item_totalcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/sms_item_count_layout"
+            android:layout_marginLeft="12dip"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="6"
+            android:gravity="right|bottom"
+            android:textSize="24sp"
+            android:textColor="@color/color_grey"/>
+        
         <ImageView
             android:id="@+id/sms_item_arrow"
             android:layout_width="wrap_content"
@@ -77,7 +92,7 @@
             android:id="@+id/sms_item_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/sms_item_count_layout"
+            android:layout_toRightOf="@id/sms_item_totalcount"
             android:layout_toLeftOf="@id/sms_item_arrow"
             android:layout_alignParentBottom="true"
             android:ellipsize="end"

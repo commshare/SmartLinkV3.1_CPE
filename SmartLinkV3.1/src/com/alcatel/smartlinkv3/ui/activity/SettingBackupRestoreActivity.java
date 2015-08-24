@@ -176,6 +176,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 				if (status == 
 						EnumRestoreErrorStatus.RESTORE_ERROR_NO_BACKUP_FILE) {
 					strTost = getString(R.string.setting_restore_no_backup_file);
+					m_btn_restore.setEnabled(true);
 				}else if (EnumRestoreErrorStatus.RESTORE_ERROR_SUCCESSFUL == status) {
 					strTost = getString(R.string.setting_restore_success);
 				}
