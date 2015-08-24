@@ -144,6 +144,7 @@
     <string name="sms_number_invalid">Error! Only 3 phone numbers are allowed.</string>
     <string name="sms_save_success">SMS is saved as a draft.</string>
     <string name="sms_save_error">Save SMS failed.</string>
+    <string name="sms_unread_num">(%1$d)</string>
     <!-- sms end -->
 
 
