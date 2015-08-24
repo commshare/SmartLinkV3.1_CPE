@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	private RelativeLayout m_rlWifi=null;
 	private ImageView m_ivSeperatorWifi=null;
 	private TextView m_tv_wifi_description=null;
+	private LinearLayout m_power_container = null;
 
 	private boolean m_blSmartModeSwitchOn=true;
 	private boolean m_blWifiModeSwitchOn=true;
@@ -75,6 +77,10 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 
 	private void createControls(){
 
+		m_power_container = (LinearLayout) findViewById(R.id.rl_power_display);
+		if(BusinessMannager.getInstance().getFeatures().getDeviceName().contains("856")){
+			m_power_container.setVisibility(View.GONE);
+		}
 		m_btn_smart_mode_switch=(Button)findViewById(R.id.btn_power_smart);
 		m_btn_wifi_mode_switch=(Button)findViewById(R.id.btn_power_wifi);
 		m_tv_battery_status=(TextView)findViewById(R.id.tv_power_status);
