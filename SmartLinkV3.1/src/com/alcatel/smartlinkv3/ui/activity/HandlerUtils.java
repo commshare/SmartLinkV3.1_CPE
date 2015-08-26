@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 import java.lang.reflect.Field;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
@@ -67,9 +68,12 @@ public class HandlerUtils {
 	
 	public static void userLogout() {
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
-		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.USER_LOGOUT_REQUEST, null);
+		if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+		{
+			if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
+				BusinessMannager.getInstance().sendRequestMessage(
+						MessageUti.USER_LOGOUT_REQUEST, null);
+			}
 		}
 	}
 }
