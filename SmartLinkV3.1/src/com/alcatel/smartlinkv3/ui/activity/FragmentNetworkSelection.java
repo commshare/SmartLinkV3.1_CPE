@@ -78,6 +78,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	private void initUi(View view){
 		m_search_network_result_filter = new IntentFilter(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
 		m_search_network_result_filter.addAction(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
+		m_search_network_result_filter.addAction(MessageUti.NETWORK_SEARCH_NETWORK_REQUSET);
 		m_fragment_get_network_setting_filter = new IntentFilter(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
 		m_fragment_set_network_setting_filter = new IntentFilter(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
 		m_fragment_get_network_setting_filter.addAction(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
@@ -209,6 +210,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	public void onDestroyView(){
 		super.onDestroyView();
 		try {
+			m_network_search_result_list.clear();
 			getActivity().unregisterReceiver(m_network_search_result_receiver);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -361,6 +363,19 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				boolean needStop = intent.getBooleanExtra("needStopWaiting", false);
+				boolean isError = intent.getBooleanExtra("isError", false);
+				
+				if(needStop){
+					m_waiting_search_result.setVisibility(View.GONE);
+					m_network_searching_title.setVisibility(View.GONE);
+				}
+					
+				if(isError){
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+					m_network_searching_title.setVisibility(View.GONE);
+				}
 				
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
@@ -368,14 +383,33 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					if(m_network_search_result_list != null){
 						m_adapter = new NetworkListAdapter(m_parent_activity, m_network_search_result_list);
 				        m_network_list.setAdapter(m_adapter);
-				        
-				        m_waiting_search_result.setVisibility(View.GONE);
+//				        m_waiting_search_result.setVisibility(View.GONE);
 					}
-						
+				}
+			}
+			
+			if (intent.getAction().equalsIgnoreCase(
+					MessageUti.NETWORK_SEARCH_NETWORK_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
+						BaseResponse.RESPONSE_OK);
+				
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				
+				if (BaseResponse.RESPONSE_OK == nResult
+						&& strErrorCode.length() == 0){
+					
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
-					
+					String strInfo = getString(R.string.unknown_error);
+					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+					m_waiting_search_result.setVisibility(View.GONE);
+					m_network_searching_title.setVisibility(View.GONE);
+				}
+				else{
+					m_waiting_search_result.setVisibility(View.GONE);
+					m_network_searching_title.setVisibility(View.GONE);
 				}
 			}
 			
@@ -403,6 +437,8 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					//Log
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+					m_waiting_search_result.setVisibility(View.GONE);
+					m_network_searching_title.setVisibility(View.GONE);
 				}
 			}
 			
@@ -422,6 +458,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 						&& strErrorCode.length() > 0){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+					m_waiting_search_result.setVisibility(View.GONE);
 				}
 			}
 			

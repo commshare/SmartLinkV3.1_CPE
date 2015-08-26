@@ -201,50 +201,49 @@ public class NetworkManager extends BaseManager {
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
 					// TODO Auto-generated method stub
+					boolean stop_waiting = false;
+					boolean is_error = false;
 					String strErrcode = new String();
                     int ret = response.getResultCode();
                     if(ret == BaseResponse.RESPONSE_OK) {
                     	strErrcode = response.getErrorCode();
                     	if(strErrcode.length() == 0) {
-                    		
                     		try{
                     			NetworkItemList networkItemList = response.getModelResult();
                     			if(networkItemList.SearchState == SEARCH_SUCCESSFUL){
                     				m_NetworkList = networkItemList.ListNetworkItem;
-//                        			Log.v("NetworkSearchResult", m_NetworkList.get(0).ShortName);
-//                    				for(NetworkItem tmp : m_NetworkList){
-//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.Rat));
-//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.State));
-//                    					Log.v("NetworkSearchResult1", Integer.toString(tmp.NetworkID));
-//                    					Log.v("NetworkSearchResult1", tmp.Numberic);
-//                    					Log.v("NetworkSearchResult1", tmp.ShortName);
-//                    					
-//                    				}
                     				stopSearchNetworkResult();
-                					
-                					Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
-                                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                        			m_context.sendBroadcast(megIntent);
+                    				stop_waiting = true;
                         		}
                     			else if(networkItemList.SearchState == SEARCH_FAILED || networkItemList.SearchState == SEARCH_NOT_NETWORK){
+                    				stop_waiting = true;
+                    				is_error = true;
                     				stopSearchNetworkResult();
                     			}
                     			else{
-//                    				Log.v("NetworkSearchResult", Integer.toString(networkItemList.SearchState));
                     			}
                     		}
                     		catch(Exception e){
-//                    			Log.v("NetworkSearchResult2", "Exception");
                     			stopSearchNetworkResult();
+                    			stop_waiting = true;
+                    			is_error = true;
                     		}
                     	}else{
                     		//Log
+                    		stop_waiting = true;
+                    		is_error = true;
                     	}
                     }else{
                     	//Log
+                    	stop_waiting = true;
+                    	is_error = true;
                     }
-                    
+                    Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
+                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                    megIntent.putExtra("needStopWaiting", stop_waiting);
+                    megIntent.putExtra("isError", is_error);
+        			m_context.sendBroadcast(megIntent);
 				}
 				
 			}));
@@ -325,6 +324,10 @@ public class NetworkManager extends BaseManager {
 	
 	
 	private void getNetworkSearchState(){
+		if(FeatureVersionManager.getInstance().isSupportApi("Network", "SearchNetwork") != true){
+			return;
+		}
+		
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork("4.2", new IHttpFinishListener(){
 
 			@Override
@@ -336,18 +339,24 @@ public class NetworkManager extends BaseManager {
                 if(ret == BaseResponse.RESPONSE_OK) {
                 	strErrcode = response.getErrorCode();
                 	if(strErrcode.length() == 0) { 
-//                		Log.v("NetworkSearchResult", "Success");
+                		Log.v("NetworkSearchResult", "Success");
                 		if(m_searchNetworkResultTask == null) {
                 			m_searchNetworkResultTask = new SearchNetworkResultTask();
                 			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_searchNetworkResultTask, 0, 5 * 1000);
                 		}
                 	}else{
-//                		Log.v("NetworkSearchResult", "Failed");
+                		Log.v("NetworkSearchResult", "Failed");
                 	}
                 }
                 else{
-//                	Log.v("NetworkSearchResult", "Failed");
+                	Log.v("NetworkSearchResult", "Failed");
                 }
+                
+                Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_REQUSET);
+                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+    			m_context.sendBroadcast(megIntent);
+                
 			}
     	}));
 	}

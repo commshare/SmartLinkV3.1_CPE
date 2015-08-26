@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -78,7 +79,8 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	private void createControls(){
 
 		m_power_container = (LinearLayout) findViewById(R.id.rl_power_display);
-		if(BusinessMannager.getInstance().getFeatures().getDeviceName().contains("856")){
+		if(!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState"))
+		{
 			m_power_container.setVisibility(View.GONE);
 		}
 		m_btn_smart_mode_switch=(Button)findViewById(R.id.btn_power_smart);
