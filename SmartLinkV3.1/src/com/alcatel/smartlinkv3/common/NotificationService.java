@@ -64,7 +64,7 @@ public class NotificationService extends Service {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-							m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
+						//	m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 					}
 				}
 				
