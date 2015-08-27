@@ -351,9 +351,9 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				return;
 			}
 			String APN = m_edit_apn.getText().toString();
-			if(APN.length() == 0){
-				APN = "3GNET";
-			}
+//			if(APN.length() == 0){
+//				APN = "3GNET";
+//			}
 			String userName = m_edit_user_name.getText().toString();
 			if(userName.length() == 0){
 				userName = "";

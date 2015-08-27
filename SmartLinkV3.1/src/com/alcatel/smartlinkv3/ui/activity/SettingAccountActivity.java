@@ -1,5 +1,8 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
@@ -133,6 +136,14 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		}
 		if(confirmPwd.length() < 4 || confirmPwd.length() > 16){
 			String strInfo = getString(R.string.change_passowrd_invalid_password);
+			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		String splChrs = "[^a-zA-Z0-9-\\+!@\\$#\\^&\\*]" ;
+		Pattern pattern = Pattern.compile(splChrs);
+		Matcher matcher = pattern.matcher(confirmPwd);
+		if(matcher.find()){
+			String strInfo = getString(R.string.login_invalid_password);
 			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			return;
 		}
