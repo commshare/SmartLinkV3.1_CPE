@@ -458,14 +458,13 @@ public class SmartLinkWidget extends AppWidgetProvider {
     	 paint.setTextSize(spTopx(10));
 		}
 
-
     paint.setStyle(Style.STROKE);
     //StrokeWidth will  overstep ringwidth/2
     RectF rectArc = new RectF(0 + ringWidth/2 + borderRingWidth,0 + ringWidth/2 + borderRingWidth,width - ringWidth/2 - borderRingWidth,width - ringWidth/2 - borderRingWidth);
 
     if (monthDataPlan == 0) {
       dataUsedAngle = 0;
-      usegeStatus =  context.getResources().getString(R.string.widget_usage_used);;
+      usegeStatus =  context.getResources().getString(R.string.widget_usage_used);
       dataUsageShowStr = dataUsed;
       if (dataUsageShowStr.length() > 5)
   		{
@@ -491,6 +490,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
       // text color
       paint.setARGB(255, 5, 137, 207);
     } else if (monthDataPlan < usedDataUsage) {
+    	 usegeStatus =  context.getResources().getString(R.string.widget_usage_excess);
       dataUsedAngle = Integer.parseInt(transfToInteger.format(360
           * (usedDataUsage - monthDataPlan) / monthDataPlan));
       dataUsedAngle = dataUsedAngle > 360 ? 360 : dataUsedAngle;

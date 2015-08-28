@@ -535,6 +535,7 @@
 
     <!-- SMART WIDGET START -->
     <string name="widget_usage_left">Restant</string>
+    <string name="widget_usage_excess">Excess</string>
     <string name="widget_usage_used">Utilisé</string>
     <!-- SMART WIDGET END -->
 

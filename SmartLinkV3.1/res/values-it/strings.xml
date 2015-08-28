@@ -527,6 +527,7 @@
 
     <!-- SMART WIDGET START -->
     <string name="widget_usage_left">Residuo</string>
+    <string name="widget_usage_excess">Excess</string>
     <string name="widget_usage_used">Utilizzato</string>
     <!-- SMART WIDGET END -->
 
