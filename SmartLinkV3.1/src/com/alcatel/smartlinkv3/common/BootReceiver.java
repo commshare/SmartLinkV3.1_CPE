@@ -15,9 +15,8 @@ public class BootReceiver extends BroadcastReceiver{
 		
 		else if((intent.getAction().equals(Intent.ACTION_TIME_CHANGED)))
 		{
-
-			//android.os.Process.killProcess(android.os.Process.myPid());
-			//System.exit(1);
+			android.os.Process.killProcess(android.os.Process.myPid());
+			System.exit(1);
 		}
 	}
 }
