@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 				MessageUti.SIM_UNLOCK_PIN_REQUEST));
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.SIM_UNLOCK_PUK_REQUEST));
-		this.registerReceiver(m_msgReceiver, new IntentFilter(
+		this.registerReceiver(m_msgReceiver2, new IntentFilter(
 				MessageUti.USER_LOGOUT_REQUEST));
 		
 		
