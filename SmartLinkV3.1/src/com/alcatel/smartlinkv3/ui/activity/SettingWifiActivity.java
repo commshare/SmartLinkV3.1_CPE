@@ -1,6 +1,8 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import java.util.regex.Pattern;
+
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -1027,16 +1029,10 @@ implements OnClickListener{
 	}
 
 	private boolean checkSsid(){
-		boolean blRes = true;
 		String strSsid = m_strSsid;
-		for (int i = 0; i < strSsid.length(); i++) {
-			char c = strSsid.charAt(i);
-			if (47 == c || 27 == c || 61 == c || 34 == c || 92 == c || 38 == c) {
-				blRes = false;
-				break;
-			}
-		}
-		return blRes;
+		if(strSsid.length() > 32)
+			return false;
+		return strSsid.matches("[a-zA-Z0-9-_. ]+");
 	}
 	
 	private void setViewGroupVisibility(ViewGroup view, final int visibility){

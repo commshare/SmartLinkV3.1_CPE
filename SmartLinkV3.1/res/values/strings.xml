@@ -269,7 +269,7 @@
     <string name="setting_reset_success">Set successfully, device will reset immediately.</string>
     <string name="setting_power_off_failed">Power Off failed.</string>
     <string name="setting_power_off_success">Set successfully, device will power off immediately.</string>
-    <string name="setting_ssid_invalid">The SSID must be ASCII characters but cannot comprise any of the following characters: /,\',=,\&quot;,\\,&amp;.</string>
+    <string name="setting_ssid_invalid">SSID can contain only characters of alphabetical, numerical, &#45; &#46; &#95; and space. It\'s length should be less than 32.</string>
     <string name="setting_wifi_error_title">Change Password</string>
     <string name="setting_change_login_password">Change Login Password</string>
     <string name="setting_log_out">Log Out</string>
