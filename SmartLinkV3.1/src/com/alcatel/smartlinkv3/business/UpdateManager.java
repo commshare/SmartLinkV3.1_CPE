@@ -204,6 +204,28 @@ public class UpdateManager extends BaseManager {
 						}));
 			}
 		}
+		else if(BusinessMannager.getInstance().getSystemInfoModel().getSwVersion().equalsIgnoreCase("Y858_FQ_01.16_02") || BusinessMannager.getInstance().getSystemInfoModel().getSwVersion().equalsIgnoreCase("Y858_FL_01.16_02")){
+			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+			if (blWifiConnected) {
+				HttpRequestManager.GetInstance().sendPostRequest(
+						new HttpUpdate.setFOTAStartDownload("9.2", 
+								new IHttpFinishListener() {
+
+							@Override
+							public void onHttpRequestFinish(BaseResponse response) {
+								// TODO Auto-generated method stub
+								int nRes = response.getResultCode();
+								String strError=response.getErrorCode();
+
+								Intent intent= new Intent(
+										MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
+								intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
+								intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
+								m_context.sendBroadcast(intent);
+							}
+						}));
+			}
+		}
 		else if (FeatureVersionManager.getInstance().isSupportApi("Update", "SetDeviceStartUpdate")) {
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
