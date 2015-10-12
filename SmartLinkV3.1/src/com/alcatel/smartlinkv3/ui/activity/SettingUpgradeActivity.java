@@ -288,7 +288,11 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION));
-		
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
+		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+		m_pb_waiting.setVisibility(View.VISIBLE);
+		setNewDeviceVersion("");
 	}
 
 	@Override
@@ -313,6 +317,19 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 			}
 		}
+		
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
+			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				//do nothing
+				m_pb_waiting.setVisibility(View.GONE);
+			}else {
+				m_pb_waiting.setVisibility(View.GONE);
+				Toast.makeText(this, R.string.setting_upgrade_start_update_failed, Toast.LENGTH_SHORT).show();
+			}
+		}
+		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
