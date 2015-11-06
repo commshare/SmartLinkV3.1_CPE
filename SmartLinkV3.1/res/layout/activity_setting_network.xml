@@ -122,6 +122,9 @@
                android:textColor="@color/color_light_gray"
                android:textSize="20sp" 
                android:layout_gravity="end"
+               android:text="China Unicom"
+               android:maxWidth="120dp"
+               android:singleLine="true"
                />
          </FrameLayout>
          <ImageView
