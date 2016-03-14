@@ -29,6 +29,13 @@ public class WlanSettingResult extends BaseResult{
 	public int WMode_5G = 0; //3: Auto;	4: 802.11a;	5: 802.11a/n; 6: 802.11a/c;
 	public int max_numsta_5G = 0; //5G WIFI max number client
 	public int curr_num = 0; //Current client count that connect to WIFI.
+	public boolean New_Interface=false;
+	public int WlanAPID_2G=-1;
+	public int WlanAPID_5G=-1;
+	public int curr_num_2G= 0;
+	public int curr_num_5G= 0;
+	public int ApStatus_2G=1;
+	public int ApStatus_5G=1;
 	
 	
 	public void clone(WlanSettingResult src) {	
@@ -61,6 +68,7 @@ public class WlanSettingResult extends BaseResult{
 		WMode_5G = src.WMode_5G;
 		max_numsta_5G= src.max_numsta_5G;
 		curr_num = src.curr_num;
+		New_Interface=src.New_Interface;
 	}
 	
 	@Override
@@ -92,6 +100,7 @@ public class WlanSettingResult extends BaseResult{
 		WMode_5G = 0;
 		max_numsta_5G= 0;
 		curr_num = 0;
+		New_Interface=false;
 	}
 
 }

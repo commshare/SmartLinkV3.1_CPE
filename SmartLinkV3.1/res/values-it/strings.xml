@@ -79,13 +79,19 @@
     <string name="home_connected_duration">%1$sHrs %2$sMins</string>
     <string name="access_lable">connesso</string>
     <string name="home_sim_loched">Scheda SIM bloccata</string>
+    <string name="home_pin_locked_notice">Please verify your PIN code at the home menu first.</string>
     <string name="home_no_sim">Nessuna scheda SIM</string>
     <string name="home_sim_not_accessible">Scheda SIM non accessibile</string>
     <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Il piano dati mensile è stato esaurito. Se si desidera ricomporre, modificare i valori mensili o reimpostare il consumo.</string>
     <!-- Home view end -->
 
-
+ <!-- pop dialog start -->
+    <string name="pop_dialog_usagesetting">Usage Setting</string>
+    <string name="pop_dialog_clearhistory">Clear History</string>
+    <!-- pop dialog end -->
+    
+    
     <!-- Usage view end -->
     <string name="usage_view_home">Casa</string>
     <string name="usage_view_duration">Durata</string>

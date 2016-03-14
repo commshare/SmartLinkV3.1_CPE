@@ -139,6 +139,111 @@ implements OnClickListener{
 		m_tv_back.setOnClickListener(this);
 		m_ib_back.setOnClickListener(this);
 	}
+	
+	private void set_Web_Mode(boolean is_2G)
+	{
+		SecurityMode securityMode;
+		
+		if(is_2G==true)
+			securityMode = SecurityMode.build(SecurityMode.antiBuild(BusinessMannager.getInstance().getSecurityMode()));
+		else
+			securityMode = SecurityMode.build(SecurityMode.antiBuild(BusinessMannager.getInstance().getSecurityMode_5G()));
+		
+		if(securityMode == SecurityMode.Disable) 
+		{
+			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
+			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
+			m_et_password.setVisibility(View.GONE);
+			m_ib_hide_password.setVisibility(View.GONE);
+			m_ib_show_password.setVisibility(View.GONE);
+			m_ll_encryption.setVisibility(View.GONE);
+			m_ll_security.setVisibility(View.GONE);
+			setAllDividerVisibility(View.GONE);
+			setOneDividerVisibility(View.VISIBLE);
+			m_blPasswordOpened = false;
+			m_btn_psd_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
+		}
+		else
+		{
+			m_blPasswordOpened = true;
+			m_et_password.setVisibility(View.VISIBLE);
+			m_et_password.setEnabled(true);
+			m_ib_hide_password.setVisibility(View.VISIBLE);
+			m_ib_show_password.setVisibility(View.GONE);
+			m_btn_psd_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
+			m_ll_encryption.setVisibility(View.VISIBLE);
+			m_ll_security.setVisibility(View.VISIBLE);
+			m_ll_password_status.setVisibility(View.VISIBLE);
+			setAllDividerVisibility(View.VISIBLE);
+			
+		}
+
+		if(securityMode == SecurityMode.WEP)
+		{
+			m_security_type.setText(R.string.setting_wifi_wep);
+		}
+		else if(securityMode == SecurityMode.WPA)
+		{
+			m_security_type.setText(R.string.setting_wifi_wpa);
+		}
+		else if(securityMode == SecurityMode.WPA2)
+		{
+			m_security_type.setText(R.string.setting_wifi_wpa2);
+		}
+		else if(securityMode == SecurityMode.WPA_WPA2)
+		{
+			m_security_type.setText(R.string.setting_wifi_wpa_or_wpa2);
+		}
+		else
+		{
+			m_security_type.setText(R.string.setting_wifi_wep);
+		}
+
+		//
+		if(securityMode == SecurityMode.WEP)
+		{
+			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
+			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
+			WEPEncryption wepType;
+			if(is_2G==true)
+				wepType = BusinessMannager.getInstance().getWEPEncryption();
+			else
+				wepType = BusinessMannager.getInstance().getWEPEncryption_5G();
+			
+			if(wepType == WEPEncryption.Open)
+			{
+				m_encription_mode.setText(R.string.setting_wifi_open);
+			}
+			else
+			{
+				m_encription_mode.setText(R.string.setting_wifi_share);
+			} 
+			
+		}
+		else
+		{
+			m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
+			m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
+			WPAEncryption wpaType ;
+			if(is_2G==true)
+				wpaType = BusinessMannager.getInstance().getWPAEncryption();
+			else
+				wpaType = BusinessMannager.getInstance().getWPAEncryption_5G();
+
+			if(wpaType == WPAEncryption.AUTO)
+			{
+				m_encription_mode.setText(R.string.setting_network_mode_auto);
+			}
+			else if(wpaType == WPAEncryption.AES)
+			{
+				m_encription_mode.setText(R.string.setting_wifi_aes);
+			}
+			else
+			{
+				m_encription_mode.setText(R.string.setting_wifi_tkip);
+			}
+		}		
+	}
 
 	private void createControls(){
 //		m_continue_to_change_to_5g = false;
@@ -151,8 +256,55 @@ implements OnClickListener{
 		setViewGroupVisibility(m_rg_wifi_mode, View.VISIBLE);
 		m_rb_2point4G_wifi = (RadioButton)findViewById(R.id.rb_2point4G_wifi);
 		m_rb_5G_wifi = (RadioButton)findViewById(R.id.rb_5G_wifi);
-		m_rb_2point4G_wifi.setOnClickListener(this);
-		m_rb_5G_wifi.setOnClickListener(this);
+		//m_rb_2point4G_wifi.setOnClickListener(this);
+		m_rb_2point4G_wifi.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v)
+			{
+				m_et_ssid.setText(BusinessMannager.getInstance().getSsid());
+				m_et_password.setText(BusinessMannager.getInstance().getWifiPwd());
+				
+				if(BusinessMannager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Disable)){
+					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
+				}
+				else if(BusinessMannager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Enable)){
+					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
+				}
+						
+				boolean IS_2G=true;
+				set_Web_Mode(IS_2G);
+				m_rb_2point4G_wifi.setChecked(true);
+				m_rb_5G_wifi.setChecked(false);
+		
+			}
+		});
+		
+		
+		//m_rb_5G_wifi.setOnClickListener(this);
+		m_rb_5G_wifi.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v)
+			{
+						
+				m_et_ssid.setText(BusinessMannager.getInstance().getSsid_5G());
+				m_et_password.setText( BusinessMannager.getInstance().getWifiPwd_5G());
+				
+				if(BusinessMannager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Disable)){
+					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
+				}
+				else if(BusinessMannager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Enable)){
+					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
+				}
+				boolean IS_2G=false;
+				set_Web_Mode(IS_2G);
+				m_rb_2point4G_wifi.setChecked(false);
+				m_rb_5G_wifi.setChecked(true);
+
+					
+			}
+		});
 		//
 		if(!m_ib_show_password.isShown()){
 			m_et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);

@@ -82,6 +82,7 @@
     <string name="access_lable">connecté</string>
     <string name="home_sim_loched">Carte SIM verrouillée</string>
     <string name="home_no_sim">Aucune carte SIM</string>
+    <string name="home_pin_locked_notice">Please verify your PIN code at the home menu first.</string>
     <string name="home_sim_not_accessible">Carte SIM inaccessible</string>
     <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Le forfait données mensuel est atteint. Pour pouvoir recomposer, modifiez ses valeurs ou réinitialisez la consommation.</string>
