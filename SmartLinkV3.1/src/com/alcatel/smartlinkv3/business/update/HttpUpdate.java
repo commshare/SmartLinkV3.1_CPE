@@ -363,4 +363,45 @@ public class HttpUpdate {
 		}
 		
 	}
+	
+	
+	public static class setFOTAStartUpdate extends BaseRequest
+	{
+		public setFOTAStartUpdate(String strId, IHttpFinishListener callback) 
+		{
+			super(callback);
+			// TODO Auto-generated constructor stub
+			m_strId = strId;
+		}
+
+		@Override
+		protected void buildHttpParamJson()
+		{
+			// TODO Auto-generated method stub
+			try {
+				m_requestParamJson.put(ConstValue.JSON_RPC,
+						ConstValue.JSON_RPC_VERSION);
+				m_requestParamJson.put(ConstValue.JSON_METHOD,
+						"setFOTAStartUpdate");
+
+				m_requestParamJson
+						.put(ConstValue.JSON_PARAMS, null);
+				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+			} catch (JSONException e) 
+			{
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public BaseResponse createResponseObject() 
+		{
+			// TODO Auto-generated method stub
+			return new setFOTAStartDownloadResponse(m_finsishCallback);
+		}
+		
+	}
+	
+	
 }

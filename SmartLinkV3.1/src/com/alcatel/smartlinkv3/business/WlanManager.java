@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.system.HttpSystem.GetFeature;
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
+import com.alcatel.smartlinkv3.business.wlan.WlanNewSettingResult;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
@@ -260,6 +261,7 @@ public class WlanManager extends BaseManager {
 		Integer nEncryption = (Integer)data.getParamByKey("Encryption");
 		Integer nSsidStatus = (Integer) data.getParamByKey("SsidStatus");
 		final WlanSettingResult settings = new WlanSettingResult();
+		final WlanNewSettingResult Newsettings = new WlanNewSettingResult();
 		settings.clone(m_settings);
 		settings.WlanAPMode = nWlanAPMode;
 		WlanFrequency frequencyMode = WlanFrequency.build(nWlanAPMode);

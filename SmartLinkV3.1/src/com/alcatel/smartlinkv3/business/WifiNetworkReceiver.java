@@ -15,6 +15,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.widget.Toast;
 public class WifiNetworkReceiver extends BroadcastReceiver{
 	private static int m_nType = -1;
 	private static String m_strGatewayMac = new String();

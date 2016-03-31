@@ -19,6 +19,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class HttpWlanSetting {
 

@@ -159,6 +159,12 @@ public class MessageUti {
 			"com.alcatel.smartlinkv3.business.update.getDeviceNewVersion";
 	public static String UPDATE_SET_DEVICE_START_UPDATE=
 			"com.alcatel.smartlinkv3.business.update.setDeviceStartUpdate";
+	
+	public static String UPDATE_SET_DEVICE_START_FOTA_UPDATE=
+			"com.alcatel.smartlinkv3.business.update.setFOTAStartUpdate";   //add by zhanghao 20160317 for FOTA update
+	
+	
+	
 	public static String UPDATE_GET_DEVICE_UPGRADE_STATE=
 			"com.alcatel.smartlinkv3.business.update.getDeviceUpgradeState";
 	public static String UPDATE_SET_DEVICE_STOP_UPDATE=
@@ -302,6 +308,9 @@ public class MessageUti {
 				new HttpMethodUti(UpdateManager.class, "getDeviceNewVersion"));
 		httpMethods.put(UPDATE_SET_DEVICE_START_UPDATE,
 				new HttpMethodUti(UpdateManager.class, "startUpdate"));
+		
+		httpMethods.put(UPDATE_SET_DEVICE_START_FOTA_UPDATE,
+				new HttpMethodUti(UpdateManager.class, "startFOTAUpdate"));
 		httpMethods.put(UPDATE_GET_DEVICE_UPGRADE_STATE,
 				new HttpMethodUti(UpdateManager.class, "getUpgradeState"));
 		httpMethods.put(UPDATE_SET_DEVICE_STOP_UPDATE,
