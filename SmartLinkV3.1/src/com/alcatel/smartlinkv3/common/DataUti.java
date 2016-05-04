@@ -3,8 +3,12 @@ package com.alcatel.smartlinkv3.common;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.net.ParseException;
+import android.util.Log;
+
 public class DataUti {
-	public static String DATE_FORMATE = "yyyy-MM-dd";
+	public final static String TAG = "DateUtils";
+	public final static String DATE_FORMATE = "yyyy-MM-dd";
 	
 	public static int parseInt(String strValue) {
 		if(null == strValue || strValue.length() == 0)
@@ -58,4 +62,38 @@ public class DataUti {
         
         return 0;
     }
+	
+	public static Date formatDateFromString(String time) {
+		String pattern;
+		if (time.matches("\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2}")) {
+			pattern = "dd-MM-yyyy HH:mm:ss";
+		} else if (time.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
+			pattern = "yyyy-MM-dd HH:mm:ss";
+		} else if (time.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}")) {
+			pattern = "dd/MM/yyyy HH:mm:ss";
+		} else if (time.matches("\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
+			pattern = "yyyy/MM/dd HH:mm:ss";
+		} else if (time.matches("\\d{2}.\\d{2}.\\d{4} \\d{2}:\\d{2}:\\d{2}")) {
+			pattern = "dd.MM.yyyy HH:mm:ss";
+		} else if (time.matches("\\d{4}.\\d{2}.\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
+			pattern = "yyyy.MM.dd HH:mm:ss";
+		} else {
+			Log.e(TAG, "unspport time format " + time);
+			return null;
+		}
+		SimpleDateFormat sDate = new SimpleDateFormat(pattern);
+		
+		Date smsDate = null;
+		try {
+			smsDate = sDate.parse(time);
+		} catch (ParseException e) {
+			Log.e(TAG, "formatDateFromString ParseException " + time);
+			e.printStackTrace();
+		} catch (Exception e) {
+			Log.e(TAG, "formatDateFromString exception " + time);
+			e.printStackTrace();
+		}
+
+		return smsDate;
+	}
 }

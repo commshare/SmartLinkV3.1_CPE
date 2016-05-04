@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
+import com.alcatel.smartlinkv3.common.DataUti;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
@@ -149,8 +150,8 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		public int compare(Object o1, Object o2) {
 			SMSSummaryItem c1 = (SMSSummaryItem) o1;
 			SMSSummaryItem c2 = (SMSSummaryItem) o2;
-			Date d1 = ActivitySmsDetail.formatDateFromString(c1.strSummaryTime);
-			Date d2 = ActivitySmsDetail.formatDateFromString(c2.strSummaryTime);
+			Date d1 = DataUti.formatDateFromString(c1.strSummaryTime);
+			Date d2 = DataUti.formatDateFromString(c2.strSummaryTime);
 			
 			if(d1.after(d2) == true)
 				return -1;
@@ -291,18 +292,8 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			}else{
 				holder.unreadImage.setVisibility(View.VISIBLE);
 			}
-			
-			String strTime = (String) smsItem.strSummaryTime;
-			SimpleDateFormat sDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			Date summaryDate = null;
-			try {
-				summaryDate = sDate.parse(strTime);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				
-			}
+						
+			Date summaryDate = DataUti.formatDateFromString(smsItem.strSummaryTime);
 			
 			String strTimeText = new String();
 			if(summaryDate != null) {

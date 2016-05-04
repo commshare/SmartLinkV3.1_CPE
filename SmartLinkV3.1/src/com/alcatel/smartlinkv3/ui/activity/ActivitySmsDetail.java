@@ -14,6 +14,7 @@ import com.alcatel.smartlinkv3.business.SMSManager;
 import com.alcatel.smartlinkv3.business.model.SMSContentItemModel;
 import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
 import com.alcatel.smartlinkv3.common.Const;
+import com.alcatel.smartlinkv3.common.DataUti;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
@@ -635,8 +636,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		public int compare(Object o1, Object o2) {
 			SMSContentItemModel c1 = (SMSContentItemModel) o1;
 			SMSContentItemModel c2 = (SMSContentItemModel) o2;
-			Date d1 = formatDateFromString(c1.SMSTime);
-			Date d2 = formatDateFromString(c2.SMSTime);
+			Date d1 = DataUti.formatDateFromString(c1.SMSTime);
+			Date d2 = DataUti.formatDateFromString(c2.SMSTime);
 			if (d1.after(d2) == true)
 				return 1;
 			if (d1.equals(d2) == true)
@@ -645,21 +646,6 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		}
 	}
 
-	public static Date formatDateFromString(String time) {
-		SimpleDateFormat sDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		Date smsDate = null;
-		try {
-			smsDate = sDate.parse(time);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return smsDate;
-	}
 
 	private void getSmsListData(SmsContentMessagesModel smsContent) {
 		Collections.sort(smsContent.SMSContentList, new SortSmsListByTime());
@@ -668,7 +654,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		for (int i = 0; i < smsContent.SMSContentList.size(); i++) {
 			SMSContentItemModel sms = smsContent.SMSContentList.get(i);
 
-			Date smsDate = formatDateFromString(sms.SMSTime);
+			Date smsDate = DataUti.formatDateFromString(sms.SMSTime);
 
 			if (i == 0) {
 				SMSDetailItem item = new SMSDetailItem();
@@ -680,7 +666,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 
 				m_smsListData.add(item);
 			} else {
-				Date preSmsDate = formatDateFromString(smsContent.SMSContentList
+				Date preSmsDate = DataUti.formatDateFromString(smsContent.SMSContentList
 						.get(i - 1).SMSTime);
 				if (!(smsDate.getYear() == preSmsDate.getYear()
 						&& smsDate.getMonth() == preSmsDate.getMonth() && smsDate
