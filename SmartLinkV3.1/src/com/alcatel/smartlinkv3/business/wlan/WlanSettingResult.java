@@ -35,7 +35,7 @@ public class WlanSettingResult extends BaseResult{
 	public int curr_num_2G= 0;
 	public int curr_num_5G= 0;
 	public int ApStatus_2G=1;
-	public int ApStatus_5G=1;
+	public int ApStatus_5G=0;
 	
 	
 	public void clone(WlanSettingResult src) {	
@@ -69,6 +69,12 @@ public class WlanSettingResult extends BaseResult{
 		max_numsta_5G= src.max_numsta_5G;
 		curr_num = src.curr_num;
 		New_Interface=src.New_Interface;
+		ApStatus_2G=src.ApStatus_2G;
+		ApStatus_5G=src.ApStatus_5G;
+		WlanAPID_2G=src.WlanAPID_2G;
+		WlanAPID_5G=src.WlanAPID_5G;
+		curr_num_2G=src.curr_num_2G;
+		curr_num_5G= src.curr_num_5G;
 	}
 	
 	@Override
@@ -100,6 +106,14 @@ public class WlanSettingResult extends BaseResult{
 		WMode_5G = 0;
 		max_numsta_5G= 0;
 		curr_num = 0;
+		
+		WlanAPID_2G=-1;
+		WlanAPID_5G=-1;
+		curr_num_2G= 0;
+		curr_num_5G= 0;
+		ApStatus_2G=1;
+		ApStatus_5G=1;
+		
 		New_Interface=false;
 	}
 

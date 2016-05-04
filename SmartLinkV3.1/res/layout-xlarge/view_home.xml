@@ -6,15 +6,16 @@
 
         <LinearLayout
             android:id="@+id/frame_connect"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dip"
 	        android:layout_weight="4"
             android:background="@color/home_connect_background_blue"
             android:orientation="vertical" >
             <LinearLayout
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dip"
 	            android:layout_weight="7"
+	            android:orientation="vertical"
 	            android:gravity="center">
                 <RelativeLayout
                     android:id="@+id/connect_layout"
@@ -124,7 +125,6 @@
                   	android:paddingBottom="6dip"
 	                android:paddingTop="9dip">  
 	                <ImageView
-	                    android:id="@+id/home_failed"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:background="@drawable/sms_failed_white_bg"
@@ -231,7 +231,7 @@
 	                android:paddingLeft="100dp"
 	                android:paddingRight="100dp"> 
 	                <TextView 
-				        android:id="@+id/txtHide" 
+				        android:id="@+id/txtHide1" 
 				        android:layout_width="0dp" 
 				        android:layout_height="0dp"  
 				        android:layout_centerHorizontal="true" />
@@ -239,7 +239,7 @@
 	                    android:id="@+id/left_signal"
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
-	                    android:layout_toLeftOf="@id/txtHide"
+	                    android:layout_toLeftOf="@id/txtHide1"
 	                    android:layout_centerVertical="true" >
 	                    <ImageView
 	                        android:id="@+id/connct_signal"
@@ -264,7 +264,7 @@
 	                <RelativeLayout
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
-	                    android:layout_toRightOf="@id/txtHide"
+	                    android:layout_toRightOf="@id/txtHide1"
 	                    android:layout_centerVertical="true"
 	                    android:orientation="horizontal"
 	                    android:gravity="center" >
@@ -303,7 +303,7 @@
 	                android:paddingLeft="100dp"
 	                android:paddingRight="100dp" >
 	                <TextView 
-				        android:id="@+id/txtHide" 
+				        android:id="@+id/txtHide2" 
 				        android:layout_width="0dip" 
 				        android:layout_height="0dip"  
 				        android:layout_centerHorizontal="true" />
@@ -311,7 +311,7 @@
 	                <FrameLayout
 	                    android:layout_width="match_parent"
 	                    android:layout_height="match_parent"
-	                    android:layout_toLeftOf="@id/txtHide"
+	                    android:layout_toLeftOf="@id/txtHide2"
 	                    android:layout_marginRight="5dip"
 	                    android:layout_centerVertical="true" >
 	                    <ProgressBar
@@ -338,7 +338,7 @@
 	                    android:id="@+id/battery_scale_layout"
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
-	                    android:layout_toRightOf="@id/txtHide" 
+	                    android:layout_toRightOf="@id/txtHide2" 
 		        		android:layout_centerVertical="true"
 	                    android:orientation="horizontal" >
 	                    <TextView
@@ -368,7 +368,7 @@
 	                    android:id="@+id/battery_description_layout"
 	                    android:layout_width="165dip"
 	                    android:layout_height="wrap_content"
-	                    android:layout_toRightOf="@id/txtHide" 
+	                    android:layout_toRightOf="@id/txtHide2" 
 		        		android:layout_centerVertical="true"
 	                    android:visibility="visible"
 	                    android:orientation="horizontal" >
@@ -397,7 +397,7 @@
 	                android:paddingLeft="100dp"
 	                android:paddingRight="100dp">
 	                <TextView 
-				        android:id="@+id/txtHide1" 
+				        android:id="@+id/txtHide3" 
 				        android:layout_width="0dip" 
 				        android:layout_height="0dip"  
 				        android:layout_centerHorizontal="true" />
@@ -406,7 +406,7 @@
 	                    android:layout_width="match_parent"
 	                    android:layout_height="match_parent"
 	                    android:clickable="true"
-	                    android:layout_toLeftOf="@id/txtHide1" 
+	                    android:layout_toLeftOf="@id/txtHide3" 
 	                    android:orientation="horizontal"
 	                    android:gravity="center" >
 	                     <ImageView
@@ -423,7 +423,7 @@
 	                    android:layout_width="match_parent"
 	                    android:clickable="true"
 	                    android:layout_height="match_parent"
-	                    android:layout_toRightOf="@id/txtHide1" 
+	                    android:layout_toRightOf="@id/txtHide3" 
 		        		android:layout_centerVertical="true"
 	                    android:orientation="horizontal"
 	                    android:gravity="center">

@@ -270,10 +270,14 @@ public class WlanManager extends BaseManager {
 		if (WlanFrequency.Frequency_24GHZ == frequencyMode) {
 			settings.Ssid = strSsid;
 			settings.SsidHidden = nSsidStatus;
+			settings.ApStatus_2G=1;
+			settings.ApStatus_5G=0;
 			bl24GHZ = true;
 		}else if (WlanFrequency.Frequency_5GHZ == frequencyMode) {
 			settings.Ssid_5G = strSsid;
 			settings.SsidHidden_5G = nSsidStatus;
+			settings.ApStatus_2G=0;
+			settings.ApStatus_5G=1;
 			bl5GHZ = true;
 		}else{
 			settings.Ssid = strSsid;

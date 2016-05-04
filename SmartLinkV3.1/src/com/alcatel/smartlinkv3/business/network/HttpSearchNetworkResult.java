@@ -84,6 +84,8 @@ public class HttpSearchNetworkResult {
 		public int NetworkID;
 		public String FullName;
 		public String ShortName;
+		public String mcc;
+		public String mnc;
 	}
 	
 	public class NetworkItemList extends BaseResult{

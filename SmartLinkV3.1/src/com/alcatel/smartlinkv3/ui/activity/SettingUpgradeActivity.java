@@ -16,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
@@ -213,6 +214,31 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			SettingUpgradeActivity.this.finish();				
 		}
 	}
+	private void onBtnFirmwareUpdate()
+	{	
+			final InquireDialog inquireDlg = new InquireDialog(this);
+			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+			inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
+			inquireDlg.m_contentTextView.setText(R.string.setting_upgrade_firmware_warning);
+			inquireDlg.m_contentDescriptionTextView.setText("");
+			inquireDlg.m_confirmBtn.setBackgroundResource(R.drawable.selector_common_button);
+			inquireDlg.m_confirmBtn.setText(R.string.ok);
+			inquireDlg.showDialog(new OnInquireApply() 
+			{
+
+				@Override
+				public void onInquireApply() 
+				{
+					// TODO Auto-generated method stub
+					//upgrade firmware
+					ShowWaiting(true);
+					inquireDlg.closeDialog();
+					BusinessMannager.getInstance().sendRequestMessage(
+							MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE, null);
+				}
+			});
+		
+	}
 	private void onBtnFirmwareCheck(){
 		if (m_blHasNewFirmware) {
 			m_nUpdradeFWProgress = 0;
@@ -283,6 +309,13 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_SET_DEVICE_START_UPDATE));
+		
+		registerReceiver(m_msgReceiver, 
+				new IntentFilter(MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE));
+		
+		
+		
+		//UPDATE_SET_FOTA_START_Download
 
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE));
@@ -368,7 +401,16 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 					Toast.makeText(this, R.string.setting_upgrade_not_start, Toast.LENGTH_SHORT).show();
 				}else if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
 					ShowWaiting(false);
-					Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
+					if (!FeatureVersionManager.getInstance().
+							isSupportApi("System", "AccessSqliteDB")) 
+					{
+						Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
+					}
+					else
+					{
+						BusinessMannager.getInstance().sendRequestMessage(MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE, null);
+						Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
+					}
 				}else if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
 					m_nUpdradeFWProgress = info.getProcess();
 					String strProgress = m_nUpdradeFWProgress+"%";

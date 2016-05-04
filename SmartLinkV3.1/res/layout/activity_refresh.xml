@@ -37,7 +37,6 @@
 		        android:id="@+id/image_connection"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_below="@id/layout_top"
 		        android:layout_centerHorizontal="true"
 		        android:layout_marginTop="20dip"
 		        android:layout_marginBottom="30dp"

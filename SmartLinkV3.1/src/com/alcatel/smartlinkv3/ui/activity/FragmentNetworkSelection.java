@@ -263,7 +263,26 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				holder = (ViewHolder)convertView.getTag();
 			}
 			
-			holder.m_network_radiobutton.setText(m_data.get(position).ShortName);
+			//holder.m_network_radiobutton.setText(m_data.get(position).ShortName);
+			String Network_mode="";
+			if(m_data.get(position).Rat == 1)
+			{
+				Network_mode=" (2G)";
+				
+			}
+			else if(m_data.get(position).Rat == 2)
+			{
+				Network_mode=" (3G)";
+				
+			}
+			else if(m_data.get(position).Rat == 3)
+			{
+				Network_mode=" (4G)";
+				
+			}
+			final String Short_name1=m_data.get(position).ShortName+Network_mode;
+			
+			holder.m_network_radiobutton.setText(Short_name1);
 			if(m_data.get(position).State == 0){
 				holder.m_network_title.setText("Unknown");
 				holder.m_network_radiobutton.setEnabled(false);

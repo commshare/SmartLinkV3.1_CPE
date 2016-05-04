@@ -290,7 +290,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 							.getContactMessagesAtOnceRequest();
 					String msgRes = this
 							.getString(R.string.sms_delete_multi_success);
-					Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 					this.finish();
 				} else {
 					String strMsg = getString(R.string.sms_delete_multi_error);
@@ -449,9 +449,22 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		if (strContent != null && strContent.length() > 0 && strNumber != null
 				&& strNumber.length() > 0) {
 			DataValue data = new DataValue();
-			data.addParam("SMSId", m_nContactID);
+			//data.addParam("SMSId", m_nContactID);
 			data.addParam("Content", strContent);
 			data.addParam("Number", strNumber);
+			//add by zhanghao for same Draft message display many time in draft message box 20160403
+			SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
+			if (null != item && item.eSMSType == EnumSMSType.Draft) 
+			{
+				//DataValue data1 = new DataValue();
+				//data1.addParam("DelFlag", EnumSMSDelFlag.Delete_message);
+				//data1.addParam("ContactId", item.nContactID);
+				data.addParam("SMSId", item.nSMSID);
+				//BusinessMannager.getInstance().sendRequestMessage(
+						//MessageUti.SMS_DELETE_SMS_REQUSET, data1);
+			}
+			//end to add
+			
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.SMS_SAVE_SMS_REQUSET, data);
 		} else {

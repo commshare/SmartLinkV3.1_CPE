@@ -75,7 +75,7 @@
             android:layout_height="20dip"/>
 	        
         <LinearLayout
-            android:id="@+id/frame_roaming"
+            android:id="@+id/frame_roaming1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="6dip"

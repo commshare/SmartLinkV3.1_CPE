@@ -55,6 +55,8 @@ implements OnClickListener{
 	private boolean m_blPasswordOpened = false;
 	private int m_nPreWlanAPMode = -1;
 	private int m_nWlanAPMode = -1;
+	private int ApStatus_2G=-1;
+	private int ApStatus_5G=-1;
 	private String m_strPreSsid = "";
 	private String m_strSsid = "";
 	private int m_nPreSecurityMode=0;
@@ -256,8 +258,9 @@ implements OnClickListener{
 		setViewGroupVisibility(m_rg_wifi_mode, View.VISIBLE);
 		m_rb_2point4G_wifi = (RadioButton)findViewById(R.id.rb_2point4G_wifi);
 		m_rb_5G_wifi = (RadioButton)findViewById(R.id.rb_5G_wifi);
-		//m_rb_2point4G_wifi.setOnClickListener(this);
-		m_rb_2point4G_wifi.setOnClickListener(new OnClickListener() 
+		m_rb_2point4G_wifi.setOnClickListener(this);
+		m_rb_5G_wifi.setOnClickListener(this);
+		/*m_rb_2point4G_wifi.setOnClickListener(new OnClickListener() 
 		{
 			@Override
 			public void onClick(View v)
@@ -304,7 +307,7 @@ implements OnClickListener{
 
 					
 			}
-		});
+		});*/
 		//
 		if(!m_ib_show_password.isShown()){
 			m_et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);

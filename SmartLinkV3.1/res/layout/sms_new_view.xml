@@ -74,7 +74,7 @@
 	        android:orientation="vertical" 
 	        android:background="@color/main_tabbar_background">
 			<RelativeLayout
-			    android:id="@+id/to_layout"
+			    android:id="@+id/to_layout_r"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:layout_marginLeft="20dip"
