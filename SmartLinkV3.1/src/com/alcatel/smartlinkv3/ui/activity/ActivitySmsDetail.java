@@ -420,7 +420,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.back_layout:
-			OnBtnBack();
+			onBackPressed();
 			break;
 
 		case R.id.ID_SMS_DETAIL_BUTTON_SEND:
@@ -438,6 +438,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 	@Override
 	public void onBackPressed() {
 		OnBtnBack();
+		super.onBackPressed();
 	}
 
 	//
