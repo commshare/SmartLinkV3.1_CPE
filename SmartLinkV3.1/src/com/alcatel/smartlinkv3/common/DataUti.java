@@ -73,9 +73,9 @@ public class DataUti {
 			pattern = "dd/MM/yyyy HH:mm:ss";
 		} else if (time.matches("\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
 			pattern = "yyyy/MM/dd HH:mm:ss";
-		} else if (time.matches("\\d{2}.\\d{2}.\\d{4} \\d{2}:\\d{2}:\\d{2}")) {
+		} else if (time.matches("\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}:\\d{2}:\\d{2}")) {
 			pattern = "dd.MM.yyyy HH:mm:ss";
-		} else if (time.matches("\\d{4}.\\d{2}.\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
+		} else if (time.matches("\\d{4}\\.\\d{2}\\.\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
 			pattern = "yyyy.MM.dd HH:mm:ss";
 		} else {
 			Log.e(TAG, "unspport time format " + time);

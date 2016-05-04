@@ -54,5 +54,9 @@
     <dimen name="quick_setup_puk_edittext_width">180dip</dimen>
     <dimen name="quick_setup_puk_textview_width">90dip</dimen>
     <dimen name="quick_setup_edittext_height">30dip</dimen>
+    
+    <dimen name="setting_name_size_s">20sp</dimen>
+    <dimen name="setting_prompt_size_s">15sp</dimen>
+    <dimen name="setting_padding_s">10dp</dimen>
 
 </resources>
