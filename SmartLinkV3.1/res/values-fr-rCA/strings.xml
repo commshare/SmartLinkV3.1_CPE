@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">LINK APP</string>
+    <string name="app_name">GOFI APP</string>
 
     <!-- common start -->
     <string name="cancel">Annuler</string>
@@ -24,8 +24,8 @@
     <!-- Qucik Setup -->
     <string name="qs_title">Configuration rapide</string>
     <string name="qs_exit_query">Fermer Configuration rapide</string>
-    <string name="qs_item_pin_code">Code PIN</string>
-    <string name="qs_pin_code_prompt">Saisissez le code PIN.\nTentatives restantes : <xliff:g id="INPUTTIMES">%1$d</xliff:g> </string>
+    <string name="qs_item_pin_code">Code NIP</string>
+    <string name="qs_pin_code_prompt">Saisissez le code NIP.\nTentatives restantes : <xliff:g id="INPUTTIMES">%1$d</xliff:g> </string>
     <string name="qs_item_wifi_ssid">Nom du réseau Wi-Fi (SSID)</string>
     <string name="qs_wifi_ssid_prompt">Le SSID doit être de 1&#8211;32 caractères.</string>
     <string name="qs_item_wifi_passwd">Mot de passe Wi-Fi</string>
@@ -35,11 +35,11 @@
     <string name="qs_summary">Appareil prêt à l’emploi.</string>
     <string name="qs_wifi_ssid">Nom du réseau Wi-Fi (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>
     <string name="qs_wifi_passwd">Mot de passe Wi-Fi: <xliff:g id="PASSWD">%1$s</xliff:g></string>
-    <string name="qs_puk_code_title">Code PUK </string>
+    <string name="qs_puk_code_title">Code PUK</string>
     <string name="qs_puk_code_prompt">Saisissez le code PUK\nTentatives restantes : <xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
     <string name="qs_puk_code">Code PUK: </string>
-    <string name="qs_pin_code_new">Nouveau code PIN: </string>
-    <string name="qs_pin_code_confirm">Confirmation : </string>
+    <string name="qs_pin_code_new">Nouveau code NIP:</string>
+    <string name="qs_pin_code_confirm">Confirmer le NIP :</string>
     <!-- Quick Setup End -->
 
 
@@ -82,7 +82,7 @@
     <string name="access_lable">connecté</string>
     <string name="home_sim_loched">Carte SIM verrouillée</string>
     <string name="home_no_sim">Aucune carte SIM</string>
-    <string name="home_pin_locked_notice">Please verify your PIN code at the home menu first.</string>
+    <string name="home_pin_locked_notice">S\'il vous plaît vérifier votre code NIP dans le menu d\'Accueil</string>
     <string name="home_sim_not_accessible">Carte SIM inaccessible</string>
     <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Le forfait de données mensuel est épuisé. Pour recomposer, modifiez les valeurs mensuelles ou réinitialisez la consommation.</string>
@@ -164,7 +164,7 @@
     <string name="microsd_file">Fichier</string>
     <string name="microsd_videos">Vidéos</string>
     <string name="microsd_music">Musique</string>
-    <string name="microsd_pictures">Images </string>
+    <string name="microsd_pictures">Images</string>
     <string name="microsd_no_sdcard">Insérez une carte SD !</string>
     <!-- microsd end -->
 
@@ -216,7 +216,7 @@
     <string name="setting_about_version">Version</string>
     <string name="setting_about_official_website">Site Web officiel</string>
     <string name="setting_about_management_page">Page de gestion</string>
-    <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. Tous droits réservés.</string>
+    <string name="setting_about_copyright">Copyright © 2014&#8211;2016 TCL Communication Ltd. Tous droits réservés.</string>
     <string name="setting_upgrade_device_version">Appareil : Version actuelle</string>
     <string name="setting_upgrade_new_device_version">Rechercher une nouvelle version</string>
     <string name="setting_upgrade_btn_check">Vérifier</string>
@@ -251,9 +251,9 @@
     <string name="setting_device_btn_reset">Réinitialiser</string>
     <string name="setting_device_upgrade_system">Mettre le système à niveau</string>
     <string name="setting_device_backup_and_reset">Sauvegarde et Réinitialiser</string>
-    <string name="setting_device_pin_code">Code PIN</string>
+    <string name="setting_device_pin_code">Code NIP</string>
     <string name="setting_device_web_version">Version Web</string>
-    <string name="setting_device_pin_code_edit">Code PIN activé</string>
+    <string name="setting_device_pin_code_edit">Code NIP activé</string>
     <string name="setting_about_app_name">ALCATELONETOUCH</string>
     <string name="setting_success">Réussite</string>
     <string name="setting_failed">Échec</string>
@@ -268,7 +268,7 @@
     <string name="setting_reset_success">Paramétrage réussi; l\'appareil va se réinitialiser.</string>
     <string name="setting_power_off_failed">Échec de la mise hors tension.</string>
     <string name="setting_power_off_success">Paramétrage réussi; l\'appareil va s\'éteindre.</string>
-    <string name="setting_ssid_invalid">Le SSID doit être composé de caractères ASCII, excepté les caractères suivants : /,\',=,\",\,&#38;.</string>
+    <string name="setting_ssid_invalid">Le SSID doit être composé de caractères ASCII, excepté les caractères suivants : /,\',=,\",\,&amp;.</string>
     <string name="setting_wifi_error_title">Changer le mot de passe</string>
     <string name="setting_change_login_password">Changer le mot de passe de connexion</string>
     <string name="setting_log_out">Déconnexion</string>
@@ -297,7 +297,7 @@
     <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
     <string name="setting_network_profile_management_profile_detail">Détails sur le profil</string>
     <string name="setting_network_profile_management_delete_profile">Supprimer le profil</string>
-    <string name="setting_network_profile_dial_number_wrong">Longueur du numéro à composer limité à 24 caractères </string>
+    <string name="setting_network_profile_dial_number_wrong">Longueur du numéro à composer limité à 24 caractères</string>
     <string name="setting_network_profile_dial_number_empty">Dial number can not be empty</string>
     <string name="setting_network_profile_input_profile_name">Nom du profil obligatoire</string>
     <string name="setting_network_profile_error_profile_name">Le nom du profil ne peut pas inclure certains éléments particuliers.</string>
@@ -331,7 +331,7 @@
     <string name="usage_limit_notification_title">Avertissement au sujet de l\'utilisation des données</string>
     <string name="usage_limit_over_notification_content">L’usage des données atteint le forfait mensuel.</string>
     <string name="usage_limit_less_notification_content">Votre utilisation ne dépasse pas %1$s.</string>
-    <string name="usage_maximum_monthly_plan_notice">Forfait mensuel maximal </string>
+    <string name="usage_maximum_monthly_plan_notice">Forfait mensuel maximal</string>
     <string name="battery_limit_notification_title">Information batterie</string>
     <string name="battery_limit_notification_content1">Charge de batterie faible, %d%% restant.</string>
     <string name="battery_limit_notification_content2">Charge de batterie faible, %d%% restant.</string>
@@ -384,9 +384,9 @@
     <string name="login_psd_error_msg">Ce mot de passe est incorrect!</string>
     <string name="login_check_dialog_title">Connexion</string>
     <string name="login_check_dialog_content">Connexion</string>
-    <string name="login_invalid_password">Mot de passe non valide! Le mot de passe peut seulement inclure 0-9, a-z, A-Z, \"-+!@$#^&#38;*\"</string>
+    <string name="login_invalid_password">Mot de passe non valide! Le mot de passe peut seulement inclure 0-9, a-z, A-Z, \"-+!@$#^&amp;*\"</string>
     <string name="login_other_user_logined_error_msg">Un autre utilisateur est connecté; veuillez vous reconnecter plus tard!</string>
-    <string name="login_other_user_logined_error_forcelogin_msg"> Un autre utilisateur a déjà une session ouverte. Vous connecter déboutera l’autre utilisateur. Voulez-vous néanmoins vous connecter ?</string>
+    <string name="login_other_user_logined_error_forcelogin_msg">Un autre utilisateur a déjà une session ouverte. Vous connecter déboutera l’autre utilisateur. Voulez-vous néanmoins vous connecter ?</string>
     <string name="login_login_time_used_out_msg">La limite de nombre de connexions est dépassée; connectez-vous au redémarrage de l\'appareil.</string>
     <string name="login_warning">Avertissement de connexion</string>
     <string name="login_logout_successful">Déconnexion réussie!</string>
@@ -397,7 +397,7 @@
     <string name="inconsistent_new_password">Nouveau mot de passe différent !</string>
     <string name="input_current_password">Saisissez votre mot de passe !</string>
     <string name="change_passowrd_invalid_password">Le mot de passe doit être de 4&#8211;16 caractères.</string>
-    <string name="unknown_error">Erreur non répertoriée ! </string>
+    <string name="unknown_error">Erreur non répertoriée !</string>
     <!-- Login view end -->
 
 
@@ -416,13 +416,13 @@
     <string name="parse_image_fail">Échec d’analyse de l’image</string>
     <string name="toast_musicplay_fail">erreur de lecture de musique</string>
     <string name="toast_videoplay_fail">Erreur de reproduction vidéo</string>
-    <string name="video_loading">Chargement en cours…</string>
+    <string name="video_loading">Chargement en cours&#8230;</string>
     <string name="video_speed_unit_second">S</string>
-    <string name="buffering">Chargement en cours…</string>
-    <string name="mp_unknown_artist">Artiste inconnu </string>
-    <string name="mp_unknown_album">Album inconnu </string>
-    <string name="mp_cant_find_lyrics">LRC introuvable </string>
-    <string name="mp_lyrics_tips">***&#160;&#160;&#160;Le LRC est téléchargé d’Internet et n’est qu’une simple référence.&#160;&#160;&#160;***</string>
+    <string name="buffering">Chargement en cours&#8230;</string>
+    <string name="mp_unknown_artist">Artiste inconnu</string>
+    <string name="mp_unknown_album">Album inconnu</string>
+    <string name="mp_cant_find_lyrics">LRC introuvable</string>
+    <string name="mp_lyrics_tips">***Le LRC est téléchargé d’Internet et n’est qu’une simple référence.***</string>
     <string name="ftp_not_open">Ouvrez la fonction FTP dans les paramètres.</string>
     <string name="dlna_not_open">Ouvrez la fonction DLNA dans les paramètres.</string>
      
@@ -437,7 +437,7 @@
     <string name="category_document">Docs</string>
     <string name="category_music">Musique</string>
     <string name="category_other">Divers</string>
-    <string name="category_picture">Images </string>
+    <string name="category_picture">Images</string>
     <string name="category_theme">Ambiances</string>
     <string name="category_video">Vidéos</string>
     <string name="category_zip">Codes postaux</string>
@@ -454,12 +454,12 @@
     <string name="menu_item_search">Rechercher</string>
     <string name="menu_item_sort">Trier par</string>
     <string name="menu_item_sort_date">Date</string>
-    <string name="menu_item_sort_name">nom</string>
+    <string name="menu_item_sort_name">Nom</string>
     <string name="menu_item_sort_size">Taille</string>
     <string name="menu_item_sort_type">Type </string>
     <string name="menu_item_sort_by_name">Trier par nom</string>
     <string name="menu_item_sort_by_type">Trier par type</string>
-    <string name="multi_select_title"><xliff:g id="number">%1$s</xliff:g> élément sélectionné</string>
+    <string name="multi_select_title">éléments sélectionnés <xliff:g id="number">%1$s</xliff:g></string>
     <string name="new_folder_name">Nouveau dossier</string>
     <string name="no">Non</string>
     <string name="notif_server_starting">Serveur FTP démarré</string>
@@ -472,13 +472,13 @@
     <string name="operation_download">Télécharger</string>
     <string name="operation_delete">Supprimer</string>
     <string name="operation_delete_confirm_message">Confirmer la suppression ?</string>
-    <string name="operation_deleting">Deleting...</string>
-    <string name="operation_info">Infos</string>
+    <string name="operation_deleting">En cours de supression&#8230;</string>
+    <string name="operation_info">Détails</string>
     <string name="operation_move">Déplacer</string>
     <string name="operation_move_to">Déplacer vers</string>
-    <string name="operation_moving">Déplacement…</string>
-    <string name="operation_paste">Coller </string>
-    <string name="operation_pasting">Collage…</string>
+    <string name="operation_moving">Déplacement&#8230;</string>
+    <string name="operation_paste">Coller</string>
+    <string name="operation_pasting">Collage&#8230;</string>
     <string name="operation_refresh">Actualiser</string>
     <string name="operation_rename">Renommer</string>
     <string name="operation_rename_message">Indiquer un nouveau nom</string>
@@ -529,7 +529,7 @@
         <item>Création du dossier effectuée ! </item>
     </string-array>
 
-    <string name="download_text_dling">Téléchargement…</string>
+    <string name="download_text_dling">Téléchargement&#8230;</string>
     <string name="download_text_path">Chemin : </string>
     <!-- FTP FILE END -->
 
@@ -556,4 +556,37 @@
         <item>GB</item>
     </string-array>
 	<string name="enable_sd_card">Enable SD card</string>
+  <string name="added_favorite">Ajouter aux favoris</string>
+  <string name="category_favorite">Favoris</string>
+  <string name="file_info_canwrite">Inscriptible: </string>
+  <string name="file_info_ishidden">Caché: </string>
+  <string name="file_info_modified">Modifié: </string>
+  <string name="install_failed">Installation échoué</string>
+  <string name="install_successful">Installation réussie</string>
+  <string name="instruction_pre">Démarrer le service pour activer le serveur FTP</string>
+  <string name="no_file">Dossier vide</string>
+  <string name="no_wifi">Aucun réseau Wi-Fi</string>
+  <string name="no_wifi_hint">Aucun réseau sans fil, appuyez sur pour vérifier les paramètres WiFi</string>
+  <string name="operation_cancel_selectall">Tout désélectionner</string>
+  <string name="operation_favorite">Ajouter aux Favoris</string>
+  <string name="operation_hide_sys">Cacher les fichiers cachés</string>
+  <string name="operation_unfavorite">Supprimer des favoris</string>
+  <string name="removed_favorite">Supprimer des favoris</string>
+  <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g> Disponible</string>
+  <string name="sd_card_size">SD Taille: <xliff:g id="total_size">%1$s</xliff:g></string>
+  <string name="search_hint">Recherche les fichiers</string>
+  <string name="search_title">Recherche les fichiers</string>
+  <string name="start_server">Démarrer le service</string>
+  <string name="stop_server">Arrêter le service</string>
+  <string name="storage_warning">Le stockage externe n\'est pas disponible ou ne peut pas être lu</string>
+  <string name="tab_category">Feuilleter</string>
+  <string name="wifi_state">État du WLAN</string>
+  <string name="favourite_root">Racine</string>
+  <string name="favorite_ringtone">Sonnerie</string>
+  <string name="menu_setting">Préférences</string>
+  <string name="preference_title">Paramétres</string>
+  <string name="pref_show_real_path">Afficher chemin réel</string>
+  <string name="pref_show_real_path_summary">Afficher chemin réel dans la barre de navigation</string>
+  <string name="confirm_folder_replace">Confirmer remplacement</string>
+  <string name="confirm_folder_content">Nom du fichier existe déjà!</string>
 </resources>
