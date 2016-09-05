@@ -149,7 +149,7 @@
 
     <!-- connect device start -->
     <string name="device_manage_title">Appareils</string>
-    <string name="device_manage_connected">Connected Devices (%1$d)</string>
+    <string name="device_manage_connected">Appareils connectés (%1$d)</string>
     <string name="device_manage_block">Bloquer des appareils (%1$d)</string>
     <string name="device_manage_block_btn">Bloquer</string>
     <string name="device_manage_unblock_btn">Débloquer</string>

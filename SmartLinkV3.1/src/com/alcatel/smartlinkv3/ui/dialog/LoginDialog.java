@@ -160,7 +160,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
   					}
   					else
   					{
-  					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
+  					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), 
+					m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
   							new OnClickBottonConfirm() 
   					{
   						public void onConfirm() 
@@ -381,6 +382,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		}
 		m_vLogin.clearAnimation();
 	}
+	OnAutoForceLoginFinishedListener call;
+	
 
 	public void closeDialog() {
 		InputMethodManager imm = (InputMethodManager) m_context
@@ -547,10 +550,40 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_FORCE_LOGIN_REQUEST, data);
 			closeDialog();
-			if (null != m_loginCallback) {
-				m_loginCallback.onLoginFinished();
-				m_loginCallback = null;
+			if(call == null)
+			{
+				call = new OnAutoForceLoginFinishedListener() 
+				{
+					public void onLoginSuccess() 				
+					{
+						closeDialog();
+						if (null != m_loginCallback) {
+							m_loginCallback.onLoginFinished();
+							m_loginCallback = null;
+						}
+					}
+					public void onLoginFailed(String error_code)
+					{
+						if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
+						{
+							ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+								new OnClickBtnRetry() 
+							{
+								@Override
+								public void onRetry() 
+								{
+									showDialog();
+									//showDialog();
+								}
+							});
+							}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
+							{
+								m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
+							}
+						}
+				};
 			}
+			m_ForceloginDlg.setCallback(call);
 		}else
 		{
 		BusinessMannager.getInstance().sendRequestMessage(

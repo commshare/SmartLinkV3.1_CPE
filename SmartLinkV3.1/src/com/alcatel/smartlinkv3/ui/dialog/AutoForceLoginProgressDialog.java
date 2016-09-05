@@ -39,6 +39,9 @@ public class AutoForceLoginProgressDialog
 		m_context.registerReceiver(m_auReceiver, new IntentFilter(
 				MessageUti.CPE_WIFI_CONNECT_CHANGE));
 	}
+	public void setCallback(OnAutoForceLoginFinishedListener callback){
+		s_callback = callback;	
+	}
 	
 	public void autoForceLoginAndShowDialog(OnAutoForceLoginFinishedListener callback)
 	{
