@@ -473,26 +473,20 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		switch(BusinessMannager.getInstance().getNetworkManager().getNetworkMode()){
 		case MODE_AUTO:
 			mode_auto.setChecked(true);
-			mode_2g_only.setChecked(false);
-			mode_3g_only.setChecked(false);
-			mode_lte_only.setChecked(false);
+			
 			break;
 		case MODE_2G_ONLY:
-			mode_auto.setChecked(false);
+			
 			mode_2g_only.setChecked(true);
-			mode_3g_only.setChecked(false);
-			mode_lte_only.setChecked(false);
+			
 			break;
 		case MODE_3G_ONLY:
-			mode_auto.setChecked(false);
-			mode_2g_only.setChecked(false);
+			
 			mode_3g_only.setChecked(true);
-			mode_lte_only.setChecked(false);
+			
 			break;
 		case MODE_LTE_ONLY:
-			mode_auto.setChecked(false);
-			mode_2g_only.setChecked(false);
-			mode_3g_only.setChecked(false);
+		
 			mode_lte_only.setChecked(true);
 			break;
 		default:
@@ -573,29 +567,23 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					case 0:
 						m_mode_desc.setText("Auto");
 						mode_auto.setChecked(true);
-						mode_2g_only.setChecked(false);
-						mode_3g_only.setChecked(false);
-						mode_lte_only.setChecked(false);
+						
 						break;
 					case 1:
 						m_mode_desc.setText("2G only");
-						mode_auto.setChecked(false);
+						
 						mode_2g_only.setChecked(true);
-						mode_3g_only.setChecked(false);
-						mode_lte_only.setChecked(false);
+						
 						break;
 					case 2:
 						m_mode_desc.setText("3G only");
-						mode_auto.setChecked(false);
-						mode_2g_only.setChecked(false);
+						
 						mode_3g_only.setChecked(true);
-						mode_lte_only.setChecked(false);
+						
 						break;
 					case 3:
 						m_mode_desc.setText("4G only");
-						mode_auto.setChecked(false);
-						mode_2g_only.setChecked(false);
-						mode_3g_only.setChecked(false);
+						
 						mode_lte_only.setChecked(true);
 						break;
 					default:
