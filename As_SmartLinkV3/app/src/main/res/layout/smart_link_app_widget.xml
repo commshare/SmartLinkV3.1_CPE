@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg"
+    android:orientation="horizontal" >
+
+    <!-- signal -->
+
+    <RelativeLayout
+        android:id="@+id/ll_widget_signal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <ImageButton
+            android:id="@+id/ib_widget_signal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/widget_signal_0"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/widget_bg_line"
+        android:contentDescription="@string/app_name" />
+
+    <!-- wifi status -->
+
+    <RelativeLayout
+        android:id="@+id/rl_widget_wifi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/iv_widget_wifi_off"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/widget_item_off"
+            android:contentDescription="@string/app_name" />
+        
+        <ImageView
+            android:id="@+id/iv_widget_wifi_on"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/widget_item_select"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/ib_widget_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/widget_btn_wifi_0"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/widget_bg_line"
+        android:contentDescription="@string/app_name" />
+
+    <!-- Internet status -->
+
+    <RelativeLayout
+        android:id="@+id/rl_widget_internet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/iv_widget_internet_off"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/widget_item_off"
+            android:contentDescription="@string/app_name" />
+        
+        <ImageView
+            android:id="@+id/iv_widget_internet_on"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/widget_item_select"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/ib_widget_internet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/widget_internet_disconnected"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/widget_bg_line"
+        android:contentDescription="@string/app_name" />
+
+    <!-- SMS status -->
+
+    <RelativeLayout
+        android:id="@+id/rl_widget_sms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_centerInParent="true" >
+
+            <ImageButton
+                android:id="@+id/ib_widget_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/widget_sms_no_new_grey"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:id="@+id/tv_widget_new_sms_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/widget_sms_new"
+                android:gravity="center"
+                android:textColor="@color/color_white"
+                android:textSize="12sp"
+                android:visibility="gone" />
+            
+            <ImageView
+                android:id="@+id/iv_widget_new_sms_plus9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/widget_sms_new_plus9"
+                android:contentDescription="@string/app_name"
+                android:visibility="gone" />
+        </FrameLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/widget_bg_line"
+        android:contentDescription="@string/app_name" />
+
+    <!-- battery status -->
+
+    <RelativeLayout
+        android:id="@+id/rl_widget_battery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <ProgressBar
+            android:id="@+id/pb_widget_battery"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="45dp"
+            android:layout_height="27dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/widget_battery_empty"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/battery_progress_status_3"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/ib_widget_charge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/widget_battery_charge"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>

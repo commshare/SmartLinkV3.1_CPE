@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inquire_dialog"
+    android:layout_width="320dip"
+    android:layout_height="187dip"
+    android:background="@drawable/dialog_bg" >
+
+    <LinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="45dip"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/dialog_delete_title"
+                android:textSize="16sp"
+                android:textStyle="bold" 
+                android:textColor="@color/color_black"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_divider" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/content_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_layout" >
+
+        <TextView
+            android:id="@+id/prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="20dip"
+            android:text="@string/new_folder_prompt"
+            android:gravity="left"
+            android:textSize="14sp"
+            android:textColor="@color/color_black" />
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="match_parent"
+            android:layout_height="30dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="15dip"
+            android:background="@drawable/selector_edit_bg"
+            android:singleLine="true"
+            android:layout_below="@id/prompt"
+            android:maxLength="255"           
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ID_PIN_BOTTOM_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:layout_centerHorizontal="true" 
+        android:layout_below="@id/content_layout" >
+        <TextView 
+	        android:id="@+id/txtHide" 
+	        android:layout_width="25dip" 
+	        android:layout_height="1dip"  
+           	android:layout_centerHorizontal="true" />
+        
+        <Button
+            android:id="@+id/ok_btn"
+            android:layout_width="80dip"
+		    android:layout_height="30dip"
+			android:gravity="center"
+			android:layout_toLeftOf="@id/txtHide" 
+			android:layout_centerVertical="true"
+            android:background="@drawable/selector_common_button"
+            android:text="@string/ok"
+            android:textColor="@drawable/common_button_text" />    
+        
+        <Button
+            android:id="@+id/close_btn"
+            android:layout_width="80dip"
+		    android:layout_height="30dip"
+	        android:layout_toRightOf="@id/txtHide" 
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/selector_common_button"
+	        android:text="@string/cancel"
+	        android:textColor="@drawable/common_button_text"/>
+    </RelativeLayout>
+
+</RelativeLayout>

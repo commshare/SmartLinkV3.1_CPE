@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/wps_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+	    <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:background="@color/main_title_background" >
+	    	<ImageButton 
+	         android:id="@+id/btn_back"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:layout_alignParentLeft="true"
+	         android:layout_centerVertical="true"
+	         android:padding="5dip"
+	         android:src="@drawable/back"
+			 android:background="@null"/>
+		     <TextView
+		         android:id="@+id/Back"
+		         android:layout_width="fill_parent"
+		         android:layout_height="wrap_content"
+		         android:layout_centerVertical="true"
+		         android:layout_toRightOf="@id/btn_back"
+		         android:text="@string/back"
+		         android:textColor="@color/color_white"
+		         android:textSize="16sp" /> 
+		    <TextView
+		        android:id="@+id/title"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_centerInParent="true"
+		        android:gravity="center"
+		        android:singleLine="true"
+		        android:text="@string/wps_title"
+		        android:textColor="@color/color_white"
+		        android:textSize="18sp"
+		        android:textStyle="bold" />
+	    </RelativeLayout>  
+	</LinearLayout>
+	
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+       	android:layout_below="@id/wps_title"
+       	android:background="@color/color_white" 
+        android:overScrollMode="never" >
+	   <LinearLayout
+	       	android:layout_width="fill_parent"
+	       	android:layout_height="wrap_content"
+	       	
+           	android:paddingBottom="6dip"
+           	android:paddingTop="6dip"
+	       	android:orientation="vertical" >
+		    <RadioGroup  
+		        android:id="@+id/radioGroup"  
+		        android:gravity="left"
+		        
+		        android:layout_width="fill_parent"  
+		        android:layout_height="wrap_content" >  
+		        <RadioButton  
+		            android:id="@+id/radio0"  
+		            android:background="@android:color/transparent" 
+		            android:layout_width="fill_parent"  
+		            android:layout_height="wrap_content"  
+		            android:layout_marginLeft="15dip"
+	       			android:layout_marginRight="15dip"
+		            android:paddingBottom="12dip"
+           			android:paddingTop="12dip"
+           			android:checked="true"
+		            android:button="@null"
+		            android:drawableRight="@drawable/selector_checkbox"
+		            android:textColor="@color/color_black"
+		            android:textSize="16sp"
+		            android:textStyle="bold"
+		            android:text="@string/wps_pbc_bt_disc" />
+		        
+		        <View
+		            android:layout_width="fill_parent"
+		            android:layout_height="1dip"
+		            android:background="@color/color_divider" />
+		        
+		        <RadioButton  
+		            android:id="@+id/radio1"  
+		            android:background="@android:color/transparent"
+		            android:layout_width="fill_parent"  
+		            android:layout_height="wrap_content" 
+		            android:layout_marginLeft="15dip"
+	       			android:layout_marginRight="15dip"
+		            android:paddingBottom="12dip"
+           			android:paddingTop="12dip" 
+		            android:button="@null"
+		            android:textSize="16sp"
+		            android:textStyle="bold"
+		            android:drawableRight="@drawable/selector_checkbox"
+		            android:textColor="@color/color_black"
+		            android:text="@string/wps_pin_bt_disc" />  
+	    	</RadioGroup>  
+	        
+	        <View
+	            android:layout_width="match_parent"
+	            android:layout_height="1dip"
+	            android:background="@color/color_divider" />
+           
+	       	<FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="6dip"
+                android:paddingTop="12dip" >   
+	       	    <include
+	       	        android:id="@+id/include_pin_view"
+		       		android:layout_width="match_parent"
+		       		android:layout_height="wrap_content"
+		       		layout="@layout/setting_wps_pin" />
+                <include
+                    android:id="@+id/include_pbc_view"
+		       		android:layout_width="match_parent"
+		       		android:layout_height="wrap_content"
+		       		layout="@layout/setting_pbc" />
+	         </FrameLayout>
+    </LinearLayout>
+   </ScrollView>
+</RelativeLayout>

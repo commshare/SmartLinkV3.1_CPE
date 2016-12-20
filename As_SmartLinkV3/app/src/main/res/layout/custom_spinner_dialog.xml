@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" 
+	android:background="@drawable/spiner_dialog_boder">
+	<ListView android:id="@+id/customspinner_list"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:cacheColorHint="@null"  
+		android:overScrollMode="never"
+		android:choiceMode="singleChoice"
+		android:clickable="true"
+		android:listSelector="@color/color_transparent"
+		android:dividerHeight="1dip"
+		android:divider="@color/color_divider"/>
+</LinearLayout>

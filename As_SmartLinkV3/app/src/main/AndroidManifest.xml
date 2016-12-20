@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.alcatel.smartlinkv3"
+    android:versionCode="14"
+    android:versionName="3.0.2" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name = "android.permission.GET_ACCOUNTS"  />
+
+    <application
+        android:name="com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.LoadingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"          
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden|screenSize"          
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.RefreshWifiActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.ActivityNewSms"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.SdSharingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.activity.UsageSettingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.activity.WpsMainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+            
+        </activity>
+        
+        <activity 
+            android:name="com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/titlebarstyle">
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.StorageMainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.StorageEditActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.StorageMoveToActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.StorageSearchActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.StorageUploadActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.LocalStorageActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.SetDefaultDirectoryActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        
+        
+        
+        <receiver android:name="com.alcatel.smartlinkv3.appwidget.SmartLinkWidget" >  
+           <intent-filter >  
+               <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />  
+               <action android:name="com.alcatel.smartlinkv3.business.cpewificonnectchange" >  
+               </action>
+               <action android:name="android.intent.action.BOOT_COMPLETED" />
+               <action android:name="com.alcatel.smartlinkv3.business.network.getnetworkinfo"/>
+               <action android:name="com.alcatel.smartlinkv3.business.power.getBatteryState"/>
+               <action android:name="com.alcatel.smartlinkv3.business.sms.getcontactlist"/>
+               <action android:name="com.alcatel.smartlinkv3.business.wan.getconnectstatus"/>
+           </intent-filter>  
+  
+           <meta-data  
+               android:name="android.appwidget.provider"  
+               android:resource="@xml/smart_link_widget_provider" />  
+       </receiver>
+       
+        <service android:name="com.alcatel.smartlinkv3.common.HttpService" >
+        </service>
+        <service android:name="com.alcatel.smartlinkv3.samba.SmbService" >
+        </service>
+        <receiver
+            android:name="com.alcatel.smartlinkv3.common.BootReceiver"
+            android:priority="2147483647" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                 <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
+       
+    </application>
+
+</manifest>
