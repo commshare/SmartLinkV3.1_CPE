@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+			
+         <RelativeLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	    	android:orientation="vertical"
+	    	android:layout_alignParentTop="true"
+	    	android:background="@color/color_black" >
+		    	<ImageButton 
+		         android:id="@+id/btn_back"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:layout_alignParentLeft="true"
+		         android:layout_centerVertical="true"
+		         android:padding="5dip"
+		         android:src="@drawable/back"
+				 android:background="@null"/>
+			     <TextView
+			         android:id="@+id/Back"
+			         android:layout_width="fill_parent"
+			         android:layout_height="wrap_content"
+			         android:layout_centerVertical="true"
+			         android:layout_toRightOf="@id/btn_back"
+			         android:text="@string/back"
+			         android:textColor="@color/color_white"
+			         android:textSize="16sp" /> 
+			    <TextView
+			        android:id="@+id/title"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_centerInParent="true"
+			        android:gravity="center"
+			        android:singleLine="true"
+			        android:paddingLeft="23dip"
+			        android:textColor="@color/color_white"
+			        android:textSize="18sp"
+			        android:textStyle="bold" />
+	    </RelativeLayout>  
+	    
+	<RelativeLayout 
+	    android:id="@+id/down_toolview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="60dp"
+	    android:layout_alignParentBottom="true"
+	    android:background="@color/media_tool_background_color">
+	    
+	    <RelativeLayout 
+	    android:id="@+id/miniplayLayout" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="fill_parent"
+	    android:padding="8dp"
+	    android:layout_alignParentBottom="true">		
+     
+	        <ImageButton 
+	        android:id="@+id/btn_play" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+	        android:background="@drawable/selector_btn_play">
+	        </ImageButton>
+	        
+            <ImageButton 
+	        android:id="@+id/btn_pause" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+			android:visibility="gone"
+	        android:background="@drawable/selector_btn_pause">
+	        </ImageButton>
+	               	
+	    </RelativeLayout>
+	    
+	      
+	    <RelativeLayout 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="fill_parent"
+	    android:layout_toRightOf="@id/miniplayLayout">		
+        
+            <TextView 
+		    android:text="@string/init_time" 
+		    android:id="@+id/tv_totalTime" 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="8dp"
+		    android:layout_centerVertical="true"
+			android:textColor="@android:color/white"
+			android:textSize="20sp"
+		    android:layout_alignParentRight="true">
+		    </TextView>
+		    
+            <TextView 
+		    android:text="@string/separate" 
+		    android:id="@+id/tv_line" 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 	
+		    android:layout_centerVertical="true"
+	    	android:textColor="@android:color/white"
+	    	android:textSize="24sp"
+		    android:layout_toLeftOf="@id/tv_totalTime">
+		    </TextView>
+              
+            <TextView 
+		    android:text="@string/init_time" 
+		    android:id="@+id/tv_curTime" 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 	
+		    android:layout_centerVertical="true"
+	    	android:textColor="@android:color/white"
+	    	android:textSize="20sp"
+		    android:layout_toLeftOf="@id/tv_line">
+		    </TextView>
+		    
+		  
+            <SeekBar 
+	        android:id="@+id/playback_seeker"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"	  
+	        android:layout_centerVertical="true"
+	        android:layout_toLeftOf="@id/tv_curTime"
+	        android:layout_marginRight="2dp"
+	        android:paddingLeft="10.0dip" 
+		    android:paddingRight="10.0dip"
+	        android:maxHeight="39.0dip" 
+		    android:minHeight="39.0dip" 
+	        android:max="100"
+	        android:thumbOffset="8dp"
+	        android:progressDrawable="@drawable/seekbar_background"
+	        android:thumb="@drawable/seekbar_thumb"/>       	
+		</RelativeLayout>       		
+	</RelativeLayout>
+	
+	<RelativeLayout 
+	    android:id="@+id/up_toolview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="30dp"
+	    android:layout_alignParentTop="true">
+	    
+	        <TextView 
+		    android:id="@+id/tv_title" 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 	
+		    android:layout_centerInParent="true"
+	    	android:textColor="@android:color/white"
+	    	android:textSize="20sp">
+		    </TextView>
+	</RelativeLayout> 
+
+</RelativeLayout>

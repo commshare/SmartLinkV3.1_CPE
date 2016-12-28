@@ -1,0 +1,407 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:2:1-229:12
+	package
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:3:5-38
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:5:5-32
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:4:5-29
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:2:11-69
+uses-sdk
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:7:5-9:41
+	android:targetSdkVersion
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:9:9-38
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:8:9-34
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+		INJECTED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:11:5-79
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:11:22-76
+uses-permission#android.permission.INTERNET
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:12:5-67
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:12:22-64
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:13:5-81
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:13:22-78
+uses-permission#android.permission.BROADCAST_STICKY
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:14:5-75
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:14:22-72
+uses-permission#android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:15:5-84
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:15:22-81
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:16:5-81
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:16:22-78
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:17:5-76
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:17:22-73
+uses-permission#android.permission.CHANGE_CONFIGURATION
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:18:5-79
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:18:22-76
+uses-permission#android.permission.GET_TASKS
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:19:5-67
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:19:22-65
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:20:5-78
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:20:22-75
+uses-permission#android.permission.GET_ACCOUNTS
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:21:5-74
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:21:22-70
+application
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:23:5-227:19
+	android:label
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:27:9-41
+	android:allowBackup
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:25:9-35
+	android:icon
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:26:9-45
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:28:9-40
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:24:9-74
+activity#com.alcatel.smartlinkv3.ui.activity.LoadingActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:29:9-39:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:31:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:32:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:33:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:30:13-79
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:34:13-38:29
+action#android.intent.action.MAIN
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:35:17-69
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:35:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:37:17-77
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:37:27-74
+activity#com.alcatel.smartlinkv3.ui.activity.MainActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:40:9-46:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:42:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:43:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:44:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:45:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:41:13-76
+activity#com.alcatel.smartlinkv3.ui.activity.RefreshWifiActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:47:9-53:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:49:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:51:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:50:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:52:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:48:13-83
+activity#com.alcatel.smartlinkv3.ui.activity.ActivitySMSDelete
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:54:9-60:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:56:13-49
+	android:windowSoftInputMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:59:13-55
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:57:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:58:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:55:13-81
+activity#com.alcatel.smartlinkv3.ui.activity.ActivityNewSms
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:61:9-67:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:63:13-49
+	android:windowSoftInputMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:66:13-55
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:64:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:65:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:62:13-78
+activity#com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:68:9-74:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:70:13-49
+	android:windowSoftInputMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:73:13-55
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:71:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:72:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:69:13-81
+activity#com.alcatel.smartlinkv3.ui.activity.SdSharingActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:75:9-80:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:77:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:78:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:79:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:76:13-81
+activity#com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:81:9-86:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:83:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:84:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:85:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:82:13-61
+activity#com.alcatel.smartlinkv3.ui.activity.WpsMainActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:87:9-93:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:89:13-49
+	android:windowSoftInputMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:91:13-54
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:90:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:92:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:88:13-56
+activity#com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:95:9-102:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:97:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:99:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:98:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:100:13-49
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:96:13-83
+activity#com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:103:9-110:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:105:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:107:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:106:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:108:13-49
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:104:13-90
+activity#com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:112:9-119:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:114:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:116:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:115:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:117:13-49
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:113:13-92
+activity#com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:121:9-128:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:123:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:125:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:124:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:126:13-49
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:122:13-85
+activity#com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:130:9-137:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:132:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:134:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:133:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:135:13-49
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:131:13-84
+activity#com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:139:9-145:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:141:13-49
+	android:launchMode
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:143:13-44
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:142:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:144:13-49
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:140:13-86
+activity#com.alcatel.smartlinkv3.ui.activity.StorageMainActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:146:9-151:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:148:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:149:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:150:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:147:13-83
+activity#com.alcatel.smartlinkv3.ui.activity.StorageEditActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:152:9-157:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:154:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:155:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:156:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:153:13-83
+activity#com.alcatel.smartlinkv3.ui.activity.StorageMoveToActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:158:9-163:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:160:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:161:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:162:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:159:13-85
+activity#com.alcatel.smartlinkv3.ui.activity.StorageSearchActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:164:9-169:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:166:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:167:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:168:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:165:13-85
+activity#com.alcatel.smartlinkv3.ui.activity.StorageUploadActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:170:9-175:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:172:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:173:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:174:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:171:13-85
+activity#com.alcatel.smartlinkv3.ui.activity.LocalStorageActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:176:9-181:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:178:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:179:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:180:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:177:13-84
+activity#com.alcatel.smartlinkv3.ui.activity.SetDefaultDirectoryActivity
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:182:9-187:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:184:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:185:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:186:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:183:13-91
+activity#com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:188:9-193:20
+	android:screenOrientation
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:190:13-49
+	android:configChanges
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:191:13-74
+	android:theme
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:192:13-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:189:13-85
+receiver#com.alcatel.smartlinkv3.appwidget.SmartLinkWidget
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:197:9-212:19
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:197:19-83
+intent-filter#android.appwidget.action.APPWIDGET_UPDATE+android.intent.action.BOOT_COMPLETED+com.alcatel.smartlinkv3.business.cpewificonnectchange+com.alcatel.smartlinkv3.business.network.getnetworkinfo+com.alcatel.smartlinkv3.business.power.getBatteryState+com.alcatel.smartlinkv3.business.sms.getcontactlist+com.alcatel.smartlinkv3.business.wan.getconnectstatus
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:198:12-207:28
+action#android.appwidget.action.APPWIDGET_UPDATE
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:199:16-83
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:199:24-80
+action#com.alcatel.smartlinkv3.business.cpewificonnectchange
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:200:16-201:25
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:200:24-92
+action#android.intent.action.BOOT_COMPLETED
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:202:16-78
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:202:24-75
+action#com.alcatel.smartlinkv3.business.network.getnetworkinfo
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:203:16-96
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:203:24-94
+action#com.alcatel.smartlinkv3.business.power.getBatteryState
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:204:16-95
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:204:24-93
+action#com.alcatel.smartlinkv3.business.sms.getcontactlist
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:205:16-92
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:205:24-90
+action#com.alcatel.smartlinkv3.business.wan.getconnectstatus
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:206:16-94
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:206:24-92
+meta-data#android.appwidget.provider
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:209:12-211:69
+	android:resource
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:211:16-66
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:210:16-57
+service#com.alcatel.smartlinkv3.common.HttpService
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:214:9-215:19
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:214:18-75
+service#com.alcatel.smartlinkv3.samba.SmbService
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:216:9-217:19
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:216:18-73
+receiver#com.alcatel.smartlinkv3.common.BootReceiver
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:218:9-225:20
+	android:priority
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:220:13-42
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:219:13-71
+intent-filter#android.intent.action.BOOT_COMPLETED+android.intent.action.TIME_SET
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:221:13-224:29
+action#android.intent.action.TIME_SET
+ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:223:18-74
+	android:name
+		ADDED from D:\StudioWorkSpace\SmartLinkV3\As_SmartLinkV3\app\src\main\AndroidManifest.xml:223:26-71

@@ -1,0 +1,294 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/titls_sd"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:background="@color/main_title_background"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:padding="3dip"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/Back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/btn_back"
+                android:text="@string/back"
+                android:textColor="@color/color_white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:paddingLeft="23dip"
+                android:singleLine="true"
+                android:text="@string/sd_sharing"
+                android:textColor="@color/color_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/titls_sd"
+        android:background="@color/color_white"
+        android:overScrollMode="never" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:orientation="horizontal"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
+
+                <Button
+                    android:id="@+id/enable_dlna_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/switch_off"
+                    android:clickable="true" />
+
+                <ProgressBar
+                    android:id="@+id/waiting_progress"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toLeftOf="@id/enable_dlna_btn"
+                    android:indeterminateDrawable="@drawable/progerss_blue" />
+
+                <TextView
+                    android:id="@+id/enable_dlna_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/waiting_progress"
+                    android:singleLine="false"
+                    android:text="@string/dlna"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/color_divider" />
+
+            <RelativeLayout
+                android:id="@+id/samba_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:orientation="horizontal"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
+
+                <Button
+                    android:id="@+id/enable_samba_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/switch_off"
+                    android:clickable="true" />
+
+                <ProgressBar
+                    android:id="@+id/samba_waiting_progress"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toLeftOf="@id/enable_samba_btn"
+                    android:indeterminateDrawable="@drawable/progerss_blue" />
+
+                <TextView
+                    android:id="@+id/enable_samba_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/waiting_progress"
+                    android:singleLine="false"
+                    android:text="@string/samba"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/color_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:orientation="vertical"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
+
+                <TextView
+                    android:id="@+id/tv_dlna_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dlna_name"
+                    android:textColor="@color/color_grey"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_dlna_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="false"
+                    android:text="@string/dlna_description"
+                    android:textColor="@color/color_grey"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/color_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:orientation="horizontal"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
+
+                <TextView
+                    android:id="@+id/sdcard_sharing_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/enable_dlna_btn"
+                    android:singleLine="false"
+                    android:text="@string/sd_card_sharing"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sdcard_sharing_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/not_available"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/color_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:orientation="vertical"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip" >
+
+                <ProgressBar
+                    android:id="@+id/sdcard_usage_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dip"
+                    android:background="@drawable/usage_status_data_progress_bg"
+                    android:max="100"
+                    android:progressDrawable="@drawable/usage_status_progress_data" />
+
+                <TextView
+                    android:id="@+id/tv_sdcard_usage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="false"
+                    android:text="@string/sdcard_usage"
+                    android:textColor="@color/color_grey"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/color_divider" />
+
+            <RelativeLayout
+                android:id="@+id/layout_storage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="15dip"
+                android:orientation="horizontal"
+                android:paddingBottom="15dip" >
+
+                <TextView
+                    android:id="@+id/storage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/storage"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/storage_enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/right_arrow_big" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/color_divider" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

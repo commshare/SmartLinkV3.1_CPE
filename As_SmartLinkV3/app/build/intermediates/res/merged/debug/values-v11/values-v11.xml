@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+        <!-- API 11 theme customizations can go here. -->
+    </style>
+    <style name="CustomizedWindowTitleBackground"> 
+        <item name="android:background">#0089cf</item> 
+    </style>
+    <style name="titlebarstyle" parent="android:Theme"> 
+        <item name="android:windowTitleSize">45dp</item> 
+        <item name="android:windowTitleBackgroundStyle">@style/CustomizedWindowTitleBackground</item> 
+        <!-- All customizations that are NOT specific to a particular API-level can go here. --> 
+    </style>
+</resources>

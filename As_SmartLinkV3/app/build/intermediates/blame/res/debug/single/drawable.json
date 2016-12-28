@@ -1,0 +1,158 @@
+[
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\battery_progress_status_3.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\battery_progress_status_3.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_new_folder_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_new_folder_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\spinner_radiobutton_style.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\spinner_radiobutton_style.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\storage_selector_delete_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\storage_selector_delete_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\progress_total_data.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\progress_total_data.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\radiobutton.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\radiobutton.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_edit_bg.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_edit_bg.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_connected_device_edit_bg.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_connected_device_edit_bg.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\home_total_progress_bg.9.png",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\home_total_progress_bg.9.png"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_conner_btn_blue.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_conner_btn_blue.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_edit_wifi_password.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_edit_wifi_password.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\battery_progress_status.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\battery_progress_status.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\usage_status_progress_data.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\usage_status_progress_data.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_common_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_common_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_toolbar_checkbox.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_toolbar_checkbox.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\storage_selector_rename_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\storage_selector_rename_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\home_total_progress.9.png",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\home_total_progress.9.png"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_sms_detail_receive.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_sms_detail_receive.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\usage_status_data_progress_data.9.png",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\usage_status_data_progress_data.9.png"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\progerss_connect.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\progerss_connect.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_toolbar_upload_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_toolbar_upload_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_back_btn.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_back_btn.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_toolbar_search_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_toolbar_search_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\spiner_dialog_boder.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\spiner_dialog_boder.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bg_conner_bottom_normal.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\bg_conner_bottom_normal.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\storage_selector_move_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\storage_selector_move_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\storage_selector_download_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\storage_selector_download_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\progerss_blue.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\progerss_blue.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_sms_detail_out.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_sms_detail_out.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_send_btn.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_send_btn.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\common_button_text.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\common_button_text.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_to_here_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_to_here_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_local_storage_item.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_local_storage_item.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bg_conner_bottom_press.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\bg_conner_bottom_press.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_checkbox.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_checkbox.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_red_button.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\selector_red_button.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\usage_status_data_progress_bg.9.png",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\usage_status_data_progress_bg.9.png"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\button_style.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\button_style.xml"
+    },
+    {
+        "merged": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\battery_progress_status_2.xml",
+        "source": "D:\\StudioWorkSpace\\SmartLinkV3\\As_SmartLinkV3\\app\\src\\main\\res\\drawable\\battery_progress_status_2.xml"
+    }
+]

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dimen_divider_1px">1.0px</dimen>
+    <dimen name="dimen_1dip">1dip</dimen>
     <dimen name="dimen_2dip">2dip</dimen>
     <dimen name="dimen_4dip">4dip</dimen>
     <dimen name="dimen_5dip">5dip</dimen>
     <dimen name="dimen_6dip">6dip</dimen>    
+    <dimen name="dimen_7dip">7dip</dimen>
     <dimen name="dimen_10dip">10dip</dimen>
     <dimen name="dimen_12dip">12dip</dimen>
     <dimen name="dimen_15dip">15dip</dimen>
@@ -21,6 +23,9 @@
     <dimen name="dimen_60dip">60dip</dimen>
     <dimen name="dimen_80dip">80dip</dimen>
     <dimen name="dimen_100dip">100dip</dimen>
+    <dimen name="dimen_160dip">160dip</dimen>
+    <dimen name="dimen_180dip">180dip</dimen>
+    <dimen name="dimen_200dip">200dip</dimen>
     <dimen name="dimen_new_sms_edit_number">280dip</dimen>
     <dimen name="dimen_new_sms_edit_content">240dip</dimen>
     
@@ -35,5 +40,17 @@
     <dimen name="dimen_textsize_20sp">20sp</dimen>    
     <dimen name="dimen_textsize_19sp">19sp</dimen>    
     <dimen name="dimen_textsize_22sp">22sp</dimen>
-    <dimen name="dimen_flux_use_text_padding">3dip</dimen> 
+    <dimen name="dimen_flux_use_text_padding">3dip</dimen>
+
+    <!--增加几个常用的尺寸-->
+    <dimen name="common_padding_middle">8dp</dimen>
+    <dimen name="common_padding">16dp</dimen>
+    <dimen name="common_margin_middle">8dp</dimen>
+    <dimen name="common_margin">16dp</dimen>
+
+    <dimen name="font_size_middle">14sp</dimen>
+    <dimen name="font_size_normal">16sp</dimen>
+    <dimen name="font_size_large">20sp</dimen>
+
+    <dimen name="setting_item_height">50dip</dimen>
 </resources>

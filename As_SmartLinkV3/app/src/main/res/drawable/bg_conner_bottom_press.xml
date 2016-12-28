@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <corners
+        android:bottomLeftRadius="@dimen/dimen_7dip"
+        android:bottomRightRadius="@dimen/dimen_7dip"
+        android:topLeftRadius="@dimen/dimen_7dip"
+        android:topRightRadius="@dimen/dimen_7dip" />
+
+    <solid android:color="@color/blue_dark_btn" />
+
+
+</shape>

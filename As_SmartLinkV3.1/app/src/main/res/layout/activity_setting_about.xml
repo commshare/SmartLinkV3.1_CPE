@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_about_version"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2" >
+
+         <!-- center position -->
+        <ImageView android:id="@+id/iv_about_center_position_up"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/setting_about"/>
+        <ImageView
+            android:id="@+id/iv_about_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/iv_about_center_position_up"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/setting_about"
+            android:src="@drawable/about_app" />
+
+        <TextView
+            android:id="@+id/tv_about_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_about_center_position_up"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/setting_about_app_name"
+            android:textSize="15sp"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/tv_about_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_about_app_name"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/setting_about_version"
+            android:textSize="15sp"
+            android:textColor="@color/color_black" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_about_copyright"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3" >
+
+        <TextView
+            android:id="@+id/tv_about_copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/setting_about_copyright"
+            android:textColor="@color/color_grey"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_about_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_link_official"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:textColor="@color/color_blue"
+                android:gravity="center"
+                android:text="@string/setting_about_official_website"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/tv_link_management_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:gravity="center"
+                android:clickable="true"
+                android:textColor="@color/color_blue"
+                android:text="@string/setting_about_management_page"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
