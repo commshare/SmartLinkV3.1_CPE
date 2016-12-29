@@ -171,16 +171,19 @@
 
 
     <!-- setting start -->
-    <string name="setting_wifi">WiFi</string>
     <string name="setting_account">Account</string>
     <string name="setting_network">Network</string>
+    <string name="setting_share">Sharing Service</string>
+    <string name="setting_device">Device</string>
+    <string name="setting_printer">Printer</string>
+    <string name="setting_usb_storage">USB Storage</string>
+    <string name="setting_about">About</string>
+    <string name="setting_wifi">WiFi</string>
     <string name="setting_power">Power Saving</string>
     <string name="setting_sharing">FTP&amp;DLNA</string>
     <string name="setting_sharing_ftp">FTP</string>
     <string name="setting_sharing_dlna">DLNA</string>
     <string name="setting_upgrade">Upgrade</string>
-    <string name="setting_device">Device</string>
-    <string name="setting_about">About</string>
     <string name="setting_backup">Backup&amp;Restore</string>
     <string name="setting_text_2point4G_wifi">2.4G WiFi</string>
     <string name="setting_text_5G_wifi">5G WiFi</string>
@@ -255,7 +258,7 @@
     <string name="setting_device_pin_code">PIN Code</string>
     <string name="setting_device_web_version">Web Version</string>
     <string name="setting_device_pin_code_edit">PIN Enable</string>
-    <string name="setting_about_app_name">ALCATELONETOUCH</string>
+    <string name="setting_about_app_name">LINK</string>
     <string name="setting_success">Success</string>
     <string name="setting_failed">Failed</string>
     <string name="setting_backup_failed">Set device back up failed.</string>
@@ -325,6 +328,8 @@
     <string name="setting_wifi_share">Share</string>
     <string name="setting_wifi_save">Save</string>
     <string name="setting_wifi_ssid_can_not_be_empty">SSID can not be empty!</string>
+
+    <string name="setting_item_link_app_version">LINK APP Version </string>
     <!-- setting end -->
 
 

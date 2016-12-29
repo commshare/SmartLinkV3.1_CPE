@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="?android:attr/listPreferredItemHeight" >
-    
-    <TextView android:id="@+id/settingItemText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="?android:attr/listPreferredItemHeight" >
+
+    <ImageView
+        android:id="@+id/settingItemIcon"
+        android:src="@drawable/settings_ic_account"
+        android:layout_centerVertical="true"
+        android:layout_width="@dimen/dimen_30dip"
+        android:layout_height="@dimen/dimen_30dip"/>
+
+    <TextView
+        android:id="@+id/settingItemText"
+        android:layout_toRightOf="@id/settingItemIcon"
+        android:layout_marginLeft="@dimen/dimen_10dip"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="@string/setting_wifi"
-        android:layout_alignParentLeft="true"
         android:textColor="@color/color_black"
         android:textSize="20sp"
-        android:layout_centerVertical="true"
-         />
+        android:layout_centerVertical="true"/>
     <!-- upgrade flag -->
-    <ImageView android:id="@+id/flagUpgrade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/settingItemText"
-        android:layout_marginTop="15dp"
-        android:contentDescription="@string/setting_wifi"
-        android:src="@drawable/upgrade_new"
-        android:visibility="visible" />
-    
+    <!--<ImageView android:id="@+id/flagUpgrade"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_toRightOf="@id/settingItemText"-->
+    <!--android:layout_marginTop="15dp"-->
+    <!--android:contentDescription="@string/setting_wifi"-->
+    <!--android:src="@drawable/upgrade_new"-->
+    <!--android:visibility="visible" />-->
+
     <ImageView android:id="@+id/flagLeftArrow"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+               android:layout_alignParentRight="true"
+               android:layout_width="@dimen/dimen_20dip"
+               android:layout_height="@dimen/dimen_20dip"
+               android:layout_centerVertical="true"
+               android:contentDescription="@string/setting_wifi"
+               android:layout_marginRight="20dp"
+               android:src="@drawable/right_arrow_big"/>
+
+    <TextView
+        android:id="@+id/flagUpgrade"
+        android:layout_toLeftOf="@id/flagLeftArrow"
+        android:layout_marginRight="@dimen/dimen_5dip"
         android:layout_centerVertical="true"
-        android:contentDescription="@string/setting_wifi"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/right_arrow_big"/>
-    
+        android:background="@drawable/tab_sms_new"
+        android:gravity="center"
+        android:textColor="@color/color_white"
+        android:text="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:visibility="visible"
+        android:layout_toRightOf="@id/settingItemIcon"
+        android:layout_marginLeft="@dimen/dimen_10dip"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_bottom_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"/>
+
 
 </RelativeLayout>

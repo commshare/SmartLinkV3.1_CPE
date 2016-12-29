@@ -1,33 +1,11 @@
 package com.alcatel.smartlinkv3.ui.view;
 
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingNewAboutActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
-import com.alcatel.smartlinkv3.ui.activity.SystemInfoActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingNetworkActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,22 +17,44 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingNetworkActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ViewSetting extends BaseViewImpl{
 	
 	
-	private final int ITEM_WIFI_SETTING1 = 0;
-	private final int ITEM_ACCOUNT_SETTING1 = 1;
-	private final int ITEM_NETWORK_SETTING1 = 2;
-	private final int ITEM_DEVICE_SETTING1 =3;
-	private final int ITEM_ABOUT_SETTING1 = 4;
-	
-	private final int ITEM_WIFI_SETTING2 = 0;
-	private final int ITEM_ACCOUNT_SETTING2 = 1;
-	private final int ITEM_NETWORK_SETTING2 = 2;
-	private final int ITEM_SHARE_SETTING = 3;
-	private final int ITEM_DEVICE_SETTING2 = 4;
-	private final int ITEM_ABOUT_SETTING2 = 5;
+	private final int ITEM_ACCOUNT_SETTING1 = 0;
+	private final int ITEM_NETWORK_SETTING1 = 1;
+	private final int ITEM_DEVICE_SETTING1 =2;
+	private final int ITEM_PRINTER_SETTING1 =3;
+	private final int ITEM_USB_SETTING1 =4;
+	private final int ITEM_ABOUT_SETTING1 = 5;
+	private final int ITEM_WIFI_SETTING1 = 6;//这个已删除
+
+    private final int ITEM_ACCOUNT_SETTING2 = 0;
+    private final int ITEM_NETWORK_SETTING2 = 1;
+    private final int ITEM_SHARE_SETTING = 2;
+    private final int ITEM_DEVICE_SETTING2 =3;
+    private final int ITEM_PRINTER_SETTING2 =4;
+    private final int ITEM_USB_SETTING2 =5;
+    private final int ITEM_ABOUT_SETTING2 = 6;
+    private final int ITEM_WIFI_SETTING2 = 7;//这个已删除
 	
 	boolean isFtpSupported = false;
 	boolean isDlnaSupported = false;
@@ -68,6 +68,7 @@ public class ViewSetting extends BaseViewImpl{
 	private List<SettingItem>list;
 	private boolean m_blFirst=true;
 	private settingBroadcast m_receiver;
+    private int upgradeStatus;
 	
 
 	private void registerReceiver() {
@@ -83,6 +84,7 @@ public class ViewSetting extends BaseViewImpl{
 	public ViewSetting(Context context) {
 		super(context);
 		init();
+        initUI();
 		m_receiver = new settingBroadcast();
 	}
 	
@@ -99,20 +101,23 @@ public class ViewSetting extends BaseViewImpl{
 						long arg3) {
 					// TODO Auto-generated method stub
 					switch(arg2){
-					case ITEM_WIFI_SETTING2:
-						goToWifiSettingPage();
-						break;
 					case ITEM_ACCOUNT_SETTING2:
-						goToAccountSettingPage();
+                        goToAccountSettingPage();
 						break;
 					case ITEM_NETWORK_SETTING2:
-						goToNetworkSettingPage();
+                        goToNetworkSettingPage();
 						break;
 					case ITEM_SHARE_SETTING:
-						goToShareSettingPage();
+                        goToShareSettingPage();
 						break;
 					case ITEM_DEVICE_SETTING2:
-						goToDeviceSettingPage();
+                        goToDeviceSettingPage();
+						break;
+					case ITEM_PRINTER_SETTING2:
+                        goToAboutSettingPage();
+						break;
+					case ITEM_USB_SETTING2:
+						goToAboutSettingPage();
 						break;
 					case ITEM_ABOUT_SETTING2:
 						goToAboutSettingPage();
@@ -140,21 +145,24 @@ public class ViewSetting extends BaseViewImpl{
 						long arg3) {
 					// TODO Auto-generated method stub
 					switch(arg2){
-					case ITEM_WIFI_SETTING1:
-						goToWifiSettingPage();
-						break;
-					case ITEM_ACCOUNT_SETTING1:
-						goToAccountSettingPage();
-						break;
-					case ITEM_NETWORK_SETTING1:
-						goToNetworkSettingPage();
-						break;
-					case ITEM_DEVICE_SETTING1:
-						goToDeviceSettingPage();
-						break;
-					case ITEM_ABOUT_SETTING1:
-						goToAboutSettingPage();
-						break;
+                        case ITEM_ACCOUNT_SETTING1:
+                            goToAccountSettingPage();
+                            break;
+                        case ITEM_NETWORK_SETTING1:
+                            goToNetworkSettingPage();
+                            break;
+                        case ITEM_DEVICE_SETTING1:
+                            goToDeviceSettingPage();
+                            break;
+                        case ITEM_PRINTER_SETTING1:
+                            goToAboutSettingPage();
+                            break;
+                        case ITEM_USB_SETTING1:
+                            goToAboutSettingPage();
+                            break;
+                        case ITEM_ABOUT_SETTING1:
+                            goToAboutSettingPage();
+                            break;
 //					case ITEM_POWER_SETTING:
 //						goToPowerSettingPage();
 //						break;
@@ -187,10 +195,18 @@ public class ViewSetting extends BaseViewImpl{
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
 			m_blFirst = false;
-//			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+            if (isSharingSupported){
+			    changeUpgradeFlag(ITEM_ABOUT_SETTING2,true);
+            }else {
+                changeUpgradeFlag(ITEM_ABOUT_SETTING1,true);
+            }
 		}else {
-//			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
-		}	
+            if (isSharingSupported){
+                changeUpgradeFlag(ITEM_ABOUT_SETTING2,false);
+            }else {
+                changeUpgradeFlag(ITEM_ABOUT_SETTING1,false);
+            }
+		}
 	}
 
 	@Override
@@ -209,40 +225,35 @@ public class ViewSetting extends BaseViewImpl{
 	private List<SettingItem> getData(Context context){
 		List<SettingItem> list = new ArrayList<SettingItem>();
 		
-		SettingItem item = new SettingItem(context.getString(R.string.setting_wifi), false);
-		list.add(item);
-		
-		item = new SettingItem(context.getString(R.string.setting_account), false);
+		SettingItem item = new SettingItem(context.getString(R.string.setting_account), false);
 		list.add(item);
 		
 		item = new SettingItem(context.getString(R.string.setting_network), false);
 		list.add(item);
 		
 		if(isSharingSupported){
-			item = new SettingItem(context.getString(R.string.setting_sharing), false);
+			item = new SettingItem(context.getString(R.string.setting_share), false);
 			list.add(item);
 		}
-		
+
 		item = new SettingItem(context.getString(R.string.setting_device), false);
 		list.add(item);
-		
-		item = new SettingItem(context.getString(R.string.setting_about), false);
+
+		item = new SettingItem(context.getString(R.string.setting_printer), false);
 		list.add(item);
 		
-//		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
-//		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
-//			item = new SettingItem(context.getString(R.string.setting_upgrade), true);
-//			list.add(item);
-//		}else {
-//			item = new SettingItem(context.getString(R.string.setting_upgrade), false);
-//			list.add(item);
-//		}
-//		
-//		item = new SettingItem(context.getString(R.string.setting_power), false);
-//		list.add(item);
-//		
-//		item = new SettingItem(context.getString(R.string.setting_backup), false);
-//		list.add(item);
+		item = new SettingItem(context.getString(R.string.setting_usb_storage), false);
+		list.add(item);
+
+        upgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+                upgradeStatus = 1;
+        if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(upgradeStatus)){
+            item = new SettingItem(context.getString(R.string.setting_about), true);
+            list.add(item);
+        }else {
+            item = new SettingItem(context.getString(R.string.setting_about), false);
+            list.add(item);
+        }
 		
 		return list;
 	}
@@ -295,8 +306,9 @@ public class ViewSetting extends BaseViewImpl{
 	}
 	
 	private void goToAboutSettingPage(){
-		Intent intent = new Intent(m_context, SettingNewAboutActivity.class);
-		m_context.startActivity(intent);
+        Intent intent = new Intent(m_context, SettingAboutActivity.class);
+        intent.putExtra("upgradeStatus", upgradeStatus);
+        m_context.startActivity(intent);
 	}
 	
 	public class UprgadeAdapter extends BaseAdapter{
@@ -332,10 +344,60 @@ public class ViewSetting extends BaseViewImpl{
 			View itemView = LayoutInflater.from(this.context).inflate(R.layout.setting_item,
 					null);
 			//
-			SettingItem item = listSettingItmes.get(arg0);
-			TextView tvItemNameTextView = (TextView)itemView.findViewById(R.id.settingItemText);
-			ImageView ivUpgrade = (ImageView)itemView.findViewById(R.id.flagUpgrade);
-			tvItemNameTextView.setText(item.getItemName());
+            SettingItem item = listSettingItmes.get(arg0);
+            ImageView ItemIconIv = (ImageView)itemView.findViewById(R.id.settingItemIcon);
+            TextView tvItemNameTextView = (TextView)itemView.findViewById(R.id.settingItemText);
+            TextView ivUpgrade = (TextView)itemView.findViewById(R.id.flagUpgrade);
+            tvItemNameTextView.setText(item.getItemName());
+
+            //图标处理
+            if (isSharingSupported){
+                switch (arg0){
+                    case 0:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_account);
+                        break;
+                    case 1:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_network);
+                        break;
+                    case 2:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_sharing);
+                        break;
+                    case 3:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_device);
+                        break;
+                    case 4:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_printer);
+                        break;
+                    case 5:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_usb);
+                        break;
+                    case 6:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_about);
+                        break;
+                }
+            }else{
+                switch (arg0){
+                    case 0:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_account);
+                        break;
+                    case 1:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_network);
+                        break;
+                    case 2:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_device);
+                        break;
+                    case 3:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_printer);
+                        break;
+                    case 4:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_usb);
+                        break;
+                    case 5:
+                        ItemIconIv.setImageResource(R.drawable.settings_ic_about);
+                        break;
+                }
+            }
+
 			Boolean blUpgrade = item.getUpgradeFlag();
 			if(blUpgrade){
 				ivUpgrade.setVisibility(View.VISIBLE);				
@@ -371,16 +433,16 @@ public class ViewSetting extends BaseViewImpl{
 		}
 	}
 	
-//	private void changeUpgradeFlag(int itemIndex, Boolean blUpgrade){
-//		if(itemIndex >= ITEM_WIFI_SETTING && itemIndex <= ITEM_UPGRADE_SETTING){
-//			SettingItem item = list.get(itemIndex);
-//			Boolean blOldUpgrade = item.getUpgradeFlag();
-//			if(blOldUpgrade != blUpgrade){
-//				item.setUpgradeFlag(blUpgrade);
-//				adapter.notifyDataSetChanged();
-//			}
-//		}
-//	}
+	private void changeUpgradeFlag(int itemIndex, Boolean blUpgrade){
+		if(itemIndex >= ITEM_ACCOUNT_SETTING2 && itemIndex <= ITEM_ABOUT_SETTING2){
+			SettingItem item = list.get(itemIndex);
+			Boolean blOldUpgrade = item.getUpgradeFlag();
+			if(blOldUpgrade != blUpgrade){
+				item.setUpgradeFlag(blUpgrade);
+				adapter.notifyDataSetChanged();
+			}
+		}
+	}
 	
 	private class settingBroadcast extends BroadcastReceiver{
 
@@ -404,9 +466,17 @@ public class ViewSetting extends BaseViewImpl{
 					int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
 					if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
 						m_blFirst = false;
-//						changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
+                        if (isSharingSupported){
+                            changeUpgradeFlag(ITEM_ABOUT_SETTING2,true);
+                        }else {
+                            changeUpgradeFlag(ITEM_ABOUT_SETTING1,true);
+                        }
 					}else {
-//						changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
+                        if (isSharingSupported){
+                            changeUpgradeFlag(ITEM_ABOUT_SETTING2,false);
+                        }else {
+                            changeUpgradeFlag(ITEM_ABOUT_SETTING1,false);
+                        }
 					}
 				}
 			}

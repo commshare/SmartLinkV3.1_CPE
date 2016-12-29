@@ -2,6 +2,7 @@
 <resources>
 
     <color name="color_transparent">#00000000</color>
+    <color name="color_bg_grey">#F5F5F5</color>
     <color name="color_divider">#ffcccccc</color>
     <color name="color_black">#ff000000</color>
     <color name="color_light_gray">#ff848484</color>
@@ -119,5 +120,12 @@
     <!-- DLNA start -->
     <color name="media_tool_background_color">#ff808080</color>
     <!-- DLNA end -->
+
+    <!--add start 2016.12.27-->
+
+    <color name="blue_btn">#009AFF</color>
+    <color name="blue_dark_btn">#3581FF</color>
+
+    <!--add end 2016.12.27-->
 
 </resources>
