@@ -15,270 +15,304 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="vertical" >
-           
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:id="@+id/device_system_info"
-            android:background="@color/color_white">
-               
-            <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:text="@string/setting_device_title"
-               android:layout_gravity="start"
-               />
-            
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
-		        android:layout_gravity="center|end"/>
-        </FrameLayout>
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="20dp"
-          android:contentDescription="@string/setting_device"/>
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/device_upgrade_system" 
-            android:background="@color/color_white">
-             <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:text="@string/setting_device_upgrade_system"
-               />
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
-		        android:layout_gravity="center|end"/>
-         </FrameLayout>
-            
-         <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-            
-         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/device_backup_and_reset"
-            android:background="@color/color_white" >
-             <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:text="@string/setting_title_backup"
-               />
             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
-		        android:layout_gravity="center|end"/>
-         </FrameLayout>
-         
-        <ImageView
-           android:layout_width="match_parent"
-           android:layout_height="1dp"
-           android:background="@color/main_bottom_divider"
-           android:contentDescription="@string/setting_device" />
-        
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/device_power_saving"
-            android:background="@color/color_white"  >
-               
-            <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:text="@string/setting_title_power"
-               android:layout_gravity="start"
-               />
-            
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
-		        android:layout_gravity="center|end"/>
-        </FrameLayout>
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="20dp"
-          android:contentDescription="@string/setting_device" />
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/device_pin_code"
-            android:background="@color/color_white"   >
-               
-            <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:text="@string/setting_device_pin_code"
-               android:layout_gravity="start"
-               />
-            
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
-		        android:layout_gravity="center|end"/>
-        </FrameLayout>
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:id="@+id/device_hidable_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/device_web_version"
-            android:background="@color/color_white"   >
-               
-            <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:id="@+id/device_web_version_desc"
-               android:text="@string/setting_device_web_version"
-               android:layout_gravity="start"
-               />
-            
-             <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:contentDescription="@string/setting_wifi"
-		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
-		        android:layout_gravity="center|end"/>
-        </FrameLayout>
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="20dp"
-          android:contentDescription="@string/setting_device" />
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:id="@+id/device_restart"
-            android:background="@color/color_white"  >
-               
-            <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:text="@string/setting_device_btn_restart"
-               android:layout_gravity="start"
-               />
+                android:layout_marginTop="@dimen/dimen_20dip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_device" />
+            <FrameLayout
+                android:id="@+id/device_system_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white">
 
-        </FrameLayout>
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-        
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/device_power_off"
-            android:background="@color/color_white"   >
-               
-            <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:padding="15dp"
-               android:textColor="@color/color_black"
-               android:textSize="20sp" 
-               android:text="@string/setting_device_btn_power_off"
-               android:layout_gravity="start"
-               />
+                <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="@dimen/dimen_15dip"
+                   android:textColor="@color/color_black"
+                   android:textSize="@dimen/dimen_textsize_20sp"
+                   android:text="@string/setting_device_title"
+                   android:layout_gravity="start"
+                   />
 
-        </FrameLayout>
+                 <ImageView
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_gravity="center|end"/>
+            </FrameLayout>
         
-       <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_device" />
-     </LinearLayout>
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_15dip"
+              android:contentDescription="@string/setting_device"/>
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />
+
+            <FrameLayout
+                android:id="@+id/device_upgrade_system"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dimen_15dip"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/dimen_textsize_20sp"
+                        android:text="@string/setting_upgrade"
+                    />
+                    <ImageView
+                        android:id="@+id/device_upgrade_system_arrow"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="@dimen/dimen_20dip"
+                        android:layout_height="@dimen/dimen_20dip"
+                        android:contentDescription="@string/setting_wifi"
+                        android:src="@drawable/right_arrow_big"
+                        android:layout_marginRight="@dimen/dimen_15dip"/>
+
+                    <TextView
+                        android:id="@+id/device_upgrade_flag"
+                        android:layout_toLeftOf="@id/device_upgrade_system_arrow"
+                        android:layout_marginRight="@dimen/dimen_5dip"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/tab_sms_new"
+                        android:gravity="center"
+                        android:textColor="@color/color_white"
+                        android:text="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+             </FrameLayout>
+
+             <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/device_backup_and_reset"
+                android:background="@color/color_white" >
+
+                 <ImageView
+                     android:layout_height="@dimen/dimen_0.5dip"
+                     android:layout_marginLeft="@dimen/dimen_15dip"
+                     android:layout_width="match_parent"
+                     android:background="@color/main_bottom_divider"
+                     android:contentDescription="@string/setting_device" />
+                 <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:padding="@dimen/dimen_15dip"
+                   android:textColor="@color/color_black"
+                   android:textSize="@dimen/dimen_textsize_20sp"
+                   android:text="@string/setting_title_backup"
+                   />
+                <ImageView
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_gravity="center|end"/>
+             </FrameLayout>
+
+            <!--<ImageView
+               android:layout_height="@dimen/dimen_0.5dip"
+               android:layout_marginLeft="@dimen/dimen_15dip"
+               android:layout_width="match_parent"
+               android:background="@color/main_bottom_divider"
+               android:contentDescription="@string/setting_device" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/device_power_saving"
+                android:background="@color/color_white"  >
+
+                <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="@dimen/dimen_15dip"
+                   android:textColor="@color/color_black"
+                   android:textSize="@dimen/dimen_textsize_20sp"
+                   android:text="@string/setting_title_power"
+                   android:layout_gravity="start"
+                   />
+
+                 <ImageView
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_gravity="center|end"/>
+            </FrameLayout>-->
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_15dip"
+              android:contentDescription="@string/setting_device" />
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/device_pin_code"
+                android:background="@color/color_white"   >
+
+                <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="@dimen/dimen_15dip"
+                   android:textColor="@color/color_black"
+                   android:textSize="@dimen/dimen_textsize_20sp"
+                   android:text="@string/setting_device_pin_code"
+                   android:layout_gravity="start"
+                   />
+
+                 <ImageView
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_gravity="center|end"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/device_web_version"
+                android:background="@color/color_white"   >
+
+                <ImageView
+                    android:id="@+id/device_hidable_divider"
+                    android:layout_marginLeft="@dimen/dimen_15dip"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"
+                    android:background="@color/main_bottom_divider"
+                    android:contentDescription="@string/setting_device" />
+
+                <TextView
+                   android:id="@+id/device_web_version_desc"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="@dimen/dimen_15dip"
+                   android:textColor="@color/color_black"
+                   android:textSize="@dimen/dimen_textsize_20sp"
+                   android:text="@string/setting_device_web_version"
+                   android:layout_gravity="start"
+                   />
+
+                 <ImageView
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_gravity="center|end"/>
+            </FrameLayout>
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_15dip"
+              android:contentDescription="@string/setting_device" />
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/device_restart"
+                android:background="@color/color_white"  >
+
+                <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="@dimen/dimen_15dip"
+                   android:textColor="@color/color_black"
+                   android:textSize="@dimen/dimen_textsize_20sp"
+                   android:text="@string/setting_device_btn_restart"
+                   android:layout_gravity="start"
+                   />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_gravity="center|end"/>
+
+            </FrameLayout>
+
+            <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />
+
+            <!--<FrameLayout
+                android:id="@+id/device_power_off"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white"   >
+
+                <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="@dimen/dimen_15dip"
+                   android:textColor="@color/color_black"
+                   android:textSize="@dimen/dimen_textsize_20sp"
+                   android:text="@string/setting_device_btn_power_off"
+                   android:layout_gravity="start"
+                   />
+
+            </FrameLayout>
+
+           <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dimen_0.5dip"
+              android:background="@color/main_bottom_divider"
+              android:contentDescription="@string/setting_device" />-->
+         </LinearLayout>
      
     </ScrollView>
     
@@ -291,7 +325,7 @@
 	        android:layout_height="wrap_content" 
 	        android:id="@+id/setting_device_pincode_editor"
 	        android:background="@color/color_white"
-	        android:visibility="visible">
+	        android:visibility="invisible">
 
         <TextView
             android:layout_margin="15dp"

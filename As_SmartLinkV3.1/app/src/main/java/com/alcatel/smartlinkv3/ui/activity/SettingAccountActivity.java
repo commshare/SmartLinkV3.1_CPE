@@ -1,38 +1,35 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnFocusChangeListener;
-import android.view.Window;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SettingAccountActivity extends BaseActivity implements OnClickListener{
 
@@ -44,7 +41,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	private LinearLayout m_inputpwd;
 	private TextView m_notice;
 	private FrameLayout m_fl_titlebar;
-	private TextView m_change_password;
+	private RelativeLayout m_change_password;
 	private TextView m_logout;
 	
 	private EditText m_current_password;
@@ -93,7 +90,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		m_inputpwd = (LinearLayout)findViewById(R.id.input_password);
 		m_inputpwd.setVisibility(View.GONE);
 		
-		m_change_password = (TextView) findViewById(R.id.setting_change_password);
+		m_change_password = (RelativeLayout) findViewById(R.id.setting_change_password_container);
 		m_logout = (TextView) findViewById(R.id.setting_logout);
 		
 		m_change_password.setOnClickListener(this);
@@ -169,7 +166,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		case R.id.ib_title_back:
 			SettingAccountActivity.this.finish();
 			break;
-		case R.id.setting_change_password:
+		case R.id.setting_change_password_container:
 			changePwdClick();
 			break;
 		case R.id.tv_titlebar_done:

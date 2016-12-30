@@ -1,43 +1,43 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM;
-import com.alcatel.smartlinkv3.common.ENUM.PinState;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
+import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
-import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog;
-import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
+import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog.OnPINError;
+import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.View.OnClickListener;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingDeviceActivity extends BaseActivity implements OnClickListener{
 	
@@ -77,6 +77,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	private TextView m_pin_notice = null;
 	
 	private ENUM.PinState m_PrePinState = ENUM.PinState.NotAvailable;
+
+    private Dialog mUpgradeDialog;
+    private RelativeLayout mWaittingContainer;
+    private RelativeLayout mUpgradeContainer;
+    private TextView mVersion;
+    private TextView mUpgrade;
+    private boolean m_blHasNewApp = false;//是否为更新版本的事件
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +117,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		m_upgrade_system.setOnClickListener(this);
 		m_backup_and_reset = (FrameLayout) findViewById(R.id.device_backup_and_reset);
 		m_backup_and_reset.setOnClickListener(this);
-		m_power_saving = (FrameLayout) findViewById(R.id.device_power_saving);
-		m_power_saving.setOnClickListener(this);
+//		m_power_saving = (FrameLayout) findViewById(R.id.device_power_saving);
+//		m_power_saving.setOnClickListener(this);
 		m_pin_code = (FrameLayout) findViewById(R.id.device_pin_code);
 		m_pin_code.setOnClickListener(this);
 		m_web_version = (FrameLayout) findViewById(R.id.device_web_version);
@@ -124,8 +131,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //		m_webversion_desc.setText(webVersion);
 		m_restart = (FrameLayout) findViewById(R.id.device_restart);
 		m_restart.setOnClickListener(this);
-		m_power_off = (FrameLayout) findViewById(R.id.device_power_off);
-		m_power_off.setOnClickListener(this);
+//		m_power_off = (FrameLayout) findViewById(R.id.device_power_off);
+//		m_power_off.setOnClickListener(this);
 		
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_device_waiting_progress);
 		
@@ -168,13 +175,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			m_pb_waiting.setVisibility(View.GONE);
 		}
 		m_system_info.setEnabled(!blShow);
-		m_power_off.setEnabled(!blShow);
+//		m_power_off.setEnabled(!blShow);
 		m_restart.setEnabled(!blShow);
 		m_backup_and_reset.setEnabled(!blShow);
 		m_ib_back.setEnabled(!blShow);
 		m_tv_back.setEnabled(!blShow);
 		m_upgrade_system.setEnabled(!blShow);
-		m_power_saving.setEnabled(!blShow);
+//		m_power_saving.setEnabled(!blShow);
 		m_pin_code.setEnabled(!blShow);
 		m_web_version.setEnabled(!blShow);
 	}
@@ -415,14 +422,15 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			goToSystemInfoPage();
 			break;
 		case R.id.device_upgrade_system:
-			goToUpgradeSettingPage();
+//			goToUpgradeSettingPage();
+            showUpgradeDialog();
 			break;
 		case R.id.device_backup_and_reset:
 			goToBackupSettingPage();
 			break;
-		case R.id.device_power_saving:
-			goToPowerSettingPage();
-			break;
+//		case R.id.device_power_saving:
+//			goToPowerSettingPage();
+//			break;
 		case R.id.device_pin_code:
 			SimStatusModel simStatus0 = BusinessMannager.getInstance().getSimStatus();
 			if(simStatus0.m_PinState == PinState.EnableButNotVerified){
@@ -440,10 +448,10 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			onBtnRestart();
 			ShowWaiting(true);
 			break;
-		case R.id.device_power_off:
-			onBtnPowerOff();
-			ShowWaiting(true);
-			break;
+//		case R.id.device_power_off:
+//			onBtnPowerOff();
+//			ShowWaiting(true);
+//			break;
 		case R.id.setting_device_pincode_editor:
 //			onDoneEditPincodeSetting();
 //			m_dlgPin.cancelUserClose();
@@ -488,8 +496,86 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			break;
 		}
 	}
-	
-	@Override
+
+    private void showUpgradeDialog() {
+        mUpgradeDialog = new Dialog(this, R.style.UpgradeMyDialog);
+        mUpgradeDialog.setCanceledOnTouchOutside(false);
+        mUpgradeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this,
+                R.layout.dialog_upgrade, null);
+
+        mWaittingContainer = (RelativeLayout) deleteDialogLLayout.findViewById(R.id.upgrade_waiting);
+        mWaittingContainer.setVisibility(View.VISIBLE);
+        mUpgradeContainer = (RelativeLayout) deleteDialogLLayout.findViewById(R.id.upgrade_container);
+        mUpgradeContainer.setVisibility(View.GONE);
+
+        ImageView cancel = (ImageView) deleteDialogLLayout.findViewById(R.id.upgrade_cancel);
+        mVersion = (TextView) deleteDialogLLayout.findViewById(R.id.upgrade_version);
+        mUpgrade = (TextView) deleteDialogLLayout.findViewById(R.id.upgrade_confirm);
+
+        mUpgradeDialog.setContentView(deleteDialogLLayout);
+        mUpgrade.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNewVersion();
+            }
+        });
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissUpgradeDialog();
+            }
+        });
+        mUpgradeDialog.show();
+
+        //获取最新版本信息
+        getNewVersion();
+    }
+
+    private void dismissUpgradeDialog() {
+        if (mUpgradeDialog != null && mUpgradeDialog.isShowing()) {
+            mUpgradeDialog.dismiss();
+        }
+    }
+
+    private void getNewVersion() {
+        ConnectStatusModel status = BusinessMannager.getInstance().getConnectStatus();
+        ENUM.ConnectionStatus result = status.m_connectionStatus;
+        if (result != ENUM.ConnectionStatus.Connected) {
+            showCheckAppWaiting(false);
+            mVersion.setText(R.string.setting_upgrade_no_connection);
+            mUpgrade.setVisibility(View.GONE);
+        }else {
+            mUpgrade.setVisibility(View.VISIBLE);
+            onBtnAppCheck();
+        }
+    }
+
+    private void showCheckAppWaiting(boolean isWait) {
+        if (isWait){
+            mWaittingContainer.setVisibility(View.VISIBLE);
+            mUpgradeContainer.setVisibility(View.GONE);
+        }else {
+            mWaittingContainer.setVisibility(View.GONE);
+            mUpgradeContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void onBtnAppCheck(){
+        if (m_blHasNewApp) {
+            //进行版本升级
+        }else {
+            checkNewVersion();
+        }
+    }
+
+    //检查版本
+    private void checkNewVersion() {
+        BusinessMannager.getInstance().sendRequestMessage(
+                MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
+    }
+
+    @Override
 	public void onStart(){
 		super.onStart();
 	}
@@ -577,6 +663,12 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE));
 		this.registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION));
+
+        /*--------------- add start 2016.12.30 ---------------*/
+        registerReceiver(m_msgReceiver,
+                new IntentFilter(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION));
+
+        /*--------------- add end 2016.12.30 ---------------*/
 		
 		int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
 		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
@@ -596,7 +688,26 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 	protected void onBroadcastReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		super.onBroadcastReceive(context, intent);
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_REBOOT)){
+
+        /*--------------- add start 2016.12.30 ---------------*/
+        if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION)){
+            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+                //do nothing
+                showCheckAppWaiting(false);
+                m_blHasNewApp = true;
+            }else {
+                showCheckAppWaiting(false);
+//                String strNew = getString(R.string.setting_upgrade_set_check_new_version_failed);
+                mVersion.setText(R.string.setting_upgrade_check_failed);
+                mUpgrade.setText(R.string.setting_upgrade_btn_check);
+                m_blHasNewApp = false;
+            }
+        }
+        /*--------------- add end 2016.12.30 ---------------*/
+
+        if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_REBOOT)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.setting_reboot_failed);

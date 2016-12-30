@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dimen_divider_1px">1.0px</dimen>
+    <dimen name="dimen_0.5dip">0.5dip</dimen>
     <dimen name="dimen_1dip">1dip</dimen>
     <dimen name="dimen_2dip">2dip</dimen>
     <dimen name="dimen_4dip">4dip</dimen>
