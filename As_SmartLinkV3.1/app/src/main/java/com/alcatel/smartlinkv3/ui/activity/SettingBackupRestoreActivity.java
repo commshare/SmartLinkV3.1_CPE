@@ -76,7 +76,6 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		if(m_bRestore)
 		{
             mRestoreTv.setClickable(false);
-            Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 		}
 		else
 		{
@@ -117,7 +116,6 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	
 	private void onBtnRestore(){
         mRestoreTv.setClickable(false);
-        Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 		m_bRestore = true;
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
@@ -207,7 +205,6 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 					if(m_bRestore)
 					{
                         mRestoreTv.setClickable(false);
-                        Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 					}
 					else
 					{

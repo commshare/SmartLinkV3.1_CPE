@@ -56,7 +56,7 @@
     <string name="home_MB">MB</string>
     <string name="home_B">B</string>
     <string name="Home_unlock_pin">Unlock</string>
-    <string name="Home_no_sim">No SIM Card</string>
+    <string name="Home_no_sim">No sim card, function can not be used</string>
     <string name="Home_sim_invalid">Invalid SIM</string>
     <string name="Home_pin_locked">PIN Locked</string>
     <string name="Home_puk_locked">PUK Locked</string>
