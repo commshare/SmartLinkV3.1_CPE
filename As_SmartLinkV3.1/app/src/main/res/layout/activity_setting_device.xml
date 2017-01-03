@@ -321,9 +321,10 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical">
 		<FrameLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" 
 	        android:id="@+id/setting_device_pincode_editor"
+            android:layout_marginTop="@dimen/dimen_20dip"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
 	        android:background="@color/color_white"
 	        android:visibility="invisible">
 
@@ -337,21 +338,22 @@
 
 
           <TextView
-             android:layout_margin="15dp"
              android:id="@+id/btn_default_switch"
-             android:layout_width="wrap_content"
-             android:layout_height="match_parent"
+             android:layout_margin="15dp"
+             android:layout_width="@dimen/dimen_50dip"
+             android:layout_height="@dimen/dimen_30dip"
              android:layout_gravity="end|center_vertical"
              android:gravity="end"
-             android:background="@drawable/pwd_switcher_off"
+             android:background="@drawable/general_btn_off"
              android:visibility="visible" />
             
     	</FrameLayout>
     
 		<TextView
+		    android:id="@+id/setting_device_pincode_editor_notice"
+            android:layout_marginTop="@dimen/dimen_10dip"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:id="@+id/setting_device_pincode_editor_notice"
 		    android:text="@string/dialog_warning_error_pin_code_error_3times"
 		    android:textSize="16sp"
 		    android:textColor="@color/red"

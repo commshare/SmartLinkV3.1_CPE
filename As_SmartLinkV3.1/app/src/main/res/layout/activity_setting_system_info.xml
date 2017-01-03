@@ -2,32 +2,23 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white" >
+    android:background="@color/setting_background_color">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:background="@color/color_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical|left"
-                android:text="@string/setting_device_title"
-                android:textColor="@color/color_black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
             <!-- Software Version -->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_margin="@dimen/dimen_10dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -44,18 +35,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_black"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/system_information_gray_font"
                     android:textSize="17sp" />
+
             </LinearLayout>
+            <ImageView
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:background="@color/main_bottom_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
             <!-- Hardware Version -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="@dimen/dimen_10dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -72,18 +67,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_black"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/system_information_gray_font"
                     android:textSize="17sp" />
             </LinearLayout>
+            <ImageView
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:background="@color/main_bottom_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
             <!-- Device Name -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="@dimen/dimen_10dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -100,18 +98,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_black"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/system_information_gray_font"
                     android:textSize="17sp" />
             </LinearLayout>
+            <ImageView
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:background="@color/main_bottom_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
             <!-- IMEI -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="@dimen/dimen_10dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -128,18 +129,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_black"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/system_information_gray_font"
                     android:textSize="17sp" />
             </LinearLayout>
+            <ImageView
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:background="@color/main_bottom_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
             <!-- MAC Address -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="@dimen/dimen_10dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -156,18 +160,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_black"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/system_information_gray_font"
                     android:textSize="17sp" />
             </LinearLayout>
+            <ImageView
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:background="@color/main_bottom_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
             <!-- IP Address -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="@dimen/dimen_10dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -184,17 +191,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_black"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/system_information_gray_font"
                     android:textSize="17sp" />
             </LinearLayout>
+            <ImageView
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:background="@color/main_bottom_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
             <!-- Subnet Mask -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="@dimen/dimen_10dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -211,79 +222,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_black"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/system_information_gray_font"
                     android:textSize="17sp" />
             </LinearLayout>
 
-            <!-- seperator -->
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="30dp"
-                android:background="@color/main_bottom_divider"
-                android:contentDescription="@string/setting_device" />
-			<!--  
-            <RelativeLayout
-                android:id="@+id/rl_device_control"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:visibility="gone" >
-
-                <Button
-                    android:id="@+id/btn_reboot"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/selector_common_button"
-                    android:gravity="center"
-                    android:text="@string/setting_device_btn_reboot"
-                    android:textColor="@drawable/common_button_text"
-                    android:textSize="15sp" />
-
-                <Button
-                    android:id="@+id/btn_power_off"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_above="@id/btn_reboot"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/selector_common_button"
-                    android:gravity="center"
-                    android:text="@string/setting_device_btn_power_off"
-                    android:textColor="@drawable/common_button_text"
-                    android:textSize="15sp" />
-
-                <Button
-                    android:id="@+id/btn_reset"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/btn_reboot"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/selector_common_button"
-                    android:gravity="center"
-                    android:text="@string/setting_device_btn_reset"
-                    android:textColor="@drawable/common_button_text"
-                    android:textSize="15sp" />
-            </RelativeLayout>
-            -->
         </LinearLayout>
-
-        <!-- <RelativeLayout
-            android:id="@+id/rl_device_waiting"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-
-            <ProgressBar
-                android:id="@+id/pb_device_waiting_progress"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_centerInParent="true"
-                android:indeterminateDrawable="@drawable/progerss_blue"
-                android:visibility="gone" />
-        </RelativeLayout> -->
+        <TextView
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:textSize="@dimen/font_size_middle"
+            android:text="@string/setting_password_note"
+            android:textColor="@color/system_information_gray_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 </ScrollView>

@@ -1,41 +1,39 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.List;
-import java.util.Stack;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BaseManager;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
-import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.HttpMethodUti;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.RadioGroup.OnCheckedChangeListener;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.List;
+import java.util.Stack;
 
 public class SettingNetworkActivity extends BaseFragmentActivity implements OnClickListener{
 	
@@ -74,9 +72,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	private TextView m_tv_title = null;
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
-	private FrameLayout m_network_mode_container=null;
-	private FrameLayout m_network_selection_container=null;
-	private FrameLayout m_network_profile_management=null;
+	private RelativeLayout m_network_mode_container=null;
+	private RelativeLayout m_network_selection_container=null;
+	private RelativeLayout m_network_profile_management=null;
 	private LinearLayout m_level_one_menu=null;
 	private LinearLayout m_add_and_delete_container = null;
 	
@@ -149,10 +147,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		m_get_network_setting_filter.addAction(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
 		m_set_network_setting_filter.addAction(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
 		m_network_setting_receiver = new NetworkSettingReceiver();
-		
-		m_network_mode_container = (FrameLayout) findViewById(R.id.network_mode);
-		m_network_selection_container = (FrameLayout) findViewById(R.id.network_selection);
-		m_network_profile_management = (FrameLayout) findViewById(R.id.network_profile_management);
+
+		m_network_mode_container = (RelativeLayout) findViewById(R.id.network_mode);
+		m_network_selection_container = (RelativeLayout) findViewById(R.id.network_selection);
+		m_network_profile_management = (RelativeLayout) findViewById(R.id.network_profile_management);
 		m_selected_profile = (TextView)findViewById(R.id.network_selected_profile);
 		
 		m_mode_desc = (TextView)findViewById(R.id.network_mode_desc);

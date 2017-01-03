@@ -125,6 +125,7 @@
 
     <color name="blue_btn">#009AFF</color>
     <color name="blue_dark_btn">#3581FF</color>
+    <color name="system_information_gray_font">#999999</color>
 
     <!--add end 2016.12.27-->
 

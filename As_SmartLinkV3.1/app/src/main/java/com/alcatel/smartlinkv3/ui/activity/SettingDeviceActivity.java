@@ -155,11 +155,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 		if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
 				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
 				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK){
-			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+			m_switch_button.setBackgroundResource(R.drawable.general_btn_on);
 			m_requested_pinState = ENUM.PinState.Disable;
 		}
 		else if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
-			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+			m_switch_button.setBackgroundResource(R.drawable.general_btn_off);
 			m_requested_pinState = ENUM.PinState.PinEnableVerified;
 		}
 		m_PrePinState = BusinessMannager.getInstance().getSimStatus().m_PinState;
@@ -195,11 +195,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
 				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
 				||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK){
-				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+				m_switch_button.setBackgroundResource(R.drawable.general_btn_on);
 				m_requested_pinState = ENUM.PinState.Disable;
 			}
 			else if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
-				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+				m_switch_button.setBackgroundResource(R.drawable.general_btn_off);
 				m_requested_pinState = ENUM.PinState.PinEnableVerified;
 			}
 			closePinAndPukDialog();
@@ -295,11 +295,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
 			||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
 			||BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK){
-				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+				m_switch_button.setBackgroundResource(R.drawable.general_btn_on);
 				m_requested_pinState = ENUM.PinState.Disable;
 			}
 			else if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
-				m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+				m_switch_button.setBackgroundResource(R.drawable.general_btn_off);
 				m_requested_pinState = ENUM.PinState.PinEnableVerified;
 			}
 		}
@@ -585,11 +585,11 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //		m_pincode_editor.setVisibility(View.GONE);
 		if(m_pin_state){
 			m_pin_state = false;
-			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+			m_switch_button.setBackgroundResource(R.drawable.general_btn_off);
 		}
 		else{
 			m_pin_state = true;
-			m_switch_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+			m_switch_button.setBackgroundResource(R.drawable.general_btn_on);
 		}
 		
 	}
