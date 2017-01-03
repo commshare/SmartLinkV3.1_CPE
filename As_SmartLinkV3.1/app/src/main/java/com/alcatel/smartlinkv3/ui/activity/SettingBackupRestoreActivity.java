@@ -1,5 +1,17 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -10,29 +22,17 @@ import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 public class SettingBackupRestoreActivity extends BaseActivity implements OnClickListener{
 
 	private TextView m_tv_titleTextView = null;
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
-	private Button m_btn_backup=null;
-	private Button m_btn_restore=null;
 	private ProgressBar m_pbWaitingBar=null;
 	private boolean  m_bRestore = false;
-	@Override
+    private TextView mBackupTv;
+    private TextView mRestoreTv;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -59,10 +59,10 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	}
 	
 	private void createControls(){
-		m_btn_backup = (Button)findViewById(R.id.btn_backup);
-		m_btn_restore = (Button)findViewById(R.id.btn_restore);
-		m_btn_backup.setOnClickListener(this);
-		m_btn_restore.setOnClickListener(this);
+        mBackupTv = (TextView) findViewById(R.id.device_backup_backup);
+        mRestoreTv = (TextView) findViewById(R.id.device_backup_restore);
+        mBackupTv.setOnClickListener(this);
+        mRestoreTv.setOnClickListener(this);
 		m_pbWaitingBar=(ProgressBar)findViewById(R.id.pb_backup_waiting_progress);
 	}
 
@@ -72,14 +72,15 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		}else {
 			m_pbWaitingBar.setVisibility(View.GONE);
 		}
-		m_btn_backup.setEnabled(!blShow);
+        mBackupTv.setClickable(!blShow);
 		if(m_bRestore)
 		{
-			m_btn_restore.setEnabled(false);	
+            mRestoreTv.setClickable(false);
+            Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 		}
 		else
 		{
-			m_btn_restore.setEnabled(!blShow);
+            mRestoreTv.setClickable(!blShow);
 		}
 		
 		m_ib_back.setEnabled(!blShow);
@@ -95,12 +96,12 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			SettingBackupRestoreActivity.this.finish();
 			break;
 
-		case R.id.btn_backup:
+		case R.id.device_backup_backup:
 			onBtnBackup();
 			ShowWaiting(true);
 			break;
 			
-		case R.id.btn_restore:
+		case R.id.device_backup_restore:
 			onBtnRestore();
 			ShowWaiting(true);
 			break;
@@ -115,7 +116,8 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	}
 	
 	private void onBtnRestore(){
-		m_btn_restore.setEnabled(false);
+        mRestoreTv.setClickable(false);
+        Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 		m_bRestore = true;
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
@@ -135,11 +137,12 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		
 		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 		if (SIMState.Accessable != sim.m_SIMState) {
-			m_btn_backup.setEnabled(false);
-			m_btn_restore.setEnabled(false);
+            mBackupTv.setClickable(false);
+            mRestoreTv.setClickable(false);
+            Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 		}else {
-			m_btn_backup.setEnabled(true);
-			m_btn_restore.setEnabled(true);
+            mBackupTv.setClickable(true);
+            mRestoreTv.setClickable(true);
 		}
 	}
 
@@ -176,7 +179,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 				if (status == 
 						EnumRestoreErrorStatus.RESTORE_ERROR_NO_BACKUP_FILE) {
 					strTost = getString(R.string.setting_restore_no_backup_file);
-					m_btn_restore.setEnabled(true);
+                    mRestoreTv.setClickable(true);
 				}else if (EnumRestoreErrorStatus.RESTORE_ERROR_SUCCESSFUL == status) {
 					strTost = getString(R.string.setting_restore_success);
 				}
@@ -186,7 +189,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 				m_bRestore = false;
 				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
-					m_btn_restore.setEnabled(true);
+                    mRestoreTv.setClickable(true);
 				}
 			}
 			
@@ -200,18 +203,20 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
-					m_btn_backup.setEnabled(true);
+                    mBackupTv.setClickable(true);
 					if(m_bRestore)
 					{
-						m_btn_restore.setEnabled(false);	
+                        mRestoreTv.setClickable(false);
+                        Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
-						m_btn_restore.setEnabled(true);
+                        mRestoreTv.setClickable(true);
 					}
 				}else{
-					m_btn_backup.setEnabled(false);
-					m_btn_restore.setEnabled(false);
+                    mBackupTv.setClickable(false);
+                    mRestoreTv.setClickable(false);
+                    Toast.makeText(getApplicationContext(), getString(R.string.Home_no_sim), Toast.LENGTH_SHORT).show();
 				}
 			}
     	}

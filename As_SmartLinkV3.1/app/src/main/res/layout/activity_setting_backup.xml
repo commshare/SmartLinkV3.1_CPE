@@ -1,108 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_white"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/setting_background_color"
+                android:orientation="vertical" >
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/device_backup_backup_container"
+        android:layout_marginTop="@dimen/dimen_15dip"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:background="@color/color_white">
 
-        <RelativeLayout
-            android:id="@+id/rl_backup"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
+        <TextView
+            android:id="@+id/device_backup_backup"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_15dip"
+            android:textColor="@color/blue_btn"
+            android:textSize="@dimen/dimen_textsize_20sp"
+            android:text="@string/setting_backup_description"
+            android:layout_gravity="start"
+        />
 
-            <!-- center position -->
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/iv_center_position_up"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_centerInParent="true"
-                android:contentDescription="@string/setting_backup" />
+    <RelativeLayout
+        android:id="@+id/device_backup_restore_container"
+        android:layout_below="@id/device_backup_backup_container"
+        android:layout_marginTop="@dimen/dimen_20dip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white">
 
-            <TextView
-                android:id="@+id/tv_backup_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/iv_center_position_up"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
-                android:text="@string/setting_backup_description"
-                android:textColor="@color/color_black"
-                android:textSize="17sp" />
-
-            <Button
-                android:id="@+id/btn_backup"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/iv_center_position_up"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_common_button"
-                android:gravity="center"
-                android:text="@string/setting_backup_btn_backup"
-                android:textColor="@drawable/common_button_text"
-                android:textSize="17sp" />
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/main_bottom_divider"
-            android:contentDescription="@string/setting_backup_description" />
-
-        <RelativeLayout
-            android:id="@+id/rl_restore"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-
-            <!-- center position -->
-
-            <ImageView
-                android:id="@+id/iv_center_position_down"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_centerInParent="true"
-                android:contentDescription="@string/setting_backup" />
-
-            <TextView
-                android:id="@+id/tv_restore_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/iv_center_position_down"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginBottom="20dp"
-                android:text="@string/setting_restore_description"
-                android:textColor="@color/color_black"
-                android:textSize="17sp" />
-
-            <Button
-                android:id="@+id/btn_restore"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/iv_center_position_down"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_common_button"
-                android:gravity="center"
-                android:text="@string/setting_restore_btn_restore"
-                android:textColor="@drawable/common_button_text"
-                android:textSize="17sp" />
-        </RelativeLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/device_backup_restore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_15dip"
+            android:textColor="@color/blue_btn"
+            android:textSize="@dimen/dimen_textsize_20sp"
+            android:text="@string/setting_restore_description"
+            android:layout_gravity="start"
+        />
+        <TextView
+            android:layout_below="@id/device_backup_restore"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:paddingBottom="@dimen/dimen_20dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_grey"
+            android:textSize="@dimen/font_size_normal"
+            android:text="@string/setting_device_backup_path"
+            android:layout_gravity="start"
+        />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_backup_waiting"
@@ -116,7 +69,6 @@
             android:layout_centerInParent="true"
             android:indeterminateDrawable="@drawable/progerss_blue"
             android:visibility="gone" />
-        <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>
