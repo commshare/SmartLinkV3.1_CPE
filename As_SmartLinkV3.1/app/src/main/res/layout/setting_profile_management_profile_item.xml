@@ -1,33 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-    
-    <TextView
-             android:id="@+id/profile_management_list_item"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginLeft="15dp"
-             android:layout_marginRight="15dp"
-             android:background="@android:color/transparent"
-              android:textSize="20sp" 
-             android:button="@null"
-             android:checked="false"
-             android:drawableLeft="@drawable/radiobutton"
-             android:enabled="true"
-             android:paddingBottom="15dip"
-             android:paddingTop="15dip"
-             android:textColor="@color/color_black" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-	<TextView 
-		android:id="@+id/profile_desc" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:textSize="20sp"  
-		android:textColor="@color/color_light_gray"
-		android:text="available"
-		android:layout_marginRight="15dp"
-		android:layout_gravity="end|center_vertical">
-	</TextView>
-</FrameLayout>
+    <ImageView
+        android:id="@+id/profile_management_list_item_check"
+        android:layout_marginLeft="@dimen/dimen_15dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="@dimen/dimen_15dip"
+        android:layout_centerVertical="true"
+        android:src="@drawable/general_ic_tick"
+        android:layout_width="@dimen/dimen_20dip"
+        android:layout_height="@dimen/dimen_20dip"/>
+
+    <LinearLayout
+        android:layout_toRightOf="@id/profile_management_list_item_check"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/profile_management_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_15dip"
+            android:button="@null"
+            android:checked="false"
+            android:enabled="true"
+            android:paddingBottom="@dimen/dimen_15dip"
+            android:paddingTop="@dimen/dimen_15dip"
+            android:textColor="@color/color_black"
+            android:textSize="20sp"/>
+        <ImageView
+            android:id="@+id/profile_management_list_item_divider"
+            android:layout_below="@id/profile_management_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/profile_management_list_item_arrow"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="@dimen/dimen_20dip"
+        android:layout_height="@dimen/dimen_20dip"
+        android:src="@drawable/right_arrow_big"
+        android:layout_marginRight="@dimen/dimen_15dip"
+        android:layout_gravity="center|end"/>
+
+    <TextView
+        android:id="@+id/profile_desc"
+        android:layout_toLeftOf="@id/profile_management_list_item_arrow"
+        android:layout_marginRight="@dimen/dimen_5dip"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:text="available"
+        android:textColor="@color/color_light_gray"
+        android:textSize="20sp">
+    </TextView>
+
+</RelativeLayout>

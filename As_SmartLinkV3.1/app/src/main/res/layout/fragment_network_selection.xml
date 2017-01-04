@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:layout_marginTop="20dp">
+    android:background="@color/setting_background_color"
+    android:orientation="vertical">
     
     <RadioGroup
          android:id="@+id/setting_network_selection"
+         android:layout_marginTop="20dp"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:gravity="start" 
@@ -16,13 +17,13 @@
              android:id="@+id/mode_auto"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="15dp"
-             android:layout_marginRight="15dp"
+             android:layout_marginLeft="@dimen/setting_padding_s"
+             android:layout_marginRight="@dimen/setting_padding_s"
              android:background="@android:color/transparent"
               android:textSize="20sp" 
              android:button="@null"
              android:checked="true"
-             android:drawableLeft="@drawable/radiobutton"
+             android:drawableRight="@drawable/radiobutton"
              android:enabled="true"
              android:paddingBottom="15dip"
              android:paddingTop="15dip"
@@ -30,21 +31,21 @@
              android:textColor="@color/color_black" />
 
          <View
-             android:layout_width="fill_parent"
-             android:layout_height="1dip"
+             android:layout_marginLeft="@dimen/setting_padding_s"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/dimen_0.5dip"
              android:background="@color/main_bottom_divider" />
 
          <RadioButton
              android:id="@+id/mode_manual"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="15dp"
-             android:layout_marginRight="15dp"
-             android:background="@android:color/transparent"
-              android:textSize="20sp" 
+             android:layout_marginLeft="@dimen/setting_padding_s"
+             android:layout_marginRight="@dimen/setting_padding_s"
+             android:textSize="20sp"
              android:button="@null"
              android:checked="false"
-             android:drawableLeft="@drawable/radiobutton"
+             android:drawableRight="@drawable/radiobutton"
              android:enabled="true"
              android:paddingBottom="15dip"
              android:paddingTop="15dip"
@@ -61,25 +62,26 @@
 	        android:id="@+id/network_searching_title"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/color_deep_grey"
+	        android:textColor="@color/color_grey"
 	        android:textSize="12sp"
 	        android:text="@string/setting_network_searching"
-	        android:layout_marginLeft="20dp"/>
+	        android:layout_marginLeft="@dimen/dimen_20dip"/>
     </LinearLayout>
     
      
     <FrameLayout
+        android:background="@color/color_white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/network_list_container"
         android:orientation="vertical">
 	    <ListView
 	        	 android:id="@+id/network_list"
 				 android:layout_width="match_parent"
 				 android:layout_height="wrap_content"
-				 android:divider="@color/main_bottom_divider"
+				 android:divider="@null"
 				 android:footerDividersEnabled="true"
-				 android:dividerHeight="1dp"
+				 android:dividerHeight="0dp"
 				 android:orientation="vertical">
 	        
 	    </ListView>

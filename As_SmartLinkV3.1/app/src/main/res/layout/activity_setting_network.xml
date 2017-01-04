@@ -20,10 +20,10 @@
     </RelativeLayout>
 
     <LinearLayout
+           android:id="@+id/level_one_menu"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:orientation="vertical" 
-           android:id="@+id/level_one_menu"
+           android:orientation="vertical"
            android:layout_marginTop="20dp">
            
          <ImageView
@@ -67,14 +67,18 @@
                android:textSize="@dimen/setting_prompt_size_s"
                android:layout_gravity="end"/>
         </RelativeLayout>
-        
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_marginLeft="@dimen/dimen_10dip"
-          android:layout_height="@dimen/dimen_0.5dip"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_network" />
-        
+        <LinearLayout
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_height="@dimen/dimen_0.5dip"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_network" />
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/network_selection"
             android:layout_width="match_parent"
@@ -170,6 +174,7 @@
             android:background="@color/main_bottom_divider"
             android:contentDescription="@string/setting_network" />
         <RelativeLayout
+            android:id="@+id/network_roaming_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -197,14 +202,21 @@
             android:background="@color/main_bottom_divider"
             android:contentDescription="@string/setting_network" />
      </LinearLayout>
-     
-    <RadioGroup
+
+    <LinearLayout
+        android:id="@+id/setting_network_mode_container"
+        android:background="@color/setting_background_color"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RadioGroup
             android:id="@+id/setting_network_mode"
+            android:layout_marginTop="@dimen/setting_prompt_size_s"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start" 
-            android:background="@color/color_white"
-            android:visibility="gone">
+            android:gravity="start"
+            android:background="@color/color_white">
 
             <RadioButton
                 android:id="@+id/mode_auto"
@@ -212,10 +224,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/setting_padding_s"
                 android:layout_marginRight="@dimen/setting_padding_s"
-                 android:textSize="@dimen/setting_name_size_s" 
+                android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="true"
-                android:drawableLeft="@drawable/radiobutton"
+                android:drawableRight="@drawable/radiobutton"
                 android:enabled="true"
                 android:paddingBottom="15dip"
                 android:paddingTop="15dip"
@@ -223,8 +235,9 @@
                 android:textColor="@color/color_black" />
 
             <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
+                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider" />
 
             <RadioButton
@@ -233,58 +246,62 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/setting_padding_s"
                 android:layout_marginRight="@dimen/setting_padding_s"
-                 android:textSize="@dimen/setting_name_size_s" 
+                android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="false"
-                android:drawableLeft="@drawable/radiobutton"
+                android:drawableRight="@drawable/radiobutton"
                 android:enabled="true"
                 android:paddingBottom="15dip"
                 android:paddingTop="15dip"
                 android:text="@string/setting_network_mode_2G_only"
                 android:textColor="@color/color_black" />
-            
+
             <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
+                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider" />
-            
+
             <RadioButton
                 android:id="@+id/mode_3g"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/setting_padding_s"
                 android:layout_marginRight="@dimen/setting_padding_s"
-                 android:textSize="@dimen/setting_name_size_s" 
+                android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="false"
-                android:drawableLeft="@drawable/radiobutton"
+                android:drawableRight="@drawable/radiobutton"
                 android:enabled="true"
                 android:paddingBottom="15dip"
                 android:paddingTop="15dip"
                 android:text="@string/setting_network_mode_3G_only"
                 android:textColor="@color/color_black" />
-            
+
             <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
+                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider" />
-            
+
             <RadioButton
                 android:id="@+id/mode_lte"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/setting_padding_s"
                 android:layout_marginRight="@dimen/setting_padding_s"
-                 android:textSize="@dimen/setting_name_size_s" 
+                android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="false"
-                android:drawableLeft="@drawable/radiobutton"
+                android:drawableRight="@drawable/radiobutton"
                 android:enabled="true"
                 android:paddingBottom="15dip"
                 android:paddingTop="15dip"
                 android:text="@string/setting_network_mode_LTE_only"
                 android:textColor="@color/color_black" />
-            
+
         </RadioGroup>
+
+    </LinearLayout>
 
 </FrameLayout>

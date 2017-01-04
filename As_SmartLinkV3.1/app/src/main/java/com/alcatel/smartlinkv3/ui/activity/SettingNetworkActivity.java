@@ -110,8 +110,11 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	private RadioButton mode_lte_only = null;
 
 	private boolean m_delete_menu = false;
-	
-	@Override
+    private RelativeLayout mRoamingContainer;
+    private TextView       mRoamingSwitch;
+    private LinearLayout   mSetNetworkModeContainer;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -151,7 +154,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		m_network_mode_container = (RelativeLayout) findViewById(R.id.network_mode);
 		m_network_selection_container = (RelativeLayout) findViewById(R.id.network_selection);
 		m_network_profile_management = (RelativeLayout) findViewById(R.id.network_profile_management);
-		m_selected_profile = (TextView)findViewById(R.id.network_selected_profile);
+        mRoamingContainer = (RelativeLayout) findViewById(R.id.network_roaming_container);
+        mRoamingSwitch = (TextView) findViewById(R.id.network_roaming_switch);
+        m_selected_profile = (TextView)findViewById(R.id.network_selected_profile);
 		
 		m_mode_desc = (TextView)findViewById(R.id.network_mode_desc);
 		m_selection_desc = (TextView)findViewById(R.id.network_selection_desc);
@@ -161,6 +166,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		m_network_mode_container.setOnClickListener(this);
 		m_network_selection_container.setOnClickListener(this);
 		m_network_profile_management.setOnClickListener(this);
+        mRoamingSwitch.setOnClickListener(this);
 		
 		m_level_one_menu = (LinearLayout) findViewById(R.id.level_one_menu);
 		m_fragment_manager = this.getSupportFragmentManager();
@@ -193,7 +199,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		
 		
 		changeTitlebar(R.string.setting_network_mode);
-		m_network_mode_radiogroup = (RadioGroup)findViewById(R.id.setting_network_mode);
+        mSetNetworkModeContainer = (LinearLayout) findViewById(R.id.setting_network_mode_container);
+        m_network_mode_radiogroup = (RadioGroup)findViewById(R.id.setting_network_mode);
 		m_current_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkMode();
 		m_current_network_selection_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkSelection();
 		
@@ -305,14 +312,19 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		switch (nID) {
 		case R.id.tv_title_back:
 		case R.id.ib_title_back:
-			this.onBackPressed();
+            if (mSetNetworkModeContainer.getVisibility() == View.VISIBLE){
+                mSetNetworkModeContainer.setVisibility(View.GONE);
+            }else{
+			    this.onBackPressed();
+            }
 			break;
 		case R.id.network_mode:
 //			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
 //			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(null);
 //			BusinessMannager.getInstance().getProfileManager().startDeleteProfile(null);
-			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
-				m_network_mode_radiogroup.setVisibility(View.VISIBLE);
+			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected){
+                mSetNetworkModeContainer.setVisibility(View.VISIBLE);
+            }
 			else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
 				String strInfo = getString(R.string.setting_network_try_again);
 				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
@@ -360,6 +372,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			}
 			break;
+        case R.id.network_roaming_switch:
+            Toast.makeText(this, "1234", Toast.LENGTH_SHORT).show();
+            break;
 		case R.id.tv_titlebar_add:
 			if(m_fragment_tag_stack.size() > 0){
 				Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
@@ -500,7 +515,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
 		}
-		m_network_mode_radiogroup.setVisibility(View.GONE);
+        mSetNetworkModeContainer.setVisibility(View.GONE);
 		m_waiting_circle.setVisibility(View.VISIBLE);
 		m_network_mode_container.setEnabled(false);
 		m_network_selection_container.setEnabled(false);

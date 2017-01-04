@@ -2,17 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:paddingTop="20dp">
+    android:background="@color/setting_background_color"
+    android:orientation="vertical">
     
     <ListView
        	 android:id="@+id/profile_list"
-       	 android:background="@color/white"
+         android:layout_marginTop="@dimen/dimen_20dip"
+       	 android:background="@color/color_white"
 		 android:layout_width="match_parent"
 		 android:layout_height="wrap_content"
-		 android:divider="@color/main_bottom_divider"
+		 android:divider="@null"
 		 android:footerDividersEnabled="true"
-		 android:dividerHeight="1dp"
+		 android:dividerHeight="0dp"
 		 android:orientation="vertical">
         
     </ListView>

@@ -331,6 +331,10 @@
     <string name="setting_wifi_ssid_can_not_be_empty">SSID can not be empty!</string>
 
     <string name="setting_item_link_app_version">LINK APP Version </string>
+    <string name="setting_network_selection_available">Available </string>
+    <string name="setting_network_selection_forbidden">Forbidden </string>
+    <string name="setting_network_selection_unknown">Unknown </string>
+    <string name="setting_network_selection_selected">Selected </string>
     <!-- setting end -->
 
 

@@ -1,25 +1,19 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.support.v4.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -31,9 +25,10 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.List;
 
 public class FragmentNetworkSelection extends Fragment implements OnClickListener{
 	
@@ -284,22 +279,30 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			
 			holder.m_network_radiobutton.setText(Short_name1);
 			if(m_data.get(position).State == 0){
-				holder.m_network_title.setText("Unknown");
+				holder.m_network_title.setText(getResources().getString(R.string.setting_network_selection_unknown));
+                holder.m_network_title.setTextColor(getResources().getColor(R.color.color_light_gray));
 				holder.m_network_radiobutton.setEnabled(false);
+                holder.m_network_radiobutton.setTextColor(getResources().getColor(R.color.color_black));
 			}
 			else if(m_data.get(position).State == 1){
-				holder.m_network_title.setText("Available");
+				holder.m_network_title.setText(getResources().getString(R.string.setting_network_selection_available));
+                holder.m_network_title.setTextColor(getResources().getColor(R.color.color_light_gray));
 				holder.m_network_radiobutton.setEnabled(true);
+                holder.m_network_radiobutton.setTextColor(getResources().getColor(R.color.color_black));
 			}
 			else if(m_data.get(position).State == 2){
-				holder.m_network_title.setText("Selected");
+				holder.m_network_title.setText(getResources().getString(R.string.setting_network_selection_selected));
+                holder.m_network_title.setTextColor(getResources().getColor(R.color.color_light_gray));
 				m_selected_position = position;
 				m_selected_button = holder.m_network_radiobutton;
 				holder.m_network_radiobutton.setEnabled(false);
+                holder.m_network_radiobutton.setTextColor(getResources().getColor(R.color.color_black));
 			}
 			else{
-				holder.m_network_title.setText("Forbidden");
+				holder.m_network_title.setText(getResources().getString(R.string.setting_network_selection_forbidden));
+                holder.m_network_title.setTextColor(getResources().getColor(R.color.network_selection_light_gray_font));
 				holder.m_network_radiobutton.setEnabled(false);
+                holder.m_network_radiobutton.setTextColor(getResources().getColor(R.color.network_selection_light_gray_font));
 			}
 			
 			if(m_selected_position != position){

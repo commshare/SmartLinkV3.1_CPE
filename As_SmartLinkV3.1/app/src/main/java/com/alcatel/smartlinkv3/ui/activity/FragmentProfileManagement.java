@@ -1,37 +1,30 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.ProfileManager;
-import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.List;
 
 public class FragmentProfileManagement extends Fragment implements OnClickListener{
 	
@@ -138,14 +131,26 @@ private class ProfileListAdapter extends BaseAdapter{
 			if(convertView == null){
 				convertView = m_inflater.inflate(R.layout.setting_profile_management_profile_item, null);
 				holder = new ViewHolder();
+				holder.m_profile_check = (ImageView) convertView.findViewById(R.id.profile_management_list_item_check);
 				holder.m_profile_title = (TextView) convertView.findViewById(R.id.profile_desc);
 				holder.m_profile_radiobutton = (TextView) convertView.findViewById(R.id.profile_management_list_item);
+				holder.m_profile_divider = (ImageView) convertView.findViewById(R.id.profile_management_list_item_divider);
 				convertView.setTag(holder);
 			}
 			else{
 				holder = (ViewHolder)convertView.getTag();
 			}
 			holder.m_profile_title.setText(m_data.get(position).Default == 1 ? "Default" : "");
+            if (m_data.get(position).Default == 1){
+                holder.m_profile_check.setVisibility(View.VISIBLE);
+            }else{
+                holder.m_profile_check.setVisibility(View.INVISIBLE);
+            }
+            if (position ==m_data.size() - 1){
+                holder.m_profile_divider.setVisibility(View.GONE);
+            }else{
+                holder.m_profile_divider.setVisibility(View.VISIBLE);
+            }
 			holder.m_profile_radiobutton.setText(m_data.get(position).ProfileName);
 			holder.m_profile_radiobutton.setOnClickListener(new OnClickListener(){
 
@@ -210,8 +215,10 @@ private class ProfileListAdapter extends BaseAdapter{
 		}
 		
 		public final class ViewHolder{
+            ImageView m_profile_check;
 			TextView m_profile_title;
 			TextView m_profile_radiobutton;
+			ImageView m_profile_divider;
 		}
 	}
 

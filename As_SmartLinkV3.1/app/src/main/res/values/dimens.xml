@@ -63,7 +63,7 @@
     
     <dimen name="setting_name_size_s">20sp</dimen>
     <dimen name="setting_prompt_size_s">15sp</dimen>
-    <dimen name="setting_padding_s">10dp</dimen>
+    <dimen name="setting_padding_s">20dp</dimen>
 
     <!--增加几个常用的尺寸-->
     <dimen name="common_padding_middle">8dp</dimen>
