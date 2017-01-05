@@ -1,15 +1,15 @@
 package com.alcatel.smartlinkv3.business.profile;
 
-import java.util.List;
-
-import org.json.JSONException;
-
 import com.alcatel.smartlinkv3.business.BaseResult;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+
+import java.util.List;
 
 public class HttpGetProfileList {
 	
@@ -92,6 +92,7 @@ public class HttpGetProfileList {
 		public int AuthType;
 		public String DailNumber;
 		public String IPAddress;
+		public boolean IsDeleteCheck;
 	}
 
 }

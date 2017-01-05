@@ -42,11 +42,12 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 	
 	
 	private ProfileListAdapter m_adapter;
-	private int selected_deleted_position = -1;
+	private int     selected_deleted_position = -1;
+    private boolean isDeleting                = false;
 	
 //	private NetworkSearchResultReceiver m_network_search_result_receiver;
-	
-	@Override  
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
             Bundle savedInstanceState)  {
 		
@@ -70,13 +71,8 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		
 		m_progress_bar = (RelativeLayout) rootView.findViewById(R.id.waiting_loading_profile_progressbar);
 		m_progress_bar.setVisibility(View.VISIBLE);
-		
-//		m_add_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_add);
-//		m_delete_profile = (ImageButton) getActivity().findViewById(R.id.tv_titlebar_delete);
-//		m_add_profile.setOnClickListener(this);
-//		m_delete_profile.setOnClickListener(this);
-		
-		getActivity().registerReceiver(m_fragment_get_profile_list_request_receiver, m_fragment_get_profile_list_request_filter);  
+
+		getActivity().registerReceiver(m_fragment_get_profile_list_request_receiver, m_fragment_get_profile_list_request_filter);
 		getActivity().registerReceiver(m_fragment_get_profile_list_request_receiver, m_fragment_delete_profile__request_filter);  
 		
 		m_profile_list = (ListView) rootView.findViewById(R.id.profile_list);
@@ -94,13 +90,45 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		
 	}
 
-private class ProfileListAdapter extends BaseAdapter{
+    public void deleteProfile() {
+        if (selected_deleted_position < 0){
+            isDeleting = false;
+            m_adapter.notifyDataSetChanged();
+            return;
+        }
+        m_progress_bar.setVisibility(View.VISIBLE);
+        int ProfileId = m_profile_list_data.get(selected_deleted_position).ProfileID;
+        DataValue data = new DataValue();
+        data.addParam("profile_id", ProfileId);
+        BusinessMannager.getInstance().getProfileManager().startDeleteProfile(data);
+    }
+
+    public ProfileListAdapter getAdapter() {
+        if (m_adapter != null){
+            return m_adapter;
+        }else{
+            return null;
+        }
+    }
+
+    public boolean getIsDeleting (){
+        return isDeleting;
+    }
+
+    public void setIsDeleting (boolean isDeleting){
+        this.isDeleting = isDeleting;
+    }
+
+    public void setDeletePosition(int deletePosition){
+        selected_deleted_position = deletePosition;
+    }
+
+    public class ProfileListAdapter extends BaseAdapter{
 		
 		private LayoutInflater m_inflater;
 		private List<ProfileItem> m_data;
 		private int m_selected_position = -1;
-		private TextView m_selected_button;
-		
+
 		public ProfileListAdapter(Context context, List<ProfileItem> data){
 			m_inflater = LayoutInflater.from(context);
 			m_data = data;
@@ -131,8 +159,11 @@ private class ProfileListAdapter extends BaseAdapter{
 			if(convertView == null){
 				convertView = m_inflater.inflate(R.layout.setting_profile_management_profile_item, null);
 				holder = new ViewHolder();
+				holder.m_profile_container = (RelativeLayout) convertView.findViewById(R.id.profile_management_list_item_container);
 				holder.m_profile_check = (ImageView) convertView.findViewById(R.id.profile_management_list_item_check);
+				holder.m_profile_delete_check = (ImageView) convertView.findViewById(R.id.profile_management_list_item_delete_check);
 				holder.m_profile_title = (TextView) convertView.findViewById(R.id.profile_desc);
+				holder.m_profile_arrow = (ImageView) convertView.findViewById(R.id.profile_management_list_item_arrow);
 				holder.m_profile_radiobutton = (TextView) convertView.findViewById(R.id.profile_management_list_item);
 				holder.m_profile_divider = (ImageView) convertView.findViewById(R.id.profile_management_list_item_divider);
 				convertView.setTag(holder);
@@ -140,19 +171,41 @@ private class ProfileListAdapter extends BaseAdapter{
 			else{
 				holder = (ViewHolder)convertView.getTag();
 			}
-			holder.m_profile_title.setText(m_data.get(position).Default == 1 ? "Default" : "");
-            if (m_data.get(position).Default == 1){
-                holder.m_profile_check.setVisibility(View.VISIBLE);
-            }else{
+            //是否为删除模式
+            if (((SettingNetworkActivity)getActivity()).isDeleteMode()){//删除模式
                 holder.m_profile_check.setVisibility(View.INVISIBLE);
+                holder.m_profile_delete_check.setVisibility(View.VISIBLE);
+                holder.m_profile_arrow.setVisibility(View.INVISIBLE);
+
+                //是否选中删除
+                if (m_profile_list_data.get(position).IsDeleteCheck){
+                    holder.m_profile_delete_check.setImageResource(R.drawable.general_ic_check);
+                }else{
+                    holder.m_profile_delete_check.setImageResource(R.drawable.general_ic_uncheck);
+                }
+            }else{//普通模式
+                holder.m_profile_check.setVisibility(View.VISIBLE);
+                holder.m_profile_delete_check.setVisibility(View.INVISIBLE);
+                holder.m_profile_arrow.setVisibility(View.VISIBLE);
+
+                //是否打勾
+                if (m_data.get(position).Default == 1){
+                    holder.m_profile_check.setVisibility(View.VISIBLE);
+                }else{
+                    holder.m_profile_check.setVisibility(View.INVISIBLE);
+                }
             }
+            //是否为预设的项
+			holder.m_profile_title.setText(m_data.get(position).Default == 1 ? "Default" : "");
+
+            //最后一行不显示分割线
             if (position ==m_data.size() - 1){
                 holder.m_profile_divider.setVisibility(View.GONE);
             }else{
                 holder.m_profile_divider.setVisibility(View.VISIBLE);
             }
 			holder.m_profile_radiobutton.setText(m_data.get(position).ProfileName);
-			holder.m_profile_radiobutton.setOnClickListener(new OnClickListener(){
+			holder.m_profile_container.setOnClickListener(new OnClickListener(){
 
 				@Override
 				public void onClick(View view) {
@@ -161,8 +214,7 @@ private class ProfileListAdapter extends BaseAdapter{
 //						m_selected_button.setChecked(false);
 //					}
 					m_selected_position = position;
-					m_selected_button = (TextView) view;
-					
+                    //普通模式
 					if(!m_parent_activity.isDeleteMode()){
 						ProfileItem profileData = m_data.get(position);
 						Bundle dataBundle = new Bundle();
@@ -178,16 +230,18 @@ private class ProfileListAdapter extends BaseAdapter{
 						dataBundle.putInt(m_parent_activity.TAG_AUTH_TYPE, profileData.AuthType);
 						goToDetailProfile(dataBundle);
 					}
+                    //删除模式
 					else{
-//						Log.v("GetProfileResultDELETEPOSITION", "" + position);
-//						Log.v("GetProfileResultDELETEID", "" + m_profile_list_data.get(position).ProfileID);
 						if(m_profile_list_data.get(position).IsPredefine == 1 && m_profile_list_data.get(position).Default == 0){
-							m_progress_bar.setVisibility(View.VISIBLE);
-							selected_deleted_position = position;
-							int ProfileId = m_profile_list_data.get(position).ProfileID;
-							DataValue data = new DataValue();
-							data.addParam("profile_id", ProfileId);
-							BusinessMannager.getInstance().getProfileManager().startDeleteProfile(data);
+                            for (int i = 0; i < m_profile_list_data.size(); i++) {
+                                if (i == position){
+                                    m_profile_list_data.get(i).IsDeleteCheck = true;
+                                }else {
+                                    m_profile_list_data.get(i).IsDeleteCheck = false;
+                                }
+                            }
+
+                            selected_deleted_position = position;
 						}
 						else if(m_profile_list_data.get(position).IsPredefine == 0){
 							String strInfo = getString(R.string.setting_network_profile_management_cannot_delete_predefined_profile);
@@ -198,7 +252,9 @@ private class ProfileListAdapter extends BaseAdapter{
 							Toast.makeText(getActivity(), strInfo, Toast.LENGTH_SHORT).show();
 						}
 					}
-					
+
+                    notifyDataSetChanged();
+
 				}
 			});
 			
@@ -215,15 +271,17 @@ private class ProfileListAdapter extends BaseAdapter{
 		}
 		
 		public final class ViewHolder{
+            RelativeLayout m_profile_container;
             ImageView m_profile_check;
+            ImageView m_profile_delete_check;
 			TextView m_profile_title;
+			ImageView m_profile_arrow;
 			TextView m_profile_radiobutton;
 			ImageView m_profile_divider;
 		}
 	}
 
-
-	private class GetProfileListReceiver extends BroadcastReceiver{
+    private class GetProfileListReceiver extends BroadcastReceiver{
 	
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -272,6 +330,9 @@ private class ProfileListAdapter extends BaseAdapter{
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
+
+                selected_deleted_position = -1;
+                isDeleting = false;
 			}
 			
 		}

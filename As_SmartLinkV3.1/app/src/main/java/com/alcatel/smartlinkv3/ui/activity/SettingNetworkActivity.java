@@ -312,6 +312,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		switch (nID) {
 		case R.id.tv_title_back:
 		case R.id.ib_title_back:
+            m_fragment_profile_management.setDeletePosition(-1);
             if (mSetNetworkModeContainer.getVisibility() == View.VISIBLE){
                 mSetNetworkModeContainer.setVisibility(View.GONE);
             }else{
@@ -376,6 +377,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
             Toast.makeText(this, "1234", Toast.LENGTH_SHORT).show();
             break;
 		case R.id.tv_titlebar_add:
+            if (m_fragment_profile_management.getIsDeleting()){
+                return;
+            }
 			if(m_fragment_tag_stack.size() > 0){
 				Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
 			}
@@ -386,6 +390,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			m_add_and_delete_container.setVisibility(View.GONE);
 			break;
 		case R.id.tv_titlebar_delete:
+            if (m_fragment_profile_management.getIsDeleting()){
+                return;
+            }
 			if(m_fragment_tag_stack.size() > 0){
 				Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
 			}
@@ -393,8 +400,17 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			m_edit_or_done_container.setVisibility(View.VISIBLE);
 			m_tv_title.setText(R.string.setting_network_profile_management_delete_profile);
 			m_delete_menu = true;
-			break;
+
+            //更新UI
+            FragmentProfileManagement.ProfileListAdapter adapterDone = m_fragment_profile_management.getAdapter();
+            if (adapterDone != null){
+                adapterDone.notifyDataSetChanged();
+            }
+            break;
 		case R.id.tv_titlebar_done:
+            if (m_fragment_profile_management.getIsDeleting()){
+                return;
+            }
 			if(!m_fragment_tag_stack.isEmpty()){
 				String FragmentTag = m_fragment_tag_stack.peek();
 				if(FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)){
@@ -409,6 +425,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					m_delete_menu = false;
 				}
 			}
+
+            //删除选中的配置
+            m_fragment_profile_management.setIsDeleting(true);
+            m_fragment_profile_management.deleteProfile();
 			break;
 		default:
 			break;

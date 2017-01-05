@@ -244,7 +244,7 @@
     <string name="setting_device_title">System Information</string>
     <string name="setting_device_software_version">Software Version:</string>
     <string name="setting_device_hadrware_version">Hardware Version:</string>
-    <string name="setting_device_device_name">Device name:</string>
+    <string name="setting_device_device_name">Device Name:</string>
     <string name="setting_device_imei">IMEI:</string>
     <string name="setting_device_mac_address">MAC Address:</string>
     <string name="setting_device_ip">IP Address:</string>
@@ -290,8 +290,9 @@
     <string name="setting_network_disconnect_first">Please disconect your network first</string>
     <string name="setting_network_try_again">Disconnecting, please try again later</string>
     <string name="setting_network_profile_management">Profile Management</string>
-    <string name="setting_network_profile_management_profile_name">*Profile Name</string>
-    <string name="setting_network_profile_management_dial_number">*Dial Number</string>
+    <string name="setting_network_profile_management_profile_red_tag">*</string>
+    <string name="setting_network_profile_management_profile_name">Profile Name</string>
+    <string name="setting_network_profile_management_dial_number">Dial Number</string>
     <string name="setting_network_profile_management_apn">APN</string>
     <string name="setting_network_profile_management_user_name">User Name</string>
     <string name="setting_network_profile_management_password">Password</string>
@@ -335,6 +336,8 @@
     <string name="setting_network_selection_forbidden">Forbidden </string>
     <string name="setting_network_selection_unknown">Unknown </string>
     <string name="setting_network_selection_selected">Selected </string>
+
+    <string name="setting_profile_note">Note: The max number of the profile you can create is 15.</string>
     <!-- setting end -->
 
 

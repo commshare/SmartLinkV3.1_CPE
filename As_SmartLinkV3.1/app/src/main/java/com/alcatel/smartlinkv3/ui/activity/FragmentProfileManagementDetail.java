@@ -1,31 +1,29 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-
-import android.support.v4.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.Toast;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class FragmentProfileManagementDetail extends Fragment implements OnClickListener{
 	
@@ -167,7 +165,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			m_edit_password.setText(Password.toCharArray(), 0, Password.length());
 			
 			if(Default == 1){
-				m_switch_icon.setBackgroundResource(R.drawable.pwd_switcher_on);
+				m_switch_icon.setBackgroundResource(R.drawable.general_btn_on);
 				m_is_default = true;
 			}
 			else{
@@ -446,7 +444,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 						&& strErrorCode.length() == 0){
 					m_is_default = true;
 					Default = 1;
-					m_switch_icon.setBackgroundResource(R.drawable.pwd_switcher_on);
+					m_switch_icon.setBackgroundResource(R.drawable.general_btn_on);
 					m_edit_profile_name.setEnabled(false);
 					m_edit_dial_number.setEnabled(false);
 					m_edit_apn.setEnabled(false);
