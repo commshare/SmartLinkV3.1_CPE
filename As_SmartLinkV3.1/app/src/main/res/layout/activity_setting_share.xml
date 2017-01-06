@@ -12,7 +12,7 @@
            
            <ImageView
 	            android:layout_width="match_parent"
-	            android:layout_height="1dp"
+	            android:layout_height="@dimen/dimen_0.5dip"
 	            android:background="@color/main_bottom_divider"
 	            android:contentDescription="@string/setting_sharing" />
            
@@ -32,25 +32,32 @@
 	               android:text="@string/setting_sharing_ftp"
 	               />
            
-	           <TextView
-		             android:layout_margin="15dp"
+	           <ImageView
 		             android:id="@+id/btn_ftp_switch"
-		             android:layout_width="wrap_content"
-		             android:layout_height="match_parent"
+                     android:clickable="true"
+		             android:layout_margin="@dimen/dimen_15dip"
+		             android:layout_width="@dimen/dimen_50dip"
+		             android:layout_height="@dimen/dimen_30dip"
 		             android:layout_gravity="end|center_vertical"
 		             android:gravity="end"
-		             android:background="@drawable/pwd_switcher_off"
+		             android:src="@drawable/general_btn_off"
 		             android:visibility="visible" />
            </FrameLayout>
            
 
-           <ImageView
-               android:id="@+id/setting_sharing_divider"
-	            android:layout_width="match_parent"
-	            android:layout_height="1dp"
-	            android:background="@color/main_bottom_divider"
-	            android:contentDescription="@string/setting_sharing" />
-           
+            <LinearLayout
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_sharing_divider"
+                    android:layout_marginLeft="@dimen/dimen_15dip"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"
+                    android:background="@color/main_bottom_divider"
+                    android:contentDescription="@string/setting_sharing" />
+            </LinearLayout>
+
            <FrameLayout 
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
@@ -67,22 +74,23 @@
 	               android:text="@string/setting_sharing_dlna"
                />
 	           
-	           <TextView
-		             android:layout_margin="15dp"
+	           <ImageView
 		             android:id="@+id/btn_dlna_switch"
-		             android:layout_width="wrap_content"
-		             android:layout_height="match_parent"
+                     android:clickable="true"
+		             android:layout_margin="@dimen/dimen_15dip"
+                     android:layout_width="@dimen/dimen_50dip"
+                     android:layout_height="@dimen/dimen_30dip"
 		             android:layout_gravity="end|center_vertical"
 		             android:gravity="end"
-		             android:background="@drawable/pwd_switcher_off"
+		             android:src="@drawable/general_btn_off"
 		             android:visibility="visible" />
            </FrameLayout>
-           
-            
-            
+
+
+
             <ImageView
 	            android:layout_width="match_parent"
-	            android:layout_height="1dp"
+	            android:layout_height="@dimen/dimen_0.5dip"
 	            android:background="@color/main_bottom_divider"
 	            android:contentDescription="@string/setting_sharing" />
 

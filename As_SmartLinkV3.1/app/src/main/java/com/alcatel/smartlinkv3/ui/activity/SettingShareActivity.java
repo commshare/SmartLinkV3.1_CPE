@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -19,7 +18,6 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 public class SettingShareActivity extends BaseActivity implements OnClickListener{
@@ -29,8 +27,8 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 		private TextView m_tv_back=null;
 		private TextView m_tv_done;
 		private FrameLayout m_fl_titlebar;
-		private TextView m_ftp_button;
-		private TextView m_dlna_button;
+		private ImageView m_ftp_button;
+		private ImageView m_dlna_button;
 		private RelativeLayout m_waiting;
 		private FrameLayout m_ftp_container;
 		private FrameLayout m_dlna_container;
@@ -85,7 +83,7 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 		
 		private void controlTitlebar(){
 			m_tv_title = (TextView)findViewById(R.id.tv_title_title);
-			m_tv_title.setText(R.string.setting_sharing);
+			m_tv_title.setText(R.string.setting_share);
 			//back button and text
 			m_ib_back = (ImageButton)findViewById(R.id.ib_title_back);
 			m_tv_back = (TextView)findViewById(R.id.tv_title_back);
@@ -108,9 +106,9 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			m_dlna_container = (FrameLayout) findViewById(R.id.setting_dlna_container);
 			m_divider = (ImageView) findViewById(R.id.setting_sharing_divider);
 			
-			m_ftp_button = (TextView) findViewById(R.id.btn_ftp_switch);
+			m_ftp_button = (ImageView) findViewById(R.id.btn_ftp_switch);
 			m_ftp_button.setOnClickListener(this);
-			m_dlna_button = (TextView) findViewById(R.id.btn_dlna_switch);
+			m_dlna_button = (ImageView) findViewById(R.id.btn_dlna_switch);
 			m_dlna_button.setOnClickListener(this);
 			m_waiting = (RelativeLayout) findViewById(R.id.setting_sharing_waiting);
 			m_ftp_supported = getIntent().getBundleExtra("Sharing").getBoolean("FtpSupport");
@@ -131,16 +129,16 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			m_dlna_enabled = BusinessMannager.getInstance().getDlnaSettings().DlnaStatus == 1;
 			m_dlnaDeviceName = BusinessMannager.getInstance().getDlnaSettings().DlnaName;
 			if(m_ftp_enabled){
-				m_ftp_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+				m_ftp_button.setImageResource(R.drawable.general_btn_on);
 			}
 			else{
-				m_ftp_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+				m_ftp_button.setImageResource(R.drawable.general_btn_off);
 			}
 			if(m_dlna_enabled){
-				m_dlna_button.setBackgroundResource(R.drawable.pwd_switcher_on);
+				m_dlna_button.setImageResource(R.drawable.general_btn_on);
 			}
 			else{
-				m_dlna_button.setBackgroundResource(R.drawable.pwd_switcher_off);
+				m_dlna_button.setImageResource(R.drawable.general_btn_off);
 			}
 			m_waiting.setVisibility(View.GONE);
 			m_dlna_response = false;
