@@ -1,57 +1,16 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
-import java.util.List;
-
-import org.cybergarage.upnp.Device;
-
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
-import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
-import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
-import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
-import com.alcatel.smartlinkv3.ui.view.ViewHome;
-import com.alcatel.smartlinkv3.ui.view.ViewIndex;
-import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
-import com.alcatel.smartlinkv3.ui.view.ViewSetting;
-import com.alcatel.smartlinkv3.ui.view.ViewSms;
-import com.alcatel.smartlinkv3.ui.view.ViewUsage;
-
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
-import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -61,10 +20,48 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
+import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
 import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
+import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
+import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
+import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
+import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
+import com.alcatel.smartlinkv3.ui.view.ViewHome;
+import com.alcatel.smartlinkv3.ui.view.ViewIndex;
+import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
+import com.alcatel.smartlinkv3.ui.view.ViewSetting;
+import com.alcatel.smartlinkv3.ui.view.ViewSms;
+import com.alcatel.smartlinkv3.ui.view.ViewUsage;
+
+import org.cybergarage.upnp.Device;
+
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements OnClickListener,IDeviceChangeListener{
 	private final int HOME_PAGE = 1;
@@ -1678,7 +1675,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	{
 		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
-			m_microsdBtn.setVisibility(View.VISIBLE);
+            //暂时屏蔽SD卡的选项
+//			m_microsdBtn.setVisibility(View.VISIBLE);
 			return;
 		}
 		
@@ -1694,7 +1692,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					|| (FeatureVersionManager.getInstance().isSupportApi("Sharing",
 							"GetDLNASettings") == true))
 			{
-				m_microsdBtn.setVisibility(View.VISIBLE);
+                //暂时屏蔽SD卡的选项
+//				m_microsdBtn.setVisibility(View.VISIBLE);
 			}
 		}else{
 			m_microsdBtn.setVisibility(View.GONE);

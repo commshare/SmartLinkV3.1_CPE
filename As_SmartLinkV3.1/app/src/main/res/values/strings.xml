@@ -190,7 +190,7 @@
     <string name="setting_text_ssid">SSID:</string>
     <string name="setting_text_ssid_broadcast">SSID Broadcast</string>
     <string name="setting_text_passwrod">Password:</string>
-    <string name="setting_set_default">Default</string>
+    <string name="setting_set_default">Set Default</string>
     <string name="setting_text_no_passwrod">No Password</string>
     <string name="setting_wifi_set_success">Change Wifi Settings successfully!</string>
     <string name="setting_wifi_set_failed">Change Wifi Settings failed!</string>

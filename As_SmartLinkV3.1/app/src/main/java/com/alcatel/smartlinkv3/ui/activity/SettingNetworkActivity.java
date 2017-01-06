@@ -25,8 +25,12 @@ import android.widget.Toast;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -114,6 +118,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     private TextView       mRoamingSwitch;
     private LinearLayout   mSetNetworkModeContainer;
 
+    private boolean m_bIsRoamingDisconnectedEdit = false;
+
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -198,7 +204,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		
 		
 		
-		changeTitlebar(R.string.setting_network_mode);
+//		changeTitlebar(R.string.setting_network_mode);
         mSetNetworkModeContainer = (LinearLayout) findViewById(R.id.setting_network_mode_container);
         m_network_mode_radiogroup = (RadioGroup)findViewById(R.id.setting_network_mode);
 		m_current_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkMode();
@@ -315,6 +321,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
             m_fragment_profile_management.setDeletePosition(-1);
             if (mSetNetworkModeContainer.getVisibility() == View.VISIBLE){
                 mSetNetworkModeContainer.setVisibility(View.GONE);
+                changeTitlebar(R.string.setting_network);
             }else{
 			    this.onBackPressed();
             }
@@ -325,6 +332,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 //			BusinessMannager.getInstance().getProfileManager().startDeleteProfile(null);
 			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected){
                 mSetNetworkModeContainer.setVisibility(View.VISIBLE);
+                changeTitlebar(R.string.setting_network_mode);
             }
 			else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
 				String strInfo = getString(R.string.setting_network_try_again);
@@ -374,7 +382,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			}
 			break;
         case R.id.network_roaming_switch:
-            Toast.makeText(this, "1234", Toast.LENGTH_SHORT).show();
+            onBtnRoamingAutoDisconnectClick();
             break;
 		case R.id.tv_titlebar_add:
             if (m_fragment_profile_management.getIsDeleting()){
@@ -488,7 +496,19 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	
 	private void UserGetNetworkSetting(){
 		registerReceiver(m_network_setting_receiver, m_get_network_setting_filter);  
-		registerReceiver(m_network_setting_receiver, m_set_network_setting_filter);  
+		registerReceiver(m_network_setting_receiver, m_set_network_setting_filter);
+
+        /*--------------- add start 2017.1.6 ---------------*/
+        registerReceiver(m_network_setting_receiver, new IntentFilter(
+                MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET));
+        registerReceiver(m_network_setting_receiver, new IntentFilter(
+                MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET));
+        registerReceiver(m_network_setting_receiver, new IntentFilter(
+                MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
+        registerReceiver(m_network_setting_receiver, new IntentFilter(
+                MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
+        /*--------------- add end 2017.1.6 ---------------*/
+
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
 		m_waiting_circle.setVisibility(View.VISIBLE);
@@ -536,6 +556,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
 		}
         mSetNetworkModeContainer.setVisibility(View.GONE);
+        changeTitlebar(R.string.setting_network);
 		m_waiting_circle.setVisibility(View.VISIBLE);
 		m_network_mode_container.setEnabled(false);
 		m_network_selection_container.setEnabled(false);
@@ -558,12 +579,15 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 //		BusinessMannager.getInstance().sendRequestMessage(
 //				MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
 		UserGetNetworkSetting();
+        showRoamingAutoDisconnectBtn();
 	}
 	
 	@Override
 	public void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+
+        m_bIsRoamingDisconnectedEdit = false;
 	}
 	
 	@Override
@@ -585,6 +609,21 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
+            if(intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+                if (nResult == 0 && strErrorCode.length() == 0) {
+                    showRoamingAutoDisconnectBtn();
+                }
+            }else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)
+                    || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)
+                    || intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)) {
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+                if (nResult == 0) {
+                    showRoamingAutoDisconnectBtn();
+                }
+            }
+
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
@@ -700,9 +739,78 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 				m_waiting_circle.setVisibility(View.GONE);
-			}
+			}else if (intent.getAction().equals(
+                    MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
+                m_bIsRoamingDisconnectedEdit = false;
+                showRoamingAutoDisconnectBtn();
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+                String strErrorCode = intent
+                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+                if (nResult == 0 && strErrorCode.length() == 0) {
+
+                }
+            }else if (intent.getAction().equals(
+                    MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+                String strErrorCode = intent
+                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+                if (nResult == 0 && strErrorCode.length() == 0) {
+                    showRoamingAutoDisconnectBtn();
+                }
+            }
 			
 		}
 	}
+
+    private void showRoamingAutoDisconnectBtn() {
+
+        SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+        //if (simState.m_SIMState == SIMState.Accessable) {
+        UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
+        ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
+        if(m_bIsRoamingDisconnectedEdit == false) {
+            //				if (usageSetting.HMonthlyPlan > 0) {
+            mRoamingSwitch.setEnabled(true);
+            if (connectionSetting.HRoamingConnect == ENUM.OVER_ROAMING_STATE.Disable) {
+                // off
+                mRoamingSwitch
+                        .setBackgroundResource(R.drawable.general_btn_off);
+            } else {
+                // on
+                mRoamingSwitch
+                        .setBackgroundResource(R.drawable.general_btn_on);
+            }
+            //				} else {
+            //					m_roamingDisconnectBtn.setEnabled(false);
+            //					m_roamingDisconnectBtn
+            //							.setBackgroundResource(R.drawable.switch_off);
+            //				}
+        }
+        //		} else {
+        //			m_usageAutoDisconnectBtn.setEnabled(false);
+        //			// set disable pic
+        //			m_usageAutoDisconnectBtn
+        //					.setBackgroundResource(R.drawable.switch_off);
+        //		}
+    }
+
+    private void onBtnRoamingAutoDisconnectClick() {
+        m_bIsRoamingDisconnectedEdit = true;
+        ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
+        DataValue data = new DataValue();
+        if (connectionSetting.HRoamingConnect == ENUM.OVER_ROAMING_STATE.Disable) {
+            mRoamingSwitch
+                    .setBackgroundResource(R.drawable.general_btn_on);
+            data.addParam("roaming_connect_flag", ENUM.OVER_ROAMING_STATE.Enable);
+        } else {
+            mRoamingSwitch
+                    .setBackgroundResource(R.drawable.general_btn_off);
+            data.addParam("roaming_connect_flag", ENUM.OVER_ROAMING_STATE.Disable);
+        }
+        BusinessMannager.getInstance().sendRequestMessage(
+                MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET,
+                data);
+
+    }
 	
 }
