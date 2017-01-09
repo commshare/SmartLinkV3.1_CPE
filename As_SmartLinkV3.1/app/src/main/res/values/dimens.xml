@@ -27,6 +27,7 @@
     <dimen name="dimen_160dip">160dip</dimen>
     <dimen name="dimen_180dip">180dip</dimen>
     <dimen name="dimen_200dip">200dip</dimen>
+    <dimen name="dimen_220dip">220dip</dimen>
     <dimen name="dimen_new_sms_edit_number">280dip</dimen>
     <dimen name="dimen_new_sms_edit_content">240dip</dimen>
     

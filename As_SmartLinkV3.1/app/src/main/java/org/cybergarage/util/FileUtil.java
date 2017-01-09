@@ -15,6 +15,8 @@
 
 package org.cybergarage.util;
 
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,5 +77,45 @@ public final class FileUtil
 		String lowerName = name.toLowerCase();
 		return lowerName.endsWith("xml");
 	}
+
+    // 生成文件
+    public File makeFilePath(String filePath, String fileName) {
+        File file = null;
+        makeRootDirectory(filePath);
+        try {
+            file = new File(filePath + fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    // 生成文件夹
+    public static void makeRootDirectory(String filePath) {
+        File file = null;
+        try {
+            file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        } catch (Exception e) {
+            Log.i("error:", e + "");
+        }
+    }
+
+    // 删除SD卡上的单个文件方法
+    public static boolean deleteFile(String fileName) {
+
+        File file = new File(fileName);
+        if (file == null || !file.exists() || file.isDirectory()){
+            return false;
+        }
+        file.delete();
+
+        return true;
+    }
 }
 

@@ -338,6 +338,10 @@
     <string name="setting_network_selection_selected">Selected </string>
 
     <string name="setting_profile_note">Note: The max number of the profile you can create is 15.</string>
+
+    <string name="setting_backup_path_tag">Path: Phone</string>
+    <string name="setting_backup_path">/CPE/Backup/</string>
+    <string name="setting_backup_waring">Please enter a name!</string>
     <!-- setting end -->
 
 

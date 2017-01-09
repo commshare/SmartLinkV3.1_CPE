@@ -15,6 +15,13 @@
 
 package org.cybergarage.util;
 
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.widget.EditText;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public final class StringUtil
 {
 	public final static boolean hasData(String value)
@@ -119,5 +126,66 @@ public final class StringUtil
 		String buf = trimStr2.substring(0, spIdx+1);
 		return buf;
 	}
+
+    /**
+     * 禁止EditText输空格+换行键
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpace(EditText editText){
+        InputFilter filter=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
+
+    /**
+     * 禁止EditText输入特殊字符
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpeChat(EditText editText){
+
+        InputFilter filter=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if(matcher.find())return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
+
+    /**
+     * 禁止EditText输入特殊字符+空格+换行键
+     * @param editText
+     */
+    public static void setEditTextInputFilter(EditText editText){
+
+        InputFilter filterSpace=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+                else return null;
+            }
+        };
+
+        InputFilter filterChat=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if(matcher.find())return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filterSpace, filterChat});
+    }
 }
 

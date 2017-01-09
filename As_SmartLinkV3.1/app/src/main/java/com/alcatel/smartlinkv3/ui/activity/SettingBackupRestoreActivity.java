@@ -1,14 +1,20 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +27,20 @@ import com.alcatel.smartlinkv3.common.ENUM.EnumRestoreErrorStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.ConstValue;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.cybergarage.util.FileUtil;
+import org.cybergarage.util.StringUtil;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class SettingBackupRestoreActivity extends BaseActivity implements OnClickListener{
 
@@ -31,6 +51,9 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	private boolean  m_bRestore = false;
     private TextView mBackupTv;
     private TextView mRestoreTv;
+    private Dialog   mUpgradeDialog;
+    private EditText mBackupNameEt;
+    private TextView mBackupConfirm;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +119,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			break;
 
 		case R.id.device_backup_backup:
-			onBtnBackup();
-			ShowWaiting(true);
+            showBackupDialog();
 			break;
 			
 		case R.id.device_backup_restore:
@@ -108,8 +130,57 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			break;
 		}
 	}
-	
-	private void onBtnBackup(){
+
+    private void showBackupDialog() {
+        mUpgradeDialog = new Dialog(this, R.style.UpgradeMyDialog);
+        mUpgradeDialog.setCanceledOnTouchOutside(false);
+        mUpgradeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this,
+                R.layout.dialog_backup, null);
+
+        ImageView cancel = (ImageView) deleteDialogLLayout.findViewById(R.id.backup_cancel);
+        mBackupNameEt = (EditText) deleteDialogLLayout.findViewById(R.id.backup_name);
+
+        //处理EditText
+        mBackupNameEt.setText("");
+        StringUtil.setEditTextInputFilter(mBackupNameEt);
+
+        mBackupConfirm = (TextView) deleteDialogLLayout.findViewById(R.id.backup_confirm);
+
+        mUpgradeDialog.setContentView(deleteDialogLLayout);
+
+        //确认备份
+        mBackupConfirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(mBackupNameEt.getText())){
+                    Toast.makeText(SettingBackupRestoreActivity.this,
+                            getString(R.string.setting_backup_waring), Toast.LENGTH_SHORT).show();
+                }else{
+                    dismissUpgradeDialog();
+                    onBtnBackup();
+                    ShowWaiting(true);
+                }
+            }
+        });
+
+        //取消按钮
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissUpgradeDialog();
+            }
+        });
+        mUpgradeDialog.show();
+    }
+
+    private void dismissUpgradeDialog() {
+        if (mUpgradeDialog != null && mUpgradeDialog.isShowing()) {
+            mUpgradeDialog.dismiss();
+        }
+    }
+
+    private void onBtnBackup(){
 		BusinessMannager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_APP_BACKUP, null);
 	}
@@ -157,13 +228,42 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_APP_BACKUP)){
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String strTost = getString(R.string.setting_backup_failed);
+//			String strTost = getString(R.string.setting_backup_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				strTost = getString(R.string.setting_backup_success);
+                //获取配置文件
+                String strPath = Environment.getExternalStorageDirectory().getPath()
+                        + getString(R.string.setting_backup_path);
+                //生成文件目录
+                FileUtil.makeRootDirectory(strPath);
+                //生成文件
+                final String localFileName = strPath + mBackupNameEt.getText() + ".bin";
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (downLoadConfig(localFileName)){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SettingBackupRestoreActivity.this, getString(R.string.setting_backup_success), Toast.LENGTH_SHORT).show();
+                                    ShowWaiting(false);
+                                }
+                            });
+                        }else{
+                            //删除错误的文件
+                            FileUtil.deleteFile(localFileName);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SettingBackupRestoreActivity.this, getString(R.string.setting_backup_failed), Toast.LENGTH_SHORT).show();
+                                    ShowWaiting(false);
+                                }
+                            });
+                        }
+                    }
+                }).start();
 			}
 			
-			Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
-			ShowWaiting(false);
 		}
 		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP)){
@@ -218,4 +318,69 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			}
     	}
 	}
+
+    //下载配置文件
+    public boolean downLoadConfig(String localFileName) {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        OutputStream out = null;
+        InputStream in = null;
+
+        try {
+            HttpGet httpGet = new HttpGet(ConstValue.HTTP_GET_CONFIG_ADDRESS);
+
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            HttpEntity entity = httpResponse.getEntity();
+            in = entity.getContent();
+
+            long length = entity.getContentLength();
+            if (length <= 0) {
+                return false;
+            }
+
+//            System.out.println("The response value of token:" + httpResponse.getFirstHeader("token"));
+
+            File file = new File(localFileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            out = new FileOutputStream(file);
+            byte[] buffer = new byte[4096];
+            int readLength = 0;
+            while ((readLength = in.read(buffer)) > 0) {
+                byte[] bytes = new byte[readLength];
+                System.arraycopy(buffer, 0, bytes, 0, readLength);
+                out.write(bytes);
+            }
+
+            out.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
