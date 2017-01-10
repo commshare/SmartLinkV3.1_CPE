@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/edit_normal">
+
+    <RelativeLayout
+        android:id="@+id/restore_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_260dip">
+        <ImageView
+            android:id="@+id/restore_cancel"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:layout_marginLeft="@dimen/dimen_20dip"
+            android:layout_marginRight="@dimen/dimen_20dip"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/popup_cancel"
+            android:layout_width="@dimen/dimen_20dip"
+            android:layout_height="@dimen/dimen_20dip"/>
+
+        <TextView
+            android:id="@+id/restore_desc"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_black"
+            android:layout_below="@id/restore_cancel"
+            android:text="@string/setting_restore_btn_restore"
+            android:textSize="@dimen/font_size_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ListView
+            android:id="@+id/restore_name_list"
+            android:listSelector="#00000000"
+            android:layout_below="@id/restore_desc"
+            android:fadingEdge="none"
+            android:scrollbars="none"
+            android:divider="@color/color_white"
+            android:dividerHeight="@dimen/dimen_0.5dip"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:layout_marginLeft="@dimen/dimen_25dip"
+            android:layout_marginRight="@dimen/dimen_25dip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_120dip"
+            android:background="@drawable/bg_backup_rounded_edt"
+            android:textSize="@dimen/font_size_large"/>
+
+        <TextView
+            android:id="@+id/restore_confirm"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:layout_below="@id/restore_name_list"
+            android:layout_marginLeft="@dimen/dimen_25dip"
+            android:layout_marginRight="@dimen/dimen_25dip"
+            android:clickable="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/font_size_normal"
+            android:background="@drawable/selector_conner_btn_blue"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_40dip"/>
+    </RelativeLayout>
+
+</RelativeLayout>

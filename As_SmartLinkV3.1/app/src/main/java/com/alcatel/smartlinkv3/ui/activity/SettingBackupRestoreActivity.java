@@ -7,12 +7,17 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,6 +46,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingBackupRestoreActivity extends BaseActivity implements OnClickListener{
 
@@ -49,11 +56,17 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	private TextView m_tv_back=null;
 	private ProgressBar m_pbWaitingBar=null;
 	private boolean  m_bRestore = false;
-    private TextView mBackupTv;
-    private TextView mRestoreTv;
-    private Dialog   mUpgradeDialog;
-    private EditText mBackupNameEt;
-    private TextView mBackupConfirm;
+    private TextView          mBackupTv;
+    private TextView          mRestoreTv;
+    private Dialog            mBackupDialog;
+    private Dialog            mRestoreDialog;
+    private EditText          mBackupNameEt;
+    private TextView          mBackupConfirm;
+    private ListView          mRestoreNameListLv;
+    private TextView          mRestoreConfirm;
+    private List<RestoreBean> restoreConfigs;
+    private RestoreAdapter mRestoreAdapter;
+    private String selectPath;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -123,31 +136,213 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			break;
 			
 		case R.id.device_backup_restore:
-			onBtnRestore();
-			ShowWaiting(true);
+            //先判断是否有备份文件
+            restoreConfigs = getRestoreConfigs();
+            if (restoreConfigs.size() > 0){
+                showRestoreDialog();
+                onBtnRestore();
+                ShowWaiting(true);
+            }else {
+                Toast.makeText(getApplicationContext(), getString(R.string.setting_restore_waring), Toast.LENGTH_SHORT).show();
+            }
 			break;
 		default:
 			break;
 		}
 	}
 
+    private void showRestoreDialog() {
+        mRestoreDialog = new Dialog(this, R.style.UpgradeMyDialog);
+        mRestoreDialog.setCanceledOnTouchOutside(false);
+        mRestoreDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout restoreDialogLLayout = (RelativeLayout) View.inflate(this,
+                R.layout.dialog_restore, null);
+
+        ImageView cancel = (ImageView) restoreDialogLLayout.findViewById(R.id.restore_cancel);
+        mRestoreNameListLv = (ListView) restoreDialogLLayout.findViewById(R.id.restore_name_list);
+
+        restoreConfigs.get(0).setCheck(true);//默认第一个被选中
+        selectPath = restoreConfigs.get(0).getRestorePath();
+        mRestoreAdapter = new RestoreAdapter(this, restoreConfigs);
+        mRestoreNameListLv.setAdapter(mRestoreAdapter);
+        mRestoreNameListLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                for (int i = 0; i < restoreConfigs.size(); i++) {
+                    if (i == position){
+                        restoreConfigs.get(i).setCheck(true);
+                        selectPath = restoreConfigs.get(i).getRestorePath();
+                    }else{
+                        restoreConfigs.get(i).setCheck(false);
+                    }
+                }
+                mRestoreAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mRestoreConfirm = (TextView) restoreDialogLLayout.findViewById(R.id.restore_confirm);
+
+        mRestoreDialog.setContentView(restoreDialogLLayout);
+
+        //确认还原备份
+        mRestoreConfirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), selectPath, Toast.LENGTH_SHORT).show();
+//                dismissBackupDialog();
+//                onBtnBackup();
+//                ShowWaiting(true);
+            }
+        });
+
+        //取消按钮
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissRestoreDialog();
+            }
+        });
+        mRestoreDialog.show();
+    }
+
+    private List<RestoreBean> getRestoreConfigs() {
+
+        List<RestoreBean> restoreBeenList = new ArrayList<RestoreBean>();
+        String rootPath = Environment.getExternalStorageDirectory().getPath() + getString(R.string.setting_backup_path);
+        File f = new File(rootPath);
+        File[] files = f.listFiles();// 列出所有文件
+        // 将所有文件存入list中
+        if(files != null){
+            int count = files.length;// 文件个数
+            for (int i = 0; i < count; i++) {
+                File file = files[i];
+                if (!file.isDirectory()){//是文件才添加
+                    RestoreBean restoreBean = new RestoreBean();
+                    restoreBean.setName(file.getName());
+                    restoreBean.setRestorePath(file.getPath());
+                    restoreBean.setCheck(false);
+                    restoreBeenList.add(restoreBean);
+                }
+            }
+        }
+        return restoreBeenList;
+    }
+
+    public class RestoreAdapter extends BaseAdapter {
+
+        private Context           context;
+        private List<RestoreBean> restoreBeanList;
+
+        public RestoreAdapter(Context context, List<RestoreBean> restoreBeanList) {
+            this.context = context;
+            this.restoreBeanList = restoreBeanList;
+        }
+
+        @Override
+        public int getCount() {
+            return restoreBeanList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return restoreBeanList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            RestoreViewHolder restoreViewHolder;
+            if (convertView == null){
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_restore_list, null);
+                restoreViewHolder = new RestoreViewHolder();
+
+                restoreViewHolder.nameTv = (TextView) convertView.findViewById(R.id.item_restore_name);
+                restoreViewHolder.isCheckIv = (ImageView) convertView.findViewById(R.id.item_restore_select);
+
+                convertView.setTag(restoreViewHolder);
+            }else{
+                restoreViewHolder = (RestoreViewHolder) convertView.getTag();
+            }
+
+            //找数据
+            RestoreBean carOrderBean = restoreBeanList.get(position);
+
+            restoreViewHolder.nameTv.setText(carOrderBean.getName());
+            if (carOrderBean.isCheck){
+                restoreViewHolder.isCheckIv.setVisibility(View.VISIBLE);
+            }else{
+                restoreViewHolder.isCheckIv.setVisibility(View.INVISIBLE);
+            }
+
+            return convertView;
+        }
+    }
+
+    //备份的viewHolder
+    private class RestoreViewHolder{
+        TextView nameTv;
+        ImageView isCheckIv;
+    }
+
+    //备份的Bean
+    public class RestoreBean{
+        private String name;
+        private Boolean isCheck;
+        private String restorePath;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Boolean getCheck() {
+            return isCheck;
+        }
+
+        public void setCheck(Boolean check) {
+            isCheck = check;
+        }
+
+        public String getRestorePath() {
+            return restorePath;
+        }
+
+        public void setRestorePath(String restorePath) {
+            this.restorePath = restorePath;
+        }
+    }
+
+    private void dismissRestoreDialog() {
+        if (mRestoreDialog != null && mRestoreDialog.isShowing()) {
+            mRestoreDialog.dismiss();
+        }
+    }
+
     private void showBackupDialog() {
-        mUpgradeDialog = new Dialog(this, R.style.UpgradeMyDialog);
-        mUpgradeDialog.setCanceledOnTouchOutside(false);
-        mUpgradeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this,
+        mBackupDialog = new Dialog(this, R.style.UpgradeMyDialog);
+        mBackupDialog.setCanceledOnTouchOutside(false);
+        mBackupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout backupDialogLLayout = (RelativeLayout) View.inflate(this,
                 R.layout.dialog_backup, null);
 
-        ImageView cancel = (ImageView) deleteDialogLLayout.findViewById(R.id.backup_cancel);
-        mBackupNameEt = (EditText) deleteDialogLLayout.findViewById(R.id.backup_name);
+        ImageView cancel = (ImageView) backupDialogLLayout.findViewById(R.id.backup_cancel);
+        mBackupNameEt = (EditText) backupDialogLLayout.findViewById(R.id.backup_name);
 
         //处理EditText
         mBackupNameEt.setText("");
         StringUtil.setEditTextInputFilter(mBackupNameEt);
 
-        mBackupConfirm = (TextView) deleteDialogLLayout.findViewById(R.id.backup_confirm);
+        mBackupConfirm = (TextView) backupDialogLLayout.findViewById(R.id.backup_confirm);
 
-        mUpgradeDialog.setContentView(deleteDialogLLayout);
+        mBackupDialog.setContentView(backupDialogLLayout);
 
         //确认备份
         mBackupConfirm.setOnClickListener(new OnClickListener() {
@@ -157,7 +352,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
                     Toast.makeText(SettingBackupRestoreActivity.this,
                             getString(R.string.setting_backup_waring), Toast.LENGTH_SHORT).show();
                 }else{
-                    dismissUpgradeDialog();
+                    dismissBackupDialog();
                     onBtnBackup();
                     ShowWaiting(true);
                 }
@@ -168,15 +363,15 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
         cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismissUpgradeDialog();
+                dismissBackupDialog();
             }
         });
-        mUpgradeDialog.show();
+        mBackupDialog.show();
     }
 
-    private void dismissUpgradeDialog() {
-        if (mUpgradeDialog != null && mUpgradeDialog.isShowing()) {
-            mUpgradeDialog.dismiss();
+    private void dismissBackupDialog() {
+        if (mBackupDialog != null && mBackupDialog.isShowing()) {
+            mBackupDialog.dismiss();
         }
     }
 

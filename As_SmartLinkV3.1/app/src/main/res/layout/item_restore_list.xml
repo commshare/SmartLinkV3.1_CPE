@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_40dip">
+        <ImageView
+            android:id="@+id/item_restore_select"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_20dip"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/general_ic_tick"
+            android:layout_width="@dimen/dimen_25dip"
+            android:layout_height="@dimen/dimen_25dip"/>
+        <TextView
+            android:id="@+id/item_restore_name"
+            android:textColor="@color/color_black"
+            android:layout_marginLeft="@dimen/dimen_20dip"
+            android:layout_marginRight="@dimen/dimen_50dip"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/item_restore_select"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:layout_alignParentLeft="true"
+            android:text="@string/setting_restore_btn_restore"
+            android:textSize="@dimen/font_size_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</LinearLayout>

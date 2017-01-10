@@ -342,6 +342,7 @@
     <string name="setting_backup_path_tag">Path: Phone</string>
     <string name="setting_backup_path">/CPE/Backup/</string>
     <string name="setting_backup_waring">Please enter a name!</string>
+    <string name="setting_restore_waring">Backup file not found!</string>
     <!-- setting end -->
 
 

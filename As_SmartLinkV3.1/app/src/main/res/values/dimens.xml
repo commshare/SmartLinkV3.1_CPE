@@ -24,10 +24,15 @@
     <dimen name="dimen_60dip">60dip</dimen>
     <dimen name="dimen_80dip">80dip</dimen>
     <dimen name="dimen_100dip">100dip</dimen>
+    <dimen name="dimen_120dip">120dip</dimen>
+    <dimen name="dimen_150dip">150dip</dimen>
     <dimen name="dimen_160dip">160dip</dimen>
     <dimen name="dimen_180dip">180dip</dimen>
     <dimen name="dimen_200dip">200dip</dimen>
     <dimen name="dimen_220dip">220dip</dimen>
+    <dimen name="dimen_250dip">250dip</dimen>
+    <dimen name="dimen_260dip">260dip</dimen>
+    <dimen name="dimen_300dip">300dip</dimen>
     <dimen name="dimen_new_sms_edit_number">280dip</dimen>
     <dimen name="dimen_new_sms_edit_content">240dip</dimen>
     
