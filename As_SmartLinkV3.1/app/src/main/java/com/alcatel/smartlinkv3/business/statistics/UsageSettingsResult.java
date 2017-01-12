@@ -12,6 +12,7 @@ public class UsageSettingsResult extends BaseResult{
 	public long MonthlyPlan = 0;//The max data that on month could use..
 	public int Unit = 0; //The unit function flage,0: MB 1: GB
 	public long UsedData = 0;//The used data in month.
+	public int UsageAlertValue = 0;
 	public int TimeLimitFlag = 0;//The time limit function flage,0: disable 1:enable
 	public int TimeLimitTimes = 0;//The time limit function open, must set the limit time.
 	public int UsedTimes = 0;//The used time that after open time limit function.
@@ -25,6 +26,7 @@ public class UsageSettingsResult extends BaseResult{
 		MonthlyPlan = 0;
 		Unit = 0;
 		UsedData = 0;
+		UsageAlertValue = 0;
 		TimeLimitFlag = 0;
 		TimeLimitTimes = 0;
 		UsedTimes = 0;
@@ -38,6 +40,8 @@ public class UsageSettingsResult extends BaseResult{
 		MonthlyPlan = src.HMonthlyPlan;
 		Unit = src.HUnit;
 		UsedData = src.HUsedData;
+		UsageAlertValue = src.HUsageAlertValue;
+
 		TimeLimitFlag = ENUM.OVER_TIME_STATE.antiBuild(src.HTimeLimitFlag);
 		TimeLimitTimes = src.HTimeLimitTimes;
 		UsedTimes = src.HUsedTimes;
@@ -49,6 +53,7 @@ public class UsageSettingsResult extends BaseResult{
 		MonthlyPlan = result.MonthlyPlan;
 		Unit = result.Unit;
 		UsedData = result.UsedData;
+		UsageAlertValue = result.UsageAlertValue;
 		TimeLimitFlag = result.TimeLimitFlag;
 		TimeLimitTimes = result.TimeLimitTimes;
 		UsedTimes = result.UsedTimes;

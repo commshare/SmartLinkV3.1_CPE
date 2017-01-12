@@ -9,12 +9,16 @@ import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.PowerManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
+import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
@@ -25,6 +29,7 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,8 +43,9 @@ public abstract class BaseActivity extends Activity{
 	protected ActivityBroadcastReceiver m_msgReceiver2;
 	private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
 	protected boolean m_bNeedBack = true;//whether need to back main activity.
+	public int alertValue;
 
-	
+
 	protected void addToDialogManager(Dialog dialog) {
 		m_dialogManager.add(dialog);
 	}
@@ -57,7 +63,7 @@ public abstract class BaseActivity extends Activity{
     	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)); 
     	
     	m_msgReceiver2 = new ActivityBroadcastReceiver();
-    	if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+    	if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 		{
     		this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
 		}
@@ -65,12 +71,50 @@ public abstract class BaseActivity extends Activity{
     	this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
     	
     	showActivity(this);
-    	if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+    	if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 		{
     		backMainActivityOnResume(this);
 		}
+
+		showIfAlertDialog();
 	}
-	
+
+	private void showIfAlertDialog() {
+		int usageRecord;
+		int usageSetting;
+		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
+		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
+
+		String usageRecordSt = CommonUtil.ConvertTrafficToStringFromMB(this, (long) m_UsageRecordResult.HUseData);
+		if (usageRecordSt.contains("MB")){
+			usageRecordSt = usageRecordSt.substring(0, usageRecordSt.lastIndexOf('M'));
+			usageRecord = ((int) Double.parseDouble(usageRecordSt));
+		} else {
+			usageRecordSt = usageRecordSt.substring(0, usageRecordSt.lastIndexOf('G'));
+			usageRecord = 1024 * ((int) Double.parseDouble(usageRecordSt));
+		}
+
+		String usageSettingSt = CommonUtil.ConvertTrafficToStringFromMB(this, statistic.HMonthlyPlan);
+		if (usageSettingSt.contains("MB")){
+			usageSettingSt = usageSettingSt.substring(0, usageSettingSt.lastIndexOf('M'));
+			usageSetting = ((int) Double.parseDouble(usageSettingSt));
+		} else {
+			usageSettingSt = usageSettingSt.substring(0, usageSettingSt.lastIndexOf('G'));
+			usageSetting = 1024 * ((int) Double.parseDouble(usageSettingSt));
+		}
+
+		alertValue = SharedPrefsUtil.getInstance(this).getInt(UsageSettingActivity.SETTING_USAGE_ALERT_VALUE, 0);
+		if (usageSetting != 0){
+			if ((100 * usageRecord / usageSetting) >= alertValue){
+				new AlertDialog.Builder(this)
+						.setTitle("WARNING")
+						.setMessage("traffic over usage restrictions")
+						.setPositiveButton("true", null)
+						.show();
+			}
+		}
+	}
+
 	@Override
 	protected void onPause() {	
     	super.onPause();
@@ -137,15 +181,15 @@ public abstract class BaseActivity extends Activity{
 	}
 	
 	private void back2MainActivity(Context context) {
-		if(m_bNeedBack == false) 
+		if(m_bNeedBack)
 			return;
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 		
-		if(bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
+		if(bCPEWifiConnected && sim.m_SIMState != SIMState.Accessable) {
 //			String strInfo = getString(R.string.home_sim_not_accessible);
 //			Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+			if(!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
 				dismissAllDialog();	
 				Intent intent = new Intent(context, MainActivity.class);	
 				context.startActivity(intent);
@@ -158,8 +202,8 @@ public abstract class BaseActivity extends Activity{
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 		
-		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
+			if(!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
 				Intent intent = new Intent(context, MainActivity.class);	
 				context.startActivity(intent);
 				finish();
@@ -174,9 +218,9 @@ public abstract class BaseActivity extends Activity{
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 		
-		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
+		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
 			dismissAllDialog();
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+			if(!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
 				Intent intent = new Intent(context, MainActivity.class);	
 				context.startActivity(intent);
 				finish();
@@ -191,7 +235,7 @@ public abstract class BaseActivity extends Activity{
 	
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();		
 		
-		if(bCPEWifiConnected == true && 
+		if(bCPEWifiConnected &&
 				this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())	)
 			{
 			dismissAllDialog();	
@@ -199,7 +243,7 @@ public abstract class BaseActivity extends Activity{
 			context.startActivity(intent);
 			finish();									
 			
-		}else if(bCPEWifiConnected == false && !this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
+		}else if(!bCPEWifiConnected && !this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
 			dismissAllDialog();		
 			Intent intent = new Intent(context, RefreshWifiActivity.class);
 			context.startActivity(intent);	
@@ -213,11 +257,7 @@ public abstract class BaseActivity extends Activity{
 	    List<RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
 	    for (RunningAppProcessInfo appProcess : appProcesses) {
 	         if (appProcess.processName.equals(context.getPackageName())) {
-	                if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-	                	return true;
-	                }else{
-	                    return false;
-	                }
+	                return appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
 	           }
 	    }
 	    return false;

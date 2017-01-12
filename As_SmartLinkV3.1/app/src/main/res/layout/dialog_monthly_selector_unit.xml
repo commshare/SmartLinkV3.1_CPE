@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/mb_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dip"
+        android:background="@color/white"
+        android:text="@string/m_unit"
+        android:textSize="@dimen/dimen_textsize_18sp"
+        android:textColor="@drawable/selector_mb_color"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_line"/>
+
+    <Button
+        android:id="@+id/gb_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dip"
+        android:background="@color/white"
+        android:text="@string/g_unit"
+        android:textSize="@dimen/dimen_textsize_18sp"
+        android:textColor="@drawable/selector_mb_color"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_line"/>
+
+    <Button
+        android:id="@+id/confirm_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dip"
+        android:background="@drawable/selector_confirm_btn_bg"
+        android:text="@string/confirm_unit"
+        android:textSize="@dimen/dimen_textsize_18sp"
+        android:textColor="@color/selector_confirm_text_color" />
+</LinearLayout>

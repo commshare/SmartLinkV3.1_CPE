@@ -2,8 +2,12 @@ package com.alcatel.smartlinkv3.ui.view;
 
 
 import java.util.ArrayList;
+import java.util.Locale;
 
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
@@ -30,7 +34,6 @@ import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -42,32 +45,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 
 public class ViewHome extends BaseViewImpl implements OnClickListener {
-	private static final String TAG = ViewHome.class.getSimpleName();
-	
-	/*frame_connect  start*/
-	
-	
-	private ProgressBar m_connectWaiting = null;
-	
-	private RelativeLayout m_connectLayout = null;
+
+	private static final String  BATTERY_LEVEL = "Battery Level";
+
+	/*frame_connect*/
+	private FrameLayout m_connectLayout = null;
 	private TextView m_connectToNetworkTextView;
-	private TextView m_connectToLabel;
 	private Button m_connectBtn = null;
 	
 	private LinearLayout m_simcardlockedLayout = null;
@@ -76,60 +76,47 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private LinearLayout m_nosimcardLayout = null;
 	private TextView m_simOrServiceTextView = null;
-	
-	private TextView m_timestatusTextView = null;
-	private TextView m_datastatusTextView = null;
-	
+
 	private boolean m_bConnectPressd = false;
 	private boolean m_bConnectReturn = false;
-	long statictime = 0;
-	long staticdata = 0;
-	/*frame_connect  end*/
+	private long statictime = 0;
+	private int staticdata = 0;
 	
-	/*sigel_panel  start*/
+	/*sigel_panel*/
 	private TextView m_networkTypeTextView;
-	private ImageView m_networkRoamImageView;
 	private ImageView m_signalImageView;
 	private TextView m_networkLabelTextView;
-	/*sigel_panel  end*/
-	
-	/*battery_panel  start*/
-	private RelativeLayout m_batteryPanelView;
-	private TextView m_batteryscaleTextView;
-	private ProgressBar m_batteryProgress = null;
-	private ImageView m_batterychargingImageView = null;
-	private RelativeLayout m_batteryscalelayout; 
-	private RelativeLayout m_batterydescriptionlayout;
-	private TextView m_batterydescriptionTextView;
-	/*battery_panel  end*/
-	
-	/*access_panel  start*/
+
+	/*access_panel*/
 	private TextView m_accessnumTextView;
 	private TextView m_accessstatusTextView;
 	private ImageView m_accessImageView;
-	private RelativeLayout m_accessDeviceLayout;
-	//private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
-	/*access_panel  end*/
+
 	
 	private LoginDialog m_loginDialog = null;
 	private AutoLoginProgressDialog	m_autoLoginDialog = null;
 	private AutoForceLoginProgressDialog m_ForceloginDlg = null;
-	
-	private String home_connected_duration = null;
-	private String home_connected_zero_duration = null;
+
 	private String strZeroConnDuration = null;
 
-	Typeface typeFace = Typeface.createFromAsset(this.m_context.getAssets(),"fonts/Roboto_Light.ttf");
+	private Typeface typeFace = Typeface.createFromAsset(this.m_context.getAssets(),"fonts/Roboto_Light.ttf");
 	
 	
 	private ViewConnetBroadcastReceiver m_viewConnetMsgReceiver;
+	private ImageView batteryView;
+	private CircleProgress circleProgress;
+	private WaveLoadingView mConnectedView;
+	private FrameLayout m_connectedLayout;
+
 
 	private class ViewConnetBroadcastReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 				resetConnectBtnFlag();
-				showConnctBtnView();
+				m_connectLayout.setVisibility(View.VISIBLE);
+				m_connectedLayout.setVisibility(View.GONE);
+				showConnectBtnView();
 	    	}
 			
 			if(intent.getAction().equals(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET)) {
@@ -138,22 +125,17 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 					showSignalAndNetworkType();
 					showNetworkState();
-					showConnctBtnView();
-					//updateBtnState();
+					showConnectBtnView();
 				}
 	    	}
 			
 			if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if(nResult == BaseResponse.RESPONSE_OK) {
 					showSignalAndNetworkType();
 					resetConnectBtnFlag();
 					showNetworkState();
-					showConnctBtnView();
-					//showTotalDataUI();
-					//updateStatisticsUI();
-					//updateBtnState();
+					showConnectBtnView();
 				}			
 	    	}
 			
@@ -163,7 +145,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
 					resetConnectBtnFlag();
 					showNetworkState();
-					showConnctBtnView();
+					showConnectBtnView();
 				}
 	    	}
 			
@@ -177,7 +159,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					//operation fail
 					m_bConnectPressd = false;
 					showNetworkState();
-					showConnctBtnView();
+					showConnectBtnView();
 				}
 			}
 			
@@ -208,42 +190,30 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 	@Override
 	protected void init() {
-		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_home,null);
-		
-		m_connectLayout = (RelativeLayout) m_view.findViewById(R.id.connect_layout);
+		m_view = LayoutInflater.from(m_context).inflate(R.layout.view_home, null);
+
+		circleProgress = ((CircleProgress) m_view.findViewById(R.id.home_circleProgress));
+		batteryView = ((ImageView) m_view.findViewById(R.id.home_battery_image));
+		mConnectedView = ((WaveLoadingView) m_view.findViewById(R.id.connected_button));
+		mConnectedView.setOnClickListener(this);
+
+		m_connectLayout = (FrameLayout) m_view.findViewById(R.id.connect_layout);
+		m_connectedLayout = ((FrameLayout) m_view.findViewById(R.id.connected_layout));
 		m_connectToNetworkTextView = (TextView) m_view.findViewById(R.id.connect_network);
-		m_connectToLabel = (TextView) m_view.findViewById(R.id.connect_label);
 		m_connectBtn = (Button) m_view.findViewById(R.id.connect_button);
 		m_connectBtn.setOnClickListener(this);
-		
+
 		m_simcardlockedLayout = (LinearLayout) m_view.findViewById(R.id.sim_card_locked_layout);
 		m_simcardlockedTextView = (TextView) m_view.findViewById(R.id.sim_card_locked_state);
 		m_unlockSimBtn = (Button) m_view.findViewById(R.id.unlock_sim_button);
 		
 		m_nosimcardLayout = (LinearLayout) m_view.findViewById(R.id.no_sim_card_layout);
 		m_simOrServiceTextView = (TextView) m_view.findViewById(R.id.no_sim_card_state);
-		
-		m_connectWaiting = (ProgressBar) m_view.findViewById(R.id.waiting_progress);
-		
-		m_timestatusTextView = (TextView) m_view.findViewById(R.id.time_status);
-		m_datastatusTextView = (TextView) m_view.findViewById(R.id.data_status);
-		
-		
+
 		m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);
 		m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);
-		m_networkRoamImageView = (ImageView) m_view.findViewById(R.id.connect_roam);
 		m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);
-		
-		
-		m_batteryPanelView = (RelativeLayout) m_view.findViewById(R.id.battery_panel);
-		m_batteryscaleTextView = (TextView) m_view.findViewById(R.id.battery_scale_label);
-		m_batteryProgress = (ProgressBar) m_view.findViewById(R.id.battery_progress);
-		m_batterychargingImageView = (ImageView) m_view.findViewById(R.id.connct_charging);
-		m_batteryscalelayout= (RelativeLayout) m_view.findViewById(R.id.battery_scale_layout);
-		m_batterydescriptionlayout= (RelativeLayout) m_view.findViewById(R.id.battery_description_layout);
-		m_batterydescriptionTextView = (TextView) m_view.findViewById(R.id.battery_description_label);
-		
-		
+
 		m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
 		m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
 		m_accessstatusTextView= (TextView) m_view.findViewById(R.id.access_label);
@@ -251,12 +221,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_loginDialog = new LoginDialog(this.m_context);
 		m_autoLoginDialog = new AutoLoginProgressDialog(this.m_context);
 		m_ForceloginDlg = new AutoForceLoginProgressDialog(this.m_context);
-		
-		home_connected_duration = this.getView().getResources().getString(R.string.home_connected_duration);
-		home_connected_zero_duration = this.getView().getResources().getString(R.string.Home_zero_data);
-		
-		strZeroConnDuration = String.format(home_connected_zero_duration, "0.00");
 
+		strZeroConnDuration = getView().getResources().getString(R.string.Home_zero_data);
 	}
 
 	@Override
@@ -271,14 +237,13 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_DISCONNECT_REQUSET));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST));
-		
-		
-		
-		showConnctBtnView();
+
+		showConnectBtnView();
 		showNetworkState();
 		showSignalAndNetworkType();
 		
 		showBatteryState();
+		showTrafficUsageView();
 		showAccessDeviceState();
 	}
 
@@ -289,11 +254,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		} catch (Exception e) {
 
 		}
-		
-		m_bConnectPressd = false;
 		m_bConnectReturn = false;
-		showConnctBtnView();
-
 	}
 
 	@Override
@@ -306,21 +267,22 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.connect_button:
-			connectBtnClick();
-			break;
+			case R.id.connect_button:
+				connectBtnClick();
+				break;
+			case R.id.connected_button:
+				connectedBtnClick();
+				break;
 		default:
 			break;
 		}
 	}
-	
-	
-	
+
 	private void resetConnectBtnFlag() {
 		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (simStatus != SIMState.Accessable
-				|| bCPEWifiConnected == false) {
+				|| !bCPEWifiConnected) {
 			m_bConnectPressd = false;
 			m_bConnectReturn = false;
 			return;
@@ -330,7 +292,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
 			if (m_bConnectReturn) {
-				m_bConnectPressd = false;
 				m_bConnectReturn = false;
 			}
 		}
@@ -342,8 +303,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private void showNetworkState() {
 		
 		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
-		if (simStatus != SIMState.Accessable) {
-			m_connectWaiting.setVisibility(View.GONE);
+			if (simStatus != SIMState.Accessable) {
 			int nStatusId = R.string.Home_sim_invalid;
 			if (SIMState.InvalidSim == simStatus) {
 				nStatusId = R.string.Home_sim_invalid;
@@ -384,9 +344,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_simcardlockedLayout.setVisibility(View.GONE);
 				m_nosimcardLayout.setVisibility(View.VISIBLE);
 			}
-			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(strZeroConnDuration);
+			mConnectedView.setCenterTitle(strZeroConnDuration);
 			m_connectLayout.setVisibility(View.GONE);
+
 			return;
 		}
 
@@ -394,141 +354,126 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
 		if(curNetwork.m_NetworkType == NetworkType.No_service) {
-			m_connectWaiting.setVisibility(View.GONE);
 			m_simOrServiceTextView.setText(R.string.home_no_service);
 			m_nosimcardLayout.setVisibility(View.VISIBLE);
 			m_connectLayout.setVisibility(View.GONE);
-			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(strZeroConnDuration);
+			mConnectedView.setCenterTitle(strZeroConnDuration);
 			return;
 		}
 		
 		if(curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
-			m_connectWaiting.setVisibility(View.GONE);
 			m_simOrServiceTextView.setText(R.string.home_initializing);
 			m_nosimcardLayout.setVisibility(View.VISIBLE);
 			m_connectLayout.setVisibility(View.GONE);
-			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(strZeroConnDuration);
+			mConnectedView.setCenterTitle(strZeroConnDuration);
 			return;
 		}
 
 		m_nosimcardLayout.setVisibility(View.GONE);
-		m_connectLayout.setVisibility(View.VISIBLE);
 		m_connectToNetworkTextView.setText(curNetwork.m_strNetworkName);
+		m_connectToNetworkTextView.setVisibility(View.VISIBLE);
 		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
-		if (m_bConnectPressd == false) {
+		if (!m_bConnectPressd ) {
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
-				m_connectToLabel.setText(R.string.home_connected_to);
-				m_connectWaiting.setVisibility(View.GONE);
-				statictime = (long)internetConnState.m_lConnectionTime;
-				staticdata = (long)internetConnState.m_lDlBytes+internetConnState.m_lUlBytes;
+				statictime = internetConnState.m_lConnectionTime;
+				staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
 
 			}
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-				m_connectToLabel.setText(R.string.home_disconnecting_to);
-				m_connectWaiting.setVisibility(View.VISIBLE);
 			}
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
-				m_connectToLabel.setText(R.string.home_disconnected_to);
-				m_connectWaiting.setVisibility(View.GONE);
-				statictime = (long)internetConnState.m_lConnectionTime;
-				staticdata = (long)internetConnState.m_lDlBytes+internetConnState.m_lUlBytes;
+				statictime = internetConnState.m_lConnectionTime;
+				staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
 			}
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connecting) {
-				m_connectToLabel.setText(R.string.home_connecting_to);
-				m_connectWaiting.setVisibility(View.VISIBLE);
 			}
 		} else {
-			m_connectWaiting.setVisibility(View.VISIBLE);
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
 					|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-				m_connectToLabel.setText(R.string.home_disconnecting_to);
 			} else {
-				m_connectToLabel.setText(R.string.home_connecting_to);
 			}
 		}
-		
-		String strConnDuration = String.format(home_connected_duration, statictime/3600, (statictime%3600)/60);
-		m_timestatusTextView.setText(strConnDuration);
-		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));
+
+		int staticDataMB = staticdata / 1024 / 1024;
+		mConnectedView.setCenterTitle(String.valueOf(staticDataMB));
 	
 	}
 	
-	private void showConnctBtnView() {
+	private void showConnectBtnView() {
 
 		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
 		if (simStatus != SIMState.Accessable) {
-			m_connectWaiting.setVisibility(View.GONE);
-			m_connectBtn.setVisibility(View.INVISIBLE);
-			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(strZeroConnDuration);
+			mConnectedView.setCenterTitle(strZeroConnDuration);
 			return;
 		}
 		
 		NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
 		if(curNetwork.m_NetworkType == NetworkType.No_service || curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
-			m_connectWaiting.setVisibility(View.GONE);
-			m_connectBtn.setVisibility(View.INVISIBLE);
-			m_timestatusTextView.setText(R.string.Home_zero_time);
-			m_datastatusTextView.setText(strZeroConnDuration);
+			mConnectedView.setCenterTitle(strZeroConnDuration);
 			return;
 		}
-		m_connectBtn.setVisibility(View.VISIBLE);
 		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
-		if (m_bConnectPressd == false) {
+		if (!m_bConnectPressd) {
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
-				m_connectBtn.setBackgroundResource(R.drawable.switch_on);
-				m_connectBtn.setEnabled(true);
-				m_connectWaiting.setVisibility(View.GONE);
-				statictime = (long)internetConnState.m_lConnectionTime;
-				staticdata = (long)internetConnState.m_lDlBytes+internetConnState.m_lUlBytes;
+				boolean logoutFlag = SharedPrefsUtil.getInstance(m_context).getBoolean(SettingAccountActivity.LOGOUT_FLAG, true);
+				if (logoutFlag) {
+					m_connectLayout.setVisibility(View.VISIBLE);
+					m_connectedLayout.setVisibility(View.GONE);
+				} else {
+					m_connectLayout.setVisibility(View.GONE);
+					m_connectedLayout.setVisibility(View.VISIBLE);
+				}
+				statictime = internetConnState.m_lConnectionTime;
+				staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
 			}
 			
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-				m_connectBtn.setBackgroundResource(R.drawable.switch_off);
-				m_connectBtn.setEnabled(false);
-				m_connectWaiting.setVisibility(View.VISIBLE);
+				m_connectLayout.setVisibility(View.VISIBLE);
+				m_connectedLayout.setVisibility(View.GONE);
 			}
 			
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
-				m_connectBtn.setBackgroundResource(R.drawable.switch_off);
-				m_connectBtn.setEnabled(true);				
-				m_connectWaiting.setVisibility(View.GONE);
+				m_connectLayout.setVisibility(View.VISIBLE);
+				m_connectedLayout.setVisibility(View.GONE);
 			}
 			
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connecting) {
-				m_connectBtn.setBackgroundResource(R.drawable.switch_on);
-				m_connectBtn.setEnabled(false);
-				m_connectWaiting.setVisibility(View.VISIBLE);
+				m_connectLayout.setVisibility(View.GONE);
+				m_connectedLayout.setVisibility(View.VISIBLE);
 			}
 		} else {
-			m_connectWaiting.setVisibility(View.VISIBLE);
-			m_connectBtn.setEnabled(false);
-			m_connectBtn.setVisibility(View.VISIBLE);
+			boolean logoutFlag = SharedPrefsUtil.getInstance(m_context).getBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
+			if (logoutFlag) {
+				m_connectLayout.setVisibility(View.VISIBLE);
+				m_connectedLayout.setVisibility(View.GONE);
+			} else {
+				m_connectLayout.setVisibility(View.GONE);
+				m_connectedLayout.setVisibility(View.VISIBLE);
+			}
+			statictime = internetConnState.m_lConnectionTime;
+			staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
 		}
-		
-		String strConnDuration = String.format(home_connected_duration, statictime/3600, (statictime%3600)/60);
-		m_timestatusTextView.setText(strConnDuration);
-		m_datastatusTextView.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, staticdata));
+
+		int staticDataMB = staticdata / 1024 / 1024;
+		mConnectedView.setCenterTitle(String.valueOf(staticDataMB));
 	
 	}
 	
-	private void connectBtnClick() 
-	{		
-		if (LoginDialog.isLoginSwitchOff()) 
+	private void connectBtnClick()
+	{
+		if (LoginDialog.isLoginSwitchOff())
 		{
-			connect();	
+			connect();
 		}
-		else 
+		else
 		{
 			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
 
-			if (status == UserLoginStatus.Logout) 
+			if (status == UserLoginStatus.Logout)
 			{
 				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
 				{
-					public void onLoginSuccess() 				
+					public void onLoginSuccess()
 					{
 						connect();
 					}
@@ -537,49 +482,49 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 							{
 								m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getOtherUserLoginString());
 							}else
 							{
-							ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
-									new OnClickBottonConfirm() 
-							{
-								public void onConfirm() 
-								{
-									m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-										public void onLoginSuccess() 				
+								ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
+										new OnClickBottonConfirm()
 										{
-											connect();
-										}
-
-										public void onLoginFailed(String error_code)
-										{
-											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
+											public void onConfirm()
 											{
-												SmartLinkV3App.getInstance().setIsforcesLogin(true);
-												ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
-														new OnClickBtnRetry() 
-												{
-													@Override
-													public void onRetry() 
+												m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+													public void onLoginSuccess()
 													{
-														m_loginDialog.showDialog(new OnLoginFinishedListener() {
-															@Override
-															public void onLoginFinished() {
-																connect();
-															}
-														});
+														connect();
+													}
+
+													public void onLoginFailed(String error_code)
+													{
+														if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
+														{
+															SmartLinkV3App.getInstance().setIsforcesLogin(true);
+															ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+																	new OnClickBtnRetry()
+																	{
+																		@Override
+																		public void onRetry()
+																		{
+																			m_loginDialog.showDialog(new OnLoginFinishedListener() {
+																				@Override
+																				public void onLoginFinished() {
+																					connect();
+																				}
+																			});
+																		}
+																	});
+														}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
+														{
+															m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
+														}
 													}
 												});
-											}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
-											{
-												m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
 											}
-										}
-									});
-								}
-							});
+										});
 							}
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
@@ -589,42 +534,47 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
 							ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
-									new OnClickBtnRetry() 
-							{
-								@Override
-								public void onRetry() 
-								{
-									m_loginDialog.showDialog();
-								}
-							});
-						}else{}				
+									new OnClickBtnRetry()
+									{
+										@Override
+										public void onRetry()
+										{
+											m_loginDialog.showDialog();
+										}
+									});
+						}
 					}
 
 					@Override
-					public void onFirstLogin() 
+					public void onFirstLogin()
 					{
 						m_loginDialog.showDialog(new OnLoginFinishedListener() {
 							@Override
 							public void onLoginFinished() {
-								connect();								
+								connect();
 							}
-						});						
-					}					
+						});
+					}
 				});
-			} 
-			else if (status == UserLoginStatus.login) 
+			}
+			else if (status == UserLoginStatus.login)
 			{
-				connect();	
-			} 
-			else 
+				connect();
+			}
+			else
 			{
 				PromptUserLogined();
 			}
-		}	
+		}
+	}
+
+	private void connectedBtnClick() {
+		m_context.startActivity(new Intent(m_context, UsageActivity.class));
 	}
 
 	private void connect()
 	{
+		SharedPrefsUtil.getInstance(m_context).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
 		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
@@ -632,8 +582,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
 			if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
 				if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
-					//show warning dialog
-					//m_connectWarningDialog.showDialog();
 					String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
 					Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
 					return;
@@ -641,14 +589,14 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			}
 		}
 	
-		if (m_bConnectPressd == false)
+		if (!m_bConnectPressd) {
 			m_bConnectPressd = true;
-		else
+		} else {
 			return;
-	
+		}
 		m_bConnectReturn = false;
 		showNetworkState();
-		showConnctBtnView();	
+		showConnectBtnView();
 		
 		if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
@@ -676,33 +624,31 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		if (simStatus != SIMState.Accessable) {
 			m_networkTypeTextView.setVisibility(View.GONE);
 			m_networkLabelTextView.setVisibility(View.VISIBLE);
-			m_networkRoamImageView.setVisibility(View.GONE);
-			m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
+			m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
 		}else{
 			NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
 			if(curNetwork.m_NetworkType == NetworkType.No_service) {
 				m_networkTypeTextView.setVisibility(View.GONE);
-				m_networkRoamImageView.setVisibility(View.GONE);
-				m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
 				m_networkLabelTextView.setVisibility(View.VISIBLE);
 				return;
 			}
 			//show roaming
-			if(curNetwork.m_bRoaming == true) 
-				m_networkRoamImageView.setVisibility(View.VISIBLE);
-			else
-				m_networkRoamImageView.setVisibility(View.GONE);
+			if(curNetwork.m_bRoaming)
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g_r);
 			//show signal strength
 			if(curNetwork.m_signalStrength == SignalStrength.Level_0)
-				m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_1)
-				m_signalImageView.setBackgroundResource(R.drawable.home_signal_1);
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g1);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_2)
-				m_signalImageView.setBackgroundResource(R.drawable.home_signal_2);
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g2);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_3)
-				m_signalImageView.setBackgroundResource(R.drawable.home_signal_3);
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g3);
 			if (curNetwork.m_signalStrength == SignalStrength.Level_4)
-				m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g4);
+			if (curNetwork.m_signalStrength == SignalStrength.Level_5)
+				m_signalImageView.setBackgroundResource(R.drawable.home_4g5);
 			//show network type
 			if (curNetwork.m_NetworkType == NetworkType.UNKNOWN)
 			{
@@ -713,89 +659,153 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			//2G
 			if (curNetwork.m_NetworkType == NetworkType.EDGE
 					|| curNetwork.m_NetworkType == NetworkType.GPRS) {
-				m_networkLabelTextView.setVisibility(View.GONE);
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_2g);
+				m_networkTypeTextView.setTextColor(m_context.getResources().getColor(R.color.mg_blue));
 			}
 			
 			//3G
 			if (curNetwork.m_NetworkType == NetworkType.HSPA					
 					|| curNetwork.m_NetworkType == NetworkType.UMTS					
 					|| curNetwork.m_NetworkType == NetworkType.HSUPA) {
-				m_networkLabelTextView.setVisibility(View.GONE);
+
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_3g);
+				m_networkTypeTextView.setTextColor(m_context.getResources().getColor(R.color.mg_blue));
 			}
 			
 			//3G+
 			if (curNetwork.m_NetworkType == NetworkType.HSPA_PLUS					
 					|| curNetwork.m_NetworkType == NetworkType.DC_HSPA_PLUS) {
-				m_networkLabelTextView.setVisibility(View.GONE);
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_3g_plus);
+				m_networkTypeTextView.setTextColor(m_context.getResources().getColor(R.color.mg_blue));
 			}
 			
 			//4G			
 			if (curNetwork.m_NetworkType == NetworkType.LTE) {
-				m_networkLabelTextView.setVisibility(View.GONE);
 				m_networkTypeTextView.setVisibility(View.VISIBLE);
 				m_networkTypeTextView.setTypeface(typeFace);
 				m_networkTypeTextView.setText(R.string.home_network_type_4g);
+				m_networkTypeTextView.setTextColor(m_context.getResources().getColor(R.color.mg_blue));
 			}
 		}
 	}
 		
 	private void showBatteryState(){
-		
+
 		if(!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState"))
 		{
-			m_batteryPanelView.setVisibility(View.GONE);
+			batteryView.setVisibility(View.GONE);
 			return;
 		}
-		int nProgress =0;
+		int nProgress;
 		BatteryInfo batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
 		if(ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()){
-			m_batteryProgress.setVisibility(View.VISIBLE);
-			m_batteryscalelayout.setVisibility(View.VISIBLE);
-			m_batterydescriptionlayout.setVisibility(View.GONE);
-			m_batterychargingImageView.setVisibility(View.GONE);
-			m_batteryscaleTextView.setTypeface(typeFace);
-			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
-			nProgress = (int)batteryinfo.getBatterLevel();
-	    	if (nProgress > m_batteryProgress.getMax())
-				nProgress = m_batteryProgress.getMax();
-	    	m_batteryProgress.setProgress(nProgress);
-		}else if(ConstValue.CHARGE_STATE_CHARGING == batteryinfo.getChargeState()){		
-			m_batteryProgress.setVisibility(View.GONE);
-			m_batteryscalelayout.setVisibility(View.VISIBLE);
-			m_batterydescriptionlayout.setVisibility(View.GONE);
-			m_batterychargingImageView.setVisibility(View.VISIBLE);
-			m_batteryscaleTextView.setTypeface(typeFace);
-			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
+			nProgress = batteryinfo.getBatterLevel();
+			if (nProgress > 20 && nProgress <= 40){
+				batteryView.setImageResource(R.drawable.home_ic_battery2);
+			} else if ((nProgress > 40) && nProgress <= 60){
+				batteryView.setImageResource(R.drawable.home_ic_battery3);
+			} else if ((nProgress > 60) && nProgress <= 80){
+				batteryView.setImageResource(R.drawable.home_ic_battery4);
+			} else if ((nProgress > 80) && nProgress <= 100){
+				batteryView.setImageResource(R.drawable.home_ic_battery5);
+			} else {
+				batteryView.setImageResource(R.drawable.home_ic_battery1);
+			}
+		}else if(ConstValue.CHARGE_STATE_CHARGING == batteryinfo.getChargeState()){
+				batteryView.setImageResource(R.drawable.home_ic_battery_charging);
 		}else if(ConstValue.CHARGE_STATE_COMPLETED == batteryinfo.getChargeState()){
-			m_batterychargingImageView.setVisibility(View.GONE);
-			m_batteryProgress.setVisibility(View.VISIBLE);
-			m_batterydescriptionlayout.setVisibility(View.GONE);
-			m_batteryProgress.setProgress(m_batteryProgress.getMax());
-			m_batteryscalelayout.setVisibility(View.VISIBLE);
-			m_batteryscaleTextView.setTypeface(typeFace);
-			m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
+			nProgress = batteryinfo.getBatterLevel();
+			if (nProgress > 20 && nProgress <= 40){
+				batteryView.setImageResource(R.drawable.home_ic_battery2);
+			} else if ((nProgress > 40) && nProgress <= 60){
+				batteryView.setImageResource(R.drawable.home_ic_battery3);
+			} else if ((nProgress > 60) && nProgress <= 80){
+				batteryView.setImageResource(R.drawable.home_ic_battery4);
+			} else if ((nProgress > 80) && nProgress <= 100){
+				batteryView.setImageResource(R.drawable.home_ic_battery5);
+			} else {
+				batteryView.setImageResource(R.drawable.home_ic_battery1);
+			}
 		}else if(ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()){
-			
+
+		}
+
+		int batterLevel = batteryinfo.getBatterLevel();
+
+		if (batterLevel <= 30){
+			circleProgress.setProgress(m_context.getResources().getColor(R.color.circle_yellow));
+		}
+		circleProgress.setValue(batterLevel);
+
+		showBatteryOnProgressPosition(batterLevel);
+		SharedPrefsUtil.getInstance(m_context).putInt(BATTERY_LEVEL, batterLevel);
+	}
+
+	private void showBatteryOnProgressPosition(int progressValue) {
+		int startProgressValue = SharedPrefsUtil.getInstance(m_context).getInt(BATTERY_LEVEL, 0);
+		float startRotateValue = (float) (3.6 * startProgressValue);
+		float rotateValue = (float) (3.6 * progressValue);
+
+		AnimationSet animationSet = new AnimationSet(true);
+		RotateAnimation animation1 = new RotateAnimation(-startRotateValue, -rotateValue,
+				Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		//实例化RotateAnimation
+		//以自身中心为圆心，旋转360度 正值为顺时针旋转，负值为逆时针旋转
+		RotateAnimation animation2 = new RotateAnimation(startRotateValue, rotateValue,
+				Animation.ABSOLUTE, 28,
+				Animation.ABSOLUTE, -300);
+		animationSet.addAnimation(animation1);
+		animationSet.addAnimation(animation2);
+
+		//设置动画插值器 被用来修饰动画效果,定义动画的变化率
+		animationSet.setInterpolator(new LinearInterpolator());
+		//设置动画执行时间
+		animationSet.setDuration(1000);
+		//动画执行完毕后是否停在结束时的角度上
+		animationSet.setFillAfter(true);
+		batteryView.startAnimation(animationSet);
+	}
+
+	private void showTrafficUsageView() {
+		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
+		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
+
+		if(statistic.HMonthlyPlan!=0){
+			long hUseData = m_UsageRecordResult.HUseData;
+			long hMonthlyPlan = statistic.HMonthlyPlan;
+			long circleUseDataProgressValue = (hUseData * 100) / hMonthlyPlan;
+			if (circleUseDataProgressValue >= 80) {
+				mConnectedView.setWaveColor(m_context.getResources().getColor(R.color.wave_yellow));
+			} else {
+				mConnectedView.setWaveColor(m_context.getResources().getColor(R.color.circle_green));
+			}
+			if (circleUseDataProgressValue <= 100){
+				mConnectedView.setProgressValue((int) circleUseDataProgressValue - 8);
+			} else {
+				mConnectedView.setProgressValue(92);
+			}
+		} else {
+			mConnectedView.setWaveColor(m_context.getResources().getColor(R.color.circle_green));
+			mConnectedView.setProgressValue(92);
 		}
 	}
 	
 	private void showAccessDeviceState(){
 		ArrayList<ConnectedDeviceItemModel> connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
 		m_accessnumTextView.setTypeface(typeFace);
-		m_accessnumTextView.setText(Integer.toString(connecedDeviceLstData.size()));
+		m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", connecedDeviceLstData.size()));
+		m_accessnumTextView.setTextColor(m_context.getResources().getColor(R.color.mg_blue));
+		m_accessImageView.setImageResource(R.drawable.home_ic_person_many);
 		
 		String strOfficial = this.m_context.getString(R.string.access_lable);
-		String strHtmlOfficial = "<u>"+strOfficial+"</u>";
-		m_accessstatusTextView.setText(Html.fromHtml(strHtmlOfficial));	
+		m_accessstatusTextView.setText(strOfficial);
 		
 	}
 }

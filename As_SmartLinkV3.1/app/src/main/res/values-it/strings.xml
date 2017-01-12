@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">LINK APP</string>
+    <string name="app_name">Alcatel Link</string>
 
     <!-- common start -->
     <string name="cancel">Annulla modifica</string>
@@ -24,7 +24,8 @@
     <string name="qs_title">Configurazione rapida</string>
     <string name="qs_exit_query">Esci da Configurazione rapida</string>
     <string name="qs_item_pin_code">Codice PIN</string>
-    <string name="qs_pin_code_prompt">Immettere il codice PIN.\nTentativi rimanenti: <xliff:g id="INPUTTIMES">%1$d</xliff:g> volta/e</string>
+    <string name="qs_pin_code_prompt">Immettere il codice PIN.\nTentativi rimanenti: </string>
+    <string name="qs_pin_code_prompt_num"><xliff:g id="INPUTTIMES">%1$d</xliff:g> volta/e</string>
     <string name="qs_item_wifi_ssid">Nome rete Wi-Fi (SSID)</string>
     <string name="qs_wifi_ssid_prompt">Il SSID deve avere 1&#8211;32 caratteri.</string>
     <string name="qs_item_wifi_passwd">Password Wi-Fi</string>
@@ -63,7 +64,7 @@
     <string name="Home_SimLock_Required">Blocco SIM richiesto</string>
     <string name="Home_SimCard_Detected">Scheda SIM rilevata</string>
     <string name="Home_zero_time">0Hrs 0Mins</string>
-    <string name="Home_zero_data">%1$sMB</string>
+    <string name="Home_zero_data">0</string>
     <string name="home_no_service">Nessun servizio</string>
     <string name="home_initializing">Inizializzazione in corso</string>
     <string name="home_disconnected_to">Disconnesso</string>

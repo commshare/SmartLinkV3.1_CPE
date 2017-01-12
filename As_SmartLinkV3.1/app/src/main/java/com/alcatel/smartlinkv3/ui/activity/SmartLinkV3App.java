@@ -3,12 +3,17 @@ package com.alcatel.smartlinkv3.ui.activity;
 import org.cybergarage.upnp.ControlPoint;
 
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
+import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.NotificationService;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
 import android.app.*;
+import android.renderscript.Double2;
 import android.util.Log;
 
 public class SmartLinkV3App extends Application {
@@ -25,7 +30,7 @@ public class SmartLinkV3App extends Application {
 	
     public static SmartLinkV3App getInstance() {  
         return m_instance;  
-    }  
+    }
 
     
 	@Override
@@ -43,7 +48,11 @@ public class SmartLinkV3App extends Application {
 		
 		mAllShareProxy = AllShareProxy.getInstance(this);
 	}
-	
+
+
+
+
+
 	public void setControlPoint(ControlPoint controlPoint){
 		mControlPoint = controlPoint;
 	}

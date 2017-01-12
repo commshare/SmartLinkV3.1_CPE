@@ -11,10 +11,12 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,28 +59,30 @@ import com.alcatel.smartlinkv3.ui.view.ViewIndex;
 import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
 import com.alcatel.smartlinkv3.ui.view.ViewSetting;
 import com.alcatel.smartlinkv3.ui.view.ViewSms;
-import com.alcatel.smartlinkv3.ui.view.ViewUsage;
+import com.alcatel.smartlinkv3.ui.view.ViewWifiKey;
 
 import org.cybergarage.upnp.Device;
 
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements OnClickListener,IDeviceChangeListener{
-	private final int HOME_PAGE = 1;
-	private final int SMS_PAGE = 2;
-	private final int BATTERY_PAGE = 3;
-	private final int USAGE_PAGE = 4;
-	private int m_preButton = 0;
-	private int m_nNewCount = 0;
+
+	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
+
+	final int HOME_PAGE = 1;
+	final int SMS_PAGE = 2;
+	final int BATTERY_PAGE = 3;
+	final int USAGE_PAGE = 4;
+	int m_preButton = 0;
+	int m_nNewCount = 0;
 
 	private RelativeLayout rl_top;
-	//private LinearLayout ll_buttom;
 	
 	private ViewFlipper m_viewFlipper;
 	
 	private TextView m_homeBtn;
 	private TextView m_microsdBtn;
-	private TextView m_usageBtn;
+	private TextView m_wifiKeyBtn;
 	private RelativeLayout m_smsBtn;
 	private TextView m_settingBtn;
 	
@@ -86,40 +90,39 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	private TextView m_newSmsTextView;
 
 
-	private TextView m_titleTextView = null;
-	private Button m_Btnbar = null;
+	private TextView m_titleTextView;
+	private Button m_Btnbar;
 
-	private ViewHome m_homeView = null;
-	private ViewUsage m_usageView = null;
-	private ViewSms m_smsView = null;
+	private ViewHome m_homeView;
+	private ViewWifiKey m_wifiKeyView;
+	private ViewSms m_smsView;
 	
-	private ViewSetting m_settingView = null;
-	private ViewMicroSD m_microsdView = null;
+	private ViewSetting m_settingView;
+	private ViewMicroSD m_microsdView;
 
 	public static DisplayMetrics m_displayMetrics = new DisplayMetrics();
 	
-	private PinDialog m_dlgPin = null;
-	private PukDialog m_dlgPuk = null;
-	private ErrorDialog m_dlgError = null;
-	private LoginDialog m_loginDlg = null;
-	private AutoForceLoginProgressDialog m_ForceloginDlg = null;
-	private AutoLoginProgressDialog	m_autoLoginDialog = null;
+	private PinDialog m_dlgPin;
+	private PukDialog m_dlgPuk;
+	private ErrorDialog m_dlgError;
+	private LoginDialog m_loginDlg;
+	private AutoForceLoginProgressDialog m_ForceloginDlg;
+	private AutoLoginProgressDialog	m_autoLoginDialog;
 
-	private Button m_unlockSimBtn = null;
-	private int pageIndex = 0;
-	static boolean m_blLogout = false;
-	static boolean m_blkickoff_Logout = false;
+	Button m_unlockSimBtn;
+	private int pageIndex;
+	static boolean m_blLogout;
+	static boolean m_blkickoff_Logout;
 	
 	private CommonErrorInfoDialog m_dialog_timeout_info;
 	
-	private RelativeLayout m_accessDeviceLayout;
-	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
-//	public static String AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS = "com.alcatel.smartlinkv3.AutLoginReturn";
-	
+	RelativeLayout m_accessDeviceLayout;
+
 	private DMSDeviceBrocastFactory mBrocastFactory;
 	private AllShareProxy mAllShareProxy;
 	private ThumbnailLoader thumbnailLoader;
 	private static Device mDevice;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -128,24 +131,19 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		this.getWindowManager().getDefaultDisplay()
 				.getMetrics(m_displayMetrics);
 		rl_top = (RelativeLayout)findViewById(R.id.main_layout_top);
-		//ll_buttom = (LinearLayout)findViewById(R.id.layout_bottom);
-        
+
         RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        
-       //RelativeLayout.LayoutParams ll_params = (RelativeLayout.LayoutParams) ll_buttom.getLayoutParams();// new LinearLayout.LayoutParams(
-                //LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
         rl_params.height = (m_displayMetrics.heightPixels * 9)/100;
-        //ll_params.height = m_displayMetrics.heightPixels / 10;
         rl_top.setLayoutParams(rl_params);
-        //ll_buttom.setLayoutParams(ll_params);
 
 		m_homeBtn = (TextView) this.findViewById(R.id.main_home);
 		m_homeBtn.setOnClickListener(this);
 		m_microsdBtn = (TextView) this.findViewById(R.id.main_microsd);
 		m_microsdBtn.setOnClickListener(this);
-		m_usageBtn = (TextView) this.findViewById(R.id.main_usage);
-		m_usageBtn.setOnClickListener(this);
+		m_wifiKeyBtn = (TextView) this.findViewById(R.id.main_wifiKey);
+		m_wifiKeyBtn.setOnClickListener(this);
 		m_smsBtn = (RelativeLayout) this.findViewById(R.id.tab_sms_layout);
 		m_smsBtn.setOnClickListener(this);
 		m_settingBtn = (TextView) this.findViewById(R.id.main_setting);
@@ -160,9 +158,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		
 		m_Btnbar = (Button) this.findViewById(R.id.btnbar);
 		m_Btnbar.setOnClickListener(this);
-		
 
 		addView();
+
 		setMainBtnStatus(R.id.main_home);
 		showView(ViewIndex.VIEW_HOME);
 		updateTitleUI(ViewIndex.VIEW_HOME);
@@ -188,7 +186,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
     
     	thumbnailLoader = new ThumbnailLoader(this);  
     	showMicroView();
-
 	}
 
 	@Override
@@ -208,7 +205,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 				MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
 
 		m_homeView.onResume();
-		m_usageView.onResume();
+		m_wifiKeyView.onResume();
 		m_smsView.onResume();
 		m_settingView.onResume();
 		m_microsdView.onResume();
@@ -227,7 +224,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 
 		}
 		m_homeView.onPause();
-		m_usageView.onPause();
+		m_wifiKeyView.onPause();
 		m_smsView.onPause();
 		m_settingView.onPause();
 		m_microsdView.onPause();
@@ -244,7 +241,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		destroyDialogs();
     
 		m_homeView.onDestroy();
-		m_usageView.onDestroy();
+		m_wifiKeyView.onDestroy();
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
 		m_microsdView.onDestroy();
@@ -471,16 +468,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		} else {
 			m_smsBtn.setEnabled(false);
 		}
-		
-//		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
-//		if(m_sdcardstatus.SDcardStatus > 0)
-//		{
-//			m_microsdBtn.setEnabled(true);
-//		}else
-//		{
-//			m_microsdBtn.setEnabled(false);
-//		}
-		
 	}
 
 	private void toPageHomeWhenPinSimNoOk() {
@@ -514,8 +501,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		case R.id.main_home:
 			homeBtnClick();
 			break;
-		case R.id.main_usage:
-			usageBtnClick();
+		case R.id.main_wifiKey:
+			wifiKeyBtnClick();
 			break;
 		case R.id.tab_sms_layout:
 			smsBtnClick();
@@ -635,7 +622,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 			break;
 		case R.id.unlock_sim_button:
 			unlockSimBtnClick(true);
-			break;	
+			break;
 		case R.id.access_num_layout:
 			accessDeviceLayoutClick();
 			break;
@@ -646,13 +633,29 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	
 	private void go2Click()
 	{
-		if(this.pageIndex == ViewIndex.VIEW_USAGE){
-			moreBtnClick();
+		if(this.pageIndex == ViewIndex.VIEW_WIFIKEY){
+			wifiEditClick();
 		}else if(this.pageIndex == ViewIndex.VIEW_SMS){
 			editBtnClick();
 		}
 	}
-	
+
+	private void wifiEditClick() {
+		if (m_Btnbar.getText().equals(getResources().getString(R.string.wifi_key_edit))){
+			m_Btnbar.setText(getResources().getString(R.string.wifi_key_Done));
+			//下面要变为编辑状态
+			Intent intent = new Intent();
+			intent.setAction(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST);
+			sendBroadcast(intent);
+		} else {
+			m_Btnbar.setText(getResources().getString(R.string.wifi_key_edit));
+			//下面要变为完成编辑状态
+			Intent intent = new Intent();
+			intent.setAction(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST);
+			sendBroadcast(intent);
+		}
+	}
+
 	private void accessDeviceLayoutClick() {
 		if (LoginDialog.isLoginSwitchOff()) {		
 			startDeviceManagerActivity();	
@@ -671,7 +674,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -737,7 +740,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}else{}				
+						}
 					}
 
 					@Override
@@ -780,13 +783,13 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		pageIndex = ViewIndex.VIEW_HOME;
 	}
 
-	private void usageBtnClick() {
-		if (m_preButton == R.id.main_usage) {
+	private void wifiKeyBtnClick() {
+		if (m_preButton == R.id.main_wifiKey) {
 			return;
 		}
 		
 		if (LoginDialog.isLoginSwitchOff()) {
-			go2UsageView();
+			go2WifiKeyView();
 		} else {
 			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
 
@@ -796,14 +799,14 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 				{
 					public void onLoginSuccess() 				
 					{
-						go2UsageView();
+						go2WifiKeyView();
 					}
 
 					public void onLoginFailed(String error_code)
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 							{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -816,7 +819,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
 										public void onLoginSuccess() 				
 										{
-											go2UsageView();
+											go2WifiKeyView();
 										}
 
 										public void onLoginFailed(String error_code)
@@ -833,7 +836,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 														m_loginDlg.showDialog(new OnLoginFinishedListener() {
 															@Override
 															public void onLoginFinished() {
-																go2UsageView();
+																go2WifiKeyView();
 															}
 														});
 													}
@@ -863,13 +866,12 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									m_loginDlg.showDialog(new OnLoginFinishedListener() {
 										@Override
 										public void onLoginFinished() {
-											go2UsageView();
+											go2WifiKeyView();
 										}
 									});
 								}
 							});
-						}else
-						{}
+						}
 					}
 
 					@Override
@@ -878,28 +880,28 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						m_loginDlg.showDialog(new OnLoginFinishedListener() {
 							@Override
 							public void onLoginFinished() {
-								go2UsageView();
+								go2WifiKeyView();
 							}
 						});
 					}					
 				});					
 				
 			} else if (status == UserLoginStatus.login) {
-				go2UsageView();
+				go2WifiKeyView();
 			} else {
 				PromptUserLogined();
 			}
 		}
 	}
 	
-	private void go2UsageView() {
+	private void go2WifiKeyView() {
 		SimStatusModel simStatus = BusinessMannager.getInstance()
 				.getSimStatus();
 		if(simStatus.m_SIMState == SIMState.Accessable) {
-			setMainBtnStatus(R.id.main_usage);
-			showView(ViewIndex.VIEW_USAGE);
-			updateTitleUI(ViewIndex.VIEW_USAGE);
-			pageIndex = ViewIndex.VIEW_USAGE;
+			setMainBtnStatus(R.id.main_wifiKey);
+			showView(ViewIndex.VIEW_WIFIKEY);
+			updateTitleUI(ViewIndex.VIEW_WIFIKEY);
+			pageIndex = ViewIndex.VIEW_WIFIKEY;
 		}
 	}
 	
@@ -926,7 +928,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -991,7 +993,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}else{}				
+						}
 					}
 
 					@Override
@@ -1046,7 +1048,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -1111,7 +1113,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}else{}				
+						}
 					}
 
 					@Override
@@ -1164,7 +1166,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -1229,7 +1231,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}else{}				
+						}
 					}
 
 					@Override
@@ -1257,13 +1259,13 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		if(m_sdcardstatus.SDcardStatus > 0)
 		{
 			if((FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetDLNASettings") == true)|| (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900")))
+					"GetDLNASettings"))|| (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900")))
 			{
 				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
 			}
 			
 			if(FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetFtpStatus") == true)
+					"GetFtpStatus"))
 			{
 				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 			}
@@ -1280,13 +1282,13 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	}
 
 	private void addView() {
-		m_homeView = new ViewHome(this);	
+		m_homeView = new ViewHome(this);
 		m_viewFlipper.addView(m_homeView.getView(), ViewIndex.VIEW_HOME,
 				m_viewFlipper.getLayoutParams());
 
-		m_usageView = new ViewUsage(this);
-		m_viewFlipper.addView(m_usageView.getView(),
-				ViewIndex.VIEW_USAGE, m_viewFlipper.getLayoutParams());
+		m_wifiKeyView = new ViewWifiKey(this);
+		m_viewFlipper.addView(m_wifiKeyView.getView(),
+				ViewIndex.VIEW_WIFIKEY, m_viewFlipper.getLayoutParams());
 		
 		m_microsdView = new ViewMicroSD(this);
 		m_viewFlipper.addView(m_microsdView.getView(),
@@ -1308,30 +1310,36 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 
 	public void updateTitleUI(int viewIndex) {
 		if (viewIndex == ViewIndex.VIEW_HOME) {
-			m_titleTextView.setText(R.string.main_home);
-			//m_Btnbar.setVisibility(View.VISIBLE);
-			//m_Btnbar.setBackgroundResource(R.drawable.actionbar_plus_icon);
+			rl_top.setVisibility(View.GONE);
 			m_Btnbar.setVisibility(View.GONE);
 			setMainBtnStatus(R.id.main_home);
 		}
-		if (viewIndex == ViewIndex.VIEW_USAGE) {
-			m_titleTextView.setText(R.string.main_usage);
+		if (viewIndex == ViewIndex.VIEW_WIFIKEY) {
+			rl_top.setVisibility(View.VISIBLE);
+			m_titleTextView.setText(R.string.wifi_key);
 			m_Btnbar.setVisibility(View.VISIBLE);
-			m_Btnbar.setBackgroundResource(R.drawable.actionbar_more_icon);
-			setMainBtnStatus(R.id.main_usage);
+			m_Btnbar.setBackgroundColor(getResources().getColor(R.color.main_title_background));
+			m_Btnbar.setText(getResources().getString(R.string.wifi_key_edit));
+			m_Btnbar.setTextColor(getResources().getColor(R.color.color_white));
+			m_Btnbar.setTextSize(20);
+			setMainBtnStatus(R.id.main_wifiKey);
 		}
 		if (viewIndex == ViewIndex.VIEW_SMS) {
+			rl_top.setVisibility(View.VISIBLE);
 			m_titleTextView.setText(R.string.sms_title);
 			m_Btnbar.setVisibility(View.VISIBLE);
 			m_Btnbar.setBackgroundResource(R.drawable.actionbar_edit_icon);
+			m_Btnbar.setText("");
 			setMainBtnStatus(R.id.tab_sms_layout);
 		}
 		if (viewIndex == ViewIndex.VIEW_SETTINGE) {
+			rl_top.setVisibility(View.VISIBLE);
 			m_titleTextView.setText(R.string.main_setting);
 			m_Btnbar.setVisibility(View.GONE);
 			setMainBtnStatus(R.id.main_setting);
 		}
 		if(viewIndex == ViewIndex.VIEW_MICROSD) {
+			rl_top.setVisibility(View.VISIBLE);
 			m_titleTextView.setText(R.string.main_sdsharing);
 			m_Btnbar.setVisibility(View.GONE);
 		}
@@ -1349,14 +1357,14 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		m_homeBtn.setTextColor(this.getResources().getColor(nTextColor));
 
 
-		nDrawable = nActiveBtnId == R.id.main_usage ? R.drawable.main_usage_active
-				: R.drawable.main_usage_grey;
+		nDrawable = nActiveBtnId == R.id.main_wifiKey ? R.drawable.tab_wifi_pre
+				: R.drawable.tab_wifi_nor;
 		d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
-		m_usageBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_usage ? R.color.color_blue
+		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
+		m_wifiKeyBtn.setCompoundDrawables(null, d, null, null);
+		nTextColor = nDrawable = nActiveBtnId == R.id.main_wifiKey ? R.color.color_blue
 				: R.color.color_grey;
-		m_usageBtn.setTextColor(this.getResources().getColor(nTextColor));
+		m_wifiKeyBtn.setTextColor(this.getResources().getColor(nTextColor));
 
 		updateNewSmsUI(m_nNewCount);
 
@@ -1385,11 +1393,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	
 	public static void setKickoffLogoutFlag(boolean blLogout){
 		m_blkickoff_Logout = blLogout;
-	}
-	
-	private void moreBtnClick(){
-		MorePopWindow morePopWindow = new MorePopWindow(MainActivity.this);
-		morePopWindow.showPopupWindow(m_Btnbar);
 	}
 	
 	private void editBtnClick(){
@@ -1514,7 +1517,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 							{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -1579,7 +1582,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 									});
 								}
 							});
-						}else{}				
+						}
 					}
 
 					@Override
@@ -1628,7 +1631,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		    }else if (nPage == HOME_PAGE) {
 			homeBtnClick();
 		    }else if(nPage == USAGE_PAGE){
-		   	usageBtnClick();
+		   	wifiKeyBtnClick();
 		    }
 		}else {
 		    Intent itent = new Intent(this, LoadingActivity.class);
@@ -1650,8 +1653,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	
 	private void updateDeviceList(){
 		List<Device> list = mAllShareProxy.getDMSDeviceList();
-		String str1 = null;
-		String str2 = null;
+		String str1;
+		String str2;
 		
 		
 		for(Device tmp : list)
@@ -1687,10 +1690,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		}
 		
 		boolean bSupport = FeatureVersionManager.getInstance().isSupportModule("Sharing");
-		if(bSupport == true) {
-			if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
+		if(bSupport) {
+			if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus"))
 					|| (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-							"GetDLNASettings") == true))
+							"GetDLNASettings")))
 			{
                 //暂时屏蔽SD卡的选项
 //				m_microsdBtn.setVisibility(View.VISIBLE);

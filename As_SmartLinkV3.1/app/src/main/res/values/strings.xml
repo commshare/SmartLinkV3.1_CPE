@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">LINK APP</string>
+    <string name="app_name">Alcatel Link</string>
 
     <!-- common start -->
     <string name="cancel">Cancel</string>
@@ -16,7 +16,7 @@
     <string name="apply">Apply</string>
     <string name="skip">Skip</string>
     <string name="next">Next</string>
-    <string name="finish">Finish</string>
+    <string name="finish">FINISH</string>
     <string name="continue_anyway">Continue</string>
     <!-- common end -->
 
@@ -25,7 +25,8 @@
     <string name="qs_title">Quick Setup</string>
     <string name="qs_exit_query">Exit Quick Setup</string>
     <string name="qs_item_pin_code">PIN Code</string>
-    <string name="qs_pin_code_prompt">Please input the PIN code\nRemain: <xliff:g id="INPUTTIMES">%1$d</xliff:g> time(s)</string>
+    <string name="qs_pin_code_prompt">Please input the PIN code\nRemain:</string>
+    <string name="qs_pin_code_prompt_num"><xliff:g id="INPUTTIMES">%1$d</xliff:g> time(s)</string>
     <string name="qs_item_wifi_ssid">Wi-Fi Network Name (SSID)</string>
     <string name="qs_wifi_ssid_prompt">The SSID should be 1&#8211;32 characters.</string>
     <string name="qs_item_wifi_passwd">Wi-Fi Password</string>
@@ -46,7 +47,7 @@
     <!-- main fram start -->
     <string name="main_home">Home</string>
     <string name="main_sdsharing">SD Sharing</string>
-    <string name="main_usage">Usage</string>
+    <string name="wifi_key">Wi-Fi key</string>
     <string name="main_setting">Settings</string>
     <string name="main_sms">SMS</string>
 
@@ -65,8 +66,9 @@
     <string name="Home_SimLock_Required">SIM Lock required</string>
     <string name="Home_SimCard_Detected">SIM Card detected</string>
     <string name="Home_zero_time">0Hrs 0Mins</string>
-    <string name="Home_zero_data">%1$sMB</string>
+    <string name="Home_zero_data">0</string>
     <string name="home_no_service">No Service</string>
+    <string name="signal">SIGNAL</string>
     <string name="home_initializing">Initializing</string>
     <string name="home_disconnected_to">Disconnected</string>
     <string name="home_connected_to">Connected</string>
@@ -79,7 +81,7 @@
     <string name="home_battery_ischarging">Charging</string>
     <string name="home_battery_completed">Charge completed</string>
     <string name="home_connected_duration">%1$sHrs %2$sMins</string>
-    <string name="access_lable">connected</string>
+    <string name="access_lable">CONNECTED</string>
     <string name="home_sim_loched">Sim Card Locked</string>
     <string name="home_pin_locked_notice">Please verify your PIN code at the home menu first.</string>
     <string name="home_no_sim">no sim card</string>
@@ -95,7 +97,7 @@
     <!-- pop dialog end -->
 
 
-    <!-- Usage view end -->
+    <!-- Usage view start -->
     <string name="usage_view_home">Home</string>
     <string name="usage_view_duration">Duration</string>
     <string name="bt_set_monthlydata">Set Monthly Data Plan</string>
@@ -115,15 +117,34 @@
     <string name="usage_setting_timeunit">min(s)</string>
     <string name="usage_setting_usage">Usage</string>
     <string name="usage_setting_billingday">Billing Day:</string>
+    <string name="usage_setting_usagealert">Usage Alert</string>
     <string name="usage_setting_dayunit">day</string>
+    <string name="usage_setting_usagealertunit">%</string>
     <string name="usage_setting_monthlysataplan">Monthly Data Plan:</string>
     <string name="usage_setting_monthlyunit">MB</string>
+    <string name="usage_setting_monthlyunitgb">GB</string>
     <string name="usage_setting_dataconsunption">Data Consumption:</string>
     <string name="usage_setting_roaming">Roaming</string>
     <string name="roaming_descrition">Automatically connect even when in roaming.</string>
     <string name="usage_setting_autodisconnected">Auto Disconnected</string>
     <!-- Usage setting end -->
 
+    <!-- Wifi Key start -->
+    <string name="wifi_key_edit">Edit</string>
+    <string name="wifi_key_Done">Done</string>
+    <string name="wifi_network">Wi-Fi NETWORK</string>
+    <string name="first_wifi">2.4G WiFi</string>
+    <string name="second_wifi">5G WiFi</string>
+    <string name="unEdit_wifi_name">Name(SSID)</string>
+    <string name="password">Password</string>
+    <string name="wifi_name">WiFi Network Name(SSID)</string>
+    <string name="wifi_password">Wi-Fi Password</string>
+    <string name="ssid_broadcast">SSID_Broadcast</string>
+    <string name="security_type">Security_Type</string>
+    <string name="encryption_type">Encryption Type</string>
+    <string name="channel">Channel</string>
+    <string name="country">Country</string>
+    <!-- Wifi Keya end -->
 
     <!-- sms start -->
     <string name="sms_title">Message</string>
@@ -402,7 +423,8 @@
 
 
     <!-- Login view start -->
-    <string name="login_title">Please Input Admin Password!</string>
+    <string name="login_title">Please input password</string>
+    <string name="login_content">Same with Web UI password.You can find default passoword on QG.</string>
     <string name="login_prompt_str">Your password is wrong!</string>
     <string name="login_user_name">admin</string>
     <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
@@ -428,7 +450,7 @@
     <!-- Refresh WIFI start -->
     <string name="refresh_wifi_title">No Wi-Fi Connected</string>
     <string name="refresh_wifi_tip">Please connect the mobile hotspot first!</string>
-    <string name="refresh">Refresh</string>
+    <string name="refresh">REFRESH</string>
     <!-- Refresh WIFI end -->
 
 
@@ -612,4 +634,10 @@
     <string name="pref_show_real_path">Display real path</string>
     <string name="pref_show_real_path_summary">Show real path in navigation bar</string>
 
+    <!-- Usage Settings dialog data -->
+    <string name="m_unit">MB</string>
+    <string name="g_unit">GB</string>
+    <string name="confirm_unit">CONFIRM</string>
+
+    
 </resources>

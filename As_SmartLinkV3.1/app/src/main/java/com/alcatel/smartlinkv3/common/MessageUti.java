@@ -69,6 +69,7 @@ public class MessageUti {
 	public static String STATISTICS_SET_BILLING_DAY_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setbillingday";
 	public static String STATISTICS_SET_MONTHLY_PLAN_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setmonthlyplan";
 	public static String STATISTICS_SET_USED_DATA_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setuseddata";
+	public static String STATISTICS_SET_ALERT_VALUE_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setalertvalue";
 	public static String STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET = "com.alcatel.smartlinkv3.business.statistics.settimelimitflag";
 	public static String STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET = "com.alcatel.smartlinkv3.business.statistics.settimelimittimes";
 	public static String STATISTICS_SET_USED_TIMES_REQUSET = "com.alcatel.smartlinkv3.business.statistics.setusedtimes";
@@ -185,7 +186,13 @@ public class MessageUti {
 	public static String DEVICE_SET_DEVICE_NAME=
 			"com.alcatel.smartlinkv3.business.update.setdevicename";
 	/**************************device message end*********************************************************************************/
-	
+
+	/**************************wifi key start**************************************************************************************/
+	public static String WIFI_KEY_GET_UNEDIT_LIST_REQUEST = "com.alcatel.smartlinkv3.business.wifiKey.getUnEditList";
+	public static String WIFI_KEY_GET_EDIT_LIST_REQUEST = "com.alcatel.smartlinkv3.business.wifiKey.getEditList";
+	/**************************wifi key end**************************************************************************************/
+
+
 	/**************************profile message start*******************************************************************************/
 	public static String PROFILE_GET_PROFILE_LIST_REQUEST = "com.alcatel.smartlinkv3.business.profile.getprofilelist";
 	public static String PROFILE_ADD_NEW_PROFILE_REQUEST = "com.alcatel.smartlinkv3.business.profile.addnewprofile";
@@ -237,6 +244,7 @@ public class MessageUti {
 		httpMethods.put(STATISTICS_SET_BILLING_DAY_REQUSET, new HttpMethodUti(StatisticsManager.class, "setBillingDay"));
 		httpMethods.put(STATISTICS_SET_MONTHLY_PLAN_REQUSET, new HttpMethodUti(StatisticsManager.class, "setMonthlyPlan"));
 		httpMethods.put(STATISTICS_SET_USED_DATA_REQUSET, new HttpMethodUti(StatisticsManager.class, "setUsedData"));
+		httpMethods.put(STATISTICS_SET_ALERT_VALUE_REQUSET, new HttpMethodUti(StatisticsManager.class, "setAlertValue"));
 		httpMethods.put(STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET, new HttpMethodUti(StatisticsManager.class, "setTimeLimitFlag"));
 		httpMethods.put(STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET, new HttpMethodUti(StatisticsManager.class, "setTimeLimitTimes"));
 		httpMethods.put(STATISTICS_SET_USED_TIMES_REQUSET, new HttpMethodUti(StatisticsManager.class, "setUsedTimes"));

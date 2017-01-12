@@ -56,9 +56,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	}
 	
 	private void clickBtn1() {
-		//if(isNoAnyConnection() == true) {
 			wifiSetting();
-		//}
 	}
 	
 	
@@ -68,40 +66,28 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
         public void onReceive(Context context, Intent intent) {	    	
 	    	if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 	    		showUI();
-	    		showActivity(context);
+	    		showActivity();
 	    		Log.d("refreshsd", "showActivity");
 	    	}else if(intent.getAction().equals(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)) {
 	    		showUI();
 	    	}
         }  	
 	}
-	
-	private boolean isHaveWifi() {
-		if(DataConnectManager.getInstance().getWifiConnected() == false) {
-			return false;
-		}
-		
-		return true;
-	}
-	
+
 	public boolean isNoAnyConnection() {
-		if(isHaveWifi() == false) {
-			return true;
-		}
-		
-		return false;
+		return !DataConnectManager.getInstance().getWifiConnected();
 	}
 	
 	private void showUI() {
-		if(isNoAnyConnection() == true) {
-			m_connectImage.setBackgroundResource(R.drawable.no_connection);
+		if(isNoAnyConnection()) {
+			m_connectImage.setBackgroundResource(R.drawable.not_connected);
 			m_connectTitle.setText(R.string.refresh_wifi_title);
 			m_connectTip.setText(R.string.refresh_wifi_tip);
 			m_connectBtn1.setText(R.string.refresh);
 		}
 	}
 	
-	private void showActivity(Context context) {
+	private void showActivity() {
 		
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		
@@ -128,7 +114,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     		
     	}
 		
-		Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+		Intent intent;
 		if (android.os.Build.VERSION.SDK_INT > 10) {
 			intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
 		} else {
@@ -149,7 +135,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
        	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));  
        	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)); 
 
-       	showActivity(this);
+       	showActivity();
 		
 		showUI();
 	}

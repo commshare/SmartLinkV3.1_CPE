@@ -50,6 +50,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,9 +68,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private TextView mNavigatorLeft;
   private TextView mNavigatorRight;
   private TextView mPromptText;
+  private TextView mPromptNumText;
   private TextView mWiFiSSIDTextView;
   private TextView mWiFiPasswdTextView;
   private StateHandler mStateHandler;
+  private LinearLayout mEnterLinear;
   private ClearEditText mEnterText;  
   private LinearLayout pukLinearLayout1;
   private LinearLayout pukLinearLayout2;
@@ -94,6 +97,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private ProgressDialog m_progress_dialog = null;
   
   public static String pageName;
+  private LinearLayout accountInformLL;
+  private Button mFinishBtn;
   //private int restoreLoginState = 0;//0:password输入框无操作。1：password输入框有操作。2.密码输入错误，弹出retry dialog。3
 
   
@@ -107,26 +112,23 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     pageName = "QuickSetupActivity";
     mContext = this;
     mBusinessMgr = BusinessMannager.getInstance();
-    requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.quick_setup);
-    getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.custom_title_1);
 
-    TextView title = (TextView) findViewById(R.id.tv_title_title);
-    if (title != null)
-      title.setText(R.string.qs_title);
-    findViewById(R.id.ib_title_back).setVisibility(View.INVISIBLE);
-    findViewById(R.id.tv_title_back).setVisibility(View.INVISIBLE);
-    
     mSetupTitle = (TextView)findViewById(R.id.qs_item_title);
     mPromptText = (TextView)findViewById(R.id.qs_item_prompt);
+    mPromptNumText = (TextView) findViewById(R.id.qs_item_num);
     mNavigatorRight = (TextView)findViewById(R.id.navigator_right);
     mNavigatorLeft = (TextView)findViewById(R.id.navigator_left);
+    mEnterLinear = (LinearLayout) findViewById(R.id.password_ll);
     mEnterText = (ClearEditText)findViewById(R.id.password);
     mWiFiSSIDTextView = (TextView)findViewById(R.id.qs_detail_wifissid);
     mWiFiPasswdTextView = (TextView)findViewById(R.id.qs_detail_wifipasswd);   
     pukCodeText = (ClearEditText) findViewById(R.id.puk_code);
     newPinCodeText = (ClearEditText) findViewById(R.id.new_pin_code);
     confirmPinCodeText = (ClearEditText) findViewById(R.id.confirm_pin_code);
+    accountInformLL = ((LinearLayout) findViewById(R.id.account_information));
+    mFinishBtn = ((Button) findViewById(R.id.finish_btn));
     pukLinearLayout1 = (LinearLayout) findViewById(R.id.qs_puk_linear1);
     pukLinearLayout2 = (LinearLayout) findViewById(R.id.qs_puk_linear2);
     pukLinearLayout3 = (LinearLayout) findViewById(R.id.qs_puk_linear3);
@@ -387,14 +389,18 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 //    mEnterText.setEnabled(true);
 //    mEnterText.setClearIconVisible(true);
     if (mTextShow) {
+      mEnterLinear.setVisibility(View.GONE);
     	mEnterText.setVisibility(View.VISIBLE);
+      mPromptNumText.setVisibility(View.GONE);
 		}else {
+      mEnterLinear.setVisibility(View.VISIBLE);
 			mEnterText.setVisibility(View.GONE);
 		}
     if (pukShow) {
       pukLinearLayout1.setVisibility(View.VISIBLE);
       pukLinearLayout2.setVisibility(View.VISIBLE);
       pukLinearLayout3.setVisibility(View.VISIBLE);
+      mPromptNumText.setVisibility(View.GONE);
 		}else {
 			pukLinearLayout1.setVisibility(View.GONE);
 	    pukLinearLayout2.setVisibility(View.GONE);
@@ -403,15 +409,23 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
    
     if (leftShow) {
       mNavigatorLeft.setVisibility(View.VISIBLE);
+      mPromptNumText.setVisibility(View.GONE);
     }else {
     	mNavigatorLeft.setVisibility(View.INVISIBLE);
 		}
     if (summShow) {
-    	 mWiFiSSIDTextView.setVisibility(View.VISIBLE);
-       mWiFiPasswdTextView.setVisibility(View.VISIBLE); 
+    	 accountInformLL.setVisibility(View.VISIBLE);
+       mFinishBtn.setVisibility(View.VISIBLE);
+      mEnterLinear.setVisibility(View.GONE);
+      mEnterText.setVisibility(View.GONE);
+      mNavigatorRight.setVisibility(View.GONE);
+      mPromptNumText.setVisibility(View.GONE);
 		}else {
-			mWiFiSSIDTextView.setVisibility(View.GONE);
-      mWiFiPasswdTextView.setVisibility(View.GONE); 
+			accountInformLL.setVisibility(View.GONE);
+      mFinishBtn.setVisibility(View.GONE);
+      mEnterLinear.setVisibility(View.VISIBLE);
+      mEnterText.setVisibility(View.VISIBLE);
+      mNavigatorRight.setVisibility(View.VISIBLE);
 		}
   }
   
@@ -476,18 +490,18 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     if ( visibility == View.GONE || visibility == View.INVISIBLE)
       return;
     //Log.d(TAG, "click Tag:"+v.getTag());
-    if (v == mNavigatorRight) {
+    if (v == mNavigatorRight| v == mFinishBtn) {
       nextSetting(true);
     } else if (v == mNavigatorLeft) {
       backSetting();
     }
   }
-  
+
   /*
    * param checkStore whether let state handler do settings
    */
   private void nextSetting(boolean checkStore) {
-    if(checkStore && mStateHandler.storeSetting() == false)
+    if(checkStore && !mStateHandler.storeSetting())
       return;
     
     StateHandler handler = mStateHandler.goNext();
@@ -901,7 +915,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         cursor = cursor.mNextHandler;
       }
       
-      if (after == false)
+      if (!after)
         return;
       
       cursor = this;
@@ -926,7 +940,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     		boolean isNext = textChangeAction(s, this.mInputMax, this.mInputMin, mEnterText);
     		if (isNext) {
     			mSkipSetup = false;
-          mNavigatorRight.setText(R.string.next);
+          mNavigatorRight.setText(R.string.skip);
 				}else{
 					mSkipSetup = true;
 	        mNavigatorRight.setText(R.string.skip);
@@ -945,7 +959,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     		
     		Log.d(TAG, "pukTextValSate:"+confirmPinState + newPinValState + pukValState);
     		if (confirmPinState && newPinValState && pukValState) {
-          mNavigatorRight.setText(R.string.next);
+          mNavigatorRight.setText(R.string.skip);
 				}else {
 	        mNavigatorRight.setText(R.string.skip);
 				}
@@ -956,7 +970,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 				//	Log.d(TAG, "------------------s:"+s.toString());
 	    		if (isNext && isVal) {
 	    			mSkipSetup = false;
-	          mNavigatorRight.setText(R.string.next);
+	          mNavigatorRight.setText(R.string.skip);
 					}else{
 						mSkipSetup = true;
 		        mNavigatorRight.setText(R.string.skip);
@@ -1375,12 +1389,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     @Override
     public void setupViews() {
     	setViewsVisibility(true,true,false,false,true);
-      mNavigatorRight.setText(R.string.finish);
+      mFinishBtn.setText(R.string.finish);
       mPromptText.setText(getString(R.string.qs_summary));
  	  mSetupTitle.setText(getString(R.string.qs_completed));
-      mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
-      mWiFiSSIDTextView.setText(getString(R.string.qs_wifi_ssid, mWiFiSSID));
-      mWiFiPasswdTextView.setText(getString(R.string.qs_wifi_passwd, mWiFiPasswd)); 
+      mFinishBtn.setOnClickListener(QuickSetupActivity.this);
+      mWiFiSSIDTextView.setText(mWiFiSSID);
+      mWiFiPasswdTextView.setText(mWiFiPasswd);
       clearOtherTextListen(this);
     }
 

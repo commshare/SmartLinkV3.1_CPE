@@ -102,7 +102,8 @@ public class StatisticsManager extends BaseManager {
 		// when conneted or disconnected to get usage history or billing day changed
 		if(intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET) || 
 				intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET) || 
-				intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET)) {
+				intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET) ||
+				intent.getAction().equals(MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -142,6 +143,7 @@ public class StatisticsManager extends BaseManager {
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.WAN_CONNECT_REQUSET));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.WAN_DISCONNECT_REQUSET));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET));
+		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.CPE_CHANGED_BILLING_MONTH));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
@@ -183,6 +185,7 @@ public class StatisticsManager extends BaseManager {
 	public static String USAGE_SETTING_BILLING_DAY_CHANGE = "com.alcatel.cpe.business.statistics.billingdaychange";
     public static String USAGE_SETTING_MONTHLY_PLAN_CHANGE = "com.alcatel.cpe.business.statistics.monthlyplanchange";
     public static String USAGE_SETTING_USED_DATA_CHANGE = "com.alcatel.cpe.business.statistics.useddatachange";
+	public static String USAGE_SETTING_USAGE_ALERT_CHANGE = "com.alcatel.cpe.business.statistics.usagealertchange";
     public static String USAGE_SETTING_TIME_LIMIT_FLAG_CHANGE = "com.alcatel.cpe.business.statistics.timelimitflagchange";
     public static String USAGE_SETTING_TIME_LIMIT_TIMES_CHANGE = "com.alcatel.cpe.business.statistics.timelimittimeschange";
     public static String USAGE_SETTING_USED_TIMES_CHANGE = "com.alcatel.cpe.business.statistics.usedtimeschange";
@@ -203,6 +206,7 @@ public class StatisticsManager extends BaseManager {
         			boolean bBillingDayChange = false;
 	            	boolean bHMonthlyPlanChange = false;
 	            	boolean bHUsedDataChange = false;
+					boolean bAlertValueChange = false;
 	            	boolean bHTimeLimitFlagChange = false;
 	            	boolean bHTimeLimitTimesChange = false;
 	            	boolean bHUsedTimesChange = false;
@@ -225,6 +229,9 @@ public class StatisticsManager extends BaseManager {
                     		
                     		if(pre.HUsedData != m_usageSettings.HUsedData)
                     			bHUsedDataChange = true;
+
+							if (pre.HUsageAlertValue != m_usageSettings.HUsageAlertValue)
+								bAlertValueChange = true;
                     		
                     		if(pre.HTimeLimitFlag != m_usageSettings.HTimeLimitFlag)
                     			bHTimeLimitFlagChange = true;
@@ -246,7 +253,7 @@ public class StatisticsManager extends BaseManager {
                     }
                     
                     if(bBillingDayChange || bHMonthlyPlanChange || 
-                    		bHUsedDataChange || bHTimeLimitFlagChange || 
+                    		bHUsedDataChange || bAlertValueChange || bHTimeLimitFlagChange ||
                     		bHTimeLimitTimesChange || bHUsedTimesChange || 
                     		bHAutoDisconnFlagChange) {
 	                    Intent megIntent= new Intent(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET);
@@ -255,6 +262,7 @@ public class StatisticsManager extends BaseManager {
 	                    megIntent.putExtra(USAGE_SETTING_BILLING_DAY_CHANGE, bBillingDayChange);
 		                megIntent.putExtra(USAGE_SETTING_MONTHLY_PLAN_CHANGE, bHMonthlyPlanChange);
 		                megIntent.putExtra(USAGE_SETTING_USED_DATA_CHANGE, bHUsedDataChange);
+						megIntent.putExtra(USAGE_SETTING_USAGE_ALERT_CHANGE, bAlertValueChange);
 		                megIntent.putExtra(USAGE_SETTING_TIME_LIMIT_FLAG_CHANGE, bHTimeLimitFlagChange);
 		                megIntent.putExtra(USAGE_SETTING_TIME_LIMIT_TIMES_CHANGE, bHTimeLimitTimesChange);
 		                megIntent.putExtra(USAGE_SETTING_USED_TIMES_CHANGE, bHUsedTimesChange);
@@ -302,6 +310,43 @@ public class StatisticsManager extends BaseManager {
             }
         }));
     }
+
+	//setAlertValue  Request //////////////////////////////////////////////////////////////////////////////////////////
+	public void setAlertValue(DataValue data){
+		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
+			return;
+
+		final int nAlertValue = (Integer) data.getParamByKey("alert_value");
+		final int nPreAlertValue = m_usageSettings.HUsageAlertValue;
+		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
+		nUsageSettings.clone(m_usageSettings);
+		nUsageSettings.UsageAlertValue = nAlertValue;
+
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {
+			@Override
+			public void onHttpRequestFinish(BaseResponse response)
+			{
+				String strErrcode = new String();
+				int ret = response.getResultCode();
+				if(ret == BaseResponse.RESPONSE_OK) {
+					strErrcode = response.getErrorCode();
+					if(strErrcode.length() == 0) {
+						m_usageSettings.setValue(nUsageSettings);
+					}else{
+
+					}
+				}else{
+
+				}
+
+				Intent megIntent= new Intent(MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET);
+				megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
+				megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+				megIntent.putExtra(IS_CHANGED, nPreAlertValue != m_usageSettings.HUsageAlertValue);
+				m_context.sendBroadcast(megIntent);
+			}
+		}));
+	}
 	
 	//SetUnit  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 		public void setUnit(DataValue data) {

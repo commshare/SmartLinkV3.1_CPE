@@ -93,6 +93,7 @@ public class HttpUsageSettings {
 				settings.put("BillingDay", m_result.BillingDay);
 				settings.put("MonthlyPlan", m_result.MonthlyPlan);
 				settings.put("Unit", m_result.Unit);
+				settings.put("AlertValue", m_result.UsageAlertValue);
 				settings.put("TimeLimitFlag", m_result.TimeLimitFlag);
 				settings.put("TimeLimitTimes", m_result.TimeLimitTimes);
 				settings.put("AutoDisconnFlag", m_result.AutoDisconnFlag);

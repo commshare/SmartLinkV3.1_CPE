@@ -1,28 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/usage_panel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="6dip" >
+    android:orientation="vertical">
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:paddingBottom="6dip"
-            android:paddingTop="6dip" >
-        	<TextView
-		        android:id="@+id/usage_title"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true"
-		        android:text="@string/usage_setting_usage"
-		        android:textSize="18sp"
-		        android:textStyle="bold" 
-		        android:textColor="@color/color_black"/>
+            android:paddingBottom="5dip"
+            android:paddingTop="9dip" >
+
+        <TextView
+            android:id="@+id/usage_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/usage_setting_usage"
+            android:textSize="@dimen/dimen_textsize_14sp"
+            android:textStyle="bold"
+            android:textColor="@color/grey_text"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/grey_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,8 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/usage_setting_billingday"
-                android:textSize="16sp"
-                android:textColor="@color/color_black" />
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/black_text" />
 
             <TextView
                 android:id="@+id/billing_plan_unit"
@@ -57,9 +63,9 @@
                 android:gravity="center"
                 android:layout_centerVertical="true"
                 android:text="@string/usage_setting_dayunit"
-                android:textSize="16sp"
-                android:textColor="@color/color_black" />
-            
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/deep_grey_text" />
+
             <EditText
                 android:id="@+id/billing_plan_value"
                 android:layout_width="65dip"
@@ -70,14 +76,17 @@
                 android:inputType="number"
                 android:maxLength="8"
                 android:imeOptions="actionDone|flagNoExtractUi"
-                android:width="65dip" />        
+                android:width="65dip"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/deep_grey_text"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:background="@color/color_divider" />
-        
+            android:background="@color/grey_line"
+            android:layout_marginLeft="@dimen/dimen_corner_8dip"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,43 +104,51 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/usage_setting_monthlysataplan"
-                android:textSize="16sp"
-                android:textColor="@color/color_black" />
-            
-            <TextView
-                android:id="@+id/monthly_plan_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/usage_setting_monthlyunit"
-                android:visibility="gone"
-                android:textSize="16sp"
-                android:textColor="@color/color_black" />
-            
-            <Spinner
-                android:id="@+id/unit_selector"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_alignBottom="@+id/monthly_plan_value" 
-                android:layout_alignParentRight="true"
-                android:background="@drawable/unit_selector"
-                android:spinnerMode="dialog"/>
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/black_text" />
 
             <EditText
                 android:id="@+id/monthly_plan_value"
                 android:layout_width="65dip"
                 android:layout_height="30dip"
                 android:layout_marginRight="2dip"
-                android:layout_toLeftOf="@+id/unit_selector"
+                android:layout_toLeftOf="@+id/monthly_plan_unit"
                 android:background="@drawable/selector_edit_bg"
                 android:inputType="number"
                 android:maxLength="8"
                 android:imeOptions="actionDone|flagNoExtractUi"
-                android:width="65dip" />
+                android:width="65dip"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/deep_grey_text"/>
+
+            <Button
+                android:id="@+id/unit_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_5dip"
+                android:layout_alignBottom="@+id/monthly_plan_value"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/general_ic_next" />
+
+            <TextView
+                android:id="@+id/monthly_plan_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_monthlyunit"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/deep_grey_text"
+                android:layout_toLeftOf="@+id/unit_selector"
+                android:layout_toStartOf="@+id/unit_selector" />
         </RelativeLayout>
-        
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/grey_line"
+            android:layout_marginLeft="@dimen/dimen_corner_8dip"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,8 +169,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/usage_setting_dataconsunption"
-                    android:textSize="16sp"
-                    android:textColor="@color/color_grey" />
+                    android:textSize="@dimen/dimen_textsize_18sp"
+                    android:textColor="@color/deep_grey_text" />
 
                 <TextView
                     android:id="@+id/consumption_value_tag"
@@ -161,37 +178,86 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:textSize="16sp" 
-                    android:textColor="@color/color_grey"/>
+                    android:textSize="@dimen/dimen_textsize_18sp"
+                    android:textColor="@color/deep_grey_text"/>
             </RelativeLayout>
         </LinearLayout>
-        
-        
+
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:background="@color/color_divider" />
-        
-        <LinearLayout
-            android:id="@+id/frame_auto_disconnected"
+            android:background="@color/grey_line"
+            android:layout_marginLeft="@dimen/dimen_corner_8dip"/>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            <RelativeLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:paddingBottom="6dip"
+            android:paddingTop="6dip" >
+
+            <TextView
+                android:id="@+id/usage_alert_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_usagealert"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/black_text" />
+
+            <TextView
+                android:id="@+id/usage_alert_unit"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_usagealertunit"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/deep_grey_text" />
+
+            <EditText
+                android:id="@+id/usage_alert_value"
+                android:layout_width="65dip"
+                android:layout_height="30dip"
+                android:layout_marginRight="2dip"
+                android:layout_toLeftOf="@+id/usage_alert_unit"
+                android:background="@drawable/selector_edit_bg"
+                android:inputType="number"
+                android:maxLength="8"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:width="65dip"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/deep_grey_text"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/grey_line"
+            android:layout_marginLeft="@dimen/dimen_corner_8dip"/>
+
+        <RelativeLayout
+            android:id="@+id/frame_auto_disconnected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="10dip"
-           	android:layout_marginRight="10dip"
-           	android:paddingTop="6dip"
+            android:layout_marginRight="10dip"
+            android:paddingTop="6dip"
             android:paddingBottom="12dip" >
             <Button
                 android:id="@+id/enable_auto_disconnected_btn"
                 android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/switch_off"
+                android:background="@drawable/general_btn_off"
                 android:clickable="true" />
 
             <TextView
@@ -201,21 +267,27 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/enable_auto_disconnected_btn"
                 android:layout_centerVertical="true"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:text="@string/usage_setting_autodisconnected"
-                android:textSize="18sp" 
-                android:textStyle="bold"
-                android:textColor="@color/color_black"/>
-			</RelativeLayout>   
-			<TextView
-                android:id="@+id/enable_disconnected_descrition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:paddingBottom="12dip"
-                android:text="@string/disconnected_descrition"
-                android:textSize="16sp" 
-                android:textColor="@color/color_grey"/>
-	  </LinearLayout>
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textColor="@color/black_text"/>
+        </RelativeLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/grey_line" />
+
+    <TextView
+        android:id="@+id/enable_disconnected_descrition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5dip"
+        android:layout_marginLeft="10dip"
+        android:paddingBottom="12dip"
+        android:text="@string/disconnected_descrition"
+        android:textSize="16sp"
+        android:textColor="@color/grey_text"/>
+
 </LinearLayout>

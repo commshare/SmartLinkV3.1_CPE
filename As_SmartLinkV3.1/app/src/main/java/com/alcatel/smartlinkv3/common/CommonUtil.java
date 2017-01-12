@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 
 public class CommonUtil {
@@ -92,4 +94,28 @@ public class CommonUtil {
 		Intent it = new Intent(Intent.ACTION_VIEW,uri);
 		context.startActivity(it);
 	}
+
+	//ScreenDimen
+	public static int getScreenWidthPixels(Context context) {
+		DisplayMetrics dm = new DisplayMetrics();
+		((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+				.getMetrics(dm);
+		return dm.widthPixels;
+	}
+
+	public static int dipToPx(Context context, int dip) {
+		return (int) (dip * getScreenDensity(context) + 0.5f);
+	}
+
+	private static float getScreenDensity(Context context) {
+		try {
+			DisplayMetrics dm = new DisplayMetrics();
+			((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+					.getMetrics(dm);
+			return dm.density;
+		} catch (Exception e) {
+			return DisplayMetrics.DENSITY_DEFAULT;
+		}
+	}
+
 }

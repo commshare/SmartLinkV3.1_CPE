@@ -25,6 +25,7 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
@@ -32,6 +33,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SettingAccountActivity extends BaseActivity implements OnClickListener{
+
+	public static final String  LOGOUT_FLAG = "LogoutFlag";
 
 	private TextView m_tv_title = null;
 	private ImageButton m_ib_back=null;
@@ -50,7 +53,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	
 	private IntentFilter m_change_password_filter;
 	private PassWordChangeReceiver m_password_change_receiver;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -76,7 +79,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		m_tv_done = (TextView)findViewById(R.id.tv_titlebar_done);
 		m_tv_done.setVisibility(View.GONE);
 		
-		findViewById(R.id.tv_titlebar_edit).setVisibility(View.GONE);;
+		findViewById(R.id.tv_titlebar_edit).setVisibility(View.GONE);
 		
 		m_ib_back.setOnClickListener(this);
 		m_tv_back.setOnClickListener(this);
@@ -186,9 +189,10 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
 			MainActivity.setLogoutFlag(true);
+			SharedPrefsUtil.getInstance(this).putBoolean(LOGOUT_FLAG, true);
 			BusinessMannager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
-			if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") == true)
+			if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 			{
 				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
 				this.sendBroadcast(intent2);

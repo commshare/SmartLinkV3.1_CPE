@@ -15,19 +15,26 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -44,38 +51,45 @@ import android.widget.Toast;
 
 public class UsageSettingActivity extends BaseActivity implements OnClickListener{
 
+	private Context context;
+
 	private UsageSettingReceiver m_usettingreceiver = new UsageSettingReceiver();
 	
 	private final static int MONTHLY_MAX_VALUE = 1048576; // megabyte
 	private final static int BILLING_MAX_VALUE = 31; // megabyte
+	public static final int USAGE_ALERT_VALUE = 100;
 	private final static int MAX_DISCONNECT_TIME_VALUE = 9999;
-	
-	private ImageButton bnBack;
+
 	private TextView tvback;
 	
 	private EditText m_billingValue;
 	private EditText m_monthlyValue;
 	private long m_monthlyVal = 0;
 	private int m_billingVal = 0;
+	private int m_alertVal = 0;
 	private TextView m_consumptionValue;
 	private boolean m_bIsMonthlyValueEdit = false;
 	private boolean m_bIsBillingValueEdit = false;
+	private boolean m_bIsAlertValueEdit = false;
 	
 	private Button m_timeLimitDisconnectBtn;
 	private EditText m_timeLimit;
 	private boolean m_bIsTimeLimitEdit = false;
 	private boolean m_bIsTimeLimitStatusEdit = false;
-	
-	
-	private Button m_roamingDisconnectBtn;
-	private boolean m_bIsRoamingDisconnectedEdit = false;
+
 	private Button m_usageAutoDisconnectBtn;
 	private boolean m_bIsAutoDisconnectedEdit = false;
 	
-	private boolean m_isFirstSelection = true;
-	
-	private Spinner m_unit_selector;
-	
+	private Button m_unit_selector;
+	private Button mbBtn;
+	private Button gbBtn;
+	private Button confirmBtn;
+	private TextView monthlyPlanUnit;
+
+	private boolean m_isMB = true;
+	public static final String SETTING_USAGE_ALERT_VALUE = "SettingUsageAlertValue";
+	public static final String SETTING_MONTHLY_DATA_UNIT = "SettingMonthlyDataUnit";
+	private EditText usage_alert_value_edt;
 
 	private class UsageSettingReceiver extends BroadcastReceiver {
 		@Override
@@ -114,7 +128,20 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 					showSettingBilling();
 				}
 				
-			} else if (intent.getAction().equals(
+			}
+
+			else if (intent.getAction().equals(
+					MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET)) {
+				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
+				String strErrorCode = intent
+						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if (nResult == 0 && strErrorCode.length() == 0) {
+					m_bIsAlertValueEdit= false;
+//					showSettingAlert();
+				}
+			}
+
+			else if (intent.getAction().equals(
 					MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET)) {
 				m_bIsMonthlyValueEdit = false;
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
@@ -182,8 +209,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			
 			else if (intent.getAction().equals(
 					MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
-				m_bIsRoamingDisconnectedEdit = false;
-				showRoamingAutoDisconnectBtn();
+//				showRoamingAutoDisconnectBtn();
 				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
@@ -198,7 +224,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				String strErrorCode = intent
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (nResult == 0 && strErrorCode.length() == 0) {
-					showRoamingAutoDisconnectBtn();
+//					showRoamingAutoDisconnectBtn();
 				}
 			}
 			
@@ -213,6 +239,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			}
 		}
 	}
+
 	private void registerReceiver() {
 		// advanced
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
@@ -233,6 +260,8 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.STATISTICS_SET_USED_DATA_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
+				MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET));
+		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET));
 		this.registerReceiver(m_usettingreceiver, new IntentFilter(
 				MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET));
@@ -252,12 +281,12 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.usage_setting_view);
+		context = this;
 		getWindow().setBackgroundDrawable(null);
 		ImageButton bnBack = (ImageButton) this.findViewById(R.id.btn_back);
 		bnBack.setOnClickListener(this);
 		tvback = (TextView) this.findViewById(R.id.Back);
 		tvback.setOnClickListener(this);
-		
 		initMonthlyEdit();
 		initBillingEdit();
 		m_consumptionValue = (TextView) this.findViewById(R.id.consumption_value_tag);
@@ -265,15 +294,96 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		m_timeLimitDisconnectBtn = (Button) this.findViewById(R.id.enable_time_limit_btn);
 		m_timeLimitDisconnectBtn.setOnClickListener(this);
 		intTimeLimitEdit();
-		
-		m_roamingDisconnectBtn = (Button) this.findViewById(R.id.enable_roaming_btn);
-		m_roamingDisconnectBtn.setOnClickListener(this);
-		
+
 		m_usageAutoDisconnectBtn = (Button) this.findViewById(R.id.enable_auto_disconnected_btn);
 		m_usageAutoDisconnectBtn.setOnClickListener(this);
-		
+
+		monthlyPlanUnit = ((TextView) findViewById(R.id.monthly_plan_unit));
+		monthlyPlanUnit.setText(SharedPrefsUtil.getInstance(this).getString(SETTING_MONTHLY_DATA_UNIT, "MB"));
+
+		initUsageAlertEdit();
+		showSettingAlert();
 	}
 
+	private void showSettingAlert() {
+		int alertV = SharedPrefsUtil.getInstance(this).getInt(SETTING_USAGE_ALERT_VALUE, 0);
+		if (alertV != 0){
+			if (alertV <= 100){
+				usage_alert_value_edt.setText(alertV + "");
+			} else {
+				usage_alert_value_edt.setText("100");
+			}
+		}
+	}
+
+	private void initUsageAlertEdit() {
+		usage_alert_value_edt = ((EditText) findViewById(R.id.usage_alert_value));
+		usage_alert_value_edt.setText("");
+		usage_alert_value_edt.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (s.toString().length() == 1
+						&& s.toString().equalsIgnoreCase("0")) {
+					usage_alert_value_edt.setText("");
+				}
+			}
+		});
+
+		usage_alert_value_edt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+				// EditorInfo.IME_ACTION_UNSPECIFIED use for 3-rd input
+				if (actionId == EditorInfo.IME_ACTION_DONE
+						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+					setUsageAlertValue();
+					// temporary behavior :just cancel edit focus
+					m_timeLimitDisconnectBtn.requestFocusFromTouch();
+					InputMethodManager imm = (InputMethodManager) UsageSettingActivity.this
+							.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(usage_alert_value_edt.getWindowToken(), 0);
+				}
+
+				return false;
+			}
+		});
+	}
+
+	private void setUsageAlertValue() {
+		int usage = 0;
+
+		if (usage_alert_value_edt.getText().toString().length() > 0) {
+			usage = (int) Long.parseLong(usage_alert_value_edt.getText().toString());
+			alertValue = usage;
+		}
+		if (usage != m_alertVal) {
+			if (usage > USAGE_ALERT_VALUE) {
+				usage = USAGE_ALERT_VALUE;
+				usage_alert_value_edt.setText("" + usage);
+			}
+			UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
+			if(usage == staticSetting.HUsageAlertValue)
+				return;
+
+			m_bIsAlertValueEdit = true;
+			DataValue usageData = new DataValue();
+			usageData.addParam("alert_value", usage);
+			BusinessMannager.getInstance().sendRequestMessage(
+					MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET, usageData);
+		} else {
+			usage_alert_value_edt.setText("" + m_alertVal);
+		}
+
+	}
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
@@ -291,9 +401,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		registerReceiver();
 		showSettingBilling();
 		showSettingMonthly();
+//		showSettingAlert();
 		showTimeLimitInfo();
 		showUsageAutoDisconnectBtn();
-		showRoamingAutoDisconnectBtn();
 		
 	}
 
@@ -308,10 +418,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		
 		m_bIsMonthlyValueEdit = false;
 		m_bIsBillingValueEdit = false;
+		m_bIsAlertValueEdit = false;
 		m_bIsTimeLimitEdit = false;
 		m_bIsTimeLimitStatusEdit = false;
 		m_bIsAutoDisconnectedEdit = false;
-		m_bIsRoamingDisconnectedEdit = false;
+
+		if (!usage_alert_value_edt.getText().equals("0")){
+			SharedPrefsUtil.getInstance(this).putInt(SETTING_USAGE_ALERT_VALUE, alertValue);
+		}
 
 	}
 
@@ -324,34 +438,30 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.btn_back:
-		case R.id.Back:
-			this.finish();
-			break;
-			
-		case R.id.enable_roaming_btn:
-			onBtnRoamingAutoDisconnectClick();
-			break;
-			
-		case R.id.enable_auto_disconnected_btn:
-			onBtnUsageAutoDisconnectClick();
-			break;
-			
-		case R.id.enable_time_limit_btn:
-			onBtnTimeLimitDisconnectClick();
-			break;
-		default:
-			break;
+			case R.id.btn_back:
+			case R.id.Back:
+				this.finish();
+				break;
+			case R.id.unit_selector:
+				onBtnUsageSelectedUint();
+				break;
+			case R.id.enable_auto_disconnected_btn:
+				onBtnUsageAutoDisconnectClick();
+				break;
+			case R.id.enable_time_limit_btn:
+				onBtnTimeLimitDisconnectClick();
+				break;
+			default:
+				break;
 		}
 		
 	}
-	
+
 	private void updateUI() {
 		showSettingBilling();
 		showSettingMonthly();
 		showTimeLimitInfo();
 		showUsageAutoDisconnectBtn();
-		showRoamingAutoDisconnectBtn();
 	}
 	
 	private void initBillingEdit() {
@@ -409,10 +519,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_billingValue.setEnabled(true);
 			m_billingVal = statistic.HBillingDay;
 			if (m_billingVal > 0) {
-				if (!(m_billingValue.isFocused() == true || m_bIsBillingValueEdit == true))
+				if (!(m_billingValue.isFocused() || m_bIsBillingValueEdit))
 					m_billingValue.setText("" + m_billingVal);
 			} else {
-				if (!(m_billingValue.isFocused() == true || m_bIsBillingValueEdit == true))
+				if (!(m_billingValue.isFocused() || m_bIsBillingValueEdit))
 					m_billingValue.setText("");
 			}
 
@@ -449,7 +559,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void initMonthlyEdit() {
-		m_monthlyValue = (EditText) this.findViewById(R.id.monthly_plan_value);
+		m_monthlyValue = (EditText) findViewById(R.id.monthly_plan_value);
 		m_monthlyValue.setText("");
 		m_monthlyValue.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -493,39 +603,79 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 		});
 		
-		m_unit_selector = (Spinner) this.findViewById(R.id.unit_selector);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-		        R.array.usage_unit, R.layout.unit_display_item);
-		adapter.setDropDownViewResource(R.layout.unit_selection_item);
-		m_unit_selector.setAdapter(adapter);
-		m_unit_selector.setSelection(BusinessMannager.getInstance().getUsageSettings().HUnit);
-		m_unit_selector.setOnItemSelectedListener(new OnItemSelectedListener(){
+		m_unit_selector = (Button) this.findViewById(R.id.unit_selector);
+		m_unit_selector.setOnClickListener(this);
+	}
 
+	private void onBtnUsageSelectedUint() {
+		final Dialog dialog = new Dialog(this, R.style.Theme_Light_Dialog);
+		View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_monthly_selector_unit,null);
+		//获得dialog的window窗口
+		Window window = dialog.getWindow();
+		//设置dialog在屏幕底部
+		window.setGravity(Gravity.BOTTOM);
+		//设置dialog弹出时的动画效果，从屏幕底部向上弹出
+		window.setWindowAnimations(R.style.dialogStyle);
+		window.getDecorView().setPadding(0, 0, 0, 0);
+		//获得window窗口的属性
+		android.view.WindowManager.LayoutParams lp = window.getAttributes();
+		//设置窗口宽度为充满全屏
+		lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+		//设置窗口高度为包裹内容
+		lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		//将设置好的属性set回去
+		window.setAttributes(lp);
+		//将自定义布局加载到dialog上
+		dialog.setContentView(dialogView);
+		mbBtn = ((Button) dialogView.findViewById(R.id.mb_btn));
+		gbBtn = ((Button) dialogView.findViewById(R.id.gb_btn));
+		confirmBtn = ((Button) dialogView.findViewById(R.id.confirm_btn));
+		dialog.show();
+		mbBtn.setPressed(m_isMB);
+		gbBtn.setPressed(!m_isMB);
+		mbBtn.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				if(m_isFirstSelection){
-					m_isFirstSelection = false;
-				}
-				else{
-					Log.v("CHECKUNIT", "selected: " + position);
+			public void onClick(View view) {
+				mbBtn.setTextColor(getResources().getColor(R.color.mg_blue));
+				gbBtn.setTextColor(getResources().getColor(R.color.black_text));
+				m_isMB = true;
+			}
+		});
+		gbBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				gbBtn.setTextColor(getResources().getColor(R.color.mg_blue));
+				mbBtn.setTextColor(getResources().getColor(R.color.black_text));
+				gbBtn.setSelected(true);
+				m_isMB = false;
+			}
+		});
+		confirmBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				dialog.dismiss();
+				if (m_isMB){
+					monthlyPlanUnit.setText(R.string.usage_setting_monthlyunit);
+					SharedPrefsUtil.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "MB");
+
 					DataValue data = new DataValue();
-					data.addParam("unit", position);
+					data.addParam("unit", 0);
+					BusinessMannager.getInstance().sendRequestMessage(
+							MessageUti.STATISTICS_SET_UNIT_REQUSET, data);
+				} else {
+					monthlyPlanUnit.setText(R.string.usage_setting_monthlyunitgb);
+					SharedPrefsUtil.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "GB");
+
+					DataValue data = new DataValue();
+					data.addParam("unit", 1);
 					BusinessMannager.getInstance().sendRequestMessage(
 							MessageUti.STATISTICS_SET_UNIT_REQUSET, data);
 				}
 			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
-				
-			}
-			
 		});
 	}
-	
+
+
 	private void showSettingMonthly() {
 		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
 		if (simState.m_SIMState == SIMState.Accessable) {
@@ -537,7 +687,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_monthlyValue.setEnabled(true);
 			m_monthlyVal = statistic.HMonthlyPlan;
 			if (m_monthlyVal > 0) {
-				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true)){
+				if (!(m_monthlyValue.isFocused() || m_bIsMonthlyValueEdit)){
 					if(statistic.HUnit == 0){
 						m_monthlyValue.setText("" + byte2megabyte(m_monthlyVal));
 					}
@@ -547,7 +697,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				}
 					
 			} else {
-				if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
+				if (!(m_monthlyValue.isFocused() || m_bIsMonthlyValueEdit))
 					m_monthlyValue.setText("");
 			}
 
@@ -555,8 +705,6 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_monthlyValue.clearFocus();
 			m_monthlyValue.setEnabled(false);
 		}
-
-		//showUsageAutoDisconnectBtn();
 	}
 	
 	private void setSettingMonthly() {
@@ -631,9 +779,12 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	
 	
 	private void showTimeLimitInfo() {
+		m_timeLimit.setEnabled(false);
+
 		UsageSettingModel setting = BusinessMannager.getInstance()
 				.getUsageSettings();
-		if (!(m_timeLimit.isInputMethodTarget() == true || this.m_bIsTimeLimitEdit == true)) {
+
+		if (!(m_timeLimit.isInputMethodTarget() || this.m_bIsTimeLimitEdit)) {
 			if (setting.HTimeLimitTimes > 0) {
 				m_timeLimit.setText(String.valueOf(setting.HTimeLimitTimes));
 			} else {
@@ -641,30 +792,22 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			}
 		}
 
-//		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-		//if (simState.m_SIMState == SIMState.Accessable) {
-//			m_timeLimit.setEnabled(true);
-			if(m_bIsTimeLimitStatusEdit == false) {
-				if (setting.HTimeLimitTimes > 0) {
-					m_timeLimitDisconnectBtn.setEnabled(true);
-					if (setting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
-						// off
-						m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
-					} else {
-						// on
-						m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
-					}
-				} else {
-					m_timeLimitDisconnectBtn.setEnabled(false);
+		if(!m_bIsTimeLimitStatusEdit) {
+			if (setting.HTimeLimitTimes > 0) {
+				m_timeLimitDisconnectBtn.setEnabled(true);
+				if (setting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
+					// off
 					m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
+				} else {
+					// on
+					m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
+					m_timeLimit.setEnabled(true);
 				}
+			} else {
+				m_timeLimitDisconnectBtn.setEnabled(false);
+				m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
 			}
-//		} else {
-//			m_timeLimit.setEnabled(false);
-//			m_timeLimitDisconnectBtn.setEnabled(false);
-//			m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
-//		}
-
+		}
 	}
 
 	private void intTimeLimitEdit() {
@@ -736,34 +879,25 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void showUsageAutoDisconnectBtn() {
-
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-		//if (simState.m_SIMState == SIMState.Accessable) {
-			UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
-			if(m_bIsAutoDisconnectedEdit == false) {
-				if (usageSetting.HMonthlyPlan > 0) {
-					m_usageAutoDisconnectBtn.setEnabled(true);
-					if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
-						// off
-						m_usageAutoDisconnectBtn
-								.setBackgroundResource(R.drawable.switch_off);
-					} else {
-						// on
-						m_usageAutoDisconnectBtn
-								.setBackgroundResource(R.drawable.switch_on);
-					}
-				} else {
-					m_usageAutoDisconnectBtn.setEnabled(false);
+		UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
+		if(!m_bIsAutoDisconnectedEdit) {
+			if (usageSetting.HMonthlyPlan > 0) {
+				m_usageAutoDisconnectBtn.setEnabled(true);
+				if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
+					// off
 					m_usageAutoDisconnectBtn
 							.setBackgroundResource(R.drawable.switch_off);
+				} else {
+					// on
+					m_usageAutoDisconnectBtn
+							.setBackgroundResource(R.drawable.switch_on);
 				}
+			} else {
+				m_usageAutoDisconnectBtn.setEnabled(false);
+				m_usageAutoDisconnectBtn
+						.setBackgroundResource(R.drawable.switch_off);
 			}
-//		} else {
-//			m_usageAutoDisconnectBtn.setEnabled(false);
-//			// set disable pic
-//			m_usageAutoDisconnectBtn
-//					.setBackgroundResource(R.drawable.switch_off);
-//		}
+		}
 	}
 	
 	private void onBtnUsageAutoDisconnectClick() {
@@ -787,7 +921,6 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 					MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
 					data);
 		}
-
 	}
 	
 	private void onBtnTimeLimitDisconnectClick() {
@@ -810,56 +943,5 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET,
 				data);
-	}
-	
-	private void showRoamingAutoDisconnectBtn() {
-
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-		//if (simState.m_SIMState == SIMState.Accessable) {
-		UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
-		ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
-			if(m_bIsRoamingDisconnectedEdit == false) {
-//				if (usageSetting.HMonthlyPlan > 0) {
-					m_roamingDisconnectBtn.setEnabled(true);
-					if (connectionSetting.HRoamingConnect == OVER_ROAMING_STATE.Disable) {
-						// off
-						m_roamingDisconnectBtn
-								.setBackgroundResource(R.drawable.switch_off);
-					} else {
-						// on
-						m_roamingDisconnectBtn
-								.setBackgroundResource(R.drawable.switch_on);
-					}
-//				} else {
-//					m_roamingDisconnectBtn.setEnabled(false);
-//					m_roamingDisconnectBtn
-//							.setBackgroundResource(R.drawable.switch_off);
-//				}
-			}
-//		} else {
-//			m_usageAutoDisconnectBtn.setEnabled(false);
-//			// set disable pic
-//			m_usageAutoDisconnectBtn
-//					.setBackgroundResource(R.drawable.switch_off);
-//		}
-	}
-	
-	private void onBtnRoamingAutoDisconnectClick() {
-		m_bIsRoamingDisconnectedEdit = true;
-		ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
-		DataValue data = new DataValue();
-		if (connectionSetting.HRoamingConnect == OVER_ROAMING_STATE.Disable) {
-			m_roamingDisconnectBtn
-					.setBackgroundResource(R.drawable.switch_on);
-			data.addParam("roaming_connect_flag", OVER_ROAMING_STATE.Enable);
-		} else {
-			m_roamingDisconnectBtn
-					.setBackgroundResource(R.drawable.switch_off);
-			data.addParam("roaming_connect_flag", OVER_ROAMING_STATE.Disable);
-		}
-		BusinessMannager.getInstance().sendRequestMessage(
-				MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET,
-				data);
-
 	}
 }

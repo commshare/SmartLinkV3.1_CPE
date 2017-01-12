@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dip"
+            android:layout_marginRight="@dimen/dimen_20dip"
+			android:gravity="center"
             android:visibility="gone"
             android:background="@drawable/actionbar_plus_icon" />         
 	</RelativeLayout>
@@ -59,7 +60,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/main_usage"
+            android:id="@+id/main_wifiKey"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,7 +68,7 @@
             android:clickable="true"
             android:drawablePadding="5dip"
             android:gravity="center_horizontal"
-            android:text="@string/main_usage"
+            android:text="@string/wifi_key"
             android:textColor="@color/color_grey"
             android:textSize="18sp" />
                 

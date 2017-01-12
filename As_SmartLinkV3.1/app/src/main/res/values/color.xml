@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">#424242</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#E91E63</color>
+    <color name="colorPrimaryText">#212121</color>
     <color name="color_transparent">#00000000</color>
     <color name="color_bg_grey">#F5F5F5</color>
     <color name="color_divider">#ffcccccc</color>
@@ -19,6 +23,22 @@
     <color name="light_blue">#ff64d2ff</color>
     <color name="color_disable_grey">#ffcccccc</color>
     <color name="color_setting_wifi_background">#efeff4</color>
+    <color name="mg_blue">#009AFF</color>
+    <color name="circle_green">#10FF90</color>
+    <color name="circle_yellow">#FFC467</color>
+    <color name="circle_bac_blue">#3866c2</color>
+    <color name="wave_yellow">#FFAE13</color>
+
+    <color name="grey_text">#666666</color>
+    <color name="black_text">#222222</color>
+    <color name="deep_black_text">#333333</color>
+    <color name="deep_grey_text">#999999</color>
+    <color name="grey_line">#DDDDDD</color>
+    <color name="not_wifi_background">#ece8e8</color>
+    <color name="quick_setting_background">#E9EAED</color>
+    <color name="quick_setting_skip_background">#555555</color>
+    <color name="orange_textColor">#FF7E00</color>
+    <color name="black_three_color">#333333</color>
 
     <!-- call log start -->
     <color name="call_log_item_selected">#ff4a4a4a</color>
@@ -32,7 +52,7 @@
     <color name="color_grey">#ffa8a8a8</color>
 
     <!-- home start -->
-    <color name="home_connect_background_blue">#ff0089cf</color>
+    <color name="home_connect_background_blue">#49bcf7</color>
     <color name="home_connect_status">#ff80c4e7</color>
     <!-- home end -->
 
