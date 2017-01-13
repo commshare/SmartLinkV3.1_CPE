@@ -204,6 +204,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		this.registerReceiver(m_msgReceiver2, new IntentFilter(
 				MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
 
+		registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
+		registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
+		registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
+
 		m_homeView.onResume();
 		m_wifiKeyView.onResume();
 		m_smsView.onResume();
@@ -513,7 +517,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		case R.id.main_microsd:
 			microsdBtnClick();
 			break;
-		case R.id.btnbar:
+		case R.id. btnbar:
 			if (LoginDialog.isLoginSwitchOff()) {		
 				go2Click();	
 			} else {		
@@ -531,7 +535,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 						{
 							if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 							{
-								if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+								if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 								{
 									m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 								}else

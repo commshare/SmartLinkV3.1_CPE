@@ -682,7 +682,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			UsageSettingModel statistic = BusinessMannager.getInstance()
 					.getUsageSettings();
 			
-			m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, (long)statistic.HUsedData));
+			m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, statistic.HUsedData));
 
 			m_monthlyValue.setEnabled(true);
 			m_monthlyVal = statistic.HMonthlyPlan;

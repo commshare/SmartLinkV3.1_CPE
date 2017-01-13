@@ -78,7 +78,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 	private String m_smsNumber = new String();
 	private int m_nContactID = 0;
 
-	private TextView m_tvCnt = null;
+//	private TextView m_tvCnt = null;
 
 	private ProgressBar m_progressWaiting = null;
 
@@ -103,9 +103,9 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 				.findViewById(R.id.ID_SMS_DETAIL_EDIT_CONTENT);
 		m_etContent.addTextChangedListener(this);
 
-		m_tvCnt = (TextView) findViewById(R.id.sms_cnt);
+//		m_tvCnt = (TextView) findViewById(R.id.sms_cnt);
 		String text = getOneSmsLenth(new String()) + "/1";
-		m_tvCnt.setText(text);
+//		m_tvCnt.setText(text);
 		// Text View
 		m_tvTitle = (TextView) this.findViewById(R.id.ID_SMS_DETAIL_TITLE);
 		// Button
@@ -598,7 +598,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		int codeUnitsRemaining = sms[2];
 		int codeUnitSize = sms[3];
 
-		m_tvCnt.setText(codeUnitsRemaining + "/" + msgCount);
+//		m_tvCnt.setText(codeUnitsRemaining + "/" + msgCount);
 
 		if (msgCount > 10) {
 			int nMax= 670;

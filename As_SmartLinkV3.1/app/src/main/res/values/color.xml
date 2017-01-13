@@ -39,6 +39,7 @@
     <color name="quick_setting_skip_background">#555555</color>
     <color name="orange_textColor">#FF7E00</color>
     <color name="black_three_color">#333333</color>
+    <color name="sms_green">#00cd3a</color>
 
     <!-- call log start -->
     <color name="call_log_item_selected">#ff4a4a4a</color>

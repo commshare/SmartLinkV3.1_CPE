@@ -140,7 +140,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		if(BusinessMannager.getInstance().getSMSInit() == SMSInit.Initing) {
 			((MainActivity)m_context).updateNewSmsUI(-1);
 		}else{
-			int nNewSmsCount = 0;
+			int nNewSmsCount;
 			nNewSmsCount = BusinessMannager.getInstance().getNewSmsNumber();
 			((MainActivity)m_context).updateNewSmsUI(nNewSmsCount);
 		}
@@ -153,9 +153,9 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			Date d1 = DataUti.formatDateFromString(c1.strSummaryTime);
 			Date d2 = DataUti.formatDateFromString(c2.strSummaryTime);
 			
-			if(d1.after(d2) == true)
+			if(d1.after(d2))
 				return -1;
-			if(d1.equals(d2) == true)
+			if(d1.equals(d2))
 				return 0;
 			return 1;
 		}
@@ -349,7 +349,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 		// TODO Auto-generated method stub	
 		Intent intent = new Intent();
 		intent.setClass(m_context, ActivitySmsDetail.class);
-		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, (String)m_smsContactMessagesLstData.get(position).strNumber);
+		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, m_smsContactMessagesLstData.get(position).strNumber);
 		intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_CONTACT_ID, m_smsContactMessagesLstData.get(position).nContactid);
 		this.m_context.startActivity(intent);
 	}

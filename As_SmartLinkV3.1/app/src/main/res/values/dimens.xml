@@ -5,6 +5,7 @@
     <dimen name="dimen_1dip">1dip</dimen>
     <dimen name="dimen_1.5dip">1.5dip</dimen>
     <dimen name="dimen_2dip">2dip</dimen>
+    <dimen name="dimen_3dip">3dip</dimen>
     <dimen name="dimen_4dip">4dip</dimen>
     <dimen name="dimen_5dip">5dip</dimen>
     <dimen name="dimen_6dip">6dip</dimen>
@@ -20,8 +21,10 @@
     <dimen name="dimen_20dip">20dip</dimen>
     <dimen name="dimen_24dip">24dip</dimen>
     <dimen name="dimen_25dip">25dip</dimen>
+    <dimen name="dimen_26dip">26dip</dimen>
     <dimen name="dimen_30dip">30dip</dimen>
     <dimen name="dimen_32dip">32dip</dimen>
+    <dimen name="dimen_35dip">35dip</dimen>
     <dimen name="dimen_36dip">36dip</dimen>
     <dimen name="dimen_40dip">40dip</dimen>
     <dimen name="dimen_42dip">42dip</dimen>

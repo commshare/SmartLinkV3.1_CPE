@@ -47,8 +47,6 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private static final String NUMBER_REG_Ex = "^([+*#\\d;]){1}(\\d|[;*#]){0,}$";
 	private String m_preMatchNumber = new String();
 	
-	private TextView m_tvCnt = null;
-	
 	private ProgressBar m_progressWaiting = null;
 	
 	private SendStatus m_sendStatus = SendStatus.None;
@@ -72,10 +70,8 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		m_etContent = (EditText) findViewById(R.id.edit_content);
 		m_etContent.setText("");
 		setEditTextChangedListener();
-		
-		m_tvCnt = (TextView)findViewById(R.id.sms_cnt);
-		String text = ActivitySmsDetail.getOneSmsLenth(new String())+"/1"; 
-		m_tvCnt.setText(text);
+
+		String text = ActivitySmsDetail.getOneSmsLenth(new String())+"/1";
 		
 		m_progressWaiting = (ProgressBar) this.findViewById(R.id.sms_new_waiting_progress);
 	}
@@ -129,8 +125,6 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 				int codeUnitCount = sms[1];
 				int codeUnitsRemaining = sms[2];
 				int codeUnitSize = sms[3];
-
-				m_tvCnt.setText(codeUnitsRemaining + "/" + msgCount);
 
 				if (msgCount > 10) {
 					int nMax= 670;
@@ -411,7 +405,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		{
 			nCnt = (s.length() -1 ) / nSmsLength +1;	
 		}	
-		
-		m_tvCnt.setText(nRemain + "/" + nCnt);		
+
+
 	}
 }

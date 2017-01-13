@@ -20,6 +20,7 @@
 	            android:layout_centerVertical="true"
 	            android:orientation="horizontal"
 	            android:layout_marginLeft="10dip" >
+
 		         <ImageView
 		             android:id="@+id/back_button"
 		             android:layout_width="wrap_content"
@@ -27,16 +28,6 @@
 		             android:background="@drawable/back"
 		             android:layout_gravity="center_vertical"
 		             android:contentDescription="@null" />
-		         <TextView
-		             android:layout_width="wrap_content"
-		             android:layout_height="wrap_content"
-		             android:layout_gravity="center_vertical"
-		             android:gravity="center"
-		             android:text="@string/back"
-		             android:singleLine="true"
-		             android:layout_marginLeft="5dip"
-		             android:textColor="@color/color_white"
-		             android:textSize="18sp" />
 	        </LinearLayout>
 	
 	        <TextView
@@ -88,13 +79,14 @@
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
 		            android:text="@string/sms_to"
-		            android:textColor="@color/color_black" />
+		            android:textColor="@color/grey_text"
+					android:textSize="@dimen/dimen_textsize_18sp"/>
 			
 			    <EditText
 			        android:id="@+id/edit_number"
 			        android:layout_width="match_parent"
 			        android:layout_height="35dip"
-			        android:background="@drawable/selector_edit_bg"
+			        android:background="@color/color_white"
 			        android:layout_centerVertical="true"
 			        android:layout_marginLeft="10dip"
 			        android:layout_marginRight="10dip"
@@ -117,29 +109,26 @@
 	        android:layout_alignParentBottom="true"
 	        android:orientation="vertical" 
 	        android:background="@color/main_tabbar_background">
+
 	        <View android:layout_width="fill_parent"
 		        android:layout_height="1dip"
 		        android:background="@color/main_bottom_divider"/>
-	        <TextView
-	            android:id="@+id/sms_cnt"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="right"
-	            android:layout_marginRight="25dip"
-	            android:layout_marginTop="5dip"
-	            android:text="160/1"
-	            android:textColor="@color/color_black" />
+
 			<RelativeLayout
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:layout_marginTop="5dip"
-			    android:layout_marginBottom="5dip" >
+			    android:layout_marginBottom="5dip"
+				android:background="@color/color_white">
 			
 			    <Button
 			        android:id="@+id/send_btn"
 			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:background="@drawable/selector_send_btn"
+			        android:layout_height="@dimen/dimen_35dip"
+			        android:background="@drawable/bg_conner_bottom_normal"
+					android:text="Send"
+					android:textColor="@color/color_white"
+					android:textSize="@dimen/dimen_textsize_16sp"
 			        android:layout_alignParentRight="true"
 			        android:layout_centerVertical="true"
 			        android:layout_marginRight="20dip"
@@ -151,7 +140,7 @@
 			        android:id="@+id/edit_content"
 			        android:layout_width="match_parent"
 			        android:layout_height="35dip"
-			        android:background="@drawable/selector_edit_bg"
+					android:background="@color/backup_name_bg"
 			        android:layout_centerVertical="true"
 			        android:layout_marginLeft="20dip"
 			        android:layout_marginRight="10dip"
@@ -165,7 +154,8 @@
 			</RelativeLayout>
 		</LinearLayout>
 	</RelativeLayout>
-	<RelativeLayout 
+
+	<RelativeLayout
 	    android:id="@+id/sms_new_waiting_layout"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">

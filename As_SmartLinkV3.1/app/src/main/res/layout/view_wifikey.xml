@@ -60,7 +60,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:layout_centerVertical="true"
-                android:background="@drawable/general_ic_tick"/>
+                android:background="@color/color_white"/>
         </RelativeLayout>
 
         <View
@@ -214,13 +214,14 @@
                 android:textSize="@dimen/dimen_textsize_18sp"
                 android:textColor="@color/black_text" />
 
-            <TextView
+            <EditText
                 android:id="@+id/edit_wifi_network_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:layout_centerVertical="true"
+                android:background="@color/color_white"
                 android:text="4G COVER_xxxx"
                 android:textColor="@color/grey_text"
                 android:textSize="@dimen/dimen_textsize_18sp" />
@@ -257,7 +258,7 @@
                 android:layout_height="@dimen/dimen_25dip"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/general_btn_on"/>
+                android:background="@drawable/general_ic_next"/>
         </RelativeLayout>
 
         <View
