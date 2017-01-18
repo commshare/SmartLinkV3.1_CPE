@@ -107,7 +107,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_40dip"
@@ -193,8 +194,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_white"
-        android:orientation="vertical"
-        android:visibility="invisible">
+        android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_40dip"
@@ -258,7 +258,7 @@
                 android:layout_height="@dimen/dimen_25dip"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/general_ic_next"/>
+                android:background="@drawable/general_btn_off"/>
         </RelativeLayout>
 
         <View

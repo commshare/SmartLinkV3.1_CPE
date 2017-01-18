@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 public abstract class BaseViewImpl {
+
 	protected Context m_context;
     protected View m_view;
     

@@ -131,7 +131,8 @@ public class HttpSms {
 /******************** GetSMSContentList  **************************************************************************************/	
 	public static class GetSMSContentList extends BaseRequest
     {	
-		private int m_nPage = 0;//Pages that SMS Content list separate,0: return allSMS content.1 : the first page ,every page has 10  SMS content list.2¡­..
+		private int m_nPage = 0;//Pages that SMS Content list separate,0: return allSMS content.1 : the first page ,every page has 10  SMS content +
+        // list.2ï¿½ï¿½..
 		private int m_nContactId = 0;
 		
         public GetSMSContentList(String strId,int nPage,int nContactId,IHttpFinishListener callback) 

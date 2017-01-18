@@ -508,7 +508,7 @@ implements OnClickListener{
 		dataBundle.putInt("Mode_Type", m_nType);
 		FragmentWifiSettingTypeSelection fg = new FragmentWifiSettingTypeSelection();
 		fg.setArguments(dataBundle);
-		ft.replace(R.id.setting_network_wifi_content_container, fg);
+//		ft.replace(R.id.setting_network_wifi_content_container, fg);
 		ft.addToBackStack(null);
 		ft.commit();
 	}

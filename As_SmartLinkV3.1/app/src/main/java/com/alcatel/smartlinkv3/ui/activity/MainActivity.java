@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -65,7 +66,7 @@ import org.cybergarage.upnp.Device;
 
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements OnClickListener,IDeviceChangeListener{
+public class MainActivity extends BaseActivity implements OnClickListener, IDeviceChangeListener {
 
 	public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
 
@@ -94,7 +95,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	private Button m_Btnbar;
 
 	private ViewHome m_homeView;
-	private ViewWifiKey m_wifiKeyView;
+	private static ViewWifiKey m_wifiKeyView;
 	private ViewSms m_smsView;
 	
 	private ViewSetting m_settingView;
@@ -122,6 +123,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	private AllShareProxy mAllShareProxy;
 	private ThumbnailLoader thumbnailLoader;
 	private static Device mDevice;
+	private android.app.FragmentManager fm;
+	private String wifi_key_status;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +133,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		getWindow().setBackgroundDrawable(null);
 		this.getWindowManager().getDefaultDisplay()
 				.getMetrics(m_displayMetrics);
+		fm = getFragmentManager();
 		rl_top = (RelativeLayout)findViewById(R.id.main_layout_top);
+		wifi_key_status = getResources().getString(R.string.wifi_key_edit);
 
         RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -217,6 +222,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		updateBtnState();
 		toPageHomeWhenPinSimNoOk();
 		showMicroView();
+
+		m_Btnbar.setText(getString(R.string.wifi_key_Done));
+		wifiEditClick();
 	}
 
 	@Override
@@ -242,6 +250,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		m_wifiKeyView = null;
 		destroyDialogs();
     
 		m_homeView.onDestroy();
@@ -646,13 +655,27 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 
 	private void wifiEditClick() {
 		if (m_Btnbar.getText().equals(getResources().getString(R.string.wifi_key_edit))){
-			m_Btnbar.setText(getResources().getString(R.string.wifi_key_Done));
+			wifi_key_status = getResources().getString(R.string.wifi_key_Done);
+			m_Btnbar.setText(wifi_key_status);
 			//下面要变为编辑状态
 			Intent intent = new Intent();
 			intent.setAction(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST);
 			sendBroadcast(intent);
 		} else {
-			m_Btnbar.setText(getResources().getString(R.string.wifi_key_edit));
+			if (!m_wifiKeyView.getTypeSelectionFragmentVisible()) {
+				wifi_key_status = getResources().getString(R.string.wifi_key_edit);
+				m_Btnbar.setText(wifi_key_status);
+				m_wifiKeyView.setTypeSelectionFragmentVisible(false);
+				if (m_wifiKeyView.getM_isTypeSelecttionDone()){
+					m_wifiKeyView.setM_isTypeSelecttionDone(false);
+					m_wifiKeyView.setTypeSelectionFragmentVisible(false);
+				}
+			} else {
+				if (m_wifiKeyView.getM_isTypeSelecttionDone()){
+					m_wifiKeyView.setM_isTypeSelecttionDone(false);
+				}
+			}
+
 			//下面要变为完成编辑状态
 			Intent intent = new Intent();
 			intent.setAction(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST);
@@ -1285,14 +1308,34 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		m_wifiKeyView.revertWifiModeSetting();
+	}
+
+	public static ViewWifiKey getWifiKeyView(){
+		if (m_wifiKeyView != null){
+			return m_wifiKeyView;
+		} else {
+			return null;
+		}
+	}
+
 	private void addView() {
 		m_homeView = new ViewHome(this);
 		m_viewFlipper.addView(m_homeView.getView(), ViewIndex.VIEW_HOME,
 				m_viewFlipper.getLayoutParams());
 
-		m_wifiKeyView = new ViewWifiKey(this);
+		m_wifiKeyView = new ViewWifiKey(this, fm);
 		m_viewFlipper.addView(m_wifiKeyView.getView(),
 				ViewIndex.VIEW_WIFIKEY, m_viewFlipper.getLayoutParams());
+		m_wifiKeyView.setOnBackPressCallback(new ViewWifiKey.OnBackPressCallback() {
+			@Override
+			public void onBackPress() {
+				MainActivity.super.onBackPressed();
+			}
+		});
 		
 		m_microsdView = new ViewMicroSD(this);
 		m_viewFlipper.addView(m_microsdView.getView(),
@@ -1323,7 +1366,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 			m_titleTextView.setText(R.string.wifi_key);
 			m_Btnbar.setVisibility(View.VISIBLE);
 			m_Btnbar.setBackgroundColor(getResources().getColor(R.color.main_title_background));
-			m_Btnbar.setText(getResources().getString(R.string.wifi_key_edit));
+			m_Btnbar.setText(wifi_key_status);
 			m_Btnbar.setTextColor(getResources().getColor(R.color.color_white));
 			m_Btnbar.setTextSize(20);
 			setMainBtnStatus(R.id.main_wifiKey);
@@ -1706,4 +1749,5 @@ public class MainActivity extends BaseActivity implements OnClickListener,IDevic
 			m_microsdBtn.setVisibility(View.GONE);
 		}
 	}
+
 }

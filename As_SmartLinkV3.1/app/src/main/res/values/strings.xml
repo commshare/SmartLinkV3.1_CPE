@@ -137,7 +137,7 @@
     <string name="second_wifi">5G WiFi</string>
     <string name="unEdit_wifi_name">Name(SSID)</string>
     <string name="password">Password</string>
-    <string name="wifi_name">WiFi Network Name(SSID)</string>
+    <string name="wifi_name">Wi-Fi Network Name(SSID)</string>
     <string name="wifi_password">Wi-Fi Password</string>
     <string name="ssid_broadcast">SSID_Broadcast</string>
     <string name="security_type">Security_Type</string>

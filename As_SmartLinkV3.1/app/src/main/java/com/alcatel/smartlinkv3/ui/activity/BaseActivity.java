@@ -44,7 +44,7 @@ public abstract class BaseActivity extends Activity{
 	private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
 	protected boolean m_bNeedBack = true;//whether need to back main activity.
 	public int alertValue;
-
+	private int alertCount;
 
 	protected void addToDialogManager(Dialog dialog) {
 		m_dialogManager.add(dialog);
@@ -85,7 +85,7 @@ public abstract class BaseActivity extends Activity{
 		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
 		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
 
-		String usageRecordSt = CommonUtil.ConvertTrafficToStringFromMB(this, (long) m_UsageRecordResult.HUseData);
+		String usageRecordSt = CommonUtil.ConvertTrafficToStringFromMB(this, m_UsageRecordResult.HUseData);
 		if (usageRecordSt.contains("MB")){
 			usageRecordSt = usageRecordSt.substring(0, usageRecordSt.lastIndexOf('M'));
 			usageRecord = ((int) Double.parseDouble(usageRecordSt));
@@ -104,7 +104,7 @@ public abstract class BaseActivity extends Activity{
 		}
 
 		alertValue = SharedPrefsUtil.getInstance(this).getInt(UsageSettingActivity.SETTING_USAGE_ALERT_VALUE, 0);
-		if (usageSetting != 0){
+		if (usageSetting != 0 && alertCount == 0){
 			if ((100 * usageRecord / usageSetting) >= alertValue){
 				new AlertDialog.Builder(this)
 						.setTitle("WARNING")
@@ -112,6 +112,7 @@ public abstract class BaseActivity extends Activity{
 						.setPositiveButton("true", null)
 						.show();
 			}
+			alertCount++;
 		}
 	}
 

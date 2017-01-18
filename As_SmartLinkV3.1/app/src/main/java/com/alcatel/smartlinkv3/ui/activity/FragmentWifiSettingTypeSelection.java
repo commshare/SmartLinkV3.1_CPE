@@ -4,10 +4,9 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
+import com.alcatel.smartlinkv3.ui.view.ViewWifiKey;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class FragmentWifiSettingTypeSelection extends Fragment{
-	
-	private SettingWifiActivity m_parent_activity;
+public class FragmentWifiSettingTypeSelection extends android.app.Fragment{
+
+	private ViewWifiKey viewWifiKey;
 	private RadioGroup m_wifi_type_selection;
 	private RadioGroup m_wifi_type_wpa_type;
 	private RadioGroup m_wifi_type_wep_type;
@@ -26,8 +25,8 @@ public class FragmentWifiSettingTypeSelection extends Fragment{
 	private int m_mode_type = -1;
 	
 	private boolean m_isFirstIn;
-	
-	@Override  
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
             Bundle savedInstanceState)  {
 		
@@ -39,14 +38,15 @@ public class FragmentWifiSettingTypeSelection extends Fragment{
 	@Override
 	public void onDestroyView(){
 		super.onDestroyView();
-		m_parent_activity.setContentVisibility(View.VISIBLE);
-		m_parent_activity.setDoneButtonVisibility(View.VISIBLE);
-		m_parent_activity.setBackButtonVisibility(View.VISIBLE);
-		m_parent_activity.setTypeSelectionFragmentVisible(false);
+		viewWifiKey.setContentVisibility(View.VISIBLE);
+		viewWifiKey.setTypeSelectionFragmentVisible(false);
+		viewWifiKey.setM_isTypeSelecttionDone(true);
 	}
 	
 	private void initUi(View view){
-		m_parent_activity = (SettingWifiActivity) getActivity();
+		if (MainActivity.getWifiKeyView() != null){
+			viewWifiKey = MainActivity.getWifiKeyView();
+		}
 		m_isFirstIn = true;
 		m_wifi_type_selection = (RadioGroup)(view.findViewById(R.id.setting_network_wifi_type_selection));
 		m_wifi_type_wpa_type = (RadioGroup)(view.findViewById(R.id.setting_network_wifi_wpa_type));
@@ -71,28 +71,28 @@ public class FragmentWifiSettingTypeSelection extends Fragment{
 //					}
 					m_wifi_type_wep_type.clearCheck();
 					m_mode_type = 0;
-					m_parent_activity.setWifiMode(m_security_mode, -1);
+					viewWifiKey.setWifiMode(m_security_mode, -1);
 					break;
 				case R.id.setting_network_wifi_type_wpa:
 					m_wifi_type_wpa_type.clearCheck();
 					m_wifi_type_wep_type.setVisibility(View.GONE);
 					m_wifi_type_wpa_type.setVisibility(View.VISIBLE);
 					m_security_mode = SecurityMode.antiBuild(SecurityMode.WPA);
-					m_parent_activity.setWifiMode(m_security_mode, -1);
+					viewWifiKey.setWifiMode(m_security_mode, -1);
 					break;
 				case R.id.setting_network_wifi_type_wpa2:
 					m_wifi_type_wpa_type.clearCheck();
 					m_wifi_type_wep_type.setVisibility(View.GONE);
 					m_wifi_type_wpa_type.setVisibility(View.VISIBLE);
 					m_security_mode = SecurityMode.antiBuild(SecurityMode.WPA2);
-					m_parent_activity.setWifiMode(m_security_mode, -1);
+					viewWifiKey.setWifiMode(m_security_mode, -1);
 					break;
 				case R.id.setting_network_wifi_type_wpa_or_wpa2:
 					m_wifi_type_wpa_type.clearCheck();
 					m_wifi_type_wep_type.setVisibility(View.GONE);
 					m_wifi_type_wpa_type.setVisibility(View.VISIBLE);
 					m_security_mode = SecurityMode.antiBuild(SecurityMode.WPA_WPA2);
-					m_parent_activity.setWifiMode(m_security_mode, -1);
+					viewWifiKey.setWifiMode(m_security_mode, -1);
 					break;
 				default:
 					break;
@@ -110,17 +110,17 @@ public class FragmentWifiSettingTypeSelection extends Fragment{
 					switch(checkedId){
 					case R.id.setting_wifi_tkip:
 						m_mode_type = WPAEncryption.antiBuild(WPAEncryption.TKIP);
-						m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+						viewWifiKey.setWifiMode(m_security_mode, m_mode_type);
 //						m_parent_activity.onBackPressed();
 						break;
 					case R.id.setting_wifi_aes:
 						m_mode_type = WPAEncryption.antiBuild(WPAEncryption.AES);
-						m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+						viewWifiKey.setWifiMode(m_security_mode, m_mode_type);
 //						m_parent_activity.onBackPressed();
 						break;
 					case R.id.setting_wifi_auto:
 						m_mode_type = WPAEncryption.antiBuild(WPAEncryption.AUTO);
-						m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+						viewWifiKey.setWifiMode(m_security_mode, m_mode_type);
 //						m_parent_activity.onBackPressed();
 						break;
 					default:
@@ -140,12 +140,12 @@ public class FragmentWifiSettingTypeSelection extends Fragment{
 					switch(checkedId){
 					case R.id.setting_wifi_open:
 						m_mode_type = WEPEncryption.antiBuild(WEPEncryption.Open);
-						m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+						viewWifiKey.setWifiMode(m_security_mode, m_mode_type);
 //						m_parent_activity.onBackPressed();
 						break;
 					case R.id.setting_wifi_share:
 						m_mode_type = WEPEncryption.antiBuild(WEPEncryption.Share);
-						m_parent_activity.setWifiMode(m_security_mode, m_mode_type);
+						viewWifiKey.setWifiMode(m_security_mode, m_mode_type);
 //						m_parent_activity.onBackPressed();
 						break;
 					default:
