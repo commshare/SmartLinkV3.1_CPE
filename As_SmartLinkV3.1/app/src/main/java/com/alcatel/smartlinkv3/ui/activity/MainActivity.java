@@ -9,15 +9,12 @@ import android.graphics.drawable.Drawable;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +47,6 @@ import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
@@ -250,11 +246,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		m_wifiKeyView = null;
 		destroyDialogs();
-    
+
 		m_homeView.onDestroy();
 		m_wifiKeyView.onDestroy();
+		m_wifiKeyView = null;
 		m_smsView.onDestroy();
 		m_settingView.onDestroy();
 		m_microsdView.onDestroy();

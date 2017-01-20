@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -21,6 +22,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
@@ -29,14 +31,12 @@ import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.*;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
-import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog.OnPINError;
-import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
 
 public class SettingDeviceActivity extends BaseActivity implements OnClickListener{
@@ -84,6 +84,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     private TextView mVersion;
     private TextView mUpgrade;
     private boolean m_blHasNewApp = false;//是否为更新版本的事件
+    private boolean m_blHasNewFirmware = false;
+    private static String m_strNewFirmwareInfo="";
+    private int m_nUpdradeFWProgress=0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -514,12 +517,6 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         mUpgrade = (TextView) deleteDialogLLayout.findViewById(R.id.upgrade_confirm);
 
         mUpgradeDialog.setContentView(deleteDialogLLayout);
-        mUpgrade.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getNewVersion();
-            }
-        });
         cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -542,8 +539,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         ConnectStatusModel status = BusinessMannager.getInstance().getConnectStatus();
         ENUM.ConnectionStatus result = status.m_connectionStatus;
         if (result != ENUM.ConnectionStatus.Connected) {
-            showCheckAppWaiting(false);
+            showCheckFwWaiting(false);
             mVersion.setText(R.string.setting_upgrade_no_connection);
+            m_strNewFirmwareInfo = "";
             mUpgrade.setVisibility(View.GONE);
         }else {
             mUpgrade.setVisibility(View.VISIBLE);
@@ -551,7 +549,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         }
     }
 
-    private void showCheckAppWaiting(boolean isWait) {
+    private void showCheckFwWaiting(boolean isWait) {
         if (isWait){
             mWaittingContainer.setVisibility(View.VISIBLE);
             mUpgradeContainer.setVisibility(View.GONE);
@@ -564,6 +562,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     private void onBtnAppCheck(){
         if (m_blHasNewApp) {
             //进行版本升级
+            showCheckFwWaiting(false);
+            Toast.makeText(getApplicationContext(), "升级事件...", Toast.LENGTH_SHORT).show();
+            m_blHasNewApp = false;
         }else {
             checkNewVersion();
         }
@@ -695,14 +696,25 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
                 //do nothing
-                showCheckAppWaiting(false);
-                m_blHasNewApp = true;
+
             }else {
-                showCheckAppWaiting(false);
+                showCheckFwWaiting(false);
 //                String strNew = getString(R.string.setting_upgrade_set_check_new_version_failed);
                 mVersion.setText(R.string.setting_upgrade_check_failed);
                 mUpgrade.setText(R.string.setting_upgrade_btn_check);
                 m_blHasNewApp = false;
+            }
+        }
+
+        if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)){
+            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+                updateNewDeviceInfo(true);
+            }else {
+                showCheckFwWaiting(false);
+                String strNew = getString(R.string.setting_upgrade_check_failed);
+                setNewDeviceVersion(strNew);
             }
         }
         /*--------------- add end 2016.12.30 ---------------*/
@@ -796,7 +808,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 			}
 		}
 		
-		if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
+		/*if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
@@ -808,9 +820,126 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 //					changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
 				}
 			}
-		}
+		}*/
 		
 		
 	}
+
+    /*--------------- add start 2017.1.20 by haodi.liang ---------------*/
+    private void updateNewDeviceInfo(boolean blNeedBackupNewVersionInfo) {
+        DeviceNewVersionInfo info = BusinessMannager.getInstance().getNewFirmwareInfo();
+        int nState = info.getState();
+        EnumDeviceCheckingStatus eStatus = EnumDeviceCheckingStatus.build(nState);
+        if (EnumDeviceCheckingStatus.DEVICE_CHECKING == eStatus) {
+            //检查中
+            showCheckFwWaiting(true);
+            return;
+        }else if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
+            //发现新版本
+            m_blHasNewFirmware = true;
+            String strNew = getString(R.string.setting_upgrade_new_device_version);
+            strNew = strNew + " " + info.getVersion();
+            if (blNeedBackupNewVersionInfo) {
+                m_strNewFirmwareInfo = strNew;
+            }
+            mUpgrade.setVisibility(View.VISIBLE);
+            mUpgrade.setText(getString(R.string.setting_upgrade));
+            mUpgrade.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //设置更新的事件
+                    Toast.makeText(getApplicationContext(), "更新中。。。", Toast.LENGTH_SHORT).show();
+                    dismissUpgradeDialog();
+                }
+            });
+            showCheckFwWaiting(false);
+            setNewDeviceVersion(m_strNewFirmwareInfo);
+            return;
+        }else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
+            //没有新版本
+            Toast.makeText(getApplicationContext(), getString(R.string.setting_upgrade_no_new_version), Toast.LENGTH_SHORT).show();
+            showCheckFwWaiting(false);
+            String strCurFWVersion = getString(R.string.setting_upgrade_device_version);
+            strCurFWVersion += BusinessMannager.getInstance().getSystemInfo().getSwVersion();
+            if (blNeedBackupNewVersionInfo) {
+                m_strNewFirmwareInfo = strCurFWVersion;
+            }
+        }else if (EnumDeviceCheckingStatus.DEVICE_NO_CONNECT == eStatus) {
+            //无连接
+            showCheckFwWaiting(false);
+            String strNew = getString(R.string.setting_upgrade_no_connection);
+            if (blNeedBackupNewVersionInfo) {
+                m_strNewFirmwareInfo = strNew;
+            }
+        }else if (EnumDeviceCheckingStatus.DEVICE_NOT_AVAILABLE == eStatus) {
+            //设备不可用
+            showCheckFwWaiting(false);
+            String strNew = getString(R.string.setting_upgrade_not_available);
+            if (blNeedBackupNewVersionInfo) {
+                m_strNewFirmwareInfo = strNew;
+            }
+        }else if (EnumDeviceCheckingStatus.DEVICE_CHECK_ERROR == eStatus) {
+            //检查出错
+            showCheckFwWaiting(false);
+            String strNew = getString(R.string.setting_upgrade_check_error);
+            if (blNeedBackupNewVersionInfo) {
+                m_strNewFirmwareInfo = strNew;
+            }
+        }else {
+            showCheckFwWaiting(false);
+        }
+        showCheckButton();
+        setNewDeviceVersion(m_strNewFirmwareInfo);
+    }
+
+    private void showCheckButton() {
+        mUpgrade.setVisibility(View.VISIBLE);
+        mUpgrade.setText(getString(R.string.setting_upgrade_btn_check));
+        mUpgrade.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //设置为检查更新的事件
+                getNewVersion();
+            }
+        });
+    }
+
+    private void setNewDeviceVersion(String m_strNewFirmwareInfo) {
+        mVersion.setText(m_strNewFirmwareInfo);
+    }
+
+    private void onBtnFirmwareCheck(){
+        if (m_blHasNewFirmware) {
+            m_nUpdradeFWProgress = 0;
+            final com.alcatel.smartlinkv3.ui.dialog.InquireDialog inquireDlg = new com.alcatel.smartlinkv3.ui.dialog.InquireDialog(this);
+            inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+            inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
+            inquireDlg.m_contentTextView
+                    .setText(R.string.setting_upgrade_firmware_warning);
+            inquireDlg.m_contentDescriptionTextView.setText("");
+            inquireDlg.m_confirmBtn
+                    .setBackgroundResource(R.drawable.selector_common_button);
+            inquireDlg.m_confirmBtn.setText(R.string.ok);
+            inquireDlg.showDialog(new InquireDialog.OnInquireApply() {
+
+                @Override
+                public void onInquireApply() {
+                    // TODO Auto-generated method stub
+                    //upgrade firmware
+                    ShowWaiting(true);
+                    inquireDlg.closeDialog();
+                    BusinessMannager.getInstance().sendRequestMessage(
+                            MessageUti.UPDATE_SET_DEVICE_START_UPDATE, null);
+                }
+            });
+        }else {
+            BusinessMannager.getInstance().sendRequestMessage(
+                    MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
+            showCheckFwWaiting(true);
+
+        }
+    }
+
+    /*--------------- add end 2017.1.20 by haodi.liang ---------------*/
 
 }
