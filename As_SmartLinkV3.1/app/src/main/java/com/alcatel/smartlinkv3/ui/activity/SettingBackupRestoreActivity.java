@@ -140,8 +140,8 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
             restoreConfigs = getRestoreConfigs();
             if (restoreConfigs.size() > 0){
                 showRestoreDialog();
-                onBtnRestore();
-                ShowWaiting(true);
+//                onBtnRestore();
+//                ShowWaiting(true);
             }else {
                 Toast.makeText(getApplicationContext(), getString(R.string.setting_restore_waring), Toast.LENGTH_SHORT).show();
             }
@@ -188,10 +188,10 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
         mRestoreConfirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), selectPath, Toast.LENGTH_SHORT).show();
-//                dismissBackupDialog();
-//                onBtnBackup();
-//                ShowWaiting(true);
+//                Toast.makeText(getApplicationContext(), selectPath, Toast.LENGTH_SHORT).show();
+                dismissRestoreDialog();
+                onBtnRestore();
+                ShowWaiting(true);
             }
         });
 
