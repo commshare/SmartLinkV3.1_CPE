@@ -289,4 +289,13 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <!--更新时，蓝色的进度条样式-->
+    <style name="StyleProgressBarMini" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">50dip</item>
+        <item name="android:minHeight">10dip</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/shape_progressbar_blue</item>
+    </style>
+
 </resources>

@@ -205,6 +205,7 @@
     <string name="setting_sharing_ftp">FTP</string>
     <string name="setting_sharing_dlna">DLNA</string>
     <string name="setting_upgrade">Upgrade</string>
+    <string name="setting_upgrading">Upgrading</string>
     <string name="setting_backup">Backup&amp;Restore</string>
     <string name="setting_text_2point4G_wifi">2.4G WiFi</string>
     <string name="setting_text_5G_wifi">5G WiFi</string>

@@ -149,6 +149,8 @@
     <color name="system_information_gray_font">#999999</color>
     <color name="network_selection_light_gray_font">#CCCCCC</color>
     <color name="backup_name_bg">#EEEEEE</color>
+    <color name="upgrade_progress_grey">#DDDDDD</color>
+    <color name="upgrade_progress_blue">#009AFF</color>
 
     <!--add end 2016.12.27-->
 
