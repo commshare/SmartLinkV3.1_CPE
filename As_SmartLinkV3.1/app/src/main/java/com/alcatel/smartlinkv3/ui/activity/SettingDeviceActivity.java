@@ -995,9 +995,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         mUpgradeProgressDialog = new Dialog(this, R.style.UpgradeMyDialog);
         DialogInterface.OnKeyListener keylistener = new DialogInterface.OnKeyListener() {
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-                    onBtnBack();
-                    return true;
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && KeyEvent.ACTION_UP==event.getAction()) {
+                    if (!CommonUtil.isFastClick()){
+                        onBtnBack();
+                        return true;
+                    }else{
+                        return false;
+                    }
                 } else {
                     return false;
                 }
@@ -1043,7 +1047,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     }
 
     private void onBtnBack() {
-        if (mUpgradeProgressDialog.isShowing() && m_blUpdating) {
+        if (mUpgradeProgressDialog != null && mUpgradeProgressDialog.isShowing() && m_blUpdating) {
             showStopUpdateDialog();
         } else {
             SettingDeviceActivity.this.finish();

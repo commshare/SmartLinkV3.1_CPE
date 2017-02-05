@@ -1,19 +1,18 @@
 package com.alcatel.smartlinkv3.common;
 
-import java.math.BigDecimal;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.model.UsageDataMode;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.DhcpInfo;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.model.UsageDataMode;
+
+import java.math.BigDecimal;
 
 
 public class CommonUtil {
@@ -117,5 +116,17 @@ public class CommonUtil {
 			return DisplayMetrics.DENSITY_DEFAULT;
 		}
 	}
+
+    //判断是否快速点击的工具类
+    private static long lastClickTime;
+
+    public synchronized static boolean isFastClick() {
+        long time = System.currentTimeMillis();
+        if (time - lastClickTime < 700) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
+    }
 
 }
