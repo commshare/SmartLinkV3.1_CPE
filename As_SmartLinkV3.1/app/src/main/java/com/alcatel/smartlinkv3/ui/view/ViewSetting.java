@@ -42,18 +42,18 @@ public class ViewSetting extends BaseViewImpl{
 	private final int ITEM_ACCOUNT_SETTING1 = 0;
 	private final int ITEM_NETWORK_SETTING1 = 1;
 	private final int ITEM_DEVICE_SETTING1 =2;
-	private final int ITEM_PRINTER_SETTING1 =3;
-	private final int ITEM_USB_SETTING1 =4;
-	private final int ITEM_ABOUT_SETTING1 = 5;
+//	private final int ITEM_PRINTER_SETTING1 =3;
+//	private final int ITEM_USB_SETTING1 =4;
+	private final int ITEM_ABOUT_SETTING1 = 3;
 	private final int ITEM_WIFI_SETTING1 = 6;//这个已删除
 
     private final int ITEM_ACCOUNT_SETTING2 = 0;
     private final int ITEM_NETWORK_SETTING2 = 1;
     private final int ITEM_SHARE_SETTING = 2;
     private final int ITEM_DEVICE_SETTING2 =3;
-    private final int ITEM_PRINTER_SETTING2 =4;
-    private final int ITEM_USB_SETTING2 =5;
-    private final int ITEM_ABOUT_SETTING2 = 6;
+//    private final int ITEM_PRINTER_SETTING2 =4;
+//    private final int ITEM_USB_SETTING2 =5;
+    private final int ITEM_ABOUT_SETTING2 = 4;
     private final int ITEM_WIFI_SETTING2 = 7;//这个已删除
 	
 	boolean isFtpSupported = false;
@@ -113,12 +113,12 @@ public class ViewSetting extends BaseViewImpl{
 					case ITEM_DEVICE_SETTING2:
                         goToDeviceSettingPage();
 						break;
-					case ITEM_PRINTER_SETTING2:
-                        goToAboutSettingPage();
-						break;
-					case ITEM_USB_SETTING2:
-						goToAboutSettingPage();
-						break;
+//					case ITEM_PRINTER_SETTING2:
+//                        goToAboutSettingPage();
+//						break;
+//					case ITEM_USB_SETTING2:
+//						goToAboutSettingPage();
+//						break;
 					case ITEM_ABOUT_SETTING2:
 						goToAboutSettingPage();
 						break;
@@ -154,12 +154,12 @@ public class ViewSetting extends BaseViewImpl{
                         case ITEM_DEVICE_SETTING1:
                             goToDeviceSettingPage();
                             break;
-                        case ITEM_PRINTER_SETTING1:
-                            goToAboutSettingPage();
-                            break;
-                        case ITEM_USB_SETTING1:
-                            goToAboutSettingPage();
-                            break;
+//                        case ITEM_PRINTER_SETTING1:
+//                            goToAboutSettingPage();
+//                            break;
+//                        case ITEM_USB_SETTING1:
+//                            goToAboutSettingPage();
+//                            break;
                         case ITEM_ABOUT_SETTING1:
                             goToAboutSettingPage();
                             break;
@@ -239,11 +239,11 @@ public class ViewSetting extends BaseViewImpl{
 		item = new SettingItem(context.getString(R.string.setting_device), false);
 		list.add(item);
 
-		item = new SettingItem(context.getString(R.string.setting_printer), false);
-		list.add(item);
-		
-		item = new SettingItem(context.getString(R.string.setting_usb_storage), false);
-		list.add(item);
+//		item = new SettingItem(context.getString(R.string.setting_printer), false);
+//		list.add(item);
+//
+//		item = new SettingItem(context.getString(R.string.setting_usb_storage), false);
+//		list.add(item);
 
         upgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
                 upgradeStatus = 1;
@@ -365,13 +365,13 @@ public class ViewSetting extends BaseViewImpl{
                     case 3:
                         ItemIconIv.setImageResource(R.drawable.settings_ic_device);
                         break;
+//                    case 4:
+//                        ItemIconIv.setImageResource(R.drawable.settings_ic_printer);
+//                        break;
+//                    case 5:
+//                        ItemIconIv.setImageResource(R.drawable.settings_ic_usb);
+//                        break;
                     case 4:
-                        ItemIconIv.setImageResource(R.drawable.settings_ic_printer);
-                        break;
-                    case 5:
-                        ItemIconIv.setImageResource(R.drawable.settings_ic_usb);
-                        break;
-                    case 6:
                         ItemIconIv.setImageResource(R.drawable.settings_ic_about);
                         break;
                 }
@@ -386,13 +386,13 @@ public class ViewSetting extends BaseViewImpl{
                     case 2:
                         ItemIconIv.setImageResource(R.drawable.settings_ic_device);
                         break;
+//                    case 3:
+//                        ItemIconIv.setImageResource(R.drawable.settings_ic_printer);
+//                        break;
+//                    case 4:
+//                        ItemIconIv.setImageResource(R.drawable.settings_ic_usb);
+//                        break;
                     case 3:
-                        ItemIconIv.setImageResource(R.drawable.settings_ic_printer);
-                        break;
-                    case 4:
-                        ItemIconIv.setImageResource(R.drawable.settings_ic_usb);
-                        break;
-                    case 5:
                         ItemIconIv.setImageResource(R.drawable.settings_ic_about);
                         break;
                 }
