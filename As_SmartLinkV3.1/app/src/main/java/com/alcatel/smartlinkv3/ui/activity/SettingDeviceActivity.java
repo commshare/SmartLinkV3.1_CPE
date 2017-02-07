@@ -97,6 +97,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     private Dialog      mUpgradeProgressDialog;
     private TextView    mUpgradeProgressTv;
     private ProgressBar mUpgradeProgressBar;
+    private TextView mUpgradeFlage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
         controlTitlebar();
         initUi();
+
+        checkNewVersion();//检查新版本
 
     }
 
@@ -127,6 +130,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         m_system_info.setOnClickListener(this);
         m_upgrade_system = (FrameLayout) findViewById(R.id.device_upgrade_system);
         m_upgrade_system.setOnClickListener(this);
+        mUpgradeFlage = (TextView) findViewById(R.id.device_upgrade_flag);
         m_backup_and_reset = (FrameLayout) findViewById(R.id.device_backup_and_reset);
         m_backup_and_reset.setOnClickListener(this);
         //		m_power_saving = (FrameLayout) findViewById(R.id.device_power_saving);
@@ -555,6 +559,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     }
 
     private void showCheckFwWaiting(boolean isWait) {
+        if (mWaittingContainer == null && mUpgradeContainer == null){
+            return;
+        }
         if (isWait) {
             mWaittingContainer.setVisibility(View.VISIBLE);
             mUpgradeContainer.setVisibility(View.GONE);
@@ -880,9 +887,14 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             //检查中
             showCheckFwWaiting(true);
             return;
-        } else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
-            //EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus
+        } else if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
+            //EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus
             //发现新版本
+            if (mUpgrade == null){
+                mUpgradeFlage.setVisibility(View.VISIBLE);
+                return;
+            }
+            mUpgradeFlage.setVisibility(View.VISIBLE);
             m_blHasNewFirmware = true;
             String strNew = getString(R.string.setting_upgrade_new_device_version);
             strNew = strNew + " " + info.getVersion();
@@ -904,6 +916,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             return;
         } else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
             //没有新版本
+            if (mUpgrade == null){
+                return;
+            }
             Toast.makeText(getApplicationContext(), getString(R.string.setting_upgrade_no_new_version), Toast
                     .LENGTH_SHORT).show();
             showCheckFwWaiting(false);
@@ -936,8 +951,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         } else {
             showCheckFwWaiting(false);
         }
-        showCheckButton();
-        setNewDeviceVersion(m_strNewFirmwareInfo);
+
+        if (mUpgrade == null){
+            mUpgradeFlage.setVisibility(View.GONE);
+        }else{
+            showCheckButton();
+            setNewDeviceVersion(m_strNewFirmwareInfo);
+        }
     }
 
     private void showCheckButton() {
@@ -957,6 +977,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     }
 
     private void onBtnFirmwareCheck() {
+        dismissUpgradeDialog();//先关闭更新提示dialog
         if (m_blHasNewFirmware) {
             m_blUpdating = true;
             m_nUpdradeFWProgress = 0;

@@ -91,6 +91,7 @@
 
                     <TextView
                         android:id="@+id/device_upgrade_flag"
+                        android:visibility="gone"
                         android:layout_toLeftOf="@id/device_upgrade_system_arrow"
                         android:layout_marginRight="@dimen/dimen_5dip"
                         android:layout_centerVertical="true"
