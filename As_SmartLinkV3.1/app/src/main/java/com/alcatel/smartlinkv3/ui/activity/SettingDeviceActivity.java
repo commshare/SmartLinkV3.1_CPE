@@ -34,6 +34,7 @@ import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
@@ -45,6 +46,8 @@ import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinStateDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
+
+import static com.alcatel.smartlinkv3.ui.view.ViewSetting.ISDEVICENEWVERSION;
 
 public class SettingDeviceActivity extends BaseActivity implements OnClickListener {
 
@@ -111,7 +114,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         controlTitlebar();
         initUi();
 
-        checkNewVersion();//检查新版本
+//        checkNewVersion();//检查新版本
 
     }
 
@@ -131,6 +134,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         m_upgrade_system = (FrameLayout) findViewById(R.id.device_upgrade_system);
         m_upgrade_system.setOnClickListener(this);
         mUpgradeFlage = (TextView) findViewById(R.id.device_upgrade_flag);
+        //获取是否有升级
+        boolean isDeviceNewVersion = SharedPrefsUtil.getInstance(this).getBoolean(ISDEVICENEWVERSION, false);
+        if (isDeviceNewVersion){
+            mUpgradeFlage.setVisibility(View.VISIBLE);
+        }else{
+            mUpgradeFlage.setVisibility(View.GONE);
+        }
         m_backup_and_reset = (FrameLayout) findViewById(R.id.device_backup_and_reset);
         m_backup_and_reset.setOnClickListener(this);
         //		m_power_saving = (FrameLayout) findViewById(R.id.device_power_saving);

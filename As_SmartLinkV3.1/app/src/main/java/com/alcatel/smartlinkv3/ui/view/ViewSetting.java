@@ -21,6 +21,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
@@ -69,6 +70,8 @@ public class ViewSetting extends BaseViewImpl{
 	private boolean m_blFirst=true;
 	private settingBroadcast m_receiver;
     private int upgradeStatus;
+
+    public static final String ISDEVICENEWVERSION = "IS_DEVICE_NEW_VERSION";
 	
 
 	private void registerReceiver() {
@@ -194,19 +197,26 @@ public class ViewSetting extends BaseViewImpl{
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
 		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 		if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+            //DEVICE_NO_NEW_VERSION
 			m_blFirst = false;
             if (isSharingSupported){
-			    changeUpgradeFlag(ITEM_ABOUT_SETTING2,true);
+			    changeUpgradeFlag(ITEM_DEVICE_SETTING2,true);
             }else {
-                changeUpgradeFlag(ITEM_ABOUT_SETTING1,true);
+                changeUpgradeFlag(ITEM_DEVICE_SETTING1,true);
             }
+            //保存升级标志到本地SP
+            SharedPrefsUtil.getInstance(m_context).putBoolean(ISDEVICENEWVERSION, true);
 		}else {
             if (isSharingSupported){
-                changeUpgradeFlag(ITEM_ABOUT_SETTING2,false);
+                changeUpgradeFlag(ITEM_DEVICE_SETTING2,false);
             }else {
-                changeUpgradeFlag(ITEM_ABOUT_SETTING1,false);
+                changeUpgradeFlag(ITEM_DEVICE_SETTING1,false);
             }
+
+            //保存升级标志到本地SP
+            SharedPrefsUtil.getInstance(m_context).putBoolean(ISDEVICENEWVERSION, false);
 		}
+
 	}
 
 	@Override
@@ -236,8 +246,19 @@ public class ViewSetting extends BaseViewImpl{
 			list.add(item);
 		}
 
-		item = new SettingItem(context.getString(R.string.setting_device), false);
-		list.add(item);
+        upgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+        if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(upgradeStatus)){
+            //DEVICE_NEW_VERSION
+            item = new SettingItem(context.getString(R.string.setting_device), true);
+            list.add(item);
+            //保存升级标志到本地SP
+            SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
+        }else {
+            item = new SettingItem(context.getString(R.string.setting_device), false);
+            list.add(item);
+            //保存升级标志到本地SP
+            SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
+        }
 
 //		item = new SettingItem(context.getString(R.string.setting_printer), false);
 //		list.add(item);
@@ -245,15 +266,8 @@ public class ViewSetting extends BaseViewImpl{
 //		item = new SettingItem(context.getString(R.string.setting_usb_storage), false);
 //		list.add(item);
 
-        upgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
-                upgradeStatus = 1;
-        if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(upgradeStatus)){
-            item = new SettingItem(context.getString(R.string.setting_about), true);
-            list.add(item);
-        }else {
-            item = new SettingItem(context.getString(R.string.setting_about), false);
-            list.add(item);
-        }
+        item = new SettingItem(context.getString(R.string.setting_about), false);
+        list.add(item);
 		
 		return list;
 	}
@@ -439,6 +453,12 @@ public class ViewSetting extends BaseViewImpl{
 			Boolean blOldUpgrade = item.getUpgradeFlag();
 			if(blOldUpgrade != blUpgrade){
 				item.setUpgradeFlag(blUpgrade);
+                ArrayList<SettingItem> settingItems = new ArrayList<SettingItem>();
+                for (int i = 0; i < list.size(); i++) {
+                    settingItems.add(i, list.get(i));
+                }
+                list.clear();
+                list.addAll(settingItems);
 				adapter.notifyDataSetChanged();
 			}
 		}
@@ -465,18 +485,24 @@ public class ViewSetting extends BaseViewImpl{
 				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
 					int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
 					if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
+                        //EnumDeviceCheckingStatus.DEVICE_NEW_VERSION
+                        //EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION
 						m_blFirst = false;
                         if (isSharingSupported){
-                            changeUpgradeFlag(ITEM_ABOUT_SETTING2,true);
+                            changeUpgradeFlag(ITEM_DEVICE_SETTING2,true);
                         }else {
-                            changeUpgradeFlag(ITEM_ABOUT_SETTING1,true);
+                            changeUpgradeFlag(ITEM_DEVICE_SETTING1,true);
                         }
+                        //保存升级标志到本地SP
+                        SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
 					}else {
                         if (isSharingSupported){
-                            changeUpgradeFlag(ITEM_ABOUT_SETTING2,false);
+                            changeUpgradeFlag(ITEM_DEVICE_SETTING2,false);
                         }else {
-                            changeUpgradeFlag(ITEM_ABOUT_SETTING1,false);
+                            changeUpgradeFlag(ITEM_DEVICE_SETTING1,false);
                         }
+                        //保存升级标志到本地SP
+                        SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
 					}
 				}
 			}
