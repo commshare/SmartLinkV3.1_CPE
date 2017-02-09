@@ -446,10 +446,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					: R.drawable.main_new_sms_tab_grey;
 			m_newSmsTextView.setBackgroundResource(nDrawable);
 		}*/
-		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_no_new_active
-				: R.drawable.main_sms_no_new_grey;
+		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.tab_sms_pre
+				: R.drawable.tab_sms_nor;
 		Drawable d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
 		m_smsTextView.setCompoundDrawables(null, d, null, null);
 		int nTextColor = nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.color.color_blue
 				: R.color.color_grey;
@@ -1390,10 +1390,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
 	private void setMainBtnStatus(int nActiveBtnId) {
 		m_preButton = nActiveBtnId;
-		int nDrawable = nActiveBtnId == R.id.main_home ? R.drawable.main_home_active
-				: R.drawable.main_home_grey;
+		int nDrawable = nActiveBtnId == R.id.main_home ? R.drawable.tab_home_pre
+				: R.drawable.tab_home_nor;
 		Drawable d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
 		m_homeBtn.setCompoundDrawables(null, d, null, null);
 		int nTextColor = nDrawable = nActiveBtnId == R.id.main_home ? R.color.color_blue
 				: R.color.color_grey;
@@ -1411,10 +1411,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
 		updateNewSmsUI(m_nNewCount);
 
-		nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.main_setting_active
-				: R.drawable.main_setting_grey;
+		nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.tab_settings_pre
+				: R.drawable.tab_settings_nor;
 		d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
 		m_settingBtn.setCompoundDrawables(null, d, null, null);
 		nTextColor = nDrawable = nActiveBtnId == R.id.main_setting ? R.color.color_blue
 				: R.color.color_grey;
@@ -1423,7 +1423,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_microssd_active
 				: R.drawable.main_microssd_grey;
 		d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
+		d.setBounds(0, 12, d.getMinimumWidth() -10, d.getMinimumHeight() -10);
 		m_microsdBtn.setCompoundDrawables(null, d, null, null);
 		nTextColor = nDrawable = nActiveBtnId == R.id.main_microsd ? R.color.color_blue
 				: R.color.color_grey;
