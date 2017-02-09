@@ -44,6 +44,8 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 	private int ApStatus_5G=-1;
 	private String m_strPreSsid = "";
 	private String m_strSsid = "";
+    private String m_strPreCountryCode = "";
+    private String m_strCountryCode = "";
 	private int m_nPreSecurityMode=0;
 	private int m_nSecurityMode=0;
 	private int m_nPreType=0;
@@ -93,7 +95,11 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 	private LinearLayout mWifiDoneLinear;
 	private boolean m_isTypeSelecttionDone;
 	private LinearLayout m_source_configure;
-//	private boolean m_continue_to_change_to_5g;
+    private FrameLayout mChannel;
+    private FrameLayout mCountry;
+    private TextView mChannelMode;
+    private TextView mCountryType;
+    //	private boolean m_continue_to_change_to_5g;
 
 	private class ActivityBroadcastReceiver extends BroadcastReceiver
 	{
@@ -373,7 +379,14 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		m_divider_under_ssid = (ImageView) m_view.findViewById(R.id.divider0);
 		m_source_configure = ((LinearLayout) m_view.findViewById(R.id.source_configure));
 
-		m_ssid_broadcast_container.setVisibility(View.GONE);
+        mChannel = (FrameLayout) m_view.findViewById(R.id.ll_channel);
+        mChannel.setOnClickListener(this);
+        mChannelMode = (TextView) m_view.findViewById(R.id.set_wifi_channel_mode);
+        mCountry = (FrameLayout) m_view.findViewById(R.id.ll_country);
+        mCountry.setOnClickListener(this);
+        mCountryType = (TextView) m_view.findViewById(R.id.set_wifi_security_country_type);
+
+        m_ssid_broadcast_container.setVisibility(View.GONE);
 		m_divider_under_ssid.setVisibility(View.GONE);
 		m_source_configure.setVisibility(View.GONE);
 
@@ -452,6 +465,12 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 			case R.id.ll_encryption:
 				goToWifiSettingFragment();
 				break;
+            case R.id.ll_channel:
+                Toast.makeText(m_context, "channel", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.ll_country:
+                Toast.makeText(m_context, "country", Toast.LENGTH_SHORT).show();
+                break;
 			default:
 				break;
 
@@ -569,6 +588,8 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		}
 
 		m_strSsid = m_strPreSsid;
+        m_strPreCountryCode = BusinessMannager.getInstance().getCountryCode();
+		m_strCountryCode = m_strPreCountryCode;
 
 		m_nSecurityMode = m_nPreSecurityMode;
 
@@ -754,6 +775,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 		m_et_ssid.setEnabled(false);
 		m_tv_ssid.setText(m_strPreSsid);
+		mCountryType.setText(m_strPreCountryCode);
 		m_tv_ssid.setVisibility(View.VISIBLE);
 		m_et_ssid.setVisibility(View.GONE);
 		m_et_password.setEnabled(false);
@@ -842,6 +864,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		data.addParam("Security", m_nSecurityMode);
 		data.addParam("Encryption", m_nType);
 		data.addParam("SsidStatus", ENUM.SsidHiddenEnum.antiBuild(m_ssid_status));
+        data.addParam("CountryCode", m_strCountryCode);
 		BusinessMannager.getInstance().sendRequestMessage(
 				MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
 		ShowWaiting(true);
@@ -856,6 +879,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		}
 		ENUM.SecurityMode securityMode = ENUM.SecurityMode.build(m_nPreSecurityMode);
 		m_et_ssid.setText(m_strPreSsid);
+        mCountryType.setText(m_strPreCountryCode);
 		if(securityMode == ENUM.SecurityMode.Disable) {
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
@@ -972,7 +996,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 			m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
 		}
 
-	}
+    }
 
 	private void initValues(){
 		m_nPreWlanAPMode = ENUM.WlanFrequency.antiBuild(
@@ -982,6 +1006,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		if (ENUM.WlanFrequency.antiBuild(ENUM.WlanFrequency.Frequency_24GHZ) == m_nWlanAPMode) {
 			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus();
 			m_strPreSsid = BusinessMannager.getInstance().getSsid();
+			m_strPreCountryCode = BusinessMannager.getInstance().getCountryCode();
 			ENUM.SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
 			m_nPreSecurityMode = ENUM.SecurityMode.antiBuild(mode);
 			if (ENUM.SecurityMode.Disable == mode) {
@@ -1003,6 +1028,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		}else {
 			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus_5G();
 			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
+            m_strPreCountryCode = BusinessMannager.getInstance().getCountryCode();
 			ENUM.SecurityMode mode = BusinessMannager.getInstance().getSecurityMode_5G();
 			m_nPreSecurityMode = ENUM.SecurityMode.antiBuild(mode);
 			if (ENUM.SecurityMode.Disable == mode) {
@@ -1025,6 +1051,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		m_ssid_status = m_pre_ssid_status;
 
 		m_strSsid = m_strPreSsid;
+		m_strCountryCode = m_strPreCountryCode;
 
 		m_nSecurityMode = m_nPreSecurityMode;
 
@@ -1036,6 +1063,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		m_nPreSecurityMode = m_nWlanAPMode;
 
 		m_strPreSsid = m_strSsid;
+		m_strPreCountryCode = m_strCountryCode;
 
 		m_nPreSecurityMode = m_nSecurityMode;
 

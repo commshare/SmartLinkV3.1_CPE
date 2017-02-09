@@ -36,7 +36,9 @@ public class WlanSettingResult extends BaseResult{
 	public int curr_num_5G= 0;
 	public int ApStatus_2G=1;
 	public int ApStatus_5G=0;
-	
+
+    public int CurChannel = -1;
+
 	
 	public void clone(WlanSettingResult src) {	
 		if(src == null)
@@ -75,6 +77,8 @@ public class WlanSettingResult extends BaseResult{
 		WlanAPID_5G=src.WlanAPID_5G;
 		curr_num_2G=src.curr_num_2G;
 		curr_num_5G= src.curr_num_5G;
+
+        CurChannel = src.CurChannel;
 	}
 	
 	@Override
@@ -115,6 +119,8 @@ public class WlanSettingResult extends BaseResult{
 		ApStatus_5G=1;
 		
 		New_Interface=false;
+
+        CurChannel = -1;
 	}
 
 }

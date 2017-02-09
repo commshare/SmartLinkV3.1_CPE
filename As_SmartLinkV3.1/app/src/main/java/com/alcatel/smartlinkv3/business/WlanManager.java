@@ -1,27 +1,26 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
 
-import com.alcatel.smartlinkv3.business.system.HttpSystem.GetFeature;
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
 import com.alcatel.smartlinkv3.business.wlan.WlanNewSettingResult;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
-import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
+import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WlanManager extends BaseManager {
 	private int m_nHostNum = 0;
@@ -146,6 +145,10 @@ public class WlanManager extends BaseManager {
 	public SsidHiddenEnum getSsidHidden_5G() {
 		return SsidHiddenEnum.build(m_settings.SsidHidden_5G);
 	}
+
+    public String getCountryCode(){
+        return m_settings.CountryCode;
+    }
 	
 	private void getInfoByWansetting() {
 		m_strSsid = m_settings.Ssid;
@@ -256,6 +259,7 @@ public class WlanManager extends BaseManager {
 
 		int nWlanAPMode = (Integer)data.getParamByKey("WlanAPMode");
 		String strSsid = data.getParamByKey("Ssid").toString();
+		String strCountryCode = data.getParamByKey("CountryCode").toString();
 		String strPassword = (String) data.getParamByKey("Password");
 		Integer nSecurity = (Integer)data.getParamByKey("Security");
 		Integer nEncryption = (Integer)data.getParamByKey("Encryption");
@@ -269,12 +273,14 @@ public class WlanManager extends BaseManager {
 		boolean bl5GHZ = false;
 		if (WlanFrequency.Frequency_24GHZ == frequencyMode) {
 			settings.Ssid = strSsid;
+			settings.CountryCode = strCountryCode;
 			settings.SsidHidden = nSsidStatus;
 			settings.ApStatus_2G=1;
 			settings.ApStatus_5G=0;
 			bl24GHZ = true;
 		}else if (WlanFrequency.Frequency_5GHZ == frequencyMode) {
 			settings.Ssid_5G = strSsid;
+            settings.CountryCode = strCountryCode;
 			settings.SsidHidden_5G = nSsidStatus;
 			settings.ApStatus_2G=0;
 			settings.ApStatus_5G=1;
@@ -282,6 +288,7 @@ public class WlanManager extends BaseManager {
 		}else{
 			settings.Ssid = strSsid;
 			settings.Ssid_5G = strSsid;
+            settings.CountryCode = strCountryCode;
 			settings.SsidHidden = nSsidStatus;
 			settings.SsidHidden_5G = nSsidStatus;
 			bl24GHZ = true;

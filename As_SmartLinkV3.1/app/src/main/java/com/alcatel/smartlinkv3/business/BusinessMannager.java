@@ -1,17 +1,13 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.util.Log;
 
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-import com.alcatel.smartlinkv3.business.DeviceManager.GetBlockDeviceListTask;
-import com.alcatel.smartlinkv3.business.DeviceManager.GetConnectedDeviceTask;
-import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
-import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
 import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
+import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
@@ -33,25 +29,25 @@ import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
-import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
-import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
-import com.alcatel.smartlinkv3.common.HttpMethodUti;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
+import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
+import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
+import com.alcatel.smartlinkv3.common.HttpMethodUti;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
-import android.content.Context;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.util.Log;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BusinessMannager {
 	public String m_preDeviceImei = new String();//used ui when changed device,when ui used once,set current imei
@@ -418,6 +414,10 @@ public class BusinessMannager {
 	public WModeEnum getWMode_5G() {
 		return m_wlanManager.getWMode();
 	}
+
+    public String getCountryCode(){
+        return m_wlanManager.getCountryCode();
+    }
 	
 	public WlanFrequency getWlanFrequency() {
 		return m_wlanManager.getWlanFrequency();
