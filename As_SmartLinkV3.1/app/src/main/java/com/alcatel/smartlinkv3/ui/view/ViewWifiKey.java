@@ -382,6 +382,8 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
         mChannel = (FrameLayout) m_view.findViewById(R.id.ll_channel);
         mChannel.setOnClickListener(this);
         mChannelMode = (TextView) m_view.findViewById(R.id.set_wifi_channel_mode);
+        mChannelMode.setText("Auto");//这个暂时写死
+        //TODO:
         mCountry = (FrameLayout) m_view.findViewById(R.id.ll_country);
         mCountry.setOnClickListener(this);
         mCountryType = (TextView) m_view.findViewById(R.id.set_wifi_security_country_type);
@@ -413,7 +415,6 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		int nbtnID = v.getId();
 		switch(nbtnID){
 			case R.id.ib_hide_password:
@@ -466,10 +467,10 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 				goToWifiSettingFragment();
 				break;
             case R.id.ll_channel:
-                Toast.makeText(m_context, "channel", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(m_context, "channel", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ll_country:
-                Toast.makeText(m_context, "country", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(m_context, "country", Toast.LENGTH_SHORT).show();
                 break;
 			default:
 				break;
@@ -489,7 +490,6 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 			@Override
 			public void onInquireApply() {
-				// TODO Auto-generated method stub
 				onWifModeChanged();
 				inquireDlg.closeDialog();
 			}
@@ -497,7 +497,6 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 			@Override
 			public void onInquireCancel() {
-				// TODO Auto-generated method stub
 				if (ENUM.WlanFrequency.antiBuild(ENUM.WlanFrequency.Frequency_24GHZ) == m_nPreWlanAPMode) {
 					m_rb_2point4G_wifi.setChecked(true);
 					m_rb_5G_wifi.setChecked(false);
@@ -715,7 +714,6 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 								@Override
 								public void onConfirm() {
-									// TODO Auto-generated method stub
 									revertWifiModeSetting();
 								}
 

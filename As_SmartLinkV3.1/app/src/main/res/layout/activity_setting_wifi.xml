@@ -447,6 +447,7 @@
 
                     <ImageView
                         android:id="@+id/set_wifi_channel_mode_start"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/setting_wifi"
@@ -489,6 +490,7 @@
 
                     <ImageView
                         android:id="@+id/set_wifi_security_country_type_start"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/setting_wifi"
