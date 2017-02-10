@@ -219,8 +219,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		toPageHomeWhenPinSimNoOk();
 		showMicroView();
 
-		m_Btnbar.setText(getString(R.string.wifi_key_Done));
-		wifiEditClick();
+        if (pageIndex == ViewIndex.VIEW_WIFIKEY){
+            m_Btnbar.setText(wifi_key_status);
+        }
+        wifiEditClick();
 	}
 
 	@Override
@@ -652,7 +654,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	private void wifiEditClick() {
 		if (m_Btnbar.getText().equals(getResources().getString(R.string.wifi_key_edit))){
 			wifi_key_status = getResources().getString(R.string.wifi_key_Done);
-			m_Btnbar.setText(wifi_key_status);
+            if (pageIndex == ViewIndex.VIEW_WIFIKEY){
+			    m_Btnbar.setText(wifi_key_status);
+            }
 			//下面要变为编辑状态
 			Intent intent = new Intent();
 			intent.setAction(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST);
@@ -660,7 +664,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		} else {
 			if (!m_wifiKeyView.getTypeSelectionFragmentVisible()) {
 				wifi_key_status = getResources().getString(R.string.wifi_key_edit);
-				m_Btnbar.setText(wifi_key_status);
+                if (pageIndex == ViewIndex.VIEW_WIFIKEY){
+                    m_Btnbar.setText(wifi_key_status);
+                }
 				m_wifiKeyView.setTypeSelectionFragmentVisible(false);
 				if (m_wifiKeyView.getM_isTypeSelecttionDone()){
 					m_wifiKeyView.setM_isTypeSelecttionDone(false);
