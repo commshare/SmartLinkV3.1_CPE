@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item  
         android:state_pressed="false" 
-        android:drawable="@drawable/sms_out_normal" />
+        android:drawable="@drawable/sms_talk_me" />
     <item  
         android:state_pressed="true" 
-        android:drawable="@drawable/sms_out_press" />
+        android:drawable="@drawable/sms_talk_me" />
 </selector>

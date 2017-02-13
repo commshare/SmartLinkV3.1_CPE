@@ -1,38 +1,20 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.SMSManager;
-import com.alcatel.smartlinkv3.business.model.SMSContentItemModel;
-import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
-import com.alcatel.smartlinkv3.common.Const;
-import com.alcatel.smartlinkv3.common.DataUti;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
-import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
-import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
-import com.alcatel.smartlinkv3.common.ToastUtil;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.InquireDialog.OnInquireApply;
-import com.alcatel.smartlinkv3.ui.view.ViewSms;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.net.ParseException;
 import android.os.Bundle;
+import android.telephony.SmsMessage;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
@@ -47,16 +29,32 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.telephony.SmsMessage;
-import android.text.Editable;
-import android.text.Selection;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.SMSManager;
+import com.alcatel.smartlinkv3.business.model.SMSContentItemModel;
+import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
+import com.alcatel.smartlinkv3.common.Const;
+import com.alcatel.smartlinkv3.common.DataUti;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
+import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
+import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
+import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ToastUtil;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.InquireDialog.OnInquireApply;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		OnScrollListener, TextWatcher {
@@ -877,6 +875,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 				switch (type) {
 				case Report:
 					holder.smsContent.setText(R.string.sms_report_message);
+                    holder.smsContentLayout.setLayoutParams(contentLayout);
+                    holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
 				case Read:
 				case Unread:
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
@@ -892,11 +892,16 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 							.getResources().getColor(R.color.color_grey));
 					holder.sentFail
 							.setImageResource(R.drawable.warning_blue_bg);
+                    holder.smsContentLayout.setLayoutParams(contentLayout);
+                    holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
+                    holder.smsContentLayout.setPadding(70, 0, 0, 0);
 					break;
 				case Draft:
 					if (position == m_smsListData.size() - 1) {
 						holder.smsContentLayout.setVisibility(View.GONE);
 					}
+                    holder.smsContentLayout.setLayoutParams(contentLayout);
+                    holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
 				default:
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,
 							R.id.sms_layout);
@@ -912,10 +917,11 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 									R.color.color_sms_detail_send_grey));
 					holder.sentFail
 							.setImageResource(R.drawable.sms_failed_white_bg);
+                    holder.smsContentLayout.setLayoutParams(contentLayout);
+                    holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
+                    holder.smsContentLayout.setPadding(20, 0, 70, 0);
 					break;
 				}
-				holder.smsContentLayout.setLayoutParams(contentLayout);
-				holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
 
 				if (type == EnumSMSType.SentFailed) {
 					holder.sentFail.setVisibility(View.VISIBLE);

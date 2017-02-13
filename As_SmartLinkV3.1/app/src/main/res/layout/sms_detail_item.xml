@@ -36,7 +36,7 @@
 	    android:background="@drawable/selector_sms_detail_receive"
 	    android:paddingTop="8dip"
 	    android:paddingBottom="8dip"
-	    android:paddingLeft="10dip"
+	    android:paddingLeft="25dip"
 	    android:paddingRight="10dip" >
 	    <TextView 
             android:id="@+id/sms_detail_content"
