@@ -1,36 +1,10 @@
 package com.alcatel.smartlinkv3.ui.view;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
-import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
-import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
-import com.alcatel.smartlinkv3.common.DataUti;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
-
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,11 +13,27 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
+import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
+import com.alcatel.smartlinkv3.common.DataUti;
+import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
+import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail;
+import com.alcatel.smartlinkv3.ui.activity.MainActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClickListener,OnItemLongClickListener {
 
@@ -314,27 +304,23 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			switch(smsItem.enumSmsType)
 			{
 			case SentFailed:
-				holder.count.setVisibility(View.INVISIBLE);
-				holder.sentFailedImage.setVisibility(View.VISIBLE);
+                holder.sentFailedImage.setVisibility(View.VISIBLE);
+                holder.totalcount.setVisibility(View.VISIBLE);
+                holder.totalcount.setText(String.valueOf(smsItem.nCount));
+                holder.count.setVisibility(View.INVISIBLE);
 				break;
 			case Draft:
-				holder.totalcount.setVisibility(View.VISIBLE);
-				holder.count.setVisibility(View.INVISIBLE);
 				holder.sentFailedImage.setVisibility(View.INVISIBLE);
+				holder.totalcount.setVisibility(View.VISIBLE);
 				holder.totalcount.setTextColor(m_context.getResources().getColor(R.color.color_grey));
 				holder.totalcount.setText(String.format(m_context.getString(R.string.sms_list_view_draft),  smsItem.nCount));
+				holder.count.setVisibility(View.INVISIBLE);
 				break;
 			default:
 				holder.sentFailedImage.setVisibility(View.INVISIBLE);
-				holder.count.setVisibility(View.VISIBLE);
-				if(nUnreadNum == 0) {
-					holder.count.setVisibility(View.INVISIBLE);
-					holder.totalcount.setVisibility(View.VISIBLE);
-					holder.totalcount.setText(String.valueOf(smsItem.nCount));
-				}else{
-					holder.count.setTextColor(m_context.getResources().getColor(R.color.color_black));
-					holder.totalcount.setVisibility(View.INVISIBLE);
-				}
+                holder.totalcount.setVisibility(View.VISIBLE);
+                holder.totalcount.setText(String.valueOf(smsItem.nCount));
+                holder.count.setVisibility(View.INVISIBLE);
 				holder.count.setText(String.format(m_context.getResources().getString(R.string.sms_unread_num), smsItem.nUnreadNumber));
 				break;
 			}
