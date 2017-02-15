@@ -38,6 +38,7 @@ import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
 import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataUti;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.DensityUtils;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
@@ -55,6 +56,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.widget.RelativeLayout.ALIGN_LEFT;
+import static android.widget.RelativeLayout.CENTER_VERTICAL;
+import static android.widget.RelativeLayout.LEFT_OF;
+import static com.alcatel.smartlinkv3.R.id.sms_sent_fail_left_iv;
+import static com.alcatel.smartlinkv3.common.ENUM.EnumSMSType.Read;
 
 public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		OnScrollListener, TextWatcher {
@@ -755,6 +762,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 			public TextView smsContent;
 			public TextView smsDate;
 			public ImageView sentFail;
+			public ImageView sentFailLeft;
 			public TextView sendFailText;
 			public View placeHolder;
 		}
@@ -778,6 +786,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 						.findViewById(R.id.sms_detail_content);
 				holder.sentFail = (ImageView) convertView
 						.findViewById(R.id.sms_sent_fail_image);
+				holder.sentFailLeft = (ImageView) convertView
+						.findViewById(sms_sent_fail_left_iv);
 				holder.sendFailText = (TextView) convertView
 						.findViewById(R.id.sms_sent_fail_text);
 				holder.placeHolder = (View) convertView
@@ -797,6 +807,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 				holder.date.setText(m_smsListData.get(position).strTime);
 				holder.dateLayout.setVisibility(View.VISIBLE);
 				holder.smsContentLayout.setVisibility(View.GONE);
+
+                holder.sentFailLeft.setVisibility(View.GONE);
 			} else {
 				holder.dateLayout.setVisibility(View.GONE);
 				holder.smsContentLayout.setVisibility(View.VISIBLE);
@@ -894,7 +906,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 							.setImageResource(R.drawable.warning_blue_bg);
                     holder.smsContentLayout.setLayoutParams(contentLayout);
                     holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
-                    holder.smsContentLayout.setPadding(70, 0, 0, 0);
+                    holder.smsContentLayout.setPadding(70, 0, 0, 20);
 					break;
 				case Draft:
 					if (position == m_smsListData.size() - 1) {
@@ -906,7 +918,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 					contentLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,
 							R.id.sms_layout);
 					nContentLayoutBg = R.drawable.selector_sms_detail_out;
-					contentLayout.setMargins(80, 10, 30, 10);
+					contentLayout.setMargins(20, 10, 30, 10);
 					holder.smsContent.setTextColor(ActivitySmsDetail.this
 							.getResources().getColor(R.color.color_white));
 					holder.smsDate.setTextColor(ActivitySmsDetail.this
@@ -917,18 +929,39 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 									R.color.color_sms_detail_send_grey));
 					holder.sentFail
 							.setImageResource(R.drawable.sms_failed_white_bg);
+
+                    int leftFailWidthParams = DensityUtils.dip2px(ActivitySmsDetail.this, 25f);
+                    RelativeLayout.LayoutParams sentFailLeftParams = new RelativeLayout.LayoutParams(leftFailWidthParams, leftFailWidthParams);
+                    if (holder.smsContent.getLineCount() > 1 || holder.smsContent.getText().toString().length() >= 12){//POP 4+型号时15是极限
+                        //多行或者当行过长时
+                        int leftFailMarginParams = DensityUtils.dip2px(ActivitySmsDetail.this, 10f);
+                        sentFailLeftParams.setMargins(leftFailMarginParams, 0, 0, 0);
+                        sentFailLeftParams.addRule(ALIGN_LEFT);
+                        contentLayout.addRule(RelativeLayout.RIGHT_OF,
+                                R.id.sms_sent_fail_left_iv);
+                    }else{
+                        //单行够短时
+                        sentFailLeftParams.addRule(LEFT_OF,R.id.sms_detail_content_layout);
+                    }
+                    sentFailLeftParams.addRule(CENTER_VERTICAL);
+                    holder.sentFailLeft.setLayoutParams(sentFailLeftParams);
+
                     holder.smsContentLayout.setLayoutParams(contentLayout);
                     holder.smsContentLayout.setBackgroundResource(nContentLayoutBg);
-                    holder.smsContentLayout.setPadding(20, 0, 70, 0);
+                    holder.smsContentLayout.setPadding(20, 0, 70, 20);
 					break;
 				}
 
 				if (type == EnumSMSType.SentFailed) {
-					holder.sentFail.setVisibility(View.VISIBLE);
-					holder.sendFailText.setVisibility(View.VISIBLE);
+                    holder.sentFail.setVisibility(View.GONE);
+                    holder.sendFailText.setVisibility(View.GONE);
+
+                    holder.sentFailLeft.setVisibility(View.VISIBLE);
 				} else {
 					holder.sentFail.setVisibility(View.GONE);
 					holder.sendFailText.setVisibility(View.GONE);
+
+                    holder.sentFailLeft.setVisibility(View.GONE);
 				}
 
 				holder.smsContentLayout
@@ -973,7 +1006,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		public boolean bIsDateItem = false;
 		public String strContent = new String();
 		public String strTime = new String();
-		public EnumSMSType eSMSType = EnumSMSType.Read;
+		public EnumSMSType eSMSType = Read;
 		public int nContactID = 0;
 		public int nSMSID = 0;
 	}
