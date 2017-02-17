@@ -48,6 +48,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+import static com.alcatel.smartlinkv3.httpservice.ConstValue.HTTP_UPLOAD_BACKUP_SETTINGS_ADDRESS;
 
 public class SettingBackupRestoreActivity extends BaseActivity implements OnClickListener{
 
@@ -190,8 +201,8 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
             public void onClick(View v) {
 //                Toast.makeText(getApplicationContext(), selectPath, Toast.LENGTH_SHORT).show();
                 dismissRestoreDialog();
-                onBtnRestore();
                 ShowWaiting(true);
+                onBtnRestore();
             }
         });
 
@@ -383,9 +394,84 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 	private void onBtnRestore(){
         mRestoreTv.setClickable(false);
 		m_bRestore = true;
-		BusinessMannager.getInstance().
-		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
-	}
+//		BusinessMannager.getInstance().
+//		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
+
+        // 调用文件上传方法，需要传入requestBody的key值，本地文件路径以及请求回调方法
+        uploadConfig("file", selectPath, new Callback() {
+            @Override
+            public void onResponse(Call call, final okhttp3.Response response) {
+                if (response.message().equals("OK")){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ShowWaiting(false);
+                            Toast.makeText(getApplicationContext(), getString(R.string.setting_restore_success), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ShowWaiting(false);
+                            Toast.makeText(getApplicationContext(), getString(R.string.setting_restore_failed), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onFailure(Call arg0, IOException e) {
+                e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShowWaiting(false);
+                        Toast.makeText(getApplicationContext(), getString(R.string.setting_restore_failed), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    public static final String MULTIPART_FORM_DATA = "multipart/form-data";       // 指明要上传的文件格式
+    public static void uploadConfig(String partName, String path, final Callback callback){
+        File file = new File(path);             // 需要上传的文件
+        RequestBody requestFile =               // 根据文件格式封装文件
+                RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file);
+
+        // 初始化请求体对象，设置Content-Type以及文件数据流
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)            // multipart/form-data
+                .addFormDataPart(partName, file.getName(), requestFile)
+                .build();
+
+        // 封装OkHttp请求对象，初始化请求参数
+        Request request = new Request.Builder()
+                .url(HTTP_UPLOAD_BACKUP_SETTINGS_ADDRESS)                // 上传url地址
+                .post(requestBody)              // post请求体
+                .build();
+
+        final okhttp3.OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder();
+        OkHttpClient okHttpClient  = httpBuilder
+                .connectTimeout(100, TimeUnit.SECONDS)          // 设置请求超时时间
+                .writeTimeout(150, TimeUnit.SECONDS)
+                .build();
+        // 发起异步网络请求
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (callback != null){
+                    callback.onResponse(call, response);
+                }
+            }
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (callback != null){
+                    callback.onFailure(call, e);
+                }
+            }
+        });
+    }
 
 	@Override
 	protected void onResume() {

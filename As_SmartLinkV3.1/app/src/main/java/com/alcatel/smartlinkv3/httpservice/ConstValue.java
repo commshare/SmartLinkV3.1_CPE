@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.httpservice;
 public class ConstValue {
 	public static String HTTP_SERVER_ADDRESS = "http://%1$s/jrd/webapi";
 	public static String HTTP_GET_CONFIG_ADDRESS = "http://192.168.1.1/cfgbak/configure.bin";
+    public static String HTTP_UPLOAD_BACKUP_SETTINGS_ADDRESS = "http://192.168.1.1/goform/uploadBackupSettings";
 	public static String SMB_SERVER_ADDRESS = "smb://%1$s/";
 	public static String LOG_FILE_NAME = "/SmartLinkV3Log.txt";
 	

@@ -1,33 +1,15 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
-import java.text.DecimalFormat;
-
-import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_ROAMING_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.CommonUtil;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
-
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,15 +19,25 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+
+import java.text.DecimalFormat;
 
 
 
