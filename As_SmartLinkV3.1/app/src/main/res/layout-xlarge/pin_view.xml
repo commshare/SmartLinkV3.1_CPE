@@ -21,7 +21,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/pin_close_btn"
                 android:paddingLeft="12dip"
                 android:text="@string/pin_title"
                 android:textSize="20sp"

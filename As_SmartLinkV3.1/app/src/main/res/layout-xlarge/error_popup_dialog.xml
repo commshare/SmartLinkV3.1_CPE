@@ -21,7 +21,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/pin_error_waring_title"
-                android:layout_toRightOf="@+id/error_dialog_close_btn"
                 android:paddingLeft="12dip"
                 android:textSize="20sp"
                 android:textStyle="bold" 

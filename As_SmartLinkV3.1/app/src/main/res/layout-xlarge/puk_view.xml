@@ -20,7 +20,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/puk_title"
-                android:layout_toRightOf="@+id/puk_close_btn"
                 android:paddingLeft="12dip"
                 android:textSize="20sp"
                 android:textStyle="bold" 
