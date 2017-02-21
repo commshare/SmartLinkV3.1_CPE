@@ -1,8 +1,31 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
-import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
@@ -20,32 +43,9 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Environment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Animation.AnimationListener;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher {
 	private Context m_context;
@@ -321,20 +321,33 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				m_etPassword.setText("");
 				m_etPassword.requestFocus();
 				m_dlgLogin.show();
-				m_bIsShow = true;
+                setDialogFullscreen();
+
+
+                m_bIsShow = true;
 				m_bIsApply = false;
 			}
 			m_vLogin.clearAnimation();
 		//}
 	}
-	
-	public void showDialogDoLogin() {
+
+    //设置dialog宽度满屏用
+    private void setDialogFullscreen() {
+        WindowManager windowManager = ((Activity)m_context).getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams lp = m_dlgLogin.getWindow().getAttributes();
+        lp.width = (int)(display.getWidth()); //设置宽度
+        m_dlgLogin.getWindow().setAttributes(lp);
+    }
+
+    public void showDialogDoLogin() {
 			if (m_dlgLogin != null) {
 				m_tvPasswordError.setVisibility(View.GONE);
 				m_btnApply.setEnabled(false);
 				m_etPassword.setText("");
 				m_etPassword.requestFocus();
 				m_dlgLogin.show();
+                setDialogFullscreen();
 				m_bIsShow = true;
 				m_bIsApply = false;
 			}
@@ -376,6 +389,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			m_tvPasswordError.setText("");			
 			if (!m_bIsShow) {
 				m_dlgLogin.show();
+                setDialogFullscreen();
 			}
 			m_bIsShow = true;
 			m_bIsApply = false;

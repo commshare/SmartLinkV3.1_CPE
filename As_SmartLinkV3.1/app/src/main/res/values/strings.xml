@@ -445,6 +445,10 @@
     <string name="input_current_password">Please Input Your Current Password!</string>
     <string name="change_passowrd_invalid_password">The password should be 4&#8211;16 characters</string>
     <string name="unknown_error">Unknown error!</string>
+
+    <string name="login_login_btn">Login</string>
+    <string name="login_enter_password">Enter administrator password(8-16 characters)</string>
+    <string name="login_forgot_password">Forgot password?</string>
     <!-- Login view end -->
 
 

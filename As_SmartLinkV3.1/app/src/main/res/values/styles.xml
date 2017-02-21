@@ -58,6 +58,11 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="Dialog_Fullscreen_2">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="GreenStyle">
         <item name="android:shadowColor">#003300</item>
         <item name="android:shadowDx">-0.5</item>
