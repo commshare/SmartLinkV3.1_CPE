@@ -926,12 +926,17 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	private void go2WifiKeyView() {
 		SimStatusModel simStatus = BusinessMannager.getInstance()
 				.getSimStatus();
-		if(simStatus.m_SIMState == SIMState.Accessable) {
-			setMainBtnStatus(R.id.main_wifiKey);
-			showView(ViewIndex.VIEW_WIFIKEY);
-			updateTitleUI(ViewIndex.VIEW_WIFIKEY);
-			pageIndex = ViewIndex.VIEW_WIFIKEY;
-		}
+//		if(simStatus.m_SIMState == SIMState.Accessable) {
+//			setMainBtnStatus(R.id.main_wifiKey);
+//			showView(ViewIndex.VIEW_WIFIKEY);
+//			updateTitleUI(ViewIndex.VIEW_WIFIKEY);
+//			pageIndex = ViewIndex.VIEW_WIFIKEY;
+//		}
+
+        setMainBtnStatus(R.id.main_wifiKey);
+        showView(ViewIndex.VIEW_WIFIKEY);
+        updateTitleUI(ViewIndex.VIEW_WIFIKEY);
+        pageIndex = ViewIndex.VIEW_WIFIKEY;
 	}
 	
 	private void smsBtnClick() {
