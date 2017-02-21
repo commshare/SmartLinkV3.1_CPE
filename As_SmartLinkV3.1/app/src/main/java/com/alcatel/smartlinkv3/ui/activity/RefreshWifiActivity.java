@@ -1,27 +1,26 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.MessageUti;
-
-import android.os.Bundle;
-import android.provider.Settings;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.MessageUti;
 
 public class RefreshWifiActivity extends Activity implements OnClickListener {
 	private ImageView m_connectImage = null;
@@ -31,6 +30,8 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	//private Button m_connectBtn2 = null;
 
 	protected MsgBroadcastReceiver m_msgReceiver;
+
+    private Dialog mTipsDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,6 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_refresh);
 		getWindow().setBackgroundDrawable(null);
 		m_connectImage = (ImageView)this.findViewById(R.id.image_connection);
-		m_connectTitle = (TextView)this.findViewById(R.id.textview_refresh_title);
-		m_connectTip = (TextView)this.findViewById(R.id.textview_refresh_tip);
 		m_connectBtn1 = (Button)this.findViewById(R.id.btn_refresh);
 		m_connectBtn1.setOnClickListener(this);	
 	}	
@@ -80,9 +79,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	
 	private void showUI() {
 		if(isNoAnyConnection()) {
-			m_connectImage.setBackgroundResource(R.drawable.not_connected);
-			m_connectTitle.setText(R.string.refresh_wifi_title);
-			m_connectTip.setText(R.string.refresh_wifi_tip);
+			m_connectImage.setBackgroundResource(R.drawable.device_ic);
 			m_connectBtn1.setText(R.string.refresh);
 		}
 	}
@@ -138,6 +135,8 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
        	showActivity();
 		
 		showUI();
+
+        showUpgradeDialog();
 	}
 	
 	@Override
@@ -148,5 +147,30 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     	}catch(Exception e) {
     		
     	}
-	}	
+	}
+
+    private void showUpgradeDialog() {
+        mTipsDialog = new Dialog(this, R.style.UpgradeMyDialog);
+        mTipsDialog.setCanceledOnTouchOutside(false);
+        mTipsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this,
+                R.layout.dialog_get_connected, null);
+
+        TextView okBtn = (TextView) deleteDialogLLayout.findViewById(R.id.get_connected_ok_btn);
+
+        mTipsDialog.setContentView(deleteDialogLLayout);
+        okBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissTipsDialog();
+            }
+        });
+        mTipsDialog.show();
+    }
+
+    private void dismissTipsDialog() {
+        if (mTipsDialog != null && mTipsDialog.isShowing()) {
+            mTipsDialog.dismiss();
+        }
+    }
 }

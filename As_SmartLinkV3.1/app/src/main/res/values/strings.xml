@@ -455,7 +455,11 @@
     <!-- Refresh WIFI start -->
     <string name="refresh_wifi_title">No Wi-Fi Connected</string>
     <string name="refresh_wifi_tip">Please connect the mobile hotspot first!</string>
-    <string name="refresh">REFRESH</string>
+    <string name="refresh">Refresh</string>
+
+    <string name="refresh_no_device_manage">No device can be managed.</string>
+    <string name="refresh_get_connected">Get connected</string>
+    <string name="refresh_manage_device_tips">To manage your device,make sure your phone is connected to the device is Wi-Fi network</string>
     <!-- Refresh WIFI end -->
 
 

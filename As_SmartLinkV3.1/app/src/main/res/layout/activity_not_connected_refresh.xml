@@ -16,37 +16,52 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content" >
 		    <ImageView
-		        android:id="@+id/image_connection"
+		        android:id="@+id/image_no_connection"
 		        android:layout_width="wrap_content"
-		        android:layout_height="@dimen/dimen_200dip"
+		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_marginTop="@dimen/dimen_30dip"
+		        android:layout_marginBottom="@dimen/dimen_30dip"
 				android:layout_marginLeft="@dimen/dimen_30dip"
 				android:layout_marginRight="@dimen/dimen_30dip"
 				android:scaleType="fitXY"
 		        android:contentDescription="@null"
-		        android:background="@drawable/device_ic" />
+		        android:background="@drawable/not_connected" />
 
 		    <TextView
 		        android:id="@+id/textview_refresh_title"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_centerVertical="true"
-		        android:layout_below="@id/image_connection"
+		        android:layout_below="@id/image_no_connection"
 		        android:layout_gravity="center"
 		        android:gravity="center"
-		        android:text="@string/refresh_no_device_manage"
-		        android:textSize="@dimen/font_size_normal"
+		        android:text="@string/refresh_wifi_title"
+		        android:textSize="@dimen/dimen_textsize_18sp"
 		        android:textStyle="bold"
-		        android:textColor="@color/color_deep_grey"/>
+		        android:textColor="@color/grey_text"/>
+
+		    <TextView
+		        android:id="@+id/textview_refresh_tip"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dip"
+			    android:layout_marginRight="10dip"
+		        android:layout_below="@id/textview_refresh_title"
+		        android:layout_marginTop="10dp"
+		        android:gravity="center"
+		        android:text="@string/refresh_wifi_tip"
+		        android:textSize="@dimen/dimen_textsize_16sp"
+		        android:textStyle="bold"
+		        android:textColor="@color/deep_grey_text"/>
 
 		    <Button
 		        android:id="@+id/btn_refresh"
 		        android:layout_width="@dimen/dimen_120dip"
 		        android:layout_height="@dimen/dimen_36dip"
-		        android:layout_below="@id/textview_refresh_title"
+		        android:layout_below="@id/textview_refresh_tip"
 		        android:layout_centerHorizontal="true"
-		        android:layout_marginTop="@dimen/dimen_20dip"
+		        android:layout_marginTop="40dp"
 		        android:background="@drawable/selector_nowifi_button"
 		        android:gravity="center"
 		        android:text="@string/refresh"
