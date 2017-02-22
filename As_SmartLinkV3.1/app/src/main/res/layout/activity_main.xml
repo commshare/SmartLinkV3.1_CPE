@@ -11,7 +11,7 @@
 	
         <TextView
             android:id="@+id/main_title"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
@@ -29,7 +29,20 @@
             android:layout_marginRight="@dimen/dimen_15dip"
 			android:gravity="center"
             android:visibility="gone"
-            android:background="@drawable/actionbar_plus_icon" />         
+            android:background="@drawable/actionbar_plus_icon" />
+
+        <TextView
+            android:id="@+id/main_login_state"
+            android:textSize="@dimen/font_size_normal"
+            android:visibility="invisible"
+            android:layout_marginRight="@dimen/dimen_15dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/color_white"
+            android:clickable="true"
+            android:text="@string/setting_log_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 	</RelativeLayout>
     <View
         android:id="@+id/layout_top_divider"

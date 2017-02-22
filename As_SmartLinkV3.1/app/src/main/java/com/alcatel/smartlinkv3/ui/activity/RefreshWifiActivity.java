@@ -136,6 +136,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		
 		showUI();
 
+        dismissTipsDialog();
         showUpgradeDialog();
 	}
 	
@@ -163,7 +164,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 dismissTipsDialog();
-                clickBtn1();
+//                clickBtn1();
             }
         });
         mTipsDialog.show();

@@ -31,6 +31,7 @@ import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
@@ -61,6 +62,8 @@ import com.alcatel.smartlinkv3.ui.view.ViewWifiKey;
 import org.cybergarage.upnp.Device;
 
 import java.util.List;
+
+import static com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
 
 public class MainActivity extends BaseActivity implements OnClickListener, IDeviceChangeListener {
 
@@ -121,8 +124,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	private static Device mDevice;
 	private android.app.FragmentManager fm;
 	private String wifi_key_status;
+    private TextView mLoginState;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -149,8 +153,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		m_smsBtn.setOnClickListener(this);
 		m_settingBtn = (TextView) this.findViewById(R.id.main_setting);
 		m_settingBtn.setOnClickListener(this);
+        mLoginState = (TextView) findViewById(R.id.main_login_state);
+        mLoginState.setOnClickListener(this);
 
-		m_viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
+        m_viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
 		m_smsTextView = (TextView) this.findViewById(R.id.main_sms);
 		m_newSmsTextView = (TextView) this.findViewById(R.id.new_sms_count);
@@ -637,10 +643,30 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		case R.id.access_num_layout:
 			accessDeviceLayoutClick();
 			break;
+		case R.id.main_login_state:
+            userLogout();
+            CPEConfig.getInstance().userLogout();
+			break;
 		default:
 			break;
 		}
 	}
+
+    public void userLogout() {
+        UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+        if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
+            MainActivity.setLogoutFlag(true);
+            SharedPrefsUtil.getInstance(this).putBoolean(LOGOUT_FLAG, true);
+            BusinessMannager.getInstance().sendRequestMessage(
+                    MessageUti.USER_LOGOUT_REQUEST, null);
+            if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+            {
+                Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+                this.sendBroadcast(intent2);
+                this.finish();
+            }
+        }
+    }
 	
 	private void go2Click()
 	{
@@ -1389,9 +1415,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		if (viewIndex == ViewIndex.VIEW_SETTINGE) {
 			rl_top.setVisibility(View.VISIBLE);
 			m_titleTextView.setText(R.string.main_setting);
+            mLoginState.setVisibility(View.VISIBLE);
 			m_Btnbar.setVisibility(View.GONE);
 			setMainBtnStatus(R.id.main_setting);
-		}
+		}else{
+            mLoginState.setVisibility(View.INVISIBLE);
+        }
 		if(viewIndex == ViewIndex.VIEW_MICROSD) {
 			rl_top.setVisibility(View.VISIBLE);
 			m_titleTextView.setText(R.string.main_sdsharing);

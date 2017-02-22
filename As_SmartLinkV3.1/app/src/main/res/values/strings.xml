@@ -192,7 +192,7 @@
 
 
     <!-- setting start -->
-    <string name="setting_account">Account</string>
+    <string name="setting_account">login password</string>
     <string name="setting_network">Network</string>
     <string name="setting_share">Sharing Service</string>
     <string name="setting_device">Device</string>
