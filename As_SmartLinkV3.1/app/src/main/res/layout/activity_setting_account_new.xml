@@ -104,7 +104,7 @@
         android:layout_marginTop="@dimen/dimen_10dip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_10dip"
+        android:layout_marginLeft="@dimen/dimen_12dip"
         android:text="@string/login_forgot_password"
         android:textColor="@color/color_light_gray"
         android:textSize="@dimen/font_size_normal"

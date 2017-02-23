@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,8 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	
 	private IntentFilter m_change_password_filter;
 	private PassWordChangeReceiver m_password_change_receiver;
+
+    private Dialog mTipsDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +136,32 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		imm.hideSoftInputFromWindow(m_new_password.getWindowToken(),0);
 		imm.hideSoftInputFromWindow(m_confirm_password.getWindowToken(),0);
 	}
+
+    private void showUpgradeDialog() {
+        mTipsDialog = new Dialog(this, R.style.UpgradeMyDialog);
+        mTipsDialog.setCanceledOnTouchOutside(false);
+        mTipsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this,
+                R.layout.dialog_change_password_success, null);
+
+        TextView okBtn = (TextView) deleteDialogLLayout.findViewById(R.id.change_password_ok_btn);
+
+        mTipsDialog.setContentView(deleteDialogLLayout);
+        okBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissTipsDialog();
+                finish();
+            }
+        });
+        mTipsDialog.show();
+    }
+
+    private void dismissTipsDialog() {
+        if (mTipsDialog != null && mTipsDialog.isShowing()) {
+            mTipsDialog.dismiss();
+        }
+    }
 	
 	@Override
 	public void onClick(View v) {
@@ -197,9 +227,9 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
-						String strInfo = getString(R.string.change_password_successful);
-						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-						finish();
+//						String strInfo = getString(R.string.change_password_successful);
+//						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+                        showUpgradeDialog();
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){
