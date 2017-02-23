@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,14 +80,14 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	
 	private ViewFlipper m_viewFlipper;
 	
-	private TextView m_homeBtn;
-	private TextView m_microsdBtn;
-	private TextView m_wifiKeyBtn;
+	private ImageView      m_homeBtn;
+	private TextView       m_microsdBtn;
+	private ImageView      m_wifiKeyBtn;
 	private RelativeLayout m_smsBtn;
-	private TextView m_settingBtn;
+	private ImageView      m_settingBtn;
 	
-	private TextView m_smsTextView;
-	private TextView m_newSmsTextView;
+	private ImageView m_smsTextView;
+	private TextView  m_newSmsTextView;
 
 
 	private TextView m_titleTextView;
@@ -143,22 +143,22 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         rl_params.height = (m_displayMetrics.heightPixels * 9)/100;
         rl_top.setLayoutParams(rl_params);
 
-		m_homeBtn = (TextView) this.findViewById(R.id.main_home);
+		m_homeBtn = (ImageView) this.findViewById(R.id.main_home);
 		m_homeBtn.setOnClickListener(this);
 		m_microsdBtn = (TextView) this.findViewById(R.id.main_microsd);
 		m_microsdBtn.setOnClickListener(this);
-		m_wifiKeyBtn = (TextView) this.findViewById(R.id.main_wifiKey);
+		m_wifiKeyBtn = (ImageView) this.findViewById(R.id.main_wifiKey);
 		m_wifiKeyBtn.setOnClickListener(this);
 		m_smsBtn = (RelativeLayout) this.findViewById(R.id.tab_sms_layout);
 		m_smsBtn.setOnClickListener(this);
-		m_settingBtn = (TextView) this.findViewById(R.id.main_setting);
+		m_settingBtn = (ImageView) this.findViewById(R.id.main_setting);
 		m_settingBtn.setOnClickListener(this);
         mLoginState = (TextView) findViewById(R.id.main_login_state);
         mLoginState.setOnClickListener(this);
 
         m_viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
-		m_smsTextView = (TextView) this.findViewById(R.id.main_sms);
+		m_smsTextView = (ImageView) this.findViewById(R.id.main_sms);
 		m_newSmsTextView = (TextView) this.findViewById(R.id.new_sms_count);
 		
 		m_titleTextView = (TextView) this.findViewById(R.id.main_title);
@@ -456,13 +456,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		}*/
 		int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.tab_sms_pre
 				: R.drawable.tab_sms_nor;
-		Drawable d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
-		m_smsTextView.setCompoundDrawables(null, d, null, null);
-		int nTextColor = nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.color.color_blue
-				: R.color.color_grey;
-		m_smsTextView.setTextColor(this.getResources().getColor(nTextColor));
-		
+        m_smsTextView.setImageResource(nDrawable);
+
 		if (nNewSmsCount <= 0) {
 			m_newSmsTextView.setVisibility(View.GONE);
 		} else if (nNewSmsCount < 10) {
@@ -1431,42 +1426,17 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		m_preButton = nActiveBtnId;
 		int nDrawable = nActiveBtnId == R.id.main_home ? R.drawable.tab_home_pre
 				: R.drawable.tab_home_nor;
-		Drawable d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
-		m_homeBtn.setCompoundDrawables(null, d, null, null);
-		int nTextColor = nDrawable = nActiveBtnId == R.id.main_home ? R.color.color_blue
-				: R.color.color_grey;
-		m_homeBtn.setTextColor(this.getResources().getColor(nTextColor));
-
+        m_homeBtn.setImageResource(nDrawable);
 
 		nDrawable = nActiveBtnId == R.id.main_wifiKey ? R.drawable.tab_wifi_pre
 				: R.drawable.tab_wifi_nor;
-		d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
-		m_wifiKeyBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_wifiKey ? R.color.color_blue
-				: R.color.color_grey;
-		m_wifiKeyBtn.setTextColor(this.getResources().getColor(nTextColor));
+        m_wifiKeyBtn.setImageResource(nDrawable);
 
 		updateNewSmsUI(m_nNewCount);
 
 		nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.tab_settings_pre
 				: R.drawable.tab_settings_nor;
-		d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 12, d.getMinimumWidth() - 10, d.getMinimumHeight() - 10);
-		m_settingBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_setting ? R.color.color_blue
-				: R.color.color_grey;
-		m_settingBtn.setTextColor(this.getResources().getColor(nTextColor));
-		
-		nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_microssd_active
-				: R.drawable.main_microssd_grey;
-		d = getResources().getDrawable(nDrawable);
-		d.setBounds(0, 12, d.getMinimumWidth() -10, d.getMinimumHeight() -10);
-		m_microsdBtn.setCompoundDrawables(null, d, null, null);
-		nTextColor = nDrawable = nActiveBtnId == R.id.main_microsd ? R.color.color_blue
-				: R.color.color_grey;
-		m_microsdBtn.setTextColor(this.getResources().getColor(nTextColor));
+        m_settingBtn.setImageResource(nDrawable);
 	}
 	
 	public static void setLogoutFlag(boolean blLogout){
