@@ -13,19 +13,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
@@ -40,13 +36,10 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
 	private TextView m_tv_done;
-	private LinearLayout m_logout_and_changepwd;
 	private LinearLayout m_inputpwd;
 	private TextView m_notice;
 	private FrameLayout m_fl_titlebar;
-	private RelativeLayout m_change_password;
-	private TextView m_logout;
-	
+
 	private EditText m_current_password;
 	private EditText m_new_password;
 	private EditText m_confirm_password;
@@ -59,7 +52,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.activity_setting_account);
+		setContentView(R.layout.activity_setting_account_new);
 		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		controlTitlebar();
@@ -77,7 +70,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		m_fl_titlebar.setVisibility(View.VISIBLE);
 		
 		m_tv_done = (TextView)findViewById(R.id.tv_titlebar_done);
-		m_tv_done.setVisibility(View.GONE);
+		m_tv_done.setVisibility(View.VISIBLE);
 		
 		findViewById(R.id.tv_titlebar_edit).setVisibility(View.GONE);
 		
@@ -87,21 +80,8 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	}
 	
 	private void initUi(){
-		m_logout_and_changepwd = (LinearLayout)findViewById(R.id.logout_and_change_password);
-		m_logout_and_changepwd.setVisibility(View.VISIBLE);
-		
-		m_inputpwd = (LinearLayout)findViewById(R.id.input_password);
-		m_inputpwd.setVisibility(View.GONE);
-		
-		m_change_password = (RelativeLayout) findViewById(R.id.setting_change_password_container);
-		m_logout = (TextView) findViewById(R.id.setting_logout);
-		
-		m_change_password.setOnClickListener(this);
-		m_logout.setOnClickListener(this);
-		
 		m_notice = (TextView)findViewById(R.id.password_notice);
-		m_notice.setVisibility(View.GONE);
-		
+
 		m_current_password = (EditText) findViewById(R.id.current_password);
 		
 		m_new_password = (EditText) findViewById(R.id.new_password);
@@ -111,13 +91,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		m_change_password_filter = new IntentFilter(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
 		m_change_password_filter.addAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
 		m_password_change_receiver = new PassWordChangeReceiver();
-	}
-	
-	private void changePwdClick(){
-		m_logout_and_changepwd.setVisibility(View.GONE);
-		m_inputpwd.setVisibility(View.VISIBLE);
-		m_tv_done.setVisibility(View.VISIBLE);
-		m_notice.setVisibility(View.VISIBLE);
 	}
 	
 	private void doneChangePassword(){
@@ -169,35 +142,11 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		case R.id.ib_title_back:
 			SettingAccountActivity.this.finish();
 			break;
-		case R.id.setting_change_password_container:
-			changePwdClick();
-			break;
 		case R.id.tv_titlebar_done:
 			doneChangePassword();
 			break;
-		case R.id.setting_logout:
-			userLogout();
-			CPEConfig.getInstance().userLogout();
-//			userChangePassword();
-			break;
 		default:
 			break;
-		}
-	}
-	
-	public void userLogout() {
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
-		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
-			MainActivity.setLogoutFlag(true);
-			SharedPrefsUtil.getInstance(this).putBoolean(LOGOUT_FLAG, true);
-			BusinessMannager.getInstance().sendRequestMessage(
-					MessageUti.USER_LOGOUT_REQUEST, null);
-			if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
-			{
-				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
-				this.sendBroadcast(intent2);
-				this.finish();
-			}
 		}
 	}
 	
@@ -250,10 +199,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 						&& strErrorCode.length() == 0){
 						String strInfo = getString(R.string.change_password_successful);
 						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-						m_tv_done.setVisibility(View.GONE);
-						m_logout_and_changepwd.setVisibility(View.VISIBLE);
-						m_inputpwd.setVisibility(View.GONE);
-						m_notice.setVisibility(View.GONE);
+						finish();
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() > 0){

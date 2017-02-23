@@ -192,7 +192,7 @@
 
 
     <!-- setting start -->
-    <string name="setting_account">login password</string>
+    <string name="setting_account">Login password</string>
     <string name="setting_network">Network</string>
     <string name="setting_mobile_network">Mobile network</string>
     <string name="setting_ethernet_wan_connection">Ethernet WAN connection</string>
@@ -307,9 +307,9 @@
     <string name="setting_wifi_error_title">Change Password</string>
     <string name="setting_change_login_password">Change Login Password</string>
     <string name="setting_log_out">Log Out</string>
-    <string name="setting_current_password">Current Password:</string>
-    <string name="setting_new_password">New Password:</string>
-    <string name="setting_confirm_password">Confirm Password:</string>
+    <string name="setting_current_password">Current Password</string>
+    <string name="setting_new_password">New Password(4~16 characters)</string>
+    <string name="setting_confirm_password">Confirm Password</string>
     <string name="setting_password_note">Note: The password should be 4&#8211;16 characters.</string>
     <string name="setting_network_mode">Network Mode</string>
     <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>

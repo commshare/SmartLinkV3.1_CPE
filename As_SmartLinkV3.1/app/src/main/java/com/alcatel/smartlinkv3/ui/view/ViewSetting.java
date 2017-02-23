@@ -192,7 +192,7 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
 
     @Override
     protected void init() {
-        m_view = LayoutInflater.from(m_context).inflate(R.layout.view_setting_new,
+        m_view = LayoutInflater.from(m_context).inflate(R.layout.view_setting,
                 null);
         //		m_lvSettingListView = (ListView)m_view.findViewById(R.id.settingList);
         mLoginPassword = (RelativeLayout) m_view.findViewById(R.id.setting_login_password);
