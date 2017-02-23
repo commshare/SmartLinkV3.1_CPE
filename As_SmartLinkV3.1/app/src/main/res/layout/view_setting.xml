@@ -43,7 +43,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/setting_wifi"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:src="@drawable/right_arrow_big"/>
             </RelativeLayout>
 
@@ -83,7 +83,7 @@
                         android:layout_height="@dimen/dimen_20dip"
                         android:layout_centerVertical="true"
                         android:contentDescription="@string/setting_wifi"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="@dimen/common_margin"
                         android:src="@drawable/right_arrow_big"/>
 
                     <TextView
@@ -141,7 +141,7 @@
                         android:layout_height="@dimen/dimen_20dip"
                         android:layout_centerVertical="true"
                         android:contentDescription="@string/setting_wifi"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="@dimen/common_margin"
                         android:src="@drawable/right_arrow_big"/>
 
                     <TextView
@@ -190,7 +190,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/setting_wifi"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:src="@drawable/right_arrow_big"/>
             </RelativeLayout>
 
@@ -227,7 +227,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/setting_wifi"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:src="@drawable/right_arrow_big"/>
 
                 <TextView
@@ -282,7 +282,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/setting_wifi"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:src="@drawable/right_arrow_big"/>
 
                 <ImageView
@@ -327,7 +327,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/setting_wifi"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:src="@drawable/right_arrow_big"/>
 
             </RelativeLayout>
@@ -365,7 +365,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/setting_wifi"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:src="@drawable/right_arrow_big"/>
 
             </RelativeLayout>

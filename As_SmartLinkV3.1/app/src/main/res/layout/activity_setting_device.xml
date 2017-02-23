@@ -42,7 +42,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big"
-                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_gravity="center|end"/>
             </FrameLayout>
         
@@ -87,7 +87,7 @@
                         android:layout_height="@dimen/dimen_20dip"
                         android:contentDescription="@string/setting_wifi"
                         android:src="@drawable/right_arrow_big"
-                        android:layout_marginRight="@dimen/dimen_15dip"/>
+                        android:layout_marginRight="@dimen/common_margin"/>
 
                     <TextView
                         android:id="@+id/device_upgrade_flag"
@@ -129,7 +129,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big"
-                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_gravity="center|end"/>
              </FrameLayout>
 
@@ -203,7 +203,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big"
-                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_gravity="center|end"/>
             </FrameLayout>
 
@@ -237,7 +237,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big"
-                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_gravity="center|end"/>
             </FrameLayout>
 
@@ -279,7 +279,7 @@
                     android:layout_height="@dimen/dimen_20dip"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big"
-                    android:layout_marginRight="@dimen/dimen_15dip"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_gravity="center|end"/>
 
             </FrameLayout>

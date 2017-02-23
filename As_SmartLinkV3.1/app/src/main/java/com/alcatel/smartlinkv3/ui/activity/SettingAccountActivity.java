@@ -56,7 +56,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.activity_setting_account_new);
+		setContentView(R.layout.activity_setting_account);
 		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
 		controlTitlebar();
