@@ -194,7 +194,15 @@
     <!-- setting start -->
     <string name="setting_account">login password</string>
     <string name="setting_network">Network</string>
+    <string name="setting_mobile_network">Mobile network</string>
+    <string name="setting_ethernet_wan_connection">Ethernet WAN connection</string>
+    <string name="setting_on_state">On</string>
+    <string name="setting_off_state">Off</string>
     <string name="setting_share">Sharing Service</string>
+    <string name="setting_firmware_upgrade">Firmware upgrade</string>
+    <string name="setting_restart_reset">Restart &amp; Reset</string>
+    <string name="setting_backup_restore">Backup &amp; Restore</string>
+    <string name="setting_not_support_sharing_service">Your device does not support shared services</string>
     <string name="setting_device">Device</string>
     <string name="setting_printer">Printer</string>
     <string name="setting_usb_storage">USB Storage</string>

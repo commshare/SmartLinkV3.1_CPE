@@ -1,0 +1,375 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/color_bg_grey">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/setting_login_password"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_login_password_pic"
+                    android:layout_marginTop="@dimen/dimen_20dip"
+                    android:layout_marginBottom="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/settings_ic_account"
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"/>
+
+                <TextView
+                    android:textSize="@dimen/font_size_normal"
+                    android:textColor="@color/black_text"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/setting_login_password_pic"
+                    android:text="@string/setting_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/setting_login_password_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/setting_wifi"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/right_arrow_big"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/setting_mobile_network"
+                    android:layout_marginTop="@dimen/dimen_10dip"
+                    android:background="@color/color_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/setting_mobile_network_pic"
+                        android:layout_marginTop="@dimen/dimen_20dip"
+                        android:layout_marginBottom="@dimen/dimen_20dip"
+                        android:layout_marginLeft="@dimen/dimen_20dip"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/settings_ic_mobile"
+                        android:layout_width="@dimen/dimen_30dip"
+                        android:layout_height="@dimen/dimen_30dip"/>
+
+                    <TextView
+                        android:textSize="@dimen/font_size_normal"
+                        android:textColor="@color/black_text"
+                        android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/setting_mobile_network_pic"
+                        android:text="@string/setting_mobile_network"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/setting_mobile_network_arrow"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="@dimen/dimen_20dip"
+                        android:layout_height="@dimen/dimen_20dip"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/setting_wifi"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/right_arrow_big"/>
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/font_size_normal"
+                        android:layout_toLeftOf="@id/setting_mobile_network_arrow"
+                        android:layout_marginRight="@dimen/dimen_10dip"
+                        android:textColor="@color/grey_text"
+                        android:text="@string/setting_on_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/setting_mobile_network_line"
+                        android:visibility="visible"
+                        android:layout_toRightOf="@id/setting_mobile_network_pic"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:background="@color/grey_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_0.5dip"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/setting_ethernet_wan"
+                    android:layout_below="@id/setting_mobile_network"
+                    android:background="@color/color_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/setting_ethernet_wan_pic"
+                        android:layout_marginTop="@dimen/dimen_20dip"
+                        android:layout_marginBottom="@dimen/dimen_20dip"
+                        android:layout_marginLeft="@dimen/dimen_20dip"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/settings_ic_wan"
+                        android:layout_width="@dimen/dimen_30dip"
+                        android:layout_height="@dimen/dimen_30dip"/>
+
+                    <TextView
+                        android:textSize="@dimen/font_size_normal"
+                        android:textColor="@color/black_text"
+                        android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/setting_ethernet_wan_pic"
+                        android:text="@string/setting_ethernet_wan_connection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/setting_ethernet_wan_arrow"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="@dimen/dimen_20dip"
+                        android:layout_height="@dimen/dimen_20dip"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/setting_wifi"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/right_arrow_big"/>
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/font_size_normal"
+                        android:layout_toLeftOf="@id/setting_ethernet_wan_arrow"
+                        android:layout_marginRight="@dimen/dimen_10dip"
+                        android:textColor="@color/grey_text"
+                        android:text="@string/setting_off_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_sharing_service"
+                android:layout_marginTop="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_sharing_service_pic"
+                    android:layout_marginTop="@dimen/dimen_20dip"
+                    android:layout_marginBottom="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/settings_ic_sharing"
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"/>
+
+                <TextView
+                    android:textSize="@dimen/font_size_normal"
+                    android:textColor="@color/black_text"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/setting_sharing_service_pic"
+                    android:text="@string/setting_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/setting_sharing_service_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/setting_wifi"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/right_arrow_big"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_firmware_upgrade"
+                android:layout_marginTop="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_firmware_upgrade_pic"
+                    android:layout_marginTop="@dimen/dimen_20dip"
+                    android:layout_marginBottom="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/settings_ic_upgrade"
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"/>
+
+                <TextView
+                    android:textSize="@dimen/font_size_normal"
+                    android:textColor="@color/black_text"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/setting_firmware_upgrade_pic"
+                    android:text="@string/setting_firmware_upgrade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/setting_firmware_upgrade_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/setting_wifi"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/right_arrow_big"/>
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/font_size_normal"
+                    android:layout_toLeftOf="@id/setting_firmware_upgrade_arrow"
+                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:textColor="@color/grey_text"
+                    android:text="1.2.4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/setting_firmware_upgrade_line"
+                    android:visibility="visible"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/grey_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_restart"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_restart_pic"
+                    android:layout_marginTop="@dimen/dimen_20dip"
+                    android:layout_marginBottom="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/settings_ic_restart"
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"/>
+
+                <TextView
+                    android:textSize="@dimen/font_size_normal"
+                    android:textColor="@color/black_text"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/setting_restart_pic"
+                    android:text="@string/setting_restart_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/setting_restart_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/setting_wifi"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/right_arrow_big"/>
+
+                <ImageView
+                    android:id="@+id/setting_restart_line"
+                    android:visibility="visible"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/grey_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_backup"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_backup_pic"
+                    android:layout_marginTop="@dimen/dimen_20dip"
+                    android:layout_marginBottom="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/settings_ic_backup"
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"/>
+
+                <TextView
+                    android:textSize="@dimen/font_size_normal"
+                    android:textColor="@color/black_text"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/setting_backup_pic"
+                    android:text="@string/setting_backup_restore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/setting_backup_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/setting_wifi"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/right_arrow_big"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_about"
+                android:layout_marginTop="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_about_pic"
+                    android:layout_marginTop="@dimen/dimen_20dip"
+                    android:layout_marginBottom="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/settings_ic_about"
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"/>
+
+                <TextView
+                    android:textSize="@dimen/font_size_normal"
+                    android:textColor="@color/black_text"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/setting_about_pic"
+                    android:text="@string/setting_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/setting_about_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/setting_wifi"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/right_arrow_big"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

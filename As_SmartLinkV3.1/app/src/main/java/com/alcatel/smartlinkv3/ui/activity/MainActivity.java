@@ -663,7 +663,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             {
                 Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
                 this.sendBroadcast(intent2);
-                this.finish();
             }
         }
     }
