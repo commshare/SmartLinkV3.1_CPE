@@ -63,20 +63,20 @@
     <dimen name="dimen_480dip">480dip</dimen>
     <dimen name="dimen_new_sms_edit_number">280dip</dimen>
     <dimen name="dimen_new_sms_edit_content">240dip</dimen>
-    
+
     <dimen name="dimen_corner_8dip">8dip</dimen>
-    
-    <dimen name="dimen_textsize_10sp">10sp</dimen> 
+
+    <dimen name="dimen_textsize_10sp">10sp</dimen>
     <dimen name="dimen_textsize_12sp">12sp</dimen>
     <dimen name="dimen_textsize_13sp">13sp</dimen>
     <dimen name="dimen_textsize_14sp">14sp</dimen>
-    <dimen name="dimen_textsize_16sp">16sp</dimen> 
-    <dimen name="dimen_textsize_18sp">18sp</dimen> 
-	<dimen name="dimen_textsize_24sp">24sp</dimen>
+    <dimen name="dimen_textsize_16sp">16sp</dimen>
+    <dimen name="dimen_textsize_18sp">18sp</dimen>
+    <dimen name="dimen_textsize_24sp">24sp</dimen>
     <dimen name="dimen_textsize_28sp">28sp</dimen>
     <dimen name="dimen_textsize_30sp">30sp</dimen>
-    <dimen name="dimen_textsize_20sp">20sp</dimen>    
-    <dimen name="dimen_textsize_19sp">19sp</dimen>    
+    <dimen name="dimen_textsize_20sp">20sp</dimen>
+    <dimen name="dimen_textsize_19sp">19sp</dimen>
     <dimen name="dimen_textsize_22sp">22sp</dimen>
     <dimen name="dimen_textsize_32sp">32sp</dimen>
     <dimen name="dimen_textsize_34sp">34sp</dimen>
@@ -94,15 +94,15 @@
     <dimen name="path_indicator_button_padding_left">6.0dip</dimen>
     <dimen name="path_indicator_button_padding_right">6.0dip</dimen>
     <dimen name="path_indicator_button_width">100dp</dimen>
-    
+
     <dimen name="title_bar_height">35.0dip</dimen>
-    
+
     <dimen name="textview_horizontal_margin">16dp</dimen>
     <dimen name="quick_setup_edittext_width">250dip</dimen>
     <dimen name="quick_setup_puk_edittext_width">180dip</dimen>
     <dimen name="quick_setup_puk_textview_width">90dip</dimen>
     <dimen name="quick_setup_edittext_height">40dip</dimen>
-    
+
     <dimen name="setting_name_size_s">20sp</dimen>
     <dimen name="setting_prompt_size_s">15sp</dimen>
     <dimen name="setting_padding_s">20dp</dimen>
@@ -113,10 +113,15 @@
     <dimen name="common_margin_middle">8dp</dimen>
     <dimen name="common_margin">16dp</dimen>
 
+    <dimen name="action_bar_height">60dp</dimen>
+
     <dimen name="font_size_middle">14sp</dimen>
     <dimen name="font_size_normal">16sp</dimen>
     <dimen name="font_size_large">20sp</dimen>
 
     <dimen name="setting_item_height">50dip</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>

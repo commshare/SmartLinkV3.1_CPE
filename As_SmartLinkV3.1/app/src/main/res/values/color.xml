@@ -45,7 +45,7 @@
     <color name="call_log_item_selected">#ff4a4a4a</color>
     <!-- call log end -->
 
-    <color name="main_title_background">#ff0089cf</color>
+    <color name="main_title_background">#009AFF</color>
     <color name="main_top_divider">#ff2ba8e7</color>
     <color name="main_bottom_divider">#ffdbdbdb</color>
     <color name="main_tabbar_background">#fff9f9f9</color>

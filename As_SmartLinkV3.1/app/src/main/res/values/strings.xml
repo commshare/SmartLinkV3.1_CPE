@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+           xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">Alcatel Link</string>
 
@@ -26,21 +27,33 @@
     <string name="qs_exit_query">Exit Quick Setup</string>
     <string name="qs_item_pin_code">PIN Code</string>
     <string name="qs_pin_code_prompt">Please input the PIN code\nRemain:</string>
-    <string name="qs_pin_code_prompt_num"><xliff:g id="INPUTTIMES">%1$d</xliff:g> time(s)</string>
+    <string name="qs_pin_code_prompt_num">
+        <xliff:g id="INPUTTIMES">%1$d</xliff:g>
+        time(s)
+    </string>
     <string name="qs_item_wifi_ssid">Wi-Fi Network Name (SSID)</string>
     <string name="qs_wifi_ssid_prompt">The SSID should be 1&#8211;32 characters.</string>
     <string name="qs_item_wifi_passwd">Wi-Fi Password</string>
     <string name="qs_wifi_passwd_prompt">The password should be 8&#8211;63 characters.</string>
-    <string name="qs_wifi_wep_passwd_prompt">The password should be 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits</string>
+    <string name="qs_wifi_wep_passwd_prompt">The password should be 5 or 13 ASCII characters, or 10 or 26 hexadecimal
+        digits
+    </string>
     <string name="qs_completed">Setup Completed</string>
     <string name="qs_summary">Your device is ready to use.</string>
-    <string name="qs_wifi_ssid">Wi-Fi Network Name (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>
-    <string name="qs_wifi_passwd">Wi-Fi Password: <xliff:g id="PASSWD">%1$s</xliff:g></string>
-    <string name="qs_puk_code_title">PUK Code </string>
-    <string name="qs_puk_code_prompt">Please input the PUK code\nRemain: <xliff:g id="INPUTTIMES">%1$d</xliff:g> time(s)</string>
-    <string name="qs_puk_code">PUK Code: </string>
-    <string name="qs_pin_code_new">New PIN: </string>
-    <string name="qs_pin_code_confirm">Confirm PIN: </string>
+    <string name="qs_wifi_ssid">Wi-Fi Network Name (SSID):
+        <xliff:g id="SSID">%1$s</xliff:g>
+    </string>
+    <string name="qs_wifi_passwd">Wi-Fi Password:
+        <xliff:g id="PASSWD">%1$s</xliff:g>
+    </string>
+    <string name="qs_puk_code_title">PUK Code</string>
+    <string name="qs_puk_code_prompt">Please input the PUK code\nRemain:
+        <xliff:g id="INPUTTIMES">%1$d</xliff:g>
+        time(s)
+    </string>
+    <string name="qs_puk_code">PUK Code:</string>
+    <string name="qs_pin_code_new">New PIN:</string>
+    <string name="qs_pin_code_confirm">Confirm PIN:</string>
     <!-- Quick Setup End -->
 
 
@@ -87,7 +100,9 @@
     <string name="home_no_sim">no sim card</string>
     <string name="home_sim_not_accessible">Sim card is not accessible</string>
     <string name="home_battery_unit">%</string>
-    <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please change the monthly values or reset consumption.</string>
+    <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please
+        change the monthly values or reset consumption.
+    </string>
     <!-- Home view end -->
 
 
@@ -157,7 +172,9 @@
     <string name="sms_new_title">New Message</string>
     <string name="sms_error_send_error">Send SMS error!</string>
     <string name="sms_send_success">Send SMS success.</string>
-    <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new SMS.</string>
+    <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new
+        SMS.
+    </string>
     <string name="sms_delete_multi_success">Delete conversation success!</string>
     <string name="sms_delete_multi_error">Delete conversation failed!</string>
     <string name="sms_delete_error">Delete SMS error!</string>
@@ -178,7 +195,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Set failed!</string>
-	<string name="device_manage_name_empty">Device name is invalid.</string>
+    <string name="device_manage_name_empty">Device name is invalid.</string>
     <!-- connect device end -->
 
 
@@ -229,8 +246,12 @@
     <string name="setting_wifi_password_wpa_psw_tip">Wifi Password:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Encryption Type:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wifi Password:</string>
-    <string name="setting_wep_password_error_prompt">Wep Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
-    <string name="setting_wpa_password_error_prompt">The WPA Pre&#8211;Shared Key (PSK) should be 8&#8211;63 ASCII characters and WPA PSK should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.</string>
+    <string name="setting_wep_password_error_prompt">Wep Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits
+        and WEP Key should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.
+    </string>
+    <string name="setting_wpa_password_error_prompt">The WPA Pre&#8211;Shared Key (PSK) should be 8&#8211;63 ASCII
+        characters and WPA PSK should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.
+    </string>
     <string name="setting_password_error_prompt">Change Wifi Password Error, please retry after a moment!</string>
     <string name="setting_disable_password_error_prompt">Disable Wifi Password failed!</string>
     <string name="setting_titlebar_text_edit">Edit</string>
@@ -242,7 +263,9 @@
     <string name="setting_title_about">About</string>
     <string name="setting_power_smart">Smart</string>
     <string name="setting_power_wifi">WiFi Sleep</string>
-    <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for 30 mins, press any key to wake up.</string>
+    <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for 30
+        mins, press any key to wake up.
+    </string>
     <string name="setting_backup_description">Backup the configuration.</string>
     <string name="setting_backup_btn_backup">Backup</string>
     <string name="setting_restore_description">Restore the configuration.</string>
@@ -251,15 +274,17 @@
     <string name="setting_about_official_website">Official website</string>
     <string name="setting_about_management_page">Management page</string>
     <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. All right reserved.</string>
-    <string name="setting_upgrade_device_version">Current Version: </string>
-    <string name="setting_upgrade_new_device_version">Find a new version </string>
+    <string name="setting_upgrade_device_version">Current Version:</string>
+    <string name="setting_upgrade_new_device_version">Find a new version</string>
     <string name="setting_upgrade_btn_check">Check</string>
     <string name="setting_upgrade_current_app_version">Mobile phone apps: Current Version v</string>
     <string name="setting_upgrade_new_app_version">Find a new version v</string>
     <string name="setting_upgrade_check_failed">Check failed</string>
     <string name="setting_upgrade_no_new_version">No new version</string>
     <string name="setting_upgrade_no_connection">No connection</string>
-    <string name="setting_upgrade_firmware_warning">The upgrade process will continue for a few minutes, please don\'t power off. Are you sure want to upgrade the system?</string>
+    <string name="setting_upgrade_firmware_warning">The upgrade process will continue for a few minutes, please don\'t
+        power off. Are you sure want to upgrade the system?
+    </string>
     <string name="setting_upgrade_check_error">Check error</string>
     <string name="setting_upgrade_btn_upgrade">Upgrade</string>
     <string name="setting_upgrade_not_start">Upgrade not start</string>
@@ -303,7 +328,9 @@
     <string name="setting_reset_success">Set successfully, device will reset immediately.</string>
     <string name="setting_power_off_failed">Power Off failed.</string>
     <string name="setting_power_off_success">Set successfully, device will power off immediately.</string>
-    <string name="setting_ssid_invalid">SSID can contain only a&#8211;z, A&#8211;Z, 0&#8211;9, &#45; &#46; &#95; and space. It\'s length should be less than 32.</string>
+    <string name="setting_ssid_invalid">SSID can contain only a&#8211;z, A&#8211;Z, 0&#8211;9, &#45; &#46; &#95; and
+        space. It\'s length should be less than 32.
+    </string>
     <string name="setting_wifi_error_title">Change Password</string>
     <string name="setting_change_login_password">Change Login Password</string>
     <string name="setting_log_out">Log Out</string>
@@ -315,7 +342,7 @@
     <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>
     <string name="setting_network_selection">Network Selection</string>
     <string name="setting_network_wifi_network_title">WiFi Network</string>
-    <string name="setting_network_profile_list">Profile List     </string>
+    <string name="setting_network_profile_list">Profile List</string>
     <string name="setting_network_add_profile">Add Profile</string>
     <string name="setting_network_disconnect_first">Please disconect your network first</string>
     <string name="setting_network_try_again">Disconnecting, please try again later</string>
@@ -333,7 +360,8 @@
     <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
     <string name="setting_network_profile_management_profile_detail">Profile Detail</string>
     <string name="setting_network_profile_management_delete_profile">Delete Profile</string>
-    <string name="setting_network_profile_dial_number_wrong">The length of your dial number can not be larger than 24</string>
+    <string name="setting_network_profile_dial_number_wrong">The length of your dial number can not be larger than 24
+    </string>
     <string name="setting_network_profile_dial_number_empty">Dial number can not be empty</string>
     <string name="setting_network_profile_input_profile_name">Profile name can not be empty</string>
     <string name="setting_network_profile_error_profile_name">Profile name can not inlude some special tokens</string>
@@ -347,8 +375,11 @@
     <string name="setting_network_profile_management_auth_type_pap">PAP</string>
     <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
     <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&#038;CHAP</string>
-    <string name="setting_network_profile_management_cannot_delete_predefined_profile">Can not delete predefined profile</string>
-    <string name="setting_network_profile_management_cannot_delete_default_profile">Can not delete default profile</string>
+    <string name="setting_network_profile_management_cannot_delete_predefined_profile">Can not delete predefined
+        profile
+    </string>
+    <string name="setting_network_profile_management_cannot_delete_default_profile">Can not delete default profile
+    </string>
     <string name="setting_network_profile_management_already_default">Profile has already been set to default</string>
     <string name="setting_wifi_wep">WEP</string>
     <string name="setting_wifi_wpa">WPA</string>
@@ -361,11 +392,11 @@
     <string name="setting_wifi_save">Save</string>
     <string name="setting_wifi_ssid_can_not_be_empty">SSID can not be empty!</string>
 
-    <string name="setting_item_link_app_version">LINK APP Version </string>
-    <string name="setting_network_selection_available">Available </string>
-    <string name="setting_network_selection_forbidden">Forbidden </string>
-    <string name="setting_network_selection_unknown">Unknown </string>
-    <string name="setting_network_selection_selected">Selected </string>
+    <string name="setting_item_link_app_version">LINK APP Version</string>
+    <string name="setting_network_selection_available">Available</string>
+    <string name="setting_network_selection_forbidden">Forbidden</string>
+    <string name="setting_network_selection_unknown">Unknown</string>
+    <string name="setting_network_selection_selected">Selected</string>
 
     <string name="setting_profile_note">Note: The max number of the profile you can create is 15.</string>
 
@@ -380,27 +411,31 @@
     <string name="usage_limit_notification_title">Data usage warning</string>
     <string name="usage_limit_over_notification_content">Data usage reaches Monthly Data Plan.</string>
     <string name="usage_limit_less_notification_content">Your usage has less than %1$s.</string>
-    <string name="usage_maximum_monthly_plan_notice">The maximum monthly plan is </string>
+    <string name="usage_maximum_monthly_plan_notice">The maximum monthly plan is</string>
     <string name="battery_limit_notification_title">Battery warning</string>
     <string name="battery_limit_notification_content1">Low battery, %d%% of battery remaining.</string>
     <string name="battery_limit_notification_content2">Low battery, %d%% of battery remaining.</string>
     <string name="new_message_notification_title">New Message</string>
     <string name="new_message_notification_content">There is a new message..</string>
-    <string name="upgrade_notification_title">Upgrade </string>
+    <string name="upgrade_notification_title">Upgrade</string>
     <string name="upgrade_notification_content">There is a new version..</string>
     <!-- notification end -->
 
     <!-- Dialog start -->
     <string name="dialog_delete_title">Confirm Deletion</string>
     <string name="dialog_delete_content">Confirm deletion of this chat\'s history</string>
-    <string name="dialog_delete_content_description">If you want to delete one SMS, long press it then choose delete.</string>
+    <string name="dialog_delete_content_description">If you want to delete one SMS, long press it then choose delete.
+    </string>
     <string name="dialog_delete_button">Delete Chat History</string>
     <string name="dialog_delete_single_sms_content">Delete this message?</string>
     <string name="dialog_delete_multi_sms_content">Delete this message(s)?</string>
-    <string name="dialog_warning_5g">If your phone doses not supply 5G, you might not be able to use all 5G features.</string>
+    <string name="dialog_warning_5g">If your phone doses not supply 5G, you might not be able to use all 5G features.
+    </string>
     <string name="dialog_change_to_5g">Change your WIFI to 5G</string>
     <string name="dialog_warning_title">Warning</string>
-    <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, please enter the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly.</string>
+    <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, please enter
+        the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly.
+    </string>
     <!-- Dialog end -->
 
     <!-- replace folder dialog start -->
@@ -440,9 +475,12 @@
     <string name="login_check_dialog_title">Login</string>
     <string name="login_check_dialog_content">Login</string>
     <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
-    <string name="login_other_user_logined_error_msg"> Other user is login, please relogin after a moment!</string>
-    <string name="login_other_user_logined_error_forcelogin_msg"> Other user already logined, do you still want to login? This will kick other user off.</string>
-    <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.</string>
+    <string name="login_other_user_logined_error_msg">Other user is login, please relogin after a moment!</string>
+    <string name="login_other_user_logined_error_forcelogin_msg">Other user already logined, do you still want to login?
+        This will kick other user off.
+    </string>
+    <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.
+    </string>
     <string name="login_warning">Login warning</string>
     <string name="login_logout_successful">Logout successfully!</string>
     <string name="login_kickoff_logout_successful">Sorry, you are kicked off!</string>
@@ -468,13 +506,15 @@
 
     <string name="refresh_no_device_manage">No device can be managed.</string>
     <string name="refresh_get_connected">Get connected</string>
-    <string name="refresh_manage_device_tips">To manage your device,make sure your phone is connected to the device is Wi-Fi network</string>
+    <string name="refresh_manage_device_tips">To manage your device,make sure your phone is connected to the device is
+        Wi-Fi network
+    </string>
     <!-- Refresh WIFI end -->
 
 
     <!-- DLNA start -->
     <string name="second">S</string>
-    <string name="separate"> / </string>
+    <string name="separate">/</string>
     <string name="init_time">00:00</string>
     <string name="load_image_fail">"image load fail"</string>
     <string name="parse_image_fail">"image parse fail"</string>
@@ -486,10 +526,12 @@
     <string name="mp_unknown_artist">Unknow Artist</string>
     <string name="mp_unknown_album">Unknow Album</string>
     <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
-    <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be reference&#160;&#160;&#160;***</string>
+    <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be
+        reference&#160;&#160;&#160;***
+    </string>
     <string name="ftp_not_open">Open FTP function in settings!</string>
     <string name="dlna_not_open">Open DLNA function in settings!</string>
-     
+
     <!-- DLNA end -->
 
 
@@ -565,12 +607,17 @@
     <string name="dialog_type_image">Image</string>
     <string name="favorite_photo">Photo</string>
     <string name="favorite_sdcard">SD Card</string>
-    <string name="multi_select_title">Selected <xliff:g id="number">%1$s</xliff:g> item(s)</string>
+    <string name="multi_select_title">Selected
+        <xliff:g id="number">%1$s</xliff:g>
+        item(s)
+    </string>
     <string name="menu_exit">Exit</string>
     <string name="pref_primary_folder">Home folder</string>
     <string name="pref_read_root">Read root</string>
     <string name="default_primary_folder">/mnt/sdcard</string>
-    <string name="pref_primary_folder_summary">The folder that appears when the app starts, and current value is <xliff:g id="string">%1$s</xliff:g></string>
+    <string name="pref_primary_folder_summary">The folder that appears when the app starts, and current value is
+        <xliff:g id="string">%1$s</xliff:g>
+    </string>
     <string name="custom_delete_dlg_text1">Delete</string>
     <string name="custom_delete_dlg_text2">Selected file will be deleted?</string>
     <string name="details_text_size">Size:</string>
@@ -581,7 +628,7 @@
     <string name="foler_name">foler name</string>
     <string name="sdcard">Sd Card</string>
     <string name="fail">Fail</string>
-	<string name="no_file">Empty directory</string>
+    <string name="no_file">Empty directory</string>
     <string-array name="fail_cause">
         <item>[cause 1] Foler is exists!</item>
         <item>[cause 2] Failed to create the folder!</item>
@@ -594,7 +641,7 @@
     </string-array>
 
     <string name="download_text_dling">Downloading...</string>
-    <string name="download_text_path">Path: </string>
+    <string name="download_text_path">Path:</string>
     <!-- FTP FILE END -->
 
 
@@ -607,11 +654,18 @@
 
     <!-- Welcome Guide -->
     <string name="guide1_title">REMOTE CONTROL</string>
-    <string name="guide1_description">Link APP is compatible with all ALCATEL ONETOUCH mobile WiFi supporting 4G LTE High Speed. Thanks to this app you can easily manage your mobile WiFi directly from smartphone or tablet.</string>
+    <string name="guide1_description">Link APP is compatible with all ALCATEL ONETOUCH mobile WiFi supporting 4G LTE
+        High Speed. Thanks to this app you can easily manage your mobile WiFi directly from smartphone or tablet.
+    </string>
     <string name="guide2_title">ALWAYS UP TO DATE</string>
-    <string name="guide2_description">LINK APP displays in real time the status of the connection and data speeds, battery life and SMS. Through the app you can set monthly data usage plan and you\'ll be automatically disconnected once you reach preset limit.</string>
+    <string name="guide2_description">LINK APP displays in real time the status of the connection and data speeds,
+        battery life and SMS. Through the app you can set monthly data usage plan and you\'ll be automatically
+        disconnected once you reach preset limit.
+    </string>
     <string name="guide3_title">SECURITY MANAGER</string>
-    <string name="guide3_description">Through LINK APP you can block any device trying to connect to your WiFi hotspot with no permission. And you\'ll also be free to edit user\'s name to easily recognize them.</string>
+    <string name="guide3_description">Through LINK APP you can block any device trying to connect to your WiFi hotspot
+        with no permission. And you\'ll also be free to edit user\'s name to easily recognize them.
+    </string>
     <string name="what_new_btn_text">Start</string>
     <!-- Welcome Guide End -->
 
@@ -619,7 +673,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-    
+
     <string name="added_favorite">Added to Favorites</string>
     <string name="category_favorite">Favorites</string>
     <string name="enable_sd_card">SD card is not available, please connect one</string>
@@ -636,8 +690,13 @@
     <string name="operation_hide_sys">Hide hidden files</string>
     <string name="operation_unfavorite">Remove from Favorites</string>
     <string name="removed_favorite">Removed from Favorites</string>
-    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g> Available</string>
-    <string name="sd_card_size">SD Size:<xliff:g id="total_size">%1$s</xliff:g></string>
+    <string name="sd_card_available">
+        <xliff:g id="available_size">%1$s</xliff:g>
+        Available
+    </string>
+    <string name="sd_card_size">SD Size:
+        <xliff:g id="total_size">%1$s</xliff:g>
+    </string>
     <string name="search_hint">Search Files</string>
     <string name="search_title">Search Files</string>
     <string name="start_server">Start Service</string>
@@ -657,5 +716,14 @@
     <string name="g_unit">GB</string>
     <string name="confirm_unit">CONFIRM</string>
 
-    
+    <!--Connect tyep selected-->
+    <string name="connect_type_select_sim_card_disable">Insert SIM card first</string>
+    <string name="connect_type_select_wan_port_disable">Or insert Internet cable to WAN port</string>
+    <string name="connect_type_select_sim_card_enable">Always use Mobile Broadband ></string>
+    <string name="connect_type_select_wan_port_enable">Always use Ethernet connection ></string>
+
+    <!--main header String-->
+    <string name="main_header_linkhub">LINKHUB</string>
+
+
 </resources>

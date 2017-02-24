@@ -12,7 +12,6 @@ import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -137,11 +136,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		rl_top = (RelativeLayout)findViewById(R.id.main_layout_top);
 		wifi_key_status = getResources().getString(R.string.wifi_key_edit);
 
-        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-        rl_params.height = (m_displayMetrics.heightPixels * 9)/100;
-        rl_top.setLayoutParams(rl_params);
+//        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
+//                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//
+//        rl_params.height = (m_displayMetrics.heightPixels * 9)/100;
+//        rl_top.setLayoutParams(rl_params);
 
 		m_homeBtn = (ImageView) this.findViewById(R.id.main_home);
 		m_homeBtn.setOnClickListener(this);

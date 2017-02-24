@@ -9,10 +9,10 @@
     </style>
 
     <style name="CustomizedWindowTitleBackground"> 
-        <item name="android:background">#0089cf</item> 
+        <item name="android:background">@color/main_title_background</item>
     </style> 
     <style name="titlebarstyle" parent="android:Theme"> 
-        <item name="android:windowTitleSize">45dp</item> 
+        <item name="android:windowTitleSize">@dimen/action_bar_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/CustomizedWindowTitleBackground</item> 
         <!-- All customizations that are NOT specific to a particular API-level can go here. --> 
     </style>
