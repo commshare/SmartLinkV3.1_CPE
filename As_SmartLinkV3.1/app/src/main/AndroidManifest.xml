@@ -33,7 +33,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".ui.activity.SmartLinkV3App"
@@ -95,11 +95,11 @@
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity
-            android:name=".ui.activity.SdSharingActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".ui.activity.SdSharingActivity"-->
+            <!--android:configChanges="orientation|screenSize|keyboardHidden"-->
+            <!--android:theme="@android:style/Theme.Black.NoTitleBar">-->
+        <!--</activity>-->
         <activity
             android:name=".ui.activity.UsageActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -176,11 +176,11 @@
             android:launchMode="singleTask"
             android:theme="@style/titlebarstyle">
         </activity>
-        <activity
-            android:name=".ui.activity.SetDefaultDirectoryActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".ui.activity.SetDefaultDirectoryActivity"-->
+            <!--android:configChanges="orientation|screenSize|keyboardHidden"-->
+            <!--android:theme="@android:style/Theme.Black.NoTitleBar">-->
+        <!--</activity>-->
         <activity
             android:name=".ui.activity.ActivityDeviceManager"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -209,12 +209,12 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
-        <activity
-            android:name=".ui.activity.SettingAboutFeedbackImageSelector"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".ui.activity.SettingAboutFeedbackImageSelector"-->
+            <!--android:configChanges="orientation|screenSize|keyboardHidden"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:theme="@style/titlebarstyle">-->
+        <!--</activity>-->
         <activity
             android:name=".fileexplorer.FtpFileExplorerTabActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -246,8 +246,8 @@
 
         <service android:name=".common.NotificationService">
         </service>
-        <service android:name=".samba.SmbService">
-        </service>
+        <!--<service android:name=".samba.SmbService">-->
+        <!--</service>-->
         <service
             android:name=".mediaplayer.center.DlnaService"
             android:enabled="true">
