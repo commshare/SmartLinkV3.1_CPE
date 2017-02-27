@@ -125,6 +125,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	private String wifi_key_status;
     private TextView mLoginState;
 
+    private long mkeyTime; //点击2次返回 键的时间
+
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -1336,8 +1338,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		m_wifiKeyView.revertWifiModeSetting();
+        if ((System.currentTimeMillis() - mkeyTime) > 2000) {
+            mkeyTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
+        } else {
+            m_wifiKeyView.revertWifiModeSetting();
+            super.onBackPressed();
+        }
 	}
 
 	public static ViewWifiKey getWifiKeyView(){
