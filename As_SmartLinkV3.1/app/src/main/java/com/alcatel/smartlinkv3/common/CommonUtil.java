@@ -5,14 +5,21 @@ import android.content.Intent;
 import android.net.DhcpInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.model.UsageDataMode;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class CommonUtil {
@@ -127,6 +134,107 @@ public class CommonUtil {
         }
         lastClickTime = time;
         return false;
+    }
+
+    // 生成文件
+    public File makeFilePath(String filePath, String fileName) {
+        File file = null;
+        makeRootDirectory(filePath);
+        try {
+            file = new File(filePath + fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    // 生成文件夹
+    public static void makeRootDirectory(String filePath) {
+        File file = null;
+        try {
+            file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        } catch (Exception e) {
+            Log.i("error:", e + "");
+        }
+    }
+
+    // 删除SD卡上的单个文件方法
+    public static boolean deleteFile(String fileName) {
+
+        File file = new File(fileName);
+        if (file == null || !file.exists() || file.isDirectory()){
+            return false;
+        }
+        file.delete();
+
+        return true;
+    }
+
+    /**
+     * 禁止EditText输空格+换行键
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpace(EditText editText){
+        InputFilter filter=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
+
+    /**
+     * 禁止EditText输入特殊字符
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpeChat(EditText editText){
+
+        InputFilter filter=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if(matcher.find())return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
+
+    /**
+     * 禁止EditText输入特殊字符+空格+换行键
+     * @param editText
+     */
+    public static void setEditTextInputFilter(EditText editText){
+
+        InputFilter filterSpace=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+                else return null;
+            }
+        };
+
+        InputFilter filterChat=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if(matcher.find())return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filterSpace, filterChat});
     }
 
 }

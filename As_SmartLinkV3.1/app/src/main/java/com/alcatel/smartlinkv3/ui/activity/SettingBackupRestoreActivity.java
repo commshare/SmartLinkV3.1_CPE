@@ -27,6 +27,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.system.RestoreError;
+import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.EnumRestoreErrorStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
@@ -38,8 +39,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.cybergarage.util.FileUtil;
-import org.cybergarage.util.StringUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -349,7 +348,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 
         //处理EditText
         mBackupNameEt.setText("");
-        StringUtil.setEditTextInputFilter(mBackupNameEt);
+        CommonUtil.setEditTextInputFilter(mBackupNameEt);
 
         mBackupConfirm = (TextView) backupDialogLLayout.findViewById(R.id.backup_confirm);
 
@@ -515,7 +514,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
                 String strPath = Environment.getExternalStorageDirectory().getPath()
                         + getString(R.string.setting_backup_path);
                 //生成文件目录
-                FileUtil.makeRootDirectory(strPath);
+                CommonUtil.makeRootDirectory(strPath);
                 //生成文件
                 final String localFileName = strPath + mBackupNameEt.getText() + ".bin";
 
@@ -532,7 +531,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
                             });
                         }else{
                             //删除错误的文件
-                            FileUtil.deleteFile(localFileName);
+                            CommonUtil.deleteFile(localFileName);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

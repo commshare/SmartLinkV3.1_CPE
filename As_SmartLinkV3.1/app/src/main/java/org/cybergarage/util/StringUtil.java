@@ -15,13 +15,6 @@
 
 package org.cybergarage.util;
 
-import android.text.InputFilter;
-import android.text.Spanned;
-import android.widget.EditText;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public final class StringUtil
 {
 	public final static boolean hasData(String value)
@@ -32,7 +25,7 @@ public final class StringUtil
 			return false;
 		return true;
 	}
-	
+
 	public final static int toInteger(String value)
 	{
 		try {
@@ -64,11 +57,11 @@ public final class StringUtil
 		while (true) {
 			if (0 < offset) {
 				if (endIdx < idx)
-					break; 
+					break;
 			}
 			else {
 				if (idx < endIdx)
-					break; 
+					break;
 			}
 			char strc = str.charAt(idx);
 			int noEqualCnt = 0;
@@ -89,27 +82,27 @@ public final class StringUtil
 		}
 		return -1;
 	}
-	
+
 	public final static int findFirstOf(String str, String chars)
 	{
 		return findOf(str, chars, 0, (str.length()-1), 1, true);
 	}
-	
+
 	public final static int findFirstNotOf(String str, String chars)
 	{
 		return findOf(str, chars, 0, (str.length()-1), 1, false);
 	}
-	
+
 	public final static int findLastOf(String str, String chars)
 	{
 		return findOf(str, chars, (str.length()-1), 0, -1, true);
 	}
-	
+
 	public final static int findLastNotOf(String str, String chars)
 	{
 		return findOf(str, chars, (str.length()-1), 0, -1, false);
 	}
-	
+
 	public final static String trim(String trimStr, String trimChars)
 	{
 		int spIdx = findFirstNotOf(trimStr, trimChars);
@@ -126,66 +119,5 @@ public final class StringUtil
 		String buf = trimStr2.substring(0, spIdx+1);
 		return buf;
 	}
-
-    /**
-     * 禁止EditText输空格+换行键
-     * @param editText
-     */
-    public static void setEditTextInhibitInputSpace(EditText editText){
-        InputFilter filter=new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
-                else return null;
-            }
-        };
-        editText.setFilters(new InputFilter[]{filter});
-    }
-
-    /**
-     * 禁止EditText输入特殊字符
-     * @param editText
-     */
-    public static void setEditTextInhibitInputSpeChat(EditText editText){
-
-        InputFilter filter=new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-                Pattern pattern = Pattern.compile(speChat);
-                Matcher matcher = pattern.matcher(source.toString());
-                if(matcher.find())return "";
-                else return null;
-            }
-        };
-        editText.setFilters(new InputFilter[]{filter});
-    }
-
-    /**
-     * 禁止EditText输入特殊字符+空格+换行键
-     * @param editText
-     */
-    public static void setEditTextInputFilter(EditText editText){
-
-        InputFilter filterSpace=new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
-                else return null;
-            }
-        };
-
-        InputFilter filterChat=new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-                Pattern pattern = Pattern.compile(speChat);
-                Matcher matcher = pattern.matcher(source.toString());
-                if(matcher.find())return "";
-                else return null;
-            }
-        };
-        editText.setFilters(new InputFilter[]{filterSpace, filterChat});
-    }
 }
 
