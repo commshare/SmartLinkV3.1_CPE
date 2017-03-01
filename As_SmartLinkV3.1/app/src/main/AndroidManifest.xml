@@ -226,6 +226,11 @@
             android:theme="@style/FtpFileDialog_Theme">
         </activity>
 
+        <activity android:name=".ui.activity.ConnectTypeSelectActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+                  android:screenOrientation="portrait">
+        </activity>
+
         <receiver android:name=".appwidget.SmartLinkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -266,8 +271,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.activity.ConnectTypeSelectActivity">
-        </activity>
     </application>
 
 </manifest>

@@ -1,12 +1,12 @@
 package com.alcatel.smartlinkv3.common;
 
-import java.io.File;
-
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+
+import java.io.File;
 
 public class CPEConfig {
 	private static CPEConfig mInstance = null;
@@ -154,4 +154,8 @@ public class CPEConfig {
 		public void setQuickSetupFlag(){
 		  mSettings.setQuickSetupFlag();
 		}
+
+        public void cleanAllSetupFlag(){
+            mSettings.cleanAllSetting();
+        }
 }
