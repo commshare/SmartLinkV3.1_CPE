@@ -54,6 +54,8 @@
     <string name="qs_puk_code">PUK Code:</string>
     <string name="qs_pin_code_new">New PIN:</string>
     <string name="qs_pin_code_confirm">Confirm PIN:</string>
+
+    <string name="qs_hint_sim_pin">SIM PIN</string>
     <!-- Quick Setup End -->
 
 

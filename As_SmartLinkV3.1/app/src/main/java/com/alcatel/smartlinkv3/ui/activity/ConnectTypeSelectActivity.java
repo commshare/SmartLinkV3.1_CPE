@@ -6,9 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +53,12 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     private ForceLoginSelectDialog forceLoginSelectDialog = null;
     private LoginDialog mLoginDialog = null;
 
+    private RelativeLayout mHandlePinContainer;
+    private RelativeLayout mNormalContainer;
+    private EditText mPinPassword;
+    private RelativeLayout mPinPasswordDel;
+    private InputMethodManager imm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +72,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     private void initView() {
         mHeaderBackIv = (ImageView) findViewById(R.id.main_header_back_iv);
         mHeaderBackIv.setVisibility(View.GONE);
+
+        mNormalContainer = (RelativeLayout) findViewById(R.id.connect_type_content_container);
         mHeaderSkipTv = (TextView) findViewById(R.id.main_header_right_text);
         mHeaderSkipTv.setVisibility(View.GONE);
 
@@ -67,6 +81,24 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mSimCardTv = (TextView) findViewById(R.id.connect_type_sim_card_tv);
         mWanPortTv = (TextView) findViewById(R.id.connect_type_wan_port_tv);
         mWanProtPic = (ImageView) findViewById(R.id.wan_port_pic);
+
+        mHandlePinContainer = (RelativeLayout) findViewById(R.id.connect_type_handle_pin_container);
+        mPinPassword = (EditText) findViewById(R.id.handle_pin_password);
+        mPinPassword.setOnClickListener(this);
+        mPinPassword.addTextChangedListener(mTextWatcher);
+//        mPinPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+//                    Toast.makeText(getApplicationContext(), "搜索中...", Toast.LENGTH_SHORT).show();
+//                    //...实现搜索的功能
+//                }
+//                return false;
+//            }
+//        });
+        mPinPasswordDel = (RelativeLayout) findViewById(R.id.handle_pin_password_delete);
+        mPinPasswordDel.setOnClickListener(this);
     }
 
     private void initData() {
@@ -127,11 +159,27 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.connect_type_sim_card_tv:
-                Toast.makeText(getApplicationContext(), "sim card setting!", Toast.LENGTH_SHORT).show();
-                break;
+                mHeaderSkipTv.setVisibility(View.VISIBLE);
+                mHandlePinContainer.setVisibility(View.VISIBLE);
+                mNormalContainer.setVisibility(View.GONE);
 
+                mHeaderSkipTv.setOnClickListener(this);
+                break;
             case R.id.connect_type_wan_port_tv:
                 Toast.makeText(getApplicationContext(), "wan port setting!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.main_header_right_text:
+                Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.handle_pin_password:
+                mPinPassword.setFocusable(true);
+                mPinPassword.requestFocus();
+                mPinPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                imm = (InputMethodManager) mPinPassword.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
+                break;
+            case R.id.handle_pin_password_delete:
+                mPinPassword.setText("");
                 break;
 
             default:
@@ -392,4 +440,26 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     MessageUti.USER_LOGOUT_REQUEST, null);
         }
     }
+
+    private TextWatcher mTextWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+            if (mPinPassword.getText().toString() != null && !mPinPassword.getText().toString().equals("")) {
+                mPinPasswordDel.setVisibility(View.VISIBLE);
+            } else {
+                mPinPasswordDel.setVisibility(View.INVISIBLE);
+            }
+        }
+    };
 }
