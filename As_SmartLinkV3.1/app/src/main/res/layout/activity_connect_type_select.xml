@@ -12,6 +12,7 @@
         layout="@layout/main_header" />
     <RelativeLayout
         android:id="@+id/connect_type_content_container"
+        android:visibility="visible"
         android:layout_below="@id/main_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -67,6 +68,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/connect_type_handle_pin_container"
+        android:visibility="gone"
+        android:layout_below="@id/main_header"
+        android:background="@color/backup_name_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/handle_pin_password_container"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dip">
+
+            <EditText
+                android:id="@+id/handle_pin_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_white"
+                android:hint="@string/qs_hint_sim_pin"
+                android:inputType="text"
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:singleLine="true"
+                android:textColor="@color/black_text"
+                android:textSize="@dimen/font_size_normal"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/handle_pin_password_delete"
+                android:clickable="true"
+                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:src="@drawable/general_del"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>
