@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dip"
+    android:layout_height="187dip"
+    android:background="@drawable/dialog_bg" >
+
+    <LinearLayout
+        android:id="@+id/ID_ERROR_DIALOG_TOP_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="45dip"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/error_dialog_view_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/pin_error_waring_title"
+                android:paddingLeft="8dip"
+                android:textSize="13sp"
+                android:textStyle="bold" 
+                android:textColor="@color/color_black" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_divider" />
+    </LinearLayout>
+    
+    <RelativeLayout
+        android:id="@+id/ID_ERROR_DIALOG_IMAGE_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="80dip"
+        android:layout_below="@id/ID_ERROR_DIALOG_TOP_LAYOUT" >
+
+        <ImageView
+            android:id="@+id/ID_ERROR_IMAGE_VIEW"
+            android:layout_width="52dip"
+            android:layout_height="52dip"
+            android:layout_centerInParent="true"
+            android:background="@anim/error_flash"
+            android:contentDescription="@string/error_info" />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="43dip" 
+            android:layout_centerHorizontal="true" 
+            android:layout_below="@id/ID_ERROR_DIALOG_IMAGE_LAYOUT">
+        
+        	<TextView 
+		        android:id="@+id/txtHide" 
+		        android:layout_width="25dip" 
+		        android:layout_height="1dip"  
+	           	android:layout_centerHorizontal="true" />
+        
+		    <Button
+		        android:id="@+id/ID_BUTTON_RETRY"
+		        android:layout_width="80dip"
+		        android:layout_height="30dip"
+				android:gravity="center"
+				android:layout_toLeftOf="@id/txtHide" 
+		        android:background="@drawable/selector_common_button"
+		        android:text="@string/btn_reply"
+		        android:textColor="@drawable/common_button_text"/>  
+	        
+		    
+	    	    
+	        <Button
+	            android:id="@+id/error_dialog_close_btn"
+	            android:layout_width="80dip"
+		        android:layout_height="30dip"
+		        android:layout_toRightOf="@id/txtHide" 
+		        android:background="@drawable/selector_common_button"
+		        android:text="@string/cancel"
+		        android:textColor="@drawable/common_button_text"/>
+    </RelativeLayout>
+
+</RelativeLayout>

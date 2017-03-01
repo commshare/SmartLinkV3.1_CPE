@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_marginTop="30dp">
+    
+    <RadioGroup
+         android:id="@+id/setting_network_selection"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="start" 
+         android:background="@color/color_white">
+
+         <RadioButton
+             android:id="@+id/mode_auto"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="25dp"
+             android:layout_marginRight="25dp"
+             android:background="@android:color/transparent"
+              android:textSize="30sp" 
+             android:button="@null"
+             android:checked="true"
+             android:drawableLeft="@drawable/radiobutton"
+             android:enabled="true"
+             android:paddingBottom="25dip"
+             android:paddingTop="25dip"
+             android:text="@string/setting_network_mode_auto"
+             android:textColor="@color/color_black" />
+
+         <View
+             android:layout_width="fill_parent"
+             android:layout_height="1dip"
+             android:background="@color/main_bottom_divider" />
+
+         <RadioButton
+             android:id="@+id/mode_manual"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="25dp"
+             android:layout_marginRight="25dp"
+             android:background="@android:color/transparent"
+              android:textSize="30sp" 
+             android:button="@null"
+             android:checked="false"
+             android:drawableLeft="@drawable/radiobutton"
+             android:enabled="true"
+             android:paddingBottom="25dip"
+             android:paddingTop="25dip"
+             android:text="@string/setting_network_mode_manual"
+             android:textColor="@color/color_black" />
+     </RadioGroup>
+     
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView 
+	        android:id="@+id/network_searching_title"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/color_deep_grey"
+	        android:textSize="18sp"
+	        android:text="@string/setting_network_searching"
+	        android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+     
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/network_list_container"
+        android:orientation="vertical">
+	    <ListView
+	        	 android:id="@+id/network_list"
+				 android:layout_width="match_parent"
+				 android:layout_height="wrap_content"
+				 android:divider="@color/main_bottom_divider"
+				 android:footerDividersEnabled="true"
+				 android:dividerHeight="1dp"
+				 android:orientation="vertical">
+	        
+	    </ListView>
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:id="@+id/network_list_progress_circle"
+	        android:orientation="vertical">
+	    <ProgressBar
+                android:id="@+id/search_waiting_progress"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/progerss_blue"
+                android:visibility="visible" />
+    	</RelativeLayout>
+    </FrameLayout>
+    
+</LinearLayout>

@@ -1,0 +1,1 @@
+alias=android_release, store.password=luji123, alias.password=luji123 

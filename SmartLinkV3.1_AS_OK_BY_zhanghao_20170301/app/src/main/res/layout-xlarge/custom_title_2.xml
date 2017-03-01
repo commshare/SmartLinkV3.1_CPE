@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageButton
+        android:id="@+id/ib_title_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="@color/color_transparent"
+        android:contentDescription="@string/back"
+        android:src="@drawable/back" />
+
+    <TextView
+        android:id="@+id/tv_title_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@id/ib_title_back"
+        android:gravity="center"
+        android:text="@string/back"
+        android:textColor="@color/color_white"
+        android:textSize="24sp" />
+    <FrameLayout
+        android:id="@+id/fl_edit_or_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tv_titlebar_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/setting_titlebar_text_edit"
+            android:textColor="@color/color_white"
+            android:textSize="24sp" />
+        
+        <TextView
+            android:id="@+id/tv_titlebar_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/setting_titlebar_text_done"
+            android:textColor="@color/color_white"
+            android:textSize="24sp"
+            android:visibility="gone" />
+    </FrameLayout>    
+
+    <TextView
+        android:id="@+id/tv_title_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingLeft="45dp"
+        android:gravity="center"
+        android:text="@string/setting_wifi"
+        android:textColor="@color/color_white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+    
+
+</RelativeLayout>

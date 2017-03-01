@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/setting_background_color" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:id="@+id/setting_network_wifi_content_container" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/setting_network_wifi_content"
+            android:orientation="vertical">
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp" 
+                android:text="@string/setting_network_wifi_network_title"
+                android:textColor="@color/color_deep_grey"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <RadioGroup
+                android:id="@+id/rg_wifi_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left" 
+                android:background="@color/color_white"
+                android:layout_marginBottom="20dp" >
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/main_bottom_divider" />
+                <RadioButton
+                    android:id="@+id/rb_2point4G_wifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@android:color/transparent"
+                    android:textSize="20sp" 
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableRight="@drawable/radiobutton"
+                    android:enabled="false"
+                    android:paddingBottom="15dip"
+                    android:paddingTop="15dip"
+                    android:text="@string/setting_text_2point4G_wifi"
+                    android:textColor="@color/color_black" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/main_bottom_divider" />
+
+                <RadioButton
+                    android:id="@+id/rb_5G_wifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@android:color/transparent"
+                     android:textSize="20sp" 
+                    android:button="@null"
+                    android:checked="false"
+                    android:focusable="true"
+                    android:drawableRight="@drawable/radiobutton"
+                    android:enabled="false"
+                    android:paddingBottom="15dip"
+                    android:paddingTop="15dip"
+                    android:text="@string/setting_text_5G_wifi"
+                    android:textColor="@color/color_black" />
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/main_bottom_divider" />
+            </RadioGroup>
+
+            <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/main_bottom_divider" />
+            <LinearLayout
+                android:id="@+id/ll_ssid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:orientation="horizontal" 
+                android:background="@color/color_white">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/setting_text_ssid"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_weight="0.4">
+
+                    <EditText
+                        android:id="@+id/edit_ssid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:inputType="text"
+                        android:textSize="20sp" 
+                        android:visibility="gone"
+                        android:imeOptions="flagNoExtractUi"
+                        android:gravity="end" />
+
+                    <TextView
+                        android:id="@+id/tv_ssid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                         android:textSize="20sp" 
+                        android:gravity="end" /> 
+                </FrameLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_wifi" />
+
+            <LinearLayout
+                android:id="@+id/ll_ssid_broadcast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" 
+                android:layout_marginBottom="20dp"
+                android:background="@color/color_white">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:padding="15dp"
+                    android:id="@+id/ll_ssid_broadcast_status">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/setting_text_ssid_broadcast"
+                        android:textColor="@color/color_black"
+                         android:textSize="20sp" 
+                         android:layout_weight="0.5"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                         android:layout_weight="1" 
+                         android:id="@+id/ll_edit_ssid_broadcast"
+                         android:gravity="right">
+
+                        <TextView
+                            android:id="@+id/btn_ssid_broadcast_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="end"
+                            android:background="@drawable/pwd_switcher_off"
+                             android:textSize="20sp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                 <ImageView
+                    android:id="@+id/divider0"
+	                android:layout_width="match_parent"
+	                android:layout_height="1dp"
+	                android:background="@color/main_bottom_divider"
+	                android:contentDescription="@string/setting_wifi" />
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:padding="15dp"
+                    android:id="@+id/ll_password_status">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/setting_text_passwrod"
+                        android:textColor="@color/color_black"
+                         android:textSize="20sp" 
+                         android:layout_weight="1"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                         android:layout_weight="1" 
+                         android:gravity="right">
+
+                        <TextView
+                            android:id="@+id/tv_no_psd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="end"
+                            android:text="@string/setting_text_no_passwrod"
+                            android:textColor="@color/color_black"
+                            android:textSize="20sp"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/btn_psd_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="end"
+                            android:background="@drawable/pwd_switcher_off"
+                             android:textSize="20sp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+                
+                
+                <ImageView
+                    android:id="@+id/divider3"
+	                android:layout_width="match_parent"
+	                android:layout_height="1dp"
+	                android:background="@color/main_bottom_divider"
+	                android:contentDescription="@string/setting_wifi" />
+                
+                <LinearLayout
+                    android:id="@+id/edit_password_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" 
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+                    
+                    <TextView
+                    android:id="@+id/tv_psd_type_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/setting_wifi_password_wpa_psw_tip"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp"
+                    android:layout_weight="8" 
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"/>
+                    
+                    <FrameLayout
+                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                         android:layout_weight="7" 
+                         android:orientation="horizontal"
+                         android:gravity="right"
+                        >
+                        <EditText
+                        android:id="@+id/edit_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:textSize="20sp" 
+                        android:background="@null"
+                        android:layout_marginRight="65dp"
+                        android:imeOptions="flagNoExtractUi"/>
+
+                        
+                        <ImageButton
+                        android:id="@+id/ib_show_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/password_show"
+                        android:layout_gravity="right|center_vertical"
+                        android:contentDescription="@string/setting_wifi"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone"                       
+                        android:textSize="20sp"/>
+                        
+                        <ImageButton
+                        android:id="@+id/ib_hide_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/password_hide"
+                        android:layout_gravity="right|center_vertical"
+                        android:contentDescription="@string/setting_wifi"
+                        android:background="@android:color/transparent"
+                        android:visibility="visible"/>            
+                    </FrameLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/divider1"
+	                android:layout_width="match_parent"
+	                android:layout_height="1dp"
+	                android:background="@color/main_bottom_divider"
+	                android:contentDescription="@string/setting_wifi" />
+                
+                <FrameLayout
+                    android:id="@+id/ll_security"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" 
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_security"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/setting_wifi_password_security_tip"
+                        android:textColor="@color/color_black"
+                        android:textSize="20sp" 
+                        android:padding="15dp"/>
+                    
+                    <TextView
+                        android:id="@+id/set_wifi_security_mode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/color_black"
+                        android:textSize="20sp" 
+                        android:padding="15dp"
+                        android:layout_marginRight="25dp"
+                        android:gravity="right"
+                        />
+                    <ImageView
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:contentDescription="@string/setting_wifi"
+				        android:src="@drawable/right_arrow_big"
+				        android:layout_marginRight="15dp"
+				        android:layout_gravity="center|end"/>
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/divider2"
+	                android:layout_width="match_parent"
+	                android:layout_height="1dp"
+	                android:background="@color/main_bottom_divider"
+	                android:contentDescription="@string/setting_wifi" />
+                
+                <FrameLayout
+                    android:id="@+id/ll_encryption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" 
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_encryption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/setting_wifi_password_wpa_encryption_tip"
+                        android:textColor="@color/color_black"
+                        android:textSize="20sp"
+                        android:padding="15dp"/>
+                    <TextView
+                        android:id="@+id/set_wifi_security_encription_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/color_black"
+                        android:textSize="20sp" 
+                        android:padding="15dp"
+                         android:gravity="right"
+                         android:layout_marginRight="25dp"
+                        />
+                    <ImageView
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:contentDescription="@string/setting_wifi"
+				        android:src="@drawable/right_arrow_big"
+				        android:layout_marginRight="15dp"
+				        android:layout_gravity="center|end"/>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/main_bottom_divider" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_wifi_waiting"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ProgressBar
+                android:id="@+id/pb_wifi_waiting_progress"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/progerss_blue"
+                android:visibility="gone" />
+            <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
+        </RelativeLayout>
+    </FrameLayout>
+
+</ScrollView>

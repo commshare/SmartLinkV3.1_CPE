@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ID_PIN_DIALOG"
+    android:layout_width="480dip"
+    android:layout_height="280dip"
+    android:background="@drawable/dialog_bg" >
+
+    <LinearLayout
+        android:id="@+id/ID_PIN_TOP_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="70dip"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pin_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingLeft="12dip"
+                android:text="@string/pin_title"
+                android:textSize="20sp"
+                android:textStyle="bold" 
+                android:textColor="@color/color_black"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_divider" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/ID_PIN_CODE_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="105dip"
+        android:layout_below="@id/ID_PIN_TOP_LAYOUT" >
+
+        <TextView
+            android:id="@+id/pin_code_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="40dip"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/dimen_40dip"
+            android:text="@string/pin_code_label"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <!-- android 2.3 need set password true -->
+
+        <EditText
+            android:id="@+id/pin_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="45dip"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="60dip"
+            android:layout_marginTop="25dip"
+            android:layout_toRightOf="@id/pin_code_tv"
+            android:background="@drawable/selector_edit_bg"
+            android:inputType="numberPassword"
+            android:maxLength="8"
+            android:password="true"
+            android:textSize="@dimen/dimen_textsize_20sp" />
+
+        <TextView
+            android:id="@+id/pin_remain_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pin_edit_view"
+            android:layout_marginTop="9dip"
+            android:layout_marginLeft="15dip"
+            android:textSize="18sp"
+            android:layout_toRightOf="@id/pin_code_tv"
+            android:textColor="@color/error_font_color" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ID_PIN_BOTTOM_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="90dip"
+        android:layout_centerHorizontal="true" 
+        android:layout_below="@id/ID_PIN_CODE_LAYOUT" >
+        
+        <TextView 
+	        android:id="@+id/txtHide" 
+	        android:layout_width="40dip" 
+	        android:layout_height="1dip"  
+           	android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/pin_apply_btn"
+            android:layout_width="120dip"
+            android:layout_height="45dip"
+            android:textSize="24sp"
+            android:gravity="center"
+			android:layout_toLeftOf="@id/txtHide" 
+			android:layout_centerVertical="true"
+            android:background="@drawable/selector_common_button"
+            android:text="@string/apply"
+            android:textColor="@drawable/common_button_text" />
+
+        <Button
+            android:id="@+id/pin_close_btn"
+            android:layout_width="120dip"
+		    android:layout_height="45dip"
+		    android:textSize="24sp"
+	        android:layout_toRightOf="@id/txtHide" 
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/selector_common_button"
+	        android:text="@string/cancel"
+	        android:textColor="@drawable/common_button_text" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

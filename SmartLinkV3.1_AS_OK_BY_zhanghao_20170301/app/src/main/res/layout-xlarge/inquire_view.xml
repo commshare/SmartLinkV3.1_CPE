@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inquire_dialog"
+    android:layout_width="480dip"
+    android:layout_height="280dip"
+    android:background="@drawable/dialog_bg" >
+
+    <LinearLayout
+        android:id="@+id/inquire_top_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="70dip"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/dialog_delete_title"
+                android:textSize="21sp"
+                android:textStyle="bold" 
+                android:textColor="@color/color_black"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_divider" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/inquire_content_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inquire_top_layout" >
+
+        <TextView
+            android:id="@+id/inquire_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:layout_marginTop="@dimen/dimen_30dip"
+            android:text="@string/dialog_delete_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/inquire_content_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/inquire_content"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="@string/dialog_delete_content_description"
+            android:textColor="@color/color_grey" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ID_PIN_BOTTOM_LAYOUT"
+        android:layout_width="fill_parent"
+        android:layout_height="90dip"
+        android:layout_centerHorizontal="true" 
+        android:layout_below="@id/inquire_content_layout" >
+        
+        <TextView 
+	        android:id="@+id/txtHide" 
+	        android:layout_width="40dip" 
+	        android:layout_height="1dip"  
+           	android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/inquire_btn"
+            android:layout_width="120dip"
+            android:layout_height="45dip"
+            android:textSize="24sp"
+            android:gravity="center"
+			android:layout_toLeftOf="@id/txtHide" 
+			android:layout_centerVertical="true"
+            android:background="@drawable/selector_common_button"
+            android:text="@string/apply"
+            android:textColor="@drawable/common_button_text" />
+        
+        <Button
+            android:id="@+id/close_btn"
+            android:layout_width="120dip"
+		    android:layout_height="45dip"
+		    android:textSize="24sp"
+	        android:layout_toRightOf="@id/txtHide" 
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/selector_common_button"
+	        android:text="@string/cancel"
+	        android:textColor="@drawable/common_button_text" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

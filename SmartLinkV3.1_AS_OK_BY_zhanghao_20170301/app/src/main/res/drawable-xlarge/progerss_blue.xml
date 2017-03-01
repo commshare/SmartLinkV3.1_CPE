@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-rotate 
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:interpolator="@android:anim/linear_interpolator"
+    android:drawable="@drawable/waiting_progress_blue" 
+    android:pivotX="50%"
+	android:pivotY="50%" />
