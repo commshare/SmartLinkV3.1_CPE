@@ -1,17 +1,15 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.common.CPEConfig;
 
 public class LoadingActivity extends Activity {
 	private final int SPLASH_DISPLAY_INTERNAL = 1000;
@@ -48,7 +46,8 @@ public class LoadingActivity extends Activity {
 		    } else if (!checkConnectState()) {
 					searchTimeOut();
 		    } else if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-		      startQuickSetupActivity();
+//		      startQuickSetupActivity();
+                startConnectTypeActivity();
 		    } else {		    
 					startMainActivity();
 		    }
@@ -81,6 +80,12 @@ public class LoadingActivity extends Activity {
 	    startActivity(it);
 	    finish();
 	  }
+
+    private void startConnectTypeActivity() {
+        Intent it = new Intent(this, ConnectTypeSelectActivity.class);
+        startActivity(it);
+        finish();
+    }
 	 
 	private void searchTimeOut() {
 		startRefreshWifiActivity();

@@ -11,6 +11,7 @@
         android:id="@+id/main_header"
         layout="@layout/main_header" />
     <RelativeLayout
+        android:id="@+id/connect_type_content_container"
         android:layout_below="@id/main_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

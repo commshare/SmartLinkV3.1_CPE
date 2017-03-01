@@ -93,7 +93,8 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		
 		Class<?> clazz;
 		if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-		  clazz = QuickSetupActivity.class;
+//		  clazz = QuickSetupActivity.class;
+            clazz = ConnectTypeSelectActivity.class;
 		} else {	
 		  clazz = MainActivity.class;				
 			Log.d("refreshsd", "startMainActivity");

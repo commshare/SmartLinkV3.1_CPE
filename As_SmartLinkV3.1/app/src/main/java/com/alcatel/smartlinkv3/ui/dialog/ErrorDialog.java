@@ -1,19 +1,19 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
-import com.alcatel.smartlinkv3.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.alcatel.smartlinkv3.R;
 
 public class ErrorDialog implements OnClickListener{
 
@@ -89,10 +89,10 @@ public class ErrorDialog implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.ID_BUTTON_RETRY:
+			closeDialog();
 			if(null != m_callback){
 				m_callback.onRetry();
 			}
-			closeDialog();
 			break;
 		case R.id.error_dialog_close_btn:
 			closeDialog();
