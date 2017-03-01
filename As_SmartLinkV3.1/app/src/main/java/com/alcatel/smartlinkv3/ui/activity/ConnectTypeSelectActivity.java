@@ -130,6 +130,10 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 Toast.makeText(getApplicationContext(), "sim card setting!", Toast.LENGTH_SHORT).show();
                 break;
 
+            case R.id.connect_type_wan_port_tv:
+                Toast.makeText(getApplicationContext(), "wan port setting!", Toast.LENGTH_SHORT).show();
+                break;
+
             default:
                 break;
         }
