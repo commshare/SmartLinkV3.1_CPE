@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
@@ -32,6 +33,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	protected MsgBroadcastReceiver m_msgReceiver;
 
     private Dialog mTipsDialog;
+    private   long              mkeyTime; //点击2次返回 键的时间
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,18 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
-	
-	private void clickBtn1() {
+
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - mkeyTime) > 2000) {
+            mkeyTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void clickBtn1() {
 			wifiSetting();
 	}
 	

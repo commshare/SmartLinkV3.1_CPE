@@ -90,7 +90,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/color_white"
                 android:hint="@string/qs_hint_sim_pin"
-                android:inputType="text"
+                android:inputType="number"
                 android:layout_marginLeft="@dimen/dimen_10dip"
                 android:layout_marginRight="@dimen/dimen_10dip"
                 android:singleLine="true"
@@ -113,8 +113,277 @@
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:src="@drawable/general_del"/>
             </RelativeLayout>
+
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/handle_pin_password_times_container"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_below="@id/handle_pin_password_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/handle_pin_password_times"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/font_size_middle"
+                android:textColor="@color/grey_text"
+                android:text="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/handle_pin_password_times_des"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/handle_pin_password_times"
+                android:layout_marginLeft="@dimen/dimen_5dip"
+                android:textColor="@color/grey_text"
+                android:textSize="@dimen/font_size_middle"
+                android:text="@string/qs_pin_times_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/handle_pin_remember_pin_container"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:layout_below="@id/handle_pin_password_times_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/handle_pin_remember_pin_select"
+                android:layout_centerVertical="true"
+                android:src="@drawable/general_btn_remember_pre"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/handle_pin_remember_pin_des"
+                android:textSize="@dimen/font_size_normal"
+                android:textColor="@color/black_text"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:layout_toRightOf="@id/handle_pin_remember_pin_select"
+                android:text="@string/qs_pin_remember_pin_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/handle_pin_connect_btn"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:layout_below="@id/handle_pin_remember_pin_container"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginRight="@dimen/dimen_10dip"
+            android:clickable="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/font_size_normal"
+            android:background="@drawable/selector_conner_btn_blue"
+            android:gravity="center"
+            android:text="@string/qs_pin_connect"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_40dip"/>
+
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/connect_type_waiting"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ProgressBar
+            android:id="@+id/connect_type_waiting_progress"
+            android:layout_width="@dimen/dimen_40dip"
+            android:layout_height="@dimen/dimen_40dip"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progerss_blue"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pin_unlock_success_container"
+        android:visibility="gone"
+        android:layout_below="@id/main_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/pin_unlock_success"
+            android:textSize="@dimen/font_size_large"
+            android:layout_centerInParent="true"
+            android:text="@string/qs_pin_unlock_congratulations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:src="@drawable/connected"
+            android:layout_above="@id/pin_unlock_success"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_200dip"/>
+        <TextView
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:textColor="@color/grey_text"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/pin_unlock_success"
+            android:text="@string/qs_pin_unlock_congratulations_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pin_unlock_fail_container"
+        android:visibility="gone"
+        android:layout_below="@id/main_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/pin_unlock_fail"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/font_size_large"
+            android:text="@string/qs_pin_unlock_can_not_connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_above="@id/pin_unlock_fail"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/not_connected"
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_150dip"/>
+        <TextView
+            android:id="@+id/pin_unlock_fail_des"
+            android:textSize="@dimen/font_size_normal"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:textColor="@color/grey_text"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/pin_unlock_fail"
+            android:text="@string/qs_pin_unlock_can_not_connect_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/pin_unlock_try_again"
+            android:layout_width="@dimen/dimen_120dip"
+            android:layout_height="@dimen/dimen_36dip"
+            android:layout_below="@id/pin_unlock_fail_des"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_30dip"
+            android:background="@drawable/selector_nowifi_button"
+            android:gravity="center"
+            android:text="@string/qs_pin_unlock_try_again"
+            android:textColor="@color/mg_blue"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_textsize_16sp" />
+
+        <TextView
+            android:id="@+id/pin_unlock_fail_to_home"
+            android:clickable="true"
+            android:textSize="@dimen/font_size_normal"
+            android:textColor="@color/grey_text"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/pin_unlock_try_again"
+            android:text="@string/qs_pin_unlock_to_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/wifi_setting_container"
+        android:background="@color/color_setting_wifi_background"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_below="@id/main_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:paddingLeft="@dimen/dimen_10dip"
+            android:paddingRight="@dimen/dimen_10dip"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_centerVertical="true"
+                android:text="@string/qs_wifi_setting_2G_wifi"
+                android:textSize="@dimen/font_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/wifi_setting_2g_switch"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/general_btn_on"
+                android:layout_width="@dimen/dimen_40dip"
+                android:layout_height="@dimen/dimen_40dip"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dimen_0.5dip"
+            android:paddingLeft="@dimen/dimen_10dip"
+            android:paddingRight="@dimen/dimen_10dip"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_centerVertical="true"
+                android:text="@string/qs_wifi_setting_account"
+                android:textSize="@dimen/font_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/wifi_setting_2g_account"
+                android:background="@color/color_white"
+                android:hint="123"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/general_btn_on"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_40dip"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/wifi_setting_2g_line"
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dimen_0.5dip"
+            android:paddingLeft="@dimen/dimen_10dip"
+            android:paddingRight="@dimen/dimen_10dip"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/wifi_setting_2g_password_switch"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/general_password_hidden"
+                android:layout_width="@dimen/dimen_30dip"
+                android:layout_height="@dimen/dimen_30dip"/>
+            <TextView
+                android:id="@+id/wifi_setting_2g_password_des"
+                android:layout_centerVertical="true"
+                android:text="@string/qs_wifi_setting_password"
+                android:textSize="@dimen/font_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/wifi_setting_2g_password"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@id/wifi_setting_2g_password_des"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_toLeftOf="@id/wifi_setting_2g_password_switch"
+                android:background="@color/color_white"
+                android:hint="123"
+                android:src="@drawable/general_btn_on"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_40dip"/>
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

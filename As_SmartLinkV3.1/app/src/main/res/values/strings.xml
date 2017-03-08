@@ -56,6 +56,19 @@
     <string name="qs_pin_code_confirm">Confirm PIN:</string>
 
     <string name="qs_hint_sim_pin">SIM PIN</string>
+    <string name="qs_pin_times_des">attempts remaining</string>
+    <string name="qs_pin_remember_pin_des">Remember SIM PIN</string>
+    <string name="qs_pin_connect">Connect</string>
+    <string name="qs_pin_unlock_congratulations">Congratulations!</string>
+    <string name="qs_pin_unlock_congratulations_des">You\'re successfully connected to the Internet</string>
+    <string name="qs_pin_unlock_can_not_connect">Couldn\'t connect</string>
+    <string name="qs_pin_unlock_can_not_connect_des">Check your WAN cabling or SIM card.</string>
+    <string name="qs_pin_unlock_try_again">Try again</string>
+    <string name="qs_pin_unlock_to_home">Home ></string>
+    <string name="qs_wifi_setting_2G_wifi">2.4GHz Wi-Fi</string>
+    <string name="qs_wifi_setting_5G_wifi">5.5GHz Wi-Fi</string>
+    <string name="qs_wifi_setting_account">Account</string>
+    <string name="qs_wifi_setting_password">Password</string>
     <!-- Quick Setup End -->
 
 
@@ -728,6 +741,7 @@
 
     <!--main header String-->
     <string name="main_header_linkhub">LINKHUB</string>
+    <string name="main_header_mobile_broadband">Mobile Broadband</string>
 
 
 </resources>
