@@ -13,3 +13,9 @@ SmartLinkV3.1/project.properties
 SmartLinkV3.1/build.xml
 SmartLinkV3.1/local.properties
 Thumbs.db
+*.iml
+build/
+local.properties
+.gradle/
+.idea/
+build/
