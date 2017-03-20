@@ -1,22 +1,15 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import org.cybergarage.upnp.ControlPoint;
-
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
-import com.alcatel.smartlinkv3.common.CommonUtil;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.NotificationService;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
-
-import android.app.*;
-import android.renderscript.Double2;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-public class SmartLinkV3App extends Application {
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.NotificationService;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
+
+import org.cybergarage.upnp.ControlPoint;
+
+public class SmartLinkV3App extends MultiDexApplication {
 	
 	private static SmartLinkV3App m_instance = null;  
 	
@@ -26,7 +19,7 @@ public class SmartLinkV3App extends Application {
 	
 	private String mapp_password = new String();
 	private String mapp_username = new String();
-	private boolean mapp_changeisforce = false;;  
+	private boolean mapp_changeisforce = false;
 	
     public static SmartLinkV3App getInstance() {  
         return m_instance;  

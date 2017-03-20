@@ -29,7 +29,7 @@ android {
         versionCode 19
 
         setProperty("archivesBaseName", "LinkApp-CPE-Android-$versionName")
-
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -79,6 +79,7 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
+
 }
 
 dependencies {
