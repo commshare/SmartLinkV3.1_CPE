@@ -1,12 +1,11 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -28,7 +27,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PinDialog implements OnClickListener, OnKeyListener, TextWatcher {
@@ -168,7 +166,7 @@ public class PinDialog implements OnClickListener, OnKeyListener, TextWatcher {
 
 		DataValue data = new DataValue();
 		data.addParam("pin", m_pin_edit.getText().toString());
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
 	}
 

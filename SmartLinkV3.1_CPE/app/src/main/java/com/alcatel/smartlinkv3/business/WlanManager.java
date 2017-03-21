@@ -439,7 +439,7 @@ public class WlanManager extends BaseManager {
 
 	//get wlan support mode
 	public void getWlanSupportMode(DataValue data){
-		String strDeviceName = BusinessMannager.getInstance().getFeatures().getDeviceName();
+		String strDeviceName = BusinessManager.getInstance().getFeatures().getDeviceName();
 		if (!FeatureVersionManager.getInstance().
 				isSupportApi("Wlan", "GetWlanSupportMode")) {
 			if (0 != strDeviceName.compareToIgnoreCase("Y900")) {

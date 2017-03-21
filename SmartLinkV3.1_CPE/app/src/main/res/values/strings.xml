@@ -736,13 +736,14 @@
 
     <!--Connect tyep selected-->
     <string name="connect_type_select_sim_card_disable">Insert SIM card first</string>
-    <string name="connect_type_select_wan_port_disable">Or insert Internet cable to WAN port</string>
+    <string name="connect_type_select_wan_port_disable">Insert Internet cable to WAN port</string>
     <string name="connect_type_select_sim_card_enable">Always use Mobile Broadband ></string>
     <string name="connect_type_select_wan_port_enable">Always use Ethernet connection ></string>
 
     <!--main header String-->
     <string name="main_header_linkhub">LINKHUB</string>
     <string name="main_header_mobile_broadband">Mobile Broadband</string>
+    <string name="or">Or</string>
 
 
 </resources>

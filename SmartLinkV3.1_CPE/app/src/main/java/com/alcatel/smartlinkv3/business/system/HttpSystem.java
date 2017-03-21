@@ -1,13 +1,13 @@
 package com.alcatel.smartlinkv3.business.system;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpSystem {
 	
@@ -16,23 +16,7 @@ public class HttpSystem {
     {	
         public GetFeature(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetFeatureList");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetFeatureList", strId, callback);
         }
 
         @Override
@@ -72,23 +56,7 @@ public class HttpSystem {
     {	
         public GetSystemInfo(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSystemInfo");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetSystemInfo", strId, callback);
         }
 
         @Override
@@ -128,23 +96,7 @@ public class HttpSystem {
     {	
         public GetSystemStatus(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSystemStatus");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetSystemStatus", strId, callback);
         }
 
         @Override
@@ -183,24 +135,7 @@ public class HttpSystem {
 	public static class SetDeviceReboot extends BaseRequest{
 
 		public SetDeviceReboot(String strId,IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceReboot");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetDeviceReboot", strId, callback);
 		}
 
 		@Override
@@ -237,24 +172,7 @@ public class HttpSystem {
 	public static class SetDeviceReset extends BaseRequest{
 
 		public SetDeviceReset(String strId,IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceReset");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetDeviceReset", strId, callback);
 		}
 
 		@Override
@@ -292,24 +210,7 @@ public class HttpSystem {
 	public static class SetDeviceBackup extends BaseRequest{
 
 		public SetDeviceBackup(String strId,IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceBackup");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetDeviceBackup", strId, callback);
 		}
 
 		@Override
@@ -348,27 +249,15 @@ public class HttpSystem {
 
 		private String m_strFileName="";
 		public SetDeviceRestore(String strId, String strFileName,IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
+			super("SetDeviceRestore", strId, callback);
 			m_strFileName = strFileName;
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDeviceRestore");
-
+        protected void buildHttpParamJson() throws JSONException {
 	        	JSONObject jFile = new JSONObject();
 	        	jFile.put("filename", m_strFileName);
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, jFile);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
 		}
 
 		@Override
@@ -406,24 +295,7 @@ public class HttpSystem {
 	public static class setDevicePowerOffRequest extends BaseRequest{
 
 		public setDevicePowerOffRequest(String strID, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strID;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetDevicePowerOff");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetDevicePowerOff", strID, callback);
 		}
 
 		@Override
@@ -458,24 +330,7 @@ public class HttpSystem {
 	public static class setAppBackupRequest extends BaseRequest{
 
 		public setAppBackupRequest(String strID, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strID;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetAppBackup");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetAppBackup", strID, callback);
 		}
 
 		@Override
@@ -510,29 +365,11 @@ public class HttpSystem {
 	public static class setAppRestoreBackupRequest extends BaseRequest{
 
 		public setAppRestoreBackupRequest(String strID, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strID;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetAppRestoreBackup");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetAppRestoreBackup", strID, callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
 			return new setAppRestoreBackupResponse(m_finsishCallback);
 		}
 		
@@ -543,12 +380,10 @@ public class HttpSystem {
 		private RestoreError m_errorInfo = null;
 		public setAppRestoreBackupResponse(IHttpFinishListener callback) {
 			super(callback);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
 		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
 			Gson gson = new Gson();
 			m_errorInfo = gson.fromJson(strJsonResult, RestoreError.class);
 		}
@@ -556,7 +391,6 @@ public class HttpSystem {
 		@SuppressWarnings("unchecked")
 		@Override
 		public RestoreError getModelResult() {
-			// TODO Auto-generated method stub
 			return m_errorInfo;
 		}
 		

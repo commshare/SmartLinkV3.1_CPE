@@ -3,7 +3,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.NotificationService;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 
@@ -25,7 +25,6 @@ public class SmartLinkV3App extends MultiDexApplication {
         return m_instance;  
     }
 
-    
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -33,7 +32,7 @@ public class SmartLinkV3App extends MultiDexApplication {
 		crashHandler.init(getApplicationContext());	
 		m_instance = this;
 		Log.d("HttpService", "Application onCreate ");
-		BusinessMannager.getInstance();
+		BusinessManager.getInstance();
 		
 		NotificationService.startService();
 		
@@ -41,10 +40,6 @@ public class SmartLinkV3App extends MultiDexApplication {
 		
 		mAllShareProxy = AllShareProxy.getInstance(this);
 	}
-
-
-
-
 
 	public void setControlPoint(ControlPoint controlPoint){
 		mControlPoint = controlPoint;
@@ -75,11 +70,11 @@ public class SmartLinkV3App extends MultiDexApplication {
 	
 	//first is forcelogin
 //	
-	public boolean getIsforcesLogin() {
+	public boolean IsForcesLogin() {
 		return mapp_changeisforce;
 	}
 
-	public void setIsforcesLogin(boolean istrue) {
-		mapp_changeisforce = istrue;
+	public void setForcesLogin(boolean forceLogin) {
+		mapp_changeisforce = forceLogin;
 	}
 }

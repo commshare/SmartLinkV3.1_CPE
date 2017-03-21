@@ -20,7 +20,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -29,6 +29,7 @@ import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -345,7 +346,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
-				if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
+				if(BusinessManager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
 				{
 					mAllShareProxy.startSearch();
 				}else
@@ -359,7 +360,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	
 	private void simRollRequest() {
 		updateBtnState();
-		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
 		toPageHomeWhenPinSimNoOk();
 
 		if (sim.m_SIMState == SIMState.PinRequired) {
@@ -475,7 +476,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 	
 	private void updateBtnState() {
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
 		if (simState.m_SIMState == SIMState.Accessable) {
 			m_smsBtn.setEnabled(true);
 		} else {
@@ -484,7 +485,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 
 	private void toPageHomeWhenPinSimNoOk() {
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
 		if (simState.m_SIMState != SIMState.Accessable) {
 			if (m_preButton == R.id.tab_sms_layout) {
 				setMainBtnStatus(R.id.main_home);
@@ -527,10 +528,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			microsdBtnClick();
 			break;
 		case R.id. btnbar:
-			if (LoginDialog.isLoginSwitchOff()) {		
+			if (LinkAppSettings.isLoginSwitchOff()) {
 				go2Click();	
 			} else {		
-				UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();	
+				UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 				if (status == UserLoginStatus.Logout) 
 				{
 					m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
@@ -565,7 +566,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 											{
 												if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 												{
-													SmartLinkV3App.getInstance().setIsforcesLogin(true);
+													SmartLinkV3App.getInstance().setForcesLogin(true);
 													ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 															new OnClickBtnRetry() 
 													{
@@ -649,11 +650,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 
     public void userLogout() {
-        UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+        UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
             MainActivity.setLogoutFlag(true);
             SharedPrefsUtil.getInstance(this).putBoolean(LOGOUT_FLAG, true);
-            BusinessMannager.getInstance().sendRequestMessage(
+            BusinessManager.getInstance().sendRequestMessage(
                     MessageUti.USER_LOGOUT_REQUEST, null);
             if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
             {
@@ -707,10 +708,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 
 	private void accessDeviceLayoutClick() {
-		if (LoginDialog.isLoginSwitchOff()) {		
+		if (LinkAppSettings.isLoginSwitchOff()) {
 			startDeviceManagerActivity();	
 		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();	
+			UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 			if (status == UserLoginStatus.Logout) 
 			{
 				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
@@ -745,7 +746,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 										{
 											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 											{
-												SmartLinkV3App.getInstance().setIsforcesLogin(true);
+												SmartLinkV3App.getInstance().setForcesLogin(true);
 												ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 														new OnClickBtnRetry() 
 												{
@@ -838,10 +839,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			return;
 		}
 		
-		if (LoginDialog.isLoginSwitchOff()) {
+		if (LinkAppSettings.isLoginSwitchOff()) {
 			go2WifiKeyView();
 		} else {
-			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+			UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 
 			if (status == UserLoginStatus.Logout) 
 			{
@@ -876,7 +877,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 										{
 											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 											{
-												SmartLinkV3App.getInstance().setIsforcesLogin(true);
+												SmartLinkV3App.getInstance().setForcesLogin(true);
 												ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 														new OnClickBtnRetry() 
 												{
@@ -945,7 +946,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 	
 	private void go2WifiKeyView() {
-		SimStatusModel simStatus = BusinessMannager.getInstance()
+		SimStatusModel simStatus = BusinessManager.getInstance()
 				.getSimStatus();
 //		if(simStatus.m_SIMState == SIMState.Accessable) {
 //			setMainBtnStatus(R.id.main_wifiKey);
@@ -965,10 +966,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			return;
 		}		
 	
-		if (LoginDialog.isLoginSwitchOff()) {
+		if (LinkAppSettings.isLoginSwitchOff()) {
 			go2SmsView();
 		} else {
-			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+			UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 
 			if (status == UserLoginStatus.Logout) 
 			{
@@ -1003,7 +1004,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 										{
 											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 											{
-												SmartLinkV3App.getInstance().setIsforcesLogin(true);
+												SmartLinkV3App.getInstance().setForcesLogin(true);
 												ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 														new OnClickBtnRetry() 
 												{
@@ -1072,7 +1073,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 
 	private void go2SmsView() {
-		SimStatusModel simStatus = BusinessMannager.getInstance()
+		SimStatusModel simStatus = BusinessManager.getInstance()
 				.getSimStatus();
 		if(simStatus.m_SIMState == SIMState.Accessable) {
 			setMainBtnStatus(R.id.tab_sms_layout);
@@ -1086,10 +1087,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		if (m_preButton == R.id.main_setting) {		
 			return;	
 		}	
-		if (LoginDialog.isLoginSwitchOff()) {		
+		if (LinkAppSettings.isLoginSwitchOff()) {
 			go2SettingView();	
 		} else {		
-			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();	
+			UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 			if (status == UserLoginStatus.Logout) 
 			{				
 				m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener()
@@ -1123,7 +1124,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 										{
 											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 											{
-												SmartLinkV3App.getInstance().setIsforcesLogin(true);
+												SmartLinkV3App.getInstance().setForcesLogin(true);
 												ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 														new OnClickBtnRetry() 
 												{
@@ -1203,10 +1204,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			return;
 		}
 		
-		if (LoginDialog.isLoginSwitchOff()) {
+		if (LinkAppSettings.isLoginSwitchOff()) {
 			go2MicroSDView();
 		} else{
-			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+			UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 
 			if (status == UserLoginStatus.Logout) 
 			{
@@ -1241,7 +1242,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 										{
 											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 											{
-												SmartLinkV3App.getInstance().setIsforcesLogin(true);
+												SmartLinkV3App.getInstance().setForcesLogin(true);
 												ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 														new OnClickBtnRetry() 
 												{
@@ -1310,19 +1311,19 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 	
 	private void go2MicroSDView(){
-		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
+		SDcardStatus m_sdcardstatus = BusinessManager.getInstance().getSDCardStatus();
 		if(m_sdcardstatus.SDcardStatus > 0)
 		{
 			if((FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetDLNASettings"))|| (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900")))
+					"GetDLNASettings"))|| (BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900")))
 			{
-				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
+				BusinessManager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
 			}
 			
 			if(FeatureVersionManager.getInstance().isSupportApi("Sharing",
 					"GetFtpStatus"))
 			{
-				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
+				BusinessManager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 			}
 
 			setMainBtnStatus(R.id.main_microsd);
@@ -1460,7 +1461,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 	
 	private void unlockSimBtnClick(boolean blCancelUserClose) {
-		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
 		if (SIMState.PinRequired == sim.m_SIMState) {
 			if (blCancelUserClose) {
 				m_dlgPin.cancelUserClose();
@@ -1482,7 +1483,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			m_dlgPuk.closeDialog();
 		}
 
-		SimStatusModel simStatus = BusinessMannager.getInstance()
+		SimStatusModel simStatus = BusinessManager.getInstance()
 				.getSimStatus();
 		// set the remain times
 		if (null != m_dlgPin) {
@@ -1517,7 +1518,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			m_dlgPin.closeDialog();
 		}
 
-		SimStatusModel simStatus = BusinessMannager.getInstance()
+		SimStatusModel simStatus = BusinessManager.getInstance()
 				.getSimStatus();
 		// set the remain times
 		if (null != m_dlgPuk) {
@@ -1557,10 +1558,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	}
 
 	private void widgetBatteryBtnClick() {
-		if (LoginDialog.isLoginSwitchOff()) {		
+		if (LinkAppSettings.isLoginSwitchOff()) {
 			go2SettingPowerSavingActivity();
 		} else {
-			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+			UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 
 			if (status == UserLoginStatus.Logout) 
 			{				
@@ -1595,7 +1596,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 										{
 											if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 											{
-												SmartLinkV3App.getInstance().setIsforcesLogin(true);
+												SmartLinkV3App.getInstance().setForcesLogin(true);
 												ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
 														new OnClickBtnRetry() 
 												{
@@ -1734,14 +1735,14 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	
 	public void showMicroView()
 	{
-		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
+		if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
             //暂时屏蔽SD卡的选项
 //			m_microsdBtn.setVisibility(View.VISIBLE);
 			return;
 		}
 		
-		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y858"))
+		if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y858"))
 		{
 			m_microsdBtn.setVisibility(View.GONE);
 			return;

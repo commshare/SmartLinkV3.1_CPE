@@ -3,11 +3,8 @@ package com.alcatel.smartlinkv3.business.profile;
 import com.alcatel.smartlinkv3.business.BaseResult;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
-
-import org.json.JSONException;
 
 import java.util.List;
 
@@ -16,24 +13,7 @@ public class HttpGetProfileList {
 	public static class GetProfileList extends BaseRequest{
 
 		public GetProfileList(String strId, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetProfileList");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			super("GetProfileList", strId, callback);
 		}
 
 		@Override

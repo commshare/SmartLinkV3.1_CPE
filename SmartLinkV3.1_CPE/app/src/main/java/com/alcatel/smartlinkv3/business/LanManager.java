@@ -1,5 +1,8 @@
 package com.alcatel.smartlinkv3.business;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.alcatel.smartlinkv3.business.lan.HttpLan;
 import com.alcatel.smartlinkv3.business.lan.LanInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -7,10 +10,6 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 public class LanManager extends BaseManager {
 
@@ -30,7 +29,7 @@ public class LanManager extends BaseManager {
 					getLaninfo(null);
 			}else {
 				clearData();
-				BusinessMannager.getInstance().getSystemInfoModel().clear();
+				BusinessManager.getInstance().getSystemInfoModel().clear();
 			}
 		}
 	}
@@ -70,11 +69,11 @@ public class LanManager extends BaseManager {
 									&& strErrcode.length() == 0) {
 								m_lanInfo = response
 										.getModelResult();
-								BusinessMannager.getInstance().getSystemInfoModel().
+								BusinessManager.getInstance().getSystemInfoModel().
 								setIP(m_lanInfo.getIPv4IPAddress());
-								BusinessMannager.getInstance().getSystemInfoModel().
+								BusinessManager.getInstance().getSystemInfoModel().
 								setSubnet(m_lanInfo.getSubnetMask());
-								BusinessMannager.getInstance().getSystemInfoModel().
+								BusinessManager.getInstance().getSystemInfoModel().
 								setMacAddress(m_lanInfo.getMacAddress());
 							}
 							

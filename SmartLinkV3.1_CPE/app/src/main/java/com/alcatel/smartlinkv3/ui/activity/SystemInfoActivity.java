@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.SystemInfoModel;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -13,9 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -124,22 +122,22 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 	}
 
 //	private void onBtnPowerOff(){
-//		BusinessMannager.getInstance().
+//		BusinessManager.getInstance().
 //		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF, null);
 //	}
 //	
 //	private void onBtnReboot(){
-//		BusinessMannager.getInstance().
+//		BusinessManager.getInstance().
 //		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_REBOOT, null);
 //	}
 //	
 //	private void onBtnReset(){
-//		BusinessMannager.getInstance().
+//		BusinessManager.getInstance().
 //		sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESET, null);
 //	}
 	
 	private void setSystemInfo(){
-		SystemInfoModel systemInfo = BusinessMannager.getInstance().getSystemInfoModel();
+		SystemInfoModel systemInfo = BusinessManager.getInstance().getSystemInfoModel();
 		m_tv_swVersion_value.setText(systemInfo.getSwVersion());
 		m_tv_hwVersion_value.setText(systemInfo.getHwVersion());
 		m_tv_device_name_value.setText(systemInfo.getDeviceName());
@@ -165,8 +163,8 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.LAN_GET_LAN_SETTINGS));
 		
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.LAN_GET_LAN_SETTINGS, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.LAN_GET_LAN_SETTINGS, null);
 //		ShowWaiting(true);
 	}
 
@@ -185,10 +183,10 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.unknown_error);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				m_tv_ip_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getIP());
-				m_tv_subnet_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getSubnet());
-				m_tv_imei_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getIMEI());
-				m_tv_mac_value.setText(BusinessMannager.getInstance().getSystemInfoModel().getMacAddress());
+				m_tv_ip_value.setText(BusinessManager.getInstance().getSystemInfoModel().getIP());
+				m_tv_subnet_value.setText(BusinessManager.getInstance().getSystemInfoModel().getSubnet());
+				m_tv_imei_value.setText(BusinessManager.getInstance().getSystemInfoModel().getIMEI());
+				m_tv_mac_value.setText(BusinessManager.getInstance().getSystemInfoModel().getMacAddress());
 			}
 			else{
 				Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();

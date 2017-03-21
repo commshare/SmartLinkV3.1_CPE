@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
@@ -362,14 +362,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				usage = USAGE_ALERT_VALUE;
 				usage_alert_value_edt.setText("" + usage);
 			}
-			UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
+			UsageSettingModel staticSetting = BusinessManager.getInstance().getUsageSettings();
 			if(usage == staticSetting.HUsageAlertValue)
 				return;
 
 			m_bIsAlertValueEdit = true;
 			DataValue usageData = new DataValue();
 			usageData.addParam("alert_value", usage);
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET, usageData);
 		} else {
 			usage_alert_value_edt.setText("" + m_alertVal);
@@ -503,9 +503,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void showSettingBilling() {
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
 		if (simState.m_SIMState == SIMState.Accessable) {
-			UsageSettingModel statistic = BusinessMannager.getInstance()
+			UsageSettingModel statistic = BusinessManager.getInstance()
 					.getUsageSettings();
 
 			m_billingValue.setEnabled(true);
@@ -535,14 +535,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			if (usage > BILLING_MAX_VALUE) {
 				usage = BILLING_MAX_VALUE;
 			}
-			UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
+			UsageSettingModel staticSetting = BusinessManager.getInstance().getUsageSettings();
 			if(usage == staticSetting.HBillingDay)
 				return;
 			
 			m_bIsBillingValueEdit = true;
 			DataValue usageData = new DataValue();
 			usageData.addParam("billing_day", usage);
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET, usageData);
 		} else {
 			m_billingValue.setText("" + m_billingVal);
@@ -652,7 +652,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 					DataValue data = new DataValue();
 					data.addParam("unit", 0);
-					BusinessMannager.getInstance().sendRequestMessage(
+					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.STATISTICS_SET_UNIT_REQUSET, data);
 				} else {
 					monthlyPlanUnit.setText(R.string.usage_setting_monthlyunitgb);
@@ -660,7 +660,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 					DataValue data = new DataValue();
 					data.addParam("unit", 1);
-					BusinessMannager.getInstance().sendRequestMessage(
+					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.STATISTICS_SET_UNIT_REQUSET, data);
 				}
 			}
@@ -669,9 +669,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 
 	private void showSettingMonthly() {
-		SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
 		if (simState.m_SIMState == SIMState.Accessable) {
-			UsageSettingModel statistic = BusinessMannager.getInstance()
+			UsageSettingModel statistic = BusinessManager.getInstance()
 					.getUsageSettings();
 			
 			m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, statistic.HUsedData));
@@ -705,7 +705,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (m_monthlyValue.getText().toString().length() > 0) {
 			usage =  Double.parseDouble(m_monthlyValue.getText().toString());
 		}
-		UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
+		UsageSettingModel staticSetting = BusinessManager.getInstance().getUsageSettings();
 		if ((usage != this.byte2megabyte(m_monthlyVal)&&staticSetting.HUnit == 0) || 
 			 (usage != this.byte2gegabyte(m_monthlyVal)&&staticSetting.HUnit == 1)) {
 			if((long)usage == staticSetting.HMonthlyPlan)
@@ -745,7 +745,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			}
 			
 			
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET, usageData);
 		} else {
 			m_monthlyValue.setText("" + byte2megabyte(m_monthlyVal));
@@ -773,7 +773,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private void showTimeLimitInfo() {
 		m_timeLimit.setEnabled(false);
 
-		UsageSettingModel setting = BusinessMannager.getInstance()
+		UsageSettingModel setting = BusinessManager.getInstance()
 				.getUsageSettings();
 
 		if (!(m_timeLimit.isInputMethodTarget() || this.m_bIsTimeLimitEdit)) {
@@ -859,19 +859,19 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			lTime = MAX_DISCONNECT_TIME_VALUE;
 		}
 		
-		UsageSettingModel staticSetting = BusinessMannager.getInstance().getUsageSettings();
+		UsageSettingModel staticSetting = BusinessManager.getInstance().getUsageSettings();
 		if(lTime == staticSetting.HTimeLimitTimes)
 			return;
 
 		m_bIsTimeLimitEdit = true;
 		DataValue data = new DataValue();
 		data.addParam("time_limit_times", lTime);
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET, data);
 	}
 	
 	private void showUsageAutoDisconnectBtn() {
-		UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
+		UsageSettingModel usageSetting = BusinessManager.getInstance().getUsageSettings();
 		if(!m_bIsAutoDisconnectedEdit) {
 			if (usageSetting.HMonthlyPlan > 0) {
 				m_usageAutoDisconnectBtn.setEnabled(true);
@@ -893,7 +893,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private void onBtnUsageAutoDisconnectClick() {
-		UsageSettingModel usageSetting = BusinessMannager.getInstance()
+		UsageSettingModel usageSetting = BusinessManager.getInstance()
 				.getUsageSettings();
 		if(usageSetting.HMonthlyPlan > 0)
 		{
@@ -909,7 +909,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 						.setBackgroundResource(R.drawable.switch_off);
 				data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
 			}
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
 					data);
 		}
@@ -917,7 +917,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	
 	private void onBtnTimeLimitDisconnectClick() {
 		m_bIsTimeLimitStatusEdit = true;
-		UsageSettingModel usageSetting = BusinessMannager.getInstance()
+		UsageSettingModel usageSetting = BusinessManager.getInstance()
 				.getUsageSettings();
 		DataValue data = new DataValue();
 		if (usageSetting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
@@ -932,7 +932,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			m_timeLimit.setEnabled(false);
 			data.addParam("time_limit_flag", OVER_TIME_STATE.Disable);
 		}
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET,
 				data);
 	}

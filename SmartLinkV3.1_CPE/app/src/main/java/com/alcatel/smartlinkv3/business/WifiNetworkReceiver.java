@@ -1,8 +1,5 @@
 package com.alcatel.smartlinkv3.business;
 
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +7,13 @@ import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.DetailedState;
-import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 public class WifiNetworkReceiver extends BroadcastReceiver{
 	private static int m_nType = -1;
 	private static String m_strGatewayMac = new String();
@@ -56,13 +54,13 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 			Log.d("strServerIp", strServerIp);
 			if(!strServerIp.equalsIgnoreCase("0.0.0.0")) {
 				HttpRequestManager.GetInstance().setServerAddress(strServerIp);
-				BusinessMannager.getInstance().setServerAddress(strServerIp);
+				BusinessManager.getInstance().setServerAddress(strServerIp);
 				
 				startBussiness(context);
 			}
 		}else{
 			//stop test wifi connected
-			//BusinessMannager.getInstance().setStopTestWifiConnect(true);
+			//BusinessManager.getInstance().setStopTestWifiConnect(true);
 		}
 	}
 	
@@ -94,8 +92,6 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 		if(nType == ConnectivityManager.TYPE_WIFI)
 			return true;
 		return false;
-        
-       
 	}
 	
 	private void changeNetworkConnect(Context context) {
@@ -132,7 +128,7 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 			if(mNetworkInfo == null)
 				return -1;
 			DetailedState state = mNetworkInfo.getDetailedState();
-			if (mNetworkInfo.isConnected() == true && state == DetailedState.CONNECTED) { 
+			if (mNetworkInfo.isConnected() && state == DetailedState.CONNECTED) {
 				return mNetworkInfo.getType(); 
 			} 
 		} 

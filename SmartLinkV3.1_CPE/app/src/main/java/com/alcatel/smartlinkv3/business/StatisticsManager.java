@@ -1,20 +1,14 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
 import com.alcatel.smartlinkv3.business.statistics.HttpUsageHistory;
 import com.alcatel.smartlinkv3.business.statistics.HttpUsageSettings;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -76,7 +70,7 @@ public class StatisticsManager extends BaseManager {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetUsageSettingTask();
 				}
@@ -88,7 +82,7 @@ public class StatisticsManager extends BaseManager {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetUsageHistoryTask();
 				}else{
@@ -664,7 +658,7 @@ public class StatisticsManager extends BaseManager {
 	}
 	
 	private void getUsageHistorySingle() {
-		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState != ENUM.SIMState.Accessable) 
 			return;
 		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.GetUsageRecord("7.1", new IHttpFinishListener() {           

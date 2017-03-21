@@ -16,19 +16,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -43,14 +46,14 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
     private   ImageView         mHeaderBackIv;
     private   TextView          mHeaderSkipTv;
-    private   BusinessMannager  mBusinessMgr;
+    private   BusinessManager   mBusinessMgr;
     private   Context           mContext;
     protected BroadcastReceiver mReceiver;
     private   TextView          mSimCardTv;
     private   TextView          mWanPortTv;
     private   long              mkeyTime; //点击2次返回 键的时间
-    private   ImageView         mSimCardPic;
-    private   ImageView         mWanProtPic;
+//    private   ImageView         mSimCardPic;
+//    private   ImageView         mWanProtPic;
 
     private CommonErrorInfoDialog        mConfirmDialog         = null;
     private AutoForceLoginProgressDialog m_ForceloginDlg        = null;
@@ -59,7 +62,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     private LoginDialog                  mLoginDialog           = null;
 
     private RelativeLayout     mHandlePinContainer;
-    private RelativeLayout     mNormalContainer;
+    private LinearLayout       mNormalContainer;
     private EditText           mPinPassword;
     private RelativeLayout     mPinPasswordDel;
     private InputMethodManager imm;
@@ -97,14 +100,14 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mHeaderBackIv = (ImageView) findViewById(R.id.main_header_back_iv);
         mHeaderBackIv.setVisibility(View.GONE);
 
-        mNormalContainer = (RelativeLayout) findViewById(R.id.connect_type_content_container);
+        mNormalContainer = (LinearLayout) findViewById(R.id.connect_type_content_container);
         mHeaderSkipTv = (TextView) findViewById(R.id.main_header_right_text);
         mHeaderSkipTv.setVisibility(View.GONE);
 
-        mSimCardPic = (ImageView) findViewById(R.id.sim_card_pic);
+//        mSimCardPic = (ImageView) findViewById(R.id.sim_card_pic);
         mSimCardTv = (TextView) findViewById(R.id.connect_type_sim_card_tv);
         mWanPortTv = (TextView) findViewById(R.id.connect_type_wan_port_tv);
-        mWanProtPic = (ImageView) findViewById(R.id.wan_port_pic);
+//        mWanProtPic = (ImageView) findViewById(R.id.wan_port_pic);
 
         mHandlePinContainer = (RelativeLayout) findViewById(R.id.connect_type_handle_pin_container);
         mPinPasswordDes = (TextView) findViewById(R.id.handle_pin_password_times_des);
@@ -137,7 +140,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
     private void initData() {
         mContext = this;
-        mBusinessMgr = BusinessMannager.getInstance();
+        mBusinessMgr = BusinessManager.getInstance();
 
         mHandler = new Handler();
 
@@ -150,8 +153,15 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             showHaveSimCard();
         }
 
+        WanConnectStatusModel wanModel = mBusinessMgr.getWanConnectStatus();
+        if (wanModel.isConnected()) {
+            showHaveWanPort();
+        } else {
+            showNoWanPort();
+        }
+
         ENUM.UserLoginStatus status = mBusinessMgr.getLoginStatus();
-        if (LoginDialog.isLoginSwitchOff() || status == ENUM.UserLoginStatus.login) {
+        if (LinkAppSettings.isLoginSwitchOff() || status == ENUM.UserLoginStatus.login) {
             return;
         }
         if (status == ENUM.UserLoginStatus.LoginTimeOut) {
@@ -167,14 +177,16 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mSimCardTv.setText(R.string.connect_type_select_sim_card_enable);
         mSimCardTv.setEnabled(true);
         mSimCardTv.setOnClickListener(this);
-        mSimCardPic.setImageResource(R.drawable.results_sim_nor);
+//        mSimCardPic.setImageResource(R.drawable.results_sim_nor);
+        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_sim_nor, 0, 0);
     }
 
     private void showNoSimCard() {
         mSimCardTv.setTextColor(getResources().getColor(R.color.red));
         mSimCardTv.setText(R.string.connect_type_select_sim_card_disable);
         mSimCardTv.setEnabled(false);
-        mSimCardPic.setImageResource(R.drawable.results_sim_dis);
+//        mSimCardPic.setImageResource(R.drawable.results_sim_dis);
+        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_sim_dis, 0, 0);
     }
 
     private void showHaveWanPort() {
@@ -182,14 +194,16 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mWanPortTv.setText(R.string.connect_type_select_wan_port_enable);
         mWanPortTv.setEnabled(true);
         mWanPortTv.setOnClickListener(this);
-        mWanProtPic.setImageResource(R.drawable.results_wan_nor);
+//        mWanProtPic.setImageResource(R.drawable.results_wan_nor);
+        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_wan_nor, 0, 0);
     }
 
     private void showNoWanPort() {
         mWanPortTv.setTextColor(getResources().getColor(R.color.red));
         mWanPortTv.setText(R.string.connect_type_select_wan_port_disable);
         mWanPortTv.setEnabled(false);
-        mWanProtPic.setImageResource(R.drawable.results_wan_dis);
+//        mWanProtPic.setImageResource(R.drawable.results_wan_dis);
+        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_wan_dis, 0, 0);
     }
 
     @Override
@@ -591,10 +605,10 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     }
 
     public void kickoffLogout() {
-        ENUM.UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+        ENUM.UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == ENUM.UserLoginStatus.Logout) {
             MainActivity.setKickoffLogoutFlag(true);
-            BusinessMannager.getInstance().sendRequestMessage(
+            BusinessManager.getInstance().sendRequestMessage(
                     MessageUti.USER_LOGOUT_REQUEST, null);
         }
     }

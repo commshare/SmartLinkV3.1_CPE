@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -255,7 +255,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				m_progress_bar.setVisibility(View.VISIBLE);
 				DataValue data = new DataValue();
 				data.addParam("profile_id", ProfileID);
-				BusinessMannager.getInstance().getProfileManager().startSetDefaultProfile(data);
+				BusinessManager.getInstance().getProfileManager().startSetDefaultProfile(data);
 			}
 			else if(m_is_default == true){
 				String strInfo = getString(R.string.setting_network_profile_management_already_default);
@@ -370,7 +370,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 			data.addParam("password", passWord);
 			data.addParam("auth_type", auth_type);
 			data.addParam("dial_number", dialNumber);
-			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(data);
+			BusinessManager.getInstance().getProfileManager().startAddNewProfile(data);
 		}
 		else if(operation == m_parent_activity.TAG_OPERATION_EDIT_PROFILE){
 			int profileID = ProfileID;
@@ -420,7 +420,7 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 				data.addParam("password", passWord);
 				data.addParam("auth_type", auth_type);
 				data.addParam("dial_number", dialNumber);
-				BusinessMannager.getInstance().getProfileManager().startEditProfile(data);
+				BusinessManager.getInstance().getProfileManager().startEditProfile(data);
 			}
 		}
 		m_parent_activity.onBackPressed();

@@ -3,19 +3,14 @@ package com.alcatel.smartlinkv3.common;
 import java.util.List;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.StatisticsManager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
-import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
-import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
@@ -127,7 +122,7 @@ public class NotificationService extends Service {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-						SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+						SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 						if(simStatus.m_SIMState != ENUM.SIMState.Accessable) {
 							m_isNeedToAlertUsageLimit = true;	
 							m_isNeedToAlertBatteryLimit  = true;
@@ -142,7 +137,7 @@ public class NotificationService extends Service {
 					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-						BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
+						BatteryInfo  batteryinfo = BusinessManager.getInstance().getBatteryInfo();
 						if(batteryinfo.getChargeState() == ConstValue.CHARGE_STATE_CHARGING)
 						{
 							m_isNeedToAlertBatteryLimit = false;	
@@ -197,8 +192,8 @@ public class NotificationService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		BusinessMannager.getInstance();
-		//BusinessMannager.getInstance().m_wifiNetworkReceiver.testWebServer(this);
+		BusinessManager.getInstance();
+		//BusinessManager.getInstance().m_wifiNetworkReceiver.testWebServer(this);
 		Log.d("NotificationService", "pchong   HttpService onCreate");
 		m_msgReceiver = new NotificationBroadcastReceiver();
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
@@ -274,15 +269,15 @@ public class NotificationService extends Service {
 	}
 
 	private void alert() {
-		UsageSettingModel settings = BusinessMannager.getInstance()
+		UsageSettingModel settings = BusinessManager.getInstance()
 				.getUsageSettings();
-		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
+		UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
 
-		BatteryInfo  batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
+		BatteryInfo  batteryinfo = BusinessManager.getInstance().getBatteryInfo();
 		
-		DeviceNewVersionInfo newVersioninfo = BusinessMannager.getInstance().getNewFirmwareInfo();
+		DeviceNewVersionInfo newVersioninfo = BusinessManager.getInstance().getNewFirmwareInfo();
 		
-		//SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+		//SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
 		
 
 		if (settings.HMonthlyPlan > 0
@@ -411,7 +406,7 @@ public class NotificationService extends Service {
 	private String getNotificationContent(ALERT_TYPE type, long used)
 	{
 		String strContent = "";
-		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
+		UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
 		switch(type)
 		{
 		case UsageLimit:

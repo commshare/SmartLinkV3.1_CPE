@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -13,7 +13,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 
 public class AutoLoginProgressDialog 
 {
@@ -47,7 +46,7 @@ public class AutoLoginProgressDialog
 			DataValue data = new DataValue();
 			data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
 			data.addParam("password", CPEConfig.getInstance().getLoginPassword());
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGIN_REQUEST, data);
 		}
 		else if(s_callback != null)

@@ -1,40 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.ENUM.PinState;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
-import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
-import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
-import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
-import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBtnCancel;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.CancelLoginListener;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.view.ClearEditText;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -53,9 +19,45 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.PinState;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
+import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
+import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.LinkAppSettings;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBtnCancel;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.CancelLoginListener;
+import com.alcatel.smartlinkv3.ui.view.ClearEditText;
 
+/*
+QuickSetupActivity support to set MiFi mainly property, such WiFi ssid, password.
+ */
+@Deprecated
 public class QuickSetupActivity  extends Activity implements OnClickListener{
   private static final String TAG = "QuickSetupActivity";
   private final static String BUNDLE_HANDLER_STATE = "State";
@@ -92,7 +94,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   private CommonErrorInfoDialog mConfirmDialog = null;
   private ForceLoginSelectDialog forceLoginSelectDialog = null;
   private Context mContext;
-  private BusinessMannager mBusinessMgr;
+  private BusinessManager mBusinessMgr;
   private boolean pukValState,newPinValState,confirmPinState;
   private ProgressDialog m_progress_dialog = null;
   
@@ -106,12 +108,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     /*
-     * DO NOT CLAIN 'android:theme="@android:style/Theme.Black.NoTitleBar"' 
+     * DO NOT declare 'android:theme="@android:style/Theme.Black.NoTitleBar"'
      * in AndroidManifest.xml
      */
     pageName = "QuickSetupActivity";
     mContext = this;
-    mBusinessMgr = BusinessMannager.getInstance();
+    mBusinessMgr = BusinessManager.getInstance();
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.quick_setup);
 
@@ -143,7 +145,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     /*When use login and back to launcher, we do not let user enter
      * login password
      */
-    if (LoginDialog.isLoginSwitchOff() || status == UserLoginStatus.login) {
+    if (LinkAppSettings.isLoginSwitchOff() || status == UserLoginStatus.login) {
       buildStateHandlerChain(false);
       return;
     }
@@ -438,7 +440,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     //SimManager poll SIM_GET_SIM_STATUS_ROLL_REQUSET in task, but it do not always 
     //broadcaset SIM request.
   
-    SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+    SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
    
 		if(m_progress_dialog != null && m_progress_dialog.isShowing() && sim.m_SIMState != SIMState.SimCardIsIniting){
   		m_progress_dialog.dismiss();
@@ -563,7 +565,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   
   @Override
   protected void onPause() {
-    super.onDestroy();
+    super.onPause();
     pageName = "";
     try {
         this.unregisterReceiver(mReceiver); 
@@ -755,10 +757,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   }  
   
   public void kickoffLogout() {
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
 			MainActivity.setKickoffLogoutFlag(true);
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.USER_LOGOUT_REQUEST, null);
 		}
 	}
@@ -773,10 +775,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mode = SecurityMode.WPA_WPA2;
     } else if (SecurityMode.WEP == mode) {
       encrypt = WEPEncryption.antiBuild(
-          BusinessMannager.getInstance().getWEPEncryption());
+          BusinessManager.getInstance().getWEPEncryption());
     }else {
       encrypt = WPAEncryption.antiBuild(
-          BusinessMannager.getInstance().getWPAEncryption());
+          BusinessManager.getInstance().getWPAEncryption());
     }
     data.addParam("WlanAPMode", WlanFrequency.antiBuild(mBusinessMgr.getWlanFrequency()));
     data.addParam("Ssid", ssid);
@@ -1137,7 +1139,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     
     public boolean retryInput(){
 	//will add a timeout later
-    	SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+    	SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
       mPINTryTimes = sim.m_nPinRemainingTimes;
       mEnterText.getText().clear();
       mPromptText.setText(getString(R.string.qs_pin_code_prompt, mPINTryTimes));
@@ -1193,7 +1195,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     public int retryTimes(){return mPUKTryTimes;}
     
     public boolean retryInput(){
-    	SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+    	SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
     	mPUKTryTimes = sim.m_nPukRemainingTimes;
       mEnterText.getText().clear();
       mPromptText.setText(getString(R.string.qs_pin_code_prompt, mPUKTryTimes));

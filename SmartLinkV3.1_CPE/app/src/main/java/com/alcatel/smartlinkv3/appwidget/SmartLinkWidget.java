@@ -1,25 +1,5 @@
 package com.alcatel.smartlinkv3.appwidget;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.R.string;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
-import com.alcatel.smartlinkv3.business.model.UsageDataMode;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
-import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.common.CommonUtil;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -27,17 +7,33 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Bitmap.Config;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageDataMode;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
+import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.ui.activity.MainActivity;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class SmartLinkWidget extends AppWidgetProvider {
 
@@ -160,7 +156,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     remoteViews.setOnClickPendingIntent(R.id.ib_widget_usage, pendingIntent);
 
     boolean m_blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-    UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+    UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
     if (m_blWifiConnected && status == UserLoginStatus.login) {
       Intent localIntent = new Intent(MessageUti.WIDGET_GET_INTERNET_SWITCH);
       pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent,
@@ -182,7 +178,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
   }
 
   private void updateUI(RemoteViews remoteViews, Context context) {
-    ConnectionStatus status = BusinessMannager.getInstance().getConnectStatus().m_connectionStatus;
+    ConnectionStatus status = BusinessManager.getInstance().getWanConnectStatus().m_connectionStatus;
     m_blInternetConnected = false;
     if (ConnectionStatus.Connected == status) {
       m_blInternetConnected = true;
@@ -197,7 +193,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
   private void updateSignal(RemoteViews remoteViews) {
     if (m_blDeviceConnected) {
-      SignalStrength eSignal = BusinessMannager.getInstance().getNetworkInfo().m_signalStrength;
+      SignalStrength eSignal = BusinessManager.getInstance().getNetworkInfo().m_signalStrength;
       if (SignalStrength.Level_0 == eSignal) {
         remoteViews.setImageViewResource(R.id.ib_widget_signal,
             R.drawable.widget_signal_0);
@@ -253,7 +249,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     if (m_blDeviceConnected) {
       remoteViews.setImageViewResource(R.id.ib_widget_sms,
           R.drawable.widget_sms_no_new_active);
-      int nUnreadNumber = BusinessMannager.getInstance().getNewSmsNumber();
+      int nUnreadNumber = BusinessManager.getInstance().getNewSmsNumber();
       String strNumberString = "";
       if (nUnreadNumber > 0 && 10 > nUnreadNumber) {
         strNumberString += nUnreadNumber;
@@ -280,8 +276,8 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
   private void updateBattery(RemoteViews remoteViews) {
     if (m_blDeviceConnected) {
-      int nProgress = BusinessMannager.getInstance().getBatteryInfo().getBatterLevel();
-      int nState = BusinessMannager.getInstance().getBatteryInfo().getChargeState();
+      int nProgress = BusinessManager.getInstance().getBatteryInfo().getBatterLevel();
+      int nState = BusinessManager.getInstance().getBatteryInfo().getChargeState();
       if (0 != nState) {
       	if (nProgress > 20)
 				{
@@ -365,7 +361,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     remoteViews.setOnClickPendingIntent(R.id.ib_widget_usage, pendingIntent);
 
     boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-    UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+    UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
     if (blCPEWifiConnected && status == UserLoginStatus.login) {
       Intent localIntent = new Intent(MessageUti.WIDGET_GET_INTERNET_SWITCH);
       pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent,
@@ -387,8 +383,8 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
   private void updateUsage(RemoteViews remoteViews, Context context) {
 
-    UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
-    UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance()
+    UsageSettingModel statistic = BusinessManager.getInstance().getUsageSettings();
+    UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance()
         .getUsageRecord();
 
     UsageDataMode usedUsageDataMode = CommonUtil
@@ -527,11 +523,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
   public void switchInternetConnection(Context context) {
     // Log.d(tagString+".switch:",
     // "-------------action---------internet switch open");
-    UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
-    UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance()
+    UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
+    UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance()
         .getUsageRecord();
-    ConnectStatusModel internetConnState = BusinessMannager.getInstance()
-        .getConnectStatus();
+    WanConnectStatusModel internetConnState = BusinessManager.getInstance()
+        .getWanConnectStatus();
     if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected
         || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
       if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable
@@ -549,11 +545,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
     if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
         || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
       // Log.d(tagString+".switch:", "switch---------disconnect");
-      BusinessMannager.getInstance().sendRequestMessage(
+      BusinessManager.getInstance().sendRequestMessage(
           MessageUti.WAN_DISCONNECT_REQUSET, null);
     } else {
       // Log.d(tagString+".switch:", "switch---------connect");
-      BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET,
+      BusinessManager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET,
           null);
     }
     // RemoteViews remoteViews = new RemoteViews(context.getPackageName(),

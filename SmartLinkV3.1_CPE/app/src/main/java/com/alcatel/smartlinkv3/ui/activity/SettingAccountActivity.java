@@ -19,13 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -125,7 +125,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 			return;
 		}
 		
-		userChangePassword(LoginDialog.USER_NAME, currentPwd, confirmPwd);
+		userChangePassword(LinkAppSettings.USER_NAME, currentPwd, confirmPwd);
 		
 		m_current_password.setText(null);
 		m_new_password.setText(null);
@@ -181,13 +181,13 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	}
 	
 	public void userChangePassword(String UserName, String CurrentPassword, String NewPassword){
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
 			DataValue data = new DataValue();
 			data.addParam("user_name", UserName);
 			data.addParam("current_password", CurrentPassword);
 			data.addParam("new_password", NewPassword);
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.USER_CHANGE_PASSWORD_REQUEST, data);
 		}
 	}

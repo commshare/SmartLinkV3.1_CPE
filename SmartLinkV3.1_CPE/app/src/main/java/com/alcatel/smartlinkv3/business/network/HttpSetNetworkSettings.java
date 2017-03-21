@@ -1,12 +1,12 @@
 package com.alcatel.smartlinkv3.business.network;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpSetNetworkSettings {
 	public static class SetNetworkSettings extends BaseRequest{
@@ -15,31 +15,19 @@ public class HttpSetNetworkSettings {
 		private int NetselectionMode = 0;
 		private int NetworkBand = 0;
 		public SetNetworkSettings(String strId, int networkMode, int netSelectionMode, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("SetNetworkSettings", strId, callback);
 			NetworkMode = networkMode;
 			NetselectionMode = netSelectionMode;
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD, "SetNetworkSettings");
-				
+        protected void buildHttpParamJson() throws JSONException {
 				JSONObject settingInfo = new JSONObject();	 
 				settingInfo.put("NetworkMode", NetworkMode);
 				settingInfo.put("NetselectionMode", NetselectionMode);
 				settingInfo.put("NetworkBand", NetworkBand);
 				
 				m_requestParamJson.put(ConstValue.JSON_PARAMS, settingInfo);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 
 		@Override

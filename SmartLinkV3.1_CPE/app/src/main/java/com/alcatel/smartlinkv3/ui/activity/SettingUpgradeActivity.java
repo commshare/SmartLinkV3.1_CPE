@@ -15,9 +15,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
@@ -113,11 +113,11 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 		//updateNewDeviceInfo(); 
 		String strCurAppVersion = getString(R.string.setting_upgrade_current_app_version);
-		strCurAppVersion += BusinessMannager.getInstance().getAppVersion();
+		strCurAppVersion += BusinessManager.getInstance().getAppVersion();
 		m_tv_cur_app_version.setText(strCurAppVersion);
 		m_tv_new_app_version.setText("");
 		String strCurFWVersion = getString(R.string.setting_upgrade_device_version);
-		strCurFWVersion += BusinessMannager.getInstance().getSystemInfo().getSwVersion();
+		strCurFWVersion += BusinessManager.getInstance().getSystemInfo().getSwVersion();
 		m_tv_cur_firmware_version.setText(strCurFWVersion);
 		m_tv_new_firmware_version.setText("");
 		Intent it = getIntent();
@@ -182,7 +182,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			break;
 
 		case R.id.btn_app_upgrade:
-			ConnectStatusModel status = BusinessMannager.getInstance().getConnectStatus();
+			WanConnectStatusModel status = BusinessManager.getInstance().getWanConnectStatus();
 			ConnectionStatus result = status.m_connectionStatus;
 			if (result != ConnectionStatus.Connected) {
 				m_tv_new_app_version.setText(R.string.setting_upgrade_no_connection);
@@ -192,7 +192,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			break;
 
 		case R.id.btn_check_firmware:
-			status = BusinessMannager.getInstance().getConnectStatus();
+			status = BusinessManager.getInstance().getWanConnectStatus();
 			result = status.m_connectionStatus;
 			if (result != ConnectionStatus.Connected) {
 				m_tv_new_firmware_version.setText(R.string.setting_upgrade_no_connection);
@@ -233,7 +233,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 					//upgrade firmware
 					ShowWaiting(true);
 					inquireDlg.closeDialog();
-					BusinessMannager.getInstance().sendRequestMessage(
+					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE, null);
 				}
 			});
@@ -259,12 +259,12 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 					//upgrade firmware
 					ShowWaiting(true);
 					inquireDlg.closeDialog();
-					BusinessMannager.getInstance().sendRequestMessage(
+					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.UPDATE_SET_DEVICE_START_UPDATE, null);
 				}
 			});
 		}else {
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
 			showCheckFWWaiting(true);
 
@@ -323,7 +323,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				new IntentFilter(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
 		m_pb_waiting.setVisibility(View.VISIBLE);
 		setNewDeviceVersion("");
 	}
@@ -392,7 +392,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()){
 				//do nothing
-				DeviceUpgradeStateInfo info = BusinessMannager.getInstance().getUpgradeStateInfo();
+				DeviceUpgradeStateInfo info = BusinessManager.getInstance().getUpgradeStateInfo();
 				EnumDeviceUpgradeStatus status = EnumDeviceUpgradeStatus.build(info.getStatus());
 				int nProgress = info.getProcess();
 				m_pb_waiting.setProgress(nProgress);
@@ -408,7 +408,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 					}
 					else
 					{
-						BusinessMannager.getInstance().sendRequestMessage(MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE, null);
+						BusinessManager.getInstance().sendRequestMessage(MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE, null);
 						Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
 					}
 				}else if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
@@ -428,7 +428,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	}
 
 	private void updateNewDeviceInfo(boolean blNeedBackupNewVersionInfo){
-		DeviceNewVersionInfo info = BusinessMannager.getInstance().getNewFirmwareInfo();
+		DeviceNewVersionInfo info = BusinessManager.getInstance().getNewFirmwareInfo();
 		int nState = info.getState();
 		EnumDeviceCheckingStatus eStatus = EnumDeviceCheckingStatus.build(nState);
 		if (EnumDeviceCheckingStatus.DEVICE_CHECKING == eStatus) {
@@ -551,7 +551,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				//upgrade firmware
 				ShowWaiting(true);
 				inquireDlg.closeDialog();
-				BusinessMannager.getInstance().sendRequestMessage(
+				BusinessManager.getInstance().sendRequestMessage(
 						MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE, null);
 				SettingUpgradeActivity.this.finish();
 			}
@@ -564,7 +564,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			switch (msg.what) {
 			case MSG_GET_NEW_VERSION:
 				String strNewVersion = msg.getData().getString("version");
-				String currVer = BusinessMannager.getInstance().getAppVersion();		
+				String currVer = BusinessManager.getInstance().getAppVersion();
 				m_tv_new_app_version.setText(getString(R.string.setting_upgrade_new_app_version)+
 						msg.getData().getString("version"));												
 				if(currVer.compareToIgnoreCase(strNewVersion) < 0)

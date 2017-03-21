@@ -11,6 +11,11 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.functions.Actions;
+
 public class LoadingActivity extends Activity {
 	private final int SPLASH_DISPLAY_INTERNAL = 1000;
 
@@ -19,7 +24,8 @@ public class LoadingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loading);
 		getWindow().setBackgroundDrawable(null);
-		goHome();
+//		goHome();
+        delayStart();
 	}
 
 	@Override
@@ -41,20 +47,35 @@ public class LoadingActivity extends Activity {
 		Thread searchingThread = new Thread() {
 			@Override
 			public void run() {
-		    if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
-		      goGuide();
-		    } else if (!checkConnectState()) {
-					searchTimeOut();
-		    } else if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-//		      startQuickSetupActivity();
-                startConnectTypeActivity();
-		    } else {		    
-					startMainActivity();
-		    }
+				startNextActivity();
 			}
 		};
 
 		new Handler().postDelayed(searchingThread, SPLASH_DISPLAY_INTERNAL);
+	}
+
+//	@RxLogObservable
+	private void delayStart() {
+		Observable.
+                empty().
+				delay(SPLASH_DISPLAY_INTERNAL, TimeUnit.MILLISECONDS).
+				subscribe(Actions.empty(),
+						Actions.empty(),
+						() -> startNextActivity()
+				);
+	}
+
+	private void startNextActivity() {
+		if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
+			goGuide();
+		} else if (!checkConnectState()) {
+			searchTimeOut();
+		} else if (!CPEConfig.getInstance().getQuickSetupFlag()) {
+//		      startQuickSetupActivity();
+			startConnectTypeActivity();
+		} else {
+			startMainActivity();
+		}
 	}
 
 	private void goGuide() {

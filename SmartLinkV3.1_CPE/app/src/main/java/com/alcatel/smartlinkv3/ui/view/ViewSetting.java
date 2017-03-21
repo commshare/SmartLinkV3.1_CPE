@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
@@ -100,9 +100,9 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
 
     //获取更新标志
     private void getUpgradeTag() {
-        int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
-        BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
-        BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
+        int nUpgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
         if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)) {
             //DEVICE_NO_NEW_VERSION
             m_blFirst = false;
@@ -141,7 +141,7 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
             list.add(item);
         }
 
-        upgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+        upgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
         if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(upgradeStatus)) {
             //DEVICE_NEW_VERSION
             item = new SettingItem(context.getString(R.string.setting_device), true);
@@ -295,7 +295,7 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-                    int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+                    int nUpgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
                     if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)) {
                         //EnumDeviceCheckingStatus.DEVICE_NEW_VERSION
                         //EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION

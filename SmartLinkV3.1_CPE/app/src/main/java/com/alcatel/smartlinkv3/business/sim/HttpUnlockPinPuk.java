@@ -1,12 +1,12 @@
 package com.alcatel.smartlinkv3.business.sim;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpUnlockPinPuk {
 	
@@ -17,27 +17,17 @@ public class HttpUnlockPinPuk {
 		
         public UnlockPin(String strId,String strPin,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("UnlockPin", strId, callback);
         	m_strPin = strPin;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "UnlockPin");
-
 	        	JSONObject pin = new JSONObject();
 	        	pin.put("Pin", m_strPin);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, pin);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override
@@ -77,29 +67,19 @@ public class HttpUnlockPinPuk {
 		
         public UnlockPuk(String strId,String strPuk,String strPin,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("UnlockPuk", strId, callback);
         	m_strPuk = strPuk;
         	m_strPin = strPin;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "UnlockPuk");
-
 	        	JSONObject pinPuk = new JSONObject();
 	        	pinPuk.put("Puk", m_strPuk);
 	        	pinPuk.put("Pin", m_strPin);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, pinPuk);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override

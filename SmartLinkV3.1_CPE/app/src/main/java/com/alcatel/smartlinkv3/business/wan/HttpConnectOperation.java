@@ -1,16 +1,14 @@
 package com.alcatel.smartlinkv3.business.wan;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
-import com.alcatel.smartlinkv3.business.statistics.HttpUsageSettings.GetUsageSettingsResponse;
 import com.alcatel.smartlinkv3.business.statistics.HttpUsageSettings.SetUsageSettingsResponse;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpConnectOperation {
 	
@@ -19,23 +17,7 @@ public class HttpConnectOperation {
     {			
         public GetConnectionState(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetConnectionState");
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetConnectionState", strId, callback);
         }
 
         @Override
@@ -74,23 +56,7 @@ public class HttpConnectOperation {
     {	
         public Connect(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Connect");
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("Connect", strId, callback);
         }
 
         @Override
@@ -125,24 +91,9 @@ public class HttpConnectOperation {
     {	
         public DisConnect(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("DisConnect", strId, callback);
         }
 
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "DisConnect");
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
 
         @Override
         public BaseResponse createResponseObject() 
@@ -177,23 +128,13 @@ public class HttpConnectOperation {
     {			
         public GetConnectionSettings(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("GetConnectionSettings", strId, callback);
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetConnectionSettings");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
         }
 
         @Override
@@ -233,33 +174,19 @@ public class HttpConnectOperation {
 		public ConnectionSettingsResult m_result = new ConnectionSettingsResult();
 
 		public SetConnectionSettings(String strId,	ConnectionSettingsResult result, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("SetConnectionSettings", strId,callback);
 			m_result.setValue(result);
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetConnectionSettings");
-				
+        protected void buildHttpParamJson() throws JSONException {
 				JSONObject settings = new JSONObject();
 				settings.put("IdleTime", m_result.IdleTime);
 				settings.put("RoamingConnect", m_result.RoamingConnect);
 				settings.put("ConnectMode", m_result.ConnectMode);
 				settings.put("PdpType", m_result.PdpType);
-				
-				
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, settings);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
 
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+				m_requestParamJson.put(ConstValue.JSON_PARAMS, settings);
 		}
 
 		@Override

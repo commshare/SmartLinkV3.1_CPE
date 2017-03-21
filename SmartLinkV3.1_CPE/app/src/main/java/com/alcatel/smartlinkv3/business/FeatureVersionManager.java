@@ -17,7 +17,7 @@ public class FeatureVersionManager {
     
     public boolean isSupportApi(String strModule,String strApi) {
     	boolean bSupport = false;
-    	ArrayList<String> apiLst = BusinessMannager.getInstance().getFeatures().getFeatures().get(strModule);
+    	ArrayList<String> apiLst = BusinessManager.getInstance().getFeatures().getFeatures().get(strModule);
     	if(null != apiLst && apiLst.size() > 0) {
     		if(apiLst.contains(strApi))
     			bSupport = true;
@@ -28,13 +28,13 @@ public class FeatureVersionManager {
     
     public boolean isSupportModule(String strModule) {
     	boolean bSupport = false;
-    	ArrayList<String> apiLst = BusinessMannager.getInstance().getFeatures().getFeatures().get(strModule);
+    	ArrayList<String> apiLst = BusinessManager.getInstance().getFeatures().getFeatures().get(strModule);
     	if(apiLst != null && apiLst.size() > 0)
     		bSupport = true;
     	return bSupport;
     }
     
     public boolean isSupportDevice(String strDeviceName) {
-    	return BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase(strDeviceName);
+    	return BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase(strDeviceName);
     }
 }

@@ -5,25 +5,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail.SMSDetailItem;
-import com.alcatel.smartlinkv3.ui.activity.InquireDialog.OnInquireApply;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.Selection;
@@ -203,7 +197,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {					
-				//BusinessMannager.getInstance().refreshSmsListAtOnce();
+				//BusinessManager.getInstance().refreshSmsListAtOnce();
 			}
 			else if(strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
 			{
@@ -253,7 +247,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 				
 				if(bEnd == true){
 					m_bSendEnd = true;
-					//BusinessMannager.getInstance().refreshSmsListAtOnce();
+					//BusinessManager.getInstance().refreshSmsListAtOnce();
 					
 					m_progressWaiting.setVisibility(View.GONE);
 					m_btnSend.setEnabled(true);
@@ -330,8 +324,8 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 				data.addParam("SMSId", -1);
 				data.addParam("Content", strContent);
 				data.addParam("Number", strNumber);
-				BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
-				BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+				BusinessManager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
+				BusinessManager.getInstance().getContactMessagesAtOnceRequest();
 			}else{
 				String msgRes = this.getString(R.string.sms_number_invalid);
 				Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
@@ -352,7 +346,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			DataValue data = new DataValue();
 			data.addParam("content", m_etContent.getText().toString());
 			data.addParam("phone_number", m_etNumber.getText().toString());
-			BusinessMannager.getInstance().sendRequestMessage(MessageUti.SMS_SEND_SMS_REQUSET, data);
+			BusinessManager.getInstance().sendRequestMessage(MessageUti.SMS_SEND_SMS_REQUSET, data);
 			
 			m_progressWaiting.setVisibility(View.VISIBLE);
 			m_btnSend.setEnabled(false);

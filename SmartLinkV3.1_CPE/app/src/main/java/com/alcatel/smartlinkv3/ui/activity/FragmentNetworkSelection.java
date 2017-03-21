@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -97,16 +97,16 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
         
         m_network_searching_title =(TextView)view.findViewById(R.id.network_searching_title);
         
-        if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
+        if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
 //			UserSetNetworkSelection(SELECTION_MODE_MANUAL);
 			m_manual_mode.setChecked(true);
 			m_auto_mode.setChecked(false);
 			m_network_searching_title.setVisibility(View.VISIBLE);
 			m_waiting_search_result.setVisibility(View.VISIBLE);
 			m_network_list_conainer.setVisibility(View.VISIBLE);
-			BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
+			BusinessManager.getInstance().getNetworkManager().startSearchNetworkResult(null);
 		}
-		else if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
+		else if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
 //			UserSetNetworkSelection(SELECTION_MODE_AUTO);
 			m_manual_mode.setChecked(false);
 			m_auto_mode.setChecked(true);
@@ -136,7 +136,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					UserSetNetworkSelection(SELECTION_MODE_AUTO);
 					m_network_searching_title.setVisibility(View.GONE);
 					m_network_list_conainer.setVisibility(View.GONE);
-					BusinessMannager.getInstance().getNetworkManager().stopSearchNetworkResult();
+					BusinessManager.getInstance().getNetworkManager().stopSearchNetworkResult();
 				}
 				else if(checked == false){
 //					m_network_list_conainer.setVisibility(View.VISIBLE);
@@ -145,7 +145,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					UserSetNetworkSelection(SELECTION_MODE_MANUAL);
 					m_network_searching_title.setVisibility(View.VISIBLE);
 					m_network_list_conainer.setVisibility(View.VISIBLE);
-//					BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
+//					BusinessManager.getInstance().getNetworkManager().startSearchNetworkResult(null);
 				}
 			}
         	
@@ -159,12 +159,12 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 	}
 	
 	private void UserSetNetworkSelection(final int mode){
-		if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() != MODE_ERROR){
+		if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() != MODE_ERROR){
 			m_waiting_search_result.setVisibility(View.VISIBLE);
 			DataValue data = new DataValue();
-			data.addParam("network_mode", BusinessMannager.getInstance().getNetworkManager().getNetworkMode());
+			data.addParam("network_mode", BusinessManager.getInstance().getNetworkManager().getNetworkMode());
 			data.addParam("netselection_mode", mode);
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
 		}
 	}
@@ -327,7 +327,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 						m_selected_button.setEnabled(true);
 					}
 					
-					BusinessMannager.getInstance().getNetworkManager().startRegisterNetwork(position);
+					BusinessManager.getInstance().getNetworkManager().startRegisterNetwork(position);
 					if(m_selected_position >= 0){
 						m_data.get(m_selected_position).State = 1;
 					}
@@ -401,7 +401,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
-					m_network_search_result_list = BusinessMannager.getInstance().getNetworkManager().getNetworkList();
+					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
 					if(m_network_search_result_list != null){
 						m_adapter = new NetworkListAdapter(m_parent_activity, m_network_search_result_list);
 				        m_network_list.setAdapter(m_adapter);
@@ -447,10 +447,10 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 				
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
-					if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
-						BusinessMannager.getInstance().getNetworkManager().startSearchNetworkResult(null);
+					if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
+						BusinessManager.getInstance().getNetworkManager().startSearchNetworkResult(null);
 					}
-					else if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
+					else if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
 						m_waiting_search_result.setVisibility(View.GONE);
 					}
 				}

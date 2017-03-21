@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -65,11 +65,11 @@ public class HandlerUtils {
 	};
 	
 	public static void userLogout() {
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
 		{
 			if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
-				BusinessMannager.getInstance().sendRequestMessage(
+				BusinessManager.getInstance().sendRequestMessage(
 						MessageUti.USER_LOGOUT_REQUEST, null);
 			}
 		}

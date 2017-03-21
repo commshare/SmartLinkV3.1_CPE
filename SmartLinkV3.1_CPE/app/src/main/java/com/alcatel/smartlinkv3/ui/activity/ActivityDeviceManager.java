@@ -29,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.EnumConnectMode;
@@ -212,14 +212,14 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 		DataValue data = new DataValue();
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);	
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);
 	}
 	
 	private void setDeviceUnlock(String strDeviceName, String strMac ) {
 		DataValue data = new DataValue();
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);	
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);
 	}
 	
 	private void setDeviceName(String strDeviceName, String strMac, EnumDeviceType nDeviceType)
@@ -228,18 +228,18 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 		data.addParam("DeviceName", strDeviceName);
 		data.addParam("MacAddress", strMac);
 		data.addParam("DeviceType", nDeviceType);
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_NAME, data);	
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_NAME, data);
 	}	
 
 	private void getListData() {
-		BusinessMannager.getInstance().getGetConnectedDeviceTaskAtOnceRequest();
-		BusinessMannager.getInstance().getGetBlockDeviceListTaskAtOnceRequest();
+		BusinessManager.getInstance().getGetConnectedDeviceTaskAtOnceRequest();
+		BusinessManager.getInstance().getGetBlockDeviceListTaskAtOnceRequest();
 	}
 	
 	private void updateConnectedDeviceUI()
 	{
 		ArrayList<ConnectedDeviceItemModel> data = (ArrayList<ConnectedDeviceItemModel>) m_connecedDeviceLstData.clone();
-		m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
+		m_connecedDeviceLstData = BusinessManager.getInstance().getConnectedDeviceList();
 		for(int i = 0;i <m_connecedDeviceLstData.size();i++) {
 			ConnectedDeviceItemModel item = m_connecedDeviceLstData.get(i);
 			if(item.MacAddress.equalsIgnoreCase(m_strLocalMac))
@@ -273,7 +273,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 	
 	private void updateBlockDeviceUI()
 	{
-		m_blockedDeviceLstData = BusinessMannager.getInstance().getBlockDeviceList();
+		m_blockedDeviceLstData = BusinessManager.getInstance().getBlockDeviceList();
 		((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 		
 		String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);		

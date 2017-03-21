@@ -20,7 +20,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Handler;
-import android.util.Log;
 
 public class SystemManager extends BaseManager {
 	private Features m_features = new Features();
@@ -94,7 +93,7 @@ public class SystemManager extends BaseManager {
 				stopRollTimer();			
 				m_systemInfo.clear();
 				m_systemStatus.clear();
-				BusinessMannager.getInstance().getSystemInfoModel().clear();
+				BusinessManager.getInstance().getSystemInfoModel().clear();
 			}
 		}
 	}
@@ -182,12 +181,12 @@ public class SystemManager extends BaseManager {
 							//									Const.DATE_FORMATE);
 							//							Calendar caNow = Calendar.getInstance();
 							//							String strNow = startTemp.format(caNow.getTime());
-							//							if (!(BusinessMannager.getInstance()
+							//							if (!(BusinessManager.getInstance()
 							//									.getUsageSettings().m_strStartBillDate
-							//									.compareTo(strNow) <= 0 && BusinessMannager
+							//									.compareTo(strNow) <= 0 && BusinessManager
 							//									.getInstance().getUsageSettings().m_strEndBillDate
 							//									.compareTo(strNow) >= 0)) {
-							//								BusinessMannager.getInstance()
+							//								BusinessManager.getInstance()
 							//										.getUsageSettings()
 							//										.calStartAndEndCalendar();
 							//								Intent megIntent = new Intent(
@@ -228,13 +227,13 @@ public class SystemManager extends BaseManager {
 									&& strErrcode.length() == 0) {
 								m_systemInfo = response
 										.getModelResult();
-								BusinessMannager.getInstance().getSystemInfoModel().
+								BusinessManager.getInstance().getSystemInfoModel().
 								setDeviceName(m_systemInfo.getDeviceName());
-								BusinessMannager.getInstance().getSystemInfoModel().
+								BusinessManager.getInstance().getSystemInfoModel().
 								setHwVersion(m_systemInfo.getHwVersion());
-								BusinessMannager.getInstance().getSystemInfoModel().
+								BusinessManager.getInstance().getSystemInfoModel().
 								setSwVersion(m_systemInfo.getSwVersion());
-								BusinessMannager.getInstance().getSystemInfoModel().
+								BusinessManager.getInstance().getSystemInfoModel().
 								setIMEI(m_systemInfo.getIMEI());
 							} else {
 								new Handler().postDelayed(

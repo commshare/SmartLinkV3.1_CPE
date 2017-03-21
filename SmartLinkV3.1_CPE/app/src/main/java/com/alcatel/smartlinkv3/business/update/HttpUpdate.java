@@ -1,10 +1,7 @@
 package com.alcatel.smartlinkv3.business.update;
 
-import org.json.JSONException;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
 
@@ -14,27 +11,7 @@ public class HttpUpdate {
 	public static class getDeviceNewVersionRequest extends BaseRequest{
 
 		public getDeviceNewVersionRequest(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetDeviceNewVersion");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("GetDeviceNewVersion", strId, callback);
 		}
 
 		@Override
@@ -73,32 +50,11 @@ public class HttpUpdate {
 	public static class setDeviceStartUpdateRequest extends BaseRequest{
 
 		public setDeviceStartUpdateRequest(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetDeviceStartUpdate");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetDeviceStartUpdate", strId, callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
 			return new setDeviceStartUpdateResponse(m_finsishCallback);
 		}
 		
@@ -133,32 +89,11 @@ public class HttpUpdate {
 	public static class setFOTAStartDownload extends BaseRequest{
 
 		public setFOTAStartDownload(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetFOTAStartDownload");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetFOTAStartDownload", strId, callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
 			return new setFOTAStartDownloadResponse(m_finsishCallback);
 		}
 		
@@ -183,10 +118,8 @@ public class HttpUpdate {
 		@SuppressWarnings("unchecked")
 		@Override
 		public Boolean getModelResult() {
-			// TODO Auto-generated method stub
 			return m_blRes;
 		}
-		
 	}
 	
 	
@@ -195,32 +128,11 @@ public class HttpUpdate {
 	public static class getDeviceUpgradeStatusRequest extends BaseRequest{
 
 		public getDeviceUpgradeStatusRequest(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetDeviceUpgradeState");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("GetDeviceUpgradeState", strId, callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
 			return new getDeviceUpgradeStatusResponse(m_finsishCallback);
 		}
 		
@@ -253,32 +165,11 @@ public class HttpUpdate {
 	public static class setDeviceUpdateStopRequest extends BaseRequest{
 
 		public setDeviceUpdateStopRequest(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetDeviceUpdateStop");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetDeviceUpdateStop", strId, callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
 			return new setDeviceUpdateStopResponse(m_finsishCallback);
 		}
 		
@@ -312,27 +203,7 @@ public class HttpUpdate {
 	public static class SetCheckNewVersionRequest extends BaseRequest{
 
 		public SetCheckNewVersionRequest(String strID, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strID;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetCheckNewVersion");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetCheckNewVersion", strID, callback);
 		}
 
 		@Override
@@ -369,39 +240,15 @@ public class HttpUpdate {
 	{
 		public setFOTAStartUpdate(String strId, IHttpFinishListener callback) 
 		{
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson()
-		{
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"setFOTAStartUpdate");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) 
-			{
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("setFOTAStartUpdate", strId, callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() 
 		{
-			// TODO Auto-generated method stub
 			return new setFOTAStartDownloadResponse(m_finsishCallback);
 		}
 		
 	}
-	
 	
 }

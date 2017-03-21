@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.CommonUtil;
@@ -168,8 +168,8 @@ public class UsageActivity extends BaseActivity implements View.OnClickListener 
 
     private void updateUI(){
         int nProgress;
-        UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
-        UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
+        UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
+        UsageSettingModel statistic = BusinessManager.getInstance().getUsageSettings();
 
         if(statistic.HMonthlyPlan!=0)
         {

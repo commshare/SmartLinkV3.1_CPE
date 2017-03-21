@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.SMSManager;
 import com.alcatel.smartlinkv3.business.model.SMSContentItemModel;
 import com.alcatel.smartlinkv3.business.model.SmsContentMessagesModel;
@@ -292,7 +292,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 
 			if (m_bDeleteContact == true) {
 				if (bDeleteSeccuss == true) {
-					BusinessMannager.getInstance()
+					BusinessManager.getInstance()
 							.getContactMessagesAtOnceRequest();
 					String msgRes = this
 							.getString(R.string.sms_delete_multi_success);
@@ -302,7 +302,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 					String strMsg = getString(R.string.sms_delete_multi_error);
 					Toast.makeText(this, strMsg, Toast.LENGTH_SHORT).show();
 					m_progressWaiting.setVisibility(View.GONE);
-					BusinessMannager.getInstance()
+					BusinessManager.getInstance()
 							.getContactMessagesAtOnceRequest();
 					getSmsContentAtOnceRequest();
 				}
@@ -312,7 +312,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 					Toast.makeText(this,
 							getString(R.string.sms_delete_success),
 							Toast.LENGTH_SHORT).show();
-					BusinessMannager.getInstance()
+					BusinessManager.getInstance()
 							.getContactMessagesAtOnceRequest();
 					if (m_bIsLastOneMessage == true) {
 						this.finish();
@@ -333,7 +333,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if (nResult == BaseResponse.RESPONSE_OK
 					&& strErrorCode.length() == 0) {
-				BusinessMannager.getInstance()
+				BusinessManager.getInstance()
 						.getContactMessagesAtOnceRequest();
 				// getSmsContentAtOnceRequest();
 			} else if (strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL)) {
@@ -448,7 +448,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 
 	//
 	private void OnBtnBack() {
-		BusinessMannager.getInstance().getContactMessagesAtOnceRequest();
+		BusinessManager.getInstance().getContactMessagesAtOnceRequest();
 		String strContent = m_etContent.getText().toString();
 		String strNumber = m_smsNumber;
 		if (strContent != null)
@@ -467,12 +467,12 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 				//data1.addParam("DelFlag", EnumSMSDelFlag.Delete_message);
 				//data1.addParam("ContactId", item.nContactID);
 				data.addParam("SMSId", item.nSMSID);
-				//BusinessMannager.getInstance().sendRequestMessage(
+				//BusinessManager.getInstance().sendRequestMessage(
 						//MessageUti.SMS_DELETE_SMS_REQUSET, data1);
 			}
 			//end to add
 			
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.SMS_SAVE_SMS_REQUSET, data);
 		} else {
 			this.finish();
@@ -484,7 +484,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 				data.addParam("DelFlag", EnumSMSDelFlag.Delete_message);
 				data.addParam("ContactId", item.nContactID);
 				data.addParam("SMSId", item.nSMSID);
-				BusinessMannager.getInstance().sendRequestMessage(
+				BusinessManager.getInstance().sendRequestMessage(
 						MessageUti.SMS_DELETE_SMS_REQUSET, data);
 			}
 		}
@@ -524,7 +524,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 					data.addParam("DelFlag",
 							EnumSMSDelFlag.Delete_contact_messages);
 					data.addParam("ContactId", m_nContactID);
-					BusinessMannager.getInstance().sendRequestMessage(
+					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.SMS_DELETE_SMS_REQUSET, data);
 				}
 				inquireDlg.closeDialog();
@@ -550,7 +550,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		DataValue data = new DataValue();
 		data.addParam("content", m_etContent.getText().toString());
 		data.addParam("phone_number", m_tvTitle.getText().toString());
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.SMS_SEND_SMS_REQUSET, data);
 		m_progressWaiting.setVisibility(View.VISIBLE);
 		// m_progress_dialog = ProgressDialog.show(ActivitySmsDetail.this, null,
@@ -863,7 +863,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 										data.addParam(
 												"SMSId",
 												m_smsListData.get(position).nSMSID);
-										BusinessMannager
+										BusinessManager
 												.getInstance()
 												.sendRequestMessage(
 														MessageUti.SMS_DELETE_SMS_REQUSET,
@@ -1016,13 +1016,13 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 		public void run() {
 			DataValue data = new DataValue();
 			data.addParam("ContactId", m_nContactID);
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET, data);
 		}
 	}
 
 	private void startGetSmsContentTask() {
-		if (BusinessMannager.getInstance().getSMSInit() == SMSInit.Initing)
+		if (BusinessManager.getInstance().getSMSInit() == SMSInit.Initing)
 			return;
 
 		if (m_getSMSContentTask == null) {
@@ -1032,7 +1032,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 	}
 
 	public void getSmsContentAtOnceRequest() {
-		if (BusinessMannager.getInstance().getSMSInit() == SMSInit.Initing)
+		if (BusinessManager.getInstance().getSMSInit() == SMSInit.Initing)
 			return;
 
 		GetSMSContentTask task = new GetSMSContentTask();

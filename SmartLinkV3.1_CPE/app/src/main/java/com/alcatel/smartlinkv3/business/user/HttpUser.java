@@ -1,49 +1,37 @@
 package com.alcatel.smartlinkv3.business.user;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class HttpUser {
 	
 /********************  Login  **************************************************************************************/	
 	public static class Login extends BaseRequest
     {	
-		String m_strUserName = new String();
-		String m_strPsw = new String();
+		String m_strUserName;
+		String m_strPsw;
 		
         public Login(String strId,String strUserName,String strPsw,IHttpFinishListener callback) 
         {
-        	super(callback);  
+        	super("Login", strId, callback);
         	m_strUserName = strUserName;
         	m_strPsw = strPsw;
-        	m_strId = strId;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+		protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Login");
-	        	
 	        	JSONObject userInfo = new JSONObject();
 	        	userInfo.put("UserName", m_strUserName);
 	        	userInfo.put("Password", m_strPsw);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override
@@ -80,29 +68,19 @@ public class HttpUser {
 		
         public ForceLogin(String strId,String strUserName,String strPsw,IHttpFinishListener callback) 
         {
-        	super(callback);  
+        	super("ForceLogin", strId, callback);
         	m_strUserName = strUserName;
         	m_strPsw = strPsw;
-        	m_strId = strId;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+		protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ForceLogin");
-	        	
 	        	JSONObject userInfo = new JSONObject();
 	        	userInfo.put("UserName", m_strUserName);
 	        	userInfo.put("Password", m_strPsw);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override
@@ -136,23 +114,7 @@ public class HttpUser {
     {	
         public Logout(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "Logout");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("Logout", strId, callback);
         }
 
         @Override
@@ -185,23 +147,7 @@ public class HttpUser {
     {	
         public GetLoginState(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetLoginState");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetLoginState", strId, callback);
         }
 
         @Override
@@ -243,23 +189,7 @@ public class HttpUser {
 		
         public HeartBeat(String strId, IHttpFinishListener callback) 
         {
-        	super(callback);      
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "HeartBeat");
-    
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {			
-				e.printStackTrace();
-			}
+        	super("HeartBeat", strId, callback);
         }
 
         @Override
@@ -296,32 +226,19 @@ public class HttpUser {
 		String m_strNewPsw = new String();
 
 		public ChangePassword(String strId,String strUserName,String strCurrPsw,String strNewPsw,IHttpFinishListener callback) {
-			super(callback);
+			super("ChangePassword", strId, callback);
 			m_strUserName = strUserName;
 			m_strCurrPsw = strCurrPsw;
 			m_strNewPsw = strNewPsw;
-        	m_strId = strId;
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ChangePassword");
-	        	
+		protected void buildHttpParamJson() throws JSONException {
 	        	JSONObject userInfo = new JSONObject();
 	        	userInfo.put("UserName", m_strUserName);
 	        	userInfo.put("CurrPassword", m_strCurrPsw);
 	        	userInfo.put("NewPassword", m_strNewPsw);
-	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 
 		@Override

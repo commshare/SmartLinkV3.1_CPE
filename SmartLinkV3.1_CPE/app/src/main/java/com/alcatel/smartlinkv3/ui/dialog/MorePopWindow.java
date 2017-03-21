@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -66,15 +66,15 @@ public class MorePopWindow extends PopupWindow implements OnClickListener{
             this.dismiss();
 			break;
 		case R.id.clear_history_layout:
-			SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
-			ConnectStatusModel connectStatus = BusinessMannager.getInstance().getConnectStatus();
+			SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
+			WanConnectStatusModel connectStatus = BusinessManager.getInstance().getWanConnectStatus();
 //			if (connectStatus.m_connectionStatus == ConnectionStatus.Disconnected) {
 				DataValue data = new DataValue();
 				SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date now = new Date();
 				String strDate = sDate.format(now);
 				data.addParam("clear_time", strDate);
-				BusinessMannager.getInstance().sendRequestMessage(
+				BusinessManager.getInstance().sendRequestMessage(
 						MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET, data);
 //			}else {
 //				msgRes = v.getContext().getString(R.string.usage_comsumptionexplain_label);

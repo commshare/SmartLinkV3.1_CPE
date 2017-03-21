@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.system.RestoreError;
 import com.alcatel.smartlinkv3.common.CommonUtil;
@@ -386,14 +386,14 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
     }
 
     private void onBtnBackup(){
-		BusinessMannager.getInstance().
+		BusinessManager.getInstance().
 		sendRequestMessage(MessageUti.SYSTEM_SET_APP_BACKUP, null);
 	}
 	
 	private void onBtnRestore(){
         mRestoreTv.setClickable(false);
 		m_bRestore = true;
-//		BusinessMannager.getInstance().
+//		BusinessManager.getInstance().
 //		sendRequestMessage(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP, null);
 
         // 调用文件上传方法，需要传入requestBody的key值，本地文件路径以及请求回调方法
@@ -484,7 +484,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
 		
-		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
 		if (SIMState.Accessable != sim.m_SIMState) {
             mBackupTv.setClickable(false);
             mRestoreTv.setClickable(false);
@@ -551,7 +551,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.setting_restore_failed);
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				RestoreError info = BusinessMannager.getInstance().getRestoreError();
+				RestoreError info = BusinessManager.getInstance().getRestoreError();
 				int nErrorStatus = info.getRestoreError();
 				EnumRestoreErrorStatus status = EnumRestoreErrorStatus.build(nErrorStatus);
 				if (status == 
@@ -565,7 +565,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			else
 			{
 				m_bRestore = false;
-				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
                     mRestoreTv.setClickable(true);
 				}
@@ -579,7 +579,7 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
                     mBackupTv.setClickable(true);
 					if(m_bRestore)

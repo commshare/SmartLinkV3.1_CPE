@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
@@ -14,7 +14,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 
 public class AutoForceLoginProgressDialog 
 {
@@ -62,7 +61,7 @@ public class AutoForceLoginProgressDialog
 			data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
 		}
 		
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.USER_FORCE_LOGIN_REQUEST, data);
 		
 		if(m_dlgProgress != null && m_dlgProgress.isShowing())
@@ -119,14 +118,14 @@ public class AutoForceLoginProgressDialog
 				{
 					if(BaseResponse.RESPONSE_OK == nRet && strErrorCode.length() == 0 )
 					{
-						if(m_isUserFirstLogin||SmartLinkV3App.getInstance().getIsforcesLogin())
+						if(m_isUserFirstLogin||SmartLinkV3App.getInstance().IsForcesLogin())
 						{
 							CPEConfig.getInstance().setLoginPassword(SmartLinkV3App.getInstance().getLoginPassword());
 							CPEConfig.getInstance().setLoginUsername(SmartLinkV3App.getInstance().getLoginUsername());
 							SmartLinkV3App.getInstance().setLoginPassword("");;
 							SmartLinkV3App.getInstance().setLoginUsername("");
 							m_isUserFirstLogin = false;
-							SmartLinkV3App.getInstance().setIsforcesLogin(false);
+							SmartLinkV3App.getInstance().setForcesLogin(false);
 						}
 						s_callback.onLoginSuccess();					
 					}

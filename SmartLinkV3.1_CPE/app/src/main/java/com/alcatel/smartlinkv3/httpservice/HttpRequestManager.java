@@ -1,14 +1,12 @@
 package com.alcatel.smartlinkv3.httpservice;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -24,15 +22,15 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HttpRequestManager {
 
@@ -46,7 +44,7 @@ public class HttpRequestManager {
 	private int DISCONNECT_NUMBER = 5;
 	// private Context m_context = null;
 
-	private Boolean m_bStopBussiness = false;
+	private Boolean m_bStopBusiness = false;
 
 	private String m_server_address = null;
 
@@ -161,11 +159,11 @@ public class HttpRequestManager {
 	{
 		String method;
 		try {
-			method = (String) request.getRequsetParmJson().get(ConstValue.JSON_METHOD);
+			method = (String) request.getRequestParamJson().get(ConstValue.JSON_METHOD);
 			final Iterator<BaseRequest> iter = m_request_list.iterator();
 			while (iter.hasNext()) {
 				BaseRequest reqInList = iter.next();
-				String methodInList = (String) reqInList.getRequsetParmJson().get(ConstValue.JSON_METHOD);				
+				String methodInList = (String) reqInList.getRequestParamJson().get(ConstValue.JSON_METHOD);
 			    if (method.equalsIgnoreCase(methodInList) && MethodProp.isRemoveAble(method)) {			    
 			    	iter.remove();			    	
 			    }
@@ -185,14 +183,14 @@ public class HttpRequestManager {
 	}
 
 	public void startBussiness() {
-		synchronized (m_bStopBussiness) {
-			m_bStopBussiness = false;
+		synchronized (m_bStopBusiness) {
+			m_bStopBusiness = false;
 		}
 	}
 
 	public void stopBussiness() {
-		synchronized (m_bStopBussiness) {
-			m_bStopBussiness = true;
+		synchronized (m_bStopBusiness) {
+			m_bStopBusiness = true;
 		}
 
 		DataConnectManager.getInstance().setCPEWifiConnected(false);
@@ -203,8 +201,8 @@ public class HttpRequestManager {
 	}
 
 	public Boolean getStopBussiness() {
-		synchronized (m_bStopBussiness) {
-			return m_bStopBussiness;
+		synchronized (m_bStopBusiness) {
+			return m_bStopBusiness;
 		}
 	}
 
@@ -236,7 +234,7 @@ public class HttpRequestManager {
 						// no feature api
 						if (DataConnectManager.getInstance()
 								.getCPEWifiConnected() == true) {
-							if (BusinessMannager.getInstance().getFeatures()
+							if (BusinessManager.getInstance().getFeatures()
 									.getFeatures().size() <= 0) {
 								HttpAccessLog.getInstance().writeLogToFile("CPE WIFI error:getFeatures().size() <= 0");
 								DataConnectManager.getInstance().setCPEWifiConnected(false);
@@ -256,7 +254,7 @@ public class HttpRequestManager {
 	public void sendPostRequest(BaseRequest request) {
 		if (getStopBussiness() == true)
 			return;
-		request.setHttpUrl(m_server_address);
+//		request.setHttpUrl(m_server_address);
 
 		request.buildRequestParamJson();
 		appendRequest(request);
@@ -279,14 +277,14 @@ public class HttpRequestManager {
 			BaseRequest request = getRequest();
 			BaseResponse response_obj = request.createResponseObject();
 			String response = null;
-			String body = request.getRequsetParmJson().toString();
+			String body = request.getRequestParamJson().toString();
 			try {
-				String httpUrl = request.getHttpUrl();
-				Log.d("HttpRequestManager", httpUrl);
+//				String httpUrl = request.getHttpUrl();
+				Log.d("HttpRequestManager", m_server_address);
 				Log.d("HttpRequestManager", body);
-				HttpAccessLog.getInstance().writeLogToFile("Request:" + body + " httpUrl:" + httpUrl);
+				HttpAccessLog.getInstance().writeLogToFile("Request:" + body + " httpUrl:" + m_server_address);
 				// HttpPost connect object
-				HttpPost httpRequest = new HttpPost(httpUrl);
+				HttpPost httpRequest = new HttpPost(m_server_address);
 				// body
 				StringEntity se = new StringEntity(body.toString(), "utf-8");
 				httpRequest.setEntity(se);
@@ -308,7 +306,7 @@ public class HttpRequestManager {
 					response = EntityUtils.toString(httpResponse.getEntity(),
 							"utf-8");
 					JSONObject responseJson = new JSONObject(response);
-					Log.d("HttpRequestManger response: ", response);
+					Log.d("HttpRequestManger",  "response: " + response);
 					HttpAccessLog.getInstance().writeLogToFile(
 							"Response:" + response);
 					response_obj.parseResult(SmartLinkV3App.getInstance().getApplicationContext(),responseJson);

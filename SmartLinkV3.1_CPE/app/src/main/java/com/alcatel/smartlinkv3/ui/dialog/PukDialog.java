@@ -2,12 +2,11 @@ package com.alcatel.smartlinkv3.ui.dialog;
 
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -29,7 +28,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -217,7 +215,7 @@ public class PukDialog implements OnClickListener, OnKeyListener, TextWatcher {
         DataValue dataPuk = new DataValue();
         dataPuk.addParam("puk", puk);
         dataPuk.addParam("pin", new_pin);
-        BusinessMannager.getInstance().sendRequestMessage(MessageUti.SIM_UNLOCK_PUK_REQUEST, dataPuk);
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.SIM_UNLOCK_PUK_REQUEST, dataPuk);
     }
     
     private void cancel()

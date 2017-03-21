@@ -98,7 +98,7 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 	private void getListSmsSummaryData() {
 		
 		m_smsSummaryLstData.clear();
-		/*ArrayList<SmsMessageModel> smsList = BusinessMannager.getInstance().getSMSList();
+		/*ArrayList<SmsMessageModel> smsList = BusinessManager.getInstance().getSMSList();
 		for(int i = 0;i < smsList.size();i++) {
 			SmsMessageModel sms = smsList.get(i);
 			boolean bExist = false;
@@ -288,7 +288,7 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 		
 		
 		int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).get("unread_count");		
-		int nNewSmsCount = BusinessMannager.getInstance().getNewSmsNumber();
+		int nNewSmsCount = BusinessManager.getInstance().getNewSmsNumber();
 		
 		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount - nUnreadNum);*/
 		

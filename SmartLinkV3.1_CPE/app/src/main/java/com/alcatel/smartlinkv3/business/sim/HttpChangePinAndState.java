@@ -1,12 +1,12 @@
 package com.alcatel.smartlinkv3.business.sim;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpChangePinAndState {
 	
@@ -18,29 +18,19 @@ public class HttpChangePinAndState {
 		
         public ChangePinCode(String strId,String strNewPin,String strCurrentPin,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("ChangePinCode", strId, callback);
         	m_strNewPin = strNewPin;
         	m_strCurrentPin = strCurrentPin;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ChangePinCode");
-
 	        	JSONObject pinInfo = new JSONObject();
 	        	pinInfo.put("NewPin", m_strNewPin);
 	        	pinInfo.put("CurrentPin", m_strCurrentPin);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, pinInfo);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override
@@ -80,29 +70,19 @@ public class HttpChangePinAndState {
 		
         public ChangePinState(String strId,String strPin,int nState,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("ChangePinState", strId, callback);
         	m_nState = nState;
         	m_strPin = strPin;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "ChangePinState");
-
 	        	JSONObject changeState = new JSONObject();
 	        	changeState.put("Pin", m_strPin);
 	        	changeState.put("State", m_nState);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, changeState);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override

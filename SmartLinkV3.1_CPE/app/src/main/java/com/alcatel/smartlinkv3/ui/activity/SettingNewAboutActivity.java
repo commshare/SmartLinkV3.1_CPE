@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 
 import android.os.Bundle;
@@ -65,7 +65,7 @@ public class SettingNewAboutActivity  extends BaseActivity implements OnClickLis
 		m_official_website = (FrameLayout)findViewById(R.id.device_about_official_website);
 		m_official_website.setOnClickListener(this);
 		
-		String strVersionString = BusinessMannager.getInstance().getAppVersion();
+		String strVersionString = BusinessManager.getInstance().getAppVersion();
 		String strTemp = getString(R.string.setting_about_version) + " " + strVersionString;
 		m_app_version.setText(strTemp);
 		

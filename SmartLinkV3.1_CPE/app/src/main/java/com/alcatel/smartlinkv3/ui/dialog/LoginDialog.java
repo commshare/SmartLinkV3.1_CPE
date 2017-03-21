@@ -7,8 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Environment;
+import android.graphics.Typeface;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -28,12 +29,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.QuickSetupActivity;
@@ -43,13 +46,11 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher {
 	private Context m_context;
-	private static final String REG_STR = "[^a-zA-Z0-9-\\+!@\\$#\\^&\\*]";
 	public boolean m_bIsShow = false;
 	public boolean m_bIsApply = false;
 	private Dialog m_dlgLogin = null;
@@ -65,7 +66,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private String m_strMsgWrongPassword;
 	private String m_strMsgOtherUserLogined;
 	private String m_strMsgLoginTimeUsedOut;
-	private AuthenficationBroadcastReviever m_auReceiver;
+	private AuthenticationBroadcastReceiver m_auReceiver;
 	private static OnLoginFinishedListener m_loginCallback;
 	private CancelLoginListener mCancelCallback=null;
 	private boolean m_bOtherUserLoginError = false;
@@ -75,9 +76,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	
 	private static String m_password = CPEConfig.getInstance().getLoginPassword();
 
-	// just for test
-	public static final String USER_NAME = "admin";
-	private CommonErrorInfoDialog m_dialog_err_info;
+    private CommonErrorInfoDialog m_dialog_err_info;
 	
 //	private CommonErrorInfoSelectDialog m_dialog_err_selece;
 	
@@ -94,7 +93,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 	public LoginDialog(Context context) {
 		m_context = context;
-		m_auReceiver = new AuthenficationBroadcastReviever();
+		m_auReceiver = new AuthenticationBroadcastReceiver();
 
 		if (null == m_dialog_err_info) {
 			m_dialog_err_info = CommonErrorInfoDialog.getInstance(m_context);
@@ -107,7 +106,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		createDialog();
 	}
 
-	private class AuthenficationBroadcastReviever extends BroadcastReceiver {
+	private class AuthenticationBroadcastReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context arg0, Intent arg1) {
@@ -131,8 +130,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 						&& strErrorCode.length() == 0) {
 
 					CPEConfig.getInstance().setLoginPassword(m_password);
-					CPEConfig.getInstance().setLoginUsername(USER_NAME);
-					SmartLinkV3App.getInstance().setLoginPassword("");;
+					CPEConfig.getInstance().setLoginUsername(LinkAppSettings.USER_NAME);
+					SmartLinkV3App.getInstance().setLoginPassword("");
 					SmartLinkV3App.getInstance().setLoginUsername("");
 					//setAlreadyLogin(true);
 					m_bOtherUserLoginError = false;
@@ -152,7 +151,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					m_bLoginPasswordError=false;
 					if (!"QuickSetupActivity".equals(QuickSetupActivity.pageName))
 					{
-  					if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+  					if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
   					{
   					m_dialog_err_info.showDialog(
   							m_context.getString(R.string.other_login_warning_title),
@@ -437,7 +436,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 				R.string.login_login_time_used_out_msg);
 
 		LayoutInflater factory = LayoutInflater.from(m_context);
-		m_vLogin = factory.inflate(R.layout.login_view, null);
+		m_vLogin = factory.inflate(R.layout.login_view, null, false);
 
 		m_vLogin.setOnKeyListener(this);
 		m_dlgLogin = new Dialog(m_context, R.style.dialog);
@@ -456,6 +455,9 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		m_etPassword = (EditText) m_vLogin.findViewById(R.id.login_edit_view);
 		m_etPassword.setOnKeyListener(this);
 		m_etPassword.addTextChangedListener(this);
+		//try to fix  android:hint font width scale large
+		m_etPassword.setTypeface(Typeface.DEFAULT);
+        m_etPassword.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Const.LOGIN_PASSWD_MAX)});
 
 		m_btnApply = (Button) m_vLogin.findViewById(R.id.login_apply_btn);
 		m_btnApply.setOnClickListener(this);
@@ -534,8 +536,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		
 		m_password = m_etPassword.getText().toString();
 		SmartLinkV3App.getInstance().setLoginPassword(m_password);
-		SmartLinkV3App.getInstance().setLoginUsername(USER_NAME);
-		Pattern pattern = Pattern.compile(REG_STR);
+		SmartLinkV3App.getInstance().setLoginUsername(LinkAppSettings.USER_NAME);
+		Pattern pattern = Pattern.compile(Const.REG_STR);
 		Matcher matcher = pattern.matcher(m_password);
 		if (matcher.find()) {
 			m_tvPasswordError.setText(m_strMsgInvalidPassword);
@@ -557,11 +559,11 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		m_tvPasswordError.setVisibility(View.GONE);
 
 		DataValue data = new DataValue();
-		data.addParam("user_name", USER_NAME);
+		data.addParam("user_name", LinkAppSettings.USER_NAME);
 		data.addParam("password", m_password);
-		if(SmartLinkV3App.getInstance().getIsforcesLogin())
+		if(SmartLinkV3App.getInstance().IsForcesLogin())
 		{
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.USER_FORCE_LOGIN_REQUEST, data);
 			closeDialog();
 			if(call == null)
@@ -600,7 +602,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 			m_ForceloginDlg.setCallback(call);
 		}else
 		{
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.USER_LOGIN_REQUEST, data);
 		}
 		m_bIsApply = true;
@@ -608,7 +610,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		if (s.length() >= 1) {
+		if (s.length() >= Const.LOGIN_PASSWD_MIN) {
 			m_btnApply.setEnabled(true);
 		} else {
 			m_btnApply.setEnabled(false);
@@ -667,13 +669,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	
 	public interface CancelLoginListener {
 	  public void onCancelLogin();
-	}
-
-	public static boolean isLoginSwitchOff() {
-		String strLoginFile = Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + "/CPE/LoginDisable";
-		File f = new File(strLoginFile);
-		return f.exists();
 	}
 
 }

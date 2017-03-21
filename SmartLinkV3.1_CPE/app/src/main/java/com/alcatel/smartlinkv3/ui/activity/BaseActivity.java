@@ -1,46 +1,39 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.PowerManager;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
-import com.alcatel.smartlinkv3.common.CommonUtil;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
-
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
+import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BaseActivity extends Activity{
-	protected ActivityBroadcastReceiver m_msgReceiver;
-	protected ActivityBroadcastReceiver m_msgReceiver2;
+	protected ActivityBroadcastReceiver m_msgReceiver = null;
+	protected ActivityBroadcastReceiver m_msgReceiver2 = null;
 	private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
 	protected boolean m_bNeedBack = true;//whether need to back main activity.
 	public int alertValue;
@@ -58,11 +51,12 @@ public abstract class BaseActivity extends Activity{
 	@Override
 	protected void onResume() {	
        	super.onResume();
-       	m_msgReceiver = new ActivityBroadcastReceiver();
+		if (m_msgReceiver == null)
+       		m_msgReceiver = new ActivityBroadcastReceiver();
        	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));  
     	this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)); 
-    	
-    	m_msgReceiver2 = new ActivityBroadcastReceiver();
+    	if (m_msgReceiver2 == null)
+    		m_msgReceiver2 = new ActivityBroadcastReceiver();
     	if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
 		{
     		this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
@@ -82,8 +76,8 @@ public abstract class BaseActivity extends Activity{
 	private void showIfAlertDialog() {
 		int usageRecord;
 		int usageSetting;
-		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
-		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
+		UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
+		UsageSettingModel statistic = BusinessManager.getInstance().getUsageSettings();
 
 		String usageRecordSt = CommonUtil.ConvertTrafficToStringFromMB(this, m_UsageRecordResult.HUseData);
 		if (usageRecordSt.contains("MB")){
@@ -120,14 +114,20 @@ public abstract class BaseActivity extends Activity{
 	protected void onPause() {	
     	super.onPause();
     	try {
-    		this.unregisterReceiver(m_msgReceiver); 		
+			if (m_msgReceiver != null)
+    			unregisterReceiver(m_msgReceiver);
+			if (m_msgReceiver2 != null)
+				unregisterReceiver(m_msgReceiver2);
     		//checkLogin();
     	}catch(Exception e) {
     		e.printStackTrace();
     	}
     }
 
-	
+	public static View getRootView(Activity activity)
+	{
+		return ((ViewGroup)activity.findViewById(android.R.id.content)).getChildAt(0);
+	}
 	
 	@Override
 	protected void onDestroy() {
@@ -185,7 +185,7 @@ public abstract class BaseActivity extends Activity{
 		if(m_bNeedBack)
 			return;
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
 		
 		if(bCPEWifiConnected && sim.m_SIMState != SIMState.Accessable) {
 //			String strInfo = getString(R.string.home_sim_not_accessible);
@@ -201,7 +201,7 @@ public abstract class BaseActivity extends Activity{
 	
 	private void backMainActivityOnResume(Context context) {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		
 		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
 			if(!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
@@ -217,7 +217,7 @@ public abstract class BaseActivity extends Activity{
 	
 	private void backMainActivity(Context context) {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		
 		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
 			dismissAllDialog();
@@ -265,7 +265,7 @@ public abstract class BaseActivity extends Activity{
 	}
 	
 	public void kickoffLogout() {
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
 //			MainActivity.setKickoffLogoutFlag(true);
 			String strInfo = getString(R.string.login_kickoff_logout_successful);

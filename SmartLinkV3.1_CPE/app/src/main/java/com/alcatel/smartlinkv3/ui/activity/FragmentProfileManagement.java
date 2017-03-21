@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -76,7 +76,7 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 		getActivity().registerReceiver(m_fragment_get_profile_list_request_receiver, m_fragment_delete_profile__request_filter);  
 		
 		m_profile_list = (ListView) rootView.findViewById(R.id.profile_list);
-		BusinessMannager.getInstance().getProfileManager().startGetProfileList(null);
+		BusinessManager.getInstance().getProfileManager().startGetProfileList(null);
 	}
 	
 	public void goToDetailProfile(Bundle data){
@@ -100,7 +100,7 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
         int ProfileId = m_profile_list_data.get(selected_deleted_position).ProfileID;
         DataValue data = new DataValue();
         data.addParam("profile_id", ProfileId);
-        BusinessMannager.getInstance().getProfileManager().startDeleteProfile(data);
+        BusinessManager.getInstance().getProfileManager().startDeleteProfile(data);
     }
 
     public ProfileListAdapter getAdapter() {
@@ -296,8 +296,8 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 				
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
-//					m_network_search_result_list = BusinessMannager.getInstance().getNetworkManager().getNetworkList();
-					m_profile_list_data = BusinessMannager.getInstance().getProfileManager().GetProfileListData();
+//					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
+					m_profile_list_data = BusinessManager.getInstance().getProfileManager().GetProfileListData();
 					m_adapter = new ProfileListAdapter(getActivity(), m_profile_list_data);
 					m_profile_list.setAdapter(m_adapter);
 					m_progress_bar.setVisibility(View.GONE);

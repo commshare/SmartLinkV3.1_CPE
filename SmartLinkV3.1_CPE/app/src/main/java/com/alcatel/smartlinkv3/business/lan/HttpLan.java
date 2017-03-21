@@ -1,13 +1,13 @@
 package com.alcatel.smartlinkv3.business.lan;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpLan {
 
@@ -15,27 +15,7 @@ public class HttpLan {
 	public static class getLanSettingsRequest extends BaseRequest{
 
 		public getLanSettingsRequest(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetLanSettings");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("GetLanSettings", strId, callback);
 		}
 
 		@Override
@@ -75,21 +55,12 @@ public class HttpLan {
 
 		private LanInfo m_lanInfo = new LanInfo();
 		public setLanSettinsRequest(String strId, LanInfo laninfo, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
+			super("SetLanSettings", strId, callback);
 			m_lanInfo = laninfo;
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetLanSettings");
-
+		protected void buildHttpParamJson() throws JSONException {
 				JSONObject jLaninfo = new JSONObject();
 				jLaninfo.put("IPv4IPAddress", m_lanInfo.getIPv4IPAddress());
 				jLaninfo.put("SubnetMask", m_lanInfo.getSubnetMask());
@@ -100,11 +71,6 @@ public class HttpLan {
 				jLaninfo.put("MacAddress", m_lanInfo.getMacAddress());
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, jLaninfo);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
 		}
 
 		@Override

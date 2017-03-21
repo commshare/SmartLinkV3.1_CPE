@@ -5,7 +5,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
@@ -49,10 +49,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BusinessMannager {
+public class BusinessManager {
 	public String m_preDeviceImei = new String();//used ui when changed device,when ui used once,set current imei
 	
-	private static final String TAG = "BusinessMannager";
+	private static final String TAG = "BusinessManager";
 	private Context m_context = null;
 	
 	private SystemManager m_systemManager = null;
@@ -77,18 +77,18 @@ public class BusinessMannager {
 	
 	public HashMap<String, BaseManager> m_class = new HashMap<String, BaseManager>();
 	
-	private static BusinessMannager m_instance;
-    public static synchronized   BusinessMannager getInstance()
+	private static BusinessManager m_instance;
+    public static synchronized BusinessManager getInstance()
     {
         if(m_instance == null) {
-        	Log.d(TAG, "new BusinessMannager()");
-            m_instance = new BusinessMannager();
+        	Log.d(TAG, "new BusinessManager()");
+            m_instance = new BusinessManager();
             m_instance.init();
         }
         return m_instance;
     }
     
-    private BusinessMannager() {	
+    private BusinessManager() {
     }  
     
     private void init() {
@@ -356,7 +356,7 @@ public class BusinessMannager {
     /********************sms manager method end************************/
     
     /********************wan manager Data start**********************/
-    public ConnectStatusModel getConnectStatus() {
+    public WanConnectStatusModel getWanConnectStatus() {
 		return m_wanManager.getConnectStatus();
 	}
     

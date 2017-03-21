@@ -1,51 +1,47 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
-import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
-
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Environment;
+import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.Const;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWatcher {
 	private Context m_context;
-	private static final String REG_STR = "[^a-zA-Z0-9-\\+!@\\$#\\^&\\*]";
 	public boolean m_bIsShow = false;
 	public boolean m_bIsApply = false;
 	private Dialog m_dlgForceLogin = null;
@@ -57,7 +53,6 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 	private Animation m_shake = null;
 
 	// private static LoginDialog m_instance;
-	private String m_strMsgInvalidPassword;
 	private String m_strMsgWrongPassword;
 	private String m_strMsgLoginTimeUsedOut;
 	private AuthenficationBroadcastReviever m_auReceiver;
@@ -236,8 +231,6 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 	}
 
 	private void createDialog() {
-		m_strMsgInvalidPassword = m_context.getResources().getString(
-				R.string.login_invalid_password);
 		m_strMsgWrongPassword = m_context.getResources().getString(
 				R.string.login_prompt_str);
 		m_strMsgLoginTimeUsedOut = m_context.getResources().getString(
@@ -263,6 +256,8 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 		m_etPassword = (EditText) m_vForceLogin.findViewById(R.id.login_edit_view);
 		m_etPassword.setOnKeyListener(this);
 		m_etPassword.addTextChangedListener(this);
+		//try to fix  android:hint font width scale large
+		m_etPassword.setTypeface(Typeface.DEFAULT);
 
 		m_btnApply = (Button) m_vForceLogin.findViewById(R.id.login_apply_btn);
 		m_btnApply.setOnClickListener(this);
@@ -338,10 +333,10 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 			return;
 		
 		m_forcelogin_password = m_etPassword.getText().toString();
-		Pattern pattern = Pattern.compile(REG_STR);
+		Pattern pattern = Pattern.compile(Const.REG_STR);
 		Matcher matcher = pattern.matcher(m_forcelogin_password);
 		if (matcher.find()) {
-			m_tvPasswordError.setText(m_strMsgInvalidPassword);
+			m_tvPasswordError.setText(m_context.getString(R.string.login_invalid_password));
 			m_tvPasswordError.setVisibility(View.VISIBLE);
 			return;
 		}
@@ -362,7 +357,7 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 		DataValue data = new DataValue();
 		data.addParam("user_name", USER_NAME);
 		data.addParam("password", m_forcelogin_password);
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.USER_FORCE_LOGIN_REQUEST, data);
 		m_bIsApply = true;
 	}

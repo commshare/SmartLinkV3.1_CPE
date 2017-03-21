@@ -1,13 +1,13 @@
 package com.alcatel.smartlinkv3.business.statistics;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpUsageHistory {
 	
@@ -16,24 +16,9 @@ public class HttpUsageHistory {
     {			
         public GetUsageRecord(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
+        	super("GetUsageRecord", strId, callback);
 
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetUsageRecord");
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+        	           }
 
         @Override
         public BaseResponse createResponseObject() 
@@ -74,27 +59,18 @@ public class HttpUsageHistory {
 		
         public SetUsageRecordClear(String strId,String Cleartime, IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("SetUsageRecordClear", strId, callback);
         	m_strUsageCleartime = Cleartime;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SetUsageRecordClear");
-	        	
-	        	JSONObject usageClearTime = new JSONObject();
-	        	usageClearTime.put("clear_time", m_strUsageCleartime);
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, usageClearTime);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            JSONObject usageClearTime = new JSONObject();
+            usageClearTime.put("clear_time", m_strUsageCleartime);
+
+            m_requestParamJson.put(ConstValue.JSON_PARAMS, usageClearTime);
+
         }
 
         @Override

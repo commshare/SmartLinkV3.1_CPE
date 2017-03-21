@@ -1,38 +1,42 @@
 package com.alcatel.smartlinkv3.httpservice;
 
-import java.util.Hashtable;
+import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import java.util.Hashtable;
 
 public abstract class BaseRequest 
 {
 	protected JSONObject m_requestParamJson = new JSONObject();
-	protected String m_url;
+//	protected String m_url;
 	protected Hashtable<String,String> m_headers;
 	protected IHttpFinishListener m_finsishCallback; 
 	
-	protected String m_strId = new String();
+	protected String m_strId;
+	protected String method;
 	
-	public BaseRequest(IHttpFinishListener callback)
+	public BaseRequest(String method, String id, IHttpFinishListener callback)
 	{
-	    m_url = "";
-	    m_finsishCallback = callback;
+		this.method = method;
+		m_strId = id;
+		m_finsishCallback = callback;
+//	    m_url = "";
 	}
 	
+//
+//	public String getHttpUrl()
+//	{
+//	    return m_url;
+//	}
+//
+//	public void setHttpUrl(String url)
+//	{
+//	    m_url = url;
+//	}
 	
-	public String getHttpUrl()
-	{
-	    return m_url;
-	}
-	
-	public void setHttpUrl(String url)
-	{
-	    m_url = url;
-	}
-	
-	public JSONObject getRequsetParmJson()
+	public JSONObject getRequestParamJson()
 	{
 	    return m_requestParamJson;
 	}
@@ -42,11 +46,22 @@ public abstract class BaseRequest
 	    return m_finsishCallback;
 	}
 	
-	protected abstract void buildHttpParamJson();
+	protected void buildHttpParamJson() throws JSONException {
+		m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
+	}
 	
 	public void buildRequestParamJson()
 	{
-		buildHttpParamJson();
+		try {
+			m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
+
+			m_requestParamJson.put(ConstValue.JSON_METHOD, method);
+			buildHttpParamJson();
+
+			m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public abstract BaseResponse createResponseObject();

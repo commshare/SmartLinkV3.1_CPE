@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
@@ -94,7 +94,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_power_waiting_progress);
 		//get device name from feature list
-		String strDeviceName = BusinessMannager.getInstance().getFeatures().getDeviceName();
+		String strDeviceName = BusinessManager.getInstance().getFeatures().getDeviceName();
 		if (0 == strDeviceName.compareToIgnoreCase("Y900")) {
 			m_blShowWifiSleep = false;
 		}
@@ -171,7 +171,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		info.setWiFiMode(nWifiMode);
 		DataValue data = new DataValue();
 		data.addParam("PowerSavingMode", info);
-		BusinessMannager.getInstance().
+		BusinessManager.getInstance().
 		sendRequestMessage(MessageUti.POWER_SET_POWER_SAVING_MODE, data);
 	}
 
@@ -195,12 +195,12 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		info.setWiFiMode(nWifiMode);
 		DataValue data = new DataValue();
 		data.addParam("PowerSavingMode", info);
-		BusinessMannager.getInstance().
+		BusinessManager.getInstance().
 		sendRequestMessage(MessageUti.POWER_SET_POWER_SAVING_MODE, data);
 	}
 
 	private void showBatterystatus(){
-		BatteryInfo info = BusinessMannager.getInstance().getBatteryInfo();
+		BatteryInfo info = BusinessManager.getInstance().getBatteryInfo();
 		int nChargeState = info.getChargeState();
 		if (ConstValue.CHARGE_STATE_CHARGING != nChargeState) {
 			m_pb_battery_status.setVisibility(View.VISIBLE);
@@ -218,7 +218,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 	}
 
 	private void initSwitchsState(){
-		PowerSavingModeInfo info = BusinessMannager.getInstance().getPowerSavingModeInfo();
+		PowerSavingModeInfo info = BusinessManager.getInstance().getPowerSavingModeInfo();
 		if (ConstValue.ENABLE == info.getSmartMode()) {
 			m_btn_smart_mode_switch.setBackgroundResource(R.drawable.switch_on);
 			m_blSmartModeSwitchOn = true;
@@ -248,7 +248,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
 		
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.POWER_GET_POWER_SAVING_MODE, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.POWER_GET_POWER_SAVING_MODE, null);
 		ShowWaiting(true);
 	}
 
@@ -279,9 +279,9 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
 				strTost = getString(R.string.setting_success);
 				int nSmartMode = m_blSmartModeSwitchOn? ConstValue.ENABLE : ConstValue.DISABLE;
-				BusinessMannager.getInstance().getPowerSavingModeInfo().setSmartMode(nSmartMode);
+				BusinessManager.getInstance().getPowerSavingModeInfo().setSmartMode(nSmartMode);
 				int nWiFiMode = m_blWifiModeSwitchOn? ConstValue.ENABLE : ConstValue.DISABLE;
-				BusinessMannager.getInstance().getPowerSavingModeInfo().setWiFiMode(nWiFiMode);
+				BusinessManager.getInstance().getPowerSavingModeInfo().setWiFiMode(nWiFiMode);
 				//initSwitchsState();
 			}else {
 				initSwitchsState();

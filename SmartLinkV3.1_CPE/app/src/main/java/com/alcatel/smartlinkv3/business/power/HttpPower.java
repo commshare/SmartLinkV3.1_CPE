@@ -1,13 +1,13 @@
 package com.alcatel.smartlinkv3.business.power;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpPower {
 
@@ -15,27 +15,7 @@ public class HttpPower {
 	public static class getBatteryStateRequest extends BaseRequest{
 
 		public getBatteryStateRequest(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetBatteryState");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("GetBatteryState", strId, callback);
 		}
 
 		@Override
@@ -73,27 +53,7 @@ public class HttpPower {
 	public static class getPowerSavingModeRequest extends BaseRequest{
 
 		public getPowerSavingModeRequest(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetPowerSavingMode");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("GetPowerSavingMode", strId, callback);
 		}
 
 		@Override
@@ -132,31 +92,17 @@ public class HttpPower {
 
 		private PowerSavingModeInfo m_info=null;
 		public setPowerSavingModeRequest(String strId, PowerSavingModeInfo info, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
+			super("SetPowerSavingMode", strId, callback);
 			m_info = info;
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetPowerSavingMode");
-
+		protected void buildHttpParamJson() throws JSONException {
 				JSONObject jInfo = new JSONObject();
 				jInfo.put("SmartMode", m_info.getSmartMode());
 				jInfo.put("WiFiMode", m_info.getWiFiMode());
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, jInfo);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
 		}
 
 		@Override

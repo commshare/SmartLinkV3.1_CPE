@@ -7,13 +7,9 @@ import java.util.List;
 import org.cybergarage.upnp.Device;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
@@ -34,7 +30,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,7 +167,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		{
 			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
 			list.add(item);
-		}else if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
+		}else if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
 			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
 			list.add(item);
@@ -419,7 +414,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 				onGetItemList(ITEM_MUSIC);
 				break;
 			}
-		}else if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
+		}else if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
 			switch(position){
 			case 0:
@@ -442,7 +437,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	}
 	
 	public void onGetItemList(int position) {
-		if(BusinessMannager.getInstance().getDlnaSettings().getDlnaStatus()  <= 0)
+		if(BusinessManager.getInstance().getDlnaSettings().getDlnaStatus()  <= 0)
 		{
 			String strInfo = m_context.getString(R.string.dlna_not_open);
 			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
@@ -484,7 +479,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 
 	private void goToFilePage(){	
 		
-		if(BusinessMannager.getInstance().getFtpSettings().getFtpStatus() <= 0)
+		if(BusinessManager.getInstance().getFtpSettings().getFtpStatus() <= 0)
 		{
 			String strInfo = m_context.getString(R.string.ftp_not_open);
 			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();

@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
 import com.alcatel.smartlinkv3.business.model.SmsContactMessagesModel;
 import com.alcatel.smartlinkv3.common.DataUti;
@@ -70,8 +70,8 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	@Override
 	public void onResume() { 
 	
-		if(BusinessMannager.getInstance().getSMSInit() == SMSInit.Complete)
-			BusinessMannager.getInstance().getContactMessagesAtOnceRequest();		
+		if(BusinessManager.getInstance().getSMSInit() == SMSInit.Complete)
+			BusinessManager.getInstance().getContactMessagesAtOnceRequest();
 		
 		m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET));		
 		m_context.registerReceiver(m_receiver, new IntentFilter(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET));
@@ -127,11 +127,11 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	
 	//
 	private void RefreshNewSmsNumber(){
-		if(BusinessMannager.getInstance().getSMSInit() == SMSInit.Initing) {
+		if(BusinessManager.getInstance().getSMSInit() == SMSInit.Initing) {
 			((MainActivity)m_context).updateNewSmsUI(-1);
 		}else{
 			int nNewSmsCount;
-			nNewSmsCount = BusinessMannager.getInstance().getNewSmsNumber();
+			nNewSmsCount = BusinessManager.getInstance().getNewSmsNumber();
 			((MainActivity)m_context).updateNewSmsUI(nNewSmsCount);
 		}
 	}
@@ -154,7 +154,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	private void getListSmsSummaryData() {
 		
 		m_smsContactMessagesLstData.clear();
-		SmsContactMessagesModel messages = BusinessMannager.getInstance().getContactMessages();
+		SmsContactMessagesModel messages = BusinessManager.getInstance().getContactMessages();
 		for(int i = 0;i < messages.SMSContactList.size();i++) {
 			SMSContactItemModel sms = messages.SMSContactList.get(i);
 			SMSSummaryItem item = new SMSSummaryItem();
@@ -198,7 +198,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 	}
 	
 	private void displayUI() {
-		if(BusinessMannager.getInstance().getSMSInit() == SMSInit.Initing) {
+		if(BusinessManager.getInstance().getSMSInit() == SMSInit.Initing) {
 			m_noSmsTv.setText(R.string.sms_init);
 			Drawable d = m_context.getResources().getDrawable(R.drawable.sms_init);
 			d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
@@ -206,7 +206,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 			m_noSmsTv.setVisibility(View.VISIBLE);
 			m_smsContactMessagesList.setVisibility(View.GONE);
 		}else{
-			SmsContactMessagesModel messages = BusinessMannager.getInstance().getContactMessages();
+			SmsContactMessagesModel messages = BusinessManager.getInstance().getContactMessages();
 			if(messages.SMSContactList.size() == 0) {
 				m_noSmsTv.setText(R.string.sms_empty);
 				Drawable d = m_context.getResources().getDrawable(R.drawable.sms_empty);

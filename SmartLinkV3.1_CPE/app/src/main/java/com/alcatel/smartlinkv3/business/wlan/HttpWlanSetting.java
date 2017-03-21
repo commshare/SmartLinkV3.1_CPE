@@ -1,25 +1,19 @@
 package com.alcatel.smartlinkv3.business.wlan;
 
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.R.string;
 import android.util.Log;
 
-import com.alcatel.smartlinkv3.business.lan.LanInfo;
-import com.alcatel.smartlinkv3.business.lan.HttpLan.getLanSettingsResponse;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
-import com.alcatel.smartlinkv3.business.wlan.WlanSupportModeType;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpWlanSetting {
 
@@ -27,25 +21,7 @@ public class HttpWlanSetting {
 	public static class GetWlanSetting extends BaseRequest {
 		
 		public GetWlanSetting(String strId,	IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetWlanSettings");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			super("GetWlanSettings", strId, callback);
 		}
 
 		@Override
@@ -164,27 +140,15 @@ public class HttpWlanSetting {
 		public WlanSettingResult m_result = new WlanSettingResult();
 
 		public SetWlanSetting(String strId,	WlanSettingResult result, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("SetWlanSettings", strId, callback);
 			m_result = result;
 		}
 		
 		public WlanNewSettingResult m_Newresult = new WlanNewSettingResult();
 
-		public void SetNewWlanSetting(String strId,	WlanNewSettingResult result, IHttpFinishListener callback) {
-			//super(callback);
-			m_strId = strId;
-			m_Newresult = result;
-		}
-
 		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetWlanSettings");
-				
+		protected void buildHttpParamJson() throws JSONException {
+
 				JSONObject settings = new JSONObject();
 				if(m_result.New_Interface)
 				{
@@ -233,8 +197,8 @@ public class HttpWlanSetting {
 				}
 				else
 				{
-					settings.put("WlanAPMode", m_result.WlanAPMode);   
-				    settings.put("CountryCode", m_result.CountryCode);  
+					settings.put("WlanAPMode", m_result.WlanAPMode);
+					settings.put("CountryCode", m_result.CountryCode);
 				    settings.put("Ssid", m_result.Ssid);                
 				    settings.put("SsidHidden", m_result.SsidHidden);    
 				    settings.put("SecurityMode", m_result.SecurityMode);  
@@ -264,11 +228,6 @@ public class HttpWlanSetting {
 				
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 		}
 
 		@Override
@@ -304,31 +263,17 @@ public class HttpWlanSetting {
 		public String m_strPin = new String();
 
 		public SetWPSPin(String strId, String strPin,IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
+			super("SetWPSPin", strId, callback);
 			m_strPin = strPin;
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetWPSPin");
-
-				JSONObject settings = new JSONObject();
+		protected void buildHttpParamJson() throws JSONException {
+			    JSONObject settings = new JSONObject();
 				settings.put("WpsPin", m_strPin);
 				
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
 		}
 
 		@Override
@@ -364,27 +309,7 @@ public class HttpWlanSetting {
 	public static class SetWPSPbc extends BaseRequest{
 
 		public SetWPSPbc(String strId, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetWPSPbc");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("SetWPSPbc", strId, callback);
 		}
 
 		@Override
@@ -418,27 +343,7 @@ public class HttpWlanSetting {
 	public static class getWlanSupportModeRequest extends BaseRequest{
 
 		public getWlanSupportModeRequest(String strID, IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-			m_strId = strID;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetWlanSupportMode");
-
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-			} catch (JSONException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			super("GetWlanSupportMode", strID, callback);
 		}
 
 		@Override
@@ -446,7 +351,6 @@ public class HttpWlanSetting {
 			// TODO Auto-generated method stub
 			return new getWlanSupportModeResponse(m_finsishCallback);
 		}
-		
 	}
 	
 	public static class getWlanSupportModeResponse extends BaseResponse{

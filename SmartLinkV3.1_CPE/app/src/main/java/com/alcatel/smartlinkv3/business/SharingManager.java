@@ -3,7 +3,6 @@ package com.alcatel.smartlinkv3.business;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.alcatel.smartlinkv3.business.SystemManager.GetSystemStatusTask;
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.business.sharing.FtpSettings;
 import com.alcatel.smartlinkv3.business.sharing.HttpSharing;
@@ -18,7 +17,6 @@ import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListene
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 
 public class SharingManager extends BaseManager {
 
@@ -99,12 +97,12 @@ public class SharingManager extends BaseManager {
 	
 	public void switchOnDlna(){
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true && BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+				"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
 			DataValue data = new DataValue();
 			data.addParam("DlnaStatus", 1);
 			data.addParam("DlnaName", m_dlnaSettings.DlnaName);
 			
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
 		}
 		else{
@@ -175,12 +173,12 @@ public class SharingManager extends BaseManager {
 	
 	public void switchOffDlna(){
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true && BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+				"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
 			DataValue data = new DataValue();
 			data.addParam("DlnaStatus", 0);
 			data.addParam("DlnaName", m_dlnaSettings.DlnaName);
 			
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
 		}
 		else{
@@ -455,7 +453,7 @@ public class SharingManager extends BaseManager {
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setDlnaSetting(DataValue data) {
 		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true && BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+				"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
 			return;
 		}
 
@@ -497,7 +495,7 @@ public class SharingManager extends BaseManager {
 	// GetDlnaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void getDlnaSetting(DataValue data) {
-		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
+		if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
 		{
 			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
 					"GetDLNASettings") != true){
@@ -723,7 +721,7 @@ public class SharingManager extends BaseManager {
 	}
 	
 	public void startGetDlnaStatus(){
-		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
+		if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
 		{
 			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
 					"GetDLNASettings") != true){

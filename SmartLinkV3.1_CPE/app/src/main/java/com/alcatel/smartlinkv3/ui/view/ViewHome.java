@@ -1,45 +1,6 @@
 package com.alcatel.smartlinkv3.ui.view;
 
 
-import java.util.ArrayList;
-import java.util.Locale;
-
-import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
-import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
-import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
-import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
-import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
-import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
-import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
-import com.alcatel.smartlinkv3.business.power.BatteryInfo;
-import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
-import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.R;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -58,6 +19,46 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
+import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.power.BatteryInfo;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
+import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.LinkAppSettings;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.ConstValue;
+import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 
 
@@ -102,14 +103,14 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private Typeface typeFace = Typeface.createFromAsset(this.m_context.getAssets(),"fonts/Roboto_Light.ttf");
 	
 	
-	private ViewConnetBroadcastReceiver m_viewConnetMsgReceiver;
+	private ViewConnectBroadcastReceiver m_viewConnetMsgReceiver;
 	private ImageView batteryView;
 	private CircleProgress circleProgress;
 	private WaveLoadingView mConnectedView;
 	private FrameLayout m_connectedLayout;
 
 
-	private class ViewConnetBroadcastReceiver extends BroadcastReceiver {
+	private class ViewConnectBroadcastReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
@@ -227,7 +228,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 	@Override
 	public void onResume() {
-		m_viewConnetMsgReceiver = new ViewConnetBroadcastReceiver();
+		m_viewConnetMsgReceiver = new ViewConnectBroadcastReceiver();
 		
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
 		m_context.registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET));
@@ -279,7 +280,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 
 	private void resetConnectBtnFlag() {
-		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
+		SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (simStatus != SIMState.Accessable
 				|| !bCPEWifiConnected) {
@@ -288,7 +289,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			return;
 		}
 
-		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
 		if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
 			if (m_bConnectReturn) {
@@ -302,7 +303,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private void showNetworkState() {
 		
-		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
+		SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
 			if (simStatus != SIMState.Accessable) {
 			int nStatusId = R.string.Home_sim_invalid;
 			if (SIMState.InvalidSim == simStatus) {
@@ -352,7 +353,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 		m_simcardlockedLayout.setVisibility(View.GONE);
 		
-		NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
+		NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
 		if(curNetwork.m_NetworkType == NetworkType.No_service) {
 			m_simOrServiceTextView.setText(R.string.home_no_service);
 			m_nosimcardLayout.setVisibility(View.VISIBLE);
@@ -372,7 +373,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_nosimcardLayout.setVisibility(View.GONE);
 		m_connectToNetworkTextView.setText(curNetwork.m_strNetworkName);
 		m_connectToNetworkTextView.setVisibility(View.VISIBLE);
-		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
 		if (!m_bConnectPressd ) {
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
 				statictime = internetConnState.m_lConnectionTime;
@@ -401,18 +402,18 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private void showConnectBtnView() {
 
-		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
+		SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
 		if (simStatus != SIMState.Accessable) {
 			mConnectedView.setCenterTitle(strZeroConnDuration);
 			return;
 		}
 		
-		NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
+		NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
 		if(curNetwork.m_NetworkType == NetworkType.No_service || curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
 			mConnectedView.setCenterTitle(strZeroConnDuration);
 			return;
 		}
-		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
 		if (!m_bConnectPressd) {
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
 				boolean logoutFlag = SharedPrefsUtil.getInstance(m_context).getBoolean(SettingAccountActivity.LOGOUT_FLAG, true);
@@ -461,13 +462,13 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	
 	private void connectBtnClick()
 	{
-		if (LoginDialog.isLoginSwitchOff())
+		if (LinkAppSettings.isLoginSwitchOff())
 		{
 			connect();
 		}
 		else
 		{
-			UserLoginStatus status = BusinessMannager.getInstance().getLoginStatus();
+			UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
 
 			if (status == UserLoginStatus.Logout)
 			{
@@ -502,7 +503,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 													{
 														if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
 														{
-															SmartLinkV3App.getInstance().setIsforcesLogin(true);
+															SmartLinkV3App.getInstance().setForcesLogin(true);
 															ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
 																	new OnClickBtnRetry()
 																	{
@@ -575,9 +576,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private void connect()
 	{
 		SharedPrefsUtil.getInstance(m_context).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
-		UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
-		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
-		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
+		UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
+		WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
 		if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
 			if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
@@ -600,10 +601,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		
 		if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
 				|| internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.WAN_DISCONNECT_REQUSET,null);
 		} else {
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.WAN_CONNECT_REQUSET,null);
 		}	
 	}
@@ -620,13 +621,13 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 	
 	private void showSignalAndNetworkType() {
-		SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
+		SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
 		if (simStatus != SIMState.Accessable) {
 			m_networkTypeTextView.setVisibility(View.GONE);
 			m_networkLabelTextView.setVisibility(View.VISIBLE);
 			m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
 		}else{
-			NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
+			NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
 			if(curNetwork.m_NetworkType == NetworkType.No_service) {
 				m_networkTypeTextView.setVisibility(View.GONE);
 				m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
@@ -703,7 +704,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 			return;
 		}
 		int nProgress;
-		BatteryInfo batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
+		BatteryInfo batteryinfo = BusinessManager.getInstance().getBatteryInfo();
 		if(ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()){
 			nProgress = batteryinfo.getBatterLevel();
 			if (nProgress > 20 && nProgress <= 40){
@@ -774,8 +775,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 
 	private void showTrafficUsageView() {
-		UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
-		UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
+		UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
+		UsageSettingModel statistic = BusinessManager.getInstance().getUsageSettings();
 
 		if(statistic.HMonthlyPlan!=0){
 			long hUseData = m_UsageRecordResult.HUseData;
@@ -798,7 +799,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	}
 	
 	private void showAccessDeviceState(){
-		ArrayList<ConnectedDeviceItemModel> connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
+		ArrayList<ConnectedDeviceItemModel> connecedDeviceLstData = BusinessManager.getInstance().getConnectedDeviceList();
 		m_accessnumTextView.setTypeface(typeFace);
 		m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", connecedDeviceLstData.size()));
 		m_accessnumTextView.setTextColor(m_context.getResources().getColor(R.color.mg_blue));

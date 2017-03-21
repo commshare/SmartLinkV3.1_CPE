@@ -23,8 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
@@ -207,8 +207,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 //		changeTitlebar(R.string.setting_network_mode);
         mSetNetworkModeContainer = (LinearLayout) findViewById(R.id.setting_network_mode_container);
         m_network_mode_radiogroup = (RadioGroup)findViewById(R.id.setting_network_mode);
-		m_current_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkMode();
-		m_current_network_selection_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkSelection();
+		m_current_mode = BusinessManager.getInstance().getNetworkManager().getNetworkMode();
+		m_current_network_selection_mode = BusinessManager.getInstance().getNetworkManager().getNetworkSelection();
 		
 		mode_auto = (RadioButton)findViewById(R.id.mode_auto);
 		mode_2g_only = (RadioButton)findViewById(R.id.mode_2g);
@@ -314,7 +314,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		int nID = v.getId();
-		ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+		WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
 		switch (nID) {
 		case R.id.tv_title_back:
 		case R.id.ib_title_back:
@@ -328,8 +328,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			break;
 		case R.id.network_mode:
 //			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
-//			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(null);
-//			BusinessMannager.getInstance().getProfileManager().startDeleteProfile(null);
+//			BusinessManager.getInstance().getProfileManager().startAddNewProfile(null);
+//			BusinessManager.getInstance().getProfileManager().startDeleteProfile(null);
 			if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected){
                 mSetNetworkModeContainer.setVisibility(View.VISIBLE);
                 changeTitlebar(R.string.setting_network_mode);
@@ -344,7 +344,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			}
 			break;
 		case R.id.network_selection:
-			 if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.Accessable){
+			 if(BusinessManager.getInstance().getSimStatus().m_SIMState == SIMState.Accessable){
 				 if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
 						showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
 					else if(internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting){
@@ -356,11 +356,11 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 						Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 					}
 			 }
-			 else if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.PinRequired){
+			 else if(BusinessManager.getInstance().getSimStatus().m_SIMState == SIMState.PinRequired){
 			 	String strInfo = getString(R.string.home_sim_loched);
 				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			 }
-			 else if(BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.PukRequired){
+			 else if(BusinessManager.getInstance().getSimStatus().m_SIMState == SIMState.PukRequired){
 			 	String strInfo = getString(R.string.home_sim_loched);
 				Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 			 }
@@ -509,7 +509,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
         /*--------------- add end 2017.1.6 ---------------*/
 
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
 		m_waiting_circle.setVisibility(View.VISIBLE);
 		m_network_mode_container.setEnabled(false);
@@ -523,7 +523,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	
 	
 	private void refresButton(){
-		switch(BusinessMannager.getInstance().getNetworkManager().getNetworkMode()){
+		switch(BusinessManager.getInstance().getNetworkManager().getNetworkMode()){
 		case MODE_AUTO:
 			mode_auto.setChecked(true);
 			
@@ -548,11 +548,11 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	}
 	
 	private void UserSetNetworkMode(final int mode){
-		if(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() != MODE_ERROR){
+		if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() != MODE_ERROR){
 			DataValue data = new DataValue();
 			data.addParam("network_mode", mode);
-			data.addParam("netselection_mode", BusinessMannager.getInstance().getNetworkManager().getNetworkSelection());
-			BusinessMannager.getInstance().sendRequestMessage(
+			data.addParam("netselection_mode", BusinessManager.getInstance().getNetworkManager().getNetworkSelection());
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
 		}
         mSetNetworkModeContainer.setVisibility(View.GONE);
@@ -571,12 +571,12 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-//		BusinessMannager.getInstance().getNetworkManager().GetNetworkSettings(null);
+//		BusinessManager.getInstance().getNetworkManager().GetNetworkSettings(null);
 		
 //		DataValue data = new DataValue();
 //		data.addParam("network_mode", 0);
 //		data.addParam("netselection_mode", 0);
-//		BusinessMannager.getInstance().sendRequestMessage(
+//		BusinessManager.getInstance().sendRequestMessage(
 //				MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
 		UserGetNetworkSetting();
         showRoamingAutoDisconnectBtn();
@@ -595,7 +595,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 		// TODO Auto-generated method stub
 		super.onResume();
 		this.registerReceiver(m_network_setting_receiver, new IntentFilter(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST));  
-		BusinessMannager.getInstance().getProfileManager().startGetProfileList(null);
+		BusinessManager.getInstance().getProfileManager().startGetProfileList(null);
 	}
 	
 	@Override
@@ -634,7 +634,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 				
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
-					switch(BusinessMannager.getInstance().getNetworkManager().getNetworkMode()){
+					switch(BusinessManager.getInstance().getNetworkManager().getNetworkMode()){
 					
 					case 0:
 						m_mode_desc.setText("Auto");
@@ -664,7 +664,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 						
 					}
 					
-					switch(BusinessMannager.getInstance().getNetworkManager().getNetworkSelection()){
+					switch(BusinessManager.getInstance().getNetworkManager().getNetworkSelection()){
 					case 0:
 						m_selection_desc.setText("Auto");
 						break;
@@ -675,8 +675,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 						break;
 					}
 					
-//					current_network_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkMode();
-//					current_network_selection_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkSelection();
+//					current_network_mode = BusinessManager.getInstance().getNetworkManager().getNetworkMode();
+//					current_network_selection_mode = BusinessManager.getInstance().getNetworkManager().getNetworkSelection();
 					
 					m_network_mode_container.setEnabled(true);
 					m_network_selection_container.setEnabled(true);
@@ -702,7 +702,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 				
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
-					BusinessMannager.getInstance().sendRequestMessage(
+					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
 				}
 				else if(BaseResponse.RESPONSE_OK == nResult
@@ -724,8 +724,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 				
 				if (BaseResponse.RESPONSE_OK == nResult
 						&& strErrorCode.length() == 0){
-//					m_network_search_result_list = BusinessMannager.getInstance().getNetworkManager().getNetworkList();
-					m_profile_list_data = BusinessMannager.getInstance().getProfileManager().GetProfileListData();
+//					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
+					m_profile_list_data = BusinessManager.getInstance().getProfileManager().GetProfileListData();
 					for(ProfileItem a : m_profile_list_data){
 						if(a.Default == 1){
 							m_selected_profile.setText(a.ProfileName);
@@ -764,10 +764,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
     private void showRoamingAutoDisconnectBtn() {
 
-        SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
+        SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
         //if (simState.m_SIMState == SIMState.Accessable) {
-        UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
-        ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
+        UsageSettingModel usageSetting = BusinessManager.getInstance().getUsageSettings();
+        ConnectionSettingsModel connectionSetting = BusinessManager.getInstance().getConnectSettings();
         if(m_bIsRoamingDisconnectedEdit == false) {
             //				if (usageSetting.HMonthlyPlan > 0) {
             mRoamingSwitch.setEnabled(true);
@@ -796,7 +796,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
     private void onBtnRoamingAutoDisconnectClick() {
         m_bIsRoamingDisconnectedEdit = true;
-        ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
+        ConnectionSettingsModel connectionSetting = BusinessManager.getInstance().getConnectSettings();
         DataValue data = new DataValue();
         if (connectionSetting.HRoamingConnect == ENUM.OVER_ROAMING_STATE.Disable) {
             mRoamingSwitch
@@ -807,7 +807,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                     .setBackgroundResource(R.drawable.general_btn_off);
             data.addParam("roaming_connect_flag", ENUM.OVER_ROAMING_STATE.Disable);
         }
-        BusinessMannager.getInstance().sendRequestMessage(
+        BusinessManager.getInstance().sendRequestMessage(
                 MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET,
                 data);
 

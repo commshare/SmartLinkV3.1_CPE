@@ -1,27 +1,15 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 
-import com.alcatel.smartlinkv3.business.SimManager.GetSimStatusTask;
-import com.alcatel.smartlinkv3.business.StatisticsManager.GetUsageSettingsTask;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
-import com.alcatel.smartlinkv3.business.sim.HttpGetSimStatus;
-import com.alcatel.smartlinkv3.business.sim.SIMStatusResult;
-import com.alcatel.smartlinkv3.business.statistics.HttpUsageHistory;
-import com.alcatel.smartlinkv3.business.statistics.HttpUsageSettings;
-import com.alcatel.smartlinkv3.business.statistics.UsageSettingsResult;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.wan.ConnectStatusResult;
 import com.alcatel.smartlinkv3.business.wan.ConnectionSettingsResult;
 import com.alcatel.smartlinkv3.business.wan.HttpConnectOperation;
-import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -29,12 +17,11 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WanManager extends BaseManager {
-	private ConnectStatusModel m_connectStatus = new ConnectStatusModel();
+	private WanConnectStatusModel m_connectStatus = new WanConnectStatusModel();
 	private ConnectionSettingsModel m_connectionSettings = new ConnectionSettingsModel();
 	private Timer m_rollTimer = new Timer();
 
@@ -71,7 +58,7 @@ public class WanManager extends BaseManager {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetConnectStatusTask();
 					startGetConnectSettingsTask();
@@ -91,7 +78,7 @@ public class WanManager extends BaseManager {
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET));
     }
 	
-	public ConnectStatusModel getConnectStatus() {
+	public WanConnectStatusModel getConnectStatus() {
 		return m_connectStatus;
 	}
 	
@@ -116,11 +103,11 @@ public class WanManager extends BaseManager {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
-                	String strErrcode = new String();
+                	String errorCode = new String();
                     int ret = response.getResultCode();
                     if(ret == BaseResponse.RESPONSE_OK) {
-                    	strErrcode = response.getErrorCode();
-                    	if(strErrcode.length() == 0) {
+                    	errorCode = response.getErrorCode();
+                    	if(errorCode.length() == 0) {
                     		ConnectStatusResult connectStatusResult = response.getModelResult();
                     		m_connectStatus.setValue(connectStatusResult);
                     	}else{
@@ -132,7 +119,7 @@ public class WanManager extends BaseManager {
                     
                     Intent megIntent= new Intent(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET);
                     megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, errorCode);
         			m_context.sendBroadcast(megIntent);
                 }
             }));

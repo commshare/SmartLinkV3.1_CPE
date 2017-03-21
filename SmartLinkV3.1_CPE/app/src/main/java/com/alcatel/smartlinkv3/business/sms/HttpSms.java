@@ -20,23 +20,7 @@ public class HttpSms {
     {	
         public GetSMSInitStatus(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSMSInitStatus");
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetSMSInitStatus", strId, callback);
         }
 
         @Override
@@ -74,27 +58,17 @@ public class HttpSms {
 		private int m_nPage = 0;//0: return all Contact SMS.1: the first page ,every page has 10 contacts SMS list.
         public GetSMSContactList(String strId,int nPage,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("GetSMSContactList", strId, callback);
         	m_nPage = nPage;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSMSContactList");
-	        	
 	        	JSONObject smsInfo = new JSONObject();	 
 	        	smsInfo.put("Page", m_nPage);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, smsInfo);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override
@@ -137,29 +111,19 @@ public class HttpSms {
 		
         public GetSMSContentList(String strId,int nPage,int nContactId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("GetSMSContentList", strId, callback);
         	m_nPage = nPage;
         	m_nContactId = nContactId;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSMSContentList");
-	        	
 	        	JSONObject smsInfo = new JSONObject();	 
 	        	smsInfo.put("Page", m_nPage);
 	        	smsInfo.put("ContactId", m_nContactId);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, smsInfo);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override
@@ -198,23 +162,7 @@ public class HttpSms {
     {	
         public GetSMSStorageState(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSMSStorageState");
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetSMSStorageState", strId, callback);
         }
 
         @Override
@@ -257,31 +205,21 @@ public class HttpSms {
 		
         public DeleteSMS(String strId,int nDelFlag,int nContactId,int nSMSId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("DeleteSMS", strId, callback);
         	m_nDelFlag = nDelFlag;
         	m_nContactId = nContactId;
         	m_nSMSId = nSMSId;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "DeleteSMS");
-	        	
 	        	JSONObject obj = new JSONObject();	 
 	        	obj.put("DelFlag", m_nDelFlag);
 	        	obj.put("ContactId", m_nContactId);
 	        	obj.put("SMSId", m_nSMSId);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override
@@ -321,20 +259,15 @@ public class HttpSms {
 		
         public SendSMS(String strId,int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("SendSMS", strId, callback);
         	m_nSMSId = nSMSId;
         	m_strSMSContent = strSMSContent;
         	m_lstNumber = lstNumber;
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SendSMS");
-	        	
 	        	JSONObject obj = new JSONObject();	 
 	        	obj.put("SMSId", m_nSMSId);
 	        	obj.put("SMSContent", m_strSMSContent);
@@ -349,11 +282,7 @@ public class HttpSms {
 	        	obj.put("SMSTime", strTimeText);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
         }
 
         @Override
@@ -389,23 +318,7 @@ public class HttpSms {
     {	
         public GetSendSMSResult(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetSendSMSResult");
-	        	
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetSendSMSResult", strId, callback);
         }
 
         @Override
@@ -447,19 +360,15 @@ public class HttpSms {
 		
         public SaveSMS(String strId,int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
+        	super("SaveSMS", strId, callback);
         	m_nSMSId = nSMSId;
         	m_strSMSContent = strSMSContent;
         	m_lstNumber = (ArrayList<String>) lstNumber.clone();
         }
 
         @Override
-        protected void buildHttpParamJson() 
+        protected void buildHttpParamJson() throws JSONException
         {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "SaveSMS");
 	        	
 	        	JSONObject obj = new JSONObject();	 
 	        	obj.put("SMSId", m_nSMSId);
@@ -475,11 +384,6 @@ public class HttpSms {
 	        	obj.put("SMSTime", strTimeText);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
         }
 
         @Override

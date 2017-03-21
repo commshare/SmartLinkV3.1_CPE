@@ -1,13 +1,13 @@
 package com.alcatel.smartlinkv3.business.device;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpDevice {
 
@@ -15,24 +15,7 @@ public class HttpDevice {
 	public static class GetConnectedDeviceList extends BaseRequest {	
 
 		public GetConnectedDeviceList(String strId, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetConnectedDeviceList");			
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			super("GetConnectedDeviceList", strId, callback);
 		}
 
 		@Override
@@ -67,24 +50,7 @@ public class HttpDevice {
 	public static class GetBlockDeviceList extends BaseRequest {	
 
 		public GetBlockDeviceList(String strId, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
-		}
-
-		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"GetBlockDeviceList");			
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, null);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			super("GetBlockDeviceList", strId, callback);
 		}
 
 		@Override
@@ -122,32 +88,20 @@ public class HttpDevice {
 		private String m_strMac;
 
 		public SetConnectedDeviceBlock(String strId, String strName, String strMac, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("SetConnectedDeviceBlock", strId, callback);
 			m_strName = strName;
 			m_strMac = strMac;
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetConnectedDeviceBlock");		
-				
+		protected void buildHttpParamJson() throws JSONException {
 				JSONObject obj = new JSONObject();
 				obj.put("DeviceName", m_strName);
 				obj.put("MacAddress", m_strMac);
 				
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, obj);				
-	
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
 
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 		}
 
 		@Override
@@ -181,32 +135,19 @@ public class HttpDevice {
 		private String m_strMac;
 
 		public SetDeviceUnlock(String strId, String strName, String strMac, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("SetDeviceUnlock", strId, callback);
 			m_strName = strName;
 			m_strMac = strMac;
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetDeviceUnlock");		
-				
+		protected void buildHttpParamJson() throws JSONException {
 				JSONObject obj = new JSONObject();
 				obj.put("DeviceName", m_strName);
 				obj.put("MacAddress", m_strMac);
 				
 				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, obj);				
-	
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+						.put(ConstValue.JSON_PARAMS, obj);
 		}
 
 		@Override
@@ -241,21 +182,14 @@ public class HttpDevice {
 		private int m_nType;
 
 		public SetDeviceName(String strId, String strName, String strMac, int nType, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("SetDeviceName", strId, callback);
 			m_strName = strName;
 			m_strMac = strMac;
 			m_nType = nType;			
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetDeviceName");		
-				
+		protected void buildHttpParamJson() throws JSONException {
 				JSONObject obj = new JSONObject();
 				obj.put("DeviceName", m_strName);
 				obj.put("MacAddress", m_strMac);
@@ -263,12 +197,7 @@ public class HttpDevice {
 				
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, obj);				
-	
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
 
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 		}
 
 		@Override

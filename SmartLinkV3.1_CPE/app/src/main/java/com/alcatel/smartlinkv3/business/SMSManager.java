@@ -75,7 +75,7 @@ public class SMSManager extends BaseManager {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetSmsInitTask();
 				}else{
@@ -122,7 +122,7 @@ public class SMSManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSInitStatus") != true)
 			return;
 		
-		SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState != ENUM.SIMState.Accessable) 
 			return;
 		

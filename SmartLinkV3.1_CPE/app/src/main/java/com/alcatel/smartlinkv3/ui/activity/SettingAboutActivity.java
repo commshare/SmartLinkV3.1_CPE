@@ -19,8 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM;
 
@@ -68,7 +68,7 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
         //create controls
         createControls();
         //app version
-        String strVersionString = BusinessMannager.getInstance().getAppVersion();
+        String strVersionString = BusinessManager.getInstance().getAppVersion();
         String strTemp = getString(R.string.setting_item_link_app_version) + " " + strVersionString;
         mAppVersionTv.setText(strTemp);
 
@@ -115,7 +115,7 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
                 SettingAboutActivity.this.finish();
                 break;
             case R.id.setting_about_link_app_container:
-                String strTemp = "http://" + BusinessMannager.getInstance().getServerAddress();
+                String strTemp = "http://" + BusinessManager.getInstance().getServerAddress();
                 CommonUtil.openWebPage(this, strTemp);
             case R.id.setting_about_link_website_container:
                 CommonUtil.openWebPage(this, "http://www.alcatelonetouch.com");
@@ -165,7 +165,7 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
     }
 
     private void getNewVersion() {
-        ConnectStatusModel status = BusinessMannager.getInstance().getConnectStatus();
+        WanConnectStatusModel status = BusinessManager.getInstance().getWanConnectStatus();
         ENUM.ConnectionStatus result = status.m_connectionStatus;
         if (result != ENUM.ConnectionStatus.Connected) {
             showCheckAppWaiting(false);
@@ -203,7 +203,7 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
             switch (msg.what) {
                 case MSG_GET_NEW_VERSION:
                     String strNewVersion = msg.getData().getString("version");
-                    String currVer = BusinessMannager.getInstance().getAppVersion();
+                    String currVer = BusinessManager.getInstance().getAppVersion();
                     mVersion.setText(getString(R.string.setting_upgrade_new_app_version)+
                             msg.getData().getString("version"));
                     if(currVer.compareToIgnoreCase(strNewVersion) < 0)

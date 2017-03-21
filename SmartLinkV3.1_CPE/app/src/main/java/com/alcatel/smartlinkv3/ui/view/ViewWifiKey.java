@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -183,9 +183,9 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		ENUM.SecurityMode securityMode;
 
 		if(is_2G==true)
-			securityMode = ENUM.SecurityMode.build(ENUM.SecurityMode.antiBuild(BusinessMannager.getInstance().getSecurityMode()));
+			securityMode = ENUM.SecurityMode.build(ENUM.SecurityMode.antiBuild(BusinessManager.getInstance().getSecurityMode()));
 		else
-			securityMode = ENUM.SecurityMode.build(ENUM.SecurityMode.antiBuild(BusinessMannager.getInstance().getSecurityMode_5G()));
+			securityMode = ENUM.SecurityMode.build(ENUM.SecurityMode.antiBuild(BusinessManager.getInstance().getSecurityMode_5G()));
 
 		if(securityMode == ENUM.SecurityMode.Disable)
 		{
@@ -244,9 +244,9 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
 			ENUM.WEPEncryption wepType;
 			if(is_2G==true)
-				wepType = BusinessMannager.getInstance().getWEPEncryption();
+				wepType = BusinessManager.getInstance().getWEPEncryption();
 			else
-				wepType = BusinessMannager.getInstance().getWEPEncryption_5G();
+				wepType = BusinessManager.getInstance().getWEPEncryption_5G();
 
 			if(wepType == ENUM.WEPEncryption.Open)
 			{
@@ -264,9 +264,9 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
 			ENUM.WPAEncryption wpaType ;
 			if(is_2G)
-				wpaType = BusinessMannager.getInstance().getWPAEncryption();
+				wpaType = BusinessManager.getInstance().getWPAEncryption();
 			else
-				wpaType = BusinessMannager.getInstance().getWPAEncryption_5G();
+				wpaType = BusinessManager.getInstance().getWPAEncryption_5G();
 
 			if(wpaType == ENUM.WPAEncryption.AUTO)
 			{
@@ -302,13 +302,13 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 			@Override
 			public void onClick(View v)
 			{
-				m_et_ssid.setText(BusinessMannager.getInstance().getSsid());
-				m_et_password.setText(BusinessMannager.getInstance().getWifiPwd());
+				m_et_ssid.setText(BusinessManager.getInstance().getSsid());
+				m_et_password.setText(BusinessManager.getInstance().getWifiPwd());
 
-				if(BusinessMannager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Disable)){
+				if(BusinessManager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Disable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
 				}
-				else if(BusinessMannager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Enable)){
+				else if(BusinessManager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Enable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
 				}
 
@@ -328,13 +328,13 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 			public void onClick(View v)
 			{
 
-				m_et_ssid.setText(BusinessMannager.getInstance().getSsid_5G());
-				m_et_password.setText( BusinessMannager.getInstance().getWifiPwd_5G());
+				m_et_ssid.setText(BusinessManager.getInstance().getSsid_5G());
+				m_et_password.setText( BusinessManager.getInstance().getWifiPwd_5G());
 
-				if(BusinessMannager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Disable)){
+				if(BusinessManager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Disable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
 				}
-				else if(BusinessMannager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Enable)){
+				else if(BusinessManager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Enable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
 				}
 				boolean IS_2G=false;
@@ -540,54 +540,54 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 	private void onWifModeChanged(){
 		m_nPreWlanAPMode = ENUM.WlanFrequency.antiBuild(
-				BusinessMannager.getInstance().getWlanFrequency());
+				BusinessManager.getInstance().getWlanFrequency());
 		m_nWlanAPMode = ENUM.WlanFrequency.antiBuild(ENUM.WlanFrequency.Frequency_24GHZ);
 		if (m_rb_5G_wifi.isChecked()) {
 			m_nWlanAPMode = ENUM.WlanFrequency.antiBuild(ENUM.WlanFrequency.Frequency_5GHZ);
 		}
 
 		if (ENUM.WlanFrequency.antiBuild(ENUM.WlanFrequency.Frequency_24GHZ) == m_nWlanAPMode) {
-			m_strPreSsid = BusinessMannager.getInstance().getSsid();
-			ENUM.SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
+			m_strPreSsid = BusinessManager.getInstance().getSsid();
+			ENUM.SecurityMode mode = BusinessManager.getInstance().getSecurityMode();
 			m_nPreSecurityMode = ENUM.SecurityMode.antiBuild(mode);
 			if (ENUM.SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (ENUM.SecurityMode.WEP == mode) {
 				m_nPreType = ENUM.WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption());
+						BusinessManager.getInstance().getWEPEncryption());
 			}else {
 				m_nPreType = ENUM.WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption());
+						BusinessManager.getInstance().getWPAEncryption());
 				if (ENUM.SecurityMode.Disable == mode) {
 					m_strPreKey = "";
 				}else {
-					m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+					m_strPreKey = BusinessManager.getInstance().getWifiPwd();
 				}
 			}
 		}else {
-			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
-			ENUM.SecurityMode mode = BusinessMannager.getInstance().getSecurityMode_5G();
+			m_strPreSsid = BusinessManager.getInstance().getSsid_5G();
+			ENUM.SecurityMode mode = BusinessManager.getInstance().getSecurityMode_5G();
 			m_nPreSecurityMode = ENUM.SecurityMode.antiBuild(mode);
 			if (ENUM.SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (ENUM.SecurityMode.WEP == mode) {
 				m_nPreType = ENUM.WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption_5G());
+						BusinessManager.getInstance().getWEPEncryption_5G());
 			}else {
 				m_nPreType = ENUM.WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption_5G());
+						BusinessManager.getInstance().getWPAEncryption_5G());
 				if (ENUM.SecurityMode.Disable == mode) {
 					m_strPreKey = "";
 				}else {
-					m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+					m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
 				}
 			}
 		}
 
 		m_strSsid = m_strPreSsid;
-        m_strPreCountryCode = BusinessMannager.getInstance().getCountryCode();
+        m_strPreCountryCode = BusinessManager.getInstance().getCountryCode();
 		m_strCountryCode = m_strPreCountryCode;
 
 		m_nSecurityMode = m_nPreSecurityMode;
@@ -659,7 +659,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		m_tv_no_password.setVisibility(View.GONE);
 		//show password switch
 		m_btn_psd_switch.setVisibility(View.VISIBLE);
-		//SecurityMode securityMode = BusinessMannager.getInstance().getSecurityMode();
+		//SecurityMode securityMode = BusinessManager.getInstance().getSecurityMode();
 		if (ENUM.SecurityMode.Disable == ENUM.SecurityMode.build(m_nSecurityMode)) {
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
@@ -759,7 +759,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 	@SuppressWarnings("deprecation")
 	private void setControlsDoneStatus(){
-		if (ENUM.WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
+		if (ENUM.WlanSupportMode.Mode2Point4GAnd5G != BusinessManager.getInstance().getWlanSupportMode()) {
 			m_rg_wifi_mode.setVisibility(View.GONE);
 		}else {
 			m_rg_wifi_mode.setVisibility(View.VISIBLE);
@@ -863,7 +863,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		data.addParam("Encryption", m_nType);
 		data.addParam("SsidStatus", ENUM.SsidHiddenEnum.antiBuild(m_ssid_status));
         data.addParam("CountryCode", m_strCountryCode);
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
 		ShowWaiting(true);
 	}
@@ -882,11 +882,11 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
 			if (ENUM.WlanFrequency.Frequency_24GHZ == ENUM.WlanFrequency.build(m_nPreWlanAPMode)) {
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd();
 			}else {
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd_5G();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd_5G();
 			}
 			m_et_password.setVisibility(View.GONE);
 			m_ib_hide_password.setVisibility(View.GONE);
@@ -934,13 +934,13 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		if(securityMode == ENUM.SecurityMode.WEP) {
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
-			ENUM.WEPEncryption wepType = BusinessMannager.getInstance().getWEPEncryption();
-			m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
-			m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
+			ENUM.WEPEncryption wepType = BusinessManager.getInstance().getWEPEncryption();
+			m_curWPAPassword = BusinessManager.getInstance().getWifiPwd();
+			m_curWEPPassword = BusinessManager.getInstance().getWifiPwd();
 			if (ENUM.WlanFrequency.Frequency_5GHZ == ENUM.WlanFrequency.build(m_nPreWlanAPMode)) {
-				wepType = BusinessMannager.getInstance().getWEPEncryption_5G();
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
+				wepType = BusinessManager.getInstance().getWEPEncryption_5G();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd_5G();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd_5G();
 			}
 			if(wepType == ENUM.WEPEncryption.Open){
 				m_encription_mode.setText(R.string.setting_wifi_open);
@@ -952,15 +952,15 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		}else{
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
-			ENUM.WPAEncryption wpaType = BusinessMannager.getInstance().getWPAEncryption();
-			ENUM.WModeEnum wmode = BusinessMannager.getInstance().getWMode();
-			m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
-			m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
+			ENUM.WPAEncryption wpaType = BusinessManager.getInstance().getWPAEncryption();
+			ENUM.WModeEnum wmode = BusinessManager.getInstance().getWMode();
+			m_curWPAPassword = BusinessManager.getInstance().getWifiPwd();
+			m_curWEPPassword = BusinessManager.getInstance().getWifiPwd();
 			if (ENUM.WlanFrequency.Frequency_5GHZ == ENUM.WlanFrequency.build(m_nPreWlanAPMode)) {
-				wpaType = BusinessMannager.getInstance().getWPAEncryption_5G();
-				wmode = BusinessMannager.getInstance().getWMode_5G();
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
+				wpaType = BusinessManager.getInstance().getWPAEncryption_5G();
+				wmode = BusinessManager.getInstance().getWMode_5G();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd_5G();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd_5G();
 			}
 			if(wpaType == ENUM.WPAEncryption.AUTO){
 				m_encription_mode.setText(R.string.setting_network_mode_auto);
@@ -998,52 +998,52 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 
 	private void initValues(){
 		m_nPreWlanAPMode = ENUM.WlanFrequency.antiBuild(
-				BusinessMannager.getInstance().getWlanFrequency());
+				BusinessManager.getInstance().getWlanFrequency());
 		m_nWlanAPMode = m_nPreWlanAPMode;
 
 		if (ENUM.WlanFrequency.antiBuild(ENUM.WlanFrequency.Frequency_24GHZ) == m_nWlanAPMode) {
-			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus();
-			m_strPreSsid = BusinessMannager.getInstance().getSsid();
-			m_strPreCountryCode = BusinessMannager.getInstance().getCountryCode();
-			ENUM.SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
+			m_pre_ssid_status = BusinessManager.getInstance().getSsidStatus();
+			m_strPreSsid = BusinessManager.getInstance().getSsid();
+			m_strPreCountryCode = BusinessManager.getInstance().getCountryCode();
+			ENUM.SecurityMode mode = BusinessManager.getInstance().getSecurityMode();
 			m_nPreSecurityMode = ENUM.SecurityMode.antiBuild(mode);
 			if (ENUM.SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (ENUM.SecurityMode.WEP == mode) {
 				m_nPreType = ENUM.WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption());
+						BusinessManager.getInstance().getWEPEncryption());
 			}else {
 				m_nPreType = ENUM.WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption());
+						BusinessManager.getInstance().getWPAEncryption());
 			}
-			m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+			m_strPreKey = BusinessManager.getInstance().getWifiPwd();
 //			if (SecurityMode.Disable == mode) {
 //				m_strPreKey = "";
 //			}else {
-//				m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+//				m_strPreKey = BusinessManager.getInstance().getWifiPwd();
 //			}
 		}else {
-			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus_5G();
-			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
-            m_strPreCountryCode = BusinessMannager.getInstance().getCountryCode();
-			ENUM.SecurityMode mode = BusinessMannager.getInstance().getSecurityMode_5G();
+			m_pre_ssid_status = BusinessManager.getInstance().getSsidStatus_5G();
+			m_strPreSsid = BusinessManager.getInstance().getSsid_5G();
+            m_strPreCountryCode = BusinessManager.getInstance().getCountryCode();
+			ENUM.SecurityMode mode = BusinessManager.getInstance().getSecurityMode_5G();
 			m_nPreSecurityMode = ENUM.SecurityMode.antiBuild(mode);
 			if (ENUM.SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (ENUM.SecurityMode.WEP == mode) {
 				m_nPreType = ENUM.WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption_5G());
+						BusinessManager.getInstance().getWEPEncryption_5G());
 			}else {
 				m_nPreType = ENUM.WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption_5G());
+						BusinessManager.getInstance().getWPAEncryption_5G());
 			}
-			m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+			m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
 //			if (SecurityMode.Disable == mode) {
 //				m_strPreKey = "";
 //			}else {
-//				m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+//				m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
 //			}
 		}
 		m_ssid_status = m_pre_ssid_status;
@@ -1091,8 +1091,8 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 		//init controls state
 //		initSpinersUI();
 		setControlsDoneStatus();
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
 		ShowWaiting(true);
 		createControls();
 

@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -72,13 +72,13 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 					new IntentFilter(MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET));
 			registerReceiver(m_msgReceiver, 
 					new IntentFilter(MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET));
-			BusinessMannager.getInstance().StartRefreshingSharingStatus();
+			BusinessManager.getInstance().StartRefreshingSharingStatus();
 		}
 		
 		@Override
 		protected void onDestroy(){
 			super.onDestroy();
-			BusinessMannager.getInstance().StopRefreshingSharingStatus();
+			BusinessManager.getInstance().StopRefreshingSharingStatus();
 		}
 		
 		private void controlTitlebar(){
@@ -125,9 +125,9 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 		}
 		
 		private void updateUI(){
-			m_ftp_enabled = BusinessMannager.getInstance().getFtpSettings().FtpStatus == 1;
-			m_dlna_enabled = BusinessMannager.getInstance().getDlnaSettings().DlnaStatus == 1;
-			m_dlnaDeviceName = BusinessMannager.getInstance().getDlnaSettings().DlnaName;
+			m_ftp_enabled = BusinessManager.getInstance().getFtpSettings().FtpStatus == 1;
+			m_dlna_enabled = BusinessManager.getInstance().getDlnaSettings().DlnaStatus == 1;
+			m_dlnaDeviceName = BusinessManager.getInstance().getDlnaSettings().DlnaName;
 			if(m_ftp_enabled){
 				m_ftp_button.setImageResource(R.drawable.general_btn_on);
 			}
@@ -161,20 +161,20 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 				data.addParam("FtpStatus", 1);
 			
 			m_waiting.setVisibility(View.VISIBLE);
-			BusinessMannager.getInstance().sendRequestMessage(
+			BusinessManager.getInstance().sendRequestMessage(
 					MessageUti.SHARING_SET_FTP_SETTING_REQUSET, data);
 		}
 		
 		private void changeDlnaSetting(){
 //			DataValue data = new DataValue();
 			if(m_dlna_enabled)
-				BusinessMannager.getInstance().getSharingManager().switchOffDlna();
+				BusinessManager.getInstance().getSharingManager().switchOffDlna();
 			else
-				BusinessMannager.getInstance().getSharingManager().switchOnDlna();
+				BusinessManager.getInstance().getSharingManager().switchOnDlna();
 //			data.addParam("DlnaName", m_dlnaDeviceName);
 			
 			m_waiting.setVisibility(View.VISIBLE);
-//			BusinessMannager.getInstance().sendRequestMessage(
+//			BusinessManager.getInstance().sendRequestMessage(
 //					MessageUti.SHARING_SET_DLNA_SETTING_REQUSET, data);
 		}
 

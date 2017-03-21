@@ -1,17 +1,13 @@
 package com.alcatel.smartlinkv3.business.statistics;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
-
-import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
-import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting.SetWlanSettingResponse;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpUsageSettings {
 	
@@ -20,23 +16,7 @@ public class HttpUsageSettings {
     {			
         public GetUsageSettings(String strId,IHttpFinishListener callback) 
         {
-        	super(callback);  
-        	m_strId = strId;
-        }
-
-        @Override
-        protected void buildHttpParamJson() 
-        {
-        	try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "GetUsageSettings");
-
-	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	super("GetUsageSettings", strId, callback);
         }
 
         @Override
@@ -76,18 +56,12 @@ public class HttpUsageSettings {
 		public UsageSettingsResult m_result = new UsageSettingsResult();
 
 		public SetUsageSettings(String strId,	UsageSettingsResult result, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("SetUsageSettings", strId, callback);
 			m_result.setValue(result);
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC,
-						ConstValue.JSON_RPC_VERSION);
-				m_requestParamJson.put(ConstValue.JSON_METHOD,
-						"SetUsageSettings");
+        protected void buildHttpParamJson() throws JSONException {
 				
 				JSONObject settings = new JSONObject();
 				settings.put("BillingDay", m_result.BillingDay);
@@ -97,15 +71,9 @@ public class HttpUsageSettings {
 				settings.put("TimeLimitFlag", m_result.TimeLimitFlag);
 				settings.put("TimeLimitTimes", m_result.TimeLimitTimes);
 				settings.put("AutoDisconnFlag", m_result.AutoDisconnFlag);
-				
-				
+
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
-				m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 		}
 
 		@Override

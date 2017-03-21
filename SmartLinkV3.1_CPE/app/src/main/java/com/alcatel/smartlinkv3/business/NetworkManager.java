@@ -18,19 +18,9 @@ import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkI
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItemList;
 import com.alcatel.smartlinkv3.business.network.HttpSetNetworkSettings;
 import com.alcatel.smartlinkv3.business.network.NetworkInfoResult;
-import com.alcatel.smartlinkv3.business.sim.AutoEnterPinStateResult;
-import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
-import com.alcatel.smartlinkv3.business.sim.HttpChangePinAndState;
-import com.alcatel.smartlinkv3.business.sim.HttpGetSimStatus;
-import com.alcatel.smartlinkv3.business.sim.HttpUnlockPinPuk;
-import com.alcatel.smartlinkv3.business.sim.SIMStatusResult;
-import com.alcatel.smartlinkv3.business.user.HttpUser;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
-import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
@@ -101,7 +91,7 @@ public class NetworkManager extends BaseManager {
 			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetNetworkInfoTask();
 				}else{

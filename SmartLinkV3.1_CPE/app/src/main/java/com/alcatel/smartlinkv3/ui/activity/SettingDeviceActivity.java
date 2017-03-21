@@ -21,9 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.ConnectStatusModel;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
@@ -150,7 +150,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         m_web_version = (FrameLayout) findViewById(R.id.device_web_version);
         m_web_version.setOnClickListener(this);
         m_hiddable_divider = (ImageView) findViewById(R.id.device_hidable_divider);
-        if (BusinessMannager.getInstance().getSystemInfo().getWebUiVersion().length() == 0) {
+        if (BusinessManager.getInstance().getSystemInfo().getWebUiVersion().length() == 0) {
             m_hiddable_divider.setVisibility(View.GONE);
             m_web_version.setVisibility(View.GONE);
         }
@@ -178,16 +178,16 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         ShowWaiting(false);
 
         isPinRequired = false;
-        if (BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
-                || BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
-                || BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK) {
+        if (BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
+                || BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
+                || BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK) {
             m_switch_button.setBackgroundResource(R.drawable.general_btn_on);
             m_requested_pinState = ENUM.PinState.Disable;
-        } else if (BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable) {
+        } else if (BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable) {
             m_switch_button.setBackgroundResource(R.drawable.general_btn_off);
             m_requested_pinState = ENUM.PinState.PinEnableVerified;
         }
-        m_PrePinState = BusinessMannager.getInstance().getSimStatus().m_PinState;
+        m_PrePinState = BusinessManager.getInstance().getSimStatus().m_PinState;
 
         m_pin_notice = (TextView) findViewById(R.id.setting_device_pincode_editor_notice);
         m_pin_notice.setVisibility(View.GONE);
@@ -213,16 +213,16 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
 
     private void simRollRequest() {
-        final SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+        final SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
 
         if (sim.m_PinState != m_PrePinState && sim.m_PinState != ENUM.PinState.RequirePUK) {
             m_PrePinState = sim.m_PinState;
-            if (BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
-                    || BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
-                    || BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK) {
+            if (BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
+                    || BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
+                    || BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK) {
                 m_switch_button.setBackgroundResource(R.drawable.general_btn_on);
                 m_requested_pinState = ENUM.PinState.Disable;
-            } else if (BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable) {
+            } else if (BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable) {
                 m_switch_button.setBackgroundResource(R.drawable.general_btn_off);
                 m_requested_pinState = ENUM.PinState.PinEnableVerified;
             }
@@ -314,12 +314,12 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
         } else {
             closePinAndPukDialog();
-            if (BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
-                    || BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
-                    || BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK) {
+            if (BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified
+                    || BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.EnableButNotVerified
+                    || BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.RequirePUK) {
                 m_switch_button.setBackgroundResource(R.drawable.general_btn_on);
                 m_requested_pinState = ENUM.PinState.Disable;
-            } else if (BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable) {
+            } else if (BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable) {
                 m_switch_button.setBackgroundResource(R.drawable.general_btn_off);
                 m_requested_pinState = ENUM.PinState.PinEnableVerified;
             }
@@ -344,7 +344,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             m_dlgPuk.closeDialog();
         }
 
-        SimStatusModel simStatus = BusinessMannager.getInstance()
+        SimStatusModel simStatus = BusinessManager.getInstance()
                 .getSimStatus();
         // set the remain times
         if (null != m_dlgPin) {
@@ -377,7 +377,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         if (null != m_dlgPin && PinStateDialog.m_isShow) {
             m_dlgPin.closeDialog();
         }
-        SimStatusModel simStatus = BusinessMannager.getInstance()
+        SimStatusModel simStatus = BusinessManager.getInstance()
                 .getSimStatus();
         // set the remain times
         if (null != m_dlgPuk) {
@@ -451,7 +451,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             //			goToPowerSettingPage();
             //			break;
             case R.id.device_pin_code:
-                SimStatusModel simStatus0 = BusinessMannager.getInstance().getSimStatus();
+                SimStatusModel simStatus0 = BusinessManager.getInstance().getSimStatus();
                 if (simStatus0.m_PinState == PinState.EnableButNotVerified) {
                     String strInfo = getString(R.string.home_pin_locked_notice);
                     Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
@@ -460,7 +460,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                 onBtnPincodeSetting();
                 break;
             case R.id.device_web_version:
-                String strTemp = "http://" + BusinessMannager.getInstance().getServerAddress();
+                String strTemp = "http://" + BusinessManager.getInstance().getServerAddress();
                 CommonUtil.openWebPage(this, strTemp);
                 break;
             case R.id.device_restart:
@@ -475,7 +475,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                 //			onDoneEditPincodeSetting();
                 //			m_dlgPin.cancelUserClose();
                 //			m_dlgPuk.cancelUserClose();
-                ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+                WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
                 if (internetConnState.m_connectionStatus != ConnectionStatus.Disconnected) {
                     if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
                         String strInfo = getString(R.string.setting_network_try_again);
@@ -487,7 +487,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                         return;
                     }
                 }
-                SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
+                SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
                 if (simStatus.m_PinState == PinState.EnableButNotVerified) {
                     String strInfo = getString(R.string.home_pin_locked_notice);
                     Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
@@ -555,7 +555,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
     private void getNewVersion() {
         m_blUpdating = false;
-        ConnectStatusModel status = BusinessMannager.getInstance().getConnectStatus();
+        WanConnectStatusModel status = BusinessManager.getInstance().getWanConnectStatus();
         ENUM.ConnectionStatus result = status.m_connectionStatus;
         if (result != ENUM.ConnectionStatus.Connected) {
             showCheckFwWaiting(false);
@@ -593,7 +593,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
     //检查版本
     private void checkNewVersion() {
-        BusinessMannager.getInstance().sendRequestMessage(
+        BusinessManager.getInstance().sendRequestMessage(
                 MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
     }
 
@@ -617,32 +617,32 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
     private void onBtnPincodeSetting() {
         m_edit_pin_showing = true;
-        if (BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.NoSim ||
-                BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.InvalidSim ||
-                BusinessMannager.getInstance().getSimStatus().m_SIMState == SIMState.SimCardIsIniting) {
+        if (BusinessManager.getInstance().getSimStatus().m_SIMState == SIMState.NoSim ||
+                BusinessManager.getInstance().getSimStatus().m_SIMState == SIMState.InvalidSim ||
+                BusinessManager.getInstance().getSimStatus().m_SIMState == SIMState.SimCardIsIniting) {
             String strInfo = getString(R.string.home_sim_not_accessible);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
             return;
         }
         m_device_menu_container.setVisibility(View.GONE);
         m_pincode_editor.setVisibility(View.VISIBLE);
-        if (BusinessMannager.getInstance().getSimStatus().m_nPinRemainingTimes <= 0) {
+        if (BusinessManager.getInstance().getSimStatus().m_nPinRemainingTimes <= 0) {
             m_pin_notice.setVisibility(View.VISIBLE);
         }
     }
 
     private void onBtnPowerOff() {
-        BusinessMannager.getInstance().
+        BusinessManager.getInstance().
                 sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF, null);
     }
 
     private void onBtnRestart() {
-        BusinessMannager.getInstance().
+        BusinessManager.getInstance().
                 sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_REBOOT, null);
     }
 
     private void onBtnReset() {
-        BusinessMannager.getInstance().
+        BusinessManager.getInstance().
                 sendRequestMessage(MessageUti.SYSTEM_SET_DEVICE_RESET, null);
     }
 
@@ -695,7 +695,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
         /*--------------- add end 2016.12.30 ---------------*/
 
-        int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+        int nUpgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
         if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)) {
             m_blFirst = false;
             //			changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
@@ -703,7 +703,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             //			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
         }
 
-        BusinessMannager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
         ShowWaiting(true);
     }
 
@@ -757,7 +757,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
                 //do nothing
-                DeviceUpgradeStateInfo info = BusinessMannager.getInstance().getUpgradeStateInfo();
+                DeviceUpgradeStateInfo info = BusinessManager.getInstance().getUpgradeStateInfo();
                 ENUM.EnumDeviceUpgradeStatus status = ENUM.EnumDeviceUpgradeStatus.build(info.getStatus());
                 int nProgress = info.getProcess();
                 m_pb_waiting.setProgress(nProgress);
@@ -770,7 +770,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                             isSupportApi("System", "AccessSqliteDB")) {
                         Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
                     } else {
-                        BusinessMannager.getInstance().sendRequestMessage(MessageUti
+                        BusinessManager.getInstance().sendRequestMessage(MessageUti
                                 .UPDATE_SET_DEVICE_START_FOTA_UPDATE, null);
                         Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
                     }
@@ -875,7 +875,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
-				int nUpgradeStatus = BusinessMannager.getInstance().getNewFirmwareInfo().getState();
+				int nUpgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
 				if(EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)){
 					m_blFirst = false;
 //					changeUpgradeFlag(ITEM_UPGRADE_SETTING,true);
@@ -890,7 +890,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
     /*--------------- add start 2017.1.20 by haodi.liang ---------------*/
     private void updateNewDeviceInfo(boolean blNeedBackupNewVersionInfo) {
-        DeviceNewVersionInfo info = BusinessMannager.getInstance().getNewFirmwareInfo();
+        DeviceNewVersionInfo info = BusinessManager.getInstance().getNewFirmwareInfo();
         int nState = info.getState();
         EnumDeviceCheckingStatus eStatus = EnumDeviceCheckingStatus.build(nState);
         if (EnumDeviceCheckingStatus.DEVICE_CHECKING == eStatus) {
@@ -933,7 +933,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                     .LENGTH_SHORT).show();
             showCheckFwWaiting(false);
             String strCurFWVersion = getString(R.string.setting_upgrade_device_version);
-            strCurFWVersion += BusinessMannager.getInstance().getSystemInfo().getSwVersion();
+            strCurFWVersion += BusinessManager.getInstance().getSystemInfo().getSwVersion();
             if (blNeedBackupNewVersionInfo) {
                 m_strNewFirmwareInfo = strCurFWVersion;
             }
@@ -1008,14 +1008,14 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                     //upgrade firmware
                     inquireDlg.closeDialog();
                     dismissUpgradeDialog();
-                    BusinessMannager.getInstance().sendRequestMessage(
+                    BusinessManager.getInstance().sendRequestMessage(
                             MessageUti.UPDATE_SET_DEVICE_START_UPDATE, null);
                     //弹出更新进度
                     showUpgradeProgressDialog();
                 }
             });
         } else {
-            BusinessMannager.getInstance().sendRequestMessage(
+            BusinessManager.getInstance().sendRequestMessage(
                     MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION, null);
             showCheckFwWaiting(true);
 
@@ -1070,7 +1070,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                 //upgrade firmware
                 dismissUpgradeProgressDialog();
                 inquireDlg.closeDialog();
-                BusinessMannager.getInstance().sendRequestMessage(
+                BusinessManager.getInstance().sendRequestMessage(
                         MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE, null);
                 SettingDeviceActivity.this.finish();
             }

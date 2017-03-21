@@ -1,34 +1,28 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.PowerManager;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-
 import android.app.ActivityManager;
-import android.app.Dialog;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseFragmentActivity extends FragmentActivity{
 	protected ActivityBroadcastReceiver m_msgReceiver;
@@ -137,7 +131,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 		if(m_bNeedBack == false)
 			return;
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
+		SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
 
 		if(bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
 //			String strInfo = getString(R.string.home_sim_not_accessible);
@@ -153,7 +147,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 
 	private void backMainActivityOnResume(Context context) {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 
 		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
 			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
@@ -169,7 +163,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 
 	private void backMainActivity(Context context) {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 
 		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
 			dismissAllDialog();
@@ -221,7 +215,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 	}
 
 	public void kickoffLogout() {
-		UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
 //			MainActivity.setKickoffLogoutFlag(true);
 			String strInfo = getString(R.string.login_kickoff_logout_successful);

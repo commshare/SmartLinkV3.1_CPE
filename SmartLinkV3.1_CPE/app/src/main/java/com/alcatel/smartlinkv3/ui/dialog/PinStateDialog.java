@@ -1,13 +1,12 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -15,7 +14,6 @@ import android.content.Context;
 //import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +28,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PinStateDialog implements OnClickListener, OnKeyListener, TextWatcher {
@@ -170,13 +167,13 @@ public class PinStateDialog implements OnClickListener, OnKeyListener, TextWatch
 
 		DataValue data = new DataValue();
 		data.addParam("pin", m_pin_edit.getText().toString());
-		if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
+		if(BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.PinEnableVerified){
 			data.addParam("state", 0);
 		}
-		else if(BusinessMannager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
+		else if(BusinessManager.getInstance().getSimStatus().m_PinState == ENUM.PinState.Disable){
 			data.addParam("state", 1);
 		}
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.SIM_CHANGE_PIN_STATE_REQUEST, data);
 	}
 

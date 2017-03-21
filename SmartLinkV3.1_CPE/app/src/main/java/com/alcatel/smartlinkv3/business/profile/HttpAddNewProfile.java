@@ -1,14 +1,12 @@
 package com.alcatel.smartlinkv3.business.profile;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
-
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HttpAddNewProfile {
 	public static class AddNewProfile extends BaseRequest{
@@ -21,24 +19,17 @@ public class HttpAddNewProfile {
 		private String m_strDialNumber = "*99#";
 		
 		public AddNewProfile(String strId, String profileName, String dialNumber, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
-			super(callback);
-			m_strId = strId;
+			super("AddNewProfile", strId, callback);
 			m_strProfileName = profileName;
 			m_strAPN = apn;
 			m_strUserName = userName;
 			m_strPassword = passWord;
 			m_intAuthType = authType;
 			m_strDialNumber = dialNumber;
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
-		protected void buildHttpParamJson() {
-			// TODO Auto-generated method stub
-			try {
-				m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-	        	m_requestParamJson.put(ConstValue.JSON_METHOD, "AddNewProfile");
-	        	
+		protected void buildHttpParamJson() throws JSONException {
 	        	JSONObject profileInfo = new JSONObject();
 	        	profileInfo.put("ProfileName", m_strProfileName);
 	        	profileInfo.put("APN", m_strAPN);
@@ -49,11 +40,6 @@ public class HttpAddNewProfile {
 	        	profileInfo.put("IPAdrress", "");
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, profileInfo);
-	        	m_requestParamJson.put(ConstValue.JSON_ID, m_strId);
-        	} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 
 		@Override

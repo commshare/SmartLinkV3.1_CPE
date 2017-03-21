@@ -1,8 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
-import java.util.regex.Pattern;
-
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -12,7 +11,6 @@ import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
 import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
 import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
@@ -24,20 +22,15 @@ import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
-import android.text.TextUtils.TruncateAt;
-import android.util.Log;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -147,9 +140,9 @@ implements OnClickListener{
 		SecurityMode securityMode;
 		
 		if(is_2G==true)
-			securityMode = SecurityMode.build(SecurityMode.antiBuild(BusinessMannager.getInstance().getSecurityMode()));
+			securityMode = SecurityMode.build(SecurityMode.antiBuild(BusinessManager.getInstance().getSecurityMode()));
 		else
-			securityMode = SecurityMode.build(SecurityMode.antiBuild(BusinessMannager.getInstance().getSecurityMode_5G()));
+			securityMode = SecurityMode.build(SecurityMode.antiBuild(BusinessManager.getInstance().getSecurityMode_5G()));
 		
 		if(securityMode == SecurityMode.Disable) 
 		{
@@ -208,9 +201,9 @@ implements OnClickListener{
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
 			WEPEncryption wepType;
 			if(is_2G==true)
-				wepType = BusinessMannager.getInstance().getWEPEncryption();
+				wepType = BusinessManager.getInstance().getWEPEncryption();
 			else
-				wepType = BusinessMannager.getInstance().getWEPEncryption_5G();
+				wepType = BusinessManager.getInstance().getWEPEncryption_5G();
 			
 			if(wepType == WEPEncryption.Open)
 			{
@@ -228,9 +221,9 @@ implements OnClickListener{
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
 			WPAEncryption wpaType ;
 			if(is_2G==true)
-				wpaType = BusinessMannager.getInstance().getWPAEncryption();
+				wpaType = BusinessManager.getInstance().getWPAEncryption();
 			else
-				wpaType = BusinessMannager.getInstance().getWPAEncryption_5G();
+				wpaType = BusinessManager.getInstance().getWPAEncryption_5G();
 
 			if(wpaType == WPAEncryption.AUTO)
 			{
@@ -265,13 +258,13 @@ implements OnClickListener{
 			@Override
 			public void onClick(View v)
 			{
-				m_et_ssid.setText(BusinessMannager.getInstance().getSsid());
-				m_et_password.setText(BusinessMannager.getInstance().getWifiPwd());
+				m_et_ssid.setText(BusinessManager.getInstance().getSsid());
+				m_et_password.setText(BusinessManager.getInstance().getWifiPwd());
 				
-				if(BusinessMannager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Disable)){
+				if(BusinessManager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Disable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
 				}
-				else if(BusinessMannager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Enable)){
+				else if(BusinessManager.getInstance().getSsidStatus().equals(SsidHiddenEnum.SsidHidden_Enable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
 				}
 						
@@ -291,13 +284,13 @@ implements OnClickListener{
 			public void onClick(View v)
 			{
 						
-				m_et_ssid.setText(BusinessMannager.getInstance().getSsid_5G());
-				m_et_password.setText( BusinessMannager.getInstance().getWifiPwd_5G());
+				m_et_ssid.setText(BusinessManager.getInstance().getSsid_5G());
+				m_et_password.setText( BusinessManager.getInstance().getWifiPwd_5G());
 				
-				if(BusinessMannager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Disable)){
+				if(BusinessManager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Disable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_on);
 				}
-				else if(BusinessMannager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Enable)){
+				else if(BusinessManager.getInstance().getSsidStatus_5G().equals(SsidHiddenEnum.SsidHidden_Enable)){
 					m_btn_ssid_broadcast_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
 				}
 				boolean IS_2G=false;
@@ -526,48 +519,48 @@ implements OnClickListener{
 
 	private void onWifModeChanged(){
 		m_nPreWlanAPMode = WlanFrequency.antiBuild(
-				BusinessMannager.getInstance().getWlanFrequency());
+				BusinessManager.getInstance().getWlanFrequency());
 		m_nWlanAPMode = WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ);
 		if (m_rb_5G_wifi.isChecked()) {
 			m_nWlanAPMode = WlanFrequency.antiBuild(WlanFrequency.Frequency_5GHZ);
 		}
 
 		if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nWlanAPMode) {
-			m_strPreSsid = BusinessMannager.getInstance().getSsid();
-			SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
+			m_strPreSsid = BusinessManager.getInstance().getSsid();
+			SecurityMode mode = BusinessManager.getInstance().getSecurityMode();
 			m_nPreSecurityMode = SecurityMode.antiBuild(mode);	
 			if (SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (SecurityMode.WEP == mode) {
 				m_nPreType = WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption());
+						BusinessManager.getInstance().getWEPEncryption());
 			}else {
 				m_nPreType = WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption());
+						BusinessManager.getInstance().getWPAEncryption());
 				if (SecurityMode.Disable == mode) {
 					m_strPreKey = "";
 				}else {
-					m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+					m_strPreKey = BusinessManager.getInstance().getWifiPwd();
 				}
 			}		
 		}else {
-			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
-			SecurityMode mode = BusinessMannager.getInstance().getSecurityMode_5G();
+			m_strPreSsid = BusinessManager.getInstance().getSsid_5G();
+			SecurityMode mode = BusinessManager.getInstance().getSecurityMode_5G();
 			m_nPreSecurityMode = SecurityMode.antiBuild(mode);	
 			if (SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (SecurityMode.WEP == mode) {
 				m_nPreType = WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption_5G());
+						BusinessManager.getInstance().getWEPEncryption_5G());
 			}else {
 				m_nPreType = WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption_5G());
+						BusinessManager.getInstance().getWPAEncryption_5G());
 				if (SecurityMode.Disable == mode) {
 					m_strPreKey = "";
 				}else {
-					m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+					m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
 				}
 			}
 		}
@@ -645,7 +638,7 @@ implements OnClickListener{
 		m_tv_no_password.setVisibility(View.GONE);
 		//show password switch
 		m_btn_psd_switch.setVisibility(View.VISIBLE);
-		//SecurityMode securityMode = BusinessMannager.getInstance().getSecurityMode();
+		//SecurityMode securityMode = BusinessManager.getInstance().getSecurityMode();
 		if (SecurityMode.Disable == SecurityMode.build(m_nSecurityMode)) {
 			m_blPasswordOpened = false;
 			m_btn_psd_switch.setBackgroundResource(R.drawable.pwd_switcher_off);
@@ -727,7 +720,7 @@ implements OnClickListener{
 
 	@SuppressWarnings("deprecation")
 	private void setControlsDoneStatus(){
-		if (WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
+		if (WlanSupportMode.Mode2Point4GAnd5G != BusinessManager.getInstance().getWlanSupportMode()) {
 			m_rg_wifi_mode.setVisibility(View.GONE);
 		}else {
 			m_rg_wifi_mode.setVisibility(View.VISIBLE);
@@ -834,7 +827,7 @@ implements OnClickListener{
 		data.addParam("Security", m_nSecurityMode);
 		data.addParam("Encryption", m_nType);
 		data.addParam("SsidStatus", SsidHiddenEnum.antiBuild(m_ssid_status));
-		BusinessMannager.getInstance().sendRequestMessage(
+		BusinessManager.getInstance().sendRequestMessage(
 				MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
 		ShowWaiting(true);
 	}
@@ -852,11 +845,11 @@ implements OnClickListener{
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
 			if (WlanFrequency.Frequency_24GHZ == WlanFrequency.build(m_nPreWlanAPMode)) {
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd();
 			}else {
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd_5G();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd_5G();
 			}
 			m_et_password.setVisibility(View.GONE);
 			m_ib_hide_password.setVisibility(View.GONE);
@@ -904,13 +897,13 @@ implements OnClickListener{
 		if(securityMode == SecurityMode.WEP) {
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
-			WEPEncryption wepType = BusinessMannager.getInstance().getWEPEncryption();
-			m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
-			m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
+			WEPEncryption wepType = BusinessManager.getInstance().getWEPEncryption();
+			m_curWPAPassword = BusinessManager.getInstance().getWifiPwd();
+			m_curWEPPassword = BusinessManager.getInstance().getWifiPwd();
 			if (WlanFrequency.Frequency_5GHZ == WlanFrequency.build(m_nPreWlanAPMode)) {
-				wepType = BusinessMannager.getInstance().getWEPEncryption_5G();
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
+				wepType = BusinessManager.getInstance().getWEPEncryption_5G();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd_5G();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd_5G();
 			}
 			if(wepType == WEPEncryption.Open){
 				m_encription_mode.setText(R.string.setting_wifi_open);
@@ -922,15 +915,15 @@ implements OnClickListener{
 		}else{
 			m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
 			m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
-			WPAEncryption wpaType = BusinessMannager.getInstance().getWPAEncryption();
-			WModeEnum wmode = BusinessMannager.getInstance().getWMode();
-			m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd();
-			m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd();
+			WPAEncryption wpaType = BusinessManager.getInstance().getWPAEncryption();
+			WModeEnum wmode = BusinessManager.getInstance().getWMode();
+			m_curWPAPassword = BusinessManager.getInstance().getWifiPwd();
+			m_curWEPPassword = BusinessManager.getInstance().getWifiPwd();
 			if (WlanFrequency.Frequency_5GHZ == WlanFrequency.build(m_nPreWlanAPMode)) {
-				wpaType = BusinessMannager.getInstance().getWPAEncryption_5G();
-				wmode = BusinessMannager.getInstance().getWMode_5G();
-				m_curWPAPassword = BusinessMannager.getInstance().getWifiPwd_5G();
-				m_curWEPPassword = BusinessMannager.getInstance().getWifiPwd_5G();
+				wpaType = BusinessManager.getInstance().getWPAEncryption_5G();
+				wmode = BusinessManager.getInstance().getWMode_5G();
+				m_curWPAPassword = BusinessManager.getInstance().getWifiPwd_5G();
+				m_curWEPPassword = BusinessManager.getInstance().getWifiPwd_5G();
 			}
 			if(wpaType == WPAEncryption.AUTO){
 				m_encription_mode.setText(R.string.setting_network_mode_auto);
@@ -968,50 +961,50 @@ implements OnClickListener{
 
 	private void initValues(){
 		m_nPreWlanAPMode = WlanFrequency.antiBuild(
-				BusinessMannager.getInstance().getWlanFrequency());
+				BusinessManager.getInstance().getWlanFrequency());
 		m_nWlanAPMode = m_nPreWlanAPMode;
 
 		if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nWlanAPMode) {
-			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus();
-			m_strPreSsid = BusinessMannager.getInstance().getSsid();
-			SecurityMode mode = BusinessMannager.getInstance().getSecurityMode();
+			m_pre_ssid_status = BusinessManager.getInstance().getSsidStatus();
+			m_strPreSsid = BusinessManager.getInstance().getSsid();
+			SecurityMode mode = BusinessManager.getInstance().getSecurityMode();
 			m_nPreSecurityMode = SecurityMode.antiBuild(mode);	
 			if (SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (SecurityMode.WEP == mode) {
 				m_nPreType = WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption());
+						BusinessManager.getInstance().getWEPEncryption());
 			}else {
 				m_nPreType = WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption());
+						BusinessManager.getInstance().getWPAEncryption());
 			}
-			m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+			m_strPreKey = BusinessManager.getInstance().getWifiPwd();
 //			if (SecurityMode.Disable == mode) {
 //				m_strPreKey = "";
 //			}else {
-//				m_strPreKey = BusinessMannager.getInstance().getWifiPwd();
+//				m_strPreKey = BusinessManager.getInstance().getWifiPwd();
 //			}		
 		}else {
-			m_pre_ssid_status = BusinessMannager.getInstance().getSsidStatus_5G();
-			m_strPreSsid = BusinessMannager.getInstance().getSsid_5G();
-			SecurityMode mode = BusinessMannager.getInstance().getSecurityMode_5G();
+			m_pre_ssid_status = BusinessManager.getInstance().getSsidStatus_5G();
+			m_strPreSsid = BusinessManager.getInstance().getSsid_5G();
+			SecurityMode mode = BusinessManager.getInstance().getSecurityMode_5G();
 			m_nPreSecurityMode = SecurityMode.antiBuild(mode);	
 			if (SecurityMode.Disable == mode) {
 				m_nPreType = -1;
 			}
 			else if (SecurityMode.WEP == mode) {
 				m_nPreType = WEPEncryption.antiBuild(
-						BusinessMannager.getInstance().getWEPEncryption_5G());
+						BusinessManager.getInstance().getWEPEncryption_5G());
 			}else {
 				m_nPreType = WPAEncryption.antiBuild(
-						BusinessMannager.getInstance().getWPAEncryption_5G());
+						BusinessManager.getInstance().getWPAEncryption_5G());
 			}
-			m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+			m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
 //			if (SecurityMode.Disable == mode) {
 //				m_strPreKey = "";
 //			}else {
-//				m_strPreKey = BusinessMannager.getInstance().getWifiPwd_5G();
+//				m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
 //			}
 		}
 		m_ssid_status = m_pre_ssid_status;
@@ -1054,8 +1047,8 @@ implements OnClickListener{
 		//init controls state
 //		initSpinersUI();
 		setControlsDoneStatus();
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
-		BusinessMannager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
 		ShowWaiting(true);
 	}
 
