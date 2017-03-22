@@ -1,33 +1,5 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
-import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
-import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
-import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
@@ -48,6 +20,34 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
+import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
+import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
+import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireDialog.OnInquireApply;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class SettingUpgradeActivity extends BaseActivity implements OnClickListener{
 
@@ -336,12 +336,12 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
 		super.onBroadcastReceive(context, intent);
 		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				//do nothing
 			}else {
 				showCheckFWWaiting(false);
@@ -352,9 +352,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}
 		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				//do nothing
 				m_pb_waiting.setVisibility(View.GONE);
 			}else {
@@ -364,9 +362,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}
 		
 		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				updateNewDeviceInfo(true);
 			}else {
 				showCheckFWWaiting(false);
@@ -377,9 +373,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_START_UPDATE)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()){
+			if (ok){
 				//do nothing
 			}else {
 				ShowWaiting(false);
@@ -388,9 +382,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()){
+			if (ok){
 				//do nothing
 				DeviceUpgradeStateInfo info = BusinessManager.getInstance().getUpgradeStateInfo();
 				EnumDeviceUpgradeStatus status = EnumDeviceUpgradeStatus.build(info.getStatus());

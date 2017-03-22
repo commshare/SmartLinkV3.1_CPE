@@ -281,49 +281,23 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 	
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
 		super.onBroadcastReceive(context, intent);
 
-		if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult&& strErrorCode.length() == 0) {
+		if (MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
+			if (ok) {
 				simRollRequest();
 			}
-		} else if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult
-					&& strErrorCode.length() == 0) {
-				m_dlgPin.onEnterPinResponse(true);
-			} else {
-				m_dlgPin.onEnterPinResponse(false);
-			}
-		} else if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult
-					&& strErrorCode.length() == 0) {
-				m_dlgPuk.onEnterPukResponse(true);
-			} else {
-				m_dlgPuk.onEnterPukResponse(false);
-			}
+		} else if (MessageUti.SIM_UNLOCK_PIN_REQUEST.equals(action)) {
+			m_dlgPin.onEnterPinResponse(ok);
+		} else if (MessageUti.SIM_UNLOCK_PUK_REQUEST.equals(action)) {
+			m_dlgPuk.onEnterPukResponse(ok);
 		}
 		
-		if (intent.getAction().equalsIgnoreCase(
-				MessageUti.USER_LOGOUT_REQUEST)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult
-					&& strErrorCode.length() == 0){
+		if (MessageUti.USER_LOGOUT_REQUEST.equals(action)) {
+			if(ok) {
 				if (m_blLogout) {
 					String strInfo = getString(R.string.login_logout_successful);
 					Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();					
@@ -338,14 +312,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 			}
 		}
 		
-		if (intent.getAction().equalsIgnoreCase(PAGE_TO_VIEW_HOME)) {
+		if (PAGE_TO_VIEW_HOME.equals(action)) {
 			homeBtnClick();
 		}
 		
-		if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0){
+		if (MessageUti.SHARING_GET_DLNA_SETTING_REQUSET.equals(action)) {
+			if(ok) {
 				if(BusinessManager.getInstance().getDlnaSettings().getDlnaStatus() > 0)
 				{
 					mAllShareProxy.startSearch();

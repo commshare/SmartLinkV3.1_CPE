@@ -109,26 +109,23 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 	private class AuthenticationBroadcastReceiver extends BroadcastReceiver {
 
 		@Override
-		public void onReceive(Context arg0, Intent arg1) {
-
-			if (arg1.getAction().equalsIgnoreCase(
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 				boolean bCPEWifiConnected = DataConnectManager.getInstance()
 						.getCPEWifiConnected();
 				if (!bCPEWifiConnected) {
 					closeDialog();
 				}
-			} else if (arg1.getAction().equalsIgnoreCase(
+			} else if (intent.getAction().equalsIgnoreCase(
 					MessageUti.USER_LOGIN_REQUEST)) {
 				m_bIsApply = false;
 				if(!m_dlgLogin.isShowing())
 					return;
-				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
-				String strErrorCode = arg1
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nRet
-						&& strErrorCode.length() == 0) {
-
+				if (ok) {
 					CPEConfig.getInstance().setLoginPassword(m_password);
 					CPEConfig.getInstance().setLoginUsername(LinkAppSettings.USER_NAME);
 					SmartLinkV3App.getInstance().setLoginPassword("");
@@ -143,9 +140,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 						m_loginCallback = null;
 					}
 
-				} else if (BaseResponse.RESPONSE_OK == nRet
-						&& strErrorCode
-								.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
+				} else if (response.isValid()
+						&& response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
 					m_bOtherUserLoginError = true;
 					m_bLoginTimeUsedOutError = false;
 					m_bLoginPasswordError=false;
@@ -205,9 +201,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 //					m_vLogin.startAnimation(m_shake);
 					//setAlreadyLogin(false);
 
-				} else if (BaseResponse.RESPONSE_OK == nRet
-						&& strErrorCode
-						.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
+				} else if (response.isValid()
+						&& response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
 					m_bLoginTimeUsedOutError = true;
 					m_bOtherUserLoginError = false;
 					m_bLoginPasswordError = false;

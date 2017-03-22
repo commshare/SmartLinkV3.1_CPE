@@ -10,9 +10,9 @@ public class HttpGetSimStatus {
 /******************** GetSimStatus  **************************************************************************************/	
 	public static class GetSimStatus extends BaseRequest
     {			
-        public GetSimStatus(String strId,IHttpFinishListener callback) 
+        public GetSimStatus(IHttpFinishListener callback)
         {
-        	super("GetSimStatus", strId, callback);
+        	super("GetSimStatus", "2.1", callback);
         }
 
         @Override

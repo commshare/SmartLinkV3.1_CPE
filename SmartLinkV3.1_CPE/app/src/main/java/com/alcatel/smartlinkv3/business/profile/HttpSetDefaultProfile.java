@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.profile;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
@@ -14,9 +13,8 @@ public class HttpSetDefaultProfile {
 		
 		private int ProfileID;
 
-		public SetDefaultProfile(String strId, int profileID, IHttpFinishListener callback) {
-			super("SetDefaultProfile", strId, callback);
-			m_strId = strId;
+		public SetDefaultProfile(int profileID, IHttpFinishListener callback) {
+			super("SetDefaultProfile", "15.5",  callback);
 			ProfileID = profileID;
 		}
 
@@ -27,30 +25,5 @@ public class HttpSetDefaultProfile {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, profileInfo);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new SetDefaultProfileResponse(m_finsishCallback);
-		}
-		
 	}
-	
-	public static class SetDefaultProfileResponse extends BaseResponse
-    {
-        
-        public SetDefaultProfileResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		} 
-    }
 }

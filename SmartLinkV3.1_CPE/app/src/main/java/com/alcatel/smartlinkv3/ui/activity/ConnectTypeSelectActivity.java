@@ -508,13 +508,10 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            int result = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                    BaseResponse.RESPONSE_OK);
-            String error = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (error == null) {
-                error = "Error";
-            }
-            boolean ok = BaseResponse.RESPONSE_OK == result && 0 == error.length();
+
+            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+            Boolean ok = response != null && response.isOk();
+
             if (action.equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
                 // If WiFi disconnect router, go to Refresh WiFi activity.
                 if (!DataConnectManager.getInstance().getCPEWifiConnected()) {
@@ -524,12 +521,12 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
             } else if (action.equals(MessageUti.USER_HEARTBEAT_REQUEST) || action.equals(MessageUti
                     .USER_COMMON_ERROR_32604_REQUEST)) {
-                if (result == BaseResponse.RESPONSE_OK && error.equalsIgnoreCase(ErrorCode
+                if (response.isValid() && response.getErrorCode().equalsIgnoreCase(ErrorCode
                         .ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
                     kickoffLogout();
                 }
             } else if (action.equals(MessageUti.USER_LOGOUT_REQUEST)) {
-                if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
+                if (ok) {
                     MainActivity.m_blLogout = false;
                     MainActivity.m_blkickoff_Logout = false;
                 }
@@ -543,7 +540,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     }
                 }
             } else if (action.equalsIgnoreCase(MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
-                if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
+                if (ok) {
                     //PIN解码成功
                     hideAllLayout();
                     mPinSuccessContainer.setVisibility(View.VISIBLE);

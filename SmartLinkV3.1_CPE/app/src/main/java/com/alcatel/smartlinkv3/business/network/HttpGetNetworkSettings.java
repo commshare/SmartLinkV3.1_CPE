@@ -9,8 +9,8 @@ import com.google.gson.Gson;
 public class HttpGetNetworkSettings {
 	public static class GetNetworkSettings extends BaseRequest{
 
-		public GetNetworkSettings(String strId, IHttpFinishListener callback) {
-			super("GetNetworkSettings", strId, callback);
+		public GetNetworkSettings(IHttpFinishListener callback) {
+			super("GetNetworkSettings", "4.6", callback);
 		}
 
 		@Override

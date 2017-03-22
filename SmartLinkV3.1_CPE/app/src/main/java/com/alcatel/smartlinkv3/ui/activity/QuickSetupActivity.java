@@ -598,14 +598,11 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     @Override
     public void onReceive(Context context, Intent intent) {
       String action = intent.getAction();
-      int result = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                                     BaseResponse.RESPONSE_OK);
-      String error = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-      if (error == null) {
-				error = "Error";
-			}
+
+      BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+      Boolean ok = response != null && response.isOk();
+
       Log.d(TAG, "Quick Setup receive broadcase " + action);
-      boolean ok = BaseResponse.RESPONSE_OK == result && 0 == error.length();
       if (action.equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
         // If WiFi disconnect router, go to Refresh WiFi activity.
         if (!DataConnectManager.getInstance().getCPEWifiConnected()) {
@@ -613,17 +610,17 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           // finish();
         }
       } else if (action.equals(MessageUti.USER_HEARTBEAT_REQUEST) || action.equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)) {
-      	if (result == BaseResponse.RESPONSE_OK && error.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+      	if (response.isValid() && ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN.equals(response.getErrorCode())) {
       		kickoffLogout();
 				}
 			}else if (action.equals(MessageUti.USER_LOGOUT_REQUEST)) {
-  			if (BaseResponse.RESPONSE_OK == result && error.length() == 0){
+  			if (ok){
   				MainActivity.m_blLogout = false;
   				MainActivity.m_blkickoff_Logout = false;
   			}
   			handleLoginError(R.string.qs_title, R.string.login_kickoff_logout_successful, true, false);
 			}else if (action.equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
-        if (BaseResponse.RESPONSE_OK == result && 0 == error.length()) {
+        if (ok) {
           /*
            * Unfortunately, when orientation changes, activity will receive this message again.
            * If user change the wifi ssid or password, they will override , especially in
@@ -664,16 +661,16 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           }
         }
       } else if (action.equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)) {
-        if (BaseResponse.RESPONSE_OK == result && 0 == error.length()) {
+        if (ok) {
           //mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
           finishQuickSetup(false);
         } else {
           if (mStateHandler == null)
             return;
           if (mStateHandler.getState() == State.WIFI_SSID) {
-            Log.v(TAG, "set wifi ssid failed, return " + error);
+            Log.v(TAG, "set wifi ssid failed, return " + response.getErrorCode());
           } else if (mStateHandler.getState() == State.WIFI_PASSWD) {
-            Log.v(TAG, "set wifi ssid failed, return " + error);
+            Log.v(TAG, "set wifi password failed, return " + response.getErrorCode());
           }
         }
       } else if (action.equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
@@ -684,7 +681,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         if(mStateHandler == null) {
           return;
         } 
-        if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
+        if (ok) {
           //actually, if user enter correct PIN, it never need go back PIN enter interface.
           removePINCodePUKCodeSetting();
           //nextSetting(false);
@@ -722,7 +719,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       	 if(mStateHandler == null) {
            return;
          } 
-         if (BaseResponse.RESPONSE_OK == result && error.length() == 0) {
+         if (ok) {
            removePINCodePUKCodeSetting();
          } else {
            //PUK unlock

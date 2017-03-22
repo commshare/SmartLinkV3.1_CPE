@@ -200,12 +200,13 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 		
 		@Override
 		protected void onBroadcastReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
+
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 			super.onBroadcastReceive(context, intent);
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_FTP_SETTING_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					updateUI();
 				}
 				else{
@@ -214,9 +215,7 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			}
 			
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					updateUI();
 				}
 				else{
@@ -225,9 +224,7 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			}
 			
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					m_dlna_response = true;
 					if(m_usb_response)
 						updateUI();
@@ -238,9 +235,7 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			}
 			
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					m_usb_response = true;
 					if(m_dlna_response)
 						updateUI();
@@ -251,17 +246,13 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 			}
 			
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					updateUI();
 				}
 			}
 			
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					updateUI();
 				}
 			}

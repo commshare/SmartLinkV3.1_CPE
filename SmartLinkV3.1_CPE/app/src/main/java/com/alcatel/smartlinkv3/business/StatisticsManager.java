@@ -1,7 +1,9 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.util.Log;
 
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
@@ -16,10 +18,8 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.util.Log;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class StatisticsManager extends BaseManager {
 	private UsageSettingModel m_usageSettings = new UsageSettingModel();
@@ -58,18 +58,19 @@ public class StatisticsManager extends BaseManager {
 	
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
-		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+        String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
+
+		if(MessageUti.CPE_WIFI_CONNECT_CHANGE.equals(action)) {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if(bCPEWifiConnected == true) {
 
 			}
     	}
 		
-		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
+			if (ok) {
 				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetUsageSettingTask();
@@ -78,10 +79,8 @@ public class StatisticsManager extends BaseManager {
     	}
 		
 		//get usage history when have imsi
-		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
+			if (ok) {
 				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetUsageHistoryTask();
@@ -94,37 +93,30 @@ public class StatisticsManager extends BaseManager {
     	}
 		
 		// when conneted or disconnected to get usage history or billing day changed
-		if(intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET) || 
-				intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET) || 
-				intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET) ||
-				intent.getAction().equals(MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.WAN_CONNECT_REQUSET.equals(action) ||
+				MessageUti.WAN_DISCONNECT_REQUSET.equals(action) ||
+				MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET.equals(action) ||
+				MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET.equals(action)) {
+			if (ok) {
 				getUsageHistorySingle();
 			}
     	}
 		
-		if(intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET.equals(action)) {
+			if(ok) {
 				m_usageRecord.clear();
 				getUsageHistorySingle();
 			}
 		}
 		
-		if(intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-				boolean bBillingDayChanged = intent.getBooleanExtra(USAGE_SETTING_BILLING_DAY_CHANGE, false);
-				if(bBillingDayChanged == true)
+		if(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET.equals(action)) {
+			boolean bBillingDayChanged = intent.getBooleanExtra(USAGE_SETTING_BILLING_DAY_CHANGE, false);
+			if(ok && bBillingDayChanged) {
 					getUsageHistorySingle();
 			}
     	}
 		
-		if(intent.getAction().equals(MessageUti.CPE_CHANGED_BILLING_MONTH)) {
+		if(MessageUti.CPE_CHANGED_BILLING_MONTH.equals(action)) {
 			getUsageHistorySingle();
 		}
 	}  
@@ -188,7 +180,7 @@ public class StatisticsManager extends BaseManager {
 	class GetUsageSettingsTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.GetUsageSettings("7.3", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.GetUsageSettings(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {   
@@ -251,8 +243,7 @@ public class StatisticsManager extends BaseManager {
                     		bHTimeLimitTimesChange || bHUsedTimesChange || 
                     		bHAutoDisconnFlagChange) {
 	                    Intent megIntent= new Intent(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET);
-	                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-	                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+	                    megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
 	                    megIntent.putExtra(USAGE_SETTING_BILLING_DAY_CHANGE, bBillingDayChange);
 		                megIntent.putExtra(USAGE_SETTING_MONTHLY_PLAN_CHANGE, bHMonthlyPlanChange);
 		                megIntent.putExtra(USAGE_SETTING_USED_DATA_CHANGE, bHUsedDataChange);
@@ -279,7 +270,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.BillingDay = nBillingDay;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -297,8 +288,7 @@ public class StatisticsManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(IS_CHANGED, nPreBillingDay != m_usageSettings.HBillingDay);
     			m_context.sendBroadcast(megIntent);
             }
@@ -316,7 +306,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.UsageAlertValue = nAlertValue;
 
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
 			@Override
 			public void onHttpRequestFinish(BaseResponse response)
 			{
@@ -334,8 +324,7 @@ public class StatisticsManager extends BaseManager {
 				}
 
 				Intent megIntent= new Intent(MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET);
-				megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-				megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+				megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
 				megIntent.putExtra(IS_CHANGED, nPreAlertValue != m_usageSettings.HUsageAlertValue);
 				m_context.sendBroadcast(megIntent);
 			}
@@ -353,7 +342,7 @@ public class StatisticsManager extends BaseManager {
 			nUsageSettings.clone(m_usageSettings);
 			nUsageSettings.Unit = nUnit;
 	    	
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+			HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
 	            @Override
 				public void onHttpRequestFinish(BaseResponse response) 
 	            {   
@@ -372,8 +361,7 @@ public class StatisticsManager extends BaseManager {
 	                }
 	 
 	                Intent megIntent= new Intent(MessageUti.STATISTICS_SET_UNIT_REQUSET);
-	                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-	                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+	                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
 	                megIntent.putExtra(IS_CHANGED, nPreUnit != m_usageSettings.HUnit);
 	    			m_context.sendBroadcast(megIntent);
 	            }
@@ -397,7 +385,7 @@ public class StatisticsManager extends BaseManager {
 		}
 		nUsageSettings.MonthlyPlan = nMonthlyPlan;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -415,8 +403,7 @@ public class StatisticsManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(IS_CHANGED, nPreMonthlyPlan != m_usageSettings.HMonthlyPlan);
     			m_context.sendBroadcast(megIntent);
             }
@@ -434,7 +421,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.UsedData = nUsedData;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -452,8 +439,7 @@ public class StatisticsManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_USED_DATA_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(IS_CHANGED, nPreUsedData != m_usageSettings.HUsedData);
     			m_context.sendBroadcast(megIntent);
             }
@@ -471,7 +457,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.TimeLimitFlag = ENUM.OVER_TIME_STATE.antiBuild(nTimeLimitFlag);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -489,8 +475,7 @@ public class StatisticsManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(IS_CHANGED, nPreTimeLimitFlag != m_usageSettings.HTimeLimitFlag);
     			m_context.sendBroadcast(megIntent);
             }
@@ -508,7 +493,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.TimeLimitTimes = nTimeLimitTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -526,8 +511,7 @@ public class StatisticsManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(IS_CHANGED, nPreTimeLimitTimes != m_usageSettings.HTimeLimitTimes);
     			m_context.sendBroadcast(megIntent);
             }
@@ -545,7 +529,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.UsedTimes = nUsedTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -563,8 +547,7 @@ public class StatisticsManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_USED_TIMES_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(IS_CHANGED, nPreUsedTimes != m_usageSettings.HUsedTimes);
     			m_context.sendBroadcast(megIntent);
             }
@@ -582,7 +565,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.AutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.antiBuild(nAutoDisconnFlag);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings("7.4",nUsageSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -600,8 +583,7 @@ public class StatisticsManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(IS_CHANGED, nPreAutoDisconnFlag != m_usageSettings.HAutoDisconnFlag);
     			m_context.sendBroadcast(megIntent);
             }
@@ -614,7 +596,7 @@ public class StatisticsManager extends BaseManager {
 			return;
 		String strCleartime = (String) data.getParamByKey("clear_time");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear("7.2",strCleartime, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear(strCleartime, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -630,11 +612,8 @@ public class StatisticsManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET);
             }
         }));
     } 
@@ -661,7 +640,7 @@ public class StatisticsManager extends BaseManager {
 		SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState != ENUM.SIMState.Accessable) 
 			return;
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.GetUsageRecord("7.1", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.GetUsageRecord(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -677,11 +656,8 @@ public class StatisticsManager extends BaseManager {
                 }else{
                 	//Log
                 }
-                
-                Intent megIntent= new Intent(MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET);
             }
 		}));
 	}

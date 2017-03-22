@@ -1,12 +1,9 @@
 package com.alcatel.smartlinkv3.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alcatel.smartlinkv3.business.DeviceManager;
+import com.alcatel.smartlinkv3.business.LanManager;
 import com.alcatel.smartlinkv3.business.NetworkManager;
 import com.alcatel.smartlinkv3.business.PowerManager;
-import com.alcatel.smartlinkv3.business.LanManager;
 import com.alcatel.smartlinkv3.business.SMSManager;
 import com.alcatel.smartlinkv3.business.SharingManager;
 import com.alcatel.smartlinkv3.business.SimManager;
@@ -17,10 +14,14 @@ import com.alcatel.smartlinkv3.business.UserManager;
 import com.alcatel.smartlinkv3.business.WanManager;
 import com.alcatel.smartlinkv3.business.WlanManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MessageUti {
 	//response result
-	public static String RESPONSE_RESULT = "com.alcatel.smartlinkv3.business.response_result";
-	public static String RESPONSE_ERROR_CODE = "com.alcatel.smartlinkv3.business.response_error_code";
+	public static String HTTP_RESPONSE = "com.alcatel.smartlinkv3.business.http_response";
+//	public static String RESPONSE_RESULT = "com.alcatel.smartlinkv3.business.response_result";
+//	public static String RESPONSE_ERROR_CODE = "com.alcatel.smartlinkv3.business.response_error_code";
 	public static String RESPONSE_ERROR_MESSAGE = "com.alcatel.smartlinkv3.business.response_error_message";
 	/*************************************Pushed to the application layer message. start***********************************************************/
 	public static String CPE_WIFI_CONNECT_CHANGE = "com.alcatel.smartlinkv3.business.cpewificonnectchange";

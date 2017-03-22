@@ -1,23 +1,20 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
 
 import com.alcatel.smartlinkv3.business.user.HttpUser;
 import com.alcatel.smartlinkv3.business.user.LoginStateResult;
-import com.alcatel.smartlinkv3.business.user.LoginTokens;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UserManager extends BaseManager {
 	
@@ -85,34 +82,26 @@ public class UserManager extends BaseManager {
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Login("1.1",strUserName, strPsw, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Login(strUserName, strPsw, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) { 
+            {
+                if(response.isValid()) {
+                	if(response.isNoError()) {
                 		startUpdateLoginTimeTask();
                 		m_loginStatus = UserLoginStatus.login;
                 		
-                	}else{
-                		if(null != m_updateLoginTimeTask) {
-                			m_updateLoginTimeTask.cancel();
-                			m_updateLoginTimeTask = null;
-                		}
+                	}else if(null != m_updateLoginTimeTask) {
+						m_updateLoginTimeTask.cancel();
+						m_updateLoginTimeTask = null;
                 	}
-                }else{
-            		if(null != m_updateLoginTimeTask) {
+                }else if(null != m_updateLoginTimeTask) {
             			m_updateLoginTimeTask.cancel();
             			m_updateLoginTimeTask = null;
             		}
-                }
  
                 Intent megIntent= new Intent(MessageUti.USER_LOGIN_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
     			m_context.sendBroadcast(megIntent);
             }
         }));
@@ -126,15 +115,12 @@ public class UserManager extends BaseManager {
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ForceLogin("1.6",strUserName, strPsw, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ForceLogin(strUserName, strPsw, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) { 
+            {
+                if(response.isValid()) {
+                	if(response.isNoError()) {
                 		startUpdateLoginTimeTask();
                 		m_loginStatus = UserLoginStatus.login;
                 		
@@ -152,8 +138,7 @@ public class UserManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.USER_FORCE_LOGIN_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
     			m_context.sendBroadcast(megIntent);
             }
         }));
@@ -165,7 +150,7 @@ public class UserManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "Logout") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Logout("1.2", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Logout( new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {              	
@@ -173,11 +158,8 @@ public class UserManager extends BaseManager {
         			m_updateLoginTimeTask.cancel();
         			m_updateLoginTimeTask = null;
         		}
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
+                if(response.isValid()) {
+                	if(response.isNoError()) {
                 		m_loginStatus = UserLoginStatus.Logout;
                 	
                 	}else{
@@ -186,11 +168,8 @@ public class UserManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.USER_LOGOUT_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+				sendBroadcast(response, MessageUti.USER_LOGOUT_REQUEST);
             }
         }));
     } 
@@ -217,16 +196,13 @@ public class UserManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "GetLoginState") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.GetLoginState("1.3", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.GetLoginState(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
-            	LoginStateResult loginStateResult = new LoginStateResult();
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
+            	LoginStateResult loginStateResult;
+                if(response.isValid()) {
+                	if(response.isNoError()) {
                 		loginStateResult = response.getModelResult();
                 		m_loginStatus = UserLoginStatus.build(loginStateResult.getState());
                 	}else{
@@ -243,15 +219,12 @@ public class UserManager extends BaseManager {
         @Override
 		public void run() { 
         	
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.HeartBeat("1.5", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.HeartBeat(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
-                { 
-                	String strErrcode = new String();
-                    int ret = response.getResultCode();                 
-                    if(ret == BaseResponse.RESPONSE_OK ) {
-                    	strErrcode = response.getErrorCode();
-                    	if(strErrcode.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+                {
+                    if(response.isValid()) {
+                    	if(response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
                     		if(null != m_updateLoginTimeTask) {
                     			m_updateLoginTimeTask.cancel();
                     			m_updateLoginTimeTask = null;
@@ -266,11 +239,8 @@ public class UserManager extends BaseManager {
                 			m_getLoginStateTask.cancel();
                 			m_getLoginStateTask = null;
                 		}
-                    }      
-                    Intent megIntent= new Intent(MessageUti.USER_HEARTBEAT_REQUEST);
-                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-        			m_context.sendBroadcast(megIntent);
+                    }
+					sendBroadcast(response, MessageUti.USER_HEARTBEAT_REQUEST);
                 }               	
             }));
         	}        
@@ -295,7 +265,7 @@ public class UserManager extends BaseManager {
     	String strCurrPsw = (String) data.getParamByKey("current_password");
     	String strNewPsw = (String) data.getParamByKey("new_password");
     	
-    	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ChangePassword("1.4", strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
+    	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ChangePassword(strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -303,16 +273,14 @@ public class UserManager extends BaseManager {
 				String strErrcode = new String();
                 int ret = response.getResultCode();
                 
-                if(ret == BaseResponse.RESPONSE_OK) {
+                if(response.isValid()) {
                 	strErrcode = response.getErrorCode();
                 }
                 else{
                 	strErrcode = ErrorCode.UNKNOWN_ERROR;
                 }
-                Intent megIntent= new Intent(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.USER_CHANGE_PASSWORD_REQUEST);
 			}
     	}));
 	}

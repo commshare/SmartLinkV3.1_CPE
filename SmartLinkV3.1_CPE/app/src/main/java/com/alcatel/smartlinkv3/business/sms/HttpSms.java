@@ -18,9 +18,9 @@ public class HttpSms {
 /******************** GetSMSInitStatus  **************************************************************************************/	
 	public static class GetSMSInitStatus extends BaseRequest
     {	
-        public GetSMSInitStatus(String strId,IHttpFinishListener callback) 
+        public GetSMSInitStatus(IHttpFinishListener callback)
         {
-        	super("GetSMSInitStatus", strId, callback);
+        	super("GetSMSInitStatus", "6.1", callback);
         }
 
         @Override
@@ -56,9 +56,9 @@ public class HttpSms {
 	public static class GetSMSContactList extends BaseRequest
     {	
 		private int m_nPage = 0;//0: return all Contact SMS.1: the first page ,every page has 10 contacts SMS list.
-        public GetSMSContactList(String strId,int nPage,IHttpFinishListener callback) 
+        public GetSMSContactList(int nPage,IHttpFinishListener callback)
         {
-        	super("GetSMSContactList", strId, callback);
+        	super("GetSMSContactList", "6.2", callback);
         	m_nPage = nPage;
         }
 
@@ -109,9 +109,9 @@ public class HttpSms {
         // list.2��..
 		private int m_nContactId = 0;
 		
-        public GetSMSContentList(String strId,int nPage,int nContactId,IHttpFinishListener callback) 
+        public GetSMSContentList(int nPage,int nContactId,IHttpFinishListener callback)
         {
-        	super("GetSMSContentList", strId, callback);
+        	super("GetSMSContentList", "6.3", callback);
         	m_nPage = nPage;
         	m_nContactId = nContactId;
         }
@@ -160,9 +160,9 @@ public class HttpSms {
 /******************** GetSMSStorageState  **************************************************************************************/	
 	public static class GetSMSStorageState extends BaseRequest
     {	
-        public GetSMSStorageState(String strId,IHttpFinishListener callback) 
+        public GetSMSStorageState(IHttpFinishListener callback)
         {
-        	super("GetSMSStorageState", strId, callback);
+        	super("GetSMSStorageState", "6.4", callback);
         }
 
         @Override
@@ -203,9 +203,9 @@ public class HttpSms {
 		private int m_nContactId = 0;
 		private int m_nSMSId = 0;
 		
-        public DeleteSMS(String strId,int nDelFlag,int nContactId,int nSMSId,IHttpFinishListener callback) 
+        public DeleteSMS(int nDelFlag,int nContactId,int nSMSId,IHttpFinishListener callback)
         {
-        	super("DeleteSMS", strId, callback);
+        	super("DeleteSMS", "6.5", callback);
         	m_nDelFlag = nDelFlag;
         	m_nContactId = nContactId;
         	m_nSMSId = nSMSId;
@@ -221,34 +221,8 @@ public class HttpSms {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new DeleteSMSResponse(m_finsishCallback);
-        }
-        
     }
-	
-	public static class DeleteSMSResponse extends BaseResponse
-    {
-        
-        public DeleteSMSResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
-    }
 	
 /******************** SendSMS  **************************************************************************************/	
 	public static class SendSMS extends BaseRequest
@@ -257,9 +231,9 @@ public class HttpSms {
 		private String m_strSMSContent = new String();
 		private ArrayList<String> m_lstNumber = new ArrayList<String>();
 		
-        public SendSMS(String strId,int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback) 
+        public SendSMS(int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback)
         {
-        	super("SendSMS", strId, callback);
+        	super("SendSMS", "6.6", callback);
         	m_nSMSId = nSMSId;
         	m_strSMSContent = strSMSContent;
         	m_lstNumber = lstNumber;
@@ -282,43 +256,16 @@ public class HttpSms {
 	        	obj.put("SMSTime", strTimeText);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
-
-        }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new SendSMSResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class SendSMSResponse extends BaseResponse
-    {
-
-        public SendSMSResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
         }
     }
+
 	
 /******************** GetSendSMSResult  **************************************************************************************/	
 	public static class GetSendSMSResult extends BaseRequest
     {	
-        public GetSendSMSResult(String strId,IHttpFinishListener callback) 
+        public GetSendSMSResult(IHttpFinishListener callback)
         {
-        	super("GetSendSMSResult", strId, callback);
+        	super("GetSendSMSResult", "6.7", callback);
         }
 
         @Override
@@ -358,9 +305,9 @@ public class HttpSms {
 		private String m_strSMSContent = new String();
 		private ArrayList<String> m_lstNumber = new ArrayList<String>();
 		
-        public SaveSMS(String strId,int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback) 
+        public SaveSMS(int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback)
         {
-        	super("SaveSMS", strId, callback);
+        	super("SaveSMS", "6.8", callback);
         	m_nSMSId = nSMSId;
         	m_strSMSContent = strSMSContent;
         	m_lstNumber = (ArrayList<String>) lstNumber.clone();
@@ -393,22 +340,5 @@ public class HttpSms {
         }
         
     }
-	
-	public static class SaveSMSResponse extends BaseResponse
-    {
-        public SaveSMSResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) {
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
-    }
 }

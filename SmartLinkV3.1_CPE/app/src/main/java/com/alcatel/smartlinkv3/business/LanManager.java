@@ -57,8 +57,7 @@ public class LanManager extends BaseManager {
 				.getCPEWifiConnected();
 		if (bCPEWifiConnected){
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpLan.getLanSettingsRequest("11.1", 
-							new IHttpFinishListener() {
+					new HttpLan.getLanSettingsRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
@@ -76,11 +75,8 @@ public class LanManager extends BaseManager {
 								BusinessManager.getInstance().getSystemInfoModel().
 								setMacAddress(m_lanInfo.getMacAddress());
 							}
-							
-							Intent megIntent= new Intent(MessageUti.LAN_GET_LAN_SETTINGS);
-			                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-			                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-			    			m_context.sendBroadcast(megIntent);
+
+			    			sendBroadcast(response, MessageUti.LAN_GET_LAN_SETTINGS);
 						}
 					}));
 		}

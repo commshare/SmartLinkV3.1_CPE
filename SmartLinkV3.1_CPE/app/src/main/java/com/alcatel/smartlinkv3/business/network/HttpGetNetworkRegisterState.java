@@ -8,25 +8,25 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
 
-public class HttpGetNetworkRegsterState {
+public class HttpGetNetworkRegisterState {
 	public static class GetNetworkRegisterState extends BaseRequest{
 
-		public GetNetworkRegisterState(String strId, IHttpFinishListener callback) {
-			super("GetNetworkRegisterState", strId, callback);
+		public GetNetworkRegisterState(IHttpFinishListener callback) {
+			super("GetNetworkRegisterState", "4.5", callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new GetNetworkRegisterStateResponse(m_finsishCallback);
+			return new NetworkRegisterStateResponse(m_finsishCallback);
 		}
 		
 	}
 	
-	public static class GetNetworkRegisterStateResponse extends BaseResponse{
+	public static class NetworkRegisterStateResponse extends BaseResponse{
 
-		private GetNetworkRegsterStateResult RegisterState;
-		public GetNetworkRegisterStateResponse(IHttpFinishListener callback) {
+		private NetworkRegisterStateResult registerState;
+		public NetworkRegisterStateResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 		}
@@ -35,29 +35,27 @@ public class HttpGetNetworkRegsterState {
 		protected void parseContent(String strJsonResult) {
 			// TODO Auto-generated method stub
 			Gson gson = new Gson();
-			RegisterState = gson.fromJson(strJsonResult, GetNetworkRegsterStateResult.class);
+			registerState = gson.fromJson(strJsonResult, NetworkRegisterStateResult.class);
 			try{
-				Log.v("NetworkRegisterTest", "" + RegisterState.State);
+				Log.v("NetworkRegisterTest", "" + registerState.State);
 			}catch(Exception e){
 				Log.v("NetworkRegisterTest", "" + "Exception");
 			}
 		}
 
 		@Override
-		public GetNetworkRegsterStateResult getModelResult() {
-			// TODO Auto-generated method stub
-			return RegisterState;
+		public NetworkRegisterStateResult getModelResult() {
+			return registerState;
 		}
 		
 	}
 	
 	
-	public class GetNetworkRegsterStateResult extends BaseResult{
+	public class NetworkRegisterStateResult extends BaseResult{
 		public int State;
 
 		@Override
 		protected void clear() {
-			// TODO Auto-generated method stub
 			State = 0;
 		}
 	}

@@ -65,18 +65,16 @@ public class UsageActivity extends BaseActivity implements View.OnClickListener 
     private class ViewUsageBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+            Boolean ok = response != null && response.isOk();
             if(intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+                if(ok) {
                     updateUI();
                 }
             }else if (intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
-
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 String msgRes;
-                if (nResult == 0 && strErrorCode.length() == 0) {
+                if (ok) {
                     msgRes = getString(R.string.usage_clear_history_success);
                     Toast.makeText(mContext, msgRes,Toast.LENGTH_SHORT).show();
                 }else{
@@ -84,12 +82,8 @@ public class UsageActivity extends BaseActivity implements View.OnClickListener 
                     Toast.makeText(mContext, msgRes,Toast.LENGTH_SHORT).show();
                 }
             }else if (intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
-
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
+                if (ok) {
                     updateUI();
-                }else{
                 }
             }
         }

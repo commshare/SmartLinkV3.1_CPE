@@ -14,8 +14,8 @@ public class HttpDevice {
 	/******************** GetConnectedDeviceList **************************************************************************************/
 	public static class GetConnectedDeviceList extends BaseRequest {	
 
-		public GetConnectedDeviceList(String strId, IHttpFinishListener callback) {
-			super("GetConnectedDeviceList", strId, callback);
+		public GetConnectedDeviceList(IHttpFinishListener callback) {
+			super("GetConnectedDeviceList", "12.1", callback);
 		}
 
 		@Override
@@ -49,8 +49,8 @@ public class HttpDevice {
 	/******************** GetBlockDeviceList **************************************************************************************/
 	public static class GetBlockDeviceList extends BaseRequest {	
 
-		public GetBlockDeviceList(String strId, IHttpFinishListener callback) {
-			super("GetBlockDeviceList", strId, callback);
+		public GetBlockDeviceList(IHttpFinishListener callback) {
+			super("GetBlockDeviceList", "12.2", callback);
 		}
 
 		@Override
@@ -87,8 +87,8 @@ public class HttpDevice {
 		private String m_strName;
 		private String m_strMac;
 
-		public SetConnectedDeviceBlock(String strId, String strName, String strMac, IHttpFinishListener callback) {
-			super("SetConnectedDeviceBlock", strId, callback);
+		public SetConnectedDeviceBlock(String strName, String strMac, IHttpFinishListener callback) {
+			super("SetConnectedDeviceBlock", "12.3", callback);
 			m_strName = strName;
 			m_strMac = strMac;
 		}
@@ -103,30 +103,8 @@ public class HttpDevice {
 						.put(ConstValue.JSON_PARAMS, obj);				
 
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetConnectedDeviceBlockResponse(m_finsishCallback);
-		}
-
 	}
 
-	public static class SetConnectedDeviceBlockResponse extends BaseResponse {
-
-		public SetConnectedDeviceBlockResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {		
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public <T> T getModelResult() {
-			return null;
-		}
-	}
 	
 	/******************** SetDeviceUnlock **************************************************************************************/
 	public static class SetDeviceUnlock extends BaseRequest {	
@@ -134,8 +112,8 @@ public class HttpDevice {
 		private String m_strName;
 		private String m_strMac;
 
-		public SetDeviceUnlock(String strId, String strName, String strMac, IHttpFinishListener callback) {
-			super("SetDeviceUnlock", strId, callback);
+		public SetDeviceUnlock(String strName, String strMac, IHttpFinishListener callback) {
+			super("SetDeviceUnlock", "12.4", callback);
 			m_strName = strName;
 			m_strMac = strMac;
 		}
@@ -149,31 +127,8 @@ public class HttpDevice {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, obj);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetDeviceUnlockResponse(m_finsishCallback);
-		}
-
 	}
 
-	public static class SetDeviceUnlockResponse extends BaseResponse {
-		
-		public SetDeviceUnlockResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			return null;
-		}
-	}
-	
 	/******************** SetDeviceUnlock **************************************************************************************/
 	public static class SetDeviceName extends BaseRequest {	
 		
@@ -181,8 +136,8 @@ public class HttpDevice {
 		private String m_strMac;
 		private int m_nType;
 
-		public SetDeviceName(String strId, String strName, String strMac, int nType, IHttpFinishListener callback) {
-			super("SetDeviceName", strId, callback);
+		public SetDeviceName(String strName, String strMac, int nType, IHttpFinishListener callback) {
+			super("SetDeviceName", "12.5", callback);
 			m_strName = strName;
 			m_strMac = strMac;
 			m_nType = nType;			
@@ -190,39 +145,13 @@ public class HttpDevice {
 
 		@Override
 		protected void buildHttpParamJson() throws JSONException {
-				JSONObject obj = new JSONObject();
-				obj.put("DeviceName", m_strName);
-				obj.put("MacAddress", m_strMac);
-				obj.put("DeviceType", m_nType);
-				
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, obj);				
+			JSONObject obj = new JSONObject();
+			obj.put("DeviceName", m_strName);
+			obj.put("MacAddress", m_strMac);
+			obj.put("DeviceType", m_nType);
 
-		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetDeviceNameResponse(m_finsishCallback);
-		}
-
-	}
-
-	public static class SetDeviceNameResponse extends BaseResponse {
-		
-		public SetDeviceNameResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			return null;
+			m_requestParamJson.put(ConstValue.JSON_PARAMS, obj);
 		}
 	}
-	
-	
+
 }

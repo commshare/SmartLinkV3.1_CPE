@@ -1,5 +1,11 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
@@ -8,12 +14,6 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-
 public class AutoLoginProgressDialog 
 {
 	private ProgressDialog m_dlgProgress = null;
@@ -21,7 +21,7 @@ public class AutoLoginProgressDialog
 	private static OnAutoLoginFinishedListener s_callback;	
 	private String loginCheckDialogTitle;
 	private String loginCheckDialogContent;
-	private AuthenficationBroadcastReviever m_auReceiver;
+	private AuthenticationBroadcastReceiver m_auReceiver;
 	
 	public AutoLoginProgressDialog(Context context) 
 	{
@@ -29,7 +29,7 @@ public class AutoLoginProgressDialog
 		loginCheckDialogTitle = m_context.getString(R.string.login_check_dialog_title);
 		loginCheckDialogContent = m_context	.getString(R.string.login_check_dialog_content) + "...";
 		
-		m_auReceiver = new AuthenficationBroadcastReviever();
+		m_auReceiver = new AuthenticationBroadcastReceiver();
 		
 		m_context.registerReceiver(m_auReceiver, new IntentFilter(
 				MessageUti.USER_LOGIN_REQUEST));
@@ -80,13 +80,16 @@ public class AutoLoginProgressDialog
 		}
 	}
 	
-	private class AuthenficationBroadcastReviever extends BroadcastReceiver 
+	private class AuthenticationBroadcastReceiver extends BroadcastReceiver
 	{
 		@Override
-		public void onReceive(Context arg0, Intent arg1) 
+		public void onReceive(Context context, Intent intent)
 		{
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 
-			if (arg1.getAction().equalsIgnoreCase(
+			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) 
 			{
 				boolean bCPEWifiConnected = DataConnectManager.getInstance()
@@ -96,25 +99,21 @@ public class AutoLoginProgressDialog
 					closeDialog();
 				}
 			} 
-			else if (arg1.getAction().equalsIgnoreCase(
+			else if (intent.getAction().equalsIgnoreCase(
 					MessageUti.USER_LOGIN_REQUEST)) 
 			{
 				if(m_dlgProgress != null && !m_dlgProgress.isShowing())
 					return;
 				closeDialog();
-				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
-				String strErrorCode = arg1.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				if (null != s_callback) 
 				{
-					if(BaseResponse.RESPONSE_OK == nRet && strErrorCode.length() == 0 )
+					if(ok)
 					{
 						s_callback.onLoginSuccess();					
 					}
 					else
 					{
-						if(strErrorCode == null)
-							strErrorCode = "";
-						s_callback.onLoginFailed(strErrorCode);
+						s_callback.onLoginFailed(response.getErrorCode());
 					}
 					s_callback = null;
 				}				
@@ -124,8 +123,8 @@ public class AutoLoginProgressDialog
 	
 	public interface OnAutoLoginFinishedListener 
 	{
-		public void onLoginSuccess();
-		public void onLoginFailed(String error_code);
-		public void onFirstLogin();
+		void onLoginSuccess();
+		void onLoginFailed(String error_code);
+		void onFirstLogin();
 	}	
 }

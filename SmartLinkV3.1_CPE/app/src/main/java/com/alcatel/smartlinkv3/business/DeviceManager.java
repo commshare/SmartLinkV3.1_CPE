@@ -1,26 +1,22 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
 
-import com.alcatel.smartlinkv3.business.SMSManager.GetContactMessagesTask;
 import com.alcatel.smartlinkv3.business.device.BlockDeviceList;
 import com.alcatel.smartlinkv3.business.device.ConnectedDeviceList;
 import com.alcatel.smartlinkv3.business.device.HttpDevice;
 import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
-import com.alcatel.smartlinkv3.business.sms.HttpSms;
-import com.alcatel.smartlinkv3.business.sms.SmsContactListResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceType;
-import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DeviceManager extends BaseManager {
 	
@@ -97,15 +93,11 @@ public class DeviceManager extends BaseManager {
 	class GetConnectedDeviceTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpDevice.GetConnectedDeviceList("12.1",new IHttpFinishListener() {
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpDevice.GetConnectedDeviceList(new IHttpFinishListener() {
 				@Override
-				public void onHttpRequestFinish(
-						BaseResponse response) {
-					String strErrcode = new String();
-					int ret = response.getResultCode();
-					if (ret == BaseResponse.RESPONSE_OK) {
-						strErrcode = response.getErrorCode();
-						if (strErrcode.length() == 0) {
+				public void onHttpRequestFinish(BaseResponse response) {
+					if (response.isValid()) {
+						if (response.isNoError()) {
 							m_connectedDeviceList.clear();
 							ConnectedDeviceList result = response.getModelResult();
 							for(int i = 0;i < result.ConnectedList.size();i++) {
@@ -120,8 +112,7 @@ public class DeviceManager extends BaseManager {
 						m_connectedDeviceList.clear();
 					}
 					Intent megIntent = new Intent(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST);
-					megIntent.putExtra(MessageUti.RESPONSE_RESULT,ret);
-					megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,strErrcode);
+					megIntent.putExtra(MessageUti.HTTP_RESPONSE,response);
 					m_context.sendBroadcast(megIntent);
 				}
 			}));
@@ -157,15 +148,11 @@ public class DeviceManager extends BaseManager {
 	class GetBlockDeviceListTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpDevice.GetBlockDeviceList("12.2",new IHttpFinishListener() {
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpDevice.GetBlockDeviceList(new IHttpFinishListener() {
 				@Override
-				public void onHttpRequestFinish(
-						BaseResponse response) {
-					String strErrcode = new String();
-					int ret = response.getResultCode();
-					if (ret == BaseResponse.RESPONSE_OK) {
-						strErrcode = response.getErrorCode();
-						if (strErrcode.length() == 0) {
+				public void onHttpRequestFinish(BaseResponse response) {
+					if (response.isValid()) {
+						if (response.isNoError()) {
 							m_blockDeviceList.clear();
 							BlockDeviceList result = response.getModelResult();
 							for(int i = 0;i < result.BlockList.size();i++) {
@@ -179,13 +166,8 @@ public class DeviceManager extends BaseManager {
 					} else {
 						m_blockDeviceList.clear();
 					}
-					Intent megIntent = new Intent(
-							MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST);
-					megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-							ret);
-					megIntent.putExtra(
-							MessageUti.RESPONSE_ERROR_CODE,
-							strErrcode);
+					Intent megIntent = new Intent(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST);
+					megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
 					m_context.sendBroadcast(megIntent);
 				}
 			}));
@@ -204,31 +186,18 @@ public class DeviceManager extends BaseManager {
 		String mac = (String) data.getParamByKey("MacAddress");
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpDevice.SetConnectedDeviceBlock("12.3", name, mac,
+				new HttpDevice.SetConnectedDeviceBlock(name, mac,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
 									BaseResponse response) {
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
+//
+//								Intent megIntent = new Intent(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK);
+//								megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
+//								m_context.sendBroadcast(megIntent);
 
-									} else {
+								sendBroadcast(response, MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK);
 
-									}
-								} else {
-
-								}
-								Intent megIntent = new Intent(
-										MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
 							}
 						}));
 	}
@@ -244,31 +213,17 @@ public class DeviceManager extends BaseManager {
 		String mac = (String) data.getParamByKey("MacAddress");
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpDevice.SetDeviceUnlock("12.4", name, mac,
+				new HttpDevice.SetDeviceUnlock(name, mac,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
 									BaseResponse response) {
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
-
-									} else {
-
-									}
-								} else {
-
-								}
-								Intent megIntent = new Intent(
-										MessageUti.DEVICE_SET_DEVICE_UNLOCK);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+//								Intent megIntent = new Intent(
+//										MessageUti.DEVICE_SET_DEVICE_UNLOCK);
+//								megIntent.putExtra(MessageUti.HTTP_RESPONSE,
+//										response);
+//								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.DEVICE_SET_DEVICE_UNLOCK);
 							}
 						}));
 	}
@@ -284,31 +239,17 @@ public class DeviceManager extends BaseManager {
 		String mac = (String) data.getParamByKey("MacAddress");
 		EnumDeviceType type = (EnumDeviceType) data.getParamByKey("DeviceType");
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpDevice.SetDeviceName("12.5", name, mac, EnumDeviceType.antiBuild(type),
+				new HttpDevice.SetDeviceName(name, mac, EnumDeviceType.antiBuild(type),
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
 									BaseResponse response) {
-								String strErrcode = new String();
-								int ret = response.getResultCode();
-								if (ret == BaseResponse.RESPONSE_OK) {
-									strErrcode = response.getErrorCode();
-									if (strErrcode.length() == 0) {
+//
+//								Intent megIntent = new Intent(MessageUti.DEVICE_SET_DEVICE_NAME);
+//								megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
+//								m_context.sendBroadcast(megIntent);
 
-									} else {
-
-									}
-								} else {
-
-								}
-								Intent megIntent = new Intent(
-										MessageUti.DEVICE_SET_DEVICE_NAME);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.DEVICE_SET_DEVICE_NAME);
 							}
 						}));
 	}

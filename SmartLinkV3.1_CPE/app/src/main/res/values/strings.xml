@@ -26,7 +26,7 @@
     <string name="qs_title">Quick Setup</string>
     <string name="qs_exit_query">Exit Quick Setup</string>
     <string name="qs_item_pin_code">PIN Code</string>
-    <string name="qs_pin_code_prompt">Please input the PIN code\nRemain:</string>
+    <string name="qs_pin_code_prompt">Please input the PIN code\nRemain: %1$d</string>
     <string name="qs_pin_code_prompt_num">
         <xliff:g id="INPUTTIMES">%1$d</xliff:g>
         time(s)
@@ -135,7 +135,7 @@
     <string name="usage_view_duration">Duration</string>
     <string name="bt_set_monthlydata">Set Monthly Data Plan</string>
     <string name="usage_status_des">No data plan set yet</string>
-    <string name="usage_duration">%1$sHrs %2$sMins</string>
+    <string name="usage_duration">%1$dHrs %2$dMins</string>
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <string name="usage_clear_history_success">Clear usage history successfully!</string>
     <string name="usage_clear_history_fail">Clear usage history failed!</string>

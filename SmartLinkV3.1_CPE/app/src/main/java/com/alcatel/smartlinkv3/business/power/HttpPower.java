@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.business.power;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.BooleanResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
@@ -14,8 +15,8 @@ public class HttpPower {
 	/*get battery state*/
 	public static class getBatteryStateRequest extends BaseRequest{
 
-		public getBatteryStateRequest(String strId, IHttpFinishListener callback) {
-			super("GetBatteryState", strId, callback);
+		public getBatteryStateRequest(IHttpFinishListener callback) {
+			super("GetBatteryState", "16.1", callback);
 		}
 
 		@Override
@@ -52,8 +53,8 @@ public class HttpPower {
 	/*get power saving mode*/
 	public static class getPowerSavingModeRequest extends BaseRequest{
 
-		public getPowerSavingModeRequest(String strId, IHttpFinishListener callback) {
-			super("GetPowerSavingMode", strId, callback);
+		public getPowerSavingModeRequest(IHttpFinishListener callback) {
+			super("GetPowerSavingMode", "16.2", callback);
 		}
 
 		@Override
@@ -91,8 +92,8 @@ public class HttpPower {
 	public static class setPowerSavingModeRequest extends BaseRequest{
 
 		private PowerSavingModeInfo m_info=null;
-		public setPowerSavingModeRequest(String strId, PowerSavingModeInfo info, IHttpFinishListener callback) {
-			super("SetPowerSavingMode", strId, callback);
+		public setPowerSavingModeRequest(PowerSavingModeInfo info, IHttpFinishListener callback) {
+			super("SetPowerSavingMode", "16.3", callback);
 			m_info = info;
 		}
 
@@ -108,33 +109,7 @@ public class HttpPower {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new setPowerSavingModeResponse(m_finsishCallback);
+			return new BooleanResponse(m_finsishCallback);
 		}
-		
-	}
-	
-	public static class setPowerSavingModeResponse extends BaseResponse{
-
-		private Boolean m_blRes = false;
-		public setPowerSavingModeResponse(IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
-			if (0 != strJsonResult.length()) {
-				m_blRes = true;
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public Boolean getModelResult() {
-			// TODO Auto-generated method stub
-			return m_blRes;
-		}
-		
 	}
 }

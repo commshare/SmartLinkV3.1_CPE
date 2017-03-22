@@ -17,9 +17,9 @@ public class HttpUser {
 		String m_strUserName;
 		String m_strPsw;
 		
-        public Login(String strId,String strUserName,String strPsw,IHttpFinishListener callback) 
+        public Login(String strUserName,String strPsw,IHttpFinishListener callback)
         {
-        	super("Login", strId, callback);
+        	super("Login", "1.1", callback);
         	m_strUserName = strUserName;
         	m_strPsw = strPsw;
         }
@@ -33,32 +33,8 @@ public class HttpUser {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new LoginResponse(m_finsishCallback);
-        }
-        
     }
-	
-	public static class LoginResponse extends BaseResponse
-    {
-        
-        public LoginResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		}
-    }
 	
 	/********************  ForceLogin  **************************************************************************************/	
 	public static class ForceLogin extends BaseRequest
@@ -66,9 +42,9 @@ public class HttpUser {
 		String m_strUserName = new String();
 		String m_strPsw = new String();
 		
-        public ForceLogin(String strId,String strUserName,String strPsw,IHttpFinishListener callback) 
+        public ForceLogin(String strUserName,String strPsw,IHttpFinishListener callback)
         {
-        	super("ForceLogin", strId, callback);
+        	super("ForceLogin", "1.6", callback);
         	m_strUserName = strUserName;
         	m_strPsw = strPsw;
         }
@@ -82,72 +58,24 @@ public class HttpUser {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new ForceLoginResponse(m_finsishCallback);
-        }
-        
     }
-	
-	public static class ForceLoginResponse extends BaseResponse
-    {
-        
-        public ForceLoginResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		}
-    }
 	
 /********************  Logout  **************************************************************************************/	
 	public static class Logout extends BaseRequest
     {	
-        public Logout(String strId,IHttpFinishListener callback) 
+        public Logout(IHttpFinishListener callback)
         {
-        	super("Logout", strId, callback);
+        	super("Logout", "1.2", callback);
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new LogoutResponse(m_finsishCallback);
-        }
-        
     }
-	
-	public static class LogoutResponse extends BaseResponse
-    {
-        
-        public LogoutResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		} 
-    }
 /********************  GetLoginState  **************************************************************************************/
 	public static class GetLoginState extends BaseRequest
     {	
-        public GetLoginState(String strId,IHttpFinishListener callback) 
+        public GetLoginState(IHttpFinishListener callback)
         {
-        	super("GetLoginState", strId, callback);
+        	super("GetLoginState", "1.3", callback);
         }
 
         @Override
@@ -186,37 +114,13 @@ public class HttpUser {
 	
 	public static class HeartBeat extends BaseRequest
     {			
-		
-        public HeartBeat(String strId, IHttpFinishListener callback) 
+        public HeartBeat(IHttpFinishListener callback)
         {
-        	super("HeartBeat", strId, callback);
+        	super("HeartBeat", "1.5", callback);
         }
 
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new HeartBeatResponse(m_finsishCallback);
-        }
-        
     }
-	
-	public static class HeartBeatResponse extends BaseResponse
-    {	
-        
-        public HeartBeatResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-		@Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		}    
-    }
 	
 	/******************** Change Password**************************************************************************************/	
 	public static class ChangePassword extends BaseRequest{
@@ -225,8 +129,8 @@ public class HttpUser {
 		String m_strCurrPsw = new String();
 		String m_strNewPsw = new String();
 
-		public ChangePassword(String strId,String strUserName,String strCurrPsw,String strNewPsw,IHttpFinishListener callback) {
-			super("ChangePassword", strId, callback);
+		public ChangePassword(String strUserName,String strCurrPsw,String strNewPsw,IHttpFinishListener callback) {
+			super("ChangePassword", "1.4", callback);
 			m_strUserName = strUserName;
 			m_strCurrPsw = strCurrPsw;
 			m_strNewPsw = strNewPsw;
@@ -240,33 +144,5 @@ public class HttpUser {
 	        	userInfo.put("NewPassword", m_strNewPsw);
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, userInfo);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new ChangePasswordResponse(m_finsishCallback);
-		}
-		
-	}
-	
-	public static class ChangePasswordResponse extends BaseResponse{
-
-		public ChangePasswordResponse(IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
 	}
 }

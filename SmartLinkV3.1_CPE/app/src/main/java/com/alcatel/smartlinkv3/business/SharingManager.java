@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
 
 import com.alcatel.smartlinkv3.business.sharing.DlnaSettings;
 import com.alcatel.smartlinkv3.business.sharing.FtpSettings;
@@ -15,8 +15,8 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SharingManager extends BaseManager {
 
@@ -108,7 +108,7 @@ public class SharingManager extends BaseManager {
 		else{
 		
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSharing.SetUSBcardSetting("14.11", 0,
+					new HttpSharing.SetUSBcardSetting(0,
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -122,7 +122,7 @@ public class SharingManager extends BaseManager {
 											final int nPreStatus = m_dlnaSettings.DlnaStatus;
 											m_dlnaSettings.DlnaStatus = 1;
 											HttpRequestManager.GetInstance().sendPostRequest(
-													new HttpSharing.SetDlnaSetting("14.2", 1, m_dlnaSettings.DlnaName,
+													new HttpSharing.SetDlnaSetting(1, m_dlnaSettings.DlnaName,
 															new IHttpFinishListener() {
 																@Override
 																public void onHttpRequestFinish(
@@ -139,15 +139,8 @@ public class SharingManager extends BaseManager {
 																	} else {
 																		m_dlnaSettings.DlnaStatus = nPreStatus;
 																	}
-	
-																	Intent megIntent = new Intent(
-																			MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET);
-																	megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-																			ret);
-																	megIntent.putExtra(
-																			MessageUti.RESPONSE_ERROR_CODE,
-																			strErrcode);
-																	m_context.sendBroadcast(megIntent);
+
+																	sendBroadcast(response, MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET);
 																}
 															}));
 											
@@ -157,15 +150,8 @@ public class SharingManager extends BaseManager {
 									} else {
 										
 									}
-	
-									Intent megIntent = new Intent(
-											MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
-									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-											ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
+
+									sendBroadcast(response, MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
 								}
 							}));
 		}
@@ -186,7 +172,7 @@ public class SharingManager extends BaseManager {
 			final int nPreStatus = m_dlnaSettings.DlnaStatus;
 			m_dlnaSettings.DlnaStatus = 0;
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSharing.SetDlnaSetting("14.2", 0, m_dlnaSettings.DlnaName,
+					new HttpSharing.SetDlnaSetting(0, m_dlnaSettings.DlnaName,
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -198,7 +184,7 @@ public class SharingManager extends BaseManager {
 										if (strErrcode.length() == 0) {
 											
 											HttpRequestManager.GetInstance().sendPostRequest(
-													new HttpSharing.SetUSBcardSetting("14.11", 1,
+													new HttpSharing.SetUSBcardSetting(1,
 															new IHttpFinishListener() {
 																@Override
 																public void onHttpRequestFinish(
@@ -215,15 +201,8 @@ public class SharingManager extends BaseManager {
 																	} else {
 																		
 																	}
-	
-																	Intent megIntent = new Intent(
-																			MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
-																	megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-																			ret);
-																	megIntent.putExtra(
-																			MessageUti.RESPONSE_ERROR_CODE,
-																			strErrcode);
-																	m_context.sendBroadcast(megIntent);
+
+																	sendBroadcast(response, MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
 																}
 															}));
 											
@@ -233,15 +212,8 @@ public class SharingManager extends BaseManager {
 									} else {
 										m_dlnaSettings.DlnaStatus = nPreStatus;
 									}
-	
-									Intent megIntent = new Intent(
-											MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET);
-									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-											ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
+
+									sendBroadcast(response, MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET);
 								}
 							}));
 		}
@@ -250,7 +222,7 @@ public class SharingManager extends BaseManager {
 	public void setUSBcardSetting(DataValue data){
 		int status = (Integer) data.getParamByKey("USBcardStatus");
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.SetUSBcardSetting("14.11", status,
+				new HttpSharing.SetUSBcardSetting(status,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -268,14 +240,7 @@ public class SharingManager extends BaseManager {
 									
 								}
 
-								Intent megIntent = new Intent(
-										MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
 							}
 						}));
 	}
@@ -291,7 +256,7 @@ public class SharingManager extends BaseManager {
 			final int nPreStatus = m_ftpSettings.FtpStatus;
 			m_ftpSettings.FtpStatus = status;
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSharing.SetFtpSetting("14.6", status,
+					new HttpSharing.SetFtpSetting( status,
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -309,14 +274,7 @@ public class SharingManager extends BaseManager {
 										m_ftpSettings.FtpStatus = nPreStatus;
 									}
 
-									Intent megIntent = new Intent(
-											MessageUti.SHARING_SET_FTP_SETTING_REQUSET);
-									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-											ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
+									sendBroadcast(response, MessageUti.SHARING_SET_FTP_SETTING_REQUSET);
 								}
 							}));
 		}
@@ -326,20 +284,13 @@ public class SharingManager extends BaseManager {
 		public void getFtpSetting(DataValue data) {
 			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
 					"GetFtpStatus") != true){
-				Intent megIntent = new Intent(
-						MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
-				megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-						"Noresult");
-				megIntent.putExtra(
-						MessageUti.RESPONSE_ERROR_CODE,
-						"Error");
-				m_context.sendBroadcast(megIntent);
+				sendBroadcast(BaseResponse.EMPTY, MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
 				return;
 			}
 				
 
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSharing.GetFtpSetting("14.5",
+					new HttpSharing.GetFtpSetting(
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -357,14 +308,7 @@ public class SharingManager extends BaseManager {
 									} else {
 										m_ftpSettings.clear();
 									}
-									Intent megIntent = new Intent(
-											MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
-									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-											ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
+									sendBroadcast(response, MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
 								}
 							}));
 		}
@@ -381,7 +325,7 @@ public class SharingManager extends BaseManager {
 		final int nPreStatus = m_sambaSettings.SambaStatus;
 		m_sambaSettings.SambaStatus = status;
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.SetSambaSetting("14.4", status,
+				new HttpSharing.SetSambaSetting(status,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -399,14 +343,7 @@ public class SharingManager extends BaseManager {
 									m_sambaSettings.SambaStatus = nPreStatus;
 								}
 
-								Intent megIntent = new Intent(
-										MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET);
 							}
 						}));
 	}
@@ -419,7 +356,7 @@ public class SharingManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.GetSambaSetting("14.3",
+				new HttpSharing.GetSambaSetting(
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -437,14 +374,7 @@ public class SharingManager extends BaseManager {
 								} else {
 									m_sambaSettings.clear();
 								}
-								Intent megIntent = new Intent(
-										MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET);
 							}
 						}));
 	}
@@ -462,7 +392,7 @@ public class SharingManager extends BaseManager {
 		final int nPreStatus = m_dlnaSettings.DlnaStatus;
 		m_dlnaSettings.DlnaStatus = status;
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.SetDlnaSetting("14.2", status, name,
+				new HttpSharing.SetDlnaSetting(status, name,
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -480,14 +410,7 @@ public class SharingManager extends BaseManager {
 									m_dlnaSettings.DlnaStatus = nPreStatus;
 								}
 
-								Intent megIntent = new Intent(
-										MessageUti.SHARING_SET_DLNA_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SHARING_SET_DLNA_SETTING_REQUSET);
 							}
 						}));
 	}
@@ -499,18 +422,13 @@ public class SharingManager extends BaseManager {
 		{
 			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
 					"GetDLNASettings") != true){
-				Intent megIntent = new Intent(
-				MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
-					megIntent.putExtra(MessageUti.RESPONSE_RESULT, "Noresult");
-						megIntent.putExtra(
-				MessageUti.RESPONSE_ERROR_CODE, "Error");
-				m_context.sendBroadcast(megIntent);
+				sendBroadcast(BaseResponse.EMPTY, MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
 				return;
 			}
 		}
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.GetDlnaSetting("14.1",
+				new HttpSharing.GetDlnaSetting(
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -528,14 +446,7 @@ public class SharingManager extends BaseManager {
 								} else {
 									m_dlnaSettings.clear();
 								}
-								Intent megIntent = new Intent(
-										MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
 							}
 						}));
 	}
@@ -548,7 +459,7 @@ public class SharingManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.GetSDCardSpace("14.7",
+				new HttpSharing.GetSDCardSpace(
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -566,14 +477,7 @@ public class SharingManager extends BaseManager {
 								} else {
 									m_sdcardSpace.clear();
 								}
-								Intent megIntent = new Intent(
-										MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET);
 							}
 						}));
 	}
@@ -602,7 +506,7 @@ public class SharingManager extends BaseManager {
 //			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpSharing.GetSDcardStatus("14.9",
+				new HttpSharing.GetSDcardStatus(
 						new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -620,14 +524,7 @@ public class SharingManager extends BaseManager {
 								} else {
 									m_sdcardStatus.clear();
 								}
-								Intent megIntent = new Intent(
-										MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET);
-								megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-										ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET);
 							}
 						}));
 	}
@@ -638,7 +535,7 @@ public class SharingManager extends BaseManager {
 		public void run() {
 			// TODO Auto-generated method stub
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSharing.GetFtpSetting("14.5",
+					new HttpSharing.GetFtpSetting(
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -656,14 +553,7 @@ public class SharingManager extends BaseManager {
 									} else {
 										m_ftpSettings.clear();
 									}
-									Intent megIntent = new Intent(
-											MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
-									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-											ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
+									sendBroadcast(response, MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
 								}
 							}));
 		}
@@ -676,7 +566,7 @@ public class SharingManager extends BaseManager {
 		public void run() {
 			// TODO Auto-generated method stub
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSharing.GetDlnaSetting("14.1",
+					new HttpSharing.GetDlnaSetting(
 							new IHttpFinishListener() {
 								@Override
 								public void onHttpRequestFinish(
@@ -694,14 +584,7 @@ public class SharingManager extends BaseManager {
 									} else {
 										m_dlnaSettings.clear();
 									}
-									Intent megIntent = new Intent(
-											MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
-									megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-											ret);
-									megIntent.putExtra(
-											MessageUti.RESPONSE_ERROR_CODE,
-											strErrcode);
-									m_context.sendBroadcast(megIntent);
+									sendBroadcast(response, MessageUti.SHARING_GET_DLNA_SETTING_REQUSET);
 								}
 							}));
 		}

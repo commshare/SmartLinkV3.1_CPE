@@ -14,9 +14,9 @@ public class HttpAutoEnterPinState {
 /******************** GetAutoValidatePinState  **************************************************************************************/	
 	public static class GetAutoValidatePinState extends BaseRequest
     {	
-        public GetAutoValidatePinState(String strId,IHttpFinishListener callback) 
+        public GetAutoValidatePinState(IHttpFinishListener callback)
         {
-        	super("GetAutoValidatePinState", strId, callback);
+        	super("GetAutoValidatePinState", "2.6", callback);
         }
 
         @Override
@@ -54,9 +54,9 @@ public class HttpAutoEnterPinState {
 		private String m_strPin = new String();
 		private int m_nState = 0;
 		
-        public SetAutoValidatePinState(String strId,int nState,String strPin,IHttpFinishListener callback) 
+        public SetAutoValidatePinState(int nState,String strPin,IHttpFinishListener callback)
         {
-        	super("SetAutoValidatePinState", strId, callback);
+        	super("SetAutoValidatePinState", "2.7", callback);
         	m_nState = nState;
         	m_strPin = strPin;
         }
@@ -80,40 +80,20 @@ public class HttpAutoEnterPinState {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new SetAutoValidatePinStateResponse(m_finsishCallback);
+            return new BaseResponse(m_finsishCallback);
         }
         
     }
-	
-	public static class SetAutoValidatePinStateResponse extends BaseResponse
-    {
-        
-        public SetAutoValidatePinStateResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
-    }
 	/******************** ChangePinState  **************************************************************************************/	
 	public static class ChangePinState extends BaseRequest
     {		
 		private String m_strPin = new String();
 		private int m_nState = 0;
 		
-        public ChangePinState(String strId,int nState,String strPin,IHttpFinishListener callback) 
+        public ChangePinState(int nState,String strPin,IHttpFinishListener callback)
         {
-        	super("ChangePinState", strId, callback);
+        	super("ChangePinState", "2.5", callback);
         	m_nState = nState;
         	m_strPin = strPin;
         }
@@ -138,29 +118,8 @@ public class HttpAutoEnterPinState {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new ChangePinStateResponse(m_finsishCallback);
+            return new BaseResponse(m_finsishCallback);
         }
         
-    }
-	
-	public static class ChangePinStateResponse extends BaseResponse
-    {
-        
-        public ChangePinStateResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
     }
 }

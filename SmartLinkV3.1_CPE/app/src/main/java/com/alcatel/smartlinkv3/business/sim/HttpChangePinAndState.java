@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.sim;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
@@ -16,9 +15,9 @@ public class HttpChangePinAndState {
 		private String m_strNewPin = new String();
 		private String m_strCurrentPin = new String();
 		
-        public ChangePinCode(String strId,String strNewPin,String strCurrentPin,IHttpFinishListener callback) 
+        public ChangePinCode(String strNewPin,String strCurrentPin,IHttpFinishListener callback)
         {
-        	super("ChangePinCode", strId, callback);
+        	super("ChangePinCode", "2.4", callback);
         	m_strNewPin = strNewPin;
         	m_strCurrentPin = strCurrentPin;
         }
@@ -33,33 +32,6 @@ public class HttpChangePinAndState {
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, pinInfo);
         }
 
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new ChangePinCodeResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class ChangePinCodeResponse extends BaseResponse
-    {
-        
-        public ChangePinCodeResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
     }
 	
 	/******************** ChangePinState  **************************************************************************************/	
@@ -68,9 +40,9 @@ public class HttpChangePinAndState {
 		private String m_strPin = new String();
 		private int m_nState = 0;
 		
-        public ChangePinState(String strId,String strPin,int nState,IHttpFinishListener callback) 
+        public ChangePinState(String strPin,int nState,IHttpFinishListener callback)
         {
-        	super("ChangePinState", strId, callback);
+        	super("ChangePinState", "2.5", callback);
         	m_nState = nState;
         	m_strPin = strPin;
         }
@@ -83,34 +55,6 @@ public class HttpChangePinAndState {
 	        	changeState.put("State", m_nState);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, changeState);
-        }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new ChangePinStateResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class ChangePinStateResponse extends BaseResponse
-    {
-        
-        public ChangePinStateResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
         }
     }
 }

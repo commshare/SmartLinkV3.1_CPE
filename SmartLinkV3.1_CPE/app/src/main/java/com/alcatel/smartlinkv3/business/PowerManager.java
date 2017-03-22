@@ -1,20 +1,19 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.alcatel.smartlinkv3.business.power.HttpPower;
-import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
+import android.content.Context;
+import android.content.Intent;
 
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
+import com.alcatel.smartlinkv3.business.power.HttpPower;
+import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PowerManager extends BaseManager {
 
@@ -101,7 +100,7 @@ public class PowerManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpPower.getBatteryStateRequest("16.1", 
+					new HttpPower.getBatteryStateRequest(
 							new IHttpFinishListener() {
 
 						@Override
@@ -113,11 +112,8 @@ public class PowerManager extends BaseManager {
 									0 == strErr.length()) {
 								m_battery = response.getModelResult();
 							}
-							
-							Intent megIntent= new Intent(MessageUti.POWER_GET_BATTERY_STATE);
-		                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-		                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErr);
-		        			m_context.sendBroadcast(megIntent);
+
+		        			sendBroadcast(response, MessageUti.POWER_GET_BATTERY_STATE);
 						}
 					}));
 		}
@@ -133,7 +129,7 @@ public class PowerManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpPower.getPowerSavingModeRequest("16.2", 
+					new HttpPower.getPowerSavingModeRequest(
 							new IHttpFinishListener() {
 
 						@Override
@@ -147,11 +143,8 @@ public class PowerManager extends BaseManager {
 							}else {
 								getPowerSavingModeInfo(null);
 							}
-							
-							Intent megIntent= new Intent(MessageUti.POWER_GET_POWER_SAVING_MODE);
-		                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-		                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErr);
-		        			m_context.sendBroadcast(megIntent);
+
+		        			sendBroadcast(response, MessageUti.POWER_GET_POWER_SAVING_MODE);
 						}
 					}));
 		}
@@ -168,19 +161,12 @@ public class PowerManager extends BaseManager {
 		if (blWifiConnected) {
 			PowerSavingModeInfo info = (PowerSavingModeInfo)data.getParamByKey("PowerSavingMode");
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpPower.setPowerSavingModeRequest("16.3", info, 
+					new HttpPower.setPowerSavingModeRequest(info,
 							new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRes = response.getResultCode();
-							String strErr = response.getErrorCode();
-							
-							Intent megIntent= new Intent(MessageUti.POWER_SET_POWER_SAVING_MODE);
-		                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-		                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErr);
-		        			m_context.sendBroadcast(megIntent);
+		        			sendBroadcast(response, MessageUti.POWER_SET_POWER_SAVING_MODE);
 						}
 					}));
 		}

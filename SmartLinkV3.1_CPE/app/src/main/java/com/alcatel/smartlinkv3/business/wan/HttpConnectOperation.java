@@ -1,6 +1,5 @@
 package com.alcatel.smartlinkv3.business.wan;
 
-import com.alcatel.smartlinkv3.business.statistics.HttpUsageSettings.SetUsageSettingsResponse;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -15,9 +14,9 @@ public class HttpConnectOperation {
 /******************** GetConnectionState  **************************************************************************************/	
 	public static class GetConnectionState extends BaseRequest
     {			
-        public GetConnectionState(String strId,IHttpFinishListener callback) 
+        public GetConnectionState(IHttpFinishListener callback)
         {
-        	super("GetConnectionState", strId, callback);
+        	super("GetConnectionState", "3.1", callback);
         }
 
         @Override
@@ -54,81 +53,30 @@ public class HttpConnectOperation {
 	/******************** Connect  **************************************************************************************/	
 	public static class Connect extends BaseRequest
     {	
-        public Connect(String strId,IHttpFinishListener callback) 
+        public Connect(IHttpFinishListener callback)
         {
-        	super("Connect", strId, callback);
+        	super("Connect", "3.2", callback);
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new ConnectResponse(m_finsishCallback);
-        }
-        
     }
 	
-	public static class ConnectResponse extends BaseResponse
-    {   
-        public ConnectResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
-    }
 	
 	/******************** DisConnect  **************************************************************************************/	
 	public static class DisConnect extends BaseRequest
     {	
-        public DisConnect(String strId,IHttpFinishListener callback) 
+        public DisConnect(IHttpFinishListener callback)
         {
-        	super("DisConnect", strId, callback);
-        }
-
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new DisConnectResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class DisConnectResponse extends BaseResponse
-    {   
-        public DisConnectResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
+        	super("DisConnect", "3.3", callback);
         }
     }
 	
-	
+
 	/******************** GetConnectionSettings  **************************************************************************************/	
 	public static class GetConnectionSettings extends BaseRequest
     {			
-        public GetConnectionSettings(String strId,IHttpFinishListener callback) 
+        public GetConnectionSettings(IHttpFinishListener callback)
         {
-        	super("GetConnectionSettings", strId, callback);
+        	super("GetConnectionSettings", "3.4", callback);
         }
 
         @Override
@@ -173,8 +121,8 @@ public class HttpConnectOperation {
 
 		public ConnectionSettingsResult m_result = new ConnectionSettingsResult();
 
-		public SetConnectionSettings(String strId,	ConnectionSettingsResult result, IHttpFinishListener callback) {
-			super("SetConnectionSettings", strId,callback);
+		public SetConnectionSettings(ConnectionSettingsResult result, IHttpFinishListener callback) {
+			super("SetConnectionSettings", "3.5", callback);
 			m_result.setValue(result);
 		}
 
@@ -188,32 +136,5 @@ public class HttpConnectOperation {
 
 				m_requestParamJson.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetUsageSettingsResponse(m_finsishCallback);
-		}
-
 	}
-	
-
-	public static class SetConnectionSettingsResponse extends BaseResponse {
-
-		
-		public SetConnectionSettingsResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-		
-		@Override
-		protected void parseContent(String strJsonResult) {
-		
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			// TODO Auto-generated method stub
-			return null;
-		}	
-	}
-
 }

@@ -10,9 +10,9 @@ public class HttpGetNetworkInfo {
 /******************** GetNetworkInfo  **************************************************************************************/	
 	public static class GetNetworkInfo extends BaseRequest
     {			
-        public GetNetworkInfo(String strId,IHttpFinishListener callback) 
+        public GetNetworkInfo(IHttpFinishListener callback)
         {
-        	super("GetNetworkInfo", strId, callback);
+        	super("GetNetworkInfo", "4.1", callback);
         }
 
         @Override

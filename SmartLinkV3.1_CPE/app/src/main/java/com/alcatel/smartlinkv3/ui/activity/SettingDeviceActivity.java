@@ -712,11 +712,13 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     protected void onBroadcastReceive(Context context, Intent intent) {
         super.onBroadcastReceive(context, intent);
 
+        String action = intent.getAction();
+        BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+        Boolean ok = response != null && response.isOk();
+
         /*--------------- add start 2016.12.30 ---------------*/
-        if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+        if (MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION.equals(action)) {
+            if (ok) {
                 //do nothing
 
             } else {
@@ -727,10 +729,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             }
         }
 
-        if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+        if (MessageUti.UPDATE_GET_DEVICE_NEW_VERSION.equals(action)) {
+            if (ok) {
                 updateNewDeviceInfo(true);
             } else {
                 showCheckFwWaiting(false);
@@ -741,9 +741,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
         //正在更新驱动设备
         if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_START_UPDATE)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+            if (ok) {
                 //do nothing
             } else {
                 dismissUpgradeProgressDialog();
@@ -753,9 +751,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
         //更新的进度状态
         if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+            if (ok) {
                 //do nothing
                 DeviceUpgradeStateInfo info = BusinessManager.getInstance().getUpgradeStateInfo();
                 ENUM.EnumDeviceUpgradeStatus status = ENUM.EnumDeviceUpgradeStatus.build(info.getStatus());
@@ -787,10 +783,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         /*--------------- add end 2016.12.30 ---------------*/
 
         if (intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_REBOOT)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             String strTost = getString(R.string.setting_reboot_failed);
-            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+            if (ok) {
                 strTost = getString(R.string.setting_reboot_success);
             }
             ShowWaiting(false);
@@ -803,10 +797,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
 
         if (intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_RESET)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             String strTost = getString(R.string.setting_reset_failed);
-            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+            if (ok) {
                 strTost = getString(R.string.setting_reset_success);
             }
             ShowWaiting(false);
@@ -814,10 +806,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         }
 
         if (intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             String strTost = getString(R.string.setting_power_off_failed);
-            if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+            if (ok) {
                 strTost = getString(R.string.setting_power_off_success);
             }
             ShowWaiting(false);
@@ -826,9 +816,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
         if (intent.getAction().equalsIgnoreCase(
                 MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
+            if (ok) {
                 simRollRequest();
             } else {
                 closePinAndPukDialog();
@@ -837,12 +825,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             }
         } else if (intent.getAction().equalsIgnoreCase(
                 MessageUti.SIM_CHANGE_PIN_STATE_REQUEST)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                    BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent
-                    .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult
-                    && strErrorCode.length() == 0) {
+
+            if (ok) {
                 m_dlgPin.onEnterPinResponse(true);
                 isPinRequired = false;
             } else {
@@ -851,9 +835,8 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             }
         } else if (intent.getAction().equalsIgnoreCase(
                 MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
+
+            if (ok) {
                 m_pin_notice.setVisibility(View.GONE);
                 m_dlgPuk.onEnterPukResponse(true);
             } else {
@@ -862,9 +845,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         }
 
         if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+            if (ok) {
             } else {
 
                 Toast.makeText(getBaseContext(), R.string.setting_upgrade_stop_error, Toast.LENGTH_SHORT).show();

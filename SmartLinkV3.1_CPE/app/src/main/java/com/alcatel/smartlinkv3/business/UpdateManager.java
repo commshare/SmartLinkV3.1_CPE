@@ -1,22 +1,22 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
 import com.alcatel.smartlinkv3.business.update.HttpUpdate;
 import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UpdateManager extends BaseManager {
 
@@ -39,20 +39,16 @@ public class UpdateManager extends BaseManager {
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
-
 		if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			if (response != null && response.isOk()) {
 				startGetDeviceNewVersionTask();
 			}
 		}
 		
 		if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_START_UPDATE)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			if (response != null && response.isOk()) {
 				startGetDeviceUpgradeStatusTask();
 			}
 		}
@@ -149,8 +145,7 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpUpdate.getDeviceNewVersionRequest("9.1", 
-							new IHttpFinishListener() {
+					new HttpUpdate.getDeviceNewVersionRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
@@ -169,10 +164,7 @@ public class UpdateManager extends BaseManager {
 								stopGetDeviceNewVersionTask();
 							}
 
-							Intent intent = new Intent(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.UPDATE_GET_DEVICE_NEW_VERSION);
 						}
 					}));
 		}
@@ -184,18 +176,12 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected)
 		{
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpUpdate.setDeviceStartUpdateRequest("9.2", new IHttpFinishListener() 
+			HttpRequestManager.GetInstance().sendPostRequest(new HttpUpdate.setDeviceStartUpdateRequest(new IHttpFinishListener()
 			{
 				@Override
 				public void onHttpRequestFinish(BaseResponse response)
 				{
-					// TODO Auto-generated method stub
-					int nRes = response.getResultCode();
-					String strError=response.getErrorCode();
-					Intent intent= new Intent(MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE);
-					intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-					intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-					m_context.sendBroadcast(intent);
+					sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE);
 				}
 				}));
 			}
@@ -208,20 +194,11 @@ public class UpdateManager extends BaseManager {
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
 				HttpRequestManager.GetInstance().sendPostRequest(
-						new HttpUpdate.setFOTAStartDownload("9.2", 
-								new IHttpFinishListener() {
+						new HttpUpdate.setFOTAStartDownload(new IHttpFinishListener() {
 
 							@Override
 							public void onHttpRequestFinish(BaseResponse response) {
-								// TODO Auto-generated method stub
-								int nRes = response.getResultCode();
-								String strError=response.getErrorCode();
-
-								Intent intent= new Intent(
-										MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
-								intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-								intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-								m_context.sendBroadcast(intent);
+								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
 							}
 						}));
 			}
@@ -230,20 +207,11 @@ public class UpdateManager extends BaseManager {
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
 				HttpRequestManager.GetInstance().sendPostRequest(
-						new HttpUpdate.setFOTAStartDownload("9.2", 
-								new IHttpFinishListener() {
+						new HttpUpdate.setFOTAStartDownload(new IHttpFinishListener() {
 
 							@Override
 							public void onHttpRequestFinish(BaseResponse response) {
-								// TODO Auto-generated method stub
-								int nRes = response.getResultCode();
-								String strError=response.getErrorCode();
-
-								Intent intent= new Intent(
-										MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
-								intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-								intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-								m_context.sendBroadcast(intent);
+								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
 							}
 						}));
 			}
@@ -252,20 +220,11 @@ public class UpdateManager extends BaseManager {
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
 				HttpRequestManager.GetInstance().sendPostRequest(
-						new HttpUpdate.setDeviceStartUpdateRequest("9.2", 
-								new IHttpFinishListener() {
+						new HttpUpdate.setDeviceStartUpdateRequest(new IHttpFinishListener() {
 
 							@Override
 							public void onHttpRequestFinish(BaseResponse response) {
-								// TODO Auto-generated method stub
-								int nRes = response.getResultCode();
-								String strError=response.getErrorCode();
-
-								Intent intent= new Intent(
-										MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
-								intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-								intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-								m_context.sendBroadcast(intent);
+								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
 							}
 						}));
 			}
@@ -285,19 +244,11 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpUpdate.setDeviceUpdateStopRequest("9.4", 
-							new IHttpFinishListener() {
+					new HttpUpdate.setDeviceUpdateStopRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRes = response.getResultCode();
-							String strError=response.getErrorCode();
-							Intent intent= new Intent(
-									MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE);
 						}
 					}));
 		}
@@ -313,8 +264,7 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpUpdate.getDeviceUpgradeStatusRequest("9.3", 
-							new IHttpFinishListener() {
+					new HttpUpdate.getDeviceUpgradeStatusRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
@@ -332,11 +282,7 @@ public class UpdateManager extends BaseManager {
 								stopGetDeviceUpgradeStatusTask();
 							}
 
-							Intent intent= new Intent(
-									MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRes);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE);
 						}
 					}));
 		}
@@ -351,18 +297,11 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpUpdate.SetCheckNewVersionRequest("9.5", 
-							new IHttpFinishListener() {
+					new HttpUpdate.SetCheckNewVersionRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							Intent intent = new Intent(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION);
 						}
 					}));
 		}

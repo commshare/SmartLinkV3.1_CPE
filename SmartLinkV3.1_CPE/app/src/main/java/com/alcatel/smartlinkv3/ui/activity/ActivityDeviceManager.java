@@ -60,38 +60,33 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+
+			if (MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST.equals(action)) {
 				m_waiting.setVisibility(View.GONE);
-				if (nResult == BaseResponse.RESPONSE_OK&& strErrorCode.length() == 0) {	
-					if(m_bEnableRefresh == true || haveEditItem() == false) {
+				if (ok) {
+					if(m_bEnableRefresh || !haveEditItem() ) {
 						resetConnectEditFlag();
 						m_bEnableRefresh = false;
 						updateConnectedDeviceUI();	
 					}
 				}
-			} else if (intent.getAction().equals(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK&& strErrorCode.length() == 0) {
-					
+			} else if (MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST.equals(action)) {
+				if (ok) {
 					updateBlockDeviceUI();					
 				}				
-			} else if (intent.getAction().equals(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
+			} else if (MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK.equals(action)) {
+				if (ok) {
 					getListData();					
 				}		
 				m_bIsWorking = false;
 				m_waiting.setVisibility(View.GONE);
 				((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
 				((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
-			} else if (intent.getAction().equals(MessageUti.DEVICE_SET_DEVICE_UNLOCK)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
+			} else if (MessageUti.DEVICE_SET_DEVICE_UNLOCK.equals(action)) {
+				if (ok) {
 					getListData();					
 				}	
 				m_bIsWorking = false;
@@ -100,14 +95,11 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 				((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 			}
 			
-			else if (intent.getAction().equals(MessageUti.DEVICE_SET_DEVICE_NAME)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {				
+			else if (MessageUti.DEVICE_SET_DEVICE_NAME.equals(action)) {
+				if (ok) {
 					getListData();					
 				}else{
-					String msgRes = ActivityDeviceManager.this.getString(R.string.device_manage_set_name_failed);
-					Toast.makeText(ActivityDeviceManager.this, msgRes, Toast.LENGTH_SHORT).show();
+					Toast.makeText(ActivityDeviceManager.this, R.string.device_manage_set_name_failed, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -288,9 +280,6 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 	}
 	
 	public class ConnectedDevAdapter extends BaseAdapter {
-		
-		private String m_focusedMac = new String();
-		private int m_currentSelection = 0;
 
 		public ConnectedDevAdapter(Context context) {
 		}

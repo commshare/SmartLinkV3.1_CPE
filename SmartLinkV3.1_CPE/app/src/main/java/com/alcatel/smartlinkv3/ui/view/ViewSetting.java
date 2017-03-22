@@ -280,21 +280,17 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
+            String action = intent.getAction();
+            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+            Boolean ok = response != null && response.isOk();
             if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+                if (ok) {
                 } else {
 
                     Toast.makeText(m_context, R.string.setting_upgrade_stop_error, Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+            } else if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
+                if (ok) {
                     int nUpgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
                     if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)) {
                         //EnumDeviceCheckingStatus.DEVICE_NEW_VERSION
@@ -317,13 +313,9 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
                         SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
                     }
                 }
-            }
-
-            if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction()
+            } else if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction()
                     .equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+                if (ok) {
                     if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET)) {
                         //						Log.v("CHECKING_SHARING", "FTP");
                         isFtpSupported = true;

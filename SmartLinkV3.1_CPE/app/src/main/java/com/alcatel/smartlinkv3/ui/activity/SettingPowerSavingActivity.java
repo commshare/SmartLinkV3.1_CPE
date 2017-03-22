@@ -1,5 +1,21 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
@@ -9,22 +25,6 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingPowerSavingActivity extends BaseActivity implements OnClickListener{
 
@@ -260,23 +260,21 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
 		super.onBroadcastReceive(context, intent);
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_POWER_SAVING_MODE)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				initSwitchsState();
 			}
 			ShowWaiting(false);
 		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_SET_POWER_SAVING_MODE)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.setting_failed);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				strTost = getString(R.string.setting_success);
 				int nSmartMode = m_blSmartModeSwitchOn? ConstValue.ENABLE : ConstValue.DISABLE;
 				BusinessManager.getInstance().getPowerSavingModeInfo().setSmartMode(nSmartMode);
@@ -291,9 +289,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_BATTERY_STATE)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				showBatterystatus();
 			}
 		}

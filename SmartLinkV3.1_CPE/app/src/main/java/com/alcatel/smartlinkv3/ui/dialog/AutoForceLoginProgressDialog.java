@@ -1,5 +1,11 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
@@ -8,12 +14,6 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 
 public class AutoForceLoginProgressDialog 
 {
@@ -92,10 +92,13 @@ public class AutoForceLoginProgressDialog
 	private class AuthenficationBroadcastReviever extends BroadcastReceiver 
 	{
 		@Override
-		public void onReceive(Context arg0, Intent arg1) 
+		public void onReceive(Context context, Intent intent)
 		{
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 
-			if (arg1.getAction().equalsIgnoreCase(
+			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) 
 			{
 				boolean bCPEWifiConnected = DataConnectManager.getInstance()
@@ -105,18 +108,17 @@ public class AutoForceLoginProgressDialog
 					closeDialog();
 				}
 			} 
-			else if (arg1.getAction().equalsIgnoreCase(
+			else if (intent.getAction().equalsIgnoreCase(
 					MessageUti.USER_FORCE_LOGIN_REQUEST)) 
 			{
 				
 				if(m_dlgProgress != null && !m_dlgProgress.isShowing())
 					return;
 				closeDialog();
-				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
-				String strErrorCode = arg1.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+
 				if (null != s_callback) 
 				{
-					if(BaseResponse.RESPONSE_OK == nRet && strErrorCode.length() == 0 )
+					if(ok )
 					{
 						if(m_isUserFirstLogin||SmartLinkV3App.getInstance().IsForcesLogin())
 						{
@@ -131,9 +133,7 @@ public class AutoForceLoginProgressDialog
 					}
 					else
 					{
-						if(strErrorCode == null)
-							strErrorCode = "";
-						s_callback.onLoginFailed(strErrorCode);
+						s_callback.onLoginFailed(response.getErrorCode());
 					}
 					s_callback = null;
 				}				

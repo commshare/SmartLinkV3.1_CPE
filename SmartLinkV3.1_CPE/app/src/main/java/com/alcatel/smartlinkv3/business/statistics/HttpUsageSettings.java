@@ -14,9 +14,9 @@ public class HttpUsageSettings {
 /******************** GetUsageSettings  **************************************************************************************/	
 	public static class GetUsageSettings extends BaseRequest
     {			
-        public GetUsageSettings(String strId,IHttpFinishListener callback) 
+        public GetUsageSettings(IHttpFinishListener callback)
         {
-        	super("GetUsageSettings", strId, callback);
+        	super("GetUsageSettings", "7.3", callback);
         }
 
         @Override
@@ -55,8 +55,8 @@ public class HttpUsageSettings {
 
 		public UsageSettingsResult m_result = new UsageSettingsResult();
 
-		public SetUsageSettings(String strId,	UsageSettingsResult result, IHttpFinishListener callback) {
-			super("SetUsageSettings", strId, callback);
+		public SetUsageSettings(UsageSettingsResult result, IHttpFinishListener callback) {
+			super("SetUsageSettings", "7.4", callback);
 			m_result.setValue(result);
 		}
 
@@ -75,32 +75,5 @@ public class HttpUsageSettings {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetUsageSettingsResponse(m_finsishCallback);
-		}
-
 	}
-	
-
-	public static class SetUsageSettingsResponse extends BaseResponse {
-
-		
-		public SetUsageSettingsResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-		
-		@Override
-		protected void parseContent(String strJsonResult) {
-		
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			// TODO Auto-generated method stub
-			return null;
-		}	
-	}
-
 }

@@ -1,7 +1,11 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Handler;
 
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
@@ -14,12 +18,8 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Handler;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SystemManager extends BaseManager {
 	private Features m_features = new Features();
@@ -157,7 +157,7 @@ public class SystemManager extends BaseManager {
 		@Override
 		public void run() {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.GetFeature("16.1", new IHttpFinishListener() {
+					new HttpSystem.GetFeature(new IHttpFinishListener() {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
 							String strErrcode = new String();
@@ -194,12 +194,7 @@ public class SystemManager extends BaseManager {
 							//								m_context.sendBroadcast(megIntent);
 							//							}
 
-							Intent megIntent = new Intent(
-									MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
-							megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-							megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,
-									strErrcode);
-							m_context.sendBroadcast(megIntent);
+							sendBroadcast(response, MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
 						}
 					}));
 		}
@@ -216,8 +211,7 @@ public class SystemManager extends BaseManager {
 				.getCPEWifiConnected();
 		if (bCPEWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.GetSystemInfo("13.1",
-							new IHttpFinishListener() {
+					new HttpSystem.GetSystemInfo(new IHttpFinishListener() {
 						@Override
 						public void onHttpRequestFinish(
 								BaseResponse response) {
@@ -245,14 +239,7 @@ public class SystemManager extends BaseManager {
 										}, 1000);
 							}
 
-							Intent megIntent = new Intent(
-									MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
-							megIntent.putExtra(
-									MessageUti.RESPONSE_RESULT, ret);
-							megIntent.putExtra(
-									MessageUti.RESPONSE_ERROR_CODE,
-									strErrcode);
-							m_context.sendBroadcast(megIntent);
+							sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
 						}
 					}));
 		}
@@ -275,8 +262,7 @@ public class SystemManager extends BaseManager {
 			@Override
 			public void run() {
 				HttpRequestManager.GetInstance().sendPostRequest(
-						new HttpSystem.GetSystemStatus("13.4",
-								new IHttpFinishListener() {
+						new HttpSystem.GetSystemStatus(new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
 									BaseResponse response) {
@@ -296,14 +282,7 @@ public class SystemManager extends BaseManager {
 //											}, 1000);
 								}
 
-								Intent megIntent = new Intent(
-										MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_RESULT, ret);
-								megIntent.putExtra(
-										MessageUti.RESPONSE_ERROR_CODE,
-										strErrcode);
-								m_context.sendBroadcast(megIntent);
+								sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
 							}
 						}));
 				}
@@ -320,18 +299,11 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.SetDeviceReboot("13.5", 
-							new IHttpFinishListener() {
+					new HttpSystem.SetDeviceReboot(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorMessage();
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_REBOOT);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_REBOOT);
 						}
 					}));
 		}
@@ -347,18 +319,12 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.SetDeviceReset("13.6", 
-							new IHttpFinishListener() {
+					new HttpSystem.SetDeviceReset(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESET);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+
+							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESET);
 						}
 					}));
 		}
@@ -374,18 +340,11 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.SetDeviceBackup("13.7", 
-							new IHttpFinishListener() {
+					new HttpSystem.SetDeviceBackup(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_BACKUP);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_BACKUP);
 						}
 					}));
 		}
@@ -402,18 +361,12 @@ public class SystemManager extends BaseManager {
 		if (blWifiConnected) {
 			String strFile = data.getParamByKey("FileName").toString();
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.SetDeviceRestore("13.8", strFile,
+					new HttpSystem.SetDeviceRestore(strFile,
 							new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_RESTORE);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response,MessageUti.SYSTEM_SET_DEVICE_RESTORE);
 						}
 					}));
 		}
@@ -428,18 +381,11 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.setDevicePowerOffRequest("13.9", 
-							new IHttpFinishListener() {
+					new HttpSystem.setDevicePowerOffRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_POWER_OFF);
 						}
 					}));
 		}
@@ -454,18 +400,11 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.setAppBackupRequest("13.10", 
-							new IHttpFinishListener() {
+					new HttpSystem.setAppBackupRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_APP_BACKUP);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.SYSTEM_SET_APP_BACKUP);
 						}
 					}));
 		}
@@ -480,8 +419,7 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpSystem.setAppRestoreBackupRequest("13.11", 
-							new IHttpFinishListener() {
+					new HttpSystem.setAppRestoreBackupRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
@@ -492,10 +430,7 @@ public class SystemManager extends BaseManager {
 									&& strError.length() == 0){
 								m_errorInfo = response.getModelResult();
 							}
-							Intent intent = new Intent(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
-							intent.putExtra(MessageUti.RESPONSE_RESULT, nRet);
-							intent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strError);
-							m_context.sendBroadcast(intent);
+							sendBroadcast(response, MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
 						}
 					}));
 		}

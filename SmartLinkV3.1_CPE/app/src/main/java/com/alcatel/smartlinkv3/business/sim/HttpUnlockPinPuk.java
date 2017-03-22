@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.sim;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
@@ -15,9 +14,9 @@ public class HttpUnlockPinPuk {
     {		
 		private String m_strPin = new String();
 		
-        public UnlockPin(String strId,String strPin,IHttpFinishListener callback) 
+        public UnlockPin(String strPin,IHttpFinishListener callback)
         {
-        	super("UnlockPin", strId, callback);
+        	super("UnlockPin", "2.2", callback);
         	m_strPin = strPin;
         }
 
@@ -29,45 +28,17 @@ public class HttpUnlockPinPuk {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, pin);
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new UnlockPinResponse(m_finsishCallback);
-        }
-        
     }
-	
-	public static class UnlockPinResponse extends BaseResponse
-    {
-        
-        public UnlockPinResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
-    }
-	
 	/******************** UnlockPuk  **************************************************************************************/	
 	public static class UnlockPuk extends BaseRequest
     {		
 		private String m_strPuk = new String();
 		private String m_strPin = new String();
 		
-        public UnlockPuk(String strId,String strPuk,String strPin,IHttpFinishListener callback) 
+        public UnlockPuk(String strPuk,String strPin,IHttpFinishListener callback)
         {
-        	super("UnlockPuk", strId, callback);
+        	super("UnlockPuk", "2.3", callback);
         	m_strPuk = strPuk;
         	m_strPin = strPin;
         }
@@ -80,34 +51,6 @@ public class HttpUnlockPinPuk {
 	        	pinPuk.put("Pin", m_strPin);
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, pinPuk);
-        }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new UnlockPinResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class UnlockPukResponse extends BaseResponse
-    {
-        
-        public UnlockPukResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.List;
+import android.content.Context;
+import android.content.Intent;
 
-import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.business.profile.HttpAddNewProfile;
 import com.alcatel.smartlinkv3.business.profile.HttpDeleteProfile;
 import com.alcatel.smartlinkv3.business.profile.HttpEditProfile;
@@ -16,9 +16,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import java.util.List;
 
 public class ProfileManager extends BaseManager{
 	
@@ -33,7 +31,7 @@ public class ProfileManager extends BaseManager{
 			return;
 		}
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpGetProfileList.GetProfileList("15.1", new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpGetProfileList.GetProfileList(new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -69,10 +67,7 @@ public class ProfileManager extends BaseManager{
                 }else{
                 	//Log
                 }
-                Intent megIntent= new Intent(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+    			sendBroadcast(response, MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST);
 			}
 			
 		}));
@@ -90,7 +85,7 @@ public class ProfileManager extends BaseManager{
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile("15.2", ProfileName, DialNumber, APN, UserName, Password, AuthType, new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile(ProfileName, DialNumber, APN, UserName, Password, AuthType, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -115,10 +110,7 @@ public class ProfileManager extends BaseManager{
 //                	Log.v("AddOrEditProfile", "No");
                 }
                 startGetProfileList(null);
-                Intent megIntent= new Intent(MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+    			sendBroadcast(response, MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST);
 			}
 			
 		}));
@@ -138,7 +130,7 @@ public class ProfileManager extends BaseManager{
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpEditProfile.EditProfile("15.3", profileID, DialNumber, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpEditProfile.EditProfile(profileID, DialNumber, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -163,11 +155,8 @@ public class ProfileManager extends BaseManager{
 //                	Log.v("AddOrEditProfile", "No");
                 }
                 startGetProfileList(null);
-                
-                Intent megIntent= new Intent(MessageUti.PROFILE_EDIT_PROFILE_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.PROFILE_EDIT_PROFILE_REQUEST);
                 
 			}
 			
@@ -182,7 +171,7 @@ public class ProfileManager extends BaseManager{
 		
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile("15.4", profileId, new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile(profileId, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -206,11 +195,8 @@ public class ProfileManager extends BaseManager{
                 	//Log
 //                	Log.v("GetProfileResultDELETE", "No");
                 }
-                
-                Intent megIntent= new Intent(MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
                 
 			}
 			
@@ -225,7 +211,7 @@ public class ProfileManager extends BaseManager{
 		
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile("15.5", profileId, new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile(profileId, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -249,12 +235,8 @@ public class ProfileManager extends BaseManager{
                 	//Log
 //                	Log.v("SetDefaultProfileResult", "No");
                 }
-                
-                Intent megIntent= new Intent(MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
-                
+
+    			sendBroadcast(response, MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST);
 			}
 			
 		}));

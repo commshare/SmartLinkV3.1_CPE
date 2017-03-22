@@ -103,19 +103,16 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub	
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 			if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)){				
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				if(ok) {
 					displayUI();
 					RefreshNewSmsNumber();
 				}
-			}
-			if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)){				
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			} else if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET)){
+				if(ok) {
 					displayUI();
 					RefreshNewSmsNumber();
 					getListSmsSummaryData();

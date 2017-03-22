@@ -64,5 +64,9 @@ public abstract class BaseRequest
 		}
 	}
 	
-	public abstract BaseResponse createResponseObject();
+
+	public BaseResponse createResponseObject()
+	{
+		return new BaseResponse(m_finsishCallback);
+	}
 }

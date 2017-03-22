@@ -55,7 +55,7 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 	// private static LoginDialog m_instance;
 	private String m_strMsgWrongPassword;
 	private String m_strMsgLoginTimeUsedOut;
-	private AuthenficationBroadcastReviever m_auReceiver;
+	private AuthenticationBroadcastReceiver m_auReceiver;
 	private static OnForceLoginFinishedListener m_forceloginCallback;
 	private CancelForceLoginListener mCancelCallback=null;
 	private boolean m_bForceLoginTimeUsedOutError = false;
@@ -70,7 +70,7 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 
 	public ForceLoginDialog(Context context) {
 		m_context = context;
-		m_auReceiver = new AuthenficationBroadcastReviever();
+		m_auReceiver = new AuthenticationBroadcastReceiver();
 
 		if (null == m_dialog_err_info) {
 			m_dialog_err_info = CommonErrorInfoDialog.getInstance(m_context);
@@ -78,29 +78,27 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 		createDialog();
 	}
 
-	private class AuthenficationBroadcastReviever extends BroadcastReceiver {
+	private class AuthenticationBroadcastReceiver extends BroadcastReceiver {
 
 		@Override
-		public void onReceive(Context arg0, Intent arg1) {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 
-			if (arg1.getAction().equalsIgnoreCase(
+			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 				boolean bCPEWifiConnected = DataConnectManager.getInstance()
 						.getCPEWifiConnected();
 				if (!bCPEWifiConnected) {
 					closeDialog();
 				}
-			} else if (arg1.getAction().equalsIgnoreCase(
+			} else if (intent.getAction().equalsIgnoreCase(
 					MessageUti.USER_FORCE_LOGIN_REQUEST)) {
 				m_bIsApply = false;
 				if(!m_dlgForceLogin.isShowing())
 					return;
-				int nRet = arg1.getIntExtra(MessageUti.RESPONSE_RESULT, -1);
-				String strErrorCode = arg1
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nRet
-						&& strErrorCode.length() == 0) {
-
+				if (ok) {
 					CPEConfig.getInstance().setLoginPassword(m_forcelogin_password);
 					CPEConfig.getInstance().setLoginUsername(USER_NAME);
 					//setAlreadyLogin(true);
@@ -112,9 +110,8 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 						m_forceloginCallback = null;
 					}
 
-				} else if (BaseResponse.RESPONSE_OK == nRet
-						&& strErrorCode
-						.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+				} else if (response.isValid()
+						&& response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
 					m_bForceLoginTimeUsedOutError = true;
 					m_bForceLoginPasswordError = false;
 					m_dialog_err_info.showDialog(

@@ -1,7 +1,7 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
 
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.sim.AutoEnterPinStateResult;
@@ -11,16 +11,15 @@ import com.alcatel.smartlinkv3.business.sim.HttpGetSimStatus;
 import com.alcatel.smartlinkv3.business.sim.HttpUnlockPinPuk;
 import com.alcatel.smartlinkv3.business.sim.SIMStatusResult;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SimManager extends BaseManager {
 	private SimStatusModel m_simStatus = new SimStatusModel();
@@ -71,7 +70,7 @@ public class SimManager extends BaseManager {
 		
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState("2.5",nState,strPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState(nState,strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -88,24 +87,21 @@ public class SimManager extends BaseManager {
                 	//Log
                 	
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SIM_CHANGE_PIN_STATE_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.SIM_CHANGE_PIN_STATE_REQUEST);
             }
         }));
     } 
 	
 	//SetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void setAutoEnterPinState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePinState") != true)
+	public void setAutoValidatePinState(DataValue data) {
+		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "setAutoValidatePinState") != true)
 			return;
 		
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState("2.7",nState,strPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.SetAutoValidatePinState(nState,strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -121,11 +117,8 @@ public class SimManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
             }
         }));
     } 
@@ -134,7 +127,7 @@ public class SimManager extends BaseManager {
 	public void getAutoPinState(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetAutoValidatePinState") != true)
 			return;
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState("2.6",new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -158,11 +151,8 @@ public class SimManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST);
             }
         }));
     } 
@@ -175,7 +165,7 @@ public class SimManager extends BaseManager {
 		String strNewPin = (String) data.getParamByKey("new_pin");
 		String strCurrentPin = (String) data.getParamByKey("current_pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpChangePinAndState.ChangePinCode("2.4",strNewPin,strCurrentPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpChangePinAndState.ChangePinCode(strNewPin,strCurrentPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -191,11 +181,8 @@ public class SimManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SIM_CHANGE_PIN_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.SIM_CHANGE_PIN_REQUEST);
             }
         }));
     } 
@@ -208,7 +195,7 @@ public class SimManager extends BaseManager {
 		String strPuk = (String) data.getParamByKey("puk");
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk("2.3",strPuk,strPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk(strPuk,strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -224,11 +211,8 @@ public class SimManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SIM_UNLOCK_PUK_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PUK_REQUEST);
             }
         }));
     } 
@@ -240,7 +224,7 @@ public class SimManager extends BaseManager {
 		
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin("2.2",strPin, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin(strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -256,11 +240,8 @@ public class SimManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SIM_UNLOCK_PIN_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PIN_REQUEST);
             }
         }));
     } 
@@ -296,7 +277,7 @@ public class SimManager extends BaseManager {
 	class GetSimStatusTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetSimStatus.GetSimStatus("2.1", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetSimStatus.GetSimStatus(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {                 	
@@ -323,10 +304,7 @@ public class SimManager extends BaseManager {
                     		}
                     		
                     		if(!m_simStatus.equalTo(pre)) {
-                    			Intent megIntent= new Intent(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET);
-        	                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-        	                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-        	        			m_context.sendBroadcast(megIntent);
+        	        			sendBroadcast(response, MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET);
 //        	        			Log.v("PINCHECK", "BROADCAST");
                     		}
                     	}else if(strErrcode.equalsIgnoreCase("1") 
@@ -334,10 +312,7 @@ public class SimManager extends BaseManager {
                     	{
                     		m_simStatus.clear();
                     		m_simStatus.m_SIMState = SIMState.NoSim;
-                    		Intent megIntent= new Intent(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET);
-    	                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-    	                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    	        			m_context.sendBroadcast(megIntent);
+    	        			sendBroadcast(response, MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET);
                     	}
                     }else{
                     	//Log

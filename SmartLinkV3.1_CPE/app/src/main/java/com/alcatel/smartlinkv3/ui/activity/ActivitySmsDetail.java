@@ -177,20 +177,16 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
 		super.onBroadcastReceive(context, intent);
 
-		if (intent.getAction()
-				.equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+		if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)) {
 			String msgRes = null;
-			if (nResult == BaseResponse.RESPONSE_OK
-					&& strErrorCode.length() == 0) {
+			if (ok) {
 				msgRes = this.getString(R.string.sms_save_success);
-			} else if (strErrorCode
-					.endsWith(ErrorCode.ERR_SAVE_SMS_SIM_IS_FULL)) {
+			} else if (response.getErrorCode().endsWith(ErrorCode.ERR_SAVE_SMS_SIM_IS_FULL)) {
 				msgRes = this
 						.getString(R.string.sms_error_message_full_storage);
 			} else {
@@ -198,28 +194,12 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 			}
 			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 			this.finish();
-		}
-
-		if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (nResult == BaseResponse.RESPONSE_OK
-					&& strErrorCode.length() == 0) {
+		} else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)) {
+			if (ok) {
 				startGetSmsContentTask();
 			}
-		}
-
-		if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (nResult == BaseResponse.RESPONSE_OK
-					&& strErrorCode.length() == 0) {
+		} else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET)) {
+			if (ok) {
 				SmsContentMessagesModel smsContent = intent
 						.getParcelableExtra(SMSManager.SMS_CONTENT_LIST_EXTRA);
 				getSmsListData(smsContent);
@@ -229,16 +209,8 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 					m_progressWaiting.setVisibility(View.GONE);
 				}
 			}
-		}
-
-		if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (nResult == BaseResponse.RESPONSE_OK
-					&& strErrorCode.length() == 0) {
+		} else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET)) {
+			if (ok) {
 				if (m_bDeleteEnd == true) {
 					m_bDeleteEnd = false;
 					m_progressWaiting.setVisibility(View.GONE);
@@ -277,21 +249,15 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 			}
 		}
 
-		if (intent.getAction().equalsIgnoreCase(
-				MessageUti.SMS_DELETE_SMS_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+		if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_DELETE_SMS_REQUSET)) {
 			m_bDeleteEnd = true;
 			boolean bDeleteSeccuss = false;
-			if (nResult == BaseResponse.RESPONSE_OK
-					&& strErrorCode.length() == 0) {
+			if (ok) {
 				bDeleteSeccuss = true;
 			}
 
-			if (m_bDeleteContact == true) {
-				if (bDeleteSeccuss == true) {
+			if (m_bDeleteContact) {
+				if (bDeleteSeccuss ) {
 					BusinessManager.getInstance()
 							.getContactMessagesAtOnceRequest();
 					String msgRes = this
@@ -308,35 +274,22 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 				}
 			} else {
 				m_progressWaiting.setVisibility(View.GONE);
-				if (bDeleteSeccuss == true) {
-					Toast.makeText(this,
-							getString(R.string.sms_delete_success),
-							Toast.LENGTH_SHORT).show();
-					BusinessManager.getInstance()
-							.getContactMessagesAtOnceRequest();
-					if (m_bIsLastOneMessage == true) {
+				if (bDeleteSeccuss) {
+					Toast.makeText(this,getString(R.string.sms_delete_success), Toast.LENGTH_SHORT).show();
+					BusinessManager.getInstance().getContactMessagesAtOnceRequest();
+					if (m_bIsLastOneMessage) {
 						this.finish();
 					}
 				} else {
-					Toast.makeText(this, getString(R.string.sms_delete_error),
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getString(R.string.sms_delete_error), Toast.LENGTH_SHORT).show();
 				}
 				getSmsContentAtOnceRequest();
 			}
-		}
-
-		if (intent.getAction()
-				.equalsIgnoreCase(MessageUti.SMS_SEND_SMS_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (nResult == BaseResponse.RESPONSE_OK
-					&& strErrorCode.length() == 0) {
-				BusinessManager.getInstance()
-						.getContactMessagesAtOnceRequest();
+		} else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_SEND_SMS_REQUSET)) {
+			if (ok) {
+				BusinessManager.getInstance().getContactMessagesAtOnceRequest();
 				// getSmsContentAtOnceRequest();
-			} else if (strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL)) {
+			} else if (response.getErrorCode().endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL)) {
 				String msgRes = this
 						.getString(R.string.sms_error_message_full_storage);
 				// Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
@@ -375,12 +328,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener,
 
 		if (intent.getAction().equalsIgnoreCase(
 				MessageUti.SMS_GET_SEND_STATUS_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-					BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent
-					.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (nResult == BaseResponse.RESPONSE_OK
-					&& strErrorCode.length() == 0) {
+			if (ok) {
 				int nSendReslt = intent.getIntExtra(Const.SMS_SNED_STATUS, 0);
 				SendStatus sendStatus = SendStatus.build(nSendReslt);
 				m_sendStatus = sendStatus;

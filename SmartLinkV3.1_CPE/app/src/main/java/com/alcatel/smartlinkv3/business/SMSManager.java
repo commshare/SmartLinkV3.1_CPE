@@ -1,8 +1,9 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Handler;
 
 import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -18,16 +19,15 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SMSManager extends BaseManager {
 	private SMSInit m_smsInit = SMSInit.Initing;
@@ -52,18 +52,19 @@ public class SMSManager extends BaseManager {
 	
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
-		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
+
+		if(MessageUti.CPE_WIFI_CONNECT_CHANGE.equals(action)) {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if(bCPEWifiConnected == true) {
 				
 			}
     	}
 		
-		if(intent.getAction().equals(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET.equals(action)) {
+			if(ok) {
 				if(m_smsInit == SMSInit.Complete) {
 					stopGetSmsInitTask();
 					startGetContactMessagesTask();
@@ -71,10 +72,8 @@ public class SMSManager extends BaseManager {
 			}
     	}
 		
-		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
+			if(ok) {
 				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetSmsInitTask();
@@ -142,7 +141,7 @@ public class SMSManager extends BaseManager {
 	class GetSMSInitTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSInitStatus("6.1", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSInitStatus(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -159,11 +158,8 @@ public class SMSManager extends BaseManager {
                     }else{
                     	//Log
                     }
-                    
-                    Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
-                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-        			m_context.sendBroadcast(megIntent);
+
+        			sendBroadcast(response, MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
                 }
             }));
         } 
@@ -172,10 +168,7 @@ public class SMSManager extends BaseManager {
 	private void sentSMSInitChangedMessage(SMSInit cur) {
 		if(m_smsInit != cur) {
 			m_smsInit = cur;
-			Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
-            megIntent.putExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-            megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, new String());
-			m_context.sendBroadcast(megIntent);
+			sendBroadcast(BaseResponse.SUCCESS, MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
 		}
 	}
 	//GetSMSContactList ////////////////////////////////////////////////////////////////////////////////////////// 
@@ -212,7 +205,7 @@ public class SMSManager extends BaseManager {
 	class GetContactMessagesTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContactList("6.2",0, new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContactList(0, new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -229,11 +222,8 @@ public class SMSManager extends BaseManager {
                     }else{
                     	//Log
                     }
-                    
-                    Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET);
-                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-        			m_context.sendBroadcast(megIntent);
+
+        			sendBroadcast(response, MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET);
                 }
             }));
         } 
@@ -247,7 +237,7 @@ public class SMSManager extends BaseManager {
 		
 		int nContactId = (Integer) data.getParamByKey("ContactId");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContentList("6.3",0,nContactId, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContentList(0,nContactId, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -267,8 +257,7 @@ public class SMSManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(SMS_CONTENT_LIST_EXTRA, model);
     			m_context.sendBroadcast(megIntent);
             }
@@ -291,7 +280,7 @@ public class SMSManager extends BaseManager {
 		if(temp != null)
 			nSMSId = temp;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.DeleteSMS("6.5",EnumSMSDelFlag.antiBuild(delFlag),nContactId,nSMSId, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.DeleteSMS(EnumSMSDelFlag.antiBuild(delFlag),nContactId,nSMSId, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -307,11 +296,8 @@ public class SMSManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SMS_DELETE_SMS_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.SMS_DELETE_SMS_REQUSET);
             }
         }));
     } 
@@ -337,7 +323,7 @@ public class SMSManager extends BaseManager {
 		String strNumbers = (String)data.getParamByKey("phone_number");
 		ArrayList<String> phoneNumberLst = getNumberFromString(strNumbers);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SendSMS("6.6",-1,strContent,phoneNumberLst, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SendSMS(-1,strContent,phoneNumberLst, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -360,12 +346,7 @@ public class SMSManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SMS_SEND_SMS_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-                //megIntent.putExtra(Const.SMS_SNED_ID, nSendId);
-    			m_context.sendBroadcast(megIntent);
+     			sendBroadcast(response, MessageUti.SMS_SEND_SMS_REQUSET);
             }
         }));
     } 
@@ -380,7 +361,7 @@ public class SMSManager extends BaseManager {
 		
 		//final int nSmsSendId = (Integer) data.getParamByKey("sms_send_id");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSendSMSResult("6.7", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSendSMSResult(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -416,8 +397,7 @@ public class SMSManager extends BaseManager {
                 }
  
                 Intent megIntent= new Intent(MessageUti.SMS_GET_SEND_STATUS_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                 megIntent.putExtra(Const.SMS_SNED_STATUS, nSendStatus);
     			m_context.sendBroadcast(megIntent);
             }
@@ -434,7 +414,7 @@ public class SMSManager extends BaseManager {
 		String strNumber =  (String)data.getParamByKey("Number");
 		ArrayList<String> phoneNumberLst = getNumberFromString(strNumber);
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SaveSMS("6.8",nSmsId,strCotent,phoneNumberLst, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SaveSMS(nSmsId,strCotent,phoneNumberLst, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -450,11 +430,7 @@ public class SMSManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.SMS_SAVE_SMS_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+    			sendBroadcast(response, MessageUti.SMS_SAVE_SMS_REQUSET);
             }
         }));
     } 	

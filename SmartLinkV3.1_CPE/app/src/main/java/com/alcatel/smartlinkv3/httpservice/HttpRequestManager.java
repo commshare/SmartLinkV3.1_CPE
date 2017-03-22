@@ -29,28 +29,24 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HttpRequestManager {
-
 	private static final String TAG = "HttpRequestManager";
+	private static final int FINISH_HTTP_REQUEST = 0x110;
+	private static final int DISCONNECT_NUMBER = 5;
+	private static HttpRequestManager m_instance = null;
 
 	private ExecutorService m_threadPool;
 	private LinkedList<BaseRequest> m_request_list;
 	private LinkedList<BaseResponse> m_response_list;
 
 	private int m_nDisconnectNum = 0;
-	private int DISCONNECT_NUMBER = 5;
 	// private Context m_context = null;
-
 	private Boolean m_bStopBusiness = false;
-
 	private String m_server_address = null;
-
-	protected static final int FINISH_HTTP_REQUEST = 0x110;
-
-	private static HttpRequestManager m_instance = null;
 
 	public static HttpRequestManager GetInstance() {
 		if (m_instance == null) {
@@ -108,8 +104,7 @@ public class HttpRequestManager {
 					counter++;
 			}
 
-			String strLog = String.format("Cpu Counter: %d", counter);
-			Log.d(TAG, strLog);
+			Log.d(TAG, String.format(Locale.getDefault(), "Cpu Counter: %d", counter));
 			return counter;
 		} catch (FileNotFoundException e) {
 			// e.printStackTrace();
@@ -232,8 +227,7 @@ public class HttpRequestManager {
 						}
 
 						// no feature api
-						if (DataConnectManager.getInstance()
-								.getCPEWifiConnected() == true) {
+						if (DataConnectManager.getInstance().getCPEWifiConnected()) {
 							if (BusinessManager.getInstance().getFeatures()
 									.getFeatures().size() <= 0) {
 								HttpAccessLog.getInstance().writeLogToFile("CPE WIFI error:getFeatures().size() <= 0");
@@ -262,7 +256,7 @@ public class HttpRequestManager {
 	}
 
 	public interface IHttpFinishListener {
-		public void onHttpRequestFinish(BaseResponse response);
+		void onHttpRequestFinish(BaseResponse response);
 	}
 
 	class HttpThreadRunnable implements Runnable {
@@ -271,17 +265,17 @@ public class HttpRequestManager {
 
 		@Override
 		public void run() {
-			if (getStopBussiness() == true)
+			if (getStopBussiness())
 				return;
 			// Log.d(TAG, String.format("%d", Thread.currentThread().getId()));
 			BaseRequest request = getRequest();
 			BaseResponse response_obj = request.createResponseObject();
-			String response = null;
+
 			String body = request.getRequestParamJson().toString();
 			try {
 //				String httpUrl = request.getHttpUrl();
-				Log.d("HttpRequestManager", m_server_address);
-				Log.d("HttpRequestManager", body);
+				Log.d(TAG, m_server_address);
+				Log.d(TAG, body);
 				HttpAccessLog.getInstance().writeLogToFile("Request:" + body + " httpUrl:" + m_server_address);
 				// HttpPost connect object
 				HttpPost httpRequest = new HttpPost(m_server_address);
@@ -299,21 +293,16 @@ public class HttpRequestManager {
 				// get HttpResponse
 				HttpResponse httpResponse = httpclient.execute(httpRequest);
 				// HttpStatus.SC_OK
-				response = new String();
+
 				int nStatusCode = httpResponse.getStatusLine().getStatusCode();
 				if (nStatusCode == HttpStatus.SC_OK) {
 					// get response string
-					response = EntityUtils.toString(httpResponse.getEntity(),
-							"utf-8");
+					String response = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
 					JSONObject responseJson = new JSONObject(response);
-					Log.d("HttpRequestManger",  "response: " + response);
-					HttpAccessLog.getInstance().writeLogToFile(
-							"Response:" + response);
+					HttpAccessLog.getInstance().writeLogToFile("Response:" + response);
 					response_obj.parseResult(SmartLinkV3App.getInstance().getApplicationContext(),responseJson);
 				} else {
 					// request error
-					Log.d("HttpRequestManager", "ERROR: body(" + body + ")"
-							+ "response:" + response);
 					HttpAccessLog.getInstance().writeLogToFile(
 							"ERROR: body(" + body + ")"
 									+ "httpResponse.getStatusLine().getStatusCode():" + String.valueOf(nStatusCode));
@@ -322,10 +311,6 @@ public class HttpRequestManager {
 			} catch (UnsupportedEncodingException e) {
 				response_obj.setResult(BaseResponse.RESPONSE_CONNECTION_ERROR);
 				e.printStackTrace();
-				Log.d("HttpRequestManager",
-						"ERROR: body(" + body + ")"
-								+ "UnsupportedEncodingException message:"
-								+ e.toString());
 				HttpAccessLog.getInstance().writeLogToFile(
 						"ERROR: body(" + body + ")"
 								+ "UnsupportedEncodingException message:"
@@ -333,8 +318,6 @@ public class HttpRequestManager {
 			} catch (ClientProtocolException e) {
 				response_obj.setResult(BaseResponse.RESPONSE_CONNECTION_ERROR);
 				e.printStackTrace();
-				Log.d("HttpRequestManager", "ERROR: body(" + body + ")"
-						+ "ClientProtocolException message:" + e.toString());
 				HttpAccessLog.getInstance().writeLogToFile(
 						"ERROR: body(" + body + ")"
 								+ "ClientProtocolException message:"
@@ -342,16 +325,12 @@ public class HttpRequestManager {
 			} catch (IOException e) {
 				response_obj.setResult(BaseResponse.RESPONSE_CONNECTION_ERROR);
 				e.printStackTrace();
-				Log.d("HttpRequestManager", "ERROR: body(" + body + ")"
-						+ "IOException message:" + e.toString());
 				HttpAccessLog.getInstance().writeLogToFile(
 						"ERROR: body(" + body + ")" + "IOException message:"
 								+ e.toString());
 			} catch (Exception e) {
 				response_obj.setResult(BaseResponse.RESPONSE_CONNECTION_ERROR);
 				e.printStackTrace();
-				Log.d("HttpRequestManager", "ERROR: body(" + body + ")"
-						+ "Exception message:" + e.toString());
 				HttpAccessLog.getInstance().writeLogToFile(
 						"ERROR: body(" + body + ")" + "Exception message:"
 								+ e.toString());

@@ -218,26 +218,21 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			if (intent.getAction().equalsIgnoreCase(
-					MessageUti.USER_CHANGE_PASSWORD_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+			if (MessageUti.USER_CHANGE_PASSWORD_REQUEST.equals(action)) {
+				if (ok){
 //						String strInfo = getString(R.string.change_password_successful);
 //						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
                         showUpgradeDialog();
 				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
-					if(strErrorCode.equals(ErrorCode.CURRENT_PASSWORD_IS_WRONG)){
+				else if(response.isValid() && null != response.getErrorCode()){
+					if(response.getErrorCode().equals(ErrorCode.CURRENT_PASSWORD_IS_WRONG)){
 						String strInfo = getString(R.string.wrong_current_password);
 						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 					}
-					else if(strErrorCode.equals(ErrorCode.CHANGE_PASSWORD_FAILED)){
+					else if(response.getErrorCode().equals(ErrorCode.CHANGE_PASSWORD_FAILED)){
 						String strInfo = getString(R.string.change_password_failed);
 						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 					}

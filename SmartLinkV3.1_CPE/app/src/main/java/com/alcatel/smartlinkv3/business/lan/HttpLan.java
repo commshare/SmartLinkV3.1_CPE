@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.business.lan;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.httpservice.BooleanResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 import com.google.gson.Gson;
@@ -14,22 +15,22 @@ public class HttpLan {
 	/*Get Lan Settings*/
 	public static class getLanSettingsRequest extends BaseRequest{
 
-		public getLanSettingsRequest(String strId, IHttpFinishListener callback) {
-			super("GetLanSettings", strId, callback);
+		public getLanSettingsRequest(IHttpFinishListener callback) {
+			super("GetLanSettings", "11.1", callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new getLanSettingsResponse(m_finsishCallback);
+			return new LanSettingsResponse(m_finsishCallback);
 		}
 		
 	}
 	
-	public static class getLanSettingsResponse extends BaseResponse{
+	public static class LanSettingsResponse extends BaseResponse{
 
 		private LanInfo m_lanInfo=null;
-		public getLanSettingsResponse(IHttpFinishListener callback) {
+		public LanSettingsResponse(IHttpFinishListener callback) {
 			super(callback);
 			// TODO Auto-generated constructor stub
 		}
@@ -51,11 +52,11 @@ public class HttpLan {
 	}
 	
 	/*Set Lan Settings*/
-	public static class setLanSettinsRequest extends BaseRequest{
+	public static class LanSettinsRequest extends BaseRequest{
 
 		private LanInfo m_lanInfo = new LanInfo();
-		public setLanSettinsRequest(String strId, LanInfo laninfo, IHttpFinishListener callback) {
-			super("SetLanSettings", strId, callback);
+		public LanSettinsRequest(LanInfo laninfo, IHttpFinishListener callback) {
+			super("SetLanSettings", "11.2", callback);
 			m_lanInfo = laninfo;
 		}
 
@@ -76,33 +77,7 @@ public class HttpLan {
 		@Override
 		public BaseResponse createResponseObject() {
 			// TODO Auto-generated method stub
-			return new setLanSettingsResponse(m_finsishCallback);
+			return new BooleanResponse(m_finsishCallback);
 		}
-		
-	}
-	
-	public static class setLanSettingsResponse extends BaseResponse{
-
-		private Boolean m_blRes = false;
-		public setLanSettingsResponse(IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
-			if (!strJsonResult.isEmpty()) {
-				m_blRes = true;
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public Boolean getModelResult() {
-			// TODO Auto-generated method stub
-			return m_blRes;
-		}
-		
 	}
 }

@@ -503,13 +503,14 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+        String action = intent.getAction();
+        BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+        Boolean ok = response != null && response.isOk();
+
 		super.onBroadcastReceive(context, intent);
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_APP_BACKUP)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+		if(MessageUti.SYSTEM_SET_APP_BACKUP.equals(action)){
 //			String strTost = getString(R.string.setting_backup_failed);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
                 //获取配置文件
                 String strPath = Environment.getExternalStorageDirectory().getPath()
                         + getString(R.string.setting_backup_path);
@@ -546,11 +547,9 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			
 		}
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+		if(MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP.equals(action)){
 			String strTost = getString(R.string.setting_restore_failed);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				RestoreError info = BusinessManager.getInstance().getRestoreError();
 				int nErrorStatus = info.getRestoreError();
 				EnumRestoreErrorStatus status = EnumRestoreErrorStatus.build(nErrorStatus);
@@ -575,21 +574,12 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
 			ShowWaiting(false);
 		}
 		
-		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
+			if(ok) {
 				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
                     mBackupTv.setClickable(true);
-					if(m_bRestore)
-					{
-                        mRestoreTv.setClickable(false);
-					}
-					else
-					{
-                        mRestoreTv.setClickable(true);
-					}
+					mRestoreTv.setClickable(!m_bRestore);
 				}else{
                     mBackupTv.setClickable(false);
                     mRestoreTv.setClickable(false);

@@ -36,6 +36,7 @@ import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 import java.text.DecimalFormat;
 
@@ -86,17 +87,15 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	private class UsageSettingReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if(intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+			if(ok && intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
 					updateUI();
-				}
 			} else if (intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				String msgRes = null;
-				if (nResult == 0 && strErrorCode.length() == 0) {
+				if (ok) {
 					msgRes = UsageSettingActivity.this.getString(R.string.usage_clear_history_success);
 					Toast.makeText(UsageSettingActivity.this, msgRes,Toast.LENGTH_SHORT).show();
 				}else{
@@ -106,126 +105,52 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			}else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)
 					|| intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)
 					|| intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				if (nResult == 0) {
+
+				if (ok) {
 					updateUI();
 				}
-			}else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET)) {
+				if (ok) {
 					m_bIsBillingValueEdit= false;
 					showSettingBilling();
 				}
-				
-			}
-
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_SET_ALERT_VALUE_REQUSET)) {
+				if (ok) {
 					m_bIsAlertValueEdit= false;
 //					showSettingAlert();
 				}
-			}
-
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET)) {
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET)) {
 				m_bIsMonthlyValueEdit = false;
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+				if (ok) {
 					showSettingMonthly();
 				}
-			}
-
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_USED_DATA_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_SET_USED_DATA_REQUSET)) {
+				if (ok) {
 					//updateUI();
 				}
-			}
-
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET)) {
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET)) {
 				m_bIsTimeLimitStatusEdit = false;
 				showTimeLimitInfo();
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
-					
-				}
-			}
-			
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET)) {
+				if (ok) {
 					m_bIsTimeLimitEdit = false;
 					showTimeLimitInfo();
 				}
-			}
-			
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_USED_TIMES_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+			} else if (intent.getAction().equals(MessageUti.STATISTICS_SET_USED_TIMES_REQUSET)) {
+				if (ok) {
 					//updateUI();
 				}
-			}
-			
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET)) {
+			} else if (intent.getAction().equals(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET)) {
 				m_bIsAutoDisconnectedEdit = false;
 				showUsageAutoDisconnectBtn();
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
-					
-				}
-			}
-			
-			else if (intent.getAction().equals(
-					MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
+			}else if (intent.getAction().equals(MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
 //				showRoamingAutoDisconnectBtn();
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
-					
-				}
-			}
-			
-			else if (intent.getAction().equals(
-					MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+			}else if (intent.getAction().equals(MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
+				if (ok) {
 //					showRoamingAutoDisconnectBtn();
 				}
-			}
-			
-			else if (intent.getAction().equals(
-					MessageUti.STATISTICS_SET_UNIT_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (nResult == 0 && strErrorCode.length() == 0) {
+			}else if (intent.getAction().equals(MessageUti.STATISTICS_SET_UNIT_REQUSET)) {
+				if (ok) {
 					setSettingMonthly();
 				}
 			}

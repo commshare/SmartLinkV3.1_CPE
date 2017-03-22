@@ -113,48 +113,37 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private class ViewConnectBroadcastReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+
 			if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 				resetConnectBtnFlag();
 				m_connectLayout.setVisibility(View.VISIBLE);
 				m_connectedLayout.setVisibility(View.GONE);
 				showConnectBtnView();
-	    	}
-			
-			if(intent.getAction().equals(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+	    	} else if(intent.getAction().equals(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET)) {
+				if(ok) {
 					showSignalAndNetworkType();
 					showNetworkState();
 					showConnectBtnView();
 				}
-	    	}
-			
-			if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				if(nResult == BaseResponse.RESPONSE_OK) {
+	    	} else if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
+				if(ok) {
 					showSignalAndNetworkType();
 					resetConnectBtnFlag();
 					showNetworkState();
 					showConnectBtnView();
 				}			
-	    	}
-			
-			if(intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+	    	} else if(intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)) {
+				if(ok) {
 					resetConnectBtnFlag();
 					showNetworkState();
 					showConnectBtnView();
 				}
-	    	}
-			
-			if (intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)
+	    	}else if (intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)
 					|| intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				if(ok) {
 					m_bConnectReturn = true;
 				}else{
 					//operation fail
@@ -162,20 +151,12 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					showNetworkState();
 					showConnectBtnView();
 				}
-			}
-			
-			if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			} else if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
+				if(ok) {
 					showAccessDeviceState();
 				}
-			}
-			
-			if (intent.getAction().equals(MessageUti.POWER_GET_BATTERY_STATE)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			} else if (intent.getAction().equals(MessageUti.POWER_GET_BATTERY_STATE)) {
+				if(ok) {
 					showBatteryState();
 				}
 			}

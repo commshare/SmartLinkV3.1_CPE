@@ -11,8 +11,8 @@ import java.util.List;
 public class HttpSearchNetworkResult {
 	public static class SearchNetworkResult extends BaseRequest{
 
-		public SearchNetworkResult(String strId, IHttpFinishListener callback) {
-			super("SearchNetworkResult", strId, callback);
+		public SearchNetworkResult(IHttpFinishListener callback) {
+			super("SearchNetworkResult", "4.3",  callback);
 		}
 
 		@Override

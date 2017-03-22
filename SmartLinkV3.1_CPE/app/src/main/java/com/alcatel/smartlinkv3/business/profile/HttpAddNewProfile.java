@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.profile;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
@@ -18,8 +17,8 @@ public class HttpAddNewProfile {
 		private int m_intAuthType = -1;
 		private String m_strDialNumber = "*99#";
 		
-		public AddNewProfile(String strId, String profileName, String dialNumber, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
-			super("AddNewProfile", strId, callback);
+		public AddNewProfile(String profileName, String dialNumber, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
+			super("AddNewProfile", "15.2", callback);
 			m_strProfileName = profileName;
 			m_strAPN = apn;
 			m_strUserName = userName;
@@ -41,31 +40,5 @@ public class HttpAddNewProfile {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, profileInfo);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new AddNewProfileResponse(m_finsishCallback);
-		}
-		
 	}
-	
-	
-	public static class AddNewProfileResponse extends BaseResponse
-    {
-        
-        public AddNewProfileResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		} 
-    }
 }

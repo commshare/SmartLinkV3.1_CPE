@@ -12,8 +12,8 @@ public class HttpGetProfileList {
 	
 	public static class GetProfileList extends BaseRequest{
 
-		public GetProfileList(String strId, IHttpFinishListener callback) {
-			super("GetProfileList", strId, callback);
+		public GetProfileList(IHttpFinishListener callback) {
+			super("GetProfileList", "15.1", callback);
 		}
 
 		@Override
@@ -56,10 +56,7 @@ public class HttpGetProfileList {
 			// TODO Auto-generated method stub
 			ProfileList.clear();
 		}
-		
 	}
-	
-	
 	
 	public class ProfileItem {
 		public String ProfileName;

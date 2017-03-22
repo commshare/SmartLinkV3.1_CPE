@@ -608,32 +608,25 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+
             if(intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
+                if (ok) {
                     showRoamingAutoDisconnectBtn();
                 }
             }else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)
                     || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)
                     || intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-                if (nResult == 0) {
+                if (ok) {
                     showRoamingAutoDisconnectBtn();
                 }
             }
 
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+				if (ok){
 					switch(BusinessManager.getInstance().getNetworkManager().getNetworkMode()){
 					
 					case 0:
@@ -643,19 +636,16 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 						break;
 					case 1:
 						m_mode_desc.setText("2G only");
-						
 						mode_2g_only.setChecked(true);
 						
 						break;
 					case 2:
 						m_mode_desc.setText("3G only");
-						
 						mode_3g_only.setChecked(true);
 						
 						break;
 					case 3:
 						m_mode_desc.setText("4G only");
-						
 						mode_lte_only.setChecked(true);
 						break;
 					default:
@@ -683,8 +673,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 					m_network_profile_management.setEnabled(true);
 					m_waiting_circle.setVisibility(View.GONE);
 				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				else if(response.isValid()){
 					//Log
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
@@ -694,19 +683,11 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+				if (ok){
 					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
 				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				else if(response.isValid()){
 					//Log
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
@@ -716,14 +697,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 			
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
 				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+				if (ok){
 //					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
 					m_profile_list_data = BusinessManager.getInstance().getProfileManager().GetProfileListData();
 					for(ProfileItem a : m_profile_list_data){
@@ -733,8 +708,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 						}
 					}
 				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				else if(response.isValid()){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
@@ -743,18 +717,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                     MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
                 m_bIsRoamingDisconnectedEdit = false;
                 showRoamingAutoDisconnectBtn();
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-                String strErrorCode = intent
-                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-
-                }
             }else if (intent.getAction().equals(
                     MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-                String strErrorCode = intent
-                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
+                if (ok) {
                     showRoamingAutoDisconnectBtn();
                 }
             }

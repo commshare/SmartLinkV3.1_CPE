@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.profile;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
@@ -14,8 +13,8 @@ public class HttpDeleteProfile {
 
 		private int ProfileID;
 		
-		public DeleteProfile(String strId, int profileID, IHttpFinishListener callback) {
-			super("DeleteProfile", strId, callback);
+		public DeleteProfile(int profileID, IHttpFinishListener callback) {
+			super("DeleteProfile", "15.4",  callback);
 			ProfileID = profileID;
 		}
 
@@ -26,30 +25,5 @@ public class HttpDeleteProfile {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, profileInfo);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new DeleteProfileResponse(m_finsishCallback);
-		}
-		
 	}
-	
-	public static class DeleteProfileResponse extends BaseResponse
-    {
-        
-        public DeleteProfileResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		} 
-    }
 }

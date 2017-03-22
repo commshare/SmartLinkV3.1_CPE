@@ -1,6 +1,18 @@
 package com.alcatel.smartlinkv3.common;
 
-import java.util.List;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.IBinder;
+import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
@@ -13,22 +25,10 @@ import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
-import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.app.ActivityManager.RunningServiceInfo;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.IBinder;
-import android.util.Log;
-import android.widget.RemoteViews;
+import java.util.List;
 
 public class NotificationService extends Service {
 	private static enum ALERT_TYPE {
@@ -54,11 +54,13 @@ public class NotificationService extends Service {
 	private class NotificationBroadcastReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+
 			if (DataConnectManager.getInstance().getCPEWifiConnected()) {
-				if (intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
-					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-					if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				if (MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET.equals(action)) {
+					if (ok) {
 						//	m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 					}
 				}
@@ -81,33 +83,22 @@ public class NotificationService extends Service {
 //					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 //				}
 				
-				if(intent.getAction().equals(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET)) {
-					int nResult = intent.getIntExtra(
-							MessageUti.RESPONSE_RESULT, 0);
-					String strErrorCode = intent
-							.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+				if(MessageUti.STATISTICS_SET_MONTHLY_PLAN_REQUSET.equals(action)) {
+
 					boolean bIsChange = intent.getBooleanExtra(StatisticsManager.IS_CHANGED,false);
-					if(bIsChange == true) {
-					if (nResult == BaseResponse.RESPONSE_OK
-							&& strErrorCode.length() == 0) {
-					m_isNeedToAlertUsageLimit = true;		
-//					m_isNeedToAlertBatteryLimit  = false;
-//					m_isNeedToAlertUpgrade = false;
-					
-					m_AlertUsageLimitLessOneTime = true;
-					m_AlertUsageLimitOverOneTime = true;	
-					m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
-					}
+					if(bIsChange && ok) {
+						m_isNeedToAlertUsageLimit = true;
+	//					m_isNeedToAlertBatteryLimit  = false;
+	//					m_isNeedToAlertUpgrade = false;
+
+						m_AlertUsageLimitLessOneTime = true;
+						m_AlertUsageLimitOverOneTime = true;
+						m_nm.cancel(ALERT_TYPE.UsageLimit.ordinal());
 					}
 				}
 				
-				if(intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
-					int nResult = intent.getIntExtra(
-							MessageUti.RESPONSE_RESULT, 0);
-					String strErrorCode = intent
-							.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-					if (nResult == BaseResponse.RESPONSE_OK
-							&& strErrorCode.length() == 0) {
+				if(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET.equals(action)) {
+					if (ok) {
 		    			m_isNeedToAlertUsageLimit = true;	
 						m_isNeedToAlertBatteryLimit  = false;
 						m_isNeedToAlertUpgrade = false;
@@ -118,10 +109,8 @@ public class NotificationService extends Service {
 		    		}
 		    	}
 				
-				if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				if(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
+					if(ok) {
 						SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 						if(simStatus.m_SIMState != ENUM.SIMState.Accessable) {
 							m_isNeedToAlertUsageLimit = true;	
@@ -133,10 +122,8 @@ public class NotificationService extends Service {
 					}
 		    	}		
 //battery				
-				if (intent.getAction().equalsIgnoreCase(MessageUti.POWER_GET_BATTERY_STATE)) {
-					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				if (MessageUti.POWER_GET_BATTERY_STATE.equals(action)) {
+					if(ok) {
 						BatteryInfo  batteryinfo = BusinessManager.getInstance().getBatteryInfo();
 						if(batteryinfo.getChargeState() == ConstValue.CHARGE_STATE_CHARGING)
 						{
@@ -160,10 +147,8 @@ public class NotificationService extends Service {
 						}
 					}
 //upgrade
-				if (intent.getAction().equalsIgnoreCase(MessageUti.UPDATE_GET_DEVICE_NEW_VERSION)) {
-					int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-					String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-					if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+				if (MessageUti.UPDATE_GET_DEVICE_NEW_VERSION.equals(action)) {
+					if(ok) {
 						m_isNeedToAlertUpgrade = true;
 //						m_isNeedToAlertBatteryLimit = false;
 //						m_isNeedToAlertUsageLimit = false;

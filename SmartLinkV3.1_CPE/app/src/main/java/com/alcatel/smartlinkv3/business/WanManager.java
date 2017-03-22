@@ -53,11 +53,9 @@ public class WanManager extends BaseManager {
 	
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
 		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			if (response != null && response.isOk()) {
 				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetConnectStatusTask();
@@ -99,7 +97,7 @@ public class WanManager extends BaseManager {
 	class GetConnectStatusTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState("3.1", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -117,10 +115,7 @@ public class WanManager extends BaseManager {
                     	//Log
                     }
                     
-                    Intent megIntent= new Intent(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET);
-                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, errorCode);
-        			m_context.sendBroadcast(megIntent);
+                    sendBroadcast(response, MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET);
                 }
             }));
         } 
@@ -131,7 +126,7 @@ public class WanManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "Connect") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.Connect("3.2", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.Connect(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -147,11 +142,8 @@ public class WanManager extends BaseManager {
                 }else{
                 	//Log
                 }
- 
-                Intent megIntent= new Intent(MessageUti.WAN_CONNECT_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.WAN_CONNECT_REQUSET);
             }
         }));
     } 
@@ -161,7 +153,7 @@ public class WanManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "DisConnect") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.DisConnect("3.3", new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.DisConnect(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -178,10 +170,7 @@ public class WanManager extends BaseManager {
                 	//Log
                 }
  
-                Intent megIntent= new Intent(MessageUti.WAN_DISCONNECT_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+                sendBroadcast(response, MessageUti.WAN_DISCONNECT_REQUSET);
             }
         }));
     } 
@@ -203,7 +192,7 @@ public class WanManager extends BaseManager {
 	class GetConnectionSettingsTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionSettings("3.4", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionSettings(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {   
@@ -229,10 +218,7 @@ public class WanManager extends BaseManager {
                     	//Log
                     }
                     
-                    Intent megIntent= new Intent(MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET);
-                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-        			m_context.sendBroadcast(megIntent);
+                    sendBroadcast(response, MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET);
                     }
             }));
         } 
@@ -250,7 +236,7 @@ public class WanManager extends BaseManager {
 		nConnectionSettings.clone(m_connectionSettings);
 		nConnectionSettings.RoamingConnect = ENUM.OVER_ROAMING_STATE.antiBuild(nRoamingConnectFlag);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.SetConnectionSettings("3.5",nConnectionSettings, new IHttpFinishListener() {           
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.SetConnectionSettings(nConnectionSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -267,10 +253,7 @@ public class WanManager extends BaseManager {
 
                 }
  
-                Intent megIntent= new Intent(MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+                sendBroadcast(response, MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET);
             }
         }));
     }  

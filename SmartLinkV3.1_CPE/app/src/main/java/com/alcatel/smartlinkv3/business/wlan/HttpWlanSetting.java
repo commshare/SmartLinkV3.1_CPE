@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.wlan;
 
 
-import android.R.string;
 import android.util.Log;
 
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
@@ -20,8 +19,8 @@ public class HttpWlanSetting {
 	/******************** get wlan setting **************************************************************************************/
 	public static class GetWlanSetting extends BaseRequest {
 		
-		public GetWlanSetting(String strId,	IHttpFinishListener callback) {
-			super("GetWlanSettings", strId, callback);
+		public GetWlanSetting(IHttpFinishListener callback) {
+			super("GetWlanSettings", "5.4", callback);
 		}
 
 		@Override
@@ -76,9 +75,6 @@ public class HttpWlanSetting {
 
 		protected void set_Prase_new_Setting_Result(WlanSettingResult m_result,WlanNewSettingResult m_New_result)
 		{
-			
-		
-			
 			m_result.curr_num=m_New_result.curr_num;
 			m_result.WlanAPMode=m_New_result.WlanAPMode;
 			int size=m_New_result.APList.size();
@@ -139,8 +135,8 @@ public class HttpWlanSetting {
 
 		public WlanSettingResult m_result = new WlanSettingResult();
 
-		public SetWlanSetting(String strId,	WlanSettingResult result, IHttpFinishListener callback) {
-			super("SetWlanSettings", strId, callback);
+		public SetWlanSetting(WlanSettingResult result, IHttpFinishListener callback) {
+			super("SetWlanSettings", "5.5", callback);
 			m_result = result;
 		}
 		
@@ -229,41 +225,14 @@ public class HttpWlanSetting {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetWlanSettingResponse(m_finsishCallback);
-		}
-
 	}
-
-	public static class SetWlanSettingResponse extends BaseResponse {
-
-	
-		public SetWlanSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-		
-		@Override
-		protected void parseContent(String strJsonResult) {
-		
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			// TODO Auto-generated method stub
-			return null;
-		}	
-	}	
-	
-	
 	
 	/*Set WPS Pin*/
 	public static class SetWPSPin extends BaseRequest{
 		public String m_strPin = new String();
 
-		public SetWPSPin(String strId, String strPin,IHttpFinishListener callback) {
-			super("SetWPSPin", strId, callback);
+		public SetWPSPin(String strPin,IHttpFinishListener callback) {
+			super("SetWPSPin", "5.6", callback);
 			m_strPin = strPin;
 		}
 
@@ -275,75 +244,24 @@ public class HttpWlanSetting {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new SetWPSPinResponse(m_finsishCallback);
-		}
-		
 	}
-	
-	public static class SetWPSPinResponse extends BaseResponse{
 
-		private string WpsPinString =null;
-		public SetWPSPinResponse(IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-        protected void parseContent(String strJsonResult) {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
-		
-	}
 	
 	/*Setb WPS Pbc*/
 	public static class SetWPSPbc extends BaseRequest{
 
-		public SetWPSPbc(String strId, IHttpFinishListener callback) {
-			super("SetWPSPbc", strId, callback);
+		public SetWPSPbc(IHttpFinishListener callback) {
+			super("SetWPSPbc", "5.7", callback);
 		}
 
-		@Override
-		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new SetWPSPbcResponse(m_finsishCallback);
-		}
-		
 	}
-	
-	public static class SetWPSPbcResponse extends BaseResponse
-    {   
-        public SetWPSPbcResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
-        }
-    }
 	
 	/*get Wlan support mode start*/
 	public static class getWlanSupportModeRequest extends BaseRequest{
 
-		public getWlanSupportModeRequest(String strID, IHttpFinishListener callback) {
-			super("GetWlanSupportMode", strID, callback);
+		public getWlanSupportModeRequest(IHttpFinishListener callback) {
+			super("GetWlanSupportMode", "5.8", callback);
 		}
 
 		@Override

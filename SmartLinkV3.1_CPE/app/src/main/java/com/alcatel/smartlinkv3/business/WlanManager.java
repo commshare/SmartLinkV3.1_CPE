@@ -216,8 +216,7 @@ public class WlanManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.GetWlanSetting("5.4",
-						new IHttpFinishListener() {
+				new HttpWlanSetting.GetWlanSetting(new IHttpFinishListener() {
 					@Override
 					public void onHttpRequestFinish(
 							BaseResponse response) {
@@ -238,14 +237,7 @@ public class WlanManager extends BaseManager {
 							// Log
 						}
 
-						Intent megIntent = new Intent(
-								MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
-						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-								ret);
-						megIntent.putExtra(
-								MessageUti.RESPONSE_ERROR_CODE,
-								strErrcode);
-						m_context.sendBroadcast(megIntent);
+						sendBroadcast(response, MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
 					}
 				}));
 	}
@@ -323,7 +315,7 @@ public class WlanManager extends BaseManager {
 		}
 		
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.SetWlanSetting("5.5", settings,
+				new HttpWlanSetting.SetWlanSetting(settings,
 						new IHttpFinishListener() {
 					@Override
 					public void onHttpRequestFinish(
@@ -343,14 +335,7 @@ public class WlanManager extends BaseManager {
 							// Log
 						}
 
-						Intent megIntent = new Intent(
-								MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
-						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-								ret);
-						megIntent.putExtra(
-								MessageUti.RESPONSE_ERROR_CODE,
-								strErrcode);
-						m_context.sendBroadcast(megIntent);
+						sendBroadcast(response, MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
 					}
 				}));
 	}
@@ -366,7 +351,7 @@ public class WlanManager extends BaseManager {
 		String m_strPin = (String) data.getParamByKey("WpsPin");
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.SetWPSPin("5.6",m_strPin,
+				new HttpWlanSetting.SetWPSPin(m_strPin,
 						new IHttpFinishListener() {
 					@Override
 					public void onHttpRequestFinish(
@@ -385,15 +370,7 @@ public class WlanManager extends BaseManager {
 						} else {
 							// Log
 						}
-
-						Intent megIntent = new Intent(
-								MessageUti.WLAN_SET_WPS_PIN_REQUSET);
-						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-								ret);
-						megIntent.putExtra(
-								MessageUti.RESPONSE_ERROR_CODE,
-								strErrcode);
-						m_context.sendBroadcast(megIntent);
+						sendBroadcast(response, MessageUti.WLAN_SET_WPS_PIN_REQUSET);
 					}
 				}));
 	}
@@ -406,8 +383,7 @@ public class WlanManager extends BaseManager {
 			return;
 
 		HttpRequestManager.GetInstance().sendPostRequest(
-				new HttpWlanSetting.SetWPSPbc("5.7",
-						new IHttpFinishListener() {
+				new HttpWlanSetting.SetWPSPbc(new IHttpFinishListener() {
 					@Override
 					public void onHttpRequestFinish(
 							BaseResponse response) {
@@ -425,14 +401,7 @@ public class WlanManager extends BaseManager {
 							// Log
 						}
 
-						Intent megIntent = new Intent(
-								MessageUti.WLAN_SET_WPS_PBC_REQUSET);
-						megIntent.putExtra(MessageUti.RESPONSE_RESULT,
-								ret);
-						megIntent.putExtra(
-								MessageUti.RESPONSE_ERROR_CODE,
-								strErrcode);
-						m_context.sendBroadcast(megIntent);
+						sendBroadcast(response, MessageUti.WLAN_SET_WPS_PBC_REQUSET);
 					}
 				}));
 	}
@@ -451,8 +420,7 @@ public class WlanManager extends BaseManager {
 		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blCPEWifiConnected) {
 			HttpRequestManager.GetInstance().sendPostRequest(
-					new HttpWlanSetting.getWlanSupportModeRequest("5.8", 
-							new IHttpFinishListener() {
+					new HttpWlanSetting.getWlanSupportModeRequest(new IHttpFinishListener() {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
@@ -465,10 +433,7 @@ public class WlanManager extends BaseManager {
 								getWlanSupportMode(null);
 							}
 							
-							Intent megIntent = new Intent(MessageUti.WLAN_SET_WPS_PBC_REQUSET);
-							megIntent.putExtra(MessageUti.RESPONSE_RESULT,nRes);
-							megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE,strErr);
-							m_context.sendBroadcast(megIntent);
+							sendBroadcast(response, MessageUti.WLAN_SET_WPS_PBC_REQUSET);
 						}
 					}));
 		}

@@ -14,11 +14,10 @@ public class HttpUsageHistory {
 /******************** GetUsageHistory  **************************************************************************************/	
 	public static class GetUsageRecord extends BaseRequest
     {			
-        public GetUsageRecord(String strId,IHttpFinishListener callback) 
+        public GetUsageRecord(IHttpFinishListener callback)
         {
-        	super("GetUsageRecord", strId, callback);
-
-        	           }
+        	super("GetUsageRecord", "7.1", callback);
+        }
 
         @Override
         public BaseResponse createResponseObject() 
@@ -57,9 +56,9 @@ public class HttpUsageHistory {
     {	
 		String m_strUsageCleartime = new String();
 		
-        public SetUsageRecordClear(String strId,String Cleartime, IHttpFinishListener callback) 
+        public SetUsageRecordClear(String Cleartime, IHttpFinishListener callback)
         {
-        	super("SetUsageRecordClear", strId, callback);
+        	super("SetUsageRecordClear", "7.2", callback);
         	m_strUsageCleartime = Cleartime;
         }
 
@@ -70,33 +69,6 @@ public class HttpUsageHistory {
             usageClearTime.put("clear_time", m_strUsageCleartime);
 
             m_requestParamJson.put(ConstValue.JSON_PARAMS, usageClearTime);
-
-        }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new SetUsageRecordClearResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class SetUsageRecordClearResponse extends BaseResponse
-    {   
-        public SetUsageRecordClearResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	
-        }
-
-        @Override
-        public <T> T getModelResult() 
-        {
-             return null;
         }
     }
 }

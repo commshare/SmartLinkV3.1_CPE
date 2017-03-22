@@ -1,11 +1,5 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.business.model.SystemInfoModel;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,6 +10,12 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.model.SystemInfoModel;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
 public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 
@@ -176,13 +176,13 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
 		super.onBroadcastReceive(context, intent);
 		if(intent.getAction().equalsIgnoreCase(MessageUti.LAN_GET_LAN_SETTINGS)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.unknown_error);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				m_tv_ip_value.setText(BusinessManager.getInstance().getSystemInfoModel().getIP());
 				m_tv_subnet_value.setText(BusinessManager.getInstance().getSystemInfoModel().getSubnet());
 				m_tv_imei_value.setText(BusinessManager.getInstance().getSystemInfoModel().getIMEI());

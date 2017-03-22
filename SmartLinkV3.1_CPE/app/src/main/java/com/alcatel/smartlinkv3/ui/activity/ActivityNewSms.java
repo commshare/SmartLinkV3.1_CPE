@@ -1,18 +1,5 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.common.Const;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -31,6 +18,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.common.Const;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private TextView m_btnCancel = null;
@@ -171,20 +171,18 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		return true;
 	}
 
-
-	
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
 		super.onBroadcastReceive(context, intent);
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)){				
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			String msgRes = null;
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)){
+			String msgRes;
+			if(ok) {
 				msgRes = this.getString(R.string.sms_save_success);
-			}else if(strErrorCode.endsWith(ErrorCode.ERR_SAVE_SMS_SIM_IS_FULL)){
+			}else if(response != null && response.getErrorCode().endsWith(ErrorCode.ERR_SAVE_SMS_SIM_IS_FULL)){
 				msgRes = this.getString(R.string.sms_error_message_full_storage);
 			}else{
 				msgRes = this.getString(R.string.sms_save_error);
@@ -193,13 +191,11 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			this.finish();
 		}
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_SEND_SMS_REQUSET)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {					
+		if(MessageUti.SMS_SEND_SMS_REQUSET.equals(action)){
+			if(ok) {
 				//BusinessManager.getInstance().refreshSmsListAtOnce();
 			}
-			else if(strErrorCode.endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
+			else if(response != null && response.getErrorCode().endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL))
 			{
 				String msgRes = this.getString(R.string.sms_error_message_full_storage);
     			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
@@ -219,10 +215,8 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			}
 		}
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SEND_STATUS_REQUSET)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {	
+		if(MessageUti.SMS_GET_SEND_STATUS_REQUSET.equals(action)){
+			if(ok) {
 				int nSendReslt = intent.getIntExtra(Const.SMS_SNED_STATUS, 0);
 				SendStatus sendStatus = SendStatus.build(nSendReslt);
 				m_sendStatus = sendStatus;
@@ -245,7 +239,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	    			bEnd = true;
 				}
 				
-				if(bEnd == true){
+				if(bEnd){
 					m_bSendEnd = true;
 					//BusinessManager.getInstance().refreshSmsListAtOnce();
 					

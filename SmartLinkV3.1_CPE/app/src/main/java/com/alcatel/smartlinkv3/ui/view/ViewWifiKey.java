@@ -105,34 +105,26 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 	{
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 			if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					initValues();
 					//init controls state
 					initSpinersUI();
 					setControlsDoneStatus();
 					ShowWaiting(false);
 				}
-			}
-
-
-			if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			} else if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET)){
+				if (ok) {
 					//init controls state
 					initSpinersUI();
 					setControlsDoneStatus();
 				}
-			}
-
-			if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)){
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-				String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+			} else if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)){
 				String strTost = m_context.getString(R.string.setting_wifi_set_failed);
-				if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+				if (ok) {
 					strTost = m_context.getString(R.string.setting_wifi_set_success);
 				}else {
 					initValues();

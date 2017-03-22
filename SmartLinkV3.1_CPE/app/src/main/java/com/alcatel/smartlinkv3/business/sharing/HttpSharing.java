@@ -15,8 +15,8 @@ public class HttpSharing {
 	public static class SetFtpSetting extends BaseRequest {
 		private int m_nStatus = 0;
 
-		public SetFtpSetting(String strId, int nStatus, IHttpFinishListener callback) {
-			super("SetFtpStatus", strId, callback);
+		public SetFtpSetting(int nStatus, IHttpFinishListener callback) {
+			super("SetFtpStatus", "14.6", callback);
 			m_nStatus = nStatus;
 		}
 
@@ -27,35 +27,13 @@ public class HttpSharing {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetFtpSettingResponse(m_finsishCallback);
-		}
-
 	}
 
-	public static class SetFtpSettingResponse extends BaseResponse {
-
-		public SetFtpSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			return null;
-		}
-	}
 	/*******************get ftp setting******************************************************************************************/
 	public static class GetFtpSetting extends BaseRequest {	
 
-		public GetFtpSetting(String strId, IHttpFinishListener callback) {
-			super("GetFtpStatus", strId, callback);
+		public GetFtpSetting(IHttpFinishListener callback) {
+			super("GetFtpStatus", "14.5", callback);
 		}
 
 		@Override
@@ -89,8 +67,8 @@ public class HttpSharing {
 	public static class SetUSBcardSetting extends BaseRequest {
 		private int m_nStatus = 0;
 
-		public SetUSBcardSetting(String strId, int nStatus, IHttpFinishListener callback) {
-			super("SetUsbcardStatus", strId, callback);
+		public SetUSBcardSetting(int nStatus, IHttpFinishListener callback) {
+			super("SetUsbcardStatus", "14.11",  callback);
 			m_nStatus = nStatus;
 		}
 
@@ -101,37 +79,14 @@ public class HttpSharing {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetUSBcardSettingResponse(m_finsishCallback);
-		}
-
 	}
 
-	public static class SetUSBcardSettingResponse extends BaseResponse {
-
-		public SetUSBcardSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			return null;
-		}
-	}
-	
 	/******************** set samba setting **************************************************************************************/
 	public static class SetSambaSetting extends BaseRequest {
 		private int m_nStatus = 0;
 
-		public SetSambaSetting(String strId, int nStatus, IHttpFinishListener callback) {
-			super("SetSambaStatus", strId, callback);
+		public SetSambaSetting(int nStatus, IHttpFinishListener callback) {
+			super("SetSambaStatus", "14.4", callback);
 			m_nStatus = nStatus;
 		}
 
@@ -142,37 +97,14 @@ public class HttpSharing {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetSambaSettingResponse(m_finsishCallback);
-		}
-
 	}
 
-	public static class SetSambaSettingResponse extends BaseResponse {
-
-		public SetSambaSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			return null;
-		}
-	}
-	
 	
 	/******************** get samba setting **************************************************************************************/
 	public static class GetSambaSetting extends BaseRequest {	
 
-		public GetSambaSetting(String strId, IHttpFinishListener callback) {
-			super("GetSambaStatus", strId, callback);
+		public GetSambaSetting(IHttpFinishListener callback) {
+			super("GetSambaStatus", "14.3", callback);
 		}
 
 		@Override
@@ -209,8 +141,8 @@ public class HttpSharing {
 		private int m_status = 0;
 		private String m_name;
 
-		public SetDlnaSetting(String strId, int status, String name, IHttpFinishListener callback) {
-			super("SetDLNASettings", strId, callback);
+		public SetDlnaSetting(int status, String name, IHttpFinishListener callback) {
+			super("SetDLNASettings", "14.2",  callback);
 			m_status = status;
 			m_name = name;	
 		}
@@ -223,37 +155,14 @@ public class HttpSharing {
 				m_requestParamJson
 						.put(ConstValue.JSON_PARAMS, settings);
 		}
-
-		@Override
-		public BaseResponse createResponseObject() {
-			return new SetDlnaSettingResponse(m_finsishCallback);
-		}
-
 	}
 
-	public static class SetDlnaSettingResponse extends BaseResponse {
-
-		public SetDlnaSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-
-		}
-
-		@Override
-		public <T> T getModelResult() {
-			return null;
-		}
-	}
-	
 	
 	/******************** get DLNA setting **************************************************************************************/
 	public static class GetDlnaSetting extends BaseRequest {	
 
-		public GetDlnaSetting(String strId, IHttpFinishListener callback) {
-			super("GetDLNASettings", strId, callback);
+		public GetDlnaSetting(IHttpFinishListener callback) {
+			super("GetDLNASettings", "14.1", callback);
 		}
 
 		@Override
@@ -285,8 +194,8 @@ public class HttpSharing {
 	/******************** GetSDCardSpace **************************************************************************************/
 	public static class GetSDCardSpace extends BaseRequest {	
 
-		public GetSDCardSpace(String strId, IHttpFinishListener callback) {
-			super("GetSDCardSpace", strId, callback);
+		public GetSDCardSpace(IHttpFinishListener callback) {
+			super("GetSDCardSpace", "14.7", callback);
 		}
 
 		@Override
@@ -319,8 +228,8 @@ public class HttpSharing {
 	/******************** GetSDCardStatus **************************************************************************************/
 	public static class GetSDcardStatus extends BaseRequest {	
 
-		public GetSDcardStatus(String strId, IHttpFinishListener callback) {
-			super("GetSDcardStatus", strId, callback);
+		public GetSDcardStatus(IHttpFinishListener callback) {
+			super("GetSDcardStatus", "14.9", callback);
 		}
 
 		@Override
@@ -349,6 +258,4 @@ public class HttpSharing {
 			return m_result;
 		}
 	}
-	
-	
 }

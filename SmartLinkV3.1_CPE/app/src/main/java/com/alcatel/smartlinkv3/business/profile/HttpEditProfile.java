@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.profile;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
@@ -19,8 +18,8 @@ public class HttpEditProfile {
 		private int m_intAuthType = -1;
 		private String m_strDialNumber = "*99#";
 		
-		public EditProfile(String strId, int profileID, String dialNumber, String profileName, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
-			super("EditProfile", strId, callback);
+		public EditProfile(int profileID, String dialNumber, String profileName, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
+			super("EditProfile", "15.3",  callback);
 			m_intProfileID = profileID;
 			m_strProfileName = profileName;
 			m_strAPN = apn;
@@ -42,29 +41,5 @@ public class HttpEditProfile {
 	        	profileInfo.put("IPAdrress", "");
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, profileInfo);
 		}
-		@Override
-		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new EditProfileResponse(m_finsishCallback);
-		}
-		
 	}
-	
-	public static class EditProfileResponse extends BaseResponse
-    {
-        
-        public EditProfileResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-		protected void parseContent(String strJsonResult) {			
-		}
-
-		@Override
-		public <T> T getModelResult() {		
-			return null;
-		} 
-    }
 }

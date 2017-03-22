@@ -25,7 +25,7 @@
     <string name="qs_title">Configuration rapide</string>
     <string name="qs_exit_query">Fermer Configuration rapide</string>
     <string name="qs_item_pin_code">Code PIN</string>
-    <string name="qs_pin_code_prompt">Saisissez le code PIN.\nTentatives restantes :  </string>
+    <string name="qs_pin_code_prompt">Saisissez le code PIN.\nTentatives restantes :  %1$d</string>
     <string name="qs_pin_code_prompt_num"><xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
     <string name="qs_item_wifi_ssid">Nom du réseau Wi-Fi (SSID)</string>
     <string name="qs_wifi_ssid_prompt">Le SSID doit être de 1&#8211;32 caractères.</string>
@@ -101,7 +101,7 @@
     <string name="usage_view_duration">Durée</string>
     <string name="bt_set_monthlydata">Forfait données mensuel</string>
     <string name="usage_status_des">Sans forfait données indiqué</string>
-    <string name="usage_duration">%1$sHrs %2$sMins</string>
+    <string name="usage_duration">%1$dHrs %2$dMins</string>
     <string name="disconnected_descrition">Quand l’usage des données atteint le forfait mensuel.</string>
     <string name="usage_clear_history_success">Historique d’usage effacé!</string>
     <string name="usage_clear_history_fail">Échec d’effacement de l’historique d’usage!</string>

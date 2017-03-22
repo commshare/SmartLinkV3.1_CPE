@@ -377,14 +377,11 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 				boolean needStop = intent.getBooleanExtra("needStopWaiting", false);
 				boolean isError = intent.getBooleanExtra("isError", false);
 				
@@ -399,8 +396,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 					m_network_searching_title.setVisibility(View.GONE);
 				}
 				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+				if (ok){
 					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
 					if(m_network_search_result_list != null){
 						m_adapter = new NetworkListAdapter(m_parent_activity, m_network_search_result_list);
@@ -412,18 +408,8 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_SEARCH_NETWORK_REQUSET)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
-					
-				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				if (ok){
+				}else if(response.isValid()){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 					m_waiting_search_result.setVisibility(View.GONE);
@@ -439,23 +425,14 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
 //				Log.v("NetworkSearchResult", "Yes");
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
 				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+				if (ok){
 					if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_MANUAL){
 						BusinessManager.getInstance().getNetworkManager().startSearchNetworkResult(null);
-					}
-					else if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
+					} else if(BusinessManager.getInstance().getNetworkManager().getNetworkSelection() == SELECTION_MODE_AUTO){
 						m_waiting_search_result.setVisibility(View.GONE);
 					}
-				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				} else if(response.isValid()){
 					//Log
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
@@ -466,18 +443,9 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 			
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.NETWORK_REGESTER_NETWORK_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+				if (ok){
 					m_waiting_search_result.setVisibility(View.GONE);
-				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				} else if(response.isValid()){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 					m_waiting_search_result.setVisibility(View.GONE);

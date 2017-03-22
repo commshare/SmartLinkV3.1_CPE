@@ -1,24 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
-import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
-import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
-import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
-import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -26,8 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
-import android.view.View.OnClickListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -41,6 +23,24 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
+import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
+import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
+import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
+import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
+import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
 
 public class SettingWifiActivity extends BaseFragmentActivity 
 implements OnClickListener{
@@ -1061,36 +1061,30 @@ implements OnClickListener{
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
 		super.onBroadcastReceive(context, intent);
-		if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+		if(ok && intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)){
+
 				initValues();
 				//init controls state
 				initSpinersUI();
 				setControlsDoneStatus();
 				ShowWaiting(false);
-			}
+
 		}
 		
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
-				//init controls state
+		if(ok && intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET)){
+						//init controls state
 				initSpinersUI();
 				setControlsDoneStatus();
-			}
 		}
 
 		if(intent.getAction().equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)){
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 			String strTost = getString(R.string.setting_wifi_set_failed);
-			if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
+			if (ok) {
 				strTost = getString(R.string.setting_wifi_set_success);
 			}else {
 				initValues();

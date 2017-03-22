@@ -431,17 +431,10 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 		
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			if (intent.getAction().equalsIgnoreCase(
-					MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
+			if (intent.getAction().equalsIgnoreCase(MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST)) {
+				if (ok){
 					m_is_default = true;
 					Default = 1;
 					m_switch_icon.setBackgroundResource(R.drawable.general_btn_on);
@@ -452,47 +445,21 @@ public class FragmentProfileManagementDetail extends Fragment implements OnClick
 					m_edit_password.setEnabled(false);
 					m_protocol_selection.setEnabled(false);
 					m_progress_bar.setVisibility(View.GONE);
-				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				} else {
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
-			if (intent.getAction().equalsIgnoreCase(
-					MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
-					
-				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+			if (intent.getAction().equalsIgnoreCase(MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST)) {
+				if (!ok){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
-			if (intent.getAction().equalsIgnoreCase(
-					MessageUti.PROFILE_EDIT_PROFILE_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
-					
-				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+			if (intent.getAction().equalsIgnoreCase(MessageUti.PROFILE_EDIT_PROFILE_REQUEST)) {
+				if (!ok){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}

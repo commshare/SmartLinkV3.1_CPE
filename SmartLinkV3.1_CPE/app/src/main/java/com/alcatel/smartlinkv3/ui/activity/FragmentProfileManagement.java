@@ -285,48 +285,33 @@ public class FragmentProfileManagement extends Fragment implements OnClickListen
 	
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
+			String action = intent.getAction();
+			BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+			Boolean ok = response != null && response.isOk();
 			if (intent.getAction().equalsIgnoreCase(
 					MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+				if (ok){
 //					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
 					m_profile_list_data = BusinessManager.getInstance().getProfileManager().GetProfileListData();
 					m_adapter = new ProfileListAdapter(getActivity(), m_profile_list_data);
 					m_profile_list.setAdapter(m_adapter);
 					m_progress_bar.setVisibility(View.GONE);
 				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				else if(response.isValid()){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
-			if (intent.getAction().equalsIgnoreCase(
-					MessageUti.PROFILE_DELETE_PROFILE_REQUEST)) {
-				int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-						BaseResponse.RESPONSE_OK);
-				
-				String strErrorCode = intent
-						.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-				
-				if (BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() == 0){
+			if (intent.getAction().equalsIgnoreCase(MessageUti.PROFILE_DELETE_PROFILE_REQUEST)) {
+				if (ok){
 					if(selected_deleted_position >=0){
 						m_profile_list_data.remove(selected_deleted_position);
 						m_adapter.notifyDataSetChanged();
 						m_progress_bar.setVisibility(View.GONE);
 					}
 				}
-				else if(BaseResponse.RESPONSE_OK == nResult
-						&& strErrorCode.length() > 0){
+				else if(response.isValid()){
 					String strInfo = getString(R.string.unknown_error);
 					Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
 				}

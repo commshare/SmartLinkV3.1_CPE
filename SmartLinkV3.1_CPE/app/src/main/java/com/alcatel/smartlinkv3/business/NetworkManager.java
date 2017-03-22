@@ -1,14 +1,15 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.util.Log;
 
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkInfo;
-import com.alcatel.smartlinkv3.business.network.HttpGetNetworkRegsterState;
-import com.alcatel.smartlinkv3.business.network.HttpGetNetworkRegsterState.GetNetworkRegsterStateResult;
+import com.alcatel.smartlinkv3.business.network.HttpGetNetworkRegisterState;
+import com.alcatel.smartlinkv3.business.network.HttpGetNetworkRegisterState.NetworkRegisterStateResult;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkSettings;
 import com.alcatel.smartlinkv3.business.network.HttpGetNetworkSettings.GetNetworkSettingResult;
 import com.alcatel.smartlinkv3.business.network.HttpRegisterNetwork;
@@ -25,10 +26,9 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.util.Log;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NetworkManager extends BaseManager {
 	private NetworkInfoModel m_networkInfo = new NetworkInfoModel();
@@ -79,7 +79,10 @@ public class NetworkManager extends BaseManager {
 	
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+		String action = intent.getAction();
+		BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+		Boolean ok = response != null && response.isOk();
+
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if(bCPEWifiConnected == true) {
@@ -87,10 +90,8 @@ public class NetworkManager extends BaseManager {
 			}
     	}
 		
-		if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
-			int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
-			String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-			if(nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
+		if(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
+			if(ok) {
 				SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 				if(simStatus.m_SIMState == ENUM.SIMState.Accessable) {
 					startGetNetworkInfoTask();
@@ -154,7 +155,7 @@ public class NetworkManager extends BaseManager {
 	class GetNetworkInfoTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkInfo.GetNetworkInfo("4.1", new IHttpFinishListener() {           
+        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkInfo.GetNetworkInfo(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -171,11 +172,8 @@ public class NetworkManager extends BaseManager {
                     }else{
                     	//Log
                     }
-                    
-                    Intent megIntent= new Intent(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET);
-                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-        			m_context.sendBroadcast(megIntent);
+
+        			sendBroadcast(response, MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET);
                 }
             }));
         } 
@@ -186,7 +184,7 @@ public class NetworkManager extends BaseManager {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetworkResult.SearchNetworkResult("4.3", new IHttpFinishListener(){
+			HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetworkResult.SearchNetworkResult(new IHttpFinishListener(){
 
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
@@ -229,8 +227,7 @@ public class NetworkManager extends BaseManager {
                     	is_error = true;
                     }
                     Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET);
-                    megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                    megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
+                    megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
                     megIntent.putExtra("needStopWaiting", stop_waiting);
                     megIntent.putExtra("isError", is_error);
         			m_context.sendBroadcast(megIntent);
@@ -247,7 +244,7 @@ public class NetworkManager extends BaseManager {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkRegsterState.GetNetworkRegisterState("4.5", new IHttpFinishListener(){
+			HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkRegisterState.GetNetworkRegisterState(new IHttpFinishListener(){
 
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
@@ -259,7 +256,7 @@ public class NetworkManager extends BaseManager {
 //                    	Log.v("NetworkRegisterTest", "RESPONSE_OK");
                     	if(strErrcode.length() == 0) {
 	                    		try{
-	                    			GetNetworkRegsterStateResult registerResult = response.getModelResult();
+	                    			NetworkRegisterStateResult registerResult = response.getModelResult();
 //		                    		Log.v("NetworkRegisterTest", "" + registerResult.State);
 		                    		if(registerResult.State == 0 || registerResult.State == 2 || registerResult.State == 3){
 		                    			stopGetNetworkRegisterState();
@@ -282,7 +279,7 @@ public class NetworkManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Network", "RegisterNetwork") != true){
 			return;
 		}
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpRegisterNetwork.RegisterNetwork("4.4", networId, new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpRegisterNetwork.RegisterNetwork(networId, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -295,12 +292,7 @@ public class NetworkManager extends BaseManager {
                     		try{
 //	                    		Log.v("NetworkRegisterTest", "OKOK");
 	                    		startGetRegisterStateTask();
-	                    		Intent megIntent= new Intent(MessageUti.NETWORK_REGESTER_NETWORK_REQUEST);
-	                            megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-	                            megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-	                			m_context.sendBroadcast(megIntent);
-	                    		
-	                    		
+	                			sendBroadcast(response, MessageUti.NETWORK_REGESTER_NETWORK_REQUEST);
                     		}
                     		catch(Exception e){
                     			
@@ -318,7 +310,7 @@ public class NetworkManager extends BaseManager {
 			return;
 		}
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork("4.2", new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork(new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -341,11 +333,8 @@ public class NetworkManager extends BaseManager {
                 else{
                 	Log.v("NetworkSearchResult", "Failed");
                 }
-                
-                Intent megIntent= new Intent(MessageUti.NETWORK_SEARCH_NETWORK_REQUSET);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.NETWORK_SEARCH_NETWORK_REQUSET);
                 
 			}
     	}));
@@ -360,7 +349,7 @@ public class NetworkManager extends BaseManager {
 			return;
 		}
 			
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkSettings.GetNetworkSettings("4.6", new IHttpFinishListener(){
+		HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkSettings.GetNetworkSettings(new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -388,11 +377,8 @@ public class NetworkManager extends BaseManager {
                 }else{
                 	//Log
                 }
-                
-                Intent megIntent= new Intent(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST);
  
 			}
 			
@@ -407,7 +393,7 @@ public class NetworkManager extends BaseManager {
     	final int networkMode = (Integer) data.getParamByKey("network_mode");
     	final int netselectionMode = (Integer) data.getParamByKey("netselection_mode");
     	
-    	HttpRequestManager.GetInstance().sendPostRequest(new HttpSetNetworkSettings.SetNetworkSettings("4.7", networkMode, netselectionMode, new IHttpFinishListener(){
+    	HttpRequestManager.GetInstance().sendPostRequest(new HttpSetNetworkSettings.SetNetworkSettings(networkMode, netselectionMode, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -426,11 +412,8 @@ public class NetworkManager extends BaseManager {
                 }else{
                 	//Log
                 }
-                
-                Intent megIntent= new Intent(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
-                megIntent.putExtra(MessageUti.RESPONSE_RESULT, ret);
-                megIntent.putExtra(MessageUti.RESPONSE_ERROR_CODE, strErrcode);
-    			m_context.sendBroadcast(megIntent);
+
+    			sendBroadcast(response, MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
 			}
     		
     	}));
