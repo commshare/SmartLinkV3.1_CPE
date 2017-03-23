@@ -13,7 +13,8 @@ import android.text.format.Formatter;
 import android.util.Log;
 
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+
 public class WifiNetworkReceiver extends BroadcastReceiver{
 	private static int m_nType = -1;
 	private static String m_strGatewayMac = new String();
@@ -25,7 +26,7 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 			/*boolean bDisconnect = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
 			if(bDisconnect == true) {
 				DataConnectManager.getInstance().setWifiConnected(false);
-				stopBussiness(context);
+				stop(context);
 			}else{
 				testWebServer(context);
 			}	*/
@@ -33,7 +34,7 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 	}
 	
 	private void stopBussiness(Context context) {
-		HttpRequestManager.GetInstance().stopBussiness();
+		LegacyHttpClient.getInstance().stop();
 		
 		Intent intent= new Intent(MessageUti.CPE_BUSINESS_STATUS_CHANGE);
 		intent.putExtra("stop", true);
@@ -41,7 +42,7 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 	}
 	
 	private void startBussiness(Context context) {
-		HttpRequestManager.GetInstance().startBussiness();
+		LegacyHttpClient.getInstance().start();
 		
 		Intent intent= new Intent(MessageUti.CPE_BUSINESS_STATUS_CHANGE);
 		intent.putExtra("stop", false);
@@ -53,7 +54,7 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 			String strServerIp = getServerAddress(context);
 			Log.d("strServerIp", strServerIp);
 			if(!strServerIp.equalsIgnoreCase("0.0.0.0")) {
-				HttpRequestManager.GetInstance().setServerAddress(strServerIp);
+				LegacyHttpClient.getInstance().setServerAddress(strServerIp);
 				BusinessManager.getInstance().setServerAddress(strServerIp);
 				
 				startBussiness(context);

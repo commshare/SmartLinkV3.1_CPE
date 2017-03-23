@@ -8,8 +8,8 @@ import com.alcatel.smartlinkv3.business.lan.LanInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 public class LanManager extends BaseManager {
 
@@ -56,7 +56,7 @@ public class LanManager extends BaseManager {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance()
 				.getCPEWifiConnected();
 		if (bCPEWifiConnected){
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpLan.getLanSettingsRequest(new IHttpFinishListener() {
 
 						@Override

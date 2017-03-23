@@ -3,7 +3,7 @@ package com.alcatel.smartlinkv3.business.statistics;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 import com.google.gson.Gson;
 
 import org.json.JSONException;

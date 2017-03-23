@@ -3,8 +3,8 @@ package com.alcatel.smartlinkv3.business.wan;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,34 +22,12 @@ public class HttpConnectOperation {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetConnectionStateResponse(m_finsishCallback);
+//            return new GetConnectionStateResponse(m_finsishCallback);
+            return new DataResponse<>(ConnectStatusResult.class, m_finsishCallback);
         }
         
     }
-	
-	public static class GetConnectionStateResponse extends BaseResponse
-    {
-		private ConnectStatusResult m_ConnectStatus;
-        
-        public GetConnectionStateResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_ConnectStatus = gson.fromJson(strJsonResult, ConnectStatusResult.class);
-        }
-
-        @Override
-        public ConnectStatusResult getModelResult() 
-        {
-             return m_ConnectStatus;
-        }
-    }
-	
 	/******************** Connect  **************************************************************************************/	
 	public static class Connect extends BaseRequest
     {	
@@ -58,9 +36,7 @@ public class HttpConnectOperation {
         	super("Connect", "3.2", callback);
         }
     }
-	
 
-	
 	/******************** DisConnect  **************************************************************************************/	
 	public static class DisConnect extends BaseRequest
     {	
@@ -69,7 +45,6 @@ public class HttpConnectOperation {
         	super("DisConnect", "3.3", callback);
         }
     }
-	
 
 	/******************** GetConnectionSettings  **************************************************************************************/	
 	public static class GetConnectionSettings extends BaseRequest
@@ -88,33 +63,11 @@ public class HttpConnectOperation {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetConnectionSettingsResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class GetConnectionSettingsResponse extends BaseResponse
-    {
-		private ConnectionSettingsResult m_ConnectionSettings;
-        
-        public GetConnectionSettingsResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_ConnectionSettings = gson.fromJson(strJsonResult, ConnectionSettingsResult.class);
-        }
-
-        @Override
-        public ConnectionSettingsResult getModelResult() 
-        {
-             return m_ConnectionSettings;
+//            return new GetConnectionSettingsResponse(m_finsishCallback);
+            return new DataResponse<>(ConnectionSettingsResult.class, m_finsishCallback);
         }
     }
+
 	
 	/******************** SetConnectionSettings **************************************************************************************/
 	public static class SetConnectionSettings extends BaseRequest {

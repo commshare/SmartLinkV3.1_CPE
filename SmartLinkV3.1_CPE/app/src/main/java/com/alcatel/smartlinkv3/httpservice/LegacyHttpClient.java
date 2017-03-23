@@ -11,7 +11,6 @@ import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -33,11 +32,11 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class HttpRequestManager {
-	private static final String TAG = "HttpRequestManager";
+public class LegacyHttpClient {
+	private static final String TAG = "LegacyHttpClient";
 	private static final int FINISH_HTTP_REQUEST = 0x110;
 	private static final int DISCONNECT_NUMBER = 5;
-	private static HttpRequestManager m_instance = null;
+	private static LegacyHttpClient m_instance = null;
 
 	private ExecutorService m_threadPool;
 	private LinkedList<BaseRequest> m_request_list;
@@ -48,10 +47,10 @@ public class HttpRequestManager {
 	private Boolean m_bStopBusiness = false;
 	private String m_server_address = null;
 
-	public static HttpRequestManager GetInstance() {
+	public static LegacyHttpClient getInstance() {
 		if (m_instance == null) {
-			Log.d(TAG, "create requestManaget");
-			m_instance = new HttpRequestManager();
+			Log.d(TAG, "Create Http Client instance");
+			m_instance = new LegacyHttpClient();
 		}
 		return m_instance;
 	}
@@ -59,12 +58,12 @@ public class HttpRequestManager {
 	/*
 	 * //fix bug:changed device public static void RecreateInstance() {
 	 * Log.d(TAG, "Recreate requestManaget"); m_instance = new
-	 * HttpRequestManager(); }
+	 * LegacyHttpClient(); }
 	 */
 
-	private HttpRequestManager() {
-		m_request_list = new LinkedList<BaseRequest>();
-		m_response_list = new LinkedList<BaseResponse>();
+	private LegacyHttpClient() {
+		m_request_list = new LinkedList<>();
+		m_response_list = new LinkedList<>();
 		m_threadPool = Executors.newFixedThreadPool(getMaxThreadCount());
 		setServerAddress("192.168.1.1");
 	}
@@ -75,8 +74,7 @@ public class HttpRequestManager {
 		// m_server_address = "http://172.24.222.48/cgi-bin/luci/jrd/webapi";
 		// test
 		Log.d(TAG, m_server_address);
-		HttpAccessLog.getInstance().writeLogToFile(
-				"Server address:" + m_server_address);
+		HttpAccessLog.getInstance().writeLogToFile("Server address:" + m_server_address);
 	}
 
 	/*
@@ -177,13 +175,13 @@ public class HttpRequestManager {
 		HttpAccessLog.getInstance().writeLogToFile("response_list size : " + String.valueOf(m_response_list.size()));
 	}
 
-	public void startBussiness() {
+	public void start() {
 		synchronized (m_bStopBusiness) {
 			m_bStopBusiness = false;
 		}
 	}
 
-	public void stopBussiness() {
+	public void stop() {
 		synchronized (m_bStopBusiness) {
 			m_bStopBusiness = true;
 		}
@@ -195,7 +193,7 @@ public class HttpRequestManager {
 		clearResponseList();
 	}
 
-	public Boolean getStopBussiness() {
+	public Boolean isStop() {
 		synchronized (m_bStopBusiness) {
 			return m_bStopBusiness;
 		}
@@ -205,9 +203,9 @@ public class HttpRequestManager {
 			.getApplicationContext().getMainLooper()) {
 		@Override
 		public void handleMessage(Message msg) {
-			if (getStopBussiness() == false) {
+			if (isStop() == false) {
 				switch (msg.what) {
-				case HttpRequestManager.FINISH_HTTP_REQUEST:
+				case LegacyHttpClient.FINISH_HTTP_REQUEST:
 					BaseResponse respose = getResponse();
 
 					if (respose != null) {
@@ -246,7 +244,7 @@ public class HttpRequestManager {
 	};
 
 	public void sendPostRequest(BaseRequest request) {
-		if (getStopBussiness() == true)
+		if (isStop())
 			return;
 //		request.setHttpUrl(m_server_address);
 
@@ -265,7 +263,7 @@ public class HttpRequestManager {
 
 		@Override
 		public void run() {
-			if (getStopBussiness())
+			if (isStop())
 				return;
 			// Log.d(TAG, String.format("%d", Thread.currentThread().getId()));
 			BaseRequest request = getRequest();
@@ -287,8 +285,8 @@ public class HttpRequestManager {
 				HttpConnectionParams.setConnectionTimeout(httpParameters,20 * 1000);
 				HttpConnectionParams.setSoTimeout(httpParameters, 20 * 1000);
 
-				// get default HttpClient
-				HttpClient httpclient = new DefaultHttpClient(httpParameters);
+				// get default LegacyHttpClient
+				org.apache.http.client.HttpClient httpclient = new DefaultHttpClient(httpParameters);
 
 				// get HttpResponse
 				HttpResponse httpResponse = httpclient.execute(httpRequest);
@@ -340,8 +338,8 @@ public class HttpRequestManager {
 
 			appendResponse(response_obj);
 			Message msg = new Message();
-			msg.what = HttpRequestManager.FINISH_HTTP_REQUEST;
-			HttpRequestManager.this.m_message_handler.sendMessage(msg);
+			msg.what = LegacyHttpClient.FINISH_HTTP_REQUEST;
+			LegacyHttpClient.this.m_message_handler.sendMessage(msg);
 		}
 	}
 }

@@ -12,8 +12,8 @@ import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -107,7 +107,7 @@ public class SharingManager extends BaseManager {
 		}
 		else{
 		
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSharing.SetUSBcardSetting(0,
 							new IHttpFinishListener() {
 								@Override
@@ -121,7 +121,7 @@ public class SharingManager extends BaseManager {
 	
 											final int nPreStatus = m_dlnaSettings.DlnaStatus;
 											m_dlnaSettings.DlnaStatus = 1;
-											HttpRequestManager.GetInstance().sendPostRequest(
+											LegacyHttpClient.getInstance().sendPostRequest(
 													new HttpSharing.SetDlnaSetting(1, m_dlnaSettings.DlnaName,
 															new IHttpFinishListener() {
 																@Override
@@ -171,7 +171,7 @@ public class SharingManager extends BaseManager {
 		
 			final int nPreStatus = m_dlnaSettings.DlnaStatus;
 			m_dlnaSettings.DlnaStatus = 0;
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSharing.SetDlnaSetting(0, m_dlnaSettings.DlnaName,
 							new IHttpFinishListener() {
 								@Override
@@ -183,7 +183,7 @@ public class SharingManager extends BaseManager {
 										strErrcode = response.getErrorCode();
 										if (strErrcode.length() == 0) {
 											
-											HttpRequestManager.GetInstance().sendPostRequest(
+											LegacyHttpClient.getInstance().sendPostRequest(
 													new HttpSharing.SetUSBcardSetting(1,
 															new IHttpFinishListener() {
 																@Override
@@ -221,7 +221,7 @@ public class SharingManager extends BaseManager {
 	
 	public void setUSBcardSetting(DataValue data){
 		int status = (Integer) data.getParamByKey("USBcardStatus");
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.SetUSBcardSetting(status,
 						new IHttpFinishListener() {
 							@Override
@@ -255,7 +255,7 @@ public class SharingManager extends BaseManager {
 			int status = (Integer) data.getParamByKey("FtpStatus");
 			final int nPreStatus = m_ftpSettings.FtpStatus;
 			m_ftpSettings.FtpStatus = status;
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSharing.SetFtpSetting( status,
 							new IHttpFinishListener() {
 								@Override
@@ -289,7 +289,7 @@ public class SharingManager extends BaseManager {
 			}
 				
 
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSharing.GetFtpSetting(
 							new IHttpFinishListener() {
 								@Override
@@ -324,7 +324,7 @@ public class SharingManager extends BaseManager {
 		int status = (Integer) data.getParamByKey("SambaStatus");
 		final int nPreStatus = m_sambaSettings.SambaStatus;
 		m_sambaSettings.SambaStatus = status;
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.SetSambaSetting(status,
 						new IHttpFinishListener() {
 							@Override
@@ -355,7 +355,7 @@ public class SharingManager extends BaseManager {
 				"GetSambaStatus") != true)
 			return;
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.GetSambaSetting(
 						new IHttpFinishListener() {
 							@Override
@@ -391,7 +391,7 @@ public class SharingManager extends BaseManager {
 		String name = (String) data.getParamByKey("DlnaName");
 		final int nPreStatus = m_dlnaSettings.DlnaStatus;
 		m_dlnaSettings.DlnaStatus = status;
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.SetDlnaSetting(status, name,
 						new IHttpFinishListener() {
 							@Override
@@ -427,7 +427,7 @@ public class SharingManager extends BaseManager {
 			}
 		}
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.GetDlnaSetting(
 						new IHttpFinishListener() {
 							@Override
@@ -458,7 +458,7 @@ public class SharingManager extends BaseManager {
 				"GetSDCardSpace") != true)
 			return;
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.GetSDCardSpace(
 						new IHttpFinishListener() {
 							@Override
@@ -505,7 +505,7 @@ public class SharingManager extends BaseManager {
 //				"GetSDcardStatus") != true)
 //			return;
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.GetSDcardStatus(
 						new IHttpFinishListener() {
 							@Override
@@ -534,7 +534,7 @@ public class SharingManager extends BaseManager {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSharing.GetFtpSetting(
 							new IHttpFinishListener() {
 								@Override
@@ -565,7 +565,7 @@ public class SharingManager extends BaseManager {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSharing.GetDlnaSetting(
 							new IHttpFinishListener() {
 								@Override

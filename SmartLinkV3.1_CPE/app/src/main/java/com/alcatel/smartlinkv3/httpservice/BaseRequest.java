@@ -1,6 +1,6 @@
 package com.alcatel.smartlinkv3.httpservice;
 
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,11 +50,9 @@ public abstract class BaseRequest
 		m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	}
 	
-	public void buildRequestParamJson()
-	{
+	public void buildRequestParamJson()	{
 		try {
 			m_requestParamJson.put(ConstValue.JSON_RPC, ConstValue.JSON_RPC_VERSION);
-
 			m_requestParamJson.put(ConstValue.JSON_METHOD, method);
 			buildHttpParamJson();
 

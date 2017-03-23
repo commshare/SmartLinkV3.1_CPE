@@ -7,7 +7,7 @@ import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -240,20 +240,16 @@ public class HttpWlanSetting {
 		protected void buildHttpParamJson() throws JSONException {
 			    JSONObject settings = new JSONObject();
 				settings.put("WpsPin", m_strPin);
-				
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, settings);
+				m_requestParamJson.put(ConstValue.JSON_PARAMS, settings);
 		}
 	}
 
 	
 	/*Setb WPS Pbc*/
 	public static class SetWPSPbc extends BaseRequest{
-
 		public SetWPSPbc(IHttpFinishListener callback) {
 			super("SetWPSPbc", "5.7", callback);
 		}
-
 	}
 
 	
@@ -266,7 +262,6 @@ public class HttpWlanSetting {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
 			return new getWlanSupportModeResponse(m_finsishCallback);
 		}
 	}

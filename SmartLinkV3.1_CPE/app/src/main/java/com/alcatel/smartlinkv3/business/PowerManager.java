@@ -9,8 +9,8 @@ import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -99,7 +99,7 @@ public class PowerManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpPower.getBatteryStateRequest(
 							new IHttpFinishListener() {
 
@@ -128,7 +128,7 @@ public class PowerManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpPower.getPowerSavingModeRequest(
 							new IHttpFinishListener() {
 
@@ -160,7 +160,7 @@ public class PowerManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			PowerSavingModeInfo info = (PowerSavingModeInfo)data.getParamByKey("PowerSavingMode");
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpPower.setPowerSavingModeRequest(info,
 							new IHttpFinishListener() {
 

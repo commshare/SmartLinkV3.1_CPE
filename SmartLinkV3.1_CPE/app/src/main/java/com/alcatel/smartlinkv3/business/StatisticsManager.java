@@ -15,8 +15,8 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -180,7 +180,7 @@ public class StatisticsManager extends BaseManager {
 	class GetUsageSettingsTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.GetUsageSettings(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.GetUsageSettings(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {   
@@ -270,7 +270,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.BillingDay = nBillingDay;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -306,7 +306,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.UsageAlertValue = nAlertValue;
 
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
 			@Override
 			public void onHttpRequestFinish(BaseResponse response)
 			{
@@ -342,7 +342,7 @@ public class StatisticsManager extends BaseManager {
 			nUsageSettings.clone(m_usageSettings);
 			nUsageSettings.Unit = nUnit;
 	    	
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+			LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
 	            @Override
 				public void onHttpRequestFinish(BaseResponse response) 
 	            {   
@@ -385,7 +385,7 @@ public class StatisticsManager extends BaseManager {
 		}
 		nUsageSettings.MonthlyPlan = nMonthlyPlan;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -421,7 +421,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.UsedData = nUsedData;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -457,7 +457,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.TimeLimitFlag = ENUM.OVER_TIME_STATE.antiBuild(nTimeLimitFlag);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -493,7 +493,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.TimeLimitTimes = nTimeLimitTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -529,7 +529,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.UsedTimes = nUsedTimes;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -565,7 +565,7 @@ public class StatisticsManager extends BaseManager {
 		nUsageSettings.clone(m_usageSettings);
 		nUsageSettings.AutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.antiBuild(nAutoDisconnFlag);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageSettings.SetUsageSettings(nUsageSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -596,7 +596,7 @@ public class StatisticsManager extends BaseManager {
 			return;
 		String strCleartime = (String) data.getParamByKey("clear_time");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear(strCleartime, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear(strCleartime, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -640,7 +640,7 @@ public class StatisticsManager extends BaseManager {
 		SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState != ENUM.SIMState.Accessable) 
 			return;
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUsageHistory.GetUsageRecord(new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageHistory.GetUsageRecord(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   

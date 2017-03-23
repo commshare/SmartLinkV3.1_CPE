@@ -22,8 +22,8 @@ import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -141,7 +141,7 @@ public class SMSManager extends BaseManager {
 	class GetSMSInitTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSInitStatus(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSInitStatus(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -205,7 +205,7 @@ public class SMSManager extends BaseManager {
 	class GetContactMessagesTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContactList(0, new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSContactList(0, new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -237,7 +237,7 @@ public class SMSManager extends BaseManager {
 		
 		int nContactId = (Integer) data.getParamByKey("ContactId");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSMSContentList(0,nContactId, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSContentList(0,nContactId, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -280,7 +280,7 @@ public class SMSManager extends BaseManager {
 		if(temp != null)
 			nSMSId = temp;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.DeleteSMS(EnumSMSDelFlag.antiBuild(delFlag),nContactId,nSMSId, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.DeleteSMS(EnumSMSDelFlag.antiBuild(delFlag),nContactId,nSMSId, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -323,7 +323,7 @@ public class SMSManager extends BaseManager {
 		String strNumbers = (String)data.getParamByKey("phone_number");
 		ArrayList<String> phoneNumberLst = getNumberFromString(strNumbers);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SendSMS(-1,strContent,phoneNumberLst, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.SendSMS(-1,strContent,phoneNumberLst, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -361,7 +361,7 @@ public class SMSManager extends BaseManager {
 		
 		//final int nSmsSendId = (Integer) data.getParamByKey("sms_send_id");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.GetSendSMSResult(new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSendSMSResult(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -414,7 +414,7 @@ public class SMSManager extends BaseManager {
 		String strNumber =  (String)data.getParamByKey("Number");
 		ArrayList<String> phoneNumberLst = getNumberFromString(strNumber);
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSms.SaveSMS(nSmsId,strCotent,phoneNumberLst, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.SaveSMS(nSmsId,strCotent,phoneNumberLst, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   

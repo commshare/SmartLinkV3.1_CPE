@@ -11,8 +11,8 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceType;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -93,7 +93,7 @@ public class DeviceManager extends BaseManager {
 	class GetConnectedDeviceTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpDevice.GetConnectedDeviceList(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpDevice.GetConnectedDeviceList(new IHttpFinishListener() {
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
 					if (response.isValid()) {
@@ -148,7 +148,7 @@ public class DeviceManager extends BaseManager {
 	class GetBlockDeviceListTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpDevice.GetBlockDeviceList(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpDevice.GetBlockDeviceList(new IHttpFinishListener() {
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
 					if (response.isValid()) {
@@ -185,7 +185,7 @@ public class DeviceManager extends BaseManager {
 		String name = (String) data.getParamByKey("DeviceName");
 		String mac = (String) data.getParamByKey("MacAddress");
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpDevice.SetConnectedDeviceBlock(name, mac,
 						new IHttpFinishListener() {
 							@Override
@@ -212,7 +212,7 @@ public class DeviceManager extends BaseManager {
 		String name = (String) data.getParamByKey("DeviceName");
 		String mac = (String) data.getParamByKey("MacAddress");
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpDevice.SetDeviceUnlock(name, mac,
 						new IHttpFinishListener() {
 							@Override
@@ -238,7 +238,7 @@ public class DeviceManager extends BaseManager {
 		String name = (String) data.getParamByKey("DeviceName");
 		String mac = (String) data.getParamByKey("MacAddress");
 		EnumDeviceType type = (EnumDeviceType) data.getParamByKey("DeviceType");
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpDevice.SetDeviceName(name, mac, EnumDeviceType.antiBuild(type),
 						new IHttpFinishListener() {
 							@Override

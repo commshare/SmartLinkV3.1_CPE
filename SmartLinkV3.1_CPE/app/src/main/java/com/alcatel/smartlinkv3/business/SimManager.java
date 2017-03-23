@@ -15,8 +15,8 @@ import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,7 +70,7 @@ public class SimManager extends BaseManager {
 		
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState(nState,strPin, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState(nState,strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -101,7 +101,7 @@ public class SimManager extends BaseManager {
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.SetAutoValidatePinState(nState,strPin, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.SetAutoValidatePinState(nState,strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -127,7 +127,7 @@ public class SimManager extends BaseManager {
 	public void getAutoPinState(DataValue data) {
 		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetAutoValidatePinState") != true)
 			return;
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState(new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -165,7 +165,7 @@ public class SimManager extends BaseManager {
 		String strNewPin = (String) data.getParamByKey("new_pin");
 		String strCurrentPin = (String) data.getParamByKey("current_pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpChangePinAndState.ChangePinCode(strNewPin,strCurrentPin, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpChangePinAndState.ChangePinCode(strNewPin,strCurrentPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -195,7 +195,7 @@ public class SimManager extends BaseManager {
 		String strPuk = (String) data.getParamByKey("puk");
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk(strPuk,strPin, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk(strPuk,strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -224,7 +224,7 @@ public class SimManager extends BaseManager {
 		
 		String strPin = (String) data.getParamByKey("pin");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin(strPin, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin(strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -277,7 +277,7 @@ public class SimManager extends BaseManager {
 	class GetSimStatusTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetSimStatus.GetSimStatus(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpGetSimStatus.GetSimStatus(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {                 	

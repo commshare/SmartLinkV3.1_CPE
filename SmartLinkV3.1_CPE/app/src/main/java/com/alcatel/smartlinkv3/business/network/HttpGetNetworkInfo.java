@@ -2,8 +2,8 @@ package com.alcatel.smartlinkv3.business.network;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 public class HttpGetNetworkInfo {
 	
@@ -18,31 +18,8 @@ public class HttpGetNetworkInfo {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetNetworkInfoResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class GetNetworkInfoResponse extends BaseResponse
-    {
-		private NetworkInfoResult m_networkInfo;
-        
-        public GetNetworkInfoResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_networkInfo = gson.fromJson(strJsonResult, NetworkInfoResult.class);
-        }
-
-        @Override
-        public NetworkInfoResult getModelResult() 
-        {
-             return m_networkInfo;
+//            return new GetNetworkInfoResponse(m_finsishCallback);
+            return new DataResponse<>(NetworkInfoResult.class, m_finsishCallback);
         }
     }
 }

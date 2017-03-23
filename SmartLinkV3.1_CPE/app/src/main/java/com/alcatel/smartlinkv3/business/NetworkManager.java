@@ -23,8 +23,8 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.List;
 import java.util.Timer;
@@ -155,7 +155,7 @@ public class NetworkManager extends BaseManager {
 	class GetNetworkInfoTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkInfo.GetNetworkInfo(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpGetNetworkInfo.GetNetworkInfo(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -184,7 +184,7 @@ public class NetworkManager extends BaseManager {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetworkResult.SearchNetworkResult(new IHttpFinishListener(){
+			LegacyHttpClient.getInstance().sendPostRequest(new HttpSearchNetworkResult.SearchNetworkResult(new IHttpFinishListener(){
 
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
@@ -244,7 +244,7 @@ public class NetworkManager extends BaseManager {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkRegisterState.GetNetworkRegisterState(new IHttpFinishListener(){
+			LegacyHttpClient.getInstance().sendPostRequest(new HttpGetNetworkRegisterState.GetNetworkRegisterState(new IHttpFinishListener(){
 
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
@@ -279,7 +279,7 @@ public class NetworkManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Network", "RegisterNetwork") != true){
 			return;
 		}
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpRegisterNetwork.RegisterNetwork(networId, new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpRegisterNetwork.RegisterNetwork(networId, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -310,7 +310,7 @@ public class NetworkManager extends BaseManager {
 			return;
 		}
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork(new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork(new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -349,7 +349,7 @@ public class NetworkManager extends BaseManager {
 			return;
 		}
 			
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpGetNetworkSettings.GetNetworkSettings(new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpGetNetworkSettings.GetNetworkSettings(new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -393,7 +393,7 @@ public class NetworkManager extends BaseManager {
     	final int networkMode = (Integer) data.getParamByKey("network_mode");
     	final int netselectionMode = (Integer) data.getParamByKey("netselection_mode");
     	
-    	HttpRequestManager.GetInstance().sendPostRequest(new HttpSetNetworkSettings.SetNetworkSettings(networkMode, netselectionMode, new IHttpFinishListener(){
+    	LegacyHttpClient.getInstance().sendPostRequest(new HttpSetNetworkSettings.SetNetworkSettings(networkMode, netselectionMode, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {

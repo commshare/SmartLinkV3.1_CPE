@@ -16,8 +16,8 @@ import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -215,7 +215,7 @@ public class WlanManager extends BaseManager {
 				"GetWlanSettings") != true)
 			return;
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.GetWlanSetting(new IHttpFinishListener() {
 					@Override
 					public void onHttpRequestFinish(
@@ -314,7 +314,7 @@ public class WlanManager extends BaseManager {
 
 		}
 		
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.SetWlanSetting(settings,
 						new IHttpFinishListener() {
 					@Override
@@ -350,7 +350,7 @@ public class WlanManager extends BaseManager {
 
 		String m_strPin = (String) data.getParamByKey("WpsPin");
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.SetWPSPin(m_strPin,
 						new IHttpFinishListener() {
 					@Override
@@ -382,7 +382,7 @@ public class WlanManager extends BaseManager {
 				"SetWPSPbc") != true)
 			return;
 
-		HttpRequestManager.GetInstance().sendPostRequest(
+		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.SetWPSPbc(new IHttpFinishListener() {
 					@Override
 					public void onHttpRequestFinish(
@@ -419,7 +419,7 @@ public class WlanManager extends BaseManager {
 
 		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blCPEWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpWlanSetting.getWlanSupportModeRequest(new IHttpFinishListener() {
 
 						@Override

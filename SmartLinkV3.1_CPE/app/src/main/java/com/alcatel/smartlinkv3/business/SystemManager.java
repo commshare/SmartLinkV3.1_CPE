@@ -15,8 +15,8 @@ import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,14 +79,14 @@ public class SystemManager extends BaseManager {
 	protected void onBroadcastReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(MessageUti.CPE_BUSINESS_STATUS_CHANGE)) {
 			m_bStopBusiness = intent.getBooleanExtra("stop", false);
-			stwichBusiness();
+			switchBusiness();
 		}
 
 		if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
 			if (bCPEWifiConnected == true) {
-				getSystemInfo(null);		
+				getSystemInfo();
 				startSystemStatusTask();
 
 			} else {
@@ -110,11 +110,9 @@ public class SystemManager extends BaseManager {
 	}
 
 	private void FetchAppVersion(){
-		PackageManager manager;
-		PackageInfo info = null;
-		manager = m_context.getPackageManager();
+		PackageManager	manager = m_context.getPackageManager();
 		try {
-			info = manager.getPackageInfo(m_context.getPackageName(), 0);
+			PackageInfo info = manager.getPackageInfo(m_context.getPackageName(), 0);
 			m_strAppVersion = info.versionName;
 		} catch (NameNotFoundException e) {
 			// TODO: handle exception
@@ -130,7 +128,7 @@ public class SystemManager extends BaseManager {
 		}
 	}
 
-	public void stwichBusiness() {
+	public void switchBusiness() {
 		if (m_bStopBusiness) {
 			m_bAlreadyRecogniseCPEDevice = false;
 			if (m_getFeaturesTask != null) {
@@ -156,21 +154,12 @@ public class SystemManager extends BaseManager {
 	class GetFeaturesTask extends TimerTask {
 		@Override
 		public void run() {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.GetFeature(new IHttpFinishListener() {
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							String strErrcode = new String();
-							int ret = response.getResultCode();
-							if (ret == BaseResponse.RESPONSE_OK) {
-								strErrcode = response.getErrorCode();
-								if (strErrcode.length() == 0) {
+							if (response.isOk()) {
 									m_features = response.getModelResult();
-								} else {
-
-								}
-							} else {
-								// Log
 							}
 
 							m_bAlreadyRecogniseCPEDevice = true;
@@ -202,7 +191,7 @@ public class SystemManager extends BaseManager {
 
 	// Get System info
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void getSystemInfo(DataValue data) {
+	public void getSystemInfo() {
 		if (FeatureVersionManager.getInstance().isSupportApi("System",
 				"GetSystemInfo") != true)
 			return;
@@ -210,17 +199,14 @@ public class SystemManager extends BaseManager {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance()
 				.getCPEWifiConnected();
 		if (bCPEWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.GetSystemInfo(new IHttpFinishListener() {
 						@Override
-						public void onHttpRequestFinish(
-								BaseResponse response) {
+						public void onHttpRequestFinish(BaseResponse response) {
 							int ret = response.getResultCode();
 							String strErrcode = response.getErrorCode();
-							if (ret == BaseResponse.RESPONSE_OK
-									&& strErrcode.length() == 0) {
-								m_systemInfo = response
-										.getModelResult();
+							if (ret == BaseResponse.RESPONSE_OK	&& strErrcode.length() == 0) {
+								m_systemInfo = response.getModelResult();
 								BusinessManager.getInstance().getSystemInfoModel().
 								setDeviceName(m_systemInfo.getDeviceName());
 								BusinessManager.getInstance().getSystemInfoModel().
@@ -234,7 +220,7 @@ public class SystemManager extends BaseManager {
 										new Runnable() {
 											@Override
 											public void run() {
-												getSystemInfo(null);
+												getSystemInfo();
 											}
 										}, 1000);
 							}
@@ -261,7 +247,7 @@ public class SystemManager extends BaseManager {
 		class GetSystemStatusTask extends TimerTask {
 			@Override
 			public void run() {
-				HttpRequestManager.GetInstance().sendPostRequest(
+				LegacyHttpClient.getInstance().sendPostRequest(
 						new HttpSystem.GetSystemStatus(new IHttpFinishListener() {
 							@Override
 							public void onHttpRequestFinish(
@@ -298,7 +284,7 @@ public class SystemManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.SetDeviceReboot(new IHttpFinishListener() {
 
 						@Override
@@ -318,7 +304,7 @@ public class SystemManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.SetDeviceReset(new IHttpFinishListener() {
 
 						@Override
@@ -339,7 +325,7 @@ public class SystemManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.SetDeviceBackup(new IHttpFinishListener() {
 
 						@Override
@@ -360,7 +346,7 @@ public class SystemManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			String strFile = data.getParamByKey("FileName").toString();
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.SetDeviceRestore(strFile,
 							new IHttpFinishListener() {
 
@@ -380,7 +366,7 @@ public class SystemManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.setDevicePowerOffRequest(new IHttpFinishListener() {
 
 						@Override
@@ -399,7 +385,7 @@ public class SystemManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.setAppBackupRequest(new IHttpFinishListener() {
 
 						@Override
@@ -418,7 +404,7 @@ public class SystemManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSystem.setAppRestoreBackupRequest(new IHttpFinishListener() {
 
 						@Override

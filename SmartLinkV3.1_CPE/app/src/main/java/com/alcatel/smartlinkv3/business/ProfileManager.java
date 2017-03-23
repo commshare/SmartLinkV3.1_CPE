@@ -13,8 +13,8 @@ import com.alcatel.smartlinkv3.business.profile.HttpSetDefaultProfile;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class ProfileManager extends BaseManager{
 			return;
 		}
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpGetProfileList.GetProfileList(new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpGetProfileList.GetProfileList(new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -85,7 +85,7 @@ public class ProfileManager extends BaseManager{
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile(ProfileName, DialNumber, APN, UserName, Password, AuthType, new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile(ProfileName, DialNumber, APN, UserName, Password, AuthType, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -130,7 +130,7 @@ public class ProfileManager extends BaseManager{
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpEditProfile.EditProfile(profileID, DialNumber, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpEditProfile.EditProfile(profileID, DialNumber, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -171,7 +171,7 @@ public class ProfileManager extends BaseManager{
 		
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile(profileId, new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile(profileId, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {
@@ -211,7 +211,7 @@ public class ProfileManager extends BaseManager{
 		
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile(profileId, new IHttpFinishListener(){
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile(profileId, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {

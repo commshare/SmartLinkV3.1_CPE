@@ -8,7 +8,7 @@ public class BooleanResponse extends BaseResponse {
 
     private Boolean m_blRes = false;
 
-    public BooleanResponse(HttpRequestManager.IHttpFinishListener callback) {
+    public BooleanResponse(LegacyHttpClient.IHttpFinishListener callback) {
         super(callback);
     }
 

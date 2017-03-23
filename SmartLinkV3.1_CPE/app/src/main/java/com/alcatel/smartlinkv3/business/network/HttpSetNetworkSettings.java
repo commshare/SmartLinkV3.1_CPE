@@ -2,7 +2,7 @@ package com.alcatel.smartlinkv3.business.network;
 
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +29,4 @@ public class HttpSetNetworkSettings {
 				m_requestParamJson.put(ConstValue.JSON_PARAMS, settingInfo);
 		}
 	}
-	
-
 }

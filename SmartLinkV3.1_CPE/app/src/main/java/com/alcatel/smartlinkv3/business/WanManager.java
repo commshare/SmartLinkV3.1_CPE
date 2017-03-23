@@ -14,8 +14,8 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -97,7 +97,7 @@ public class WanManager extends BaseManager {
 	class GetConnectStatusTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {               	
@@ -126,7 +126,7 @@ public class WanManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "Connect") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.Connect(new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.Connect(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -153,7 +153,7 @@ public class WanManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "DisConnect") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.DisConnect(new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.DisConnect(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -192,7 +192,7 @@ public class WanManager extends BaseManager {
 	class GetConnectionSettingsTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.GetConnectionSettings(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.GetConnectionSettings(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {   
@@ -236,7 +236,7 @@ public class WanManager extends BaseManager {
 		nConnectionSettings.clone(m_connectionSettings);
 		nConnectionSettings.RoamingConnect = ENUM.OVER_ROAMING_STATE.antiBuild(nRoamingConnectFlag);
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpConnectOperation.SetConnectionSettings(nConnectionSettings, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.SetConnectionSettings(nConnectionSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   

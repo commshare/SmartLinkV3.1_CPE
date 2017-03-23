@@ -3,8 +3,8 @@ package com.alcatel.smartlinkv3.business.sharing;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,30 +38,11 @@ public class HttpSharing {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new GetFtpSettingResponse(m_finsishCallback);
-		}
-
-	}
-
-	public static class GetFtpSettingResponse extends BaseResponse {
-
-		private FtpSettings m_result = new FtpSettings();
-		public GetFtpSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			Gson gson = new Gson();
-			m_result = gson.fromJson(strJsonResult, FtpSettings.class);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public FtpSettings getModelResult() {
-			return m_result;
+//			return new GetFtpSettingResponse(m_finsishCallback);
+			return new DataResponse<>(FtpSettings.class, m_finsishCallback);
 		}
 	}
+
 	/******************** set USB card setting **************************************************************************************/
 	
 	public static class SetUSBcardSetting extends BaseRequest {
@@ -76,8 +57,7 @@ public class HttpSharing {
 		protected void buildHttpParamJson() throws JSONException {
 				JSONObject settings = new JSONObject();
 				settings.put("UsbcardStatus", m_nStatus);
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, settings);
+				m_requestParamJson.put(ConstValue.JSON_PARAMS, settings);
 		}
 	}
 
@@ -94,8 +74,7 @@ public class HttpSharing {
 		protected void buildHttpParamJson() throws JSONException {
 				JSONObject settings = new JSONObject();
 				settings.put("SambaStatus", m_nStatus);
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, settings);
+				m_requestParamJson.put(ConstValue.JSON_PARAMS, settings);
 		}
 	}
 
@@ -109,31 +88,10 @@ public class HttpSharing {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new GetSambaSettingResponse(m_finsishCallback);
-		}
-
-	}
-
-	public static class GetSambaSettingResponse extends BaseResponse {
-
-		private SambaSettings m_result = new SambaSettings();
-		public GetSambaSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			Gson gson = new Gson();
-			m_result = gson.fromJson(strJsonResult, SambaSettings.class);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public SambaSettings getModelResult() {
-			return m_result;
+//			return new GetSambaSettingResponse(m_finsishCallback);
+			return new DataResponse<>(SambaSettings.class, m_finsishCallback);
 		}
 	}
-	
 
 	/******************** set DLNA setting **************************************************************************************/
 	public static class SetDlnaSetting extends BaseRequest {
@@ -152,8 +110,7 @@ public class HttpSharing {
 				JSONObject settings = new JSONObject();
 				settings.put("DlnaStatus", m_status);
 				settings.put("DlnaName", m_name);
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, settings);
+				m_requestParamJson.put(ConstValue.JSON_PARAMS, settings);
 		}
 	}
 
@@ -167,30 +124,11 @@ public class HttpSharing {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new GetDlnaSettingResponse(m_finsishCallback);
+//			return new GetDlnaSettingResponse(m_finsishCallback);
+			return new DataResponse<>(DlnaSettings.class, m_finsishCallback);
 		}
-
 	}
 
-	public static class GetDlnaSettingResponse extends BaseResponse {
-
-		private DlnaSettings m_result = new DlnaSettings();
-		public GetDlnaSettingResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			Gson gson = new Gson();
-			m_result = gson.fromJson(strJsonResult, DlnaSettings.class);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public DlnaSettings getModelResult() {
-			return m_result;
-		}
-	}	
 	/******************** GetSDCardSpace **************************************************************************************/
 	public static class GetSDCardSpace extends BaseRequest {	
 
@@ -200,31 +138,11 @@ public class HttpSharing {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new GetSDCardSpaceResponse(m_finsishCallback);
-		}
-
-	}
-
-	public static class GetSDCardSpaceResponse extends BaseResponse {
-
-		private SDCardSpace m_result = new SDCardSpace();
-		public GetSDCardSpaceResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			Gson gson = new Gson();
-			m_result = gson.fromJson(strJsonResult, SDCardSpace.class);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public SDCardSpace getModelResult() {
-			return m_result;
+//			return new GetSDCardSpaceResponse(m_finsishCallback);
+			return new DataResponse<>(SDCardSpace.class, m_finsishCallback);
 		}
 	}
-	
+
 	/******************** GetSDCardStatus **************************************************************************************/
 	public static class GetSDcardStatus extends BaseRequest {	
 
@@ -234,28 +152,8 @@ public class HttpSharing {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new GetSDcardStatusResponse(m_finsishCallback);
-		}
-
-	}
-
-	public static class GetSDcardStatusResponse extends BaseResponse {
-
-		private SDcardStatus m_result = new SDcardStatus();
-		public GetSDcardStatusResponse(IHttpFinishListener callback) {
-			super(callback);
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			Gson gson = new Gson();
-			m_result = gson.fromJson(strJsonResult, SDcardStatus.class);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public SDcardStatus getModelResult() {
-			return m_result;
+//			return new GetSDcardStatusResponse(m_finsishCallback);
+			return new DataResponse<>(SDcardStatus.class, m_finsishCallback);
 		}
 	}
 }

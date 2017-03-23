@@ -12,8 +12,8 @@ import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -144,7 +144,7 @@ public class UpdateManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpUpdate.getDeviceNewVersionRequest(new IHttpFinishListener() {
 
 						@Override
@@ -176,7 +176,7 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected)
 		{
-			HttpRequestManager.GetInstance().sendPostRequest(new HttpUpdate.setDeviceStartUpdateRequest(new IHttpFinishListener()
+			LegacyHttpClient.getInstance().sendPostRequest(new HttpUpdate.setDeviceStartUpdateRequest(new IHttpFinishListener()
 			{
 				@Override
 				public void onHttpRequestFinish(BaseResponse response)
@@ -193,7 +193,7 @@ public class UpdateManager extends BaseManager {
 		{
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
-				HttpRequestManager.GetInstance().sendPostRequest(
+				LegacyHttpClient.getInstance().sendPostRequest(
 						new HttpUpdate.setFOTAStartDownload(new IHttpFinishListener() {
 
 							@Override
@@ -206,7 +206,7 @@ public class UpdateManager extends BaseManager {
 		else if(BusinessManager.getInstance().getSystemInfoModel().getSwVersion().equalsIgnoreCase("Y858_FQ_01.16_02") || BusinessManager.getInstance().getSystemInfoModel().getSwVersion().equalsIgnoreCase("Y858_FL_01.16_02")){
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
-				HttpRequestManager.GetInstance().sendPostRequest(
+				LegacyHttpClient.getInstance().sendPostRequest(
 						new HttpUpdate.setFOTAStartDownload(new IHttpFinishListener() {
 
 							@Override
@@ -219,7 +219,7 @@ public class UpdateManager extends BaseManager {
 		else if (FeatureVersionManager.getInstance().isSupportApi("Update", "SetDeviceStartUpdate")) {
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
-				HttpRequestManager.GetInstance().sendPostRequest(
+				LegacyHttpClient.getInstance().sendPostRequest(
 						new HttpUpdate.setDeviceStartUpdateRequest(new IHttpFinishListener() {
 
 							@Override
@@ -243,7 +243,7 @@ public class UpdateManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpUpdate.setDeviceUpdateStopRequest(new IHttpFinishListener() {
 
 						@Override
@@ -263,7 +263,7 @@ public class UpdateManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpUpdate.getDeviceUpgradeStatusRequest(new IHttpFinishListener() {
 
 						@Override
@@ -296,7 +296,7 @@ public class UpdateManager extends BaseManager {
 
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
-			HttpRequestManager.GetInstance().sendPostRequest(
+			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpUpdate.SetCheckNewVersionRequest(new IHttpFinishListener() {
 
 						@Override

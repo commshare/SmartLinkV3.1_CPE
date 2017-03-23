@@ -4,8 +4,8 @@ import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.BooleanResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,36 +21,11 @@ public class HttpLan {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new LanSettingsResponse(m_finsishCallback);
+//			return new LanSettingsResponse(m_finsishCallback);
+			return new DataResponse<>(LanInfo.class, m_finsishCallback);
 		}
-		
 	}
-	
-	public static class LanSettingsResponse extends BaseResponse{
 
-		private LanInfo m_lanInfo=null;
-		public LanSettingsResponse(IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
-			Gson gson = new Gson();
-			m_lanInfo = gson.fromJson(strJsonResult, LanInfo.class);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public LanInfo getModelResult() {
-			// TODO Auto-generated method stub
-			return m_lanInfo;
-		}
-		
-	}
-	
 	/*Set Lan Settings*/
 	public static class LanSettinsRequest extends BaseRequest{
 
@@ -70,13 +45,11 @@ public class HttpLan {
 				jLaninfo.put("EndIPAddress", m_lanInfo.getEndIPAddress());
 				jLaninfo.put("DHCPLeaseTime", m_lanInfo.getDHCPLeaseTime());
 				jLaninfo.put("MacAddress", m_lanInfo.getMacAddress());
-				m_requestParamJson
-						.put(ConstValue.JSON_PARAMS, jLaninfo);
+				m_requestParamJson.put(ConstValue.JSON_PARAMS, jLaninfo);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
 			return new BooleanResponse(m_finsishCallback);
 		}
 	}

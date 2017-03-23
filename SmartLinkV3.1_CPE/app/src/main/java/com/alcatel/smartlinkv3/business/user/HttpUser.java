@@ -3,8 +3,8 @@ package com.alcatel.smartlinkv3.business.user;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,34 +81,12 @@ public class HttpUser {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetLoginStateResponse(m_finsishCallback);
+//            return new GetLoginStateResponse(m_finsishCallback);
+			return new DataResponse<>(LoginStateResult.class, m_finsishCallback);
         }
         
     }
-	
-	public static class GetLoginStateResponse extends BaseResponse
-    {
-		private LoginStateResult m_loginStateResult;
-        
-        public GetLoginStateResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_loginStateResult = gson.fromJson(strJsonResult, LoginStateResult.class);
-        }
-
-        @SuppressWarnings("unchecked")
-		@Override
-        public LoginStateResult getModelResult() 
-        {
-             return m_loginStateResult;
-        }
-    }
 	
 	/******************** UpdateLoginTime  not  defined**************************************************************************************/	
 	
@@ -118,7 +96,6 @@ public class HttpUser {
         {
         	super("HeartBeat", "1.5", callback);
         }
-
     }
 
 	

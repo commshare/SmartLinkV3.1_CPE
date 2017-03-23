@@ -3,8 +3,8 @@ package com.alcatel.smartlinkv3.business.sms;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,32 +26,12 @@ public class HttpSms {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetSMSInitStatusResponse(m_finsishCallback);
+//            return new GetSMSInitStatusResponse(m_finsishCallback);
+            return new DataResponse<>(SmsInitResult.class, m_finsishCallback);
         }
         
     }
-	
-	public static class GetSMSInitStatusResponse extends BaseResponse
-    {
-        private SmsInitResult m_smsInit = new SmsInitResult();
-        public GetSMSInitStatusResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	Gson gson = new Gson();
-        	m_smsInit = gson.fromJson(strJsonResult, SmsInitResult.class);
-        }
-
-		@Override
-        public SmsInitResult getModelResult() 
-        {
-             return m_smsInit;
-        }
-    }
-	
 /******************** GetSMSContactList  **************************************************************************************/	
 	public static class GetSMSContactList extends BaseRequest
     {	
@@ -67,40 +47,17 @@ public class HttpSms {
         {
 	        	JSONObject smsInfo = new JSONObject();	 
 	        	smsInfo.put("Page", m_nPage);
-	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, smsInfo);
         }
 
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetSMSContactListResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class GetSMSContactListResponse extends BaseResponse
-    {
-		private SmsContactListResult m_nSmsList;
-        
-        public GetSMSContactListResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_nSmsList = gson.fromJson(strJsonResult, SmsContactListResult.class);
-        }
-
-        @Override
-        public SmsContactListResult getModelResult() 
-        {
-             return m_nSmsList;
+//            return new GetSMSContactListResponse(m_finsishCallback);
+            return new DataResponse<>(SmsContactListResult.class, m_finsishCallback);
         }
     }
+
 	
 /******************** GetSMSContentList  **************************************************************************************/	
 	public static class GetSMSContentList extends BaseRequest
@@ -129,34 +86,12 @@ public class HttpSms {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetSMSContentListResponse(m_finsishCallback);
+//            return new GetSMSContentListResponse(m_finsishCallback);
+            return new DataResponse<>(SmsContentListResult.class, m_finsishCallback);
         }
         
     }
-	
-	public static class GetSMSContentListResponse extends BaseResponse
-    {
-		private SmsContentListResult m_nSmsList;
-        
-        public GetSMSContentListResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_nSmsList = gson.fromJson(strJsonResult, SmsContentListResult.class);
-        }
-
-        @Override
-        public SmsContentListResult getModelResult() 
-        {
-             return m_nSmsList;
-        }
-    }
-	
 /******************** GetSMSStorageState  **************************************************************************************/	
 	public static class GetSMSStorageState extends BaseRequest
     {	
@@ -168,33 +103,11 @@ public class HttpSms {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetSMSStorageStateResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class GetSMSStorageStateResponse extends BaseResponse
-    {
-		private SmsStorageStateResult m_nSmsState;
-        
-        public GetSMSStorageStateResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_nSmsState = gson.fromJson(strJsonResult, SmsStorageStateResult.class);
-        }
-
-        @Override
-        public SmsStorageStateResult getModelResult() 
-        {
-             return m_nSmsState;
+//            return new GetSMSStorageStateResponse(m_finsishCallback);
+            return new DataResponse<>(SmsStorageStateResult.class, m_finsishCallback);
         }
     }
+
 	
 /******************** DeleteSMS  **************************************************************************************/	
 	public static class DeleteSMS extends BaseRequest
@@ -271,32 +184,11 @@ public class HttpSms {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetSendSMSResultResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class GetSendSMSResultResponse extends BaseResponse
-    {
-		private SendStatusResult result;
-
-        public GetSendSMSResultResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	Gson gson = new Gson();
-        	result = gson.fromJson(strJsonResult, SendStatusResult.class);
-        }
-
-        @Override
-        public SendStatusResult getModelResult() 
-        {
-             return result;
+//            return new GetSendSMSResultResponse(m_finsishCallback);
+            return new DataResponse<>(SendStatusResult.class, m_finsishCallback);
         }
     }
+
 	
 	/******************** SaveSMS  **************************************************************************************/	
 	public static class SaveSMS extends BaseRequest
@@ -336,7 +228,8 @@ public class HttpSms {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetSendSMSResultResponse(m_finsishCallback);
+//            return new GetSendSMSResultResponse(m_finsishCallback);
+            return new DataResponse<>(SendStatusResult.class, m_finsishCallback);
         }
         
     }

@@ -10,8 +10,8 @@ import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -82,7 +82,7 @@ public class UserManager extends BaseManager {
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Login(strUserName, strPsw, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.Login(strUserName, strPsw, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {
@@ -115,7 +115,7 @@ public class UserManager extends BaseManager {
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ForceLogin(strUserName, strPsw, new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.ForceLogin(strUserName, strPsw, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {
@@ -150,7 +150,7 @@ public class UserManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "Logout") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.Logout( new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.Logout(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {              	
@@ -196,7 +196,7 @@ public class UserManager extends BaseManager {
 		if(FeatureVersionManager.getInstance().isSupportApi("User", "GetLoginState") != true)
 			return;
     	
-		HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.GetLoginState(new IHttpFinishListener() {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.GetLoginState(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
@@ -219,7 +219,7 @@ public class UserManager extends BaseManager {
         @Override
 		public void run() { 
         	
-        	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.HeartBeat(new IHttpFinishListener() {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.HeartBeat(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
                 {
@@ -265,7 +265,7 @@ public class UserManager extends BaseManager {
     	String strCurrPsw = (String) data.getParamByKey("current_password");
     	String strNewPsw = (String) data.getParamByKey("new_password");
     	
-    	HttpRequestManager.GetInstance().sendPostRequest(new HttpUser.ChangePassword(strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
+    	LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.ChangePassword(strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
 
 			@Override
 			public void onHttpRequestFinish(BaseResponse response) {

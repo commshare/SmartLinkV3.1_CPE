@@ -3,8 +3,8 @@ package com.alcatel.smartlinkv3.business.sim;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,32 +22,12 @@ public class HttpAutoEnterPinState {
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetAutoValidatePinStateResponse(m_finsishCallback);
+//            return new GetAutoValidatePinStateResponse(m_finsishCallback);
+            return new DataResponse<>(AutoEnterPinStateResult.class, m_finsishCallback);
         }
         
     }
-	
-	public static class GetAutoValidatePinStateResponse extends BaseResponse
-    {
-		AutoEnterPinStateResult m_autoEnterPinState;
-        
-        public GetAutoValidatePinStateResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
 
-        @Override
-        protected void parseContent(String strJsonResult) {
-        	Gson gson = new Gson();
-        	m_autoEnterPinState = gson.fromJson(strJsonResult, AutoEnterPinStateResult.class);
-        }
-
-        @Override
-        public AutoEnterPinStateResult getModelResult() 
-        {
-             return m_autoEnterPinState;
-        }
-    }
 	/******************** SetAutoValidatePinState  **************************************************************************************/	
 	public static class SetAutoValidatePinState extends BaseRequest
     {		
@@ -76,13 +56,6 @@ public class HttpAutoEnterPinState {
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, setState);
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new BaseResponse(m_finsishCallback);
-        }
-        
     }
 
 	/******************** ChangePinState  **************************************************************************************/	
@@ -112,14 +85,6 @@ public class HttpAutoEnterPinState {
 	        	}
 	        	
 	        	m_requestParamJson.put(ConstValue.JSON_PARAMS, setState);
-
         }
-
-        @Override
-        public BaseResponse createResponseObject() 
-        {            
-            return new BaseResponse(m_finsishCallback);
-        }
-        
     }
 }

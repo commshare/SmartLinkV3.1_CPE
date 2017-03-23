@@ -3,8 +3,8 @@ package com.alcatel.smartlinkv3.business.profile;
 import com.alcatel.smartlinkv3.business.BaseResult;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
-import com.google.gson.Gson;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
+import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.List;
 
@@ -18,42 +18,16 @@ public class HttpGetProfileList {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			// TODO Auto-generated method stub
-			return new GetProfileListResponse(m_finsishCallback);
+//			return new GetProfileListResponse(m_finsishCallback);
+			return new DataResponse<>(GetProfileListResult.class, m_finsishCallback);
 		}
-		
 	}
-	
-	public static class GetProfileListResponse extends BaseResponse{
 
-		private GetProfileListResult getProfileListResult;
-		
-		public GetProfileListResponse(IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
-			Gson gson = new Gson();
-			getProfileListResult = gson.fromJson(strJsonResult, GetProfileListResult.class);
-		}
-
-		@Override
-		public GetProfileListResult getModelResult() {
-			// TODO Auto-generated method stub
-			return getProfileListResult;
-		}
-		
-	}
-	
 	public class GetProfileListResult extends BaseResult{
 
 		public List<ProfileItem> ProfileList;
 		@Override
 		protected void clear() {
-			// TODO Auto-generated method stub
 			ProfileList.clear();
 		}
 	}
