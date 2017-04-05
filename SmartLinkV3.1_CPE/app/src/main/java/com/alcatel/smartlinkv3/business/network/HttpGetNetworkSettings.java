@@ -10,7 +10,7 @@ public class HttpGetNetworkSettings {
 	public static class GetNetworkSettings extends BaseRequest{
 
 		public GetNetworkSettings(IHttpFinishListener callback) {
-			super("GetNetworkSettings", "4.6", callback);
+			super("Network", "GetNetworkSettings", "4.6", callback);
 		}
 
 		@Override

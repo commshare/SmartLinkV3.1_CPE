@@ -49,10 +49,6 @@ public class LanManager extends BaseManager {
 
 	//get Lan information
 	public void getLaninfo(DataValue dataValue){
-		if(!FeatureVersionManager.getInstance().isSupportApi("LAN", "GetLanSettings")){
-			return;
-		}
-
 		boolean bCPEWifiConnected = DataConnectManager.getInstance()
 				.getCPEWifiConnected();
 		if (bCPEWifiConnected){

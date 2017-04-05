@@ -16,7 +16,7 @@ public class HttpAutoEnterPinState {
     {	
         public GetAutoValidatePinState(IHttpFinishListener callback)
         {
-        	super("GetAutoValidatePinState", "2.6", callback);
+        	super("SIM", "GetAutoValidatePinState", "2.6", callback);
         }
 
         @Override
@@ -36,7 +36,7 @@ public class HttpAutoEnterPinState {
 		
         public SetAutoValidatePinState(int nState,String strPin,IHttpFinishListener callback)
         {
-        	super("SetAutoValidatePinState", "2.7", callback);
+        	super("SIM", "SetAutoValidatePinState", "2.7", callback);
         	m_nState = nState;
         	m_strPin = strPin;
         }
@@ -66,7 +66,7 @@ public class HttpAutoEnterPinState {
 		
         public ChangePinState(int nState,String strPin,IHttpFinishListener callback)
         {
-        	super("ChangePinState", "2.5", callback);
+        	super("SIM", "ChangePinState", "2.5", callback);
         	m_nState = nState;
         	m_strPin = strPin;
         }

@@ -13,7 +13,7 @@ public class HttpGetProfileList {
 	public static class GetProfileList extends BaseRequest{
 
 		public GetProfileList(IHttpFinishListener callback) {
-			super("GetProfileList", "15.1", callback);
+			super("Profile", "GetProfileList", "15.1", callback);
 		}
 
 		@Override

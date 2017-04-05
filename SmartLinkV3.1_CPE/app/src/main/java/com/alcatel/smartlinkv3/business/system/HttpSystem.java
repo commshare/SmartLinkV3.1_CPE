@@ -14,22 +14,24 @@ public class HttpSystem {
     /********************  Get feature list  *************************************/
     public static class GetFeature extends BaseRequest {
         public GetFeature(IHttpFinishListener callback) {
-            super("GetFeatureList", "16.1", callback);
+            super(ANY_MODULE, "GetFeatureList", "16.1", callback);
+        }
+
+        public GetFeature() {
+            this(null);
         }
 
         @Override
         public BaseResponse createResponseObject() {
-//            return new GetFeatureResponse(m_finsishCallback);
             return new DataResponse<>(Features.class, m_finsishCallback);
         }
     }
 
 
-
     /******************** GetSystemInfo  **************************************************************************************/
     public static class GetSystemInfo extends BaseRequest {
         public GetSystemInfo(IHttpFinishListener callback) {
-            super("GetSystemInfo", "13.1", callback);
+            super("System", "GetSystemInfo", "13.1", callback);
         }
 
         @Override
@@ -43,7 +45,7 @@ public class HttpSystem {
     /******************** GetSystemStatus  **************************************************************************************/
     public static class GetSystemStatus extends BaseRequest {
         public GetSystemStatus(IHttpFinishListener callback) {
-            super("GetSystemStatus", "13.4", callback);
+            super("System", "GetSystemStatus", "13.4", callback);
         }
 
         @Override
@@ -59,7 +61,7 @@ public class HttpSystem {
     public static class SetDeviceReboot extends BaseRequest {
 
         public SetDeviceReboot(IHttpFinishListener callback) {
-            super("SetDeviceReboot", "13.5", callback);
+            super("System", "SetDeviceReboot", "13.5", callback);
         }
     }
 
@@ -68,7 +70,7 @@ public class HttpSystem {
     public static class SetDeviceReset extends BaseRequest {
 
         public SetDeviceReset(IHttpFinishListener callback) {
-            super("SetDeviceReset", "13.6", callback);
+            super("System", "SetDeviceReset", "13.6", callback);
         }
 
     }
@@ -78,7 +80,7 @@ public class HttpSystem {
     public static class SetDeviceBackup extends BaseRequest {
 
         public SetDeviceBackup(IHttpFinishListener callback) {
-            super("SetDeviceBackup", "13.7", callback);
+            super("System", "SetDeviceBackup", "13.7", callback);
         }
     }
 
@@ -89,7 +91,7 @@ public class HttpSystem {
         private String m_strFileName = "";
 
         public SetDeviceRestore(String strFileName, IHttpFinishListener callback) {
-            super("SetDeviceRestore", "13.8", callback);
+            super("System", "SetDeviceRestore", "13.8", callback);
             m_strFileName = strFileName;
         }
 
@@ -105,20 +107,20 @@ public class HttpSystem {
     /*power off*/
     public static class setDevicePowerOffRequest extends BaseRequest {
         public setDevicePowerOffRequest(IHttpFinishListener callback) {
-            super("SetDevicePowerOff", "13.9", callback);
+            super("System", "SetDevicePowerOff", "13.9", callback);
         }
     }
 
     public static class setAppBackupRequest extends BaseRequest {
         public setAppBackupRequest(IHttpFinishListener callback) {
-            super("SetAppBackup", "13.10", callback);
+            super(null, "SetAppBackup", "13.10", callback);
         }
     }
 
 
     public static class setAppRestoreBackupRequest extends BaseRequest {
         public setAppRestoreBackupRequest(IHttpFinishListener callback) {
-            super("SetAppRestoreBackup", "13.11", callback);
+            super(null, "SetAppRestoreBackup", "13.11", callback);
         }
 
         @Override

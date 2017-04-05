@@ -12,7 +12,7 @@ public class HttpGetNetworkInfo {
     {			
         public GetNetworkInfo(IHttpFinishListener callback)
         {
-        	super("GetNetworkInfo", "4.1", callback);
+        	super("Network", "GetNetworkInfo", "4.1", callback);
         }
 
         @Override

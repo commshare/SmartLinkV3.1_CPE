@@ -19,7 +19,7 @@ public class HttpUser {
 		
         public Login(String strUserName,String strPsw,IHttpFinishListener callback)
         {
-        	super("Login", "1.1", callback);
+        	super("User", "Login", "1.1", callback);
         	m_strUserName = strUserName;
         	m_strPsw = strPsw;
         }
@@ -44,7 +44,7 @@ public class HttpUser {
 		
         public ForceLogin(String strUserName,String strPsw,IHttpFinishListener callback)
         {
-        	super("ForceLogin", "1.6", callback);
+        	super("User", "ForceLogin", "1.6", callback);
         	m_strUserName = strUserName;
         	m_strPsw = strPsw;
         }
@@ -66,7 +66,7 @@ public class HttpUser {
     {	
         public Logout(IHttpFinishListener callback)
         {
-        	super("Logout", "1.2", callback);
+        	super("User", "Logout", "1.2", callback);
         }
     }
 
@@ -75,7 +75,7 @@ public class HttpUser {
     {	
         public GetLoginState(IHttpFinishListener callback)
         {
-        	super("GetLoginState", "1.3", callback);
+        	super("User", "GetLoginState", "1.3", callback);
         }
 
         @Override
@@ -94,7 +94,7 @@ public class HttpUser {
     {			
         public HeartBeat(IHttpFinishListener callback)
         {
-        	super("HeartBeat", "1.5", callback);
+        	super("User", "HeartBeat", "1.5", callback);
         }
     }
 
@@ -107,7 +107,7 @@ public class HttpUser {
 		String m_strNewPsw = new String();
 
 		public ChangePassword(String strUserName,String strCurrPsw,String strNewPsw,IHttpFinishListener callback) {
-			super("ChangePassword", "1.4", callback);
+			super("User", "ChangePassword", "1.4", callback);
 			m_strUserName = strUserName;
 			m_strCurrPsw = strCurrPsw;
 			m_strNewPsw = strNewPsw;

@@ -12,7 +12,7 @@ public class HttpSearchNetworkResult {
 	public static class SearchNetworkResult extends BaseRequest{
 
 		public SearchNetworkResult(IHttpFinishListener callback) {
-			super("SearchNetworkResult", "4.3",  callback);
+			super("Network","SearchNetworkResult", "4.3",  callback);
 		}
 
 		@Override

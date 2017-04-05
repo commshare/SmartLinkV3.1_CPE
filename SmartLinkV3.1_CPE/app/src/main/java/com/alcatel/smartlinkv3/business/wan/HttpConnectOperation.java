@@ -16,7 +16,7 @@ public class HttpConnectOperation {
     {			
         public GetConnectionState(IHttpFinishListener callback)
         {
-        	super("GetConnectionState", "3.1", callback);
+        	super("Connection","GetConnectionState", "3.1", callback);
         }
 
         @Override
@@ -33,7 +33,7 @@ public class HttpConnectOperation {
     {	
         public Connect(IHttpFinishListener callback)
         {
-        	super("Connect", "3.2", callback);
+        	super("Connection", "Connect", "3.2", callback);
         }
     }
 
@@ -42,7 +42,7 @@ public class HttpConnectOperation {
     {	
         public DisConnect(IHttpFinishListener callback)
         {
-        	super("DisConnect", "3.3", callback);
+        	super("Connection", "DisConnect", "3.3", callback);
         }
     }
 
@@ -51,7 +51,7 @@ public class HttpConnectOperation {
     {			
         public GetConnectionSettings(IHttpFinishListener callback)
         {
-        	super("GetConnectionSettings", "3.4", callback);
+        	super("Connection", "GetConnectionSettings", "3.4", callback);
         }
 
         @Override
@@ -75,7 +75,7 @@ public class HttpConnectOperation {
 		public ConnectionSettingsResult m_result = new ConnectionSettingsResult();
 
 		public SetConnectionSettings(ConnectionSettingsResult result, IHttpFinishListener callback) {
-			super("SetConnectionSettings", "3.5", callback);
+			super("Connection", "SetConnectionSettings", "3.5", callback);
 			m_result.setValue(result);
 		}
 

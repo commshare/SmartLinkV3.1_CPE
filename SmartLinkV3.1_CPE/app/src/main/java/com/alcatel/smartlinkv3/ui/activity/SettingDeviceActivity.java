@@ -669,7 +669,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         registerReceiver(m_msgReceiver,
                 new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF));
         registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
+                new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST));
 
         this.registerReceiver(m_msgReceiver, new IntentFilter(
                 MessageUti.SIM_UNLOCK_PUK_REQUEST));
@@ -703,7 +703,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             //			changeUpgradeFlag(ITEM_UPGRADE_SETTING,false);
         }
 
-        BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST, null);
         ShowWaiting(true);
     }
 
@@ -762,8 +762,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
                     Toast.makeText(this, R.string.setting_upgrade_not_start, Toast.LENGTH_SHORT).show();
                 } else if (ENUM.EnumDeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
                     dismissUpgradeProgressDialog();
-                    if (!FeatureVersionManager.getInstance().
-                            isSupportApi("System", "AccessSqliteDB")) {
+                    if (!FeatureVersionManager.getInstance().isSupportApi("System", "AccessSqliteDB")) {
                         Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
                     } else {
                         BusinessManager.getInstance().sendRequestMessage(MessageUti
@@ -791,7 +790,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             Toast.makeText(this, strTost, Toast.LENGTH_SHORT).show();
         }
 
-        if (intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)) {
+        if (intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST)) {
             ShowWaiting(false);
         }
 

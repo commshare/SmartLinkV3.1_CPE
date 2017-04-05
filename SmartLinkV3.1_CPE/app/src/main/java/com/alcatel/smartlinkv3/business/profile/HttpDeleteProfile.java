@@ -14,7 +14,7 @@ public class HttpDeleteProfile {
 		private int ProfileID;
 		
 		public DeleteProfile(int profileID, IHttpFinishListener callback) {
-			super("DeleteProfile", "15.4",  callback);
+			super("Profile", "DeleteProfile", "15.4",  callback);
 			ProfileID = profileID;
 		}
 

@@ -124,7 +124,7 @@ public class StatisticsManager extends BaseManager {
 	public StatisticsManager(Context context) {
 		super(context);
 		//CPE_BUSINESS_STATUS_CHANGE and CPE_WIFI_CONNECT_CHANGE already register in basemanager
-		//m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
+		//m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.WAN_CONNECT_REQUSET));
 		m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.WAN_DISCONNECT_REQUSET));
@@ -157,9 +157,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//GetUsageSetting ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetUsageSettingTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "GetUsageSettings") != true)
-			return;
-		
 		//GetUsageSettingsTask getUsageSettingsTask = new GetUsageSettingsTask();
 		//m_rollTimer.scheduleAtFixedRate(getUsageSettingsTask, 0, 10 * 1000);
 		if(m_getUsageSettingsTask == null) {
@@ -261,9 +258,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//SetBillingDay  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setBillingDay(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-		
 		final int nBillingDay = (Integer) data.getParamByKey("billing_day");
 		final int nPreBillingDay = m_usageSettings.HBillingDay;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -297,9 +291,6 @@ public class StatisticsManager extends BaseManager {
 
 	//setAlertValue  Request //////////////////////////////////////////////////////////////////////////////////////////
 	public void setAlertValue(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-
 		final int nAlertValue = (Integer) data.getParamByKey("alert_value");
 		final int nPreAlertValue = m_usageSettings.HUsageAlertValue;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -333,9 +324,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//SetUnit  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 		public void setUnit(DataValue data) {
-			if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-				return;
-			
 			final int nUnit = (Integer) data.getParamByKey("unit");
 			final int nPreUnit = m_usageSettings.HUnit;
 			final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -370,9 +358,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//setMonthlyPlan  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setMonthlyPlan(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-		
 		final long nMonthlyPlan = (Long)data.getParamByKey("monthly_plan");
 		final long nPreMonthlyPlan = m_usageSettings.HMonthlyPlan;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -412,9 +397,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//setUsedData  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setUsedData(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-		
 		final long nUsedData = (Integer) data.getParamByKey("used_data");
 		final long nPreUsedData = m_usageSettings.HUsedData;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -448,9 +430,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//setTimeLimitFlag  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setTimeLimitFlag(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-		
 		final ENUM.OVER_TIME_STATE nTimeLimitFlag = (ENUM.OVER_TIME_STATE) data.getParamByKey("time_limit_flag");
 		final ENUM.OVER_TIME_STATE nPreTimeLimitFlag = m_usageSettings.HTimeLimitFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -484,9 +463,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//setTimeLimitTimes  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setTimeLimitTimes(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-		
 		final int nTimeLimitTimes = (Integer) data.getParamByKey("time_limit_times");
 		final int nPreTimeLimitTimes = m_usageSettings.HTimeLimitTimes;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -520,9 +496,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//setUsedTimes  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setUsedTimes(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-		
 		final int nUsedTimes = (Integer) data.getParamByKey("used_times");
 		final int nPreUsedTimes = m_usageSettings.HUsedTimes;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -556,9 +529,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//AutoDisconnFlag  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setAutoDisconnFlag(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageSettings") != true)
-			return;
-		
 		final ENUM.OVER_DISCONNECT_STATE nAutoDisconnFlag = (ENUM.OVER_DISCONNECT_STATE) data.getParamByKey("auto_disconn_flag");
 		final ENUM.OVER_DISCONNECT_STATE nPreAutoDisconnFlag = m_usageSettings.HAutoDisconnFlag;
 		final UsageSettingsResult nUsageSettings = new UsageSettingsResult();
@@ -592,8 +562,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//ClearAllRecords  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void clearAllRecords(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "SetUsageRecordClear") != true)
-			return;
 		String strCleartime = (String) data.getParamByKey("clear_time");
     	
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpUsageHistory.SetUsageRecordClear(strCleartime, new IHttpFinishListener() {
@@ -620,9 +588,6 @@ public class StatisticsManager extends BaseManager {
 	
 	//GetUsageHistory ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetUsageHistoryTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("Statistics", "GetUsageRecord") != true)
-			return;
-		
 		if(m_getUsageHistoryTask == null) {
 			m_getUsageHistoryTask = new GetUsageHistoryTask();
 			m_getUsageHistoryRollTimer.scheduleAtFixedRate(m_getUsageHistoryTask, 0, 10 * 1000);

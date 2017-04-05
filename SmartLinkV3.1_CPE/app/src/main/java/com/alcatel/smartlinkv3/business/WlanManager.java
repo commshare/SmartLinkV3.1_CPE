@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
 import com.alcatel.smartlinkv3.business.wlan.WlanNewSettingResult;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
+import com.alcatel.smartlinkv3.business.wlan.WlanSupportModeType;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
@@ -194,9 +195,6 @@ public class WlanManager extends BaseManager {
 	// GetNumOfHosts
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	private void startGetHostNumTask() {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
-				"GetNumOfHosts") != true)
-			return;
 		if(m_getHostNumTask == null) {
 			m_getHostNumTask = new GetHostNumTask();
 			m_rollTimer.scheduleAtFixedRate(m_getHostNumTask, 0, 10 * 1000);
@@ -211,10 +209,6 @@ public class WlanManager extends BaseManager {
 	// get wlan setting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void getWlanSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
-				"GetWlanSettings") != true)
-			return;
-
 		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.GetWlanSetting(new IHttpFinishListener() {
 					@Override
@@ -245,10 +239,6 @@ public class WlanManager extends BaseManager {
 	// set wlan setting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setWlanSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
-				"SetWlanSettings") != true)
-			return;
-
 		int nWlanAPMode = (Integer)data.getParamByKey("WlanAPMode");
 		String strSsid = data.getParamByKey("Ssid").toString();
 		String strCountryCode = data.getParamByKey("CountryCode").toString();
@@ -344,10 +334,6 @@ public class WlanManager extends BaseManager {
 	// Set WPS Pin
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void SetWPSPin(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
-				"SetWPSPin") != true)
-			return;
-
 		String m_strPin = (String) data.getParamByKey("WpsPin");
 
 		LegacyHttpClient.getInstance().sendPostRequest(
@@ -378,10 +364,6 @@ public class WlanManager extends BaseManager {
 	// Set WPS Pbc
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void SetWPSPbc(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Wlan",
-				"SetWPSPbc") != true)
-			return;
-
 		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.SetWPSPbc(new IHttpFinishListener() {
 					@Override
@@ -409,8 +391,7 @@ public class WlanManager extends BaseManager {
 	//get wlan support mode
 	public void getWlanSupportMode(DataValue data){
 		String strDeviceName = BusinessManager.getInstance().getFeatures().getDeviceName();
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Wlan", "GetWlanSupportMode")) {
+		if (!FeatureVersionManager.getInstance().isSupportApi("Wlan", "GetWlanSupportMode")) {
 			if (0 != strDeviceName.compareToIgnoreCase("Y900")) {
 				m_wlanSupportMode = WlanSupportMode.Mode2Point4G;
 				return;				
@@ -424,11 +405,9 @@ public class WlanManager extends BaseManager {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRes = response.getResultCode();
-							String strErr = response.getErrorMessage();
-							if (BaseResponse.RESPONSE_OK == nRes && 0 == strErr.length()) {
-								m_wlanSupportMode = response.getModelResult();
+							if (response.isOk()) {
+								WlanSupportModeType modeType = response.getModelResult();
+								m_wlanSupportMode = WlanSupportMode.build(modeType.getWlanSupportMode());
 							}else{
 								getWlanSupportMode(null);
 							}

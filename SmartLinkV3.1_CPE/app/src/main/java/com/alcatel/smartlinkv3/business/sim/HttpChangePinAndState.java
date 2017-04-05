@@ -17,7 +17,7 @@ public class HttpChangePinAndState {
 		
         public ChangePinCode(String strNewPin,String strCurrentPin,IHttpFinishListener callback)
         {
-        	super("ChangePinCode", "2.4", callback);
+        	super("SIM", "ChangePinCode", "2.4", callback);
         	m_strNewPin = strNewPin;
         	m_strCurrentPin = strCurrentPin;
         }
@@ -42,7 +42,7 @@ public class HttpChangePinAndState {
 		
         public ChangePinState(String strPin,int nState,IHttpFinishListener callback)
         {
-        	super("ChangePinState", "2.5", callback);
+        	super("SIM", "ChangePinState", "2.5", callback);
         	m_nState = nState;
         	m_strPin = strPin;
         }

@@ -160,8 +160,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					showBatteryState();
 				}
 			}
-			
-			
 		}	
 	}
 	
@@ -263,8 +261,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 	private void resetConnectBtnFlag() {
 		SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (simStatus != SIMState.Accessable
-				|| !bCPEWifiConnected) {
+		if (simStatus != SIMState.Accessable || !bCPEWifiConnected) {
 			m_bConnectPressd = false;
 			m_bConnectReturn = false;
 			return;
@@ -464,7 +461,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
 								m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getOtherUserLoginString());
 							}else

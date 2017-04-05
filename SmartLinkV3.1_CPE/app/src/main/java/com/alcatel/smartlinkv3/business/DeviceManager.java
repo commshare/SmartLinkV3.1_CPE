@@ -67,9 +67,6 @@ public class DeviceManager extends BaseManager {
 	// GetConnectedDeviceList
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void startGetConnectedDeviceTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("ConnectionDevices", "GetConnectedDeviceList") != true)
-			return;
-		
 		if(m_getGetConnectedDeviceTask == null) {
 			m_getGetConnectedDeviceTask = new GetConnectedDeviceTask();
 			m_rollTimer.scheduleAtFixedRate(m_getGetConnectedDeviceTask, 0, 30 * 1000);
@@ -84,8 +81,6 @@ public class DeviceManager extends BaseManager {
 	}
 	
 	public void getGetConnectedDeviceTaskAtOnceRequest(){
-		if(FeatureVersionManager.getInstance().isSupportApi("ConnectionDevices", "GetConnectedDeviceList") != true)
-			return;
 		GetConnectedDeviceTask task = new GetConnectedDeviceTask();
 		m_rollTimer.schedule(task, 0);
 	}
@@ -122,9 +117,6 @@ public class DeviceManager extends BaseManager {
 	// GetBlockDeviceList
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void startGetBlockDeviceListTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("ConnectionDevices", "GetBlockDeviceList") != true)
-			return;
-		
 		if(m_getGetBlockDeviceListTask == null) {
 			m_getGetBlockDeviceListTask = new GetBlockDeviceListTask();
 			m_rollTimer.scheduleAtFixedRate(m_getGetBlockDeviceListTask, 0, 30 * 1000);
@@ -139,8 +131,6 @@ public class DeviceManager extends BaseManager {
 	}
 	
 	public void getGetBlockDeviceListTaskAtOnceRequest(){
-		if(FeatureVersionManager.getInstance().isSupportApi("ConnectionDevices", "GetBlockDeviceList") != true)
-			return;
 		GetBlockDeviceListTask task = new GetBlockDeviceListTask();
 		m_rollTimer.schedule(task, 0);
 	}
@@ -178,10 +168,6 @@ public class DeviceManager extends BaseManager {
 	// SetConnectedDeviceBlock
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setConnectedDeviceBlock(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi(
-				"ConnectionDevices", "SetConnectedDeviceBlock") != true)
-			return;
-
 		String name = (String) data.getParamByKey("DeviceName");
 		String mac = (String) data.getParamByKey("MacAddress");
 
@@ -205,10 +191,6 @@ public class DeviceManager extends BaseManager {
 	// SetDeviceUnblock
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setDeviceUnlock(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi(
-				"ConnectionDevices", "SetDeviceUnlock") != true)
-			return;
-
 		String name = (String) data.getParamByKey("DeviceName");
 		String mac = (String) data.getParamByKey("MacAddress");
 
@@ -231,10 +213,6 @@ public class DeviceManager extends BaseManager {
 	// SetDeviceName
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setDeviceName(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi(
-				"ConnectionDevices", "SetDeviceName") != true)
-			return;
-
 		String name = (String) data.getParamByKey("DeviceName");
 		String mac = (String) data.getParamByKey("MacAddress");
 		EnumDeviceType type = (EnumDeviceType) data.getParamByKey("DeviceType");

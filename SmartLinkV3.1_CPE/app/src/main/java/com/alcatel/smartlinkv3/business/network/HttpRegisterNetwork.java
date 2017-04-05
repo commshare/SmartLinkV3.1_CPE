@@ -12,7 +12,7 @@ public class HttpRegisterNetwork {
 
 		private int NetworkID;
 		public RegisterNetwork(int networkID, IHttpFinishListener callback) {
-			super("RegisterNetwork", "4.4",  callback);
+			super("Network", "RegisterNetwork", "4.4",  callback);
 			NetworkID = networkID;
 		}
 

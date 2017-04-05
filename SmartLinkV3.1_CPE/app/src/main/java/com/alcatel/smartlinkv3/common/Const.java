@@ -10,5 +10,5 @@ public class Const {
 	public static String DATE_CALL_LOG_TIME_FORMATE = "HH:mm";
 	public static String SMS_SNED_ID = "com.alcatel.cpe.business.sms.sendsms.sendid";
 	public static String SMS_SNED_STATUS = "com.alcatel.cpe.business.sms.sendsms.sendstatus";
-
+	public final static String ACTION_NETWORK_DISCONNECT = "com.alcatel.cpe.NETWORK_DISCONNECTED";
 }

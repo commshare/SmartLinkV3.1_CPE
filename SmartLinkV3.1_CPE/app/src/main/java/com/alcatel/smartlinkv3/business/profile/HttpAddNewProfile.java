@@ -18,7 +18,7 @@ public class HttpAddNewProfile {
 		private String m_strDialNumber = "*99#";
 		
 		public AddNewProfile(String profileName, String dialNumber, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
-			super("AddNewProfile", "15.2", callback);
+			super("Profile", "AddNewProfile", "15.2", callback);
 			m_strProfileName = profileName;
 			m_strAPN = apn;
 			m_strUserName = userName;

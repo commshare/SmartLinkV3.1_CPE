@@ -289,8 +289,8 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
  
       public void onLoginFailed(String error_code) { 
         if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)){ 
-        	//Log.d(TAG, "ForceLogin.status:"+FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"));
-        	if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") == true){
+        	//Log.d(TAG, "ForceLogin.status:"+FeatureVersionManager.getInstance().isSupportForceLogin());
+        	if(FeatureVersionManager.getInstance().isSupportForceLogin()){
           forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(mContext);
           forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg), 
             		new OnClickBottonConfirm()  

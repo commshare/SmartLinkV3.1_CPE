@@ -16,7 +16,7 @@ public class HttpUnlockPinPuk {
 		
         public UnlockPin(String strPin,IHttpFinishListener callback)
         {
-        	super("UnlockPin", "2.2", callback);
+        	super("SIM", "UnlockPin", "2.2", callback);
         	m_strPin = strPin;
         }
 
@@ -38,7 +38,7 @@ public class HttpUnlockPinPuk {
 		
         public UnlockPuk(String strPuk,String strPin,IHttpFinishListener callback)
         {
-        	super("UnlockPuk", "2.3", callback);
+        	super("SIM", "UnlockPuk", "2.3", callback);
         	m_strPuk = strPuk;
         	m_strPin = strPin;
         }

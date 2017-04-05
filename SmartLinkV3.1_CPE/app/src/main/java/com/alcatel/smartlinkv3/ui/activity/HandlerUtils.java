@@ -66,7 +66,7 @@ public class HandlerUtils {
 	
 	public static void userLogout() {
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
-		if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
+		if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 		{
 			if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
 				BusinessManager.getInstance().sendRequestMessage(

@@ -86,8 +86,6 @@ public class WanManager extends BaseManager {
 	
 	//GetConnectionState ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetConnectStatusTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "GetConnectionState") != true)
-			return;
 		if(m_getConnetStatusTask == null) {
 			m_getConnetStatusTask = new GetConnectStatusTask();
 			m_getConnectStatusRollTimer.scheduleAtFixedRate(m_getConnetStatusTask, 0, 5 * 1000);
@@ -122,27 +120,11 @@ public class WanManager extends BaseManager {
 	}
 	
 	//Connect  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void connect(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "Connect") != true)
-			return;
-    	
+	public void connect() {
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.Connect(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-         
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
-
+            {
     			sendBroadcast(response, MessageUti.WAN_CONNECT_REQUSET);
             }
         }));
@@ -150,26 +132,10 @@ public class WanManager extends BaseManager {
 	
 	//DisConnect  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void disconnect(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "DisConnect") != true)
-			return;
-    	
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.DisConnect(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-         
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
- 
+            {
                 sendBroadcast(response, MessageUti.WAN_DISCONNECT_REQUSET);
             }
         }));
@@ -178,8 +144,6 @@ public class WanManager extends BaseManager {
 	
 	//GetUsageSetting ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetConnectSettingsTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "GetConnectionSettings") != true)
-			return;
 		
 		//GetUsageSettingsTask getUsageSettingsTask = new GetUsageSettingsTask();
 		//m_rollTimer.scheduleAtFixedRate(getUsageSettingsTask, 0, 10 * 1000);
@@ -200,25 +164,13 @@ public class WanManager extends BaseManager {
         			if(bCPEWifiConnected == false) {
         				return;
         			}
-	            	
-                	String strErrcode = new String();
-                    int ret = response.getResultCode();
-                    if(ret == BaseResponse.RESPONSE_OK) {
-                    	strErrcode = response.getErrorCode();
-                    	if(strErrcode.length() == 0) {
+                    	if(response.isOk()) {
                     		ConnectionSettingsResult connectionSettingResult = response.getModelResult();
                     		ConnectionSettingsModel pre = new ConnectionSettingsModel();
                     		pre.clone(m_connectionSettings);
                     		m_connectionSettings.setValue(connectionSettingResult);
-                    		
-                    	}else{
-                    		
                     	}
-                    }else{
-                    	//Log
-                    }
-                    
-                    sendBroadcast(response, MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET);
+                    	sendBroadcast(response, MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET);
                     }
             }));
         } 
@@ -227,9 +179,6 @@ public class WanManager extends BaseManager {
 	
 	//setTimeLimitFlag  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setRoamingConnectFlag(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Connection", "SetConnectionSettings") != true)
-			return;
-		
 		final ENUM.OVER_ROAMING_STATE nRoamingConnectFlag = (ENUM.OVER_ROAMING_STATE) data.getParamByKey("roaming_connect_flag");
 		//final ENUM.OVER_ROAMING_STATE nPreRoamingConnectFlag = m_connectionSettings.HRoamingConnect;
 		final ConnectionSettingsResult nConnectionSettings = new ConnectionSettingsResult();
@@ -239,19 +188,10 @@ public class WanManager extends BaseManager {
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.SetConnectionSettings(nConnectionSettings, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		m_connectionSettings.setValue(nConnectionSettings);
-                	}else{
-
-                	}
-                }else{
-
-                }
+            {
+				if(response.isOk()) {
+					m_connectionSettings.setValue(nConnectionSettings);
+				}
  
                 sendBroadcast(response, MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET);
             }

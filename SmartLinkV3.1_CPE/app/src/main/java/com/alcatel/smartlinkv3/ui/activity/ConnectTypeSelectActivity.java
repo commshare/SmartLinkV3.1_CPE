@@ -396,7 +396,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                     //Log.d(TAG, "ForceLogin.status:"+FeatureVersionManager.getInstance().isSupportApi("User",
                     // "ForceLogin"));
-                    if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") == true) {
+                    if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
                         forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(ConnectTypeSelectActivity.this);
                         forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title),
                                 getString(R.string.login_other_user_logined_error_forcelogin_msg),

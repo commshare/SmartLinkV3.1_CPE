@@ -137,11 +137,6 @@ public class UpdateManager extends BaseManager {
 	}
 	//get firmware new version
 	public void getDeviceNewVersion(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Update", "GetDeviceNewVersion")) {
-			return;
-		}
-
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
@@ -149,14 +144,9 @@ public class UpdateManager extends BaseManager {
 
 						@Override
 						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRes = response.getResultCode();
-							String strError=response.getErrorCode();
-							if(BaseResponse.RESPONSE_OK == nRes &&
-									strError.length() == 0){
+							if(response.isOk()){
 								m_newFirmwareVersionInfo = response.getModelResult();
-								if(EnumDeviceCheckingStatus.
-										antiBuild(EnumDeviceCheckingStatus.DEVICE_CHECKING) 
+								if(EnumDeviceCheckingStatus.antiBuild(EnumDeviceCheckingStatus.DEVICE_CHECKING)
 										!= m_newFirmwareVersionInfo.getState()){
 									stopGetDeviceNewVersionTask();
 								}
@@ -215,8 +205,7 @@ public class UpdateManager extends BaseManager {
 							}
 						}));
 			}
-		}
-		else if (FeatureVersionManager.getInstance().isSupportApi("Update", "SetDeviceStartUpdate")) {
+		} else if (FeatureVersionManager.getInstance().isSupportApi("Update", "SetDeviceStartUpdate")) {
 			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 			if (blWifiConnected) {
 				LegacyHttpClient.getInstance().sendPostRequest(
@@ -236,11 +225,6 @@ public class UpdateManager extends BaseManager {
 
 	//stop update firmware
 	public void stopUpdate(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Update", "SetDeviceUpdateStop")) {
-			return;
-		}
-
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
@@ -256,11 +240,6 @@ public class UpdateManager extends BaseManager {
 
 	//get update state
 	public void getUpgradeState(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("Update", "GetDeviceUpgradeState")) {
-			return;
-		}
-
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(

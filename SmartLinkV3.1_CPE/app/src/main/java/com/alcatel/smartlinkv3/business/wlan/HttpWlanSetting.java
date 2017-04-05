@@ -7,6 +7,7 @@ import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 import com.google.gson.Gson;
 
@@ -20,7 +21,7 @@ public class HttpWlanSetting {
 	public static class GetWlanSetting extends BaseRequest {
 		
 		public GetWlanSetting(IHttpFinishListener callback) {
-			super("GetWlanSettings", "5.4", callback);
+			super("Wlan", "GetWlanSettings", "5.4", callback);
 		}
 
 		@Override
@@ -45,10 +46,8 @@ public class HttpWlanSetting {
 			if(m_result.CountryCode.isEmpty())
 			{
 				m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
-				
 				set_Prase_new_Setting_Result(m_result,m_New_result);
 				m_result.New_Interface=true;
-				
 			}
 		}
 		
@@ -136,7 +135,7 @@ public class HttpWlanSetting {
 		public WlanSettingResult m_result = new WlanSettingResult();
 
 		public SetWlanSetting(WlanSettingResult result, IHttpFinishListener callback) {
-			super("SetWlanSettings", "5.5", callback);
+			super("Wlan", "SetWlanSettings", "5.5", callback);
 			m_result = result;
 		}
 		
@@ -232,7 +231,7 @@ public class HttpWlanSetting {
 		public String m_strPin = new String();
 
 		public SetWPSPin(String strPin,IHttpFinishListener callback) {
-			super("SetWPSPin", "5.6", callback);
+			super("Wlan", "SetWPSPin", "5.6", callback);
 			m_strPin = strPin;
 		}
 
@@ -248,7 +247,7 @@ public class HttpWlanSetting {
 	/*Setb WPS Pbc*/
 	public static class SetWPSPbc extends BaseRequest{
 		public SetWPSPbc(IHttpFinishListener callback) {
-			super("SetWPSPbc", "5.7", callback);
+			super("Wlan", "SetWPSPbc", "5.7", callback);
 		}
 	}
 
@@ -257,38 +256,15 @@ public class HttpWlanSetting {
 	public static class getWlanSupportModeRequest extends BaseRequest{
 
 		public getWlanSupportModeRequest(IHttpFinishListener callback) {
-			super("GetWlanSupportMode", "5.8", callback);
+			super("Wlan", "GetWlanSupportMode", "5.8", callback);
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new getWlanSupportModeResponse(m_finsishCallback);
+//			return new getWlanSupportModeResponse(m_finsishCallback);
+			return new DataResponse<>(WlanSupportMode.class, m_finsishCallback);
 		}
 	}
-	
-	public static class getWlanSupportModeResponse extends BaseResponse{
 
-		private WlanSupportMode mode=WlanSupportMode.Mode2Point4G;
-		public getWlanSupportModeResponse(IHttpFinishListener callback) {
-			super(callback);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void parseContent(String strJsonResult) {
-			// TODO Auto-generated method stub
-			Gson gson= new Gson();
-			WlanSupportModeType type = gson.fromJson(strJsonResult, WlanSupportModeType.class);
-			mode = WlanSupportMode.build(type.getWlanSupportMode());
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public WlanSupportMode getModelResult() {
-			// TODO Auto-generated method stub
-			return mode;
-		}
-		
-	}
 	/*get Wlan support mode end***/
 }

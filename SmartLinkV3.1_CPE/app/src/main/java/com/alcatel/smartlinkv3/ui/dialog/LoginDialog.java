@@ -147,7 +147,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 					m_bLoginPasswordError=false;
 					if (!"QuickSetupActivity".equals(QuickSetupActivity.pageName))
 					{
-  					if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+  					if(!FeatureVersionManager.getInstance().isSupportForceLogin())
   					{
   					m_dialog_err_info.showDialog(
   							m_context.getString(R.string.other_login_warning_title),

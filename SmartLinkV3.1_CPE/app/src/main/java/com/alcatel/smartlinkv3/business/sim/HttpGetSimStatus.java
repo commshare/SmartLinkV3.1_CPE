@@ -12,7 +12,7 @@ public class HttpGetSimStatus {
     {			
         public GetSimStatus(IHttpFinishListener callback)
         {
-        	super("GetSimStatus", "2.1", callback);
+        	super("SIM", "GetSimStatus", "2.1", callback);
         }
 
         @Override

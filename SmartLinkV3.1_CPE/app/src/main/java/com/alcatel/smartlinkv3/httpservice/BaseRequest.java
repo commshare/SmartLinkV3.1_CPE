@@ -9,6 +9,7 @@ import java.util.Hashtable;
 
 public abstract class BaseRequest 
 {
+	public final static String ANY_MODULE = "*";
 	protected JSONObject m_requestParamJson = new JSONObject();
 //	protected String m_url;
 	protected Hashtable<String,String> m_headers;
@@ -16,9 +17,11 @@ public abstract class BaseRequest
 	
 	protected String m_strId;
 	protected String method;
+	protected String module;
 	
-	public BaseRequest(String method, String id, IHttpFinishListener callback)
+	public BaseRequest(String module, String method, String id, IHttpFinishListener callback)
 	{
+		this.module = module;
 		this.method = method;
 		m_strId = id;
 		m_finsishCallback = callback;
@@ -45,7 +48,16 @@ public abstract class BaseRequest
 	{
 	    return m_finsishCallback;
 	}
-	
+
+
+	public String getMethod() {
+		return method;
+	}
+
+	public String getModule() {
+		return module;
+	}
+
 	protected void buildHttpParamJson() throws JSONException {
 		m_requestParamJson.put(ConstValue.JSON_PARAMS, null);
 	}

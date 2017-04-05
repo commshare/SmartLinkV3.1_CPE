@@ -42,7 +42,7 @@ public class MessageUti {
 	/**************************System message start*********************************************************************************/
 	public static String SYSTEM_GET_FEATURES_ROLL_REQUSET = 
 			"com.alcatel.smartlinkv3.business.system.getFeatures";
-	public static String SYSTEM_GET_SYSTEM_INFO_REQUSET =
+	public static String SYSTEM_GET_SYSTEM_INFO_REQUEST =
 			"com.alcatel.smartlinkv3.business.system.getsysteminfo";
 	public static String SYSTEM_GET_SYSTEM_STATUS_REQUSET =
 			"com.alcatel.smartlinkv3.business.system.getsystemstatus";	
@@ -210,22 +210,15 @@ public class MessageUti {
 	public static Map<String, HttpMethodUti> httpMethods = new HashMap<String, HttpMethodUti>();
 	public static void intHttpMethods() {
 		/********************System method start**********************/
-		httpMethods.put(SYSTEM_GET_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemInfo"));
+		httpMethods.put(SYSTEM_GET_SYSTEM_INFO_REQUEST, new HttpMethodUti(SystemManager.class, "getSystemInfo"));
 		httpMethods.put(SYSTEM_GET_SYSTEM_STATUS_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemStatus"));
-		httpMethods.put(SYSTEM_SET_DEVICE_REBOOT, 
-				new HttpMethodUti(SystemManager.class, "rebootDevice"));
-		httpMethods.put(SYSTEM_SET_DEVICE_RESET, 
-				new HttpMethodUti(SystemManager.class, "resetDevice"));
-		httpMethods.put(SYSTEM_SET_DEVICE_BACKUP, 
-				new HttpMethodUti(SystemManager.class, "backupDevice"));
-		httpMethods.put(SYSTEM_SET_DEVICE_RESTORE, 
-				new HttpMethodUti(SystemManager.class, "restoreDevice"));
-		httpMethods.put(SYSTEM_SET_DEVICE_POWER_OFF, 
-				new HttpMethodUti(SystemManager.class, "setDevicePowerOff"));
-		httpMethods.put(SYSTEM_SET_APP_BACKUP, 
-				new HttpMethodUti(SystemManager.class, "setAppBackup"));
-		httpMethods.put(SYSTEM_SET_APP_RESTORE_BACKUP, 
-				new HttpMethodUti(SystemManager.class, "setAppRestoreBackup"));
+		httpMethods.put(SYSTEM_SET_DEVICE_REBOOT, new HttpMethodUti(SystemManager.class, "rebootDevice"));
+		httpMethods.put(SYSTEM_SET_DEVICE_RESET, new HttpMethodUti(SystemManager.class, "resetDevice"));
+		httpMethods.put(SYSTEM_SET_DEVICE_BACKUP, new HttpMethodUti(SystemManager.class, "backupDevice"));
+		httpMethods.put(SYSTEM_SET_DEVICE_RESTORE, new HttpMethodUti(SystemManager.class, "restoreDevice"));
+		httpMethods.put(SYSTEM_SET_DEVICE_POWER_OFF, new HttpMethodUti(SystemManager.class, "setDevicePowerOff"));
+		httpMethods.put(SYSTEM_SET_APP_BACKUP, new HttpMethodUti(SystemManager.class, "setAppBackup"));
+		httpMethods.put(SYSTEM_SET_APP_RESTORE_BACKUP, new HttpMethodUti(SystemManager.class, "setAppRestoreBackup"));
 		/********************System method end**********************/
 		
 		/********************User method start**********************/
@@ -274,8 +267,7 @@ public class MessageUti {
 		/********************WAN method start**********************/
 		httpMethods.put(WAN_CONNECT_REQUSET, new HttpMethodUti(WanManager.class, "connect"));
 		httpMethods.put(WAN_DISCONNECT_REQUSET, new HttpMethodUti(WanManager.class, "disconnect"));	
-		httpMethods.put(WAN_SET_ROAMING_CONNECT_FLAG_REQUSET, new HttpMethodUti(WanManager.class, "setRoamingConnectFlag"));	
-		
+		httpMethods.put(WAN_SET_ROAMING_CONNECT_FLAG_REQUSET, new HttpMethodUti(WanManager.class, "setRoamingConnectFlag"));
 		/********************WAN method end**********************/
 		
 		/********************Sharing method start**********************/			
@@ -297,19 +289,14 @@ public class MessageUti {
 		/********************WLAN method end**********************/
 
 		/**************************LAN message start*******************************************************************************/
-		httpMethods.put(LAN_GET_LAN_SETTINGS,
-				new HttpMethodUti(LanManager.class, "getLaninfo"));
-		httpMethods.put(LAN_SET_LAN_SETTINGS,
-				new HttpMethodUti(LanManager.class, ""));
+		httpMethods.put(LAN_GET_LAN_SETTINGS, new HttpMethodUti(LanManager.class, "getLaninfo"));
+		httpMethods.put(LAN_SET_LAN_SETTINGS, new HttpMethodUti(LanManager.class, ""));
 		/**************************LAN message end*********************************************************************************/
 		
 		/**************************power message start*******************************************************************************/
-		httpMethods.put(POWER_GET_BATTERY_STATE,
-				new HttpMethodUti(PowerManager.class, "getBatteryState"));
-		httpMethods.put(POWER_GET_POWER_SAVING_MODE,
-				new HttpMethodUti(PowerManager.class, "getPowerSavingModeInfo"));
-		httpMethods.put(POWER_SET_POWER_SAVING_MODE,
-				new HttpMethodUti(PowerManager.class, "setPowerSavingModeInfo"));
+		httpMethods.put(POWER_GET_BATTERY_STATE, new HttpMethodUti(PowerManager.class, "getBatteryState"));
+		httpMethods.put(POWER_GET_POWER_SAVING_MODE, new HttpMethodUti(PowerManager.class, "getPowerSavingModeInfo"));
+		httpMethods.put(POWER_SET_POWER_SAVING_MODE, new HttpMethodUti(PowerManager.class, "setPowerSavingModeInfo"));
 		/**************************power message end*********************************************************************************/
 		
 		/**************************update message start*******************************************************************************/

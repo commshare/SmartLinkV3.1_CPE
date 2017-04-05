@@ -27,10 +27,6 @@ public class ProfileManager extends BaseManager{
 	}
 	
 	public void startGetProfileList(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "GetProfileList") != true){
-			return;
-		}
-		
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpGetProfileList.GetProfileList(new IHttpFinishListener(){
 
 			@Override
@@ -74,10 +70,6 @@ public class ProfileManager extends BaseManager{
 	}
 	
 	public void startAddNewProfile(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "AddNewProfile") != true){
-			return;
-		}
-		
 		String ProfileName = (String) data.getParamByKey("profile_name");
 		String DialNumber = (String) data.getParamByKey("dial_number");
 		String APN = (String) data.getParamByKey("apn");
@@ -118,10 +110,6 @@ public class ProfileManager extends BaseManager{
 	
 	
 	public void startEditProfile(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "EditProfile") != true){
-			return;
-		}
-		
 		int profileID = (Integer) data.getParamByKey("profile_id");
 		String ProfileName = (String) data.getParamByKey("profile_name");
 		String DialNumber = (String) data.getParamByKey("dial_number");
@@ -165,10 +153,6 @@ public class ProfileManager extends BaseManager{
 	
 	
 	public void startDeleteProfile(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "DeleteProfile") != true){
-			return;
-		}
-		
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile(profileId, new IHttpFinishListener(){
@@ -205,10 +189,6 @@ public class ProfileManager extends BaseManager{
 	}
 	
 	public void startSetDefaultProfile(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Profile", "SetDefaultProfile") != true){
-			return;
-		}
-		
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile(profileId, new IHttpFinishListener(){

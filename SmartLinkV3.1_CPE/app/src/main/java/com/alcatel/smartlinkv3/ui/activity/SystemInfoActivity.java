@@ -159,11 +159,11 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.SYSTEM_SET_DEVICE_POWER_OFF));
 		registerReceiver(m_msgReceiver, 
-				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
+				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST));
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.LAN_GET_LAN_SETTINGS));
 		
-		BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST, null);
 		BusinessManager.getInstance().sendRequestMessage(MessageUti.LAN_GET_LAN_SETTINGS, null);
 //		ShowWaiting(true);
 	}
@@ -196,7 +196,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		
 	}
 //		
-//		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
+//		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST)){
 //			ShowWaiting(false);
 //			setSystemInfo();
 //		}

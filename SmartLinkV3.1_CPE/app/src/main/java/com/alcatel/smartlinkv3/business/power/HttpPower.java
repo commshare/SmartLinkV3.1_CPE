@@ -16,7 +16,7 @@ public class HttpPower {
 	public static class getBatteryStateRequest extends BaseRequest{
 
 		public getBatteryStateRequest(IHttpFinishListener callback) {
-			super("GetBatteryState", "16.1", callback);
+			super("PowerManagement","GetBatteryState", "16.1", callback);
 		}
 
 		@Override
@@ -30,7 +30,7 @@ public class HttpPower {
 	public static class getPowerSavingModeRequest extends BaseRequest{
 
 		public getPowerSavingModeRequest(IHttpFinishListener callback) {
-			super("GetPowerSavingMode", "16.2", callback);
+			super("PowerManagement","GetPowerSavingMode", "16.2", callback);
 		}
 
 		@Override
@@ -45,7 +45,7 @@ public class HttpPower {
 
 		private PowerSavingModeInfo m_info=null;
 		public setPowerSavingModeRequest(PowerSavingModeInfo info, IHttpFinishListener callback) {
-			super("SetPowerSavingMode", "16.3", callback);
+			super("PowerManagement","SetPowerSavingMode", "16.3", callback);
 			m_info = info;
 		}
 

@@ -16,7 +16,7 @@ public class HttpLan {
 	public static class getLanSettingsRequest extends BaseRequest{
 
 		public getLanSettingsRequest(IHttpFinishListener callback) {
-			super("GetLanSettings", "11.1", callback);
+			super("LAN", "GetLanSettings", "11.1", callback);
 		}
 
 		@Override
@@ -31,7 +31,7 @@ public class HttpLan {
 
 		private LanInfo m_lanInfo = new LanInfo();
 		public LanSettinsRequest(LanInfo laninfo, IHttpFinishListener callback) {
-			super("SetLanSettings", "11.2", callback);
+			super("LAN", "SetLanSettings", "11.2", callback);
 			m_lanInfo = laninfo;
 		}
 

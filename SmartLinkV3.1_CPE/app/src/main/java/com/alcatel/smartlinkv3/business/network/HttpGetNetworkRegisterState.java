@@ -10,7 +10,7 @@ public class HttpGetNetworkRegisterState {
 	public static class GetNetworkRegisterState extends BaseRequest{
 
 		public GetNetworkRegisterState(IHttpFinishListener callback) {
-			super("GetNetworkRegisterState", "4.5", callback);
+			super("Network", "GetNetworkRegisterState", "4.5", callback);
 		}
 
 		@Override

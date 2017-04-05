@@ -14,7 +14,7 @@ public class HttpSetDefaultProfile {
 		private int ProfileID;
 
 		public SetDefaultProfile(int profileID, IHttpFinishListener callback) {
-			super("SetDefaultProfile", "15.5",  callback);
+			super("Profile", "SetDefaultProfile", "15.5",  callback);
 			ProfileID = profileID;
 		}
 

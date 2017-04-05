@@ -1,5 +1,7 @@
 package com.alcatel.smartlinkv3.business.model;
 
+import com.alcatel.smartlinkv3.business.system.SystemInfo;
+
 public class SystemInfoModel extends BaseModel {
 
 	private String m_strSWVersion="";
@@ -12,7 +14,6 @@ public class SystemInfoModel extends BaseModel {
 	
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
 		m_strSWVersion="";
 		m_strHWVersion="";
 		m_strDeviceName="";
@@ -21,7 +22,15 @@ public class SystemInfoModel extends BaseModel {
 		m_strIP="";
 		m_strSubnet="";
 	}
-	
+
+	public void updateSystemInfo(SystemInfo m_systemInfo) {
+		setDeviceName(m_systemInfo.getDeviceName());
+		setHwVersion(m_systemInfo.getHwVersion());
+		setSwVersion(m_systemInfo.getSwVersion());
+		setIMEI(m_systemInfo.getIMEI());
+	}
+
+
 	public String getMacAddress() {
 		return m_strMacAddress;
 	}

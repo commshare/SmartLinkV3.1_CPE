@@ -20,7 +20,7 @@ public class HttpSms {
     {	
         public GetSMSInitStatus(IHttpFinishListener callback)
         {
-        	super("GetSMSInitStatus", "6.1", callback);
+        	super("SMS", "GetSMSInitStatus", "6.1", callback);
         }
 
         @Override
@@ -38,7 +38,7 @@ public class HttpSms {
 		private int m_nPage = 0;//0: return all Contact SMS.1: the first page ,every page has 10 contacts SMS list.
         public GetSMSContactList(int nPage,IHttpFinishListener callback)
         {
-        	super("GetSMSContactList", "6.2", callback);
+        	super("SMS", "GetSMSContactList", "6.2", callback);
         	m_nPage = nPage;
         }
 
@@ -68,7 +68,7 @@ public class HttpSms {
 		
         public GetSMSContentList(int nPage,int nContactId,IHttpFinishListener callback)
         {
-        	super("GetSMSContentList", "6.3", callback);
+        	super("SMS", "GetSMSContentList", "6.3", callback);
         	m_nPage = nPage;
         	m_nContactId = nContactId;
         }
@@ -97,7 +97,7 @@ public class HttpSms {
     {	
         public GetSMSStorageState(IHttpFinishListener callback)
         {
-        	super("GetSMSStorageState", "6.4", callback);
+        	super("SMS", "GetSMSStorageState", "6.4", callback);
         }
 
         @Override
@@ -118,7 +118,7 @@ public class HttpSms {
 		
         public DeleteSMS(int nDelFlag,int nContactId,int nSMSId,IHttpFinishListener callback)
         {
-        	super("DeleteSMS", "6.5", callback);
+        	super("SMS", "DeleteSMS", "6.5", callback);
         	m_nDelFlag = nDelFlag;
         	m_nContactId = nContactId;
         	m_nSMSId = nSMSId;
@@ -146,7 +146,7 @@ public class HttpSms {
 		
         public SendSMS(int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback)
         {
-        	super("SendSMS", "6.6", callback);
+        	super("SMS", "SendSMS", "6.6", callback);
         	m_nSMSId = nSMSId;
         	m_strSMSContent = strSMSContent;
         	m_lstNumber = lstNumber;
@@ -178,7 +178,7 @@ public class HttpSms {
     {	
         public GetSendSMSResult(IHttpFinishListener callback)
         {
-        	super("GetSendSMSResult", "6.7", callback);
+        	super("SMS", "GetSendSMSResult", "6.7", callback);
         }
 
         @Override
@@ -194,15 +194,16 @@ public class HttpSms {
 	public static class SaveSMS extends BaseRequest
     {	
 		private int m_nSMSId = -1;
-		private String m_strSMSContent = new String();
-		private ArrayList<String> m_lstNumber = new ArrayList<String>();
+		private String m_strSMSContent = "";
+		private ArrayList<String> m_lstNumber = new ArrayList<>();
 		
         public SaveSMS(int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback)
         {
-        	super("SaveSMS", "6.8", callback);
+        	super("SMS", "SaveSMS", "6.8", callback);
         	m_nSMSId = nSMSId;
         	m_strSMSContent = strSMSContent;
         	m_lstNumber = (ArrayList<String>) lstNumber.clone();
+//            Arrays.copyOf()
         }
 
         @Override

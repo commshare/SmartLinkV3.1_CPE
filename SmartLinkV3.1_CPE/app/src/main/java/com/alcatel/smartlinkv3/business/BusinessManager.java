@@ -105,13 +105,10 @@ public class BusinessManager {
     	m_wanManager = new WanManager(m_context);
     	m_wlanManager = new WlanManager(m_context);
     	m_sharingManager = new SharingManager(m_context);
-    	
     	m_updateManager = new UpdateManager(m_context);
     	m_lanManager = new LanManager(m_context);
     	m_powerManager = new PowerManager(m_context);
-    	
     	m_deviceManager = new DeviceManager(m_context);
-    	
     	m_profileManager = new ProfileManager(m_context);
     	
     	m_class.put("SystemManager", m_systemManager);

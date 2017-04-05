@@ -12,7 +12,7 @@ public class HttpUpdate {
 	public static class getDeviceNewVersionRequest extends BaseRequest{
 
 		public getDeviceNewVersionRequest(IHttpFinishListener callback) {
-			super("GetDeviceNewVersion", "9.1", callback);
+			super("Update", "GetDeviceNewVersion", "9.1", callback);
 		}
 
 		@Override
@@ -27,7 +27,7 @@ public class HttpUpdate {
 	public static class setDeviceStartUpdateRequest extends BaseRequest{
 
 		public setDeviceStartUpdateRequest(IHttpFinishListener callback) {
-			super("SetDeviceStartUpdate", "9.2", callback);
+			super("Update", "SetDeviceStartUpdate", "9.2", callback);
 		}
 
 		@Override
@@ -42,7 +42,7 @@ public class HttpUpdate {
 	public static class setFOTAStartDownload extends BaseRequest{
 
 		public setFOTAStartDownload(IHttpFinishListener callback) {
-			super("SetFOTAStartDownload", "9.2", callback);
+			super("Update", "SetFOTAStartDownload", "9.2", callback);
 		}
 
 		@Override
@@ -56,7 +56,7 @@ public class HttpUpdate {
 	public static class getDeviceUpgradeStatusRequest extends BaseRequest{
 
 		public getDeviceUpgradeStatusRequest(IHttpFinishListener callback) {
-			super("GetDeviceUpgradeState", "9.3", callback);
+			super("Update", "GetDeviceUpgradeState", "9.3", callback);
 		}
 
 		@Override
@@ -70,7 +70,7 @@ public class HttpUpdate {
 	public static class setDeviceUpdateStopRequest extends BaseRequest{
 
 		public setDeviceUpdateStopRequest(IHttpFinishListener callback) {
-			super("SetDeviceUpdateStop", "9.4", callback);
+			super("Update", "SetDeviceUpdateStop", "9.4", callback);
 		}
 
 		@Override
@@ -83,7 +83,7 @@ public class HttpUpdate {
 	public static class SetCheckNewVersionRequest extends BaseRequest{
 
 		public SetCheckNewVersionRequest(IHttpFinishListener callback) {
-			super("SetCheckNewVersion", "9.5", callback);
+			super("Update","SetCheckNewVersion", "9.5", callback);
 		}
 	}
 }

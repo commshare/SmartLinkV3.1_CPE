@@ -1,29 +1,5 @@
 package com.alcatel.smartlinkv3.ui.view;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.cybergarage.upnp.Device;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity;
-import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
-import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
-import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.MediaManager;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy.BrowseRequestCallback;
-import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
-import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
-import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
-import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
-import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
-import com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,12 +10,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity;
+import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
+import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
+import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy.BrowseRequestCallback;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.MediaManager;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
+import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
+import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
+import com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity;
+
+import org.cybergarage.upnp.Device;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,BrowseRequestCallback{
 	
@@ -50,7 +50,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	
 	private ListView m_MicrosdListView = null;
 	private UpitemAdapter adapter;
-	private List<MicrosdItem>list;
+	private List<MicroSDItem>list;
 	
 	private AllShareProxy mAllShareProxy;
 	private List<MediaItem> mCurItems;	
@@ -130,66 +130,37 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		// TODO Auto-generated method stub
 	}
 	
-	private List<MicrosdItem> getData(Context context){
-		List<MicrosdItem> list = new ArrayList<MicrosdItem>();
-		MicrosdItem item;
-		
-		if ((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
-				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") == true))
+	private List<MicroSDItem> getData(Context context){
+		List<MicroSDItem> list = new ArrayList<MicroSDItem>();
+		MicroSDItem item;
+
+		if(FeatureVersionManager.getInstance().isSupportFtp() || FeatureVersionManager.getInstance().isY900Project())
 		{
-			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
-			list.add(item);
-		
-			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
-			list.add(item);
-			
-			item = new MicrosdItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), false);
-			list.add(item);
-			
-			item = new MicrosdItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), false);
-			list.add(item);
-		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") != true) 
-				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") == true))
-		{
-			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
-			list.add(item);
-			
-			item = new MicrosdItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), false);
-			list.add(item);
-			
-			item = new MicrosdItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), false);
-			list.add(item);
-		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
-				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") != true))
-		{
-			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
-			list.add(item);
-		}else if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
-		{
-			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
-			list.add(item);
-			
-			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
-			list.add(item);
-			
-			item = new MicrosdItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), false);
-			list.add(item);
-			
-			item = new MicrosdItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), false);
+			item = new MicroSDItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), ITEM_FILE);
 			list.add(item);
 		}
+
+		if(FeatureVersionManager.getInstance().isSupportDLNA() || FeatureVersionManager.getInstance().isY900Project())
+		{
+			item = new MicroSDItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), ITEM_MUSIC);
+			list.add(item);
+			
+			item = new MicroSDItem(context.getString(R.string.microsd_pictures), context.getResources().getDrawable(R.drawable.microsd_item_pictures), ITEM_PICTURES);
+			list.add(item);
+			
+			item = new MicroSDItem(context.getString(R.string.microsd_videos), context.getResources().getDrawable(R.drawable.microsd_item_videos), ITEM_VIDEO);
+			list.add(item);
+		}
+
 		return list;
 	}
 	
 	public class UpitemAdapter extends BaseAdapter{
 
 		private Context context;
-		private List<MicrosdItem> listMicrosdItmes;
+		private List<MicroSDItem> listMicrosdItmes;
 		
-		public UpitemAdapter(Context context, List<MicrosdItem>list){
+		public UpitemAdapter(Context context, List<MicroSDItem>list){
 			this.context =context;
 			this.listMicrosdItmes = list;
 		}
@@ -200,7 +171,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		}
 
 		@Override
-		public Object getItem(int position) {
+		public MicroSDItem getItem(int position) {
 			// TODO Auto-generated method stub
 			return listMicrosdItmes.get(position);
 		}
@@ -230,9 +201,9 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 				holder = (ViewHolder)convertView.getTag();
 			}
 			
-			MicrosdItem item = listMicrosdItmes.get(position);
+			MicroSDItem item = listMicrosdItmes.get(position);
 			
-			holder.Itemicon.setBackgroundDrawable(item.getDrawableId());
+			holder.Itemicon.setBackgroundDrawable(item.getDrawable());
 			holder.ItemName.setText(item.getItemName());
 			
 			/*是否显示*/
@@ -246,37 +217,29 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		}
 	}
 	
-	public class MicrosdItem{
+	public class MicroSDItem {
 		//Item name
 		private String m_strItem;
-		private Drawable m_drawableId ;
-		private Boolean m_IsShowFlag;
+		private Drawable m_drawableId;
+		private int m_type;
 		
-		public MicrosdItem(String strItem, Drawable mdrawableid,Boolean IsShowFlag){
+		public MicroSDItem(String strItem, Drawable drawable, int type){
 			super();
 			this.m_strItem = strItem;
-			this.m_drawableId = mdrawableid;
-			this.m_IsShowFlag = IsShowFlag;
+			this.m_drawableId = drawable;
+			this.m_type = type;
 		}
 		
-		public Drawable getDrawableId(){
+		public Drawable getDrawable(){
 			return m_drawableId;
 		}
-		
-		public void setDrawableId(Drawable mdrawableid){
-			m_drawableId = mdrawableid;
+
+		public int getType() {
+			return m_type;
 		}
-		
+
 		public String getItemName(){
 			return m_strItem;
-		}
-		
-		public Boolean getIsShowFlag(){
-			return m_IsShowFlag;
-		}
-		
-		public void setIsShowFlag(Boolean IsShowFlag){
-			m_IsShowFlag = IsShowFlag;
 		}
 	}
 	
@@ -372,75 +335,23 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		if ((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
-				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") == true))
-		{	
-			switch(position){
-			case 0:
+		MicroSDItem item = adapter.getItem(position);
+
+		switch(item.getType()) {
+			case ITEM_FILE:
 				goToFilePage();
 				break;
-			case 1:
-				onGetItemList(ITEM_MUSIC);
+
+			default:
+				onGetItemList(item.getType());
 				break;
-			case 2:
-				onGetItemList(ITEM_PICTURES);
-				break;
-			case 3:
-				onGetItemList(ITEM_VIDEO);
-				break;
-			}
-		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") != true) 
-				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") == true))
-		{
-			switch(position){
-			case 0:
-				onGetItemList(ITEM_MUSIC);
-				break;
-			case 1:
-				onGetItemList(ITEM_PICTURES);
-				break;
-			case 2:
-				onGetItemList(ITEM_VIDEO);
-				break;
-			}
-		}else if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus") == true) 
-				&& (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetDLNASettings") != true))
-		{
-			switch(position){
-			case 0:
-				onGetItemList(ITEM_MUSIC);
-				break;
-			}
-		}else if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
-		{
-			switch(position){
-			case 0:
-				goToFilePage();
-				break;
-			case 1:
-				onGetItemList(ITEM_MUSIC);
-				break;
-			case 2:
-				onGetItemList(ITEM_PICTURES);
-				break;
-			case 3:
-				onGetItemList(ITEM_VIDEO);
-				break;
-			}
-		}else
-		{
-			
 		}
 	}
 	
 	public void onGetItemList(int position) {
 		if(BusinessManager.getInstance().getDlnaSettings().getDlnaStatus()  <= 0)
 		{
-			String strInfo = m_context.getString(R.string.dlna_not_open);
-			Toast.makeText(m_context, strInfo, Toast.LENGTH_SHORT).show();
+			Toast.makeText(m_context, R.string.dlna_not_open, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		

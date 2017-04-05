@@ -65,9 +65,6 @@ public class SimManager extends BaseManager {
 	}
 	
 	public void changePinState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePinState") != true)
-			return;
-		
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState(nState,strPin, new IHttpFinishListener() {
@@ -95,9 +92,6 @@ public class SimManager extends BaseManager {
 	
 	//SetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void setAutoValidatePinState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "setAutoValidatePinState") != true)
-			return;
-		
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
     	
@@ -125,8 +119,6 @@ public class SimManager extends BaseManager {
 	
 	//GetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void getAutoPinState(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetAutoValidatePinState") != true)
-			return;
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
@@ -159,9 +151,6 @@ public class SimManager extends BaseManager {
 	
 	//change pin  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void changePin(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "ChangePinCode") != true)
-			return;
-		
 		String strNewPin = (String) data.getParamByKey("new_pin");
 		String strCurrentPin = (String) data.getParamByKey("current_pin");
     	
@@ -189,9 +178,6 @@ public class SimManager extends BaseManager {
 	
 	//unlock Puk  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void unlockPuk(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "UnlockPuk") != true)
-			return;
-		
 		String strPuk = (String) data.getParamByKey("puk");
 		String strPin = (String) data.getParamByKey("pin");
     	
@@ -219,9 +205,6 @@ public class SimManager extends BaseManager {
 	
 	//unlock Pin  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void unlockPin(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "UnlockPin") != true)
-			return;
-		
 		String strPin = (String) data.getParamByKey("pin");
     	
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin(strPin, new IHttpFinishListener() {
@@ -249,9 +232,6 @@ public class SimManager extends BaseManager {
 	//GetSimStatus ////////////////////////////////////////////////////////////////////////////////////////// 
 	private GetSimStatusTask m_getSimStatusTask = null;
 	private void startGetSimStatusTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("SIM", "GetSimStatus") != true)
-			return;
-		
 		m_getSimStatusTask = new GetSimStatusTask();
 		changeSimStatusGetInterval(false);
 	}

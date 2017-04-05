@@ -17,248 +17,370 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
+import com.alcatel.smartlinkv3.httpservice.RestHttpClient;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import rx.Observable;
+
 public class SystemManager extends BaseManager {
-	private Features m_features = new Features();
-	private SystemInfo m_systemInfo = new SystemInfo();
-	private SystemStatus m_systemStatus = new SystemStatus();
+    private Features m_features = new Features();
+    private SystemInfo m_systemInfo = new SystemInfo();
+    private SystemStatus m_systemStatus = new SystemStatus();
 
-	private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
-	// this device
+    private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
+    // this device
 
-	private Timer m_getFeaturesTimer = new Timer();// this time not to cancel
-	// when cpe wifi
-	// disconnected,beacause
-	// used to test the wifi
-	// connect state
+    private Timer m_getFeaturesTimer = new Timer();// this time not to cancel
+    // when cpe wifi
+    // disconnected,beacause
+    // used to test the wifi
+    // connect state
 //	private Timer m_getStorageTimer = new Timer();
-	private Timer m_getSystemStatusTimer = new Timer();
+    private Timer m_getSystemStatusTimer = new Timer();
 
-	private String m_strAppVersion = "";
+    private String m_strAppVersion = "";
 
-	private GetFeaturesTask m_getFeaturesTask = null;
-	private GetSystemStatusTask m_getSystemStatusTask = null;
-	
-	private RestoreError m_errorInfo=new RestoreError();
+    private GetFeaturesTask m_getFeaturesTask = null;
+    private GetSystemStatusTask m_getSystemStatusTask = null;
 
-	public Features getFeatures() {
-		return m_features;
-	}
-	
-	public SystemInfo getSystemInfoModel() {
-		return m_systemInfo;
-	}
+    private RestoreError m_errorInfo = new RestoreError();
 
-	public SystemStatus getSystemStatus() {
-		return m_systemStatus;
-	}
+    public SystemManager(Context context) {
+        super(context);
+        // CPE_BUSINESS_STATUS_CHANGE and CPE_WIFI_CONNECT_CHANGE already
+        // register in basemanager
+        // m_context.registerReceiver(m_msgReceiver, new
+        // IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
 
-	public boolean getAlreadyRecongniseDeviceFlag() {
-		return m_bAlreadyRecogniseCPEDevice;
-	}
+        //app version
+        FetchAppVersion();
+    }
 
-	public String getAppVersion() {
-		return m_strAppVersion;
-	}
-	
-	public RestoreError getRestoreError(){
-		return m_errorInfo;
-	}
+    public Features getFeatures() {
+        return m_features;
+    }
 
-	@Override
-	protected void clearData() {	
-		m_features.clear();
-		m_systemInfo.clear();
-		m_systemInfo.clear();
-	}
+    public SystemInfo getSystemInfoModel() {
+        return m_systemInfo;
+    }
 
-	@Override
-	protected void onBroadcastReceive(Context context, Intent intent) {
-		if (intent.getAction().equals(MessageUti.CPE_BUSINESS_STATUS_CHANGE)) {
-			m_bStopBusiness = intent.getBooleanExtra("stop", false);
-			switchBusiness();
-		}
+    public SystemStatus getSystemStatus() {
+        return m_systemStatus;
+    }
 
-		if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-			boolean bCPEWifiConnected = DataConnectManager.getInstance()
-					.getCPEWifiConnected();
-			if (bCPEWifiConnected == true) {
-				getSystemInfo();
-				startSystemStatusTask();
+    public boolean getAlreadyRecongniseDeviceFlag() {
+        return m_bAlreadyRecogniseCPEDevice;
+    }
 
-			} else {
-				stopRollTimer();			
-				m_systemInfo.clear();
-				m_systemStatus.clear();
-				BusinessManager.getInstance().getSystemInfoModel().clear();
-			}
-		}
-	}
+    public String getAppVersion() {
+        return m_strAppVersion;
+    }
 
-	public SystemManager(Context context) {
-		super(context);
-		// CPE_BUSINESS_STATUS_CHANGE and CPE_WIFI_CONNECT_CHANGE already
-		// register in basemanager
-		// m_context.registerReceiver(m_msgReceiver, new
-		// IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
+    public RestoreError getRestoreError() {
+        return m_errorInfo;
+    }
 
-		//app version
-		FetchAppVersion();
-	}
+    @Override
+    protected void clearData() {
+        m_features.clear();
+        m_systemInfo.clear();
+        m_systemInfo.clear();
+    }
 
-	private void FetchAppVersion(){
-		PackageManager	manager = m_context.getPackageManager();
-		try {
-			PackageInfo info = manager.getPackageInfo(m_context.getPackageName(), 0);
-			m_strAppVersion = info.versionName;
-		} catch (NameNotFoundException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-	@Override
-	protected void stopRollTimer() {
-		
-		if (null != m_getSystemStatusTask) {
-			m_getSystemStatusTask.cancel();
-			m_getSystemStatusTask = null;
-		}
-	}
+    @Override
+    protected void onBroadcastReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(MessageUti.CPE_BUSINESS_STATUS_CHANGE)) {
+            m_bStopBusiness = intent.getBooleanExtra("stop", false);
+            switchBusiness();
+        }
 
-	public void switchBusiness() {
-		if (m_bStopBusiness) {
-			m_bAlreadyRecogniseCPEDevice = false;
-			if (m_getFeaturesTask != null) {
-				m_getFeaturesTask.cancel();
-				m_getFeaturesTask = null;
-			}
-			// m_getFeaturesTimer.cancel();
-			// m_getFeaturesTimer.purge();
-			// m_getFeaturesTimer = new Timer();
-		} else {
-			// GetFeaturesTask getFeaturesTask = new GetFeaturesTask();
-			// m_getFeaturesTimer.scheduleAtFixedRate(getFeaturesTask, 0, 5000);
-			if (m_getFeaturesTask == null) {
-				m_getFeaturesTask = new GetFeaturesTask();
-				m_getFeaturesTimer.scheduleAtFixedRate(m_getFeaturesTask, 0,
-						10*1000);
-			}
-		}
-	}
+        if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+            if (isWifiConnect()) {
+                getSystemInfo();
+                startSystemStatusTask();
+            } else {
+                stopRollTimer();
+                m_systemInfo.clear();
+                m_systemStatus.clear();
+                BusinessManager.getInstance().getSystemInfoModel().clear();
+            }
+        }
+    }
 
-	// Get feature list
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	class GetFeaturesTask extends TimerTask {
-		@Override
-		public void run() {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.GetFeature(new IHttpFinishListener() {
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							if (response.isOk()) {
-									m_features = response.getModelResult();
-							}
+    private void FetchAppVersion() {
+        PackageManager manager = m_context.getPackageManager();
+        try {
+            PackageInfo info = manager.getPackageInfo(m_context.getPackageName(), 0);
+            m_strAppVersion = info.versionName;
+        } catch (NameNotFoundException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
 
-							m_bAlreadyRecogniseCPEDevice = true;
+    @Override
+    protected void stopRollTimer() {
+        if (null != m_getSystemStatusTask) {
+            m_getSystemStatusTask.cancel();
+            m_getSystemStatusTask = null;
+        }
+    }
 
-							// change billing month,because to next billing
-							// month
-							//							SimpleDateFormat startTemp = new SimpleDateFormat(
-							//									Const.DATE_FORMATE);
-							//							Calendar caNow = Calendar.getInstance();
-							//							String strNow = startTemp.format(caNow.getTime());
-							//							if (!(BusinessManager.getInstance()
-							//									.getUsageSettings().m_strStartBillDate
-							//									.compareTo(strNow) <= 0 && BusinessManager
-							//									.getInstance().getUsageSettings().m_strEndBillDate
-							//									.compareTo(strNow) >= 0)) {
-							//								BusinessManager.getInstance()
-							//										.getUsageSettings()
-							//										.calStartAndEndCalendar();
-							//								Intent megIntent = new Intent(
-							//										MessageUti.CPE_CHANGED_BILLING_MONTH);
-							//								m_context.sendBroadcast(megIntent);
-							//							}
+    public void switchBusiness() {
+        if (m_bStopBusiness) {
+            m_bAlreadyRecogniseCPEDevice = false;
+            if (m_getFeaturesTask != null) {
+                m_getFeaturesTask.cancel();
+                m_getFeaturesTask = null;
+            }
+            // m_getFeaturesTimer.cancel();
+            // m_getFeaturesTimer.purge();
+            // m_getFeaturesTimer = new Timer();
+        } else {
+            requestFeatures();
+//			if (m_getFeaturesTask == null) {
+//				m_getFeaturesTask = new GetFeaturesTask();
+//				m_getFeaturesTimer.scheduleAtFixedRate(m_getFeaturesTask, 0, 10*1000);
+//			}
+        }
+    }
 
-							sendBroadcast(response, MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
-						}
-					}));
-		}
-	}
+    public Observable<Features> requestFeatures() {
+        Observable<Features> observable = createObservable(new HttpSystem.GetFeature(),
+                data -> {
+                    m_features = data;
+                    m_bAlreadyRecogniseCPEDevice = true;
+                });
+        //do not receive after schedule.
+//        observable.doOnNext(data -> {
+//                    m_features = data;
+//                    m_bAlreadyRecogniseCPEDevice = true;
+//                });
+        observable.subscribe();
+        return observable;
 
-	// Get System info
-	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void getSystemInfo() {
-		if (FeatureVersionManager.getInstance().isSupportApi("System",
-				"GetSystemInfo") != true)
-			return;
+    }
 
-		boolean bCPEWifiConnected = DataConnectManager.getInstance()
-				.getCPEWifiConnected();
-		if (bCPEWifiConnected) {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.GetSystemInfo(new IHttpFinishListener() {
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							int ret = response.getResultCode();
-							String strErrcode = response.getErrorCode();
-							if (ret == BaseResponse.RESPONSE_OK	&& strErrcode.length() == 0) {
-								m_systemInfo = response.getModelResult();
-								BusinessManager.getInstance().getSystemInfoModel().
-								setDeviceName(m_systemInfo.getDeviceName());
-								BusinessManager.getInstance().getSystemInfoModel().
-								setHwVersion(m_systemInfo.getHwVersion());
-								BusinessManager.getInstance().getSystemInfoModel().
-								setSwVersion(m_systemInfo.getSwVersion());
-								BusinessManager.getInstance().getSystemInfoModel().
-								setIMEI(m_systemInfo.getIMEI());
-							} else {
-								new Handler().postDelayed(
-										new Runnable() {
-											@Override
-											public void run() {
-												getSystemInfo();
-											}
-										}, 1000);
-							}
+    // Get System info
+    // //////////////////////////////////////////////////////////////////////////////////////////
+    public void getSystemInfo() {
+        boolean bCPEWifiConnected = DataConnectManager.getInstance()
+                .getCPEWifiConnected();
+        if (bCPEWifiConnected) {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.GetSystemInfo(new IHttpFinishListener() {
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+                            if (response.isOk()) {
+                                m_systemInfo = response.getModelResult();
+                                BusinessManager.getInstance().getSystemInfoModel().updateSystemInfo(m_systemInfo);
+                            } else {
+                                new Handler().postDelayed(
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getSystemInfo();
+                                            }
+                                        }, 1000);
+                            }
 
-							sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET);
-						}
-					}));
-		}
-	}
+                            sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST);
+                        }
+                    }));
+        }
+    }
 
-	// startSystemStatusTask
-		// //////////////////////////////////////////////////////////////////////////////////////////
+    private void startSystemStatusTask() {
+        if (m_getSystemStatusTask == null) {
+            m_getSystemStatusTask = new GetSystemStatusTask();
+            m_getSystemStatusTimer.scheduleAtFixedRate(m_getSystemStatusTask, 0, 5 * 1000);
+        }
+    }
 
-		private void startSystemStatusTask() {
-			if(FeatureVersionManager.getInstance().isSupportApi("System", "GetSystemStatus") != true)
-				return;
-			
-			if(m_getSystemStatusTask == null) {
-				m_getSystemStatusTask = new GetSystemStatusTask();
-				m_getSystemStatusTimer.scheduleAtFixedRate(m_getSystemStatusTask, 0, 5 * 1000);
-			}
-		}
+    // startSystemStatusTask
+    // //////////////////////////////////////////////////////////////////////////////////////////
 
-		class GetSystemStatusTask extends TimerTask {
-			@Override
-			public void run() {
-				LegacyHttpClient.getInstance().sendPostRequest(
-						new HttpSystem.GetSystemStatus(new IHttpFinishListener() {
-							@Override
-							public void onHttpRequestFinish(
-									BaseResponse response) {
-								int ret = response.getResultCode();
-								String strErrcode = response.getErrorCode();
-								if (ret == BaseResponse.RESPONSE_OK
-										&& strErrcode.length() == 0) {
-									m_systemStatus = response
-											.getModelResult();
-								} else {
+    //device reboot
+    public void rebootDevice(DataValue data) {
+        boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        if (blWifiConnected) {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.SetDeviceReboot(new IHttpFinishListener() {
+
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_REBOOT);
+                        }
+                    }));
+        }
+    }
+
+    //reset device
+    public void resetDevice(DataValue data) {
+        boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        if (blWifiConnected) {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.SetDeviceReset(new IHttpFinishListener() {
+
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+
+                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESET);
+                        }
+                    }));
+        }
+    }
+
+    //device backup
+    public void backupDevice(DataValue data) {
+        boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        if (blWifiConnected) {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.SetDeviceBackup(new IHttpFinishListener() {
+
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_BACKUP);
+                        }
+                    }));
+        }
+    }
+
+    //device restore
+    public void restoreDevice(DataValue data) {
+        boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        if (blWifiConnected) {
+            String strFile = data.getParamByKey("FileName").toString();
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.SetDeviceRestore(strFile,
+                            new IHttpFinishListener() {
+
+                                @Override
+                                public void onHttpRequestFinish(BaseResponse response) {
+                                    sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESTORE);
+                                }
+                            }));
+        }
+    }
+
+    public void setDevicePowerOff(DataValue data) {
+        boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        if (blWifiConnected) {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.setDevicePowerOffRequest(new IHttpFinishListener() {
+
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_POWER_OFF);
+                        }
+                    }));
+        }
+    }
+
+    public void setAppBackup(DataValue data) {
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("System", "SetAppBackup")) {
+//			return;
+//		}
+
+        boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        if (blWifiConnected) {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.setAppBackupRequest(new IHttpFinishListener() {
+
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+                            sendBroadcast(response, MessageUti.SYSTEM_SET_APP_BACKUP);
+                        }
+                    }));
+        }
+    }
+
+    public void setAppRestoreBackup(DataValue data) {
+//		if (!FeatureVersionManager.getInstance().
+//				isSupportApi("System", "SetAppRestoreBackup")) {
+//			return;
+//		}
+
+        boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        if (blWifiConnected) {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.setAppRestoreBackupRequest(new IHttpFinishListener() {
+
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+                            if (response.isOk()) {
+                                m_errorInfo = response.getModelResult();
+                            }
+                            sendBroadcast(response, MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
+                        }
+                    }));
+        }
+    }
+
+    // Get feature list
+    // //////////////////////////////////////////////////////////////////////////////////////////
+    class GetFeaturesTask extends TimerTask {
+        @Override
+        public void run() {
+            RestHttpClient.getInstance().sendPostRequest(new HttpSystem.GetFeature(
+                    (response -> {
+                        if (response.isOk()) {
+                            m_features = response.getModelResult();
+                            m_bAlreadyRecogniseCPEDevice = true;
+                        }
+
+                        sendBroadcast(response, MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
+                    })));
+
+//
+//			LegacyHttpClient.getInstance().sendPostRequest(
+//					new HttpSystem.GetFeature(new IHttpFinishListener() {
+//						@Override
+//						public void onHttpRequestFinish(BaseResponse response) {
+//							if (response.isOk()) {
+//									m_features = response.getModelResult();
+//							}
+//
+//							m_bAlreadyRecogniseCPEDevice = true;
+//
+//							// change billing month,because to next billing
+//							// month
+//							//							SimpleDateFormat startTemp = new SimpleDateFormat(
+//							//									Const.DATE_FORMATE);
+//							//							Calendar caNow = Calendar.getInstance();
+//							//							String strNow = startTemp.format(caNow.getTime());
+//							//							if (!(BusinessManager.getInstance()
+//							//									.getUsageSettings().m_strStartBillDate
+//							//									.compareTo(strNow) <= 0 && BusinessManager
+//							//									.getInstance().getUsageSettings().m_strEndBillDate
+//							//									.compareTo(strNow) >= 0)) {
+//							//								BusinessManager.getInstance()
+//							//										.getUsageSettings()
+//							//										.calStartAndEndCalendar();
+//							//								Intent megIntent = new Intent(
+//							//										MessageUti.CPE_CHANGED_BILLING_MONTH);
+//							//								m_context.sendBroadcast(megIntent);
+//							//							}
+//
+//							sendBroadcast(response, MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
+//						}
+//					}));
+        }
+    }
+
+    class GetSystemStatusTask extends TimerTask {
+        @Override
+        public void run() {
+            LegacyHttpClient.getInstance().sendPostRequest(
+                    new HttpSystem.GetSystemStatus(new IHttpFinishListener() {
+                        @Override
+                        public void onHttpRequestFinish(BaseResponse response) {
+                            if (response.isOk()) {
+                                m_systemStatus = response.getModelResult();
+                            } else {
 //									new Handler().postDelayed(
 //											new Runnable() {
 //												@Override
@@ -266,159 +388,11 @@ public class SystemManager extends BaseManager {
 //													getSystemStatus(null);
 //												}
 //											}, 1000);
-								}
+                            }
 
-								sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
-							}
-						}));
-				}
-		}
-
-
-	//device reboot
-	public void rebootDevice(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("System", "SetDeviceReboot")) {
-			return;
-		}
-
-		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blWifiConnected) {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.SetDeviceReboot(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_REBOOT);
-						}
-					}));
-		}
-	}
-
-	//reset device
-	public void resetDevice(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("System", "SetDeviceReset")) {
-			return;
-		}
-
-		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blWifiConnected) {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.SetDeviceReset(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-
-							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESET);
-						}
-					}));
-		}
-	}
-
-	//device backup
-	public void backupDevice(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("System", "SetDeviceBackup")) {
-			return;
-		}
-
-		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blWifiConnected) {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.SetDeviceBackup(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_BACKUP);
-						}
-					}));
-		}
-	}
-
-	//device restore
-	public void restoreDevice(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("System", "SetDeviceRestore")) {
-			return;
-		}
-
-		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blWifiConnected) {
-			String strFile = data.getParamByKey("FileName").toString();
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.SetDeviceRestore(strFile,
-							new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							sendBroadcast(response,MessageUti.SYSTEM_SET_DEVICE_RESTORE);
-						}
-					}));
-		}
-	}
-
-	public void setDevicePowerOff(DataValue data){
-		if (!FeatureVersionManager.getInstance().
-				isSupportApi("System", "SetDevicePowerOff")) {
-			return;
-		}
-
-		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blWifiConnected) {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.setDevicePowerOffRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_POWER_OFF);
-						}
-					}));
-		}
-	}
-	
-	public void setAppBackup(DataValue data){
-//		if (!FeatureVersionManager.getInstance().
-//				isSupportApi("System", "SetAppBackup")) {
-//			return;
-//		}
-
-		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blWifiConnected) {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.setAppBackupRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							sendBroadcast(response, MessageUti.SYSTEM_SET_APP_BACKUP);
-						}
-					}));
-		}
-	}
-	
-	public void setAppRestoreBackup(DataValue data){
-//		if (!FeatureVersionManager.getInstance().
-//				isSupportApi("System", "SetAppRestoreBackup")) {
-//			return;
-//		}
-
-		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-		if (blWifiConnected) {
-			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpSystem.setAppRestoreBackupRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRet = response.getResultCode();
-							String strError = response.getErrorCode();
-							if (nRet == BaseResponse.RESPONSE_OK
-									&& strError.length() == 0){
-								m_errorInfo = response.getModelResult();
-							}
-							sendBroadcast(response, MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
-						}
-					}));
-		}
-	}
+                            sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
+                        }
+                    }));
+        }
+    }
 }

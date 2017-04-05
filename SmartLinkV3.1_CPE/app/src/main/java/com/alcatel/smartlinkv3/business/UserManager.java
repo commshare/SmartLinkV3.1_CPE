@@ -76,9 +76,6 @@ public class UserManager extends BaseManager {
 	
 //Login  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void login(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("User", "Login") != true)
-			return;
-		
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
@@ -109,9 +106,6 @@ public class UserManager extends BaseManager {
 	
 //Login  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void forcelogin(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true)
-			return;
-		
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
@@ -145,11 +139,7 @@ public class UserManager extends BaseManager {
     } 
 		
 //Logout  Request ////////////////////////////////////////////////////////////////////////////////////////// 
-	public void logout(DataValue data) {		
-	
-		if(FeatureVersionManager.getInstance().isSupportApi("User", "Logout") != true)
-			return;
-    	
+	public void logout(DataValue data) {
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.Logout(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
@@ -193,9 +183,6 @@ public class UserManager extends BaseManager {
 	
 //GetLoginState  Request ////////////////////////////////////////////////////////////////////////////////////////// 	
 	public void getLoginState() {
-		if(FeatureVersionManager.getInstance().isSupportApi("User", "GetLoginState") != true)
-			return;
-    	
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.GetLoginState(new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
@@ -248,8 +235,6 @@ public class UserManager extends BaseManager {
 	
 	private void startUpdateLoginTimeTask()
 	{
-		if(FeatureVersionManager.getInstance().isSupportApi("User", "HeartBeat") != true)
-			return;
 		if(m_updateLoginTimeTask == null) {
 			m_updateLoginTimeTask = new UpdateLoginTimeTask();
 			m_UpdateLoginTimer.scheduleAtFixedRate(m_updateLoginTimeTask, 0, 6000);
@@ -258,9 +243,6 @@ public class UserManager extends BaseManager {
 	
 	//Change Password Request///////////////////////////////////////////////////////////////////////////////////
 	public void changepassword(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("User", "ChangePassword") != true){
-			return;
-		}
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strCurrPsw = (String) data.getParamByKey("current_password");
     	String strNewPsw = (String) data.getParamByKey("new_password");

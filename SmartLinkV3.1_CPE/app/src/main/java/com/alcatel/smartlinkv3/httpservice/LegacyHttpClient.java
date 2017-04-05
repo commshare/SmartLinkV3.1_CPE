@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
+import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 import org.apache.http.HttpResponse;
@@ -167,12 +168,16 @@ public class LegacyHttpClient {
 		}	
 	}
 
-	public void appendResponse(BaseResponse response) {
+	public void sendResponse(BaseResponse response) {
 		synchronized (m_response_list) {
 			m_response_list.addLast(response);
 		}
 		Log.d("response_list", "response_list size : " + String.valueOf(m_response_list.size()));
 		HttpAccessLog.getInstance().writeLogToFile("response_list size : " + String.valueOf(m_response_list.size()));
+
+		Message msg = new Message();
+		msg.what = LegacyHttpClient.FINISH_HTTP_REQUEST;
+		m_message_handler.sendMessage(msg);
 	}
 
 	public void start() {
@@ -246,6 +251,15 @@ public class LegacyHttpClient {
 	public void sendPostRequest(BaseRequest request) {
 		if (isStop())
 			return;
+
+		if(!FeatureVersionManager.getInstance().isSupportApi(request.getModule(), request.getMethod())){
+			BaseResponse response_obj = request.createResponseObject();
+			response_obj.setResult(BaseResponse.RESPONSE_UNSUPPORTED_API);
+			sendResponse(response_obj);
+			return;
+		}
+
+
 //		request.setHttpUrl(m_server_address);
 
 		request.buildRequestParamJson();
@@ -336,10 +350,7 @@ public class LegacyHttpClient {
 
 			}
 
-			appendResponse(response_obj);
-			Message msg = new Message();
-			msg.what = LegacyHttpClient.FINISH_HTTP_REQUEST;
-			LegacyHttpClient.this.m_message_handler.sendMessage(msg);
+			sendResponse(response_obj);
 		}
 	}
 }

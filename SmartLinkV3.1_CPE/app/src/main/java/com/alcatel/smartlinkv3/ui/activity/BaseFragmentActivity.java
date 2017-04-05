@@ -48,7 +48,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 		this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
 
 		m_msgReceiver2 = new ActivityBroadcastReceiver();
-		if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+		if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 		{
 			this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
 		}
@@ -56,7 +56,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 		this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
 
 		showActivity(this);
-		if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+		if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 		{
 			backMainActivityOnResume(this);
 		}

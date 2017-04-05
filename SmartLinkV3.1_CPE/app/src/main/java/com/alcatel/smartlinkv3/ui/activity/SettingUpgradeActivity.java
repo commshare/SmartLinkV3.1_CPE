@@ -322,8 +322,8 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		registerReceiver(m_msgReceiver, 
 				new IntentFilter(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION));
 		registerReceiver(m_msgReceiver, 
-				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET));
-		BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET, null);
+				new IntentFilter(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST));
+		BusinessManager.getInstance().sendRequestMessage(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST, null);
 		m_pb_waiting.setVisibility(View.VISIBLE);
 		setNewDeviceVersion("");
 	}
@@ -351,7 +351,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			}
 		}
 		
-		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUSET)){
+		if(intent.getAction().equalsIgnoreCase(MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST)){
 			if (ok) {
 				//do nothing
 				m_pb_waiting.setVisibility(View.GONE);
@@ -393,8 +393,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 					Toast.makeText(this, R.string.setting_upgrade_not_start, Toast.LENGTH_SHORT).show();
 				}else if (EnumDeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
 					ShowWaiting(false);
-					if (!FeatureVersionManager.getInstance().
-							isSupportApi("System", "AccessSqliteDB")) 
+					if (!FeatureVersionManager.getInstance().isSupportApi("System", "AccessSqliteDB"))
 					{
 						Toast.makeText(this, R.string.setting_upgrade_complete, Toast.LENGTH_SHORT).show();
 					}

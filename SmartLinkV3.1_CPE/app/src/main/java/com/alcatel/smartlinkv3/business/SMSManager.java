@@ -118,9 +118,6 @@ public class SMSManager extends BaseManager {
 	} 
 	//GetSMSInitStatus ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetSmsInitTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSInitStatus") != true)
-			return;
-		
 		SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
 		if(simStatus.m_SIMState != ENUM.SIMState.Accessable) 
 			return;
@@ -173,9 +170,6 @@ public class SMSManager extends BaseManager {
 	}
 	//GetSMSContactList ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void startGetContactMessagesTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSContactList") != true)
-			return;
-		
 		if(m_smsInit == SMSInit.Initing)
 			return;
 		
@@ -193,9 +187,6 @@ public class SMSManager extends BaseManager {
 	}
 	
 	public void getContactMessagesAtOnceRequest(){
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSContactList") != true)
-			return;
-		
 		if(m_smsInit == SMSInit.Complete) {
 			GetContactMessagesTask task = new GetContactMessagesTask();
 			m_getSmsRollTimer.schedule(task, 0);
@@ -232,9 +223,6 @@ public class SMSManager extends BaseManager {
 	//GetSMSContentList ////////////////////////////////////////////////////////////////////////////////////////// 
 	public static String SMS_CONTENT_LIST_EXTRA = "com.alcatel.smartlinkv3.business.smscontentlistextra";
 	public void getSMSContentListRequest(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSMSContentList") != true)
-			return;
-		
 		int nContactId = (Integer) data.getParamByKey("ContactId");
     	
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSContentList(0,nContactId, new IHttpFinishListener() {
@@ -266,9 +254,6 @@ public class SMSManager extends BaseManager {
 	
 	//DeleteSMS ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void deleteSms(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "DeleteSMS") != true)
-			return;
-		
 		EnumSMSDelFlag delFlag = (EnumSMSDelFlag) data.getParamByKey("DelFlag");
 		Integer temp =  (Integer)data.getParamByKey("ContactId");
 		int nContactId = 0;
@@ -316,9 +301,6 @@ public class SMSManager extends BaseManager {
 	
 	//SendSMS ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void sendSms(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "SendSMS") != true)
-			return;
-		
 		String strContent = (String) data.getParamByKey("content");
 		String strNumbers = (String)data.getParamByKey("phone_number");
 		ArrayList<String> phoneNumberLst = getNumberFromString(strNumbers);
@@ -353,9 +335,6 @@ public class SMSManager extends BaseManager {
 	
 //GetSendSMSResult ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void getSmsSendResult(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "GetSendSMSResult") != true)
-			return;
-		
 		if(m_smsInit == SMSInit.Initing)
 			return;
 		
@@ -406,9 +385,6 @@ public class SMSManager extends BaseManager {
 	
 	//SaveSMS ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void SaveSMS(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("SMS", "SaveSMS") != true)
-			return;
-		
 		int nSmsId = (Integer) data.getParamByKey("SMSId");//the index of SMS, if savenew SMS is -1, else other.
 		String strCotent =  (String)data.getParamByKey("Content");
 		String strNumber =  (String)data.getParamByKey("Number");

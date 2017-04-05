@@ -6,7 +6,7 @@ import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 public class HttpSearchNetwork {
 	public static class SearchNetwork extends BaseRequest{
 		public SearchNetwork(IHttpFinishListener callback) {
-			super("SearchNetwork", "4.2", callback);
+			super("Network", "SearchNetwork", "4.2", callback);
 		}
 	}
 }

@@ -16,7 +16,7 @@ public class HttpUsageSettings {
     {			
         public GetUsageSettings(IHttpFinishListener callback)
         {
-        	super("GetUsageSettings", "7.3", callback);
+        	super("Statistics", "GetUsageSettings", "7.3", callback);
         }
 
         @Override
@@ -34,7 +34,7 @@ public class HttpUsageSettings {
 		public UsageSettingsResult m_result = new UsageSettingsResult();
 
 		public SetUsageSettings(UsageSettingsResult result, IHttpFinishListener callback) {
-			super("SetUsageSettings", "7.4", callback);
+			super("Statistics", "SetUsageSettings", "7.4", callback);
 			m_result.setValue(result);
 		}
 

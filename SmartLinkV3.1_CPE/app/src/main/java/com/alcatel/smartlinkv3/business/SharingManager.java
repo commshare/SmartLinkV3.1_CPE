@@ -96,8 +96,7 @@ public class SharingManager extends BaseManager {
 	//SetUSBcardSetting//////////////////////////////////
 	
 	public void switchOnDlna(){
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+		if (!FeatureVersionManager.getInstance().isSupportDLNA() && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
 			DataValue data = new DataValue();
 			data.addParam("DlnaStatus", 1);
 			data.addParam("DlnaName", m_dlnaSettings.DlnaName);
@@ -158,8 +157,7 @@ public class SharingManager extends BaseManager {
 	}
 	
 	public void switchOffDlna(){
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",	"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
 			DataValue data = new DataValue();
 			data.addParam("DlnaStatus", 0);
 			data.addParam("DlnaName", m_dlnaSettings.DlnaName);
@@ -248,10 +246,6 @@ public class SharingManager extends BaseManager {
 	// SetSambaSetting
 		// //////////////////////////////////////////////////////////////////////////////////////////
 		public void setFtpSetting(DataValue data) {
-			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"SetFtpStatus") != true)
-				return;
-
 			int status = (Integer) data.getParamByKey("FtpStatus");
 			final int nPreStatus = m_ftpSettings.FtpStatus;
 			m_ftpSettings.FtpStatus = status;
@@ -282,13 +276,6 @@ public class SharingManager extends BaseManager {
 		// GetSambaSetting
 		// //////////////////////////////////////////////////////////////////////////////////////////
 		public void getFtpSetting(DataValue data) {
-			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetFtpStatus") != true){
-				sendBroadcast(BaseResponse.EMPTY, MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
-				return;
-			}
-				
-
 			LegacyHttpClient.getInstance().sendPostRequest(
 					new HttpSharing.GetFtpSetting(
 							new IHttpFinishListener() {
@@ -317,10 +304,6 @@ public class SharingManager extends BaseManager {
 	// SetSambaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setSambaSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetSambaStatus") != true)
-			return;
-
 		int status = (Integer) data.getParamByKey("SambaStatus");
 		final int nPreStatus = m_sambaSettings.SambaStatus;
 		m_sambaSettings.SambaStatus = status;
@@ -351,10 +334,6 @@ public class SharingManager extends BaseManager {
 	// GetSambaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void getSambaSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetSambaStatus") != true)
-			return;
-
 		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.GetSambaSetting(
 						new IHttpFinishListener() {
@@ -382,8 +361,7 @@ public class SharingManager extends BaseManager {
 	// SetDlnaSetting
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void setDlnaSetting(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
+		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",	"SetDLNASettings") != true && BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true){
 			return;
 		}
 
@@ -420,8 +398,7 @@ public class SharingManager extends BaseManager {
 	public void getDlnaSetting(DataValue data) {
 		if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
 		{
-			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetDLNASettings") != true){
+			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",	"GetDLNASettings") != true){
 				sendBroadcast(BaseResponse.EMPTY, MessageUti.SHARING_GET_FTP_SETTING_REQUSET);
 				return;
 			}
@@ -454,10 +431,6 @@ public class SharingManager extends BaseManager {
 	// GetSDCardSpace
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void getSDCardSpace(DataValue data) {
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetSDCardSpace") != true)
-			return;
-
 		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpSharing.GetSDCardSpace(
 						new IHttpFinishListener() {
@@ -592,11 +565,6 @@ public class SharingManager extends BaseManager {
 	}
 	
 	public void startGetFtpStatus(){
-		if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-				"GetFtpStatus") != true){
-			return;
-		}
-		
 		if(m_ftp_task == null) {
 			m_ftp_task = new GetFtpStatusTask();
 			m_getShareStatusTimer.scheduleAtFixedRate(m_ftp_task, 0, 5 * 1000);
@@ -606,8 +574,7 @@ public class SharingManager extends BaseManager {
 	public void startGetDlnaStatus(){
 		if(BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900") !=true)
 		{
-			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetDLNASettings") != true){
+			if (FeatureVersionManager.getInstance().isSupportApi("Sharing",	"GetDLNASettings") != true){
 				return;
 			}
 		}

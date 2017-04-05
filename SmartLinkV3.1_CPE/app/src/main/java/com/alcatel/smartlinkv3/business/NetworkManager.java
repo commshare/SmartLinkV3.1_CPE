@@ -115,8 +115,6 @@ public class NetworkManager extends BaseManager {
 	
 	//GetNetworkInfo ////////////////////////////////////////////////////////////////////////////////////////// 
 	private void startGetNetworkInfoTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("Network", "GetNetworkInfo") != true)
-			return;
 		if(m_getNetworkInfoTask == null) {
 			m_getNetworkInfoTask = new GetNetworkInfoTask();
 			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_getNetworkInfoTask, 0, 10 * 1000);
@@ -124,8 +122,6 @@ public class NetworkManager extends BaseManager {
 	}
 	
 	public void startSearchNetworkResult(DataValue data) {
-		if(FeatureVersionManager.getInstance().isSupportApi("Network", "SearchNetworkResult") != true)
-			return;
 		getNetworkSearchState();
 	}
 	
@@ -144,8 +140,6 @@ public class NetworkManager extends BaseManager {
 	}
 	
 	private void startGetRegisterStateTask() {
-		if(FeatureVersionManager.getInstance().isSupportApi("Network", "GetNetworkRegisterState") != true)
-			return;
 		if(m_getNetworkRegisterStateTask == null) {
 			m_getNetworkRegisterStateTask = new GetNetworkRegisterStateTask();
 			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_getNetworkRegisterStateTask, 0, 3 * 1000);
@@ -276,9 +270,6 @@ public class NetworkManager extends BaseManager {
 	
 	
 	public void startRegisterNetwork(final int networId){
-		if(FeatureVersionManager.getInstance().isSupportApi("Network", "RegisterNetwork") != true){
-			return;
-		}
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpRegisterNetwork.RegisterNetwork(networId, new IHttpFinishListener(){
 
 			@Override
@@ -306,10 +297,6 @@ public class NetworkManager extends BaseManager {
 	
 	
 	private void getNetworkSearchState(){
-		if(FeatureVersionManager.getInstance().isSupportApi("Network", "SearchNetwork") != true){
-			return;
-		}
-		
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork(new IHttpFinishListener(){
 
 			@Override
@@ -345,10 +332,6 @@ public class NetworkManager extends BaseManager {
 	}
 	
 	public void GetNetworkSettings(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Network", "GetNetworkSettings") != true){
-			return;
-		}
-			
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpGetNetworkSettings.GetNetworkSettings(new IHttpFinishListener(){
 
 			@Override
@@ -386,10 +369,6 @@ public class NetworkManager extends BaseManager {
 	}
 	
 	public void SetNetworkSettings(DataValue data){
-		if(FeatureVersionManager.getInstance().isSupportApi("Network", "SetNetworkSettings") != true){
-			return;
-		}
-    	
     	final int networkMode = (Integer) data.getParamByKey("network_mode");
     	final int netselectionMode = (Integer) data.getParamByKey("netselection_mode");
     	

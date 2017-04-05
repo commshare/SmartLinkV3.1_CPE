@@ -14,7 +14,7 @@ public class HttpSetNetworkSettings {
 		private int NetselectionMode = 0;
 		private int NetworkBand = 0;
 		public SetNetworkSettings(int networkMode, int netSelectionMode, IHttpFinishListener callback) {
-			super("SetNetworkSettings", "4.7", callback);
+			super("Network", "SetNetworkSettings", "4.7", callback);
 			NetworkMode = networkMode;
 			NetselectionMode = netSelectionMode;
 		}

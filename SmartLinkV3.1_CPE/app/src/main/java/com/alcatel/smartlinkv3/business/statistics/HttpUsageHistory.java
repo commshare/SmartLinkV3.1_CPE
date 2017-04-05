@@ -3,8 +3,8 @@ package com.alcatel.smartlinkv3.business.statistics;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
+import com.alcatel.smartlinkv3.httpservice.DataResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,38 +16,14 @@ public class HttpUsageHistory {
     {			
         public GetUsageRecord(IHttpFinishListener callback)
         {
-        	super("GetUsageRecord", "7.1", callback);
+        	super("Statistics", "GetUsageRecord", "7.1", callback);
         }
 
         @Override
         public BaseResponse createResponseObject() 
         {            
-            return new GetUsageRecordResponse(m_finsishCallback);
-        }
-        
-    }
-	
-	public static class GetUsageRecordResponse extends BaseResponse
-    {
-		private UsageRecordResult m_usageRecord;
-        
-        public GetUsageRecordResponse(IHttpFinishListener callback) 
-        {
-            super(callback);            
-        }
-
-        @Override
-        protected void parseContent(String strJsonResult) 
-        {
-        	Gson gson = new Gson();
-        	m_usageRecord = gson.fromJson(strJsonResult, UsageRecordResult.class);
-        }
-
-        @SuppressWarnings("unchecked")
-		@Override
-        public UsageRecordResult getModelResult() 
-        {
-             return m_usageRecord;
+//            return new GetUsageRecordResponse(m_finsishCallback);
+            return new DataResponse<>(UsageRecordResult.class, m_finsishCallback);
         }
     }
 	
@@ -58,7 +34,7 @@ public class HttpUsageHistory {
 		
         public SetUsageRecordClear(String Cleartime, IHttpFinishListener callback)
         {
-        	super("SetUsageRecordClear", "7.2", callback);
+        	super("Statistics", "SetUsageRecordClear", "7.2", callback);
         	m_strUsageCleartime = Cleartime;
         }
 

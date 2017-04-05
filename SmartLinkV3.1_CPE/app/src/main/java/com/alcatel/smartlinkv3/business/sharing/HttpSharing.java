@@ -16,7 +16,7 @@ public class HttpSharing {
 		private int m_nStatus = 0;
 
 		public SetFtpSetting(int nStatus, IHttpFinishListener callback) {
-			super("SetFtpStatus", "14.6", callback);
+			super("Sharing","SetFtpStatus", "14.6", callback);
 			m_nStatus = nStatus;
 		}
 
@@ -33,7 +33,7 @@ public class HttpSharing {
 	public static class GetFtpSetting extends BaseRequest {	
 
 		public GetFtpSetting(IHttpFinishListener callback) {
-			super("GetFtpStatus", "14.5", callback);
+			super("Sharing","GetFtpStatus", "14.5", callback);
 		}
 
 		@Override
@@ -49,7 +49,7 @@ public class HttpSharing {
 		private int m_nStatus = 0;
 
 		public SetUSBcardSetting(int nStatus, IHttpFinishListener callback) {
-			super("SetUsbcardStatus", "14.11",  callback);
+			super(null, /*"Sharing",*/ "SetUsbcardStatus", "14.11",  callback);
 			m_nStatus = nStatus;
 		}
 
@@ -66,7 +66,7 @@ public class HttpSharing {
 		private int m_nStatus = 0;
 
 		public SetSambaSetting(int nStatus, IHttpFinishListener callback) {
-			super("SetSambaStatus", "14.4", callback);
+			super("Sharing", "SetSambaStatus", "14.4", callback);
 			m_nStatus = nStatus;
 		}
 
@@ -83,7 +83,7 @@ public class HttpSharing {
 	public static class GetSambaSetting extends BaseRequest {	
 
 		public GetSambaSetting(IHttpFinishListener callback) {
-			super("GetSambaStatus", "14.3", callback);
+			super("Sharing","GetSambaStatus", "14.3", callback);
 		}
 
 		@Override
@@ -100,7 +100,7 @@ public class HttpSharing {
 		private String m_name;
 
 		public SetDlnaSetting(int status, String name, IHttpFinishListener callback) {
-			super("SetDLNASettings", "14.2",  callback);
+			super("Sharing", "SetDLNASettings", "14.2",  callback);
 			m_status = status;
 			m_name = name;	
 		}
@@ -119,7 +119,7 @@ public class HttpSharing {
 	public static class GetDlnaSetting extends BaseRequest {	
 
 		public GetDlnaSetting(IHttpFinishListener callback) {
-			super("GetDLNASettings", "14.1", callback);
+			super("Sharing", "GetDLNASettings", "14.1", callback);
 		}
 
 		@Override
@@ -133,7 +133,7 @@ public class HttpSharing {
 	public static class GetSDCardSpace extends BaseRequest {	
 
 		public GetSDCardSpace(IHttpFinishListener callback) {
-			super("GetSDCardSpace", "14.7", callback);
+			super("Sharing", "GetSDCardSpace", "14.7", callback);
 		}
 
 		@Override
@@ -147,7 +147,7 @@ public class HttpSharing {
 	public static class GetSDcardStatus extends BaseRequest {	
 
 		public GetSDcardStatus(IHttpFinishListener callback) {
-			super("GetSDcardStatus", "14.9", callback);
+			super(null , /*"Sharing",*/ "GetSDcardStatus", "14.9", callback);
 		}
 
 		@Override

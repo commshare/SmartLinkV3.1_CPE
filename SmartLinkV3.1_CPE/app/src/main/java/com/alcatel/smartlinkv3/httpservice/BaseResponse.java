@@ -19,7 +19,10 @@ public class BaseResponse implements Parcelable {
 
     public final static int RESPONSE_OK = 0;
     public final static int RESPONSE_CONNECTION_ERROR = 1;
-    public final static int RESPONSE_INVALID = 2;
+    public final static int RESPONSE_MALFORMED = 2;
+    public final static int RESPONSE_INVALID = 3;
+    public final static int RESPONSE_STATUS_ERROR = 4;
+    public final static int RESPONSE_UNSUPPORTED_API = 5;
     public final static int RESPONSE_EMPTY = -1;
     public final static BaseResponse SUCCESS = new BaseResponse(RESPONSE_OK, "");
     public final static BaseResponse EMPTY = new BaseResponse(RESPONSE_EMPTY, "empty response");
@@ -44,7 +47,8 @@ public class BaseResponse implements Parcelable {
 
     public BaseResponse(IHttpFinishListener callback) {
         m_response_result = RESPONSE_OK;
-        m_finsishCallback = callback;
+        if (callback != null)
+            m_finsishCallback = callback;
     }
 
     public BaseResponse(int result, String errorCode) {
@@ -64,8 +68,17 @@ public class BaseResponse implements Parcelable {
         return m_strErrorCode;
     }
 
+    public void setErrorCode(String errorCode) {
+        if (errorCode != null)
+            m_strErrorCode = errorCode;
+    }
+
     public String getErrorMessage() {
         return m_strErrorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        m_strErrorMessage = errorMessage;
     }
 
     public int getResultCode() {
@@ -99,36 +112,32 @@ public class BaseResponse implements Parcelable {
             return;
         }
 
-        try {
-            m_response_result = RESPONSE_OK;
-            JSONObject resultObj = jsonResult.optJSONObject(ConstValue.JSON_RESULT);
-            if (resultObj == null) {
-                JSONObject errorObj = jsonResult.optJSONObject(ConstValue.JSON_ERROR);
-                if (errorObj != null) {
-                    m_strErrorCode = DataUti.parseString(errorObj.optString(ConstValue.JSON_ERROR_CODE));
-                    m_strErrorMessage = DataUti.parseString(errorObj.optString(ConstValue.JSON_ERROR_MESSAGE));
-                } else {
-                    m_response_result = RESPONSE_INVALID;
-                }
+        m_response_result = RESPONSE_OK;
+        JSONObject resultObj = jsonResult.optJSONObject(ConstValue.JSON_RESULT);
+        if (resultObj == null) {
+            JSONObject errorObj = jsonResult.optJSONObject(ConstValue.JSON_ERROR);
+            if (errorObj != null) {
+                m_strErrorCode = DataUti.parseString(errorObj.optString(ConstValue.JSON_ERROR_CODE));
+                m_strErrorMessage = DataUti.parseString(errorObj.optString(ConstValue.JSON_ERROR_MESSAGE));
             } else {
-                parseContent(resultObj.toString());
+                m_response_result = RESPONSE_INVALID;
             }
-
-            if (m_strErrorCode.equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604)) {
-                Intent megIntent = new Intent(MessageUti.USER_COMMON_ERROR_32604_REQUEST);
-                megIntent.putExtra(MessageUti.HTTP_RESPONSE, this);
-                context.sendBroadcast(megIntent);
-            }
-
-            m_strId = DataUti.parseString(jsonResult.optString(ConstValue.JSON_ID));
-        } catch (Exception e) {
-            m_response_result = RESPONSE_INVALID;
-            e.printStackTrace();
+        } else {
+            parseContent(resultObj.toString());
         }
+
+        if (m_strErrorCode.equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604)) {
+            Intent megIntent = new Intent(MessageUti.USER_COMMON_ERROR_32604_REQUEST);
+            megIntent.putExtra(MessageUti.HTTP_RESPONSE, this);
+            context.sendBroadcast(megIntent);
+        }
+
+        m_strId = DataUti.parseString(jsonResult.optString(ConstValue.JSON_ID));
     }
 
     public void invokeFinishCallback() {
-        m_finsishCallback.onHttpRequestFinish(this);
+        if (m_finsishCallback != null)
+            m_finsishCallback.onHttpRequestFinish(this);
     }
 
     public <T> T getModelResult() {

@@ -517,7 +517,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 						{
 							if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 							{
-								if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+								if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 								{
 									m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 								}else
@@ -628,7 +628,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             SharedPrefsUtil.getInstance(this).putBoolean(LOGOUT_FLAG, true);
             BusinessManager.getInstance().sendRequestMessage(
                     MessageUti.USER_LOGOUT_REQUEST, null);
-            if(FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+            if(FeatureVersionManager.getInstance().isSupportForceLogin())
             {
                 Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
                 this.sendBroadcast(intent2);
@@ -697,7 +697,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -829,7 +829,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -956,7 +956,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -1076,7 +1076,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -1194,7 +1194,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
 								m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -1286,14 +1286,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		SDcardStatus m_sdcardstatus = BusinessManager.getInstance().getSDCardStatus();
 		if(m_sdcardstatus.SDcardStatus > 0)
 		{
-			if((FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetDLNASettings"))|| (BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900")))
+			if(FeatureVersionManager.getInstance().isSupportDLNA() || FeatureVersionManager.getInstance().isY900Project())
 			{
 				BusinessManager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
 			}
-			
-			if(FeatureVersionManager.getInstance().isSupportApi("Sharing",
-					"GetFtpStatus"))
+
+			if(FeatureVersionManager.getInstance().isSupportFtp())
 			{
 				BusinessManager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
 			}
@@ -1548,7 +1546,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					{
 						if(error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED))
 						{
-							if(!FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin"))
+							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
 							m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title),	m_loginDlg.getOtherUserLoginString());
 							}else
@@ -1722,9 +1720,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 		
 		boolean bSupport = FeatureVersionManager.getInstance().isSupportModule("Sharing");
 		if(bSupport) {
-			if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus"))
-					|| (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-							"GetDLNASettings")))
+			if((FeatureVersionManager.getInstance().isSupportApi("Sharing","GetFtpStatus"))	|| FeatureVersionManager.getInstance().isSupportDLNA() )
 			{
                 //暂时屏蔽SD卡的选项
 //				m_microsdBtn.setVisibility(View.VISIBLE);

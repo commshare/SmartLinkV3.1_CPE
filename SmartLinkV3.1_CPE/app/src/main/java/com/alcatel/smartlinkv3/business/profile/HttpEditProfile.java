@@ -19,7 +19,7 @@ public class HttpEditProfile {
 		private String m_strDialNumber = "*99#";
 		
 		public EditProfile(int profileID, String dialNumber, String profileName, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
-			super("EditProfile", "15.3",  callback);
+			super("Profile", "EditProfile", "15.3",  callback);
 			m_intProfileID = profileID;
 			m_strProfileName = profileName;
 			m_strAPN = apn;
