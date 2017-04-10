@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.network;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
@@ -15,6 +16,7 @@ public class HttpSetNetworkSettings {
 		private int NetworkBand = 0;
 		public SetNetworkSettings(int networkMode, int netSelectionMode, IHttpFinishListener callback) {
 			super("Network", "SetNetworkSettings", "4.7", callback);
+			setBroadcastAction(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
 			NetworkMode = networkMode;
 			NetselectionMode = netSelectionMode;
 		}

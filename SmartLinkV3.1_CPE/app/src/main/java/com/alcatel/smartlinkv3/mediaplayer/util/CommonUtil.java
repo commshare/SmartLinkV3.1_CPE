@@ -2,10 +2,6 @@ package com.alcatel.smartlinkv3.mediaplayer.util;
 
 
 
-import java.io.InputStream;
-
-import org.cybergarage.util.CommonLog;
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -20,6 +16,12 @@ import android.os.Environment;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import org.cybergarage.util.CommonLog;
+
+import java.io.InputStream;
+
+
 
 public class CommonUtil {
 

@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.wan;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -23,7 +24,9 @@ public class HttpConnectOperation {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetConnectionStateResponse(m_finsishCallback);
-            return new DataResponse<>(ConnectStatusResult.class, m_finsishCallback);
+            return new DataResponse<>(ConnectStatusResult.class,
+                    MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET,
+                    m_finsishCallback);
         }
         
     }
@@ -34,6 +37,7 @@ public class HttpConnectOperation {
         public Connect(IHttpFinishListener callback)
         {
         	super("Connection", "Connect", "3.2", callback);
+            setBroadcastAction(MessageUti.WAN_CONNECT_REQUSET);
         }
     }
 
@@ -43,6 +47,7 @@ public class HttpConnectOperation {
         public DisConnect(IHttpFinishListener callback)
         {
         	super("Connection", "DisConnect", "3.3", callback);
+            setBroadcastAction(MessageUti.WAN_DISCONNECT_REQUSET);
         }
     }
 
@@ -64,7 +69,9 @@ public class HttpConnectOperation {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetConnectionSettingsResponse(m_finsishCallback);
-            return new DataResponse<>(ConnectionSettingsResult.class, m_finsishCallback);
+            return new DataResponse<>(ConnectionSettingsResult.class,
+                    MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET,
+                    m_finsishCallback);
         }
     }
 
@@ -76,6 +83,7 @@ public class HttpConnectOperation {
 
 		public SetConnectionSettings(ConnectionSettingsResult result, IHttpFinishListener callback) {
 			super("Connection", "SetConnectionSettings", "3.5", callback);
+            setBroadcastAction(MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET);
 			m_result.setValue(result);
 		}
 

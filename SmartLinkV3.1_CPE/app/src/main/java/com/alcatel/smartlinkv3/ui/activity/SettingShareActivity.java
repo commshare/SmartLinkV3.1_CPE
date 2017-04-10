@@ -70,8 +70,8 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 					new IntentFilter(MessageUti.SHARING_SET_FTP_SETTING_REQUSET));
 			registerReceiver(m_msgReceiver, 
 					new IntentFilter(MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET));
-			registerReceiver(m_msgReceiver, 
-					new IntentFilter(MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET));
+//			registerReceiver(m_msgReceiver,
+//					new IntentFilter(MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET));
 			BusinessManager.getInstance().StartRefreshingSharingStatus();
 		}
 		
@@ -214,16 +214,16 @@ public class SettingShareActivity extends BaseActivity implements OnClickListene
 				}
 			}
 			
-			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)){
-				if (ok) {
-					updateUI();
-				}
-				else{
-					setFailed();
-				}
-			}
+//			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)){
+//				if (ok) {
+//					updateUI();
+//				}
+//				else{
+//					setFailed();
+//				}
+//			}
 			
-			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET)){
+			if(intent.getAction().equalsIgnoreCase(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET)){
 				if (ok) {
 					m_dlna_response = true;
 					if(m_usb_response)

@@ -260,11 +260,7 @@ public class BusinessManager {
     public SystemInfo getSystemInfo() {
 		return m_systemManager.getSystemInfoModel();
 	}
-    
-	public boolean getAlreadyRecongniseDeviceFlag() {
-		return m_systemManager.getAlreadyRecongniseDeviceFlag();
-	}
-	
+
 	public String getAppVersion(){
 		return m_systemManager.getAppVersion();
 	}

@@ -7,9 +7,7 @@ import com.alcatel.smartlinkv3.business.lan.HttpLan;
 import com.alcatel.smartlinkv3.business.lan.LanInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
-import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 public class LanManager extends BaseManager {
 
@@ -53,17 +51,9 @@ public class LanManager extends BaseManager {
 				.getCPEWifiConnected();
 		if (bCPEWifiConnected){
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpLan.getLanSettingsRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int ret = response.getResultCode();
-							String strErrcode = response.getErrorCode();
-							if (ret == BaseResponse.RESPONSE_OK
-									&& strErrcode.length() == 0) {
-								m_lanInfo = response
-										.getModelResult();
+					new HttpLan.getLanSettingsRequest( response -> {
+							if (response.isOk()) {
+								m_lanInfo = response.getModelResult();
 								BusinessManager.getInstance().getSystemInfoModel().
 								setIP(m_lanInfo.getIPv4IPAddress());
 								BusinessManager.getInstance().getSystemInfoModel().
@@ -72,8 +62,7 @@ public class LanManager extends BaseManager {
 								setMacAddress(m_lanInfo.getMacAddress());
 							}
 
-			    			sendBroadcast(response, MessageUti.LAN_GET_LAN_SETTINGS);
-						}
+//			    			sendBroadcast(response, MessageUti.LAN_GET_LAN_SETTINGS);
 					}));
 		}
 	}

@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.sim;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.DataResponse;
@@ -19,7 +20,7 @@ public class HttpGetSimStatus {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetSimStatusResponse(m_finsishCallback);
-            return new DataResponse<>(SIMStatusResult.class, m_finsishCallback);
+            return new DataResponse<>(SIMStatusResult.class, MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET, m_finsishCallback);
         }
     }
 }

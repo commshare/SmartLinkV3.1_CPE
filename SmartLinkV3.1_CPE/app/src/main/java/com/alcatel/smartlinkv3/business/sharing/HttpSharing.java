@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.sharing;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -17,6 +18,7 @@ public class HttpSharing {
 
 		public SetFtpSetting(int nStatus, IHttpFinishListener callback) {
 			super("Sharing","SetFtpStatus", "14.6", callback);
+			setBroadcastAction(MessageUti.SHARING_SET_FTP_SETTING_REQUSET);
 			m_nStatus = nStatus;
 		}
 
@@ -39,7 +41,7 @@ public class HttpSharing {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetFtpSettingResponse(m_finsishCallback);
-			return new DataResponse<>(FtpSettings.class, m_finsishCallback);
+			return new DataResponse<>(FtpSettings.class, MessageUti.SHARING_GET_FTP_SETTING_REQUSET, m_finsishCallback);
 		}
 	}
 
@@ -50,6 +52,7 @@ public class HttpSharing {
 
 		public SetUSBcardSetting(int nStatus, IHttpFinishListener callback) {
 			super(null, /*"Sharing",*/ "SetUsbcardStatus", "14.11",  callback);
+			setBroadcastAction(MessageUti.SHARING_SET_USBCARD_SETTING_REQUSET);
 			m_nStatus = nStatus;
 		}
 
@@ -67,6 +70,7 @@ public class HttpSharing {
 
 		public SetSambaSetting(int nStatus, IHttpFinishListener callback) {
 			super("Sharing", "SetSambaStatus", "14.4", callback);
+			setBroadcastAction(MessageUti.SHARING_SET_SAMBA_SETTING_REQUSET);
 			m_nStatus = nStatus;
 		}
 
@@ -89,7 +93,7 @@ public class HttpSharing {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetSambaSettingResponse(m_finsishCallback);
-			return new DataResponse<>(SambaSettings.class, m_finsishCallback);
+			return new DataResponse<>(SambaSettings.class, MessageUti.SHARING_GET_SAMBA_SETTING_REQUSET, m_finsishCallback);
 		}
 	}
 
@@ -101,6 +105,7 @@ public class HttpSharing {
 
 		public SetDlnaSetting(int status, String name, IHttpFinishListener callback) {
 			super("Sharing", "SetDLNASettings", "14.2",  callback);
+			setBroadcastAction(MessageUti.SHARING_SET_DLNA_SETTING_REQUSET);
 			m_status = status;
 			m_name = name;	
 		}
@@ -125,7 +130,7 @@ public class HttpSharing {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetDlnaSettingResponse(m_finsishCallback);
-			return new DataResponse<>(DlnaSettings.class, m_finsishCallback);
+			return new DataResponse<>(DlnaSettings.class, MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, m_finsishCallback);
 		}
 	}
 
@@ -139,7 +144,7 @@ public class HttpSharing {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetSDCardSpaceResponse(m_finsishCallback);
-			return new DataResponse<>(SDCardSpace.class, m_finsishCallback);
+			return new DataResponse<>(SDCardSpace.class, MessageUti.SHARING_GET_SDCARD_SPACE_REQUSET, m_finsishCallback);
 		}
 	}
 
@@ -153,7 +158,7 @@ public class HttpSharing {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetSDcardStatusResponse(m_finsishCallback);
-			return new DataResponse<>(SDcardStatus.class, m_finsishCallback);
+			return new DataResponse<>(SDcardStatus.class, MessageUti.SHARING_GET_SDCARD_STATUS_REQUSET, m_finsishCallback);
 		}
 	}
 }

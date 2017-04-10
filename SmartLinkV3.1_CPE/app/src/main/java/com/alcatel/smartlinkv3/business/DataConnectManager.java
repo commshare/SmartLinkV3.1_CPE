@@ -1,11 +1,10 @@
 package com.alcatel.smartlinkv3.business;
 
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
-
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.HttpAccessLog;
 
 public class DataConnectManager {
 	private Context m_context = null;
@@ -43,12 +42,11 @@ public class DataConnectManager {
 			m_bWifiConnected = false;
 			m_bCPEWifiConnected = false;
 
-			if (m_bPreMobileConnected != m_bMobileNetworkConnected
-					|| m_bPreWifiConnected != m_bWifiConnected
-					|| m_bPreCPEWifiConnected != m_bCPEWifiConnected) {
-				if (m_bCPEWifiConnected == false)
-					HttpAccessLog.getInstance().writeLogToFile(
-							"CPE WIFI error:setNoConnected");
+			if (m_bPreMobileConnected
+					|| m_bPreWifiConnected
+					|| m_bPreCPEWifiConnected) {
+
+				HttpAccessLog.getInstance().writeLogToFile("CPE WIFI error:setNoConnected");
 				Intent intent = new Intent(MessageUti.CPE_WIFI_CONNECT_CHANGE);
 				m_context.sendBroadcast(intent);
 			}
@@ -84,7 +82,7 @@ public class DataConnectManager {
 
 	public void setWifiConnected(boolean bConnected) {
 		synchronized (this) {
-			if (bConnected == true) {
+			if (bConnected) {
 				m_bPreMobileConnected = m_bMobileNetworkConnected;
 				m_bMobileNetworkConnected = false;
 			} else {

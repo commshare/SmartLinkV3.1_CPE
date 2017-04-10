@@ -15,6 +15,7 @@ import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 import org.json.JSONObject;
 
 public class BaseResponse implements Parcelable {
+    private final static String TAG = "BaseResponse";
     public final static String ENCODING = "utf-8";
 
     public final static int RESPONSE_OK = 0;
@@ -26,6 +27,8 @@ public class BaseResponse implements Parcelable {
     public final static int RESPONSE_EMPTY = -1;
     public final static BaseResponse SUCCESS = new BaseResponse(RESPONSE_OK, "");
     public final static BaseResponse EMPTY = new BaseResponse(RESPONSE_EMPTY, "empty response");
+
+    private Intent m_intent;
     public static final Creator<BaseResponse> CREATOR = new Creator<BaseResponse>() {
         @Override
         public BaseResponse createFromParcel(Parcel in) {
@@ -44,6 +47,13 @@ public class BaseResponse implements Parcelable {
     protected String m_strId = "";
     protected int m_response_result;
     protected IHttpFinishListener m_finsishCallback = EMPTY_LISTENER;
+    protected String broadcastAction = null;
+    private boolean m_broadcast = true;
+
+    public BaseResponse(String action, IHttpFinishListener callback) {
+        this(callback);
+        broadcastAction = action;
+    }
 
     public BaseResponse(IHttpFinishListener callback) {
         m_response_result = RESPONSE_OK;
@@ -155,5 +165,43 @@ public class BaseResponse implements Parcelable {
         dest.writeString(m_strErrorMessage);
         dest.writeString(m_strId);
         dest.writeInt(m_response_result);
+    }
+
+    public void setIntent(Intent intent) {
+        if (intent == null) {
+            Log.e(TAG, "null intent parameter");
+            return;
+        }
+        m_intent = intent;
+    }
+
+    public Intent getIntent(String action) {
+        if (m_intent == null) {
+            if (action != null && !action.isEmpty()) {
+                m_intent = new Intent(action);
+            } else if (broadcastAction == null || broadcastAction.isEmpty()) {
+                Log.e(TAG, "invalid broadcast action");
+                m_intent = new Intent();
+            } else {
+                m_intent = new Intent(broadcastAction);
+            }
+        }
+        return m_intent;
+    }
+
+    public boolean isBroadcast() {
+        return m_broadcast;
+    }
+
+    public void setBroadcast(boolean sendBroadcast) {
+        m_broadcast = sendBroadcast;
+    }
+
+    public void sendBroadcast(Context context) {
+        if (isBroadcast()) {
+            Intent intent = getIntent(null);
+            intent.putExtra(MessageUti.HTTP_RESPONSE, this);
+            context.sendBroadcast(intent);
+        }
     }
 }

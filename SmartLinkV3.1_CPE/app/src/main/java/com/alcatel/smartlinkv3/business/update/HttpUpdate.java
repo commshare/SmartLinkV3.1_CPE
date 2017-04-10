@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.update;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.BooleanResponse;
@@ -18,21 +19,25 @@ public class HttpUpdate {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new getDeviceNewVersionResponse(m_finsishCallback);
-			return new DataResponse<>(DeviceNewVersionInfo.class, m_finsishCallback);
+			return new DataResponse<>(DeviceNewVersionInfo.class, MessageUti.UPDATE_GET_DEVICE_NEW_VERSION, m_finsishCallback);
 		}
 	}
 
 	
 	/*start to update device*/
 	public static class setDeviceStartUpdateRequest extends BaseRequest{
-
-		public setDeviceStartUpdateRequest(IHttpFinishListener callback) {
+		private boolean fota;
+		public setDeviceStartUpdateRequest(boolean fota, IHttpFinishListener callback) {
 			super("Update", "SetDeviceStartUpdate", "9.2", callback);
+			this.fota = fota;
 		}
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new BooleanResponse(m_finsishCallback);
+			if (fota)
+				return new BooleanResponse(MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE, m_finsishCallback);
+			else
+				return new BooleanResponse(MessageUti.UPDATE_SET_DEVICE_START_UPDATE, m_finsishCallback);
 		}
 	}
 	
@@ -47,7 +52,7 @@ public class HttpUpdate {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new BooleanResponse(m_finsishCallback);
+			return new BooleanResponse(MessageUti.UPDATE_SET_DEVICE_START_UPDATE, m_finsishCallback);
 		}
 	}
 
@@ -62,7 +67,7 @@ public class HttpUpdate {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new DeviceUpgradeStatusResponse(m_finsishCallback);
-			return new DataResponse<>(DeviceUpgradeStateInfo.class, m_finsishCallback);
+			return new DataResponse<>(DeviceUpgradeStateInfo.class, MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE, m_finsishCallback);
 		}
 	}
 
@@ -75,7 +80,7 @@ public class HttpUpdate {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new BooleanResponse(m_finsishCallback);
+			return new BooleanResponse(MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE, m_finsishCallback);
 		}
 		
 	}
@@ -84,6 +89,7 @@ public class HttpUpdate {
 
 		public SetCheckNewVersionRequest(IHttpFinishListener callback) {
 			super("Update","SetCheckNewVersion", "9.5", callback);
+			setBroadcastAction(MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION);
 		}
 	}
 }

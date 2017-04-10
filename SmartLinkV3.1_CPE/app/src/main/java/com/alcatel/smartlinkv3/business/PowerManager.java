@@ -8,9 +8,7 @@ import com.alcatel.smartlinkv3.business.power.HttpPower;
 import com.alcatel.smartlinkv3.business.power.PowerSavingModeInfo;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
-import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -95,22 +93,13 @@ public class PowerManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpPower.getBatteryStateRequest(
-							new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRes = response.getResultCode();
-							String strErr = response.getErrorMessage();
-							if (BaseResponse.RESPONSE_OK == nRes &&
-									0 == strErr.length()) {
+					new HttpPower.getBatteryStateRequest(response -> {
+							if (response.isOk()) {
 								m_battery = response.getModelResult();
 							}
 
-		        			sendBroadcast(response, MessageUti.POWER_GET_BATTERY_STATE);
-						}
-					}));
+//		        			sendBroadcast(response, MessageUti.POWER_GET_BATTERY_STATE);
+						}));
 		}
 	}
 
@@ -119,23 +108,14 @@ public class PowerManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpPower.getPowerSavingModeRequest(
-							new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRes = response.getResultCode();
-							String strErr = response.getErrorMessage();
-							if (BaseResponse.RESPONSE_OK == nRes &&
-									0 == strErr.length()) {
+					new HttpPower.getPowerSavingModeRequest(response -> {
+							if (response.isOk()) {
 								m_powerSavingMode = response.getModelResult();
 							}else {
 								getPowerSavingModeInfo(null);
 							}
 
-		        			sendBroadcast(response, MessageUti.POWER_GET_POWER_SAVING_MODE);
-						}
+//		        			sendBroadcast(response, MessageUti.POWER_GET_POWER_SAVING_MODE);
 					}));
 		}
 	}
@@ -146,13 +126,8 @@ public class PowerManager extends BaseManager {
 		if (blWifiConnected) {
 			PowerSavingModeInfo info = (PowerSavingModeInfo)data.getParamByKey("PowerSavingMode");
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpPower.setPowerSavingModeRequest(info,
-							new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-		        			sendBroadcast(response, MessageUti.POWER_SET_POWER_SAVING_MODE);
-						}
+					new HttpPower.setPowerSavingModeRequest(info, response -> {
+//		        			sendBroadcast(response, MessageUti.POWER_SET_POWER_SAVING_MODE);
 					}));
 		}
 	}

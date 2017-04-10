@@ -67,26 +67,8 @@ public class SimManager extends BaseManager {
 	public void changePinState(DataValue data) {
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState(nState,strPin, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-//                	if(strErrcode.length() == 0) {
-//                		
-//                	}else{
-//                		
-//                	}
-                }else{
-                	//Log
-                	
-                }
-
-    			sendBroadcast(response, MessageUti.SIM_CHANGE_PIN_STATE_REQUEST);
-            }
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.ChangePinState(nState,strPin, response ->{
+//    			sendBroadcast(response, MessageUti.SIM_CHANGE_PIN_STATE_REQUEST);
         }));
     } 
 	
@@ -95,39 +77,17 @@ public class SimManager extends BaseManager {
 		int nState = (Integer) data.getParamByKey("state");
 		String strPin = (String) data.getParamByKey("pin");
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.SetAutoValidatePinState(nState,strPin, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
-
-    			sendBroadcast(response, MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
-            }
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.SetAutoValidatePinState(nState,strPin, response ->
+            {
+//    			sendBroadcast(response, MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
         }));
     } 
 	
 	//GetAutoEnterPinState  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void getAutoPinState(DataValue data) {
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState(new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.GetAutoValidatePinState(response ->
+            {
+                	if(response.isOk()) {
                 		AutoEnterPinStateResult result = response.getModelResult();
 //                		m_autoPinState.build(result.State);
 //                		Log.v("PINCHECK", "RESULT " + result.State);
@@ -137,15 +97,9 @@ public class SimManager extends BaseManager {
                 		else{
                 			m_autoPinState = AutoPinState.Disable;
                 		}
-                	}else{
-                		
                 	}
-                }else{
-                	//Log
-                }
 
-    			sendBroadcast(response, MessageUti.SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST);
-            }
+//    			sendBroadcast(response, MessageUti.SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST);
         }));
     } 
 	
@@ -154,25 +108,10 @@ public class SimManager extends BaseManager {
 		String strNewPin = (String) data.getParamByKey("new_pin");
 		String strCurrentPin = (String) data.getParamByKey("current_pin");
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpChangePinAndState.ChangePinCode(strNewPin,strCurrentPin, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
-
-    			sendBroadcast(response, MessageUti.SIM_CHANGE_PIN_REQUEST);
-            }
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpChangePinAndState.ChangePinCode(strNewPin,strCurrentPin,
+				response ->
+            {
+//    			sendBroadcast(response, MessageUti.SIM_CHANGE_PIN_REQUEST);
         }));
     } 
 	
@@ -184,21 +123,8 @@ public class SimManager extends BaseManager {
 		LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk(strPuk,strPin, new IHttpFinishListener() {
             @Override
 			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		changeSimStatusGetInterval(true);
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
-
-    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PUK_REQUEST);
+            {
+//    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PUK_REQUEST);
             }
         }));
     } 
@@ -207,25 +133,12 @@ public class SimManager extends BaseManager {
 	public void unlockPin(DataValue data) {
 		String strPin = (String) data.getParamByKey("pin");
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin(strPin, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin(strPin, response -> {
+                	if(response.isOk()) {
                 		changeSimStatusGetInterval(true);
-                	}else{
-                		
                 	}
-                }else{
-                	//Log
-                }
 
-    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PIN_REQUEST);
-            }
+//    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PIN_REQUEST);
         }));
     } 
 	
@@ -260,16 +173,15 @@ public class SimManager extends BaseManager {
         	LegacyHttpClient.getInstance().sendPostRequest(new HttpGetSimStatus.GetSimStatus(new IHttpFinishListener() {
                 @Override
 				public void onHttpRequestFinish(BaseResponse response) 
-                {                 	
+                {
+					boolean isBroadcast = false;
                 	boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-        			if(bCPEWifiConnected == false) {
+        			if(!bCPEWifiConnected) {
         				return;
         			}
-        			            	
-                	String strErrcode = new String();
-                    int ret = response.getResultCode();
-                    if(ret == BaseResponse.RESPONSE_OK) {
-                    	strErrcode = response.getErrorCode();                    	
+
+                    if(response.isValid()) {
+                    	String strErrcode = response.getErrorCode();
                     	if(strErrcode.length() == 0) {
                     		SIMStatusResult simStatusResult = response.getModelResult();
                     		SimStatusModel pre = new SimStatusModel();
@@ -278,13 +190,12 @@ public class SimManager extends BaseManager {
 //                    		Log.v("PINCHECK", "PINSTATUS " + simStatusResult.PinState);
                     		
                     		
-                    		if(m_simStatus.m_SIMState == SIMState.Accessable) {
-                    			if(m_bisFastSpeed == true)
+                    		if(m_bisFastSpeed && m_simStatus.m_SIMState == SIMState.Accessable) {
                     				changeSimStatusGetInterval(false);
                     		}
                     		
                     		if(!m_simStatus.equalTo(pre)) {
-        	        			sendBroadcast(response, MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET);
+								isBroadcast = true;
 //        	        			Log.v("PINCHECK", "BROADCAST");
                     		}
                     	}else if(strErrcode.equalsIgnoreCase("1") 
@@ -292,11 +203,11 @@ public class SimManager extends BaseManager {
                     	{
                     		m_simStatus.clear();
                     		m_simStatus.m_SIMState = SIMState.NoSim;
-    	        			sendBroadcast(response, MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET);
+							isBroadcast = true;
                     	}
-                    }else{
-                    	//Log
                     }
+
+					response.setBroadcast(isBroadcast);
                 }
             }));
         } 

@@ -7,8 +7,6 @@ public class WlanSupportModeType extends BaseResult {
 	private int WlanAPMode = 0;
 	@Override
 	protected void clear() {
-		// TODO Auto-generated method stub
-
 		WlanAPMode = 0;
 	}
 	

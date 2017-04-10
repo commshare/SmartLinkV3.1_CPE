@@ -1,9 +1,12 @@
 package com.alcatel.smartlinkv3.httpservice;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.common.ConnectivityUtils;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.fernandocejas.frodo.annotation.RxLogObservable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +21,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Subscriber;
 
 /**
@@ -36,6 +36,7 @@ public class RestHttpClient {
     private static final String CONTENT_TYPE_VALUE_JSON = "application/json; charset=utf-8";
     private static final String CONTENT_TYPE_MULT_FORM = "multipart/form-data";
     private static RestHttpClient m_instance = null;
+    private boolean mSniffHttpServer = false;
     private String currentAccessTokenValue = "";
     Interceptor mTokenInterceptor = new Interceptor() {
         @Override
@@ -67,14 +68,7 @@ public class RestHttpClient {
         build();
 
         //// TODO: 17-3-22 use the gateway ip is better.
-        setServerAddress("192.168.1.1");
-        retrofit = new Retrofit.Builder()
-                .baseUrl(mServerUrl + "/") //baseUrl must end in /:
-                .client(mHttpClient)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
+        setServerAddress(ConnectivityUtils.getServerAddress(SmartLinkV3App.getInstance()));//"192.168.1.1"
     }
 
     public static RestHttpClient getInstance() {
@@ -98,11 +92,38 @@ public class RestHttpClient {
     }
 
     public void setServerAddress(String strIp) {
+        String originServer = mServerUrl;
         mServerUrl = String.format(ConstValue.HTTP_SERVER_ADDRESS, strIp);
         // mServerUrl = "http://172.24.222.48/cgi-bin/luci/jrd/webapi";
 
+//        if (retrofit != null && mServerUrl.equals(originServer)) {
+//            return;
+//        }
+//
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl(mServerUrl) //baseUrl must end in "/"
+//                .client(mHttpClient)
+//                .addConverterFactory(ScalarsConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .build();
+
+        if (mServerUrl.equals(originServer)) {
+            return;
+        }
+
+        setSniffHttpServer(false);
+
         Log.d(TAG, mServerUrl);
         HttpAccessLog.getInstance().writeLogToFile("Server address:" + mServerUrl);
+    }
+
+    public boolean isSniffHttpServer() {
+        return mSniffHttpServer;
+    }
+
+    public void setSniffHttpServer(boolean mSniffHttpServer) {
+        this.mSniffHttpServer = mSniffHttpServer;
     }
 
     public BaseResponse sendPostRequest(BaseRequest baseRequest) {
@@ -136,6 +157,7 @@ public class RestHttpClient {
                 baseResponse.setErrorCode(Integer.toString(httpResponse.code()));
                 baseResponse.setErrorMessage(httpResponse.message());
             }
+            setSniffHttpServer(true);
         } catch (IOException e) {
             e.printStackTrace();
             baseResponse.setResult(BaseResponse.RESPONSE_CONNECTION_ERROR);
@@ -152,6 +174,7 @@ public class RestHttpClient {
         return baseResponse;
     }
 
+    @RxLogObservable
     public <T> BaseResponse sendPostRequest(BaseRequest baseRequest, Subscriber<T> f) {
         baseRequest.buildRequestParamJson();
         BaseResponse baseResponse = baseRequest.createResponseObject();
@@ -171,13 +194,15 @@ public class RestHttpClient {
 
         try {
             Response httpResponse = mHttpClient.newCall(request).execute();
+            Context context = SmartLinkV3App.getInstance();//SmartLinkV3App.getInstance().getApplicationContext();
             responseBody = httpResponse.body().string();
             if (httpResponse.isSuccessful()) {
                 JSONObject responseJson = new JSONObject(responseBody);
                 HttpAccessLog.getInstance().writeLogToFile("Response:" + responseBody);
-                baseResponse.parseResult(SmartLinkV3App.getInstance().getApplicationContext(), responseJson);
+                baseResponse.parseResult(context, responseJson);
                 f.onNext(baseResponse.getModelResult());
                 f.onCompleted();
+                baseResponse.sendBroadcast(context);
             } else {
                 f.onError(new HttpException(httpResponse));
             }

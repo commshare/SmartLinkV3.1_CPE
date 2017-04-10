@@ -8,13 +8,11 @@ import android.util.Log;
 
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.NetworkConnectionException;
 import com.alcatel.smartlinkv3.httpservice.RestHttpClient;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static com.alcatel.smartlinkv3.common.Const.ACTION_NETWORK_DISCONNECT;
@@ -32,11 +30,11 @@ public abstract class BaseManager {
     	m_context.registerReceiver(m_msgReceiver, new  IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
     }
 
-	public void sendBroadcast(BaseResponse response, String action) {
-		Intent intent = new Intent(action);
-		intent.putExtra(MessageUti.HTTP_RESPONSE, response);
-		m_context.sendBroadcast(intent);
-	}
+//	public void sendBroadcast(BaseResponse response, String action) {
+//		Intent intent = new Intent(action);
+//		intent.putExtra(MessageUti.HTTP_RESPONSE, response);
+//		m_context.sendBroadcast(intent);
+//	}
 
 	public boolean isWifiConnect() {
 		return DataConnectManager.getInstance().getCPEWifiConnected();
@@ -76,19 +74,17 @@ public abstract class BaseManager {
 	 * @return true device with internet connection, otherwise false.
 	 */
 	public boolean isInternetConnected() {
-//		boolean isConnected;
-//
-//		ConnectivityManager connectivityManager =
-//				(ConnectivityManager) m_context.getSystemService(Context.CONNECTIVITY_SERVICE);
-//		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-//		isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
-//
-//		return isConnected;
-		return DataConnectManager.getInstance().getCPEWifiConnected();
+
+		 if (DataConnectManager.getInstance().getCPEWifiConnected())
+		 	return true;
+		if (!RestHttpClient.getInstance().isSniffHttpServer() && DataConnectManager.getInstance().getWifiConnected())
+			return true;
+
+		return false;
 	}
 
-	public <T> Observable<T> createObservable(BaseRequest baseRequest, Action1<? super T> onNext) {
-
+//	public <T> Observable<T> createObservable(BaseRequest baseRequest, Action1<? super T> onNext) {
+		public <T> Observable<T> createObservable(BaseRequest baseRequest) {
 		Observable<T> observable;
 		if (!isInternetConnected()) {
 			Throwable e = new NetworkConnectionException("network unavailable.");
@@ -120,8 +116,8 @@ public abstract class BaseManager {
 
 			});
 
-			if (onNext != null)
-				observable = observable.doOnNext(onNext);
+//			if (onNext != null)
+//				observable = observable.doOnNext(onNext);
 		}
 
 		observable = observable.observeOn(AndroidSchedulers.mainThread());

@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.profile;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
@@ -15,6 +16,7 @@ public class HttpDeleteProfile {
 		
 		public DeleteProfile(int profileID, IHttpFinishListener callback) {
 			super("Profile", "DeleteProfile", "15.4",  callback);
+			setBroadcastAction(MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
 			ProfileID = profileID;
 		}
 

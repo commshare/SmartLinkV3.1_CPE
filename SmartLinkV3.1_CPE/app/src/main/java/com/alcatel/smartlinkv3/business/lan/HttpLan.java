@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.lan;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.BooleanResponse;
@@ -22,7 +23,7 @@ public class HttpLan {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new LanSettingsResponse(m_finsishCallback);
-			return new DataResponse<>(LanInfo.class, m_finsishCallback);
+			return new DataResponse<>(LanInfo.class, MessageUti.LAN_GET_LAN_SETTINGS, m_finsishCallback);
 		}
 	}
 
@@ -50,7 +51,7 @@ public class HttpLan {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new BooleanResponse(m_finsishCallback);
+			return new BooleanResponse(null, m_finsishCallback);
 		}
 	}
 }

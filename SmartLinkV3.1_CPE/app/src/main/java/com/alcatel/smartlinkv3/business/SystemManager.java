@@ -14,6 +14,7 @@ import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
@@ -23,14 +24,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import rx.Observable;
+import rx.Subscription;
 
 public class SystemManager extends BaseManager {
     private Features m_features = new Features();
     private SystemInfo m_systemInfo = new SystemInfo();
     private SystemStatus m_systemStatus = new SystemStatus();
-
-    private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
-    // this device
 
     private Timer m_getFeaturesTimer = new Timer();// this time not to cancel
     // when cpe wifi
@@ -46,6 +45,8 @@ public class SystemManager extends BaseManager {
     private GetSystemStatusTask m_getSystemStatusTask = null;
 
     private RestoreError m_errorInfo = new RestoreError();
+    private int featureTryTime = 0;
+    private final static int MAX_TRY = 10;
 
     public SystemManager(Context context) {
         super(context);
@@ -68,10 +69,6 @@ public class SystemManager extends BaseManager {
 
     public SystemStatus getSystemStatus() {
         return m_systemStatus;
-    }
-
-    public boolean getAlreadyRecongniseDeviceFlag() {
-        return m_bAlreadyRecogniseCPEDevice;
     }
 
     public String getAppVersion() {
@@ -130,7 +127,6 @@ public class SystemManager extends BaseManager {
 
     public void switchBusiness() {
         if (m_bStopBusiness) {
-            m_bAlreadyRecogniseCPEDevice = false;
             if (m_getFeaturesTask != null) {
                 m_getFeaturesTask.cancel();
                 m_getFeaturesTask = null;
@@ -148,19 +144,26 @@ public class SystemManager extends BaseManager {
     }
 
     public Observable<Features> requestFeatures() {
-        Observable<Features> observable = createObservable(new HttpSystem.GetFeature(),
+        BaseRequest request = new HttpSystem.GetFeature();
+        Observable<Features> observable = createObservable(request);
+        Subscription subscription = observable.subscribe(
                 data -> {
                     m_features = data;
-                    m_bAlreadyRecogniseCPEDevice = true;
-                });
-        //do not receive after schedule.
-//        observable.doOnNext(data -> {
-//                    m_features = data;
-//                    m_bAlreadyRecogniseCPEDevice = true;
-//                });
-        observable.subscribe();
-        return observable;
 
+                    // no feature api
+                    if (m_features != null && m_features.getFeatures().size() > 0) {
+                        DataConnectManager.getInstance().setCPEWifiConnected(true);
+                        featureTryTime = 0;
+                    } else if (featureTryTime++ < MAX_TRY && !m_bStopBusiness) {
+                        requestFeatures();
+                    }
+                },
+
+                error -> {
+            if (featureTryTime++ < MAX_TRY && !m_bStopBusiness) {
+                requestFeatures();
+            }});//.unsubscribe();
+        return observable;
     }
 
     // Get System info
@@ -186,7 +189,7 @@ public class SystemManager extends BaseManager {
                                         }, 1000);
                             }
 
-                            sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST);
+//                            sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_INFO_REQUEST);
                         }
                     }));
         }
@@ -207,12 +210,8 @@ public class SystemManager extends BaseManager {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.SetDeviceReboot(new IHttpFinishListener() {
-
-                        @Override
-                        public void onHttpRequestFinish(BaseResponse response) {
-                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_REBOOT);
-                        }
+                    new HttpSystem.SetDeviceReboot(response-> {
+//                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_REBOOT);
                     }));
         }
     }
@@ -222,13 +221,8 @@ public class SystemManager extends BaseManager {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.SetDeviceReset(new IHttpFinishListener() {
-
-                        @Override
-                        public void onHttpRequestFinish(BaseResponse response) {
-
-                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESET);
-                        }
+                    new HttpSystem.SetDeviceReset( response -> {
+//                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESET);
                     }));
         }
     }
@@ -238,12 +232,8 @@ public class SystemManager extends BaseManager {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.SetDeviceBackup(new IHttpFinishListener() {
-
-                        @Override
-                        public void onHttpRequestFinish(BaseResponse response) {
-                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_BACKUP);
-                        }
+                    new HttpSystem.SetDeviceBackup( response -> {
+//                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_BACKUP);
                     }));
         }
     }
@@ -254,13 +244,8 @@ public class SystemManager extends BaseManager {
         if (blWifiConnected) {
             String strFile = data.getParamByKey("FileName").toString();
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.SetDeviceRestore(strFile,
-                            new IHttpFinishListener() {
-
-                                @Override
-                                public void onHttpRequestFinish(BaseResponse response) {
-                                    sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESTORE);
-                                }
+                    new HttpSystem.SetDeviceRestore(strFile, response -> {
+//                                    sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_RESTORE);
                             }));
         }
     }
@@ -269,12 +254,8 @@ public class SystemManager extends BaseManager {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.setDevicePowerOffRequest(new IHttpFinishListener() {
-
-                        @Override
-                        public void onHttpRequestFinish(BaseResponse response) {
-                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_POWER_OFF);
-                        }
+                    new HttpSystem.setDevicePowerOffRequest(response -> {
+//                            sendBroadcast(response, MessageUti.SYSTEM_SET_DEVICE_POWER_OFF);
                     }));
         }
     }
@@ -288,12 +269,8 @@ public class SystemManager extends BaseManager {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.setAppBackupRequest(new IHttpFinishListener() {
-
-                        @Override
-                        public void onHttpRequestFinish(BaseResponse response) {
-                            sendBroadcast(response, MessageUti.SYSTEM_SET_APP_BACKUP);
-                        }
+                    new HttpSystem.setAppBackupRequest( response -> {
+//                            sendBroadcast(response, MessageUti.SYSTEM_SET_APP_BACKUP);
                     }));
         }
     }
@@ -307,15 +284,11 @@ public class SystemManager extends BaseManager {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.setAppRestoreBackupRequest(new IHttpFinishListener() {
-
-                        @Override
-                        public void onHttpRequestFinish(BaseResponse response) {
+                    new HttpSystem.setAppRestoreBackupRequest(response -> {
                             if (response.isOk()) {
                                 m_errorInfo = response.getModelResult();
                             }
-                            sendBroadcast(response, MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
-                        }
+//                            sendBroadcast(response, MessageUti.SYSTEM_SET_APP_RESTORE_BACKUP);
                     }));
         }
     }
@@ -329,10 +302,9 @@ public class SystemManager extends BaseManager {
                     (response -> {
                         if (response.isOk()) {
                             m_features = response.getModelResult();
-                            m_bAlreadyRecogniseCPEDevice = true;
                         }
 
-                        sendBroadcast(response, MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
+//                        sendBroadcast(response, MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
                     })));
 
 //
@@ -375,9 +347,7 @@ public class SystemManager extends BaseManager {
         @Override
         public void run() {
             LegacyHttpClient.getInstance().sendPostRequest(
-                    new HttpSystem.GetSystemStatus(new IHttpFinishListener() {
-                        @Override
-                        public void onHttpRequestFinish(BaseResponse response) {
+                    new HttpSystem.GetSystemStatus( response -> {
                             if (response.isOk()) {
                                 m_systemStatus = response.getModelResult();
                             } else {
@@ -389,9 +359,6 @@ public class SystemManager extends BaseManager {
 //												}
 //											}, 1000);
                             }
-
-                            sendBroadcast(response, MessageUti.SYSTEM_GET_SYSTEM_STATUS_REQUSET);
-                        }
                     }));
         }
     }

@@ -11,10 +11,7 @@ import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.GetProfileLis
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
 import com.alcatel.smartlinkv3.business.profile.HttpSetDefaultProfile;
 import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
-import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.List;
 
@@ -27,17 +24,8 @@ public class ProfileManager extends BaseManager{
 	}
 	
 	public void startGetProfileList(DataValue data){
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpGetProfileList.GetProfileList(new IHttpFinishListener(){
-
-			@Override
-			public void onHttpRequestFinish(BaseResponse response) {
-				// TODO Auto-generated method stub
-				String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	try {
-						strErrcode = response.getErrorCode();
-						if(strErrcode.length() == 0) { 
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpGetProfileList.GetProfileList(response -> {
+						if(response.isOk()) {
 							GetProfileListResult profileList = response.getModelResult();
 							m_profile_list = profileList.ProfileList;
 //							for(ProfileItem tmp : profileList.ProfileList){
@@ -52,18 +40,8 @@ public class ProfileManager extends BaseManager{
 //            					Log.v("GetProfileResultIsPredefine","" +  tmp.IsPredefine);
 //            					Log.v("GetProfileResultProfileID", "" + tmp.ProfileID);
 //            				}
-						}else{
-							//Log
-						}
-						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }else{
-                	//Log
-                }
-    			sendBroadcast(response, MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST);
+
+//    			sendBroadcast(response, MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST);
 			}
 			
 		}));
@@ -77,32 +55,16 @@ public class ProfileManager extends BaseManager{
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile(ProfileName, DialNumber, APN, UserName, Password, AuthType, new IHttpFinishListener(){
-
-			@Override
-			public void onHttpRequestFinish(BaseResponse response) {
-				// TODO Auto-generated method stub
-				String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	try {
-						strErrcode = response.getErrorCode();
-						if(strErrcode.length() == 0) { 
-//							Log.v("AddOrEditProfile", "Yes");
-						}else{
-							//Log
-						}
-						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }else{
-                	//Log
-//                	Log.v("AddOrEditProfile", "No");
-                }
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpAddNewProfile.AddNewProfile(ProfileName,
+				DialNumber,
+				APN,
+				UserName,
+				Password,
+				AuthType,
+				response -> {
+                if(response.isValid()) {
                 startGetProfileList(null);
-    			sendBroadcast(response, MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST);
+//    			sendBroadcast(response, MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST);
 			}
 			
 		}));
@@ -118,36 +80,12 @@ public class ProfileManager extends BaseManager{
 		String Password = (String) data.getParamByKey("password");
 		int AuthType = (Integer) data.getParamByKey("auth_type");
 		
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpEditProfile.EditProfile(profileID, DialNumber, ProfileName, APN, UserName, Password, AuthType, new IHttpFinishListener(){
-
-			@Override
-			public void onHttpRequestFinish(BaseResponse response) {
-				// TODO Auto-generated method stub
-				String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	try {
-						strErrcode = response.getErrorCode();
-						if(strErrcode.length() == 0) { 
-//							Log.v("AddOrEditProfile", "Yes");
-						}else{
-							//Log
-						}
-						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }else{
-                	//Log
-//                	Log.v("AddOrEditProfile", "No");
-                }
-                startGetProfileList(null);
-
-    			sendBroadcast(response, MessageUti.PROFILE_EDIT_PROFILE_REQUEST);
-                
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpEditProfile.EditProfile(profileID, DialNumber, ProfileName, APN, UserName, Password, AuthType,
+				response -> {
+				if(response.isValid()) {
+					startGetProfileList(null);
+//					sendBroadcast(response, MessageUti.PROFILE_EDIT_PROFILE_REQUEST);
 			}
-			
 		}));
 	}
 	
@@ -155,35 +93,10 @@ public class ProfileManager extends BaseManager{
 	public void startDeleteProfile(DataValue data){
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile(profileId, new IHttpFinishListener(){
-
-			@Override
-			public void onHttpRequestFinish(BaseResponse response) {
-				// TODO Auto-generated method stub
-				String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	try {
-						strErrcode = response.getErrorCode();
-						if(strErrcode.length() == 0) { 
-//							Log.v("GetProfileResultDELETE", "Yes");
-						}else{
-							//Log
-						}
-						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }else{
-                	//Log
-//                	Log.v("GetProfileResultDELETE", "No");
-                }
-
-    			sendBroadcast(response, MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
-                
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpDeleteProfile.DeleteProfile(profileId, response -> {
+            if(response.isValid()) {
+//    			sendBroadcast(response, MessageUti.PROFILE_DELETE_PROFILE_REQUEST);
 			}
-			
 		}));
 		
 	}
@@ -191,34 +104,8 @@ public class ProfileManager extends BaseManager{
 	public void startSetDefaultProfile(DataValue data){
 		int profileId = (Integer) data.getParamByKey("profile_id");
 		
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile(profileId, new IHttpFinishListener(){
-
-			@Override
-			public void onHttpRequestFinish(BaseResponse response) {
-				// TODO Auto-generated method stub
-				String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	try {
-						strErrcode = response.getErrorCode();
-						if(strErrcode.length() == 0) { 
-//							Log.v("SetDefaultProfileResult", "Yes");
-						}else{
-							//Log
-						}
-						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }else{
-                	//Log
-//                	Log.v("SetDefaultProfileResult", "No");
-                }
-
-    			sendBroadcast(response, MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST);
-			}
-			
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSetDefaultProfile.SetDefaultProfile(profileId, response -> {
+//            sendBroadcast(response, MessageUti.PROFILE_SET_DEFAULT_PROFILE_REQUEST);
 		}));
 		
 	}

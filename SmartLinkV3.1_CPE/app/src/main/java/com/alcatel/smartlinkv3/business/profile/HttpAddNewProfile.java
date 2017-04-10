@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.profile;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
@@ -19,6 +20,7 @@ public class HttpAddNewProfile {
 		
 		public AddNewProfile(String profileName, String dialNumber, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
 			super("Profile", "AddNewProfile", "15.2", callback);
+			setBroadcastAction(MessageUti.PROFILE_ADD_NEW_PROFILE_REQUEST);
 			m_strProfileName = profileName;
 			m_strAPN = apn;
 			m_strUserName = userName;

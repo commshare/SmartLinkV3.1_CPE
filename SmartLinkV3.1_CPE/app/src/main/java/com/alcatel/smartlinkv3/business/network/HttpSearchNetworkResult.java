@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.business.network;
 
 import com.alcatel.smartlinkv3.business.BaseResult;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.DataResponse;
@@ -18,7 +19,7 @@ public class HttpSearchNetworkResult {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new SearchNetworkResultResponse(m_finsishCallback);
-			return new DataResponse<>(NetworkItemList.class, m_finsishCallback);
+			return new DataResponse<>(NetworkItemList.class, MessageUti.NETWORK_SEARCH_NETWORK_RESULT_ROLL_REQUSET, m_finsishCallback);
 		}
 	}
 

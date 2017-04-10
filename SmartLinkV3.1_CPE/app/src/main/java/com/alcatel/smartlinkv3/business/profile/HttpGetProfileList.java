@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.business.profile;
 
 import com.alcatel.smartlinkv3.business.BaseResult;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.DataResponse;
@@ -19,7 +20,7 @@ public class HttpGetProfileList {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetProfileListResponse(m_finsishCallback);
-			return new DataResponse<>(GetProfileListResult.class, m_finsishCallback);
+			return new DataResponse<>(GetProfileListResult.class, MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST, m_finsishCallback);
 		}
 	}
 

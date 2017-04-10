@@ -137,7 +137,7 @@ public class MessageUti {
 	public static String SHARING_GET_FTP_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.getftpsetting";	
 	public static String SHARING_SET_FTP_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setftpsetting";	
 	public static String SHARING_SET_USBCARD_SETTING_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setusbcardsetting";
-	public static String SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setdlnasettingspecial";	
+	//public static String SHARING_SET_DLNA_SETTING_SPECIAL_REQUSET = "com.alcatel.smartlinkv3.business.sharing.setdlnasettingspecial";
 	/**************************Sharing message end*********************************************************************************/
 	
 	/**************************LAN message start*******************************************************************************/

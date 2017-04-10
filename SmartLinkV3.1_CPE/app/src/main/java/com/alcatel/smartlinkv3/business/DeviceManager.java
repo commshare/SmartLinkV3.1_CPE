@@ -15,31 +15,31 @@ import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class DeviceManager extends BaseManager {
 	
 	private Timer m_rollTimer = new Timer();
-	GetConnectedDeviceTask m_getGetConnectedDeviceTask = null;
-	GetBlockDeviceListTask m_getGetBlockDeviceListTask = null;
+	private GetConnectedDeviceTask m_getGetConnectedDeviceTask = null;
+	private GetBlockDeviceListTask m_getGetBlockDeviceListTask = null;
 
-	private ArrayList<ConnectedDeviceItemModel> m_connectedDeviceList = new ArrayList<ConnectedDeviceItemModel>();
-	private ArrayList<ConnectedDeviceItemModel> m_blockDeviceList = new ArrayList<ConnectedDeviceItemModel>();
+	private ArrayList<ConnectedDeviceItemModel> m_connectedDeviceList = new ArrayList<>();
+	private ArrayList<ConnectedDeviceItemModel> m_blockDeviceList = new ArrayList<>();
 
 	@Override
 	protected void onBroadcastReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
 		if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-			if(bCPEWifiConnected == true) {
+			if(bCPEWifiConnected) {
 				startGetConnectedDeviceTask();
 				startGetBlockDeviceListTask();
 			}
     	}
 	}
 
-	public DeviceManager(Context context) {
+	DeviceManager(Context context) {
 		super(context);
 	}
 
@@ -54,61 +54,61 @@ public class DeviceManager extends BaseManager {
 		stopGetBlockDeviceListTask();
 	}	
 	
-	public ArrayList<ConnectedDeviceItemModel> getConnectedDeviceList()
+	ArrayList<ConnectedDeviceItemModel> getConnectedDeviceList()
 	{
-		return (ArrayList<ConnectedDeviceItemModel>) m_connectedDeviceList.clone();
+		ArrayList<ConnectedDeviceItemModel> dest = new ArrayList<>();
+		Collections.copy(dest, m_connectedDeviceList);
+		return dest;
+//		return (ArrayList<ConnectedDeviceItemModel>) m_connectedDeviceList.clone();
 	}
 	
-	public ArrayList<ConnectedDeviceItemModel> getBlockDeviceList()
+	ArrayList<ConnectedDeviceItemModel> getBlockDeviceList()
 	{
-		return (ArrayList<ConnectedDeviceItemModel>) m_blockDeviceList.clone();
+		ArrayList<ConnectedDeviceItemModel> dest = new ArrayList<>();
+		Collections.copy(dest, m_blockDeviceList);
+		return dest;
+//		return (ArrayList<ConnectedDeviceItemModel>) m_blockDeviceList.clone();
 	}
 
 	// GetConnectedDeviceList
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void startGetConnectedDeviceTask() {
+	private void startGetConnectedDeviceTask() {
 		if(m_getGetConnectedDeviceTask == null) {
 			m_getGetConnectedDeviceTask = new GetConnectedDeviceTask();
 			m_rollTimer.scheduleAtFixedRate(m_getGetConnectedDeviceTask, 0, 30 * 1000);
 		}
 	}
-	
-	public void stopGetConnectedDeviceTask() {
+
+	private void stopGetConnectedDeviceTask() {
 		if(m_getGetConnectedDeviceTask != null) {
 			m_getGetConnectedDeviceTask.cancel();
 			m_getGetConnectedDeviceTask = null;
 		}
 	}
-	
+
 	public void getGetConnectedDeviceTaskAtOnceRequest(){
 		GetConnectedDeviceTask task = new GetConnectedDeviceTask();
 		m_rollTimer.schedule(task, 0);
 	}
-	
-	class GetConnectedDeviceTask extends TimerTask{ 
+
+	private class GetConnectedDeviceTask extends TimerTask{
         @Override
 		public void run() { 
         	LegacyHttpClient.getInstance().sendPostRequest(new HttpDevice.GetConnectedDeviceList(new IHttpFinishListener() {
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
-					if (response.isValid()) {
-						if (response.isNoError()) {
-							m_connectedDeviceList.clear();
+					m_connectedDeviceList.clear();
+					if (response.isOk()) {
 							ConnectedDeviceList result = response.getModelResult();
 							for(int i = 0;i < result.ConnectedList.size();i++) {
 								ConnectedDeviceItemModel item = new ConnectedDeviceItemModel();
 								item.buildFromResult(result.ConnectedList.get(i));
 								m_connectedDeviceList.add(item);
 							}
-						} else {
-							m_connectedDeviceList.clear();
-						}
-					} else {
-						m_connectedDeviceList.clear();
 					}
-					Intent megIntent = new Intent(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST);
-					megIntent.putExtra(MessageUti.HTTP_RESPONSE,response);
-					m_context.sendBroadcast(megIntent);
+//					Intent megIntent = new Intent(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST);
+//					megIntent.putExtra(MessageUti.HTTP_RESPONSE,response);
+//					m_context.sendBroadcast(megIntent);
 				}
 			}));
         } 
@@ -116,49 +116,44 @@ public class DeviceManager extends BaseManager {
 
 	// GetBlockDeviceList
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void startGetBlockDeviceListTask() {
+	private void startGetBlockDeviceListTask() {
 		if(m_getGetBlockDeviceListTask == null) {
 			m_getGetBlockDeviceListTask = new GetBlockDeviceListTask();
 			m_rollTimer.scheduleAtFixedRate(m_getGetBlockDeviceListTask, 0, 30 * 1000);
 		}
 	}
-	
-	public void stopGetBlockDeviceListTask() {
+
+	private void stopGetBlockDeviceListTask() {
 		if(m_getGetBlockDeviceListTask != null) {
 			m_getGetBlockDeviceListTask.cancel();
 			m_getGetBlockDeviceListTask = null;
 		}
 	}
-	
+
 	public void getGetBlockDeviceListTaskAtOnceRequest(){
 		GetBlockDeviceListTask task = new GetBlockDeviceListTask();
 		m_rollTimer.schedule(task, 0);
 	}
 	
-	class GetBlockDeviceListTask extends TimerTask{ 
+	private class GetBlockDeviceListTask extends TimerTask{
         @Override
 		public void run() { 
         	LegacyHttpClient.getInstance().sendPostRequest(new HttpDevice.GetBlockDeviceList(new IHttpFinishListener() {
 				@Override
 				public void onHttpRequestFinish(BaseResponse response) {
-					if (response.isValid()) {
-						if (response.isNoError()) {
-							m_blockDeviceList.clear();
+					//TODO, need clear if error?
+					m_blockDeviceList.clear();
+					if (response.isOk()) {
 							BlockDeviceList result = response.getModelResult();
 							for(int i = 0;i < result.BlockList.size();i++) {
 								ConnectedDeviceItemModel item = new ConnectedDeviceItemModel();
 								item.buildFromResult(result.BlockList.get(i));
 								m_blockDeviceList.add(item);
 							}
-						} else {
-							m_blockDeviceList.clear();
-						}
-					} else {
-						m_blockDeviceList.clear();
 					}
-					Intent megIntent = new Intent(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST);
-					megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
-					m_context.sendBroadcast(megIntent);
+//					Intent megIntent = new Intent(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST);
+//					megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
+//					m_context.sendBroadcast(megIntent);
 				}
 			}));
         } 
@@ -181,9 +176,6 @@ public class DeviceManager extends BaseManager {
 //								Intent megIntent = new Intent(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK);
 //								megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
 //								m_context.sendBroadcast(megIntent);
-
-								sendBroadcast(response, MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK);
-
 							}
 						}));
 	}
@@ -205,7 +197,6 @@ public class DeviceManager extends BaseManager {
 //								megIntent.putExtra(MessageUti.HTTP_RESPONSE,
 //										response);
 //								m_context.sendBroadcast(megIntent);
-								sendBroadcast(response, MessageUti.DEVICE_SET_DEVICE_UNLOCK);
 							}
 						}));
 	}
@@ -227,7 +218,6 @@ public class DeviceManager extends BaseManager {
 //								megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
 //								m_context.sendBroadcast(megIntent);
 
-								sendBroadcast(response, MessageUti.DEVICE_SET_DEVICE_NAME);
 							}
 						}));
 	}

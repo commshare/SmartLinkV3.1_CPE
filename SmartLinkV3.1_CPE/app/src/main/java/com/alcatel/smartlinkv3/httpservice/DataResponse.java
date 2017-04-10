@@ -11,8 +11,13 @@ public class DataResponse<T> extends BaseResponse {
     T data;
     Class<T> clazz;
 
-    public DataResponse(Class<T> classOfT, LegacyHttpClient.IHttpFinishListener callback) {
-        super(callback);
+//    public DataResponse(Class<T> classOfT, LegacyHttpClient.IHttpFinishListener callback) {
+//        super(callback);
+//        clazz = classOfT; //(Class<T>) data.getClass()
+//    }
+
+    public DataResponse(Class<T> classOfT, String action, LegacyHttpClient.IHttpFinishListener callback) {
+        super(action, callback);
         clazz = classOfT; //(Class<T>) data.getClass()
     }
 

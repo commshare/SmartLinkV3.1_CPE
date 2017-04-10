@@ -8,8 +8,8 @@ public class BooleanResponse extends BaseResponse {
 
     private Boolean m_blRes = false;
 
-    public BooleanResponse(LegacyHttpClient.IHttpFinishListener callback) {
-        super(callback);
+    public BooleanResponse(String action, LegacyHttpClient.IHttpFinishListener callback) {
+        super(action, callback);
     }
 
     @Override

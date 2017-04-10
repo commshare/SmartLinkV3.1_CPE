@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.power;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.BooleanResponse;
@@ -22,7 +23,7 @@ public class HttpPower {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new getBatteryStateResponse(m_finsishCallback);
-			return new DataResponse<>(BatteryInfo.class, m_finsishCallback);
+			return new DataResponse<>(BatteryInfo.class, MessageUti.POWER_GET_BATTERY_STATE, m_finsishCallback);
 		}
 	}
 
@@ -36,7 +37,7 @@ public class HttpPower {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new getPowerSavingModeResponse(m_finsishCallback);
-			return new DataResponse<>(PowerSavingModeInfo.class, m_finsishCallback);
+			return new DataResponse<>(PowerSavingModeInfo.class, MessageUti.POWER_GET_POWER_SAVING_MODE, m_finsishCallback);
 		}
 	}
 
@@ -59,7 +60,7 @@ public class HttpPower {
 
 		@Override
 		public BaseResponse createResponseObject() {
-			return new BooleanResponse(m_finsishCallback);
+			return new BooleanResponse(MessageUti.POWER_SET_POWER_SAVING_MODE, m_finsishCallback);
 		}
 	}
 }

@@ -13,7 +13,6 @@ import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceUpgradeStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
-import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -140,22 +139,18 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpUpdate.getDeviceNewVersionRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							if(response.isOk()){
-								m_newFirmwareVersionInfo = response.getModelResult();
-								if(EnumDeviceCheckingStatus.antiBuild(EnumDeviceCheckingStatus.DEVICE_CHECKING)
-										!= m_newFirmwareVersionInfo.getState()){
-									stopGetDeviceNewVersionTask();
-								}
-							}else {
+					new HttpUpdate.getDeviceNewVersionRequest(response -> {
+						if(response.isOk()){
+							m_newFirmwareVersionInfo = response.getModelResult();
+							if(EnumDeviceCheckingStatus.antiBuild(EnumDeviceCheckingStatus.DEVICE_CHECKING)
+									!= m_newFirmwareVersionInfo.getState()){
 								stopGetDeviceNewVersionTask();
 							}
-
-							sendBroadcast(response, MessageUti.UPDATE_GET_DEVICE_NEW_VERSION);
+						}else {
+							stopGetDeviceNewVersionTask();
 						}
+
+//						sendBroadcast(response, MessageUti.UPDATE_GET_DEVICE_NEW_VERSION);
 					}));
 		}
 	}
@@ -166,61 +161,38 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected)
 		{
-			LegacyHttpClient.getInstance().sendPostRequest(new HttpUpdate.setDeviceStartUpdateRequest(new IHttpFinishListener()
-			{
-				@Override
-				public void onHttpRequestFinish(BaseResponse response)
-				{
-					sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE);
-				}
+			LegacyHttpClient.getInstance().sendPostRequest(new HttpUpdate.setDeviceStartUpdateRequest(true, response -> {
+//					sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_FOTA_UPDATE);
 				}));
 			}
 		}
 	
 	public void startUpdate(DataValue data)
 	{
+		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+		if (!blWifiConnected) {
+			return;
+		}
+
 		if(FeatureVersionManager.getInstance().isSupportApi("Update", "SetFOTAStartDownload"))
 		{
-			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-			if (blWifiConnected) {
 				LegacyHttpClient.getInstance().sendPostRequest(
-						new HttpUpdate.setFOTAStartDownload(new IHttpFinishListener() {
-
-							@Override
-							public void onHttpRequestFinish(BaseResponse response) {
-								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
-							}
+						new HttpUpdate.setFOTAStartDownload(response -> {
+//								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
 						}));
-			}
 		}
 		else if(BusinessManager.getInstance().getSystemInfoModel().getSwVersion().equalsIgnoreCase("Y858_FQ_01.16_02") || BusinessManager.getInstance().getSystemInfoModel().getSwVersion().equalsIgnoreCase("Y858_FL_01.16_02")){
-			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-			if (blWifiConnected) {
 				LegacyHttpClient.getInstance().sendPostRequest(
-						new HttpUpdate.setFOTAStartDownload(new IHttpFinishListener() {
-
-							@Override
-							public void onHttpRequestFinish(BaseResponse response) {
-								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
-							}
+						new HttpUpdate.setFOTAStartDownload( response -> {
+//								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
 						}));
-			}
+
 		} else if (FeatureVersionManager.getInstance().isSupportApi("Update", "SetDeviceStartUpdate")) {
-			boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-			if (blWifiConnected) {
 				LegacyHttpClient.getInstance().sendPostRequest(
-						new HttpUpdate.setDeviceStartUpdateRequest(new IHttpFinishListener() {
-
-							@Override
-							public void onHttpRequestFinish(BaseResponse response) {
-								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
-							}
+						new HttpUpdate.setDeviceStartUpdateRequest(false, response -> {
+//								sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_START_UPDATE);
 						}));
-			}
 		}
-		else
-			return;
-		
 	}
 
 	//stop update firmware
@@ -228,12 +200,8 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpUpdate.setDeviceUpdateStopRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE);
-						}
+					new HttpUpdate.setDeviceUpdateStopRequest(response -> {
+//                        sendBroadcast(response, MessageUti.UPDATE_SET_DEVICE_STOP_UPDATE);
 					}));
 		}
 	}
@@ -243,15 +211,8 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpUpdate.getDeviceUpgradeStatusRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							// TODO Auto-generated method stub
-							int nRes = response.getResultCode();
-							String strError=response.getErrorCode();
-							if(BaseResponse.RESPONSE_OK == nRes &&
-									strError.length() == 0){
+					new HttpUpdate.getDeviceUpgradeStatusRequest(response -> {
+							if(response.isOk()){
 								m_upgradeFirmwareStateInfo = response.getModelResult();
 							}
 							
@@ -261,8 +222,7 @@ public class UpdateManager extends BaseManager {
 								stopGetDeviceUpgradeStatusTask();
 							}
 
-							sendBroadcast(response, MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE);
-						}
+//							sendBroadcast(response, MessageUti.UPDATE_GET_DEVICE_UPGRADE_STATE);
 					}));
 		}
 	}
@@ -276,12 +236,8 @@ public class UpdateManager extends BaseManager {
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpUpdate.SetCheckNewVersionRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
-							sendBroadcast(response, MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION);
-						}
+					new HttpUpdate.SetCheckNewVersionRequest(response -> {
+//							sendBroadcast(response, MessageUti.UPDATE_SET_CHECK_DEVICE_NEW_VERSION);
 					}));
 		}
 	}

@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.sms;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -27,7 +28,7 @@ public class HttpSms {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetSMSInitStatusResponse(m_finsishCallback);
-            return new DataResponse<>(SmsInitResult.class, m_finsishCallback);
+            return new DataResponse<>(SmsInitResult.class, MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET,m_finsishCallback);
         }
         
     }
@@ -54,7 +55,8 @@ public class HttpSms {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetSMSContactListResponse(m_finsishCallback);
-            return new DataResponse<>(SmsContactListResult.class, m_finsishCallback);
+            return new DataResponse<>(SmsContactListResult.class, MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET,
+                    m_finsishCallback);
         }
     }
 
@@ -87,7 +89,7 @@ public class HttpSms {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetSMSContentListResponse(m_finsishCallback);
-            return new DataResponse<>(SmsContentListResult.class, m_finsishCallback);
+            return new DataResponse<>(SmsContentListResult.class, MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET, m_finsishCallback);
         }
         
     }
@@ -104,7 +106,7 @@ public class HttpSms {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetSMSStorageStateResponse(m_finsishCallback);
-            return new DataResponse<>(SmsStorageStateResult.class, m_finsishCallback);
+            return new DataResponse<>(SmsStorageStateResult.class, null, m_finsishCallback);
         }
     }
 
@@ -119,6 +121,7 @@ public class HttpSms {
         public DeleteSMS(int nDelFlag,int nContactId,int nSMSId,IHttpFinishListener callback)
         {
         	super("SMS", "DeleteSMS", "6.5", callback);
+            setBroadcastAction(MessageUti.SMS_DELETE_SMS_REQUSET);
         	m_nDelFlag = nDelFlag;
         	m_nContactId = nContactId;
         	m_nSMSId = nSMSId;
@@ -147,6 +150,7 @@ public class HttpSms {
         public SendSMS(int nSMSId,String strSMSContent,ArrayList<String> lstNumber,IHttpFinishListener callback)
         {
         	super("SMS", "SendSMS", "6.6", callback);
+            setBroadcastAction(MessageUti.SMS_SEND_SMS_REQUSET);
         	m_nSMSId = nSMSId;
         	m_strSMSContent = strSMSContent;
         	m_lstNumber = lstNumber;
@@ -185,7 +189,7 @@ public class HttpSms {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetSendSMSResultResponse(m_finsishCallback);
-            return new DataResponse<>(SendStatusResult.class, m_finsishCallback);
+            return new DataResponse<>(SendStatusResult.class, MessageUti.SMS_GET_SEND_STATUS_REQUSET, m_finsishCallback);
         }
     }
 
@@ -230,7 +234,7 @@ public class HttpSms {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetSendSMSResultResponse(m_finsishCallback);
-            return new DataResponse<>(SendStatusResult.class, m_finsishCallback);
+            return new DataResponse<>(SendStatusResult.class,  MessageUti.SMS_SAVE_SMS_REQUSET, m_finsishCallback);
         }
         
     }

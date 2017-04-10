@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.business.network;
 
 import com.alcatel.smartlinkv3.business.BaseResult;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.DataResponse;
@@ -16,7 +17,7 @@ public class HttpGetNetworkSettings {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetNetworkSettingsResponse(m_finsishCallback);
-			return new DataResponse<>(GetNetworkSettingResult.class, m_finsishCallback);
+			return new DataResponse<>(GetNetworkSettingResult.class, MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, m_finsishCallback);
 		}
 	}
 

@@ -212,26 +212,11 @@ public class WlanManager extends BaseManager {
 		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.GetWlanSetting(new IHttpFinishListener() {
 					@Override
-					public void onHttpRequestFinish(
-							BaseResponse response) {
-
-						String strErrcode = new String();
-						int ret = response.getResultCode();
-						if (ret == BaseResponse.RESPONSE_OK) {
-							strErrcode = response.getErrorCode();
-							if (strErrcode.length() == 0) {
+					public void onHttpRequestFinish(BaseResponse response) {
+							if (response.isOk()) {
 								m_settings = response.getModelResult();
-
 								getInfoByWansetting();
-
-							} else {
-
 							}
-						} else {
-							// Log
-						}
-
-						sendBroadcast(response, MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
 					}
 				}));
 	}
@@ -308,24 +293,12 @@ public class WlanManager extends BaseManager {
 				new HttpWlanSetting.SetWlanSetting(settings,
 						new IHttpFinishListener() {
 					@Override
-					public void onHttpRequestFinish(
-							BaseResponse response) {
-
-						String strErrcode = new String();
-						int ret = response.getResultCode();
-						if (ret == BaseResponse.RESPONSE_OK) {
-							strErrcode = response.getErrorCode();
-							if (strErrcode.length() == 0) {
+					public void onHttpRequestFinish(BaseResponse response) {
+							if (response.isOk()) {
 								m_settings.clone(settings);
 								getInfoByWansetting();
-							} else {
-
 							}
-						} else {
-							// Log
-						}
-
-						sendBroadcast(response, MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
+//						sendBroadcast(response, MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
 					}
 				}));
 	}
@@ -338,26 +311,12 @@ public class WlanManager extends BaseManager {
 
 		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.SetWPSPin(m_strPin,
-						new IHttpFinishListener() {
-					@Override
-					public void onHttpRequestFinish(
-							BaseResponse response) {
-
-						String strErrcode = new String();
-						int ret = response.getResultCode();
-						if (ret == BaseResponse.RESPONSE_OK) {
-							strErrcode = response.getErrorCode();
-							if (strErrcode.length() == 0) {
+					 response-> {
+						if (response.isOk()) {
 								m_strWpsPin = response.getModelResult();
-
-							} else {
-
-							}
-						} else {
-							// Log
 						}
-						sendBroadcast(response, MessageUti.WLAN_SET_WPS_PIN_REQUSET);
-					}
+
+//						sendBroadcast(response, MessageUti.WLAN_SET_WPS_PIN_REQUSET);
 				}));
 	}
 
@@ -365,26 +324,8 @@ public class WlanManager extends BaseManager {
 	// //////////////////////////////////////////////////////////////////////////////////////////
 	public void SetWPSPbc(DataValue data) {
 		LegacyHttpClient.getInstance().sendPostRequest(
-				new HttpWlanSetting.SetWPSPbc(new IHttpFinishListener() {
-					@Override
-					public void onHttpRequestFinish(
-							BaseResponse response) {
-
-						String strErrcode = new String();
-						int ret = response.getResultCode();
-						if (ret == BaseResponse.RESPONSE_OK) {
-							strErrcode = response.getErrorCode();
-							if (strErrcode.length() == 0) {
-
-							} else {
-
-							}
-						} else {
-							// Log
-						}
-
-						sendBroadcast(response, MessageUti.WLAN_SET_WPS_PBC_REQUSET);
-					}
+				new HttpWlanSetting.SetWPSPbc(response-> {
+//						sendBroadcast(response, MessageUti.WLAN_SET_WPS_PBC_REQUSET);
 				}));
 	}
 
@@ -401,10 +342,7 @@ public class WlanManager extends BaseManager {
 		boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blCPEWifiConnected) {
 			LegacyHttpClient.getInstance().sendPostRequest(
-					new HttpWlanSetting.getWlanSupportModeRequest(new IHttpFinishListener() {
-
-						@Override
-						public void onHttpRequestFinish(BaseResponse response) {
+					new HttpWlanSetting.getWlanSupportModeRequest( response -> {
 							if (response.isOk()) {
 								WlanSupportModeType modeType = response.getModelResult();
 								m_wlanSupportMode = WlanSupportMode.build(modeType.getWlanSupportMode());
@@ -412,8 +350,7 @@ public class WlanManager extends BaseManager {
 								getWlanSupportMode(null);
 							}
 							
-							sendBroadcast(response, MessageUti.WLAN_SET_WPS_PBC_REQUSET);
-						}
+//							sendBroadcast(response, MessageUti.WLAN_SET_WPS_PBC_REQUSET);
 					}));
 		}
 	}

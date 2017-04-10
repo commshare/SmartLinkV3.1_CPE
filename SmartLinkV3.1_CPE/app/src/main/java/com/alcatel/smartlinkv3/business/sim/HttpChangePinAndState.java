@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.sim;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
@@ -18,6 +19,7 @@ public class HttpChangePinAndState {
         public ChangePinCode(String strNewPin,String strCurrentPin,IHttpFinishListener callback)
         {
         	super("SIM", "ChangePinCode", "2.4", callback);
+			setBroadcastAction(MessageUti.SIM_CHANGE_PIN_REQUEST);
         	m_strNewPin = strNewPin;
         	m_strCurrentPin = strCurrentPin;
         }

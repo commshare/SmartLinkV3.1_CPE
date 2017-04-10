@@ -138,26 +138,15 @@ public class SMSManager extends BaseManager {
 	class GetSMSInitTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSInitStatus(new IHttpFinishListener() {
-                @Override
-				public void onHttpRequestFinish(BaseResponse response) 
-                {               	
-                	String strErrcode = new String();
-                    int ret = response.getResultCode();
-                    if(ret == BaseResponse.RESPONSE_OK) {
-                    	strErrcode = response.getErrorCode();
-                    	if(strErrcode.length() == 0) {
-                    		SmsInitResult result = response.getModelResult();
-                    		m_smsInit = SMSInit.build(result.Status);
-                    	}else{
-                    		
-                    	}
-                    }else{
-                    	//Log
-                    }
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSInitStatus(response ->
+                {
+					if(response.isOk()) {
+						SmsInitResult result = response.getModelResult();
+						m_smsInit = SMSInit.build(result.Status);
+					}
 
-        			sendBroadcast(response, MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
-                }
+//        			sendBroadcast(response, MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
+
             }));
         } 
 	}
@@ -165,7 +154,7 @@ public class SMSManager extends BaseManager {
 	private void sentSMSInitChangedMessage(SMSInit cur) {
 		if(m_smsInit != cur) {
 			m_smsInit = cur;
-			sendBroadcast(BaseResponse.SUCCESS, MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
+//			sendBroadcast(BaseResponse.SUCCESS, MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET);
 		}
 	}
 	//GetSMSContactList ////////////////////////////////////////////////////////////////////////////////////////// 
@@ -196,26 +185,16 @@ public class SMSManager extends BaseManager {
 	class GetContactMessagesTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSContactList(0, new IHttpFinishListener() {
-                @Override
-				public void onHttpRequestFinish(BaseResponse response) 
-                {               	
-                	String strErrcode = new String();
-                    int ret = response.getResultCode();
-                    if(ret == BaseResponse.RESPONSE_OK) {
-                    	strErrcode = response.getErrorCode();
-                    	if(strErrcode.length() == 0) {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSMSContactList(0,
+					response ->
+                {
+                    	if(response.isOk()) {
                     		SmsContactListResult result = response.getModelResult();
                     		m_contactMessages.bulidFromResult(result);
-                    	}else{
-                    		
                     	}
-                    }else{
-                    	//Log
-                    }
 
-        			sendBroadcast(response, MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET);
-                }
+//        			sendBroadcast(response, MessageUti.SMS_GET_SMS_CONTACT_LIST_ROLL_REQUSET);
+
             }));
         } 
 	}
@@ -230,24 +209,14 @@ public class SMSManager extends BaseManager {
 			public void onHttpRequestFinish(BaseResponse response) 
             {   
             	SmsContentMessagesModel model = new SmsContentMessagesModel();
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		SmsContentListResult result = response.getModelResult();
-                		model.buildFromResult(result);
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
+                if(response.isOk()) {
+                    SmsContentListResult result = response.getModelResult();
+                    model.buildFromResult(result);
                 }
  
-                Intent megIntent= new Intent(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET);
-                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
+                Intent megIntent= response.getIntent(null);
                 megIntent.putExtra(SMS_CONTENT_LIST_EXTRA, model);
-    			m_context.sendBroadcast(megIntent);
+//    			m_context.sendBroadcast(megIntent);
             }
         }));
     } 
@@ -265,25 +234,9 @@ public class SMSManager extends BaseManager {
 		if(temp != null)
 			nSMSId = temp;
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.DeleteSMS(EnumSMSDelFlag.antiBuild(delFlag),nContactId,nSMSId, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
-
-    			sendBroadcast(response, MessageUti.SMS_DELETE_SMS_REQUSET);
-            }
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.DeleteSMS(EnumSMSDelFlag.antiBuild(delFlag),nContactId,nSMSId,
+				 response ->             {
+//    			sendBroadcast(response, MessageUti.SMS_DELETE_SMS_REQUSET);
         }));
     } 
 	
@@ -305,16 +258,9 @@ public class SMSManager extends BaseManager {
 		String strNumbers = (String)data.getParamByKey("phone_number");
 		ArrayList<String> phoneNumberLst = getNumberFromString(strNumbers);
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.SendSMS(-1,strContent,phoneNumberLst, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-//            	int nSendId = 0;
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.SendSMS(-1,strContent,phoneNumberLst,
+				response ->  {
+                	if(response.isOk()) {
 //                		SendSmsResult sendSmsResult = response.getModelResult();
 //                		nSendId = sendSmsResult.SmsSendId;
 //                		
@@ -322,14 +268,9 @@ public class SMSManager extends BaseManager {
 //                		DataValue dataValue = new DataValue();
 //						dataValue.addParam("sms_send_id", nSendId);
 						getSmsSendResult(null);
-                	}else{
-                		
                 	}
-                }else{
-                	//Log
-                }
-     			sendBroadcast(response, MessageUti.SMS_SEND_SMS_REQUSET);
-            }
+
+//     			sendBroadcast(response, MessageUti.SMS_SEND_SMS_REQUSET);
         }));
     } 
 	
@@ -340,74 +281,44 @@ public class SMSManager extends BaseManager {
 		
 		//final int nSmsSendId = (Integer) data.getParamByKey("sms_send_id");
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSendSMSResult(new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.GetSendSMSResult(response -> {
             	int nSendStatus = 0;
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		SendStatusResult sendStatusResult = response.getModelResult();
-                		nSendStatus = sendStatusResult.SendStatus;
-                		SendStatus sendStatus = SendStatus.build(nSendStatus);
-                		if(sendStatus == SendStatus.None) {
-                			nSendStatus = 1;
-                			sendStatus = SendStatus.build(nSendStatus);
-                		}
-                		if(sendStatus != SendStatus.Fail && sendStatus != SendStatus.Success && 
-                				sendStatus != SendStatus.Fail_Memory_Full) {
-                			new Handler().postDelayed(new Runnable() {
-        						
-        						public void run() {
-        							// TODO Auto-generated method stub
-        							DataValue dataValue = new DataValue();
-        							getSmsSendResult(dataValue);
-        						}
-        					}, 1000);
-                		}
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
- 
-                Intent megIntent= new Intent(MessageUti.SMS_GET_SEND_STATUS_REQUSET);
-                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
+                	if(response.isOk()) {
+						SendStatusResult sendStatusResult = response.getModelResult();
+						nSendStatus = sendStatusResult.SendStatus;
+						SendStatus sendStatus = SendStatus.build(nSendStatus);
+						if (sendStatus == SendStatus.None) {
+							nSendStatus = 1;
+							sendStatus = SendStatus.build(nSendStatus);
+						}
+						if (sendStatus != SendStatus.Fail && sendStatus != SendStatus.Success &&
+								sendStatus != SendStatus.Fail_Memory_Full) {
+							new Handler().postDelayed(new Runnable() {
+
+								public void run() {
+									DataValue dataValue = new DataValue();
+									getSmsSendResult(dataValue);
+								}
+							}, 1000);
+						}
+					}
+
+                Intent megIntent= response.getIntent(null);
                 megIntent.putExtra(Const.SMS_SNED_STATUS, nSendStatus);
-    			m_context.sendBroadcast(megIntent);
-            }
+//    			m_context.sendBroadcast(megIntent);
         }));
     } 
 	
 	//SaveSMS ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void SaveSMS(DataValue data) {
 		int nSmsId = (Integer) data.getParamByKey("SMSId");//the index of SMS, if savenew SMS is -1, else other.
-		String strCotent =  (String)data.getParamByKey("Content");
-		String strNumber =  (String)data.getParamByKey("Number");
-		ArrayList<String> phoneNumberLst = getNumberFromString(strNumber);
+		String content =  (String)data.getParamByKey("Content");
+		String number =  (String)data.getParamByKey("Number");
+		ArrayList<String> phoneNumberLst = getNumberFromString(number);
 		
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.SaveSMS(nSmsId,strCotent,phoneNumberLst, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	String strErrcode = new String();
-                int ret = response.getResultCode();
-                if(ret == BaseResponse.RESPONSE_OK) {
-                	strErrcode = response.getErrorCode();
-                	if(strErrcode.length() == 0) {
-                		
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
-                }
-    			sendBroadcast(response, MessageUti.SMS_SAVE_SMS_REQUSET);
-            }
-        }));
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpSms.SaveSMS(nSmsId,content,phoneNumberLst,
+				response ->  {
+//    			sendBroadcast(response, MessageUti.SMS_SAVE_SMS_REQUSET);
+            }));
     } 	
 }

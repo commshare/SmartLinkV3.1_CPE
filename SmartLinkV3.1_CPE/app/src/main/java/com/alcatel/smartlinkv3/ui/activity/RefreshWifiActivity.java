@@ -81,6 +81,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	    		Log.d("refreshsd", "showActivity");
 	    	}else if(intent.getAction().equals(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)) {
 	    		showUI();
+				showActivity();
 	    	}
         }  	
 	}
@@ -118,11 +119,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	}
 
 	private void wifiSetting() {
-		try {
-    		this.unregisterReceiver(m_msgReceiver);
-    	}catch(Exception e) {
-    		
-    	}
+		this.unregisterReceiver(m_msgReceiver);
 		
 		Intent intent;
 		if (android.os.Build.VERSION.SDK_INT > 10) {
@@ -156,11 +153,8 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		try {
-    		this.unregisterReceiver(m_msgReceiver);
-    	}catch(Exception e) {
-    		
-    	}
+
+    	this.unregisterReceiver(m_msgReceiver);
 	}
 
     private void showUpgradeDialog() {

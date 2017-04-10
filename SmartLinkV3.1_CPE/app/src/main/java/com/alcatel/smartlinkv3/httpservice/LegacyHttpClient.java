@@ -208,18 +208,19 @@ public class LegacyHttpClient {
 			.getApplicationContext().getMainLooper()) {
 		@Override
 		public void handleMessage(Message msg) {
-			if (isStop() == false) {
+			if (!isStop()) {
 				switch (msg.what) {
 				case LegacyHttpClient.FINISH_HTTP_REQUEST:
-					BaseResponse respose = getResponse();
+					BaseResponse response = getResponse();
 
-					if (respose != null) {
-						respose.invokeFinishCallback();
+					if (response != null) {
+						response.invokeFinishCallback();
 
-						if ((respose.getResultCode() == BaseResponse.RESPONSE_CONNECTION_ERROR)) {
+						if ((response.getResultCode() == BaseResponse.RESPONSE_CONNECTION_ERROR)) {
 							m_nDisconnectNum++;
 						} else {
 							m_nDisconnectNum = 0;
+							response.sendBroadcast(SmartLinkV3App.getInstance().getApplicationContext());
 						}
 						if (m_nDisconnectNum >= DISCONNECT_NUMBER) {
 							m_nDisconnectNum = DISCONNECT_NUMBER;

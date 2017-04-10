@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.sim;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -23,7 +24,7 @@ public class HttpAutoEnterPinState {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetAutoValidatePinStateResponse(m_finsishCallback);
-            return new DataResponse<>(AutoEnterPinStateResult.class, m_finsishCallback);
+            return new DataResponse<>(AutoEnterPinStateResult.class, MessageUti.SIM_GET_AUTO_ENTER_PIN_STATE_REQUEST, m_finsishCallback);
         }
         
     }
@@ -37,6 +38,7 @@ public class HttpAutoEnterPinState {
         public SetAutoValidatePinState(int nState,String strPin,IHttpFinishListener callback)
         {
         	super("SIM", "SetAutoValidatePinState", "2.7", callback);
+			setBroadcastAction(MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
         	m_nState = nState;
         	m_strPin = strPin;
         }
@@ -67,6 +69,7 @@ public class HttpAutoEnterPinState {
         public ChangePinState(int nState,String strPin,IHttpFinishListener callback)
         {
         	super("SIM", "ChangePinState", "2.5", callback);
+			setBroadcastAction(MessageUti.SIM_CHANGE_PIN_STATE_REQUEST);
         	m_nState = nState;
         	m_strPin = strPin;
         }

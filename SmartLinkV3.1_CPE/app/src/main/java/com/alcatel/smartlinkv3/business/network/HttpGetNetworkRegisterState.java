@@ -16,7 +16,7 @@ public class HttpGetNetworkRegisterState {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new NetworkRegisterStateResponse(m_finsishCallback);
-			return new DataResponse<>(NetworkRegisterStateResult.class, m_finsishCallback);
+			return new DataResponse<>(NetworkRegisterStateResult.class, null, m_finsishCallback);
 		}
 	}
 	

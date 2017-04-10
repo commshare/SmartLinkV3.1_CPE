@@ -3,7 +3,7 @@ package com.alcatel.smartlinkv3.business.wlan;
 
 import android.util.Log;
 
-import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -22,6 +22,7 @@ public class HttpWlanSetting {
 		
 		public GetWlanSetting(IHttpFinishListener callback) {
 			super("Wlan", "GetWlanSettings", "5.4", callback);
+			setBroadcastAction(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
 		}
 
 		@Override
@@ -136,6 +137,7 @@ public class HttpWlanSetting {
 
 		public SetWlanSetting(WlanSettingResult result, IHttpFinishListener callback) {
 			super("Wlan", "SetWlanSettings", "5.5", callback);
+			setBroadcastAction(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
 			m_result = result;
 		}
 		
@@ -228,10 +230,11 @@ public class HttpWlanSetting {
 	
 	/*Set WPS Pin*/
 	public static class SetWPSPin extends BaseRequest{
-		public String m_strPin = new String();
+		public String m_strPin = "";
 
 		public SetWPSPin(String strPin,IHttpFinishListener callback) {
 			super("Wlan", "SetWPSPin", "5.6", callback);
+			setBroadcastAction(MessageUti.WLAN_SET_WPS_PIN_REQUSET);
 			m_strPin = strPin;
 		}
 
@@ -248,6 +251,7 @@ public class HttpWlanSetting {
 	public static class SetWPSPbc extends BaseRequest{
 		public SetWPSPbc(IHttpFinishListener callback) {
 			super("Wlan", "SetWPSPbc", "5.7", callback);
+			setBroadcastAction(MessageUti.WLAN_SET_WPS_PBC_REQUSET);
 		}
 	}
 
@@ -262,7 +266,7 @@ public class HttpWlanSetting {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new getWlanSupportModeResponse(m_finsishCallback);
-			return new DataResponse<>(WlanSupportMode.class, m_finsishCallback);
+			return new DataResponse<>(WlanSupportModeType.class, MessageUti.WLAN_SET_WPS_PBC_REQUSET, m_finsishCallback);
 		}
 	}
 

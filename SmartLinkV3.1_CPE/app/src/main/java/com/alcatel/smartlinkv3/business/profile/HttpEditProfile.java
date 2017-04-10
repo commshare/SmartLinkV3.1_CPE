@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.profile;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
@@ -20,6 +21,7 @@ public class HttpEditProfile {
 		
 		public EditProfile(int profileID, String dialNumber, String profileName, String apn, String userName, String passWord, int authType, IHttpFinishListener callback) {
 			super("Profile", "EditProfile", "15.3",  callback);
+			setBroadcastAction(MessageUti.PROFILE_EDIT_PROFILE_REQUEST);
 			m_intProfileID = profileID;
 			m_strProfileName = profileName;
 			m_strAPN = apn;

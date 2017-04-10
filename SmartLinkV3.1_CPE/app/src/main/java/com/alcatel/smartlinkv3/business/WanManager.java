@@ -15,7 +15,6 @@ import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient;
-import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -95,49 +94,28 @@ public class WanManager extends BaseManager {
 	class GetConnectStatusTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState(new IHttpFinishListener() {
-                @Override
-				public void onHttpRequestFinish(BaseResponse response) 
-                {               	
-                	String errorCode = new String();
-                    int ret = response.getResultCode();
-                    if(ret == BaseResponse.RESPONSE_OK) {
-                    	errorCode = response.getErrorCode();
-                    	if(errorCode.length() == 0) {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.GetConnectionState(response -> {
+                    	if(response.isOk()) {
                     		ConnectStatusResult connectStatusResult = response.getModelResult();
                     		m_connectStatus.setValue(connectStatusResult);
-                    	}else{
-                    		
                     	}
-                    }else{
-                    	//Log
-                    }
-                    
-                    sendBroadcast(response, MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET);
-                }
+//                    sendBroadcast(response, MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET);
             }));
         } 
 	}
 	
 	//Connect  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void connect() {
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.Connect(new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {
-    			sendBroadcast(response, MessageUti.WAN_CONNECT_REQUSET);
-            }
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.Connect(response -> {
+//    			sendBroadcast(response, MessageUti.WAN_CONNECT_REQUSET);
         }));
     } 
 	
 	//DisConnect  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void disconnect(DataValue data) {
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.DisConnect(new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {
-                sendBroadcast(response, MessageUti.WAN_DISCONNECT_REQUSET);
-            }
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.DisConnect(response -> {
+//                sendBroadcast(response, MessageUti.WAN_DISCONNECT_REQUSET);
+
         }));
     } 
 	
@@ -156,12 +134,10 @@ public class WanManager extends BaseManager {
 	class GetConnectionSettingsTask extends TimerTask{ 
         @Override
 		public void run() { 
-        	LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.GetConnectionSettings(new IHttpFinishListener() {
-                @Override
-				public void onHttpRequestFinish(BaseResponse response) 
-                {   
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.GetConnectionSettings(
+        			response -> {
                 	boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-        			if(bCPEWifiConnected == false) {
+        			if(!bCPEWifiConnected) {
         				return;
         			}
                     	if(response.isOk()) {
@@ -170,8 +146,7 @@ public class WanManager extends BaseManager {
                     		pre.clone(m_connectionSettings);
                     		m_connectionSettings.setValue(connectionSettingResult);
                     	}
-                    	sendBroadcast(response, MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET);
-                    }
+//                    	sendBroadcast(response, MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET);
             }));
         } 
 	}
@@ -185,16 +160,13 @@ public class WanManager extends BaseManager {
 		nConnectionSettings.clone(m_connectionSettings);
 		nConnectionSettings.RoamingConnect = ENUM.OVER_ROAMING_STATE.antiBuild(nRoamingConnectFlag);
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.SetConnectionSettings(nConnectionSettings, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpConnectOperation.SetConnectionSettings(nConnectionSettings,
+				 response -> {
 				if(response.isOk()) {
 					m_connectionSettings.setValue(nConnectionSettings);
 				}
  
-                sendBroadcast(response, MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET);
-            }
+//                sendBroadcast(response, MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET);
         }));
     }  
 }

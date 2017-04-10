@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.user;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -45,6 +46,7 @@ public class HttpUser {
         public ForceLogin(String strUserName,String strPsw,IHttpFinishListener callback)
         {
         	super("User", "ForceLogin", "1.6", callback);
+			setBroadcastAction(MessageUti.USER_FORCE_LOGIN_REQUEST);
         	m_strUserName = strUserName;
         	m_strPsw = strPsw;
         }
@@ -67,6 +69,7 @@ public class HttpUser {
         public Logout(IHttpFinishListener callback)
         {
         	super("User", "Logout", "1.2", callback);
+			setBroadcastAction(MessageUti.USER_LOGOUT_REQUEST);
         }
     }
 
@@ -82,7 +85,7 @@ public class HttpUser {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetLoginStateResponse(m_finsishCallback);
-			return new DataResponse<>(LoginStateResult.class, m_finsishCallback);
+			return new DataResponse<>(LoginStateResult.class, null, m_finsishCallback);
         }
         
     }
@@ -95,6 +98,7 @@ public class HttpUser {
         public HeartBeat(IHttpFinishListener callback)
         {
         	super("User", "HeartBeat", "1.5", callback);
+			setBroadcastAction(MessageUti.USER_HEARTBEAT_REQUEST);
         }
     }
 
@@ -108,6 +112,7 @@ public class HttpUser {
 
 		public ChangePassword(String strUserName,String strCurrPsw,String strNewPsw,IHttpFinishListener callback) {
 			super("User", "ChangePassword", "1.4", callback);
+			setBroadcastAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
 			m_strUserName = strUserName;
 			m_strCurrPsw = strCurrPsw;
 			m_strNewPsw = strNewPsw;

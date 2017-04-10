@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.device;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -21,7 +22,7 @@ public class HttpDevice {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetConnectedDeviceListResponse(m_finsishCallback);
-			return new DataResponse<>(ConnectedDeviceList.class, m_finsishCallback);
+			return new DataResponse<>(ConnectedDeviceList.class, MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST, m_finsishCallback);
 		}
 	}
 
@@ -35,7 +36,7 @@ public class HttpDevice {
 		@Override
 		public BaseResponse createResponseObject() {
 //			return new GetBlockDeviceListResponse(m_finsishCallback);
-			return new DataResponse<>(BlockDeviceList.class, m_finsishCallback);
+			return new DataResponse<>(BlockDeviceList.class, MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST, m_finsishCallback);
 		}
 	}
 
@@ -47,6 +48,7 @@ public class HttpDevice {
 
 		public SetConnectedDeviceBlock(String strName, String strMac, IHttpFinishListener callback) {
 			super("ConnectionDevices", "SetConnectedDeviceBlock", "12.3", callback);
+			setBroadcastAction(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK);
 			m_strName = strName;
 			m_strMac = strMac;
 		}
@@ -69,6 +71,7 @@ public class HttpDevice {
 
 		public SetDeviceUnlock(String strName, String strMac, IHttpFinishListener callback) {
 			super("ConnectionDevices", "SetDeviceUnlock", "12.4", callback);
+			setBroadcastAction(MessageUti.DEVICE_SET_DEVICE_UNLOCK);
 			m_strName = strName;
 			m_strMac = strMac;
 		}
@@ -91,6 +94,7 @@ public class HttpDevice {
 
 		public SetDeviceName(String strName, String strMac, int nType, IHttpFinishListener callback) {
 			super("ConnectionDevices", "SetDeviceName", "12.5", callback);
+			setBroadcastAction(MessageUti.DEVICE_SET_DEVICE_NAME);
 			m_strName = strName;
 			m_strMac = strMac;
 			m_nType = nType;			

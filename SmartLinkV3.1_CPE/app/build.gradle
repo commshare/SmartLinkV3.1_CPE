@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.fernandocejas.frodo'
 
 android {
     useLibrary 'org.apache.http.legacy'
@@ -23,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId "com.alcatel.smartlinkv3"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 25
         versionName '3.2.7'
         versionCode 19

@@ -18,6 +18,7 @@ public abstract class BaseRequest
 	protected String m_strId;
 	protected String method;
 	protected String module;
+	protected String broadcastAction = null;
 	
 	public BaseRequest(String module, String method, String id, IHttpFinishListener callback)
 	{
@@ -27,8 +28,15 @@ public abstract class BaseRequest
 		m_finsishCallback = callback;
 //	    m_url = "";
 	}
-	
-//
+
+	public String getBroadcastAction() {
+		return broadcastAction;
+	}
+
+	public void setBroadcastAction(String broadcastAction) {
+		this.broadcastAction = broadcastAction;
+	}
+	//
 //	public String getHttpUrl()
 //	{
 //	    return m_url;
@@ -77,6 +85,6 @@ public abstract class BaseRequest
 
 	public BaseResponse createResponseObject()
 	{
-		return new BaseResponse(m_finsishCallback);
+		return new BaseResponse(getBroadcastAction(), m_finsishCallback);
 	}
 }

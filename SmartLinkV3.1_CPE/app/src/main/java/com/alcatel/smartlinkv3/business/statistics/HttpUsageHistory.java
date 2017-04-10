@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.statistics;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -23,7 +24,9 @@ public class HttpUsageHistory {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetUsageRecordResponse(m_finsishCallback);
-            return new DataResponse<>(UsageRecordResult.class, m_finsishCallback);
+            return new DataResponse<>(UsageRecordResult.class,
+                    MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET,
+                    m_finsishCallback);
         }
     }
 	
@@ -35,6 +38,7 @@ public class HttpUsageHistory {
         public SetUsageRecordClear(String Cleartime, IHttpFinishListener callback)
         {
         	super("Statistics", "SetUsageRecordClear", "7.2", callback);
+            setBroadcastAction(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET);
         	m_strUsageCleartime = Cleartime;
         }
 

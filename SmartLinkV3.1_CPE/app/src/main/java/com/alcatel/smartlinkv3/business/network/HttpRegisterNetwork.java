@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.network;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
@@ -13,6 +14,7 @@ public class HttpRegisterNetwork {
 		private int NetworkID;
 		public RegisterNetwork(int networkID, IHttpFinishListener callback) {
 			super("Network", "RegisterNetwork", "4.4",  callback);
+			setBroadcastAction(MessageUti.NETWORK_REGESTER_NETWORK_REQUEST);
 			NetworkID = networkID;
 		}
 

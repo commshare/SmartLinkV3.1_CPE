@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.business.statistics;
 
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseRequest;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
@@ -23,7 +24,7 @@ public class HttpUsageSettings {
         public BaseResponse createResponseObject() 
         {            
 //            return new GetUsageSettingsResponse(m_finsishCallback);
-            return new DataResponse<>(UsageSettingsResult.class, m_finsishCallback);
+            return new DataResponse<>(UsageSettingsResult.class, MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET, m_finsishCallback);
         }
     }
 

@@ -225,7 +225,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			inquireDlg.m_confirmBtn.setText(R.string.ok);
 			inquireDlg.showDialog(new OnInquireApply() 
 			{
-
 				@Override
 				public void onInquireApply() 
 				{

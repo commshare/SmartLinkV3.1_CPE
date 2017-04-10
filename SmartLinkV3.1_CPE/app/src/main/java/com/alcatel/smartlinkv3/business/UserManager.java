@@ -109,58 +109,35 @@ public class UserManager extends BaseManager {
 		String strUserName = (String) data.getParamByKey("user_name");
     	String strPsw = (String) data.getParamByKey("password");
     	
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.ForceLogin(strUserName, strPsw, new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {
-                if(response.isValid()) {
-                	if(response.isNoError()) {
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.ForceLogin(strUserName, strPsw,
+				response -> {
+                if(response.isOk()) {
                 		startUpdateLoginTimeTask();
                 		m_loginStatus = UserLoginStatus.login;
-                		
-                	}else{
-                		if(null != m_updateLoginTimeTask) {
-                			m_updateLoginTimeTask.cancel();
-                			m_updateLoginTimeTask = null;
-                		}
-                	}
-                }else{
-            		if(null != m_updateLoginTimeTask) {
+                }else if(null != m_updateLoginTimeTask) {
             			m_updateLoginTimeTask.cancel();
             			m_updateLoginTimeTask = null;
-            		}
                 }
  
-                Intent megIntent= new Intent(MessageUti.USER_FORCE_LOGIN_REQUEST);
-                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
-    			m_context.sendBroadcast(megIntent);
-            }
+//                Intent megIntent= new Intent(MessageUti.USER_FORCE_LOGIN_REQUEST);
+//                megIntent.putExtra(MessageUti.HTTP_RESPONSE, response);
+//    			m_context.sendBroadcast(megIntent);
         }));
     } 
 		
 //Logout  Request ////////////////////////////////////////////////////////////////////////////////////////// 
 	public void logout(DataValue data) {
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.Logout(new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.Logout(response ->
             {              	
         		if(null != m_updateLoginTimeTask) {
         			m_updateLoginTimeTask.cancel();
         			m_updateLoginTimeTask = null;
         		}
-                if(response.isValid()) {
-                	if(response.isNoError()) {
-                		m_loginStatus = UserLoginStatus.Logout;
-                	
-                	}else{
-                		
-                	}
-                }else{
-                	//Log
+                if(response.isOk()) {
+					m_loginStatus = UserLoginStatus.Logout;
                 }
 
-				sendBroadcast(response, MessageUti.USER_LOGOUT_REQUEST);
-            }
+//				sendBroadcast(response, MessageUti.USER_LOGOUT_REQUEST);
         }));
     } 
 	
@@ -169,7 +146,7 @@ public class UserManager extends BaseManager {
         @Override
 		public void run() { 
         	getLoginState();  
-        };        
+        }
 	}
 	
 
@@ -183,22 +160,13 @@ public class UserManager extends BaseManager {
 	
 //GetLoginState  Request ////////////////////////////////////////////////////////////////////////////////////////// 	
 	public void getLoginState() {
-		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.GetLoginState(new IHttpFinishListener() {
-            @Override
-			public void onHttpRequestFinish(BaseResponse response) 
-            {   
-            	LoginStateResult loginStateResult;
-                if(response.isValid()) {
-                	if(response.isNoError()) {
-                		loginStateResult = response.getModelResult();
-                		m_loginStatus = UserLoginStatus.build(loginStateResult.getState());
-                	}else{
-                		m_loginStatus = UserLoginStatus.Logout;
-                	}
+		LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.GetLoginState(response -> {
+                if(response.isOk()) {
+					LoginStateResult loginStateResult = response.getModelResult();
+                	m_loginStatus = UserLoginStatus.build(loginStateResult.getState());
                 }else{
                 	m_loginStatus = UserLoginStatus.Logout;
-                }             
-            }
+                }
         }));
     }
 	
@@ -206,10 +174,7 @@ public class UserManager extends BaseManager {
         @Override
 		public void run() { 
         	
-        	LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.HeartBeat(new IHttpFinishListener() {
-                @Override
-				public void onHttpRequestFinish(BaseResponse response) 
-                {
+        	LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.HeartBeat(response -> {
                     if(response.isValid()) {
                     	if(response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
                     		if(null != m_updateLoginTimeTask) {
@@ -217,18 +182,13 @@ public class UserManager extends BaseManager {
                     			m_updateLoginTimeTask = null;
                     		}
                     		m_loginStatus = UserLoginStatus.Logout;
-                    	}else{
-                    		
                     	}
-                    }
-                    else{
-                		if(null != m_getLoginStateTask) {
+                    } else if(null != m_getLoginStateTask) {
                 			m_getLoginStateTask.cancel();
                 			m_getLoginStateTask = null;
-                		}
+
                     }
-					sendBroadcast(response, MessageUti.USER_HEARTBEAT_REQUEST);
-                }               	
+//					sendBroadcast(response, MessageUti.USER_HEARTBEAT_REQUEST);
             }));
         	}        
 	}	
@@ -247,23 +207,9 @@ public class UserManager extends BaseManager {
     	String strCurrPsw = (String) data.getParamByKey("current_password");
     	String strNewPsw = (String) data.getParamByKey("new_password");
     	
-    	LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.ChangePassword(strUserName, strCurrPsw, strNewPsw, new IHttpFinishListener(){
-
-			@Override
-			public void onHttpRequestFinish(BaseResponse response) {
-				// TODO Auto-generated method stub
-				String strErrcode = new String();
-                int ret = response.getResultCode();
-                
-                if(response.isValid()) {
-                	strErrcode = response.getErrorCode();
-                }
-                else{
-                	strErrcode = ErrorCode.UNKNOWN_ERROR;
-                }
-
-    			sendBroadcast(response, MessageUti.USER_CHANGE_PASSWORD_REQUEST);
-			}
+    	LegacyHttpClient.getInstance().sendPostRequest(new HttpUser.ChangePassword(strUserName, strCurrPsw, strNewPsw,
+				response -> {
+//    			sendBroadcast(response, MessageUti.USER_CHANGE_PASSWORD_REQUEST);
     	}));
 	}
 }
