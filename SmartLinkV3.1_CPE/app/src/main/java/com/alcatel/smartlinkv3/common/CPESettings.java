@@ -112,7 +112,7 @@ public class CPESettings {
         saveSettings();
     }
 
-    //login password
+    //LOGIN password
     public String getLoginPassword() {
         return m_password;
     }
@@ -122,7 +122,7 @@ public class CPESettings {
         saveLoginSettings();
     }
 
-    //login username
+    //LOGIN username
     public String getLoginUsername() {
         return m_username;
     }
@@ -132,7 +132,7 @@ public class CPESettings {
         saveLoginSettings();
     }
 
-    //login status
+    //LOGIN status
     //	public  void setAutoLoginFlag(boolean blAutoLogin){
     //		m_blAutoLogin = blAutoLogin;
     //		saveLoginSettings();

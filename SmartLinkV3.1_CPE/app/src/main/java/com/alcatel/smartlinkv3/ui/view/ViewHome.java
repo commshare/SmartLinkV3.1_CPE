@@ -24,10 +24,10 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.power.BatteryInfo;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
@@ -53,7 +53,6 @@ import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 
@@ -463,14 +462,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 						{
 							if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 							{
-								m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getOtherUserLoginString());
-							}else
-							{
-								ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
-										new OnClickBottonConfirm()
-										{
-											public void onConfirm()
-											{
+								m_loginDialog.showOtherLogin();
+							} else {
+								ForceLoginSelectDialog.getInstance(m_context).showDialog(() ->{
 												m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
 													public void onLoginSuccess()
 													{
@@ -498,17 +492,17 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 																	});
 														}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
 														{
-															m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
+															m_loginDialog.showTimeout();
 														}
 													}
 												});
 											}
-										});
+										);
 							}
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT))
 						{
-							m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title),	m_loginDialog.getLoginTimeUsedOutString());
+							m_loginDialog.showTimeout();
 						}
 						else if(error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD))
 						{
@@ -536,7 +530,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 					}
 				});
 			}
-			else if (status == UserLoginStatus.login)
+			else if (status == UserLoginStatus.LOGIN)
 			{
 				connect();
 			}

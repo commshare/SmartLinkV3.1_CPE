@@ -157,7 +157,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
     boolean m_blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
     UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
-    if (m_blWifiConnected && status == UserLoginStatus.login) {
+    if (m_blWifiConnected && status == UserLoginStatus.LOGIN) {
       Intent localIntent = new Intent(MessageUti.WIDGET_GET_INTERNET_SWITCH);
       pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent,
           PendingIntent.FLAG_CANCEL_CURRENT);
@@ -362,7 +362,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
     boolean blCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
     UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
-    if (blCPEWifiConnected && status == UserLoginStatus.login) {
+    if (blCPEWifiConnected && status == UserLoginStatus.LOGIN) {
       Intent localIntent = new Intent(MessageUti.WIDGET_GET_INTERNET_SWITCH);
       pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent,
           PendingIntent.FLAG_CANCEL_CURRENT);

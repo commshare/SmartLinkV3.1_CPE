@@ -260,6 +260,9 @@
                 <action android:name="com.alcatel.smartlinkv3.allshare.reset_search_device"/>
             </intent-filter>
         </service>
+        <provider
+            android:authorities="com.alcatel.smartlinkv3.sms"
+            android:name=".provider.MediaProvider"></provider>
 
         <receiver
             android:name=".common.BootReceiver"

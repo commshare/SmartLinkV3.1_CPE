@@ -1,11 +1,5 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
-import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
-import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
-import com.alcatel.smartlinkv3.ui.view.ViewWifiKey;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +7,12 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
+import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
+import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
+import com.alcatel.smartlinkv3.ui.view.ViewWifiKey;
 
 public class FragmentWifiSettingTypeSelection extends android.app.Fragment{
 
@@ -44,9 +44,9 @@ public class FragmentWifiSettingTypeSelection extends android.app.Fragment{
 	}
 	
 	private void initUi(View view){
-		if (MainActivity.getWifiKeyView() != null){
-			viewWifiKey = MainActivity.getWifiKeyView();
-		}
+//		if (MainActivity.getWifiKeyView() != null){
+			viewWifiKey = new ViewWifiKey(view.getContext());// MainActivity.getWifiKeyView();
+//		}
 		m_isFirstIn = true;
 		m_wifi_type_selection = (RadioGroup)(view.findViewById(R.id.setting_network_wifi_type_selection));
 		m_wifi_type_wpa_type = (RadioGroup)(view.findViewById(R.id.setting_network_wifi_wpa_type));

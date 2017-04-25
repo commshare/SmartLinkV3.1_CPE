@@ -14,6 +14,7 @@ import com.alcatel.smartlinkv3.httpservice.RestHttpClient;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.alcatel.smartlinkv3.common.Const.ACTION_NETWORK_DISCONNECT;
 
@@ -22,6 +23,7 @@ public abstract class BaseManager {
 	protected boolean m_bStopBusiness = false;
 	protected Context m_context;
 	protected ManagerBroadcastReceiver m_msgReceiver;
+	private CompositeSubscription msubscription;
 	
 	public BaseManager(Context context) {
     	m_context = context;

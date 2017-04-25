@@ -24,6 +24,7 @@ import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
 
 public class RefreshWifiActivity extends Activity implements OnClickListener {
+	private final static String TAG = "RefreshWifiActivity";
 	private ImageView m_connectImage = null;
 	private TextView m_connectTitle = null;
 	private TextView m_connectTip = null;
@@ -78,7 +79,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 	    	if(intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 	    		showUI();
 	    		showActivity();
-	    		Log.d("refreshsd", "showActivity");
+	    		Log.d(TAG, "showActivity");
 	    	}else if(intent.getAction().equals(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)) {
 	    		showUI();
 				showActivity();
@@ -110,7 +111,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
             clazz = ConnectTypeSelectActivity.class;
 		} else {	
 		  clazz = MainActivity.class;				
-			Log.d("refreshsd", "startMainActivity");
+			Log.d(TAG, "startMainActivity");
 		}
 			 
 	    Intent it = new Intent(this, clazz);
@@ -146,7 +147,6 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		
 		showUI();
 
-        dismissTipsDialog();
         showUpgradeDialog();
 	}
 	
@@ -155,6 +155,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 		super.onPause();
 
     	this.unregisterReceiver(m_msgReceiver);
+		dismissTipsDialog();
 	}
 
     private void showUpgradeDialog() {

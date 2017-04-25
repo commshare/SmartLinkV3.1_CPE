@@ -702,7 +702,7 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
 					if (ENUM.SecurityMode.Disable != ENUM.SecurityMode.build(m_nSecurityMode)) {
 						boolean blCheckPsd = checkPassword(m_strKey);
 						if (!blCheckPsd) {
-							m_err_dialog.setCancelCallback(new CommonErrorInfoDialog.OnClickConfirmBotton(){
+							m_err_dialog.setCancelCallback(new CommonErrorInfoDialog.OnClickConfirmButton(){
 
 								@Override
 								public void onConfirm() {

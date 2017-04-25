@@ -49,7 +49,7 @@ public class SmartLinkV3App extends MultiDexApplication {
 		return mControlPoint;
 	}
 
-	//first  login password
+	//first  LOGIN password
 	public String getLoginPassword() {
 		return mapp_password;
 	}
@@ -58,7 +58,7 @@ public class SmartLinkV3App extends MultiDexApplication {
 		mapp_password = password;
 	}
 //	
-	//first login username
+	//first LOGIN username
 //	
 	public String getLoginUsername() {
 		return mapp_username;

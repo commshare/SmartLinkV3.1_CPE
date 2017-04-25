@@ -22,7 +22,7 @@ public class AutoForceLoginProgressDialog
 	private static OnAutoForceLoginFinishedListener s_callback;	
 	private String loginCheckDialogTitle;
 	private String loginCheckDialogContent;
-	private AuthenficationBroadcastReviever m_auReceiver;
+	private AuthenticationBroadcastReceiver m_auReceiver;
 	private static boolean m_isUserFirstLogin =false;
 	
 	public AutoForceLoginProgressDialog(Context context) 
@@ -31,12 +31,8 @@ public class AutoForceLoginProgressDialog
 		loginCheckDialogTitle = m_context.getString(R.string.login_check_dialog_title);
 		loginCheckDialogContent = m_context	.getString(R.string.login_check_dialog_content) + "...";
 		
-		m_auReceiver = new AuthenficationBroadcastReviever();
-		
-		m_context.registerReceiver(m_auReceiver, new IntentFilter(
-				MessageUti.USER_FORCE_LOGIN_REQUEST));
-		m_context.registerReceiver(m_auReceiver, new IntentFilter(
-				MessageUti.CPE_WIFI_CONNECT_CHANGE));
+		m_auReceiver = new AuthenticationBroadcastReceiver();
+
 	}
 	public void setCallback(OnAutoForceLoginFinishedListener callback){
 		s_callback = callback;	
@@ -66,7 +62,11 @@ public class AutoForceLoginProgressDialog
 		
 		if(m_dlgProgress != null && m_dlgProgress.isShowing())
 			return;
-		
+
+		m_context.registerReceiver(m_auReceiver, new IntentFilter(
+				MessageUti.USER_FORCE_LOGIN_REQUEST));
+		m_context.registerReceiver(m_auReceiver, new IntentFilter(
+				MessageUti.CPE_WIFI_CONNECT_CHANGE));
 			
 		m_dlgProgress = ProgressDialog.show(m_context, loginCheckDialogTitle, loginCheckDialogContent, true, false);
 		m_dlgProgress.setCancelable(true);
@@ -89,7 +89,7 @@ public class AutoForceLoginProgressDialog
 		}
 	}
 	
-	private class AuthenficationBroadcastReviever extends BroadcastReceiver 
+	private class AuthenticationBroadcastReceiver extends BroadcastReceiver
 	{
 		@Override
 		public void onReceive(Context context, Intent intent)

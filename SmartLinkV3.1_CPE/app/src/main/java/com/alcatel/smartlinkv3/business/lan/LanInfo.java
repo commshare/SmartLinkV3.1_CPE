@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.business.lan;
 
 import com.alcatel.smartlinkv3.business.BaseResult;
 
+//WLAN connect information
 public class LanInfo extends BaseResult{
 
 	private String IPv4IPAddress="";//IPv4 IP address, Gateway

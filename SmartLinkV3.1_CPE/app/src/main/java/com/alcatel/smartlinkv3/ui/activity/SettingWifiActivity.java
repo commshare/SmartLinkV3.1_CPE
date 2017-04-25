@@ -37,7 +37,7 @@ import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmButton;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
@@ -689,7 +689,7 @@ implements OnClickListener{
 				if (SecurityMode.Disable != SecurityMode.build(m_nSecurityMode)) {
 					boolean blCheckPsd = checkPassword(m_strKey);
 					if (!blCheckPsd) {
-						m_err_dialog.setCancelCallback(new OnClickConfirmBotton(){
+						m_err_dialog.setCancelCallback(new OnClickConfirmButton(){
 
 							@Override
 							public void onConfirm() {

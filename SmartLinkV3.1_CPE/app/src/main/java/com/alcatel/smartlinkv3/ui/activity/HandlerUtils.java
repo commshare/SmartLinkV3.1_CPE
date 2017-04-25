@@ -68,7 +68,7 @@ public class HandlerUtils {
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 		{
-			if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
+			if (m_loginStatus != null && m_loginStatus == UserLoginStatus.LOGIN) {
 				BusinessManager.getInstance().sendRequestMessage(
 						MessageUti.USER_LOGOUT_REQUEST, null);
 			}

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -43,7 +44,7 @@ import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 public class ConnectTypeSelectActivity extends Activity implements View.OnClickListener {
-
+    private static final String TAG = "ConnectTypeSelectActivity";
     private   ImageView         mHeaderBackIv;
     private   TextView          mHeaderSkipTv;
     private   BusinessManager   mBusinessMgr;
@@ -51,15 +52,15 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     protected BroadcastReceiver mReceiver;
     private   TextView          mSimCardTv;
     private   TextView          mWanPortTv;
-    private   long              mkeyTime; //点击2次返回 键的时间
+    private   long              mKeyTime; //点击2次返回 键的时间
 //    private   ImageView         mSimCardPic;
 //    private   ImageView         mWanProtPic;
 
-    private CommonErrorInfoDialog        mConfirmDialog         = null;
-    private AutoForceLoginProgressDialog m_ForceloginDlg        = null;
-    private AutoLoginProgressDialog      mAutoLoginDialog       = null;
+    private CommonErrorInfoDialog        mConfirmDialog  = null;
+    private AutoForceLoginProgressDialog mForceLoginDlg = null;
+    private AutoLoginProgressDialog      mAutoLoginDialog= null;
     private ForceLoginSelectDialog       forceLoginSelectDialog = null;
-    private LoginDialog                  mLoginDialog           = null;
+    private LoginDialog                  mLoginDialog    = null;
 
     private RelativeLayout     mHandlePinContainer;
     private LinearLayout       mNormalContainer;
@@ -77,7 +78,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     private RelativeLayout mWaitingContainer;
     private RelativeLayout mPinSuccessContainer;
     private RelativeLayout mPinFailContainer;
-    private Button         mPinTryAaginBtn;
+    private Button         mPinTryAgainBtn;
     private TextView       mPinFailToHome;
 
     private Handler        mHandler;
@@ -132,8 +133,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mPinSuccessContainer = (RelativeLayout) findViewById(R.id.pin_unlock_success_container);
 
         mPinFailContainer = (RelativeLayout) findViewById(R.id.pin_unlock_fail_container);
-        mPinTryAaginBtn = (Button) findViewById(R.id.pin_unlock_try_again);
-        mPinTryAaginBtn.setOnClickListener(this);
+        mPinTryAgainBtn = (Button) findViewById(R.id.pin_unlock_try_again);
+        mPinTryAgainBtn.setOnClickListener(this);
         mPinFailToHome = (TextView) findViewById(R.id.pin_unlock_fail_to_home);
         mPinFailToHome.setOnClickListener(this);
     }
@@ -146,22 +147,11 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
         mReceiver = new QSBroadcastReceiver();
 
-        SimStatusModel simStatus = mBusinessMgr.getSimStatus();
-        if (simStatus.m_SIMState == ENUM.SIMState.NoSim || simStatus.m_SIMState == ENUM.SIMState.Unknown) {
-            showNoSimCard();
-        } else {
-            showHaveSimCard();
-        }
-
-        WanConnectStatusModel wanModel = mBusinessMgr.getWanConnectStatus();
-        if (wanModel.isConnected()) {
-            showHaveWanPort();
-        } else {
-            showNoWanPort();
-        }
+        showSimCard(mBusinessMgr.getSimStatus());
+        showHaveWanPort(mBusinessMgr.getWanConnectStatus());
 
         ENUM.UserLoginStatus status = mBusinessMgr.getLoginStatus();
-        if (LinkAppSettings.isLoginSwitchOff() || status == ENUM.UserLoginStatus.login) {
+        if (LinkAppSettings.isLoginSwitchOff() || status == ENUM.UserLoginStatus.LOGIN) {
             return;
         }
         if (status == ENUM.UserLoginStatus.LoginTimeOut) {
@@ -172,38 +162,38 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
-    private void showHaveSimCard() {
-        mSimCardTv.setTextColor(getResources().getColor(R.color.black_text));
-        mSimCardTv.setText(R.string.connect_type_select_sim_card_enable);
-        mSimCardTv.setEnabled(true);
-        mSimCardTv.setOnClickListener(this);
+    private void showSimCard(SimStatusModel simStatus) {
+        boolean insert = true;
+
+        if (simStatus.m_SIMState == ENUM.SIMState.NoSim || simStatus.m_SIMState == ENUM.SIMState.Unknown) {
+            Log.e(TAG, "todo test, please fix it later");
+            insert = false;
+        }
+
+        mSimCardTv.setTextColor(getResources().getColor(insert ? R.color.black_text : R.color.red));
+        mSimCardTv.setText(insert ? R.string.connect_type_select_sim_card_enable : R.string.connect_type_select_sim_card_disable);
+        mSimCardTv.setEnabled(insert);
+
+        mSimCardTv.setOnClickListener(insert ? this : null);
 //        mSimCardPic.setImageResource(R.drawable.results_sim_nor);
-        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_sim_nor, 0, 0);
+        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0,
+                insert ? R.drawable.results_sim_nor : R.drawable.results_sim_dis,
+                0,
+                0);
     }
 
-    private void showNoSimCard() {
-        mSimCardTv.setTextColor(getResources().getColor(R.color.red));
-        mSimCardTv.setText(R.string.connect_type_select_sim_card_disable);
-        mSimCardTv.setEnabled(false);
-//        mSimCardPic.setImageResource(R.drawable.results_sim_dis);
-        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_sim_dis, 0, 0);
-    }
 
-    private void showHaveWanPort() {
-        mWanPortTv.setTextColor(getResources().getColor(R.color.black_text));
-        mWanPortTv.setText(R.string.connect_type_select_wan_port_enable);
-        mWanPortTv.setEnabled(true);
-        mWanPortTv.setOnClickListener(this);
+    private void showHaveWanPort(WanConnectStatusModel wanModel) {
+        boolean connected = wanModel.isConnected();
+        mWanPortTv.setTextColor(getResources().getColor(connected ? R.color.black_text : R.color.red));
+        mWanPortTv.setText(connected ? R.string.connect_type_select_wan_port_enable : R.string.connect_type_select_wan_port_disable);
+        mWanPortTv.setEnabled(connected);
+        mWanPortTv.setOnClickListener(connected ? this : null);
 //        mWanProtPic.setImageResource(R.drawable.results_wan_nor);
-        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_wan_nor, 0, 0);
-    }
-
-    private void showNoWanPort() {
-        mWanPortTv.setTextColor(getResources().getColor(R.color.red));
-        mWanPortTv.setText(R.string.connect_type_select_wan_port_disable);
-        mWanPortTv.setEnabled(false);
-//        mWanProtPic.setImageResource(R.drawable.results_wan_dis);
-        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.results_wan_dis, 0, 0);
+        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0,
+                connected ? R.drawable.results_wan_nor : R.drawable.results_wan_dis,
+                0,
+                0);
     }
 
     @Override
@@ -229,7 +219,11 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
                     mHeaderSkipTv.setOnClickListener(this);
                 } else {
-                    Toast.makeText(getApplicationContext(), "enter wifisetting", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "enter wifisetting", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(getApplicationContext(), SettingWifiActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+                    finishQuickSetup(false);
                 }
                 break;
             //WAN口是否存在
@@ -296,8 +290,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        if ((System.currentTimeMillis() - mkeyTime) > 2000) {
-            mkeyTime = System.currentTimeMillis();
+        if ((System.currentTimeMillis() - mKeyTime) > 2000) {
+            mKeyTime = System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
         } else {
             super.onBackPressed();
@@ -336,6 +330,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         if (forceLoginSelectDialog != null) {
             forceLoginSelectDialog.destroyDialog();
         }
+        mForceLoginDlg.destroyDialog();
         mBusinessMgr = null;
     }
 
@@ -344,12 +339,12 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             mConfirmDialog.destroyDialog();
         }
         mConfirmDialog = CommonErrorInfoDialog.getInstance(this);
-        mConfirmDialog.setCancelCallback(new CommonErrorInfoDialog.OnClickConfirmBotton() {
+        mConfirmDialog.setCancelCallback(new CommonErrorInfoDialog.OnClickConfirmButton() {
 
             @Override
             public void onConfirm() {
                 if (retryLogin) {
-                    //If timeout, let user re-login
+                    //If timeout, let user re-LOGIN
                     //showLoginDialog();
                     doLogin();
                 } else {
@@ -380,11 +375,11 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     }
 
     private void doLogin() {
-        m_ForceloginDlg = new AutoForceLoginProgressDialog(this);
+        mForceLoginDlg = new AutoForceLoginProgressDialog(this);
         mAutoLoginDialog = new AutoLoginProgressDialog(this);
         mAutoLoginDialog.autoLoginAndShowDialog(new AutoLoginProgressDialog.OnAutoLoginFinishedListener() {
             /*
-             * Auto login successfully.
+             * Auto LOGIN successfully.
              * Scenario: user enter correct password, then exit activity by press home key,
              * later launch smartlink again.
              */
@@ -400,9 +395,9 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                         forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(ConnectTypeSelectActivity.this);
                         forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title),
                                 getString(R.string.login_other_user_logined_error_forcelogin_msg),
-                                new ForceLoginSelectDialog.OnClickBottonConfirm() {
+                                new ForceLoginSelectDialog.OnClickButtonConfirm() {
                                     public void onConfirm() {
-                                        m_ForceloginDlg.autoForceLoginAndShowDialog(new AutoForceLoginProgressDialog
+                                        mForceLoginDlg.autoForceLoginAndShowDialog(new AutoForceLoginProgressDialog
                                                 .OnAutoForceLoginFinishedListener() {
                                             public void onLoginSuccess() {
                                                 //
@@ -445,7 +440,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                                 }, new ForceLoginSelectDialog.OnClickBtnCancel() {
 
                                     @Override
-                                    public void onCancle() {
+                                    public void onCancel() {
                                         handleLoginError(R.string.qs_title, R.string.qs_exit_query, true, false);
                                     }
                                 });
@@ -533,11 +528,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 handleLoginError(R.string.qs_title, R.string.login_kickoff_logout_successful, true, false);
             } else if (action.equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
                 if (ok) {
-                    if (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.NoSim) {
-                        showNoSimCard();
-                    } else {
-                        showHaveSimCard();
-                    }
+                    showSimCard(mBusinessMgr.getSimStatus());
                 }
             } else if (action.equalsIgnoreCase(MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
                 if (ok) {

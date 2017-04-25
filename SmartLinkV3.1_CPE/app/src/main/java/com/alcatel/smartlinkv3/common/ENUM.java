@@ -635,14 +635,14 @@ public class ENUM {
 	}
 
 	/*
-	 * Login status 0: logout 1: logined 2:the login times used out
+	 * Login status 0: logout 1: logined 2:the LOGIN times used out
 	 */
-	public static enum UserLoginStatus {
-		Logout, login, LoginTimeOut;
+	public enum UserLoginStatus {
+		Logout, LOGIN, LoginTimeOut;
 
 		public static UserLoginStatus build(int status) {
 			if (status == 1) {
-				return login;
+				return LOGIN;
 			} else if (status == 2) {
 				return LoginTimeOut;
 			} else {
@@ -653,7 +653,7 @@ public class ENUM {
 		public static int antiBuild(UserLoginStatus status) {
 			if (status == LoginTimeOut) {
 				return 2;
-			} else if (status == login) {
+			} else if (status == LOGIN) {
 				return 1;
 			} else
 				return 0;
@@ -680,8 +680,8 @@ public class ENUM {
 	}
 
 	/*
-	 * 0: use the web UI and login device;
-	   1: just connected to device but not login.
+	 * 0: use the web UI and LOGIN device;
+	   1: just connected to device but not LOGIN.
 
 	 */
 	public static enum EnumDeviceType{

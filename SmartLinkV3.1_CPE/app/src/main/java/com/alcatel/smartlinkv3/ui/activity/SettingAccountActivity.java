@@ -182,7 +182,7 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 	
 	public void userChangePassword(String UserName, String CurrentPassword, String NewPassword){
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
-		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
+		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.LOGIN) {
 			DataValue data = new DataValue();
 			data.addParam("user_name", UserName);
 			data.addParam("current_password", CurrentPassword);

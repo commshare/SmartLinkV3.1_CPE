@@ -199,7 +199,7 @@ public abstract class BaseActivity extends Activity{
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		
-		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
+		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.LOGIN) {
 			if(!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
 				Intent intent = new Intent(context, MainActivity.class);	
 				context.startActivity(intent);
@@ -215,7 +215,7 @@ public abstract class BaseActivity extends Activity{
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		
-		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
+		if(bCPEWifiConnected && m_loginStatus != UserLoginStatus.LOGIN) {
 			dismissAllDialog();
 			if(!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
 				Intent intent = new Intent(context, MainActivity.class);	

@@ -104,7 +104,7 @@ public class CPEConfig {
 	}*/
 	
 	
-	//login password
+	//LOGIN password
 	
 	public String getLoginPassword() {
 		return mSettings.getLoginPassword();
@@ -114,7 +114,7 @@ public class CPEConfig {
 		mSettings.setLoginPassword(password);
 	}
 	
-	//login username
+	//LOGIN username
 	
 	public String getLoginUsername() {
 		return mSettings.getLoginUsername();
@@ -124,7 +124,7 @@ public class CPEConfig {
 		mSettings.setLoginUsername(username);
 	}
 
-	//login status
+	//LOGIN status
 	
 		public boolean getAutoLoginFlag() {
 			return mSettings.getAutoLoginFlag();

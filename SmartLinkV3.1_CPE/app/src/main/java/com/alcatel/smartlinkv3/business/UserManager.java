@@ -86,7 +86,7 @@ public class UserManager extends BaseManager {
                 if(response.isValid()) {
                 	if(response.isNoError()) {
                 		startUpdateLoginTimeTask();
-                		m_loginStatus = UserLoginStatus.login;
+                		m_loginStatus = UserLoginStatus.LOGIN;
                 		
                 	}else if(null != m_updateLoginTimeTask) {
 						m_updateLoginTimeTask.cancel();
@@ -113,7 +113,7 @@ public class UserManager extends BaseManager {
 				response -> {
                 if(response.isOk()) {
                 		startUpdateLoginTimeTask();
-                		m_loginStatus = UserLoginStatus.login;
+                		m_loginStatus = UserLoginStatus.LOGIN;
                 }else if(null != m_updateLoginTimeTask) {
             			m_updateLoginTimeTask.cancel();
             			m_updateLoginTimeTask = null;

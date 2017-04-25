@@ -69,6 +69,10 @@
     <string name="qs_wifi_setting_5G_wifi">5.5GHz Wi-Fi</string>
     <string name="qs_wifi_setting_account">Account</string>
     <string name="qs_wifi_setting_password">Password</string>
+    <string name="connect_internet">Connect Internet</string>
+    <string name="ppp_over_ethernet" translatable="false">PPPoE</string>
+    <string name="mtu">MTU</string>
+    <string name="statics_ip">Statics IP</string>
     <!-- Quick Setup End -->
 
 
@@ -282,7 +286,7 @@
     <string name="setting_power_smart">Smart</string>
     <string name="setting_power_wifi">WiFi Sleep</string>
     <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for 30
-        mins, press any key to wake up.
+        minutes, press any key to wake up.
     </string>
     <string name="setting_backup_description">Backup the configuration.</string>
     <string name="setting_backup_btn_backup">Backup</string>
@@ -336,7 +340,7 @@
     <string name="setting_success">Success</string>
     <string name="setting_failed">Failed</string>
     <string name="setting_backup_failed">Set device back up failed.</string>
-    <string name="setting_backup_success">Set device back up successed.</string>
+    <string name="setting_backup_success">Set device back up succeed.</string>
     <string name="setting_restore_failed">Restore failed.</string>
     <string name="setting_restore_success">Restore successed, device will reboot immediately.</string>
     <string name="setting_restore_no_backup_file">No backup file.</string>
@@ -745,5 +749,13 @@
     <string name="main_header_mobile_broadband">Mobile Broadband</string>
     <string name="or">Or</string>
 
+    <string name="dhcp_renew">Renew</string>
+    <string name="wan_connection">Ethernet WAN connection</string>
+    <string name="preferred_dns">Preferred DNS</string>
+    <string name="secondary_dns">Secondary DNS</string>
+    <string name="default_gateway">Default gateway</string>
+    <string name="subnet_mask">Subnet mask</string>
+    <string name="ip_address">IP address</string>
+    <string name="prompt_not_change">Do not change default if not necessary</string>
 
 </resources>

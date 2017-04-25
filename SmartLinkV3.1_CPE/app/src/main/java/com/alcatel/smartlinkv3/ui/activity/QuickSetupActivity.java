@@ -44,11 +44,11 @@ import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForc
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmButton;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
+import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickButtonConfirm;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.CancelLoginListener;
@@ -142,10 +142,10 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 //      return;
     
     UserLoginStatus status = mBusinessMgr.getLoginStatus(); 
-    /*When use login and back to launcher, we do not let user enter
-     * login password
+    /*When use LOGIN and back to launcher, we do not let user enter
+     * LOGIN password
      */
-    if (LinkAppSettings.isLoginSwitchOff() || status == UserLoginStatus.login) {
+    if (LinkAppSettings.isLoginSwitchOff() || status == UserLoginStatus.LOGIN) {
       buildStateHandlerChain(false);
       return;
     }
@@ -254,12 +254,12 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
       mConfirmDialog.destroyDialog();
     }
     mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
-    mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+    mConfirmDialog.setCancelCallback(new OnClickConfirmButton() {
 
       @Override
       public void onConfirm() {
         if(retryLogin) {
-          //If timeout, let user re-login
+          //If timeout, let user re-LOGIN
           //showLoginDialog();
         	doLogin();
         } else {
@@ -279,7 +279,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
     mAutoLoginDialog = new AutoLoginProgressDialog(this); 
     mAutoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener() { 
       /* 
-       * Auto login successfully. 
+       * Auto LOGIN successfully.
        * Scenario: user enter correct password, then exit activity by press home key, 
        * later launch smartlink again.  
        */ 
@@ -293,7 +293,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
         	if(FeatureVersionManager.getInstance().isSupportForceLogin()){
           forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(mContext);
           forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg), 
-            		new OnClickBottonConfirm()  
+            		new OnClickButtonConfirm()
             { 
                 public void onConfirm()  
                 { 
@@ -331,7 +331,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
             },new OnClickBtnCancel(){
 
 							@Override
-							public void onCancle() {
+							public void onCancel() {
 								 handleLoginError(R.string.qs_title, R.string.qs_exit_query, true, false);
 							}}); 
          
@@ -643,7 +643,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           }
           
           if(mStateHandler == null || mEnterText.getText().length() > 0 ||
-              mBusinessMgr.getLoginStatus() != UserLoginStatus.login) {
+              mBusinessMgr.getLoginStatus() != UserLoginStatus.LOGIN) {
             return;
           }  
           if (mStateHandler.getState() == State.WIFI_SSID && mWiFiSSID != null) {
@@ -701,7 +701,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
           } else {
             // PIN LOCK
             mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
-            mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+            mConfirmDialog.setCancelCallback(new OnClickConfirmButton() {
 
               @Override
               public void onConfirm() {
@@ -737,7 +737,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
            } else {
              // PUK LOCK
              mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
-             mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+             mConfirmDialog.setCancelCallback(new OnClickConfirmButton() {
                @Override
                public void onConfirm() {
                  removePINCodePUKCodeSetting();
@@ -1073,7 +1073,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
   }
  
   /*
-   * when other user login or login timeout
+   * when other user LOGIN or LOGIN timeout
    */
   class LoginExceptionHandler extends StateHandler {
     private final String mTitle;
@@ -1220,7 +1220,7 @@ public class QuickSetupActivity  extends Activity implements OnClickListener{
 		    m_progress_dialog = ProgressDialog.show(mContext, strTitle, strMsg, true, false);  
 			}else {
 				mConfirmDialog = CommonErrorInfoDialog.getInstance(mContext);
-        mConfirmDialog.setCancelCallback(new OnClickConfirmBotton() {
+        mConfirmDialog.setCancelCallback(new OnClickConfirmButton() {
         @Override
         public void onConfirm() {
            //removePINCodePUKCodeSetting();

@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.ui.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,12 +18,13 @@ import com.alcatel.smartlinkv3.R;
 
 public class ErrorDialog implements OnClickListener{
 
-	private static ErrorDialog m_instance;
-	private Context m_context;
+	private /*static*/ volatile ErrorDialog m_instance = null;
+//	Do not place Android context classes in static fields (static reference to ErrorDialog which has field m_context pointing to Context); this is a memory leak (and also breaks Instant Run) less... (Ctrl+F1)
+//	A static field will leak contexts.
+//	private Context m_context;
 	private View m_vError = null;
 	private Dialog m_dlgError = null;
 	private Button m_btnRetry = null;
-	private Button m_ivClose = null;
 	private TextView m_tvTitle = null;
 	private ImageView m_image = null;
 	private AnimationDrawable m_anim = null;
@@ -30,26 +32,27 @@ public class ErrorDialog implements OnClickListener{
 	private OnClickBtnRetry m_callback;
 	private OnClickBtnCancel mCancelCallback=null;
 	
-	public static ErrorDialog getInstance(Context context)
+	public synchronized static ErrorDialog getInstance(Context context)
 	{
-		//if(m_instance == null){
-		m_instance = new ErrorDialog(context);			
-		//}
-		return m_instance;
+//		if(m_instance != null){
+//			m_instance.destroyDialog();
+//		}
+
+//		m_instance = new ErrorDialog(context);
+		return new ErrorDialog(context);
 	}
 
 	private ErrorDialog(Context context)
 	{
-		m_context = context;
-		createDialog();
+		createDialog(context);
 	}
 	
-	private void createDialog()
+	private void createDialog(Context context)
 	{
-		LayoutInflater factory = LayoutInflater.from(m_context);
+		LayoutInflater factory = LayoutInflater.from(context);
 		m_vError = factory.inflate(R.layout.error_popup_dialog, null);
 
-		m_dlgError = new Dialog(m_context, R.style.dialog);
+		m_dlgError = new Dialog(context, R.style.dialog);
 		Window window = m_dlgError.getWindow();
 		window.setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
@@ -63,9 +66,9 @@ public class ErrorDialog implements OnClickListener{
 
 		m_btnRetry = (Button)m_vError.findViewById(R.id.ID_BUTTON_RETRY);
 		m_btnRetry.setOnClickListener(this);
-		
-		m_ivClose = (Button)m_vError.findViewById(R.id.error_dialog_close_btn);
-		m_ivClose.setOnClickListener(this);
+
+		Button ivClose = (Button) m_vError.findViewById(R.id.error_dialog_close_btn);
+		ivClose.setOnClickListener(this);
 		
 		m_dlgError.setCancelable(false);
 		
@@ -109,7 +112,7 @@ public class ErrorDialog implements OnClickListener{
 
 	public void destroyDialog(){
 		closeDialog();
-		m_instance = null;
+//		m_instance = null;
     mCancelCallback = null;
 	}
 	
@@ -119,6 +122,10 @@ public class ErrorDialog implements OnClickListener{
 			m_dlgError.dismiss();
 			m_bIsShow = false;			
 		}
+	}
+
+	public void showDialog(@StringRes int msgId, OnClickBtnRetry callback) {
+		showDialog(m_dlgError.getContext().getResources().getString(msgId), callback);
 	}
 	
 	public void showDialog(String strMessage, OnClickBtnRetry callback){
@@ -140,11 +147,11 @@ public class ErrorDialog implements OnClickListener{
 	//
 	public interface OnClickBtnRetry
 	{
-		public void onRetry();
+		void onRetry();
 	}
 	
 	public interface OnClickBtnCancel
   {
-    public void onCancel();
+     void onCancel();
   }
 }
