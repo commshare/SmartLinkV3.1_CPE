@@ -199,7 +199,8 @@ public class LegacyHttpClient {
 	}
 
 	public Boolean isStop() {
-		synchronized (m_bStopBusiness) {
+		SmartLinkV3App.getInstance();
+		synchronized (this) {
 			return m_bStopBusiness;
 		}
 	}

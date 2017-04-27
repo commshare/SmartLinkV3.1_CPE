@@ -55,7 +55,7 @@ public class BaseResponse implements Parcelable {
         broadcastAction = action;
     }
 
-    public BaseResponse(IHttpFinishListener callback) {
+    private BaseResponse(IHttpFinishListener callback) {
         m_response_result = RESPONSE_OK;
         if (callback != null)
             m_finsishCallback = callback;
@@ -201,7 +201,10 @@ public class BaseResponse implements Parcelable {
         if (isBroadcast()) {
             Intent intent = getIntent(null);
             intent.putExtra(MessageUti.HTTP_RESPONSE, this);
+            Log.d(TAG, "enter sendBroadcast, the action is " + intent.getAction());
             context.sendBroadcast(intent);
+        } else {
+            Log.d(TAG, "do not send broadcast");
         }
     }
 }

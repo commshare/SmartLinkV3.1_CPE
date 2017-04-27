@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.business;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.alcatel.smartlinkv3.business.wlan.HttpWlanSetting;
 import com.alcatel.smartlinkv3.business.wlan.WlanNewSettingResult;
@@ -24,25 +25,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class WlanManager extends BaseManager {
-	private int m_nHostNum = 0;
-	private String m_strSsid = new String();
-	private String m_strSsid_5G = new String();
-	private String m_strWifiPwd = new String();
-	private String m_strWifiPwd_5G = new String();
+	private final static String TAG = "WlanManager";
+	private String m_strSsid = "";
+	private String m_strSsid_5G = "";
+	private String m_strWifiPwd = "";
+	private String m_strWifiPwd_5G = "";
 
 	private WlanSettingResult m_settings = new WlanSettingResult();
 
 	private Timer m_rollTimer = new Timer();
 	GetHostNumTask m_getHostNumTask = null;
 
-	private String m_strWpsPin = new String();
+	private String m_strWpsPin = "";
 
 	private WlanSupportMode m_wlanSupportMode=WlanSupportMode.Mode2Point4G;
 
 
 	@Override
 	protected void clearData() {
-		m_nHostNum = 0;
 		m_settings.clear();
 		m_wlanSupportMode=WlanSupportMode.Mode2Point4G;
 	}
@@ -63,10 +63,10 @@ public class WlanManager extends BaseManager {
 		if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
 			boolean bCPEWifiConnected = DataConnectManager.getInstance()
 					.getCPEWifiConnected();
-			if (bCPEWifiConnected == true) {
+			if (bCPEWifiConnected) {
 				startGetHostNumTask();
 				getWlanSupportMode(null);
-				getWlanSetting(null);
+				getWlanSetting();
 			}else {
 				m_wlanSupportMode = WlanSupportMode.Mode2Point4G;
 			}
@@ -208,11 +208,12 @@ public class WlanManager extends BaseManager {
 
 	// get wlan setting
 	// //////////////////////////////////////////////////////////////////////////////////////////
-	public void getWlanSetting(DataValue data) {
+	public void getWlanSetting() {
 		LegacyHttpClient.getInstance().sendPostRequest(
 				new HttpWlanSetting.GetWlanSetting(new IHttpFinishListener() {
 					@Override
 					public void onHttpRequestFinish(BaseResponse response) {
+							Log.e(TAG, "getWlanSetting return");
 							if (response.isOk()) {
 								m_settings = response.getModelResult();
 								getInfoByWansetting();

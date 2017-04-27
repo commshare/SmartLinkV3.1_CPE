@@ -131,14 +131,7 @@ public abstract class BaseActivity extends Activity{
 	
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
-		try {
-    		this.unregisterReceiver(m_msgReceiver2); 		
-    		//checkLogin();
-    	}catch(Exception e) {
-    		e.printStackTrace();
-    	}
 	}
 
 	protected void onBroadcastReceive(Context context, Intent intent)

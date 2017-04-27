@@ -56,10 +56,11 @@ public class DeviceManager extends BaseManager {
 	
 	ArrayList<ConnectedDeviceItemModel> getConnectedDeviceList()
 	{
-		ArrayList<ConnectedDeviceItemModel> dest = new ArrayList<>();
-		Collections.copy(dest, m_connectedDeviceList);
-		return dest;
-//		return (ArrayList<ConnectedDeviceItemModel>) m_connectedDeviceList.clone();
+//		ArrayList<ConnectedDeviceItemModel> dest = new ArrayList<>(m_connectedDeviceList.size());
+//		dest.ensureCapacity(m_connectedDeviceList.size());
+//		Collections.copy(dest, m_connectedDeviceList);
+//		return dest;
+		return (ArrayList<ConnectedDeviceItemModel>) m_connectedDeviceList.clone();
 	}
 	
 	ArrayList<ConnectedDeviceItemModel> getBlockDeviceList()

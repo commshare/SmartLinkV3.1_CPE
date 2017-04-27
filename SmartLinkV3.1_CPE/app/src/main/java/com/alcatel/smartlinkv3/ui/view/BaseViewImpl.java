@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.view;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 public abstract class BaseViewImpl {
 
@@ -21,5 +22,14 @@ public abstract class BaseViewImpl {
     public View getView()
     {
         return m_view;
+    }
+
+    void setViewGroupVisibility(ViewGroup view, final int visibility) {
+        final int count = view.getChildCount();
+        for (int i = 0; i < count; ++i) {
+            View temp = view.getChildAt(i);
+            temp.setVisibility(visibility);
+        }
+        view.setVisibility(visibility);
     }
 }

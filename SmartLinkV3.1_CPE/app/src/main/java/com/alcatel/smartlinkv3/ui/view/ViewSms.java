@@ -82,7 +82,7 @@ public class ViewSms extends BaseViewImpl implements OnClickListener ,OnItemClic
     }
 	
 	@Override
-	public void onPause() {	
+	public void onPause() {
 		try{
 			m_context.unregisterReceiver(m_receiver);
 		}catch(Exception e){

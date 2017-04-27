@@ -71,7 +71,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     public static DisplayMetrics m_displayMetrics = new DisplayMetrics();
     static boolean m_blLogout;
     static boolean m_blkickoff_Logout;
-    private ViewWifiKey m_wifiKeyView;
     private static Device mDevice;
     final int HOME_PAGE = 1;
     final int SMS_PAGE = 2;
@@ -81,6 +80,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     int m_nNewCount = 0;
     Button m_unlockSimBtn;
     RelativeLayout m_accessDeviceLayout;
+    private ViewWifiKey m_wifiKeyView;
     private RelativeLayout rl_top;
     private ViewFlipper m_viewFlipper;
     private ImageView m_homeBtn;
@@ -103,7 +103,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private AutoForceLoginProgressDialog m_ForceloginDlg;
     private AutoLoginProgressDialog m_autoLoginDialog;
     private int pageIndex;
-    private CommonErrorInfoDialog m_dialog_timeout_info;
     private DMSDeviceBrocastFactory mBrocastFactory;
     private AllShareProxy mAllShareProxy;
     private ThumbnailLoader thumbnailLoader;
@@ -854,15 +853,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         }
     }
 
-    private void PromptUserLogined() {
-        if (null == m_dialog_timeout_info) {
-            m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(this);
-        }
-        m_dialog_timeout_info.showDialog(
-                this.getString(R.string.other_login_warning_title),
-                this.getResources().getString(
-                        R.string.login_login_time_used_out_msg));
-    }
 
     private void navigateAfterLogin(OnLoginFinishedListener listener) {
         if (LinkAppSettings.isLoginSwitchOff()) {
@@ -876,7 +866,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             listener.onLoginFinished();
             return;
         } else if (status != UserLoginStatus.Logout) {
-            PromptUserLogined();
+            CommonErrorInfoDialog m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(this);
+            m_dialog_timeout_info.showDialog(
+                    getString(R.string.other_login_warning_title),
+                    getString(R.string.login_login_time_used_out_msg));
             return;
         }
 
@@ -915,7 +908,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                                             SmartLinkV3App.getInstance().setForcesLogin(true);
                                             ErrorDialog.getInstance(MainActivity.this).
                                                     showDialog(R.string.login_psd_error_msg,
-                                                    () -> m_loginDlg.showDialog(listener));
+                                                            () -> m_loginDlg.showDialog(listener));
                                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
                                             m_loginDlg.showTimeout();
                                         }

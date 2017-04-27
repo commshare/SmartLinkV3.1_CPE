@@ -44,7 +44,7 @@ import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 public class ConnectTypeSelectActivity extends Activity implements View.OnClickListener {
-    private static final String TAG = "ConnectTypeSelectActivity";
+    private static final String TAG = "ConnectTypeSelect";
     private   ImageView         mHeaderBackIv;
     private   TextView          mHeaderSkipTv;
     private   BusinessManager   mBusinessMgr;
@@ -167,7 +167,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
         if (simStatus.m_SIMState == ENUM.SIMState.NoSim || simStatus.m_SIMState == ENUM.SIMState.Unknown) {
             Log.e(TAG, "todo test, please fix it later");
-            insert = false;
+            // TODO: 17-4-26
+//            insert = false;
         }
 
         mSimCardTv.setTextColor(getResources().getColor(insert ? R.color.black_text : R.color.red));
@@ -305,7 +306,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
         registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
 
-        mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET, null);
+        mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
     }
 
     @Override
@@ -330,7 +331,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         if (forceLoginSelectDialog != null) {
             forceLoginSelectDialog.destroyDialog();
         }
-        mForceLoginDlg.destroyDialog();
+        if (mForceLoginDlg != null)
+            mForceLoginDlg.destroyDialog();
         mBusinessMgr = null;
     }
 
@@ -370,6 +372,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
         Intent it = new Intent(this, MainActivity.class);
         //TODO:
+        CPEConfig.getInstance().setQuickSetupFlag();
         startActivity(it);
         finish();
     }

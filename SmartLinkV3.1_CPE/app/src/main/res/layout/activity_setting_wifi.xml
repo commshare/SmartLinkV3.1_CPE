@@ -24,6 +24,7 @@
                 android:paddingTop="@dimen/dimen_15dip"
                 android:textSize="@dimen/dimen_textsize_14sp"
                 android:text="@string/wifi_network"
+                android:visibility="gone"
                 android:textColor="@color/grey_text" />
 
             <RadioGroup
