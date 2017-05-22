@@ -8,6 +8,7 @@
         android:minSdkVersion="9"
         android:targetSdkVersion="17"/>
 
+    
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
