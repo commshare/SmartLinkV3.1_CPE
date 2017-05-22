@@ -24,13 +24,131 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="vertical"
-           android:layout_marginTop="20dp">
+           android:layout_marginTop="5dp">
            
          <ImageView
           android:layout_width="match_parent"
           android:layout_height="@dimen/dimen_0.5dip"
           android:background="@color/main_bottom_divider"
           android:contentDescription="@string/setting_network" />
+
+
+        <RelativeLayout
+            android:id="@+id/network_mobile_data_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/usage_setting_mobile_data"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/network_mobile_data_switch"
+                android:layout_width="@dimen/dimen_50dip"
+                android:layout_height="@dimen/dimen_30dip"
+                android:clickable="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/general_btn_off" />
+        </RelativeLayout>
+        <ImageView
+            android:layout_marginTop="@dimen/dimen_1dip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_network" />
+
+        <RelativeLayout
+            android:id="@+id/network_connect_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/setting_network_connect_mode"
+                android:layout_gravity="start"
+                />
+            <ImageView
+                android:id="@+id/network_connect_mode_arrow"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/network_connect_mode_desc"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/network_connect_mode_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+        <ImageView
+            android:layout_marginTop="@dimen/dimen_1dip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_network" />
+
+        <RelativeLayout
+            android:id="@+id/network_set_data_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/setting_set_data_plan"
+                android:layout_gravity="start"
+                />
+            <ImageView
+                android:id="@+id/network_set_data_plan_arrow"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/network_set_data_plan_desc"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/network_set_data_plan_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginTop="@dimen/dimen_1dip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_network" />
         
         <RelativeLayout
             android:id="@+id/network_mode"
@@ -41,7 +159,7 @@
             <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="@dimen/setting_padding_s"
+               android:padding="@dimen/setting_padding_10_dp"
                android:textColor="@color/color_black"
                android:textSize="@dimen/setting_name_size_s" 
                android:text="@string/setting_network_mode"
@@ -62,9 +180,9 @@
                android:layout_toLeftOf="@id/network_mode_arrow"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:padding="@dimen/setting_padding_s"
+               android:padding="@dimen/setting_padding_10_dp"
                android:textColor="@color/color_light_gray"
-               android:textSize="@dimen/setting_prompt_size_s"
+               android:textSize="@dimen/setting_padding_10_dp"
                android:layout_gravity="end"/>
         </RelativeLayout>
         <LinearLayout
@@ -73,54 +191,16 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
                 android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_network" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/network_selection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white">
-             <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" 
-               android:padding="@dimen/setting_padding_s"
-               android:textColor="@color/color_black"
-               android:textSize="@dimen/setting_name_size_s" 
-               android:text="@string/setting_network_selection"
-               />
-            <ImageView
-                android:id="@+id/network_selection_arrow"
-                android:layout_marginRight="@dimen/dimen_10dip"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/right_arrow_big"
-                android:layout_width="@dimen/dimen_20dip"
-                android:layout_height="@dimen/dimen_20dip"/>
-             <TextView
-               android:id="@+id/network_selection_desc"
-               android:layout_toLeftOf="@id/network_selection_arrow"
-               android:layout_centerVertical="true"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:padding="@dimen/setting_padding_s"
-               android:textColor="@color/color_light_gray"
-               android:textSize="@dimen/setting_prompt_size_s"
-               android:layout_gravity="end"
-               />
-         </RelativeLayout>
-         <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/dimen_0.5dip"
-          android:background="@color/main_bottom_divider"
-          android:contentDescription="@string/setting_network" />  
-        
+
         
          <ImageView
-             android:layout_marginTop="@dimen/dimen_15dip"
+             android:layout_marginTop="@dimen/dimen_1dip"
 	          android:layout_width="match_parent"
 	          android:layout_height="@dimen/dimen_0.5dip"
 	          android:background="@color/main_bottom_divider"
@@ -133,7 +213,7 @@
                android:background="@color/color_white"
                android:layout_width="match_parent"
                android:layout_height="wrap_content" 
-               android:padding="@dimen/setting_padding_s"
+               android:padding="@dimen/setting_padding_10_dp"
                android:textColor="@color/color_black"
                android:textSize="@dimen/setting_name_size_s" 
                android:text="@string/setting_network_profile_management"
@@ -153,9 +233,9 @@
                android:layout_toLeftOf="@id/network_selected_profile_arrow"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
-               android:padding="@dimen/setting_padding_s"
+               android:padding="@dimen/setting_padding_10_dp"
                android:textColor="@color/color_light_gray"
-               android:textSize="@dimen/setting_prompt_size_s" 
+               android:textSize="@dimen/setting_padding_10_dp" 
                android:layout_gravity="end"
                android:maxWidth="250dp"
                android:singleLine="true"
@@ -168,7 +248,7 @@
 	          android:contentDescription="@string/setting_network" />
 
         <ImageView
-            android:layout_marginTop="@dimen/dimen_15dip"
+            android:layout_marginTop="@dimen/dimen_1dip"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_0.5dip"
             android:background="@color/main_bottom_divider"
@@ -181,7 +261,7 @@
                 android:background="@color/color_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/setting_padding_s"
+                android:padding="@dimen/setting_padding_10_dp"
                 android:textColor="@color/color_black"
                 android:textSize="@dimen/setting_name_size_s"
                 android:text="@string/usage_setting_roaming"/>
@@ -201,7 +281,201 @@
             android:layout_height="@dimen/dimen_0.5dip"
             android:background="@color/main_bottom_divider"
             android:contentDescription="@string/setting_network" />
-     </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/network_sim_pin_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/usage_setting_sim_pin"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/network_sim_pin_switch"
+                android:clickable="true"
+                android:layout_margin="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/general_btn_off"
+                android:layout_width="@dimen/dimen_50dip"
+                android:layout_height="@dimen/dimen_30dip"/>
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_network" />
+
+        <RelativeLayout
+            android:id="@+id/network_change_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/setting_change_pin"
+                android:layout_gravity="start"
+                />
+            <ImageView
+                android:id="@+id/network_change_pin_arrow"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/network_change_pin_desc"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/network_change_pin_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/network_sim_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/setting_sim_number"
+                android:layout_gravity="start"
+                />
+            <ImageView
+                android:id="@+id/network_sim_number_arrow"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/network_sim_number_desc"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/network_sim_number_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginTop="@dimen/dimen_1dip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_network" />
+
+        <RelativeLayout
+            android:id="@+id/network_imsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/setting_imsi"
+                android:layout_gravity="start"
+                />
+            <ImageView
+                android:id="@+id/network_imsi_arrow"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/network_imsi_desc"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/network_imsi_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginTop="@dimen/dimen_1dip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_network" />
+
+        <RelativeLayout
+            android:id="@+id/network_selection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s"
+                android:text="@string/setting_network_selection"
+                />
+            <ImageView
+                android:id="@+id/network_selection_arrow"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+            <TextView
+                android:id="@+id/network_selection_desc"
+                android:layout_toLeftOf="@id/network_selection_arrow"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"
+                />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/main_bottom_divider"
+            android:contentDescription="@string/setting_network" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/setting_network_mode_container"
@@ -212,7 +486,7 @@
 
         <RadioGroup
             android:id="@+id/setting_network_mode"
-            android:layout_marginTop="@dimen/setting_prompt_size_s"
+            android:layout_marginTop="@dimen/setting_padding_10_dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
@@ -222,8 +496,8 @@
                 android:id="@+id/mode_auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/setting_padding_s"
-                android:layout_marginRight="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
+                android:layout_marginRight="@dimen/setting_padding_10_dp"
                 android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="true"
@@ -235,7 +509,7 @@
                 android:textColor="@color/color_black" />
 
             <View
-                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider" />
@@ -244,8 +518,8 @@
                 android:id="@+id/mode_lte"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/setting_padding_s"
-                android:layout_marginRight="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
+                android:layout_marginRight="@dimen/setting_padding_10_dp"
                 android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="false"
@@ -257,7 +531,7 @@
                 android:textColor="@color/color_black" />
 
             <View
-                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider" />
@@ -266,8 +540,8 @@
                 android:id="@+id/mode_3g"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/setting_padding_s"
-                android:layout_marginRight="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
+                android:layout_marginRight="@dimen/setting_padding_10_dp"
                 android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="false"
@@ -279,7 +553,7 @@
                 android:textColor="@color/color_black" />
 
             <View
-                android:layout_marginLeft="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider" />
@@ -288,8 +562,8 @@
                 android:id="@+id/mode_2g"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/setting_padding_s"
-                android:layout_marginRight="@dimen/setting_padding_s"
+                android:layout_marginLeft="@dimen/setting_padding_10_dp"
+                android:layout_marginRight="@dimen/setting_padding_10_dp"
                 android:textSize="@dimen/setting_name_size_s"
                 android:button="@null"
                 android:checked="false"

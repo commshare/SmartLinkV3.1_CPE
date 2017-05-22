@@ -162,6 +162,8 @@
     <string name="usage_setting_monthlyunitgb">GB</string>
     <string name="usage_setting_dataconsunption">Data Consumption:</string>
     <string name="usage_setting_roaming">Roaming</string>
+    <string name="usage_setting_sim_pin">SIM PIN</string>
+    <string name="usage_setting_mobile_data">Mobile data</string>
     <string name="roaming_descrition">Automatically connect even when in roaming.</string>
     <string name="usage_setting_autodisconnected">Auto Disconnected</string>
     <!-- Usage setting end -->
@@ -360,7 +362,12 @@
     <string name="setting_new_password">New Password(4~16 characters)</string>
     <string name="setting_confirm_password">Confirm Password</string>
     <string name="setting_password_note">Note: The password should be 4&#8211;16 characters.</string>
-    <string name="setting_network_mode">Network Mode</string>
+    <string name="setting_network_mode">Network mode</string>
+    <string name="setting_network_connect_mode">Connection mode</string>
+    <string name="setting_set_data_plan">Set data plan</string>
+    <string name="setting_change_pin">Change PIN</string>
+    <string name="setting_sim_number">SIM number</string>
+    <string name="setting_imsi">IMSI</string>
     <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>
     <string name="setting_network_selection">Network Selection</string>
     <string name="setting_network_wifi_network_title">WiFi Network</string>
@@ -368,7 +375,7 @@
     <string name="setting_network_add_profile">Add Profile</string>
     <string name="setting_network_disconnect_first">Please disconect your network first</string>
     <string name="setting_network_try_again">Disconnecting, please try again later</string>
-    <string name="setting_network_profile_management">Profile Management</string>
+    <string name="setting_network_profile_management">Profile</string>
     <string name="setting_network_profile_management_profile_red_tag">*</string>
     <string name="setting_network_profile_management_profile_name">Profile Name</string>
     <string name="setting_network_profile_management_dial_number">Dial Number</string>

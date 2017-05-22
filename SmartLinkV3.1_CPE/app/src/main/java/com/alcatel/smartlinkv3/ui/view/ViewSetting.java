@@ -33,12 +33,12 @@ import java.util.List;
 
 public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
 
-    boolean isFtpSupported  = false;
+    boolean isFtpSupported = false;
     boolean isDlnaSupported = false;
-    private boolean  isSharingSupported  = false;
+    private boolean isSharingSupported = false;
     private boolean m_blFirst = true;
     private settingBroadcast m_receiver;
-    private int              upgradeStatus;
+    private int upgradeStatus;
 
     public static final String ISDEVICENEWVERSION = "IS_DEVICE_NEW_VERSION";
     private RelativeLayout mLoginPassword;
@@ -197,7 +197,7 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
         m_context.startActivity(intent);
     }
 
-    private void goToNetworkSettingPage() {
+    private void goToMobileNetworkSettingPage() {
         Intent intent = new Intent(m_context, SettingNetworkActivity.class);
         m_context.startActivity(intent);
     }
@@ -221,7 +221,9 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
                 goToAccountSettingPage();
                 break;
             case R.id.setting_mobile_network:
-                Toast.makeText(m_context.getApplicationContext(), "mobile network", Toast.LENGTH_SHORT).show();
+                // TODO
+                goToMobileNetworkSettingPage();
+                //Toast.makeText(m_context.getApplicationContext(), "mobile network", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.setting_ethernet_wan:
                 Toast.makeText(m_context.getApplicationContext(), "ethernet wan", Toast.LENGTH_SHORT).show();
@@ -254,7 +256,7 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
 
     public class SettingItem {
         //Item name
-        private String  m_strItem;
+        private String m_strItem;
         private Boolean m_blHasUpgrade;
 
         public SettingItem(String strItem, Boolean blHasUpgrade) {
