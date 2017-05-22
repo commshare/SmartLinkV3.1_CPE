@@ -73,7 +73,7 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="sensor"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.ActivitySMSDelete"
@@ -112,67 +112,67 @@
             android:name=".ui.activity.SettingWifiActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingAccountActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingNetworkActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingShareActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingPowerSavingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingBackupRestoreActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SystemInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingNewAboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingAboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingDeviceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <activity
             android:name=".ui.activity.SettingUpgradeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/titlebarstyle">
+            android:theme="@style/AppThemeMyTitle">
         </activity>
         <!--<activity-->
             <!--android:name=".ui.activity.SetDefaultDirectoryActivity"-->
