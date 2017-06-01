@@ -883,7 +883,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     m_loginDlg.showTimeout();
                     return;
                 } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                    ErrorDialog.getInstance(getBaseContext()).
+                    ErrorDialog.getInstance(MainActivity.this).
                             showDialog(R.string.login_psd_error_msg,
                                     () -> m_loginDlg.showDialog(listener));
                     return;
