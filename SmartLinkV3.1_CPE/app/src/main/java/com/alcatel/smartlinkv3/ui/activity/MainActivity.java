@@ -866,7 +866,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             listener.onLoginFinished();
             return;
         } else if (status != UserLoginStatus.Logout) {
-            CommonErrorInfoDialog m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(this);
+            CommonErrorInfoDialog m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(MainActivity.this);
             m_dialog_timeout_info.showDialog(
                     getString(R.string.other_login_warning_title),
                     getString(R.string.login_login_time_used_out_msg));

@@ -474,6 +474,7 @@
 
 
     <!-- PIN start -->
+    <string name="pin_change_pin_title">Change PIN</string>
     <string name="puk_prompt_str">The comfirmed PIN code should be the same as new PIN code.</string>
     <string name="pin_title">Please input the PIN code!</string>
     <string name="pin_code_label">PIN Code:</string>

@@ -7,7 +7,7 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="17"/>
-    
+
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -227,6 +228,12 @@
         <activity android:name=".ui.activity.ConnectTypeSelectActivity"
                   android:configChanges="orientation|screenSize|keyboardHidden"
                   android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".ui.activity.SettingChangePinActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:launchMode="singleTask"
+                android:theme="@style/AppThemeMyTitle">
         </activity>
 
         <receiver android:name=".appwidget.SmartLinkWidget">

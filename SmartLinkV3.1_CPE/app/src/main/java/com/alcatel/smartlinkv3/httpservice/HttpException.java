@@ -6,11 +6,17 @@ package com.alcatel.smartlinkv3.httpservice;
 
 import okhttp3.Response;
 
-/** Exception for an unexpected, non-2xx HTTP response. */
+/**
+ * Exception for an unexpected, non-2xx HTTP response.
+ */
 public class HttpException extends Exception {
     private static String getMessage(Response response) {
         if (response == null) throw new NullPointerException("response == null");
-        return "HTTP " + response.code() + " " + response.message();
+
+        String url = response.request().url().toString();
+        String httpExc = "\n" + url + "\n" + "HTTP " + response.code() + " " + response.message();
+
+        return httpExc;
     }
 
     private final int code;
@@ -24,12 +30,16 @@ public class HttpException extends Exception {
         this.response = response;
     }
 
-    /** HTTP status code. */
+    /**
+     * HTTP status code.
+     */
     public int code() {
         return code;
     }
 
-    /** HTTP status message. */
+    /**
+     * HTTP status message.
+     */
     public String message() {
         return message;
     }

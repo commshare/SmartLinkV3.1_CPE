@@ -76,6 +76,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     private TextView m_tv_title = null;
     private ImageButton m_ib_back = null;
     private TextView m_tv_back = null;
+    private RelativeLayout m_network_set_data_plan_container = null;
+    private RelativeLayout m_network_change_pin_container = null;
     private RelativeLayout m_network_mode_container = null;
     private RelativeLayout m_network_selection_container = null;
     private RelativeLayout m_network_profile_management = null;
@@ -158,6 +160,11 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         m_set_network_setting_filter.addAction(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
         m_network_setting_receiver = new NetworkSettingReceiver();
 
+        m_network_set_data_plan_container = (RelativeLayout) findViewById(R.id.network_set_data_plan);
+
+        m_network_change_pin_container = (RelativeLayout) findViewById(R.id.network_change_pin);
+
+
         m_network_mode_container = (RelativeLayout) findViewById(R.id.network_mode);
         m_network_selection_container = (RelativeLayout) findViewById(R.id.network_selection);
         m_network_profile_management = (RelativeLayout) findViewById(R.id.network_profile_management);
@@ -171,11 +178,14 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
         m_waiting_circle = (RelativeLayout) findViewById(R.id.waiting_progressbar);
 
+        m_network_set_data_plan_container.setOnClickListener(this);
         m_network_mode_container.setOnClickListener(this);
+        m_network_change_pin_container.setOnClickListener(this);
         m_network_selection_container.setOnClickListener(this);
         m_network_profile_management.setOnClickListener(this);
         mRoamingSwitch.setOnClickListener(this);
         mMobileDataSwitch.setOnClickListener(this);
+
 
         m_level_one_menu = (LinearLayout) findViewById(R.id.level_one_menu);
         m_fragment_manager = this.getSupportFragmentManager();
@@ -379,6 +389,12 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 break;
             case R.id.network_mobile_data_switch:
                 onBtnMobileDataClick();
+                break;
+            case R.id.network_set_data_plan:
+                onBtnNetWorkDataPlanClick();
+                break;
+            case R.id.network_change_pin:
+                onBtnNetWorkChangePinClick();
                 break;
             case R.id.tv_titlebar_add:
                 if (m_fragment_profile_management.getIsDeleting()) {
@@ -766,9 +782,19 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
     }
 
+    private void onBtnNetWorkDataPlanClick() {
+        Intent intent = new Intent(this, UsageSettingActivity.class);
+        this.startActivity(intent);
+    }
+
+    private void onBtnNetWorkChangePinClick() {
+        Intent intent = new Intent(this, SettingChangePinActivity.class);
+        this.startActivity(intent);
+    }
+
     private void onBtnMobileDataClick() {
         // TODO : need test
-        if (false) {
+        if (true) {
             WanConnectStatusModel internetConnState = BusinessManager.getInstance()
                     .getWanConnectStatus();
 
