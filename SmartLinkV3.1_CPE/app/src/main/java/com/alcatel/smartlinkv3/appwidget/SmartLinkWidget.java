@@ -34,7 +34,7 @@ import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
+//
 public class SmartLinkWidget extends AppWidgetProvider {
 
   private boolean m_blDeviceConnected = false;

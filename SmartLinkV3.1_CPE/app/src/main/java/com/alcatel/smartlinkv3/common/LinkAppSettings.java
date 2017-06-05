@@ -4,14 +4,10 @@ import android.os.Environment;
 
 import java.io.File;
 
-/**
- * Created by zen on 17-3-20.
- */
-
 public class LinkAppSettings {
-    // just for test
+    // TOAT: 测试帐号
     public static final String USER_NAME = "admin";
-
+    // 登陆是否关闭
     public static boolean isLoginSwitchOff() {
         String strLoginFile = Environment.getExternalStorageDirectory()
                 .getAbsolutePath() + "/CPE/LoginDisable";

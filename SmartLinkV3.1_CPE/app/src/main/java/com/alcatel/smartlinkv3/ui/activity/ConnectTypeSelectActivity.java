@@ -29,6 +29,7 @@ import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ErrorCode;
@@ -45,43 +46,43 @@ import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
 public class ConnectTypeSelectActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "ConnectTypeSelect";
-    private   ImageView         mHeaderBackIv;
-    private   TextView          mHeaderSkipTv;
-    private   BusinessManager   mBusinessMgr;
-    private   Context           mContext;
+    private ImageView mHeaderBackIv;
+    private TextView mHeaderSkipTv;
+    private BusinessManager mBusinessMgr;
+    private Context mContext;
     protected BroadcastReceiver mReceiver;
-    private   TextView          mSimCardTv;
-    private   TextView          mWanPortTv;
-    private   long              mKeyTime; //点击2次返回 键的时间
-//    private   ImageView         mSimCardPic;
-//    private   ImageView         mWanProtPic;
+    private TextView mSimCardTv;
+    private TextView mWanPortTv;
+    private long mKeyTime; //点击2次返回键的时间
+    //    private   ImageView         mSimCardPic;
+    //    private   ImageView         mWanProtPic;
 
-    private CommonErrorInfoDialog        mConfirmDialog  = null;
+    private CommonErrorInfoDialog mConfirmDialog = null;
     private AutoForceLoginProgressDialog mForceLoginDlg = null;
-    private AutoLoginProgressDialog      mAutoLoginDialog= null;
-    private ForceLoginSelectDialog       forceLoginSelectDialog = null;
-    private LoginDialog                  mLoginDialog    = null;
+    private AutoLoginProgressDialog mAutoLoginDialog = null;
+    private ForceLoginSelectDialog forceLoginSelectDialog = null;
+    private LoginDialog mLoginDialog = null;
 
-    private RelativeLayout     mHandlePinContainer;
-    private LinearLayout       mNormalContainer;
-    private EditText           mPinPassword;
-    private RelativeLayout     mPinPasswordDel;
+    private RelativeLayout mHandlePinContainer;
+    private LinearLayout mNormalContainer;
+    private EditText mPinPassword;
+    private RelativeLayout mPinPasswordDel;
     private InputMethodManager imm;
-    private TextView           mPinPasswordDes;
-    private TextView           mPasswordTimes;
-    private TextView           mConnectBtn;
-    private ImageView          mRememberPasswordSelect;
-    private              boolean isRememberPassword = true;
-    private static final String  PIN_PASSWORD       = "pinPassword";
-    private int            pinRemainingTimes;
-    private TextView       mHeardTitle;
+    private TextView mPinPasswordDes;
+    private TextView mPasswordTimes;
+    private TextView mConnectBtn;
+    private ImageView mRememberPasswordSelect;
+    private boolean isRememberPassword = true;
+    private static final String PIN_PASSWORD = "pinPassword";
+    private int pinRemainingTimes;
+    private TextView mHeardTitle;
     private RelativeLayout mWaitingContainer;
     private RelativeLayout mPinSuccessContainer;
     private RelativeLayout mPinFailContainer;
-    private Button         mPinTryAgainBtn;
-    private TextView       mPinFailToHome;
+    private Button mPinTryAgainBtn;
+    private TextView mPinFailToHome;
 
-    private Handler        mHandler;
+    private Handler mHandler;
     private RelativeLayout mHeaderContainer;
 
     @Override
@@ -95,21 +96,24 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     }
 
     private void initView() {
+        // 顶部标题容器
         mHeaderContainer = (RelativeLayout) findViewById(R.id.main_header);
         mHeardTitle = (TextView) findViewById(R.id.tv_title_title);
         mHeardTitle.setText(R.string.main_header_linkhub);
         mHeaderBackIv = (ImageView) findViewById(R.id.main_header_back_iv);
         mHeaderBackIv.setVisibility(View.GONE);
 
+        // 普通容器
         mNormalContainer = (LinearLayout) findViewById(R.id.connect_type_content_container);
         mHeaderSkipTv = (TextView) findViewById(R.id.main_header_right_text);
         mHeaderSkipTv.setVisibility(View.GONE);
 
-//        mSimCardPic = (ImageView) findViewById(R.id.sim_card_pic);
+        // mSimCardPic = (ImageView) findViewById(R.id.sim_card_pic);
         mSimCardTv = (TextView) findViewById(R.id.connect_type_sim_card_tv);
         mWanPortTv = (TextView) findViewById(R.id.connect_type_wan_port_tv);
-//        mWanProtPic = (ImageView) findViewById(R.id.wan_port_pic);
+        // mWanProtPic = (ImageView) findViewById(R.id.wan_port_pic);
 
+        // PIN容器
         mHandlePinContainer = (RelativeLayout) findViewById(R.id.connect_type_handle_pin_container);
         mPinPasswordDes = (TextView) findViewById(R.id.handle_pin_password_times_des);
         mPinPassword = (EditText) findViewById(R.id.handle_pin_password);
@@ -127,15 +131,15 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mRememberPasswordSelect.setOnClickListener(this);
         mConnectBtn = (TextView) findViewById(R.id.handle_pin_connect_btn);
         mConnectBtn.setOnClickListener(this);
-
+        // 等待页
         mWaitingContainer = (RelativeLayout) findViewById(R.id.connect_type_waiting);
-
+        // 成功页
         mPinSuccessContainer = (RelativeLayout) findViewById(R.id.pin_unlock_success_container);
-
-        mPinFailContainer = (RelativeLayout) findViewById(R.id.pin_unlock_fail_container);
-        mPinTryAgainBtn = (Button) findViewById(R.id.pin_unlock_try_again);
+        // 失败页
+        mPinFailContainer = (RelativeLayout) findViewById(R.id.mRl_connectStatus_failed);
+        mPinTryAgainBtn = (Button) findViewById(R.id.mRp_connectStatus_tryagain);
         mPinTryAgainBtn.setOnClickListener(this);
-        mPinFailToHome = (TextView) findViewById(R.id.pin_unlock_fail_to_home);
+        mPinFailToHome = (TextView) findViewById(R.id.mTv_connectStatus_home);
         mPinFailToHome.setOnClickListener(this);
     }
 
@@ -146,90 +150,120 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mHandler = new Handler();
 
         mReceiver = new QSBroadcastReceiver();
-
+        // 切换SIM卡状态drawable视图
         showSimCard(mBusinessMgr.getSimStatus());
+        // WAN口状态drawable视图
         showHaveWanPort(mBusinessMgr.getWanConnectStatus());
-
+        // 登陆状态
         ENUM.UserLoginStatus status = mBusinessMgr.getLoginStatus();
-        if (LinkAppSettings.isLoginSwitchOff() || status == ENUM.UserLoginStatus.LOGIN) {
+        if (LinkAppSettings.isLoginSwitchOff() || status == ENUM.UserLoginStatus.LOGIN) {// 已登陆
             return;
         }
-        if (status == ENUM.UserLoginStatus.LoginTimeOut) {
-            handleLoginError(R.string.other_login_warning_title,
-                    R.string.login_login_time_used_out_msg, true, false);
+        if (status == ENUM.UserLoginStatus.LoginTimeOut) {// 已登出
+            handleLoginError(R.string.other_login_warning_title, R.string.login_login_time_used_out_msg, true, false);
         } else {
-            doLogin();
+            doLogin();// 进行登陆
         }
     }
 
+    /**
+     * 切换SIM卡drawable状态
+     *
+     * @param simStatus
+     */
     private void showSimCard(SimStatusModel simStatus) {
-        boolean insert = true;
+        boolean insert = true;// 默认为true
 
+        // 获取SIM状态
         if (simStatus.m_SIMState == ENUM.SIMState.NoSim || simStatus.m_SIMState == ENUM.SIMState.Unknown) {
             Log.e(TAG, "todo test, please fix it later");
-            // TODO: 17-4-26
-//            insert = false;
+            // TOGO: 2017/6/5 没有插入sim卡时的解决方案 
+            insert = false;
         }
-
         mSimCardTv.setTextColor(getResources().getColor(insert ? R.color.black_text : R.color.red));
         mSimCardTv.setText(insert ? R.string.connect_type_select_sim_card_enable : R.string.connect_type_select_sim_card_disable);
         mSimCardTv.setEnabled(insert);
 
         mSimCardTv.setOnClickListener(insert ? this : null);
-//        mSimCardPic.setImageResource(R.drawable.results_sim_nor);
-        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0,
-                insert ? R.drawable.results_sim_nor : R.drawable.results_sim_dis,
-                0,
-                0);
+        // mSimCardPic.setImageResource(R.drawable.results_sim_nor);
+        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0, insert ? R.drawable.results_sim_nor : R.drawable.results_sim_dis, 0, 0);
     }
 
 
+    /**
+     * 切换WAN口drawable状态
+     *
+     * @param wanModel
+     */
     private void showHaveWanPort(WanConnectStatusModel wanModel) {
         boolean connected = wanModel.isConnected();
+        // TOAT: 測試把該標記設置為true
+        connected = true;
         mWanPortTv.setTextColor(getResources().getColor(connected ? R.color.black_text : R.color.red));
         mWanPortTv.setText(connected ? R.string.connect_type_select_wan_port_enable : R.string.connect_type_select_wan_port_disable);
         mWanPortTv.setEnabled(connected);
         mWanPortTv.setOnClickListener(connected ? this : null);
-//        mWanProtPic.setImageResource(R.drawable.results_wan_nor);
-        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0,
-                connected ? R.drawable.results_wan_nor : R.drawable.results_wan_dis,
-                0,
-                0);
+        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0, connected ? R.drawable.results_wan_nor : R.drawable.results_wan_dis, 0, 0);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.main_header_back_iv:
+                // 回跳到类型选择 
+                mHeardTitle.setText(R.string.main_header_linkhub);
+                mHeaderSkipTv.setVisibility(View.GONE);
+                mHeaderBackIv.setVisibility(View.GONE);
+
+                // 页面切换
+                mHandlePinContainer.setVisibility(View.GONE);
+                mWaitingContainer.setVisibility(View.GONE);
+                mPinSuccessContainer.setVisibility(View.GONE);
+                mPinFailContainer.setVisibility(View.GONE);
+                mNormalContainer.setVisibility(View.VISIBLE);
+
+                // 恢复初始数据
+                pinRemainingTimes = 0;
+                mPasswordTimes.setText(pinRemainingTimes + "");
+
+                break;
+
             //SIM卡是否存在
             case R.id.connect_type_sim_card_tv:
-                if (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) {
+                // TOAT: 测试时暂时使用标记位为true
+                if (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) { // 再次判断SIM状态
+                // if (true) {
                     hideAllLayout();
+                    mHeaderBackIv.setVisibility(View.VISIBLE);
                     mHeaderContainer.setVisibility(View.VISIBLE);
                     mHeaderSkipTv.setVisibility(View.VISIBLE);
                     mHandlePinContainer.setVisibility(View.VISIBLE);
                     mHeardTitle.setText(R.string.main_header_mobile_broadband);
                     pinRemainingTimes = mBusinessMgr.getSimStatus().m_nPinRemainingTimes;
                     mPasswordTimes.setText(pinRemainingTimes + "");
-                    if (pinRemainingTimes < 3){
+                    if (pinRemainingTimes < 3) {
                         mPasswordTimes.setTextColor(getResources().getColor(R.color.red));
                         mPinPasswordDes.setTextColor(getResources().getColor(R.color.red));
-                    }else{
+                    } else {
                         mPasswordTimes.setTextColor(getResources().getColor(R.color.black_text));
                         mPinPasswordDes.setTextColor(getResources().getColor(R.color.black_text));
                     }
 
                     mHeaderSkipTv.setOnClickListener(this);
+                    mHeaderBackIv.setOnClickListener(this);
+
                 } else {
-//                    Toast.makeText(getApplicationContext(), "enter wifisetting", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(getApplicationContext(), SettingWifiActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
+                    // Toast.makeText(getApplicationContext(), "enter wifisetting", Toast.LENGTH_SHORT).show();
+                    // Intent intent = new Intent(getApplicationContext(), SettingWifiActivity.class);
+                    // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    // startActivity(intent);
                     finishQuickSetup(false);
                 }
                 break;
-            //WAN口是否存在
+            //WAN口
             case R.id.connect_type_wan_port_tv:
-                Toast.makeText(getApplicationContext(), "wan port setting!", Toast.LENGTH_SHORT).show();
+                // 显示WIFI设置页面
+                ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
                 break;
             //头部的下一步
             case R.id.main_header_right_text:
@@ -249,7 +283,6 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 break;
             //pin码是否记住
             case R.id.handle_pin_remember_pin_select:
-                //TODO:
                 isRememberPassword = !isRememberPassword;
                 if (isRememberPassword) {
                     mRememberPasswordSelect.setImageResource(R.drawable.general_btn_remember_pre);
@@ -257,7 +290,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     mRememberPasswordSelect.setImageResource(R.drawable.general_btn_remember_nor);
                 }
                 break;
-            //点击连接按钮
+            // PIN界面点击连接按钮
             case R.id.handle_pin_connect_btn:
                 //TODO:
                 //只记录验证正确的，请求前把旧数据清空。
@@ -271,7 +304,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
                 break;
             //重新解pin
-            case R.id.pin_unlock_try_again:
+            case R.id.mRp_connectStatus_tryagain:
                 //TODO:
                 hideAllLayout();
                 mHeaderContainer.setVisibility(View.VISIBLE);
@@ -279,9 +312,9 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 mHeardTitle.setText(R.string.main_header_linkhub);
                 break;
             //解pin失败，跳到home页按钮
-            case R.id.pin_unlock_fail_to_home:
-                //TODO:
-                Toast.makeText(getApplicationContext(), "to home", Toast.LENGTH_SHORT).show();
+            case R.id.mTv_connectStatus_home:
+                //Toast.makeText(getApplicationContext(), "to home", Toast.LENGTH_SHORT).show();
+                ChangeActivity.toActivity(this, MainActivity.class, true, true, false, 0);
                 break;
 
             default:
@@ -302,6 +335,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        // 重新注册动态广播
         registerReceiver(mReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
         registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
         registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
@@ -360,9 +394,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             }
 
         });
-        mConfirmDialog.showDialog(
-                getString(titleId),
-                getString(messageId));
+        mConfirmDialog.showDialog(getString(titleId), getString(messageId));
     }
 
     //直接跳过设置到主界面中
@@ -371,7 +403,6 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             CPEConfig.getInstance().setQuickSetupFlag();
         }
         Intent it = new Intent(this, MainActivity.class);
-        //TODO:
         CPEConfig.getInstance().setQuickSetupFlag();
         startActivity(it);
         finish();
@@ -396,65 +427,55 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     // "ForceLogin"));
                     if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
                         forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(ConnectTypeSelectActivity.this);
-                        forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title),
-                                getString(R.string.login_other_user_logined_error_forcelogin_msg),
-                                new ForceLoginSelectDialog.OnClickButtonConfirm() {
-                                    public void onConfirm() {
-                                        mForceLoginDlg.autoForceLoginAndShowDialog(new AutoForceLoginProgressDialog
-                                                .OnAutoForceLoginFinishedListener() {
-                                            public void onLoginSuccess() {
-                                                //
-                                                // buildStateHandlerChain(false);
-                                            }
-
-                                            public void onLoginFailed(String error_code) {
-                                                if (error_code.equalsIgnoreCase(ErrorCode
-                                                        .ERR_FORCE_USERNAME_OR_PASSWORD)) {
-                                                    ErrorDialog errorDialog = ErrorDialog.getInstance
-                                                            (ConnectTypeSelectActivity.this);
-                                                    errorDialog.setCancelCallback(new ErrorDialog.OnClickBtnCancel() {
-                                                        @Override
-                                                        public void onCancel() {
-                                                            CPEConfig.getInstance().cleanAllSetupFlag();
-                                                            finish();
-                                                        }
-                                                    });
-                                                    errorDialog.showDialog(getString(R.string.login_psd_error_msg),
-                                                            new ErrorDialog.OnClickBtnRetry() {
-                                                                @Override
-                                                                public void onRetry() {
-                                                                    //showLoginDialog();
-                                                                    doLogin();
-                                                                }
-                                                            });
-                                                } else if (error_code.equalsIgnoreCase(ErrorCode
-                                                        .ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-                                                    //m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R
-                                                    // .string.other_login_warning_title),    m_loginDlg
-                                                    // .getLoginTimeUsedOutString());
-                                                    handleLoginError(R.string.other_login_warning_title,
-                                                            R.string.login_login_time_used_out_msg, true, false);
-                                                }
-                                            }
-                                        });
+                        forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg), new ForceLoginSelectDialog.OnClickButtonConfirm() {
+                            public void onConfirm() {
+                                mForceLoginDlg.autoForceLoginAndShowDialog(new AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener() {
+                                    public void onLoginSuccess() {
+                                        //
+                                        // buildStateHandlerChain(false);
                                     }
 
-
-                                }, new ForceLoginSelectDialog.OnClickBtnCancel() {
-
-                                    @Override
-                                    public void onCancel() {
-                                        handleLoginError(R.string.qs_title, R.string.qs_exit_query, true, false);
+                                    public void onLoginFailed(String error_code) {
+                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                                            ErrorDialog errorDialog = ErrorDialog.getInstance(ConnectTypeSelectActivity.this);
+                                            errorDialog.setCancelCallback(new ErrorDialog.OnClickBtnCancel() {
+                                                @Override
+                                                public void onCancel() {
+                                                    CPEConfig.getInstance().cleanAllSetupFlag();
+                                                    finish();
+                                                }
+                                            });
+                                            errorDialog.showDialog(getString(R.string.login_psd_error_msg), new ErrorDialog.OnClickBtnRetry() {
+                                                @Override
+                                                public void onRetry() {
+                                                    //showLoginDialog();
+                                                    doLogin();
+                                                }
+                                            });
+                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                                            //m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R
+                                            // .string.other_login_warning_title),    m_loginDlg
+                                            // .getLoginTimeUsedOutString());
+                                            handleLoginError(R.string.other_login_warning_title, R.string.login_login_time_used_out_msg, true, false);
+                                        }
                                     }
                                 });
+                            }
+
+
+                        }, new ForceLoginSelectDialog.OnClickBtnCancel() {
+
+                            @Override
+                            public void onCancel() {
+                                handleLoginError(R.string.qs_title, R.string.qs_exit_query, true, false);
+                            }
+                        });
 
                     } else {
-                        handleLoginError(R.string.other_login_warning_title, R.string
-                                .login_other_user_logined_error_msg, false, false);
+                        handleLoginError(R.string.other_login_warning_title, R.string.login_other_user_logined_error_msg, false, false);
                     }
                 } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
-                    handleLoginError(R.string.other_login_warning_title,
-                            R.string.login_login_time_used_out_msg, true, false);
+                    handleLoginError(R.string.other_login_warning_title, R.string.login_login_time_used_out_msg, true, false);
                 } else {
                     ErrorDialog errorDialog = ErrorDialog.getInstance(ConnectTypeSelectActivity.this);
 
@@ -466,15 +487,13 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                         }
                     });
 
-                    errorDialog.showDialog(
-                            getString(R.string.login_psd_error_msg),
-                            new ErrorDialog.OnClickBtnRetry() {
-                                @Override
-                                public void onRetry() {
-                                    //showLoginDialog();
-                                    doLogin();
-                                }
-                            });
+                    errorDialog.showDialog(getString(R.string.login_psd_error_msg), new ErrorDialog.OnClickBtnRetry() {
+                        @Override
+                        public void onRetry() {
+                            //showLoginDialog();
+                            doLogin();
+                        }
+                    });
                 }
             }
 
@@ -517,10 +536,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     finish();
                 }
 
-            } else if (action.equals(MessageUti.USER_HEARTBEAT_REQUEST) || action.equals(MessageUti
-                    .USER_COMMON_ERROR_32604_REQUEST)) {
-                if (response.isValid() && response.getErrorCode().equalsIgnoreCase(ErrorCode
-                        .ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
+            } else if (action.equals(MessageUti.USER_HEARTBEAT_REQUEST) || action.equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)) {
+                if (response.isValid() && response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
                     kickoffLogout();
                 }
             } else if (action.equals(MessageUti.USER_LOGOUT_REQUEST)) {
@@ -540,15 +557,13 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     mPinSuccessContainer.setVisibility(View.VISIBLE);
 
                     if (isRememberPassword) {
-                        SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD,
-                                mPinPassword.getText().toString());
+                        SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, mPinPassword.getText().toString());
                     } else {
                         SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, "");
                     }
 
                     //测试显示用的
-                    String pinPassword = SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).getString
-                            (PIN_PASSWORD, "");
+                    String pinPassword = SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).getString(PIN_PASSWORD, "");
                     if (!pinPassword.equals("")) {
                         Toast.makeText(getApplicationContext(), pinPassword, Toast.LENGTH_SHORT).show();
                     } else {
@@ -565,18 +580,18 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     mHandler.postDelayed(filterRunnable, 2000);
                 } else {//PIN解码失败
                     //PIN 的输入机会还有
-//                    pinRemainingTimes--;//由于是定时获取的sim卡状态，故手动自减一次机会
-//                    mPinPasswordDes.setTextColor(getResources().getColor(R.color.red));
-//                    if (pinRemainingTimes > 0) {
-//                        mWaitingContainer.setVisibility(View.GONE);
-//                        mHandlePinContainer.setVisibility(View.VISIBLE);
-//                        mHeaderSkipTv.setVisibility(View.VISIBLE);
-//                        mPasswordTimes.setText(pinRemainingTimes + "");
-//                        mPasswordTimes.setTextColor(getResources().getColor(R.color.red));
-//                    } else {
-//                        // PIN 输入机会用完
-//                        Toast.makeText(getApplicationContext(), "PIN码输入次数已经用完！！！", Toast.LENGTH_SHORT).show();
-//                    }
+                    //                    pinRemainingTimes--;//由于是定时获取的sim卡状态，故手动自减一次机会
+                    //                    mPinPasswordDes.setTextColor(getResources().getColor(R.color.red));
+                    //                    if (pinRemainingTimes > 0) {
+                    //                        mWaitingContainer.setVisibility(View.GONE);
+                    //                        mHandlePinContainer.setVisibility(View.VISIBLE);
+                    //                        mHeaderSkipTv.setVisibility(View.VISIBLE);
+                    //                        mPasswordTimes.setText(pinRemainingTimes + "");
+                    //                        mPasswordTimes.setTextColor(getResources().getColor(R.color.red));
+                    //                    } else {
+                    //                        // PIN 输入机会用完
+                    //                        Toast.makeText(getApplicationContext(), "PIN码输入次数已经用完！！！", Toast.LENGTH_SHORT).show();
+                    //                    }
 
                     hideAllLayout();
                     mPinFailContainer.setVisibility(View.VISIBLE);
@@ -585,7 +600,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
-    public void hideAllLayout(){
+    public void hideAllLayout() {
         mHeaderContainer.setVisibility(View.GONE);//头部
         mHeaderSkipTv.setVisibility(View.GONE);//头部的skip按钮
         mNormalContainer.setVisibility(View.GONE);//普通的内容页
@@ -595,12 +610,17 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mPinFailContainer.setVisibility(View.GONE);//pin解码失败页
     }
 
+    public void backToAllLayout() {
+        mHeaderContainer.setVisibility(View.VISIBLE);//头部
+        mHeaderSkipTv.setVisibility(View.VISIBLE);//头部的skip按钮
+        mNormalContainer.setVisibility(View.VISIBLE);//普通的内容页
+    }
+
     public void kickoffLogout() {
         ENUM.UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == ENUM.UserLoginStatus.Logout) {
             MainActivity.setKickoffLogoutFlag(true);
-            BusinessManager.getInstance().sendRequestMessage(
-                    MessageUti.USER_LOGOUT_REQUEST, null);
+            BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGOUT_REQUEST, null);
         }
     }
 

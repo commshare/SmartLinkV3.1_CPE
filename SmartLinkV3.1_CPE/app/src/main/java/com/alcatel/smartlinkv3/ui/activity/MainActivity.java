@@ -125,17 +125,16 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawable(null);
-        this.getWindowManager().getDefaultDisplay()
-                .getMetrics(m_displayMetrics);
+        this.getWindowManager().getDefaultDisplay().getMetrics(m_displayMetrics);
         fm = getFragmentManager();
         rl_top = (RelativeLayout) findViewById(R.id.main_layout_top);
         wifi_key_status = getResources().getString(R.string.wifi_key_edit);
 
-//        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
-//                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//
-//        rl_params.height = (m_displayMetrics.heightPixels * 9)/100;
-//        rl_top.setLayoutParams(rl_params);
+        //        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
+        //                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        //
+        //        rl_params.height = (m_displayMetrics.heightPixels * 9)/100;
+        //        rl_top.setLayoutParams(rl_params);
 
         m_homeBtn = (ImageView) this.findViewById(R.id.main_home);
         m_homeBtn.setOnClickListener(this);
@@ -173,8 +172,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         m_loginDlg = new LoginDialog(this);
         m_ForceloginDlg = new AutoForceLoginProgressDialog(this);
         m_autoLoginDialog = new AutoLoginProgressDialog(this);
-        m_unlockSimBtn = (Button) m_homeView.getView().findViewById(
-                R.id.unlock_sim_button);
+        m_unlockSimBtn = (Button) m_homeView.getView().findViewById(R.id.unlock_sim_button);
         m_unlockSimBtn.setOnClickListener(this);
 
         m_accessDeviceLayout = (RelativeLayout) m_homeView.getView().findViewById(R.id.access_num_layout);
@@ -192,18 +190,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     @Override
     public void onResume() {
         super.onResume();
-        this.registerReceiver(m_msgReceiver, new IntentFilter(
-                MessageUti.SIM_UNLOCK_PIN_REQUEST));
-        this.registerReceiver(m_msgReceiver, new IntentFilter(
-                MessageUti.SIM_UNLOCK_PUK_REQUEST));
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(
-                MessageUti.USER_LOGOUT_REQUEST));
+        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
+        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
+        this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
 
 
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(
-                PAGE_TO_VIEW_HOME));
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(
-                MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
+        this.registerReceiver(m_msgReceiver2, new IntentFilter(PAGE_TO_VIEW_HOME));
+        this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
 
         registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
         registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
@@ -335,20 +328,18 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
             if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
                 if (!PinDialog.m_isShow) {
-                    m_dlgPin.showDialog(sim.m_nPinRemainingTimes,
-                            new OnPINError() {
+                    m_dlgPin.showDialog(sim.m_nPinRemainingTimes, new OnPINError() {
+                        @Override
+                        public void onPinError() {
+                            String strMsg = getString(R.string.pin_error_waring_title);
+                            m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
                                 @Override
-                                public void onPinError() {
-                                    String strMsg = getString(R.string.pin_error_waring_title);
-                                    m_dlgError.showDialog(strMsg,
-                                            new OnClickBtnRetry() {
-                                                @Override
-                                                public void onRetry() {
-                                                    m_dlgPin.showDialog();
-                                                }
-                                            });
+                                public void onRetry() {
+                                    m_dlgPin.showDialog();
                                 }
                             });
+                        }
+                    });
                 } else {
                     m_dlgPin.onSimStatusReady(sim);
                 }
@@ -364,22 +355,20 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
             if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
                 if (!PukDialog.m_isShow) {
-                    m_dlgPuk.showDialog(sim.m_nPukRemainingTimes,
-                            new OnPUKError() {
+                    m_dlgPuk.showDialog(sim.m_nPukRemainingTimes, new OnPUKError() {
+
+                        @Override
+                        public void onPukError() {
+                            String strMsg = getString(R.string.puk_error_waring_title);
+                            m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
 
                                 @Override
-                                public void onPukError() {
-                                    String strMsg = getString(R.string.puk_error_waring_title);
-                                    m_dlgError.showDialog(strMsg,
-                                            new OnClickBtnRetry() {
-
-                                                @Override
-                                                public void onRetry() {
-                                                    m_dlgPuk.showDialog();
-                                                }
-                                            });
+                                public void onRetry() {
+                                    m_dlgPuk.showDialog();
                                 }
                             });
+                        }
+                    });
                 } else {
                     m_dlgPuk.onSimStatusReady(sim);
                 }
@@ -418,8 +407,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					: R.drawable.main_new_sms_tab_grey;
 			m_newSmsTextView.setBackgroundResource(nDrawable);
 		}*/
-        int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.tab_sms_pre
-                : R.drawable.tab_sms_nor;
+        int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.tab_sms_pre : R.drawable.tab_sms_nor;
         m_smsTextView.setImageResource(nDrawable);
 
         if (nNewSmsCount <= 0) {
@@ -502,7 +490,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                 unlockSimBtnClick(true);
                 break;
             case R.id.access_num_layout:
-//			accessDeviceLayoutClick();
+                //			accessDeviceLayoutClick();
                 navigateAfterLogin(() -> {
                     Intent intent = new Intent();
                     intent.setClass(this, ActivityDeviceManager.class);
@@ -523,8 +511,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         if (m_loginStatus != null && m_loginStatus == UserLoginStatus.LOGIN) {
             MainActivity.setLogoutFlag(true);
             SharedPrefsUtil.getInstance(this).putBoolean(LOGOUT_FLAG, true);
-            BusinessManager.getInstance().sendRequestMessage(
-                    MessageUti.USER_LOGOUT_REQUEST, null);
+            BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGOUT_REQUEST, null);
             if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
                 Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
                 this.sendBroadcast(intent2);
@@ -582,14 +569,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         }
 
         navigateAfterLogin(() -> {
-            SimStatusModel simStatus = BusinessManager.getInstance()
-                    .getSimStatus();
-//		if(simStatus.m_SIMState == SIMState.Accessable) {
-//			setMainBtnStatus(R.id.main_wifiKey);
-//			showView(ViewIndex.VIEW_WIFIKEY);
-//			updateTitleUI(ViewIndex.VIEW_WIFIKEY);
-//			pageIndex = ViewIndex.VIEW_WIFIKEY;
-//		}
+            SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
+            //		if(simStatus.m_SIMState == SIMState.Accessable) {
+            //			setMainBtnStatus(R.id.main_wifiKey);
+            //			showView(ViewIndex.VIEW_WIFIKEY);
+            //			updateTitleUI(ViewIndex.VIEW_WIFIKEY);
+            //			pageIndex = ViewIndex.VIEW_WIFIKEY;
+            //		}
 
             setMainBtnStatus(R.id.main_wifiKey);
             showView(ViewIndex.VIEW_WIFIKEY);
@@ -605,8 +591,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         }
 
         navigateAfterLogin(() -> {
-            SimStatusModel simStatus = BusinessManager.getInstance()
-                    .getSimStatus();
+            SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
             if (simStatus.m_SIMState == SIMState.Accessable) {
                 setMainBtnStatus(R.id.tab_sms_layout);
                 showView(ViewIndex.VIEW_SMS);
@@ -672,12 +657,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
     private void addView() {
         m_homeView = new ViewHome(this);
-        m_viewFlipper.addView(m_homeView.getView(), ViewIndex.VIEW_HOME,
-                m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_homeView.getView(), ViewIndex.VIEW_HOME, m_viewFlipper.getLayoutParams());
 
         m_wifiKeyView = new ViewWifiKey(this, fm);
-        m_viewFlipper.addView(m_wifiKeyView.getView(),
-                ViewIndex.VIEW_WIFIKEY, m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_wifiKeyView.getView(), ViewIndex.VIEW_WIFIKEY, m_viewFlipper.getLayoutParams());
         m_wifiKeyView.setOnBackPressCallback(new ViewWifiKey.OnBackPressCallback() {
             @Override
             public void onBackPress() {
@@ -686,16 +669,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         });
 
         m_microsdView = new ViewMicroSD(this);
-        m_viewFlipper.addView(m_microsdView.getView(),
-                ViewIndex.VIEW_MICROSD, m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_microsdView.getView(), ViewIndex.VIEW_MICROSD, m_viewFlipper.getLayoutParams());
 
         m_smsView = new ViewSms(this);
-        m_viewFlipper.addView(m_smsView.getView(), ViewIndex.VIEW_SMS,
-                m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_smsView.getView(), ViewIndex.VIEW_SMS, m_viewFlipper.getLayoutParams());
 
         m_settingView = new ViewSetting(this);
-        m_viewFlipper.addView(m_settingView.getView(),
-                ViewIndex.VIEW_SETTINGE, m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_settingView.getView(), ViewIndex.VIEW_SETTINGE, m_viewFlipper.getLayoutParams());
 
     }
 
@@ -745,18 +725,15 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
     private void setMainBtnStatus(int nActiveBtnId) {
         m_preButton = nActiveBtnId;
-        int nDrawable = nActiveBtnId == R.id.main_home ? R.drawable.tab_home_pre
-                : R.drawable.tab_home_nor;
+        int nDrawable = nActiveBtnId == R.id.main_home ? R.drawable.tab_home_pre : R.drawable.tab_home_nor;
         m_homeBtn.setImageResource(nDrawable);
 
-        nDrawable = nActiveBtnId == R.id.main_wifiKey ? R.drawable.tab_wifi_pre
-                : R.drawable.tab_wifi_nor;
+        nDrawable = nActiveBtnId == R.id.main_wifiKey ? R.drawable.tab_wifi_pre : R.drawable.tab_wifi_nor;
         m_wifiKeyBtn.setImageResource(nDrawable);
 
         updateNewSmsUI(m_nNewCount);
 
-        nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.tab_settings_pre
-                : R.drawable.tab_settings_nor;
+        nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.tab_settings_pre : R.drawable.tab_settings_nor;
         m_settingBtn.setImageResource(nDrawable);
     }
 
@@ -789,30 +766,27 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             m_dlgPuk.closeDialog();
         }
 
-        SimStatusModel simStatus = BusinessManager.getInstance()
-                .getSimStatus();
+        SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
         // set the remain times
         if (null != m_dlgPin) {
             m_dlgPin.updateRemainTimes(simStatus.m_nPinRemainingTimes);
         }
         if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
             if (!PinDialog.m_isShow) {
-                m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes,
-                        new OnPINError() {
+                m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes, new OnPINError() {
+
+                    @Override
+                    public void onPinError() {
+                        String strMsg = getString(R.string.pin_error_waring_title);
+                        m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
 
                             @Override
-                            public void onPinError() {
-                                String strMsg = getString(R.string.pin_error_waring_title);
-                                m_dlgError.showDialog(strMsg,
-                                        new OnClickBtnRetry() {
-
-                                            @Override
-                                            public void onRetry() {
-                                                m_dlgPin.showDialog();
-                                            }
-                                        });
+                            public void onRetry() {
+                                m_dlgPin.showDialog();
                             }
                         });
+                    }
+                });
             }
         }
     }
@@ -824,31 +798,28 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             m_dlgPin.closeDialog();
         }
 
-        SimStatusModel simStatus = BusinessManager.getInstance()
-                .getSimStatus();
+        SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
         // set the remain times
         if (null != m_dlgPuk) {
             m_dlgPuk.updateRemainTimes(simStatus.m_nPukRemainingTimes);
         }
         if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
             if (!PukDialog.m_isShow) {
-                m_dlgPuk.showDialog(simStatus.m_nPukRemainingTimes,
-                        new OnPUKError() {
+                m_dlgPuk.showDialog(simStatus.m_nPukRemainingTimes, new OnPUKError() {
+
+                    @Override
+                    public void onPukError() {
+                        String strMsg = getString(R.string.puk_error_waring_title);
+                        m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
 
                             @Override
-                            public void onPukError() {
-                                String strMsg = getString(R.string.puk_error_waring_title);
-                                m_dlgError.showDialog(strMsg,
-                                        new OnClickBtnRetry() {
-
-                                            @Override
-                                            public void onRetry() {
-                                                m_dlgPuk.showDialog();
-                                            }
-                                        });
-
+                            public void onRetry() {
+                                m_dlgPuk.showDialog();
                             }
                         });
+
+                    }
+                });
             }
         }
     }
@@ -866,10 +837,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             listener.onLoginFinished();
             return;
         } else if (status != UserLoginStatus.Logout) {
-            CommonErrorInfoDialog m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(MainActivity.this);
-            m_dialog_timeout_info.showDialog(
-                    getString(R.string.other_login_warning_title),
-                    getString(R.string.login_login_time_used_out_msg));
+            CommonErrorInfoDialog m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(this);
+            m_dialog_timeout_info.showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_login_time_used_out_msg));
             return;
         }
 
@@ -883,9 +852,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     m_loginDlg.showTimeout();
                     return;
                 } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                    ErrorDialog.getInstance(MainActivity.this).
-                            showDialog(R.string.login_psd_error_msg,
-                                    () -> m_loginDlg.showDialog(listener));
+                    ErrorDialog.getInstance(getBaseContext()).
+                                                                     showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
                     return;
                 } else if (!error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                     return;
@@ -894,27 +862,24 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                 if (!FeatureVersionManager.getInstance().isSupportForceLogin()) {
                     m_loginDlg.showOtherLogin();
                     return;
-                }
+                } 
 
                 ForceLoginSelectDialog.getInstance(MainActivity.this).
-                        showDialog(() -> m_ForceloginDlg.autoForceLoginAndShowDialog(
-                                new OnAutoForceLoginFinishedListener() {
-                                    public void onLoginSuccess() {
-                                        listener.onLoginFinished();
-                                    }
+                                                                             showDialog(() -> m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                                                                                 public void onLoginSuccess() {
+                                                                                     listener.onLoginFinished();
+                                                                                 }
 
-                                    public void onLoginFailed(String error_code) {
-                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-                                            SmartLinkV3App.getInstance().setForcesLogin(true);
-                                            ErrorDialog.getInstance(MainActivity.this).
-                                                    showDialog(R.string.login_psd_error_msg,
-                                                            () -> m_loginDlg.showDialog(listener));
-                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-                                            m_loginDlg.showTimeout();
-                                        }
-                                    }
-                                })
-                        );
+                                                                                 public void onLoginFailed(String error_code) {
+                                                                                     if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                                                                                         SmartLinkV3App.getInstance().setForcesLogin(true);
+                                                                                         ErrorDialog.getInstance(MainActivity.this).
+                                                                                                                                           showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
+                                                                                     } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                                                                                         m_loginDlg.showTimeout();
+                                                                                     }
+                                                                                 }
+                                                                             }));
             }
 
             @Override
@@ -991,7 +956,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     public void showMicroView() {
         if (BusinessManager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900")) {
             //暂时屏蔽SD卡的选项
-//			m_microsdBtn.setVisibility(View.VISIBLE);
+            //			m_microsdBtn.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -1004,7 +969,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         if (bSupport) {
             if ((FeatureVersionManager.getInstance().isSupportApi("Sharing", "GetFtpStatus")) || FeatureVersionManager.getInstance().isSupportDLNA()) {
                 //暂时屏蔽SD卡的选项
-//				m_microsdBtn.setVisibility(View.VISIBLE);
+                //				m_microsdBtn.setVisibility(View.VISIBLE);
             }
         } else {
             m_microsdBtn.setVisibility(View.GONE);

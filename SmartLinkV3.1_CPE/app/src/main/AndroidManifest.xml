@@ -1,284 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.alcatel.smartlinkv3"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="19"
-          android:versionName="3.2.5">
+<manifest
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    package = "com.alcatel.smartlinkv3"
+    android:versionCode = "19"
+    android:versionName = "3.2.5">
 
     <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="17"/>
+        android:minSdkVersion = "9"
+        android:targetSdkVersion = "17" />
 
     <supports-screens
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:resizeable="true"
-        android:xlargeScreens="true"/>
+        android:largeScreens = "true"
+        android:normalScreens = "true"
+        android:resizeable = "true"
+        android:xlargeScreens = "true" />
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name = "android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name = "android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name = "android.permission.INTERNET" />
+    <uses-permission android:name = "android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name = "android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name = "android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name = "android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name = "android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name = "android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name = "android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name = "android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name = "android.permission.GET_TASKS" />
+    <uses-permission android:name = "android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name = "android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name = "android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name = "android.permission.RECORD_AUDIO" />
+    <uses-permission android:name = "android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name = "android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".ui.activity.SmartLinkV3App"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:name = ".ui.activity.SmartLinkV3App"
+        android:allowBackup = "true"
+        android:icon = "@drawable/ic_launcher"
+        android:label = "@string/app_name"
+        android:theme = "@style/AppTheme">
         <activity
-            android:name=".ui.activity.LoadingActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:name = ".ui.activity.LoadingActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:theme = "@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name = "android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name = "android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.GuideActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:name = ".ui.activity.GuideActivity"
+            android:launchMode = "singleTask"
+            android:theme = "@android:style/Theme.Black.NoTitleBar">
         </activity>
         <activity
-            android:name=".ui.activity.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:name = ".ui.activity.MainActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@android:style/Theme.Black.NoTitleBar">
         </activity>
         <activity
-            android:name=".ui.activity.RefreshWifiActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:name = ".ui.activity.RefreshWifiActivity"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:launchMode = "singleTask"
+            android:theme = "@android:style/Theme.Black.NoTitleBar">
         </activity>
         <activity
-            android:name=".ui.activity.QuickSetupActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:screenOrientation="sensor"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.QuickSetupActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents = "true"
+            android:launchMode = "singleTask"
+            android:noHistory = "true"
+            android:screenOrientation = "sensor"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.ActivitySMSDelete"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustResize">
+            android:name = ".ui.activity.ActivitySMSDelete"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode = "adjustResize">
         </activity>
         <activity
-            android:name=".ui.activity.ActivityNewSms"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustResize">
+            android:name = ".ui.activity.ActivityNewSms"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode = "adjustResize">
         </activity>
         <activity
-            android:name=".ui.activity.ActivitySmsDetail"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustResize">
+            android:name = ".ui.activity.ActivitySmsDetail"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode = "adjustResize">
         </activity>
-        <!--<activity-->
-            <!--android:name=".ui.activity.SdSharingActivity"-->
-            <!--android:configChanges="orientation|screenSize|keyboardHidden"-->
-            <!--android:theme="@android:style/Theme.Black.NoTitleBar">-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".ui.activity.SdSharingActivity" -->
+        <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
+        <!-- android:theme="@android:style/Theme.Black.NoTitleBar"> -->
+        <!-- </activity> -->
         <activity
-            android:name=".ui.activity.UsageActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
-        </activity>
-        <activity
-            android:name=".ui.activity.UsageSettingActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:name = ".ui.activity.UsageActivity"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@android:style/Theme.Black.NoTitleBar">
         </activity>
         <activity
-            android:name=".ui.activity.SettingWifiActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.UsageSettingActivity"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@android:style/Theme.Black.NoTitleBar">
         </activity>
         <activity
-            android:name=".ui.activity.SettingAccountActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingWifiActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingNetworkActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingAccountActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingShareActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingNetworkActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingPowerSavingActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingShareActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingBackupRestoreActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingPowerSavingActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SystemInfoActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingBackupRestoreActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingNewAboutActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SystemInfoActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingAboutActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingNewAboutActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingDeviceActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
+            android:name = ".ui.activity.SettingAboutActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".ui.activity.SettingUpgradeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMyTitle">
-        </activity>
-        <!--<activity-->
-            <!--android:name=".ui.activity.SetDefaultDirectoryActivity"-->
-            <!--android:configChanges="orientation|screenSize|keyboardHidden"-->
-            <!--android:theme="@android:style/Theme.Black.NoTitleBar">-->
-        <!--</activity>-->
-        <activity
-            android:name=".ui.activity.ActivityDeviceManager"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:name = ".ui.activity.SettingDeviceActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
         <activity
-            android:name=".mediaplayer.activity.Go2ContentActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
-        <activity
-            android:name=".mediaplayer.music.MusicPlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
-        <activity
-            android:name=".mediaplayer.video.VideoPlayerActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
-        <activity
-            android:name=".mediaplayer.picture.PicturePlayerActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
-        <!--<activity-->
-            <!--android:name=".ui.activity.SettingAboutFeedbackImageSelector"-->
-            <!--android:configChanges="orientation|screenSize|keyboardHidden"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:theme="@style/titlebarstyle">-->
-        <!--</activity>-->
-        <activity
-            android:name=".fileexplorer.FtpFileExplorerTabActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/Custom_ActionBar_Style">
-        </activity>
-        <activity
-            android:name=".fileexplorer.FtpFileDialog"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/FtpFileDialog_Theme">
+            android:name = ".ui.activity.SettingUpgradeActivity"
+            android:configChanges = "orientation|keyboardHidden|screenSize"
+            android:launchMode = "singleTask"
+            android:theme = "@style/titlebarstyle">
         </activity>
 
-        <activity android:name=".ui.activity.ConnectTypeSelectActivity"
-                  android:configChanges="orientation|screenSize|keyboardHidden"
-                  android:screenOrientation="portrait">
+        <!-- 测试Activity -->
+        <activity android:name = ".ui.activity.TestActivity">
         </activity>
 
-        <activity android:name=".ui.activity.SettingChangePinActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:launchMode="singleTask"
-                android:theme="@style/AppThemeMyTitle">
+        <!-- SettingNetModeActivity -->
+        <activity android:name = ".ui.activity.SettingNetModeActivity">
         </activity>
 
-        <receiver android:name=".appwidget.SmartLinkWidget">
+        <!-- <activity -->
+        <!-- android:name=".ui.activity.SetDefaultDirectoryActivity" -->
+        <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
+        <!-- android:theme="@android:style/Theme.Black.NoTitleBar"> -->
+        <!-- </activity> -->
+        <activity
+            android:name = ".ui.activity.ActivityDeviceManager"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        <activity
+            android:name = ".mediaplayer.activity.Go2ContentActivity"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:launchMode = "singleTask"
+            android:theme = "@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name = ".mediaplayer.music.MusicPlayerActivity"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:launchMode = "singleTask"
+            android:theme = "@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name = ".mediaplayer.video.VideoPlayerActivity"
+            android:launchMode = "singleTask"
+            android:screenOrientation = "landscape"
+            android:theme = "@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name = ".mediaplayer.picture.PicturePlayerActivity"
+            android:launchMode = "singleTask"
+            android:theme = "@android:style/Theme.NoTitleBar">
+        </activity>
+        <!-- <activity -->
+        <!-- android:name=".ui.activity.SettingAboutFeedbackImageSelector" -->
+        <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
+        <!-- android:launchMode="singleTask" -->
+        <!-- android:theme="@style/titlebarstyle"> -->
+        <!-- </activity> -->
+        <activity
+            android:name = ".fileexplorer.FtpFileExplorerTabActivity"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@style/Custom_ActionBar_Style">
+        </activity>
+        <activity
+            android:name = ".fileexplorer.FtpFileDialog"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:theme = "@style/FtpFileDialog_Theme">
+        </activity>
+        <activity
+            android:name = ".ui.activity.ConnectTypeSelectActivity"
+            android:configChanges = "orientation|screenSize|keyboardHidden"
+            android:screenOrientation = "portrait">
+        </activity>
+
+        <receiver android:name = ".appwidget.SmartLinkWidget">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.alcatel.smartlinkv3.business.cpewificonnectchange"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="com.alcatel.smartlinkv3.business.network.getnetworkinfo"/>
-                <action android:name="com.alcatel.smartlinkv3.business.power.getBatteryState"/>
-                <action android:name="com.alcatel.smartlinkv3.business.sms.getcontactlist"/>
-                <action android:name="com.alcatel.smartlinkv3.business.wan.getconnectstatus"/>
-                <action android:name="com.alcatel.smartlinkv3.business.statistics.getusagesettings"/>
-                <action android:name="com.alcatel.smartlinkv3.appwidget.smartLinkWidget"/>
+                <action android:name = "android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name = "com.alcatel.smartlinkv3.business.cpewificonnectchange" />
+                <action android:name = "android.intent.action.BOOT_COMPLETED" />
+                <action android:name = "com.alcatel.smartlinkv3.business.network.getnetworkinfo" />
+                <action android:name = "com.alcatel.smartlinkv3.business.power.getBatteryState" />
+                <action android:name = "com.alcatel.smartlinkv3.business.sms.getcontactlist" />
+                <action android:name = "com.alcatel.smartlinkv3.business.wan.getconnectstatus" />
+                <action android:name = "com.alcatel.smartlinkv3.business.statistics.getusagesettings" />
+                <action android:name = "com.alcatel.smartlinkv3.appwidget.smartLinkWidget" />
             </intent-filter>
 
             <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/smart_link_widget_provider"/>
+                android:name = "android.appwidget.provider"
+                android:resource = "@xml/smart_link_widget_provider" />
         </receiver>
 
-        <service android:name=".common.NotificationService">
+        <service android:name = ".common.NotificationService">
         </service>
-        <!--<service android:name=".samba.SmbService">-->
-        <!--</service>-->
+        <!-- <service android:name=".samba.SmbService"> -->
+        <!-- </service> -->
         <service
-            android:name=".mediaplayer.center.DlnaService"
-            android:enabled="true">
+            android:name = ".mediaplayer.center.DlnaService"
+            android:enabled = "true">
             <intent-filter>
-                <action android:name="com.alcatel.smartlinkv3.allshare.search_device"/>
-                <action android:name="com.alcatel.smartlinkv3.allshare.reset_search_device"/>
+                <action android:name = "com.alcatel.smartlinkv3.allshare.search_device" />
+                <action android:name = "com.alcatel.smartlinkv3.allshare.reset_search_device" />
             </intent-filter>
         </service>
+
         <provider
-            android:authorities="com.alcatel.smartlinkv3.sms"
-            android:name=".provider.MediaProvider"></provider>
+            android:name = ".provider.MediaProvider"
+            android:authorities = "com.alcatel.smartlinkv3.sms" />
 
         <receiver
-            android:name=".common.BootReceiver"
-            android:priority="2147483647">
+            android:name = ".common.BootReceiver"
+            android:priority = "2147483647">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name = "android.intent.action.BOOT_COMPLETED" />
+                <action android:name = "android.intent.action.TIME_SET" />
             </intent-filter>
         </receiver>
 
+        <activity android:name = ".ui.activity.NetModeConnectStatusActivity">
+        </activity>
     </application>
 
 </manifest>

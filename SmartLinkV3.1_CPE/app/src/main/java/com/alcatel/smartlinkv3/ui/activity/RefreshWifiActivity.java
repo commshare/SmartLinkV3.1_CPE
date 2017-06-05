@@ -106,7 +106,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
 
         Class<?> clazz;
         if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-//		  clazz = QuickSetupActivity.class;
+            //		  clazz = QuickSetupActivity.class;
             clazz = ConnectTypeSelectActivity.class;
         } else {
             clazz = MainActivity.class;
@@ -126,8 +126,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
             intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
         } else {
             intent = new Intent();
-            ComponentName component = new ComponentName("com.android.settings",
-                    "com.android.settings.WirelessSettings");
+            ComponentName component = new ComponentName("com.android.settings", "com.android.settings.WirelessSettings");
             intent.setComponent(component);
             intent.setAction("android.intent.action.VIEW");
         }
@@ -153,10 +152,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     protected void onPause() {
         super.onPause();
 
-        if (null != m_msgReceiver) {
-            this.unregisterReceiver(m_msgReceiver);
-        }
-
+        this.unregisterReceiver(m_msgReceiver);
         dismissTipsDialog();
     }
 
@@ -164,8 +160,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
         mTipsDialog = new Dialog(this, R.style.UpgradeMyDialog);
         mTipsDialog.setCanceledOnTouchOutside(false);
         mTipsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this,
-                R.layout.dialog_get_connected, null);
+        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this, R.layout.dialog_get_connected, null);
 
         TextView okBtn = (TextView) deleteDialogLLayout.findViewById(R.id.get_connected_ok_btn);
 
@@ -174,7 +169,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 dismissTipsDialog();
-//                clickBtn1();
+                //                clickBtn1();
             }
         });
         mTipsDialog.show();

@@ -60,7 +60,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     public final String TAG_AUTH_TYPE = "auth_type";
     public final String TAG_DAIL_NUMBER = "dial_number";
     public final String TAG_IP_ADDRESS = "ip_address";
-//////////////////////////////profile tags end/////////////////////////////////
+    //////////////////////////////profile tags end/////////////////////////////////
 
     private FragmentNetworkSelection m_fragment_network_selection = null;
     private FragmentProfileManagement m_fragment_profile_management = null;
@@ -76,8 +76,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     private TextView m_tv_title = null;
     private ImageButton m_ib_back = null;
     private TextView m_tv_back = null;
-    private RelativeLayout m_network_set_data_plan_container = null;
-    private RelativeLayout m_network_change_pin_container = null;
     private RelativeLayout m_network_mode_container = null;
     private RelativeLayout m_network_selection_container = null;
     private RelativeLayout m_network_profile_management = null;
@@ -118,7 +116,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     private boolean m_delete_menu = false;
     private RelativeLayout mRoamingContainer;
     private TextView mRoamingSwitch;
-    private TextView mMobileDataSwitch;
     private LinearLayout mSetNetworkModeContainer;
 
     private boolean m_bIsRoamingDisconnectedEdit = false;
@@ -160,17 +157,11 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         m_set_network_setting_filter.addAction(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST);
         m_network_setting_receiver = new NetworkSettingReceiver();
 
-        m_network_set_data_plan_container = (RelativeLayout) findViewById(R.id.network_set_data_plan);
-
-        m_network_change_pin_container = (RelativeLayout) findViewById(R.id.network_change_pin);
-
-
         m_network_mode_container = (RelativeLayout) findViewById(R.id.network_mode);
         m_network_selection_container = (RelativeLayout) findViewById(R.id.network_selection);
         m_network_profile_management = (RelativeLayout) findViewById(R.id.network_profile_management);
         mRoamingContainer = (RelativeLayout) findViewById(R.id.network_roaming_container);
         mRoamingSwitch = (TextView) findViewById(R.id.network_roaming_switch);
-        mMobileDataSwitch = (TextView) findViewById(R.id.network_mobile_data_switch);
         m_selected_profile = (TextView) findViewById(R.id.network_selected_profile);
 
         m_mode_desc = (TextView) findViewById(R.id.network_mode_desc);
@@ -178,14 +169,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
         m_waiting_circle = (RelativeLayout) findViewById(R.id.waiting_progressbar);
 
-        m_network_set_data_plan_container.setOnClickListener(this);
         m_network_mode_container.setOnClickListener(this);
-        m_network_change_pin_container.setOnClickListener(this);
         m_network_selection_container.setOnClickListener(this);
         m_network_profile_management.setOnClickListener(this);
         mRoamingSwitch.setOnClickListener(this);
-        mMobileDataSwitch.setOnClickListener(this);
-
 
         m_level_one_menu = (LinearLayout) findViewById(R.id.level_one_menu);
         m_fragment_manager = this.getSupportFragmentManager();
@@ -214,7 +201,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         m_fragment_profile_management_detail = new FragmentProfileManagementDetail();
 
 
-//		changeTitlebar(R.string.setting_network_mode);
+        //		changeTitlebar(R.string.setting_network_mode);
         mSetNetworkModeContainer = (LinearLayout) findViewById(R.id.setting_network_mode_container);
         m_network_mode_radiogroup = (RadioGroup) findViewById(R.id.setting_network_mode);
         m_current_mode = BusinessManager.getInstance().getNetworkManager().getNetworkMode();
@@ -251,7 +238,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
         });
 
-//		refresButton();
+        //		refresButton();
 
 
     }
@@ -337,9 +324,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 }
                 break;
             case R.id.network_mode:
-//			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
-//			BusinessManager.getInstance().getProfileManager().startAddNewProfile(null);
-//			BusinessManager.getInstance().getProfileManager().startDeleteProfile(null);
+                //			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
+                //			BusinessManager.getInstance().getProfileManager().startAddNewProfile(null);
+                //			BusinessManager.getInstance().getProfileManager().startDeleteProfile(null);
                 if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
                     mSetNetworkModeContainer.setVisibility(View.VISIBLE);
                     changeTitlebar(R.string.setting_network_mode);
@@ -387,15 +374,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
             case R.id.network_roaming_switch:
                 onBtnRoamingAutoDisconnectClick();
                 break;
-            case R.id.network_mobile_data_switch:
-                onBtnMobileDataClick();
-                break;
-            case R.id.network_set_data_plan:
-                onBtnNetWorkDataPlanClick();
-                break;
-            case R.id.network_change_pin:
-                onBtnNetWorkChangePinClick();
-                break;
             case R.id.tv_titlebar_add:
                 if (m_fragment_profile_management.getIsDeleting()) {
                     return;
@@ -403,7 +381,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 if (m_fragment_tag_stack.size() > 0) {
                     Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
                 }
-//			setAddAndDeleteVisibility(View.GONE);
+                //			setAddAndDeleteVisibility(View.GONE);
                 Bundle dataBundle = new Bundle();
                 dataBundle.putString(TAG_OPERATION, TAG_OPERATION_ADD_PROFILE);
                 showFragmentProfileManagementDetail(dataBundle);
@@ -435,8 +413,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                     String FragmentTag = m_fragment_tag_stack.peek();
                     if (FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)) {
                         m_fragment_profile_management_detail.AddOrDeleteProfile();
-//					Log.v("AddOrEditProfile", "TEST");
-//					this.onBackPressed();
+                        //					Log.v("AddOrEditProfile", "TEST");
+                        //					this.onBackPressed();
                     }
                     if (FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT)) {
                         m_edit_or_done_container.setVisibility(View.INVISIBLE);
@@ -506,18 +484,13 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         registerReceiver(m_network_setting_receiver, m_set_network_setting_filter);
 
         /*--------------- add start 2017.1.6 ---------------*/
-        registerReceiver(m_network_setting_receiver, new IntentFilter(
-                MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET));
-        registerReceiver(m_network_setting_receiver, new IntentFilter(
-                MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET));
-        registerReceiver(m_network_setting_receiver, new IntentFilter(
-                MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
-        registerReceiver(m_network_setting_receiver, new IntentFilter(
-                MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
+        registerReceiver(m_network_setting_receiver, new IntentFilter(MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET));
+        registerReceiver(m_network_setting_receiver, new IntentFilter(MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET));
+        registerReceiver(m_network_setting_receiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
+        registerReceiver(m_network_setting_receiver, new IntentFilter(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
         /*--------------- add end 2017.1.6 ---------------*/
 
-        BusinessManager.getInstance().sendRequestMessage(
-                MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
         m_waiting_circle.setVisibility(View.VISIBLE);
         m_network_mode_container.setEnabled(false);
         m_network_selection_container.setEnabled(false);
@@ -559,8 +532,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
             DataValue data = new DataValue();
             data.addParam("network_mode", mode);
             data.addParam("netselection_mode", BusinessManager.getInstance().getNetworkManager().getNetworkSelection());
-            BusinessManager.getInstance().sendRequestMessage(
-                    MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
+            BusinessManager.getInstance().sendRequestMessage(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
         }
         mSetNetworkModeContainer.setVisibility(View.GONE);
         changeTitlebar(R.string.setting_network);
@@ -578,13 +550,13 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     public void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-//		BusinessManager.getInstance().getNetworkManager().GetNetworkSettings(null);
+        //		BusinessManager.getInstance().getNetworkManager().GetNetworkSettings(null);
 
-//		DataValue data = new DataValue();
-//		data.addParam("network_mode", 0);
-//		data.addParam("netselection_mode", 0);
-//		BusinessManager.getInstance().sendRequestMessage(
-//				MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
+        //		DataValue data = new DataValue();
+        //		data.addParam("network_mode", 0);
+        //		data.addParam("netselection_mode", 0);
+        //		BusinessManager.getInstance().sendRequestMessage(
+        //				MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
         UserGetNetworkSetting();
         showRoamingAutoDisconnectBtn();
     }
@@ -623,16 +595,13 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 if (ok) {
                     showRoamingAutoDisconnectBtn();
                 }
-            } else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET)
-                    || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)
-                    || intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)) {
+            } else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET) || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET) || intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)) {
                 if (ok) {
                     showRoamingAutoDisconnectBtn();
                 }
             }
 
-            if (intent.getAction().equalsIgnoreCase(
-                    MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST)) {
+            if (intent.getAction().equalsIgnoreCase(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST)) {
                 if (ok) {
                     switch (BusinessManager.getInstance().getNetworkManager().getNetworkMode()) {
 
@@ -672,8 +641,8 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                             break;
                     }
 
-//					current_network_mode = BusinessManager.getInstance().getNetworkManager().getNetworkMode();
-//					current_network_selection_mode = BusinessManager.getInstance().getNetworkManager().getNetworkSelection();
+                    //					current_network_mode = BusinessManager.getInstance().getNetworkManager().getNetworkMode();
+                    //					current_network_selection_mode = BusinessManager.getInstance().getNetworkManager().getNetworkSelection();
 
                     m_network_mode_container.setEnabled(true);
                     m_network_selection_container.setEnabled(true);
@@ -687,11 +656,9 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 m_waiting_circle.setVisibility(View.GONE);
             }
 
-            if (intent.getAction().equalsIgnoreCase(
-                    MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
+            if (intent.getAction().equalsIgnoreCase(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
                 if (ok) {
-                    BusinessManager.getInstance().sendRequestMessage(
-                            MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
+                    BusinessManager.getInstance().sendRequestMessage(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
                 } else if (response.isValid()) {
                     //Log
                     String strInfo = getString(R.string.unknown_error);
@@ -700,11 +667,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 m_waiting_circle.setVisibility(View.GONE);
             }
 
-            if (intent.getAction().equalsIgnoreCase(
-                    MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
+            if (intent.getAction().equalsIgnoreCase(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
 
                 if (ok) {
-//					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
+                    //					m_network_search_result_list = BusinessManager.getInstance().getNetworkManager().getNetworkList();
                     m_profile_list_data = BusinessManager.getInstance().getProfileManager().GetProfileListData();
                     for (ProfileItem a : m_profile_list_data) {
                         if (a.Default == 1) {
@@ -717,12 +683,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                     Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
                 }
                 m_waiting_circle.setVisibility(View.GONE);
-            } else if (intent.getAction().equals(
-                    MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
+            } else if (intent.getAction().equals(MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
                 m_bIsRoamingDisconnectedEdit = false;
                 showRoamingAutoDisconnectBtn();
-            } else if (intent.getAction().equals(
-                    MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
+            } else if (intent.getAction().equals(MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
                 if (ok) {
                     showRoamingAutoDisconnectBtn();
                 }
@@ -742,12 +706,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
             mRoamingSwitch.setEnabled(true);
             if (connectionSetting.HRoamingConnect == ENUM.OVER_ROAMING_STATE.Disable) {
                 // off
-                mRoamingSwitch
-                        .setBackgroundResource(R.drawable.general_btn_off);
+                mRoamingSwitch.setBackgroundResource(R.drawable.general_btn_off);
             } else {
                 // on
-                mRoamingSwitch
-                        .setBackgroundResource(R.drawable.general_btn_on);
+                mRoamingSwitch.setBackgroundResource(R.drawable.general_btn_on);
             }
             //				} else {
             //					m_roamingDisconnectBtn.setEnabled(false);
@@ -768,65 +730,14 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         ConnectionSettingsModel connectionSetting = BusinessManager.getInstance().getConnectSettings();
         DataValue data = new DataValue();
         if (connectionSetting.HRoamingConnect == ENUM.OVER_ROAMING_STATE.Disable) {
-            mRoamingSwitch
-                    .setBackgroundResource(R.drawable.general_btn_on);
+            mRoamingSwitch.setBackgroundResource(R.drawable.general_btn_on);
             data.addParam("roaming_connect_flag", ENUM.OVER_ROAMING_STATE.Enable);
         } else {
-            mRoamingSwitch
-                    .setBackgroundResource(R.drawable.general_btn_off);
+            mRoamingSwitch.setBackgroundResource(R.drawable.general_btn_off);
             data.addParam("roaming_connect_flag", ENUM.OVER_ROAMING_STATE.Disable);
         }
-        BusinessManager.getInstance().sendRequestMessage(
-                MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET,
-                data);
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET, data);
 
-    }
-
-    private void onBtnNetWorkDataPlanClick() {
-        Intent intent = new Intent(this, UsageSettingActivity.class);
-        this.startActivity(intent);
-    }
-
-    private void onBtnNetWorkChangePinClick() {
-        Intent intent = new Intent(this, SettingChangePinActivity.class);
-        this.startActivity(intent);
-    }
-
-    private void onBtnMobileDataClick() {
-        // TODO : need test
-        if (true) {
-            WanConnectStatusModel internetConnState = BusinessManager.getInstance()
-                    .getWanConnectStatus();
-
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
-                mMobileDataSwitch.setBackgroundResource(R.drawable.switch_off);
-                BusinessManager.getInstance().sendRequestMessage(
-                        MessageUti.WAN_DISCONNECT_REQUSET);
-            } else {
-                mMobileDataSwitch.setBackgroundResource(R.drawable.switch_on);
-                BusinessManager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET);
-            }
-        }
-
-//        UsageSettingModel usageSetting = BusinessManager.getInstance()
-//                .getUsageSettings();
-//        if (usageSetting.HMonthlyPlan > 0) {
-//            //m_bIsAutoDisconnectedEdit = true;
-//            DataValue data = new DataValue();
-//
-//            if (usageSetting.HAutoDisconnFlag == ENUM.OVER_DISCONNECT_STATE.Disable) {
-//                mMobileDataSwitch
-//                        .setBackgroundResource(R.drawable.switch_on);
-//                data.addParam("auto_disconn_flag", ENUM.OVER_DISCONNECT_STATE.Enable);
-//            } else {
-//                mMobileDataSwitch
-//                        .setBackgroundResource(R.drawable.switch_off);
-//                data.addParam("auto_disconn_flag", ENUM.OVER_DISCONNECT_STATE.Disable);
-//            }
-//            BusinessManager.getInstance().sendRequestMessage(
-//                    MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET,
-//                    data);
-//        }
     }
 
 }

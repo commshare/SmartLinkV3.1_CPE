@@ -23,42 +23,42 @@ import java.util.regex.Pattern;
 
 
 public class CommonUtil {
-	public static String ConvertTrafficToStringFromMB(Context context,long traffic){
-		BigDecimal trafficMB;
-		BigDecimal trafficGB;
+    public static String ConvertTrafficToStringFromMB(Context context, long traffic) {
+        BigDecimal trafficMB;
+        BigDecimal trafficGB;
 
-		BigDecimal temp = new BigDecimal(traffic);
-		BigDecimal divide = new BigDecimal(1024);
-		BigDecimal divideM = new BigDecimal(1024l * 1024l);
-		trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
-		if(trafficMB.compareTo(divide) >= 0){
-			trafficGB = trafficMB.divide(divide,2,BigDecimal.ROUND_HALF_UP);
-			return trafficGB + context.getResources().getString(R.string.home_GB);
-		}else{
-			return trafficMB + context.getResources().getString(R.string.home_MB);
-		}
-	}
-	
-	public static UsageDataMode ConvertTrafficToUsageModelFromMB(long traffic){
-		BigDecimal trafficMB;
-		BigDecimal trafficGB;
-		
-		UsageDataMode usageDataMode = new UsageDataMode();
-		BigDecimal temp = new BigDecimal(traffic);
-		BigDecimal divide = new BigDecimal(1024);
-		BigDecimal divideM = new BigDecimal(1024l * 1024l);
-		trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
-		if(trafficMB.compareTo(divide) >= 0){
-			trafficGB = trafficMB.divide(divide,2,BigDecimal.ROUND_HALF_UP);
-			usageDataMode.setUsageData(trafficGB.doubleValue());
-			usageDataMode.setUsageUnit(1);
-		}else{
-			usageDataMode.setUsageData(trafficMB.doubleValue());
-			usageDataMode.setUsageUnit(0);
-		}
-		return usageDataMode;
-	}
-	
+        BigDecimal temp = new BigDecimal(traffic);
+        BigDecimal divide = new BigDecimal(1024);
+        BigDecimal divideM = new BigDecimal(1024l * 1024l);
+        trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
+        if (trafficMB.compareTo(divide) >= 0) {
+            trafficGB = trafficMB.divide(divide, 2, BigDecimal.ROUND_HALF_UP);
+            return trafficGB + context.getResources().getString(R.string.home_GB);
+        } else {
+            return trafficMB + context.getResources().getString(R.string.home_MB);
+        }
+    }
+
+    public static UsageDataMode ConvertTrafficToUsageModelFromMB(long traffic) {
+        BigDecimal trafficMB;
+        BigDecimal trafficGB;
+
+        UsageDataMode usageDataMode = new UsageDataMode();
+        BigDecimal temp = new BigDecimal(traffic);
+        BigDecimal divide = new BigDecimal(1024);
+        BigDecimal divideM = new BigDecimal(1024l * 1024l);
+        trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
+        if (trafficMB.compareTo(divide) >= 0) {
+            trafficGB = trafficMB.divide(divide, 2, BigDecimal.ROUND_HALF_UP);
+            usageDataMode.setUsageData(trafficGB.doubleValue());
+            usageDataMode.setUsageUnit(1);
+        } else {
+            usageDataMode.setUsageData(trafficMB.doubleValue());
+            usageDataMode.setUsageUnit(0);
+        }
+        return usageDataMode;
+    }
+                
 	/*public static String ConvertTrafficToString(Context context,long traffic){
 		BigDecimal trafficB;
 		BigDecimal trafficKB;
@@ -86,43 +86,41 @@ public class CommonUtil {
 			return trafficB.doubleValue() + context.getResources().getString(R.string.home_B);
 		}
 	}*/
-	
-	
-	@SuppressWarnings("deprecation")
-	public static String getIp(Context ctx){  
-        WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);  
-        DhcpInfo dhcpInfo = wifi_service.getDhcpInfo();      
-        return Formatter.formatIpAddress(dhcpInfo.ipAddress);  
-    } 
-	
-	public static void openWebPage(Context context, String strWeb){
-		Uri uri = Uri.parse(strWeb);
-		Intent it = new Intent(Intent.ACTION_VIEW,uri);
-		context.startActivity(it);
-	}
 
-	//ScreenDimen
-	public static int getScreenWidthPixels(Context context) {
-		DisplayMetrics dm = new DisplayMetrics();
-		((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
-				.getMetrics(dm);
-		return dm.widthPixels;
-	}
 
-	public static int dipToPx(Context context, int dip) {
-		return (int) (dip * getScreenDensity(context) + 0.5f);
-	}
+    @SuppressWarnings("deprecation")
+    public static String getIp(Context ctx) {
+        WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcpInfo = wifi_service.getDhcpInfo();
+        return Formatter.formatIpAddress(dhcpInfo.ipAddress);
+    }
 
-	private static float getScreenDensity(Context context) {
-		try {
-			DisplayMetrics dm = new DisplayMetrics();
-			((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
-					.getMetrics(dm);
-			return dm.density;
-		} catch (Exception e) {
-			return DisplayMetrics.DENSITY_DEFAULT;
-		}
-	}
+    public static void openWebPage(Context context, String strWeb) {
+        Uri uri = Uri.parse(strWeb);
+        Intent it = new Intent(Intent.ACTION_VIEW, uri);
+        context.startActivity(it);
+    }
+
+    //ScreenDimen
+    public static int getScreenWidthPixels(Context context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
+    }
+
+    public static int dipToPx(Context context, int dip) {
+        return (int) (dip * getScreenDensity(context) + 0.5f);
+    }
+
+    private static float getScreenDensity(Context context) {
+        try {
+            DisplayMetrics dm = new DisplayMetrics();
+            ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
+            return dm.density;
+        } catch (Exception e) {
+            return DisplayMetrics.DENSITY_DEFAULT;
+        }
+    }
 
     //判断是否快速点击的工具类
     private static long lastClickTime;
@@ -168,7 +166,7 @@ public class CommonUtil {
     public static boolean deleteFile(String fileName) {
 
         File file = new File(fileName);
-        if (file == null || !file.exists() || file.isDirectory()){
+        if (file == null || !file.exists() || file.isDirectory()) {
             return false;
         }
         file.delete();
@@ -178,14 +176,17 @@ public class CommonUtil {
 
     /**
      * 禁止EditText输空格+换行键
+     *
      * @param editText
      */
-    public static void setEditTextInhibitInputSpace(EditText editText){
-        InputFilter filter=new InputFilter() {
+    public static void setEditTextInhibitInputSpace(EditText editText) {
+        InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
-                else return null;
+                if (source.equals(" ") || source.toString().contentEquals("\n"))
+                    return "";
+                else
+                    return null;
             }
         };
         editText.setFilters(new InputFilter[]{filter});
@@ -193,18 +194,21 @@ public class CommonUtil {
 
     /**
      * 禁止EditText输入特殊字符
+     *
      * @param editText
      */
-    public static void setEditTextInhibitInputSpeChat(EditText editText){
+    public static void setEditTextInhibitInputSpeChat(EditText editText) {
 
-        InputFilter filter=new InputFilter() {
+        InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if(matcher.find())return "";
-                else return null;
+                if (matcher.find())
+                    return "";
+                else
+                    return null;
             }
         };
         editText.setFilters(new InputFilter[]{filter});
@@ -212,26 +216,31 @@ public class CommonUtil {
 
     /**
      * 禁止EditText输入特殊字符+空格+换行键
+     *
      * @param editText
      */
-    public static void setEditTextInputFilter(EditText editText){
+    public static void setEditTextInputFilter(EditText editText) {
 
-        InputFilter filterSpace=new InputFilter() {
+        InputFilter filterSpace = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
-                else return null;
+                if (source.equals(" ") || source.toString().contentEquals("\n"))
+                    return "";
+                else
+                    return null;
             }
         };
 
-        InputFilter filterChat=new InputFilter() {
+        InputFilter filterChat = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if(matcher.find())return "";
-                else return null;
+                if (matcher.find())
+                    return "";
+                else
+                    return null;
             }
         };
         editText.setFilters(new InputFilter[]{filterSpace, filterChat});

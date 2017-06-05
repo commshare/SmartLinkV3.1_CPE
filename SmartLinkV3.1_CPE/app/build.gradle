@@ -72,6 +72,20 @@ android {
         javaMaxHeapSize "2g"
         preDexLibraries = false
         jumboMode = true
+
+        // 加快Gradle速度的配置
+        // 使用增量模式构建
+        //incremental true
+        // 最大堆内存
+        javaMaxHeapSize "8g"
+        // 是否支持大工程模式
+        jumboMode = true
+        // 预编译
+        preDexLibraries = true
+        // 线程数
+        threadCount = 8
+
+
     }
     packagingOptions {
         exclude 'LICENSE.txt'
@@ -83,21 +97,27 @@ android {
 }
 
 dependencies {
+    //    compile files('libs/commons-net-3.3-sources.jar')
+    compile files('libs/commons-net-3.3.jar')
+    //    compile files('libs/commons-net-examples-3.3.jar')
+    compile files('libs/jcifs-1.3.17.jar')
+    //    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    //    compile 'io.reactivex:rxjava:1.1.2'
+    // butterknife
+    compile files('libs/nineoldandroids-2.4.0.jar')
     compile 'com.android.support:support-v4:25.3.0'
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:recyclerview-v7:25.3.0'
     compile 'com.android.support:design:25.3.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.7'
-//    compile files('libs/commons-net-3.3-sources.jar')
-    compile files('libs/commons-net-3.3.jar')
-//    compile files('libs/commons-net-examples-3.3.jar')
-    compile files('libs/jcifs-1.3.17.jar')
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
-//    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-//    compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 }

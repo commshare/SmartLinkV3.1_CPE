@@ -7,10 +7,12 @@
     android:layout_height="match_parent"
     tools:context="com.alcatel.smartlinkv3.ui.activity.ConnectTypeSelectActivity">
 
+    <!-- 头部 -->
     <include
         android:id="@+id/main_header"
         layout="@layout/main_header" />
 
+    <!-- 选择页 -->
     <LinearLayout
         android:id="@+id/connect_type_content_container"
         android:layout_width="match_parent"
@@ -80,6 +82,7 @@
 
     </LinearLayout>
 
+    <!-- PIN码页 -->
     <RelativeLayout
         android:id="@+id/connect_type_handle_pin_container"
         android:visibility="gone"
@@ -182,10 +185,7 @@
 
         <TextView
             android:id="@+id/handle_pin_connect_btn"
-            android:layout_marginTop="@dimen/dimen_20dip"
-            android:layout_below="@id/handle_pin_remember_pin_container"
-            android:layout_marginLeft="@dimen/dimen_10dip"
-            android:layout_marginRight="@dimen/dimen_10dip"
+            android:layout_marginTop="21dp"
             android:clickable="true"
             android:textColor="@color/color_white"
             android:textSize="@dimen/font_size_normal"
@@ -193,10 +193,14 @@
             android:gravity="center"
             android:text="@string/qs_pin_connect"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_40dip"/>
+            android:layout_height="@dimen/dimen_40dip"
+            android:layout_below = "@+id/handle_pin_remember_pin_container"
+            android:layout_alignLeft = "@+id/handle_pin_remember_pin_container"
+            android:layout_alignStart = "@+id/handle_pin_remember_pin_container" />
 
     </RelativeLayout>
 
+    <!-- 等待页 -->
     <RelativeLayout
         android:id="@+id/connect_type_waiting"
         android:visibility="gone"
@@ -211,6 +215,7 @@
             android:indeterminateDrawable="@drawable/progerss_blue"/>
     </RelativeLayout>
 
+    <!-- 连接成功页 -->
     <RelativeLayout
         android:id="@+id/pin_unlock_success_container"
         android:visibility="gone"
@@ -219,7 +224,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/pin_unlock_success"
+            android:id="@+id/mTv_connectStatus_des1_success"
             android:textSize="@dimen/font_size_large"
             android:layout_centerInParent="true"
             android:text="@string/qs_pin_unlock_congratulations"
@@ -227,7 +232,7 @@
             android:layout_height="wrap_content"/>
         <ImageView
             android:src="@drawable/connected"
-            android:layout_above="@id/pin_unlock_success"
+            android:layout_above="@id/mTv_connectStatus_des1_success"
             android:layout_centerHorizontal="true"
             android:layout_width="@dimen/dimen_200dip"
             android:layout_height="@dimen/dimen_200dip"/>
@@ -235,48 +240,49 @@
             android:layout_marginTop="@dimen/dimen_10dip"
             android:textColor="@color/grey_text"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/pin_unlock_success"
+            android:layout_below="@id/mTv_connectStatus_des1_success"
             android:text="@string/qs_pin_unlock_congratulations_des"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 
+    <!-- 连接失败页 -->
     <RelativeLayout
-        android:id="@+id/pin_unlock_fail_container"
+        android:id="@+id/mRl_connectStatus_failed"
         android:visibility="gone"
         android:layout_below="@id/main_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:id="@+id/pin_unlock_fail"
+            android:id="@+id/mTv_connectStatus_des1_failed"
             android:layout_centerInParent="true"
             android:textSize="@dimen/font_size_large"
             android:text="@string/qs_pin_unlock_can_not_connect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageView
-            android:layout_above="@id/pin_unlock_fail"
+            android:layout_above="@id/mTv_connectStatus_des1_failed"
             android:layout_centerHorizontal="true"
             android:src="@drawable/not_connected"
             android:layout_width="@dimen/dimen_200dip"
             android:layout_height="@dimen/dimen_150dip"/>
         <TextView
-            android:id="@+id/pin_unlock_fail_des"
+            android:id="@+id/mTv_connectStatus_des2_failed"
             android:textSize="@dimen/font_size_normal"
             android:layout_marginTop="@dimen/dimen_10dip"
             android:textColor="@color/grey_text"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/pin_unlock_fail"
+            android:layout_below="@id/mTv_connectStatus_des1_failed"
             android:text="@string/qs_pin_unlock_can_not_connect_des"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/pin_unlock_try_again"
+            android:id="@+id/mRp_connectStatus_tryagain"
             android:layout_width="@dimen/dimen_120dip"
             android:layout_height="@dimen/dimen_36dip"
-            android:layout_below="@id/pin_unlock_fail_des"
+            android:layout_below="@id/mTv_connectStatus_des2_failed"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_30dip"
             android:background="@drawable/selector_nowifi_button"
@@ -287,18 +293,19 @@
             android:textSize="@dimen/dimen_textsize_16sp" />
 
         <TextView
-            android:id="@+id/pin_unlock_fail_to_home"
+            android:id="@+id/mTv_connectStatus_home"
             android:clickable="true"
             android:textSize="@dimen/font_size_normal"
             android:textColor="@color/grey_text"
             android:layout_marginTop="@dimen/dimen_20dip"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/pin_unlock_try_again"
+            android:layout_below="@id/mRp_connectStatus_tryagain"
             android:text="@string/qs_pin_unlock_to_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
 
+    <!-- WIFI设置页 -->
     <LinearLayout
         android:id="@+id/wifi_setting_container"
         android:background="@color/color_setting_wifi_background"

@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@color/main_title_background"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/action_bar_height">
-    <ImageView
-        android:id="@+id/main_header_back_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dimen_10dip"
-        android:background="@color/color_transparent"
-        android:contentDescription="@string/back"
-        android:src="@drawable/back" />
+<RelativeLayout
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    android:layout_width = "match_parent"
+    android:layout_height = "@dimen/action_bar_height"
+    android:background = "@color/main_title_background">
+
+    <RelativeLayout
+        android:layout_width = "@dimen/dimen_30dip"
+        android:layout_height = "@dimen/dimen_30dip"
+        android:layout_centerVertical = "true"
+        android:layout_marginLeft = "11dp">
+
+        <ImageView
+            android:id = "@+id/main_header_back_iv"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"
+            android:layout_alignParentLeft = "true"
+            android:layout_alignParentStart = "true"
+            android:layout_centerInParent = "true"
+            android:layout_centerVertical = "true"
+            android:background = "@color/color_transparent"
+            android:contentDescription = "@string/back"
+            android:src = "@drawable/back" />
+    </RelativeLayout>
 
     <FrameLayout
-        android:id="@+id/main_header_right_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/dimen_10dip">
+        android:id = "@+id/main_header_right_container"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_alignParentRight = "true"
+        android:layout_centerVertical = "true"
+        android:layout_marginRight = "@dimen/dimen_10dip">
 
         <TextView
-            android:id="@+id/main_header_right_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/skip"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/font_size_normal" />
+            android:id = "@+id/main_header_right_text"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:gravity = "center"
+            android:text = "@string/skip"
+            android:textColor = "@color/color_white"
+            android:textSize = "@dimen/font_size_normal" />
 
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tv_title_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingLeft="@dimen/dimen_20dip"
-        android:gravity="center"
-        android:text="@string/setting_wifi"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/font_size_normal"/>
+        android:id = "@+id/tv_title_title"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_centerInParent = "true"
+        android:gravity = "center"
+        android:paddingLeft = "@dimen/dimen_20dip"
+        android:text = "@string/setting_wifi"
+        android:textColor = "@color/color_white"
+        android:textSize = "@dimen/font_size_normal" />
 </RelativeLayout>

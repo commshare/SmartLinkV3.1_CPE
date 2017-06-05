@@ -43,4 +43,15 @@
         <attr name="wlv_titleCenterStrokeWidth" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name = "ScaleText">
+        <attr name = "topColor" format = "color" />
+        <attr name = "bottomColor" format = "color" />
+    </declare-styleable>
+
+    <declare-styleable name = "RippleView">
+        <attr name = "rippleColor" format = "color" />
+        <attr name = "alphaFactor" format = "float" />
+        <attr name = "hover" format = "boolean" />
+    </declare-styleable>
+
 </resources>
