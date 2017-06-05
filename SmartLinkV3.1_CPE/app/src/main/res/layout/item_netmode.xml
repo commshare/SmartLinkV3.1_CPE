@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    android:layout_width = "match_parent"
+    android:layout_height = "wrap_content">
+
+    <RelativeLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "@dimen/dimen_60dip"
+        android:background = "@android:color/white">
+
+        <RelativeLayout
+            android:id = "@+id/mRl_netmode_item"
+            android:layout_width = "wrap_content"
+            android:layout_height = "match_parent"
+            android:layout_marginLeft = "@dimen/dimen_20dip"
+            android:background = "@android:color/white">
+
+            <TextView
+                android:id = "@+id/mTv_netmode_item_title"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:layout_centerVertical = "true"
+                android:text = "Account"
+                android:textColor = "@android:color/black"
+                android:textSize = "@dimen/dimen_16dip" />
+
+            <TextView
+                android:id = "@+id/mTv_netmode_item_subTitle"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:layout_below = "@id/mTv_netmode_item_title"
+                android:text = "Do not change default if not neccessary"
+                android:textColor = "@color/deep_grey_text"
+                android:textSize = "@dimen/dimen_12dip"
+                android:visibility = "gone" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id = "@+id/mEd_netmode_item_content"
+            android:layout_width = "match_parent"
+            android:layout_height = "wrap_content"
+            android:layout_centerVertical = "true"
+            android:layout_marginLeft = "@dimen/dimen_20dip"
+            android:layout_marginRight = "@dimen/dimen_20dip"
+            android:layout_toRightOf = "@id/mRl_netmode_item"
+            android:background = "@drawable/ed_netmode_item"
+            android:cursorVisible = "true"
+            android:gravity = "right"
+            android:lines = "1"
+            android:maxLength = "20"
+            android:paddingLeft = "@dimen/dimen_5dip"
+            android:textColor = "@color/deep_grey_text"
+            android:textCursorDrawable = "@null"
+            android:textSize = "@dimen/dimen_16dip" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

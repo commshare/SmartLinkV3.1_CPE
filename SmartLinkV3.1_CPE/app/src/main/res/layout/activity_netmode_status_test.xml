@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    android:background = "@color/netmode_status_BG"
+    tools:context = "com.alcatel.smartlinkv3.ui.activity.NetModeConnectStatusActivity">
+
+    <!-- 连接成功总布局 -->
+    <RelativeLayout
+        android:id = "@+id/mRl_connectStatus_success"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_centerVertical = "true"
+        android:visibility = "gone">
+
+        <ImageView
+            android:id = "@+id/mIv_connectStatus_logo_success"
+            android:layout_width = "@dimen/dimen_100dip"
+            android:layout_height = "@dimen/dimen_100dip"
+            android:layout_centerHorizontal = "true"
+            android:src = "@drawable/wifi_state4" />
+
+        <TextView
+            android:id = "@+id/mTv_connectStatus_des1_success"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_below = "@id/mIv_connectStatus_logo_success"
+            android:layout_centerHorizontal = "true"
+            android:layout_marginTop = "@dimen/dimen_30dip"
+            android:text = "@string/qs_pin_unlock_congratulations"
+            android:textSize = "@dimen/dimen_18dip"
+            android:textStyle = "bold" />
+
+        <TextView
+            android:id = "@+id/mTv_connectStatus_des2_success"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_below = "@id/mTv_connectStatus_des1_success"
+            android:layout_centerHorizontal = "true"
+            android:layout_marginTop = "@dimen/dimen_12dip"
+            android:text = "@string/NETMODE_STATUS_SUCCESS_DES2"
+            android:textColor = "@color/netmode_status_des2"
+            android:textSize = "@dimen/dimen_14dip" />
+
+    </RelativeLayout>
+
+    <!-- 连接失败总布局 -->
+    <RelativeLayout
+        android:id = "@+id/mRl_connectStatus_failed"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_centerInParent = "true"
+        android:visibility = "visible">
+
+        <ImageView
+            android:id = "@+id/mIv_connectStatus_logo_failed"
+            android:layout_width = "@dimen/dimen_100dip"
+            android:layout_height = "@dimen/dimen_100dip"
+            android:layout_centerHorizontal = "true"
+            android:src = "@drawable/wifi_state0" />
+
+        <TextView
+            android:id = "@+id/mTv_connectStatus_des1_failed"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_below = "@id/mIv_connectStatus_logo_failed"
+            android:layout_centerHorizontal = "true"
+            android:layout_marginTop = "@dimen/dimen_30dip"
+            android:text = "@string/NETMODE_STATUS_FAILED_DES1"
+            android:textSize = "@dimen/dimen_18dip"
+            android:textStyle = "bold" />
+
+        <TextView
+            android:id = "@+id/mTv_connectStatus_des2_failed"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_below = "@id/mTv_connectStatus_des1_failed"
+            android:layout_centerHorizontal = "true"
+            android:layout_marginTop = "@dimen/dimen_12dip"
+            android:text = "@string/NETMODE_STATUS_FAILED_DES2"
+            android:textColor = "@color/netmode_status_des2"
+            android:textSize = "@dimen/dimen_14dip" />
+
+        <com.alcatel.smartlinkv3.appwidget.RippleView
+            android:id = "@+id/mRp_connectStatus_tryagain"
+            android:layout_width = "@dimen/dimen_140dip"
+            android:layout_height = "@dimen/dimen_35dip"
+            android:layout_below = "@id/mTv_connectStatus_des2_failed"
+            android:layout_centerHorizontal = "true"
+            android:layout_marginTop = "@dimen/dimen_50dip"
+            android:background = "@drawable/netmode_connectstatus_tryagain"
+            android:gravity = "center"
+            android:text = "@string/NETMODE_STATUS_FAILED_TRYAGAIN"
+            android:textColor = "@color/netmode_status_tryagain"
+            android:textSize = "@dimen/dimen_16dip"
+            app:alphaFactor = "0.8"
+            app:hover = "true"
+            app:rippleColor = "@android:color/white" />
+
+        <TextView
+            android:id = "@+id/mTv_connectStatus_home"
+            android:layout_width = "@dimen/dimen_100dip"
+            android:layout_height = "@dimen/dimen_30dip"
+            android:layout_below = "@id/mRp_connectStatus_tryagain"
+            android:layout_centerHorizontal = "true"
+            android:layout_marginTop = "@dimen/dimen_30dip"
+            android:gravity = "center"
+            android:text = "@string/NETMODE_STATUS_FAILED_HOME"
+            android:textColor = "@color/netmode_status_home"
+            android:textSize = "@dimen/dimen_16dip" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
