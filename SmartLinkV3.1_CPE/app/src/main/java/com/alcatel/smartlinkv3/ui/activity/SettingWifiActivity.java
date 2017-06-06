@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.ConnectivityUtils;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
@@ -45,8 +46,7 @@ import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
 /*
 This activity is used for MiFi product to setting Wi-Fi password , encrypt, SSID, frequency etc,.
  */
-public class SettingWifiActivity extends BaseFragmentActivity
-        implements OnClickListener {
+public class SettingWifiActivity extends BaseFragmentActivity implements OnClickListener {
     private boolean m_blPasswordOpened = false;
     private WlanFrequency m_nPreWlanAPMode = WlanFrequency.UNKNOWN;
     private WlanFrequency m_nWlanAPMode = WlanFrequency.UNKNOWN;
@@ -205,7 +205,7 @@ public class SettingWifiActivity extends BaseFragmentActivity
     }
 
     private void createControls() {
-//		m_continue_to_change_to_5g = false;
+        //		m_continue_to_change_to_5g = false;
         m_isTypeSelecttionShown = false;
         m_et_ssid = (EditText) findViewById(R.id.edit_ssid);
         m_et_password = (EditText) findViewById(R.id.edit_password);
@@ -289,7 +289,7 @@ public class SettingWifiActivity extends BaseFragmentActivity
         m_ll_edit_ssid_broadcast.setOnClickListener(this);
         m_ll_edit_ssid_broadcast.setEnabled(false);
         m_btn_ssid_broadcast_switch = (TextView) findViewById(R.id.btn_ssid_broadcast_switch);
-//		m_pre_ssid_status = SsidHiddenEnum.SsidHidden_Enable;
+        //		m_pre_ssid_status = SsidHiddenEnum.SsidHidden_Enable;
         //init spiner
         m_content_container = (LinearLayout) findViewById(R.id.setting_network_wifi_content);
         m_security_type = (TextView) findViewById(R.id.set_wifi_security_mode);
@@ -334,14 +334,15 @@ public class SettingWifiActivity extends BaseFragmentActivity
                 m_et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 break;
             case R.id.ib_title_back:
+                ChangeActivity.toActivity(this, ConnectTypeSelectActivity.class, true, true, false, 0);
+                break;
             case R.id.tv_title_back:
                 //hide keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 boolean isOpen = imm.isActive();
                 if (isOpen) {
                     try {
-                        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
-                                InputMethodManager.HIDE_NOT_ALWAYS);
+                        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -372,20 +373,20 @@ public class SettingWifiActivity extends BaseFragmentActivity
                 if (m_nPreWlanAPMode == WlanFrequency.Frequency_24GHZ) {
                     popInquireyDialog();
                 }
-//			if(!m_continue_to_change_to_5g){
-//				if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nPreWlanAPMode) {
-//					m_rb_2point4G_wifi.setChecked(true);
-//					m_rb_5G_wifi.setChecked(false);
-//				}else{
-//					m_rb_5G_wifi.setChecked(true);
-//					m_rb_2point4G_wifi.setChecked(false);
-//				}
-//				break;
-//			}
-//			else{
-//				m_continue_to_change_to_5g = false;
-//			}
-//			onWifModeChanged();
+                //			if(!m_continue_to_change_to_5g){
+                //				if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nPreWlanAPMode) {
+                //					m_rb_2point4G_wifi.setChecked(true);
+                //					m_rb_5G_wifi.setChecked(false);
+                //				}else{
+                //					m_rb_5G_wifi.setChecked(true);
+                //					m_rb_2point4G_wifi.setChecked(false);
+                //				}
+                //				break;
+                //			}
+                //			else{
+                //				m_continue_to_change_to_5g = false;
+                //			}
+                //			onWifModeChanged();
                 break;
             case R.id.set_wifi_security_mode:
                 goToWifiSettingFragment();
@@ -408,12 +409,10 @@ public class SettingWifiActivity extends BaseFragmentActivity
     }
 
     private void popInquireyDialog() {
-        final InquireReplaceDialog inquireDlg = new InquireReplaceDialog(
-                SettingWifiActivity.this);
+        final InquireReplaceDialog inquireDlg = new InquireReplaceDialog(SettingWifiActivity.this);
         inquireDlg.setCancelDisabled();
         inquireDlg.m_titleTextView.setText(R.string.dialog_change_to_5g);
-        inquireDlg.m_contentTextView
-                .setText(R.string.dialog_warning_5g);
+        inquireDlg.m_contentTextView.setText(R.string.dialog_warning_5g);
         inquireDlg.m_confirmBtn.setText(R.string.continue_anyway);
         inquireDlg.showDialog(new OnInquireApply() {
 
@@ -443,9 +442,9 @@ public class SettingWifiActivity extends BaseFragmentActivity
         setContentVisibility(View.GONE);
 
         m_tv_edit.setVisibility(View.GONE);
-//		m_tv_done.setVisibility(View.GONE);
-//		m_tv_back.setVisibility(View.GONE);
-//		m_ib_back.setVisibility(View.GONE);
+        //		m_tv_done.setVisibility(View.GONE);
+        //		m_tv_back.setVisibility(View.GONE);
+        //		m_ib_back.setVisibility(View.GONE);
 
         setTypeSelectionFragmentVisible(true);
         FragmentManager fm = getSupportFragmentManager();
@@ -455,7 +454,7 @@ public class SettingWifiActivity extends BaseFragmentActivity
         dataBundle.putInt("Mode_Type", m_nType);
         FragmentWifiSettingTypeSelection fg = new FragmentWifiSettingTypeSelection();
         fg.setArguments(dataBundle);
-//		ft.replace(R.id.setting_network_wifi_content_container, fg);
+        //		ft.replace(R.id.setting_network_wifi_content_container, fg);
         ft.addToBackStack(null);
         ft.commit();
     }
@@ -480,11 +479,9 @@ public class SettingWifiActivity extends BaseFragmentActivity
             if (SecurityMode.Disable == m_nPreSecurityMode) {
                 m_nPreType = -1;
             } else if (SecurityMode.WEP == m_nPreSecurityMode) {
-                m_nPreType = WEPEncryption.antiBuild(
-                        BusinessManager.getInstance().getWEPEncryption_5G());
+                m_nPreType = WEPEncryption.antiBuild(BusinessManager.getInstance().getWEPEncryption_5G());
             } else {
-                m_nPreType = WPAEncryption.antiBuild(
-                        BusinessManager.getInstance().getWPAEncryption_5G());
+                m_nPreType = WPAEncryption.antiBuild(BusinessManager.getInstance().getWPAEncryption_5G());
                 if (SecurityMode.Disable == m_nPreSecurityMode) {
                     m_strPreKey = "";
                 } else {
@@ -498,11 +495,9 @@ public class SettingWifiActivity extends BaseFragmentActivity
             if (SecurityMode.Disable == m_nPreSecurityMode) {
                 m_nPreType = -1;
             } else if (SecurityMode.WEP == m_nPreSecurityMode) {
-                m_nPreType = WEPEncryption.antiBuild(
-                        BusinessManager.getInstance().getWEPEncryption());
+                m_nPreType = WEPEncryption.antiBuild(BusinessManager.getInstance().getWEPEncryption());
             } else {
-                m_nPreType = WPAEncryption.antiBuild(
-                        BusinessManager.getInstance().getWPAEncryption());
+                m_nPreType = WPAEncryption.antiBuild(BusinessManager.getInstance().getWPAEncryption());
                 if (SecurityMode.Disable == m_nPreSecurityMode) {
                     m_strPreKey = "";
                 } else {
@@ -571,7 +566,7 @@ public class SettingWifiActivity extends BaseFragmentActivity
         m_et_password.setEnabled(true);
         m_et_password.setVisibility(View.VISIBLE);
         //m_et_password.setBackgroundResource(R.drawable.selector_edit_bg);
-//		m_et_ssid.setBackgroundResource(R.drawable.selector_edit_bg);
+        //		m_et_ssid.setBackgroundResource(R.drawable.selector_edit_bg);
         //m_et_password.setPadding(0, 0, 200, 0);
         if (m_rg_wifi_mode.isShown()) {
             m_rb_2point4G_wifi.setEnabled(true);
@@ -625,8 +620,7 @@ public class SettingWifiActivity extends BaseFragmentActivity
                 boolean blCheckSsid = ConnectivityUtils.checkSsid(m_strSsid);
                 if (!blCheckSsid) {
                     String m_strErrorInfo = getString(R.string.setting_ssid_invalid);
-                    m_err_dialog.showDialog(
-                            getString(R.string.setting_wifi_error_title), m_strErrorInfo);
+                    m_err_dialog.showDialog(getString(R.string.setting_wifi_error_title), m_strErrorInfo);
                     return;
                 }
                 if (SecurityMode.Disable != m_nSecurityMode) {
@@ -678,8 +672,8 @@ public class SettingWifiActivity extends BaseFragmentActivity
         m_et_password.setEnabled(false);
         //m_et_password.setVisibility(View.GONE);
         //m_et_password.setBackgroundDrawable(null);
-//		m_et_ssid.setBackgroundDrawable(null);
-//		m_et_password.setPadding(0, 0, 200, 0);
+        //		m_et_ssid.setBackgroundDrawable(null);
+        //		m_et_password.setPadding(0, 0, 200, 0);
         if (m_rg_wifi_mode.isShown()) {
             m_rb_2point4G_wifi.setEnabled(false);
             m_rb_5G_wifi.setEnabled(false);
@@ -729,8 +723,8 @@ public class SettingWifiActivity extends BaseFragmentActivity
         m_strSsid = m_et_ssid.getText().toString();
 
         if (m_blPasswordOpened) {
-//			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.WEP);
-//			m_nType = WEPEncryption.antiBuild(WEPEncryption.Open);
+            //			m_nSecurityMode = SecurityMode.antiBuild(SecurityMode.WEP);
+            //			m_nType = WEPEncryption.antiBuild(WEPEncryption.Open);
             m_strKey = m_et_password.getText().toString();
         } else {
             m_nSecurityMode = SecurityMode.Disable;
@@ -738,19 +732,11 @@ public class SettingWifiActivity extends BaseFragmentActivity
         }
 
         if (SecurityMode.Disable != m_nSecurityMode) {
-            if (m_nPreWlanAPMode != m_nWlanAPMode
-                    || 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid)
-                    || m_nSecurityMode != m_nPreSecurityMode
-                    || m_nType != m_nPreType
-                    || 0 != m_strKey.compareToIgnoreCase(m_strPreKey)
-                    || !m_pre_ssid_status.equals(m_ssid_status)) {
+            if (m_nPreWlanAPMode != m_nWlanAPMode || 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid) || m_nSecurityMode != m_nPreSecurityMode || m_nType != m_nPreType || 0 != m_strKey.compareToIgnoreCase(m_strPreKey) || !m_pre_ssid_status.equals(m_ssid_status)) {
                 blChanged = true;
             }
         } else {
-            if (m_nPreWlanAPMode != m_nWlanAPMode
-                    || 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid)
-                    || m_nSecurityMode != m_nPreSecurityMode
-                    || !m_pre_ssid_status.equals(m_ssid_status)) {
+            if (m_nPreWlanAPMode != m_nWlanAPMode || 0 != m_strSsid.compareToIgnoreCase(m_strPreSsid) || m_nSecurityMode != m_nPreSecurityMode || !m_pre_ssid_status.equals(m_ssid_status)) {
                 blChanged = true;
             }
         }
@@ -765,8 +751,7 @@ public class SettingWifiActivity extends BaseFragmentActivity
         data.addParam("Security", m_nSecurityMode);
         data.addParam("Encryption", m_nType);
         data.addParam("SsidStatus", SsidHiddenEnum.antiBuild(m_ssid_status));
-        BusinessManager.getInstance().sendRequestMessage(
-                MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
+        BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET, data);
         ShowWaiting(true);
     }
 
@@ -791,7 +776,7 @@ public class SettingWifiActivity extends BaseFragmentActivity
             m_ib_show_password.setVisibility(View.GONE);
             m_ll_encryption.setVisibility(View.GONE);
             m_ll_security.setVisibility(View.GONE);
-//			m_ll_password_status.setVisibility(View.GONE);
+            //			m_ll_password_status.setVisibility(View.GONE);
             //m_tv_psd_type_title.setVisibility(View.GONE);
             setAllDividerVisibility(View.GONE);
             setOneDividerVisibility(View.VISIBLE);
@@ -854,19 +839,19 @@ public class SettingWifiActivity extends BaseFragmentActivity
             } else {
                 m_encription_mode.setText(R.string.setting_wifi_tkip);
             }
-//			if(wmode == WModeEnum.WMode_802_11a_n || wmode == WModeEnum.WMode_802_11g_n) {
-//				
-//			}else{
-//				if(wpaType == WPAEncryption.AUTO){
-//					m_encription_mode.setText(R.string.setting_network_mode_auto);
-//				}
-//				else if(wpaType == WPAEncryption.AES){
-//					m_encription_mode.setText(R.string.setting_wifi_aes);
-//				}
-//				else{
-//					m_encription_mode.setText(R.string.setting_wifi_tkip);
-//				}
-//			}
+            //			if(wmode == WModeEnum.WMode_802_11a_n || wmode == WModeEnum.WMode_802_11g_n) {
+            //				
+            //			}else{
+            //				if(wpaType == WPAEncryption.AUTO){
+            //					m_encription_mode.setText(R.string.setting_network_mode_auto);
+            //				}
+            //				else if(wpaType == WPAEncryption.AES){
+            //					m_encription_mode.setText(R.string.setting_wifi_aes);
+            //				}
+            //				else{
+            //					m_encription_mode.setText(R.string.setting_wifi_tkip);
+            //				}
+            //			}
             m_et_password.setText(m_password);
         }
 
@@ -889,18 +874,16 @@ public class SettingWifiActivity extends BaseFragmentActivity
             if (SecurityMode.Disable == m_nPreSecurityMode) {
                 m_nPreType = -1;
             } else if (SecurityMode.WEP == m_nPreSecurityMode) {
-                m_nPreType = WEPEncryption.antiBuild(
-                        BusinessManager.getInstance().getWEPEncryption());
+                m_nPreType = WEPEncryption.antiBuild(BusinessManager.getInstance().getWEPEncryption());
             } else {
-                m_nPreType = WPAEncryption.antiBuild(
-                        BusinessManager.getInstance().getWPAEncryption());
+                m_nPreType = WPAEncryption.antiBuild(BusinessManager.getInstance().getWPAEncryption());
             }
             m_strPreKey = BusinessManager.getInstance().getWifiPwd();
-//			if (SecurityMode.Disable == mode) {
-//				m_strPreKey = "";
-//			}else {
-//				m_strPreKey = BusinessManager.getInstance().getWifiPwd();
-//			}		
+            //			if (SecurityMode.Disable == mode) {
+            //				m_strPreKey = "";
+            //			}else {
+            //				m_strPreKey = BusinessManager.getInstance().getWifiPwd();
+            //			}		
         } else {
             m_pre_ssid_status = BusinessManager.getInstance().getSsidStatus_5G();
             m_strPreSsid = BusinessManager.getInstance().getSsid_5G();
@@ -909,18 +892,16 @@ public class SettingWifiActivity extends BaseFragmentActivity
             if (SecurityMode.Disable == mode) {
                 m_nPreType = -1;
             } else if (SecurityMode.WEP == mode) {
-                m_nPreType = WEPEncryption.antiBuild(
-                        BusinessManager.getInstance().getWEPEncryption_5G());
+                m_nPreType = WEPEncryption.antiBuild(BusinessManager.getInstance().getWEPEncryption_5G());
             } else {
-                m_nPreType = WPAEncryption.antiBuild(
-                        BusinessManager.getInstance().getWPAEncryption_5G());
+                m_nPreType = WPAEncryption.antiBuild(BusinessManager.getInstance().getWPAEncryption_5G());
             }
             m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
-//			if (SecurityMode.Disable == mode) {
-//				m_strPreKey = "";
-//			}else {
-//				m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
-//			}
+            //			if (SecurityMode.Disable == mode) {
+            //				m_strPreKey = "";
+            //			}else {
+            //				m_strPreKey = BusinessManager.getInstance().getWifiPwd_5G();
+            //			}
         }
         m_ssid_status = m_pre_ssid_status;
 
@@ -946,17 +927,15 @@ public class SettingWifiActivity extends BaseFragmentActivity
         // TODO Auto-generated method stub
         m_bNeedBack = false;
         super.onResume();
-        registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
+        registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
 
-        registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
+        registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
         registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
 
 
         initValues();
         //init controls state
-//		initSpinersUI();
+        //		initSpinersUI();
         setControlsDoneStatus();
         BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
         BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);

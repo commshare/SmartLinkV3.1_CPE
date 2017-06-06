@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    android:background = "@color/puk_bg"
+    tools:context = "com.alcatel.smartlinkv3.ui.activity.SettingPukActivity">
+
+    <!-- 头部 -->
+    <RelativeLayout
+        android:id = "@+id/mRl_puk_head"
+        android:layout_width = "match_parent"
+        android:layout_height = "@dimen/dimen_60dip"
+        android:background = "@color/main_title_background">
+
+        <TextView
+            android:id = "@+id/mTv_puk_title"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_centerInParent = "true"
+            android:text = "@string/main_header_mobile_broadband"
+            android:textColor = "@android:color/white"
+            android:textSize = "@dimen/dimen_16dip" />
+
+        <TextView
+            android:id = "@+id/mTv_pub_skip"
+            android:layout_width = "@dimen/dimen_50dip"
+            android:layout_height = "@dimen/dimen_25dip"
+            android:layout_alignParentRight = "true"
+            android:layout_centerVertical = "true"
+            android:layout_marginRight = "@dimen/dimen_10dip"
+            android:gravity = "center"
+            android:text = "@string/skip"
+            android:textColor = "@android:color/white"
+            android:textSize = "@dimen/dimen_16dip" />
+
+    </RelativeLayout>
+
+    <!-- 输入框 -->
+    <RelativeLayout
+        android:id = "@+id/mRl_puk_pukCode"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_below = "@id/mRl_puk_head">
+
+        <EditText
+            android:id = "@+id/mEt_puk_pukCode"
+            android:layout_width = "match_parent"
+            android:layout_height = "@dimen/dimen_50dip"
+            android:background = "@color/color_white"
+            android:hint = "@string/qs_puk_code_title"
+            android:inputType = "number"
+            android:paddingLeft = "@dimen/dimen_10dip"
+            android:paddingRight = "@dimen/dimen_50dip"
+            android:singleLine = "true"
+            android:textColor = "@color/black_text"
+            android:textSize = "@dimen/font_size_normal"
+            android:visibility = "visible" />
+
+        <ImageView
+            android:id = "@+id/mIv_puk_del"
+            android:layout_width = "@dimen/dimen_30dip"
+            android:layout_height = "@dimen/dimen_30dip"
+            android:layout_alignParentRight = "true"
+            android:layout_centerVertical = "true"
+            android:layout_marginRight = "@dimen/dimen_10dip"
+            android:src = "@drawable/general_del" />
+
+    </RelativeLayout>
+
+    <!-- 剩余次数 -->
+    <TextView
+        android:id = "@+id/mTv_puk_remain"
+        android:layout_width = "match_parent"
+        android:layout_height = "@dimen/dimen_50dip"
+        android:layout_below = "@id/mRl_puk_pukCode"
+        android:background = "@color/puk_bg"
+        android:gravity = "center_vertical"
+        android:paddingLeft = "@dimen/dimen_10dip"
+        android:text = "0 attempts remainning"
+        android:textColor = "@color/puk_remain_tv" />
+
+    <!-- 新PIN码 -->
+    <RelativeLayout
+        android:id = "@+id/mRl_puk_newPin"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_below = "@id/mTv_puk_remain">
+
+        <EditText
+            android:id = "@+id/mEt_puk_newPin"
+            android:layout_width = "match_parent"
+            android:layout_height = "@dimen/dimen_50dip"
+            android:background = "@color/color_white"
+            android:hint = "@string/puk_newpin"
+            android:inputType = "number"
+            android:maxLength = "8"
+            android:paddingLeft = "@dimen/dimen_10dip"
+            android:paddingRight = "@dimen/dimen_120dip"
+            android:singleLine = "true"
+            android:textColor = "@color/black_text"
+            android:textSize = "@dimen/font_size_normal"
+            android:visibility = "visible" />
+
+        <TextView
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_alignParentRight = "true"
+            android:layout_centerVertical = "true"
+            android:layout_marginRight = "@dimen/dimen_16dip"
+            android:text = "@string/puk_limit_strings"
+            android:textColor = "@color/puk_remain_tv"
+            android:textSize = "@dimen/dimen_16dip" />
+
+    </RelativeLayout>
+
+    <!-- 确认PIN码 -->
+    <RelativeLayout
+        android:id = "@+id/mRl_puk_confirmPin"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_below = "@id/mRl_puk_newPin">
+
+        <EditText
+            android:id = "@+id/mEt_puk_confirmPin"
+            android:layout_width = "match_parent"
+            android:layout_height = "@dimen/dimen_50dip"
+            android:background = "@color/color_white"
+            android:hint = "@string/puk_confirmpin"
+            android:inputType = "number"
+            android:maxLength = "8"
+            android:paddingLeft = "@dimen/dimen_10dip"
+            android:paddingRight = "@dimen/dimen_120dip"
+            android:singleLine = "true"
+            android:textColor = "@color/black_text"
+            android:textSize = "@dimen/font_size_normal"
+            android:visibility = "visible" />
+
+    </RelativeLayout>
+
+    <!-- 警告提示 -->
+    <TextView
+        android:id = "@+id/mTv_puk_alarm"
+        android:layout_width = "match_parent"
+        android:layout_height = "@dimen/dimen_30dip"
+        android:layout_below = "@id/mRl_puk_confirmPin"
+        android:background = "@color/puk_bg"
+        android:gravity = "center_vertical"
+        android:paddingLeft = "@dimen/dimen_10dip"
+        android:text = "@string/puk_pinDontMatch"
+        android:textColor = "@color/red"
+        android:visibility = "gone" />
+
+    <!-- 记录SIM码 -->
+    <RelativeLayout
+        android:id = "@+id/mRl_puk_check"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_below = "@id/mTv_puk_alarm"
+        android:layout_marginLeft = "@dimen/dimen_10dip"
+        android:layout_marginTop = "@dimen/dimen_10dip">
+
+        <ImageView
+            android:id = "@+id/mIv_puk_check"
+            android:layout_width = "@dimen/dimen_20dip"
+            android:layout_height = "@dimen/dimen_20dip"
+            android:layout_centerVertical = "true"
+            android:src = "@drawable/general_btn_remember_pre" />
+
+        <TextView
+            android:id = "@+id/mTv_puk_check"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_centerVertical = "true"
+            android:layout_marginLeft = "@dimen/dimen_10dip"
+            android:layout_toRightOf = "@id/mIv_puk_check"
+            android:text = "@string/qs_pin_remember_pin_des"
+            android:textColor = "@color/black_text"
+            android:textSize = "@dimen/font_size_normal" />
+    </RelativeLayout>
+
+    <!-- Connect按钮 -->
+    <com.alcatel.smartlinkv3.appwidget.RippleView
+        android:id = "@+id/mRp_puk_connect"
+        android:layout_width = "match_parent"
+        android:layout_height = "@dimen/dimen_40dip"
+        android:layout_below = "@id/mRl_puk_check"
+        android:layout_marginLeft = "@dimen/dimen_10dip"
+        android:layout_marginRight = "@dimen/dimen_10dip"
+        android:layout_marginTop = "@dimen/dimen_20dip"
+        android:background = "@drawable/puk_normal"
+        android:gravity = "center"
+        android:text = "@string/puk_connect"
+        android:textColor = "@android:color/white"
+        android:textSize = "@dimen/dimen_16dip"
+        app:alphaFactor = "0.8"
+        app:hover = "true"
+        app:rippleColor = "@android:color/white" />
+
+    <!-- 等待页面 -->
+    <RelativeLayout
+        android:visibility="gone"
+        android:id = "@+id/mRl_puk_waitting"
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        android:layout_below = "@id/mRl_puk_head"
+        android:alpha = "0.8"
+        android:background = "@android:color/white">
+
+        <ImageView
+            android:layout_width = "@dimen/dimen_30dip"
+            android:layout_height = "@dimen/dimen_30dip"
+            android:layout_centerInParent = "true"
+            android:src = "@drawable/waiting_progress_blue" />
+    </RelativeLayout>
+
+</RelativeLayout>

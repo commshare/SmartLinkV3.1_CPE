@@ -25,6 +25,8 @@ public class SimManager extends BaseManager {
     private SimStatusModel m_simStatus = new SimStatusModel();
     private AutoPinState m_autoPinState = AutoPinState.Disable;
     private Timer m_rollTimer = new Timer();
+    private OnLockPinListener onLockPinListener;
+    private OnUnlockPukListener onUnlockPukListener;
 
     @Override
     protected void clearData() {
@@ -79,7 +81,7 @@ public class SimManager extends BaseManager {
         String strPin = (String) data.getParamByKey("pin");
 
         LegacyHttpClient.getInstance().sendPostRequest(new HttpAutoEnterPinState.SetAutoValidatePinState(nState, strPin, response -> {
-            //    			sendBroadcast(response, MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
+            // sendBroadcast(response, MessageUti.SIM_SET_AUTO_ENTER_PIN_STATE_REQUEST);
         }));
     }
 
@@ -119,22 +121,44 @@ public class SimManager extends BaseManager {
         LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPuk(strPuk, strPin, new IHttpFinishListener() {
             @Override
             public void onHttpRequestFinish(BaseResponse response) {
-                //    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PUK_REQUEST);
+                // sendBroadcast(response, MessageUti.SIM_UNLOCK_PUK_REQUEST);
+                if (onUnlockPukListener != null) {
+                    onUnlockPukListener.isSuccess(response.isOk());
+                }
             }
         }));
+    }
+
+    public interface OnUnlockPukListener {
+        void isSuccess(boolean success);
+    }
+
+    public void setOnUnlockPukListener(OnUnlockPukListener onUnlockPukListener) {
+        this.onUnlockPukListener = onUnlockPukListener;
     }
 
     //unlock Pin  Request ////////////////////////////////////////////////////////////////////////////////////////// 
     public void unlockPin(DataValue data) {
         String strPin = (String) data.getParamByKey("pin");
-
         LegacyHttpClient.getInstance().sendPostRequest(new HttpUnlockPinPuk.UnlockPin(strPin, response -> {
             if (response.isOk()) {
                 changeSimStatusGetInterval(true);
             }
 
-            //    			sendBroadcast(response, MessageUti.SIM_UNLOCK_PIN_REQUEST);
+            if (onLockPinListener != null) {
+                onLockPinListener.isCorrect(response.isOk());
+            }
+            //  sendBroadcast(response, MessageUti.SIM_UNLOCK_PIN_REQUEST);
         }));
+    }
+
+    // 监听器: SIM请求
+    public interface OnLockPinListener {
+        void isCorrect(boolean correct);
+    }
+
+    public void setOnLockPinListener(OnLockPinListener onLockPinListener) {
+        this.onLockPinListener = onLockPinListener;
     }
 
     //GetSimStatus ////////////////////////////////////////////////////////////////////////////////////////// 

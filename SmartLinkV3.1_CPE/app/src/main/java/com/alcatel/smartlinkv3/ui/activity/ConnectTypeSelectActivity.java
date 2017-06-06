@@ -5,10 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -28,14 +30,15 @@ import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
+import com.alcatel.smartlinkv3.business.sim.helper.SimPinHelper;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
-import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+import com.alcatel.smartlinkv3.common.ToastUtil_m;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
@@ -84,6 +87,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
     private Handler mHandler;
     private RelativeLayout mHeaderContainer;
+    private boolean test = true;// 测试开关
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,9 +181,11 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         // 获取SIM状态
         if (simStatus.m_SIMState == ENUM.SIMState.NoSim || simStatus.m_SIMState == ENUM.SIMState.Unknown) {
             Log.e(TAG, "todo test, please fix it later");
-            // TOGO: 2017/6/5 没有插入sim卡时的解决方案 
             insert = false;
         }
+
+        // TOAT: 测试阶段强制为true
+        insert = test;
         mSimCardTv.setTextColor(getResources().getColor(insert ? R.color.black_text : R.color.red));
         mSimCardTv.setText(insert ? R.string.connect_type_select_sim_card_enable : R.string.connect_type_select_sim_card_disable);
         mSimCardTv.setEnabled(insert);
@@ -198,7 +204,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     private void showHaveWanPort(WanConnectStatusModel wanModel) {
         boolean connected = wanModel.isConnected();
         // TOAT: 測試把該標記設置為true
-        connected = true;
+        connected = test;
         mWanPortTv.setTextColor(getResources().getColor(connected ? R.color.black_text : R.color.red));
         mWanPortTv.setText(connected ? R.string.connect_type_select_wan_port_enable : R.string.connect_type_select_wan_port_disable);
         mWanPortTv.setEnabled(connected);
@@ -231,8 +237,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             //SIM卡是否存在
             case R.id.connect_type_sim_card_tv:
                 // TOAT: 测试时暂时使用标记位为true
-                if (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) { // 再次判断SIM状态
-                // if (true) {
+                // if (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) { // 再次判断SIM状态
+                if (test) {
                     hideAllLayout();
                     mHeaderBackIv.setVisibility(View.VISIBLE);
                     mHeaderContainer.setVisibility(View.VISIBLE);
@@ -260,14 +266,16 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     finishQuickSetup(false);
                 }
                 break;
+
             //WAN口
             case R.id.connect_type_wan_port_tv:
                 // 显示WIFI设置页面
-                ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
+                //ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, SettingPukActivity.class, true, true, false, 0);
                 break;
-            //头部的下一步
+            // skip按钮
             case R.id.main_header_right_text:
-                Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_SHORT).show();
+                ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 0);
                 break;
             //pin码输入框
             case R.id.handle_pin_password:
@@ -292,16 +300,48 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 break;
             // PIN界面点击连接按钮
             case R.id.handle_pin_connect_btn:
-                //TODO:
-                //只记录验证正确的，请求前把旧数据清空。
-                SharedPrefsUtil.getInstance(this).putString(PIN_PASSWORD, "");
-
-                hideAllLayout();
+                // TOAT: 校验PIN
+                // 判断次数 : <=0 不执行
+                if (!currentRemain()) {
+                    ToastUtil_m.show(this, "Pin had locked");
+                    return;
+                }
                 mWaitingContainer.setVisibility(View.VISIBLE);
+                // 请求前把旧数据清空
+                SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, "");
+                // 非空判断
+                String pinPassword = mPinPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(pinPassword)) {
+                    ToastUtil_m.show(this, "Not permit PIN empty");
+                    mWaitingContainer.setVisibility(View.GONE);
+                    return;
+                }
+                // 请求
+                new SimPinHelper(this) {
+                    @Override
+                    public void isPinCorrect(boolean correct) {
+                        hideAllLayout();
+                        mWaitingContainer.setVisibility(View.GONE);
+                        if (correct) {// 如果PIN码正确, 则保存PIN码到本地
+                            SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, pinPassword);
+                            mPinSuccessContainer.setVisibility(View.VISIBLE);
+                            // 跳转到wifi setting
+                            ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingWifiActivity.class, true, true, false, 2000);
+                        } else {
+                            // 输入错误后--> 并当前剩余次数 < 0
+                            if (!currentRemain()) {
+                                // TODO 跳转到PUK设置界面
+                                ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingPukActivity.class, true, true, false, 0);
+                            }
+                        }
 
-                DataValue data = new DataValue();
-                data.addParam("pin", mPinPassword.getText().toString());
-                mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
+                    }
+                }.connect(mPinPassword.getText().toString().trim());
+
+
+                // DataValue data = new DataValue();
+                // data.addParam("pin", mPinPassword.getText().toString());
+                // mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
                 break;
             //重新解pin
             case R.id.mRp_connectStatus_tryagain:
@@ -313,13 +353,35 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 break;
             //解pin失败，跳到home页按钮
             case R.id.mTv_connectStatus_home:
-                //Toast.makeText(getApplicationContext(), "to home", Toast.LENGTH_SHORT).show();
                 ChangeActivity.toActivity(this, MainActivity.class, true, true, false, 0);
                 break;
 
             default:
                 break;
         }
+    }
+
+    /**
+     * 根据当前剩余次数进行限定操作
+     *
+     * @return
+     */
+    private boolean currentRemain() {
+        // 1.获取最近一次剩余次数
+        int mCurrentRemainTime = mBusinessMgr.getSimStatus().m_nPinRemainingTimes;
+        // 2.设置UI
+        mPasswordTimes.setText(mCurrentRemainTime + "");
+        mPinPassword.setTextColor(Color.RED);
+        mPinPasswordDes.setText("attempts remaining");
+        // 3.剩余次数如果小等于0--> 则屏蔽输入控件
+        if (mCurrentRemainTime <= 0) {
+            mPinPassword.setEnabled(false);
+            mPinPassword.setFocusable(false);
+            mPinPassword.setClickable(false);
+            mPinPassword.setTextColor(Color.GRAY);
+            return false;
+        }
+        return true;
     }
 
     @Override

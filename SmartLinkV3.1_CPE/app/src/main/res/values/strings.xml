@@ -765,4 +765,14 @@
     <string name = "NETMODE_FAILED_CONNECTING">Connecting...</string>
     <string name = "NETMODE_FAILED_CONNECTING_DES">Please wait a minute</string>
 
+    <!-- PUK -->
+    <string name = "puk_newpin">New SIM PIN</string>
+    <string name = "puk_confirmpin">Confirm new SIM PIN</string>
+    <string name = "puk_limit_strings">(4~8 digits)</string>
+    <string name = "puk_pinDontMatch">Pins don\'t match</string>
+    <string name = "puk_connect">Connect</string>
+    <string name = "puk_alarm_des1">
+        You have incorrectly entered the PUK code more than 10 times.\nThe SIM card has been permanently blocked.Please connect your network operator.
+    </string>
+
 </resources>
