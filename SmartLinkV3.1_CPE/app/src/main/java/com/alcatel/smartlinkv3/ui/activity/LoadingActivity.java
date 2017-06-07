@@ -60,7 +60,7 @@ public class LoadingActivity extends Activity {
     }
 
     private void startNextActivity() {
-        // TOAT: 启屏进去选择模式
+        // TOIN 2017/6/7 启屏进去选择模式
         if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
             goGuide();// 进入向导页
         } else if (!checkConnectState()) {

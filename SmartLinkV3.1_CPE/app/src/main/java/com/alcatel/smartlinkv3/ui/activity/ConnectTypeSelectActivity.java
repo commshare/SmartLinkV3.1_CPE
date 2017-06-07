@@ -270,8 +270,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             //WAN口
             case R.id.connect_type_wan_port_tv:
                 // 显示WIFI设置页面
-                //ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
-                ChangeActivity.toActivity(this, SettingPukActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
+
                 break;
             // skip按钮
             case R.id.main_header_right_text:
@@ -298,14 +298,15 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     mRememberPasswordSelect.setImageResource(R.drawable.general_btn_remember_nor);
                 }
                 break;
-            // PIN界面点击连接按钮
+            // PIN界面连接按钮
             case R.id.handle_pin_connect_btn:
-                // TOAT: 校验PIN
                 // 判断次数 : <=0 不执行
+                // TOAT: 测试时把该代码注释 START
                 if (!currentRemain()) {
                     ToastUtil_m.show(this, "Pin had locked");
                     return;
                 }
+                // TOAT: 测试时把该代码注释 END
                 mWaitingContainer.setVisibility(View.VISIBLE);
                 // 请求前把旧数据清空
                 SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, "");
@@ -330,7 +331,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                         } else {
                             // 输入错误后--> 并当前剩余次数 < 0
                             if (!currentRemain()) {
-                                // TODO 跳转到PUK设置界面
+                                // 跳转到PUK设置界面
                                 ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingPukActivity.class, true, true, false, 0);
                             }
                         }
@@ -353,6 +354,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 break;
             //解pin失败，跳到home页按钮
             case R.id.mTv_connectStatus_home:
+                CPEConfig.getInstance().setQuickSetupFlag();
                 ChangeActivity.toActivity(this, MainActivity.class, true, true, false, 0);
                 break;
 

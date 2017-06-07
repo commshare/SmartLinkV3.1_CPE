@@ -57,7 +57,7 @@ public class NetModeUiHelper {
     public void setOnClickAndInit(RadioButton[] rbs, LinearLayout mllNetMode, WanInfo wanInfo) {
         this.wanInfo = wanInfo;
         initUi(mllNetMode, wanInfo);// 初始化UI
-        // TOAT: WAN口模式的切换监听(当前屏蔽,根据后期业务需求开启|屏蔽)
+        // TOGO: WAN口模式的切换监听(当前屏蔽,根据后期业务需求开启|屏蔽)
         //setClick(rbs, mllNetMode);// 设置点击切换
     }
 

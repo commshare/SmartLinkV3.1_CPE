@@ -158,5 +158,8 @@
     <color name = "puk_remain_tv">#999999</color>
     <color name = "puk_normal">#CCCCCC</color>
     <color name = "puk_unable">#dddddd</color>
-
+    
+    <!--login forgot password -->
+    <color name = "login_forgotpassword_ok">#009aff</color>
+    
 </resources>

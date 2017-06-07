@@ -302,7 +302,7 @@ public class LegacyHttpClient {
                 org.apache.http.client.HttpClient httpclient = new DefaultHttpClient(httpParameters);
 
                 // get HttpResponse--> 真正提交请求
-                // TOAT: 真正提交请求
+                // TOIN 2017/6/7 真正提交请求
                 HttpResponse httpResponse = httpclient.execute(httpRequest);
                 // HttpStatus.SC_OK
 

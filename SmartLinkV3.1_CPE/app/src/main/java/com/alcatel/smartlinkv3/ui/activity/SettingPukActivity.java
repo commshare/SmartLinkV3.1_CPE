@@ -89,16 +89,15 @@ public class SettingPukActivity extends BaseActivity {
     private void initData() {
         // 获取PUK剩余次数
         mBusinessMana = BusinessManager.getInstance();
-        pukRemainTimes = getPukRemainTimes();
-        // TOAT: 测试阶段把该句去除
-        setRemainUi();
+        // TOAT: 测试阶段把该句注释
+        setRemainUi(getPukRemainTimes());
     }
 
 
     private void initEvent() {
-        setCheckable(false);
-        setClickable(mRpPukConnect, false, R.drawable.puk_normal);
-        // 根据ED的empty激活connect button
+        setCheckable(false);// 1.设置选项默认为未选中
+        setClickable(mRpPukConnect, false, R.drawable.puk_normal);// 2.设置connect初始化不可点击
+        // 3.根据ED的empty激活connect button
         new SimPukEmptyHelper(this, mEtPukPukCode, mEtPukNewPin, mEtPukConfirmPin) {
             @Override
             public void getEmpty(boolean isEmpty) {
@@ -107,6 +106,7 @@ public class SettingPukActivity extends BaseActivity {
                 } else {
                     setClickable(mRpPukConnect, true, R.drawable.puk_pressed);
                 }
+
             }
         };
     }
@@ -127,11 +127,12 @@ public class SettingPukActivity extends BaseActivity {
             case R.id.mRp_puk_connect:/* connect button */
                 // 1.检验PIN是否一致--> 根据情况显示警告UI
                 boolean samePin = isSamePin(mEtPukNewPin, mEtPukConfirmPin);
+                // 1.1.警告文本是否显示
                 mTvPukAlarm.setVisibility(samePin ? View.GONE : View.VISIBLE);
                 // 2.提交
                 if (samePin) {
-                    mRlPukWaitting.setVisibility(View.VISIBLE);
-                    new SimPukHelper(this) {
+                    mRlPukWaitting.setVisibility(View.VISIBLE);// waitting ui
+                    new SimPukHelper(this) {// commit to remote
                         @Override
                         public void isSuccesss(boolean isSuccess) {
                             mRlPukWaitting.setVisibility(View.GONE);
@@ -140,12 +141,10 @@ public class SettingPukActivity extends BaseActivity {
                                 ChangeActivity.toActivity(SettingPukActivity.this, NetModeConnectStatusActivity.class, true, true, false, 0);
                             } else {/* PUK码错误--> 获取剩余次数 */
                                 runOnUiThread(() -> {
-                                    // TODO: 2017/6/6  不同次数的UI显示
-                                    int pukRemainTimes = getPukRemainTimes();
-                                    setRemainUi();
+                                    // 不同次数的UI显示
+                                    setRemainUi(getPukRemainTimes());
+                                    // setRemainUi(1);
                                 });
-
-
                             }
                         }
                     }.commit(mEtPukNewPin, mEtPukConfirmPin);
@@ -227,13 +226,13 @@ public class SettingPukActivity extends BaseActivity {
     /**
      * H7.根据剩余次数显示不同的UI
      */
-    public void setRemainUi() {
-        if (pukRemainTimes == 1) {// 1.剩余1次时提示用户
+    public void setRemainUi(int pukRemainTimes) {
+        if (pukRemainTimes == 1) {// 1.剩余 1 次时提示用户
             mTvPukRemain.setTextColor(Color.RED);
             mTvPukRemain.setText(pukRemainTimes + DES);
         }
 
-        if (pukRemainTimes == 0) {// 2.剩余0次时提示用户
+        if (pukRemainTimes == 0) {// 2.剩余 0 次时提示用户
             mTvPukRemain.setTextColor(Color.RED);
             mTvPukRemain.setTextSize(Dimension.SP, 12);
             mTvPukRemain.setText(getResources().getString(R.string.puk_alarm_des1));

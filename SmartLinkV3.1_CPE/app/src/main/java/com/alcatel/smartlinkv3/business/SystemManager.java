@@ -155,7 +155,7 @@ public class SystemManager extends BaseManager {
                     m_features = data;
 
                     /* ******************************* 所有API方法 START ******************************* */
-                    // TOAT: 测试方法 
+                    // TOIN 2017/6/7 测试方法
                     Set<String> strings = m_features.getFeatures().keySet();
                     Iterator<String> iterator = strings.iterator();
                     while (iterator.hasNext()) {

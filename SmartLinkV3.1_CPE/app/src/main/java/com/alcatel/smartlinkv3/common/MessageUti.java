@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessageUti {
-    // TOAT: 添加一个网络请求方法, 需要此声明方法标记以及方法名
+    // TOIN 2017/6/7 添加一个网络请求方法, 需要此声明方法标记以及方法名
     //response result
     public static String HTTP_RESPONSE = "com.alcatel.smartlinkv3.business.http_response";
     // public static String RESPONSE_RESULT = "com.alcatel.smartlinkv3.business.response_result";

@@ -74,6 +74,8 @@ public class NetModeConnectStatusActivity extends BaseActivity {
         if (status == SUCCESS) {
             // 1.显示成功页
             switchStatus(View.VISIBLE, View.GONE);
+            // 1.1.设置成功略过选择页--> 进入快速启动
+            CPEConfig.getInstance().setQuickSetupFlag();
             // 2.延迟2秒跳转到setting页
             ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 2000);
         } else if (status == FAILED) {
@@ -81,7 +83,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             switchStatus(View.GONE, View.VISIBLE);
         }
     }
-
+    
     /* EVENTBUS观察者--> StatusBean */
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void getConnectStatus(StatusBean statusBean) {

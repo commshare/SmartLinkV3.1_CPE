@@ -774,5 +774,8 @@
     <string name = "puk_alarm_des1">
         You have incorrectly entered the PUK code more than 10 times.\nThe SIM card has been permanently blocked.Please connect your network operator.
     </string>
+    
+    <!-- FORGOT LOGIN -->
+    <string name = "login_forgotpassword_des">First reset your device,then set a newConfirm password</string>
 
 </resources>
