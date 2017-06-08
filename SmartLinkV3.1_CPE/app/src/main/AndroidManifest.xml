@@ -5,8 +5,8 @@
     android:versionName="3.2.5">
 
     <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="23" />
 
     <supports-screens
         android:largeScreens="true"
@@ -53,17 +53,17 @@
         <activity
             android:name=".ui.activity.GuideActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RefreshWifiActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.QuickSetupActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -71,25 +71,25 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.ActivitySMSDelete"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.activity.ActivityNewSms"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.activity.ActivitySmsDetail"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <!-- <activity -->
         <!-- android:name=".ui.activity.SdSharingActivity" -->
         <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
@@ -99,86 +99,86 @@
             android:name=".ui.activity.UsageActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.activity.UsageSettingActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.activity.SettingWifiActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingAccountActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingNetworkActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingShareActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingPowerSavingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingBackupRestoreActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SystemInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingNewAboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingAboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingDeviceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
         <activity
             android:name=".ui.activity.SettingUpgradeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"></activity>
+            android:theme="@style/titlebarstyle" />
 
         <!-- 测试Activity -->
-        <activity android:name=".ui.activity.TestActivity"></activity>
+        <activity android:name=".ui.activity.TestActivity" />
 
         <!-- SettingNetModeActivity -->
         <activity
             android:name=".ui.activity.SettingNetModeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <!-- <activity -->
         <!-- android:name=".ui.activity.SetDefaultDirectoryActivity" -->
@@ -188,28 +188,28 @@
         <activity
             android:name=".ui.activity.ActivityDeviceManager"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mediaplayer.activity.Go2ContentActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".mediaplayer.music.MusicPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".mediaplayer.video.VideoPlayerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".mediaplayer.picture.PicturePlayerActivity"
             android:launchMode="singleTask"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <!-- <activity -->
         <!-- android:name=".ui.activity.SettingAboutFeedbackImageSelector" -->
         <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
@@ -220,16 +220,16 @@
             android:name=".fileexplorer.FtpFileExplorerTabActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@style/Custom_ActionBar_Style"/>
+            android:theme="@style/Custom_ActionBar_Style" />
         <activity
             android:name=".fileexplorer.FtpFileDialog"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@style/FtpFileDialog_Theme"/>
+            android:theme="@style/FtpFileDialog_Theme" />
         <activity
             android:name=".ui.activity.ConnectTypeSelectActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".appwidget.SmartLinkWidget">
             <intent-filter>
@@ -249,7 +249,7 @@
                 android:resource="@xml/smart_link_widget_provider" />
         </receiver>
 
-        <service android:name=".common.NotificationService"></service>
+        <service android:name=".common.NotificationService" />
         <!-- <service android:name=".samba.SmbService"> -->
         <!-- </service> -->
         <service
@@ -276,10 +276,15 @@
 
         <activity
             android:name=".ui.activity.NetModeConnectStatusActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingPukActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.WlanAdvancedSettingsActivity"
+            android:label="@string/advanced_settings"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

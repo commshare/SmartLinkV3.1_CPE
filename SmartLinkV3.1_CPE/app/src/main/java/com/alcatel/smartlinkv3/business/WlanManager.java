@@ -54,7 +54,7 @@ public class WlanManager extends BaseManager {
     @Override
     protected void stopRollTimer() {
         /*m_getHostNumRollTimer.cancel();
-		m_getHostNumRollTimer.purge();
+        m_getHostNumRollTimer.purge();
 		m_getHostNumRollTimer = new Timer();*/
         if (m_getHostNumTask != null) {
             m_getHostNumTask.cancel();
@@ -70,7 +70,7 @@ public class WlanManager extends BaseManager {
             if (bCPEWifiConnected) {
                 startGetHostNumTask();
                 getWlanSupportMode(null);
-                loadWlanSetting();
+                getWlanSetting();
             } else {
                 m_wlanSupportMode = WlanSupportMode.Mode2Point4G;
             }
@@ -239,12 +239,12 @@ public class WlanManager extends BaseManager {
 
     // get wlan setting
     // //////////////////////////////////////////////////////////////////////////////////////////
-    private void loadWlanSetting() {
+    public void getWlanSetting() {
         LegacyHttpClient.getInstance().sendPostRequest(
                 new HttpWlanSetting.GetWlanSetting(new IHttpFinishListener() {
                     @Override
                     public void onHttpRequestFinish(BaseResponse response) {
-                        Log.e(TAG, "loadWlanSetting return");
+                        Log.e(TAG, "getWlanSetting return");
                         if (response.isOk()) {
                             mWlanSettings = response.getModelResult();
 //								getInfoByWansetting();
@@ -255,71 +255,7 @@ public class WlanManager extends BaseManager {
 
     // set wlan setting
     // //////////////////////////////////////////////////////////////////////////////////////////
-    public void setWlanSetting(DataValue data) {
-        int nWlanAPMode = (Integer) data.getParamByKey("WlanAPMode");
-        String strSsid = data.getParamByKey("Ssid").toString();
-        String strCountryCode = data.getParamByKey("CountryCode").toString();
-        String strPassword = (String) data.getParamByKey("Password");
-        Integer nSecurity = (Integer) data.getParamByKey("Security");
-        Integer nEncryption = (Integer) data.getParamByKey("Encryption");
-        Integer nSsidStatus = (Integer) data.getParamByKey("SsidStatus");
-        final WlanSettingResult settings = new WlanSettingResult();
-        final WlanNewSettingResult Newsettings = new WlanNewSettingResult();
-        settings.clone(m_settings);
-        settings.WlanAPMode = nWlanAPMode;
-        WlanFrequency frequencyMode = WlanFrequency.build(nWlanAPMode);
-        boolean bl24GHZ = false;
-        boolean bl5GHZ = false;
-        if (WlanFrequency.Frequency_24GHZ == frequencyMode) {
-            settings.Ssid = strSsid;
-            settings.CountryCode = strCountryCode;
-            settings.SsidHidden = nSsidStatus;
-            settings.ApStatus_2G = 1;
-            settings.ApStatus_5G = 0;
-            bl24GHZ = true;
-        } else if (WlanFrequency.Frequency_5GHZ == frequencyMode) {
-            settings.Ssid_5G = strSsid;
-            settings.CountryCode = strCountryCode;
-            settings.SsidHidden_5G = nSsidStatus;
-            settings.ApStatus_2G = 0;
-            settings.ApStatus_5G = 1;
-            bl5GHZ = true;
-        } else {
-            settings.Ssid = strSsid;
-            settings.Ssid_5G = strSsid;
-            settings.CountryCode = strCountryCode;
-            settings.SsidHidden = nSsidStatus;
-            settings.SsidHidden_5G = nSsidStatus;
-            bl24GHZ = true;
-            bl5GHZ = true;
-        }
-
-        if (bl24GHZ) {
-            settings.SecurityMode = nSecurity;
-            if (settings.SecurityMode != SecurityMode.antiBuild(SecurityMode.Disable)) {
-                if (settings.SecurityMode == SecurityMode.antiBuild(SecurityMode.WEP)) {
-                    settings.WepType = nEncryption;
-                    settings.WepKey = strPassword;
-                } else {
-                    settings.WpaType = nEncryption;
-                    settings.WpaKey = strPassword;
-                }
-            }
-        }
-
-        if (bl5GHZ) {
-            settings.SecurityMode_5G = nSecurity;
-            if (settings.SecurityMode_5G != SecurityMode.antiBuild(SecurityMode.Disable)) {
-                if (settings.SecurityMode_5G == SecurityMode.antiBuild(SecurityMode.WEP)) {
-                    settings.WepType_5G = nEncryption;
-                    settings.WepKey_5G = strPassword;
-                } else {
-                    settings.WpaType_5G = nEncryption;
-                    settings.WpaKey_5G = strPassword;
-                }
-            }
-
-        }
+    public void setWlanSetting(WlanNewSettingResult settings) {
 
         LegacyHttpClient.getInstance().sendPostRequest(
                 new HttpWlanSetting.SetWlanSetting(settings,
@@ -327,7 +263,7 @@ public class WlanManager extends BaseManager {
                             @Override
                             public void onHttpRequestFinish(BaseResponse response) {
                                 if (response.isOk()) {
-                                    m_settings.clone(settings);
+//                                    m_settings.clone(settings);
 //								getInfoByWansetting();
                                 }
 //						sendBroadcast(response, MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);

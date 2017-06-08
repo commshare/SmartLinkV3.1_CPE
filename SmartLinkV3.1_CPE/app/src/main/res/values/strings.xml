@@ -776,5 +776,7 @@
 
     <!-- FORGOT LOGIN -->
     <string name="login_forgotpassword_des">First reset your device,then set a newConfirm password</string>
-
+    <!--20170608 add-->
+    <string name="advanced_settings">Advanced settings</string>
+    <string name="only_phones_supported_5ghz_wi_fi_can_connect_5ghz_wi_fi_network">Only phones supported 5GHZ Wi-Fi can connect 5GHZ Wi-Fi network</string>
 </resources>

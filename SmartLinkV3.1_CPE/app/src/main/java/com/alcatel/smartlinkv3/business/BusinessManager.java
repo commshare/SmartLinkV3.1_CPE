@@ -148,6 +148,9 @@ public class BusinessManager {
         return true;
     }
 
+    public void sendSetWlanRequest(WlanNewSettingResult settings){
+        m_wlanManager.setWlanSetting(settings);
+    }
     //send http request message
     //param:strMessageId: MessageUti defined message string
     public void sendRequestMessage(String strMessageId, DataValue data) {

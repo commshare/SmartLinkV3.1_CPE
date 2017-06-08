@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.business.wlan;
 
 public class AP {
-   public int WlanAPID = 0;
    public int ApStatus = 1;
    public int WMode = 0; //0: 802.11b; 1: 802.11b/g; 2: 802.11b/g/n; 3: Auto
    public String Ssid = new String();//2.4GHz SSID
@@ -16,26 +15,29 @@ public class AP {
    public int ApIsolation = 0; //0: disable	1: enable
    public int max_numsta = 0; //2.4 G WIFI max number client
    public int curr_num = 0; //Current client count that connect to WIFI.
+   public int CurChannel = 0;
+   public int Bandwidth = 0;
 
    @Override
    public String toString() {
-       return "AP{" +
-               "WlanAPID=" + WlanAPID +
-               ", ApStatus=" + ApStatus +
-               ", WMode=" + WMode +
-               ", Ssid='" + Ssid + '\'' +
-               ", SsidHidden=" + SsidHidden +
-               ", Channel=" + Channel +
-               ", SecurityMode=" + SecurityMode +
-               ", WepType=" + WepType +
-               ", WepKey='" + WepKey + '\'' +
-               ", WpaType=" + WpaType +
-               ", WpaKey='" + WpaKey + '\'' +
-               ", CountryCode='" + CountryCode + '\'' +
-               ", ApIsolation=" + ApIsolation +
-               ", max_numsta=" + max_numsta +
-               ", curr_num=" + curr_num +
-               '}';
+      return "AP{" +
+              "ApStatus=" + ApStatus +
+              ", WMode=" + WMode +
+              ", Ssid='" + Ssid + '\'' +
+              ", SsidHidden=" + SsidHidden +
+              ", Channel=" + Channel +
+              ", SecurityMode=" + SecurityMode +
+              ", WepType=" + WepType +
+              ", WepKey='" + WepKey + '\'' +
+              ", WpaType=" + WpaType +
+              ", WpaKey='" + WpaKey + '\'' +
+              ", CountryCode='" + CountryCode + '\'' +
+              ", ApIsolation=" + ApIsolation +
+              ", max_numsta=" + max_numsta +
+              ", curr_num=" + curr_num +
+              ", CurChannel=" + CurChannel +
+              ", Bandwidth=" + Bandwidth +
+              '}';
    }
 
 

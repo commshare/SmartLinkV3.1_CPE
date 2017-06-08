@@ -11,35 +11,31 @@
 	
         <TextView
             android:id="@+id/main_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/sms_title"
             android:textColor="@color/color_white"
             android:textSize="20sp"/>
         
-        <Button
-            android:id="@+id/btnbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_15dip"
-			android:gravity="center"
-            android:visibility="gone"
-            android:background="@drawable/actionbar_plus_icon" />
+        <!--<Button-->
+            <!--android:id="@+id/btnbar"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/dimen_15dip"-->
+			<!--android:gravity="center"-->
+            <!--android:visibility="gone"-->
+            <!--android:background="@drawable/actionbar_plus_icon" />-->
 
         <TextView
-            android:id="@+id/main_login_state"
+            android:id="@+id/action"
             android:textSize="@dimen/font_size_normal"
-            android:visibility="invisible"
             android:layout_marginRight="@dimen/dimen_15dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="@color/color_white"
-            android:clickable="true"
-            android:text="@string/setting_log_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 	</RelativeLayout>

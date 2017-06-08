@@ -56,7 +56,6 @@ import com.alcatel.smartlinkv3.ui.view.ViewIndex;
 import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
 import com.alcatel.smartlinkv3.ui.view.ViewSetting;
 import com.alcatel.smartlinkv3.ui.view.ViewSms;
-import com.alcatel.smartlinkv3.ui.view.ViewWifiKey;
 import com.alcatel.smartlinkv3.ui.view.ViewWifiSettings;
 
 import org.cybergarage.upnp.Device;
@@ -93,7 +92,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private ImageView m_smsTextView;
     private TextView m_newSmsTextView;
     private TextView m_titleTextView;
-    private Button m_Btnbar;
+//    private Button m_Btnbar;
     private ViewHome m_homeView;
     private ViewSms m_smsView;
     private ViewSetting m_settingView;
@@ -109,8 +108,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private AllShareProxy mAllShareProxy;
     private ThumbnailLoader thumbnailLoader;
     private android.app.FragmentManager fm;
-    private String wifi_key_status;
-    private TextView mLoginState;
+//    private String wifi_key_status;
+    private TextView mActionText;
 
     private long mkeyTime; //点击2次返回 键的时间
 
@@ -130,7 +129,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         this.getWindowManager().getDefaultDisplay().getMetrics(m_displayMetrics);
         fm = getFragmentManager();
         rl_top = (RelativeLayout) findViewById(R.id.main_layout_top);
-        wifi_key_status = getResources().getString(R.string.wifi_key_edit);
+//        wifi_key_status = getResources().getString(R.string.wifi_key_edit);
 
         //        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
         //                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -148,8 +147,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         m_smsBtn.setOnClickListener(this);
         m_settingBtn = (ImageView) this.findViewById(R.id.main_setting);
         m_settingBtn.setOnClickListener(this);
-        mLoginState = (TextView) findViewById(R.id.main_login_state);
-        mLoginState.setOnClickListener(this);
+        mActionText = (TextView) findViewById(R.id.action);
+        mActionText.setOnClickListener(this);
 
         m_viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
@@ -158,8 +157,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
         m_titleTextView = (TextView) this.findViewById(R.id.main_title);
 
-        m_Btnbar = (Button) this.findViewById(R.id.btnbar);
-        m_Btnbar.setOnClickListener(this);
+//        m_Btnbar = (Button) this.findViewById(R.id.btnbar);
+//        m_Btnbar.setOnClickListener(this);
 
         addView();
 
@@ -215,10 +214,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         toPageHomeWhenPinSimNoOk();
         showMicroView();
 
-        if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
-            m_Btnbar.setText(wifi_key_status);
-        }
-        wifiEditClick();
+//        if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
+//            m_Btnbar.setText(wifi_key_status);
+//        }
+//        onWifiSettingsApplyClick();
     }
 
     @Override
@@ -482,13 +481,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                 microsdBtnClick();
                 break;
             case R.id.btnbar:
-                navigateAfterLogin(() -> {
-                    if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
-                        wifiEditClick();
-                    } else if (pageIndex == ViewIndex.VIEW_SMS) {
-                        editBtnClick();
-                    }
-                });
+
 
                 break;
             case R.id.unlock_sim_button:
@@ -502,9 +495,16 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     startActivity(intent);
                 });
                 break;
-            case R.id.main_login_state:
-                userLogout();
-                CPEConfig.getInstance().userLogout();
+            case R.id.action:
+                if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
+                    navigateAfterLogin(this::onWifiSettingsApplyClick);
+                }else if (pageIndex == ViewIndex.VIEW_SMS){
+                    navigateAfterLogin(this::editBtnClick);
+                }else if (pageIndex == ViewIndex.VIEW_SETTINGE){
+                    userLogout();
+                    CPEConfig.getInstance().userLogout();
+                }
+
                 break;
             default:
                 break;
@@ -524,38 +524,38 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         }
     }
 
-    private void wifiEditClick() {
-        if (m_Btnbar.getText().equals(getResources().getString(R.string.wifi_key_edit))) {
-            wifi_key_status = getResources().getString(R.string.wifi_key_Done);
-            if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
-                m_Btnbar.setText(wifi_key_status);
-            }
-            //下面要变为编辑状态
-            Intent intent = new Intent();
-            intent.setAction(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST);
-            sendBroadcast(intent);
-        } else {
-//            if (!m_wifiKeyView.getTypeSelectionFragmentVisible()) {
-//                wifi_key_status = getResources().getString(R.string.wifi_key_edit);
-//                if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
-//                    m_Btnbar.setText(wifi_key_status);
-//                }
-//                m_wifiKeyView.setTypeSelectionFragmentVisible(false);
-//                if (m_wifiKeyView.getM_isTypeSelecttionDone()) {
-//                    m_wifiKeyView.setM_isTypeSelecttionDone(false);
-//                    m_wifiKeyView.setTypeSelectionFragmentVisible(false);
-//                }
-//            } else {
-//                if (m_wifiKeyView.getM_isTypeSelecttionDone()) {
-//                    m_wifiKeyView.setM_isTypeSelecttionDone(false);
-//                }
+    private void onWifiSettingsApplyClick() {
+//        if (m_Btnbar.getText().equals(getResources().getString(R.string.wifi_key_edit))) {
+//            wifi_key_status = getResources().getString(R.string.wifi_key_Done);
+//            if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
+//                m_Btnbar.setText(wifi_key_status);
 //            }
-
-            //下面要变为完成编辑状态
-            Intent intent = new Intent();
-            intent.setAction(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST);
-            sendBroadcast(intent);
-        }
+//            //下面要变为编辑状态
+//            Intent intent = new Intent();
+//            intent.setAction(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST);
+//            sendBroadcast(intent);
+//        } else {
+////            if (!m_wifiKeyView.getTypeSelectionFragmentVisible()) {
+////                wifi_key_status = getResources().getString(R.string.wifi_key_edit);
+////                if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
+////                    m_Btnbar.setText(wifi_key_status);
+////                }
+////                m_wifiKeyView.setTypeSelectionFragmentVisible(false);
+////                if (m_wifiKeyView.getM_isTypeSelecttionDone()) {
+////                    m_wifiKeyView.setM_isTypeSelecttionDone(false);
+////                    m_wifiKeyView.setTypeSelectionFragmentVisible(false);
+////                }
+////            } else {
+////                if (m_wifiKeyView.getM_isTypeSelecttionDone()) {
+////                    m_wifiKeyView.setM_isTypeSelecttionDone(false);
+////                }
+////            }
+//
+//            //下面要变为完成编辑状态
+//            Intent intent = new Intent();
+//            intent.setAction(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST);
+//            sendBroadcast(intent);
+//        }
     }
 
     private void homeBtnClick() {
@@ -695,40 +695,42 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     public void updateTitleUI(int viewIndex) {
         if (viewIndex == ViewIndex.VIEW_HOME) {
             rl_top.setVisibility(View.GONE);
-            m_Btnbar.setVisibility(View.GONE);
+//            m_Btnbar.setVisibility(View.GONE);
+            mActionText.setVisibility(View.GONE);
             setMainBtnStatus(R.id.main_home);
-        }
-        if (viewIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
+        } else if (viewIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
             rl_top.setVisibility(View.VISIBLE);
             m_titleTextView.setText(R.string.wifi_settings);
-            m_Btnbar.setVisibility(View.VISIBLE);
-            m_Btnbar.setBackgroundColor(getResources().getColor(R.color.main_title_background));
-            m_Btnbar.setText(wifi_key_status);
-            m_Btnbar.setTextColor(getResources().getColor(R.color.color_white));
-            m_Btnbar.setTextSize(20);
+            mActionText.setVisibility(View.VISIBLE);
+            mActionText.setText(R.string.apply);
+//            m_Btnbar.setVisibility(View.VISIBLE);
+//            m_Btnbar.setBackgroundResource(null);
+//            m_Btnbar.setText(R.string.apply);
+//            m_Btnbar.setTextColor(getResources().getColor(R.color.color_white));
+//            m_Btnbar.setTextSize(20);
             setMainBtnStatus(R.id.main_wifiKey);
-        }
-        if (viewIndex == ViewIndex.VIEW_SMS) {
+        } else if (viewIndex == ViewIndex.VIEW_SMS) {
             rl_top.setVisibility(View.VISIBLE);
             m_titleTextView.setText(R.string.sms_title);
-            m_Btnbar.setVisibility(View.VISIBLE);
-            m_Btnbar.setBackgroundResource(R.drawable.actionbar_edit_icon);
-            m_Btnbar.setText("");
+            mActionText.setVisibility(View.VISIBLE);
+            mActionText.setBackgroundResource(R.drawable.actionbar_edit_icon);
+            mActionText.setText("");
+//            m_Btnbar.setVisibility(View.VISIBLE);
+//            m_Btnbar.setBackgroundResource(R.drawable.actionbar_edit_icon);
+//            m_Btnbar.setText("");
             setMainBtnStatus(R.id.tab_sms_layout);
-        }
-        if (viewIndex == ViewIndex.VIEW_SETTINGE) {
+        } else if (viewIndex == ViewIndex.VIEW_SETTINGE) {
             rl_top.setVisibility(View.VISIBLE);
             m_titleTextView.setText(R.string.main_setting);
-            mLoginState.setVisibility(View.VISIBLE);
-            m_Btnbar.setVisibility(View.GONE);
+            mActionText.setVisibility(View.VISIBLE);
+            mActionText.setText(R.string.setting_log_out);
+//            m_Btnbar.setVisibility(View.GONE);
             setMainBtnStatus(R.id.main_setting);
-        } else {
-            mLoginState.setVisibility(View.INVISIBLE);
-        }
-        if (viewIndex == ViewIndex.VIEW_MICROSD) {
+        } else if (viewIndex == ViewIndex.VIEW_MICROSD) {
             rl_top.setVisibility(View.VISIBLE);
             m_titleTextView.setText(R.string.main_sdsharing);
-            m_Btnbar.setVisibility(View.GONE);
+//            m_Btnbar.setVisibility(View.GONE);
+            mActionText.setVisibility(View.GONE);
         }
     }
 

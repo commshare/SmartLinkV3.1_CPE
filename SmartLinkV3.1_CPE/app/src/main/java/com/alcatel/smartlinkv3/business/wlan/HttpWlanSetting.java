@@ -10,10 +10,13 @@ import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.httpservice.DataResponse;
 import com.alcatel.smartlinkv3.httpservice.LegacyHttpClient.IHttpFinishListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpWlanSetting {
 
@@ -133,91 +136,47 @@ public class HttpWlanSetting {
         public WlanSettingResult m_result = new WlanSettingResult();
         public WlanNewSettingResult m_Newresult = new WlanNewSettingResult();
 
-        public SetWlanSetting(WlanSettingResult result, IHttpFinishListener callback) {
+        public SetWlanSetting(WlanNewSettingResult result, IHttpFinishListener callback) {
             super("Wlan", "SetWlanSettings", "5.5", callback);
             setBroadcastAction(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET);
-            m_result = result;
+            m_Newresult = result;
         }
 
         @Override
         protected void buildHttpParamJson() throws JSONException {
 
             JSONObject settings = new JSONObject();
-            if (m_result.New_Interface) {
-                settings.put("WlanAPMode", m_result.WlanAPMode);
-                settings.put("curr_num", m_result.curr_num);
 
-                JSONArray member = new JSONArray();
-                JSONObject json_2G = new JSONObject();
-                json_2G.put("WlanAPID", 0);
-                json_2G.put("ApStatus", m_result.ApStatus_2G);
-                json_2G.put("WMode", m_result.WMode);
-                json_2G.put("Ssid", m_result.Ssid);
-                json_2G.put("SsidHidden", m_result.SsidHidden);
-                json_2G.put("Channel", m_result.Channel);
-                json_2G.put("SecurityMode", m_result.SecurityMode);
-                json_2G.put("WepType", m_result.WepType);
-                json_2G.put("WepKey", m_result.WepKey);
-                json_2G.put("WpaType", m_result.WpaType);
-                json_2G.put("WpaKey", m_result.WpaKey);
-
-                json_2G.put("CountryCode", m_result.CountryCode);
-                json_2G.put("ApIsolation", m_result.ApIsolation);
-                json_2G.put("max_numsta", m_result.max_numsta);
-                json_2G.put("curr_num", m_result.curr_num_2G);
-                member.put(json_2G);
-
-                JSONObject json_5G = new JSONObject();
-                json_5G.put("WlanAPID", 1);
-                json_5G.put("ApStatus", m_result.ApStatus_5G);
-                json_5G.put("WMode", m_result.WMode_5G);
-                json_5G.put("Ssid", m_result.Ssid_5G);
-                json_5G.put("SsidHidden", m_result.SsidHidden_5G);
-                json_5G.put("Channel", m_result.Channel_5G);
-                json_5G.put("SecurityMode", m_result.SecurityMode_5G);
-                json_5G.put("WepType", m_result.WepType_5G);
-                json_5G.put("WepKey", m_result.WepKey_5G);
-                json_5G.put("WpaType", m_result.WpaType_5G);
-                json_5G.put("WpaKey", m_result.WpaKey_5G);
-                json_5G.put("CountryCode", m_result.CountryCode);
-                json_5G.put("ApIsolation", m_result.ApIsolation_5G);
-                json_5G.put("max_numsta", m_result.max_numsta_5G);
-                json_5G.put("curr_num", m_result.curr_num_5G);
-
-                member.put(json_5G);
-                settings.put("APList", member);
-            } else {
-                settings.put("WlanAPMode", m_result.WlanAPMode);
-                settings.put("CountryCode", m_result.CountryCode);
-                settings.put("Ssid", m_result.Ssid);
-                settings.put("SsidHidden", m_result.SsidHidden);
-                settings.put("SecurityMode", m_result.SecurityMode);
-                settings.put("WpaType", m_result.WpaType);
-                settings.put("WpaKey", m_result.WpaKey);
-                settings.put("WepType", m_result.WepType);
-                settings.put("WepKey", m_result.WepKey);
-                settings.put("Channel", m_result.Channel);
-                settings.put("ApIsolation", m_result.ApIsolation);
-                settings.put("WMode", m_result.WMode);
-                settings.put("max_numsta", m_result.max_numsta);
-
-                settings.put("Ssid_5G", m_result.Ssid_5G);
-                settings.put("SsidHidden_5G", m_result.SsidHidden_5G);
-                settings.put("SecurityMode_5G", m_result.SecurityMode_5G);
-                settings.put("WpaType_5G", m_result.WpaType_5G);
-                settings.put("WpaKey_5G", m_result.WpaKey_5G);
-                settings.put("WepType_5G", m_result.WepType_5G);
-                settings.put("WepKey_5G", m_result.WepKey_5G);
-                settings.put("Channel_5G", m_result.Channel_5G);
-                settings.put("ApIsolation_5G", m_result.ApIsolation_5G);
-                settings.put("WMode_5G", m_result.WMode_5G);
-                settings.put("max_numsta_5G", m_result.max_numsta_5G);
-            }
-            String setString = settings.toString();
-            Log.d("Json", setString);
+            settings.put("AP2G", buildAPJsonObject(m_Newresult.AP2G));
+            settings.put("AP5G", buildAPJsonObject(m_Newresult.AP5G));
 
             m_requestParamJson
                     .put(ConstValue.JSON_PARAMS, settings);
+
+        }
+
+
+        private JSONObject buildAPJsonObject(AP ap) throws JSONException{
+            JSONObject object = new JSONObject();
+
+            object.put("ApStatus", ap.ApStatus);
+            object.put("WMode", ap.WMode);
+            object.put("Ssid", ap.Ssid);
+            object.put("SsidHidden", ap.SsidHidden);
+            object.put("SecurityMode", ap.SecurityMode);
+            object.put("WpaType", ap.WpaType);
+            object.put("WpaKey", ap.WpaKey);
+            object.put("WepType", ap.WepType);
+            object.put("WepKey", ap.WepKey);
+            object.put("Channel", ap.Channel);
+            object.put("ApIsolation", ap.ApIsolation);
+            object.put("max_numsta", ap.max_numsta);
+            object.put("curr_num", ap.curr_num);
+            object.put("CurChannel", ap.CurChannel);
+            object.put("Bandwidth", ap.Bandwidth);
+            object.put("CountryCode", ap.CountryCode);
+
+            return object;
         }
     }
 
