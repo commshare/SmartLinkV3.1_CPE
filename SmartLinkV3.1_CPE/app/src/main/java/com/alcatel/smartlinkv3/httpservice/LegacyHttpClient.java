@@ -259,7 +259,6 @@ public class LegacyHttpClient {
             return;
         }
         // request.setHttpUrl(m_server_address);
-        Log.d(TAG, "sendpostrequest");
         request.buildRequestParamJson();
         appendRequest(request);
         m_threadPool.submit(new HttpThreadRunnable());
@@ -275,7 +274,6 @@ public class LegacyHttpClient {
 
         @Override
         public void run() {
-            Log.d(TAG, "lega run");
             if (isStop())
                 return;
             // Log.d(TAG, String.format("%d", Thread.currentThread().getId()));
@@ -285,7 +283,7 @@ public class LegacyHttpClient {
             String body = request.getRequestParamJson().toString();
             try {
                 //				String httpUrl = request.getHttpUrl();
-                Log.d(TAG, m_server_address);
+                Log.d(TAG, "--> "+m_server_address);
                 Log.d(TAG, body);
                 HttpAccessLog.getInstance().writeLogToFile("Request:" + body + " httpUrl:" + m_server_address);
                 // HttpPost connect object
@@ -305,11 +303,11 @@ public class LegacyHttpClient {
                 // TOIN 2017/6/7 真正提交请求
                 HttpResponse httpResponse = httpclient.execute(httpRequest);
                 // HttpStatus.SC_OK
-
                 int nStatusCode = httpResponse.getStatusLine().getStatusCode();
                 if (nStatusCode == HttpStatus.SC_OK) {
                     // get response string
                     String response = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
+                    Log.d(TAG, "<-- " + request.getMethod() + ", " + response);
                     JSONObject responseJson = new JSONObject(response);
                     HttpAccessLog.getInstance().writeLogToFile("Response:" + response);
                     response_obj.parseResult(SmartLinkV3App.getInstance().getApplicationContext(), responseJson);

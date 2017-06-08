@@ -665,16 +665,16 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                     if (mWiFiSSID != null && mWiFiPasswd != null) {
                         return;
                     }
-                    if (mBusinessMgr.getWlanFrequency() == WlanFrequency.Frequency_24GHZ) {
+//                    if (mBusinessMgr.getWlanFrequency() == WlanFrequency.Frequency_24GHZ) {
                         mWiFiSSID = mBusinessMgr.getSsid();
                         mWiFiPasswd = mBusinessMgr.getWifiPwd();
                         mSecurityMode = mBusinessMgr.getSecurityMode();
-                    }
-                    if (mBusinessMgr.getWlanFrequency() == WlanFrequency.Frequency_5GHZ) {
-                        mWiFiSSID = mBusinessMgr.getSsid_5G();
-                        mWiFiPasswd = mBusinessMgr.getWifiPwd_5G();
-                        mSecurityMode = mBusinessMgr.getSecurityMode_5G();
-                    }
+//                    }
+//                    if (mBusinessMgr.getWlanFrequency() == WlanFrequency.Frequency_5GHZ) {
+//                        mWiFiSSID = mBusinessMgr.getSsid_5G();
+//                        mWiFiPasswd = mBusinessMgr.getWifiPwd_5G();
+//                        mSecurityMode = mBusinessMgr.getSecurityMode_5G();
+//                    }
 
                     if (mStateHandler == null || mEnterText.getText().length() > 0 ||
                             mBusinessMgr.getLoginStatus() != UserLoginStatus.LOGIN) {

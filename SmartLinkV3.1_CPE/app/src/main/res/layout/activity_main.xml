@@ -90,7 +90,7 @@
                 android:clickable="true"
                 android:drawablePadding="3dip"
                 android:gravity="center_horizontal"
-                android:text="@string/wifi_key"
+                android:text="@string/wifi_settings"
                 android:textColor="@color/color_grey"
                 android:textSize="12sp" />
         </RelativeLayout>

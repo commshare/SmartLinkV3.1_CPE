@@ -27,6 +27,8 @@ import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
+import com.alcatel.smartlinkv3.business.wlan.AP;
+import com.alcatel.smartlinkv3.business.wlan.WlanNewSettingResult;
 import com.alcatel.smartlinkv3.business.wlan.WlanSettingResult;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
@@ -404,8 +406,17 @@ public class BusinessManager {
 
     /********************wlan manager Data start**********************/
 
+    public AP getAP2G(){
+        return m_wlanManager.getWlanSettings().AP2G;
+    }
+
+    public AP getAP5G(){
+        return m_wlanManager.getWlanSettings().AP5G;
+    }
+
     public String getSsid() {
         return m_wlanManager.getSsid();
+
     }
 
     public String getWifiPwd() {
@@ -441,15 +452,15 @@ public class BusinessManager {
     }
 
     public WPAEncryption getWPAEncryption_5G() {
-        return m_wlanManager.getWPAEncryption();
+        return m_wlanManager.getWPAEncryption_5G();
     }
 
     public WEPEncryption getWEPEncryption_5G() {
-        return m_wlanManager.getWEPEncryption();
+        return m_wlanManager.getWEPEncryption_5G();
     }
 
     public WModeEnum getWMode_5G() {
-        return m_wlanManager.getWMode();
+        return m_wlanManager.getWMode_5G();
     }
 
     public String getCountryCode() {

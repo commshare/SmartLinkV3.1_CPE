@@ -33,7 +33,7 @@ public class HttpWlanSetting {
 
     public static class GetWlanSettingResponse extends BaseResponse {
         private static final String TAG = "GetWlanSettingResponse";
-        WlanSettingResult m_result = new WlanSettingResult();
+//        WlanSettingResult m_result = new WlanSettingResult();
         WlanNewSettingResult m_New_result = new WlanNewSettingResult();
 
         public GetWlanSettingResponse(String action, IHttpFinishListener callback) {
@@ -42,84 +42,89 @@ public class HttpWlanSetting {
 
         @Override
         protected void parseContent(String strJsonResult) {
+            Log.d(TAG, "parseContent, strJsonResult: "+strJsonResult);
+
             Gson gson = new Gson();
-            m_result = gson.fromJson(strJsonResult, WlanSettingResult.class);
-            if (m_result.CountryCode.isEmpty()) {
-                m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
-                parseNewSettingResult(m_result, m_New_result);
-                m_result.New_Interface = true;
-            }
+            m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
+            Log.d(TAG, "parseContent, ap2g: "+m_New_result.AP2G);
+            Log.d(TAG, "parseContent, ap5g: "+m_New_result.AP5G);
+//            if (m_result.CountryCode.isEmpty()) {
+//                m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
+//                parseNewSettingResult(m_result, m_New_result);
+//                m_result.New_Interface = true;
+//            }
         }
 
-        protected void parseNewSettingResult(WlanSettingResult m_result, WlanNewSettingResult m_New_result) {
-            m_result.curr_num = m_New_result.curr_num;
-            m_result.WlanAPMode = m_New_result.WlanAPMode;
-            int size = m_New_result.APList.size();
-            if (size > 2 || size <= 0) {
-                Log.e(TAG, "error, invalid ap list size = " +size);
-            }
-            for (ApList ap : m_New_result.APList) {
-                //WlanAPID_2G
-                int type = ap.WlanAPID;
-                if (type == WlanAPMode.E_JRD_WIFI_MODE_2G.getmMode()) {
-                    m_result.WlanAPID_2G = ap.WlanAPID;
-                    m_result.curr_num_2G = ap.curr_num;
-                    m_result.ApStatus_2G = ap.ApStatus;
-
-                    m_result.Ssid = ap.Ssid;
-                    m_result.SsidHidden = ap.SsidHidden;
-                    m_result.CountryCode = ap.CountryCode;
-                    m_result.SecurityMode = ap.SecurityMode;
-                    m_result.WpaType = ap.WpaType;
-                    m_result.WpaKey = ap.WpaKey;
-                    m_result.WepType = ap.WepType;
-                    m_result.WepKey = ap.WepKey;
-                    m_result.Channel = ap.Channel;
-                    m_result.ApIsolation = ap.ApIsolation;
-                    m_result.WMode = ap.WMode;
-                    m_result.max_numsta = ap.max_numsta;
-                }
-                if (type == WlanAPMode.E_JRD_WIFI_MODE_5G.getmMode()) {
-                    m_result.WlanAPID_5G = ap.WlanAPID;
-                    m_result.curr_num_5G = ap.curr_num;
-                    m_result.ApStatus_5G = ap.ApStatus;
-                    m_result.Ssid_5G = ap.Ssid;
-                    m_result.SsidHidden_5G = ap.SsidHidden;
-                    m_result.SecurityMode_5G = m_New_result.APList.get(1).SecurityMode;
-                    m_result.WpaType_5G = ap.WpaType;
-                    m_result.WpaKey_5G = ap.WpaKey;
-                    m_result.WepType_5G = ap.WepType;
-                    m_result.WepKey_5G = ap.WepKey;
-                    m_result.Channel_5G = ap.Channel;
-                    m_result.ApIsolation_5G = ap.ApIsolation;
-                    m_result.WMode_5G = ap.WMode;
-                    m_result.max_numsta_5G = ap.max_numsta;
-                }
-            }
-        }
+//        protected void parseNewSettingResult(WlanSettingResult m_result, WlanNewSettingResult m_New_result) {
+//            m_result.curr_num = m_New_result.curr_num;
+//            m_result.WlanAPMode = m_New_result.WlanAPMode;
+//            int size = m_New_result.APList.size();
+//            Log.e(TAG, "ap list size = " +size);
+//            if (size > 2 || size <= 0) {
+//                Log.e(TAG, "error, invalid ap list size = " +size);
+//            }
+//            for (AP ap : m_New_result.APList) {
+//                //WlanAPID_2G
+//                int type = ap.WlanAPID;
+//                if (type == WlanAPMode.E_JRD_WIFI_MODE_2G.getmMode()) {
+//                    m_result.WlanAPID_2G = ap.WlanAPID;
+//                    m_result.curr_num_2G = ap.curr_num;
+//                    m_result.ApStatus_2G = ap.ApStatus;
+//
+//                    m_result.Ssid = ap.Ssid;
+//                    m_result.SsidHidden = ap.SsidHidden;
+//                    m_result.CountryCode = ap.CountryCode;
+//                    m_result.SecurityMode = ap.SecurityMode;
+//                    m_result.WpaType = ap.WpaType;
+//                    m_result.WpaKey = ap.WpaKey;
+//                    m_result.WepType = ap.WepType;
+//                    m_result.WepKey = ap.WepKey;
+//                    m_result.Channel = ap.Channel;
+//                    m_result.ApIsolation = ap.ApIsolation;
+//                    m_result.WMode = ap.WMode;
+//                    m_result.max_numsta = ap.max_numsta;
+//                }
+//                if (type == WlanAPMode.E_JRD_WIFI_MODE_5G.getmMode()) {
+//                    m_result.WlanAPID_5G = ap.WlanAPID;
+//                    m_result.curr_num_5G = ap.curr_num;
+//                    m_result.ApStatus_5G = ap.ApStatus;
+//                    m_result.Ssid_5G = ap.Ssid;
+//                    m_result.SsidHidden_5G = ap.SsidHidden;
+//                    m_result.SecurityMode_5G = m_New_result.APList.get(1).SecurityMode;
+//                    m_result.WpaType_5G = ap.WpaType;
+//                    m_result.WpaKey_5G = ap.WpaKey;
+//                    m_result.WepType_5G = ap.WepType;
+//                    m_result.WepKey_5G = ap.WepKey;
+//                    m_result.Channel_5G = ap.Channel;
+//                    m_result.ApIsolation_5G = ap.ApIsolation;
+//                    m_result.WMode_5G = ap.WMode;
+//                    m_result.max_numsta_5G = ap.max_numsta;
+//                }
+//            }
+//        }
 
         @SuppressWarnings("unchecked")
         @Override
-        public WlanSettingResult getModelResult() {
-            return m_result;
+        public WlanNewSettingResult getModelResult() {
+            return m_New_result;
         }
 
-        protected enum WlanAPMode {
-            E_JRD_WIFI_MODE_2G(0),
-            E_JRD_WIFI_MODE_5G(1),
-            E_JRD_WIFI_MODE_2G_2G(2),
-            E_JRD_WIFI_MODE_5G_5G(3);
-
-            private int mMode;
-
-            private WlanAPMode(int mode) {
-                this.mMode = mode;
-            }
-
-            public int getmMode() {
-                return mMode;
-            }
-        }
+//        protected enum WlanAPMode {
+//            E_JRD_WIFI_MODE_2G(0),
+//            E_JRD_WIFI_MODE_5G(1),
+//            E_JRD_WIFI_MODE_2G_2G(2),
+//            E_JRD_WIFI_MODE_5G_5G(3);
+//
+//            private int mMode;
+//
+//            private WlanAPMode(int mode) {
+//                this.mMode = mode;
+//            }
+//
+//            public int getmMode() {
+//                return mMode;
+//            }
+//        }
     }
 
     /******************** set wlan setting **************************************************************************************/

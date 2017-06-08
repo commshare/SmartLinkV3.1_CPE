@@ -28,8 +28,8 @@ public class SmartLinkV3App extends MultiDexApplication {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		CrashHandler crashHandler = CrashHandler.getInstance();
-		crashHandler.init(getApplicationContext());	
+//		CrashHandler crashHandler = CrashHandler.getInstance();
+//		crashHandler.init(getApplicationContext());
 		m_instance = this;
 		Log.d("HttpService", "Application onCreate ");
 		BusinessManager.getInstance();

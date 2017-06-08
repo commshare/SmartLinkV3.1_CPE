@@ -6,6 +6,7 @@ public class WlanSettingResult extends BaseResult{
 
 	public int WlanAPMode = 0;  //0:2.4G; 1:5G; 2: 2.4G and 5G
 	public String CountryCode = new String();
+
 	public String Ssid = new String();//2.4GHz SSID
 	public int SsidHidden = 0; //0: disable; 1: enable
 	public int SecurityMode = 0; //0: disable; 	1: wep;	2: WPA;	3: WPA2; 4: WPA/WPA2	
@@ -17,6 +18,7 @@ public class WlanSettingResult extends BaseResult{
 	public int ApIsolation = 0; //0: disable	1: enable
 	public int WMode = 0; //0: 802.11b; 1: 802.11b/g; 2: 802.11b/g/n; 3: Auto
 	public int max_numsta = 0; //2.4 G WIFI max number client
+
 	public String Ssid_5G = new String(); //5GHz SSID
 	public int SsidHidden_5G = 0; //0: disable; 1: enable
 	public int SecurityMode_5G = 0; //0: disable; 	1: wep;	2: WPA;	3: WPA2; 4: WPA/WPA2
@@ -28,6 +30,7 @@ public class WlanSettingResult extends BaseResult{
 	public int ApIsolation_5G = 0; //0: disable	1: enable
 	public int WMode_5G = 0; //3: Auto;	4: 802.11a;	5: 802.11a/n; 6: 802.11a/c;
 	public int max_numsta_5G = 0; //5G WIFI max number client
+
 	public int curr_num = 0; //Current client count that connect to WIFI.
 	public boolean New_Interface=false;
 	public int WlanAPID_2G=-1;
@@ -123,4 +126,42 @@ public class WlanSettingResult extends BaseResult{
         CurChannel = -1;
 	}
 
+    @Override
+    public String toString() {
+        return "WlanSettingResult{" +
+                "WlanAPMode=" + WlanAPMode +
+                ", CountryCode='" + CountryCode + '\'' +
+                ", Ssid='" + Ssid + '\'' +
+                ", SsidHidden=" + SsidHidden +
+                ", SecurityMode=" + SecurityMode +
+                ", WpaType=" + WpaType +
+                ", WpaKey='" + WpaKey + '\'' +
+                ", WepType=" + WepType +
+                ", WepKey='" + WepKey + '\'' +
+                ", Channel=" + Channel +
+                ", ApIsolation=" + ApIsolation +
+                ", WMode=" + WMode +
+                ", max_numsta=" + max_numsta +
+                ", Ssid_5G='" + Ssid_5G + '\'' +
+                ", SsidHidden_5G=" + SsidHidden_5G +
+                ", SecurityMode_5G=" + SecurityMode_5G +
+                ", WpaType_5G=" + WpaType_5G +
+                ", WpaKey_5G='" + WpaKey_5G + '\'' +
+                ", WepType_5G=" + WepType_5G +
+                ", WepKey_5G='" + WepKey_5G + '\'' +
+                ", Channel_5G=" + Channel_5G +
+                ", ApIsolation_5G=" + ApIsolation_5G +
+                ", WMode_5G=" + WMode_5G +
+                ", max_numsta_5G=" + max_numsta_5G +
+                ", curr_num=" + curr_num +
+                ", New_Interface=" + New_Interface +
+                ", WlanAPID_2G=" + WlanAPID_2G +
+                ", WlanAPID_5G=" + WlanAPID_5G +
+                ", curr_num_2G=" + curr_num_2G +
+                ", curr_num_5G=" + curr_num_5G +
+                ", ApStatus_2G=" + ApStatus_2G +
+                ", ApStatus_5G=" + ApStatus_5G +
+                ", CurChannel=" + CurChannel +
+                '}';
+    }
 }
