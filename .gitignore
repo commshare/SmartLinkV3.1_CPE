@@ -12,6 +12,7 @@ SmartLinkV3.1/.classpath
 SmartLinkV3.1/project.properties
 SmartLinkV3.1/build.xml
 SmartLinkV3.1/local.properties
+SmartLinkV3.1_CPE/app/*.apk
 Thumbs.db
 *.iml
 build/

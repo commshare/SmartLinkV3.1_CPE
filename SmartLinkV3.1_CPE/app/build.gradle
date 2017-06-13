@@ -24,10 +24,10 @@ android {
 
     defaultConfig {
         applicationId "com.alcatel.smartlinkv3"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 25
-        versionName '3.2.7'
-        versionCode 19
+        versionName '0.0.1'
+        versionCode 1
 
         setProperty("archivesBaseName", "LinkApp-CPE-Android-$versionName")
         multiDexEnabled true

@@ -4,5 +4,72 @@
         <item >open</item>
         <item >share</item>
     </string-array>
+
+    <string-array name="wlan_settings_security">
+        <item>disable</item>
+        <item>WEP</item>
+        <item>WPA</item>
+        <item>WPA2</item>
+        <item>WPA/WPA2</item>
+    </string-array>
+
+
+    <string-array name="wlan_settings_80211">
+        <item>Auto</item>
+        <item>802.11b</item>
+        <item>802.11b/g</item>
+        <item>802.11b/g/n</item>
+        <item>802.11a</item>
+        <item>802.11a/n</item>
+        <item>802.11a/c</item>
+    </string-array>
+
+    <string-array name="wlan_settings_channel">
+        <item>Auto</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+    </string-array>
     
+    <string-array name="wlan_settings_wpa_type">
+        <item>TKIP</item>
+        <item>AES</item>
+        <item>AUTO</item>
+    </string-array>
+
+
+    <string-array name="wlan_settings_wep_type">
+        <item>Open</item>
+        <item>Share</item>
+    </string-array>
+
+    <string-array name="wlan_settings_bandwidth">
+        <item>20MHz/40MHz</item>
+        <item>20MHz</item>
+        <item>40MHz</item>
+        <item>80MHz</item>
+        <item>40MHz/80MHz</item>
+    </string-array>
+
+    <string-array name="wlan_settings_country">
+        <item>GB</item>
+        <item>IT</item>
+        <item>FR</item>
+        <item>PT</item>
+        <item>ES</item>
+        <item>US</item>
+        <item>HK</item>
+        <item>CN</item>
+    </string-array>
 </resources>

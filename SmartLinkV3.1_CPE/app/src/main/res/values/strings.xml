@@ -171,7 +171,7 @@
     <string name="password">Password</string>
     <string name="wifi_name">Wi-Fi Network Name(SSID)</string>
     <string name="wifi_password">Wi-Fi Password</string>
-    <string name="ssid_broadcast">SSID_Broadcast</string>
+    <string name="ssid_broadcast">SSID Broadcast</string>
     <string name="security_type">Security_Type</string>
     <string name="encryption_type">Encryption Type</string>
     <string name="channel">Channel</string>
@@ -779,4 +779,11 @@
     <!--20170608 add-->
     <string name="advanced_settings">Advanced settings</string>
     <string name="only_phones_supported_5ghz_wi_fi_can_connect_5ghz_wi_fi_network">Only phones supported 5GHZ Wi-Fi can connect 5GHZ Wi-Fi network</string>
+    <string name="security">Security</string>
+    <string name="encryption">Encryption</string>
+    <string name="country_region">County/Region</string>
+    <string name="mode_802_11">802.11 mode</string>
+    <string name="ap_isolation">AP isolation</string>
+    <string name="bandwidth">bandwidth</string>
+    <string name="auto">Auto</string>
 </resources>

@@ -132,8 +132,8 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
                         CPEConfig.getInstance().setInitialLaunchedFlag();// 设置向导标记位为true
                         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();// 获取WIFI标记.判断是否有WIFI
                         // 有WIFI--> 进入WIFI选择: 没有WIFI--> 进入刷新页面
-                        Class<?> clazz = bCPEWifiConnected ? ConnectTypeSelectActivity.class : RefreshWifiActivity.class;
-                        Intent intent = new Intent(mActivity, clazz);
+//                        Class<?> clazz = bCPEWifiConnected ? ConnectTypeSelectActivity.class : RefreshWifiActivity.class;
+                        Intent intent = new Intent(mActivity, MainActivity.class);
                         mActivity.startActivity(intent);
                         mActivity.finish();
                     }

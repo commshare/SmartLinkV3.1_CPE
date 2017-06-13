@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.business.wlan.AP;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -42,6 +43,9 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     private EditText mSsid5gEdit;
     private EditText mKey2gEdit;
     private EditText mKey5gEdit;
+
+    private AP mNewAP2G;
+    private AP mNewAP5G;
 
     public ViewWifiSettings(Context context) {
         super(context);
@@ -69,6 +73,10 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     }
 
     private void updateWifiSettings() {
+
+        mNewAP2G = BusinessManager.getInstance().getAP2G().clone();
+        mNewAP5G = BusinessManager.getInstance().getAP5G().clone();
+
         updateSupportMode();
         mSsid2gEdit.setText(BusinessManager.getInstance().getSsid());
         mSsid5gEdit.setText(BusinessManager.getInstance().getSsid_5G());
@@ -151,17 +159,26 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 
     @Override
     public void onClick(View v) {
+        Intent intent = new Intent(m_context, WlanAdvancedSettingsActivity.class);
+        intent.putExtra("ssid_broadcast", mNewAP2G.SsidHidden);
+        intent.putExtra("security", mNewAP2G.SecurityMode);
+        intent.putExtra("wpa_type", mNewAP2G.WpaType);
+        intent.putExtra("wep_type", mNewAP2G.WepType);
+        intent.putExtra("channel", mNewAP2G.Channel);
+        intent.putExtra("country", mNewAP2G.CountryCode);
+        intent.putExtra("bandwidth", mNewAP2G.Bandwidth);
+        intent.putExtra("80211_mode", mNewAP2G.WMode);
+        intent.putExtra("ap_isolation", mNewAP2G.ApIsolation);
+
         if (v.getId() == R.id.text_advanced_settings_2g) {
             Log.d(TAG, "click 2g");
-            Intent intent = new Intent(m_context, WlanAdvancedSettingsActivity.class);
             intent.putExtra("wlan_type", "2g");
-            m_context.startActivity(intent);
         } else if (v.getId() == R.id.text_advanced_settings_5g) {
             Log.d(TAG, "click 5g");
-            Intent intent = new Intent(m_context, WlanAdvancedSettingsActivity.class);
             intent.putExtra("wlan_type", "5g");
-            m_context.startActivity(intent);
         }
+        m_context.startActivity(intent);
+
     }
 
     private class ActivityBroadcastReceiver extends BroadcastReceiver {

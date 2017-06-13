@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -67,6 +68,7 @@ import static com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity.LOGOUT_
 
 public class MainActivity extends BaseActivity implements OnClickListener, IDeviceChangeListener {
 
+    private static final String TAG = "MainActivity";
     public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
     public static DisplayMetrics m_displayMetrics = new DisplayMetrics();
     static boolean m_blLogout;
@@ -80,7 +82,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     int m_nNewCount = 0;
     Button m_unlockSimBtn;
     RelativeLayout m_accessDeviceLayout;
-//    private ViewWifiKey m_wifiKeyView;
+    //    private ViewWifiKey m_wifiKeyView;
     private ViewWifiSettings m_wifiSettingsView;
     private RelativeLayout rl_top;
     private ViewFlipper m_viewFlipper;
@@ -92,7 +94,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private ImageView m_smsTextView;
     private TextView m_newSmsTextView;
     private TextView m_titleTextView;
-//    private Button m_Btnbar;
+    //    private Button m_Btnbar;
     private ViewHome m_homeView;
     private ViewSms m_smsView;
     private ViewSetting m_settingView;
@@ -108,7 +110,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private AllShareProxy mAllShareProxy;
     private ThumbnailLoader thumbnailLoader;
     private android.app.FragmentManager fm;
-//    private String wifi_key_status;
+    //    private String wifi_key_status;
     private TextView mActionText;
 
     private long mkeyTime; //点击2次返回 键的时间
@@ -127,6 +129,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawable(null);
         this.getWindowManager().getDefaultDisplay().getMetrics(m_displayMetrics);
+        Log.d(TAG, "onCreate");
         fm = getFragmentManager();
         rl_top = (RelativeLayout) findViewById(R.id.main_layout_top);
 //        wifi_key_status = getResources().getString(R.string.wifi_key_edit);
@@ -160,7 +163,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 //        m_Btnbar = (Button) this.findViewById(R.id.btnbar);
 //        m_Btnbar.setOnClickListener(this);
 
-        addView();
+        initFlipViews();
 
         setMainBtnStatus(R.id.main_home);
         showView(ViewIndex.VIEW_HOME);
@@ -178,7 +181,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
         m_accessDeviceLayout = (RelativeLayout) m_homeView.getView().findViewById(R.id.access_num_layout);
         m_accessDeviceLayout.setOnClickListener(this);
-        OnResponseAppWidget();
+//        OnResponseAppWidget();
 
         mAllShareProxy = AllShareProxy.getInstance(this);
         mBrocastFactory = new DMSDeviceBrocastFactory(this);
@@ -186,11 +189,16 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
         thumbnailLoader = new ThumbnailLoader(this);
         showMicroView();
+        Log.d(TAG, "onCreate----");
+
     }
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume");
         super.onResume();
+        Log.d(TAG, "onResume----");
+
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
         this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
@@ -498,9 +506,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             case R.id.action:
                 if (pageIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
                     navigateAfterLogin(this::onWifiSettingsApplyClick);
-                }else if (pageIndex == ViewIndex.VIEW_SMS){
+                } else if (pageIndex == ViewIndex.VIEW_SMS) {
                     navigateAfterLogin(this::editBtnClick);
-                }else if (pageIndex == ViewIndex.VIEW_SETTINGE){
+                } else if (pageIndex == ViewIndex.VIEW_SETTINGE) {
                     userLogout();
                     CPEConfig.getInstance().userLogout();
                 }
@@ -660,12 +668,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         }
     }
 
-    private void addView() {
+    private void initFlipViews() {
         m_homeView = new ViewHome(this);
         m_viewFlipper.addView(m_homeView.getView(), ViewIndex.VIEW_HOME, m_viewFlipper.getLayoutParams());
 
 //        m_wifiKeyView = new ViewWifiKey(this, fm);
-//        m_viewFlipper.addView(m_wifiKeyView.getView(), ViewIndex.VIEW_WIFI_SETTINGS, m_viewFlipper.getLayoutParams());
+//        m_viewFlipper.initFlipViews(m_wifiKeyView.getView(), ViewIndex.VIEW_WIFI_SETTINGS, m_viewFlipper.getLayoutParams());
 //        m_wifiKeyView.setOnBackPressCallback(new ViewWifiKey.OnBackPressCallback() {
 //            @Override
 //            public void onBackPress() {
@@ -864,7 +872,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     return;
                 } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
                     ErrorDialog.getInstance(getBaseContext()).
-                                                                     showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
+                            showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
                     return;
                 } else if (!error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                     return;
@@ -873,24 +881,24 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                 if (!FeatureVersionManager.getInstance().isSupportForceLogin()) {
                     m_loginDlg.showOtherLogin();
                     return;
-                } 
+                }
 
                 ForceLoginSelectDialog.getInstance(MainActivity.this).
-                                                                             showDialog(() -> m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-                                                                                 public void onLoginSuccess() {
-                                                                                     listener.onLoginFinished();
-                                                                                 }
+                        showDialog(() -> m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                            public void onLoginSuccess() {
+                                listener.onLoginFinished();
+                            }
 
-                                                                                 public void onLoginFailed(String error_code) {
-                                                                                     if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-                                                                                         SmartLinkV3App.getInstance().setForcesLogin(true);
-                                                                                         ErrorDialog.getInstance(MainActivity.this).
-                                                                                                                                           showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
-                                                                                     } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-                                                                                         m_loginDlg.showTimeout();
-                                                                                     }
-                                                                                 }
-                                                                             }));
+                            public void onLoginFailed(String error_code) {
+                                if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                                    SmartLinkV3App.getInstance().setForcesLogin(true);
+                                    ErrorDialog.getInstance(MainActivity.this).
+                                            showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
+                                } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                                    m_loginDlg.showTimeout();
+                                }
+                            }
+                        }));
             }
 
             @Override
@@ -905,31 +913,36 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        OnResponseAppWidget();
+//        OnResponseAppWidget();
     }
 
-    private void OnResponseAppWidget() {
-        if (DataConnectManager.getInstance().getCPEWifiConnected() && CPEConfig.getInstance().getInitialLaunchedFlag() && CPEConfig.getInstance().getQuickSetupFlag()) {
-            Intent it = getIntent();
-            int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-            if (nPage == SMS_PAGE) {
-                smsBtnClick();
-            } else if (nPage == BATTERY_PAGE) {
-                //widgetBatteryBtnClick();
-                navigateAfterLogin(() -> {
-                    go2SettingView();
-                    startActivity(new Intent(this, SettingPowerSavingActivity.class));
-                });
-            } else if (nPage == HOME_PAGE) {
-                homeBtnClick();
-            } else if (nPage == USAGE_PAGE) {
-                wifiKeyBtnClick();
-            }
-        } else {
-            startActivity(new Intent(this, LoadingActivity.class));
-            finish();
-        }
-    }
+//    private void OnResponseAppWidget() {
+//        Log.d(TAG, ""+DataConnectManager.getInstance().getCPEWifiConnected());
+//        Log.d(TAG, ""+CPEConfig.getInstance().getInitialLaunchedFlag());
+//        Log.d(TAG, ""+CPEConfig.getInstance().getQuickSetupFlag());
+//        if (DataConnectManager.getInstance().getCPEWifiConnected() && CPEConfig.getInstance().getInitialLaunchedFlag() /*&& CPEConfig.getInstance().getQuickSetupFlag()*/) {
+//            Intent it = getIntent();
+//            int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
+//            Log.d(TAG, "OnResponseAppWidget:"+nPage);
+//
+//            if (nPage == SMS_PAGE) {
+//                smsBtnClick();
+//            } else if (nPage == BATTERY_PAGE) {
+//                //widgetBatteryBtnClick();
+//                navigateAfterLogin(() -> {
+//                    go2SettingView();
+//                    startActivity(new Intent(this, SettingPowerSavingActivity.class));
+//                });
+//            } else if (nPage == HOME_PAGE) {
+//                homeBtnClick();
+//            } else if (nPage == USAGE_PAGE) {
+//                wifiKeyBtnClick();
+//            }
+//        } else {
+////            startActivity(new Intent(this, LoadingActivity.class));
+////            finish();
+//        }
+//    }
 
     @Override
     public void onDeviceChange(boolean isSelDeviceChange) {

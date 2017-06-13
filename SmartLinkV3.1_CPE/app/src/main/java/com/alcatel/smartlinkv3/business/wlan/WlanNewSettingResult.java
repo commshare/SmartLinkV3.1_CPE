@@ -11,8 +11,8 @@ public class WlanNewSettingResult extends BaseResult {
     public int curr_num = 0; //Current client count that connect to WIFI.
 //    public List<AP> APList = new ArrayList<AP>();
 
-    public AP AP2G;
-    public AP AP5G;
+    public AP AP2G = new AP();
+    public AP AP5G = new AP();
 
     public void clone(WlanNewSettingResult src) {
         if (src == null)

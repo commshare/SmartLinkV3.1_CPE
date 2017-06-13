@@ -19,6 +19,28 @@ public class AP {
    public int Bandwidth = 0;
 
    @Override
+   public AP clone() {
+      AP ap = new AP();
+      ap.ApStatus = this.ApStatus;
+      ap.WMode = this.WMode;
+      ap.Ssid = this.Ssid;
+      ap.SsidHidden = this.SsidHidden;
+      ap.Channel = this.Channel;
+      ap.SecurityMode = this.SecurityMode;
+      ap.WepType = this.WepType;
+      ap.WepKey = this.WepKey;
+      ap.WpaType = this.WpaType;
+      ap.WpaKey = this.WpaKey;
+      ap.CountryCode = this.CountryCode;
+      ap.ApIsolation = this.ApIsolation;
+      ap.max_numsta = this.max_numsta;
+      ap.curr_num = this.curr_num;
+      ap.CurChannel = this.CurChannel;
+      ap.Bandwidth = this.Bandwidth;
+      return ap;
+   }
+
+   @Override
    public String toString() {
       return "AP{" +
               "ApStatus=" + ApStatus +

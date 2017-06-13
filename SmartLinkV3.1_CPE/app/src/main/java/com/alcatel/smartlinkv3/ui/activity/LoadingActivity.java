@@ -17,13 +17,14 @@ import rx.Observable;
 import rx.functions.Actions;
 
 public class LoadingActivity extends Activity {
+    private static final String TAG = "LoadingActivity";
     private final int SPLASH_DISPLAY_INTERNAL = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        getWindow().setBackgroundDrawable(null);
+//        getWindow().setBackgroundDrawable(null);
         // goHome();
         delayStart();
     }
@@ -60,14 +61,15 @@ public class LoadingActivity extends Activity {
     }
 
     private void startNextActivity() {
+        Log.d(TAG, "startNextActivity");
         // TOIN 2017/6/7 启屏进去选择模式
         if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
             goGuide();// 进入向导页
-        } else if (!checkConnectState()) {
-            searchTimeOut();
-        } else if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-            // 选择类型界面
-            startConnectTypeActivity();
+//        } else if (!checkConnectState()) {
+//            searchTimeOut();
+//        } else if (!CPEConfig.getInstance().getQuickSetupFlag()) {
+//            // 选择类型界面
+//            startConnectTypeActivity();
         } else {
             startMainActivity();
         }
