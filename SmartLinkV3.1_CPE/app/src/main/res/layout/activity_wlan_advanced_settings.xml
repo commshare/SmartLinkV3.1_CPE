@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-    <RelativeLayout
+<!--    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:id="@+id/rl_security"
@@ -82,7 +82,7 @@
             android:layout_centerVertical="true"
             android:drawableRight="@drawable/right_arrow_small"
             android:drawableEnd="@drawable/right_arrow_small"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -214,4 +214,11 @@
             android:drawableRight="@drawable/right_arrow_small"
             android:drawableEnd="@drawable/right_arrow_small"/>
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:onClick="OnOKClick"/>
 </LinearLayout>

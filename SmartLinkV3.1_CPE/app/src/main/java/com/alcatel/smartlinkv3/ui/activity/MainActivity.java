@@ -709,7 +709,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         } else if (viewIndex == ViewIndex.VIEW_WIFI_SETTINGS) {
             rl_top.setVisibility(View.VISIBLE);
             m_titleTextView.setText(R.string.wifi_settings);
-            mActionText.setVisibility(View.VISIBLE);
+            mActionText.setVisibility(View.GONE);
             mActionText.setText(R.string.apply);
 //            m_Btnbar.setVisibility(View.VISIBLE);
 //            m_Btnbar.setBackgroundResource(null);

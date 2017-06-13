@@ -64,7 +64,7 @@
     <string name="qs_pin_unlock_try_again">Try again</string>
     <string name="qs_pin_unlock_to_home">Home ></string>
     <string name="qs_wifi_setting_2G_wifi">2.4GHz Wi-Fi</string>
-    <string name="qs_wifi_setting_5G_wifi">5.5GHz Wi-Fi</string>
+    <string name="qs_wifi_setting_5G_wifi">5GHz Wi-Fi</string>
     <string name="qs_wifi_setting_account">Account</string>
     <string name="qs_wifi_setting_password">Password</string>
     <string name="connect_internet">Connect Internet</string>

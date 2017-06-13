@@ -146,7 +146,7 @@ public class HttpWlanSetting {
         protected void buildHttpParamJson() throws JSONException {
 
             JSONObject settings = new JSONObject();
-
+            settings.put("WiFiOffTime", m_Newresult.WiFiOffTime);
             settings.put("AP2G", buildAPJsonObject(m_Newresult.AP2G));
             settings.put("AP5G", buildAPJsonObject(m_Newresult.AP5G));
 

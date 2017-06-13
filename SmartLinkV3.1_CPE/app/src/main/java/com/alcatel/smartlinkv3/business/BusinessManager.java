@@ -478,8 +478,9 @@ public class BusinessManager {
         return m_wlanManager.getCurSupportWlanMode();
     }
 
-    public WlanSettingResult getWlanSettingResult() {
-        return m_wlanManager.getWlanSettingResult();
+
+    public WlanNewSettingResult getWlanSettings(){
+        return m_wlanManager.getWlanSettings();
     }
 
     public SsidHiddenEnum getSsidStatus() {
