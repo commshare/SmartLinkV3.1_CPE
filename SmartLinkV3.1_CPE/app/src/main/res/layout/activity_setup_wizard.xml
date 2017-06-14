@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity">
+
+    <!-- 头部 -->
+    <include
+        android:id="@+id/mHead_setupWizard"
+        layout="@layout/main_header" />
+
+    <!-- Fragment填充容器 -->
+    <FrameLayout
+        android:id="@+id/mFl_Setupwizard_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mHead_setupWizard" />
+
+    <!-- 等待页 -->
+    <RelativeLayout
+        android:id="@+id/mRl_setupWizard_waitting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/connect_type_waiting_progress"
+            android:layout_width="@dimen/dimen_40dip"
+            android:layout_height="@dimen/dimen_40dip"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progerss_blue" />
+    </RelativeLayout>
+
+    <!-- 连接成功页 -->
+    <RelativeLayout
+        android:id="@+id/mRl_setupWizard_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/mTv_setupWizard_des_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/qs_pin_unlock_congratulations"
+            android:textSize="@dimen/font_size_large" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_200dip"
+            android:layout_above="@id/mTv_setupWizard_des_success"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/connected" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mTv_setupWizard_des_success"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:text="@string/qs_pin_unlock_congratulations_des"
+            android:textColor="@color/grey_text" />
+
+    </RelativeLayout>
+
+    <!-- 连接失败页 -->
+    <RelativeLayout
+        android:id="@+id/mRl_setupWizard_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/mTv_setupWizard_des_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/qs_pin_unlock_can_not_connect"
+            android:textSize="@dimen/font_size_large" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_150dip"
+            android:layout_above="@id/mTv_setupWizard_des_failed"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/not_connected" />
+
+        <TextView
+            android:id="@+id/mTv_connectStatus_des2_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mTv_setupWizard_des_failed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:text="@string/qs_pin_unlock_can_not_connect_des"
+            android:textColor="@color/grey_text"
+            android:textSize="@dimen/font_size_normal" />
+
+        <Button
+            android:id="@+id/mRp_setupWizard_tryagain"
+            android:layout_width="@dimen/dimen_120dip"
+            android:layout_height="@dimen/dimen_36dip"
+            android:layout_below="@id/mTv_connectStatus_des2_failed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_30dip"
+            android:background="@drawable/selector_nowifi_button"
+            android:gravity="center"
+            android:text="@string/qs_pin_unlock_try_again"
+            android:textColor="@color/mg_blue"
+            android:textSize="@dimen/dimen_textsize_16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mTv_setupWizard_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mRp_setupWizard_tryagain"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:clickable="true"
+            android:text="@string/qs_pin_unlock_to_home"
+            android:textColor="@color/grey_text"
+            android:textSize="@dimen/font_size_normal" />
+    </RelativeLayout>
+
+</RelativeLayout>

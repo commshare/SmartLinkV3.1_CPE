@@ -31,7 +31,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends BaseFragmentActivity {
     protected ActivityBroadcastReceiver m_msgReceiver = null;
     protected ActivityBroadcastReceiver m_msgReceiver2 = null;
     private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();

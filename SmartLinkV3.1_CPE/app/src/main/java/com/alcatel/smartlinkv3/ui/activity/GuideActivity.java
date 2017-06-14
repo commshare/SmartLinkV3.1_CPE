@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,6 +16,8 @@ import android.widget.LinearLayout;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.ChangeActivity;
+import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,10 +133,12 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
                         CPEConfig.getInstance().setInitialLaunchedFlag();// 设置向导标记位为true
                         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();// 获取WIFI标记.判断是否有WIFI
                         // 有WIFI--> 进入WIFI选择: 没有WIFI--> 进入刷新页面
-//                        Class<?> clazz = bCPEWifiConnected ? ConnectTypeSelectActivity.class : RefreshWifiActivity.class;
-                        Intent intent = new Intent(mActivity, MainActivity.class);
-                        mActivity.startActivity(intent);
-                        mActivity.finish();
+                        //                        Class<?> clazz = bCPEWifiConnected ? ConnectTypeSelectActivity.class : RefreshWifiActivity.class;
+                        //                         Intent intent = new Intent(mActivity, MainActivity.class);
+                        //                         mActivity.startActivity(intent);
+                        //                         mActivity.finish();
+                        // to setupwizard activity
+                        ChangeActivity.toActivity(GuideActivity.this, SetupWizardActivity.class, true, true, false, 0);
                     }
                 });
             }

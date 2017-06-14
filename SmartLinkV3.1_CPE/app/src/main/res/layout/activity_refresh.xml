@@ -6,12 +6,14 @@
     tools:context=".ui.activity.RefreshWifiActivity" >
 
 	<ScrollView
-	    android:id="@+id/ScrollView01"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:layout_marginTop="@dimen/dimen_70dip"
-		android:layout_marginBottom="30dp"
-	    android:overScrollMode="never" >
+		android:id="@+id/ScrollView01"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginBottom="28dp"
+		android:overScrollMode="never"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true">
         <RelativeLayout
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content" >

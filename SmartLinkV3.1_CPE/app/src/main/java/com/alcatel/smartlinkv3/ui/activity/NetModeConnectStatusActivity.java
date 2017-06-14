@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@Deprecated
 public class NetModeConnectStatusActivity extends BaseActivity {
 
     private final String TAG = "NetModeConnectStatus";

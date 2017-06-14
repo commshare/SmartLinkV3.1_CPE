@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -47,6 +46,9 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 
+import retrofit2.http.HEAD;
+
+@Deprecated
 public class ConnectTypeSelectActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "ConnectTypeSelect";
     private ImageView mHeaderBackIv;
@@ -87,7 +89,11 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
     private Handler mHandler;
     private RelativeLayout mHeaderContainer;
-    private boolean test = true;// 测试开关
+
+    // TOAT: 测试阶段设置为true
+    private boolean test = false;// 测试开关
+    private boolean simInsert;// SIM卡是否插入
+    private boolean wanConnect;// WAN口是否连接
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +107,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
     private void initView() {
         // 顶部标题容器
-        mHeaderContainer = (RelativeLayout) findViewById(R.id.main_header);
+        mHeaderContainer = (RelativeLayout) findViewById(R.id.mHead_setupWizard);
         mHeardTitle = (TextView) findViewById(R.id.tv_title_title);
         mHeardTitle.setText(R.string.main_header_linkhub);
         mHeaderBackIv = (ImageView) findViewById(R.id.main_header_back_iv);
@@ -147,7 +153,9 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mPinFailToHome.setOnClickListener(this);
     }
 
+    // TOGO 2017/6/14 GO
     private void initData() {
+
         mContext = this;
         mBusinessMgr = BusinessManager.getInstance();
 
@@ -158,9 +166,12 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         showSimCard(mBusinessMgr.getSimStatus());
         // WAN口状态drawable视图
         showHaveWanPort(mBusinessMgr.getWanConnectStatus());
+
         // 登陆状态
         ENUM.UserLoginStatus status = mBusinessMgr.getLoginStatus();
+
         if (LinkAppSettings.isLoginSwitchOff() || status == ENUM.UserLoginStatus.LOGIN) {// 已登陆
+            onlyTypeMode();
             return;
         }
         if (status == ENUM.UserLoginStatus.LoginTimeOut) {// 已登出
@@ -170,51 +181,85 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
+    // TOGO 2017/6/14 GO
+    /**
+     * 单模式下的自动跳转
+     */
+    private void onlyTypeMode() {
+        // TOAT: 单模式下的自动跳转
+        // 判断是否为单模式(only SIM or only WAN)
+        if (simInsert && !wanConnect) {// only sim
+            simClick();// --> execute the sim logic
+        } else if (!simInsert && wanConnect) {// only wan
+            // 只有WAN口的模式下的跳转
+            ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
+        }
+    }
+
+    // TOGO 2017/6/14 Go
     /**
      * 切换SIM卡drawable状态
      *
      * @param simStatus
      */
     private void showSimCard(SimStatusModel simStatus) {
-        boolean insert = true;// 默认为true
+        // 默认为true
+        simInsert = true;
 
         // 获取SIM状态
         if (simStatus.m_SIMState == ENUM.SIMState.NoSim || simStatus.m_SIMState == ENUM.SIMState.Unknown) {
-            Log.e(TAG, "todo test, please fix it later");
-            insert = false;
+            simInsert = false;
         }
+        
+        // TOAT: 测试阶段强制为true START 
+        if (test) {
+            simInsert = test;
+        }
+        // TOAT: 测试阶段强制为true END 
 
-        // TOAT: 测试阶段强制为true
-        insert = test;
-        mSimCardTv.setTextColor(getResources().getColor(insert ? R.color.black_text : R.color.red));
-        mSimCardTv.setText(insert ? R.string.connect_type_select_sim_card_enable : R.string.connect_type_select_sim_card_disable);
-        mSimCardTv.setEnabled(insert);
+        // TOAT: 测试单模式请打开此代码
+        //simInsert = false;
 
-        mSimCardTv.setOnClickListener(insert ? this : null);
+        mSimCardTv.setTextColor(getResources().getColor(simInsert ? R.color.black_text : R.color.red));
+        mSimCardTv.setText(simInsert ? R.string.connect_type_select_sim_card_enable : R.string.connect_type_select_sim_card_disable);
+        mSimCardTv.setEnabled(simInsert);
+
+        mSimCardTv.setOnClickListener(simInsert ? this : null);
         // mSimCardPic.setImageResource(R.drawable.results_sim_nor);
-        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0, insert ? R.drawable.results_sim_nor : R.drawable.results_sim_dis, 0, 0);
+        mSimCardTv.setCompoundDrawablesWithIntrinsicBounds(0, simInsert ? R.drawable.results_sim_nor : R.drawable.results_sim_dis, 0, 0);
     }
 
 
+    // TOGO 2017/6/14 Go
     /**
      * 切换WAN口drawable状态
      *
      * @param wanModel
      */
     private void showHaveWanPort(WanConnectStatusModel wanModel) {
-        boolean connected = wanModel.isConnected();
-        // TOAT: 測試把該標記設置為true
-        connected = test;
-        mWanPortTv.setTextColor(getResources().getColor(connected ? R.color.black_text : R.color.red));
-        mWanPortTv.setText(connected ? R.string.connect_type_select_wan_port_enable : R.string.connect_type_select_wan_port_disable);
-        mWanPortTv.setEnabled(connected);
-        mWanPortTv.setOnClickListener(connected ? this : null);
-        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0, connected ? R.drawable.results_wan_nor : R.drawable.results_wan_dis, 0, 0);
+        // 检测WAN口是否接上
+        wanConnect = wanModel.isConnected();
+
+        // TOAT: 測試把該標記設置為true START
+        if (test) {
+            wanConnect = test;
+        }
+        // TOAT: 測試把該標記設置為true END
+
+        // TOAT: 测试单模式下请打开此代码
+        //wanConnect = true;
+
+        mWanPortTv.setTextColor(getResources().getColor(wanConnect ? R.color.black_text : R.color.red));
+        mWanPortTv.setText(wanConnect ? R.string.connect_type_select_wan_port_enable : R.string.connect_type_select_wan_port_disable);
+        mWanPortTv.setEnabled(wanConnect);
+        mWanPortTv.setOnClickListener(wanConnect ? this : null);
+        mWanPortTv.setCompoundDrawablesWithIntrinsicBounds(0, wanConnect ? R.drawable.results_wan_nor : R.drawable.results_wan_dis, 0, 0);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            // TOGO 2017/6/14 to connecttypefragment
             case R.id.main_header_back_iv:
                 // 回跳到类型选择 
                 mHeardTitle.setText(R.string.main_header_linkhub);
@@ -234,49 +279,28 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
                 break;
 
+            // TOGO 2017/6/14 to connecttypefragment
             //SIM卡是否存在
             case R.id.connect_type_sim_card_tv:
-                // TOAT: 测试时暂时使用标记位为true
-                // if (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) { // 再次判断SIM状态
-                if (test) {
-                    hideAllLayout();
-                    mHeaderBackIv.setVisibility(View.VISIBLE);
-                    mHeaderContainer.setVisibility(View.VISIBLE);
-                    mHeaderSkipTv.setVisibility(View.VISIBLE);
-                    mHandlePinContainer.setVisibility(View.VISIBLE);
-                    mHeardTitle.setText(R.string.main_header_mobile_broadband);
-                    pinRemainingTimes = mBusinessMgr.getSimStatus().m_nPinRemainingTimes;
-                    mPasswordTimes.setText(pinRemainingTimes + "");
-                    if (pinRemainingTimes < 3) {
-                        mPasswordTimes.setTextColor(getResources().getColor(R.color.red));
-                        mPinPasswordDes.setTextColor(getResources().getColor(R.color.red));
-                    } else {
-                        mPasswordTimes.setTextColor(getResources().getColor(R.color.black_text));
-                        mPinPasswordDes.setTextColor(getResources().getColor(R.color.black_text));
-                    }
-
-                    mHeaderSkipTv.setOnClickListener(this);
-                    mHeaderBackIv.setOnClickListener(this);
-
-                } else {
-                    // Toast.makeText(getApplicationContext(), "enter wifisetting", Toast.LENGTH_SHORT).show();
-                    // Intent intent = new Intent(getApplicationContext(), SettingWifiActivity.class);
-                    // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // startActivity(intent);
-                    finishQuickSetup(false);
-                }
+                // 执行SIM卡操作逻辑
+                simClick();
                 break;
 
+            // TODO: 2017/6/14 ready to creat the netmode fragment 
             //WAN口
             case R.id.connect_type_wan_port_tv:
                 // 显示WIFI设置页面
                 ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
 
                 break;
+
+            // TOGO 2017/6/14 to setupwizard
             // skip按钮
             case R.id.main_header_right_text:
                 ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 0);
                 break;
+            
+            
             //pin码输入框
             case R.id.handle_pin_password:
                 mPinPassword.setFocusable(true);
@@ -285,10 +309,14 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 imm = (InputMethodManager) mPinPassword.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
                 break;
+
+            // TOGO 2017/6/14 to pincodefragment
             //pin码删除框
             case R.id.handle_pin_password_delete:
                 mPinPassword.setText("");
                 break;
+
+            // TOGO 2017/6/14 to pincode fragment
             //pin码是否记住
             case R.id.handle_pin_remember_pin_select:
                 isRememberPassword = !isRememberPassword;
@@ -298,6 +326,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     mRememberPasswordSelect.setImageResource(R.drawable.general_btn_remember_nor);
                 }
                 break;
+
+            // TOGO 2017/6/14 to pincodefragment
             // PIN界面连接按钮
             case R.id.handle_pin_connect_btn:
                 // 判断次数 : <=0 不执行
@@ -344,15 +374,18 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 // data.addParam("pin", mPinPassword.getText().toString());
                 // mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PIN_REQUEST, data);
                 break;
-            //重新解pin
+
+            // TOGO 2017/6/14 move to setupwizard activity
+            // tryagain--> SIM WAN选择界面
             case R.id.mRp_connectStatus_tryagain:
-                //TODO:
                 hideAllLayout();
                 mHeaderContainer.setVisibility(View.VISIBLE);
                 mNormalContainer.setVisibility(View.VISIBLE);
                 mHeardTitle.setText(R.string.main_header_linkhub);
                 break;
-            //解pin失败，跳到home页按钮
+
+            // TOGO 2017/6/14 move to setupwizard activity
+            // 跳到home页按钮
             case R.id.mTv_connectStatus_home:
                 CPEConfig.getInstance().setQuickSetupFlag();
                 ChangeActivity.toActivity(this, MainActivity.class, true, true, false, 0);
@@ -363,6 +396,56 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
+    
+    /* -------------------------------------------- HELPER -------------------------------------------- */
+
+    // TOGO 2017/6/14 Go
+    /**
+     * 点击sim卡逻辑
+     */
+    private void simClick() {
+        boolean sim;
+
+        // if (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) { // 再次判断SIM状态
+
+        // TOAT: 测试时暂时使用标记位为true START
+        if (test) {
+            sim = test;
+        } else {
+            sim = (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) ? true : false;
+        }
+        // TOAT: 测试时暂时使用标记位为true END
+
+        if (sim) {
+            hideAllLayout();
+            mHeaderBackIv.setVisibility(View.VISIBLE);
+            mHeaderContainer.setVisibility(View.VISIBLE);
+            mHeaderSkipTv.setVisibility(View.VISIBLE);
+            mHandlePinContainer.setVisibility(View.VISIBLE);
+            mHeardTitle.setText(R.string.main_header_mobile_broadband);
+            pinRemainingTimes = mBusinessMgr.getSimStatus().m_nPinRemainingTimes;
+            mPasswordTimes.setText(pinRemainingTimes + "");
+            if (pinRemainingTimes < 3) {
+                mPasswordTimes.setTextColor(getResources().getColor(R.color.red));
+                mPinPasswordDes.setTextColor(getResources().getColor(R.color.red));
+            } else {
+                mPasswordTimes.setTextColor(getResources().getColor(R.color.black_text));
+                mPinPasswordDes.setTextColor(getResources().getColor(R.color.black_text));
+            }
+
+            mHeaderSkipTv.setOnClickListener(this);
+            mHeaderBackIv.setOnClickListener(this);
+
+        } else {
+            // Toast.makeText(getApplicationContext(), "enter wifisetting", Toast.LENGTH_SHORT).show();
+            // Intent intent = new Intent(getApplicationContext(), SettingWifiActivity.class);
+            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            // startActivity(intent);
+            finishQuickSetup(false);
+        }
+    }
+
+    // TOGO 2017/6/14 to pinCodeFragment
     /**
      * 根据当前剩余次数进行限定操作
      *
@@ -386,6 +469,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         return true;
     }
 
+    // TOGO 2017/6/14 GO
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - mKeyTime) > 2000) {
@@ -396,6 +480,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
+    // TOGO 2017/6/14 : split for connecttypefragment & pinCodeFragment
     @Override
     protected void onResume() {
         super.onResume();
@@ -407,6 +492,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
     }
 
+    // TOGO 2017/6/14 GO
     @Override
     protected void onPause() {
         super.onPause();
@@ -416,6 +502,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
+    // TOGO 2017/6/14 GO
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -434,6 +521,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mBusinessMgr = null;
     }
 
+    // TOGO 2017/6/14 GO
     private void handleLoginError(int titleId, int messageId, boolean showDialog, final boolean retryLogin) {
         if (mConfirmDialog != null) {
             mConfirmDialog.destroyDialog();
@@ -448,8 +536,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     //showLoginDialog();
                     doLogin();
                 } else {
-                    //                    //If other user enter, do not need setup
-                    //                    finishQuickSetup(true);
+                    //If other user enter, do not need setup
+                    // finishQuickSetup(true);
 
                     CPEConfig.getInstance().cleanAllSetupFlag();
                     mConfirmDialog.destroyDialog();
@@ -461,6 +549,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mConfirmDialog.showDialog(getString(titleId), getString(messageId));
     }
 
+    // TOGO 2017/6/14 Go
     //直接跳过设置到主界面中
     private void finishQuickSetup(boolean setFlag) {
         if (setFlag) {
@@ -472,6 +561,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         finish();
     }
 
+    // TOGO 2017/6/14 GO
     private void doLogin() {
         mForceLoginDlg = new AutoForceLoginProgressDialog(this);
         mAutoLoginDialog = new AutoLoginProgressDialog(this);
@@ -568,9 +658,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         });
     }
 
-    /*
-   * A dialog that let use enter password.
-   */
+    // TOGO 2017/6/14 GO
     private void showLoginDialog() {
         mLoginDialog = new LoginDialog(this);
         mLoginDialog.setCancelCallback(new LoginDialog.CancelLoginListener() {
@@ -581,9 +669,18 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             }
 
         });
+
+        // TOAT: 单模式下的自动跳转行为
+        mLoginDialog.setOnLoginStatusListener(success -> {
+            if (success) {
+                onlyTypeMode();
+            }
+        });
+
         mLoginDialog.showDialogDoLogin();
     }
 
+    // TOGO 2017/6/14 GO
     class QSBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -664,6 +761,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
+    // TOGO 2017/6/14 GO
     public void hideAllLayout() {
         mHeaderContainer.setVisibility(View.GONE);//头部
         mHeaderSkipTv.setVisibility(View.GONE);//头部的skip按钮
@@ -680,6 +778,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         mNormalContainer.setVisibility(View.VISIBLE);//普通的内容页
     }
 
+    // TOGO 2017/6/14 GO
     public void kickoffLogout() {
         ENUM.UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == ENUM.UserLoginStatus.Logout) {
@@ -688,6 +787,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         }
     }
 
+    // TOGO 2017/6/14 GO
     private TextWatcher mTextWatcher = new TextWatcher() {
 
         @Override

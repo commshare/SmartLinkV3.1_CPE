@@ -13,10 +13,6 @@
         android:background="@color/netmode"
         android:orientation="vertical">
 
-        <!-- 头部 -->
-        <include
-            android:id="@+id/mHead_setupWizard"
-            layout="@layout/main_header" />
 
         <RadioGroup
             android:id="@+id/mRg_netmode"

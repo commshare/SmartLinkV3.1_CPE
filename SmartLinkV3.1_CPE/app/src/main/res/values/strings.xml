@@ -763,6 +763,7 @@
     <string name="NETMODE_FAILED_TO_CONNECT">Failed to Connect</string>
     <string name="NETMODE_FAILED_CONNECTING">Connecting...</string>
     <string name="NETMODE_FAILED_CONNECTING_DES">Please wait a minute</string>
+    <string name="NETMODE_DETEING_INTERNET">Detecting Internet connection type</string>
 
     <!-- PUK -->
     <string name="puk_newpin">New SIM PIN</string>

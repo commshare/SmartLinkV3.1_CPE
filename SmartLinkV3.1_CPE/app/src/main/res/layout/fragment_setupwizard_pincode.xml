@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- PIN码页 -->
+    <RelativeLayout
+        android:id="@+id/connect_type_handle_pin_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mHead_setupWizard"
+        android:background="@color/backup_name_bg"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/handle_pin_password_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dip"
+            android:background="@color/color_white">
+
+            <EditText
+                android:id="@+id/handle_pin_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                android:hint="@string/qs_hint_sim_pin"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/black_text"
+                android:textSize="@dimen/font_size_normal"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/handle_pin_password_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:src="@drawable/general_del" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/handle_pin_password_times_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/handle_pin_password_container"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_10dip">
+
+            <TextView
+                android:id="@+id/handle_pin_password_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="3"
+                android:textColor="@color/grey_text"
+                android:textSize="@dimen/font_size_middle" />
+
+            <TextView
+                android:id="@+id/handle_pin_password_times_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_5dip"
+                android:layout_toRightOf="@id/handle_pin_password_times"
+                android:text="@string/qs_pin_times_des"
+                android:textColor="@color/grey_text"
+                android:textSize="@dimen/font_size_middle" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/handle_pin_remember_pin_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/handle_pin_password_times_container"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_20dip">
+
+            <ImageView
+                android:id="@+id/handle_pin_remember_pin_select"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"
+                android:layout_centerVertical="true"
+                android:src="@drawable/general_btn_remember_pre" />
+
+            <TextView
+                android:id="@+id/handle_pin_remember_pin_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10dip"
+                android:layout_toRightOf="@id/handle_pin_remember_pin_select"
+                android:text="@string/qs_pin_remember_pin_des"
+                android:textColor="@color/black_text"
+                android:textSize="@dimen/font_size_normal" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/handle_pin_connect_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_40dip"
+            android:layout_alignLeft="@+id/handle_pin_remember_pin_container"
+            android:layout_alignStart="@+id/handle_pin_remember_pin_container"
+            android:layout_below="@+id/handle_pin_remember_pin_container"
+            android:layout_marginRight="@dimen/dimen_5dip"
+            android:layout_marginTop="21dp"
+            android:background="@drawable/selector_conner_btn_blue"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/qs_pin_connect"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/font_size_normal" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

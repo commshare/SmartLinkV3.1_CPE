@@ -334,6 +334,7 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
                 m_et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 break;
             case R.id.ib_title_back:
+                //finish();
                 ChangeActivity.toActivity(this, LoadingActivity.class, true, true, false, 0);
                 break;
             case R.id.tv_title_back:

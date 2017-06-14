@@ -22,7 +22,6 @@ import android.widget.ViewFlipper;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
@@ -71,8 +70,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private static final String TAG = "MainActivity";
     public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
     public static DisplayMetrics m_displayMetrics = new DisplayMetrics();
-    static boolean m_blLogout;
-    static boolean m_blkickoff_Logout;
+    public static boolean m_blLogout;
+    public static boolean m_blkickoff_Logout;
     private static Device mDevice;
     final int HOME_PAGE = 1;
     final int SMS_PAGE = 2;

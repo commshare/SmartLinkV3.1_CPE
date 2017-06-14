@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/netmode_status_BG"
+    tools:context="com.alcatel.smartlinkv3.ui.activity.NetModeConnectStatusActivity">
+
+    <!-- 连接成功页 -->
+    <RelativeLayout
+        android:id="@+id/mRl_connectStatus_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mHead_setupWizard"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/mTv_connectStatus_des1_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/qs_pin_unlock_congratulations"
+            android:textSize="@dimen/font_size_large" />
+
+        <ImageView
+            android:id="@+id/mIv_connectStatus_logo_success"
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_200dip"
+            android:layout_above="@id/mTv_connectStatus_des1_success"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/connected" />
+
+        <TextView
+            android:id="@+id/mTv_connectStatus_des2_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mTv_connectStatus_des1_success"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:text="@string/qs_pin_unlock_congratulations_des"
+            android:textColor="@color/grey_text" />
+
+    </RelativeLayout>
+
+    <!-- 连接失败页 -->
+    <RelativeLayout
+        android:id="@+id/mRl_connectStatus_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/mRl_connectStatus_success"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/mTv_connectStatus_des1_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/qs_pin_unlock_can_not_connect"
+            android:textSize="@dimen/font_size_large" />
+
+        <ImageView
+            android:id="@+id/mIv_connectStatus_logo_failed"
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_150dip"
+            android:layout_above="@id/mTv_connectStatus_des1_failed"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/not_connected" />
+
+        <TextView
+            android:id="@+id/mTv_connectStatus_des2_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mTv_connectStatus_des1_failed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:text="@string/qs_pin_unlock_can_not_connect_des"
+            android:textColor="@color/grey_text"
+            android:textSize="@dimen/font_size_normal" />
+
+        <com.alcatel.smartlinkv3.appwidget.RippleView
+            android:id="@+id/mRp_connectStatus_tryagain"
+            android:layout_width="@dimen/dimen_120dip"
+            android:layout_height="@dimen/dimen_36dip"
+            android:layout_below="@id/mTv_connectStatus_des2_failed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_30dip"
+            android:background="@drawable/selector_nowifi_button"
+            android:gravity="center"
+            android:text="@string/qs_pin_unlock_try_again"
+            android:textColor="@color/mg_blue"
+            android:textSize="@dimen/dimen_textsize_16sp"
+            android:textStyle="bold"
+            app:alphaFactor="0.8"
+            app:hover="true"
+            app:rippleColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/mTv_connectStatus_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mRp_connectStatus_tryagain"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:clickable="true"
+            android:text="@string/qs_pin_unlock_to_home"
+            android:textColor="@color/grey_text"
+            android:textSize="@dimen/font_size_normal" />
+    </RelativeLayout>
+
+</RelativeLayout>

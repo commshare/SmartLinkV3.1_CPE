@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
+import com.alcatel.smartlinkv3.business.user.LoginHelper;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.Const;
@@ -91,6 +93,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
                     }*/
     private CommonErrorInfoDialog m_dialog_err_info;
     private TextView m_tvForgotPassword;
+    private OnLoginStatusLisener onLoginStatusListener;
 
     public LoginDialog(Context context) {
         m_context = context;
@@ -393,6 +396,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
         data.addParam("user_name", LinkAppSettings.USER_NAME);
         data.addParam("password", m_password);
         if (SmartLinkV3App.getInstance().IsForcesLogin()) {
+            Log.d("ConnectTypeSelect", "forceLogin");
             BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_FORCE_LOGIN_REQUEST, data);
             closeDialog();
             if (call == null) {
@@ -422,9 +426,27 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
             }
             m_ForceloginDlg.setCallback(call);
         } else {
-            BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGIN_REQUEST, data);
+            Log.d("ConnectTypeSelect", "not forceLogin");
+            //BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGIN_REQUEST, data);
+            new LoginHelper(m_context) {
+                @Override
+                public void getLoginStatus(boolean success) {
+                    Log.d("ConnectTypeSelect", "getLoginStatus: " + success);
+                    if (onLoginStatusListener != null) {
+                        onLoginStatusListener.isSuccess(success);
+                    }
+                }
+            }.login(data);
         }
         m_bIsApply = true;
+    }
+
+    public interface OnLoginStatusLisener {
+        void isSuccess(boolean success);
+    }
+
+    public void setOnLoginStatusListener(OnLoginStatusLisener onLoginStatusListener) {
+        this.onLoginStatusListener = onLoginStatusListener;
     }
 
     @Override

@@ -1,10 +1,14 @@
-package com.alcatel.smartlinkv3.ui.activity;
+package com.alcatel.smartlinkv3.ui.setupwizard.fragment;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Dimension;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,74 +21,80 @@ import com.alcatel.smartlinkv3.business.sim.helper.SimPukEmptyHelper;
 import com.alcatel.smartlinkv3.business.sim.helper.SimPukHelper;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+import com.alcatel.smartlinkv3.ui.activity.NetModeConnectStatusActivity;
+import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+public class PukCodeFragment extends Fragment implements View.OnClickListener {
 
-@Deprecated
-public class SettingPukActivity extends BaseActivity {
 
-    // 头部
-    @BindView(R.id.mTv_puk_title)
-    TextView mTvPukTitle;
-    @BindView(R.id.mTv_pub_skip)
-    TextView mTvPubSkip;
-    @BindView(R.id.mRl_puk_head)
-    RelativeLayout mRlPukHead;
+    private final SetupWizardActivity activity;
+
     // puk code
-    @BindView(R.id.mEt_puk_pukCode)
     EditText mEtPukPukCode;
-    @BindView(R.id.mIv_puk_del)
     ImageView mIvPukDel;
-    @BindView(R.id.mRl_puk_pukCode)
     RelativeLayout mRlPukPukCode;
     // 剩余次数
-    @BindView(R.id.mTv_puk_remain)
     TextView mTvPukRemain;
     // new pin
-    @BindView(R.id.mEt_puk_newPin)
     EditText mEtPukNewPin;
-    @BindView(R.id.mRl_puk_newPin)
     RelativeLayout mRlPukNewPin;
     // confirm pin
-    @BindView(R.id.mEt_puk_confirmPin)
     EditText mEtPukConfirmPin;
-    @BindView(R.id.mRl_puk_confirmPin)
     RelativeLayout mRlPukConfirmPin;
     // not match    
-    @BindView(R.id.mTv_puk_alarm)
     TextView mTvPukAlarm;
     // 记录
-    @BindView(R.id.mIv_puk_check)
     ImageView mIvPukCheck;
-    @BindView(R.id.mTv_puk_check)
     TextView mTvPukCheck;
-    @BindView(R.id.mRl_puk_check)
     RelativeLayout mRlPukCheck;
     // connect button
-    @BindView(R.id.mRp_puk_connect)
     RippleView mRpPukConnect;
 
-    // waitting ui
-    @BindView(R.id.mRl_puk_waitting)
+    // puk waitting ui
     RelativeLayout mRlPukWaitting;
 
-    private boolean isCheck;
-    private final String TAG = "SettingPukActivity";
-    private static final String PIN_PASSWORD = "pinPassword";
+    private View inflate;
     private BusinessManager mBusinessMana;
-    private int pukRemainTimes;
+    private boolean isCheck = true;
+    private static final String PIN_PASSWORD = "pinPassword";
     private String DES = " attempts remainning";
 
+    public PukCodeFragment(Activity activity) {
+        this.activity = ((SetupWizardActivity) activity);
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_setting_puk);
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        activity.mIv_back.setVisibility(View.GONE);
+        activity.mTv_title.setText(getString(R.string.main_header_mobile_broadband));
+        inflate = View.inflate(getActivity(), R.layout.fragment_setupwizard_pukcode, null);
+        initView();
         initData();
         initEvent();
+        return inflate;
+    }
+
+    private void initView() {
+        mEtPukPukCode = (EditText) inflate.findViewById(R.id.mEt_puk_pukCode);
+        mIvPukDel = (ImageView) inflate.findViewById(R.id.mIv_puk_del);
+        mRlPukPukCode = (RelativeLayout) inflate.findViewById(R.id.mRl_puk_pukCode);
+        mTvPukRemain = (TextView) inflate.findViewById(R.id.mTv_puk_remain);
+        mEtPukNewPin = (EditText) inflate.findViewById(R.id.mEt_puk_newPin);
+        mRlPukNewPin = (RelativeLayout) inflate.findViewById(R.id.mRl_puk_newPin);
+
+        mEtPukConfirmPin = (EditText) inflate.findViewById(R.id.mEt_puk_confirmPin);
+        mRlPukConfirmPin = (RelativeLayout) inflate.findViewById(R.id.mRl_puk_confirmPin);
+        mTvPukAlarm = (TextView) inflate.findViewById(R.id.mTv_puk_alarm);
+
+        mIvPukCheck = (ImageView) inflate.findViewById(R.id.mIv_puk_check);
+        mTvPukCheck = (TextView) inflate.findViewById(R.id.mTv_puk_check);
+        mRlPukCheck = (RelativeLayout) inflate.findViewById(R.id.mRl_puk_check);
+
+        mRpPukConnect = (RippleView) inflate.findViewById(R.id.mRp_puk_connect);
+        mRlPukWaitting = (RelativeLayout) inflate.findViewById(R.id.mRl_puk_waitting);
+
+
     }
 
     private void initData() {
@@ -96,10 +106,14 @@ public class SettingPukActivity extends BaseActivity {
 
 
     private void initEvent() {
+        mIvPukDel.setOnClickListener(this);
+        mIvPukCheck.setOnClickListener(this);
+        mRpPukConnect.setOnClickListener(this);
+        
         setCheckable(false);// 1.设置选项默认为未选中
         setClickable(mRpPukConnect, false, R.drawable.puk_normal);// 2.设置connect初始化不可点击
         // 3.根据ED的empty激活connect button
-        new SimPukEmptyHelper(this, mEtPukPukCode, mEtPukNewPin, mEtPukConfirmPin) {
+        new SimPukEmptyHelper(getActivity(), mEtPukPukCode, mEtPukNewPin, mEtPukConfirmPin) {
             @Override
             public void getEmpty(boolean isEmpty) {
                 if (isEmpty) {
@@ -112,12 +126,9 @@ public class SettingPukActivity extends BaseActivity {
         };
     }
 
-    @OnClick({R.id.mIv_puk_del, R.id.mRp_puk_connect, R.id.mTv_pub_skip, R.id.mIv_puk_check})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.mTv_pub_skip:// skip
-                ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 0);
-                break;
             case R.id.mIv_puk_del:// clear puk code edittext
                 mEtPukPukCode.setText("");
                 break;
@@ -133,15 +144,15 @@ public class SettingPukActivity extends BaseActivity {
                 // 2.提交
                 if (samePin) {
                     mRlPukWaitting.setVisibility(View.VISIBLE);// waitting ui
-                    new SimPukHelper(this) {// commit to remote
+                    new SimPukHelper(getActivity()) {// commit to remote
                         @Override
                         public void isSuccesss(boolean isSuccess) {
                             mRlPukWaitting.setVisibility(View.GONE);
                             if (isSuccess) {/* 成功后--> 保存PIN到文件--> 跳转到状态页 */
-                                SharedPrefsUtil.getInstance(SettingPukActivity.this).putString(PIN_PASSWORD, getEtContent(mEtPukConfirmPin));
-                                ChangeActivity.toActivity(SettingPukActivity.this, NetModeConnectStatusActivity.class, true, true, false, 0);
+                                SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, getEtContent(mEtPukConfirmPin));
+                                ChangeActivity.toActivity(getActivity(), NetModeConnectStatusActivity.class, true, true, false, 0);
                             } else {/* PUK码错误--> 获取剩余次数 */
-                                runOnUiThread(() -> {
+                                getActivity().runOnUiThread(() -> {
                                     // 不同次数的UI显示
                                     setRemainUi(getPukRemainTimes());
                                     // setRemainUi(1);
@@ -215,7 +226,7 @@ public class SettingPukActivity extends BaseActivity {
      * @param eds
      */
     private void setEtUnable(EditText... eds) {
-        SharedPrefsUtil.getInstance(SettingPukActivity.this).putString(PIN_PASSWORD, "");
+        SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, "");
         for (EditText ed : eds) {
             ed.setText("");
             ed.setBackgroundColor(Color.parseColor("#dddddd"));
@@ -240,4 +251,6 @@ public class SettingPukActivity extends BaseActivity {
             setEtUnable(mEtPukPukCode, mEtPukNewPin, mEtPukConfirmPin);
         }
     }
+
+
 }

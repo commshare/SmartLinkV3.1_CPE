@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 选择页 -->
+    <LinearLayout
+        android:id="@+id/connect_type_content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mHead_setupWizard"
+        android:orientation="vertical"
+        android:visibility="visible">
+            
+        <!-- SIM -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/connect_type_sim_card_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/results_sim_dis"
+                android:text="@string/connect_type_select_sim_card_disable"
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/center_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="8"
+                android:background="@color/grey_line" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_18_dp"
+                android:text="@string/or"
+                android:textColor="@color/grey_line" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="8"
+                android:background="@color/grey_line" />
+        </LinearLayout>
+
+        <!-- WAN -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/connect_type_wan_port_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/results_wan_dis"
+                android:text="@string/connect_type_select_wan_port_disable"
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

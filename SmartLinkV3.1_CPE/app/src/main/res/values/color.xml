@@ -58,11 +58,6 @@
     <color name = "home_connect_status">#ff80c4e7</color>
     <!-- home end -->
 
-    <!-- PIN color start -->
-    <color name = "error_font_color">#ffff0000</color>
-    <color name = "font_color">#ffffffff</color>
-    <!-- PIN color end -->
-
     <!-- usage start -->
     <!-- usage end -->
 
@@ -153,6 +148,12 @@
     <color name = "netmode_status_BG">#e6e6e6</color>
     <color name = "netmode_status_tryagain">#009aff</color>
     <color name = "netmode_status_home">#666666</color>
+
+    <!-- PIN color start -->
+    <color name = "error_font_color">#ffff0000</color>
+    <color name = "font_color">#ffffffff</color>
+    <color name = "pin_hint">#666666</color>
+    <!-- PIN color end -->
     
     <!-- PUK -->
     <color name = "puk_bg">#e9eaed</color>

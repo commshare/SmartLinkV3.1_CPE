@@ -13,8 +13,8 @@
         android:id = "@+id/mRl_connectStatus_success"
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
-        android:layout_below = "@id/main_header"
-        android:visibility = "gone">
+        android:layout_below = "@id/mHead_setupWizard"
+        android:visibility = "visible">
 
         <TextView
             android:id = "@+id/mTv_connectStatus_des1_success"

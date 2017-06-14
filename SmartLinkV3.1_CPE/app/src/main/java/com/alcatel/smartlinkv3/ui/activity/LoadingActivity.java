@@ -10,6 +10,8 @@ import android.util.Log;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.ChangeActivity;
+import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -100,9 +102,12 @@ public class LoadingActivity extends Activity {
     }
 
     private void startConnectTypeActivity() {
-        Intent it = new Intent(this, ConnectTypeSelectActivity.class);
-        startActivity(it);
-        finish();
+        // Intent it = new Intent(this, ConnectTypeSelectActivity.class);
+        // startActivity(it);
+        // finish();
+        // TOAT: 2017/6/13 --> to setupwizard activity 
+        ChangeActivity.toActivity(this, SetupWizardActivity.class, true, true, false, 0);
+
     }
 
     private void searchTimeOut() {
@@ -110,7 +115,7 @@ public class LoadingActivity extends Activity {
     }
 
     private boolean checkConnectState() {
-        Log.v("pchong", "p11111  checkConnectState m_bCPEWifiConnected = " + DataConnectManager.getInstance().getCPEWifiConnected());
+        Log.v(TAG, "p11111  checkConnectState m_bCPEWifiConnected = " + DataConnectManager.getInstance().getCPEWifiConnected());
         return DataConnectManager.getInstance().getCPEWifiConnected();
     }
 }
