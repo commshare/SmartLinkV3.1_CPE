@@ -138,8 +138,10 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     protected void onResume() {
         super.onResume();
         m_msgReceiver = new MsgBroadcastReceiver();
-        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
-        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MessageUti.CPE_WIFI_CONNECT_CHANGE);
+        intentFilter.addAction(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
+        this.registerReceiver(m_msgReceiver, intentFilter);
 
         showActivity();
 

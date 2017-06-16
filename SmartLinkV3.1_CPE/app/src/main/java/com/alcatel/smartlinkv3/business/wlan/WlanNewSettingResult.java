@@ -28,6 +28,15 @@ public class WlanNewSettingResult extends BaseResult {
 //        curr_num = 0;
 //        this.APList.clear();
     }
+
+    @Override
+    public String toString() {
+        return "WlanNewSettingResult{" +
+                "WiFiOffTime=" + WiFiOffTime +
+                ", AP2G=" + AP2G +
+                ", AP5G=" + AP5G +
+                '}';
+    }
 }
 
 

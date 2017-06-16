@@ -16,8 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +26,8 @@ import com.alcatel.smartlinkv3.business.wlan.WlanNewSettingResult;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity;
 
 import static com.alcatel.smartlinkv3.R.id.text_advanced_settings_2g;
@@ -227,8 +227,21 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
             intent.putExtra(EXTRA_MODE_80211, mNewAP2G.WMode);
             intent.putExtra(EXTRA_AP_ISOLATION, mNewAP2G.ApIsolation);
             m_context.startActivity(intent);
-        } else if(v.getId() == R.id.btn_apply){
-            applySettings();
+        } else if (v.getId() == R.id.btn_apply) {
+//            applySettings();
+
+            API.get().login("admin", "admin", new MySubscriber() {
+
+                @Override
+                public void onSuccess(Object result) {
+                    Log.d("OkHttp", "onSuccess" + result);
+                }
+
+                @Override
+                protected void onFailure() {
+
+                }
+            });
         }
 
     }
@@ -262,7 +275,7 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
                 mEncryption2GSpinner.setSelection(mNewAP2G.WpaType);
                 mPasswd2GGroup.setVisibility(View.VISIBLE);
             }
-        }else if (parent.getId() == R.id.spinner_security_5g) {
+        } else if (parent.getId() == R.id.spinner_security_5g) {
             if (position == 0) {
                 mEncryption5GGroup.setVisibility(View.GONE);
                 mPasswd5GGroup.setVisibility(View.GONE);
