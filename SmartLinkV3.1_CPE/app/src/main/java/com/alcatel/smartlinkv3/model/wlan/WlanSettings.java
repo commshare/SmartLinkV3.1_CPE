@@ -6,7 +6,7 @@ import com.alcatel.smartlinkv3.business.wlan.AP;
  * Created by tao.j on 2017/6/15.
  */
 
-public class WlanSettings {
+public class WlanSettings implements Cloneable{
     private int WiFiOffTime;
 
     private AP AP2G = new AP();
@@ -43,5 +43,16 @@ public class WlanSettings {
                 ", AP2G=" + AP2G +
                 ", AP5G=" + AP5G +
                 '}';
+    }
+
+    @Override
+    public WlanSettings clone()  {
+        WlanSettings wlanSettings = null;
+        try {
+            wlanSettings = (WlanSettings) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return wlanSettings;
     }
 }

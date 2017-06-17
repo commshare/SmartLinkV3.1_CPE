@@ -12,6 +12,8 @@ import com.alcatel.smartlinkv3.model.sim.SetAutoValidatePinStateParams;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.user.LoginParams;
 import com.alcatel.smartlinkv3.model.sim.UnlockSimlockParams;
+import com.alcatel.smartlinkv3.model.wlan.WlanState;
+import com.alcatel.smartlinkv3.model.wlan.WlanSupportAPMode;
 import com.alcatel.smartlinkv3.model.wlan.WlanSettings;
 
 import java.util.concurrent.TimeUnit;
@@ -175,12 +177,34 @@ public class API {
     public void getConnectionState(MySubscriber<ConnectionState> subscriber){
         subscribe(subscriber, smartLinkApi.getConnectionState(new RequestBody(Methods.GET_CONNECTION_STATE)));
     }
+
+
+    /**
+     * get 2.4g and 5g status (on/off)
+     * @param subscriber call back
+     */
+    public void getWlanState(MySubscriber<WlanState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getWlanState(new RequestBody(Methods.GET_WLAN_STATE)));
+    }
+
+    public void setWlanState(WlanState state, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_STATE, state)));
+    }
+
     /**
      * get all wlan settings
      * @param subscriber call back
      */
     public void getWlanSettings(MySubscriber<WlanSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
+    }
+
+    public void setWlanSettings(WlanSettings settings, MySubscriber subscriber){
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, settings)));
+    }
+
+    public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber){
+        subscribe(subscriber, smartLinkApi.getWlanSupportMode(new RequestBody(Methods.GET_WLAN_SUPPORT_MODE)));
     }
 
     interface SmartLinkApi {
@@ -195,12 +219,18 @@ public class API {
         Observable<ResponseBody<SimStatus>> getSimStatus(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
-        Observable<ResponseBody<WlanSettings>> getWlanSettings(@Body RequestBody requestBody);
-
-        @POST("/jrd/webapi")
         Observable<ResponseBody<AutoValidatePinState>> getAutoValidatePinState(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<ConnectionState>> getConnectionState(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanState>> getWlanState(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanSettings>> getWlanSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanSupportAPMode>> getWlanSupportMode(@Body RequestBody requestBody);
     }
 }

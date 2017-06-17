@@ -1,10 +1,7 @@
 package com.alcatel.smartlinkv3.ui.view;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -17,26 +14,19 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.business.wlan.AP;
 import com.alcatel.smartlinkv3.business.wlan.WlanNewSettingResult;
 import com.alcatel.smartlinkv3.common.ENUM;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.common.ToastUtil;
+import com.alcatel.smartlinkv3.model.wlan.WlanSupportAPMode;
+import com.alcatel.smartlinkv3.model.wlan.WlanSettings;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity;
 
 import static com.alcatel.smartlinkv3.R.id.text_advanced_settings_2g;
-import static com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity.EXTRA_AP_ISOLATION;
-import static com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity.EXTRA_BANDWIDTH;
-import static com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity.EXTRA_CHANNEL;
-import static com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity.EXTRA_COUNTRY;
-import static com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity.EXTRA_MODE_80211;
-import static com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity.EXTRA_SSID_BROADCAST;
 
 /**
  * Created by tao.j on 2017/6/7.
@@ -45,16 +35,19 @@ import static com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity.E
 public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ViewWifiSettings";
-    protected ActivityBroadcastReceiver m_msgReceiver;
+//    protected ActivityBroadcastReceiver m_msgReceiver;
 
     private String[] mSecuritySettings;
     private String[] mWpaEncryptionSettings;
     private String[] mWepEncryptionSettings;
 
-    private SwitchCompat switchWifi2g;
-    private TextView textAdvancedSettings2g;
-    private SwitchCompat switchWifi5g;
-    private TextView textAdvancedSettings5g;
+    private ViewGroup m2GSettingsGroup;
+    private ViewGroup m5GSettingsGroup;
+
+    private SwitchCompat mWifi2GSwitch;
+    private TextView m2GAdvancedText;
+    private SwitchCompat mWifi5GSwitch;
+    private TextView m5GAdvancedText;
 
     private AppCompatSpinner mSecurity2GSpinner;
     private AppCompatSpinner mSecurity5GSpinner;
@@ -62,21 +55,38 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     private AppCompatSpinner mEncryption2GSpinner;
     private AppCompatSpinner mEncryption5GSpinner;
 
-    private EditText mSsid2gEdit;
-    private EditText mSsid5gEdit;
-    private EditText mKey2gEdit;
-    private EditText mKey5gEdit;
+    private EditText mSsid2GEdit;
+    private EditText mSsid5GEdit;
+    private EditText mKey2GEdit;
+    private EditText mKey5GEdit;
 
     private Button mApplyBtn;
+    private Button mCancelBtn;
+
+    private ViewGroup mSwitch2GGroup;
+    private ViewGroup mSwitch5GGroup;
+
+    private ViewGroup mSsid2GGroup;
+    private ViewGroup mSsid5GGroup;
+
+    private ViewGroup mSecurity2GGroup;
+    private ViewGroup mSecurity5GGroup;
 
     private ViewGroup mEncryption2GGroup;
-    private ViewGroup mPasswd2GGroup;
-
     private ViewGroup mEncryption5GGroup;
-    private ViewGroup mPasswd5GGroup;
 
-    private AP mNewAP2G;
-    private AP mNewAP5G;
+    private ViewGroup mKey2GGroup;
+    private ViewGroup mKey5GGroup;
+
+    private View mDividerView;
+
+//    private AP mNewAP2G = new AP();
+//    private AP mWlanSettings.getAP5G() = new AP();
+
+    private WlanSettings mWlanSettings;
+
+//    private boolean mIs2GAPEnabled;
+//    private boolean mIs5GAPEnabled;
 
     public ViewWifiSettings(Context context) {
         super(context);
@@ -89,24 +99,38 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     @Override
     protected void init() {
         m_view = LayoutInflater.from(m_context).inflate(R.layout.wifi_settings, null);
-        switchWifi2g = (SwitchCompat) m_view.findViewById(R.id.switch_wifi_2g);
-        switchWifi2g.setOnCheckedChangeListener(this);
-        textAdvancedSettings2g = (TextView) m_view.findViewById(text_advanced_settings_2g);
-        textAdvancedSettings2g.setOnClickListener(this);
-        switchWifi5g = (SwitchCompat) m_view.findViewById(R.id.switch_wifi_5g);
-        switchWifi5g.setOnCheckedChangeListener(this);
-        textAdvancedSettings5g = (TextView) m_view.findViewById(R.id.text_advanced_settings_5g);
-        textAdvancedSettings5g.setOnClickListener(this);
+        mSwitch2GGroup = (ViewGroup) m_view.findViewById(R.id.rl_wifi_2g_switch_group);
+        mSwitch5GGroup = (ViewGroup) m_view.findViewById(R.id.rl_wifi_5g_switch_group);
 
-        mSsid2gEdit = (EditText) m_view.findViewById(R.id.edit_ssid_2g);
-        mSsid5gEdit = (EditText) m_view.findViewById(R.id.edit_ssid_5g);
-        mKey2gEdit = (EditText) m_view.findViewById(R.id.edit_key_2g);
-        mKey5gEdit = (EditText) m_view.findViewById(R.id.edit_key_5g);
+        m2GSettingsGroup = (ViewGroup) m_view.findViewById(R.id.ll_settings_2g);
+        m5GSettingsGroup = (ViewGroup) m_view.findViewById(R.id.ll_settings_5g);
+
+        mWifi2GSwitch = (SwitchCompat) m_view.findViewById(R.id.switch_wifi_2g);
+        mWifi2GSwitch.setOnCheckedChangeListener(this);
+        mWifi5GSwitch = (SwitchCompat) m_view.findViewById(R.id.switch_wifi_5g);
+        mWifi5GSwitch.setOnCheckedChangeListener(this);
+
+        m2GAdvancedText = (TextView) m_view.findViewById(text_advanced_settings_2g);
+        m2GAdvancedText.setOnClickListener(this);
+        m5GAdvancedText = (TextView) m_view.findViewById(R.id.text_advanced_settings_5g);
+        m5GAdvancedText.setOnClickListener(this);
+
+        mSsid2GEdit = (EditText) m_view.findViewById(R.id.edit_ssid_2g);
+        mSsid5GEdit = (EditText) m_view.findViewById(R.id.edit_ssid_5g);
+
+        mKey2GEdit = (EditText) m_view.findViewById(R.id.edit_key_2g);
+        mKey5GEdit = (EditText) m_view.findViewById(R.id.edit_key_5g);
+
+        mSsid2GGroup = (ViewGroup) m_view.findViewById(R.id.ll_ssid_2g);
+        mSsid5GGroup = (ViewGroup) m_view.findViewById(R.id.ll_ssid_5g);
+
+        mSecurity2GGroup = (ViewGroup) m_view.findViewById(R.id.rl_security_2g);
+        mSecurity5GGroup = (ViewGroup) m_view.findViewById(R.id.rl_security_5g);
 
         mEncryption2GGroup = (ViewGroup) m_view.findViewById(R.id.rl_encryption_2g);
         mEncryption5GGroup = (ViewGroup) m_view.findViewById(R.id.rl_encryption_5g);
-        mPasswd2GGroup = (ViewGroup) m_view.findViewById(R.id.ll_key_2g);
-        mPasswd5GGroup = (ViewGroup) m_view.findViewById(R.id.ll_key_5g);
+        mKey2GGroup = (ViewGroup) m_view.findViewById(R.id.ll_key_2g);
+        mKey5GGroup = (ViewGroup) m_view.findViewById(R.id.ll_key_5g);
 
         mSecurity2GSpinner = (AppCompatSpinner) m_view.findViewById(R.id.spinner_security_2g);
         mSecurity2GSpinner.setOnItemSelectedListener(this);
@@ -119,69 +143,179 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
         mEncryption5GSpinner.setOnItemSelectedListener(this);
 
         mApplyBtn = (Button) m_view.findViewById(R.id.btn_apply);
+        mCancelBtn = (Button) m_view.findViewById(R.id.btn_cancel);
         mApplyBtn.setOnClickListener(this);
-        m_msgReceiver = new ActivityBroadcastReceiver();
+        mCancelBtn.setOnClickListener(this);
+
+        mDividerView = m_view.findViewById(R.id.divider);
+
+
+//        m_msgReceiver = new ActivityBroadcastReceiver();
     }
 
-    private void updateWifiSettings() {
+    private void updateUIWithWlanSettings() {
+        Log.d(TAG, "updateUIWithWlanSettings");
+        if (mWlanSettings == null) {
+            return;
+        }
 
-        mNewAP2G = BusinessManager.getInstance().getAP2G().clone();
-        mNewAP5G = BusinessManager.getInstance().getAP5G().clone();
+        mWifi2GSwitch.setChecked(mWlanSettings.getAP2G().isApEnabled());
+        mWifi5GSwitch.setChecked(mWlanSettings.getAP5G().isApEnabled());
 
-        updateSupportMode();
-
-        mSsid2gEdit.setText(BusinessManager.getInstance().getSsid());
-        mSsid5gEdit.setText(BusinessManager.getInstance().getSsid_5G());
-        mKey2gEdit.setText(BusinessManager.getInstance().getWifiPwd());
-        mKey5gEdit.setText(BusinessManager.getInstance().getWifiPwd_5G());
-
-        mSecurity2GSpinner.setSelection(mNewAP2G.SecurityMode);
-        mSecurity5GSpinner.setSelection(mNewAP5G.SecurityMode);
-
-    }
-
-    private void updateSupportMode() {
-        ENUM.WlanSupportMode supportMode = BusinessManager.getInstance().getWlanSupportMode();
-        Log.d(TAG, "updateSupportMode: " + supportMode);
-        if (supportMode == ENUM.WlanSupportMode.Mode2Point4G) {
-            switchWifi2g.setChecked(true);
-            switchWifi5g.setChecked(false);
-        } else if (supportMode == ENUM.WlanSupportMode.Mode5G) {
-            switchWifi2g.setChecked(false);
-            switchWifi5g.setChecked(true);
-        } else if (supportMode == ENUM.WlanSupportMode.Mode2Point4GAnd5G) {
-            switchWifi2g.setChecked(true);
-            switchWifi5g.setChecked(true);
+        mSsid2GEdit.setText(mWlanSettings.getAP2G().Ssid);
+        int securityMode = mWlanSettings.getAP2G().SecurityMode;
+        mSecurity2GSpinner.setSelection(securityMode);
+        if (securityMode == ENUM.SecurityMode.Disable.ordinal()) {
+            mEncryption2GGroup.setVisibility(View.GONE);
+            mKey2GGroup.setVisibility(View.GONE);
+            mEncryption2GSpinner.setSelection(-1);
+            mKey2GEdit.setText("");
+        } else if (securityMode == ENUM.SecurityMode.WEP.ordinal()) {
+            mEncryption2GGroup.setVisibility(View.VISIBLE);
+            mKey2GGroup.setVisibility(View.VISIBLE);
+            mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WepType);
+            mKey2GEdit.setText(mWlanSettings.getAP2G().WepKey);
         } else {
-            switchWifi2g.setChecked(false);
-            switchWifi5g.setChecked(false);
+            mEncryption2GGroup.setVisibility(View.VISIBLE);
+            mKey2GGroup.setVisibility(View.VISIBLE);
+            mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WpaType);
+            mKey2GEdit.setText(mWlanSettings.getAP2G().WpaKey);
+        }
+
+        mSsid5GEdit.setText(mWlanSettings.getAP5G().Ssid);
+        mSecurity5GSpinner.setSelection(mWlanSettings.getAP5G().SecurityMode);
+        if (mWlanSettings.getAP5G().SecurityMode == ENUM.SecurityMode.Disable.ordinal()) {
+            mEncryption5GGroup.setVisibility(View.GONE);
+            mKey5GGroup.setVisibility(View.GONE);
+            mEncryption5GSpinner.setSelection(-1);
+            mKey5GEdit.setText("");
+        } else if (mWlanSettings.getAP5G().SecurityMode == ENUM.SecurityMode.WEP.ordinal()) {
+            mEncryption5GGroup.setVisibility(View.VISIBLE);
+            mKey5GGroup.setVisibility(View.VISIBLE);
+            mEncryption5GSpinner.setSelection(mWlanSettings.getAP5G().WepType);
+            mKey5GEdit.setText(mWlanSettings.getAP5G().WepKey);
+        } else {
+            mEncryption5GGroup.setVisibility(View.VISIBLE);
+            mKey5GGroup.setVisibility(View.VISIBLE);
+            mEncryption5GSpinner.setSelection(mWlanSettings.getAP5G().WpaType);
+            mKey5GEdit.setText(mWlanSettings.getAP5G().WpaKey);
+        }
+
+        m2GSettingsGroup.setVisibility(mWlanSettings.getAP2G().isApEnabled() ? View.VISIBLE : View.GONE);
+        m5GSettingsGroup.setVisibility(mWlanSettings.getAP5G().isApEnabled() ? View.VISIBLE : View.GONE);
+
+    }
+
+
+    private void updateUIWithSupportMode(int supportMode) {
+        if (supportMode == ENUM.WlanSupportMode.Mode2Point4G.ordinal()) {
+            mSwitch2GGroup.setVisibility(View.VISIBLE);
+            mSwitch5GGroup.setVisibility(View.GONE);
+
+            m2GSettingsGroup.setVisibility(View.VISIBLE);
+            m5GSettingsGroup.setVisibility(View.GONE);
+
+            mDividerView.setVisibility(View.GONE);
+        } else if (supportMode == ENUM.WlanSupportMode.Mode5G.ordinal()) {
+            mSwitch2GGroup.setVisibility(View.GONE);
+            mSwitch5GGroup.setVisibility(View.VISIBLE);
+
+            m2GSettingsGroup.setVisibility(View.GONE);
+            m5GSettingsGroup.setVisibility(View.VISIBLE);
+
+            mDividerView.setVisibility(View.GONE);
+
+        } else if (supportMode == ENUM.WlanSupportMode.Mode2Point4GAnd5G.ordinal()) {
+            mSwitch2GGroup.setVisibility(View.VISIBLE);
+            mSwitch5GGroup.setVisibility(View.VISIBLE);
+
+            m2GSettingsGroup.setVisibility(View.VISIBLE);
+            m5GSettingsGroup.setVisibility(View.VISIBLE);
+        } else {
+            mSwitch2GGroup.setVisibility(View.GONE);
+            mSwitch5GGroup.setVisibility(View.GONE);
+
+            m2GSettingsGroup.setVisibility(View.GONE);
+            m5GSettingsGroup.setVisibility(View.GONE);
+
+            mDividerView.setVisibility(View.GONE);
+
         }
     }
 
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
-        m_context.registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST));
-        m_context.registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST));
-        m_context.registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
-        m_context.registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
-        m_context.registerReceiver(m_msgReceiver,
-                new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
+//        m_context.registerReceiver(m_msgReceiver,
+//                new IntentFilter(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST));
+//        m_context.registerReceiver(m_msgReceiver,
+//                new IntentFilter(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST));
+//        m_context.registerReceiver(m_msgReceiver,
+//                new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
+//        m_context.registerReceiver(m_msgReceiver,
+//                new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
+//        m_context.registerReceiver(m_msgReceiver,
+//                new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
 
-        BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
-        BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
+        requestWlanSupportMode();
+//        requestWlanState();
+        requestWlanSettings();
+//        BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
+//        BusinessManager.getInstance().sendRequestMessage(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET, null);
+//
+//        updateUIWithWlanSettings();
+    }
 
-        updateWifiSettings();
+    private void requestWlanSettings() {
+        API.get().getWlanSettings(new MySubscriber<WlanSettings>() {
+            @Override
+            protected void onSuccess(WlanSettings result) {
+                mWlanSettings = result;
+                updateUIWithWlanSettings();
+            }
+
+            @Override
+            protected void onFailure() {
+
+            }
+        });
+    }
+
+//    private void requestWlanState() {
+//        API.get().getWlanState(new MySubscriber<WlanState>() {
+//            @Override
+//            protected void onSuccess(WlanState result) {
+//                mIs2GAPEnabled = result.isAP2GEnabled();
+//                mIs5GAPEnabled = result.isAP5GEnabled();
+//                mWifi2GSwitch.setChecked(mIs2GAPEnabled);
+//                mWifi5GSwitch.setChecked(mIs5GAPEnabled);
+//            }
+//
+//            @Override
+//            protected void onFailure() {
+//
+//            }
+//        });
+//    }
+
+    private void requestWlanSupportMode() {
+        API.get().getWlanSupportMode(new MySubscriber<WlanSupportAPMode>() {
+            @Override
+            protected void onSuccess(WlanSupportAPMode result) {
+                updateUIWithSupportMode(result.getWlanSupportAPMode());
+            }
+
+            @Override
+            protected void onFailure() {
+
+            }
+        });
     }
 
     @Override
     public void onPause() {
         Log.d(TAG, "onPause");
-        m_context.unregisterReceiver(m_msgReceiver);
+//        m_context.unregisterReceiver(m_msgReceiver);
     }
 
     @Override
@@ -192,26 +326,54 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.d(TAG, "onCheckedChanged buttonView:" + buttonView + ", isChecked:" + isChecked);
+
         if (buttonView.getId() == R.id.switch_wifi_2g) {
-            set2GSettingsEnable(isChecked);
+            m2GSettingsGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         } else if (buttonView.getId() == R.id.switch_wifi_5g) {
-            set5GSettingsEnable(isChecked);
+            m5GSettingsGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         }
     }
 
+//    private void setWlanState() {
+//        Log.d(TAG, "setWlanState");
+//        boolean is2GEnabled = mWifi2GSwitch.isChecked();
+//        boolean is5GEnabled = mWifi5GSwitch.isChecked();
+//        WlanState wlanState = new WlanState(is2GEnabled, is5GEnabled);
+//        API.get().setWlanState(wlanState, new MySubscriber() {
+//            @Override
+//            protected void onSuccess(Object result) {
+//                Log.d(TAG, "onSuccess");
+//
+//                mIs2GAPEnabled = is2GEnabled;
+//                mIs5GAPEnabled = is5GEnabled;
+//            }
+//
+//            @Override
+//            protected void onFailure() {
+//                Log.d(TAG, "onFailure");
+//                mWifi2GSwitch.setChecked(mIs2GAPEnabled);
+//                mWifi5GSwitch.setChecked(mIs5GAPEnabled);
+//            }
+//        });
+//    }
+
     private void set2GSettingsEnable(boolean enabled) {
-        mSsid2gEdit.setEnabled(enabled);
-        mSsid2gEdit.setEnabled(enabled);
-        mKey2gEdit.setEnabled(enabled);
-        textAdvancedSettings2g.setEnabled(enabled);
-        textAdvancedSettings2g.setTextColor(enabled ? Color.BLACK : Color.LTGRAY);
+        int visibility = enabled ? View.VISIBLE : View.GONE;
+        mSsid2GGroup.setVisibility(visibility);
+        mSecurity2GGroup.setVisibility(visibility);
+        mEncryption2GGroup.setVisibility(visibility);
+        mKey2GGroup.setVisibility(visibility);
+        m2GAdvancedText.setVisibility(visibility);
     }
 
     private void set5GSettingsEnable(boolean enabled) {
-        mSsid5gEdit.setEnabled(enabled);
-        mKey5gEdit.setEnabled(enabled);
-        textAdvancedSettings5g.setEnabled(enabled);
-        textAdvancedSettings5g.setTextColor(enabled ? Color.BLACK : Color.LTGRAY);
+        int visibility = enabled ? View.VISIBLE : View.GONE;
+        mSsid5GGroup.setVisibility(visibility);
+        mSecurity5GGroup.setVisibility(visibility);
+        mEncryption5GGroup.setVisibility(visibility);
+        mKey5GGroup.setVisibility(visibility);
+        m5GAdvancedText.setVisibility(visibility);
     }
 
     @Override
@@ -220,75 +382,173 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 
         if (v.getId() == R.id.text_advanced_settings_2g || v.getId() == R.id.text_advanced_settings_5g) {
             Intent intent = new Intent(m_context, WlanAdvancedSettingsActivity.class);
-            intent.putExtra(EXTRA_SSID_BROADCAST, mNewAP2G.SsidHidden);
-            intent.putExtra(EXTRA_CHANNEL, mNewAP2G.Channel);
-            intent.putExtra(EXTRA_COUNTRY, mNewAP2G.CountryCode);
-            intent.putExtra(EXTRA_BANDWIDTH, mNewAP2G.Bandwidth);
-            intent.putExtra(EXTRA_MODE_80211, mNewAP2G.WMode);
-            intent.putExtra(EXTRA_AP_ISOLATION, mNewAP2G.ApIsolation);
+//            intent.putExtra(EXTRA_SSID_BROADCAST, mWlanSettings.getAP2G().SsidHidden);
+//            intent.putExtra(EXTRA_CHANNEL, mWlanSettings.getAP2G().Channel);
+//            intent.putExtra(EXTRA_COUNTRY, mWlanSettings.getAP2G().CountryCode);
+//            intent.putExtra(EXTRA_BANDWIDTH, mWlanSettings.getAP2G().Bandwidth);
+//            intent.putExtra(EXTRA_MODE_80211, mWlanSettings.getAP2G().WMode);
+//            intent.putExtra(EXTRA_AP_ISOLATION, mWlanSettings.getAP2G().ApIsolation);
             m_context.startActivity(intent);
         } else if (v.getId() == R.id.btn_apply) {
-//            applySettings();
-
-            API.get().login("admin", "admin", new MySubscriber() {
-
-                @Override
-                public void onSuccess(Object result) {
-                    Log.d("OkHttp", "onSuccess" + result);
-                }
-
-                @Override
-                protected void onFailure() {
-
-                }
-            });
+            applySettings();
+        } else if (v.getId() == R.id.btn_cancel) {
+            restoreSettings();
         }
 
     }
 
-    private void applySettings() {
-        WlanNewSettingResult settings = BusinessManager.getInstance().getWlanSettings();
-        mNewAP2G.Ssid = mSsid2gEdit.getText().toString().trim();
-        mNewAP2G.WpaKey = mKey2gEdit.getText().toString().trim();
+    private void restoreSettings() {
+        requestWlanSettings();
+    }
 
-        mNewAP5G.Ssid = mSsid5gEdit.getText().toString().trim();
-        mNewAP5G.WpaKey = mKey5gEdit.getText().toString().trim();
-        settings.AP2G = mNewAP2G;
-        settings.AP5G = mNewAP5G;
-        BusinessManager.getInstance().sendSetWlanRequest(settings);
+    private void applySettings() {
+        boolean isAP2GStateChanged = mWifi2GSwitch.isChecked() != mWlanSettings.getAP2G().isApEnabled();
+        boolean isAP5GStateChanged = mWifi5GSwitch.isChecked() != mWlanSettings.getAP5G().isApEnabled();
+
+        WlanSettings newSettings = mWlanSettings.clone();
+
+        if (isAP2GStateChanged && !mWifi2GSwitch.isChecked()) {
+            newSettings.getAP2G().setApEnabled(false);
+        } else {
+            newSettings.getAP2G().setApEnabled(true);
+            String newSsid2G = mSsid2GEdit.getText().toString().trim();
+            int newSecurity2GMode = mSecurity2GSpinner.getSelectedItemPosition();
+            int newEncryption2G = mEncryption2GSpinner.getSelectedItemPosition();
+            String newKey2G = mKey2GEdit.getText().toString().trim();
+
+            if (newSsid2G.isEmpty()) {
+                ToastUtil.showMessage(m_context, "Name(2.4G) is missing!");
+                return;
+            }
+            newSettings.getAP2G().Ssid = newSsid2G;
+            newSettings.getAP2G().SecurityMode = newSecurity2GMode;
+            //disable
+            if (newSecurity2GMode == 0) {
+                newSettings.getAP2G().WepKey = "";
+                newSettings.getAP2G().WepType = 0;
+                newSettings.getAP2G().WpaType = 0;
+                newSettings.getAP2G().WpaKey = "";
+                //wep
+            } else if (newSecurity2GMode == 1) {
+                if (newKey2G.length() != 5 || newKey2G.length() != 13) {
+                    ToastUtil.showMessage(m_context, "Wep password(2.4G) length must be 5 or 13!");
+                    return;
+                }
+                newSettings.getAP2G().WepType = newEncryption2G;
+                newSettings.getAP2G().WepKey = newKey2G;
+                newSettings.getAP2G().WpaType = 0;
+                newSettings.getAP2G().WpaKey = "";
+                //wpa
+            } else {
+                if (newKey2G.length() < 8 || newKey2G.length() > 63) {
+                    ToastUtil.showMessage(m_context, "Password(2.4G) length must be 8-63!");
+                    return;
+                }
+                newSettings.getAP2G().WepType = 0;
+                newSettings.getAP2G().WepKey = "";
+                newSettings.getAP2G().WpaType = newEncryption2G;
+                newSettings.getAP2G().WpaKey = newKey2G;
+            }
+        }
+
+        if (isAP5GStateChanged && !mWifi5GSwitch.isChecked()) {
+            newSettings.getAP5G().setApEnabled(false);
+        } else {
+            newSettings.getAP5G().setApEnabled(true);
+            String newSsid5G = mSsid5GEdit.getText().toString().trim();
+            int newSecurity5GMode = mSecurity5GSpinner.getSelectedItemPosition();
+            int newEncryption5G = mEncryption5GSpinner.getSelectedItemPosition();
+            String newKey5G = mKey5GEdit.getText().toString().trim();
+
+            if (newSsid5G.isEmpty()) {
+                ToastUtil.showMessage(m_context, "Name(5G) is missing!");
+                return;
+            }
+            newSettings.getAP5G().Ssid = newSsid5G;
+            newSettings.getAP5G().SecurityMode = newSecurity5GMode;
+            //disable
+            if (newSecurity5GMode == 0) {
+                newSettings.getAP5G().WepKey = "";
+                newSettings.getAP5G().WepType = 0;
+                newSettings.getAP5G().WpaType = 0;
+                newSettings.getAP5G().WpaKey = "";
+                //wep
+            } else if (newSecurity5GMode == 1) {
+                if (newKey5G.length() != 5 || newKey5G.length() != 13) {
+                    ToastUtil.showMessage(m_context, "Wep password(5G) length must be 5 or 13!");
+                    return;
+                }
+                newSettings.getAP5G().WepType = newEncryption5G;
+                newSettings.getAP5G().WepKey = newKey5G;
+                newSettings.getAP5G().WpaType = 0;
+                newSettings.getAP5G().WpaKey = "";
+                //wpa
+            } else {
+                if (newKey5G.length() < 8 || newKey5G.length() > 63) {
+                    ToastUtil.showMessage(m_context, "Password(5G) length must be 8-63!");
+                    return;
+                }
+                newSettings.getAP5G().WepType = 0;
+                newSettings.getAP5G().WepKey = "";
+                newSettings.getAP5G().WpaType = newEncryption5G;
+                newSettings.getAP5G().WpaKey = newKey5G;
+            }
+        }
+        Log.d(TAG, "newSettings, " + newSettings);
+
+        API.get().setWlanSettings(newSettings, new MySubscriber(){
+            @Override
+            protected void onSuccess(Object result) {
+                ToastUtil.showMessage(m_context, "Success");
+            }
+
+            @Override
+            protected void onFailure() {
+
+            }
+        });
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemSelected");
         if (parent.getId() == R.id.spinner_security_2g) {
             if (position == 0) {
                 mEncryption2GGroup.setVisibility(View.GONE);
-                mPasswd2GGroup.setVisibility(View.GONE);
+                mKey2GGroup.setVisibility(View.GONE);
             } else if (position == 1) {
                 mEncryption2GGroup.setVisibility(View.VISIBLE);
                 mEncryption2GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
-                mEncryption2GSpinner.setSelection(mNewAP2G.WepType);
-                mPasswd2GGroup.setVisibility(View.VISIBLE);
+                if (mWlanSettings != null) {
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WepType);
+                }
+                mKey2GGroup.setVisibility(View.VISIBLE);
             } else {
                 mEncryption2GGroup.setVisibility(View.VISIBLE);
                 mEncryption2GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
-                mEncryption2GSpinner.setSelection(mNewAP2G.WpaType);
-                mPasswd2GGroup.setVisibility(View.VISIBLE);
+                if (mWlanSettings != null) {
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WpaType);
+                }
+                mKey2GGroup.setVisibility(View.VISIBLE);
             }
         } else if (parent.getId() == R.id.spinner_security_5g) {
             if (position == 0) {
                 mEncryption5GGroup.setVisibility(View.GONE);
-                mPasswd5GGroup.setVisibility(View.GONE);
+                mKey5GGroup.setVisibility(View.GONE);
             } else if (position == 1) {
                 mEncryption5GGroup.setVisibility(View.VISIBLE);
                 mEncryption5GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
-                mEncryption2GSpinner.setSelection(mNewAP5G.WepType);
-                mPasswd5GGroup.setVisibility(View.VISIBLE);
+                if (mWlanSettings != null) {
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP5G().WepType);
+                }
+                mKey5GGroup.setVisibility(View.VISIBLE);
             } else {
                 mEncryption5GGroup.setVisibility(View.VISIBLE);
                 mEncryption5GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
-                mEncryption2GSpinner.setSelection(mNewAP5G.WpaType);
-                mPasswd5GGroup.setVisibility(View.VISIBLE);
+                if (mWlanSettings != null) {
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP5G().WpaType);
+                }
+                mKey5GGroup.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -298,33 +558,33 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 
     }
 
-    private class ActivityBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            Log.e(TAG, "get action is " + action);
-            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
-            Boolean ok = response != null && response.isOk();
-            if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
-                if (ok) {
-                    updateWifiSettings();
-                }
-            } else if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET)) {
-                if (ok) {
-                    //init controls state
-                }
-            } else if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)) {
-                String strTost;
-                if (ok) {
-                    strTost = m_context.getString(R.string.setting_wifi_set_success);
-                } else {
-                    strTost = m_context.getString(R.string.setting_wifi_set_failed);
-                }
-                Toast.makeText(m_context, strTost, Toast.LENGTH_SHORT).show();
-
-            } else if (intent.getAction().equals(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST)) {
-            } else if (intent.getAction().equals(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST)) {
-            }
-        }
-    }
+//    private class ActivityBroadcastReceiver extends BroadcastReceiver {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            Log.e(TAG, "get action is " + action);
+//            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
+//            Boolean ok = response != null && response.isOk();
+//            if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {
+//                if (ok) {
+//                    updateUIWithWlanSettings();
+//                }
+//            } else if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET)) {
+//                if (ok) {
+//                    //init controls state
+//                }
+//            } else if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)) {
+//                String strTost;
+//                if (ok) {
+//                    strTost = m_context.getString(R.string.setting_wifi_set_success);
+//                } else {
+//                    strTost = m_context.getString(R.string.setting_wifi_set_failed);
+//                }
+//                Toast.makeText(m_context, strTost, Toast.LENGTH_SHORT).show();
+//
+//            } else if (intent.getAction().equals(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST)) {
+//            } else if (intent.getAction().equals(MessageUti.WIFI_KEY_GET_EDIT_LIST_REQUEST)) {
+//            }
+//        }
+//    }
 }
