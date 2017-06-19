@@ -11,6 +11,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -84,7 +85,7 @@ public class LoadingActivity extends Activity {
     }
 
     private void startMainActivity() {
-        Intent it = new Intent(this, MainActivity.class);
+        Intent it = new Intent(this, HomeActivity.class);
         this.startActivity(it);
         this.finish();
     }
