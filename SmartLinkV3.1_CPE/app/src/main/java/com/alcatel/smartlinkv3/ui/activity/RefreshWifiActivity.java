@@ -22,6 +22,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
 public class RefreshWifiActivity extends Activity implements OnClickListener {
     private final static String TAG = "RefreshWifiActivity";
@@ -109,7 +110,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
             //		  clazz = QuickSetupActivity.class;
             clazz = ConnectTypeSelectActivity.class;
         } else {
-            clazz = MainActivity.class;
+            clazz = HomeActivity.class;
             Log.d(TAG, "startMainActivity");
         }
 

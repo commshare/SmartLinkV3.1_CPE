@@ -45,8 +45,7 @@ import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-
-import retrofit2.http.HEAD;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
 @Deprecated
 public class ConnectTypeSelectActivity extends Activity implements View.OnClickListener {
@@ -388,7 +387,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             // 跳到home页按钮
             case R.id.mTv_connectStatus_home:
                 CPEConfig.getInstance().setQuickSetupFlag();
-                ChangeActivity.toActivity(this, MainActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
                 break;
 
             default:
@@ -555,7 +554,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
         if (setFlag) {
             CPEConfig.getInstance().setQuickSetupFlag();
         }
-        Intent it = new Intent(this, MainActivity.class);
+        Intent it = new Intent(this, HomeActivity.class);
         CPEConfig.getInstance().setQuickSetupFlag();
         startActivity(it);
         finish();
@@ -703,8 +702,8 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 }
             } else if (action.equals(MessageUti.USER_LOGOUT_REQUEST)) {
                 if (ok) {
-                    MainActivity.m_blLogout = false;
-                    MainActivity.m_blkickoff_Logout = false;
+                    HomeActivity.m_blLogout = false;
+                    HomeActivity.m_blkickoff_Logout = false;
                 }
                 handleLoginError(R.string.qs_title, R.string.login_kickoff_logout_successful, true, false);
             } else if (action.equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
@@ -782,7 +781,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     public void kickoffLogout() {
         ENUM.UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == ENUM.UserLoginStatus.Logout) {
-            MainActivity.setKickoffLogoutFlag(true);
+            HomeActivity.setKickoffLogoutFlag(true);
             BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGOUT_REQUEST, null);
         }
     }

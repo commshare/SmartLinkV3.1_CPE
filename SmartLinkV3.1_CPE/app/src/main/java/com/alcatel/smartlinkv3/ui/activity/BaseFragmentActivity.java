@@ -20,6 +20,7 @@ import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 		showActivity(this);
 		if(!FeatureVersionManager.getInstance().isSupportForceLogin())
 		{
-			backMainActivityOnResume(this);
+			backHomeActivityOnResume(this);
 		}
 	}
 	
@@ -96,20 +97,20 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
     		showActivity(context);
     	}else if(intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
 			if(ok) {
-				back2MainActivity(context);
+				back2HomeActivity(context);
 			}
 		}else if(intent.getAction().equals(MessageUti.USER_LOGOUT_REQUEST)) {
 			if(ok && isForeground(this)) {
-				backMainActivity(context);
+				backHomeActivity(context);
 			}
 		}else if(intent.getAction().equals(MessageUti.USER_HEARTBEAT_REQUEST)){
 			if(response.isValid() && response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
-				backMainActivity(context);
+				backHomeActivity(context);
 				kickoffLogout();
 			}
 		}else if(intent.getAction().equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)){
 			if(response.getErrorCode().equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604) && isForeground(this)) {
-				backMainActivity(context);
+				backHomeActivity(context);
 				kickoffLogout();
 			}
 		}
@@ -123,7 +124,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
         }
 	}
 
-	private void back2MainActivity(Context context) {
+	private void back2HomeActivity(Context context) {
 		if(m_bNeedBack == false)
 			return;
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
@@ -132,43 +133,43 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 		if(bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
 //			String strInfo = getString(R.string.home_sim_not_accessible);
 //			Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+			if(this.getClass().getName().equalsIgnoreCase(HomeActivity.class.getName()) == false) {
 				dismissAllDialog();
-				Intent intent = new Intent(context, MainActivity.class);
+				Intent intent = new Intent(context, HomeActivity.class);
 				context.startActivity(intent);
 				finish();
 			}
 		}
 	}
 
-	private void backMainActivityOnResume(Context context) {
+	private void backHomeActivityOnResume(Context context) {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 
 		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.LOGIN) {
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
-				Intent intent = new Intent(context, MainActivity.class);
+			if(this.getClass().getName().equalsIgnoreCase(HomeActivity.class.getName()) == false) {
+				Intent intent = new Intent(context, HomeActivity.class);
 				context.startActivity(intent);
 				finish();
 			}else {
-				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+				Intent intent2= new Intent(HomeActivity.PAGE_TO_VIEW_HOME);
 				context.sendBroadcast(intent2);
 			}
 		}
 	}
 
-	private void backMainActivity(Context context) {
+	private void backHomeActivity(Context context) {
 		boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 
 		if(bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.LOGIN) {
 			dismissAllDialog();
-			if(this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
-				Intent intent = new Intent(context, MainActivity.class);
+			if(this.getClass().getName().equalsIgnoreCase(HomeActivity.class.getName()) == false) {
+				Intent intent = new Intent(context, HomeActivity.class);
 				context.startActivity(intent);
 				finish();
 			}else {
-				Intent intent2= new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+				Intent intent2= new Intent(HomeActivity.PAGE_TO_VIEW_HOME);
 				context.sendBroadcast(intent2);
 			}
 		}
@@ -182,7 +183,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 				this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())	)
 			{
 			dismissAllDialog();
-			Intent intent = new Intent(context, MainActivity.class);
+			Intent intent = new Intent(context, HomeActivity.class);
 			context.startActivity(intent);
 			finish();
 
@@ -213,7 +214,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity{
 	public void kickoffLogout() {
 		UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
 		if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
-//			MainActivity.setKickoffLogoutFlag(true);
+//			HomeActivity.setKickoffLogoutFlag(true);
 			String strInfo = getString(R.string.login_kickoff_logout_successful);
 			Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
 		}

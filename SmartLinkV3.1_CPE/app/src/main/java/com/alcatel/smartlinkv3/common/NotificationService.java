@@ -25,8 +25,8 @@ import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
 import java.util.List;
 
@@ -349,7 +349,7 @@ public class NotificationService extends Service {
 	}
 	
 	private void showNotification(ALERT_TYPE type, long used) {		
-		Intent it = new Intent(this, MainActivity.class);	
+		Intent it = new Intent(this, HomeActivity.class);	
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				it, PendingIntent.FLAG_UPDATE_CURRENT);
 		

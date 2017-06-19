@@ -8,7 +8,7 @@ import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
 public class QSBroadcastReceiver extends BroadcastReceiver {
 
@@ -47,8 +47,8 @@ public class QSBroadcastReceiver extends BroadcastReceiver {
             }
         } else if (action.equals(MessageUti.USER_LOGOUT_REQUEST)) {
             if (ok) {
-                MainActivity.m_blLogout = false;
-                MainActivity.m_blkickoff_Logout = false;
+                HomeActivity.m_blLogout = false;
+                HomeActivity.m_blkickoff_Logout = false;
             }
             // TOAT: 2017/6/12  handleLoginError
             if (onLoginErrorListener != null) {

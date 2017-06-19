@@ -26,12 +26,12 @@ import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.ConnectivityUtils;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -49,9 +49,8 @@ import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBtnCancel
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickButtonConfirm;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.CancelLoginListener;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 import com.alcatel.smartlinkv3.ui.view.ClearEditText;
-
-import com.alcatel.smartlinkv3.common.ConnectivityUtils;
 
 /*
 QuickSetupActivity support to set MiFi mainly property, such WiFi ssid, password.
@@ -589,7 +588,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
     private void kickoffLogout() {
         UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
-            MainActivity.setKickoffLogoutFlag(true);
+            HomeActivity.setKickoffLogoutFlag(true);
             BusinessManager.getInstance().sendRequestMessage(
                     MessageUti.USER_LOGOUT_REQUEST, null);
         }
@@ -621,7 +620,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         if (setFlag) {
             CPEConfig.getInstance().setQuickSetupFlag();
         }
-        Intent it = new Intent(mContext, MainActivity.class);
+        Intent it = new Intent(mContext, HomeActivity.class);
         startActivity(it);
         finish();
     }
@@ -651,8 +650,8 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                 }
             } else if (action.equals(MessageUti.USER_LOGOUT_REQUEST)) {
                 if (ok) {
-                    MainActivity.m_blLogout = false;
-                    MainActivity.m_blkickoff_Logout = false;
+                    HomeActivity.m_blLogout = false;
+                    HomeActivity.m_blkickoff_Logout = false;
                 }
                 handleLoginError(R.string.qs_title, R.string.login_kickoff_logout_successful, true, false);
             } else if (action.equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {

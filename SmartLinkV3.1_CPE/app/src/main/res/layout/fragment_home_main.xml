@@ -6,7 +6,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <!-- 1.流量模块 -->
     <LinearLayout
         android:id="@+id/frame_connect"
         android:layout_width="fill_parent"
@@ -16,7 +15,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <!-- 圆形头像 -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +26,6 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone">
 
-                <!-- 进度条 -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +44,6 @@
                     android:contentDescription="@null"
                     android:src="@drawable/home_ic_bg" />
 
-                <!-- 波浪 -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -71,7 +67,6 @@
                         app:wlv_wave_background_Color="@color/circle_bac_blue" />
                 </LinearLayout>
 
-                <!-- 电池电量 -->
                 <LinearLayout
                     android:layout_width="@dimen/dimen_240dip"
                     android:layout_height="@dimen/dimen_240dip"
@@ -87,7 +82,6 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- 流量连接 -->
             <FrameLayout
                 android:id="@+id/connect_layout"
                 android:layout_width="match_parent"
@@ -111,7 +105,6 @@
             </FrameLayout>
         </FrameLayout>
 
-        <!-- sim卡锁定提醒 -->
         <LinearLayout
             android:id="@+id/sim_card_locked_layout"
             android:layout_width="wrap_content"
@@ -149,7 +142,6 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <!-- unlock button -->
             <Button
                 android:id="@+id/unlock_sim_button"
                 android:layout_width="wrap_content"
@@ -165,7 +157,6 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- 提示: 没有SIM卡 -->
         <LinearLayout
             android:id="@+id/no_sim_card_layout"
             android:layout_width="wrap_content"
@@ -203,10 +194,9 @@
             android:gravity="center"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_textsize_24sp"
-            android:visibility="gone" />
+            android:visibility="invisible" />
     </LinearLayout>
 
-    <!-- 动态波浪 -->
     <com.alcatel.smartlinkv3.ui.view.DynamicWave
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_16dip"
@@ -226,7 +216,6 @@
             android:baselineAligned="false"
             android:orientation="horizontal">
 
-            <!-- 4G信号强度 -->
             <RelativeLayout
                 android:id="@+id/sigel_panel"
                 android:layout_width="0dip"
@@ -246,10 +235,8 @@
                     android:id="@+id/left_signal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="49dp">
+                    android:layout_centerInParent="true"
+                    android:layout_toLeftOf="@id/txtHide1">
 
                     <ImageView
                         android:id="@+id/connct_signal"
@@ -290,7 +277,6 @@
                 </RelativeLayout>
             </RelativeLayout>
 
-            <!-- 已连接数 -->
             <RelativeLayout
                 android:id="@+id/access_panel"
                 android:layout_width="0dip"

@@ -20,9 +20,9 @@ import android.widget.Toast;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageDataMode;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.CommonUtil;
 import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
@@ -30,7 +30,7 @@ import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.ui.activity.MainActivity;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -124,7 +124,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
     updateUI(remoteViews, context);
 
     // power intent
-    Intent intent = new Intent(context, MainActivity.class);
+    Intent intent = new Intent(context, HomeActivity.class);
     // create a pending intent
     intent.putExtra("com.alcatel.smartlinkv3.business.openPage", BATTERY_PAGE);
     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
@@ -331,7 +331,7 @@ public class SmartLinkWidget extends AppWidgetProvider {
         R.layout.smart_link_app_widget);
     updateUI(remoteViews, context);
     // power intent
-    Intent intent = new Intent(context, MainActivity.class);
+    Intent intent = new Intent(context, HomeActivity.class);
     intent.putExtra("com.alcatel.smartlinkv3.business.openPage", BATTERY_PAGE);
     // create a pending intent
     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,

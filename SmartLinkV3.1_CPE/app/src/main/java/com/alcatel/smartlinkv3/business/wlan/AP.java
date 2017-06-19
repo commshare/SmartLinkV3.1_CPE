@@ -37,7 +37,7 @@ public class AP implements Cloneable{
     /**
      * 0: disable, 1: enable
      */
-    int ApIsolation = 0;
+    public int ApIsolation = 0;
     /**
      * 2.4 G WIFI max number client
      */

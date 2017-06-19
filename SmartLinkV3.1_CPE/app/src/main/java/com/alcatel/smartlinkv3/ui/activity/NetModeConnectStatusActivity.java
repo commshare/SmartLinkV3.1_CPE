@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.appwidget.RippleView;
 import com.alcatel.smartlinkv3.business.wanguide.StatusBean;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -127,7 +128,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             /*home--> 跳转至主页*/
             case R.id.mTv_connectStatus_home:
                 CPEConfig.getInstance().setQuickSetupFlag();/* 跳转到主页先初始化跳转标记, 否则--> loadingActivity */
-                ChangeActivity.toActivity(this, MainActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
                 break;
         }
     }
