@@ -286,8 +286,17 @@
             android:label="@string/advanced_settings"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.setupwizard.allsetup.SetupWizardActivity"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.setupwizard.allsetup.SetupWizardActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.home.allsetup.HomeActivity"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
+
     </application>
 
 </manifest>

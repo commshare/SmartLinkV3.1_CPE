@@ -500,6 +500,7 @@
     </string>
     <string name="login_warning">Login warning</string>
     <string name="login_logout_successful">Logout successfully!</string>
+    <string name="login_logout_failed">Logout failed!</string>
     <string name="login_kickoff_logout_successful">Sorry, you are kicked off!</string>
     <string name="change_password_successful">Change password successfully!</string>
     <string name="wrong_current_password">The current password is wrong!</string>
