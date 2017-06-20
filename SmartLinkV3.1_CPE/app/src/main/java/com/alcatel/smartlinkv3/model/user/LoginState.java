@@ -5,10 +5,15 @@ package com.alcatel.smartlinkv3.model.user;
  */
 
 public class LoginState {
+
     int State;
     int LoginRemainingTimes;
     int LockedRemainingTime;
 
+    /**
+     *get login state
+     * @return 0: logout 1: login 2: the login times used out.
+     */
     public int getState() {
         return State;
     }

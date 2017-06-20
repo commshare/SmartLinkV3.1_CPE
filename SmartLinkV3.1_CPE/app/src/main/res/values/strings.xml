@@ -511,7 +511,7 @@
     <string name="unknown_error">Unknown error!</string>
 
     <string name="login_login_btn">Login</string>
-    <string name="login_enter_password">Enter administrator password(8-16 characters)</string>
+    <string name="login_enter_password">Administrator password(8-16 characters)</string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="login_change_password_success_tips">First reset your device,then set a new Confirm password</string>
     <!-- Login view end -->
@@ -788,4 +788,8 @@
     <string name="ap_isolation">AP isolation</string>
     <string name="bandwidth">bandwidth</string>
     <string name="auto">Auto</string>
+
+    <string name="times_remain_zero">No attempt remaining, please reboot device and try again</string>
+    <string name="times_remain_one">1 attempt remaining</string>
+    <string name="times_remain_many">%d attempts remaining</string>
 </resources>

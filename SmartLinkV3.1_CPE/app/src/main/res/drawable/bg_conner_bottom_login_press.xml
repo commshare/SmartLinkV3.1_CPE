@@ -2,10 +2,10 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <corners
-        android:bottomLeftRadius="@dimen/dimen_40dip"
-        android:bottomRightRadius="@dimen/dimen_40dip"
-        android:topLeftRadius="@dimen/dimen_40dip"
-        android:topRightRadius="@dimen/dimen_40dip" />
+        android:bottomLeftRadius="@dimen/dimen_5dip"
+        android:bottomRightRadius="@dimen/dimen_5dip"
+        android:topLeftRadius="@dimen/dimen_5dip"
+        android:topRightRadius="@dimen/dimen_5dip" />
 
     <solid android:color="@color/blue_dark_btn" />
 

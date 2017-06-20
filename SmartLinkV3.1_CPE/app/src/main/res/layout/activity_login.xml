@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <View
+        android:id="@+id/login_center_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/login_pic_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/login_center_line"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_50dip"
+        android:src="@drawable/ic_launcher" />
+
+    <EditText
+        android:id="@+id/login_edit_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_center_line"
+        android:hint="@string/login_enter_password"
+        android:imeOptions="flagNoExtractUi"
+        android:inputType="textPassword"
+        android:textSize="@dimen/dimen_textsize_13sp" />
+
+    <TextView
+        android:id="@+id/tv_time_remain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_edit_view"
+        android:textColor="@color/error_font_color"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/login_apply_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_time_remain"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/selector_conner_btn_login_blue"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/login_login_btn"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/font_size_normal" />
+</RelativeLayout>

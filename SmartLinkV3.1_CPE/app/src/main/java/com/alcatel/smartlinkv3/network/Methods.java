@@ -42,4 +42,8 @@ public interface Methods {
     String SET_WPS_PBC = "SetWPSPbc";
     String GET_WLAN_SUPPORT_MODE = "GetWlanSupportMode";
     String GET_WLAN_STATISTICS = "GetWlanStatistics";
+
+    //System
+    String GET_SYSTEM_STATUS = "GetSystemStatus";
+
 }

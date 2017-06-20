@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.network;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.sim.AutoValidatePinState;
 import com.alcatel.smartlinkv3.model.sim.ChangePinParams;
+import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.model.user.NewPasswdParams;
 import com.alcatel.smartlinkv3.model.sim.PinParams;
@@ -56,9 +57,9 @@ public class API {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(30, TimeUnit.SECONDS);
-        builder.readTimeout(30, TimeUnit.SECONDS);
-        builder.writeTimeout(30, TimeUnit.SECONDS);
+        builder.connectTimeout(5, TimeUnit.SECONDS);
+        builder.readTimeout(5, TimeUnit.SECONDS);
+        builder.writeTimeout(5, TimeUnit.SECONDS);
         builder.addInterceptor(httpLoggingInterceptor);
         return builder.build();
     }
@@ -207,6 +208,10 @@ public class API {
         subscribe(subscriber, smartLinkApi.getWlanSupportMode(new RequestBody(Methods.GET_WLAN_SUPPORT_MODE)));
     }
 
+    public void getSystemStatus(MySubscriber<SysStatus> subscriber){
+        subscribe(subscriber, smartLinkApi.getSystemStatus(new RequestBody(Methods.GET_SYSTEM_STATUS)));
+    }
+
     interface SmartLinkApi {
 
         @POST("/jrd/webapi")
@@ -232,5 +237,8 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<WlanSupportAPMode>> getWlanSupportMode(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SysStatus>> getSystemStatus(@Body RequestBody requestBody);
     }
 }

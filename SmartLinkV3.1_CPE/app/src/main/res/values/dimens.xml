@@ -127,4 +127,11 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="size_18_dp">18dp</dimen>
 
+    <!-- circle indicator-->
+    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+    <dimen name="default_circle_indicator_radius">3dp</dimen>
+    <bool name="default_circle_indicator_centered">true</bool>
+    <bool name="default_circle_indicator_snap">false</bool>
+    <integer name="default_circle_indicator_orientation">0</integer>
+
 </resources>

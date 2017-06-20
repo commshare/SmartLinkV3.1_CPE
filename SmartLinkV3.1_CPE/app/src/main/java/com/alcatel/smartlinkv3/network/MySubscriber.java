@@ -39,7 +39,7 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
 
     @Override
     public void onError(Throwable e) {
-        Log.e(TAG, "onError " + e);
+        Log.e(TAG, "onResultError " + e);
 
         if (e instanceof SocketTimeoutException) {
             ToastUtil.showMessage(mAppContext, "Time out");
@@ -57,11 +57,13 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
 
         if (responseBody.getError() != null) {
             ToastUtil.showMessage(mAppContext, responseBody.getError().message);
+            onResultError(responseBody.getError());
         } else {
             onSuccess(responseBody.getResult());
         }
     }
 
     protected abstract void onSuccess(T result);
-    protected abstract void onFailure();
+    protected void onResultError(ResponseBody.Error error){}
+    protected void onFailure(){}
 }
