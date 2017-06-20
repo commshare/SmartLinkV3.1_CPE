@@ -2,15 +2,13 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 
 import com.alcatel.smartlinkv3.R;
 
-public class WlanAdvancedSettingsActivity extends AppCompatActivity {
+public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
 
     private static final String TAG = "WlanAdvancedSettingsAct";
 
@@ -20,8 +18,6 @@ public class WlanAdvancedSettingsActivity extends AppCompatActivity {
     public static final String EXTRA_BANDWIDTH = "bandwidth";
     public static final String EXTRA_MODE_80211 = "80211_mode";
     public static final String EXTRA_AP_ISOLATION = "ap_isolation";
-
-    private String mWlanType;
 
     private SwitchCompat mBroadcastSwitch;
 
@@ -45,12 +41,6 @@ public class WlanAdvancedSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wlan_advanced_settings);
-        ActionBar baseActionBar = getSupportActionBar();
-        if (baseActionBar != null) {
-            baseActionBar.setDisplayHomeAsUpEnabled(true);
-            baseActionBar.setElevation(0);
-        }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initArrays();
         loadSettings();
         initViews();
@@ -100,13 +90,6 @@ public class WlanAdvancedSettingsActivity extends AppCompatActivity {
     private void initArrays() {
         mCountrySettings = getResources().getStringArray(R.array.wlan_settings_country);
     }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return super.onSupportNavigateUp();
-    }
-
 
     public void OnOKClick(View view) {
         Intent intent = new Intent();
