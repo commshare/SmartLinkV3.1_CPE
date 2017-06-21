@@ -15,7 +15,7 @@
         android:background="@drawable/device_ic" />
 
     <TextView
-        android:id="@+id/textview_refresh_title"
+        android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/image_connection"
@@ -26,18 +26,30 @@
         android:textSize="@dimen/font_size_normal"
         android:textStyle="bold" />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pb_refreshing"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:layout_centerHorizontal="true"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Small"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+
     <Button
         android:id="@+id/btn_refresh"
         android:layout_width="@dimen/dimen_120dip"
         android:layout_height="@dimen/dimen_36dip"
-        android:layout_below="@id/textview_refresh_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/selector_nowifi_button"
         android:gravity="center"
         android:text="@string/refresh"
         android:textColor="@color/mg_blue"
         android:textSize="@dimen/dimen_textsize_16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:onClick="OnRefreshClick"/>
 
 </RelativeLayout>

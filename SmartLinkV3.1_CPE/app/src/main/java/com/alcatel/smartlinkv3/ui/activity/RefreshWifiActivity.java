@@ -1,187 +1,159 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
-import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.common.ENUM;
+import com.alcatel.smartlinkv3.model.user.LoginState;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.network.ResponseBody;
 import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
-public class RefreshWifiActivity extends AppCompatActivity implements OnClickListener {
-    private final static String TAG = "RefreshWifiActivity";
-    private ImageView m_connectImage = null;
-    private TextView m_connectTitle = null;
-    private TextView m_connectTip = null;
-    private Button m_connectBtn1 = null;
-    //private Button m_connectBtn2 = null;
+public class RefreshWifiActivity extends AppCompatActivity {
+    private static final String TAG = "RefreshWifiActivity";
+    private static final int MSG_REFRESHING = 0x1001;
+    public static final int REFRESH_DELAY_MILLIS = 2000;
 
-    protected MsgBroadcastReceiver m_msgReceiver;
+    private Button mRefreshBtn;
+    private TextView mTipText;
+    private ProgressBar mProgressBar;
 
-    private Dialog mTipsDialog;
-    private long mkeyTime; //点击2次返回 键的时间
+    private boolean mIsRefreshing;
+
+    private int mCount = 0;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == MSG_REFRESHING) {
+                Log.d(TAG, "check wifi connected:" + isWifiConnected());
+                if (isWifiConnected()) {
+                    requestLoginState();
+                } else {
+                    Log.d(TAG, "mCount:" + mCount);
+                    if (mCount < 5) {
+                        mHandler.sendEmptyMessageDelayed(MSG_REFRESHING, REFRESH_DELAY_MILLIS);
+                        mCount++;
+                    } else {
+                        mIsRefreshing = false;
+                        updateRefreshingUI(false);
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refresh);
-        getWindow().setBackgroundDrawable(null);
-        m_connectImage = (ImageView) this.findViewById(R.id.image_connection);
-        m_connectBtn1 = (Button) this.findViewById(R.id.btn_refresh);
-        m_connectBtn1.setOnClickListener(this);
-    }
-
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.btn_refresh://m_connectBtn1
-                clickBtn1();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if ((System.currentTimeMillis() - mkeyTime) > 2000) {
-            mkeyTime = System.currentTimeMillis();
-            Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void clickBtn1() {
-        wifiSetting();
-    }
-
-
-    private class MsgBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-                showUI();
-                showActivity();
-                Log.d(TAG, "showActivity");
-            } else if (intent.getAction().equals(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)) {
-                showUI();
-                showActivity();
-            }
-        }
-    }
-
-    public boolean isNoAnyConnection() {
-        return !DataConnectManager.getInstance().getWifiConnected();
-    }
-
-    private void showUI() {
-        if (isNoAnyConnection()) {
-            m_connectImage.setBackgroundResource(R.drawable.device_ic);
-            m_connectBtn1.setText(R.string.refresh);
-        }
-    }
-
-    private void showActivity() {
-
-        boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-
-        if (!bCPEWifiConnected)
-            return;
-
-        Class<?> clazz;
-        if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-            //		  clazz = QuickSetupActivity.class;
-            clazz = ConnectTypeSelectActivity.class;
-        } else {
-            clazz = HomeActivity.class;
-            Log.d(TAG, "startMainActivity");
-        }
-
-        Intent it = new Intent(this, clazz);
-        startActivity(it);
-        finish();
-    }
-
-    private void wifiSetting() {
-        this.unregisterReceiver(m_msgReceiver);
-
-        Intent intent;
-        if (android.os.Build.VERSION.SDK_INT > 10) {
-            intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
-        } else {
-            intent = new Intent();
-            ComponentName component = new ComponentName("com.android.settings", "com.android.settings.WirelessSettings");
-            intent.setComponent(component);
-            intent.setAction("android.intent.action.VIEW");
-        }
-
-        this.startActivity(intent);
+        mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
+        mTipText = (TextView) findViewById(R.id.tv_tip);
+        mProgressBar = (ProgressBar) findViewById(R.id.pb_refreshing);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        m_msgReceiver = new MsgBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MessageUti.CPE_WIFI_CONNECT_CHANGE);
-        intentFilter.addAction(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET);
-        this.registerReceiver(m_msgReceiver, intentFilter);
 
-        showActivity();
-
-        showUI();
-
-        showUpgradeDialog();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
-        this.unregisterReceiver(m_msgReceiver);
-        dismissTipsDialog();
+    protected void onStart() {
+        super.onStart();
     }
 
-    private void showUpgradeDialog() {
-        mTipsDialog = new Dialog(this, R.style.UpgradeMyDialog);
-        mTipsDialog.setCanceledOnTouchOutside(false);
-        mTipsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this, R.layout.dialog_get_connected, null);
-
-        TextView okBtn = (TextView) deleteDialogLLayout.findViewById(R.id.get_connected_ok_btn);
-
-        mTipsDialog.setContentView(deleteDialogLLayout);
-        okBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismissTipsDialog();
-                //                clickBtn1();
-            }
-        });
-        mTipsDialog.show();
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
-    private void dismissTipsDialog() {
-        if (mTipsDialog != null && mTipsDialog.isShowing()) {
-            mTipsDialog.dismiss();
+    private void updateRefreshingUI(boolean refreshing) {
+        mProgressBar.setVisibility(refreshing ? View.VISIBLE : View.GONE);
+        mRefreshBtn.setVisibility(refreshing ? View.GONE : View.VISIBLE);
+        mTipText.setVisibility(refreshing ? View.GONE : View.VISIBLE);
+    }
+
+    public void OnRefreshClick(View view) {
+        if (mIsRefreshing) {
+            return;
+        }
+        mIsRefreshing = true;
+        updateRefreshingUI(true);
+        WifiManager wifiManager = (WifiManager) SmartLinkV3App.getInstance().getApplicationContext().getSystemService(WIFI_SERVICE);
+        if (!wifiManager.isWifiEnabled()) {
+            wifiManager.setWifiEnabled(true);
+            mCount = 0;
+            mHandler.sendEmptyMessageDelayed(MSG_REFRESHING, 2000);
+        } else {
+            requestLoginState();
         }
     }
+
+    private boolean isWifiConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .getState();
+        return NetworkInfo.State.CONNECTED == wifiState;
+    }
+
+
+    private void requestLoginState() {
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                Log.d(TAG, "login state:" + result.getState());
+                if (result.getState() == ENUM.UserLoginStatus.LOGIN.ordinal()) {
+                    launchHomeActivity();
+                } else {
+                    launchLoginActivity(result.getLoginRemainingTimes());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError " + e);
+                mIsRefreshing = false;
+                updateRefreshingUI(false);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                mIsRefreshing = false;
+                updateRefreshingUI(false);
+            }
+        });
+    }
+
+    private void launchHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        this.startActivity(intent);
+    }
+
+
+    private void launchLoginActivity(int remainTimes) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("remain_times", remainTimes);
+        startActivity(intent);
+        finish();
+    }
+
 }
