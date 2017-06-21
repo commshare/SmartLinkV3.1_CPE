@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +25,7 @@ import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 
-public class RefreshWifiActivity extends Activity implements OnClickListener {
+public class RefreshWifiActivity extends AppCompatActivity implements OnClickListener {
     private final static String TAG = "RefreshWifiActivity";
     private ImageView m_connectImage = null;
     private TextView m_connectTitle = null;

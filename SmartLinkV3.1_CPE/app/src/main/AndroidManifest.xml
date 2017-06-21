@@ -64,6 +64,7 @@
         <activity
             android:name=".ui.activity.RefreshWifiActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
