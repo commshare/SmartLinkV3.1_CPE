@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.ui.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -11,6 +12,8 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +70,22 @@ public class RefreshWifiActivity extends AppCompatActivity {
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
         mTipText = (TextView) findViewById(R.id.tv_tip);
         mProgressBar = (ProgressBar) findViewById(R.id.pb_refreshing);
+        showGetConnectedDlg();
+    }
+
+    private void showGetConnectedDlg(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.refresh_get_connected);
+        builder.setMessage(R.string.refresh_manage_device_tips);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            gotoWifiSettings();
+        });
+        builder.create().show();
+    }
+
+    private void gotoWifiSettings() {
+        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+        startActivity(intent);
     }
 
     @Override
