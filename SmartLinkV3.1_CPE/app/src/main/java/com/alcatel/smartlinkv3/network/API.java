@@ -1,5 +1,10 @@
 package com.alcatel.smartlinkv3.network;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.alcatel.smartlinkv3.Constants;
+import com.alcatel.smartlinkv3.EncryptionUtil;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.sharing.DLNASettings;
 import com.alcatel.smartlinkv3.model.sharing.FTPSettings;
@@ -16,16 +21,19 @@ import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.model.system.WanSetting;
 import com.alcatel.smartlinkv3.model.user.LoginParams;
+import com.alcatel.smartlinkv3.model.user.LoginResult;
 import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.model.user.NewPasswdParams;
 import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.model.wlan.WlanSettings;
 import com.alcatel.smartlinkv3.model.wlan.WlanState;
 import com.alcatel.smartlinkv3.model.wlan.WlanSupportAPMode;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -36,26 +44,60 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.alcatel.smartlinkv3.Constants.SP_KEY_TOKEN;
+
 /**
  * Created by tao.j on 2017/6/14.
  */
 
 public class API {
 
+    public static final String AUTHORIZATION_KEY = "KSDHSDFOGQ5WERYTUIQWERTYUISDFG1HJZXCVCXBN2GDSMNDHKVKFsVBNf";
+
     private SmartLinkApi smartLinkApi;
 
     private static API api;
 
+    private String token;
+
     private API() {
         if (smartLinkApi == null) {
-            Retrofit.Builder builder = new Retrofit.Builder();
-            builder.baseUrl("http://192.168.1.1")
-                    .client(buildOkHttpClient())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create());
-            Retrofit retrofit = builder.build();
-            smartLinkApi = retrofit.create(SmartLinkApi.class);
+            SharedPreferences sp = SmartLinkV3App.getInstance().getSharedPreferences(Constants.SP_GLOBAL_INFO, Context.MODE_PRIVATE);
+            int token = sp.getInt(SP_KEY_TOKEN, 0);
+            encryptToken(token);
+            createSmartLinkApi();
         }
+    }
+
+    public void updateToken(int token){
+        cacheToken(token);
+        encryptToken(token);
+        createSmartLinkApi();
+    }
+
+    public void encryptToken(int token){
+        if (token == 0){
+            this.token = null;
+        }
+
+        String str = String.valueOf(token);
+
+        this.token = EncryptionUtil.encrypt(str);
+    }
+
+    private void cacheToken(int token){
+        SharedPreferences sp = SmartLinkV3App.getInstance().getSharedPreferences(Constants.SP_GLOBAL_INFO, Context.MODE_PRIVATE);
+        sp.edit().putInt(SP_KEY_TOKEN, token).apply();
+    }
+
+    private void createSmartLinkApi() {
+        Retrofit.Builder builder = new Retrofit.Builder();
+        builder.baseUrl("http://192.168.1.1")
+                .client(buildOkHttpClient())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        smartLinkApi = retrofit.create(SmartLinkApi.class);
     }
 
     private OkHttpClient buildOkHttpClient() {
@@ -66,6 +108,16 @@ public class API {
         builder.connectTimeout(5, TimeUnit.SECONDS);
         builder.readTimeout(5, TimeUnit.SECONDS);
         builder.writeTimeout(5, TimeUnit.SECONDS);
+        builder.addInterceptor(chain -> {
+            Request request = chain.request();
+            Request.Builder reqBuilder = request.newBuilder();
+            reqBuilder.addHeader("_TclRequestVerificationKey", AUTHORIZATION_KEY);
+            if (token != null) {
+                reqBuilder.addHeader("_TclRequestVerificationToken", token);
+            }
+            request = reqBuilder.build();
+            return chain.proceed(request);
+        });
         builder.addInterceptor(httpLoggingInterceptor);
         return builder.build();
     }
@@ -95,8 +147,8 @@ public class API {
      * @param passwd     password
      * @param subscriber callback
      */
-    public void login(String userName, String passwd, MySubscriber subscriber) {
-        Observable observable = smartLinkApi.request(new RequestBody(Methods.LOGIN, new LoginParams(userName, passwd)));
+    public void login(String userName, String passwd, MySubscriber<LoginResult> subscriber) {
+        Observable observable = smartLinkApi.login(new RequestBody(Methods.LOGIN, new LoginParams(userName, passwd)));
         subscribe(subscriber, observable);
     }
 
@@ -277,6 +329,9 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<LoginState>> getLoginState(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<LoginResult>> login(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<SimStatus>> getSimStatus(@Body RequestBody requestBody);

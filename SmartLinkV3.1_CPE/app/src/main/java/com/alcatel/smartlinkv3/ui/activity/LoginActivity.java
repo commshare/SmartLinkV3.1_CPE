@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.Constants;
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.model.user.LoginResult;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.network.ResponseBody;
@@ -68,11 +70,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.login_apply_btn:
                 String passwd = mPasswdEdit.getText().toString().trim();
-                API.get().login(Constants.USER_NAME_ADMIN, passwd, new MySubscriber() {
+                API.get().login(Constants.USER_NAME_ADMIN, passwd, new MySubscriber<LoginResult>() {
                     @Override
-                    protected void onSuccess(Object result) {
+                    protected void onSuccess(LoginResult result) {
                         Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                         launchHomeActivity();
+                        Log.d(TAG, "token = " + result.getToken());
+                        API.get().updateToken(result.getToken());
                     }
 
                     @Override
@@ -87,13 +91,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void updatePromptText(int remainingTimes){
+    private void updatePromptText(int remainingTimes) {
         String text;
-        if (remainingTimes == 0){
+        if (remainingTimes == 0) {
             text = getString(R.string.times_remain_zero);
-        }else if (remainingTimes == 1){
+        } else if (remainingTimes == 1) {
             text = getString(R.string.times_remain_one);
-        }else {
+        } else {
             text = getString(R.string.times_remain_many, remainingTimes);
         }
         mPromptText.setText(text);
