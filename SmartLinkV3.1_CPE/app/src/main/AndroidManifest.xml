@@ -131,7 +131,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"/>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.activity.SettingPowerSavingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

@@ -54,4 +54,11 @@ public interface Methods {
     String GET_WAN_SETTINGS = "GetWanSettings";
     String SET_WAN_SETTINGS = "SetWanSettings";
 
+    //sharing
+    String GET_FTP_SETTINGS = "GetFtpSettings";
+    String GET_SAMBA_SETTINGS = "GetSambaSettings";
+    String GET_DLNA_SETTINGS = "GetDLNASettings";
+    String SET_FTP_SETTINGS = "SetFtpSettings";
+    String SET_SAMBA_SETTINGS = "SetSambaSettings";
+    String SET_DLNA_SETTINGS = "SetDLNASettings";
 }

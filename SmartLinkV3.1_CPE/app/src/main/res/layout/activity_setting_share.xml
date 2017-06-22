@@ -1,112 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
+    android:orientation="vertical"
     android:background="@color/setting_background_color">
-    
-	    <LinearLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="vertical" >
-           
-           <ImageView
-	            android:layout_width="match_parent"
-	            android:layout_height="@dimen/dimen_0.5dip"
-	            android:background="@color/main_bottom_divider"
-	            android:contentDescription="@string/setting_sharing" />
-           
-           <FrameLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal" 
-			    android:background="@color/white"
-			    android:id="@+id/setting_ftp_container">
-               <TextView
-	               android:id="@+id/setting_change_ftp"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content" 
-	               android:padding="15dp"
-	               android:textColor="@color/color_black"
-	               android:textSize="20sp" 
-	               android:text="@string/setting_sharing_ftp"
-	               />
-           
-	           <ImageView
-		             android:id="@+id/btn_ftp_switch"
-                     android:clickable="true"
-		             android:layout_margin="@dimen/dimen_15dip"
-		             android:layout_width="@dimen/dimen_50dip"
-		             android:layout_height="@dimen/dimen_30dip"
-		             android:layout_gravity="end|center_vertical"
-		             android:gravity="end"
-		             android:src="@drawable/general_btn_off"
-		             android:visibility="visible" />
-           </FrameLayout>
-           
 
-            <LinearLayout
-                android:background="@color/color_white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/setting_sharing_divider"
-                    android:layout_marginLeft="@dimen/dimen_15dip"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_0.5dip"
-                    android:background="@color/main_bottom_divider"
-                    android:contentDescription="@string/setting_sharing" />
-            </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/color_white"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
-           <FrameLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal" 
-			    android:background="@color/white"
-			    android:id="@+id/setting_dlna_container">
-	           <TextView
-                   android:id="@+id/setting_change_dlna"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content" 
-	               android:padding="15dp"
-	               android:textSize="20sp" 
-	               android:textColor="@color/color_black"
-	               android:text="@string/setting_sharing_dlna"
-               />
-	           
-	           <ImageView
-		             android:id="@+id/btn_dlna_switch"
-                     android:clickable="true"
-		             android:layout_margin="@dimen/dimen_15dip"
-                     android:layout_width="@dimen/dimen_50dip"
-                     android:layout_height="@dimen/dimen_30dip"
-		             android:layout_gravity="end|center_vertical"
-		             android:gravity="end"
-		             android:src="@drawable/general_btn_off"
-		             android:visibility="visible" />
-           </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/usb"
+            android:textColor="@color/deep_black_text"
+            android:textSize="@dimen/dimen_textsize_18sp"
+            android:layout_alignParentLeft="true"
+            android:gravity="center" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/setting_usb_storage"
+            android:textColor="@color/grey_text"
+            android:textSize="@dimen/dimen_textsize_12sp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:id="@+id/tv_usb_storage"
+            android:drawablePadding="@dimen/dimen_6dip"
+            android:drawableRight="@drawable/right_arrow_small" />
+    </RelativeLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_share"
+        android:textSize="@dimen/dimen_textsize_20sp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/dimen_10dip"
+        android:paddingBottom="@dimen/dimen_8dip" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/color_white"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/dimen_6dip">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/setting_sharing_ftp"
+                android:textColor="@color/deep_black_text"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:layout_alignParentLeft="true"
+                android:gravity="center" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/switch_ftp"
+                android:layout_toLeftOf="@+id/iv_ftp_access_storage"
+                android:layout_marginRight="@dimen/dimen_40dip"
+                android:checked="false" />
 
             <ImageView
-	            android:layout_width="match_parent"
-	            android:layout_height="@dimen/dimen_0.5dip"
-	            android:background="@color/main_bottom_divider"
-	            android:contentDescription="@string/setting_sharing" />
+                android:id="@+id/iv_ftp_access_storage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/selector_access_storage_image"
+                android:layout_alignParentRight="true" />
 
-		</LinearLayout>
-		<RelativeLayout
-	            android:id="@+id/setting_sharing_waiting"
-	            android:layout_width="fill_parent"
-	            android:layout_height="fill_parent" >
+        </RelativeLayout>
 
-	            <ProgressBar
-	                android:id="@+id/pb_device_waiting_progress"
-	                android:layout_width="40dip"
-	                android:layout_height="40dip"
-	                android:layout_centerInParent="true"
-	                android:indeterminateDrawable="@drawable/progerss_blue"
-	                android:visibility="visible" />
-	            <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
-        	</RelativeLayout>
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/share_usb_storage_content"
+            android:textColor="@color/deep_grey_text"
+            android:textSize="@dimen/dimen_textsize_12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dip"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/color_white"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/dimen_6dip">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/samba"
+                android:textColor="@color/deep_black_text"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:layout_alignParentLeft="true"
+                android:gravity="center" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/iv_samba_access_storage"
+                android:layout_marginRight="@dimen/dimen_40dip"
+                android:id="@+id/switch_samba"
+                android:checked="false" />
+
+            <ImageView
+                android:id="@+id/iv_samba_access_storage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/selector_access_storage_image"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/share_usb_storage_content"
+            android:textColor="@color/deep_grey_text"
+            android:textSize="@dimen/dimen_textsize_12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dip"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/color_white"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/dimen_6dip">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/setting_sharing_dlna"
+                android:textColor="@color/deep_black_text"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:layout_alignParentLeft="true"
+                android:gravity="center" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/iv_dlna_access_storage"
+                android:layout_marginRight="@dimen/dimen_40dip"
+                android:id="@+id/switch_dlna"
+                android:checked="false" />
+
+            <ImageView
+                android:id="@+id/iv_dlna_access_storage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/selector_access_storage_image"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/share_service_dlna_tips"
+            android:textColor="@color/deep_grey_text"
+            android:textSize="@dimen/dimen_textsize_12sp" />
+    </LinearLayout>
+</LinearLayout>

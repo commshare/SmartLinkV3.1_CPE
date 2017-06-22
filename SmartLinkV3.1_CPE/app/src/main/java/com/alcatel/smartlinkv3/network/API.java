@@ -1,6 +1,9 @@
 package com.alcatel.smartlinkv3.network;
 
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
+import com.alcatel.smartlinkv3.model.sharing.DLNASettings;
+import com.alcatel.smartlinkv3.model.sharing.FTPSettings;
+import com.alcatel.smartlinkv3.model.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.model.sim.AutoValidatePinState;
 import com.alcatel.smartlinkv3.model.sim.ChangePinParams;
 import com.alcatel.smartlinkv3.model.sim.PinParams;
@@ -9,13 +12,13 @@ import com.alcatel.smartlinkv3.model.sim.PukParams;
 import com.alcatel.smartlinkv3.model.sim.SetAutoValidatePinStateParams;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.sim.UnlockSimlockParams;
-import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.model.system.WanSetting;
 import com.alcatel.smartlinkv3.model.user.LoginParams;
 import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.model.user.NewPasswdParams;
+import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.model.wlan.WlanSettings;
 import com.alcatel.smartlinkv3.model.wlan.WlanState;
 import com.alcatel.smartlinkv3.model.wlan.WlanSupportAPMode;
@@ -243,6 +246,30 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
+    public void getFTPSettings(MySubscriber<FTPSettings> subscriber) {
+        subscribe(subscriber, smartLinkApi.getFTPSettings(new RequestBody(Methods.GET_FTP_SETTINGS)));
+    }
+
+    public void getSambaSettings(MySubscriber<SambaSettings> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSambaSettings(new RequestBody(Methods.GET_SAMBA_SETTINGS)));
+    }
+
+    public void getDLNASettings(MySubscriber<DLNASettings> subscriber) {
+        subscribe(subscriber, smartLinkApi.getDLNASettings(new RequestBody(Methods.GET_DLNA_SETTINGS)));
+    }
+
+    public void setFTPSettings(FTPSettings settings, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_FTP_SETTINGS, settings)));
+    }
+
+    public void setSambaSettings(SambaSettings settings, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_SAMBA_SETTINGS, settings)));
+    }
+
+    public void setDLNASettings(DLNASettings settings, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DLNA_SETTINGS, settings)));
+    }
+
     interface SmartLinkApi {
 
         @POST("/jrd/webapi")
@@ -290,5 +317,13 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody<WanSettingsResult>> getWanSettings(@Body RequestBody requestBody);
 
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<FTPSettings>> getFTPSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SambaSettings>> getSambaSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<DLNASettings>> getDLNASettings(@Body RequestBody requestBody);
     }
 }
