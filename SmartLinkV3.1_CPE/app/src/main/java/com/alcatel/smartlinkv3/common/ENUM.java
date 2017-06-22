@@ -728,7 +728,7 @@ public class ENUM {
 
     public enum EnumDeviceCheckingStatus {
         DEVICE_CHECKING, DEVICE_NEW_VERSION, DEVICE_NO_NEW_VERSION, DEVICE_NO_CONNECT,
-        DEVICE_NOT_AVAILABLE, DEVICE_CHECK_ERROR;
+        SERVICE_NOT_AVAILABLE, DEVICE_CHECK_ERROR;
 
         public static EnumDeviceCheckingStatus build(int nStatus) {
             switch (nStatus) {
@@ -743,7 +743,7 @@ public class ENUM {
                 case 3:
                     return DEVICE_NO_CONNECT;
                 case 4:
-                    return DEVICE_NOT_AVAILABLE;
+                    return SERVICE_NOT_AVAILABLE;
                 case 5:
                     return DEVICE_CHECK_ERROR;
 
@@ -763,7 +763,7 @@ public class ENUM {
                 nStatus = 2;
             } else if (DEVICE_NO_CONNECT == status) {
                 nStatus = 3;
-            } else if (DEVICE_NOT_AVAILABLE == status) {
+            } else if (SERVICE_NOT_AVAILABLE == status) {
                 nStatus = 4;
             } else if (DEVICE_CHECK_ERROR == status) {
                 nStatus = 5;

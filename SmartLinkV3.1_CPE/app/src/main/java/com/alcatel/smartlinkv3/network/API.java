@@ -27,6 +27,8 @@ import com.alcatel.smartlinkv3.model.sim.UnlockSimlockParams;
 import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.model.system.WanSetting;
+import com.alcatel.smartlinkv3.model.update.DeviceNewVersion;
+import com.alcatel.smartlinkv3.model.update.DeviceUpgradeState;
 import com.alcatel.smartlinkv3.model.user.LoginParams;
 import com.alcatel.smartlinkv3.model.user.LoginResult;
 import com.alcatel.smartlinkv3.model.user.LoginState;
@@ -188,6 +190,7 @@ public class API {
 
     /**
      * get sim status
+     *
      * @param subscriber callback
      */
     public void getSimStatus(MySubscriber<SimStatus> subscriber){
@@ -246,6 +249,7 @@ public class API {
 
     /**
      * get all wlan settings
+     *
      * @param subscriber call back
      */
     public void getWlanSettings(MySubscriber<WlanSettings> subscriber) {
@@ -290,6 +294,26 @@ public class API {
 
     public void setWanSettings(MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.GET_WAN_SETTINGS)));
+    }
+
+    public void getDeviceNewVersion(MySubscriber<DeviceNewVersion> subscriber) {
+        subscribe(subscriber, smartLinkApi.getDeviceNewVersion(new RequestBody(Methods.GET_DEVICE_NEW_VERSION)));
+    }
+
+    public void setCheckNewVersion(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CHECK_NEW_VERSION)));
+    }
+
+    public void setDeviceStartUpdate(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICE_START_UPDATE)));
+    }
+
+    public void SetFOTAStartDownload(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_FOTA_START_DOWNLOAD)));
+    }
+
+    public void getDeviceUpgradeState(MySubscriber<DeviceUpgradeState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getDeviceUpgradeState(new RequestBody(Methods.GET_DEVICE_UPGRADE_STATE)));
     }
 
     public void getFTPSettings(MySubscriber<FTPSettings> subscriber) {
@@ -408,6 +432,13 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<WanSettingsResult>> getWanSettings(@Body RequestBody requestBody);
+
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<DeviceNewVersion>> getDeviceNewVersion(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<DeviceUpgradeState>> getDeviceUpgradeState(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<FTPSettings>> getFTPSettings(@Body RequestBody requestBody);

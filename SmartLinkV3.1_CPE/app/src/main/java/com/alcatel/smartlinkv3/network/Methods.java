@@ -58,7 +58,12 @@ public interface Methods {
     String GET_WAN_SETTINGS = "GetWanSettings";
     String SET_WAN_SETTINGS = "SetWanSettings";
 
-    //sharing
+    //update
+    String GET_DEVICE_NEW_VERSION = "GetDeviceNewVersion";
+    String SET_CHECK_NEW_VERSION = "SetCheckNewVersion";
+    String SET_DEVICE_START_UPDATE = "SetDeviceStartUpdate";
+    String GET_DEVICE_UPGRADE_STATE = "GetDeviceUpgradeState";
+    String SET_FOTA_START_DOWNLOAD = "SetFOTAStartDownload";
     String GET_FTP_SETTINGS = "GetFtpSettings";
     String GET_SAMBA_SETTINGS = "GetSambaSettings";
     String GET_DLNA_SETTINGS = "GetDLNASettings";

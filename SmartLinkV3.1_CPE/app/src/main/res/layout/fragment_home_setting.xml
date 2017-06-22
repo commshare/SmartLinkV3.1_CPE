@@ -223,9 +223,9 @@
                 <TextView
                     android:id="@+id/setting_firmware_upgrade_version"
                     android:layout_centerVertical="true"
-                    android:textSize="@dimen/font_size_normal"
+                    android:textSize="@dimen/dimen_textsize_10sp"
                     android:layout_toLeftOf="@id/setting_firmware_upgrade_arrow"
-                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:layout_marginRight="@dimen/dimen_4dip"
                     android:textColor="@color/grey_text"
                     android:text="1.2.4"
                     android:layout_width="wrap_content"

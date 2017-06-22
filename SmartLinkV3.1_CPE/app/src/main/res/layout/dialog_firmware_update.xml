@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_180dip"
+    android:gravity="center"
+    android:padding="@dimen/activity_horizontal_margin">
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:id="@+id/pb_update_progress"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:progress="60"
+        android:layout_marginBottom="@dimen/dimen_10dip"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_content"
+        android:textColor="@color/deep_black_text"
+        android:text="Checking for update"
+        android:gravity="center"
+        android:layout_below="@id/pb_update_progress"
+        android:visibility="gone"
+        android:textSize="@dimen/dimen_textsize_16sp"/>
+
+    <TextView
+        android:id="@+id/tv_update_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/general_ic_check"
+        android:textColor="@color/deep_black_text"
+        android:textSize="@dimen/dimen_textsize_16sp"
+        android:visibility="gone"
+        android:drawablePadding="@dimen/dimen_10dip"
+        android:text="update"/>
+
+
+</RelativeLayout>

@@ -817,4 +817,10 @@
     <string name="share_usb_storage_content">Share USB storage content</string>
     <string name="samba">Samba</string>
     <string name="share_service_dlna_tips">Real-time displaying content from other \nDLNA-supported devices in the LAN;or provide content for other DLNA-supported devices in the LAN to display.</string>
+    <string name="checking_for_update">Checking for update</string>
+    <string name="your_firmware_is_up_to_date">Your firmware is up to date</string>
+    <string name="available">available</string>
+    <string name="update">Update</string>
+    <string name="updating">Updating...</string>
+    <string name="could_not_update_try_again">Couldn\'t update.Try again.</string>
 </resources>

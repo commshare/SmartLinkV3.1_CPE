@@ -445,7 +445,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			if (blNeedBackupNewVersionInfo) {
 				m_strNewFirmwareInfo = strNew;
 			}
-		}else if (EnumDeviceCheckingStatus.DEVICE_NOT_AVAILABLE == eStatus) {
+		}else if (EnumDeviceCheckingStatus.SERVICE_NOT_AVAILABLE == eStatus) {
 			showCheckFWWaiting(false);
 			String strNew = getString(R.string.setting_upgrade_not_available);
 			if (blNeedBackupNewVersionInfo) {

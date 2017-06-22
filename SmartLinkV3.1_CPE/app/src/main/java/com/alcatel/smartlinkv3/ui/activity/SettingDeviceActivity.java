@@ -924,7 +924,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             if (blNeedBackupNewVersionInfo) {
                 m_strNewFirmwareInfo = strNew;
             }
-        } else if (EnumDeviceCheckingStatus.DEVICE_NOT_AVAILABLE == eStatus) {
+        } else if (EnumDeviceCheckingStatus.SERVICE_NOT_AVAILABLE == eStatus) {
             //设备不可用
             showCheckFwWaiting(false);
             String strNew = getString(R.string.setting_upgrade_not_available);
