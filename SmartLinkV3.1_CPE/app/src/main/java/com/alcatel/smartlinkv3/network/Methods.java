@@ -31,6 +31,10 @@ public interface Methods {
     String GET_CONNECTION_SETTINGS = "GetConnectionSettings";
     String SET_CONNECTION_SETTINGS = "SetConnectionSettings";
 
+    //Network
+    String GET_NETWORK_SETTINGS = "GetNetworkSettings";
+    String SET_NETWORK_SETTINGS = "SetNetworkSettings";
+    String GET_NETWORK_INFO = "GetNetworkInfo";
 
     //Wlan setting
     String GET_WLAN_STATE = "GetWlanState";
@@ -45,10 +49,10 @@ public interface Methods {
 
     //System
     String GET_SYSTEM_STATUS = "GetSystemStatus";
+    String GET_SYSTEM_INFO = "GetSystemInfo";
     String SET_DEVICE_REBOOT = "SetDeviceReboot";
     String SET_DEVICE_RESET = "SetDeviceReset";
     String SET_DEVICE_BACKUP = "SetDeviceBackup";
-    String GET_SYSTEM_INFO = "GetSystemInfo";
 
     //Wan
     String GET_WAN_SETTINGS = "GetWanSettings";

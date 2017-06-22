@@ -27,6 +27,9 @@ import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.network.ResponseBody;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +51,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
     private EditText m_confirm_password;
 
     private IntentFilter m_change_password_filter;
-    private PassWordChangeReceiver m_password_change_receiver;
 
     private Dialog mTipsDialog;
     private RippleView mRpForgotPassword;
@@ -101,7 +103,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
         m_change_password_filter = new IntentFilter(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
         m_change_password_filter.addAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
-        m_password_change_receiver = new PassWordChangeReceiver();
     }
 
     private void doneChangePassword() {
@@ -192,70 +193,35 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
     }
 
     public void userChangePassword(String UserName, String CurrentPassword, String NewPassword) {
-        UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
-        if (m_loginStatus != null && m_loginStatus == UserLoginStatus.LOGIN) {
-            DataValue data = new DataValue();
-            data.addParam("user_name", UserName);
-            data.addParam("current_password", CurrentPassword);
-            data.addParam("new_password", NewPassword);
-            BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_CHANGE_PASSWORD_REQUEST, data);
-        }
+        API.get().changePassword(UserName, CurrentPassword, NewPassword ,new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Toast.makeText(SettingAccountActivity.this, "Success", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                if ("010101".equals(error.getCode())) {
+                }
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //		IntentFilter filter = new IntentFilter();  
-        //		filter.addAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
-        //		PassWordChangeReceiver receiver = new PassWordChangeReceiver();
-        registerReceiver(m_password_change_receiver, m_change_password_filter);
     }
 
     @Override
     protected void onResume() {
         m_bNeedBack = false;
         super.onResume();
-        registerReceiver(m_password_change_receiver, m_change_password_filter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(m_password_change_receiver);
     }
 
-    private class PassWordChangeReceiver extends BroadcastReceiver {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
-            Boolean ok = response != null && response.isOk();
-            if (MessageUti.USER_CHANGE_PASSWORD_REQUEST.equals(action)) {
-                if (ok) {
-                    //						String strInfo = getString(R.string.change_password_successful);
-                    //						Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-                    showUpgradeDialog();
-                } else if (response.isValid() && null != response.getErrorCode()) {
-                    if (response.getErrorCode().equals(ErrorCode.CURRENT_PASSWORD_IS_WRONG)) {
-                        String strInfo = getString(R.string.wrong_current_password);
-                        Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-                    } else if (response.getErrorCode().equals(ErrorCode.CHANGE_PASSWORD_FAILED)) {
-                        String strInfo = getString(R.string.change_password_failed);
-                        Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-                    } else {
-                        String strInfo = getString(R.string.unknown_error);
-                        Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    String strInfo = getString(R.string.unknown_error);
-                    Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                String strInfo = getString(R.string.unknown_error);
-                Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
 }

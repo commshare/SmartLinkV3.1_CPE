@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:background="@color/white"
+    android:id="@+id/sett_data_plan">
+        <RelativeLayout
+            android:id="@+id/rl_monthly_data_plan"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_monthlysataplan" />
+
+            <ImageView
+                android:id="@+id/img_monthly_data_plan"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/textview_monthly_data_plan"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/img_monthly_data_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_billingday" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/setdataplan_billing_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:entries="@array/settings_data_plan_billing_day"
+                android:spinnerMode="dialog" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_usagealert" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/setdataplan_usagealert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:entries="@array/settings_data_plan_usage_alert"
+                android:spinnerMode="dialog" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_autodisconnected" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/setdataplan_auto_disconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:showText="false" />
+        </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/usage_setting_timelimit" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/setdataplan_timelimit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:showText="false" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_set_time_limit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                android:id="@+id/setdataplan_settimelimit"
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Set time limit" />
+
+            <ImageView
+                android:id="@+id/img_set_time_limit"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/right_arrow_big"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"/>
+
+            <TextView
+                android:id="@+id/textview_set_time_limit"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/img_set_time_limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:textColor="@color/color_light_gray"
+                android:textSize="@dimen/setting_padding_10_dp"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/auto_disconnect" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/setdataplan_limit_auto_disaconect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:showText="false" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

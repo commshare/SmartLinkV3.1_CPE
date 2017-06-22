@@ -159,6 +159,7 @@
     <string name="usage_setting_roaming">Roaming</string>
     <string name="roaming_descrition">Automatically connect even when in roaming.</string>
     <string name="usage_setting_autodisconnected">Auto Disconnected</string>
+    <string name="auto_disconnect">Auto disconnect</string>
     <!-- Usage setting end -->
 
     <!-- Wifi Key start -->

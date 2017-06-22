@@ -72,4 +72,30 @@
         <item>HK</item>
         <item>CN</item>
     </string-array>
+
+    <string-array name="settings_connection_mode">
+        <item>Auto</item>
+        <item>Manual</item>
+    </string-array>
+
+    <string-array name="settings_network_mode">
+        <item>Auto</item>
+        <item>4G</item>
+        <item>3G</item>
+        <item>2G</item>
+    </string-array>
+
+    <string-array name="settings_data_plan_billing_day">
+        <item>Day 1</item>
+        <item>Day 2</item>
+        <item>Day 3</item>
+        <item>Day 4</item>
+    </string-array>
+
+    <string-array name="settings_data_plan_usage_alert">
+        <item>90%</item>
+        <item>80%</item>
+        <item>70%</item>
+        <item>60%</item>
+    </string-array>
 </resources>

@@ -24,6 +24,8 @@ import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ToastUtil;
 import com.alcatel.smartlinkv3.common.ToastUtil_m;
+import com.alcatel.smartlinkv3.ui.activity.EthernetWanConnectionActivity;
+import com.alcatel.smartlinkv3.ui.activity.SettingAboutActivity;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.network.ResponseBody;
@@ -134,7 +136,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 goToMobileNetworkSettingPage();
                 break;
             case R.id.setting_ethernet_wan:
-                ToastUtil_m.show(getActivity(), "ethernet wan");
+                goEthernetWanConnectionPage();
                 break;
             case R.id.setting_sharing_service:
                 if (isSharingSupported) {
@@ -158,6 +160,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    private void goEthernetWanConnectionPage() {
+        ChangeActivity.toActivity(getActivity(), EthernetWanConnectionActivity.class, true, true, false, 0);
     }
 
 

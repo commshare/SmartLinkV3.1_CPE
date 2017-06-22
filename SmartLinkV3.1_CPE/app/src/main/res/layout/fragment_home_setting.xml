@@ -144,16 +144,6 @@
                         android:layout_marginRight="@dimen/common_margin"
                         android:src="@drawable/right_arrow_big"/>
 
-                    <TextView
-                        android:layout_centerVertical="true"
-                        android:textSize="@dimen/font_size_normal"
-                        android:layout_toLeftOf="@id/setting_ethernet_wan_arrow"
-                        android:layout_marginRight="@dimen/dimen_10dip"
-                        android:textColor="@color/grey_text"
-                        android:text="@string/setting_off_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
                 </RelativeLayout>
             </RelativeLayout>
 

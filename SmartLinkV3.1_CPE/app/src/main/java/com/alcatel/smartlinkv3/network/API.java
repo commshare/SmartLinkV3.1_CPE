@@ -5,12 +5,19 @@ import android.content.SharedPreferences;
 
 import com.alcatel.smartlinkv3.Constants;
 import com.alcatel.smartlinkv3.EncryptionUtil;
+import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.sharing.DLNASettings;
 import com.alcatel.smartlinkv3.model.sharing.FTPSettings;
 import com.alcatel.smartlinkv3.model.sharing.SambaSettings;
+import com.alcatel.smartlinkv3.model.network.Network;
+import com.alcatel.smartlinkv3.model.network.NetworkInfo;
 import com.alcatel.smartlinkv3.model.sim.AutoValidatePinState;
 import com.alcatel.smartlinkv3.model.sim.ChangePinParams;
+import com.alcatel.smartlinkv3.model.system.SysStatus;
+import com.alcatel.smartlinkv3.model.system.SystemInfo;
+import com.alcatel.smartlinkv3.model.user.LoginState;
+import com.alcatel.smartlinkv3.model.user.NewPasswdParams;
 import com.alcatel.smartlinkv3.model.sim.PinParams;
 import com.alcatel.smartlinkv3.model.sim.PinStateParams;
 import com.alcatel.smartlinkv3.model.sim.PukParams;
@@ -171,19 +178,6 @@ public class API {
     }
 
     /**
-     * change password
-     *
-     * @param userName   user name
-     * @param currPasswd current password
-     * @param newPasswd  new password
-     * @param subscriber callback
-     */
-    public void changePasswd(String userName, String currPasswd, String newPasswd, MySubscriber subscriber) {
-        NewPasswdParams passwdParams = new NewPasswdParams(userName, currPasswd, newPasswd);
-        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
-    }
-
-    /**
      * heart beat
      *
      * @param subscriber callback
@@ -322,6 +316,49 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DLNA_SETTINGS, settings)));
     }
 
+
+    /**
+     * change password
+     *
+     * @param userName   user name
+     * @param currPasswd current password
+     * @param newPasswd  new password
+     * @param subscriber callback
+     */
+    public void changePassword(String userName, String currPasswd, String newPasswd, MySubscriber subscriber) {
+        NewPasswdParams passwdParams = new NewPasswdParams(userName, currPasswd, newPasswd);
+        subscribe(subscriber, smartLinkApi.changePassword(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
+    }
+
+    public void connect(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.connect(new RequestBody(Methods.CONNECT)));
+    }
+
+    public void disConnect(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.disConnect(new RequestBody(Methods.DISCONNECT)));
+    }
+
+    public void getConnectionSettings(MySubscriber<ConnectionSettings> subscriber){
+        subscribe(subscriber, smartLinkApi.getConnectionSettings(new RequestBody(Methods.GET_CONNECTION_SETTINGS)));
+    }
+
+    public void setConnectionSettings(int connectMode, int roamingConnect, int pdpType, int connOffTime, MySubscriber subscriber) {
+        ConnectionSettings connectionSettingsParams = new ConnectionSettings(connectMode, roamingConnect, pdpType, connOffTime);
+        subscribe(subscriber, smartLinkApi.setConnectionSettings(new RequestBody(Methods.SET_CONNECTION_SETTINGS, connectionSettingsParams)));
+    }
+
+    public void getNetworkSettings(MySubscriber<Network> subscriber) {
+        subscribe(subscriber, smartLinkApi.getNetworkSettings(new RequestBody(Methods.GET_NETWORK_SETTINGS)));
+    }
+
+    public void setNetworkSettings(Network network, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.setNetworkSettings(new RequestBody(Methods.SET_NETWORK_SETTINGS, network)));
+    }
+
+    public void getNetworkInfo(MySubscriber<NetworkInfo> subscriber) {
+        subscribe(subscriber, smartLinkApi.getNetworkInfo(new RequestBody(Methods.GET_NETWORK_INFO)));
+    }
+
     interface SmartLinkApi {
 
         @POST("/jrd/webapi")
@@ -380,5 +417,30 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<DLNASettings>> getDLNASettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody> changePassword(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody> connect(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody> disConnect(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<ConnectionSettings>> getConnectionSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody> setConnectionSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<Network>> getNetworkSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody> setNetworkSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<NetworkInfo>> getNetworkInfo(@Body RequestBody requestBody);
+
     }
 }

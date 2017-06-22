@@ -124,8 +124,12 @@
             android:name=".ui.activity.SettingNetworkActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/titlebarstyle"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EthernetWanConnectionActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingShareActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
