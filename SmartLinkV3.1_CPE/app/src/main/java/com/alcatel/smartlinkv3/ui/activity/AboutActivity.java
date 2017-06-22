@@ -1,0 +1,110 @@
+package com.alcatel.smartlinkv3.ui.activity;
+
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.model.system.SystemInfo;
+import com.alcatel.smartlinkv3.model.system.WanSetting;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.network.ResponseBody;
+
+public class AboutActivity extends BaseActivityWithBack implements View.OnClickListener {
+    private final static String TAG = "AboutActivity";
+    private TextView mDeviceNameTxt;
+    private TextView mImeiTxt;
+    private TextView mMacAddressTxt;
+    private TextView mManagementIpTxt;
+    private TextView mSubnetMaskTxt;
+    private TextView mWebManager;
+    private TextView mQuickGuide;
+    private ImageView mIvPoint;
+    private TextView mAppVersionTxt;
+    private ProgressDialog mProgressDialog;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about);
+        //control title bar
+        mDeviceNameTxt = (TextView) findViewById(R.id.device_name_txt);
+        mImeiTxt = (TextView) findViewById(R.id.imei_txt);
+        mMacAddressTxt = (TextView) findViewById(R.id.mac_address_txt);
+        mManagementIpTxt = (TextView) findViewById(R.id.management_ip_txt);
+        mSubnetMaskTxt = (TextView) findViewById(R.id.subnet_mask_txt);
+        mWebManager = (TextView) findViewById(R.id.web_manager);
+        mQuickGuide = (TextView) findViewById(R.id.quick_guide);
+        mIvPoint = (ImageView) findViewById(R.id.iv_point);
+        mAppVersionTxt = (TextView) findViewById(R.id.app_version_txt);
+
+        setTitle(R.string.setting_title_about);
+        getDataFromNet();
+    }
+
+    private void getDataFromNet() {
+        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoadingDialog();
+            }
+
+            @Override
+            protected void onSuccess(SystemInfo result) {
+                dismissLoadingDialog();
+                mDeviceNameTxt.setText(result.getDeviceName());
+                mImeiTxt.setText(result.getIMEI());
+                mMacAddressTxt.setText(result.getMacAddress());
+                mAppVersionTxt.setText(result.getAppVersion());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                dismissLoadingDialog();
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                dismissLoadingDialog();
+            }
+        });
+        API.get().getWanSeting(new MySubscriber<WanSetting>() {
+            @Override
+            protected void onSuccess(WanSetting result) {
+                Log.d(TAG, "getWanSeting: " + result.toString());
+                mManagementIpTxt.setText(result.getIpAddress());
+                mSubnetMaskTxt.setText(result.getSubNetMask());
+            }
+        });
+
+    }
+
+    private void showLoadingDialog() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        mProgressDialog.dismiss();
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ib_title_back:
+            case R.id.tv_title_back:
+                this.finish();
+                break;
+            default:
+                break;
+        }
+    }
+}

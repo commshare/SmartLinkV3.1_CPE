@@ -511,7 +511,7 @@
     <string name="unknown_error">Unknown error!</string>
 
     <string name="login_login_btn">Login</string>
-    <string name="login_enter_password">Administrator password(8-16 characters)</string>
+    <string name="login_enter_password">Enter administrator password(8-16 characters)</string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="login_change_password_success_tips">First reset your device,then set a new Confirm password</string>
     <!-- Login view end -->
@@ -790,4 +790,25 @@
     <string name="times_remain_zero">No attempt remaining, please reboot device and try again</string>
     <string name="times_remain_one">1 attempt remaining</string>
     <string name="times_remain_many">%d attempts remaining</string>
+    <string name="restart">Restart</string>
+    <string name="reset_to_factory_settings">Reset to factory settings</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="reset_device">Reset device?</string>
+    <string name="this_will_erase_all_settings_from_your_device_and_reset_to_factory_defaults_this_action_cannot_be_undone">This will erase all settings from your device and reset to factory defaults. This action cannot be undone.</string>
+    <string name="reset">Reset</string>
+    <string name="couldn_t_reset_try_again">Couldn’t reset. Try again.</string>
+    <string name="couldn_t_backup_try_again">Couldn’t backup. Try again.</string>
+    <string name="couldn_t_restore_try_again">Couldn’t restore. Try again.</string>
+    <string name="couldn_t_update_try_again">Couldn’t update. Try again.</string>
+    <string name="backup_current_settings_to">Backup current settings to</string>
+    <string name="complete">Complete</string>
+    <string name="device">Device</string>
+    <string name="device_name">Device name</string>
+    <string name="imei">IMEI</string>
+    <string name="mac_address">MAC Address</string>
+    <string name="management_ip_adress">Management IP adress</string>
+    <string name="web_manager">Web manager</string>
+    <string name="app_version">APP version</string>
+    <string name="quick_guide_user_manual"><![CDATA[Quick guide & User manual]]></string>
 </resources>

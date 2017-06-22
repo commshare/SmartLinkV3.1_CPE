@@ -45,5 +45,9 @@ public interface Methods {
 
     //System
     String GET_SYSTEM_STATUS = "GetSystemStatus";
-
+    String SET_DEVICE_REBOOT = "SetDeviceReboot";
+    String SET_DEVICE_RESET = "SetDeviceReset";
+    String SET_DEVICE_BACKUP = "SetDeviceBackup";
+    String GET_SYSTEM_INFO = "GetSystemInfo";
+    String GET_WAN_SETTINGS = "GetWanSettings";
 }

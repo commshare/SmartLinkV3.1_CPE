@@ -163,5 +163,5 @@
     
     <!--login forgot password -->
     <color name = "login_forgotpassword_ok">#009aff</color>
-    
+    <color name="pink">#e64a4a</color>
 </resources>
