@@ -34,7 +34,6 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
     @Override
     public void onCompleted() {
         Log.d(TAG, "onCompleted");
-
     }
 
     @Override

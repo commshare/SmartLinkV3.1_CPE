@@ -73,7 +73,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
         showGetConnectedDlg();
     }
 
-    private void showGetConnectedDlg(){
+    private void showGetConnectedDlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.refresh_get_connected);
         builder.setMessage(R.string.refresh_manage_device_tips);
@@ -102,6 +102,14 @@ public class RefreshWifiActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mHandler.hasMessages(MSG_REFRESHING)) {
+            mHandler.removeMessages(MSG_REFRESHING);
+        }
     }
 
     private void updateRefreshingUI(boolean refreshing) {

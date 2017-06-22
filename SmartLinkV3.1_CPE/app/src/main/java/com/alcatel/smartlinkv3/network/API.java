@@ -9,6 +9,7 @@ import com.alcatel.smartlinkv3.model.sim.PukParams;
 import com.alcatel.smartlinkv3.model.sim.SetAutoValidatePinStateParams;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.sim.UnlockSimlockParams;
+import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.model.system.WanSetting;
@@ -138,55 +139,52 @@ public class API {
 
     /**
      * get sim status
-     *
      * @param subscriber callback
      */
-    public void getSimStatus(MySubscriber<SimStatus> subscriber) {
+    public void getSimStatus(MySubscriber<SimStatus> subscriber){
         subscribe(subscriber, smartLinkApi.getSimStatus(new RequestBody(Methods.GET_SIM_STATUS)));
     }
 
     /**
      * unlock pin
-     *
-     * @param pin        pin code
+     * @param pin pin code
      * @param subscriber call back
      */
-    public void unlockPin(String pin, MySubscriber subscriber) {
+    public void unlockPin(String pin, MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_PIN, new PinParams(pin))));
     }
 
-    public void unlockPuk(String puk, String newPin, MySubscriber subscriber) {
+    public void unlockPuk(String puk, String newPin, MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_PUK, new PukParams(puk, newPin))));
     }
 
-    public void changePinCode(String currPin, String newPin, MySubscriber subscriber) {
+    public void changePinCode(String currPin, String newPin, MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_CODE, new ChangePinParams(currPin, newPin))));
     }
 
-    public void changePinState(String pin, int state, MySubscriber subscriber) {
+    public void changePinState(String pin, int state, MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_STATE, new PinStateParams(pin, state))));
     }
 
-    public void getAutoValidatePinState(MySubscriber<AutoValidatePinState> subscriber) {
+    public void getAutoValidatePinState(MySubscriber<AutoValidatePinState> subscriber){
         subscribe(subscriber, smartLinkApi.getAutoValidatePinState(new RequestBody(Methods.GET_AUTO_VALIDATE_PIN_STATE)));
     }
 
-    public void setAutoValidatePinState(String pin, int state, MySubscriber subscriber) {
+    public void setAutoValidatePinState(String pin, int state, MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_AUTO_VALIDATE_PIN_STATE, new SetAutoValidatePinStateParams(pin, state))));
     }
 
-    public void unlockSimlock(int simlockState, String simlockCode, MySubscriber subscriber) {
+    public void unlockSimlock(int simlockState, String simlockCode, MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_SIMLOCK, new UnlockSimlockParams(simlockState, simlockCode))));
     }
 
-    public void getConnectionState(MySubscriber<ConnectionState> subscriber) {
+    public void getConnectionState(MySubscriber<ConnectionState> subscriber){
         subscribe(subscriber, smartLinkApi.getConnectionState(new RequestBody(Methods.GET_CONNECTION_STATE)));
     }
 
 
     /**
      * get 2.4g and 5g status (on/off)
-     *
      * @param subscriber call back
      */
     public void getWlanState(MySubscriber<WlanState> subscriber) {
@@ -199,22 +197,21 @@ public class API {
 
     /**
      * get all wlan settings
-     *
      * @param subscriber call back
      */
     public void getWlanSettings(MySubscriber<WlanSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
     }
 
-    public void setWlanSettings(WlanSettings settings, MySubscriber subscriber) {
+    public void setWlanSettings(WlanSettings settings, MySubscriber subscriber){
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, settings)));
     }
 
-    public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber) {
+    public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber){
         subscribe(subscriber, smartLinkApi.getWlanSupportMode(new RequestBody(Methods.GET_WLAN_SUPPORT_MODE)));
     }
 
-    public void getSystemStatus(MySubscriber<SysStatus> subscriber) {
+    public void getSystemStatus(MySubscriber<SysStatus> subscriber){
         subscribe(subscriber, smartLinkApi.getSystemStatus(new RequestBody(Methods.GET_SYSTEM_STATUS)));
     }
 
@@ -236,6 +233,14 @@ public class API {
 
     public void getWanSeting(MySubscriber<WanSetting> subscriber) {
         subscribe(subscriber, smartLinkApi.getWanSeting(new RequestBody(Methods.GET_WAN_SETTINGS)));
+    }
+
+    public void getWanSettings(MySubscriber<WanSettingsResult> subscriber){
+        subscribe(subscriber, smartLinkApi.getWanSettings(new RequestBody(Methods.GET_WAN_SETTINGS)));
+    }
+
+    public void setWanSettings(MySubscriber subscriber){
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
     interface SmartLinkApi {
@@ -281,5 +286,9 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<WanSetting>> getWanSeting(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WanSettingsResult>> getWanSettings(@Body RequestBody requestBody);
+
     }
 }
