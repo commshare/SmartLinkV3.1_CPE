@@ -327,15 +327,15 @@ public class API {
      */
     public void changePassword(String userName, String currPasswd, String newPasswd, MySubscriber subscriber) {
         NewPasswdParams passwdParams = new NewPasswdParams(userName, currPasswd, newPasswd);
-        subscribe(subscriber, smartLinkApi.changePassword(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
     }
 
     public void connect(MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.connect(new RequestBody(Methods.CONNECT)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CONNECT)));
     }
 
     public void disConnect(MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.disConnect(new RequestBody(Methods.DISCONNECT)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.DISCONNECT)));
     }
 
     public void getConnectionSettings(MySubscriber<ConnectionSettings> subscriber){
@@ -344,7 +344,7 @@ public class API {
 
     public void setConnectionSettings(int connectMode, int roamingConnect, int pdpType, int connOffTime, MySubscriber subscriber) {
         ConnectionSettings connectionSettingsParams = new ConnectionSettings(connectMode, roamingConnect, pdpType, connOffTime);
-        subscribe(subscriber, smartLinkApi.setConnectionSettings(new RequestBody(Methods.SET_CONNECTION_SETTINGS, connectionSettingsParams)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTION_SETTINGS, connectionSettingsParams)));
     }
 
     public void getNetworkSettings(MySubscriber<Network> subscriber) {
@@ -352,7 +352,7 @@ public class API {
     }
 
     public void setNetworkSettings(Network network, MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.setNetworkSettings(new RequestBody(Methods.SET_NETWORK_SETTINGS, network)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_NETWORK_SETTINGS, network)));
     }
 
     public void getNetworkInfo(MySubscriber<NetworkInfo> subscriber) {
@@ -419,25 +419,10 @@ public class API {
         Observable<ResponseBody<DLNASettings>> getDLNASettings(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
-        Observable<ResponseBody> changePassword(@Body RequestBody requestBody);
-
-        @POST("/jrd/webapi")
-        Observable<ResponseBody> connect(@Body RequestBody requestBody);
-
-        @POST("/jrd/webapi")
-        Observable<ResponseBody> disConnect(@Body RequestBody requestBody);
-
-        @POST("/jrd/webapi")
         Observable<ResponseBody<ConnectionSettings>> getConnectionSettings(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
-        Observable<ResponseBody> setConnectionSettings(@Body RequestBody requestBody);
-
-        @POST("/jrd/webapi")
         Observable<ResponseBody<Network>> getNetworkSettings(@Body RequestBody requestBody);
-
-        @POST("/jrd/webapi")
-        Observable<ResponseBody> setNetworkSettings(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<NetworkInfo>> getNetworkInfo(@Body RequestBody requestBody);
