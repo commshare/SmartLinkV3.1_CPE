@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -38,6 +37,11 @@ import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingNetworkActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
+import com.alcatel.smartlinkv3.utils.FileUtils;
+
+import java.io.File;
+
+import rx.Subscriber;
 
 /**
  * Created by qianli.ma on 2017/6/16.
@@ -45,7 +49,7 @@ import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
 
-    private final String TAG = "SettingFragment";
+    private final static String TAG = "SettingFragment";
     public static boolean isFtpSupported = false;
     public static boolean isDlnaSupported = false;
     public static boolean isSharingSupported = false;
@@ -70,6 +74,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private TextView mDeviceVersion;
     private AlertDialog mCheckVersionDlg;
     private AlertDialog mUpdatingDlg;
+
 
     @Nullable
     @Override
@@ -189,6 +194,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 } else {
                     backupDevice();
                 }
+                popupWindow.dismiss();
             }
         });
         mSecondTxt.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +205,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 } else {
                     restore();
                 }
+                popupWindow.dismiss();
             }
         });
         mCancelTxt.setOnClickListener(new View.OnClickListener() {
@@ -218,7 +225,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.color.orange));
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.color.white));
         backgroundAlpha(getActivity(), 0.5f);
         popupWindow.setAnimationStyle(R.style.dialogStyle);
         popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
@@ -226,11 +233,46 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void backupDevice() {
+
+        API.get().backupDevice(new MySubscriber() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoadingDialog();
+            }
+
+            @Override
+            protected void onSuccess(Object result) {
+                dismissLoadingDialog();
+                Log.d(TAG, "backup" + "success");
+                showBackupSuccessDialog();
+            }
+
+            @Override
+            protected void onFailure() {
+                super.onFailure();
+                dismissLoadingDialog();
+                showFailedDialog(R.string.couldn_t_backup_try_again);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                dismissLoadingDialog();
+                showFailedDialog(R.string.couldn_t_backup_try_again);
+            }
+        });
+
+
+    }
+
+    private void showBackupSuccessDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.backup_current_settings_to);
-        EditText editText = new EditText(getActivity());
-        editText.setText("TCL/LINKHUB/Backup");
-        builder.setView(editText);
+        TextView textView = new TextView(getActivity());
+        String saveUrl = "/TCL/LINKHUB/Backup";
+        textView.setText(saveUrl);
+        builder.setView(textView);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -240,10 +282,42 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         builder.setPositiveButton(R.string.backup, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                backup();
+                downLoadConfigureFile(saveUrl);
             }
         });
+        builder.show();
+    }
 
+    private void downLoadConfigureFile(String saveUrl) {
+
+        File file = new File(FileUtils.createFilePath(saveUrl), "configure.bin");
+        String downloadFileUrl = "/cfgbak/configure.bin";
+        API.get().downConfigureFile(new Subscriber() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoadingDialog();
+            }
+
+            @Override
+            public void onCompleted() {
+                dismissLoadingDialog();
+                ToastUtil.showMessage(getActivity(), "downLoadConfigureFile:onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                dismissLoadingDialog();
+                ToastUtil.showMessage(getActivity(), "downLoadConfigureFile:onError");
+            }
+
+            @Override
+            public void onNext(Object o) {
+                dismissLoadingDialog();
+                ToastUtil.showMessage(getActivity(), "downLoadConfigureFile:onNext");
+
+            }
+        }, downloadFileUrl, file);
     }
 
 
@@ -270,18 +344,27 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private void restartDevice() {
         API.get().restartDevice(new MySubscriber() {
             @Override
+            public void onStart() {
+                super.onStart();
+                showLoadingDialog();
+            }
+
+            @Override
             protected void onSuccess(Object result) {
                 ToastUtil.showMessage(getActivity(), "restart device success");
+                dismissLoadingDialog();
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
+                dismissLoadingDialog();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
+                dismissLoadingDialog();
             }
         });
     }
@@ -289,6 +372,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void resetDevice() {
         API.get().resetDevice(new MySubscriber() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoadingDialog();
+            }
+
             @Override
             protected void onSuccess(Object result) {
                 dismissLoadingDialog();
@@ -307,28 +396,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 super.onResultError(error);
                 dismissLoadingDialog();
                 showFailedDialog(R.string.couldn_t_reset_try_again);
-            }
-        });
-
-    }
-
-    private void backup() {
-        API.get().bakcupDevice(new MySubscriber() {
-            @Override
-            protected void onSuccess(Object result) {
-                dismissLoadingDialog();
-            }
-
-            @Override
-            protected void onFailure() {
-                super.onFailure();
-                dismissLoadingDialog();
-            }
-
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
-                dismissLoadingDialog();
             }
         });
 
@@ -354,7 +421,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showLoadingDialog() {
         mProgressDialog = new ProgressDialog(getActivity());
-//        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 //        mProgressDialog.setMessage("Resetting … 50%");
         mProgressDialog.show();
 
@@ -518,14 +585,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             } else if (ENUM.EnumDeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
                 mUpgradeBar.setVisibility(View.VISIBLE);
                 mUpgradeStatus.setVisibility(View.GONE);
-                mContentText.setText(getString(R.string.updating)+result.getProcess());
+                mContentText.setText(getString(R.string.updating) + result.getProcess());
                 mUpgradeBar.setProgress(result.getProcess());
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         requestGetDeviceUpgradeState();
                     }
-                },2*1000);
+                }, 2 * 1000);
 
             } else if (ENUM.EnumDeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
                 requestSetDeviceStartUpdate();
@@ -544,7 +611,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             mUpdatingDlg = builder.create();
             mUpdatingDlg.show();
         } else {
-            if (result !=null && result.getStatus() != 1 ) {
+            if (result != null && result.getStatus() != 1) {
                 mUpdatingDlg.dismiss();
                 mUpdatingDlg.cancel();
                 mUpdatingDlg = builder.create();

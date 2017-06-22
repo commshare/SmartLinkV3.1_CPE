@@ -7,17 +7,13 @@ import com.alcatel.smartlinkv3.Constants;
 import com.alcatel.smartlinkv3.EncryptionUtil;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
+import com.alcatel.smartlinkv3.model.network.Network;
+import com.alcatel.smartlinkv3.model.network.NetworkInfo;
 import com.alcatel.smartlinkv3.model.sharing.DLNASettings;
 import com.alcatel.smartlinkv3.model.sharing.FTPSettings;
 import com.alcatel.smartlinkv3.model.sharing.SambaSettings;
-import com.alcatel.smartlinkv3.model.network.Network;
-import com.alcatel.smartlinkv3.model.network.NetworkInfo;
 import com.alcatel.smartlinkv3.model.sim.AutoValidatePinState;
 import com.alcatel.smartlinkv3.model.sim.ChangePinParams;
-import com.alcatel.smartlinkv3.model.system.SysStatus;
-import com.alcatel.smartlinkv3.model.system.SystemInfo;
-import com.alcatel.smartlinkv3.model.user.LoginState;
-import com.alcatel.smartlinkv3.model.user.NewPasswdParams;
 import com.alcatel.smartlinkv3.model.sim.PinParams;
 import com.alcatel.smartlinkv3.model.sim.PinStateParams;
 import com.alcatel.smartlinkv3.model.sim.PukParams;
@@ -37,8 +33,14 @@ import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.model.wlan.WlanSettings;
 import com.alcatel.smartlinkv3.model.wlan.WlanState;
 import com.alcatel.smartlinkv3.model.wlan.WlanSupportAPMode;
+import com.alcatel.smartlinkv3.network.downloadfile.DownloadProgressInterceptor;
+import com.alcatel.smartlinkv3.network.downloadfile.DownloadProgressListener;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.utils.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -48,9 +50,15 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.alcatel.smartlinkv3.Constants.SP_KEY_TOKEN;
@@ -109,6 +117,19 @@ public class API {
         smartLinkApi = retrofit.create(SmartLinkApi.class);
     }
 
+//    private API(DownloadProgressListener listener) {
+//        if (smartLinkApi == null) {
+//            Retrofit.Builder builder = new Retrofit.Builder();
+//            builder.baseUrl("http://192.168.1.1")
+//                    .client(createDownloadHttpClient(listener))
+//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                    .addConverterFactory(GsonConverterFactory.create());
+//            Retrofit retrofit = builder.build();
+//            smartLinkApi = retrofit.create(SmartLinkApi.class);
+//        }
+//
+//    }
+
     private OkHttpClient buildOkHttpClient() {
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -131,6 +152,19 @@ public class API {
         return builder.build();
     }
 
+
+    private OkHttpClient createDownloadHttpClient(DownloadProgressListener listener) {
+        DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(listener);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .retryOnConnectionFailure(true)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .build();
+
+        return client;
+    }
+
     public static API get() {
         if (api == null) {
             synchronized (API.class) {
@@ -142,9 +176,45 @@ public class API {
         return api;
     }
 
+//    public static API get(DownloadProgressListener listener) {
+//        if (api == null) {
+//            synchronized (API.class) {
+//                if (api == null) {
+//                    api = new API(listener);
+//                }
+//            }
+//        }
+//        return api;
+//    }
+
+
     private void subscribe(MySubscriber subscriber, Observable observable) {
         observable
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    private void subscribeDownloadFile(Subscriber subscriber, Observable observable, File file) {
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .map(new Func1<okhttp3.ResponseBody, InputStream>() {
+                    @Override
+                    public InputStream call(okhttp3.ResponseBody responseBody) {
+                        return responseBody.byteStream();
+                    }
+                })
+                .observeOn(Schedulers.computation())
+                .doOnNext(new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream inputStream) {
+                        try {
+                            FileUtils.writeFile(inputStream, file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
@@ -177,6 +247,19 @@ public class API {
      */
     public void getLoginState(MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.getLoginState(new RequestBody(Methods.GET_LOGIN_STATE)));
+    }
+
+    /**
+     * change password
+     *
+     * @param userName   user name
+     * @param currPasswd current password
+     * @param newPasswd  new password
+     * @param subscriber callback
+     */
+    public void changePasswd(String userName, String currPasswd, String newPasswd, MySubscriber subscriber) {
+        NewPasswdParams passwdParams = new NewPasswdParams(userName, currPasswd, newPasswd);
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
     }
 
     /**
@@ -276,7 +359,7 @@ public class API {
         subscribe(subscriber, smartLinkApi.resetDevice(new RequestBody(Methods.SET_DEVICE_RESET)));
     }
 
-    public void bakcupDevice(MySubscriber subscriber) {
+    public void backupDevice(MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.backupDevice(new RequestBody(Methods.SET_DEVICE_BACKUP)));
     }
 
@@ -314,6 +397,10 @@ public class API {
 
     public void getDeviceUpgradeState(MySubscriber<DeviceUpgradeState> subscriber) {
         subscribe(subscriber, smartLinkApi.getDeviceUpgradeState(new RequestBody(Methods.GET_DEVICE_UPGRADE_STATE)));
+    }
+
+    public void downConfigureFile(Subscriber subscriber, String url, File file) {
+        subscribeDownloadFile(subscriber, smartLinkApi.downloadFile(url), file);
     }
 
     public void getFTPSettings(MySubscriber<FTPSettings> subscriber) {
@@ -439,6 +526,10 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<DeviceUpgradeState>> getDeviceUpgradeState(@Body RequestBody requestBody);
+
+        @Streaming
+        @GET
+        Observable<okhttp3.ResponseBody> downloadFile(@Url String url);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<FTPSettings>> getFTPSettings(@Body RequestBody requestBody);
