@@ -9,6 +9,7 @@ import com.alcatel.smartlinkv3.model.Usage.UsageParams;
 import com.alcatel.smartlinkv3.model.Usage.UsageRecord;
 import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
 import com.alcatel.smartlinkv3.model.battery.BatteryState;
+import com.alcatel.smartlinkv3.model.connection.ConnectionMode;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.device.param.ConnectedDeviceBlockParam;
@@ -462,8 +463,7 @@ public class API {
         subscribe(subscriber, smartLinkApi.getConnectionSettings(new RequestBody(Methods.GET_CONNECTION_SETTINGS)));
     }
 
-    public void setConnectionSettings(int connectMode, int roamingConnect, int pdpType, int connOffTime, MySubscriber subscriber) {
-        ConnectionSettings connectionSettingsParams = new ConnectionSettings(connectMode, roamingConnect, pdpType, connOffTime);
+    public void setConnectionSettings(ConnectionSettings connectionSettingsParams, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTION_SETTINGS, connectionSettingsParams)));
     }
 
@@ -481,6 +481,10 @@ public class API {
 
     public void getBatteryState(MySubscriber<BatteryState> subscriber) {
         subscribe(subscriber, smartLinkApi.getBatteryState(new RequestBody(Methods.GET_BATTERYSTATE)));
+    }
+
+    public void setUsageSetting(UsageSetting usageSettingParams ,Subscriber<UsageSetting> subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.GET_USAGESETTING, usageSettingParams)));
     }
 
     public void getUsageSetting(MySubscriber<UsageSetting> subscriber) {
@@ -517,6 +521,10 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICENAME, new DeviceNameParam(DeviceName, MacAddress, DeviceType))));
     }
 
+    public void setConnectionMode(int connectMode, MySubscriber subscriber) {
+        ConnectionMode connectionModeParams = new ConnectionMode(connectMode);
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTION_MODE, connectionModeParams)));
+    }
 
     interface SmartLinkApi {
 

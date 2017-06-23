@@ -24,19 +24,18 @@
                 android:orientation = "horizontal">
 
                 <EditText
-                    android:id = "@+id/current_sim_pin"
-                    android:layout_width = "match_parent"
-                    android:layout_height = "wrap_content"
-                    android:layout_marginLeft = "@dimen/dimen_12dip"
-                    android:background = "@null"
-                    android:hint = "Current SIM PIN"
-                    android:imeOptions = "flagNoExtractUi"
-                    android:inputType = "textPassword"
-                    android:paddingBottom = "@dimen/dimen_12dip"
-                    android:paddingTop = "@dimen/dimen_12dip"
-                    android:textColor = "@color/grey_text"
-                    android:textSize = "@dimen/dimen_textsize_16sp"
-                    />
+                    android:id="@+id/current_sim_pin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_12dip"
+                    android:background="@null"
+                    android:hint="Current SIM PIN"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="textPassword"
+                    android:paddingBottom="@dimen/dimen_12dip"
+                    android:paddingTop="@dimen/dimen_12dip"
+                    android:textColor="@color/grey_text"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
             </LinearLayout>
 
             <ImageView
@@ -52,7 +51,7 @@
                 android:orientation = "horizontal">
 
                 <EditText
-                    android:id = "@+id/new_sin_pin"
+                    android:id = "@+id/new_sim_pin"
                     android:layout_width = "match_parent"
                     android:layout_height = "wrap_content"
                     android:layout_marginLeft = "@dimen/dimen_12dip"
@@ -80,7 +79,7 @@
                 android:orientation = "horizontal">
 
                 <EditText
-                    android:id = "@+id/confirm_password"
+                    android:id = "@+id/confirm_new_sim_pin"
                     android:layout_width = "match_parent"
                     android:layout_height = "wrap_content"
                     android:layout_marginLeft = "@dimen/dimen_12dip"
@@ -105,11 +104,12 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cb_do_not_ask"
+                android:id="@+id/remember_sim_pin"
                 android:layout_marginTop="4dp"
                 android:text="Remember SIM PIN"/>
 
             <Button
+                android:id="@+id/change_sim_pin_done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

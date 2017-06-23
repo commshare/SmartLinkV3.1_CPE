@@ -123,8 +123,8 @@
 
     </LinearLayout>
 
-    <!-- 提示框 -->
-    <include
-        android:id = "@+id/pop_forgotpassword"
-        layout = "@layout/pop_forgotpassword" />
+    <!--&lt;!&ndash; 提示框 &ndash;&gt;-->
+    <!--<include-->
+        <!--android:id = "@+id/pop_forgotpassword"-->
+        <!--layout = "@layout/pop_forgotpassword" />-->
 </RelativeLayout>

@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.network.Network;
@@ -23,6 +26,8 @@ import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.network.ResponseBody;
+import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener ,AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
@@ -30,12 +35,29 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private LinearLayout mChangePin;
     private SwitchCompat mMobileDataSwitchCompat;
     private AppCompatSpinner mConnectionModeSpinner;
+    private AppCompatSpinner mNetworkModeSpinner;
     private SwitchCompat mRoamingSwitchCompat;
     private SwitchCompat mSimPinCompat;
     private TextView mSimNumberTextView;
     private TextView mImsiTextView;
+    private boolean mOldMobileDataEnable;
 
+    private Network mNetworkSettings;
+    private ConnectionSettings mConnectionSettings;
+    private UsageSetting mUsageSetting;
     //set data plan
+    private TextView mMonthlyDataPlanText;
+    private AppCompatSpinner mBillingDaySpinner;
+    private AppCompatSpinner mUsageAlertSpinner;
+    private SwitchCompat mDisconnectCompat;
+    private SwitchCompat mTimeLimitCompat;
+    private TextView mSetTimeLimitText;
+    private SwitchCompat mLimitAutoDisaconectCompat;
+
+    //change sim pin
+    private EditText mCurrentSimPin;
+    private EditText mNewSimPin;
+    private EditText mConfirmNewSimPin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +65,9 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         super.onCreate(savedInstanceState);
         setTitle(R.string.setting_mobile_network);
         setContentView(R.layout.activity_setting_network);
+        mNetworkSettings = new Network();
+        mConnectionSettings = new ConnectionSettings();
+        mUsageSetting = new UsageSetting();
         //set data plan
         findViewById(R.id.rl_monthly_data_plan).setOnClickListener(this);
         findViewById(R.id.rl_set_time_limit).setOnClickListener(this);
@@ -50,8 +75,23 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mSetDataPlan = (LinearLayout) findViewById(R.id.sett_data_plan);
         mChangePin = (LinearLayout) findViewById(R.id.linear_network_change_pin);
         mMobileDataSwitchCompat = (SwitchCompat) findViewById(R.id.network_mobile_data_switch);
+        mMobileDataSwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
+                Log.d(TAG, "mMobileDataSwitchCompat = " + enable);
+                if (mOldMobileDataEnable != enable) {
+                    if(enable) {
+                        connect();
+                    } else {
+                        disConnect();
+                    }
+                }
+            }
+        });
         mConnectionModeSpinner = (AppCompatSpinner) findViewById(R.id.spinner_connection_mode);
         mConnectionModeSpinner.setOnItemSelectedListener(this);
+        mNetworkModeSpinner = (AppCompatSpinner) findViewById(R.id.settings_network_mode);
+        mNetworkModeSpinner.setOnItemSelectedListener(this);
         mRoamingSwitchCompat = (SwitchCompat) findViewById(R.id.network_roaming_switch);
         mSimPinCompat = (SwitchCompat) findViewById(R.id.network_sim_pin_switch);
         mSimNumberTextView = (TextView) findViewById(R.id.textview_sim_number);
@@ -64,6 +104,69 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         getRoaming();
         getSimStatus();
         getSystemInfo();
+
+        //set data plan
+        mMonthlyDataPlanText = (TextView) findViewById(R.id.textview_monthly_data_plan);
+        mBillingDaySpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_billing_day);
+        mUsageAlertSpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_usagealert);
+        mDisconnectCompat = (SwitchCompat) findViewById(R.id.setdataplan_auto_disconnect);
+        mTimeLimitCompat = (SwitchCompat) findViewById(R.id.setdataplan_timelimit);
+        mSetTimeLimitText = (TextView) findViewById(R.id.textview_set_time_limit);
+        mLimitAutoDisaconectCompat = (SwitchCompat) findViewById(R.id.setdataplan_limit_auto_disaconect);
+
+        //change sim pin
+        mCurrentSimPin = (EditText) findViewById(R.id.current_sim_pin);
+        mNewSimPin = (EditText) findViewById(R.id.new_sim_pin);
+        mConfirmNewSimPin = (EditText) findViewById(R.id.confirm_new_sim_pin);
+
+    }
+
+    private void connect() {
+        API.get().connect(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                mOldMobileDataEnable = true;
+            }
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "connect error");
+                mOldMobileDataEnable = false;
+                mMobileDataSwitchCompat.setChecked(false);
+            }
+        });
+    }
+
+    private void disConnect() {
+        API.get().disConnect(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                mOldMobileDataEnable = false;
+            }
+
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "disConnect error");
+                mOldMobileDataEnable = true;
+                mMobileDataSwitchCompat.setChecked(true);
+            }
+        });
+    }
+
+    private void setConnectionSettings(int connectMode) {
+        mConnectionSettings.setConnectMode(connectMode);
+        API.get().setConnectionSettings(mConnectionSettings, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "setConnectionSettings error");
+            }
+        });
     }
 
     private void getConnectionState() {
@@ -74,8 +177,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 Log.v(TAG, "getConnectionState"+result.getConnectionStatus());
                 if(result.getConnectionStatus().equals(0)){
                     mMobileDataSwitchCompat.setChecked(false);
+                    mOldMobileDataEnable = false;
                 } else if(result.getConnectionStatus().equals(0)) {
                     mMobileDataSwitchCompat.setChecked(true);
+                    mOldMobileDataEnable = true;
                 }
             }
             @Override
@@ -90,7 +195,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(ConnectionSettings result) {
                 //  0: manual connect 1: auto connect
-
+                mConnectionSettings = result;
                 Log.v(TAG, "getConnectionSettings"+result.getConnectMode());
                 if(result.getConnectMode() == 0){
                     mConnectionModeSpinner.setSelection(0);
@@ -105,6 +210,22 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
+    private void setNetworkSettings(int networkMode) {
+        mNetworkSettings.setNetworkMode(networkMode);
+        API.get().setNetworkSettings(mNetworkSettings, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "setNetworkSettings error");
+            }
+        });
+    }
+
     private void getNetworkModeSettings() {
         API.get().getNetworkSettings(new MySubscriber<Network> (){
             @Override
@@ -112,14 +233,15 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 //  0: auto mode 1: 2G only 2: 3G only 3: LTE only
 
                 Log.v(TAG, "getNetworkModeSettings"+result.getNetworkMode());
+                mNetworkSettings = result;
                 if(result.getNetworkMode() == 0){
-                    mConnectionModeSpinner.setSelection(0);
+                    mNetworkModeSpinner.setSelection(0);
                 } else if(result.getNetworkMode() == 3) {
-                    mConnectionModeSpinner.setSelection(1);
+                    mNetworkModeSpinner.setSelection(1);
                 } else if(result.getNetworkMode() == 2) {
-                    mConnectionModeSpinner.setSelection(2);
+                    mNetworkModeSpinner.setSelection(2);
                 } else if(result.getNetworkMode() == 1) {
-                    mConnectionModeSpinner.setSelection(3);
+                    mNetworkModeSpinner.setSelection(3);
                 }
             }
             @Override
@@ -155,7 +277,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(SimStatus result) {
                 // PinState: 0: unknown 1: enable but not verified 2: PIN enable verified 3: PIN disable 4: PUK required 5: PUK times used out;
-                Log.v(TAG, "getRoaming"+result.getPinState());
+                Log.v(TAG, "getSimStatus"+result.getPinState());
                 if(result.getPinState() == 2){
                     mSimPinCompat.setChecked(true);
                 } else if(result.getPinState() == 3) {
@@ -164,7 +286,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getRoaming error");
+                Log.d(TAG, "getSimStatus error");
             }
         });
     }
@@ -179,7 +301,62 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getRoaming error");
+                Log.d(TAG, "getSystemInfo error");
+            }
+        });
+    }
+
+    private void setUsageSetting(UsageSetting usageSetting) {
+        API.get().setUsageSetting(usageSetting, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "setUsageSetting error");
+            }
+        });
+    }
+
+    private void getUsageSetting() {
+        API.get().getUsageSetting(new MySubscriber<UsageSetting> (){
+            @Override
+            protected void onSuccess(UsageSetting result) {
+                mUsageSetting = result;
+                String unit = "";
+                if(result.getUnit() == 0) {
+                    unit = "MB";
+                } else if(result.getUnit() == 1) {
+                    unit = "GB";
+                } else if(result.getUnit() == 2) {
+                    unit = "KB";
+                }
+                mMonthlyDataPlanText.setText(result.getMonthlyPlan() + " "+unit);
+                mBillingDaySpinner.setSelection(result.getBillingDay()-1);
+//                mUsageAlertSpinner
+                if(result.getAutoDisconnFlag() == 0) {
+                    mDisconnectCompat.setChecked(false);
+                } else if(result.getAutoDisconnFlag() == 1) {
+                    mDisconnectCompat.setChecked(true);
+                }
+                if(result.getTimeLimitFlag() == 0) {
+                    mTimeLimitCompat.setChecked(false);
+                } else if(result.getTimeLimitFlag() == 1) {
+                    mTimeLimitCompat.setChecked(true);
+                }
+                mSetTimeLimitText.setText(result.getTimeLimitTimes()+"mins(s)");
+                if(result.getAutoDisconnFlag() == 0) {
+                    mLimitAutoDisaconectCompat.setChecked(false);
+                } else if(result.getAutoDisconnFlag() == 1) {
+                    mLimitAutoDisaconectCompat.setChecked(true);
+                }
+            }
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "getUsageSetting error");
             }
         });
     }
@@ -192,6 +369,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             case R.id.network_set_data_plan:
                 mSetDataPlan.setVisibility(View.VISIBLE);
                 setTitle("Set data plan");
+                getUsageSetting();
                 break;
             case R.id.rl_monthly_data_plan:
                 showSetmonthlyDataPlanDialog();
@@ -245,7 +423,17 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.spinner_connection_mode) {
-
+            setConnectionSettings(position);
+        } else if (parent.getId() == R.id.settings_network_mode) {
+            if(position == 0){
+                setNetworkSettings(0);
+            } else if(position == 3) {
+                setNetworkSettings(3);
+            } else if(position == 2) {
+                setNetworkSettings(2);
+            } else if(position == 1) {
+                setNetworkSettings(1);
+            }
         }
     }
 

@@ -1,114 +1,53 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.appwidget.RippleView;
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
-import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.network.ResponseBody;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SettingAccountActivity extends BaseActivity implements OnClickListener {
+public class SettingAccountActivity extends BaseActivityWithBack implements OnClickListener {
 
     public static final String LOGOUT_FLAG = "LogoutFlag";
-
-    private TextView m_tv_title = null;
-    private ImageButton m_ib_back = null;
-    private TextView m_tv_back = null;
-    private TextView m_tv_done;
-    private LinearLayout m_inputpwd;
-    private TextView m_notice;
-    private FrameLayout m_fl_titlebar;
-
-    private EditText m_current_password;
-    private EditText m_new_password;
-    private EditText m_confirm_password;
-
-    private IntentFilter m_change_password_filter;
-
-    private Dialog mTipsDialog;
-    private RippleView mRpForgotPassword;
-    private RelativeLayout mRlForgotPasswordPop;
+    private EditText mCurrentPassword;
+    private EditText mNewPassword;
+    private EditText mConfirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_setting_account);
+        setTitle(R.string.setting_account);
         getWindow().setBackgroundDrawable(null);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
-        controlTitlebar();
         initUi();
     }
 
-    private void controlTitlebar() {
-        m_tv_title = (TextView) findViewById(R.id.tv_title_title);
-        m_tv_title.setText(R.string.setting_account);
-        //back button and text
-        m_ib_back = (ImageButton) findViewById(R.id.ib_title_back);
-        m_tv_back = (TextView) findViewById(R.id.tv_title_back);
-
-        m_fl_titlebar = (FrameLayout) findViewById(R.id.fl_edit_or_done);
-        m_fl_titlebar.setVisibility(View.VISIBLE);
-
-        m_tv_done = (TextView) findViewById(R.id.tv_titlebar_done);
-        m_tv_done.setVisibility(View.VISIBLE);
-
-        findViewById(R.id.tv_titlebar_edit).setVisibility(View.GONE);
-
-        mRlForgotPasswordPop = (RelativeLayout) findViewById(R.id.mRl_forgotPassword_pop);
-        mRpForgotPassword = (RippleView) findViewById(R.id.mRp_forgotPassword);
-        mRpForgotPassword.setOnClickListener(this);
-
-        m_ib_back.setOnClickListener(this);
-        m_tv_back.setOnClickListener(this);
-        m_tv_done.setOnClickListener(this);
-    }
-
     private void initUi() {
-        m_notice = (TextView) findViewById(R.id.password_notice);
-
-        m_current_password = (EditText) findViewById(R.id.current_password);
-
-        m_new_password = (EditText) findViewById(R.id.new_password);
-
-        m_confirm_password = (EditText) findViewById(R.id.confirm_password);
-
-        m_change_password_filter = new IntentFilter(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
-        m_change_password_filter.addAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
+        mCurrentPassword = (EditText) findViewById(R.id.current_password);
+        mNewPassword = (EditText) findViewById(R.id.new_password);
+        mConfirmPassword = (EditText) findViewById(R.id.confirm_password);
+        findViewById(R.id.password_notice).setOnClickListener(this);
     }
 
     private void doneChangePassword() {
-        String currentPwd = m_current_password.getText().toString();
-        String newPwd = m_new_password.getText().toString();
-        String confirmPwd = m_confirm_password.getText().toString();
+        String currentPwd = mCurrentPassword.getText().toString();
+        String newPwd = mNewPassword.getText().toString();
+        String confirmPwd = mConfirmPassword.getText().toString();
         if (currentPwd.length() == 0) {
             String strInfo = getString(R.string.input_current_password);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
@@ -135,39 +74,22 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
         userChangePassword(LinkAppSettings.USER_NAME, currentPwd, confirmPwd);
 
-        m_current_password.setText(null);
-        m_new_password.setText(null);
-        m_confirm_password.setText(null);
+        mCurrentPassword.setText(null);
+        mNewPassword.setText(null);
+        mConfirmPassword.setText(null);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(m_current_password.getWindowToken(), 0);
-        imm.hideSoftInputFromWindow(m_new_password.getWindowToken(), 0);
-        imm.hideSoftInputFromWindow(m_confirm_password.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(mCurrentPassword.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(mNewPassword.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(mConfirmPassword.getWindowToken(), 0);
     }
 
-    private void showUpgradeDialog() {
-        mTipsDialog = new Dialog(this, R.style.UpgradeMyDialog);
-        mTipsDialog.setCanceledOnTouchOutside(false);
-        mTipsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        RelativeLayout deleteDialogLLayout = (RelativeLayout) View.inflate(this, R.layout.dialog_change_password_success, null);
-
-        TextView okBtn = (TextView) deleteDialogLLayout.findViewById(R.id.change_password_ok_btn);
-
-        mTipsDialog.setContentView(deleteDialogLLayout);
-        okBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismissTipsDialog();
-                finish();
-            }
-        });
-        mTipsDialog.show();
-    }
-
-    private void dismissTipsDialog() {
-        if (mTipsDialog != null && mTipsDialog.isShowing()) {
-            mTipsDialog.dismiss();
-        }
+    private void showDialog(String str) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(str);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.ok, null);
+        builder.create().show();
     }
 
     @Override
@@ -175,21 +97,31 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
         // TODO Auto-generated method stub
         int nID = v.getId();
         switch (nID) {
-
-            case R.id.mRp_forgotPassword:
-                mRlForgotPasswordPop.setVisibility(View.INVISIBLE);
-                break;
-
-            case R.id.tv_title_back:
-            case R.id.ib_title_back:
-                SettingAccountActivity.this.finish();
-                break;
-            case R.id.tv_titlebar_done:
-                doneChangePassword();
+            case R.id.password_notice:
+                showDialog(getString(R.string.login_forgotpassword_des));
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_save) {
+            doneChangePassword();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void userChangePassword(String UserName, String CurrentPassword, String NewPassword) {
@@ -214,7 +146,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
     @Override
     protected void onResume() {
-        m_bNeedBack = false;
         super.onResume();
     }
 

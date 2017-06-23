@@ -33,6 +33,8 @@ public class ApiEngine {
     public static NetworkInfos home_networkInfos;
     public static ConnectedList home_connectDeviceList;
     public static BlockList home_blockDeviceList;
+    public static BlockList blockDeviceList;
+    public static ConnectedList connectDeviceList;
 
     /* interface */
     private static OnConnectDeviceList onConnectDeviceList;

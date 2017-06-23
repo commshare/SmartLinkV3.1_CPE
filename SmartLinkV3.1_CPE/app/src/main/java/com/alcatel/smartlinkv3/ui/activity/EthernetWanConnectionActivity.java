@@ -1,15 +1,21 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
 
 public class EthernetWanConnectionActivity extends BaseActivityWithBack implements OnClickListener {
+    private static final String TAG = "EthernetWanConnectionActivity";
 
     private ImageView mSelectedPppopImg;
     private ImageView mSelectedDhcpImg;
@@ -17,6 +23,19 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
     private LinearLayout mPppopLayout;
     private TextView mDhcpTextview;
     private LinearLayout mStaticIpLayout;
+
+    //pppoe
+    private EditText mPppoeAccount;
+    private EditText mPppoePassword;
+    private TextView mPppoeMtu;
+
+    //Static Ip
+    private EditText mStaticIpAddress;
+    private EditText mStaticIpSubnetMask;
+    private EditText mStaticIpDefaultGateway;
+    private EditText mStaticIpPreferredDns;
+    private EditText mStaticIpSecondaryDns;
+    private TextView mStaticIpMtu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +54,43 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
         findViewById(R.id.ethernet_wan_connection_pppoe).setOnClickListener(this);
         findViewById(R.id.ethernet_wan_connection_dhcp).setOnClickListener(this);
         findViewById(R.id.ethernet_wan_connection_static_ip).setOnClickListener(this);
+
+        //pppoe
+        mPppoeAccount = (EditText) findViewById(R.id.pppoe_account);
+        mPppoePassword = (EditText) findViewById(R.id.pppoe_password);
+        mPppoeMtu = (TextView) findViewById(R.id.pppoe_mtu);
+
+        //static ip
+        mStaticIpAddress = (EditText) findViewById(R.id.static_ip_address);
+        mStaticIpSubnetMask = (EditText) findViewById(R.id.static_ip_subnet_mask);
+        mStaticIpDefaultGateway = (EditText) findViewById(R.id.static_ip_default_gateway);
+        mStaticIpPreferredDns = (EditText) findViewById(R.id.static_ip_preferred_dns);
+        mStaticIpSecondaryDns = (EditText) findViewById(R.id.static_ip_secondary_dns);
+        mStaticIpMtu = (TextView) findViewById(R.id.static_ip_mtu);
+        getWanSettings();
     }
 
-
+    private void getWanSettings() {
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>(){
+            @Override
+            protected void onSuccess(WanSettingsResult result) {
+                Log.v(TAG,"account"+result);
+                mPppoeAccount.setText(result.getAccount().toString());
+                mPppoePassword.setText(result.getPassword().toString());
+                mPppoeMtu.setText(result.getPppoeMtu()+"");
+                mStaticIpAddress.setText(result.getIpAddress().toString());
+                mStaticIpSubnetMask.setText(result.getSubNetMask().toString());
+                mStaticIpDefaultGateway.setText(result.getGateway().toString());
+                mStaticIpPreferredDns.setText(result.getPrimaryDNS().toString());
+                mStaticIpSecondaryDns.setText(result.getSecondaryDNS().toString());
+                mStaticIpMtu.setText(result.getMtu()+"");
+            }
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "getWanSettings error");
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {

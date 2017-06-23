@@ -30,6 +30,7 @@ public interface Methods {
     String DISCONNECT = "DisConnect";
     String GET_CONNECTION_SETTINGS = "GetConnectionSettings";
     String SET_CONNECTION_SETTINGS = "SetConnectionSettings";
+    String SET_CONNECTION_MODE = "SetConnectionMode";
 
     //Network
     String GET_NETWORK_SETTINGS = "GetNetworkSettings";
@@ -73,7 +74,8 @@ public interface Methods {
 
     String GET_BATTERYSTATE = "GetBatteryState";
     String GET_NETWORKINFO = "GetNetworkInfo";
-    
+
+    String SET_USAGE_SETTING = "SetUsageSettings";
     String GET_USAGESETTING = "GetUsageSettings";
     String GET_USAGERECORD = "GetUsageRecord";
     String SET_USAGERECORDCLEAR = "SetUsageRecordClear";

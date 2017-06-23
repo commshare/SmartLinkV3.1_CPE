@@ -10,6 +10,10 @@ public class ConnectionSettings {
     int PdpType;
     int ConnOffTime;
 
+    public ConnectionSettings() {
+
+    }
+
     public ConnectionSettings(int connectMode, int roamingConnect, int pdpType, int connOffTime) {
         ConnectMode = connectMode;
         RoamingConnect = roamingConnect;

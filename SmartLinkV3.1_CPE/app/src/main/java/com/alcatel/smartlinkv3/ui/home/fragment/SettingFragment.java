@@ -170,11 +170,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void goEthernetWanConnectionPage() {
-        ChangeActivity.toActivity(getActivity(), EthernetWanConnectionActivity.class, true, true, false, 0);
-    }
-
-
     private void popDialogFromBottom(int itemType) {
         PopupWindow popupWindow = new PopupWindow(getActivity());
         View view = View.inflate(getActivity(), R.layout.dialog_from_bottom, null);
@@ -725,12 +720,19 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void goToAccountSettingPage() {
         // to setting account activity
-        ChangeActivity.toActivity(getActivity(), SettingAccountActivity.class, true, true, false, 0);
+        Intent intent = new Intent(getActivity(), SettingAccountActivity.class);
+        getActivity().startActivity(intent);
     }
 
     private void goToMobileNetworkSettingPage() {
         // to setting network activity
-        ChangeActivity.toActivity(getActivity(), SettingNetworkActivity.class, true, true, false, 0);
+        Intent intent = new Intent(getActivity(), SettingNetworkActivity.class);
+        getActivity().startActivity(intent);
+    }
+
+    private void goEthernetWanConnectionPage() {
+        Intent intent = new Intent(getActivity(), EthernetWanConnectionActivity.class);
+        getActivity().startActivity(intent);
     }
 
     private void goToDeviceSettingPage() {
