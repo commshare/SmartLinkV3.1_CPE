@@ -40,7 +40,12 @@ import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
 import com.alcatel.smartlinkv3.utils.FileUtils;
 
 import java.io.File;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Subscriber;
 
 /**
@@ -74,6 +79,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private TextView mDeviceVersion;
     private AlertDialog mCheckVersionDlg;
     private AlertDialog mUpdatingDlg;
+    private final static String mSaveUrl = "/TCL/LINKHUB/Backup";
 
 
     @Nullable
@@ -270,8 +276,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.backup_current_settings_to);
         TextView textView = new TextView(getActivity());
-        String saveUrl = "/TCL/LINKHUB/Backup";
-        textView.setText(saveUrl);
+        textView.setText(mSaveUrl);
         builder.setView(textView);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -282,7 +287,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         builder.setPositiveButton(R.string.backup, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                downLoadConfigureFile(saveUrl);
+                downLoadConfigureFile(mSaveUrl);
             }
         });
         builder.show();
@@ -402,6 +407,43 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void restore() {
+        File file = new File(FileUtils.createFilePath(mSaveUrl), "configure.bin");
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("iptUpload", file.getName(), requestFile);
+        API.get().uploadFile(new Subscriber() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoadingDialog();
+            }
+
+            @Override
+            public void onCompleted() {
+                dismissLoadingDialog();
+                showSuccessDialog();
+                Log.d(TAG, " restore onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onResultError " + e);
+                if (e instanceof SocketTimeoutException) {
+                    ToastUtil.showMessage(getActivity(), "Time out");
+                } else if (e instanceof ConnectException) {
+                    ToastUtil.showMessage(getActivity(), "Couldn't connect");
+                } else {
+                    ToastUtil.showMessage(getActivity(), "Failed");
+                }
+                dismissLoadingDialog();
+                showFailedDialog(R.string.couldn_t_restore_try_again);
+            }
+
+            @Override
+            public void onNext(Object o) {
+
+            }
+
+        }, body);
     }
 
 

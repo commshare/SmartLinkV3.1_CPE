@@ -1,6 +1,8 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,7 +43,8 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         mQuickGuide = (TextView) findViewById(R.id.quick_guide);
         mIvPoint = (ImageView) findViewById(R.id.iv_point);
         mAppVersionTxt = (TextView) findViewById(R.id.app_version_txt);
-
+        mWebManager.setOnClickListener(this);
+        mQuickGuide.setOnClickListener(this);
         setTitle(R.string.setting_title_about);
         getDataFromNet();
     }
@@ -99,9 +102,12 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ib_title_back:
-            case R.id.tv_title_back:
-                this.finish();
+            case R.id.web_manager:
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse("http://192.168.1.1");
+                intent.setData(content_url);
+                startActivity(intent);
                 break;
             default:
                 break;

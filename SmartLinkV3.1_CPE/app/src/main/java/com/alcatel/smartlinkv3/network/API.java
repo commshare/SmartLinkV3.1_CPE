@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -61,7 +62,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -195,6 +198,9 @@ public class API {
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
+    private void subscribe(Subscriber subscriber, Observable observable) {
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    }
     private void subscribeDownloadFile(Subscriber subscriber, Observable observable, File file) {
         observable.subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io()).map(new Func1<okhttp3.ResponseBody, InputStream>() {
             @Override
@@ -311,9 +317,10 @@ public class API {
     public void getConnectionState(MySubscriber<ConnectionState> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectionState(new RequestBody(Methods.GET_CONNECTION_STATE)));
     }
-    
-   
 
+    public void uploadFile(Subscriber subscriber, MultipartBody.Part body) {
+        subscribe(subscriber, smartLinkApi.uploadFile(body));
+    }
 
     /**
      * get 2.4g and 5g status (on/off)
@@ -511,7 +518,6 @@ public class API {
     }
 
 
-
     interface SmartLinkApi {
 
         @POST("/jrd/webapi")
@@ -531,7 +537,7 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<ConnectionState>> getConnectionState(@Body RequestBody requestBody);
-        
+
         @POST("/jrd/webapi")
         Observable<ResponseBody<WlanState>> getWlanState(@Body RequestBody requestBody);
 
@@ -572,6 +578,10 @@ public class API {
         @Streaming
         @GET
         Observable<okhttp3.ResponseBody> downloadFile(@Url String url);
+
+        @Multipart
+        @POST("/goform/uploadBackupSettings")
+        Observable<okhttp3.ResponseBody> uploadFile(@Part MultipartBody.Part file);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<FTPSettings>> getFTPSettings(@Body RequestBody requestBody);
