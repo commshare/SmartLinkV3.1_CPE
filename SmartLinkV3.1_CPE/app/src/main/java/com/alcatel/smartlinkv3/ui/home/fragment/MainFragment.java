@@ -35,7 +35,7 @@ import com.alcatel.smartlinkv3.model.battery.BatteryState;
 import com.alcatel.smartlinkv3.model.network.NetworkInfos;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.user.LoginState;
-import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
+import com.alcatel.smartlinkv3.ui.activity.DeviceActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
@@ -47,7 +47,6 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 import com.alcatel.smartlinkv3.ui.home.helper.cons.Cons;
 import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 import com.alcatel.smartlinkv3.ui.home.helper.main.ViewConnectBroadcastReceiver;
@@ -119,8 +118,8 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        m_view = View.inflate(getActivity(), R.layout.fragment_home_mains, null);
-        typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Light.ttf");
+        m_view = View.inflate(hac, R.layout.fragment_home_mains, null);
+        typeFace = Typeface.createFromAsset(hac.getAssets(), "fonts/Roboto_Light.ttf");
         circleProgress = ((CircleProgress) m_view.findViewById(R.id.home_circleProgress));
         batteryView = ((ImageView) m_view.findViewById(R.id.home_battery_image));
         mConnectedView = ((WaveLoadingView) m_view.findViewById(R.id.connected_button));
@@ -148,9 +147,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         m_accessImageView.setOnClickListener(this);
         m_accessstatusTextView = (TextView) m_view.findViewById(R.id.access_label);
 
-        m_loginDialog = new LoginDialog(getActivity());
-        m_autoLoginDialog = new AutoLoginProgressDialog(getActivity());
-        m_ForceloginDlg = new AutoForceLoginProgressDialog(getActivity());
+        m_loginDialog = new LoginDialog(hac);
+        m_autoLoginDialog = new AutoLoginProgressDialog(hac);
+        m_ForceloginDlg = new AutoForceLoginProgressDialog(hac);
 
         m_unlockSimBtn = (Button) m_view.findViewById(R.id.unlock_sim_button);
         m_unlockSimBtn.setOnClickListener(this);
@@ -242,7 +241,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     public void onPause() {
         super.onPause();
         try {
-            getActivity().unregisterReceiver(m_viewConnetMsgReceiver);
+            hac.unregisterReceiver(m_viewConnetMsgReceiver);
         } catch (Exception e) {
 
         }
@@ -268,11 +267,11 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                 break;
 
             case R.id.unlock_sim_button:
-                ((HomeActivity) getActivity()).unlockSimBtnClick(true);
+                hac.unlockSimBtnClick(true);
                 break;
             case R.id.access_status:
-                ((HomeActivity) getActivity()).navigateAfterLogin(() -> {
-                    ChangeActivity.toActivity(getActivity(), ActivityDeviceManager.class, true, false, false, 0);
+                hac.navigateAfterLogin(() -> {
+                    ChangeActivity.toActivity(hac, DeviceActivity.class, true, false, false, 0);
                 });
                 break;
             default:
@@ -424,7 +423,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         // WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
         if (!m_bConnectPressd) {
             if (home_connectionState.getConnectionStatus() == Cons.CONNECTED & home_connectionState != null) {
-                boolean logoutFlag = SharedPrefsUtil.getInstance(getActivity()).getBoolean(SettingAccountActivity.LOGOUT_FLAG, true);
+                boolean logoutFlag = SharedPrefsUtil.getInstance(hac).getBoolean(SettingAccountActivity.LOGOUT_FLAG, true);
                 if (logoutFlag) {
                     m_connectLayout.setVisibility(View.VISIBLE);
                     m_connectedLayout.setVisibility(View.GONE);
@@ -451,7 +450,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                 m_connectedLayout.setVisibility(View.VISIBLE);
             }
         } else {
-            boolean logoutFlag = SharedPrefsUtil.getInstance(getActivity()).getBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
+            boolean logoutFlag = SharedPrefsUtil.getInstance(hac).getBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
             if (logoutFlag) {
                 m_connectLayout.setVisibility(View.VISIBLE);
                 m_connectedLayout.setVisibility(View.GONE);
@@ -498,7 +497,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                     PromptUserLogined();
                 }
             }
-            
+
         }
     }
 
@@ -507,7 +506,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
             if (!FeatureVersionManager.getInstance().isSupportForceLogin()) {
                 m_loginDialog.showOtherLogin();
             } else {
-                ForceLoginSelectDialog.getInstance(getActivity()).showDialog(() -> {
+                ForceLoginSelectDialog.getInstance(hac).showDialog(() -> {
                     m_ForceloginDlg.autoForceLoginAndShowDialog(new AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener() {
                         public void onLoginSuccess() {
                             connect();
@@ -516,7 +515,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                         public void onLoginFailed(String error_code) {
                             if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
                                 SmartLinkV3App.getInstance().setForcesLogin(true);
-                                ErrorDialog.getInstance(getActivity()).showDialog(getActivity().getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                ErrorDialog.getInstance(hac).showDialog(hac.getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
                                     @Override
                                     public void onRetry() {
                                         m_loginDialog.showDialog(() -> connect());
@@ -532,7 +531,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
             m_loginDialog.showTimeout();
         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-            ErrorDialog.getInstance(getActivity()).showDialog(getActivity().getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+            ErrorDialog.getInstance(hac).showDialog(hac.getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
                 @Override
                 public void onRetry() {
                     m_loginDialog.showDialog();
@@ -542,11 +541,11 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void connectedBtnClick() {
-        getActivity().startActivity(new Intent(getActivity(), UsageActivity.class));
+        hac.startActivity(new Intent(hac, UsageActivity.class));
     }
 
     private void connect() {
-        SharedPrefsUtil.getInstance(getActivity()).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
+        SharedPrefsUtil.getInstance(hac).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
         // TOAT: usagesetting
         //UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
         //UsageSetting home_usageSetting = APIManager.getInstance().getUsageSetting();
@@ -556,19 +555,19 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         //WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
 
         if (home_connectionState != null) {
-            if ((home_connectionState.getConnectionStatus() == Cons.DISCONNECTED || home_connectionState.getConnectionStatus() == Cons.DISCONNECTING) ) {
+            if ((home_connectionState.getConnectionStatus() == Cons.DISCONNECTED || home_connectionState.getConnectionStatus() == Cons.DISCONNECTING)) {
                 if (home_usageSetting != null & home_usageRecord != null) {
-                    if (home_usageSetting.getAutoDisconnFlag() == Cons.ENABLE && home_usageRecord.getMonthlyPlan() > 0 ) {
+                    if (home_usageSetting.getAutoDisconnFlag() == Cons.ENABLE && home_usageRecord.getMonthlyPlan() > 0) {
                         if ((home_usageRecord.getHUseData() + home_usageRecord.getRoamUseData()) >= home_usageRecord.getMonthlyPlan()) {
-                            String msgRes = getActivity().getString(R.string.home_usage_over_redial_message);
-                            Toast.makeText(getActivity(), msgRes, Toast.LENGTH_LONG).show();
+                            String msgRes = hac.getString(R.string.home_usage_over_redial_message);
+                            Toast.makeText(hac, msgRes, Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
                 }
             }
         }
-       
+
 
         if (!m_bConnectPressd) {
             m_bConnectPressd = true;
@@ -593,9 +592,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
     private void PromptUserLogined() {
         if (null == m_dialog_timeout_info) {
-            m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(getActivity());
+            m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(hac);
         }
-        m_dialog_timeout_info.showDialog(getActivity().getString(R.string.other_login_warning_title), getActivity().getResources().getString(R.string.login_login_time_used_out_msg));
+        m_dialog_timeout_info.showDialog(hac.getString(R.string.other_login_warning_title), hac.getResources().getString(R.string.login_login_time_used_out_msg));
     }
 
     private void showSignalAndNetworkType() {
@@ -643,7 +642,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                     m_networkTypeTextView.setVisibility(View.VISIBLE);
                     m_networkTypeTextView.setTypeface(typeFace);
                     m_networkTypeTextView.setText(R.string.home_network_type_2g);
-                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                    m_networkTypeTextView.setTextColor(hac.getResources().getColor(R.color.mg_blue));
                 }
 
                 //3G
@@ -652,7 +651,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                     m_networkTypeTextView.setVisibility(View.VISIBLE);
                     m_networkTypeTextView.setTypeface(typeFace);
                     m_networkTypeTextView.setText(R.string.home_network_type_3g);
-                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                    m_networkTypeTextView.setTextColor(hac.getResources().getColor(R.color.mg_blue));
                 }
 
                 //3G+
@@ -660,7 +659,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                     m_networkTypeTextView.setVisibility(View.VISIBLE);
                     m_networkTypeTextView.setTypeface(typeFace);
                     m_networkTypeTextView.setText(R.string.home_network_type_3g_plus);
-                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                    m_networkTypeTextView.setTextColor(hac.getResources().getColor(R.color.mg_blue));
                 }
 
                 //4G			
@@ -668,7 +667,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                     m_networkTypeTextView.setVisibility(View.VISIBLE);
                     m_networkTypeTextView.setTypeface(typeFace);
                     m_networkTypeTextView.setText(R.string.home_network_type_4g);
-                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                    m_networkTypeTextView.setTextColor(hac.getResources().getColor(R.color.mg_blue));
                 }
             }
         }
@@ -719,16 +718,16 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     //     int batterLevel = home_batteryState.getBatteryLevel();
     //
     //     if (batterLevel <= 30) {
-    //         circleProgress.setProgress(getActivity().getResources().getColor(R.color.circle_yellow));
+    //         circleProgress.setProgress(hac.getResources().getColor(R.color.circle_yellow));
     //     }
     //     circleProgress.setValue(batterLevel);
     //
     //     showBatteryOnProgressPosition(batterLevel);
-    //     SharedPrefsUtil.getInstance(getActivity()).putInt(BATTERY_LEVEL, batterLevel);
+    //     SharedPrefsUtil.getInstance(hac).putInt(BATTERY_LEVEL, batterLevel);
     // }
 
     private void showBatteryOnProgressPosition(int progressValue) {
-        int startProgressValue = SharedPrefsUtil.getInstance(getActivity()).getInt(BATTERY_LEVEL, 0);
+        int startProgressValue = SharedPrefsUtil.getInstance(hac).getInt(BATTERY_LEVEL, 0);
         float startRotateValue = (float) (3.6 * startProgressValue);
         float rotateValue = (float) (3.6 * progressValue);
 
@@ -760,9 +759,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
             long hMonthlyPlan = home_usageSetting.getMonthlyPlan();
             long circleUseDataProgressValue = (hUseData * 100) / hMonthlyPlan;
             if (circleUseDataProgressValue >= 80) {
-                mConnectedView.setWaveColor(getActivity().getResources().getColor(R.color.wave_yellow));
+                mConnectedView.setWaveColor(hac.getResources().getColor(R.color.wave_yellow));
             } else {
-                mConnectedView.setWaveColor(getActivity().getResources().getColor(R.color.circle_green));
+                mConnectedView.setWaveColor(hac.getResources().getColor(R.color.circle_green));
             }
             if (circleUseDataProgressValue <= 100) {
                 mConnectedView.setProgressValue((int) circleUseDataProgressValue - 8);
@@ -770,7 +769,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                 mConnectedView.setProgressValue(92);
             }
         } else {
-            mConnectedView.setWaveColor(getActivity().getResources().getColor(R.color.circle_green));
+            mConnectedView.setWaveColor(hac.getResources().getColor(R.color.circle_green));
             mConnectedView.setProgressValue(92);
         }
     }
@@ -779,10 +778,10 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         ArrayList<ConnectedDeviceItemModel> connecedDeviceLstData = BusinessManager.getInstance().getConnectedDeviceList();
         m_accessnumTextView.setTypeface(typeFace);
         m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", connecedDeviceLstData.size()));
-        m_accessnumTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+        m_accessnumTextView.setTextColor(hac.getResources().getColor(R.color.mg_blue));
         m_accessImageView.setImageResource(R.drawable.home_ic_person_many);
 
-        String strOfficial = this.getActivity().getString(R.string.access_lable);
+        String strOfficial = hac.getString(R.string.access_lable);
         m_accessstatusTextView.setText(strOfficial);
     }
 

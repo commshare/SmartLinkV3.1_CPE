@@ -173,6 +173,9 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
 
         hac = this;
 
+        // init engine status
+        getAllStatus();
+
         // get action bar
         supportActionBar = getSupportActionBar();
 
@@ -185,6 +188,17 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         startTimer();
     }
 
+    private void getAllStatus() {
+        ApiEngine.getSimStatus();
+        ApiEngine.getUserLoginStatus();
+        ApiEngine.getConnectStatus();
+        ApiEngine.getNetworkInfo();
+        ApiEngine.getUsageSetting();
+        ApiEngine.getUsageRecord();
+        ApiEngine.getConnectedDeviceList();
+        ApiEngine.getBlockDeviceList();
+    }
+
     /**
      * 心跳定时器
      */
@@ -193,7 +207,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
             @Override
             public void doSomething() {
                 // 检测必要状态
-                checkAllStatus();
+                getAllStatus();
                 if (onTimerStatus != null) {
                     onTimerStatus.sendTimerFlag();
                 }
@@ -210,19 +224,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         this.onTimerStatus = onTimerStatus;
     }
 
-    /**
-     * 检测必要状态
-     */
-    private void checkAllStatus() {
-        ApiEngine.getSimStatus();
-        ApiEngine.getUserLoginStatus();
-        ApiEngine.getConnectStatus();
-        ApiEngine.getNetworkInfo();
-        ApiEngine.getUsageSetting();
-        ApiEngine.getUsageRecord();
-        ApiEngine.getConnectedDeviceList();
-        ApiEngine.getBlockDeviceList();
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

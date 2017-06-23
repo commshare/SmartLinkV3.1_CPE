@@ -24,7 +24,6 @@ import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
-import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 import com.alcatel.smartlinkv3.ui.view.CirclePageIndicator;
 
 import java.net.ConnectException;
@@ -56,22 +55,8 @@ public class LoadingActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initViews();
 
-        // init engine status
-        initEngine();
-
         mSharedPrefs = getSharedPreferences(LoadingActivity.class.getSimpleName(), MODE_PRIVATE);
         mHandler.postDelayed(this::startApp, SPLASH_DELAY);
-    }
-
-    private void initEngine() {
-        ApiEngine.getSimStatus();
-        ApiEngine.getUserLoginStatus();
-        ApiEngine.getConnectStatus();
-        ApiEngine.getNetworkInfo();
-        ApiEngine.getUsageSetting();
-        ApiEngine.getUsageRecord();
-        ApiEngine.getConnectedDeviceList();
-        ApiEngine.getBlockDeviceList();
     }
 
     private void initViews() {
@@ -93,7 +78,6 @@ public class LoadingActivity extends AppCompatActivity {
         mViewPager.setAdapter(mPagerAdapter);
         mPageIndicator.setViewPager(mViewPager);
     }
-
 
     @Override
     protected void onResume() {

@@ -30,8 +30,8 @@ public class ApiEngine {
     public static LoginState home_loginStatu;
     public static ConnectionStates home_connectionState;
     public static NetworkInfos home_networkInfos;
-    public static ConnectedList connectDeviceList;
-    public static BlockList blockDeviceList;
+    public static ConnectedList home_connectDeviceList;
+    public static BlockList home_blockDeviceList;
 
     /* interface */
     private static OnConnectDeviceList onConnectDeviceList;
@@ -163,7 +163,7 @@ public class ApiEngine {
         API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
             @Override
             protected void onSuccess(ConnectedList device) {
-                ApiEngine.connectDeviceList = device;
+                ApiEngine.home_connectDeviceList = device;
                 if (onConnectDeviceList != null) {
                     onConnectDeviceList.getConnectDevices(device);
                 }
@@ -175,7 +175,7 @@ public class ApiEngine {
         API.get().getBlockDeviceList(new MySubscriber<BlockList>() {
             @Override
             protected void onSuccess(BlockList blockList) {
-                ApiEngine.blockDeviceList = blockList;
+                ApiEngine.home_blockDeviceList = blockList;
                 if (onBlockDeviceList != null) {
                     onBlockDeviceList.getBlockDevices(blockList);
                 }
