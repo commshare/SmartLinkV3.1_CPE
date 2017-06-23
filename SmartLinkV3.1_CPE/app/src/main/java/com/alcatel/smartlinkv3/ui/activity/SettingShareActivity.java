@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.model.sharing.DLNASettings;
 import com.alcatel.smartlinkv3.model.sharing.FTPSettings;
 import com.alcatel.smartlinkv3.model.sharing.SambaSettings;
@@ -20,6 +21,9 @@ import com.alcatel.smartlinkv3.network.ResponseBody;
 public class SettingShareActivity extends BaseActivityWithBack implements OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private final String TAG = "SettingShareActivity";
+    private final int USB_STATUS_ON_INSERT = 0;
+    private final int USB_STATUS_USB_STORAGE = 1;
+    private final int USB_STATUS_USB_PRINT = 2;
     private TextView mUSBStorageText;
     private SwitchCompat mFTPSwitch;
     private SwitchCompat mSambaSwitch;
@@ -53,6 +57,15 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     }
 
     private void initData() {
+
+        int usbStatus = BusinessManager.getInstance().getSystemStatus().getUsbStatus();
+        Log.d(TAG,"initData,usb status:"+usbStatus);
+        switch (usbStatus){
+            case USB_STATUS_ON_INSERT:
+                mUSBStorageText.setText(R.string.no_insert);break;
+            case USB_STATUS_USB_STORAGE: mUSBStorageText.setText(R.string.setting_usb_storage);break;
+            case USB_STATUS_USB_PRINT:mUSBStorageText.setText(R.string.usb_printer);break;
+        }
         requestGetFTPSettings();
         requestGetSambaSettings();
         requestGetDLNASettings();

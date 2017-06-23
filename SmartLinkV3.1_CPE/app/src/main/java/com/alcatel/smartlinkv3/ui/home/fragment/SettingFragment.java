@@ -57,7 +57,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private final static String TAG = "SettingFragment";
     public static boolean isFtpSupported = false;
     public static boolean isDlnaSupported = false;
-    public static boolean isSharingSupported = false;
+    public static boolean isSharingSupported = true;
     public static boolean m_blFirst = true;
     private int upgradeStatus;
 

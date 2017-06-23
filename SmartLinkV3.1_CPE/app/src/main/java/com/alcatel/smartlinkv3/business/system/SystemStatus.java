@@ -12,7 +12,19 @@ public class SystemStatus extends BaseResult{
 	private int barrery = 0;  //0: disconnected	1: connected
 	private int Roaming = 0;  //0: no 1:Roaming
 	private int curr_num = 0;	//Current WIFI client
-	
+
+	/**
+	 * usb status
+	 0: Not Insert
+	 1: USB storage
+	 2: USB print
+	 */
+	private int UsbStatus;	//usb status
+	/**
+	 * USB disk name
+	 */
+	private String UsbName;
+
 	@Override
 	public void clear(){
 		NetworkType = 0;
@@ -70,5 +82,19 @@ public class SystemStatus extends BaseResult{
 	public int getNetworkType() {
 		return NetworkType;
 	}
-	
+	public int getUsbStatus() {
+		return UsbStatus;
+	}
+
+	public void setUsbStatus(int usbStatus) {
+		UsbStatus = usbStatus;
+	}
+
+	public String getUsbName() {
+		return UsbName;
+	}
+
+	public void setUsbName(String usbName) {
+		UsbName = usbName;
+	}
 }

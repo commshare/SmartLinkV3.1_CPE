@@ -824,4 +824,6 @@
     <string name="update">Update</string>
     <string name="updating">Updating...</string>
     <string name="could_not_update_try_again">Couldn\'t update.Try again.</string>
+    <string name="no_insert">NO insert</string>
+    <string name="usb_printer">USB printer</string>
 </resources>
