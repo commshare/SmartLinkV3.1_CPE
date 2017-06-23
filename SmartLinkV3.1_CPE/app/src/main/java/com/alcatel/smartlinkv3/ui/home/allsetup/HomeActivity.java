@@ -162,16 +162,11 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     private OnTimerStatus onTimerStatus;
     private TimerHelper timerHelper;
 
-    public static HomeActivity hac;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homes);
-
-        hac = this;
 
         // init engine status
         getAllStatus();
