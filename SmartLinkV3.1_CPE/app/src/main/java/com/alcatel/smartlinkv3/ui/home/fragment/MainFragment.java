@@ -35,7 +35,7 @@ import com.alcatel.smartlinkv3.model.battery.BatteryState;
 import com.alcatel.smartlinkv3.model.network.NetworkInfos;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.user.LoginState;
-import com.alcatel.smartlinkv3.ui.activity.DeviceActivity;
+import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
@@ -271,7 +271,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                 break;
             case R.id.access_status:
                 hac.navigateAfterLogin(() -> {
-                    ChangeActivity.toActivity(hac, DeviceActivity.class, true, false, false, 0);
+                    ChangeActivity.toActivity(hac, ActivityDeviceManager.class, true, false, false, 0);
                 });
                 break;
             default:
