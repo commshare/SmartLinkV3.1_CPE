@@ -58,6 +58,8 @@ import com.alcatel.smartlinkv3.ui.view.WaveLoadingView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity.hac;
+
 public class MainFragment extends Fragment implements View.OnClickListener, ViewConnectBroadcastReceiver.OnBatteryListener, ViewConnectBroadcastReceiver.OnDeviceConnectListener, ViewConnectBroadcastReceiver.OnNetworkRollRequestListener, ViewConnectBroadcastReceiver.OnSimRollRequestListener, ViewConnectBroadcastReceiver.OnWanConnectListener, ViewConnectBroadcastReceiver.OnWanRollRequestListener, ViewConnectBroadcastReceiver.OnWifiConnectListener {
 
     private static final String BATTERY_LEVEL = "Battery Level";
@@ -166,20 +168,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         m_viewConnetMsgReceiver.setOnWanRollRequestListener(this);
         m_viewConnetMsgReceiver.setOnWifiConnectListener(this);
 
-        initStatus();
-
-        // 接收HomeActivity的定时信号
-        // TOAT: null point exception
-        ((HomeActivity) getActivity()).setOnTimerStatus(() -> {
-            getActivity().runOnUiThread(() -> {
-                System.out.println(" MainFragment running ");
-                // 1.get all status
-                getAllStatus();
-                // 2.refresh ui
-                showAllView();
-            });
-        });
-
         return m_view;
     }
 
@@ -225,7 +213,19 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     @Override
     public void onResume() {
         super.onResume();
-        repeatDataUi();
+        initStatus();
+
+        // 接收HomeActivity的定时信号
+        // TOAT: null point exception
+        hac.setOnTimerStatus(() -> {
+            hac.runOnUiThread(() -> {
+                System.out.println(" MainFragment running ");
+                // 1.get all status
+                getAllStatus();
+                // 2.refresh ui
+                showAllView();
+            });
+        });
     }
 
 

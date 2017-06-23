@@ -70,6 +70,13 @@ public class Cons {
 
     public static int DISABLE_NOTAUTODISCONNECT = 0;
     public static int ENABLE_AUTODISCONNECT = 1;
+    
+    /* Device */
+    public static  int WEBUI_LOGIN = 0;
+    public static  int CONNECT_NOTLOGIN = 1;
+
+    public static  int USB_CONNECT =0;
+    public static  int WIFI_CONNECT =1;
 
 
 }

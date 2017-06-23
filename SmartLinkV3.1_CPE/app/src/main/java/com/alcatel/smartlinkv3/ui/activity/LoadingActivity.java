@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,11 +20,11 @@ import android.widget.ImageView;
 import com.alcatel.smartlinkv3.Constants;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.ENUM;
-import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
+import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 import com.alcatel.smartlinkv3.ui.view.CirclePageIndicator;
 
 import java.net.ConnectException;
@@ -57,8 +56,22 @@ public class LoadingActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initViews();
 
+        // init engine status
+        initEngine();
+
         mSharedPrefs = getSharedPreferences(LoadingActivity.class.getSimpleName(), MODE_PRIVATE);
         mHandler.postDelayed(this::startApp, SPLASH_DELAY);
+    }
+
+    private void initEngine() {
+        ApiEngine.getSimStatus();
+        ApiEngine.getUserLoginStatus();
+        ApiEngine.getConnectStatus();
+        ApiEngine.getNetworkInfo();
+        ApiEngine.getUsageSetting();
+        ApiEngine.getUsageRecord();
+        ApiEngine.getConnectedDeviceList();
+        ApiEngine.getBlockDeviceList();
     }
 
     private void initViews() {
@@ -94,9 +107,8 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private boolean isWifiConnected() {
-        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-                .getState();
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
         return NetworkInfo.State.CONNECTED == wifiState;
     }
 
@@ -112,7 +124,7 @@ public class LoadingActivity extends AppCompatActivity {
 
     private void launchNextActivity() {
 
-        if (!isWifiConnected()){
+        if (!isWifiConnected()) {
             launchRefreshWifiActivity();
             return;
         }

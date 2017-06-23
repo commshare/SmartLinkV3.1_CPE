@@ -162,12 +162,17 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     private OnTimerStatus onTimerStatus;
     private TimerHelper timerHelper;
 
+    public static HomeActivity hac;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homes);
+
+        hac = this;
+
         // get action bar
         supportActionBar = getSupportActionBar();
 
@@ -215,6 +220,8 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         ApiEngine.getNetworkInfo();
         ApiEngine.getUsageSetting();
         ApiEngine.getUsageRecord();
+        ApiEngine.getConnectedDeviceList();
+        ApiEngine.getBlockDeviceList();
     }
 
     @Override
@@ -323,11 +330,11 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         switch (view.getId()) {
             
             /* group groupButtons */
-            
+
             case R.id.mRl_home_mainbutton:// home button
                 refreshUi_fragment(FragmentHomeEnum.MAIN);
                 break;
-            
+
             case R.id.mRl_home_wifibutton:// wifi button
                 // if login --> then go to wifi fragment
                 navigateAfterLogin(() -> {
