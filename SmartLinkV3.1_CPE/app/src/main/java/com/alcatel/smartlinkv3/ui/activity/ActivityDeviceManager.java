@@ -39,13 +39,10 @@ import com.alcatel.smartlinkv3.common.ENUM.EnumConnectMode;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceType;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.model.device.response.BlockList;
-import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
-import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
-import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+
+import static com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity.disableABCShowHideAnimation;
 
 public class ActivityDeviceManager extends BaseActivityWithBack implements OnClickListener {
     private ListView m_connecedDeviceList = null;
@@ -65,7 +62,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
     private String m_strLocalMac = new String();
     private ImageButton mbackBtn;
     private Button mMoreBtn;
-    private TimerHelper timerHelper;
 
 
     private class DeviceReceiver extends BroadcastReceiver {
@@ -159,29 +155,8 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
         m_waiting = (ProgressBar) this.findViewById(R.id.waiting_progress);
 
-        // init action bar
         initActionbar();
-        // init timer
-        initTimer();
 
-    }
-
-    private void initTimer() {
-        timerHelper = new TimerHelper(this) {
-            private BlockList blockDeviceList;
-            private ConnectedList connectDeviceList;
-
-            @Override
-            public void doSomething() {
-                // TODO: 2017/6/23 getAllStatus
-                ApiEngine.getConnectedDeviceList();
-                ApiEngine.getBlockDeviceList();
-
-                connectDeviceList = ApiEngine.connectDeviceList;
-                blockDeviceList = ApiEngine.blockDeviceList;
-            }
-        };
-        timerHelper.start(5000);
     }
 
     private void initActionbar() {
@@ -239,7 +214,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timerHelper.stop();
     }
 
     public void onClick(View arg0) {
@@ -267,7 +241,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         DataValue data = new DataValue();
         data.addParam("DeviceName", strDeviceName);
         data.addParam("MacAddress", strMac);
-        // TOAT: SET_CONNECTED_DEVICE_BLOCK
         BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);
     }
 
@@ -275,7 +248,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         DataValue data = new DataValue();
         data.addParam("DeviceName", strDeviceName);
         data.addParam("MacAddress", strMac);
-        // TOAT: SET_DEVICE_UNLOCK
         BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);
     }
 
@@ -284,43 +256,17 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         data.addParam("DeviceName", strDeviceName);
         data.addParam("MacAddress", strMac);
         data.addParam("DeviceType", nDeviceType);
-        // TOAT: SET_DEVICE_NAME
         BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_NAME, data);
     }
 
     private void getListData() {
         // BusinessManager.getInstance().getGetConnectedDeviceTaskAtOnceRequest();
         // BusinessManager.getInstance().getGetBlockDeviceListTaskAtOnceRequest();
-
-        m_waiting.setVisibility(View.VISIBLE);
-
-        // TOAT: get devices list
-        getConnectDeviceList();
-        // TOAT: get block list
-        getBlockDeviceList();
-
-        m_waiting.setVisibility(View.GONE);
     }
 
-    private void getConnectDeviceList() {
-        ApiEngine.setOnConnectDeviceList(connectDevices -> {
-            // TODO: 2017/6/22  设备管理
-            System.out.println(" connectdevices: " + connectDevices.toString());
-        });
-        ApiEngine.getConnectedDeviceList();
-    }
-
-    private void getBlockDeviceList() {
-        ApiEngine.setOnBlockDeviceList(blockList -> {
-            // TODO: 2017/6/22  设备管理
-            System.out.println(" blockdevices: " + blockList.toString());
-        });
-        ApiEngine.getBlockDeviceList();
-    }
 
     private void updateConnectedDeviceUI() {
         ArrayList<ConnectedDeviceItemModel> data = (ArrayList<ConnectedDeviceItemModel>) m_connecedDeviceLstData.clone();
-        // TOAT: getConnectedDeviceList
         m_connecedDeviceLstData = BusinessManager.getInstance().getConnectedDeviceList();
         for (int i = 0; i < m_connecedDeviceLstData.size(); i++) {
             ConnectedDeviceItemModel item = m_connecedDeviceLstData.get(i);
@@ -352,7 +298,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
     }
 
     private void updateBlockDeviceUI() {
-        // TOAT: getBlockDeviceList
         m_blockedDeviceLstData = BusinessManager.getInstance().getBlockDeviceList();
         ((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
 
@@ -646,27 +591,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
             return convertView;
         }
 
-
     }
 
-
-    public static void disableABCShowHideAnimation(ActionBar actionBar) {
-        try {
-            actionBar.getClass().getDeclaredMethod("setShowHideAnimationEnabled", boolean.class).invoke(actionBar, false);
-        } catch (Exception exception) {
-            try {
-                Field mActionBarField = actionBar.getClass().getSuperclass().getDeclaredField("mActionBar");
-                mActionBarField.setAccessible(true);
-                Object icsActionBar = mActionBarField.get(actionBar);
-                Field mShowHideAnimationEnabledField = icsActionBar.getClass().getDeclaredField("mShowHideAnimationEnabled");
-                mShowHideAnimationEnabledField.setAccessible(true);
-                mShowHideAnimationEnabledField.set(icsActionBar, false);
-                Field mCurrentShowAnimField = icsActionBar.getClass().getDeclaredField("mCurrentShowAnim");
-                mCurrentShowAnimField.setAccessible(true);
-                mCurrentShowAnimField.set(icsActionBar, null);
-            } catch (Exception e) {
-            }
-        }
-
-    }
 }

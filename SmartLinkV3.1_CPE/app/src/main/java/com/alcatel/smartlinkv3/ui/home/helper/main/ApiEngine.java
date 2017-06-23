@@ -20,6 +20,7 @@ import java.util.Date;
 
 import static com.alcatel.smartlinkv3.R.string.device_set_success;
 
+@Deprecated
 public class ApiEngine {
 
     private static ApiEngine apiEngine;
