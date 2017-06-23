@@ -245,7 +245,7 @@ public class API {
      *
      * @param subscriber callback
      */
-    public void getLoginState(MySubscriber subscriber) {
+    public void getLoginState(MySubscriber<LoginState> subscriber) {
         subscribe(subscriber, smartLinkApi.getLoginState(new RequestBody(Methods.GET_LOGIN_STATE)));
     }
 

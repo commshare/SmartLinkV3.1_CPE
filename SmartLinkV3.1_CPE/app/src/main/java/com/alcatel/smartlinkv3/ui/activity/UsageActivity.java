@@ -26,7 +26,7 @@ import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
 import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
 
-import static com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager.disableABCShowHideAnimation;
+import static com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity.disableABCShowHideAnimation;
 
 
 public class UsageActivity extends BaseActivityWithBack implements View.OnClickListener {
