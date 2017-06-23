@@ -5,5 +5,5 @@ package com.alcatel.smartlinkv3.ui.home.helper.utils;
  */
 
 public enum FragmentHomeEnum {
-    MAIN, WIFI, MESSAGE, SETTING, SHARESD;
+    MAIN, WIFI, SMS, SETTING, SHARESD;
 }

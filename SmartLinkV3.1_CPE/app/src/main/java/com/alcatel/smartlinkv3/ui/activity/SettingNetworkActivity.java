@@ -12,15 +12,13 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.network.Network;
-import com.alcatel.smartlinkv3.model.network.NetworkInfo;
+import com.alcatel.smartlinkv3.model.network.NetworkInfos;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.network.API;
@@ -74,9 +72,9 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             protected void onSuccess(ConnectionState result) {
                // 0: disconnected  1: connecting 2: connected 3: disconnecting
                 Log.v(TAG, "getConnectionState"+result.getConnectionStatus());
-                if(result.getConnectionStatus().equals("0")){
+                if(result.getConnectionStatus().equals(0)){
                     mMobileDataSwitchCompat.setChecked(false);
-                } else if(result.getConnectionStatus().equals("2")) {
+                } else if(result.getConnectionStatus().equals(0)) {
                     mMobileDataSwitchCompat.setChecked(true);
                 }
             }
@@ -132,9 +130,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getRoaming() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfo> (){
+        
+        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
             @Override
-            protected void onSuccess(NetworkInfo result) {
+            protected void onSuccess(NetworkInfos result) {
                 //  0: roaming 1: no roaming
                 Log.v(TAG, "getRoaming"+result.getRoaming());
                 if(result.getRoaming() == 0){
@@ -143,6 +142,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     mRoamingSwitchCompat.setChecked(false);
                 }
             }
+
             @Override
             protected void onFailure() {
                 Log.d(TAG, "getRoaming error");

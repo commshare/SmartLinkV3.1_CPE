@@ -404,7 +404,7 @@ public class WifiFragment extends Fragment implements CompoundButton.OnCheckedCh
     private void showApplySettingsDlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Warning");
-        builder.setMessage("Device will be restarted to apply new settings.");
+        builder.setMessage("ConnectedList will be restarted to apply new settings.");
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             applySettings();
         });

@@ -421,8 +421,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showLoadingDialog() {
         mProgressDialog = new ProgressDialog(getActivity());
-//        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        mProgressDialog.setMessage("Resetting … 50%");
+        //        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        //        mProgressDialog.setMessage("Resetting … 50%");
         mProgressDialog.show();
 
     }
@@ -692,7 +692,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void goToDeviceSettingPage() {
-        // to setting device activity
+        // to setting connectDeviceList activity
         ChangeActivity.toActivity(getActivity(), SettingDeviceActivity.class, true, true, false, 0);
     }
 

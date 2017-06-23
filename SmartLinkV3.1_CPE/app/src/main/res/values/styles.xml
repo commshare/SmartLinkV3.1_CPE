@@ -5,7 +5,14 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="actionBarStyle">@style/clubActionbar</item>
         <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <!-- 去除两侧空白 -->
+    <style name="clubActionbar" parent="Widget.AppCompat.ActionBar">
+        <item name="contentInsetStart">0dp</item><!-- 设置该属性解决空白部分-->
+        <item name="contentInsetEnd">0dp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

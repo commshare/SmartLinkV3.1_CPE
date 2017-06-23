@@ -30,7 +30,7 @@ public class FragmentHomeBucket {
             fragment = new MainFragment();
         } else if (flag.equals(FragmentHomeEnum.WIFI)) {
             fragment = new WifiFragment();
-        } else if (flag.equals(FragmentHomeEnum.MESSAGE)) {
+        } else if (flag.equals(FragmentHomeEnum.SMS)) {
             fragment = new SmsFragment();
         } else if (flag.equals(FragmentHomeEnum.SETTING)) {
             fragment = new SettingFragment();

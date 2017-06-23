@@ -300,7 +300,7 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 	public void onDeviceChange(boolean isSelDeviceChange) {
 		// TODO Auto-generated method stub
 		if (isSelDeviceChange){
-			CommonUtil.showToask(this.m_context, "current device has been drop...");
+			CommonUtil.showToask(this.m_context, "current connectDeviceList has been drop...");
 			//finish();
 		}
 	}

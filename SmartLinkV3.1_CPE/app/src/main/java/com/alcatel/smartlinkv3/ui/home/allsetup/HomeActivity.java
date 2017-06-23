@@ -1,17 +1,18 @@
 package com.alcatel.smartlinkv3.ui.home.allsetup;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.Formatter;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,10 +29,8 @@ import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.common.ToastUtil_m;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
@@ -39,7 +38,6 @@ import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.ActivityNewSms;
-import com.alcatel.smartlinkv3.ui.activity.BaseActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
@@ -51,6 +49,8 @@ import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
+import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
+import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
 import com.alcatel.smartlinkv3.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.smartlinkv3.ui.home.helper.utils.FraHomeHelper;
 import com.alcatel.smartlinkv3.ui.home.helper.utils.FragmentHomeEnum;
@@ -58,13 +58,19 @@ import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
 
 import org.cybergarage.upnp.Device;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.alcatel.smartlinkv3.R.drawable.tab_home_nor;
 import static com.alcatel.smartlinkv3.R.drawable.tab_home_pre;
 import static com.alcatel.smartlinkv3.R.drawable.tab_settings_nor;
@@ -73,25 +79,16 @@ import static com.alcatel.smartlinkv3.R.drawable.tab_sms_nor;
 import static com.alcatel.smartlinkv3.R.drawable.tab_sms_pre;
 import static com.alcatel.smartlinkv3.R.drawable.tab_wifi_nor;
 import static com.alcatel.smartlinkv3.R.drawable.tab_wifi_pre;
+import static com.alcatel.smartlinkv3.R.string.main_setting;
+import static com.alcatel.smartlinkv3.R.string.main_sms;
+import static com.alcatel.smartlinkv3.R.string.wifi_settings;
 import static com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import static com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
 
-public class HomeActivity extends BaseActivity implements IDeviceChangeListener {
+public class HomeActivity extends AppCompatActivity implements IDeviceChangeListener, View.OnClickListener {
 
     @BindView(R.id.layout_main)
     RelativeLayout layoutMain;// 父布局
-
-    @BindView(R.id.mRl_home_topbanner)
-    RelativeLayout mRlHomeTopbanner;// 顶部栏
-    @BindView(R.id.mTv_home_Title)
-    TextView mTvHomeTitle;// 标题
-    @BindView(R.id.mTv_home_logout)
-    TextView mTvHomeLogout;// Logout
-    @BindView(R.id.mIv_home_editMessage)
-    ImageView mIvHomeEditMessage;// sms edit ui按钮
-
-    @BindView(R.id.mView_split_top)
-    View mViewSplitTop;// 顶部分割线
 
     @BindView(R.id.mLl_home_bottomGroup)
     LinearLayout mLlHomeBottomGroup;// 底部选项组
@@ -155,16 +152,69 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
     public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
 
 
+    private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
+    protected boolean m_bNeedBack = true;//whether need to back main activity.
+    public static ActionBar supportActionBar;
+
+    private Timer timer;
+    private TimerTask task;
+    private boolean heartFlag;
+    private OnTimerStatus onTimerStatus;
+    private TimerHelper timerHelper;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_homes);
+        // get action bar
+        supportActionBar = getSupportActionBar();
+
         fm = getSupportFragmentManager();
         ButterKnife.bind(this);
         initView();
         initDialog();
         initUi();
+        // 启动定时器
+        startTimer();
+    }
+
+    /**
+     * 心跳定时器
+     */
+    private void startTimer() {
+        timerHelper = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                // 检测必要状态
+                checkAllStatus();
+                if (onTimerStatus != null) {
+                    onTimerStatus.sendTimerFlag();
+                }
+            }
+        };
+        timerHelper.start(5000);
+    }
+
+    public interface OnTimerStatus {
+        void sendTimerFlag();
+    }
+
+    public void setOnTimerStatus(OnTimerStatus onTimerStatus) {
+        this.onTimerStatus = onTimerStatus;
+    }
+
+    /**
+     * 检测必要状态
+     */
+    private void checkAllStatus() {
+        ApiEngine.getSimStatus();
+        ApiEngine.getUserLoginStatus();
+        ApiEngine.getConnectStatus();
+        ApiEngine.getNetworkInfo();
+        ApiEngine.getUsageSetting();
+        ApiEngine.getUsageRecord();
     }
 
     @Override
@@ -178,24 +228,28 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
             mkeyTime = System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
         } else {
+            // 停止定时器
+            timerHelper.stop();
             // m_wifiKeyView.revertWifiModeSetting();
             super.onBackPressed();
+            finish();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
-        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(PAGE_TO_VIEW_HOME));
 
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
-
-        registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
-        registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
-        registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
+        // this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
+        // this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
+        // this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
+        // this.registerReceiver(m_msgReceiver2, new IntentFilter(PAGE_TO_VIEW_HOME));
+        //
+        // this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
+        //
+        // registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
+        // registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
+        // registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
 
         updateBtnState();
         toPageHomeWhenPinSimNoOk();
@@ -204,11 +258,6 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
     @Override
     protected void onPause() {
         super.onPause();
-        try {
-            this.unregisterReceiver(m_msgReceiver);
-        } catch (Exception e) {
-
-        }
     }
 
     @Override
@@ -220,57 +269,6 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
         thumbnailLoader.clearCache();
     }
 
-    @Override
-    protected void onBroadcastReceive(Context context, Intent intent) {
-        super.onBroadcastReceive(context, intent);
-
-        String action = intent.getAction();
-        BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
-        Boolean ok = response != null && response.isOk();
-        super.onBroadcastReceive(context, intent);
-
-        if (MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
-            if (ok) {
-                simRollRequest();
-            }
-        } else if (MessageUti.SIM_UNLOCK_PIN_REQUEST.equals(action)) {
-            m_dlgPin.onEnterPinResponse(ok);
-        } else if (MessageUti.SIM_UNLOCK_PUK_REQUEST.equals(action)) {
-            m_dlgPuk.onEnterPukResponse(ok);
-        }
-
-        if (PAGE_TO_VIEW_HOME.equals(action)) {
-            refreshUi_fragment(FragmentHomeEnum.MAIN);
-        }
-
-        if (MessageUti.USER_LOGOUT_REQUEST.equals(action)) {
-            if (ok) {
-                if (m_blLogout) {
-                    String strInfo = getString(R.string.login_logout_successful);
-                    Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
-                }
-
-                if (m_blkickoff_Logout) {
-                    String strInfo = getString(R.string.login_kickoff_logout_successful);
-                    Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
-                }
-                m_blLogout = false;
-                m_blkickoff_Logout = false;
-            }
-        }
-
-        if (MessageUti.SHARING_GET_DLNA_SETTING_REQUSET.equals(action)) {
-            if (ok) {
-                if (BusinessManager.getInstance().getDlnaSettings().getDlnaStatus() > 0) {
-                    mAllShareProxy.startSearch();
-                } else {
-                    mAllShareProxy.exitSearch();
-                }
-
-            }
-        }
-
-    }
 
     private void destroyDialogs() {
         m_dlgPin.destroyDialog();
@@ -283,7 +281,7 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
 
     private void initView() {
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        SmsCountHelper.setSmsCount(mTvHomeMessageCount);// init show sms count
+        SmsCountHelper.setSmsCount(mTvHomeMessageCount);// getInstance show sms count
 
         mAllShareProxy = AllShareProxy.getInstance(this);
         mBrocastFactory = new DMSDeviceBrocastFactory(this);
@@ -292,39 +290,45 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
     }
 
     private void initUi() {
-        // 1.init button ui arrays
+        // 1.getInstance button ui arrays
         initRes();
         // 2.set topbanner
-        setTopBannerUi(false, "", false, false);
-        // 3.init main button ui & refresh fragment
+        // setTopBannerUi(false, "", false, false);
+        // 3.getInstance main button ui & refresh fragment
         refreshUi_fragment(FragmentHomeEnum.MAIN);
     }
 
-    @OnClick({R.id.mTv_home_logout,// logout
-                     R.id.mIv_home_editMessage,// message edit
-                     R.id.mRl_home_mainbutton,// home
+    /* action bar click */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            /* topbanner buttons */
+            case R.id.mTv_home_logout:// logout
+                logout();
+                break;
+            case R.id.mIv_home_editSms:// edit message
+                // to message send ui
+                navigateAfterLogin(this::toSmsActivity);
+                break;
+        }
+    }
+
+    /* bottom group click */
+    @OnClick({R.id.mRl_home_mainbutton,// home
                      R.id.mRl_home_wifibutton,// wifi
                      R.id.mRl_home_messagebutton,// message
                      R.id.mRl_home_settingbutton})// setting
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
-            /* topbanner buttons */
-            case R.id.mTv_home_logout:// logout
-                logout();
-                break;
-            case R.id.mIv_home_editMessage:// edit message
-                // to message send ui
-                navigateAfterLogin(this::toSmsActivity);
-                break;
             
             /* group groupButtons */
+            
             case R.id.mRl_home_mainbutton:// home button
-                setTopBannerUi(false, "", false, false);
                 refreshUi_fragment(FragmentHomeEnum.MAIN);
                 break;
+            
             case R.id.mRl_home_wifibutton:// wifi button
-                setTopBannerUi(true, getString(R.string.wifi_settings), false, false);
                 // if login --> then go to wifi fragment
                 navigateAfterLogin(() -> {
                     refreshUi_fragment(FragmentHomeEnum.WIFI);
@@ -332,18 +336,16 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
 
                 break;
             case R.id.mRl_home_messagebutton:// message button
-                setTopBannerUi(true, getString(R.string.main_sms), true, false);
                 // if login --> then sim card is effect then go to sms fragment
                 navigateAfterLogin(() -> {
                     SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
                     if (simStatus.m_SIMState == SIMState.Accessable) {
-                        refreshUi_fragment(FragmentHomeEnum.MESSAGE);
+                        refreshUi_fragment(FragmentHomeEnum.SMS);
                     }
                 });
 
                 break;
             case R.id.mRl_home_settingbutton:// setting button
-                setTopBannerUi(true, getString(R.string.main_setting), false, true);
                 // if login --> then go to the setting fragment
                 navigateAfterLogin(() -> {
                     refreshUi_fragment(FragmentHomeEnum.SETTING);
@@ -392,12 +394,16 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
             });
             // 3.injust is force login --> set to the main fragment
             if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
-                setTopBannerUi(false, "", false, false);
+                // setTopBannerUi(false, "", false, false);
+                setActionBarUi(false, -1, false, false);
                 Intent intent2 = new Intent(HomeActivity.PAGE_TO_VIEW_HOME);
                 this.sendBroadcast(intent2);
             }
             // 4.reset the logout flag in CPEconfig
             CPEConfig.getInstance().userLogout();
+            // 登出后--> 显示登陆界面
+            m_loginDlg.showDialog();
+
         }
     }
 
@@ -431,7 +437,7 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
             index = 0;
         } else if (enums.equals(FragmentHomeEnum.WIFI)) {
             index = 1;
-        } else if (enums.equals(FragmentHomeEnum.MESSAGE)) {
+        } else if (enums.equals(FragmentHomeEnum.SMS)) {
             index = 2;
         } else if (enums.equals(FragmentHomeEnum.SETTING)) {
             index = 3;
@@ -449,23 +455,12 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
      * @param en 枚举
      */
     private void refreshUi_fragment(FragmentHomeEnum en) {
+        // 0.actionbar ui
+        refreshActionbar(en);
         // 1.groupbutton change
         setGroupButtonUi(en);
         // 2.transfer the fragment
         FraHomeHelper.commit(fm, R.id.mFl_home_container, en);
-    }
-
-    /**
-     * H4.顶部栏是否显示 & 显示的标题
-     *
-     * @param isTopBannerVisible
-     * @param title
-     */
-    private void setTopBannerUi(boolean isTopBannerVisible, String title, boolean isMessageLogo, boolean isLogOutLogo) {
-        mRlHomeTopbanner.setVisibility(isTopBannerVisible ? View.VISIBLE : View.GONE);// 顶部总布局
-        mTvHomeTitle.setText(title);// title
-        mIvHomeEditMessage.setVisibility(isMessageLogo ? View.VISIBLE : View.GONE);// message edit
-        mTvHomeLogout.setVisibility(isLogOutLogo ? View.VISIBLE : View.GONE);// logout
     }
 
     /**
@@ -535,6 +530,99 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
         });
     }
 
+    /**
+     * H6.设置action各项属性
+     *
+     * @param isshow
+     */
+    private void setActionBarUi(boolean isshow, int titleId, boolean isLogout, boolean isSMS) {
+        // 1.clear the animation
+        disableABCShowHideAnimation(supportActionBar);
+        // 2.show attrs-self view
+        supportActionBar.setDisplayShowCustomEnabled(isshow);
+        if (isshow) {
+            supportActionBar.setCustomView(R.layout.actionbarhome);
+            supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            supportActionBar.show();
+            findActionBarView(titleId, isLogout, isSMS);
+        } else {
+            supportActionBar.hide();
+        }
+
+    }
+
+    /**
+     * H7.Actionbar 视图元素
+     *
+     * @param titleId
+     * @param isLogout
+     * @param isSMS
+     */
+    private void findActionBarView(int titleId, boolean isLogout, boolean isSMS) {
+        // 1.get view
+        View customView = supportActionBar.getCustomView();
+        // 2.find widget
+        TextView tv_title = (TextView) customView.findViewById(R.id.mTv_home_Title);
+        TextView tv_logout = (TextView) customView.findViewById(R.id.mTv_home_logout);
+        ImageView iv_smsedit = (ImageView) customView.findViewById(R.id.mIv_home_editSms);
+        // 3.set title
+        tv_title.setText(titleId < 0 ? "" : getString(titleId));
+        // 4.set right function ui 
+        tv_logout.setVisibility(isLogout ? VISIBLE : GONE);
+        iv_smsedit.setVisibility(isSMS ? VISIBLE : GONE);
+        // 5.set right function click
+        tv_logout.setOnClickListener(this);
+        iv_smsedit.setOnClickListener(this);
+    }
+
+    /**
+     * H8.更新Actionui
+     *
+     * @param en
+     */
+    private void refreshActionbar(FragmentHomeEnum en) {
+        switch (en) {
+            case MAIN:
+                setActionBarUi(false, -1, false, false);
+                break;
+            case WIFI:
+                setActionBarUi(true, wifi_settings, false, false);
+                break;
+            case SMS:
+                setActionBarUi(true, main_sms, false, true);
+                break;
+            case SETTING:
+                setActionBarUi(true, main_setting, true, false);
+                break;
+
+        }
+    }
+
+    /**
+     * H9.消除ActionBar隐藏|显示时候的动画
+     *
+     * @param actionBar
+     */
+    public static void disableABCShowHideAnimation(ActionBar actionBar) {
+        try {
+            actionBar.getClass().getDeclaredMethod("setShowHideAnimationEnabled", boolean.class).invoke(actionBar, false);
+        } catch (Exception exception) {
+            try {
+                Field mActionBarField = actionBar.getClass().getSuperclass().getDeclaredField("mActionBar");
+                mActionBarField.setAccessible(true);
+                Object icsActionBar = mActionBarField.get(actionBar);
+                Field mShowHideAnimationEnabledField = icsActionBar.getClass().getDeclaredField("mShowHideAnimationEnabled");
+                mShowHideAnimationEnabledField.setAccessible(true);
+                mShowHideAnimationEnabledField.set(icsActionBar, false);
+                Field mCurrentShowAnimField = icsActionBar.getClass().getDeclaredField("mCurrentShowAnim");
+                mCurrentShowAnimField.setAccessible(true);
+                mCurrentShowAnimField.set(icsActionBar, null);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+
     /* -------------------------------------------- TEMP -------------------------------------------- */
     /* -------------------------------------------- TEMP -------------------------------------------- */
     public static void setLogoutFlag(boolean blLogout) {
@@ -557,7 +645,7 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
     private void toPageHomeWhenPinSimNoOk() {
         SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
         if (simState.m_SIMState != SIMState.Accessable) {
-            setTopBannerUi(false, "", false, false);
+            //setTopBannerUi(false, "", false, false);
             refreshUi_fragment(FragmentHomeEnum.MAIN);
             unlockSimBtnClick(false);
         }
@@ -734,4 +822,6 @@ public class HomeActivity extends BaseActivity implements IDeviceChangeListener 
         sendBroadcast(msdIntent);
 
     }
+
+
 }

@@ -5,57 +5,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <!-- 1.顶部栏 -->
-    <RelativeLayout
-        android:id="@+id/mRl_home_topbanner"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/action_bar_height"
-        android:background="@color/main_title_background">
-
-        <!-- 标题 -->
-        <TextView
-            android:id="@+id/mTv_home_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="Title"
-            android:textColor="@color/color_white"
-            android:textSize="20sp" />
-
-        <!-- LogOut -->
-        <TextView
-            android:id="@+id/mTv_home_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_15dip"
-            android:text="Logout"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/font_size_normal"
-            android:visibility="gone" />
-
-        <!-- edit message button -->
-        <ImageView
-            android:id="@+id/mIv_home_editMessage"
-            android:layout_width="@dimen/dimen_40dip"
-            android:layout_height="@dimen/dimen_40dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_15dip"
-            android:src="@drawable/actionbar_edit_icon"
-            android:visibility="gone" />
-    </RelativeLayout>
-
-    <!-- 2.SPLIT LINE -TOP -->
-    <View
-        android:id="@+id/mView_split_top"
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:layout_below="@id/mRl_home_topbanner"
-        android:background="@color/main_top_divider" />
-
     <!-- 3.BOTTOM GROUP -->
     <LinearLayout
         android:id="@+id/mLl_home_bottomGroup"
@@ -194,8 +143,7 @@
         android:id="@+id/mFl_home_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/mView_split_bottom"
-        android:layout_below="@id/mView_split_top" />
+        android:layout_above="@+id/mView_split_bottom"/>
 
 </RelativeLayout>
 

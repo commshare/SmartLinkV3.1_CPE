@@ -203,7 +203,7 @@
     <string name="sms_unread_num">(%1$d)</string>
     <!-- sms end -->
 
-    <!-- connect device start -->
+    <!-- connect connectDeviceList start -->
     <string name="setting_imsi">IMSI</string>
     <string name="setting_sim_number">SIM number</string>
     <string name="setting_change_pin">Change PIN</string>
@@ -219,6 +219,7 @@
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Set failed!</string>
     <string name="device_manage_name_empty">Device name is invalid.</string>
+    <string name="device_set_success">Setting Successful</string>
     <!-- connect device end -->
 
     <!-- microsd start -->

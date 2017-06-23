@@ -70,4 +70,17 @@ public interface Methods {
     String SET_FTP_SETTINGS = "SetFtpSettings";
     String SET_SAMBA_SETTINGS = "SetSambaSettings";
     String SET_DLNA_SETTINGS = "SetDLNASettings";
+
+    String GET_BATTERYSTATE = "GetBatteryState";
+    String GET_NETWORKINFO = "GetNetworkInfo";
+    
+    String GET_USAGESETTING = "GetUsageSettings";
+    String GET_USAGERECORD = "GetUsageRecord";
+    String SET_USAGERECORDCLEAR = "SetUsageRecordClear";
+    
+    String GET_CONNECTEDDEVICELIST = "GetConnectedDeviceList";
+    String GET_BLOCKDEVICELIST = "GetBlockDeviceList";
+    String SET_CONNECTEDDEVICEBLOCK = "SetConnectedDeviceBlock";
+    String SET_DEVICEUNBLOCK = "SetDeviceUnblock";
+    String SET_DEVICENAME = "SetDeviceName";
 }

@@ -5,10 +5,19 @@ import android.content.SharedPreferences;
 
 import com.alcatel.smartlinkv3.Constants;
 import com.alcatel.smartlinkv3.EncryptionUtil;
+import com.alcatel.smartlinkv3.model.Usage.UsageParams;
+import com.alcatel.smartlinkv3.model.Usage.UsageRecord;
+import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
+import com.alcatel.smartlinkv3.model.battery.BatteryState;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
+import com.alcatel.smartlinkv3.model.device.param.ConnectedDeviceBlockParam;
+import com.alcatel.smartlinkv3.model.device.param.DeviceNameParam;
+import com.alcatel.smartlinkv3.model.device.param.DeviceUnblockParam;
+import com.alcatel.smartlinkv3.model.device.response.BlockList;
+import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
 import com.alcatel.smartlinkv3.model.network.Network;
-import com.alcatel.smartlinkv3.model.network.NetworkInfo;
+import com.alcatel.smartlinkv3.model.network.NetworkInfos;
 import com.alcatel.smartlinkv3.model.sharing.DLNASettings;
 import com.alcatel.smartlinkv3.model.sharing.FTPSettings;
 import com.alcatel.smartlinkv3.model.sharing.SambaSettings;
@@ -36,6 +45,7 @@ import com.alcatel.smartlinkv3.model.wlan.WlanSupportAPMode;
 import com.alcatel.smartlinkv3.network.downloadfile.DownloadProgressInterceptor;
 import com.alcatel.smartlinkv3.network.downloadfile.DownloadProgressListener;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.smartlinkv3.utils.FileUtils;
 
 import java.io.File;
@@ -86,14 +96,14 @@ public class API {
         }
     }
 
-    public void updateToken(int token){
+    public void updateToken(int token) {
         cacheToken(token);
         encryptToken(token);
         createSmartLinkApi();
     }
 
-    public void encryptToken(int token){
-        if (token == 0){
+    public void encryptToken(int token) {
+        if (token == 0) {
             this.token = null;
         }
 
@@ -102,33 +112,30 @@ public class API {
         this.token = EncryptionUtil.encrypt(str);
     }
 
-    private void cacheToken(int token){
+    private void cacheToken(int token) {
         SharedPreferences sp = SmartLinkV3App.getInstance().getSharedPreferences(Constants.SP_GLOBAL_INFO, Context.MODE_PRIVATE);
         sp.edit().putInt(SP_KEY_TOKEN, token).apply();
     }
 
     private void createSmartLinkApi() {
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl("http://192.168.1.1")
-                .client(buildOkHttpClient())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create());
+        builder.baseUrl("http://192.168.1.1").client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
         smartLinkApi = retrofit.create(SmartLinkApi.class);
     }
 
-//    private API(DownloadProgressListener listener) {
-//        if (smartLinkApi == null) {
-//            Retrofit.Builder builder = new Retrofit.Builder();
-//            builder.baseUrl("http://192.168.1.1")
-//                    .client(createDownloadHttpClient(listener))
-//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                    .addConverterFactory(GsonConverterFactory.create());
-//            Retrofit retrofit = builder.build();
-//            smartLinkApi = retrofit.create(SmartLinkApi.class);
-//        }
-//
-//    }
+    //    private API(DownloadProgressListener listener) {
+    //        if (smartLinkApi == null) {
+    //            Retrofit.Builder builder = new Retrofit.Builder();
+    //            builder.baseUrl("http://192.168.1.1")
+    //                    .client(createDownloadHttpClient(listener))
+    //                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+    //                    .addConverterFactory(GsonConverterFactory.create());
+    //            Retrofit retrofit = builder.build();
+    //            smartLinkApi = retrofit.create(SmartLinkApi.class);
+    //        }
+    //
+    //    }
 
     private OkHttpClient buildOkHttpClient() {
 
@@ -156,11 +163,7 @@ public class API {
     private OkHttpClient createDownloadHttpClient(DownloadProgressListener listener) {
         DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(listener);
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .retryOnConnectionFailure(true)
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .build();
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(5, TimeUnit.SECONDS).build();
 
         return client;
     }
@@ -176,47 +179,38 @@ public class API {
         return api;
     }
 
-//    public static API get(DownloadProgressListener listener) {
-//        if (api == null) {
-//            synchronized (API.class) {
-//                if (api == null) {
-//                    api = new API(listener);
-//                }
-//            }
-//        }
-//        return api;
-//    }
+    //    public static API get(DownloadProgressListener listener) {
+    //        if (api == null) {
+    //            synchronized (API.class) {
+    //                if (api == null) {
+    //                    api = new API(listener);
+    //                }
+    //            }
+    //        }
+    //        return api;
+    //    }
 
 
     private void subscribe(MySubscriber subscriber, Observable observable) {
-        observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
     private void subscribeDownloadFile(Subscriber subscriber, Observable observable, File file) {
-        observable.subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .map(new Func1<okhttp3.ResponseBody, InputStream>() {
-                    @Override
-                    public InputStream call(okhttp3.ResponseBody responseBody) {
-                        return responseBody.byteStream();
-                    }
-                })
-                .observeOn(Schedulers.computation())
-                .doOnNext(new Action1<InputStream>() {
-                    @Override
-                    public void call(InputStream inputStream) {
-                        try {
-                            FileUtils.writeFile(inputStream, file);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+        observable.subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io()).map(new Func1<okhttp3.ResponseBody, InputStream>() {
+            @Override
+            public InputStream call(okhttp3.ResponseBody responseBody) {
+                return responseBody.byteStream();
+            }
+        }).observeOn(Schedulers.computation()).doOnNext(new Action1<InputStream>() {
+            @Override
+            public void call(InputStream inputStream) {
+                try {
+                    FileUtils.writeFile(inputStream, file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
     /**
@@ -276,50 +270,54 @@ public class API {
      *
      * @param subscriber callback
      */
-    public void getSimStatus(MySubscriber<SimStatus> subscriber){
+    public void getSimStatus(MySubscriber<SimStatus> subscriber) {
         subscribe(subscriber, smartLinkApi.getSimStatus(new RequestBody(Methods.GET_SIM_STATUS)));
     }
 
     /**
      * unlock pin
-     * @param pin pin code
+     *
+     * @param pin        pin code
      * @param subscriber call back
      */
-    public void unlockPin(String pin, MySubscriber subscriber){
+    public void unlockPin(String pin, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_PIN, new PinParams(pin))));
     }
 
-    public void unlockPuk(String puk, String newPin, MySubscriber subscriber){
+    public void unlockPuk(String puk, String newPin, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_PUK, new PukParams(puk, newPin))));
     }
 
-    public void changePinCode(String currPin, String newPin, MySubscriber subscriber){
+    public void changePinCode(String currPin, String newPin, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_CODE, new ChangePinParams(currPin, newPin))));
     }
 
-    public void changePinState(String pin, int state, MySubscriber subscriber){
+    public void changePinState(String pin, int state, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_STATE, new PinStateParams(pin, state))));
     }
 
-    public void getAutoValidatePinState(MySubscriber<AutoValidatePinState> subscriber){
+    public void getAutoValidatePinState(MySubscriber<AutoValidatePinState> subscriber) {
         subscribe(subscriber, smartLinkApi.getAutoValidatePinState(new RequestBody(Methods.GET_AUTO_VALIDATE_PIN_STATE)));
     }
 
-    public void setAutoValidatePinState(String pin, int state, MySubscriber subscriber){
+    public void setAutoValidatePinState(String pin, int state, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_AUTO_VALIDATE_PIN_STATE, new SetAutoValidatePinStateParams(pin, state))));
     }
 
-    public void unlockSimlock(int simlockState, String simlockCode, MySubscriber subscriber){
+    public void unlockSimlock(int simlockState, String simlockCode, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_SIMLOCK, new UnlockSimlockParams(simlockState, simlockCode))));
     }
 
-    public void getConnectionState(MySubscriber<ConnectionState> subscriber){
+    public void getConnectionState(MySubscriber<ConnectionState> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectionState(new RequestBody(Methods.GET_CONNECTION_STATE)));
     }
+    
+   
 
 
     /**
      * get 2.4g and 5g status (on/off)
+     *
      * @param subscriber call back
      */
     public void getWlanState(MySubscriber<WlanState> subscriber) {
@@ -339,15 +337,15 @@ public class API {
         subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
     }
 
-    public void setWlanSettings(WlanSettings settings, MySubscriber subscriber){
+    public void setWlanSettings(WlanSettings settings, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, settings)));
     }
 
-    public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber){
+    public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSupportMode(new RequestBody(Methods.GET_WLAN_SUPPORT_MODE)));
     }
 
-    public void getSystemStatus(MySubscriber<SysStatus> subscriber){
+    public void getSystemStatus(MySubscriber<SysStatus> subscriber) {
         subscribe(subscriber, smartLinkApi.getSystemStatus(new RequestBody(Methods.GET_SYSTEM_STATUS)));
     }
 
@@ -371,11 +369,11 @@ public class API {
         subscribe(subscriber, smartLinkApi.getWanSeting(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
-    public void getWanSettings(MySubscriber<WanSettingsResult> subscriber){
+    public void getWanSettings(MySubscriber<WanSettingsResult> subscriber) {
         subscribe(subscriber, smartLinkApi.getWanSettings(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
-    public void setWanSettings(MySubscriber subscriber){
+    public void setWanSettings(MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
@@ -427,6 +425,10 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DLNA_SETTINGS, settings)));
     }
 
+    public void getConnectionStates(MySubscriber<ConnectionStates> subscriber) {
+        subscribe(subscriber, smartLinkApi.getConnectionStates(new RequestBody(Methods.GET_CONNECTION_STATE)));
+    }
+
 
     /**
      * change password
@@ -449,7 +451,7 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.DISCONNECT)));
     }
 
-    public void getConnectionSettings(MySubscriber<ConnectionSettings> subscriber){
+    public void getConnectionSettings(MySubscriber<ConnectionSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectionSettings(new RequestBody(Methods.GET_CONNECTION_SETTINGS)));
     }
 
@@ -466,9 +468,49 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_NETWORK_SETTINGS, network)));
     }
 
-    public void getNetworkInfo(MySubscriber<NetworkInfo> subscriber) {
-        subscribe(subscriber, smartLinkApi.getNetworkInfo(new RequestBody(Methods.GET_NETWORK_INFO)));
+    public void getUsageRecord(MySubscriber<UsageRecord> subscriber) {
+        subscribe(subscriber, smartLinkApi.getUsageRecord(new RequestBody(Methods.GET_USAGERECORD)));
     }
+
+    public void getBatteryState(MySubscriber<BatteryState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getBatteryState(new RequestBody(Methods.GET_BATTERYSTATE)));
+    }
+
+    public void getUsageSetting(MySubscriber<UsageSetting> subscriber) {
+        subscribe(subscriber, smartLinkApi.getUsageSetting(new RequestBody(Methods.GET_USAGESETTING)));
+    }
+
+    public void getNetworkInfo(MySubscriber<NetworkInfos> subscriber) {
+        subscribe(subscriber, smartLinkApi.getNetworkInfo(new RequestBody(Methods.GET_NETWORKINFO)));
+    }
+
+    public void setUsageRecordClear(String clearTime, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGERECORDCLEAR, new UsageParams(clearTime))));
+    }
+
+    // TOAT: 
+    public void getConnectedDeviceList(MySubscriber<ConnectedList> subscriber) {
+        subscribe(subscriber, smartLinkApi.getConnectedDeviceList(new RequestBody(Methods.GET_CONNECTEDDEVICELIST)));
+    }
+
+    public void getBlockDeviceList(MySubscriber<BlockList> subscriber) {
+        subscribe(subscriber, smartLinkApi.getBlockDeviceList(new RequestBody(Methods.GET_BLOCKDEVICELIST)));
+    }
+
+
+    public void setConnectedDeviceBlock(String DeviceName, String MacAddress, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTEDDEVICEBLOCK, new ConnectedDeviceBlockParam(DeviceName, MacAddress))));
+    }
+
+    public void setDeviceUnblock(String DeviceName, String MacAddress, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICEUNBLOCK, new DeviceUnblockParam(DeviceName, MacAddress))));
+    }
+
+    public void setDeviceName(String DeviceName, String MacAddress, int DeviceType, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICENAME, new DeviceNameParam(DeviceName, MacAddress, DeviceType))));
+    }
+
+
 
     interface SmartLinkApi {
 
@@ -489,7 +531,7 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<ConnectionState>> getConnectionState(@Body RequestBody requestBody);
-
+        
         @POST("/jrd/webapi")
         Observable<ResponseBody<WlanState>> getWlanState(@Body RequestBody requestBody);
 
@@ -520,9 +562,9 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody<WanSettingsResult>> getWanSettings(@Body RequestBody requestBody);
 
-
         @POST("/jrd/webapi")
         Observable<ResponseBody<DeviceNewVersion>> getDeviceNewVersion(@Body RequestBody requestBody);
+
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<DeviceUpgradeState>> getDeviceUpgradeState(@Body RequestBody requestBody);
@@ -546,8 +588,27 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody<Network>> getNetworkSettings(@Body RequestBody requestBody);
 
+        // TOAT: 
         @POST("/jrd/webapi")
-        Observable<ResponseBody<NetworkInfo>> getNetworkInfo(@Body RequestBody requestBody);
+        Observable<ResponseBody<BatteryState>> getBatteryState(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<UsageRecord>> getUsageRecord(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<UsageSetting>> getUsageSetting(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<NetworkInfos>> getNetworkInfo(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<ConnectedList>> getConnectedDeviceList(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<BlockList>> getBlockDeviceList(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<ConnectionStates>> getConnectionStates(@Body RequestBody requestBody);
 
     }
 }

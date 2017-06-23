@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.ui.home.fragment;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,36 +25,33 @@ import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
-import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
-import com.alcatel.smartlinkv3.business.power.BatteryInfo;
-import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
-import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
-import com.alcatel.smartlinkv3.common.ENUM.NetworkType;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.ENUM.SignalStrength;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
-import com.alcatel.smartlinkv3.httpservice.ConstValue;
+import com.alcatel.smartlinkv3.model.Usage.UsageRecord;
+import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
+import com.alcatel.smartlinkv3.model.battery.BatteryState;
+import com.alcatel.smartlinkv3.model.network.NetworkInfos;
+import com.alcatel.smartlinkv3.model.sim.SimStatus;
+import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
+import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
+import com.alcatel.smartlinkv3.ui.home.helper.cons.Cons;
+import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 import com.alcatel.smartlinkv3.ui.home.helper.main.ViewConnectBroadcastReceiver;
+import com.alcatel.smartlinkv3.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.smartlinkv3.ui.view.CircleProgress;
 import com.alcatel.smartlinkv3.ui.view.WaveLoadingView;
 
@@ -110,10 +106,18 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     RelativeLayout m_accessDeviceLayout;
     private View m_view;
 
+    public SimStatus home_simStatus;
+    public UsageSetting home_usageSetting;
+    public UsageRecord home_usageRecord;
+    public BatteryState home_batteryState;
+    public LoginState home_loginStatu;
+    public ConnectionStates home_connectionState;
+    public NetworkInfos home_networkInfos;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        m_view = View.inflate(getActivity(), R.layout.fragment_home_main, null);
+        m_view = View.inflate(getActivity(), R.layout.fragment_home_mains, null);
         typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Light.ttf");
         circleProgress = ((CircleProgress) m_view.findViewById(R.id.home_circleProgress));
         batteryView = ((ImageView) m_view.findViewById(R.id.home_battery_image));
@@ -139,6 +143,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
         m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
         m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
+        m_accessImageView.setOnClickListener(this);
         m_accessstatusTextView = (TextView) m_view.findViewById(R.id.access_label);
 
         m_loginDialog = new LoginDialog(getActivity());
@@ -149,7 +154,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         m_unlockSimBtn.setOnClickListener(this);
 
         m_accessDeviceLayout = (RelativeLayout) m_view.findViewById(R.id.access_num_layout);
-        m_accessDeviceLayout.setOnClickListener(this);
 
         strZeroConnDuration = getString(R.string.Home_zero_data);
 
@@ -162,40 +166,74 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         m_viewConnetMsgReceiver.setOnWanRollRequestListener(this);
         m_viewConnetMsgReceiver.setOnWifiConnectListener(this);
 
+        initStatus();
+
+        // 接收HomeActivity的定时信号
+        // TOAT: null point exception
+        ((HomeActivity) getActivity()).setOnTimerStatus(() -> {
+            getActivity().runOnUiThread(() -> {
+                System.out.println(" MainFragment running ");
+                // 1.get all status
+                getAllStatus();
+                // 2.refresh ui
+                showAllView();
+            });
+        });
+
         return m_view;
+    }
+
+    /**
+     * 初始化所有状态
+     */
+    private void initStatus() {
+        home_simStatus = ApiEngine.home_simStatus;
+        home_usageSetting = ApiEngine.home_usageSetting;
+        home_usageRecord = ApiEngine.home_usageRecord;
+        home_batteryState = ApiEngine.home_batteryState;
+        home_loginStatu = ApiEngine.home_loginStatu;
+        home_connectionState = ApiEngine.home_connectionState;
+        home_networkInfos = ApiEngine.home_networkInfos;
+    }
+
+    /**
+     * 获取所有状态
+     */
+    private void getAllStatus() {
+        ApiEngine.getSimStatus();
+        ApiEngine.getUserLoginStatus();
+        ApiEngine.getConnectStatus();
+        ApiEngine.getNetworkInfo();
+        ApiEngine.getUsageSetting();
+        ApiEngine.getUsageRecord();
+
+        initStatus();
+    }
+
+    /**
+     * 刷新所有视图
+     */
+    private void showAllView() {
+        showConnectBtnView();
+        showNetworkState();
+        showTrafficUsageView();
+        showSignalAndNetworkType();
+        showAccessDeviceState();
+        repeatDataUi();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.NETWORK_GET_NETWORK_INFO_ROLL_REQUSET));
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET));
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET));
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_CONNECT_REQUSET));
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.WAN_DISCONNECT_REQUSET));
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.POWER_GET_BATTERY_STATE));
-        getActivity().registerReceiver(m_viewConnetMsgReceiver, new IntentFilter(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST));
-
-        showConnectBtnView();
-        showNetworkState();
-        showSignalAndNetworkType();
-
-        showBatteryState();
-        showTrafficUsageView();
-        showAccessDeviceState();
-
         repeatDataUi();
-
     }
-    
-    
+
 
     private void repeatDataUi() {
         // 确保流量界面显示
-        UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
-        if (m_loginStatus != null && m_loginStatus == UserLoginStatus.LOGIN) {
+        // TOAT: 登陆
+        // UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
+        if (home_loginStatu != null && home_loginStatu.getState() == Cons.LOGIN) {
             connect();
         }
     }
@@ -232,7 +270,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
             case R.id.unlock_sim_button:
                 ((HomeActivity) getActivity()).unlockSimBtnClick(true);
                 break;
-            case R.id.access_num_layout:
+            case R.id.access_status:
                 ((HomeActivity) getActivity()).navigateAfterLogin(() -> {
                     ChangeActivity.toActivity(getActivity(), ActivityDeviceManager.class, true, false, false, 0);
                 });
@@ -243,16 +281,18 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void resetConnectBtnFlag() {
-        SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
+        // TOAT: SIM
+        //SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-        if (simStatus != SIMState.Accessable || !bCPEWifiConnected) {
+        if ((home_simStatus.getSIMState() != Cons.READY || !bCPEWifiConnected) & home_simStatus != null) {
             m_bConnectPressd = false;
             m_bConnectReturn = false;
             return;
         }
 
-        WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
-        if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
+        // TOAT: connect
+        // WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
+        if ((home_connectionState.getConnectionStatus() == Cons.CONNECTED || home_connectionState.getConnectionStatus() == Cons.DISCONNECTED) & home_connectionState != null) {
             if (m_bConnectReturn) {
                 m_bConnectReturn = false;
             }
@@ -262,32 +302,32 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void showNetworkState() {
-
-        SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
-        if (simStatus != SIMState.Accessable) {
+        // TOAT: SIM
+        // SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
+        if (Cons.READY != home_simStatus.getSIMState() & home_simStatus != null) {
             int nStatusId = R.string.Home_sim_invalid;
-            if (SIMState.InvalidSim == simStatus) {
+            if (Cons.ILLEGAL == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_sim_invalid;
                 m_unlockSimBtn.setVisibility(View.GONE);
-            } else if (SIMState.NoSim == simStatus) {
+            } else if (Cons.NOWN == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_no_sim;
                 m_unlockSimBtn.setVisibility(View.GONE);
-            } else if (SIMState.SimCardDetected == simStatus) {
+            } else if (Cons.DETECTED == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_SimCard_Detected;
                 m_unlockSimBtn.setVisibility(View.GONE);
-            } else if (SIMState.SimLockRequired == simStatus) {
+            } else if (Cons.SIMLOCK == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_SimLock_Required;
                 m_unlockSimBtn.setVisibility(View.GONE);
-            } else if (SIMState.PukTimesUsedOut == simStatus) {
+            } else if (Cons.PUK_TIMESOUT == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_PukTimes_UsedOut;
                 m_unlockSimBtn.setVisibility(View.GONE);
-            } else if (SIMState.SimCardIsIniting == simStatus) {
+            } else if (Cons.INITING == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_SimCard_IsIniting;
                 m_unlockSimBtn.setVisibility(View.GONE);
-            } else if (SIMState.PinRequired == simStatus) {
+            } else if (Cons.PIN_REQUIRED == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_pin_locked;
                 m_unlockSimBtn.setVisibility(View.VISIBLE);
-            } else if (SIMState.PukRequired == simStatus) {
+            } else if (Cons.PUK_REQUIRED == home_simStatus.getSIMState()) {
                 nStatusId = R.string.Home_puk_locked;
                 m_unlockSimBtn.setVisibility(View.VISIBLE);
             } else {
@@ -295,7 +335,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                 m_unlockSimBtn.setVisibility(View.GONE);
             }
 
-            if (SIMState.PinRequired == simStatus || SIMState.PukRequired == simStatus) {
+            if (Cons.PIN_REQUIRED == home_simStatus.getSIMState() || Cons.PUK_REQUIRED == home_simStatus.getSIMState()) {
                 m_nosimcardLayout.setVisibility(View.GONE);
                 m_simcardlockedLayout.setVisibility(View.VISIBLE);
                 m_simcardlockedTextView.setText(nStatusId);
@@ -312,8 +352,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
         m_simcardlockedLayout.setVisibility(View.GONE);
 
-        NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
-        if (curNetwork.m_NetworkType == NetworkType.No_service) {
+        // TOAT: network
+        // NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
+        if (home_networkInfos.getNetworkType() == Cons.NOSERVER & home_networkInfos != null) {
             m_simOrServiceTextView.setText(R.string.home_no_service);
             m_nosimcardLayout.setVisibility(View.VISIBLE);
             m_connectLayout.setVisibility(View.GONE);
@@ -321,7 +362,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
             return;
         }
 
-        if (curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
+        if (home_networkInfos.getNetworkType() == Cons.UNKNOW & home_networkInfos != null) {
             m_simOrServiceTextView.setText(R.string.home_initializing);
             m_nosimcardLayout.setVisibility(View.VISIBLE);
             m_connectLayout.setVisibility(View.GONE);
@@ -330,25 +371,27 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         }
 
         m_nosimcardLayout.setVisibility(View.GONE);
-        m_connectToNetworkTextView.setText(curNetwork.m_strNetworkName);
+        m_connectToNetworkTextView.setText(home_networkInfos.getNetworkName());
         m_connectToNetworkTextView.setVisibility(View.VISIBLE);
-        WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
-        if (!m_bConnectPressd) {
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
-                statictime = internetConnState.m_lConnectionTime;
-                staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
+
+        // TOAT: connect
+        // WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
+        if (!m_bConnectPressd & home_connectionState != null) {
+            if (home_connectionState.getConnectionStatus() == Cons.CONNECTED) {
+                statictime = home_connectionState.getConnectionTime();
+                staticdata = (int) (home_connectionState.getDlBytes() + home_connectionState.getUlBytes());
 
             }
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+            if (home_connectionState.getConnectionStatus() == Cons.DISCONNECTED) {
             }
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
-                statictime = internetConnState.m_lConnectionTime;
-                staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
+            if (home_connectionState.getConnectionStatus() == Cons.DISCONNECTED) {
+                statictime = home_connectionState.getConnectionTime();
+                staticdata = (int) (home_connectionState.getDlBytes() + home_connectionState.getUlBytes());
             }
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connecting) {
+            if (home_connectionState.getConnectionStatus() == Cons.CONNECTING) {
             }
         } else {
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+            if (home_connectionState.getConnectionStatus() == Cons.CONNECTED || home_connectionState.getConnectionStatus() == Cons.DISCONNECTING) {
             } else {
             }
         }
@@ -360,21 +403,27 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
     private void showConnectBtnView() {
 
-        SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
-        if (simStatus != SIMState.Accessable) {
+        // TOAT: SIM
+        //SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
+        if (home_simStatus != null) {
+            if (home_simStatus.getSIMState() != Cons.READY) {
+                mConnectedView.setCenterTitle(strZeroConnDuration);
+                return;
+            }
+
+        }
+
+        // TOAT: network
+        //NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
+        if (home_networkInfos != null & home_networkInfos.getNetworkType() == Cons.NOSERVER || home_networkInfos.getNetworkType() == Cons.UNKNOW) {
             mConnectedView.setCenterTitle(strZeroConnDuration);
             return;
         }
 
-        NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
-        if (curNetwork.m_NetworkType == NetworkType.No_service || curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
-            mConnectedView.setCenterTitle(strZeroConnDuration);
-            return;
-        }
-
-        WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
+        // TOAT: connect
+        // WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
         if (!m_bConnectPressd) {
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
+            if (home_connectionState.getConnectionStatus() == Cons.CONNECTED & home_connectionState != null) {
                 boolean logoutFlag = SharedPrefsUtil.getInstance(getActivity()).getBoolean(SettingAccountActivity.LOGOUT_FLAG, true);
                 if (logoutFlag) {
                     m_connectLayout.setVisibility(View.VISIBLE);
@@ -383,21 +432,21 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                     m_connectLayout.setVisibility(View.GONE);
                     m_connectedLayout.setVisibility(View.VISIBLE);
                 }
-                statictime = internetConnState.m_lConnectionTime;
-                staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
+                statictime = home_connectionState.getConnectionTime();
+                staticdata = (int) (home_connectionState.getDlBytes() + home_connectionState.getUlBytes());
             }
 
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+            if (home_connectionState.getConnectionStatus() == Cons.DISCONNECTING & home_connectionState != null) {
                 m_connectLayout.setVisibility(View.VISIBLE);
                 m_connectedLayout.setVisibility(View.GONE);
             }
 
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
+            if (home_connectionState.getConnectionStatus() == Cons.DISCONNECTED & home_connectionState != null) {
                 m_connectLayout.setVisibility(View.VISIBLE);
                 m_connectedLayout.setVisibility(View.GONE);
             }
 
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connecting) {
+            if (home_connectionState.getConnectionStatus() == Cons.CONNECTING & home_connectionState != null) {
                 m_connectLayout.setVisibility(View.GONE);
                 m_connectedLayout.setVisibility(View.VISIBLE);
             }
@@ -410,8 +459,8 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                 m_connectLayout.setVisibility(View.GONE);
                 m_connectedLayout.setVisibility(View.VISIBLE);
             }
-            statictime = internetConnState.m_lConnectionTime;
-            staticdata = (int) (internetConnState.m_lDlBytes + internetConnState.m_lUlBytes);
+            statictime = home_connectionState.getConnectionTime();
+            staticdata = (int) (home_connectionState.getDlBytes() + home_connectionState.getUlBytes());
         }
 
         int staticDataMB = staticdata / 1024 / 1024;
@@ -423,73 +472,72 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         if (LinkAppSettings.isLoginSwitchOff()) {
             connect();
         } else {
-            UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
+            // TOAT: login
+            // UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
+            if (home_loginStatu != null) {
+                if (home_loginStatu.getState() == Cons.LOGOUT) {
+                    m_autoLoginDialog.autoLoginAndShowDialog(new OnAutoLoginFinishedListener() {
+                        public void onLoginSuccess() {
+                            connect();
+                        }
 
-            if (status == UserLoginStatus.Logout) {
-                m_autoLoginDialog.autoLoginAndShowDialog(new AutoLoginProgressDialog.OnAutoLoginFinishedListener() {
-                    public void onLoginSuccess() {
-                        connect();
-                    }
+                        public void onLoginFailed(String error_code) {
+                            loginerrorhandle(error_code);
+                        }
 
-                    public void onLoginFailed(String error_code) {
-                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
-                            if (!FeatureVersionManager.getInstance().isSupportForceLogin()) {
-                                m_loginDialog.showOtherLogin();
-                            } else {
-                                ForceLoginSelectDialog.getInstance(getActivity()).showDialog(() -> {
-                                    m_ForceloginDlg.autoForceLoginAndShowDialog(new AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener() {
-                                        public void onLoginSuccess() {
-                                            connect();
-                                        }
-
-                                        public void onLoginFailed(String error_code) {
-                                            if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-                                                SmartLinkV3App.getInstance().setForcesLogin(true);
-                                                ErrorDialog.getInstance(getActivity()).showDialog(getActivity().getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
-                                                    @Override
-                                                    public void onRetry() {
-                                                        m_loginDialog.showDialog(new LoginDialog.OnLoginFinishedListener() {
-                                                            @Override
-                                                            public void onLoginFinished() {
-                                                                connect();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-                                                m_loginDialog.showTimeout();
-                                            }
-                                        }
-                                    });
-                                });
-                            }
-                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
-                            m_loginDialog.showTimeout();
-                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(getActivity()).showDialog(getActivity().getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
-                                @Override
-                                public void onRetry() {
-                                    m_loginDialog.showDialog();
-                                }
+                        @Override
+                        public void onFirstLogin() {
+                            m_loginDialog.showDialog(() -> {
+                                connect();
                             });
                         }
-                    }
-
-                    @Override
-                    public void onFirstLogin() {
-                        m_loginDialog.showDialog(new LoginDialog.OnLoginFinishedListener() {
-                            @Override
-                            public void onLoginFinished() {
-                                connect();
-                            }
-                        });
-                    }
-                });
-            } else if (status == UserLoginStatus.LOGIN) {
-                connect();
-            } else {
-                PromptUserLogined();
+                    });
+                } else if (home_loginStatu.getState() == Cons.LOGIN & home_loginStatu != null) {
+                    connect();
+                } else {
+                    PromptUserLogined();
+                }
             }
+            
+        }
+    }
+
+    private void loginerrorhandle(String error_code) {
+        if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
+            if (!FeatureVersionManager.getInstance().isSupportForceLogin()) {
+                m_loginDialog.showOtherLogin();
+            } else {
+                ForceLoginSelectDialog.getInstance(getActivity()).showDialog(() -> {
+                    m_ForceloginDlg.autoForceLoginAndShowDialog(new AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener() {
+                        public void onLoginSuccess() {
+                            connect();
+                        }
+
+                        public void onLoginFailed(String error_code) {
+                            if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                                SmartLinkV3App.getInstance().setForcesLogin(true);
+                                ErrorDialog.getInstance(getActivity()).showDialog(getActivity().getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                    @Override
+                                    public void onRetry() {
+                                        m_loginDialog.showDialog(() -> connect());
+                                    }
+                                });
+                            } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                                m_loginDialog.showTimeout();
+                            }
+                        }
+                    });
+                });
+            }
+        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
+            m_loginDialog.showTimeout();
+        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
+            ErrorDialog.getInstance(getActivity()).showDialog(getActivity().getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                @Override
+                public void onRetry() {
+                    m_loginDialog.showDialog();
+                }
+            });
         }
     }
 
@@ -499,18 +547,28 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
     private void connect() {
         SharedPrefsUtil.getInstance(getActivity()).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
-        UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
-        UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
-        WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
-        if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-            if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
-                if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
-                    String msgRes = getActivity().getString(R.string.home_usage_over_redial_message);
-                    Toast.makeText(getActivity(), msgRes, Toast.LENGTH_LONG).show();
-                    return;
+        // TOAT: usagesetting
+        //UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
+        //UsageSetting home_usageSetting = APIManager.getInstance().getUsageSetting();
+        // TOAT: UsageRecordResult
+        //UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
+        // TOAT: connect
+        //WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
+
+        if (home_connectionState != null) {
+            if ((home_connectionState.getConnectionStatus() == Cons.DISCONNECTED || home_connectionState.getConnectionStatus() == Cons.DISCONNECTING) ) {
+                if (home_usageSetting != null & home_usageRecord != null) {
+                    if (home_usageSetting.getAutoDisconnFlag() == Cons.ENABLE && home_usageRecord.getMonthlyPlan() > 0 ) {
+                        if ((home_usageRecord.getHUseData() + home_usageRecord.getRoamUseData()) >= home_usageRecord.getMonthlyPlan()) {
+                            String msgRes = getActivity().getString(R.string.home_usage_over_redial_message);
+                            Toast.makeText(getActivity(), msgRes, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
                 }
             }
         }
+       
 
         if (!m_bConnectPressd) {
             m_bConnectPressd = true;
@@ -521,12 +579,15 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         showNetworkState();
         showConnectBtnView();
 
-        if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-            BusinessManager.getInstance().sendRequestMessage(MessageUti.WAN_DISCONNECT_REQUSET, null);
+        if ((home_connectionState.getConnectionStatus() == Cons.CONNECTED || home_connectionState.getConnectionStatus() == Cons.DISCONNECTING) & home_connectionState != null) {
+            // TOAT: disconnect
+            ApiEngine.disconnect();
         } else {
-            BusinessManager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET, null);
+            // TOAT: to connect
+            ApiEngine.connectto();
         }
     }
+
 
     private CommonErrorInfoDialog m_dialog_timeout_info;
 
@@ -538,127 +599,133 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void showSignalAndNetworkType() {
-        SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
-        if (simStatus != SIMState.Accessable) {
+        // TOAT: SIM
+        // SIMState simStatus = BusinessManager.getInstance().getSimStatus().m_SIMState;
+        if (home_simStatus.getSIMState() != Cons.READY & home_simStatus != null) {
             m_networkTypeTextView.setVisibility(View.GONE);
             m_networkLabelTextView.setVisibility(View.VISIBLE);
             m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
         } else {
-            NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
-            if (curNetwork.m_NetworkType == NetworkType.No_service) {
-                m_networkTypeTextView.setVisibility(View.GONE);
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
-                m_networkLabelTextView.setVisibility(View.VISIBLE);
-                return;
-            }
-            //show roaming
-            if (curNetwork.m_bRoaming)
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g_r);
-            //show signal strength
-            if (curNetwork.m_signalStrength == SignalStrength.Level_0) {
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
-            }
-            if (curNetwork.m_signalStrength == SignalStrength.Level_1)
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g1);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_2)
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g2);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_3)
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g3);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_4)
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g4);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_5)
-                m_signalImageView.setBackgroundResource(R.drawable.home_4g5);
-            //show network type
-            if (curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
-                m_networkTypeTextView.setVisibility(View.GONE);
-                m_networkLabelTextView.setVisibility(View.VISIBLE);
-            }
+            // TOAT: NETWORK
+            // NetworkInfoModel curNetwork = BusinessManager.getInstance().getNetworkInfo();
+            if (home_networkInfos != null) {
+                if (home_networkInfos.getNetworkType() == Cons.NOSERVER) {
+                    m_networkTypeTextView.setVisibility(View.GONE);
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
+                    m_networkLabelTextView.setVisibility(View.VISIBLE);
+                    return;
+                }
+                //show roaming
+                if (home_networkInfos.getRoaming() == Cons.ROAMING)
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g_r);
+                //show signal strength
+                if (home_networkInfos.getSignalStrength() == Cons.LEVEL_0) {
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
+                }
+                if (home_networkInfos.getSignalStrength() == Cons.LEVEL_1)
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g1);
+                if (home_networkInfos.getSignalStrength() == Cons.LEVEL_2)
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g2);
+                if (home_networkInfos.getSignalStrength() == Cons.LEVEL_3)
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g3);
+                if (home_networkInfos.getSignalStrength() == Cons.LEVEL_4)
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g4);
+                if (home_networkInfos.getSignalStrength() == Cons.LEVEL_5)
+                    m_signalImageView.setBackgroundResource(R.drawable.home_4g5);
+                //show network type
+                if (home_networkInfos.getNetworkType() == Cons.UNKNOW) {
+                    m_networkTypeTextView.setVisibility(View.GONE);
+                    m_networkLabelTextView.setVisibility(View.VISIBLE);
+                }
 
-            //2G
-            if (curNetwork.m_NetworkType == NetworkType.EDGE || curNetwork.m_NetworkType == NetworkType.GPRS) {
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_2g);
-                m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
-            }
+                //2G
+                if (home_networkInfos.getNetworkType() == Cons.EDGE || home_networkInfos.getNetworkType() == Cons.GPRS) {
+                    m_networkTypeTextView.setVisibility(View.VISIBLE);
+                    m_networkTypeTextView.setTypeface(typeFace);
+                    m_networkTypeTextView.setText(R.string.home_network_type_2g);
+                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                }
 
-            //3G
-            if (curNetwork.m_NetworkType == NetworkType.HSPA || curNetwork.m_NetworkType == NetworkType.UMTS || curNetwork.m_NetworkType == NetworkType.HSUPA) {
+                //3G
+                if (home_networkInfos.getNetworkType() == Cons.HSPA || home_networkInfos.getNetworkType() == Cons.UMTS || home_networkInfos.getNetworkType() == Cons.HSUPA) {
 
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_3g);
-                m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
-            }
+                    m_networkTypeTextView.setVisibility(View.VISIBLE);
+                    m_networkTypeTextView.setTypeface(typeFace);
+                    m_networkTypeTextView.setText(R.string.home_network_type_3g);
+                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                }
 
-            //3G+
-            if (curNetwork.m_NetworkType == NetworkType.HSPA_PLUS || curNetwork.m_NetworkType == NetworkType.DC_HSPA_PLUS) {
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_3g_plus);
-                m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
-            }
+                //3G+
+                if (home_networkInfos.getNetworkType() == Cons.HSPA_PLUS || home_networkInfos.getNetworkType() == Cons.DC_HSPA_PLUS) {
+                    m_networkTypeTextView.setVisibility(View.VISIBLE);
+                    m_networkTypeTextView.setTypeface(typeFace);
+                    m_networkTypeTextView.setText(R.string.home_network_type_3g_plus);
+                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                }
 
-            //4G			
-            if (curNetwork.m_NetworkType == NetworkType.LTE) {
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_4g);
-                m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                //4G			
+                if (home_networkInfos.getNetworkType() == Cons.LTE) {
+                    m_networkTypeTextView.setVisibility(View.VISIBLE);
+                    m_networkTypeTextView.setTypeface(typeFace);
+                    m_networkTypeTextView.setText(R.string.home_network_type_4g);
+                    m_networkTypeTextView.setTextColor(getActivity().getResources().getColor(R.color.mg_blue));
+                }
             }
         }
     }
 
-    private void showBatteryState() {
-
-        if (!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState")) {
-            batteryView.setVisibility(View.GONE);
-            return;
-        }
-        int nProgress;
-        BatteryInfo batteryinfo = BusinessManager.getInstance().getBatteryInfo();
-        if (ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()) {
-            nProgress = batteryinfo.getBatterLevel();
-            if (nProgress > 20 && nProgress <= 40) {
-                batteryView.setImageResource(R.drawable.home_ic_battery2);
-            } else if ((nProgress > 40) && nProgress <= 60) {
-                batteryView.setImageResource(R.drawable.home_ic_battery3);
-            } else if ((nProgress > 60) && nProgress <= 80) {
-                batteryView.setImageResource(R.drawable.home_ic_battery4);
-            } else if ((nProgress > 80) && nProgress <= 100) {
-                batteryView.setImageResource(R.drawable.home_ic_battery5);
-            } else {
-                batteryView.setImageResource(R.drawable.home_ic_battery1);
-            }
-        } else if (ConstValue.CHARGE_STATE_CHARGING == batteryinfo.getChargeState()) {
-            batteryView.setImageResource(R.drawable.home_ic_battery_charging);
-        } else if (ConstValue.CHARGE_STATE_COMPLETED == batteryinfo.getChargeState()) {
-            nProgress = batteryinfo.getBatterLevel();
-            if (nProgress > 20 && nProgress <= 40) {
-                batteryView.setImageResource(R.drawable.home_ic_battery2);
-            } else if ((nProgress > 40) && nProgress <= 60) {
-                batteryView.setImageResource(R.drawable.home_ic_battery3);
-            } else if ((nProgress > 60) && nProgress <= 80) {
-                batteryView.setImageResource(R.drawable.home_ic_battery4);
-            } else if ((nProgress > 80) && nProgress <= 100) {
-                batteryView.setImageResource(R.drawable.home_ic_battery5);
-            } else {
-                batteryView.setImageResource(R.drawable.home_ic_battery1);
-            }
-        } else if (ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()) {
-
-        }
-
-        int batterLevel = batteryinfo.getBatterLevel();
-
-        if (batterLevel <= 30) {
-            circleProgress.setProgress(getActivity().getResources().getColor(R.color.circle_yellow));
-        }
-        circleProgress.setValue(batterLevel);
-
-        showBatteryOnProgressPosition(batterLevel);
-        SharedPrefsUtil.getInstance(getActivity()).putInt(BATTERY_LEVEL, batterLevel);
-    }
+    // private void showBatteryState() {
+    //
+    //     if (!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState")) {
+    //         batteryView.setVisibility(View.GONE);
+    //         return;
+    //     }
+    //     int nProgress;
+    //
+    //     // TOAT: BatteryState
+    //     // BatteryInfo batteryinfo = BusinessManager.getInstance().getBatteryInfo();
+    //     if (ConstValue.CHARGE_STATE_REMOVED == home_batteryState.getChg_state()) {
+    //         nProgress = home_batteryState.getBatteryLevel();
+    //         if (nProgress > 20 && nProgress <= 40) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery2);
+    //         } else if ((nProgress > 40) && nProgress <= 60) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery3);
+    //         } else if ((nProgress > 60) && nProgress <= 80) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery4);
+    //         } else if ((nProgress > 80) && nProgress <= 100) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery5);
+    //         } else {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery1);
+    //         }
+    //     } else if (ConstValue.CHARGE_STATE_CHARGING == home_batteryState.getChg_state()) {
+    //         batteryView.setImageResource(R.drawable.home_ic_battery_charging);
+    //     } else if (ConstValue.CHARGE_STATE_COMPLETED == home_batteryState.getChg_state()) {
+    //         nProgress = home_batteryState.getBatteryLevel();
+    //         if (nProgress > 20 && nProgress <= 40) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery2);
+    //         } else if ((nProgress > 40) && nProgress <= 60) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery3);
+    //         } else if ((nProgress > 60) && nProgress <= 80) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery4);
+    //         } else if ((nProgress > 80) && nProgress <= 100) {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery5);
+    //         } else {
+    //             batteryView.setImageResource(R.drawable.home_ic_battery1);
+    //         }
+    //     } else if (ConstValue.CHARGE_STATE_ABORT == home_batteryState.getChg_state()) {
+    //
+    //     }
+    //
+    //     int batterLevel = home_batteryState.getBatteryLevel();
+    //
+    //     if (batterLevel <= 30) {
+    //         circleProgress.setProgress(getActivity().getResources().getColor(R.color.circle_yellow));
+    //     }
+    //     circleProgress.setValue(batterLevel);
+    //
+    //     showBatteryOnProgressPosition(batterLevel);
+    //     SharedPrefsUtil.getInstance(getActivity()).putInt(BATTERY_LEVEL, batterLevel);
+    // }
 
     private void showBatteryOnProgressPosition(int progressValue) {
         int startProgressValue = SharedPrefsUtil.getInstance(getActivity()).getInt(BATTERY_LEVEL, 0);
@@ -683,12 +750,14 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void showTrafficUsageView() {
-        UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
-        UsageSettingModel statistic = BusinessManager.getInstance().getUsageSettings();
+        // TOAT: UsageRecordResult
+        //UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
+        // TOAT:  UsageSetting
+        //UsageSettingModel statistic = BusinessManager.getInstance().getUsageSettings();
 
-        if (statistic.HMonthlyPlan != 0) {
-            long hUseData = m_UsageRecordResult.HUseData;
-            long hMonthlyPlan = statistic.HMonthlyPlan;
+        if (home_usageSetting.getMonthlyPlan() != 0 & home_usageSetting != null) {
+            long hUseData = home_usageRecord.getHUseData();
+            long hMonthlyPlan = home_usageSetting.getMonthlyPlan();
             long circleUseDataProgressValue = (hUseData * 100) / hMonthlyPlan;
             if (circleUseDataProgressValue >= 80) {
                 mConnectedView.setWaveColor(getActivity().getResources().getColor(R.color.wave_yellow));
@@ -720,7 +789,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
     @Override
     public void batteryStatus() {
-        showBatteryState();
+        // showBatteryState();
     }
 
     @Override
