@@ -5,17 +5,17 @@ package com.alcatel.smartlinkv3.ui.home.helper.temp;
  */
 
 public class ConnectionStates {
-    int ConnectionStatus;
-    int Conprofileerror;
-    String IPv4AdrressString;
-    String IPv6AdrressString;
-    int Speed_Dl;
-    int Speed_Ul;
-    int DlRate;
-    int UlRate;
-    int ConnectionTime;
-    int UlBytes;
-    int DlBytes;
+    public int ConnectionStatus;
+    public int Conprofileerror;
+    public String IPv4AdrressString;
+    public String IPv6AdrressString;
+    public int Speed_Dl;
+    public int Speed_Ul;
+    public int DlRate;
+    public int UlRate;
+    public int ConnectionTime;
+    public int UlBytes;
+    public int DlBytes;
 
     public int getConnectionStatus() {
         return ConnectionStatus;

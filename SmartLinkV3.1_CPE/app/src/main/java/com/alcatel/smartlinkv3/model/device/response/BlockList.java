@@ -2,25 +2,22 @@ package com.alcatel.smartlinkv3.model.device.response;
 
 import java.util.List;
 
-/**
- * Created by qianli.ma on 2017/6/22.
- */
 
 public class BlockList {
 
-    public List<BlockDevice> BlockListpub;
+    public List<BlockDevice> BlockList;
 
     @Override
     public String toString() {
-        return "BlockList{" + "BlockListpub=" + BlockListpub + '}';
+        return "BlockList{" + "BlockList=" + BlockList + '}';
     }
 
-    public List<BlockDevice> getBlockListpub() {
-        return BlockListpub;
+    public List<BlockDevice> getBlockList() {
+        return BlockList;
     }
 
-    public void setBlockListpub(List<BlockDevice> blockListpub) {
-        BlockListpub = blockListpub;
+    public void setBlockList(List<BlockDevice> blockList) {
+        BlockList = blockList;
     }
 
     public class BlockDevice {

@@ -14,9 +14,7 @@ import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.home.helper.temp.ConnectionStates;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.alcatel.smartlinkv3.utils.DataUtils;
 
 import static com.alcatel.smartlinkv3.R.string.device_set_success;
 
@@ -53,7 +51,7 @@ public class ApiEngine {
     }
 
     public static void getUsageRecord() {
-        API.get().getUsageRecord(new MySubscriber<UsageRecord>() {
+        API.get().getUsageRecord(DataUtils.getCurrent(),new MySubscriber<UsageRecord>() {
             @Override
             protected void onSuccess(UsageRecord usageRecord) {
                 home_usageRecord = usageRecord;
@@ -151,10 +149,7 @@ public class ApiEngine {
 
     // TOAT: 
     public static void clearUsageReacord() {
-        SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date now = new Date();
-        String clearTime = sDate.format(now);
-        API.get().setUsageRecordClear(clearTime, new MySubscriber() {
+        API.get().setUsageRecordClear(DataUtils.getCurrent(), new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
 

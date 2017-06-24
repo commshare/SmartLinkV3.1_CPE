@@ -6,7 +6,6 @@ package com.alcatel.smartlinkv3.model.network;
 
 public class NetworkInfos {
 
-
     public String PLMN;
     public int NetworkType;
     public String NetworkName;
@@ -34,6 +33,11 @@ public class NetworkInfos {
     public String RSRQ;
     public int EcIo;
     public int RSCP;
+
+    @Override
+    public String toString() {
+        return "NetworkInfos{" + "PLMN='" + PLMN + '\'' + ", NetworkType=" + NetworkType + ", NetworkName='" + NetworkName + '\'' + ", SpnName='" + SpnName + '\'' + ", LAC='" + LAC + '\'' + ", CellId='" + CellId + '\'' + ", RncId='" + RncId + '\'' + ", Roaming=" + Roaming + ", Domestic_Roaming=" + Domestic_Roaming + ", SignalStrength=" + SignalStrength + ", mcc='" + mcc + '\'' + ", mnc='" + mnc + '\'' + ", SINR='" + SINR + '\'' + ", RSRP='" + RSRP + '\'' + ", RSSI='" + RSSI + '\'' + ", eNBID='" + eNBID + '\'' + ", CGI='" + CGI + '\'' + ", CenterFreq='" + CenterFreq + '\'' + ", TxPWR='" + TxPWR + '\'' + ", LTE_state=" + LTE_state + ", PLMN_name='" + PLMN_name + '\'' + ", Band=" + Band + ", DL_channel='" + DL_channel + '\'' + ", UL_channel='" + UL_channel + '\'' + ", RSRQ='" + RSRQ + '\'' + ", EcIo=" + EcIo + ", RSCP=" + RSCP + '}';
+    }
 
     public String getPLMN() {
         return PLMN;
@@ -249,10 +253,5 @@ public class NetworkInfos {
 
     public void setRSCP(int RSCP) {
         this.RSCP = RSCP;
-    }
-
-    @Override
-    public String toString() {
-        return "NetworkInfos{" + "PLMN='" + PLMN + '\'' + ", NetworkType=" + NetworkType + ", NetworkName='" + NetworkName + '\'' + ", SpnName='" + SpnName + '\'' + ", LAC='" + LAC + '\'' + ", CellId='" + CellId + '\'' + ", RncId='" + RncId + '\'' + ", Roaming=" + Roaming + ", Domestic_Roaming=" + Domestic_Roaming + ", SignalStrength=" + SignalStrength + ", mcc='" + mcc + '\'' + ", mnc='" + mnc + '\'' + ", SINR='" + SINR + '\'' + ", RSRP='" + RSRP + '\'' + ", RSSI='" + RSSI + '\'' + ", eNBID='" + eNBID + '\'' + ", CGI='" + CGI + '\'' + ", CenterFreq='" + CenterFreq + '\'' + ", TxPWR='" + TxPWR + '\'' + ", LTE_state=" + LTE_state + ", PLMN_name='" + PLMN_name + '\'' + ", Band=" + Band + ", DL_channel='" + DL_channel + '\'' + ", UL_channel='" + UL_channel + '\'' + ", RSRQ='" + RSRQ + '\'' + ", EcIo=" + EcIo + ", RSCP=" + RSCP + '}';
     }
 }

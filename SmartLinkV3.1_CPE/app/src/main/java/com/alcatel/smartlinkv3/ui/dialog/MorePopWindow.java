@@ -12,13 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
-import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
+import com.alcatel.smartlinkv3.utils.DataUtils;
 
 public class MorePopWindow extends PopupWindow implements OnClickListener {
     private View conentView;
     LinearLayout m_usage_setting;
     LinearLayout m_clear_history;
+    private OnClearUsageRecord onClearUsageRecord;
 
     public MorePopWindow(final Activity context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,23 +57,30 @@ public class MorePopWindow extends PopupWindow implements OnClickListener {
                 this.dismiss();
                 break;
             case R.id.clear_history_layout:
-                // SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
-                // WanConnectStatusModel connectStatus = BusinessManager.getInstance().getWanConnectStatus();
-                // if (connectStatus.m_connectionStatus == ConnectionStatus.Disconnected) {
-                // DataValue data = new DataValue();
-                // SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                // Date now = new Date();
-                // String strDate = sDate.format(now);
-                // data.addParam("clear_time", strDate);
-                // TOAT: clear record
-                // BusinessManager.getInstance().sendRequestMessage(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET, data);
-                ApiEngine.clearUsageReacord();
+                // clear the record
+                clearUsageRecord();
                 this.dismiss();
                 break;
         }
     }
 
+    /* **** clearUsageRecord **** */
+    private void clearUsageRecord() {
+        API.get().setUsageRecordClear(DataUtils.getCurrent(), new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
 
+            }
+        });
+    }
+
+    public interface OnClearUsageRecord{
+        void clearRecord();
+    }
+    
+    public void setOnClearUsageRecord(OnClearUsageRecord onClearUsageRecord){
+        this.onClearUsageRecord = onClearUsageRecord;
+    }
 
     public void showPopupWindow(View parent) {
         if (!this.isShowing()) {

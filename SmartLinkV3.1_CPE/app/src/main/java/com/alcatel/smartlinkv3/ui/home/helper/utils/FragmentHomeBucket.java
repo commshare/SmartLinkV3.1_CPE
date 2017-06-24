@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.home.helper.utils;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import com.alcatel.smartlinkv3.ui.home.fragment.MainFragment;
@@ -23,11 +24,11 @@ public class FragmentHomeBucket {
      * @param flag 传递进来的位置
      * @return 对应位置的Fragment
      */
-    public static Fragment getFragment(FragmentHomeEnum flag) {
+    public static Fragment getFragment(Activity activity, FragmentHomeEnum flag) {
 
         Fragment fragment = null;
         if (flag.equals(FragmentHomeEnum.MAIN)) {
-            fragment = new MainFragment();
+            fragment = new MainFragment(activity);
         } else if (flag.equals(FragmentHomeEnum.WIFI)) {
             fragment = new WifiFragment();
         } else if (flag.equals(FragmentHomeEnum.SMS)) {

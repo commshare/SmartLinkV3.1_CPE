@@ -4,10 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBar.LayoutParams;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,11 +18,12 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.model.Usage.UsageRecord;
 import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
-import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
-
-import static com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity.disableABCShowHideAnimation;
+import com.alcatel.smartlinkv3.utils.ActionbarSetting;
+import com.alcatel.smartlinkv3.utils.DataUtils;
 
 
 public class UsageActivity extends BaseActivityWithBack implements View.OnClickListener {
@@ -56,12 +53,11 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
     private TextView m_durationtime;
                 /*duration_panel  end*/
 
-    private ViewUsageBroadcastReceiver m_viewUsageMsgReceiver;
     private ImageButton mbackBtn;
     private Button mMoreBtn;
     private TimerHelper timerHelper;
-    private UsageRecord home_usageRecord;
-    private UsageSetting home_usageSetting;
+    private int timeLimitTimes = 0;
+    int nProgress;
 
     public UsageActivity() {
         this.mContext = this;
@@ -98,9 +94,15 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_usage);
-        initStatus();
+
+        // init action bar
         initActionBar();
+        // init layout ui
         initView();
+
+        // init status
+        updateUI();
+        // init Timer
         initTimer();
 
     }
@@ -112,25 +114,10 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
         timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                ApiEngine.getUsageRecord();
-                ApiEngine.getUsageSetting();
-                runOnUiThread(() -> updateUI());
-                System.out.println();
+                updateUI();
             }
         };
         timerHelper.start(5000);
-    }
-
-    /**
-     * 初始化状态
-     */
-    private void initStatus() {
-        ApiEngine.getUsageRecord();
-        ApiEngine.getUsageSetting();
-
-        home_usageRecord = ApiEngine.home_usageRecord;
-        home_usageSetting = ApiEngine.home_usageSetting;
-
     }
 
     /**
@@ -138,32 +125,15 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
      */
     private void initActionBar() {
         // initView action bar
-        ActionBar supportActionBar = getSupportActionBar();
-        View inflate = View.inflate(this, R.layout.actionbarusage, null);
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL;
-        supportActionBar.setCustomView(inflate, lp);
-        disableABCShowHideAnimation(supportActionBar);
-        supportActionBar.setDisplayShowHomeEnabled(false);
-        supportActionBar.setDisplayShowCustomEnabled(true);
-        supportActionBar.setDisplayShowTitleEnabled(false);
-        supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        supportActionBar.show();
-        findActionbarView(supportActionBar);
-    }
-
-
-    /**
-     * 查找控件
-     *
-     * @param supportActionBar
-     */
-    private void findActionbarView(ActionBar supportActionBar) {
-        View customView = supportActionBar.getCustomView();
-        mbackBtn = (ImageButton) customView.findViewById(R.id.usage_back);
-        mMoreBtn = (Button) customView.findViewById(R.id.usage_more);
-        mbackBtn.setOnClickListener(this);
-        mMoreBtn.setOnClickListener(this);
+        new ActionbarSetting() {
+            @Override
+            public void findActionbarView(View view) {
+                mbackBtn = (ImageButton) view.findViewById(R.id.usage_back);
+                mMoreBtn = (Button) view.findViewById(R.id.usage_more);
+                mbackBtn.setOnClickListener(UsageActivity.this);
+                mMoreBtn.setOnClickListener(UsageActivity.this);
+            }
+        }.settingActionbarAttr(this, getSupportActionBar(), R.layout.actionbarusage);
     }
 
     protected void initView() {
@@ -200,69 +170,87 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
 
     private void moreBtnClick() {
         MorePopWindow morePopWindow = new MorePopWindow(this);
+        // when user click this button & request the clear action then refresh ui
+        morePopWindow.setOnClearUsageRecord(() -> updateUI());
+        // clear action
         morePopWindow.showPopupWindow(mMoreBtn);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // m_viewUsageMsgReceiver = new ViewUsageBroadcastReceiver();
-        // registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET));
-        // registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
-        // registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
-
         updateUI();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        try {
-            unregisterReceiver(m_viewUsageMsgReceiver);
-        } catch (Exception e) {
+    /* update ui */
+    private void updateUI() {
+        // get usage setting
+        getUsageSetting();
 
-        }
+        // get usage record
+        getUsageRecord();
     }
 
-    private void updateUI() {
-        int nProgress;
-        // TOAT: usagerecord
-        // UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
-        //UsageSettingModel statistic = BusinessManager.getInstance().getUsageSettings();
+    /* **** getUsageSetting **** */
+    private void getUsageSetting() {
+        API.get().getUsageSetting(new MySubscriber<UsageSetting>() {
+            @Override
+            protected void onSuccess(UsageSetting result) {
+                // set ui by result
+                updateUsageSetting(result);
+            }
+        });
+    }
 
-        if (home_usageSetting != null & home_usageSetting.getMonthlyPlan() != 0) {
+    /* **** getUsageRecord **** */
+    private void getUsageRecord() {
+        API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
+            @Override
+            protected void onSuccess(UsageRecord result) {
+                updateUsageRecord(result);
+            }
+        });
+    }
+
+
+    /*  */
+    public void updateUsageSetting(UsageSetting result) {
+        timeLimitTimes = result.getTimeLimitTimes();
+        if (result.getMonthlyPlan() != 0) {
             m_homedataprogressdec.setVisibility(View.GONE);
             m_homedata.setVisibility(View.VISIBLE);
-            int useData = home_usageRecord != null ? home_usageRecord.getHUseData() : 0;
-            m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(mContext, useData) + " of " + CommonUtil.ConvertTrafficToStringFromMB(mContext, home_usageSetting.getMonthlyPlan()));
-            nProgress = (int) (useData * m_homedataprogress.getMax() / home_usageSetting.getMonthlyPlan());
-            Log.v("text", "p11111   nProgress=" + nProgress);
-            if (nProgress > m_homedataprogress.getMax())
-                nProgress = m_homedataprogress.getMax();
-            m_homedataprogress.setProgress(nProgress);
-            if (useData > home_usageSetting.getMonthlyPlan()) {
-                m_homewarn.setVisibility(View.VISIBLE);
-            } else {
-                m_homewarn.setVisibility(View.GONE);
-            }
         } else {
             m_homedata.setVisibility(View.GONE);
             m_homedataprogress.setProgress(0);
             m_homedataprogressdec.setVisibility(View.VISIBLE);
             m_homewarn.setVisibility(View.GONE);
-
         }
+    }
 
-        int traffic_HD = home_usageRecord == null ? 0 : home_usageRecord.getHCurrUseDL();
-        int traffic_HU = home_usageRecord == null ? 0 : home_usageRecord.getHCurrUseUL();
+    private void updateUsageRecord(UsageRecord result) {
+        int useData = result.getHUseData();
+        m_homedata.setText(CommonUtil.ConvertTrafficToStringFromMB(mContext, useData) + " of " + CommonUtil.ConvertTrafficToStringFromMB(mContext, result.getMonthlyPlan()));
+        if (result.getMonthlyPlan() <= 0) {// user have no set plan
+            return;
+        }
+        nProgress = useData * m_homedataprogress.getMax() / result.getMonthlyPlan();
+        if (nProgress > m_homedataprogress.getMax())
+            nProgress = m_homedataprogress.getMax();
+        m_homedataprogress.setProgress(nProgress);
+        if (useData > result.getMonthlyPlan()) {
+            m_homewarn.setVisibility(View.VISIBLE);
+        } else {
+            m_homewarn.setVisibility(View.GONE);
+        }
+        int traffic_HD = result.getHCurrUseDL();
+        int traffic_HU = result.getHCurrUseUL();
         m_homedowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(mContext, (long) traffic_HD));
         m_homeupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(mContext, (long) traffic_HU));
 
 
-        int traffic_RD = home_usageRecord == null ? 0 : home_usageRecord.getRCurrUseDL();
-        int traffic_RU = home_usageRecord == null ? 0 : home_usageRecord.getRCurrUseUL();
-        int RoamUseData = home_usageRecord == null ? 0 : home_usageRecord.getRoamUseData();
+        int traffic_RD = result.getRCurrUseDL();
+        int traffic_RU = result.getRCurrUseUL();
+        int RoamUseData = result.getRoamUseData();
         m_roamingdowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(mContext, (long) traffic_RD));
         m_roamingupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(mContext, (long) traffic_RU));
         m_roamingdata.setText(CommonUtil.ConvertTrafficToStringFromMB(mContext, (long) RoamUseData));
@@ -270,20 +258,19 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
 
         String durationformat = getResources().getString(R.string.usage_duration);
 
-        int connectTime = home_usageRecord == null ? 0 : home_usageRecord.getCurrConnTimes();
-        int totalTime = home_usageRecord == null ? 0 : home_usageRecord.getTConnTimes();
-        Log.v("time", "pccccc CurrConnTimes=" + connectTime + "TConnTimes=" + totalTime);
+        int connectTime = result.getCurrConnTimes();
+        int totalTime = result.getTConnTimes();
         String strCurrDuration = String.format(durationformat, connectTime / 3600, (connectTime % 3600) / 60);
         m_durationtime.setText(strCurrDuration);
         String strTotalDuration = String.format(durationformat, totalTime / 3600, (totalTime % 3600) / 60);
         m_durationtotaltime.setText(strTotalDuration);
 
-        int HTimeLimitTimes = home_usageSetting == null ? 0 : home_usageSetting.getTimeLimitTimes();
+        int HTimeLimitTimes = timeLimitTimes;
         if (connectTime > (HTimeLimitTimes * 60)) {
             m_durationwarn.setVisibility(View.VISIBLE);
         } else {
             m_durationwarn.setVisibility(View.GONE);
         }
-
     }
 }
+

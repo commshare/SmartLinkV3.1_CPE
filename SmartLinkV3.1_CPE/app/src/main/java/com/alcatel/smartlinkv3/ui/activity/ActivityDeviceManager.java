@@ -1,17 +1,12 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,21 +27,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.business.model.ConnectedDeviceItemModel;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.EnumConnectMode;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceType;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.model.device.other.BlockModel;
+import com.alcatel.smartlinkv3.model.device.other.ConnectModel;
+import com.alcatel.smartlinkv3.model.device.other.ModelHelper;
+import com.alcatel.smartlinkv3.model.device.response.BlockList;
+import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.ui.home.helper.cons.Cons;
+import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
+import com.alcatel.smartlinkv3.utils.ActionbarSetting;
 
 import java.util.ArrayList;
-
-import static com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity.disableABCShowHideAnimation;
+import java.util.List;
 
 public class ActivityDeviceManager extends BaseActivityWithBack implements OnClickListener {
-    private ListView m_connecedDeviceList = null;
-    private ListView m_blockedDeviceList = null;
+    private ListView mLv_connectDevice = null;
+    private ListView mLv_blockedDevice = null;
     private LinearLayout m_back = null;
     private TextView m_txConnectedCnt;
     private TextView m_txBlockCnt;
@@ -56,89 +53,27 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
     private boolean m_bIsWorking = false;
     private boolean m_bEnableRefresh = false;
 
-    private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
-    private ArrayList<ConnectedDeviceItemModel> m_blockedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
-    private DeviceReceiver m_deviceReceiver = null;
+    List<ConnectModel> connectModelList = new ArrayList<>();
+    List<BlockModel> blockModelList = new ArrayList<>();
+
     private String m_strLocalMac = new String();
     private ImageButton mbackBtn;
-    private Button mMoreBtn;
-
-
-    private class DeviceReceiver extends BroadcastReceiver {
-        // TOAT: broatcase
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            String action = intent.getAction();
-            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
-            Boolean ok = response != null && response.isOk();
-
-            if (MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST.equals(action)) {
-                m_waiting.setVisibility(View.GONE);
-                if (ok) {
-                    if (m_bEnableRefresh || !haveEditItem()) {
-                        resetConnectEditFlag();
-                        m_bEnableRefresh = false;
-                        updateConnectedDeviceUI();
-                    }
-                }
-            } else if (MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST.equals(action)) {
-                if (ok) {
-                    updateBlockDeviceUI();
-                }
-            } else if (MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK.equals(action)) {
-                if (ok) {
-                    getListData();
-                }
-                m_bIsWorking = false;
-                m_waiting.setVisibility(View.GONE);
-                ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
-                ((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
-            } else if (MessageUti.DEVICE_SET_DEVICE_UNLOCK.equals(action)) {
-                if (ok) {
-                    getListData();
-                }
-                m_bIsWorking = false;
-                m_waiting.setVisibility(View.GONE);
-                ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
-                ((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
-            } else if (MessageUti.DEVICE_SET_DEVICE_NAME.equals(action)) {
-                if (ok) {
-                    getListData();
-                } else {
-                    Toast.makeText(ActivityDeviceManager.this, R.string.device_manage_set_name_failed, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }
-    }
-
-    private void registerReceiver() {
-        m_deviceReceiver = new DeviceReceiver();
-        this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST));
-        this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_GET_BLOCK_DEVICE_LIST));
-        this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK));
-        this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_SET_DEVICE_UNLOCK));
-        this.registerReceiver(m_deviceReceiver, new IntentFilter(MessageUti.DEVICE_SET_DEVICE_NAME));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.device_manage_view);
         getWindow().setBackgroundDrawable(null);
-        // m_bNeedBack = false;
 
-        //m_back = (LinearLayout) this.findViewById(R.id.back_layout);
-        //m_back.setOnClickListener(this);
-
-        m_connecedDeviceList = (ListView) this.findViewById(R.id.connected_devices);
+        // connect device
+        mLv_connectDevice = (ListView) this.findViewById(R.id.connected_devices);
         ConnectedDevAdapter connectedDevAdapter = new ConnectedDevAdapter(this);
-        m_connecedDeviceList.setAdapter(connectedDevAdapter);
+        mLv_connectDevice.setAdapter(connectedDevAdapter);
 
-        m_blockedDeviceList = (ListView) this.findViewById(R.id.block_devices);
+        // block device
+        mLv_blockedDevice = (ListView) this.findViewById(R.id.block_devices);
         BlockedDevAdapter blockedDevAdapter = new BlockedDevAdapter(this);
-        m_blockedDeviceList.setAdapter(blockedDevAdapter);
+        mLv_blockedDevice.setAdapter(blockedDevAdapter);
 
         m_txConnectedCnt = (TextView) this.findViewById(R.id.tx_connected_cnt);
         m_txBlockCnt = (TextView) this.findViewById(R.id.tx_block_cnt);
@@ -155,45 +90,90 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
         m_waiting = (ProgressBar) this.findViewById(R.id.waiting_progress);
 
+        // init action bar
         initActionbar();
+        // init Devices
+        getDevicesStatus();
+        // init timer
+        initTimer();
 
     }
 
+    /* **** initActionbar **** */
     private void initActionbar() {
-        // initView action bar
-        ActionBar supportActionBar = getSupportActionBar();
-        View inflate = View.inflate(this, R.layout.actionbardevices, null);
-        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-        lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL;
-        supportActionBar.setCustomView(inflate, lp);
-        disableABCShowHideAnimation(supportActionBar);
-        supportActionBar.setDisplayShowHomeEnabled(false);
-        supportActionBar.setDisplayShowCustomEnabled(true);
-        supportActionBar.setDisplayShowTitleEnabled(false);
-        supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        supportActionBar.show();
-        findActionbarView(supportActionBar);
+        new ActionbarSetting() {
+            @Override
+            public void findActionbarView(View view) {
+                mbackBtn = (ImageButton) view.findViewById(R.id.device_back);
+                mbackBtn.setOnClickListener(ActivityDeviceManager.this);
+            }
+        }.settingActionbarAttr(this, getSupportActionBar(), R.layout.actionbardevices);
     }
 
-    /**
-     * 查找控件
-     *
-     * @param supportActionBar
-     */
-    private void findActionbarView(ActionBar supportActionBar) {
-        View customView = supportActionBar.getCustomView();
-        mbackBtn = (ImageButton) customView.findViewById(R.id.device_back);
-        mbackBtn.setOnClickListener(this);
+    /* **** initTimer **** */
+    private void initTimer() {
+        new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                getDevicesStatus();
+            }
+        }.start(5000);
     }
+
+    /* **** getDevicesStatus **** */
+    private void getDevicesStatus() {
+        // get macaddress
+        getLocalMacAddress();
+        // get connect devices
+        updateConnectedDeviceUI();
+        // get block devices
+        updateBlockDeviceUI();
+    }
+
+    /* **** updateConnectedDeviceUI **** */
+    private void updateConnectedDeviceUI() {
+        API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
+            @Override
+            protected void onSuccess(ConnectedList result) {
+                connectModelList = ModelHelper.getConnectModel(result);
+                if (connectModelList.size() > 0) {
+                    ((ConnectedDevAdapter) mLv_connectDevice.getAdapter()).notifyDataSetChanged();
+                    String strConnectedCnt = ActivityDeviceManager.this.getResources().getString(R.string.device_manage_connected);
+                    strConnectedCnt = String.format(strConnectedCnt, connectModelList.size());
+                    m_txConnectedCnt.setText(strConnectedCnt);
+                }
+            }
+        });
+    }
+
+    /* **** updateBlockDeviceUI **** */
+    private void updateBlockDeviceUI() {
+        API.get().getBlockDeviceList(new MySubscriber<BlockList>() {
+            @Override
+            protected void onSuccess(BlockList result) {
+                blockModelList = ModelHelper.getBlockModel(result);
+                if (blockModelList.size() > 0) {
+                    ((BlockedDevAdapter) mLv_blockedDevice.getAdapter()).notifyDataSetChanged();
+                    String strBlockdCnt = ActivityDeviceManager.this.getResources().getString(R.string.device_manage_block);
+                    strBlockdCnt = String.format(strBlockdCnt, blockModelList.size());
+                    m_txBlockCnt.setText(strBlockdCnt);
+                }
+            }
+        });
+    }
+
+    /* **** getLocalMacAddress **** */
+    private void getLocalMacAddress() {
+        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        m_strLocalMac = info.getMacAddress();
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        getLocalMacAddress();
-        registerReceiver();
-        //getListData();
-        updateConnectedDeviceUI();
-        updateBlockDeviceUI();
+        getDevicesStatus();
     }
 
     @Override
@@ -201,9 +181,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         super.onPause();
         m_bIsWorking = false;
         m_bEnableRefresh = false;
-        resetConnectEditFlag();
         m_waiting.setVisibility(View.GONE);
-        this.unregisterReceiver(m_deviceReceiver);
     }
 
     @Override
@@ -218,14 +196,11 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     public void onClick(View arg0) {
         switch (arg0.getId()) {
-            // case R.id.back_layout:
-            //     OnBtnBack();
-            //     break;
 
             case R.id.refresh:
                 m_bEnableRefresh = true;
                 m_waiting.setVisibility(View.VISIBLE);
-                getListData();
+                getDevicesStatus();
 
             case R.id.device_back:
                 finish();
@@ -233,83 +208,34 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         }
     }
 
-    // private void OnBtnBack() {
-    //     this.finish();
-    // }
-
+    /* setConnectedDeviceBlock */
     private void setConnectedDeviceBlock(String strDeviceName, String strMac) {
-        DataValue data = new DataValue();
-        data.addParam("DeviceName", strDeviceName);
-        data.addParam("MacAddress", strMac);
-        BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_CONNECTED_DEVICE_BLOCK, data);
+        API.get().setConnectedDeviceBlock(strDeviceName, strMac, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
+            }
+        });
     }
 
+    /* setDeviceUnlock */
     private void setDeviceUnlock(String strDeviceName, String strMac) {
-        DataValue data = new DataValue();
-        data.addParam("DeviceName", strDeviceName);
-        data.addParam("MacAddress", strMac);
-        BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_UNLOCK, data);
-    }
+        API.get().setDeviceUnblock(strDeviceName, strMac, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
 
-    private void setDeviceName(String strDeviceName, String strMac, EnumDeviceType nDeviceType) {
-        DataValue data = new DataValue();
-        data.addParam("DeviceName", strDeviceName);
-        data.addParam("MacAddress", strMac);
-        data.addParam("DeviceType", nDeviceType);
-        BusinessManager.getInstance().sendRequestMessage(MessageUti.DEVICE_SET_DEVICE_NAME, data);
-    }
-
-    private void getListData() {
-        // BusinessManager.getInstance().getGetConnectedDeviceTaskAtOnceRequest();
-        // BusinessManager.getInstance().getGetBlockDeviceListTaskAtOnceRequest();
-    }
-
-
-    private void updateConnectedDeviceUI() {
-        ArrayList<ConnectedDeviceItemModel> data = (ArrayList<ConnectedDeviceItemModel>) m_connecedDeviceLstData.clone();
-        m_connecedDeviceLstData = BusinessManager.getInstance().getConnectedDeviceList();
-        for (int i = 0; i < m_connecedDeviceLstData.size(); i++) {
-            ConnectedDeviceItemModel item = m_connecedDeviceLstData.get(i);
-            if (item.MacAddress.equalsIgnoreCase(m_strLocalMac)) {
-                m_connecedDeviceLstData.remove(i);
-                m_connecedDeviceLstData.add(0, item);
-                break;
             }
-        }
+        });
+    }
 
-        for (int i = 0; i < m_connecedDeviceLstData.size(); i++) {
-            m_connecedDeviceLstData.get(i).strEditString = m_connecedDeviceLstData.get(i).DeviceName;
-            for (int j = 0; j < data.size(); j++) {
-                if (m_connecedDeviceLstData.get(i).MacAddress.equalsIgnoreCase(data.get(j).MacAddress) && m_connecedDeviceLstData.get(i).IPAddress.equalsIgnoreCase(data.get(j).IPAddress)) {
-                    m_connecedDeviceLstData.get(i).bEditStatus = data.get(j).bEditStatus;
-                    if (data.get(j).bEditStatus == true)
-                        m_connecedDeviceLstData.get(i).strEditString = data.get(j).strEditString;
-                    break;
-                }
+    /* setDeviceName */
+    private void setDeviceName(String strDeviceName, String strMac, int nDeviceType) {
+        API.get().setDeviceName(strDeviceName, strMac, nDeviceType, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
             }
-        }
-
-        ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
-
-        String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);
-        strConnectedCnt = String.format(strConnectedCnt, m_connecedDeviceLstData.size());
-        m_txConnectedCnt.setText(strConnectedCnt);
-
-    }
-
-    private void updateBlockDeviceUI() {
-        m_blockedDeviceLstData = BusinessManager.getInstance().getBlockDeviceList();
-        ((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
-
-        String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);
-        strBlockdCnt = String.format(strBlockdCnt, m_blockedDeviceLstData.size());
-        m_txBlockCnt.setText(strBlockdCnt);
-    }
-
-    private void getLocalMacAddress() {
-        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = wifi.getConnectionInfo();
-        m_strLocalMac = info.getMacAddress();
+        });
     }
 
     public class ConnectedDevAdapter extends BaseAdapter {
@@ -318,7 +244,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         }
 
         public int getCount() {
-            return m_connecedDeviceLstData.size();
+            return connectModelList.size();
         }
 
         public Object getItem(int position) {
@@ -360,26 +286,26 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            //Log.d("dddd", "position:" + String.valueOf(position));
-
             if (m_bIsWorking == true)
                 holder.blockBtn.setEnabled(false);
             else
                 holder.blockBtn.setEnabled(true);
 
-            final ConnectedDeviceItemModel model = m_connecedDeviceLstData.get(position);
-            final String displayName = model.DeviceName;
+            ConnectModel connectModel = connectModelList.get(position);
+            ConnectedList.Device device = connectModel.device;
+
+            final String displayName = device.DeviceName;
             holder.deviceNameTextView.setText(displayName);
 
-            if (model.ConnectMode == EnumConnectMode.USB_CONNECT)
+            if (device.ConnectMode == Cons.USB_CONNECT)
                 holder.blockBtn.setEnabled(false);
             else
                 holder.blockBtn.setEnabled(true);
 
-            holder.ip.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_ip), model.IPAddress));
-            final String mac = model.MacAddress;
+            holder.ip.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_ip), device.IPAddress));
+            final String mac = device.MacAddress;
             holder.mac.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_mac), mac));
-            final EnumDeviceType type = model.DeviceType;
+            final int type = device.DeviceType;
 
             if (mac.equalsIgnoreCase(m_strLocalMac)) {
                 holder.blockBtn.setVisibility(View.GONE);
@@ -391,7 +317,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
                 holder.blockBtn.setVisibility(View.VISIBLE);
                 holder.icon.setBackgroundResource(R.drawable.connected_device);
                 holder.modifyDeviceName.setVisibility(View.VISIBLE);
-                if (model.bEditStatus == true) {
+                if (connectModel.isEdit == true) {
                     holder.deviceNameEditView.setVisibility(View.VISIBLE);
                     holder.deviceNameEditView.setText(m_strEditString);
                     holder.deviceNameEditView.requestFocus();
@@ -410,26 +336,21 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
                 @Override
                 public void afterTextChanged(Editable arg0) {
-                    // TODO Auto-generated method stub
                     String strText = arg0.toString();
                     String strNewText = strText.replaceAll("[,\":;&]", "");
                     if (strNewText.equals(arg0.toString()) == false) {
                         arg0 = arg0.replace(0, arg0.length(), strNewText);
                     }
                     m_strEditString = strNewText;
-                    //Log.d("dddd", "m_strEditString s:" + strText);
-                    //Log.d("dddd", "m_strEditString:" + m_strEditString);
                 }
 
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    // TODO Auto-generated method stub
 
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    // TODO Auto-generated method stub
 
                 }
 
@@ -438,32 +359,25 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
             holder.modifyDeviceName.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (m_connecedDeviceLstData.get(position).bEditStatus == true) {
+                    if (connectModelList.get(position).isEdit == true) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-
-                        //holder.deviceNameTextView.setVisibility(View.VISIBLE);
-                        m_connecedDeviceLstData.get(position).bEditStatus = false;
-                        //holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
-                        //String strName = holder.deviceNameEditView.getText().toString().trim();
+                        connectModelList.get(position).isEdit = false;
                         String strName = m_strEditString.trim();
-                        //holder.deviceNameEditView.setVisibility(View.GONE);
-                        //Log.d("dddd", "onclick:" + strName);
                         if (strName.length() == 0 || strName.length() > 31) {
                             String msgRes = ActivityDeviceManager.this.getString(R.string.device_manage_name_empty);
                             Toast.makeText(ActivityDeviceManager.this, msgRes, Toast.LENGTH_SHORT).show();
                         }
                         if (strName.length() != 0 && !strName.equals(displayName)) {
                             setDeviceName(strName, mac, type);
-                            m_connecedDeviceLstData.get(position).DeviceName = strName;
+                            connectModelList.get(position).device.DeviceName = strName;
                         }
                     } else {
-                        resetConnectEditFlag();
-                        m_strEditString = m_connecedDeviceLstData.get(position).DeviceName;
-                        m_connecedDeviceLstData.get(position).bEditStatus = true;
+                        m_strEditString = connectModelList.get(position).device.DeviceName;
+                        connectModelList.get(position).isEdit = true;
                     }
 
-                    ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
+                    ((ConnectedDevAdapter) mLv_connectDevice.getAdapter()).notifyDataSetChanged();
                 }
 
             });
@@ -475,11 +389,10 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
                     m_bEnableRefresh = true;
                     m_waiting.setVisibility(View.VISIBLE);
                     holder.blockBtn.setEnabled(false);
-                    resetConnectEditFlag();
                     setConnectedDeviceBlock(displayName, mac);
-                    m_connecedDeviceLstData.remove(position);
-                    ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
-                    ((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
+                    connectModelList.remove(position);
+                    ((ConnectedDevAdapter) mLv_connectDevice.getAdapter()).notifyDataSetChanged();
+                    ((BlockedDevAdapter) mLv_blockedDevice.getAdapter()).notifyDataSetChanged();
                 }
 
             });
@@ -495,7 +408,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
                         if (!strName.equals(displayName)) {
                             setDeviceName(strName, mac, type);
                         }
-                        m_connecedDeviceLstData.get(position).bEditStatus = false;
+                        connectModelList.get(position).isEdit = false;
                         holder.modifyDeviceName.setBackgroundResource(R.drawable.connected_edit);
                     }
 
@@ -509,20 +422,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     }
 
-    private boolean haveEditItem() {
-        for (int i = 0; i < m_connecedDeviceLstData.size(); i++) {
-            if (m_connecedDeviceLstData.get(i).bEditStatus == true)
-                return true;
-        }
-        return false;
-    }
-
-    private void resetConnectEditFlag() {
-        for (int i = 0; i < m_connecedDeviceLstData.size(); i++) {
-            m_connecedDeviceLstData.get(i).bEditStatus = false;
-        }
-    }
-
     public class BlockedDevAdapter extends BaseAdapter {
 
         public BlockedDevAdapter(Context context) {
@@ -530,7 +429,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         }
 
         public int getCount() {
-            return m_blockedDeviceLstData.size();
+            return blockModelList.size();
         }
 
         public Object getItem(int position) {
@@ -569,9 +468,12 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
             else
                 holder.unblockBtn.setEnabled(true);
 
-            final String displayName = m_blockedDeviceLstData.get(position).DeviceName;
+            BlockModel blockModel = blockModelList.get(position);
+            BlockList.BlockDevice block = blockModel.block;
+
+            final String displayName = block.DeviceName;
             holder.deviceName.setText(displayName);
-            final String mac = m_blockedDeviceLstData.get(position).MacAddress;
+            final String mac = block.MacAddress;
             holder.mac.setText(String.format(ActivityDeviceManager.this.getString(R.string.device_manage_mac), mac));
 
             holder.unblockBtn.setOnClickListener(new OnClickListener() {
@@ -582,9 +484,9 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
                     m_bEnableRefresh = true;
                     holder.unblockBtn.setEnabled(false);
                     setDeviceUnlock(displayName, mac);
-                    m_blockedDeviceLstData.remove(position);
-                    ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
-                    ((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
+                    blockModelList.remove(position);
+                    ((ConnectedDevAdapter) mLv_connectDevice.getAdapter()).notifyDataSetChanged();
+                    ((BlockedDevAdapter) mLv_blockedDevice.getAdapter()).notifyDataSetChanged();
                 }
             });
 

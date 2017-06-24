@@ -1,6 +1,5 @@
 package com.alcatel.smartlinkv3.ui.home.allsetup;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -27,29 +26,24 @@ import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.common.ToastUtil_m;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
 import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
+import com.alcatel.smartlinkv3.model.sim.SimStatus;
+import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.ActivityNewSms;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
-import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
+import com.alcatel.smartlinkv3.ui.home.helper.cons.Cons;
 import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
 import com.alcatel.smartlinkv3.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.smartlinkv3.ui.home.helper.utils.FraHomeHelper;
@@ -59,11 +53,8 @@ import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;
 import org.cybergarage.upnp.Device;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,7 +73,6 @@ import static com.alcatel.smartlinkv3.R.drawable.tab_wifi_pre;
 import static com.alcatel.smartlinkv3.R.string.main_setting;
 import static com.alcatel.smartlinkv3.R.string.main_sms;
 import static com.alcatel.smartlinkv3.R.string.wifi_settings;
-import static com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import static com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
 
 public class HomeActivity extends AppCompatActivity implements IDeviceChangeListener, View.OnClickListener {
@@ -150,30 +140,22 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     private long mkeyTime; //点击2次返回键的时间
     private static Device mDevice;
     public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
-
-
-    private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
     protected boolean m_bNeedBack = true;//whether need to back main activity.
     public static ActionBar supportActionBar;
 
-    private Timer timer;
-    private TimerTask task;
-    private boolean heartFlag;
     private OnTimerStatus onTimerStatus;
     private TimerHelper timerHelper;
 
+    public static HomeActivity hac;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homes);
-
-        // init engine status
-        getAllStatus();
-
+        hac = this;
         // get action bar
         supportActionBar = getSupportActionBar();
-
         fm = getSupportFragmentManager();
         ButterKnife.bind(this);
         initView();
@@ -183,17 +165,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         startTimer();
     }
 
-    private void getAllStatus() {
-        ApiEngine.getSimStatus();
-        ApiEngine.getUserLoginStatus();
-        ApiEngine.getConnectStatus();
-        ApiEngine.getNetworkInfo();
-        ApiEngine.getUsageSetting();
-        ApiEngine.getUsageRecord();
-        ApiEngine.getConnectedDeviceList();
-        ApiEngine.getBlockDeviceList();
-    }
-
     /**
      * 心跳定时器
      */
@@ -201,14 +172,33 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                // 检测必要状态
-                getAllStatus();
+                // 检测sim状态
+                // getAllStatus();
+                getSmsCount();
+
                 if (onTimerStatus != null) {
                     onTimerStatus.sendTimerFlag();
                 }
             }
         };
         timerHelper.start(5000);
+    }
+
+    /**
+     * 获取sms未读消息数量
+     */
+    private void getSmsCount() {
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                if (result.getSIMState() == Cons.READY) {
+                    // 获取消息数
+                    // TODO: 2017/6/23  获取消息数
+                    // SmsCountHelper.setSmsCount(mTvHomeMessageCount);
+                }
+
+            }
+        });
     }
 
     public interface OnTimerStatus {
@@ -242,18 +232,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     @Override
     protected void onResume() {
         super.onResume();
-
-        // this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
-        // this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
-        // this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
-        // this.registerReceiver(m_msgReceiver2, new IntentFilter(PAGE_TO_VIEW_HOME));
-        //
-        // this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
-        //
-        // registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET));
-        // registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET));
-        // registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.WLAN_GET_WLAN_SUPPORT_MODE_REQUSET));
-
         updateBtnState();
         toPageHomeWhenPinSimNoOk();
     }
@@ -295,9 +273,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     private void initUi() {
         // 1.getInstance button ui arrays
         initRes();
-        // 2.set topbanner
-        // setTopBannerUi(false, "", false, false);
-        // 3.getInstance main button ui & refresh fragment
+        // 2.getInstance main button ui & refresh fragment
         refreshUi_fragment(FragmentHomeEnum.MAIN);
     }
 
@@ -311,7 +287,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
                 break;
             case R.id.mIv_home_editSms:// edit message
                 // to message send ui
-                navigateAfterLogin(this::toSmsActivity);
+                toSmsActivity();
                 break;
         }
     }
@@ -332,27 +308,23 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
                 break;
 
             case R.id.mRl_home_wifibutton:// wifi button
-                // if login --> then go to wifi fragment
-                navigateAfterLogin(() -> {
-                    refreshUi_fragment(FragmentHomeEnum.WIFI);
-                });
+                refreshUi_fragment(FragmentHomeEnum.WIFI);
 
                 break;
             case R.id.mRl_home_messagebutton:// message button
-                // if login --> then sim card is effect then go to sms fragment
-                navigateAfterLogin(() -> {
-                    SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
-                    if (simStatus.m_SIMState == SIMState.Accessable) {
-                        refreshUi_fragment(FragmentHomeEnum.SMS);
+                API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                    @Override
+                    protected void onSuccess(SimStatus result) {
+                        if (result.getSIMState() == Cons.READY) {
+                            refreshUi_fragment(FragmentHomeEnum.SMS);
+                        }
                     }
                 });
 
+
                 break;
             case R.id.mRl_home_settingbutton:// setting button
-                // if login --> then go to the setting fragment
-                navigateAfterLogin(() -> {
-                    refreshUi_fragment(FragmentHomeEnum.SETTING);
-                });
+                refreshUi_fragment(FragmentHomeEnum.SETTING);
                 break;
 
         }
@@ -379,35 +351,37 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
      */
     private void logout() {
         // 1.injust the login status flag
-        UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
-        if (m_loginStatus != null && m_loginStatus == UserLoginStatus.LOGIN) {
-            setLogoutFlag(true);// set logout flag = true
-            SharedPrefsUtil.getInstance(HomeActivity.this).putBoolean(LOGOUT_FLAG, true);
-            // 2. logout action
-            API.get().logout(new MySubscriber() {
-                @Override
-                protected void onSuccess(Object result) {
-                    ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
-                }
+        // UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                if (result.getState() == Cons.LOGIN) {
+                    setLogoutFlag(true);// set logout flag = true
+                    SharedPrefsUtil.getInstance(HomeActivity.this).putBoolean(LOGOUT_FLAG, true);
+                    // 2. logout action
+                    API.get().logout(new MySubscriber() {
+                        @Override
+                        protected void onSuccess(Object result) {
+                            ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
+                        }
 
-                @Override
-                protected void onFailure() {
-                    ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_failed));
+                        @Override
+                        protected void onFailure() {
+                            ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_failed));
+                        }
+                    });
+                    // 3.injust is force login --> set to the main fragment
+                    if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
+                        setActionBarUi(false, -1, false, false);
+                        refreshUi_fragment(FragmentHomeEnum.MAIN);
+                    }
+                    // 4.reset the logout flag in CPEconfig
+                    CPEConfig.getInstance().userLogout();
+                    // 登出后--> 显示登陆界面
+                    m_loginDlg.showDialog();
                 }
-            });
-            // 3.injust is force login --> set to the main fragment
-            if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
-                // setTopBannerUi(false, "", false, false);
-                setActionBarUi(false, -1, false, false);
-                Intent intent2 = new Intent(HomeActivity.PAGE_TO_VIEW_HOME);
-                this.sendBroadcast(intent2);
             }
-            // 4.reset the logout flag in CPEconfig
-            CPEConfig.getInstance().userLogout();
-            // 登出后--> 显示登陆界面
-            m_loginDlg.showDialog();
-
-        }
+        });
     }
 
     /**
@@ -463,75 +437,11 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         // 1.groupbutton change
         setGroupButtonUi(en);
         // 2.transfer the fragment
-        FraHomeHelper.commit(fm, R.id.mFl_home_container, en);
+        FraHomeHelper.commit(this, fm, R.id.mFl_home_container, en);
     }
 
-    /**
-     * H5.登陆后的操作
-     *
-     * @param listener
-     */
-    public void navigateAfterLogin(OnLoginFinishedListener listener) {
-        if (LinkAppSettings.isLoginSwitchOff()) {
-            listener.onLoginFinished();
-            return;
-        }
 
-        UserLoginStatus status = BusinessManager.getInstance().getLoginStatus();
-
-        if (status == UserLoginStatus.LOGIN) {
-            listener.onLoginFinished();
-            return;
-        } else if (status != UserLoginStatus.Logout) {
-            CommonErrorInfoDialog m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(this);
-            m_dialog_timeout_info.showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_login_time_used_out_msg));
-            return;
-        }
-
-        m_autoLoginDialog.autoLoginAndShowDialog(new AutoLoginProgressDialog.OnAutoLoginFinishedListener() {
-            public void onLoginSuccess() {
-                listener.onLoginFinished();
-            }
-
-            public void onLoginFailed(String error_code) {
-                if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
-                    m_loginDlg.showTimeout();
-                    return;
-                } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                    ErrorDialog.getInstance(getBaseContext()).showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
-                    return;
-                } else if (!error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
-                    return;
-                }
-
-                if (!FeatureVersionManager.getInstance().isSupportForceLogin()) {
-                    m_loginDlg.showOtherLogin();
-                    return;
-                }
-
-                ForceLoginSelectDialog.getInstance(HomeActivity.this).showDialog(() -> m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-                    public void onLoginSuccess() {
-                        listener.onLoginFinished();
-                    }
-
-                    public void onLoginFailed(String error_code) {
-                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-                            SmartLinkV3App.getInstance().setForcesLogin(true);
-                            ErrorDialog.getInstance(HomeActivity.this).
-                                                                              showDialog(R.string.login_psd_error_msg, () -> m_loginDlg.showDialog(listener));
-                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-                            m_loginDlg.showTimeout();
-                        }
-                    }
-                }));
-            }
-
-            @Override
-            public void onFirstLogin() {
-                m_loginDlg.showDialog(listener);
-            }
-        });
-    }
+    /* +++++++++++++++++++++++++++++++++++++++++++ action bar +++++++++++++++++++++++++++++++++++++++++++++ */
 
     /**
      * H6.设置action各项属性
@@ -625,6 +535,8 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         }
     }
 
+    /* +++++++++++++++++++++++++++++++++++++++++++ action bar +++++++++++++++++++++++++++++++++++++++++++++ */
+
 
     /* -------------------------------------------- TEMP -------------------------------------------- */
     /* -------------------------------------------- TEMP -------------------------------------------- */
@@ -637,38 +549,46 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     }
 
     private void updateBtnState() {
-        SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
-        if (simState.m_SIMState == SIMState.Accessable) {
-            mRlHomeMessagebutton.setEnabled(true);
-        } else {
-            mRlHomeMessagebutton.setEnabled(false);
-        }
+        //SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                mRlHomeMessagebutton.setEnabled(result.getSIMState() == Cons.READY ? true : false);
+            }
+        });
     }
 
     private void toPageHomeWhenPinSimNoOk() {
-        SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
-        if (simState.m_SIMState != SIMState.Accessable) {
-            //setTopBannerUi(false, "", false, false);
-            refreshUi_fragment(FragmentHomeEnum.MAIN);
-            unlockSimBtnClick(false);
-        }
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                if (result.getSIMState() != Cons.READY) {
+                    refreshUi_fragment(FragmentHomeEnum.MAIN);
+                    unlockSimBtnClick(false);
+                }
+            }
+        });
     }
 
     public void unlockSimBtnClick(boolean blCancelUserClose) {
-        SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
-        if (SIMState.PinRequired == sim.m_SIMState) {
-            if (blCancelUserClose) {
-                m_dlgPin.cancelUserClose();
-                m_dlgPuk.cancelUserClose();
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                if (result.getSIMState() == Cons.PIN_REQUIRED) {
+                    if (blCancelUserClose) {
+                        m_dlgPin.cancelUserClose();
+                        m_dlgPuk.cancelUserClose();
+                    }
+                    ShowPinDialog();
+                } else if (result.getSIMState() == Cons.PUK_REQUIRED) {
+                    if (blCancelUserClose) {
+                        m_dlgPin.cancelUserClose();
+                        m_dlgPuk.cancelUserClose();
+                    }
+                    ShowPukDialog();
+                }
             }
-            ShowPinDialog();
-        } else if (SIMState.PukRequired == sim.m_SIMState) {
-            if (blCancelUserClose) {
-                m_dlgPin.cancelUserClose();
-                m_dlgPuk.cancelUserClose();
-            }
-            ShowPukDialog();
-        }
+        });
     }
 
     public void ShowPinDialog() {
@@ -677,21 +597,26 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
             m_dlgPuk.closeDialog();
         }
 
-        SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
-        // set the remain times
-        if (null != m_dlgPin) {
-            m_dlgPin.updateRemainTimes(simStatus.m_nPinRemainingTimes);
-        }
-        if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
-            if (!PinDialog.m_isShow) {
-                m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes, () -> {
-                    String strMsg = getString(R.string.pin_error_waring_title);
-                    m_dlgError.showDialog(strMsg, () -> {
-                        m_dlgPin.showDialog();
-                    });
-                });
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                // set the remain times
+                if (null != m_dlgPin) {
+                    m_dlgPin.updateRemainTimes(result.getPinRemainingTimes());
+                }
+                if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
+                    if (!PinDialog.m_isShow) {
+                        m_dlgPin.showDialog(result.getPinRemainingTimes(), () -> {
+                            String strMsg = getString(R.string.pin_error_waring_title);
+                            m_dlgError.showDialog(strMsg, () -> {
+                                m_dlgPin.showDialog();
+                            });
+                        });
+                    }
+                }
             }
-        }
+        });
+
     }
 
     public void ShowPukDialog() {
@@ -700,21 +625,26 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
             m_dlgPin.closeDialog();
         }
 
-        SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
-        // set the remain times
-        if (null != m_dlgPuk) {
-            m_dlgPuk.updateRemainTimes(simStatus.m_nPukRemainingTimes);
-        }
-        if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
-            if (!PukDialog.m_isShow) {
-                m_dlgPuk.showDialog(simStatus.m_nPinRemainingTimes, () -> {
-                    String strMsg = getString(R.string.puk_error_waring_title);
-                    m_dlgError.showDialog(strMsg, () -> {
-                        m_dlgPuk.showDialog();
-                    });
-                });
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                // set the remain times
+                if (null != m_dlgPuk) {
+                    m_dlgPuk.updateRemainTimes(result.getPukRemainingTimes());
+                }
+                if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
+                    if (!PukDialog.m_isShow) {
+                        m_dlgPuk.showDialog(result.getPinRemainingTimes(), () -> {
+                            String strMsg = getString(R.string.puk_error_waring_title);
+                            m_dlgError.showDialog(strMsg, () -> {
+                                m_dlgPuk.showDialog();
+                            });
+                        });
+                    }
+                }
             }
-        }
+        });
+
     }
 
     @Override
@@ -820,11 +750,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         }
 
         mAllShareProxy.setDMSSelectedDevice(mDevice);
-
         Intent msdIntent = new Intent(ViewMicroSD.DLNA_DEVICES_SUCCESS);
         sendBroadcast(msdIntent);
-
     }
-
-
 }

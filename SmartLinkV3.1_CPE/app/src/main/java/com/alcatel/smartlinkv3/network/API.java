@@ -7,6 +7,7 @@ import com.alcatel.smartlinkv3.Constants;
 import com.alcatel.smartlinkv3.EncryptionUtil;
 import com.alcatel.smartlinkv3.model.Usage.UsageParams;
 import com.alcatel.smartlinkv3.model.Usage.UsageRecord;
+import com.alcatel.smartlinkv3.model.Usage.UsageRecordParam;
 import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
 import com.alcatel.smartlinkv3.model.battery.BatteryState;
 import com.alcatel.smartlinkv3.model.connection.ConnectionMode;
@@ -202,6 +203,7 @@ public class API {
     private void subscribe(Subscriber subscriber, Observable observable) {
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
+
     private void subscribeDownloadFile(Subscriber subscriber, Observable observable, File file) {
         observable.subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io()).map(new Func1<okhttp3.ResponseBody, InputStream>() {
             @Override
@@ -475,8 +477,8 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_NETWORK_SETTINGS, network)));
     }
 
-    public void getUsageRecord(MySubscriber<UsageRecord> subscriber) {
-        subscribe(subscriber, smartLinkApi.getUsageRecord(new RequestBody(Methods.GET_USAGERECORD)));
+    public void getUsageRecord(String current_time, MySubscriber<UsageRecord> subscriber) {
+        subscribe(subscriber, smartLinkApi.getUsageRecord(new RequestBody(Methods.GET_USAGERECORD, new UsageRecordParam(current_time))));
     }
 
     public void getBatteryState(MySubscriber<BatteryState> subscriber) {
