@@ -1,21 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
-import java.text.DecimalFormat;
-
-import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_ROAMING_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
-import com.alcatel.smartlinkv3.common.ENUM.SIMState;
-import com.alcatel.smartlinkv3.common.CommonUtil;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.R;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +24,22 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.ConnectionSettingsModel;
+import com.alcatel.smartlinkv3.business.model.SimStatusModel;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
+import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_DISCONNECT_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_ROAMING_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.OVER_TIME_STATE;
+import com.alcatel.smartlinkv3.common.ENUM.SIMState;
+import com.alcatel.smartlinkv3.common.MessageUti;
+
+import java.text.DecimalFormat;
 
 
 
@@ -531,8 +532,13 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		if (simState.m_SIMState == SIMState.Accessable) {
 			UsageSettingModel statistic = BusinessMannager.getInstance()
 					.getUsageSettings();
-			
-			m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, (long)statistic.HUsedData));
+
+			//change the interface by zhanghao 20170626
+
+			UsageRecordResult statisticTem = BusinessMannager.getInstance().getUsageRecord();
+			m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, (long)statisticTem.HUseData));
+
+			//end to change;
 
 			m_monthlyValue.setEnabled(true);
 			m_monthlyVal = statistic.HMonthlyPlan;

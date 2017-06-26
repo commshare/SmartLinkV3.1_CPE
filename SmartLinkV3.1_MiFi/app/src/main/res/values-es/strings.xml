@@ -589,4 +589,11 @@
     <string name="pref_show_real_path">Mostrar ruta real</string>
     <string name="pref_show_real_path_summary">Mostrar ruta real en la barra de navegación</string>
 
+    <string name="sms_unread_num">(%1$d)</string>
+    <string name="confirm_folder_replace">confirm replace</string>
+    <string name="confirm_folder_content">File name already exists!</string>
+
+
+
+
 </resources>
