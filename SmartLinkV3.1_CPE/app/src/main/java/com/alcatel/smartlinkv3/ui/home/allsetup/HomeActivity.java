@@ -239,6 +239,8 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     @Override
     protected void onPause() {
         super.onPause();
+        // commit the main fragment visible flag in order to keep the [connected] button show
+        SharedPrefsUtil.getInstance(this).putBoolean(PRESSBUTTON, false);
     }
 
     @Override

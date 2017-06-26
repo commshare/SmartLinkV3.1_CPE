@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.common.ToastUtil_m;
 import com.alcatel.smartlinkv3.model.device.other.BlockModel;
 import com.alcatel.smartlinkv3.model.device.other.ConnectModel;
 import com.alcatel.smartlinkv3.model.device.other.ModelHelper;
@@ -58,6 +59,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     private String m_strLocalMac = new String();
     private ImageButton mbackBtn;
+    private TimerHelper timerHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         strBlockdCnt = String.format(strBlockdCnt, 0);
         m_txBlockCnt.setText(strBlockdCnt);
 
-        m_refresh = (ImageView) this.findViewById(R.id.refresh);
+        m_refresh = (ImageView) findViewById(R.id.refresh);
         m_refresh.setOnClickListener(this);
 
         m_waiting = (ProgressBar) this.findViewById(R.id.waiting_progress);
@@ -112,18 +114,21 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     /* **** initTimer **** */
     private void initTimer() {
-        new TimerHelper(this) {
+        timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
                 getDevicesStatus();
             }
-        }.start(5000);
+        };
+        timerHelper.start(5000);
     }
 
     /* **** getDevicesStatus **** */
     private void getDevicesStatus() {
-        // get macaddress
-        getLocalMacAddress();
+        if (!m_bEnableRefresh) {
+            // get macaddress
+            getLocalMacAddress();
+        }
         // get connect devices
         updateConnectedDeviceUI();
         // get block devices
@@ -132,6 +137,10 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     /* **** updateConnectedDeviceUI **** */
     private void updateConnectedDeviceUI() {
+<<<<<<< Updated upstream
+=======
+        // System.out.println("当前方法名: " + "updateConnectedDeviceUI");
+>>>>>>> Stashed changes
         API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
             @Override
             protected void onSuccess(ConnectedList result) {
@@ -148,6 +157,10 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     /* **** updateBlockDeviceUI **** */
     private void updateBlockDeviceUI() {
+<<<<<<< Updated upstream
+=======
+        // System.out.println("当前方法名: " + "updateBlockDeviceUI");
+>>>>>>> Stashed changes
         API.get().getBlockDeviceList(new MySubscriber<BlockList>() {
             @Override
             protected void onSuccess(BlockList result) {
@@ -164,6 +177,10 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     /* **** getLocalMacAddress **** */
     private void getLocalMacAddress() {
+<<<<<<< Updated upstream
+=======
+        // System.out.println("当前方法名: " + "getLocalMacAddress");
+>>>>>>> Stashed changes
         WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifi.getConnectionInfo();
         m_strLocalMac = info.getMacAddress();
@@ -192,20 +209,8 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-    public void onClick(View arg0) {
-        switch (arg0.getId()) {
-
-            case R.id.refresh:
-                m_bEnableRefresh = true;
-                m_waiting.setVisibility(View.VISIBLE);
-                getDevicesStatus();
-
-            case R.id.device_back:
-                finish();
-                break;
-        }
+        timerHelper.stop();
+        System.out.println("当前方法名: " + "onDestroy");
     }
 
     /* setConnectedDeviceBlock */
@@ -213,7 +218,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         API.get().setConnectedDeviceBlock(strDeviceName, strMac, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-
             }
         });
     }
@@ -223,7 +227,6 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         API.get().setDeviceUnblock(strDeviceName, strMac, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-
             }
         });
     }
@@ -233,14 +236,30 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         API.get().setDeviceName(strDeviceName, strMac, nDeviceType, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.refresh:// button who refresh 
+                m_bEnableRefresh = true;
+                m_waiting.setVisibility(View.VISIBLE);
+                getDevicesStatus();
+                ToastUtil_m.show(this, getString(R.string.Refresh_successful));
+                m_waiting.setVisibility(View.GONE);
+                break;
+            case R.id.device_back:// button who back to home 
+                finish();
+                break;
+        }
     }
 
     public class ConnectedDevAdapter extends BaseAdapter {
 
         public ConnectedDevAdapter(Context context) {
+
         }
 
         public int getCount() {

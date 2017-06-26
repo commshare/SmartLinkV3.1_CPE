@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
-import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
+import com.alcatel.smartlinkv3.common.ToastUtil;
 import com.alcatel.smartlinkv3.common.ToastUtil_m;
 import com.alcatel.smartlinkv3.model.Usage.UsageRecord;
 import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
@@ -53,11 +53,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private LinearLayout m_nosimcardLayout = null;
     private TextView m_simOrServiceTextView = null;
 
-    private boolean m_bConnectPressd = false;
-    private boolean m_bConnectReturn = false;
-    private long statictime = 0;
-    private int staticdata = 0;
-
     /*sigel_panel*/
     private TextView m_networkTypeTextView;
     private ImageView m_signalImageView;
@@ -68,19 +63,31 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private TextView m_accessstatusTextView;
     private ImageView m_accessImageView;
 
-    private String strZeroConnDuration = null;
-
-    private Typeface typeFace;
-
     private WaveLoadingView mConnectedView;
     private FrameLayout m_connectedLayout;
     RelativeLayout m_accessDeviceLayout;
-    private View m_view;
 
-    private TimerHelper timerHelper;
+    private View m_view;// all view
+    private Typeface typeFace;// font type
+    private TimerHelper timerHelper;// timer
+    private long connectTime = 0;// connect time
+    private int upOrDownByteData = 0;// upload or download byte data
+
+    // if status is sim then use this flag to injudge the press button status
+    private boolean m_simConnectFlag = false;
+    // TOGO if status is wan then use this flag to injudge the press button status
+    // private boolean m_wanConnectFlag = false;
+
+    // status type : wan or sim
+    private boolean isWan;
+    // can be click?
+    private boolean canClick;
+
+    private String zeroMB = "0";// traffic used
+
 
     private Activity activity;
-    
+    public static String PRESSBUTTON = "PRESSBUTTON";// true: the button have pressed.
 
     public MainFragment(Activity activity) {
         this.activity = activity;
@@ -107,9 +114,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_nosimcardLayout = (LinearLayout) m_view.findViewById(R.id.no_sim_card_layout);
         m_simOrServiceTextView = (TextView) m_view.findViewById(R.id.no_sim_card_state);
 
-        m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);
-        m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);
-        m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);
+        m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);// SIGNAL LOGO
+        m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);// 4G
+        m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);// SIGNAL
 
         m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
         m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
@@ -121,7 +128,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         m_accessDeviceLayout = (RelativeLayout) m_view.findViewById(R.id.access_num_layout);
 
-        strZeroConnDuration = getString(R.string.Home_zero_data);
+        zeroMB = getString(R.string.Home_zero_data);
 
         // 1. 初始化获取
         getStatus();
@@ -129,9 +136,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         timerHelper = new TimerHelper(activity) {
             @Override
             public void doSomething() {
-                if (m_bConnectPressd) {// the flag will be true by click the connect button when init
-                    getStatus(); 
-                }
+                getStatus();
             }
         };
         timerHelper.start(5000);
@@ -139,24 +144,56 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         return m_view;
     }
 
+    // TOAT: all status
     /* **** get all status **** */
     private void getStatus() {
-        setConnectbuttonlogo();// logo connect/unconnected button layout
-        setUnlockedLayout();// sim unlocked/locked layout 
-        setTrafficLayout();// traffic 0MB...layout
-        setSignStatus();// sign level layout
-        setAccessDeviceStatus();// device count layout
+        /* **** check the type is wan or sim **** */
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+            @Override
+            protected void onSuccess(ConnectionStates result) {
+                /* connected || connecting means that wan is connect successful */
+                int connectionStatus = result.getConnectionStatus();
+                /* wan connect */
+                if (connectionStatus == Cons.CONNECTED || connectionStatus == Cons.CONNECTING) {
+                    isWan = true;// set wan button effect
+                    // wan logic
+                    m_connectLayout.setVisibility(View.VISIBLE);
+                    m_connectedLayout.setVisibility(View.GONE);
+                    m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
+                    m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
+                    m_signalImageView.setBackgroundResource(R.drawable.storage_toolbar_download_normal);
+                    // get download speed rate
+                    m_networkLabelTextView.setText(result.getDlRate());
+                } else {/* sim connect */
+                    isWan = false;// set sim button effect
+                    // sim logic
+                    m_simConnectFlag = SharedPrefsUtil.getInstance(getActivity()).getBoolean(PRESSBUTTON, false);
+                    if (m_simConnectFlag) {
+                        setSimButtonLogo();// logo connect/unconnected button layout
+                    }
+                    setUnlockedLayout();// sim unlocked/locked layout 
+                    setTrafficLayout();// traffic 0MB...layout
+                    setSignStatus();// sign level layout
+                    setAccessDeviceStatus();// device count layout
+                }
+
+                // when type check is finish , logo button can be click
+                canClick = true;
+            }
+        });
+
+
     }
 
     /* --------------------------------------------- 1.CONNECT BUTTON ---------------------------------------- */
     /* **** injust connect button status **** */
-    public void setConnectbuttonlogo() {
+    public void setSimButtonLogo() {
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus simStatus) {
                 // 1.is sim can be work
                 if (simStatus.getSIMState() != Cons.READY) {
-                    mConnectedView.setCenterTitle(strZeroConnDuration);
+                    mConnectedView.setCenterTitle(zeroMB);
                 } else {
                     // 2. is network can be work
                     isNetworkInfo();
@@ -174,19 +211,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 // doesn't worked--> show 0MB
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
-                    mConnectedView.setCenterTitle(strZeroConnDuration);
+                    mConnectedView.setCenterTitle(zeroMB);
                 } else {
                     // is press the connect button ?
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
-                            if (!m_bConnectPressd) {
+                            if (!m_simConnectFlag) {
                                 // 3.is connected worked ?
                                 noPressSituation(result);
                             } else {
                                 pressSituation(result);
                             }
-                            int staticDataMB = staticdata / 1024 / 1024;
+                            int staticDataMB = upOrDownByteData / 1024 / 1024;
                             mConnectedView.setCenterTitle(String.valueOf(staticDataMB));
                         }
                     });
@@ -201,8 +238,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectLayout.setVisibility(isLogout() ? View.VISIBLE : View.GONE);
         m_connectedLayout.setVisibility(isLogout() ? View.GONE : View.VISIBLE);
 
-        statictime = result.getConnectionTime();
-        staticdata = (result.getDlBytes() + result.getUlBytes());
+        connectTime = result.getConnectionTime();
+        upOrDownByteData = (result.getDlBytes() + result.getUlBytes());
     }
 
     /* noPressSituation--> is connected work ? */
@@ -214,8 +251,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             m_connectLayout.setVisibility(logoutflag ? View.VISIBLE : View.GONE);
             m_connectedLayout.setVisibility(logoutflag ? View.GONE : View.VISIBLE);
             // caculate the connect time and bytes
-            statictime = result.getConnectionTime();
-            staticdata = result.getDlBytes() + result.getUlBytes();
+            connectTime = result.getConnectionTime();
+            upOrDownByteData = result.getDlBytes() + result.getUlBytes();
         } else if (result.getConnectionStatus() == Cons.DISCONNECTING) {
             m_connectLayout.setVisibility(View.VISIBLE);
             m_connectedLayout.setVisibility(View.GONE);
@@ -263,12 +300,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     m_simOrServiceTextView.setText(R.string.home_no_service);
                     m_nosimcardLayout.setVisibility(View.VISIBLE);
                     m_connectLayout.setVisibility(View.GONE);
-                    mConnectedView.setCenterTitle(strZeroConnDuration);
+                    mConnectedView.setCenterTitle(zeroMB);
                 } else if (result.getNetworkType() == Cons.UNKNOW) {
                     m_simOrServiceTextView.setText(R.string.home_initializing);
                     m_nosimcardLayout.setVisibility(View.VISIBLE);
                     m_connectLayout.setVisibility(View.GONE);
-                    mConnectedView.setCenterTitle(strZeroConnDuration);
+                    mConnectedView.setCenterTitle(zeroMB);
                 } else {
                     m_nosimcardLayout.setVisibility(View.GONE);
                     m_connectToNetworkTextView.setText(result.getNetworkName());
@@ -286,20 +323,20 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
-                if (!m_bConnectPressd) {
+                if (!m_simConnectFlag) {
                     if (result.getConnectionStatus() == Cons.CONNECTED) {
-                        statictime = result.getConnectionTime();
-                        staticdata = (int) (result.getDlBytes() + result.getUlBytes());
+                        connectTime = result.getConnectionTime();
+                        upOrDownByteData = (int) (result.getDlBytes() + result.getUlBytes());
                     }
                     if (result.getConnectionStatus() == Cons.DISCONNECTED) {
-                        statictime = result.getConnectionTime();
-                        staticdata = (int) (result.getDlBytes() + result.getUlBytes());
+                        connectTime = result.getConnectionTime();
+                        upOrDownByteData = (int) (result.getDlBytes() + result.getUlBytes());
                     }
                 } else {
                     if (result.getConnectionStatus() == Cons.CONNECTED || result.getConnectionStatus() == Cons.DISCONNECTING) {
                     }
                 }
-                int staticDataMB = staticdata / 1024 / 1024;
+                int staticDataMB = upOrDownByteData / 1024 / 1024;
                 mConnectedView.setCenterTitle(String.valueOf(staticDataMB));
             }
         });
@@ -347,7 +384,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             m_simcardlockedLayout.setVisibility(View.GONE);
             m_nosimcardLayout.setVisibility(View.VISIBLE);
         }
-        mConnectedView.setCenterTitle(strZeroConnDuration);
+        mConnectedView.setCenterTitle(zeroMB);
         m_connectLayout.setVisibility(View.GONE);
     }
     
@@ -516,17 +553,35 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        m_bConnectReturn = false;
+        timerHelper.stop();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.connect_button:
-                connectBtnClick();
+                if (canClick) {// when the connect type is not sure--> can't click
+                    if (!isWan) {/* sim button click logic */
+                        // commit the flag for keep logo visible
+                        SharedPrefsUtil.getInstance(getActivity()).putBoolean(PRESSBUTTON, true);
+                        // operater the button click function
+                        simButtonConnect();
+                    } else {/* wwan button click logic */
+                        // TODO: 2017/6/26 wan connect
+                        ToastUtil_m.show(getActivity(),"function is creating");
+                    }
+                } else {
+                    ToastUtil_m.show(getActivity(), getString(R.string.please_wait));
+                }
                 break;
             case R.id.connected_button:
-                connectedBtnClick();
+                if (canClick) {// when the connect type is not sure--> can't click
+                    if (!isWan) {/* sim button click logic */
+                        connectedBtnClick();
+                    }
+                } else {
+                    ToastUtil_m.show(getActivity(), getString(R.string.please_wait));
+                }
                 break;
             case R.id.unlock_sim_button:
                 ((HomeActivity) activity).unlockSimBtnClick(true);
@@ -539,18 +594,23 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void connectBtnClick() {
-        if (LinkAppSettings.isLoginSwitchOff()) {// test temp file flag
+    /* 初始状态: 未按下--> 去按下 */
+    private void simButtonConnect() {
+        //if (LinkAppSettings.isLoginSwitchOff()) {// test temp file flag
+        // TOAT: 测试阶段将其强制为true
+        if (true) {// test temp file flag
             connect();
         } else {
-            ToastUtil_m.show(activity, "UserAccount Disable");
+            ToastUtil_m.show(activity, getString(R.string.UserAccount_Disable));
         }
     }
 
+    /* 初始状态: 已按下--> 再次按下 */
     private void connectedBtnClick() {
         ChangeActivity.toActivity(activity, UsageActivity.class, true, false, false, 0);
     }
 
+    /* **** core method: connect to remote **** */
     private void connect() {
         // injudge flag from settingAccount activity
         SharedPrefsUtil.getInstance(activity).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
@@ -560,11 +620,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 int connectStatus = result.getConnectionStatus();
                 if (connectStatus == Cons.DISCONNECTED || connectStatus == Cons.DISCONNECTING) {
                     // reset flag
-                    m_bConnectPressd = !m_bConnectPressd;
+                    m_simConnectFlag = !m_simConnectFlag;
                     // get monthly used
                     getMonthlyPlan();
                     // set logo button layout
-                    setConnectbuttonlogo();
+                    setSimButtonLogo();
                     // set unlocked/locked layout
                     setUnlockedLayout();
                 } else {
@@ -606,7 +666,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     //         m_bConnectReturn = true;
     //     } else {
     //         //operation fail
-    //         m_bConnectPressd = false;
+    //         m_simConnectFlag = false;
     //         showNetworkState();
     //         showConnectBtnView();
     //     }
@@ -645,4 +705,5 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             });
         }
     }
+
 }

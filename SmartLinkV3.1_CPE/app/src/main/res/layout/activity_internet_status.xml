@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alcatel.smartlinkv3.ui.activity.InternetStatus">
+
+    <!-- IP_ADDRESS -->
+    <RelativeLayout
+        android:id="@+id/rl_internet_IPADDRESS"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dip">
+
+        <TextView
+            android:id="@+id/tv_internet_title_IPADDRESS"
+            style="@style/internet_tv_title"
+            android:text="@string/ip_address" />
+
+        <TextView
+            android:id="@+id/tv_internet_content_IPADDRESS"
+            style="@style/internet_tv_content"
+            android:text="0.0.0.0" />
+
+        <View
+            style="@style/internet_split" />
+
+        <!-- Subnet mask  -->
+        <RelativeLayout
+            android:id="@+id/rl_internet_SUBNET"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_60dip">
+
+            <TextView
+                android:id="@+id/tv_internet_title"
+                style="@style/internet_tv_title"
+                android:text="@string/ip_address" />
+
+            <TextView
+                android:id="@+id/tv_internet_content"
+                style="@style/internet_tv_content"
+                android:text="0.0.0.0" />
+
+            <View
+                style="@style/internet_split" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

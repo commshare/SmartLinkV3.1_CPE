@@ -107,7 +107,6 @@
             android:name=".ui.activity.UsageSettingActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.SettingWifiActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -118,7 +117,7 @@
             android:name=".ui.activity.SettingAccountActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingNetworkActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -303,9 +302,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.AboutActivity"
-            android:screenOrientation="portrait"
-            />
-
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.InternetStatus">
+        </activity>
     </application>
 
 </manifest>
