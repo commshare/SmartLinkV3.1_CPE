@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.alcatel.smartlinkv3.R;
 
-public class InternetStatus extends Activity {
+public class InternetStatusActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

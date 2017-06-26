@@ -303,7 +303,7 @@
         <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.InternetStatus">
+        <activity android:name=".ui.activity.InternetStatusActivity">
         </activity>
     </application>
 

@@ -87,7 +87,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
 
     private Activity activity;
-    public static String PRESSBUTTON = "PRESSBUTTON";// true: the button have pressed.
+    public static String PRESSBUTTON = "PRESSBUTTON";// true: the sim button have pressed.
 
     public MainFragment(Activity activity) {
         this.activity = activity;
@@ -163,7 +163,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
                     m_signalImageView.setBackgroundResource(R.drawable.storage_toolbar_download_normal);
                     // get download speed rate
-                    m_networkLabelTextView.setText(result.getDlRate());
+                    m_networkLabelTextView.setText(String.valueOf(result.getDlRate()));
                 } else {/* sim connect */
                     isWan = false;// set sim button effect
                     // sim logic
@@ -568,7 +568,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         simButtonConnect();
                     } else {/* wwan button click logic */
                         // TODO: 2017/6/26 wan connect
-                        ToastUtil_m.show(getActivity(),"function is creating");
+                        ToastUtil_m.show(getActivity(), "function is creating");
                     }
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.please_wait));

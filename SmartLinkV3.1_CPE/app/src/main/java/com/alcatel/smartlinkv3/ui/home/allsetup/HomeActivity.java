@@ -43,6 +43,7 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
+import com.alcatel.smartlinkv3.ui.home.fragment.MainFragment;
 import com.alcatel.smartlinkv3.ui.home.helper.cons.Cons;
 import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
 import com.alcatel.smartlinkv3.ui.home.helper.sms.SmsCountHelper;
@@ -74,6 +75,7 @@ import static com.alcatel.smartlinkv3.R.string.main_setting;
 import static com.alcatel.smartlinkv3.R.string.main_sms;
 import static com.alcatel.smartlinkv3.R.string.wifi_settings;
 import static com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
+import static com.alcatel.smartlinkv3.ui.home.fragment.MainFragment.PRESSBUTTON;
 
 public class HomeActivity extends AppCompatActivity implements IDeviceChangeListener, View.OnClickListener {
 
@@ -239,8 +241,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     @Override
     protected void onPause() {
         super.onPause();
-        // commit the main fragment visible flag in order to keep the [connected] button show
-        SharedPrefsUtil.getInstance(this).putBoolean(PRESSBUTTON, false);
+        SharedPrefsUtil.getInstance(this).putBoolean(MainFragment.PRESSBUTTON, false);
     }
 
     @Override
@@ -250,6 +251,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         mBrocastFactory.unRegisterListener();
         mAllShareProxy.exitSearch();
         thumbnailLoader.clearCache();
+        SharedPrefsUtil.getInstance(this).putBoolean(PRESSBUTTON, false);
     }
 
 

@@ -22,7 +22,7 @@
 
     <!-- networkinfo -->
     <string name="networktype">Unknown</string>
-
+    
     <!-- Qucik Setup -->
     <string name="qs_title">Quick Setup</string>
     <string name="qs_exit_query">Exit Quick Setup</string>
@@ -742,6 +742,7 @@
     <string name="main_header_linkhub">LINKHUB</string>
     <string name="main_header_mobile_broadband">Mobile Broadband</string>
     <string name="or">Or</string>
+    <string name="UserAccount_Disable">UserAccount Disable</string>
 
     <string name="dhcp_renew">Renew</string>
     <string name="wan_connection">Ethernet WAN connection</string>
@@ -829,7 +830,6 @@
     <string name="could_not_update_try_again">Couldn\'t update.Try again.</string>
     <string name="no_insert">NO insert</string>
     <string name="usb_printer">USB printer</string>
-    <string name="Refresh_successful">Refresh Successful</string>
-    <string name="please_wait">Please wait...</string>
+    <string name="please_wait">please wait...</string>
 
 </resources>

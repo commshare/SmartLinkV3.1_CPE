@@ -5,47 +5,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.alcatel.smartlinkv3.ui.activity.InternetStatus">
+    tools:context="com.alcatel.smartlinkv3.ui.activity.InternetStatusActivity">
 
     <!-- IP_ADDRESS -->
     <RelativeLayout
-        android:id="@+id/rl_internet_IPADDRESS"
+        android:id="@+id/rl_internet_IPAddress"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_60dip">
 
         <TextView
-            android:id="@+id/tv_internet_title_IPADDRESS"
+            android:id="@+id/tv_internet_title_IPAddress"
             style="@style/internet_tv_title"
             android:text="@string/ip_address" />
 
         <TextView
-            android:id="@+id/tv_internet_content_IPADDRESS"
+            android:id="@+id/tv_internet_content_IPAddress"
             style="@style/internet_tv_content"
             android:text="0.0.0.0" />
 
         <View
             style="@style/internet_split" />
 
-        <!-- Subnet mask  -->
-        <RelativeLayout
-            android:id="@+id/rl_internet_SUBNET"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_60dip">
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_internet_title"
-                style="@style/internet_tv_title"
-                android:text="@string/ip_address" />
+    <!-- Subnet mask  -->
+    <RelativeLayout
+        android:id="@+id/rl_internet_subnet"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dip"
+        android:layout_below="@id/rl_internet_IPAddress">
 
-            <TextView
-                android:id="@+id/tv_internet_content"
-                style="@style/internet_tv_content"
-                android:text="0.0.0.0" />
+        <TextView
+            android:id="@+id/tv_internet_title_SubnetMask"
+            style="@style/internet_tv_title"
+            android:text="@string/subnet_mask" />
 
-            <View
-                style="@style/internet_split" />
+        <TextView
+            android:id="@+id/tv_internet_content_subnetmask"
+            style="@style/internet_tv_content"
+            android:text="0.0.0.0" />
 
-        </RelativeLayout>
+        <View
+            style="@style/internet_split" />
+
+    </RelativeLayout>
+
+    <!-- Default gateway  -->
+    <RelativeLayout
+        android:id="@+id/rl_internet_gateway"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dip"
+        android:layout_below="@id/rl_internet_subnet">
+
+        <TextView
+            android:id="@+id/tv_internet_title_gateway"
+            style="@style/internet_tv_title"
+            android:text="@string/default_gateway" />
+
+        <TextView
+            android:id="@+id/tv_internet_content_gateway"
+            style="@style/internet_tv_content"
+            android:text="0.0.0.0" />
+
+        <View
+            style="@style/internet_split" />
+
+    </RelativeLayout>
+
+    <!-- Preferred DNS  -->
+    <RelativeLayout
+        android:id="@+id/rl_internet_dns"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dip"
+        android:layout_below="@id/rl_internet_subnet">
+
+        <TextView
+            android:id="@+id/tv_internet_title_dns"
+            style="@style/internet_tv_title"
+            android:text="@string/default_gateway" />
+
+        <TextView
+            android:id="@+id/tv_internet_content_dns"
+            style="@style/internet_tv_content"
+            android:text="0.0.0.0" />
+
+        <View
+            style="@style/internet_split" />
 
     </RelativeLayout>
 </RelativeLayout>
