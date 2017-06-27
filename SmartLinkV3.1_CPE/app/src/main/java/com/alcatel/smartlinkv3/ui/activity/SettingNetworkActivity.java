@@ -13,10 +13,13 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.common.ToastUtil;
 import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
@@ -27,7 +30,6 @@ import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.network.ResponseBody;
-import com.alcatel.smartlinkv3.ui.home.helper.main.ApiEngine;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener ,AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
@@ -94,6 +96,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mNetworkModeSpinner.setOnItemSelectedListener(this);
         mRoamingSwitchCompat = (SwitchCompat) findViewById(R.id.network_roaming_switch);
         mSimPinCompat = (SwitchCompat) findViewById(R.id.network_sim_pin_switch);
+        mSimPinCompat.setOnClickListener(this);
         mSimNumberTextView = (TextView) findViewById(R.id.textview_sim_number);
         mImsiTextView = (TextView) findViewById(R.id.textview_network_imsi);
         findViewById(R.id.network_set_data_plan).setOnClickListener(this);
@@ -108,9 +111,34 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         //set data plan
         mMonthlyDataPlanText = (TextView) findViewById(R.id.textview_monthly_data_plan);
         mBillingDaySpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_billing_day);
+        mBillingDaySpinner.setOnItemSelectedListener(this);
         mUsageAlertSpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_usagealert);
         mDisconnectCompat = (SwitchCompat) findViewById(R.id.setdataplan_auto_disconnect);
+        mDisconnectCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
+                Log.d(TAG, "mDisconnectCompat = " + enable);
+                if(enable) {
+                    mUsageSetting.setAutoDisconnFlag(1);
+                } else {
+                    mUsageSetting.setAutoDisconnFlag(0);
+                }
+                setUsageSetting(mUsageSetting);
+            }
+        });
         mTimeLimitCompat = (SwitchCompat) findViewById(R.id.setdataplan_timelimit);
+        mTimeLimitCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
+                Log.d(TAG, "mTimeLimitCompat = " + enable);
+                if(enable) {
+                    mUsageSetting.setTimeLimitFlag(1);
+                } else {
+                    mUsageSetting.setTimeLimitFlag(0);
+                }
+                setUsageSetting(mUsageSetting);
+            }
+        });
         mSetTimeLimitText = (TextView) findViewById(R.id.textview_set_time_limit);
         mLimitAutoDisaconectCompat = (SwitchCompat) findViewById(R.id.setdataplan_limit_auto_disaconect);
 
@@ -272,6 +300,21 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
+    private void changePinState(String pinCode, int enable) {
+        API.get().changePinState(pinCode, enable, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Log.d(TAG, "changePinState success");
+                mSimPinCompat.setChecked(enable == 1);
+            }
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "changePinState error");
+                mSimPinCompat.setChecked(enable == 1? false: true);
+            }
+        });
+    }
+
     private void getSimStatus() {
         API.get().getSimStatus(new MySubscriber<SimStatus> (){
             @Override
@@ -310,8 +353,8 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().setUsageSetting(usageSetting, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG, "setUsageSetting success");
+                getUsageSetting();
             }
 
             @Override
@@ -381,6 +424,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 mChangePin.setVisibility(View.VISIBLE);
                 setTitle("Change Pin");
                 break;
+            case R.id.network_sim_pin_switch:
+                mSimPinCompat.setChecked(mSimPinCompat.isChecked()?false:true);
+                showSimPinEnableDialog();
+                break;
             default:
                 break;
         }
@@ -389,13 +436,34 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private void showSetmonthlyDataPlanDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.dialog_monthly_data_plan, null);
-        final EditText nameEdit = (EditText) v.findViewById(R.id.monthly_number);
+        final EditText monthlyNumber = (EditText) v.findViewById(R.id.monthly_number);
+        monthlyNumber.setText(mUsageSetting.getMonthlyPlan()+"");
+        RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.radiogroup_monthly_plan);
+        RadioButton radioButtonGb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_gb);
+        RadioButton radioButtonMb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_mb);
+        RadioButton radioButtonKb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_kb);
+        if(mUsageSetting.getUnit() == 0) {
+            radioButtonMb.setChecked(true);
+        } else if(mUsageSetting.getUnit() == 1) {
+            radioButtonGb.setChecked(true);
+        } else if(mUsageSetting.getUnit() == 2) {
+            radioButtonKb.setChecked(true);
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                mUsageSetting.setMonthlyPlan(Long.parseLong(monthlyNumber.getText().toString()));
+                mUsageSetting.setUnit(radioGroup.getCheckedRadioButtonId());
+                if(radioButtonMb.getId() == radioGroup.getCheckedRadioButtonId()){
+                    mUsageSetting.setUnit(0);
+                } else if(radioButtonGb.getId() == radioGroup.getCheckedRadioButtonId()){
+                    mUsageSetting.setUnit(1);
+                } else if(radioButtonKb.getId() == radioGroup.getCheckedRadioButtonId()){
+                    mUsageSetting.setUnit(2);
+                }
+                setUsageSetting(mUsageSetting);
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
@@ -420,6 +488,23 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         builder.show();
     }
 
+    private void showSimPinEnableDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.dialog_set_sim_enable, null);
+        final EditText nameEdit = (EditText) v.findViewById(R.id.et_sim_pin_code);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(v);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                changePinState(nameEdit.getText().toString(), mSimPinCompat.isChecked()?0:1);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.create();
+        builder.show();
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.spinner_connection_mode) {
@@ -434,6 +519,9 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             } else if(position == 1) {
                 setNetworkSettings(1);
             }
+        } else if (parent.getId() == R.id.setdataplan_billing_day) {
+            mUsageSetting.setBillingDay(position);
+            setUsageSetting(mUsageSetting);
         }
     }
 

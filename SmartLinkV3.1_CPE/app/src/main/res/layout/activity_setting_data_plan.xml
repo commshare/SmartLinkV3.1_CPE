@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:visibility="gone"
-    android:background="@color/white"
-    android:id="@+id/sett_data_plan">
+    android:id="@+id/sett_data_plan"
+    android:background="@color/color_bg_normal">
         <RelativeLayout
             android:id="@+id/rl_monthly_data_plan"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:background="@color/white"
+            android:layout_height="60dp">
 
             <TextView
                 style="@style/WlanSettingTitle"
@@ -19,6 +20,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
                 android:text="@string/usage_setting_monthlysataplan" />
 
             <ImageView
@@ -40,11 +42,17 @@
                 android:textColor="@color/color_light_gray"
                 android:textSize="@dimen/setting_padding_10_dp"
                 android:layout_gravity="end"/>
+            <ImageView
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="60dp"
+            android:background="@color/white">
 
             <TextView
                 style="@style/WlanSettingTitle"
@@ -53,6 +61,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
                 android:text="@string/usage_setting_billingday" />
 
             <android.support.v7.widget.AppCompatSpinner
@@ -64,11 +73,17 @@
                 android:layout_centerVertical="true"
                 android:entries="@array/settings_data_plan_billing_day"
                 android:spinnerMode="dialog" />
+            <ImageView
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
         </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="60dp"
+        android:background="@color/white">
 
         <TextView
             style="@style/WlanSettingTitle"
@@ -77,6 +92,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:padding="@dimen/setting_padding_10_dp"
             android:text="@string/usage_setting_usagealert" />
 
         <android.support.v7.widget.AppCompatSpinner
@@ -88,43 +104,52 @@
             android:layout_centerVertical="true"
             android:entries="@array/settings_data_plan_usage_alert"
             android:spinnerMode="dialog" />
+        <ImageView
+            android:layout_alignParentBottom="true"
+            android:background="@color/grey_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"/>
     </RelativeLayout>
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
 
-            <TextView
-                style="@style/WlanSettingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/usage_setting_autodisconnected" />
+        <TextView
+            style="@style/WlanSettingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/setting_padding_10_dp"
+            android:text="@string/usage_setting_autodisconnected" />
 
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/setdataplan_auto_disconnect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:showText="false" />
-        </RelativeLayout>
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/setdataplan_auto_disconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:showText="false" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp"
+            android:background="@color/white">
 
             <TextView
                 style="@style/WlanSettingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
                 android:text="@string/usage_setting_timelimit" />
 
             <android.support.v7.widget.SwitchCompat
@@ -134,13 +159,19 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 app:showText="false" />
+            <ImageView
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
         </RelativeLayout>
 
 
         <RelativeLayout
             android:id="@+id/rl_set_time_limit"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="60dp"
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/setdataplan_settimelimit"
@@ -150,6 +181,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
                 android:text="Set time limit" />
 
             <ImageView
@@ -171,17 +203,24 @@
                 android:textColor="@color/color_light_gray"
                 android:textSize="@dimen/setting_padding_10_dp"
                 android:layout_gravity="end"/>
+            <ImageView
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp"
+            android:background="@color/white">
 
             <TextView
                 style="@style/WlanSettingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
                 android:text="@string/auto_disconnect" />
 
             <android.support.v7.widget.SwitchCompat
