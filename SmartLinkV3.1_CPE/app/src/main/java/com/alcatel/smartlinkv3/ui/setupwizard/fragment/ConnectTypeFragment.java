@@ -22,9 +22,9 @@ import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.user.LoginState;
+import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
@@ -104,12 +104,11 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
             }
         });
 
-        API.get().getConnectionState(new MySubscriber<ConnectionState>() {
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
             @Override
-            protected void onSuccess(ConnectionState result) {
-
+            protected void onSuccess(WanSettingsResult result) {
                 // WAN口状态drawable视图
-                showHaveWanPort(result.getConnectionStatus());
+                showHaveWanPort(result.getStatus());
             }
         });
 
@@ -247,7 +246,8 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
      */
     private void showHaveWanPort(int wanModel) {
         // 检测WAN口是否接上
-        wanConnect = wanModel == Constants.ConnectionStatus.CONNECTED;
+        //0: disconnected 1: connecting 2: connected 3: disconnecting
+        wanConnect = wanModel == 2;
         // TOAT: 測試把該標記設置為true START
         if (test) {
             wanConnect = test;
@@ -320,11 +320,8 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
     private void doLogin() {
 
 
-
-
         mForceLoginDlg = new AutoForceLoginProgressDialog(getActivity());
         mAutoLoginDialog = new AutoLoginProgressDialog(getActivity());
-
 
 
         mAutoLoginDialog.autoLoginAndShowDialog(new AutoLoginProgressDialog.OnAutoLoginFinishedListener() {
