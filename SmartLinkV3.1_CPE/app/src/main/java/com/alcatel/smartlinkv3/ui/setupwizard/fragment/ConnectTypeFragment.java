@@ -35,6 +35,7 @@ import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
 import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 import com.alcatel.smartlinkv3.ui.setupwizard.helper.FraHelper;
 import com.alcatel.smartlinkv3.ui.setupwizard.helper.FragmentEnum;
@@ -475,7 +476,7 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
         if (setFlag) {
             CPEConfig.getInstance().setQuickSetupFlag();
         }
-        Intent it = new Intent(getActivity(), MainActivity.class);
+        Intent it = new Intent(getActivity(), HomeActivity.class);
         CPEConfig.getInstance().setQuickSetupFlag();
         startActivity(it);
         getActivity().finish();
