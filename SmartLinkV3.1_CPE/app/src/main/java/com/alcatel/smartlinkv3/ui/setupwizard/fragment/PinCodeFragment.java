@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.ui.setupwizard.fragment;
 
 import android.app.Activity;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,17 +16,18 @@ import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.business.sim.helper.SimPinHelper;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.common.ToastUtil_m;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.network.ResponseBody;
 import com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity;
 import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 import com.alcatel.smartlinkv3.ui.setupwizard.helper.EdittextWatcher;
 import com.alcatel.smartlinkv3.ui.setupwizard.helper.FraHelper;
 import com.alcatel.smartlinkv3.ui.setupwizard.helper.FragmentEnum;
-import com.alcatel.smartlinkv3.ui.setupwizard.helper.QSBroadcastReceiver;
 
 
 public class PinCodeFragment extends Fragment {
@@ -47,7 +47,7 @@ public class PinCodeFragment extends Fragment {
     private TextView mTv_pin_unlocked;// pin_unlocked
     private RelativeLayout mRl_setupWizard_wait;// waitting ui
 
-    private QSBroadcastReceiver mReceiver;
+    //    private QSBroadcastReceiver mReceiver;
     private static final String PIN_PASSWORD = "pinPassword";
 
     public PinCodeFragment(Activity activity) {
@@ -69,16 +69,16 @@ public class PinCodeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
+//        getActivity().registerReceiver(mReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
         mBusinessMgr.sendRequestMessage(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (mReceiver != null) {
-            getActivity().unregisterReceiver(mReceiver);
-        }
+//        if (mReceiver != null) {
+//            getActivity().unregisterReceiver(mReceiver);
+//        }
     }
 
     private void initView() {
@@ -96,7 +96,7 @@ public class PinCodeFragment extends Fragment {
 
     private void initData() {
         mBusinessMgr = BusinessManager.getInstance();
-        mReceiver = new QSBroadcastReceiver();
+//        mReceiver = new QSBroadcastReceiver();
         remaingTimes();// 显示剩余次数
         rememberCheck();// 显示check选中状态
     }
@@ -125,21 +125,21 @@ public class PinCodeFragment extends Fragment {
             pinUnlocked();
         });
 
-        // PIN解锁成功(broadcast形式):预留
-        mReceiver.setOnPinSuccessListener(() -> {
-            // 1.show success ui
-            activity.mRl_Success.setVisibility(View.VISIBLE);
-            // 2. save the pin password to sp
-            SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, isRememberPassword ? mEt_Pin_Password.getText().toString() : "");
-            // 3. auto trans to wifi setting ui
-            ToastUtil_m.show(getActivity(), "Switching...");
-            ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 0);
-        });
-
-        // PIN解锁失败(broadcast形式):预留
-        mReceiver.setOnPinFailedListener(() -> {
-            activity.mRl_Failed.setVisibility(View.VISIBLE);
-        });
+//        // PIN解锁成功(broadcast形式):预留
+//        mReceiver.setOnPinSuccessListener(() -> {
+//            // 1.show success ui
+//            activity.mRl_Success.setVisibility(View.VISIBLE);
+//            // 2. save the pin password to sp
+//            SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, isRememberPassword ? mEt_Pin_Password.getText().toString() : "");
+//            // 3. auto trans to wifi setting ui
+//            ToastUtil_m.show(getActivity(), "Switching...");
+//            ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 0);
+//        });
+//
+//        // PIN解锁失败(broadcast形式):预留
+//        mReceiver.setOnPinFailedListener(() -> {
+//            activity.mRl_Failed.setVisibility(View.VISIBLE);
+//        });
 
     }
 
@@ -211,29 +211,67 @@ public class PinCodeFragment extends Fragment {
             mRl_setupWizard_wait.setVisibility(View.GONE);
             return;
         }
-        // 请求
-        new SimPinHelper(getActivity()) {
-            @Override
-            public void isPinCorrect(boolean correct) {
-                // wait ui is gone
-                mRl_setupWizard_wait.setVisibility(View.GONE);
-                if (correct) {// 如果PIN码正确, 则保存PIN码到本地
-                    SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
-                    activity.mRl_Success.setVisibility(View.VISIBLE);
-                    // to --> wifi setting
-                    ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 2000);
-                } else {
-                    // 输入错误后--> 并当前剩余次数 < 0
-                    if (!currentRemain()) {
-                        // 跳转到PUK设置界面k
-                        // to puk fragment 
-                        //ChangeActivity.toActivity(getActivity(), SettingPukActivity.class, true, true, false, 0);
-                        FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PUK_FRA);
-                    }
-                }
 
+        API.get().unlockPin(pinPassword, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
+                activity.mRl_Success.setVisibility(View.VISIBLE);
+                // to --> wifi setting
+                ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 2000);
             }
-        }.connect(mEt_Pin_Password.getText().toString().trim());
+
+            @Override
+            protected void onFailure() {
+                super.onFailure();
+                if (!currentRemain()) {
+                    // 跳转到PUK设置界面k
+                    // to puk fragment
+                    //ChangeActivity.toActivity(getActivity(), SettingPukActivity.class, true, true, false, 0);
+                    FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PUK_FRA);
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                if (!currentRemain()) {
+                    // 跳转到PUK设置界面k
+                    // to puk fragment
+                    //ChangeActivity.toActivity(getActivity(), SettingPukActivity.class, true, true, false, 0);
+                    FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PUK_FRA);
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                mRl_setupWizard_wait.setVisibility(View.GONE);
+            }
+        });
+//        // 请求
+//        new SimPinHelper(getActivity()) {
+//            @Override
+//            public void isPinCorrect(boolean correct) {
+//                // wait ui is gone
+//                mRl_setupWizard_wait.setVisibility(View.GONE);
+//                if (correct) {// 如果PIN码正确, 则保存PIN码到本地
+//                    SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
+//                    activity.mRl_Success.setVisibility(View.VISIBLE);
+//                    // to --> wifi setting
+//                    ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 2000);
+//                } else {
+//                    // 输入错误后--> 并当前剩余次数 < 0
+//                    if (!currentRemain()) {
+//                        // 跳转到PUK设置界面k
+//                        // to puk fragment
+//                        //ChangeActivity.toActivity(getActivity(), SettingPukActivity.class, true, true, false, 0);
+//                        FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PUK_FRA);
+//                    }
+//                }
+//
+//            }
+//        }.connect(mEt_Pin_Password.getText().toString().trim());
     }
 
     /**

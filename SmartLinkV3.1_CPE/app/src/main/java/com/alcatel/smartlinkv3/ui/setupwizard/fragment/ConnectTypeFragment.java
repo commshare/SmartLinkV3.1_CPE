@@ -15,14 +15,18 @@ import android.widget.TextView;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.business.model.SimStatusModel;
-import com.alcatel.smartlinkv3.business.model.WanConnectStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
+import com.alcatel.smartlinkv3.common.Constants;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.model.connection.ConnectionState;
+import com.alcatel.smartlinkv3.model.sim.SimStatus;
+import com.alcatel.smartlinkv3.model.user.LoginState;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
 import com.alcatel.smartlinkv3.ui.activity.RefreshWifiActivity;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
@@ -91,25 +95,42 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
         mReceiver.setOnLoginErrorListener(this);
         mReceiver.setOnSimListener(this);
 
-        // 切换SIM卡状态drawable视图
-        showSimCard(mBusinessMgr.getSimStatus());
-        // WAN口状态drawable视图
-        showHaveWanPort(mBusinessMgr.getWanConnectStatus());
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
 
-        // 登陆状态
-        ENUM.UserLoginStatus status = mBusinessMgr.getLoginStatus();
+                // 切换SIM卡状态drawable视图
+                showSimCard(result.getSIMState());
+            }
+        });
 
-        if (LinkAppSettings.isLoginSwitchOff() || status == ENUM.UserLoginStatus.LOGIN) {// 已登陆
-            onlyTypeMode();
-            return;
-        }
-        if (status == ENUM.UserLoginStatus.LoginTimeOut) {// 已登出
-            int warnTitle = R.string.other_login_warning_title;
-            int timeUsedOut = R.string.login_login_time_used_out_msg;
-            handleLoginError(warnTitle, timeUsedOut, true, false);
-        } else {
-            doLogin();// 进行登陆
-        }
+        API.get().getConnectionState(new MySubscriber<ConnectionState>() {
+            @Override
+            protected void onSuccess(ConnectionState result) {
+
+                // WAN口状态drawable视图
+                showHaveWanPort(result.getConnectionStatus());
+            }
+        });
+
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                // 登陆状态
+
+                if (LinkAppSettings.isLoginSwitchOff() || result.getState() == Constants.Loginstate.LOGIN) {// 已登陆
+                    onlyTypeMode();
+                    return;
+                }
+                if (result.getState() == Constants.Loginstate.THE_LOGIN_TIMES_USED_OUT) {// 已登出
+                    int warnTitle = R.string.other_login_warning_title;
+                    int timeUsedOut = R.string.login_login_time_used_out_msg;
+                    handleLoginError(warnTitle, timeUsedOut, true, false);
+                } else {
+                    doLogin();// 进行登陆
+                }
+            }
+        });
     }
 
     @Override
@@ -145,7 +166,7 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
 
     @Override
     public void showSim() {// SIM卡状态改变--> SIM_GET_SIM_STATUS_ROLL_REQUSET
-        showSimCard(mBusinessMgr.getSimStatus());
+//        showSimCard(mBusinessMgr.getSimStatus());
     }
 
     @Override
@@ -193,12 +214,12 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
      *
      * @param simStatus
      */
-    private void showSimCard(SimStatusModel simStatus) {
+    private void showSimCard(int simStatus) {
         // 默认为true
         simInsert = true;
 
         // 获取SIM状态
-        if (simStatus.m_SIMState == ENUM.SIMState.NoSim || simStatus.m_SIMState == ENUM.SIMState.Unknown) {
+        if (simStatus == Constants.SIMState.NOWN || simStatus == Constants.SIMState.SIM_CARD_ILLEGAL) {
             simInsert = false;
         }
 
@@ -224,10 +245,9 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
      *
      * @param wanModel
      */
-    private void showHaveWanPort(WanConnectStatusModel wanModel) {
+    private void showHaveWanPort(int wanModel) {
         // 检测WAN口是否接上
-        wanConnect = wanModel.isConnected();
-
+        wanConnect = wanModel == Constants.ConnectionStatus.CONNECTED;
         // TOAT: 測試把該標記設置為true START
         if (test) {
             wanConnect = test;
@@ -298,8 +318,15 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
      * H5.登陆
      */
     private void doLogin() {
+
+
+
+
         mForceLoginDlg = new AutoForceLoginProgressDialog(getActivity());
         mAutoLoginDialog = new AutoLoginProgressDialog(getActivity());
+
+
+
         mAutoLoginDialog.autoLoginAndShowDialog(new AutoLoginProgressDialog.OnAutoLoginFinishedListener() {
             /*
              * Auto LOGIN successfully.

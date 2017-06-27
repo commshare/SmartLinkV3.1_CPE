@@ -5,23 +5,23 @@ package com.alcatel.smartlinkv3.model.connection;
  */
 
 public class ConnectionState {
-    String ConnectionStatus;
-    String Conprofileerror;
+    int ConnectionStatus;
+    int Conprofileerror;
     String IPv4AdrressString;
     String IPv6AdrressString;
-    String Speed_Dl;
-    String Speed_Ul;
-    String DlRate;
-    String UlRate;
-    String ConnectionTime;
-    String UlBytes;
-    String DlBytes;
+    int Speed_Dl;
+    int Speed_Ul;
+    int DlRate;
+    int UlRate;
+    int ConnectionTime;
+    int UlBytes;
+    int DlBytes;
 
-    public String getConnectionStatus() {
+    public int getConnectionStatus() {
         return ConnectionStatus;
     }
 
-    public String getConprofileerror() {
+    public int getConprofileerror() {
         return Conprofileerror;
     }
 
@@ -33,31 +33,31 @@ public class ConnectionState {
         return IPv6AdrressString;
     }
 
-    public String getSpeed_Dl() {
+    public int getSpeed_Dl() {
         return Speed_Dl;
     }
 
-    public String getSpeed_Ul() {
+    public int getSpeed_Ul() {
         return Speed_Ul;
     }
 
-    public String getDlRate() {
+    public int getDlRate() {
         return DlRate;
     }
 
-    public String getUlRate() {
+    public int getUlRate() {
         return UlRate;
     }
 
-    public String getConnectionTime() {
+    public int getConnectionTime() {
         return ConnectionTime;
     }
 
-    public String getUlBytes() {
+    public int getUlBytes() {
         return UlBytes;
     }
 
-    public String getDlBytes() {
+    public int getDlBytes() {
         return DlBytes;
     }
 }

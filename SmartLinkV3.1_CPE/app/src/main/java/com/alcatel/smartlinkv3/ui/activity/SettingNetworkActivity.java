@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.common.ToastUtil;
+import com.alcatel.smartlinkv3.common.Constants;
 import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
@@ -29,7 +29,6 @@ import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
-import com.alcatel.smartlinkv3.network.ResponseBody;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener ,AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
@@ -198,15 +197,15 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getConnectionState() {
-        API.get().getConnectionState(new MySubscriber<ConnectionState> (){
+        API.get().getConnectionState(new MySubscriber<ConnectionState>() {
             @Override
             protected void onSuccess(ConnectionState result) {
-               // 0: disconnected  1: connecting 2: connected 3: disconnecting
-                Log.v(TAG, "getConnectionState"+result.getConnectionStatus());
-                if(result.getConnectionStatus().equals(0)){
+                // 0: disconnected  1: connecting 2: connected 3: disconnecting
+                Log.v(TAG, "getConnectionState" + result.getConnectionStatus());
+                if (result.getConnectionStatus() == Constants.ConnectionStatus.DISCONNECTED) {
                     mMobileDataSwitchCompat.setChecked(false);
                     mOldMobileDataEnable = false;
-                } else if(result.getConnectionStatus().equals(0)) {
+                } else if (result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTED) {
                     mMobileDataSwitchCompat.setChecked(true);
                     mOldMobileDataEnable = true;
                 }

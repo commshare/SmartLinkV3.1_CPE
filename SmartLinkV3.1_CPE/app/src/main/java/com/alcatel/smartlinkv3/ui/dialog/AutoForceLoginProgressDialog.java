@@ -7,12 +7,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.model.user.LoginResult;
+import com.alcatel.smartlinkv3.network.API;
+import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.network.ResponseBody;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 public class AutoForceLoginProgressDialog {
@@ -40,24 +43,55 @@ public class AutoForceLoginProgressDialog {
     public void autoForceLoginAndShowDialog(OnAutoForceLoginFinishedListener callback) {
         s_callback = callback;
         DataValue data = new DataValue();
-
+        String loginUsername = null;
+        String loginPassword = null;
         if (CPEConfig.getInstance().getAutoLoginFlag()) {
 
-            data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
-            data.addParam("password", CPEConfig.getInstance().getLoginPassword());
+//            data.addParam("user_name", CPEConfig.getInstance().getLoginUsername());
+//            data.addParam("password", CPEConfig.getInstance().getLoginPassword());
+            loginUsername = CPEConfig.getInstance().getLoginUsername();
+            loginPassword = CPEConfig.getInstance().getLoginPassword();
 
         } else {
             m_isUserFirstLogin = true;
-            data.addParam("user_name", SmartLinkV3App.getInstance().getLoginUsername());
-            data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
+//            data.addParam("user_name", SmartLinkV3App.getInstance().getLoginUsername());
+//            data.addParam("password", SmartLinkV3App.getInstance().getLoginPassword());
+            loginUsername = SmartLinkV3App.getInstance().getLoginUsername();
+            loginPassword = SmartLinkV3App.getInstance().getLoginPassword();
         }
 
-        BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_FORCE_LOGIN_REQUEST, data);
+        API.get().login(loginUsername, loginPassword, new MySubscriber<LoginResult>() {
+            @Override
+            protected void onSuccess(LoginResult result) {
+                if (m_isUserFirstLogin || SmartLinkV3App.getInstance().IsForcesLogin()) {
+                    CPEConfig.getInstance().setLoginPassword(SmartLinkV3App.getInstance().getLoginPassword());
+                    CPEConfig.getInstance().setLoginUsername(SmartLinkV3App.getInstance().getLoginUsername());
+                    SmartLinkV3App.getInstance().setLoginPassword("");
+                    SmartLinkV3App.getInstance().setLoginUsername("");
+                    m_isUserFirstLogin = false;
+                    SmartLinkV3App.getInstance().setForcesLogin(false);
+                }
+                s_callback.onLoginSuccess();
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                s_callback.onLoginFailed(error.getCode());
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                s_callback = null;
+            }
+        });
+//        BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_FORCE_LOGIN_REQUEST, data);
 
         if (m_dlgProgress != null && m_dlgProgress.isShowing())
             return;
 
-        m_context.registerReceiver(m_auReceiver, new IntentFilter(MessageUti.USER_FORCE_LOGIN_REQUEST));
+//        m_context.registerReceiver(m_auReceiver, new IntentFilter(MessageUti.USER_FORCE_LOGIN_REQUEST));
         m_context.registerReceiver(m_auReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
 
         m_dlgProgress = ProgressDialog.show(m_context, loginCheckDialogTitle, loginCheckDialogContent, true, false);
@@ -88,30 +122,31 @@ public class AutoForceLoginProgressDialog {
                 if (!bCPEWifiConnected) {
                     closeDialog();
                 }
-            } else if (intent.getAction().equalsIgnoreCase(MessageUti.USER_FORCE_LOGIN_REQUEST)) {
-
-                if (m_dlgProgress != null && !m_dlgProgress.isShowing())
-                    return;
-                closeDialog();
-
-                if (null != s_callback) {
-                    if (ok) {
-                        if (m_isUserFirstLogin || SmartLinkV3App.getInstance().IsForcesLogin()) {
-                            CPEConfig.getInstance().setLoginPassword(SmartLinkV3App.getInstance().getLoginPassword());
-                            CPEConfig.getInstance().setLoginUsername(SmartLinkV3App.getInstance().getLoginUsername());
-                            SmartLinkV3App.getInstance().setLoginPassword("");
-                            ;
-                            SmartLinkV3App.getInstance().setLoginUsername("");
-                            m_isUserFirstLogin = false;
-                            SmartLinkV3App.getInstance().setForcesLogin(false);
-                        }
-                        s_callback.onLoginSuccess();
-                    } else {
-                        s_callback.onLoginFailed(response.getErrorCode());
-                    }
-                    s_callback = null;
-                }
             }
+
+//            else if (intent.getAction().equalsIgnoreCase(MessageUti.USER_FORCE_LOGIN_REQUEST)) {
+//                if (m_dlgProgress != null && !m_dlgProgress.isShowing())
+//                    return;
+//                closeDialog();
+//
+//                if (null != s_callback) {
+//                    if (ok) {
+//                        if (m_isUserFirstLogin || SmartLinkV3App.getInstance().IsForcesLogin()) {
+//                            CPEConfig.getInstance().setLoginPassword(SmartLinkV3App.getInstance().getLoginPassword());
+//                            CPEConfig.getInstance().setLoginUsername(SmartLinkV3App.getInstance().getLoginUsername());
+//                            SmartLinkV3App.getInstance().setLoginPassword("");
+//                            ;
+//                            SmartLinkV3App.getInstance().setLoginUsername("");
+//                            m_isUserFirstLogin = false;
+//                            SmartLinkV3App.getInstance().setForcesLogin(false);
+//                        }
+//                        s_callback.onLoginSuccess();
+//                    } else {
+//                        s_callback.onLoginFailed(response.getErrorCode());
+//                    }
+//                    s_callback = null;
+//                }
+//            }
         }
     }
 

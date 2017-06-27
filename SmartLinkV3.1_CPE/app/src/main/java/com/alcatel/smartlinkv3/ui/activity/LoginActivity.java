@@ -1,8 +1,8 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,11 +14,14 @@ import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.Constants;
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.model.user.LoginResult;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.network.ResponseBody;
 import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
+import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,7 +77,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     protected void onSuccess(LoginResult result) {
                         Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                        launchHomeActivity();
+                        boolean quickSetupFlag = CPEConfig.getInstance().getQuickSetupFlag();
+                        if (quickSetupFlag) {
+                            launchHomeActivity();
+                        } else {
+                            ChangeActivity.toActivity(LoginActivity.this, SetupWizardActivity.class, true, true, false, 0);
+                        }
                         Log.d(TAG, "token = " + result.getToken());
                         API.get().updateToken(result.getToken());
                     }
