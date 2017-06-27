@@ -59,4 +59,23 @@ public class Constants {
         public static final int LOGIN = 1;
         public static final int THE_LOGIN_TIMES_USED_OUT = 2;
     }
+
+    public class SetNetWorkSeting {
+        public static final int NET_WORK_MODE_AUTO = 0;
+        public static final int NET_WORK_MODE_4G = 3;
+        public static final int NET_WORK_MODE_3G = 2;
+        public static final int NET_WORK_MODE_2G = 1;
+    }
+
+    public class GetNetworkInfo {
+        public static final int ROAMING = 0;
+        public static final int NO_ROAMING = 1;
+    }
+
+    public class ConnectionSettings {
+        public static final int CONNECTION_MODE_AUTO = 1;
+        public static final int CONNECTION_MODE_MANUAL = 0;
+        public static final int ROAMING_DISABLE = 0;
+        public static final int ROAMING_ENABLE = 1;
+    }
 }

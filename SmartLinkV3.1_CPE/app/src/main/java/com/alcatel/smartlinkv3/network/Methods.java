@@ -85,4 +85,7 @@ public interface Methods {
     String SET_CONNECTEDDEVICEBLOCK = "SetConnectedDeviceBlock";
     String SET_DEVICEUNBLOCK = "SetDeviceUnblock";
     String SET_DEVICENAME = "SetDeviceName";
+
+    //profile
+    String GET_PROFILE_LIST = "GetProfileList";
 }

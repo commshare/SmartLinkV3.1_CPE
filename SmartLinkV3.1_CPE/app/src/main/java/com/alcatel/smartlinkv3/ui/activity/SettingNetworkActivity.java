@@ -1,39 +1,49 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.Constants;
+import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
 import com.alcatel.smartlinkv3.model.network.Network;
-import com.alcatel.smartlinkv3.model.network.NetworkInfos;
+import com.alcatel.smartlinkv3.model.profile.ProfileList;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener ,AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
     private LinearLayout mSetDataPlan;
     private LinearLayout mChangePin;
+    private RelativeLayout mRoamingRl;
     private SwitchCompat mMobileDataSwitchCompat;
     private AppCompatSpinner mConnectionModeSpinner;
     private AppCompatSpinner mNetworkModeSpinner;
@@ -41,6 +51,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private SwitchCompat mSimPinCompat;
     private TextView mSimNumberTextView;
     private TextView mImsiTextView;
+    private TextView mTvProfile;
     private boolean mOldMobileDataEnable;
 
     private Network mNetworkSettings;
@@ -54,6 +65,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private SwitchCompat mTimeLimitCompat;
     private TextView mSetTimeLimitText;
     private SwitchCompat mLimitAutoDisaconectCompat;
+    private boolean isCodeSelectBillingDay;
 
     //change sim pin
     private EditText mCurrentSimPin;
@@ -72,9 +84,11 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         //set data plan
         findViewById(R.id.rl_monthly_data_plan).setOnClickListener(this);
         findViewById(R.id.rl_set_time_limit).setOnClickListener(this);
+        findViewById(R.id.relativelayout_network_profile).setOnClickListener(this);
 
         mSetDataPlan = (LinearLayout) findViewById(R.id.sett_data_plan);
         mChangePin = (LinearLayout) findViewById(R.id.linear_network_change_pin);
+        mRoamingRl = (RelativeLayout) findViewById(R.id.relativelayout_network_roaming);
         mMobileDataSwitchCompat = (SwitchCompat) findViewById(R.id.network_mobile_data_switch);
         mMobileDataSwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -98,12 +112,13 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mSimPinCompat.setOnClickListener(this);
         mSimNumberTextView = (TextView) findViewById(R.id.textview_sim_number);
         mImsiTextView = (TextView) findViewById(R.id.textview_network_imsi);
+        mTvProfile = (TextView) findViewById(R.id.textview_network_profile);
         findViewById(R.id.network_set_data_plan).setOnClickListener(this);
         findViewById(R.id.network_change_pin).setOnClickListener(this);
         getConnectionState();
         getConnectionSettings();
         getNetworkModeSettings();
-        getRoaming();
+        getProfileList();
         getSimStatus();
         getSystemInfo();
 
@@ -181,21 +196,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
-    private void setConnectionSettings(int connectMode) {
-        mConnectionSettings.setConnectMode(connectMode);
-        API.get().setConnectionSettings(mConnectionSettings, new MySubscriber() {
-            @Override
-            protected void onSuccess(Object result) {
-                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
-            }
-            @Override
-            protected void onFailure() {
-                Log.d(TAG, "setConnectionSettings error");
-            }
-        });
-    }
-
     private void getConnectionState() {
         API.get().getConnectionState(new MySubscriber<ConnectionState>() {
             @Override
@@ -217,6 +217,29 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
+    private void setConnectionSettings(int connectMode) {
+        if(connectMode == 0) {
+            mConnectionSettings.setConnectMode(Constants.ConnectionSettings.CONNECTION_MODE_AUTO);
+        } else if(connectMode == 1){
+            mConnectionSettings.setConnectMode(Constants.ConnectionSettings.CONNECTION_MODE_MANUAL);
+        }
+        API.get().setConnectionSettings(mConnectionSettings, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                if(connectMode == 0){
+                    mRoamingRl.setVisibility(View.VISIBLE);
+                } else if(connectMode == 1){
+                    mRoamingRl.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "setConnectionSettings error");
+            }
+        });
+    }
+
     private void getConnectionSettings() {
         API.get().getConnectionSettings(new MySubscriber<ConnectionSettings> (){
             @Override
@@ -224,10 +247,17 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 //  0: manual connect 1: auto connect
                 mConnectionSettings = result;
                 Log.v(TAG, "getConnectionSettings"+result.getConnectMode());
-                if(result.getConnectMode() == 0){
+                if(result.getConnectMode() == Constants.ConnectionSettings.CONNECTION_MODE_AUTO){
                     mConnectionModeSpinner.setSelection(0);
-                } else if(result.getConnectMode() == 1) {
+                    mRoamingRl.setVisibility(View.VISIBLE);
+                } else if(result.getConnectMode() == Constants.ConnectionSettings.CONNECTION_MODE_MANUAL) {
                     mConnectionModeSpinner.setSelection(1);
+                    mRoamingRl.setVisibility(View.GONE);
+                }
+                if(result.getRoamingConnect() == Constants.ConnectionSettings.ROAMING_DISABLE){
+                    mRoamingSwitchCompat.setChecked(false);
+                } else if(result.getRoamingConnect() == Constants.ConnectionSettings.ROAMING_ENABLE){
+                    mRoamingSwitchCompat.setChecked(true);
                 }
             }
             @Override
@@ -261,13 +291,13 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
                 Log.v(TAG, "getNetworkModeSettings"+result.getNetworkMode());
                 mNetworkSettings = result;
-                if(result.getNetworkMode() == 0){
+                if(result.getNetworkMode() == Constants.SetNetWorkSeting.NET_WORK_MODE_AUTO){
                     mNetworkModeSpinner.setSelection(0);
-                } else if(result.getNetworkMode() == 3) {
+                } else if(result.getNetworkMode() == Constants.SetNetWorkSeting.NET_WORK_MODE_4G) {
                     mNetworkModeSpinner.setSelection(1);
-                } else if(result.getNetworkMode() == 2) {
+                } else if(result.getNetworkMode() == Constants.SetNetWorkSeting.NET_WORK_MODE_3G) {
                     mNetworkModeSpinner.setSelection(2);
-                } else if(result.getNetworkMode() == 1) {
+                } else if(result.getNetworkMode() == Constants.SetNetWorkSeting.NET_WORK_MODE_2G) {
                     mNetworkModeSpinner.setSelection(3);
                 }
             }
@@ -278,18 +308,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
-    private void getRoaming() {
-        
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+    private void getProfileList() {
+
+        API.get().getProfileList(new MySubscriber<ProfileList>() {
             @Override
-            protected void onSuccess(NetworkInfos result) {
-                //  0: roaming 1: no roaming
-                Log.v(TAG, "getRoaming"+result.getRoaming());
-                if(result.getRoaming() == 0){
-                    mRoamingSwitchCompat.setChecked(true);
-                } else if(result.getRoaming() == 1) {
-                    mRoamingSwitchCompat.setChecked(false);
-                }
+            protected void onSuccess(ProfileList result) {
+                mTvProfile.setText(result.getProfileName());
             }
 
             @Override
@@ -363,6 +387,24 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
+    private void changePinCode(String newPin, String currentPin) {
+        API.get().changePinCode(newPin, currentPin, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                Log.d(TAG, "changePinCode success");
+                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                mCurrentSimPin.setText(null);
+                mNewSimPin.setText(null);
+                mConfirmNewSimPin.setText(null);
+            }
+
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "changePinCode error");
+            }
+        });
+    }
+
     private void getUsageSetting() {
         API.get().getUsageSetting(new MySubscriber<UsageSetting> (){
             @Override
@@ -377,7 +419,8 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     unit = "KB";
                 }
                 mMonthlyDataPlanText.setText(result.getMonthlyPlan() + " "+unit);
-                mBillingDaySpinner.setSelection(result.getBillingDay()-1);
+                mBillingDaySpinner.setSelection(result.getBillingDay()-1,true);
+                isCodeSelectBillingDay = true;
 //                mUsageAlertSpinner
                 if(result.getAutoDisconnFlag() == 0) {
                     mDisconnectCompat.setChecked(false);
@@ -422,10 +465,14 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             case R.id.network_change_pin:
                 mChangePin.setVisibility(View.VISIBLE);
                 setTitle("Change Pin");
+                invalidateOptionsMenu();
                 break;
             case R.id.network_sim_pin_switch:
                 mSimPinCompat.setChecked(mSimPinCompat.isChecked()?false:true);
                 showSimPinEnableDialog();
+                break;
+            case R.id.relativelayout_network_profile:
+                showProfileLinkDialog();
                 break;
             default:
                 break;
@@ -453,7 +500,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mUsageSetting.setMonthlyPlan(Long.parseLong(monthlyNumber.getText().toString()));
+                mUsageSetting.setMonthlyPlan(Integer.parseInt(monthlyNumber.getText().toString()));
                 mUsageSetting.setUnit(radioGroup.getCheckedRadioButtonId());
                 if(radioButtonMb.getId() == radioGroup.getCheckedRadioButtonId()){
                     mUsageSetting.setUnit(0);
@@ -473,13 +520,17 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private void showSetTimeLimitDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.dialog_set_time_limit, null);
-        final EditText nameEdit = (EditText) v.findViewById(R.id.set_time_limit_number);
+        final EditText hrEt = (EditText) v.findViewById(R.id.dialog_time_limit_hr);
+        final EditText minEt = (EditText) v.findViewById(R.id.dialog_time_limit_min);
+        hrEt.setText(mUsageSetting.getTimeLimitTimes()/60+"");
+        minEt.setText(mUsageSetting.getTimeLimitTimes()%60+"");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                mUsageSetting.setTimeLimitTimes(Integer.parseInt(hrEt.getText().toString())*60 + Integer.parseInt(minEt.getText().toString()));
+                setUsageSetting(mUsageSetting);
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
@@ -504,24 +555,91 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         builder.show();
     }
 
+    private void showProfileLinkDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.dialog_profile_link, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(v);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.create();
+        builder.show();
+    }
+
+    private void doneChangePinCode() {
+        String currentPin = mCurrentSimPin.getText().toString();
+        String newPin = mNewSimPin.getText().toString();
+        String confirmPin = mConfirmNewSimPin.getText().toString();
+        if (currentPin.length() == 0) {
+            String strInfo = "Please input your current pin code";
+            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (newPin.length() == 0) {
+            String strInfo = "Please input your new pin code!";
+            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!newPin.equals(confirmPin)) {
+            String strInfo = "Inconsistent new pin code!";
+            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (confirmPin.length() != 4) {
+            String strInfo = "The pin code should be 4 characters";
+            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        changePinCode(newPin, currentPin);
+//
+//        mCurrentPassword.setText(null);
+//        mNewPassword.setText(null);
+//        mConfirmPassword.setText(null);
+//
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(mCurrentPassword.getWindowToken(), 0);
+//        imm.hideSoftInputFromWindow(mNewPassword.getWindowToken(), 0);
+//        imm.hideSoftInputFromWindow(mConfirmPassword.getWindowToken(), 0);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.spinner_connection_mode) {
             setConnectionSettings(position);
         } else if (parent.getId() == R.id.settings_network_mode) {
             if(position == 0){
-                setNetworkSettings(0);
-            } else if(position == 3) {
-                setNetworkSettings(3);
-            } else if(position == 2) {
-                setNetworkSettings(2);
+                setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_AUTO);
             } else if(position == 1) {
-                setNetworkSettings(1);
+                setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_4G);
+            } else if(position == 2) {
+                setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_3G);
+            } else if(position == 3) {
+                setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_2G);
             }
         } else if (parent.getId() == R.id.setdataplan_billing_day) {
-            mUsageSetting.setBillingDay(position);
-            setUsageSetting(mUsageSetting);
+            if(isCodeSelectBillingDay){
+                isCodeSelectBillingDay = false;
+            } else {
+                mUsageSetting.setBillingDay(position);
+                setUsageSetting(mUsageSetting);
+            }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (mChangePin.getVisibility() == View.VISIBLE) {
+            getMenuInflater().inflate(R.menu.save, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_save) {
+            doneChangePinCode();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -538,6 +656,9 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         } else if (mChangePin.getVisibility() == View.VISIBLE) {
             mChangePin.setVisibility(View.GONE);
             setTitle(R.string.setting_mobile_network);
+            invalidateOptionsMenu();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             return;
         }
         super.onBackPressed();

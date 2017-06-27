@@ -20,6 +20,7 @@ import com.alcatel.smartlinkv3.model.device.response.BlockList;
 import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
 import com.alcatel.smartlinkv3.model.network.Network;
 import com.alcatel.smartlinkv3.model.network.NetworkInfos;
+import com.alcatel.smartlinkv3.model.profile.ProfileList;
 import com.alcatel.smartlinkv3.model.sharing.DLNASettings;
 import com.alcatel.smartlinkv3.model.sharing.FTPSettings;
 import com.alcatel.smartlinkv3.model.sharing.SambaSettings;
@@ -297,8 +298,8 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_PUK, new PukParams(puk, newPin))));
     }
 
-    public void changePinCode(String currPin, String newPin, MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_CODE, new ChangePinParams(currPin, newPin))));
+    public void changePinCode(String newPin, String currPin, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_CODE, new ChangePinParams(newPin, currPin))));
     }
 
     public void changePinState(String pin, int state, MySubscriber subscriber) {
@@ -486,7 +487,7 @@ public class API {
     }
 
     public void setUsageSetting(UsageSetting usageSettingParams ,Subscriber<UsageSetting> subscriber) {
-        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.GET_USAGESETTING, usageSettingParams)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, usageSettingParams)));
     }
 
     public void getUsageSetting(MySubscriber<UsageSetting> subscriber) {
@@ -526,6 +527,10 @@ public class API {
     public void setConnectionMode(int connectMode, MySubscriber subscriber) {
         ConnectionMode connectionModeParams = new ConnectionMode(connectMode);
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTION_MODE, connectionModeParams)));
+    }
+
+    public void getProfileList(MySubscriber<ProfileList> subscriber) {
+        subscribe(subscriber, smartLinkApi.getProfileList(new RequestBody(Methods.GET_PROFILE_LIST)));
     }
 
     interface SmartLinkApi {
@@ -630,5 +635,7 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody<ConnectionStates>> getConnectionStates(@Body RequestBody requestBody);
 
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<ProfileList>> getProfileList(@Body RequestBody requestBody);
     }
 }

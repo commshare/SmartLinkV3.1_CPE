@@ -83,6 +83,34 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/relativelayout_network_roaming"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:background="@color/color_white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/setting_padding_10_dp"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/setting_name_size_s"
+                        android:text="@string/usage_setting_roaming"
+                        android:gravity="center_vertical"/>
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/network_roaming_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        app:showText="false" />
+                    <ImageView
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/grey_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_0.5dip"/>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/network_set_data_plan"
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
@@ -150,9 +178,9 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/relativelayout_network_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:id="@+id/network_profile_management">
+                    android:layout_height="60dp">
                     <TextView
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
@@ -172,7 +200,7 @@
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"/>
                     <TextView
-                        android:id="@+id/network_selected_profile"
+                        android:id="@+id/textview_network_profile"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@id/network_selected_profile_arrow"
                         android:layout_width="wrap_content"
@@ -184,30 +212,6 @@
                         android:maxWidth="250dp"
                         android:singleLine="true"
                         />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/network_roaming_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp">
-                    <TextView
-                        android:background="@color/color_white"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/usage_setting_roaming"
-                        android:gravity="center_vertical"/>
-
-                    <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/network_roaming_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        app:showText="false" />
                 </RelativeLayout>
 
                 <RelativeLayout

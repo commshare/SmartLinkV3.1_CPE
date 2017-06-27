@@ -31,7 +31,9 @@
                     android:background="@null"
                     android:hint="Current SIM PIN"
                     android:imeOptions="flagNoExtractUi"
-                    android:inputType="textPassword"
+                    android:maxLength="4"
+                    android:inputType="number"
+                    android:digits="1234567890"
                     android:paddingBottom="@dimen/dimen_12dip"
                     android:paddingTop="@dimen/dimen_12dip"
                     android:textColor="@color/grey_text"
@@ -58,7 +60,9 @@
                     android:background = "@null"
                     android:hint = "New SIM PIN"
                     android:imeOptions = "flagNoExtractUi"
-                    android:inputType = "textPassword"
+                    android:maxLength="4"
+                    android:inputType="number"
+                    android:digits="1234567890"
                     android:paddingBottom = "15dp"
                     android:paddingTop = "@dimen/dimen_15dip"
                     android:textColor = "@color/grey_text"
@@ -87,7 +91,9 @@
                     android:background = "@null"
                     android:hint = "Confirm New SIM PIN"
                     android:imeOptions = "flagNoExtractUi"
-                    android:inputType = "textPassword"
+                    android:maxLength="4"
+                    android:inputType="number"
+                    android:digits="1234567890"
                     android:paddingBottom = "@dimen/dimen_15dip"
                     android:paddingTop = "@dimen/dimen_15dip"
                     android:textColor = "@color/grey_text"
@@ -107,13 +113,6 @@
                 android:id="@+id/remember_sim_pin"
                 android:layout_marginTop="4dp"
                 android:text="Remember SIM PIN"/>
-
-            <Button
-                android:id="@+id/change_sim_pin_done"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Done"/>
 
         </LinearLayout>
     </ScrollView>

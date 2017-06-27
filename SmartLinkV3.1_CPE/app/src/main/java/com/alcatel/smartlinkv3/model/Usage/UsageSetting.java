@@ -6,78 +6,87 @@ package com.alcatel.smartlinkv3.model.Usage;
 
 public class UsageSetting {
 
-    public int BillingDay = 0;//Billing day (Min:1, Max:31),
-    public long MonthlyPlan = 0;//The max data that on month could use..
-    public long UsedData = 0;//The used data in month.
-    public int Unit = 0;//  The unit function flage 0: MB 1: GB 2: KB
-    public int TimeLimitFlag = 0;// The time limit function flage --> 0: disable 1:enable
-    public int TimeLimitTimes = 0;// The time limit function open, must set the limit time.(单位为分钟)
-    public int UsedTimes = 0;// The used time that after open time limit function.(单位为分钟)
-    public int AutoDisconnFlag = 0;// This flage control the disconnection when the usage settings get conditions. 0: disable, 
-    // not auto disconnect 1: enable, auto disconnect
+    /**
+     * BillingDay : 1
+     * MonthlyPlan : 0
+     * UsedData : 0
+     * Unit : 1
+     * TimeLimitFlag : 0
+     * TimeLimitTimes : 5
+     * UsedTimes : 0
+     * AutoDisconnFlag : 0
+     */
 
+    private int BillingDay;
+    private int MonthlyPlan;
+    private int UsedData;
+    private int Unit;
+    private int TimeLimitFlag;
+    private int TimeLimitTimes;
+    private int UsedTimes;
+    private int AutoDisconnFlag;
 
     public int getBillingDay() {
         return BillingDay;
     }
 
-    public void setBillingDay(int billingDay) {
-        BillingDay = billingDay;
+    public void setBillingDay(int BillingDay) {
+        this.BillingDay = BillingDay;
     }
 
-    public long getMonthlyPlan() {
+    public int getMonthlyPlan() {
         return MonthlyPlan;
     }
 
-    public void setMonthlyPlan(long monthlyPlan) {
-        MonthlyPlan = monthlyPlan;
+    public void setMonthlyPlan(int MonthlyPlan) {
+        this.MonthlyPlan = MonthlyPlan;
     }
 
-    public long getUsedData() {
+    public int getUsedData() {
         return UsedData;
     }
 
-    public void setUsedData(long usedData) {
-        UsedData = usedData;
+    public void setUsedData(int UsedData) {
+        this.UsedData = UsedData;
     }
 
     public int getUnit() {
         return Unit;
     }
 
-    public void setUnit(int unit) {
-        Unit = unit;
+    public void setUnit(int Unit) {
+        this.Unit = Unit;
     }
 
     public int getTimeLimitFlag() {
         return TimeLimitFlag;
     }
 
-    public void setTimeLimitFlag(int timeLimitFlag) {
-        TimeLimitFlag = timeLimitFlag;
+    public void setTimeLimitFlag(int TimeLimitFlag) {
+        this.TimeLimitFlag = TimeLimitFlag;
     }
 
     public int getTimeLimitTimes() {
         return TimeLimitTimes;
     }
 
-    public void setTimeLimitTimes(int timeLimitTimes) {
-        TimeLimitTimes = timeLimitTimes;
+    public void setTimeLimitTimes(int TimeLimitTimes) {
+        this.TimeLimitTimes = TimeLimitTimes;
     }
 
     public int getUsedTimes() {
         return UsedTimes;
     }
 
-    public void setUsedTimes(int usedTimes) {
-        UsedTimes = usedTimes;
+    public void setUsedTimes(int UsedTimes) {
+        this.UsedTimes = UsedTimes;
     }
 
     public int getAutoDisconnFlag() {
         return AutoDisconnFlag;
     }
 
-    public void setAutoDisconnFlag(int autoDisconnFlag) {
-        AutoDisconnFlag = autoDisconnFlag;
+    public void setAutoDisconnFlag(int AutoDisconnFlag) {
+        this.AutoDisconnFlag = AutoDisconnFlag;
     }
 }
