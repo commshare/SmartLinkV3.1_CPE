@@ -1,7 +1,6 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
@@ -12,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -22,10 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.Constants;
-import com.alcatel.smartlinkv3.common.LinkAppSettings;
 import com.alcatel.smartlinkv3.model.Usage.UsageSetting;
 import com.alcatel.smartlinkv3.model.connection.ConnectionSettings;
 import com.alcatel.smartlinkv3.model.connection.ConnectionState;
@@ -35,9 +31,6 @@ import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener ,AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
@@ -419,7 +412,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     unit = "KB";
                 }
                 mMonthlyDataPlanText.setText(result.getMonthlyPlan() + " "+unit);
-                mBillingDaySpinner.setSelection(result.getBillingDay()-1,true);
+                mBillingDaySpinner.setSelection(result.getBillingDay());
                 isCodeSelectBillingDay = true;
 //                mUsageAlertSpinner
                 if(result.getAutoDisconnFlag() == 0) {
@@ -657,8 +650,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             mChangePin.setVisibility(View.GONE);
             setTitle(R.string.setting_mobile_network);
             invalidateOptionsMenu();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             return;
         }
         super.onBackPressed();

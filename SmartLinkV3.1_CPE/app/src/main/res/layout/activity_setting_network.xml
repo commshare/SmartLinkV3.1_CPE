@@ -12,10 +12,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,10 +30,9 @@
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
+                        style="@style/WlanSettingTitle"
                         android:gravity="center_vertical"
-                        android:textSize="@dimen/setting_name_size_s"
+                        android:padding="@dimen/setting_padding_10_dp"
                         android:text="@string/usage_setting_mobile_data"/>
 
                     <android.support.v7.widget.SwitchCompat
@@ -44,8 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        app:showText="false" />
+                        android:layout_centerVertical="true" />
                     <ImageView
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
@@ -61,11 +56,10 @@
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/setting_network_connect_mode"
-                        android:gravity="center_vertical"/>
+                        android:gravity="center_vertical"
+                        android:text="@string/setting_network_connect_mode"/>
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/spinner_connection_mode"
@@ -90,19 +84,17 @@
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/usage_setting_roaming"
-                        android:gravity="center_vertical"/>
+                        android:text="@string/usage_setting_roaming"/>
 
                     <android.support.v7.widget.SwitchCompat
                         android:id="@+id/network_roaming_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        app:showText="false" />
+                        android:layout_centerVertical="true" />
                     <ImageView
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
@@ -119,11 +111,10 @@
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/setting_set_data_plan"
-                        android:gravity="center_vertical"/>
+                        android:text="@string/setting_set_data_plan"/>
                     <ImageView
                         android:id="@+id/network_set_data_plan_arrow"
                         android:layout_marginRight="@dimen/dimen_10dip"
@@ -135,16 +126,13 @@
 
                     <TextView
                         android:id="@+id/network_set_data_plan_desc"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/network_set_data_plan_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/setting_padding_10_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/network_set_data_plan_arrow"
                         android:textColor="@color/color_light_gray"
-                        android:textSize="@dimen/setting_padding_10_dp"
-                        android:layout_gravity="end"/>
+                        android:textSize="12sp"/>
                 </RelativeLayout>
-
 
                 <RelativeLayout
                     android:id="@+id/network_mode"
@@ -155,11 +143,10 @@
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/setting_network_mode"
-                        android:gravity="center_vertical"/>
+                        android:text="@string/setting_network_mode"/>
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/settings_network_mode"
@@ -168,8 +155,7 @@
                         android:entries="@array/settings_network_mode"
                         android:spinnerMode="dialog"
                         android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true" />
+                        android:layout_alignParentRight="true" />
                     <ImageView
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
@@ -185,33 +171,27 @@
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="Profile"
-                        android:gravity="center_vertical"/>
+                        android:text="Profile"/>
 
                     <ImageView
                         android:id="@+id/network_selected_profile_arrow"
+                        android:layout_width="@dimen/dimen_20dip"
+                        android:layout_height="@dimen/dimen_20dip"
                         android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/right_arrow_big"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"/>
+                        android:src="@drawable/right_arrow_big"/>
                     <TextView
                         android:id="@+id/textview_network_profile"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/network_selected_profile_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/setting_padding_10_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/network_selected_profile_arrow"
                         android:textColor="@color/color_light_gray"
-                        android:textSize="@dimen/setting_padding_10_dp"
-                        android:layout_gravity="end"
-                        android:maxWidth="250dp"
-                        android:singleLine="true"
-                        />
+                        android:textSize="12sp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -223,22 +203,17 @@
                         android:background="@color/color_white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/usage_setting_sim_pin"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:gravity="center_vertical"/>
+                        android:text="@string/usage_setting_sim_pin"/>
 
                     <android.support.v7.widget.SwitchCompat
                         android:id="@+id/network_sim_pin_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        app:showText="false" />
+                        android:layout_centerVertical="true" />
                     <ImageView
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
@@ -254,32 +229,28 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="@dimen/setting_padding_10_dp"
-                        android:textColor="@color/color_black"
+                        style="@style/WlanSettingTitle"
                         android:background="@color/color_white"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/setting_change_pin"
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical"/>
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/setting_padding_10_dp"
+                        android:text="@string/setting_change_pin"/>
                     <ImageView
                         android:id="@+id/network_change_pin_arrow"
+                        android:layout_width="@dimen/dimen_20dip"
+                        android:layout_height="@dimen/dimen_20dip"
                         android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/right_arrow_big"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"/>
+                        android:src="@drawable/right_arrow_big"/>
 
                     <TextView
                         android:id="@+id/network_change_pin_desc"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/network_change_pin_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/setting_padding_10_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/network_change_pin_arrow"
                         android:textColor="@color/color_light_gray"
-                        android:textSize="@dimen/setting_padding_10_dp"
-                        android:layout_gravity="end"/>
+                        android:textSize="12sp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -291,31 +262,28 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
                         android:background="@color/color_white"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/setting_sim_number"
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical"/>
+                        android:text="@string/setting_sim_number"/>
                     <ImageView
                         android:id="@+id/network_sim_number_arrow"
+                        android:layout_width="@dimen/dimen_20dip"
+                        android:layout_height="@dimen/dimen_20dip"
                         android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/right_arrow_big"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"/>
+                        android:src="@drawable/right_arrow_big"/>
 
                     <TextView
                         android:id="@+id/textview_sim_number"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/network_sim_number_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/setting_padding_10_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/network_sim_number_arrow"
                         android:textColor="@color/color_light_gray"
-                        android:textSize="@dimen/setting_padding_10_dp"
+                        android:textSize="12sp"
                         android:layout_gravity="end"/>
                     <ImageView
                         android:layout_alignParentBottom="true"
@@ -332,32 +300,28 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        style="@style/WlanSettingTitle"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
                         android:background="@color/color_white"
-                        android:textColor="@color/color_black"
-                        android:textSize="@dimen/setting_name_size_s"
-                        android:text="@string/setting_imsi"
-                        android:layout_gravity="start"
-                        />
+                        android:text="@string/setting_imsi"/>
                     <ImageView
                         android:id="@+id/network_imsi_arrow"
+                        android:layout_width="@dimen/dimen_20dip"
+                        android:layout_height="@dimen/dimen_20dip"
                         android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/right_arrow_big"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"/>
+                        android:src="@drawable/right_arrow_big"/>
 
                     <TextView
                         android:id="@+id/textview_network_imsi"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/network_imsi_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/setting_padding_10_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/network_imsi_arrow"
                         android:textColor="@color/color_light_gray"
-                        android:textSize="@dimen/setting_padding_10_dp"
-                        android:layout_gravity="end"/>
+                        android:textSize="12sp"/>
                 </RelativeLayout>
 
                 <ImageView

@@ -7,8 +7,7 @@
     <RelativeLayout
         android:id="@+id/night_version_setting_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/enable_auto_disconnected_title"

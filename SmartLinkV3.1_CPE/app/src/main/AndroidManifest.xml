@@ -127,6 +127,7 @@
             android:name=".ui.activity.EthernetWanConnectionActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingShareActivity"
