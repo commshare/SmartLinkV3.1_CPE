@@ -14,8 +14,8 @@ public class ConnectionStates {
     public int DlRate;
     public int UlRate;
     public int ConnectionTime;
-    public int UlBytes;
-    public int DlBytes;
+    public long UlBytes;
+    public long DlBytes;
 
     public int getConnectionStatus() {
         return ConnectionStatus;
@@ -89,19 +89,19 @@ public class ConnectionStates {
         ConnectionTime = connectionTime;
     }
 
-    public int getUlBytes() {
+    public long getUlBytes() {
         return UlBytes;
     }
 
-    public void setUlBytes(int ulBytes) {
+    public void setUlBytes(long ulBytes) {
         UlBytes = ulBytes;
     }
 
-    public int getDlBytes() {
+    public long getDlBytes() {
         return DlBytes;
     }
 
-    public void setDlBytes(int dlBytes) {
+    public void setDlBytes(long dlBytes) {
         DlBytes = dlBytes;
     }
 }

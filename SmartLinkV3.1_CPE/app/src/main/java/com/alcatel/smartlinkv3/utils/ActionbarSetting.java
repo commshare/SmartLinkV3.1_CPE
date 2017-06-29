@@ -13,20 +13,39 @@ import java.lang.reflect.Field;
 
 public abstract class ActionbarSetting {
 
+    private ActionBar actionBar;
+
     public void settingActionbarAttr(Context context, ActionBar actionBar, int layoutId) {
+        this.actionBar = actionBar;
         // initView action bar
         ActionBar supportActionBar = actionBar;
+        supportActionBar.setDisplayOptions(0,0);
+        supportActionBar.setDisplayShowHomeEnabled(false);
+        supportActionBar.setDisplayHomeAsUpEnabled(false);
+        supportActionBar.setDefaultDisplayHomeAsUpEnabled(false);
+        supportActionBar.setHomeButtonEnabled(false);
+        disableABCShowHideAnimation(supportActionBar);
+        
         View inflate = View.inflate(context, layoutId, null);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-        lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL;
+        lp.gravity = Gravity.CENTER_HORIZONTAL|Gravity.LEFT|Gravity.FILL;
         supportActionBar.setCustomView(inflate, lp);
-        disableABCShowHideAnimation(supportActionBar);
-        supportActionBar.setDisplayShowHomeEnabled(false);
+
         supportActionBar.setDisplayShowCustomEnabled(true);
         supportActionBar.setDisplayShowTitleEnabled(false);
         supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         supportActionBar.show();
+        
         findActionbarView(supportActionBar.getCustomView());
+    }
+
+    /**
+     * 获取当前actionbar
+     *
+     * @return
+     */
+    public ActionBar getBar() {
+        return actionBar;
     }
 
     public abstract void findActionbarView(View view);

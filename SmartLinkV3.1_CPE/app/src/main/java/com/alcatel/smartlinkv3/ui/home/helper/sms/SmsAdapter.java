@@ -10,33 +10,38 @@ import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.DataUti;
+import com.alcatel.smartlinkv3.model.sms.SMSContactList;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SmsAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context context;
-    private ArrayList<SMSSummaryItem> m_smsContactMessagesLstData;
+    // private ArrayList<SMSSummaryItem> m_smsContactMessagesLstData;
+    public List<SMSContactList.SMSContact> smsContacts;
 
     public SmsAdapter(Context context) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
     }
 
-    public SmsAdapter(Context context, ArrayList<SMSSummaryItem> m_smsContactMessagesLstData) {
+    public SmsAdapter(Context context, List<SMSContactList.SMSContact> smsContacts) {
         this.context = context;
-        this.m_smsContactMessagesLstData = m_smsContactMessagesLstData;
+        this.smsContacts = smsContacts;
+    }
+
+    public void notifity(List<SMSContactList.SMSContact> smsContacts) {
+        this.smsContacts = smsContacts;
+        notifyDataSetChanged();
     }
 
     public int getCount() {
-        // TODO Auto-generated method stub
-        return m_smsContactMessagesLstData.size();
+        return smsContacts.size();
     }
 
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -55,7 +60,6 @@ public class SmsAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -73,18 +77,21 @@ public class SmsAdapter extends BaseAdapter {
         }
 
 
-        SMSSummaryItem smsItem = m_smsContactMessagesLstData.get(position);
-        holder.number.setText(smsItem.strNumber);
-        holder.content.setText(smsItem.strSummaryContent);
+        // TOAT: info item
+        //SMSSummaryItem smsItem = m_smsContactMessagesLstData.get(position);
+        SMSContactList.SMSContact smsContact = smsContacts.get(position);
 
-        int nUnreadNum = smsItem.nUnreadNumber;
+        holder.number.setText(SmsNumHelper.getNew(smsContact.getPhoneNumber()));
+        holder.content.setText(smsContact.getSMSContent());
+
+        int nUnreadNum = smsContact.getUnreadCount();
         if (nUnreadNum == 0) {
             holder.unreadImage.setVisibility(View.INVISIBLE);
         } else {
             holder.unreadImage.setVisibility(View.VISIBLE);
         }
 
-        Date summaryDate = DataUti.formatDateFromString(smsItem.strSummaryTime);
+        Date summaryDate = DataUti.formatDateFromString(smsContact.getSMSTime());
 
         String strTimeText = new String();
         if (summaryDate != null) {
@@ -100,26 +107,27 @@ public class SmsAdapter extends BaseAdapter {
         holder.time.setText(strTimeText);
 
         //Read, Unread, Sent, SentFailed, Report, Flash,Draft;
-        switch (smsItem.enumSmsType) {
-            case SentFailed:
+        int smsType = smsContact.getSMSType();
+        switch (smsType) {
+            case 3:
                 holder.sentFailedImage.setVisibility(View.VISIBLE);
                 holder.totalcount.setVisibility(View.VISIBLE);
-                holder.totalcount.setText(String.valueOf(smsItem.nCount));
+                holder.totalcount.setText(String.valueOf(smsContact.getTSMSCount()));
                 holder.count.setVisibility(View.INVISIBLE);
                 break;
-            case Draft:
+            case 6:
                 holder.sentFailedImage.setVisibility(View.INVISIBLE);
                 holder.totalcount.setVisibility(View.VISIBLE);
                 holder.totalcount.setTextColor(context.getResources().getColor(R.color.color_grey));
-                holder.totalcount.setText(String.format(context.getString(R.string.sms_list_view_draft), smsItem.nCount));
+                holder.totalcount.setText(String.format(context.getString(R.string.sms_list_view_draft), smsContact.getTSMSCount()));
                 holder.count.setVisibility(View.INVISIBLE);
                 break;
             default:
                 holder.sentFailedImage.setVisibility(View.INVISIBLE);
                 holder.totalcount.setVisibility(View.VISIBLE);
-                holder.totalcount.setText(String.valueOf(smsItem.nCount));
+                holder.totalcount.setText(String.valueOf(smsContact.getTSMSCount()));
                 holder.count.setVisibility(View.INVISIBLE);
-                holder.count.setText(String.format(context.getResources().getString(R.string.sms_unread_num), smsItem.nUnreadNumber));
+                holder.count.setText(String.format(context.getResources().getString(R.string.sms_unread_num), smsContact.getUnreadCount()));
                 break;
         }
 

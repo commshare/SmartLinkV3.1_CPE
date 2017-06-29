@@ -19,15 +19,16 @@ import android.widget.Toast;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
-import com.alcatel.smartlinkv3.common.ToastUtil;
 import com.alcatel.smartlinkv3.common.ToastUtil_m;
 import com.alcatel.smartlinkv3.model.Usage.UsageRecord;
 import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
 import com.alcatel.smartlinkv3.model.network.NetworkInfos;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
+import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
+import com.alcatel.smartlinkv3.ui.activity.InternetStatusActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
 import com.alcatel.smartlinkv3.ui.home.allsetup.HomeActivity;
@@ -38,6 +39,7 @@ import com.alcatel.smartlinkv3.ui.view.WaveLoadingView;
 import com.alcatel.smartlinkv3.utils.DataUtils;
 
 import java.util.Locale;
+
 
 public class MainFragment extends Fragment implements View.OnClickListener {
 
@@ -54,6 +56,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private TextView m_simOrServiceTextView = null;
 
     /*sigel_panel*/
+    private RelativeLayout mRl_sigelPanel;
     private TextView m_networkTypeTextView;
     private ImageView m_signalImageView;
     private TextView m_networkLabelTextView;
@@ -71,7 +74,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private Typeface typeFace;// font type
     private TimerHelper timerHelper;// timer
     private long connectTime = 0;// connect time
-    private int upOrDownByteData = 0;// upload or download byte data
+    private long upOrDownByteData = 0;// upload or download byte data
 
     // if status is sim then use this flag to injudge the press button status
     private boolean m_simConnectFlag = false;
@@ -88,6 +91,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private Activity activity;
     public static String PRESSBUTTON = "PRESSBUTTON";// true: the sim button have pressed.
+
+    public String TAGS = "ma";
 
     public MainFragment(Activity activity) {
         this.activity = activity;
@@ -114,9 +119,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_nosimcardLayout = (LinearLayout) m_view.findViewById(R.id.no_sim_card_layout);
         m_simOrServiceTextView = (TextView) m_view.findViewById(R.id.no_sim_card_state);
 
+        mRl_sigelPanel = (RelativeLayout) m_view.findViewById(R.id.sigel_panel);
         m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);// SIGNAL LOGO
         m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);// 4G
-        m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);// SIGNAL
+        m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);// SIGNAL text
 
         m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
         m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
@@ -132,51 +138,33 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         // 1. 初始化获取
         getStatus();
-        // 2. 启动定时器
-        timerHelper = new TimerHelper(activity) {
-            @Override
-            public void doSomething() {
-                getStatus();
-            }
-        };
-        timerHelper.start(5000);
 
         return m_view;
     }
 
+    /* -------------------------------------------- 0.GET ALL STATUS -------------------------------------------- */
     // TOAT: all status
     /* **** get all status **** */
     private void getStatus() {
         /* **** check the type is wan or sim **** */
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
             @Override
-            protected void onSuccess(ConnectionStates result) {
+            protected void onSuccess(WanSettingsResult result) {
+                int status = result.getStatus();
+                System.out.println("status = " + status);
                 /* connected || connecting means that wan is connect successful */
-                int connectionStatus = result.getConnectionStatus();
-                /* wan connect */
-                if (connectionStatus == Cons.CONNECTED || connectionStatus == Cons.CONNECTING) {
-                    isWan = true;// set wan button effect
-                    // wan logic
-                    m_connectLayout.setVisibility(View.VISIBLE);
-                    m_connectedLayout.setVisibility(View.GONE);
-                    m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
-                    m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
-                    m_signalImageView.setBackgroundResource(R.drawable.storage_toolbar_download_normal);
-                    // get download speed rate
-                    m_networkLabelTextView.setText(String.valueOf(result.getDlRate()));
-                } else {/* sim connect */
-                    isWan = false;// set sim button effect
-                    // sim logic
-                    m_simConnectFlag = SharedPrefsUtil.getInstance(getActivity()).getBoolean(PRESSBUTTON, false);
-                    if (m_simConnectFlag) {
-                        setSimButtonLogo();// logo connect/unconnected button layout
-                    }
-                    setUnlockedLayout();// sim unlocked/locked layout 
-                    setTrafficLayout();// traffic 0MB...layout
-                    setSignStatus();// sign level layout
-                    setAccessDeviceStatus();// device count layout
+                // TOAT: force to wan
+                // status = Cons.CONNECTED;
+                if (status == Cons.CONNECTED || status == Cons.CONNECTING) {
+                    // wan connect
+                    wan_ui_setting();
+                } else {
+                    // sim connect
+                    // TODO: NumberFormat Exception
+                    sim_ui_setting();
                 }
-
+                // device count layout
+                setAccessDeviceStatus();
                 // when type check is finish , logo button can be click
                 canClick = true;
             }
@@ -184,6 +172,35 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
+    /* wan ui setting */
+    private void wan_ui_setting() {
+        isWan = true;// set wan button effect
+        // wan logic
+        m_connectLayout.setVisibility(View.VISIBLE);
+        m_connectedLayout.setVisibility(View.GONE);
+        m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
+        m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
+        // m_signalImageView.setBackgroundResource(R.drawable.storage_toolbar_download_normal);
+        mRl_sigelPanel.setVisibility(View.GONE);
+        // TOGO 2017/6/27 there is the function of wan download speed, but hardware have no interface provider
+        m_networkLabelTextView.setText("Ethernet");
+    }
+
+    /* sim ui setting */
+    private void sim_ui_setting() {
+        isWan = false;// set sim button effect
+        // sim logic
+        m_simConnectFlag = SharedPrefsUtil.getInstance(getActivity()).getBoolean(PRESSBUTTON, false);
+        if (m_simConnectFlag) {
+            setSimButtonLogo();// logo connect/unconnected button layout
+        }
+        setUnlockedLayout();// sim unlocked/locked layout 
+        setTrafficLayout();// traffic 0MB...layout
+        setSignStatus();// sign level layout
+    }
+
+    /* -------------------------------------------- 0.GET ALL STATUS -------------------------------------------- */
 
     /* --------------------------------------------- 1.CONNECT BUTTON ---------------------------------------- */
     /* **** injust connect button status **** */
@@ -208,8 +225,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
-
-                // doesn't worked--> show 0MB
+                
+                // // doesn't worked--> show 0MB
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
                     mConnectedView.setCenterTitle(zeroMB);
                 } else {
@@ -223,8 +240,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             } else {
                                 pressSituation(result);
                             }
-                            int staticDataMB = upOrDownByteData / 1024 / 1024;
-                            mConnectedView.setCenterTitle(String.valueOf(staticDataMB));
+                            long staticDataMB = upOrDownByteData / 1024 / 1024;
+                            mConnectedView.setCenterTitle(staticDataMB + "");
                         }
                     });
 
@@ -326,18 +343,18 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (!m_simConnectFlag) {
                     if (result.getConnectionStatus() == Cons.CONNECTED) {
                         connectTime = result.getConnectionTime();
-                        upOrDownByteData = (int) (result.getDlBytes() + result.getUlBytes());
+                        upOrDownByteData = (result.getDlBytes() + result.getUlBytes());
                     }
                     if (result.getConnectionStatus() == Cons.DISCONNECTED) {
                         connectTime = result.getConnectionTime();
-                        upOrDownByteData = (int) (result.getDlBytes() + result.getUlBytes());
+                        upOrDownByteData = (result.getDlBytes() + result.getUlBytes());
                     }
                 } else {
                     if (result.getConnectionStatus() == Cons.CONNECTED || result.getConnectionStatus() == Cons.DISCONNECTING) {
                     }
                 }
-                int staticDataMB = upOrDownByteData / 1024 / 1024;
-                mConnectedView.setCenterTitle(String.valueOf(staticDataMB));
+                long staticDataMB = upOrDownByteData / 1024 / 1024;
+                mConnectedView.setCenterTitle(staticDataMB + "");
             }
         });
 
@@ -547,7 +564,14 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        getStatus();
+        // 2. 启动定时器
+        timerHelper = new TimerHelper(activity) {
+            @Override
+            public void doSomething() {
+                getStatus();
+            }
+        };
+        timerHelper.start(5000);
     }
 
     @Override
@@ -567,11 +591,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         // operater the button click function
                         simButtonConnect();
                     } else {/* wwan button click logic */
-                        // TODO: 2017/6/26 wan connect
-                        ToastUtil_m.show(getActivity(), "function is creating");
+                        // to internet status activity
+                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, true, false, false, 0);
                     }
                 } else {
-                    ToastUtil_m.show(getActivity(), getString(R.string.please_wait));
+                    ToastUtil_m.show(getActivity(), "Please wait...");
                 }
                 break;
             case R.id.connected_button:
@@ -579,8 +603,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     if (!isWan) {/* sim button click logic */
                         connectedBtnClick();
                     }
-                } else {
-                    ToastUtil_m.show(getActivity(), getString(R.string.please_wait));
                 }
                 break;
             case R.id.unlock_sim_button:
@@ -651,41 +673,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
-    // @Override
-    // public void simRollRequest() {
-    //     showSignalAndNetworkType();
-    //     resetConnectBtnFlag();
-    //     showNetworkState();
-    //     showConnectBtnView();
-    // }
-
-    // @Override
-    // public void wanConnect(boolean isOk) {
-    //     if (isOk) {
-    //         m_bConnectReturn = true;
-    //     } else {
-    //         //operation fail
-    //         m_simConnectFlag = false;
-    //         showNetworkState();
-    //         showConnectBtnView();
-    //     }
-    // }
-
-    // @Override
-    // public void wanRollRequest() {
-    //     resetConnectBtnFlag();
-    //     showNetworkState();
-    //     showConnectBtnView();
-    // }
-
-    // @Override
-    // public void wificonnect() {
-    //     resetConnectBtnFlag();
-    //     m_connectLayout.setVisibility(View.VISIBLE);
-    //     m_connectedLayout.setVisibility(View.GONE);
-    //     showConnectBtnView();
-    // }
 
     /* connect helper */
     public void connectHelper(boolean connectflag) {

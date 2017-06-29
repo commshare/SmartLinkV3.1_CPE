@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/usage_layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dip"
+        android:background="@color/main_title_background">
+
+        <ImageButton
+            android:id="@+id/ib_internet_back"
+            android:layout_width="@dimen/dimen_18dip"
+            android:layout_height="@dimen/dimen_35dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_internet_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/internet_status"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_20dip"
+            android:textStyle="normal" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

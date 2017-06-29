@@ -32,6 +32,14 @@ import com.alcatel.smartlinkv3.model.sim.PukParams;
 import com.alcatel.smartlinkv3.model.sim.SetAutoValidatePinStateParams;
 import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.sim.UnlockSimlockParams;
+import com.alcatel.smartlinkv3.model.sms.SMSContactList;
+import com.alcatel.smartlinkv3.model.sms.SMSContactListParam;
+import com.alcatel.smartlinkv3.model.sms.SMSContentList;
+import com.alcatel.smartlinkv3.model.sms.SMSContentParam;
+import com.alcatel.smartlinkv3.model.sms.SMSDeleteParam;
+import com.alcatel.smartlinkv3.model.sms.SMSSaveParam;
+import com.alcatel.smartlinkv3.model.sms.SMSSendParam;
+import com.alcatel.smartlinkv3.model.sms.SmsInitState;
 import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
 import com.alcatel.smartlinkv3.model.system.WanSetting;
@@ -41,6 +49,7 @@ import com.alcatel.smartlinkv3.model.user.LoginParams;
 import com.alcatel.smartlinkv3.model.user.LoginResult;
 import com.alcatel.smartlinkv3.model.user.LoginState;
 import com.alcatel.smartlinkv3.model.user.NewPasswdParams;
+import com.alcatel.smartlinkv3.model.wan.WanSettingsParams;
 import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.model.wlan.WlanSettings;
 import com.alcatel.smartlinkv3.model.wlan.WlanState;
@@ -384,8 +393,8 @@ public class API {
         subscribe(subscriber, smartLinkApi.getWanSettings(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
-    public void setWanSettings(MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.GET_WAN_SETTINGS)));
+    public void setWanSettings(WanSettingsParams wsp, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WAN_SETTINGS, wsp)));
     }
 
     public void getDeviceNewVersion(MySubscriber<DeviceNewVersion> subscriber) {
@@ -532,6 +541,30 @@ public class API {
     public void getProfileList(MySubscriber<ProfileList> subscriber) {
         subscribe(subscriber, smartLinkApi.getProfileList(new RequestBody(Methods.GET_PROFILE_LIST)));
     }
+    public void getSMSContactList(int Page, MySubscriber<SMSContactList> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSMSContactList(new RequestBody(Methods.GET_SMSCONTACTLIST, new SMSContactListParam(Page))));
+    }
+    
+    public void getSmsInitState(MySubscriber<SmsInitState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSmsInitState(new RequestBody(Methods.GET_SMSINITSTATE)));
+    }
+    
+    public void getSMSContentList(SMSContentParam scp, MySubscriber<SMSContentList> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSMSContentList(new RequestBody(Methods.GET_SMSCONTENTLIST,scp)));
+    }
+    
+    public void saveSMS(SMSSaveParam ssp, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SAVESMS,ssp)));
+    }
+
+    public void deleteSMS(SMSDeleteParam sp, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.DELETESMS,sp)));
+    }
+    
+    public void sendSMS(SMSSendParam sssp, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SENDSMS,sssp)));
+    }
+
 
     interface SmartLinkApi {
 
@@ -637,5 +670,14 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<ProfileList>> getProfileList(@Body RequestBody requestBody);
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SMSContactList>> getSMSContactList(@Body RequestBody requestBody);
+        
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SmsInitState>> getSmsInitState(@Body RequestBody requestBody);
+        
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SMSContentList>> getSMSContentList(@Body RequestBody requestBody);
+        
     }
 }

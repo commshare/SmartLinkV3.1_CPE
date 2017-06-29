@@ -266,7 +266,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
 
     private void initView() {
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        SmsCountHelper.setSmsCount(mTvHomeMessageCount);// getInstance show sms count
+        SmsCountHelper.setSmsCount(this,mTvHomeMessageCount);// getInstance show sms count
 
         mAllShareProxy = AllShareProxy.getInstance(this);
         mBrocastFactory = new DMSDeviceBrocastFactory(this);

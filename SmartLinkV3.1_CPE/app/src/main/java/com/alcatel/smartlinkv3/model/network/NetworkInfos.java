@@ -7,15 +7,15 @@ package com.alcatel.smartlinkv3.model.network;
 public class NetworkInfos {
 
     public String PLMN;
-    public int NetworkType;
+    public float NetworkType;
     public String NetworkName;
     public String SpnName;
     public String LAC;
     public String CellId;
     public String RncId;
-    public int Roaming;
-    public int Domestic_Roaming;
-    public int SignalStrength;
+    public float Roaming;
+    public float Domestic_Roaming;
+    public float SignalStrength;
     public String mcc;
     public String mnc;
     public String SINR;
@@ -25,19 +25,14 @@ public class NetworkInfos {
     public String CGI;
     public String CenterFreq;
     public String TxPWR;
-    public int LTE_state;
+    public float LTE_state;
     public String PLMN_name;
-    public int Band;
+    public float Band;
     public String DL_channel;
     public String UL_channel;
     public String RSRQ;
-    public int EcIo;
-    public int RSCP;
-
-    @Override
-    public String toString() {
-        return "NetworkInfos{" + "PLMN='" + PLMN + '\'' + ", NetworkType=" + NetworkType + ", NetworkName='" + NetworkName + '\'' + ", SpnName='" + SpnName + '\'' + ", LAC='" + LAC + '\'' + ", CellId='" + CellId + '\'' + ", RncId='" + RncId + '\'' + ", Roaming=" + Roaming + ", Domestic_Roaming=" + Domestic_Roaming + ", SignalStrength=" + SignalStrength + ", mcc='" + mcc + '\'' + ", mnc='" + mnc + '\'' + ", SINR='" + SINR + '\'' + ", RSRP='" + RSRP + '\'' + ", RSSI='" + RSSI + '\'' + ", eNBID='" + eNBID + '\'' + ", CGI='" + CGI + '\'' + ", CenterFreq='" + CenterFreq + '\'' + ", TxPWR='" + TxPWR + '\'' + ", LTE_state=" + LTE_state + ", PLMN_name='" + PLMN_name + '\'' + ", Band=" + Band + ", DL_channel='" + DL_channel + '\'' + ", UL_channel='" + UL_channel + '\'' + ", RSRQ='" + RSRQ + '\'' + ", EcIo=" + EcIo + ", RSCP=" + RSCP + '}';
-    }
+    public float EcIo;
+    public float RSCP;
 
     public String getPLMN() {
         return PLMN;
@@ -47,11 +42,11 @@ public class NetworkInfos {
         this.PLMN = PLMN;
     }
 
-    public int getNetworkType() {
+    public float getNetworkType() {
         return NetworkType;
     }
 
-    public void setNetworkType(int networkType) {
+    public void setNetworkType(float networkType) {
         NetworkType = networkType;
     }
 
@@ -95,27 +90,27 @@ public class NetworkInfos {
         RncId = rncId;
     }
 
-    public int getRoaming() {
+    public float getRoaming() {
         return Roaming;
     }
 
-    public void setRoaming(int roaming) {
+    public void setRoaming(float roaming) {
         Roaming = roaming;
     }
 
-    public int getDomestic_Roaming() {
+    public float getDomestic_Roaming() {
         return Domestic_Roaming;
     }
 
-    public void setDomestic_Roaming(int domestic_Roaming) {
+    public void setDomestic_Roaming(float domestic_Roaming) {
         Domestic_Roaming = domestic_Roaming;
     }
 
-    public int getSignalStrength() {
+    public float getSignalStrength() {
         return SignalStrength;
     }
 
-    public void setSignalStrength(int signalStrength) {
+    public void setSignalStrength(float signalStrength) {
         SignalStrength = signalStrength;
     }
 
@@ -191,11 +186,11 @@ public class NetworkInfos {
         TxPWR = txPWR;
     }
 
-    public int getLTE_state() {
+    public float getLTE_state() {
         return LTE_state;
     }
 
-    public void setLTE_state(int LTE_state) {
+    public void setLTE_state(float LTE_state) {
         this.LTE_state = LTE_state;
     }
 
@@ -207,11 +202,11 @@ public class NetworkInfos {
         this.PLMN_name = PLMN_name;
     }
 
-    public int getBand() {
+    public float getBand() {
         return Band;
     }
 
-    public void setBand(int band) {
+    public void setBand(float band) {
         Band = band;
     }
 
@@ -239,19 +234,19 @@ public class NetworkInfos {
         this.RSRQ = RSRQ;
     }
 
-    public int getEcIo() {
+    public float getEcIo() {
         return EcIo;
     }
 
-    public void setEcIo(int ecIo) {
+    public void setEcIo(float ecIo) {
         EcIo = ecIo;
     }
 
-    public int getRSCP() {
+    public float getRSCP() {
         return RSCP;
     }
 
-    public void setRSCP(int RSCP) {
+    public void setRSCP(float RSCP) {
         this.RSCP = RSCP;
     }
 }

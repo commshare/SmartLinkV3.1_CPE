@@ -216,7 +216,8 @@
             android:layout_height="fill_parent"
             android:baselineAligned="false"
             android:orientation="horizontal">
-
+            
+            <!-- signal -->
             <RelativeLayout
                 android:id="@+id/sigel_panel"
                 android:layout_width="0dip"
@@ -278,6 +279,7 @@
                 </RelativeLayout>
             </RelativeLayout>
 
+            <!-- connected device -->
             <RelativeLayout
                 android:id="@+id/access_panel"
                 android:layout_width="0dip"

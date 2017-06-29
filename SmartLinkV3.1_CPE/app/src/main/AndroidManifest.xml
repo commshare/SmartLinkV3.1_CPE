@@ -92,7 +92,6 @@
             android:name=".ui.activity.ActivitySmsDetail"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustResize" />
         <!-- <activity -->
         <!-- android:name=".ui.activity.SdSharingActivity" -->
@@ -304,8 +303,7 @@
         <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.InternetStatusActivity">
-        </activity>
+       <activity android:name=".ui.activity.InternetStatusActivity"/>
     </application>
 
 </manifest>

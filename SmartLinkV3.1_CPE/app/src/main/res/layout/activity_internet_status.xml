@@ -77,12 +77,12 @@
         android:id="@+id/rl_internet_dns"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_60dip"
-        android:layout_below="@id/rl_internet_subnet">
+        android:layout_below="@id/rl_internet_gateway">
 
         <TextView
             android:id="@+id/tv_internet_title_dns"
             style="@style/internet_tv_title"
-            android:text="@string/default_gateway" />
+            android:text="@string/preferred_dns" />
 
         <TextView
             android:id="@+id/tv_internet_content_dns"
@@ -93,4 +93,52 @@
             style="@style/internet_split" />
 
     </RelativeLayout>
+
+    <!-- Secondary DNS  -->
+    <RelativeLayout
+        android:id="@+id/rl_internet_secondDns"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dip"
+        android:layout_below="@id/rl_internet_dns">
+
+        <TextView
+            android:id="@+id/tv_internet_title_secondDns"
+            style="@style/internet_tv_title"
+            android:text="@string/secondary_dns" />
+
+        <TextView
+            android:id="@+id/tv_internet_content_secondDns"
+            style="@style/internet_tv_content"
+            android:text="0.0.0.0" />
+
+        <View
+            style="@style/internet_split" />
+
+    </RelativeLayout>
+
+    <!-- Renew -->
+    <com.alcatel.smartlinkv3.appwidget.RippleView
+        android:id="@+id/rv_internet_renew"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dip"
+        android:layout_below="@id/rl_internet_secondDns"
+        android:layout_margin="@dimen/dimen_20dip"
+        android:background="@drawable/bg_internetstatus"
+        android:gravity="center"
+        android:text="@string/dhcp_renew"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_18dip"
+        app:alphaFactor="0.8"
+        app:hover="true"
+        app:rippleColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_internet_ethernetWanConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_internet_renew"
+        android:layout_centerHorizontal="true"
+        android:text="Ethernet WAN Connection >"
+        android:textSize="@dimen/dimen_16dip" />
+
 </RelativeLayout>

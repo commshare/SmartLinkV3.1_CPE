@@ -70,13 +70,31 @@ public class Cons {
 
     public static int DISABLE_NOTAUTODISCONNECT = 0;
     public static int ENABLE_AUTODISCONNECT = 1;
-    
-    /* Device */
-    public static  int WEBUI_LOGIN = 0;
-    public static  int CONNECT_NOTLOGIN = 1;
 
-    public static  int USB_CONNECT =0;
-    public static  int WIFI_CONNECT =1;
+    /* Device */
+    public static int WEBUI_LOGIN = 0;
+    public static int CONNECT_NOTLOGIN = 1;
+
+    public static int USB_CONNECT = 0;
+    public static int WIFI_CONNECT = 1;
+
+    /* sms */
+    public static int SMS_INITING = 1;
+    public static int SMS_COMPLETE = 0;
+
+    public static int DELETE_ALL_SMS = 0;
+    public static int DELETE_ONE_SMS = 1;
+    public static int DELETE_SESSION_SMS = 2;
+    public static int DELETE_MORE_SMS = 3;
+
+    public static final int READ = 0;
+    public static final int UNREAD = 1;
+    public static final int SENT = 2;
+    public static final int SENT_FAILED = 3;
+    public static final int REPORT = 4;
+    public static final int FLASH = 5;
+    public static final int DRAFT = 6;
+
 
 
 }

@@ -88,4 +88,13 @@ public interface Methods {
 
     //profile
     String GET_PROFILE_LIST = "GetProfileList";
+    
+    String GET_SMSCONTACTLIST = "GetSMSContactList";
+    String GET_SMSINITSTATE = "getSmsInitState";
+    
+    String GET_SMSCONTENTLIST = "GetSMSContentList";
+    String SAVESMS = "SaveSMS";
+    String DELETESMS = "DeleteSMS";
+    String SENDSMS = "SendSMS";
+    
 }
