@@ -840,5 +840,11 @@
     <string name="reset_statistics">Reset statistics</string>
     <string name="mobile_network_settings">Mobile network settings</string>
     <string name="reset_monthly_data_usage_statistics">Reset monthly data usage statistics?</string>
+    <string name="send_sms_failed">Send SMS failed.</string>
+    <string name="fail_still_sending_last_message">Fail still sending last message.</string>
+    <string name="fail_with_store_space_full">Fail with store space full.</string>
+    <string name="fail_with_memory_full">fail with Memory full</string>
+    <string name="none">none</string>
+
 
 </resources>

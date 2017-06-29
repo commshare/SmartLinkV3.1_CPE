@@ -96,5 +96,6 @@ public interface Methods {
     String SAVESMS = "SaveSMS";
     String DELETESMS = "DeleteSMS";
     String SENDSMS = "SendSMS";
+    String GET_SEND_SMS_RESULT = "GetSendSMSResult";
     
 }

@@ -39,6 +39,7 @@ import com.alcatel.smartlinkv3.model.sms.SMSContentParam;
 import com.alcatel.smartlinkv3.model.sms.SMSDeleteParam;
 import com.alcatel.smartlinkv3.model.sms.SMSSaveParam;
 import com.alcatel.smartlinkv3.model.sms.SMSSendParam;
+import com.alcatel.smartlinkv3.model.sms.SendSMSResult;
 import com.alcatel.smartlinkv3.model.sms.SmsInitState;
 import com.alcatel.smartlinkv3.model.system.SysStatus;
 import com.alcatel.smartlinkv3.model.system.SystemInfo;
@@ -495,7 +496,7 @@ public class API {
         subscribe(subscriber, smartLinkApi.getBatteryState(new RequestBody(Methods.GET_BATTERYSTATE)));
     }
 
-    public void setUsageSetting(UsageSetting usageSettingParams ,Subscriber<UsageSetting> subscriber) {
+    public void setUsageSetting(UsageSetting usageSettingParams, Subscriber<UsageSetting> subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, usageSettingParams)));
     }
 
@@ -541,28 +542,33 @@ public class API {
     public void getProfileList(MySubscriber<ProfileList> subscriber) {
         subscribe(subscriber, smartLinkApi.getProfileList(new RequestBody(Methods.GET_PROFILE_LIST)));
     }
+
     public void getSMSContactList(int Page, MySubscriber<SMSContactList> subscriber) {
         subscribe(subscriber, smartLinkApi.getSMSContactList(new RequestBody(Methods.GET_SMSCONTACTLIST, new SMSContactListParam(Page))));
     }
-    
+
     public void getSmsInitState(MySubscriber<SmsInitState> subscriber) {
         subscribe(subscriber, smartLinkApi.getSmsInitState(new RequestBody(Methods.GET_SMSINITSTATE)));
     }
-    
+
     public void getSMSContentList(SMSContentParam scp, MySubscriber<SMSContentList> subscriber) {
-        subscribe(subscriber, smartLinkApi.getSMSContentList(new RequestBody(Methods.GET_SMSCONTENTLIST,scp)));
+        subscribe(subscriber, smartLinkApi.getSMSContentList(new RequestBody(Methods.GET_SMSCONTENTLIST, scp)));
     }
-    
+
     public void saveSMS(SMSSaveParam ssp, MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SAVESMS,ssp)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SAVESMS, ssp)));
     }
 
     public void deleteSMS(SMSDeleteParam sp, MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.DELETESMS,sp)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.DELETESMS, sp)));
     }
-    
+
     public void sendSMS(SMSSendParam sssp, MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SENDSMS,sssp)));
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SENDSMS, sssp)));
+    }
+
+    public void GetSendSMSResult(MySubscriber<SendSMSResult> subscriber) {
+        subscribe(subscriber, smartLinkApi.GetSendSMSResult(new RequestBody(Methods.GET_SEND_SMS_RESULT)));
     }
 
 
@@ -669,14 +675,17 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<ProfileList>> getProfileList(@Body RequestBody requestBody);
+
         @POST("/jrd/webapi")
         Observable<ResponseBody<SMSContactList>> getSMSContactList(@Body RequestBody requestBody);
-        
+
         @POST("/jrd/webapi")
         Observable<ResponseBody<SmsInitState>> getSmsInitState(@Body RequestBody requestBody);
-        
+
         @POST("/jrd/webapi")
         Observable<ResponseBody<SMSContentList>> getSMSContentList(@Body RequestBody requestBody);
-        
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SendSMSResult>> GetSendSMSResult(@Body RequestBody requestBody);
     }
 }

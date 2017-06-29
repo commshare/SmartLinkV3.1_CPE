@@ -13,6 +13,16 @@ public class SMSSaveParam {
     private String SMSTime;
     private List<String> PhoneNumber;
 
+    public SMSSaveParam(int SMSId, String SMSContent, String SMSTime, List<String> phoneNumber) {
+        this.SMSId = SMSId;
+        this.SMSContent = SMSContent;
+        this.SMSTime = SMSTime;
+        PhoneNumber = phoneNumber;
+    }
+
+    public SMSSaveParam() {
+    }
+
     public int getSMSId() {
         return SMSId;
     }

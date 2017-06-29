@@ -156,15 +156,16 @@
 	</RelativeLayout>
 
 	<RelativeLayout
-	    android:id="@+id/sms_new_waiting_layout"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
-	    <ProgressBar
-             android:id="@+id/sms_new_waiting_progress"
-             android:layout_width="40dip"
-             android:layout_height="40dip"
-             android:layout_centerInParent="true"
-             android:indeterminateDrawable="@drawable/progerss_blue"
-             android:visibility="gone" />
+		android:id="@+id/sms_new_waiting_layout"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+		<ProgressBar
+			android:id="@+id/sms_new_waiting_progress"
+			android:layout_width="40dip"
+			android:layout_height="40dip"
+			android:layout_centerInParent="true"
+			android:indeterminateDrawable="@drawable/progerss_blue"
+			android:visibility="gone"/>
 	</RelativeLayout>
 </FrameLayout>
