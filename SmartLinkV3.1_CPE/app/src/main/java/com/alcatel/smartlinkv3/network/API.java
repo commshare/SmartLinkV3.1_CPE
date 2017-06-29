@@ -646,7 +646,6 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody<Network>> getNetworkSettings(@Body RequestBody requestBody);
 
-        // TOAT: 
         @POST("/jrd/webapi")
         Observable<ResponseBody<BatteryState>> getBatteryState(@Body RequestBody requestBody);
 

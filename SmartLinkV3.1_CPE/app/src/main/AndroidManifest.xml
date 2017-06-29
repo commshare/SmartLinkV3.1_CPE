@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alcatel.smartlinkv3"
-    android:versionCode="19"
-    android:versionName="3.2.5">
-
-    <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="23" />
+    package="com.alcatel.smartlinkv3">
 
     <supports-screens
         android:largeScreens="true"

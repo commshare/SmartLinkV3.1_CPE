@@ -44,10 +44,8 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
             ToastUtil.showMessage(mAppContext, "Time out");
         } else if (e instanceof ConnectException) {
             ToastUtil.showMessage(mAppContext, "Couldn't connect");
-        }else {
-            ToastUtil.showMessage(mAppContext, "Failed");
-            System.out.println("e: "+e.getMessage().toString());
         }
+
         onFailure();
     }
 
