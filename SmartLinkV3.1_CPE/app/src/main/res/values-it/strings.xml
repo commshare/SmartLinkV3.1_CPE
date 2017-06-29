@@ -20,7 +20,7 @@
     <string name="continue_anyway">Continua</string>
     <!-- common end -->
 
-	<!-- Qucik Setup -->
+    <!-- Qucik Setup -->
     <string name="qs_title">Configurazione rapida</string>
     <string name="qs_exit_query">Esci da Configurazione rapida</string>
     <string name="qs_item_pin_code">Codice PIN</string>
@@ -87,18 +87,18 @@
     <string name="home_usage_over_redial_message">Il piano dati mensile è stato esaurito. Se si desidera ricomporre, modificare i valori mensili o reimpostare il consumo.</string>
     <!-- Home view end -->
 
- <!-- pop dialog start -->
+    <!-- pop dialog start -->
     <string name="pop_dialog_usagesetting">Usage Setting</string>
     <string name="pop_dialog_clearhistory">Clear History</string>
     <!-- pop dialog end -->
-    
-    
+
+
     <!-- Usage view end -->
     <string name="usage_view_home">Casa</string>
     <string name="usage_view_duration">Durata</string>
     <string name="bt_set_monthlydata">Imposta piano dati mensile</string>
     <string name="usage_status_des">Nessun piano dati impostato al momento</string>
-    <string name="usage_duration">%1$dHrs %2$dMins</string>
+    <string name="usage_duration">%1$dh %2$dm</string>
     <string name="disconnected_descrition">Quando l\'utilizzo dei dati raggiunge il piano dati mensile.</string>
     <string name="usage_clear_history_success">Cancellazione della cronologia di utilizzo riuscita!</string>
     <string name="usage_clear_history_fail">Cancellazione della cronologia di utilizzo non riuscita!</string>
@@ -154,7 +154,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Impostazione non riuscita</string>
-	<string name="device_manage_name_empty">Nome del dispositivo non è valido.</string>
+    <string name="device_manage_name_empty">Nome del dispositivo non è valido.</string>
     <!-- connect device end -->
 
 
@@ -405,7 +405,7 @@
     <string name="refresh_wifi_tip">Prima collegare l\'hotspot mobile.</string>
     <string name="refresh">Aggiorna</string>
     <!-- Refresh WIFI end -->
-    
+
     <!-- DLNA start -->
     <string name="second">S</string>
     <string name="separate"> / </string>
@@ -423,7 +423,7 @@
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;Testo recuperato su Internet. Solo per riferimento&#160;&#160;&#160;***</string>
     <string name="ftp_not_open">Aprire la funzione FTP nelle impostazioni.</string>
     <string name="dlna_not_open">Aprire la funzione DLNA nelle impostazioni.</string>
-     
+
     <!-- DLNA end -->
 
 
@@ -553,5 +553,5 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">Enable SD card</string>
+    <string name="enable_sd_card">Enable SD card</string>
 </resources>

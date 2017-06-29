@@ -101,7 +101,7 @@
     <string name="usage_view_duration">Durée</string>
     <string name="bt_set_monthlydata">Forfait données mensuel</string>
     <string name="usage_status_des">Sans forfait données indiqué</string>
-    <string name="usage_duration">%1$dHrs %2$dMins</string>
+    <string name="usage_duration">%1$dh %2$dm</string>
     <string name="disconnected_descrition">Quand l’usage des données atteint le forfait mensuel.</string>
     <string name="usage_clear_history_success">Historique d’usage effacé!</string>
     <string name="usage_clear_history_fail">Échec d’effacement de l’historique d’usage!</string>

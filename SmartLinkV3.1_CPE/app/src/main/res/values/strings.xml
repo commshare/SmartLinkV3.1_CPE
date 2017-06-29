@@ -22,7 +22,7 @@
 
     <!-- networkinfo -->
     <string name="networktype">Unknown</string>
-    
+
     <!-- Qucik Setup -->
     <string name="qs_title">Quick Setup</string>
     <string name="qs_exit_query">Exit Quick Setup</string>
@@ -137,7 +137,7 @@
     <string name="usage_view_duration">Duration</string>
     <string name="bt_set_monthlydata">Set Monthly Data Plan</string>
     <string name="usage_status_des">No data plan set yet</string>
-    <string name="usage_duration">%1$dHrs %2$dMins</string>
+    <string name="usage_duration">%1$dh %2$dm</string>
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <string name="usage_clear_history_success">Clear usage history successfully!</string>
     <string name="usage_clear_history_fail">Clear usage history failed!</string>
@@ -835,5 +835,10 @@
     <string name="select_your_internet_connection_type">Select your Internet connection type</string>
     <string name="for_internet_connection">For Internet connection</string>
     <string name="always_use_ethernet_connection">Always use Ethernet connection</string>
+    <string name="monthly_data_usage">Monthly data usage</string>
+    <string name="home_network">Home network</string>
+    <string name="reset_statistics">Reset statistics</string>
+    <string name="mobile_network_settings">Mobile network settings</string>
+    <string name="reset_monthly_data_usage_statistics">Reset monthly data usage statistics?</string>
 
 </resources>

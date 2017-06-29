@@ -101,7 +101,7 @@
     <string name="usage_view_duration">Duración</string>
     <string name="bt_set_monthlydata">Definir plan de datos mensual</string>
     <string name="usage_status_des">Aún no se ha definido un plan de datos.</string>
-    <string name="usage_duration">%1$dHrs %2$dMins</string>
+    <string name="usage_duration">%1$dh %2$dm</string>
     <string name="disconnected_descrition">Cuando el uso de datos supera el plan de datos mensual.</string>
     <string name="usage_clear_history_success">El historial de uso se ha borrado correctamente.</string>
     <string name="usage_clear_history_fail">No se ha podido borrar el historial de uso.</string>
