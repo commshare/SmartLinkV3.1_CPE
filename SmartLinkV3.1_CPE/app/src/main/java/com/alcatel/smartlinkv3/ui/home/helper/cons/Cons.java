@@ -107,6 +107,5 @@ public class Cons {
     public static final String GET_SMS_CONTACT_LIST_FAILED = "060201";
     public static final String GET_SMS_CONTENT_LIST_FAILED = "060301";
     public static final String GET_SEND_SMS_STATUS_FAILED = "060701";
-
-
+    
 }

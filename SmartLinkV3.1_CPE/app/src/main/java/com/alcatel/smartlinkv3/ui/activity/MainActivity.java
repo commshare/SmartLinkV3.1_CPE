@@ -51,6 +51,7 @@ import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog.OnPINError;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog;
 import com.alcatel.smartlinkv3.ui.dialog.PukDialog.OnPUKError;
+import com.alcatel.smartlinkv3.ui.sms.allsetup.ActivityDeviceManager;
 import com.alcatel.smartlinkv3.ui.view.ViewHome;
 import com.alcatel.smartlinkv3.ui.view.ViewIndex;
 import com.alcatel.smartlinkv3.ui.view.ViewMicroSD;

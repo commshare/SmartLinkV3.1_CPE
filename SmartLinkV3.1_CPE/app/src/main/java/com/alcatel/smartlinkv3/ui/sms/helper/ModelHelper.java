@@ -1,5 +1,7 @@
-package com.alcatel.smartlinkv3.model.device.other;
+package com.alcatel.smartlinkv3.ui.sms.helper;
 
+import com.alcatel.smartlinkv3.model.device.other.BlockModel;
+import com.alcatel.smartlinkv3.model.device.other.ConnectModel;
 import com.alcatel.smartlinkv3.model.device.response.BlockList;
 import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
 

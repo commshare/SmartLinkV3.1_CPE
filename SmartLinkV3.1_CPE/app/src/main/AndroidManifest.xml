@@ -191,7 +191,7 @@
         <!-- android:theme="@android:style/Theme.Black.NoTitleBar"> -->
         <!-- </activity> -->
         <activity
-            android:name=".ui.activity.ActivityDeviceManager"
+            android:name=".ui.sms.allsetup.ActivityDeviceManager"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity

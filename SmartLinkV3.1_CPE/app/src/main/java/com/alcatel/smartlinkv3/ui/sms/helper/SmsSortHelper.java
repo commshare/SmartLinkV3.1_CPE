@@ -1,4 +1,4 @@
-package com.alcatel.smartlinkv3.ui.sms;
+package com.alcatel.smartlinkv3.ui.sms.helper;
 
 import com.alcatel.smartlinkv3.common.DataUti;
 import com.alcatel.smartlinkv3.model.sms.SMSContentList;

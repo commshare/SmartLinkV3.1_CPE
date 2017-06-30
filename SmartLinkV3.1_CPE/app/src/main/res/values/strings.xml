@@ -218,7 +218,7 @@
     <string name="device_manage_connected_des">Connected Devices</string>
     <string name="device_manage_block">Block Devices (%1$d)</string>
     <string name="device_manage_block_des">Block Devices</string>
-    <string name="device_manage_block_btn">Block</string>
+    <string name="device_manage_block_btn">Blocked</string>
     <string name="device_manage_unblock_btn">Unblock</string>
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
@@ -847,7 +847,6 @@
     <string name="fail_with_store_space_full">Fail with store space full.</string>
     <string name="fail_with_memory_full">fail with Memory full</string>
     <string name="none">none</string>
-
-
+    <string name="host">Host</string>
 
 </resources>

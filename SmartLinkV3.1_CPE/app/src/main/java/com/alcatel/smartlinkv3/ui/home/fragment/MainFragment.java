@@ -27,7 +27,7 @@ import com.alcatel.smartlinkv3.model.sim.SimStatus;
 import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
-import com.alcatel.smartlinkv3.ui.activity.ActivityDeviceManager;
+import com.alcatel.smartlinkv3.ui.sms.allsetup.ActivityDeviceManager;
 import com.alcatel.smartlinkv3.ui.activity.InternetStatusActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.UsageActivity;
