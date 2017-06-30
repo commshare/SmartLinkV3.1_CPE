@@ -392,7 +392,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
      * A2.切换到SMS编辑界面
      */
     private void toSmsActivity() {
-        ChangeActivity.toActivity(this, ActivityNewSms.class, true, true, false, 0);
+        ChangeActivity.toActivity(this, ActivityNewSms.class, true, false, false, 0);
     }
 
     /* -------------------------------------------- HELPER -------------------------------------------- */

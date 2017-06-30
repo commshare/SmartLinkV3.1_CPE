@@ -1,5 +1,7 @@
 package com.alcatel.smartlinkv3.ui.home.helper.cons;
 
+import java.util.List;
+
 /**
  * Created by qianli.ma on 2017/6/19.
  */
@@ -95,6 +97,16 @@ public class Cons {
     public static final int FLASH = 5;
     public static final int DRAFT = 6;
 
+    public static final String SEND_SMS_FAILED = "060601";
+    public static final String FAIL_STILL_SENDING_LAST_MESSAGE = "060602";
+    public static final String FAIL_WITH_STORE_SPACE_FULL = "060603";
+
+    public static final String SAVE_SMS_FAILED = "060801";
+    public static final String SAVE_FAIL_WITH_STORE_SPACE_FULL = "060802";
+    public static final String DELETE_SMS_FAILED = "060501";
+    public static final String GET_SMS_CONTACT_LIST_FAILED = "060201";
+    public static final String GET_SMS_CONTENT_LIST_FAILED = "060301";
+    public static final String GET_SEND_SMS_STATUS_FAILED = "060701";
 
 
 }

@@ -151,7 +151,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 int status = result.getStatus();
-                System.out.println("status = " + status);
                 /* connected || connecting means that wan is connect successful */
                 // TOAT: force to wan
                 // status = Cons.CONNECTED;
@@ -183,7 +182,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
         // m_signalImageView.setBackgroundResource(R.drawable.storage_toolbar_download_normal);
         mRl_sigelPanel.setVisibility(View.GONE);
-        // TOGO 2017/6/27 there is the function of wan download speed, but hardware have no interface provider
         m_networkLabelTextView.setText("Ethernet");
     }
 
@@ -225,7 +223,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
-                
+
                 // // doesn't worked--> show 0MB
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
                     mConnectedView.setCenterTitle(zeroMB);

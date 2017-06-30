@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
@@ -18,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessManager;
+import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ToastUtil;
 import com.alcatel.smartlinkv3.model.sms.SMSSaveParam;
 import com.alcatel.smartlinkv3.model.sms.SMSSendParam;
@@ -253,17 +257,16 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-//        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
-//        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
-//        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SAVE_SMS_REQUSET));
+        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
+        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
+        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SAVE_SMS_REQUSET));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         m_progressWaiting.setVisibility(View.GONE);
-        if (m_etNumber.getText().toString() != null && m_etNumber.getText().toString().length() != 0 &&
-                m_etContent.getText().toString() != null && m_etContent.getText().toString().length() != 0)
+        if (m_etNumber.getText().toString() != null && m_etNumber.getText().toString().length() != 0 && m_etContent.getText().toString() != null && m_etContent.getText().toString().length() != 0)
             m_btnSend.setEnabled(true);
         m_etNumber.setEnabled(true);
         m_etContent.setEnabled(true);
@@ -302,12 +305,6 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
             strContent = strContent.trim();
         if (strContent != null && strContent.length() > 0 && strNumber != null && strNumber.length() > 0) {
             if (checkNumbers() == true) {
-//                DataValue data = new DataValue();
-//                data.addParam("SMSId", -1);
-//                data.addParam("Content", strContent);
-//                data.addParam("Number", strNumber);
-//                BusinessManager.getInstance().sendRequestMessage(MessageUti.SMS_SAVE_SMS_REQUSET, data);
-//                BusinessManager.getInstance().getContactMessagesAtOnceRequest();
 
                 String num = m_etNumber.getText().toString();
                 ArrayList<String> numList = new ArrayList<>();
@@ -357,10 +354,6 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
         imm.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         if (checkNumbers() == true) {
-//            DataValue data = new DataValue();
-//            data.addParam("content", m_etContent.getText().toString());
-//            data.addParam("phone_number", m_etNumber.getText().toString());
-//            BusinessManager.getInstance().sendRequestMessage(MessageUti.SMS_SEND_SMS_REQUSET, data);
 
             String num = m_etNumber.getText().toString();
             ArrayList<String> numList = new ArrayList<>();
@@ -428,7 +421,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
                 int sendStatus = result.getSendStatus();
                 if (sendStatus == 0) {
                     m_progressWaiting.setVisibility(View.GONE);
-                    ToastUtil.showMessage(ActivityNewSms.this, R.string.none);
+                    ToastUtil.showMessage(ActivityNewSms.this, getString(R.string.none));
                 } else if (sendStatus == 1) {
                     getSendSMSResult();
                 } else if (sendStatus == 2) {

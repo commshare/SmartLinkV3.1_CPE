@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.Selection;
@@ -22,7 +23,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -31,72 +31,62 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessManager;
-import com.alcatel.smartlinkv3.common.Const;
 import com.alcatel.smartlinkv3.common.DataUti;
-import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.DensityUtils;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
-import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
+import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
-import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ToastUtil;
 import com.alcatel.smartlinkv3.common.ToastUtil_m;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.model.sms.SMSContentList;
-import com.alcatel.smartlinkv3.model.sms.SMSContentNew;
 import com.alcatel.smartlinkv3.model.sms.SMSContentParam;
 import com.alcatel.smartlinkv3.model.sms.SMSDeleteParam;
+import com.alcatel.smartlinkv3.model.sms.SMSDetailItem;
 import com.alcatel.smartlinkv3.model.sms.SMSSaveParam;
 import com.alcatel.smartlinkv3.model.sms.SMSSendParam;
+import com.alcatel.smartlinkv3.model.sms.SMSSendResult;
+import com.alcatel.smartlinkv3.model.sms.SendSMSResult;
 import com.alcatel.smartlinkv3.model.sms.SmsInitState;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
+import com.alcatel.smartlinkv3.network.ResponseBody;
 import com.alcatel.smartlinkv3.ui.activity.InquireDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.home.helper.cons.Cons;
 import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
+import com.alcatel.smartlinkv3.ui.sms.SmsSortHelper;
 import com.alcatel.smartlinkv3.utils.ActionbarSetting;
 import com.alcatel.smartlinkv3.utils.DataUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static android.widget.RelativeLayout.ALIGN_LEFT;
 import static android.widget.RelativeLayout.CENTER_VERTICAL;
 import static android.widget.RelativeLayout.LEFT_OF;
 import static com.alcatel.smartlinkv3.R.id.sms_sent_fail_left_iv;
-import static com.alcatel.smartlinkv3.common.ENUM.EnumSMSType.Draft;
-import static com.alcatel.smartlinkv3.common.ENUM.EnumSMSType.Read;
-import static com.alcatel.smartlinkv3.common.ENUM.EnumSMSType.Report;
-import static com.alcatel.smartlinkv3.common.ENUM.EnumSMSType.Unread;
+import static com.alcatel.smartlinkv3.ui.home.helper.cons.Cons.GET_SMS_CONTENT_LIST_FAILED;
 
 public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickListener, OnScrollListener, TextWatcher {
-    // public static final int ONE_SMS_LENGTH = 160;
     public static final String INTENT_EXTRA_SMS_NUMBER = "sms_number";
     public static final String INTENT_EXTRA_CONTACT_ID = "contact_id";
 
     private Timer m_timer = new Timer();
-    // private GetSMSContentTask m_getSMSContentTask = null;
 
     // private TextView m_tvTitle = null;
     private Button m_btnSend = null;
-    // private Button m_btnDelete = null;
-    // private LinearLayout m_btnBack = null;
+    //private Button m_btnDelete = null;
+    //private LinearLayout m_btnBack = null;
     private EditText m_etContent = null;
 
     private ListView m_smsListView = null;
-    // private ArrayList<SMSDetailItem> mSmsListData = new ArrayList<SMSDetailItem>();
-    private List<SMSContentNew> mSmsListData = new ArrayList<>();
+    private List<SMSDetailItem> m_smsListData = new ArrayList<>();
     private String m_smsNumber = new String();
-    private int mContactId = 0;
+    private int m_nContactID = 0;
 
     private ProgressBar m_progressWaiting = null;
 
@@ -105,47 +95,45 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
 
     private boolean m_bDeleteSingleEnable = true;
     private boolean m_bDeleteEnd = false;
-    // private boolean m_bNeedFinish = false;
     private boolean m_bSendEnd = false;
     private SendStatus m_sendStatus = SendStatus.None;
 
     private boolean m_bFristGet = true;
     private TimerHelper timerHelper;
-    
-    private ImageButton ib_back;
-    private TextView tv_title;
-    private ImageView iv_delete;
+
+    private ImageButton ib_back;// back button
+    private TextView tv_title;// title
+    private ImageView iv_delete;// deleted
+
+    public boolean deletedbutton_worked = false;// 删除按钮是否显示(显示则: 可删)
+    public List<String> posList = new ArrayList<>();// 选择多条短信时的临时位标集合
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sms_details_view);
+        setContentView(R.layout.sms_details_views);
         getWindow().setBackgroundDrawable(null);
         // Edit Text
         m_etContent = (EditText) this.findViewById(R.id.ID_SMS_DETAIL_EDIT_CONTENT);
         m_etContent.addTextChangedListener(this);
 
         String text = getOneSmsLenth(new String()) + "/1";
-        // Text View
-        //m_tvTitle = (TextView) this.findViewById(R.id.ID_SMS_DETAIL_TITLE);
         // Button
         m_btnSend = (Button) this.findViewById(R.id.ID_SMS_DETAIL_BUTTON_SEND);
         m_btnSend.setOnClickListener(this);
-        //m_btnBack = (LinearLayout) this.findViewById(R.id.back_layout);
-        //m_btnBack.setOnClickListener(this);
-        //m_btnDelete = (Button) findViewById(R.id.delete_button);
-        //m_btnDelete.setOnClickListener(this);
-        //
+
         m_progressWaiting = (ProgressBar) this.findViewById(R.id.sms_waiting_progress);
 
         m_smsNumber = this.getIntent().getStringExtra(INTENT_EXTRA_SMS_NUMBER);
-        mContactId = this.getIntent().getIntExtra(INTENT_EXTRA_CONTACT_ID, 0);
-        // m_tvTitle.setText(m_smsNumber);
+        m_nContactID = this.getIntent().getIntExtra(INTENT_EXTRA_CONTACT_ID, 0);
+
+        System.out.println("onCreate: " + m_smsNumber);
+
         m_smsListView = (ListView) this.findViewById(R.id.sms_detail_list_view);
         SmsDetailListAdapter smsListAdapter = new SmsDetailListAdapter(this);
         m_smsListView.setAdapter(smsListAdapter);
         m_smsListView.setOnScrollListener(this);
-        
+
         initActionbar();
 
     }
@@ -157,14 +145,15 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
             public void findActionbarView(View view) {
                 ib_back = (ImageButton) view.findViewById(R.id.ib_smsdetail_back);
                 ib_back.setOnClickListener(ActivitySmsDetail.this);
-                
+
                 tv_title = (TextView) view.findViewById(R.id.tv_smsdetail_title);
                 tv_title.setText(m_smsNumber);
-                
+
                 iv_delete = (ImageView) view.findViewById(R.id.iv_smsdetail_delete);
+                iv_delete.setVisibility(View.GONE);
                 iv_delete.setOnClickListener(ActivitySmsDetail.this);
             }
-        }.settingActionbarAttr(this,getSupportActionBar(),R.layout.actionbar_smsdetail);
+        }.settingActionbarAttr(this, getSupportActionBar(), R.layout.actionbar_smsdetail);
     }
 
     @Override
@@ -175,336 +164,160 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
     @Override
     public void onResume() {
         super.onResume();
-
+        /* **** timerHelper **** */
         timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                getSmsContents();
+                getAllStatus();
             }
         };
         timerHelper.start(5000);
     }
 
-
-    
-    /* -------------------------------------------- SMS API -------------------------------------------- */
-
-    /* **** getSmsContents **** */
-    private void getSmsContents() {
+    /* **** getAllstatus **** */
+    private void getAllStatus() {
         API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
-                    // get content list
-                    SMSContentParam scp = new SMSContentParam(0, mContactId);
-                    API.get().getSMSContentList(scp, new MySubscriber<SMSContentList>() {
-                        @Override
-                        protected void onSuccess(SMSContentList result) {
-                            // transfer the sms content list
-                            getSmsListData(result);
-                            // m_btnDelete.setEnabled(true);
-                            iv_delete.setEnabled(true);
-                            if (m_bFristGet == true) {
-                                m_bFristGet = false;
-                                m_progressWaiting.setVisibility(View.GONE);
-                            }
-                            if (m_bDeleteEnd == true) {
-                                m_bDeleteEnd = false;
-                                m_progressWaiting.setVisibility(View.GONE);
-                                m_etContent.setEnabled(true);
-                                if (m_etContent.getText().toString() != null && m_etContent.getText().toString().length() > 0)
-                                    m_btnSend.setEnabled(true);
-                                else
-                                    m_btnSend.setEnabled(false);
-                                // m_btnDelete.setEnabled(true);
-                                iv_delete.setEnabled(true);
-                                m_bDeleteSingleEnable = true;
-                            } else if (m_bSendEnd == true) {
-                                m_bSendEnd = false;
-                                m_progressWaiting.setVisibility(View.GONE);
-                                m_etContent.setEnabled(true);
-                                // m_btnDelete.setEnabled(true);
-                                iv_delete.setEnabled(true);
-                                m_bDeleteSingleEnable = true;
-                                if (m_sendStatus == SendStatus.Success) {
-                                    m_etContent.setText("");
-                                    m_btnSend.setEnabled(false);
-                                } else if (m_sendStatus == SendStatus.Fail || m_sendStatus == SendStatus.Fail_Memory_Full) {
-                                    m_btnSend.setEnabled(true);
-                                }
-                            }
-
-                        }
-                    });
+                    // get sms contents
+                    getSMSContentList();
                 }
             }
         });
     }
-    
-    
-    /* -------------------------------------------- SMS API -------------------------------------------- */
 
+    /* **** getSMSContentList **** */
+    private void getSMSContentList() {
+        SMSContentParam scp = new SMSContentParam(0, m_nContactID);
+        API.get().getSMSContentList(scp, new MySubscriber<SMSContentList>() {
+            @Override
+            protected void onSuccess(SMSContentList result) {
+                // if ok
+                getSuccessful(result);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                if (error.getCode().equals(GET_SMS_CONTENT_LIST_FAILED)) {
+                    ActivitySmsDetail.this.finish();
+                    return;
+                }
+                super.onResultError(error);
+            }
+        });
+    }
+
+    /* **** getSuccessful **** */
+    private void getSuccessful(SMSContentList result) {
+        // hibernater the sms data
+        getSmsListData(result);
+        /* session 1 */
+        iv_delete.setEnabled(true);
+        if (m_bFristGet == true) {
+            m_bFristGet = false;
+            m_progressWaiting.setVisibility(View.GONE);
+        }
+        /* session 2 */
+        if (m_bDeleteEnd == true) {
+            m_bDeleteEnd = false;
+            m_progressWaiting.setVisibility(View.GONE);
+            m_etContent.setEnabled(true);
+            if (m_etContent.getText().toString() != null && m_etContent.getText().toString().length() > 0)
+                m_btnSend.setEnabled(true);
+            else
+                m_btnSend.setEnabled(false);
+            iv_delete.setEnabled(true);
+            m_bDeleteSingleEnable = true;
+        } else if (m_bSendEnd == true) {
+            m_bSendEnd = false;
+            m_progressWaiting.setVisibility(View.GONE);
+            m_etContent.setEnabled(true);
+            iv_delete.setEnabled(true);
+            m_bDeleteSingleEnable = true;
+            if (m_sendStatus == SendStatus.Success) {
+                m_etContent.setText("");
+                m_btnSend.setEnabled(false);
+            } else if (m_sendStatus == SendStatus.Fail || m_sendStatus == SendStatus.Fail_Memory_Full) {
+                m_btnSend.setEnabled(true);
+            }
+        }
+
+    }
 
     @Override
     public void onPause() {
         super.onPause();
         m_progressWaiting.setVisibility(View.GONE);
-
         m_etContent.setEnabled(true);
-        // m_btnSend.setEnabled(true);
         m_bDeleteSingleEnable = true;
-        // m_etContent.setText("");
-
-        // m_bNeedFinish = false;
         m_bSendEnd = false;
         m_bDeleteEnd = false;
-
-        // stopGetSmsContentTask();
+        timerHelper.stop();
     }
 
-    //    @Override
-    protected void onBroadcastReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
-        Boolean ok = response != null && response.isOk();
-        //super.onBroadcastReceive(context, intent);
-
-        // TOGO 2017/6/28 SAVE SMS
-        if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)) {
-            // String msgRes = null;
-            // if (ok) {
-            //     msgRes = this.getString(R.string.sms_save_success);
-            // } else if (response.getErrorCode().endsWith(ErrorCode.ERR_SAVE_SMS_SIM_IS_FULL)) {
-            //     msgRes = this.getString(R.string.sms_error_message_full_storage);
-            // } else {
-            //     msgRes = this.getString(R.string.sms_save_error);
-            // }
-            // Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-            // this.finish();
-
-            // TOGO 2017/6/28 SMS INIT
-        } else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_INIT_ROLL_REQUSET)) {
-            // if (ok) {
-            //     startGetSmsContentTask();
-            // }
-
-            // TOGO 2017/6/28 SMS GET CONTENT
-        } else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET)) {
-            // if (ok) {
-            //     SmsContentMessagesModel smsContent = intent.getParcelableExtra(SMSManager.SMS_CONTENT_LIST_EXTRA);
-            //     getSmsListData(smsContent);
-            //     m_btnDelete.setEnabled(true);
-            //     if (m_bFristGet == true) {
-            //         m_bFristGet = false;
-            //         m_progressWaiting.setVisibility(View.GONE);
-            //     }
-            // }
-            // TOGO 2017/6/29 
-        } else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SMS_CONTENT_LIST_REQUSET)) {
-            if (ok) {
-                if (m_bDeleteEnd == true) {
-                    m_bDeleteEnd = false;
-                    m_progressWaiting.setVisibility(View.GONE);
-                    m_etContent.setEnabled(true);
-                    if (m_etContent.getText().toString() != null && m_etContent.getText().toString().length() > 0)
-                        m_btnSend.setEnabled(true);
-                    else
-                        m_btnSend.setEnabled(false);
-                    // m_btnDelete.setEnabled(true);
-                    iv_delete.setEnabled(true);
-                    m_bDeleteSingleEnable = true;
-                } else if (m_bSendEnd == true) {
-                    m_bSendEnd = false;
-                    m_progressWaiting.setVisibility(View.GONE);
-                    m_etContent.setEnabled(true);
-                    // m_btnDelete.setEnabled(true);
-                    iv_delete.setEnabled(true);
-                    m_bDeleteSingleEnable = true;
-                    if (m_sendStatus == SendStatus.Success) {
-                        m_etContent.setText("");
-                        m_btnSend.setEnabled(false);
-                    } else if (m_sendStatus == SendStatus.Fail || m_sendStatus == SendStatus.Fail_Memory_Full) {
-                        m_btnSend.setEnabled(true);
-                    }
-                }
-            }
-        }
-
-        // TOGO 2017/6/28 SMS_DELETE_SMS_REQUSET
-        if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_DELETE_SMS_REQUSET)) {
-            m_bDeleteEnd = true;
-            boolean bDeleteSeccuss = false;
-            if (ok) {
-                bDeleteSeccuss = true;
-            }
-
-            if (m_bDeleteContact) {
-                if (bDeleteSeccuss) {
-                    BusinessManager.getInstance().getContactMessagesAtOnceRequest();
-                    String msgRes = this.getString(R.string.sms_delete_multi_success);
-                    //Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-                    this.finish();
-                } else {
-                    String strMsg = getString(R.string.sms_delete_multi_error);
-                    Toast.makeText(this, strMsg, Toast.LENGTH_SHORT).show();
-                    m_progressWaiting.setVisibility(View.GONE);
-                    BusinessManager.getInstance().getContactMessagesAtOnceRequest();
-                    // getSmsContentAtOnceRequest();
-                }
-            } else {
-                m_progressWaiting.setVisibility(View.GONE);
-                if (bDeleteSeccuss) {
-                    Toast.makeText(this, getString(R.string.sms_delete_success), Toast.LENGTH_SHORT).show();
-                    BusinessManager.getInstance().getContactMessagesAtOnceRequest();
-                    if (m_bIsLastOneMessage) {
-                        this.finish();
-                    }
-                } else {
-                    Toast.makeText(this, getString(R.string.sms_delete_error), Toast.LENGTH_SHORT).show();
-                }
-                // getSmsContentAtOnceRequest();
-            }
-
-            // TOAT: SMS_SEND_SMS_REQUSET
-        } else if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_SEND_SMS_REQUSET)) {
-            if (ok) {
-                BusinessManager.getInstance().getContactMessagesAtOnceRequest();
-                // getSmsContentAtOnceRequest();
-            } else if (response.getErrorCode().endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL)) {
-                String msgRes = this.getString(R.string.sms_error_message_full_storage);
-                // Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-                ToastUtil.showMessage(this, msgRes, Toast.LENGTH_SHORT);
-                m_progressWaiting.setVisibility(View.GONE);
-                // if (m_progress_dialog != null &&
-                // m_progress_dialog.isShowing()) {
-                // m_progress_dialog.dismiss();
-                // }
-                m_etContent.setEnabled(true);
-                m_btnSend.setEnabled(true);
-                // m_btnDelete.setEnabled(true);
-                iv_delete.setEnabled(true);
-                m_bDeleteSingleEnable = true;
-                m_bSendEnd = true;
-                m_sendStatus = SendStatus.Fail_Memory_Full;
-                // getSmsContentAtOnceRequest();
-            } else {
-                String msgRes = this.getString(R.string.sms_error_send_error);
-                Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-                m_progressWaiting.setVisibility(View.GONE);
-                // if (m_progress_dialog != null &&
-                // m_progress_dialog.isShowing()) {
-                // m_progress_dialog.dismiss();
-                // }
-                m_etContent.setEnabled(true);
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(m_etContent.getWindowToken(), 0);
-                m_btnSend.setEnabled(true);
-                // m_btnDelete.setEnabled(true);
-                iv_delete.setEnabled(true);
-                m_bDeleteSingleEnable = true;
-                m_bSendEnd = true;
-                m_sendStatus = SendStatus.Fail;
-                // getSmsContentAtOnceRequest();
-            }
-        }
-
-        if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_GET_SEND_STATUS_REQUSET)) {
-            if (ok) {
-                int nSendReslt = intent.getIntExtra(Const.SMS_SNED_STATUS, 0);
-                SendStatus sendStatus = SendStatus.build(nSendReslt);
-                m_sendStatus = sendStatus;
-                boolean bEnd = false;
-                if (sendStatus == SendStatus.Fail) {
-                    String msgRes = this.getString(R.string.sms_error_send_error);
-                    Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-                    bEnd = true;
-                }
-                if (sendStatus == SendStatus.Fail_Memory_Full) {
-                    String msgRes = this.getString(R.string.sms_error_message_full_storage);
-                    // Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-                    ToastUtil.showMessage(this, msgRes, Toast.LENGTH_SHORT);
-                    bEnd = true;
-                }
-                if (sendStatus == SendStatus.Success) {
-                    String msgRes = this.getString(R.string.sms_send_success);
-                    Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-                    bEnd = true;
-                }
-
-                if (bEnd == true) {
-                    m_bSendEnd = true;
-                    // getSmsContentAtOnceRequest();
-                }
-            } else {
-                m_progressWaiting.setVisibility(View.GONE);
-                // if (m_progress_dialog != null &&
-                // m_progress_dialog.isShowing()) {
-                // m_progress_dialog.dismiss();
-                // }
-                m_etContent.setEnabled(true);
-                m_btnSend.setEnabled(true);
-                // m_btnDelete.setEnabled(true);
-                iv_delete.setEnabled(true);
-                m_bDeleteSingleEnable = true;
-            }
-        }
-    }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back_layout:
-                onBackPressed();
-                break;
-
-            case R.id.ID_SMS_DETAIL_BUTTON_SEND:
+            case R.id.ID_SMS_DETAIL_BUTTON_SEND:// send button
                 OnBtnSend();
                 break;
-
-            case R.id.delete_button:
-                OnBtnDelete();
-                break;
-            
-            case R.id.ib_smsdetail_back:
+            case R.id.ib_smsdetail_back:// back button
                 onBackPressed();
                 break;
-            
-            case R.id.iv_smsdetail_delete:
-                OnBtnDelete();
-                break;
-            
-            
-            default:
+            case R.id.iv_smsdetail_delete:// deleted button
+                // when user have long click action , then deletedbutton_worked will be true
+                if (deletedbutton_worked) {
+                    OnBtnDelete();
+                }
+
                 break;
         }
     }
 
-    // TOGO 2017/6/28 
     @Override
     public void onBackPressed() {
-        OnBtnBack();
-        super.onBackPressed();
+        /* 如果是删除短信状态--> 恢复原短信界面 */
+        if (deletedbutton_worked) {
+            // reback flag
+            deletedbutton_worked = !deletedbutton_worked;
+            iv_delete.setVisibility(deletedbutton_worked ? View.VISIBLE : View.GONE);
+            // the sms list cant be empty
+            if (m_smsListData.size() > 0) {
+                // set all sms is not check
+                for (SMSDetailItem item : m_smsListData) {
+                    item.setSelectFlag(false);
+                }
+                // set ui gone
+                for (int i = 0; i < m_smsListData.size(); i++) {
+                    if (i != 0) {
+                        View childAt = m_smsListView.getChildAt(i);
+                        childAt.findViewById(R.id.iv_smsdetail_checkbox).setVisibility(View.GONE);
+                    }
+
+                }
+            }
+
+        } else {/* 否则返回上一页Activity */
+            OnBtnBack();
+            super.onBackPressed();
+        }
+
+
     }
 
-    // TOGO 2017/6/28 
+    /* **** OnBtnBack **** */
     private void OnBtnBack() {
-        // BusinessManager.getInstance().getContactMessagesAtOnceRequest();
-        String et_content = m_etContent.getText().toString();
+        String strContent = m_etContent.getText().toString();
         String strNumber = m_smsNumber;
-        if (et_content != null)
-            et_content = et_content.trim();
-        // **** if edittext have content input ****
-        if (et_content != null && et_content.length() > 0 && strNumber != null && strNumber.length() > 0) {
-            SMSSaveParam ssp = new SMSSaveParam();
-            ssp.setSMSContent(et_content);
-            List<String> phonenums = new ArrayList<>();
-            phonenums.add(strNumber);
-            ssp.setPhoneNumber(phonenums);
+        if (strContent != null)
+            strContent = strContent.trim();
+        if (strContent != null && strContent.length() > 0 && strNumber != null && strNumber.length() > 0) {
+            SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
 
-            SMSContentNew smsContentNew = mSmsListData.get(mSmsListData.size() - 1);
-            if (null != smsContentNew && smsContentNew.getScsb().getSMSType() == Cons.DRAFT) {
-                ssp.setSMSId(smsContentNew.getScsb().getSMSId());
-            }
-            // TOAT: SAVE SMS
+            List<String> phones = new ArrayList<>();
+            phones.add(strNumber);
+            SMSSaveParam ssp = new SMSSaveParam(item.nSMSID, strContent, DataUtils.getCurrent(), phones);
             API.get().saveSMS(ssp, new MySubscriber() {
                 @Override
                 protected void onSuccess(Object result) {
@@ -512,56 +325,31 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
                 }
 
                 @Override
-                protected void onFailure() {
-                    super.onFailure();
-                    ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_save_error));
+                protected void onResultError(ResponseBody.Error error) {
+                    super.onResultError(error);
+                    String code = error.getCode();
+                    if (code.equals(Cons.SAVE_FAIL_WITH_STORE_SPACE_FULL)) {
+                        ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_error_message_full_storage));
+                    } else {
+                        ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_save_error));
+                    }
+                    ActivitySmsDetail.this.finish();
                 }
             });
-            // **** if no content ****
         } else {
             this.finish();
-            if (mSmsListData.size() == 0)
+            if (m_smsListData.size() == 0)
                 return;
-            SMSContentNew smsContentNew = mSmsListData.get(mSmsListData.size() - 1);
-            if (null != smsContentNew && smsContentNew.getScsb().getSMSType() == Cons.DRAFT) {
-
-                List<Integer> smsIds = new ArrayList<>();
-                smsIds.add(smsContentNew.getScsb().getSMSId());
-                SMSDeleteParam sdp = new SMSDeleteParam(Cons.DELETE_SESSION_SMS, smsIds);
-                deleteSms(sdp);// deleted sms
+            SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
+            if (null != item && item.eSMSType == Cons.DRAFT) {
+                ArrayList<Integer> smsids = new ArrayList<>();
+                smsids.add(item.nSMSID);
+                deletedSmsFuntion(Cons.DELETE_MORE_SMS, smsids, m_smsListData, item);
             }
         }
     }
 
-    /* **** deleted sms **** */
-    private void deleteSms(SMSDeleteParam sdp) {
-        API.get().deleteSMS(sdp, new MySubscriber() {
-            @Override
-            protected void onSuccess(Object result) {
-                // TOAT: 2017/6/28 DELETE 
-                m_bDeleteEnd = true;
-                m_progressWaiting.setVisibility(View.GONE);
-                if (m_bDeleteContact) {
-                    ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_delete_multi_success));
-                    ActivitySmsDetail.this.finish();
-                } else {
-                    ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_delete_success));
-                    if (m_bIsLastOneMessage) {
-                        ActivitySmsDetail.this.finish();
-                    }
-                }
-            }
-
-            @Override
-            protected void onFailure() {
-                super.onFailure();
-                m_progressWaiting.setVisibility(View.GONE);
-                ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_delete_multi_error));
-            }
-        });
-    }
-
-    // TOGO 2017/6/28 
+    /* **** OnBtnDelete **** */
     private void OnBtnDelete() {
         final InquireDialog inquireDlg = new InquireDialog(ActivitySmsDetail.this);
         inquireDlg.m_titleTextView.setText(R.string.dialog_delete_title);
@@ -572,113 +360,153 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
             @Override
             public void onInquireApply() {
 
-                m_bDeleteContact = true;
                 m_progressWaiting.setVisibility(View.VISIBLE);
                 m_etContent.setEnabled(false);
                 m_btnSend.setEnabled(false);
-                // m_btnDelete.setEnabled(false);
-                iv_delete.setEnabled(true);
+                iv_delete.setEnabled(false);
                 m_bDeleteSingleEnable = false;
 
                 boolean bHaveSms = false;
-                for (int i = 0; i < mSmsListData.size(); i++) {
-                    // SMSDetailItem item = mSmsListData.get(i);
-                    SMSContentNew item = mSmsListData.get(i);
-                    if (item.isDateItem == false) {
+                for (int i = 0; i < m_smsListData.size(); i++) {
+                    SMSDetailItem item = m_smsListData.get(i);
+                    if (item.bIsDateItem == false) {
                         bHaveSms = true;
                         break;
                     }
                 }
 
                 if (bHaveSms == true) {
-
-                    List<Integer> smsIds = new ArrayList<>();
-                    for (SMSContentNew smsContentNew : mSmsListData) {
-                        smsIds.add(smsContentNew.getScsb().getSMSId());
+                    // prepare a list for smsId
+                    List<Integer> smsids = new ArrayList<>();
+                    // foreach poslist for who have selected
+                    for (String position : posList) {
+                        smsids.add(m_smsListData.get(Integer.valueOf(position)).getnSMSID());
                     }
-                    SMSDeleteParam sdp = new SMSDeleteParam(Cons.DELETE_ONE_SMS, smsIds);
-                    deleteSms(sdp);// deleted sms
-
-                    // DataValue data = new DataValue();
-                    // data.addParam("DelFlag", EnumSMSDelFlag.Delete_contact_messages);
-                    // data.addParam("ContactId", mContactId);
-                    // BusinessManager.getInstance().sendRequestMessage(MessageUti.SMS_DELETE_SMS_REQUSET, data);
+                    // real to del
+                    deletedSmsFuntion(Cons.DELETE_MORE_SMS, smsids, m_smsListData, null);
                 }
                 inquireDlg.closeDialog();
             }
         });
     }
 
-    // TOGO 2017/6/28 
-    private int getDeleteMessagesNumber() {
-        int nNumber = 0;
-        for (int i = 0; i < mSmsListData.size(); i++) {
-            // SMSDetailItem item = mSmsListData.get(i);
-            SMSContentNew smsContentNew = mSmsListData.get(i);
-            if (smsContentNew.isDateItem == false)
-                nNumber++;
-        }
-        return nNumber;
-    }
-
-    // TOAT: 
+    /* **** OnBtnSend **** */
     private void OnBtnSend() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(m_etContent.getWindowToken(), 0);
 
-        // DataValue data = new DataValue();
-        // data.addParam("content", m_etContent.getText().toString());
-        // data.addParam("phone_number", m_tvTitle.getText().toString());
-        // BusinessManager.getInstance().sendRequestMessage(MessageUti.SMS_SEND_SMS_REQUSET, data);
-
-        // String phonenum = m_tvTitle.getText().toString();
-        String phonenum = tv_title.getText().toString();
-        List<String> phonenums = new ArrayList<>();
-        phonenums.add(phonenum);
-
-        int smsid = -1;// TODO: 2017/6/28 发送短信时候是否为-1 
-        String smsTime = DataUtils.getCurrent();
-        String content = m_etContent.getText().toString();
-
-        SMSSendParam sssp = new SMSSendParam(smsid, content, smsTime, phonenums);
+        List<String> phones = new ArrayList<>();
+        phones.add(tv_title.getText().toString());
+        SMSSendParam sssp = new SMSSendParam(-1, m_etContent.getText().toString(), DataUtils.getCurrent(), phones);
+        /* send */
         API.get().sendSMS(sssp, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
+                m_progressWaiting.setVisibility(View.GONE);
+                /* getSendResult */
+                getSendResult();
+            }
 
+            /* **** getSendResult **** */
+            private void getSendResult() {
+                API.get().GetSendSMSResult(new MySubscriber<SendSMSResult>() {
+                    @Override
+                    protected void onSuccess(SendSMSResult result) {
+                        m_progressWaiting.setVisibility(View.GONE);
+                        int resultCode = result.getSendStatus();
+                        System.out.println("resultCode = " + resultCode);
+                        SendStatus sendStatus = SendStatus.build(resultCode);
+                        m_sendStatus = sendStatus;
+                        boolean bEnd = false;
+                        if (sendStatus == SendStatus.Fail) {
+                            String msgRes = ActivitySmsDetail.this.getString(R.string.sms_error_send_error);
+                            Toast.makeText(ActivitySmsDetail.this, msgRes, Toast.LENGTH_SHORT).show();
+                            bEnd = true;
+                        }
+                        if (sendStatus == SendStatus.Fail_Memory_Full) {
+                            String msgRes = ActivitySmsDetail.this.getString(R.string.sms_error_message_full_storage);
+                            ToastUtil.showMessage(ActivitySmsDetail.this, msgRes, Toast.LENGTH_SHORT);
+                            bEnd = true;
+                        }
+                        if (sendStatus == SendStatus.Success) {
+                            String msgRes = ActivitySmsDetail.this.getString(R.string.sms_send_success);
+                            Toast.makeText(ActivitySmsDetail.this, msgRes, Toast.LENGTH_SHORT).show();
+                            bEnd = true;
+                        }
+
+                        /* attesion: if the first state is sending, then request again */
+                        if (sendStatus == SendStatus.Sending) {
+                            getSendResult();
+                        }
+
+
+                        if (bEnd == true) {
+                            m_bSendEnd = true;
+                            getAllStatus();
+                        }
+                    }
+
+                    @Override
+                    protected void onFailure() {
+                        super.onFailure();
+                        m_progressWaiting.setVisibility(View.GONE);
+                        m_etContent.setEnabled(true);
+                        m_btnSend.setEnabled(true);
+                        iv_delete.setEnabled(true);
+                        m_bDeleteSingleEnable = true;
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        super.onResultError(error);
+                        m_progressWaiting.setVisibility(View.GONE);
+                        if (error.getCode().equals(Cons.GET_SEND_SMS_STATUS_FAILED)) {
+                            ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_error_send_error));
+                        }
+                    }
+                });
             }
 
             @Override
-            protected void onFailure() {
-                super.onFailure();
-                ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_error_send_error));
-                m_progressWaiting.setVisibility(View.GONE);
-                // set some flag
-                m_etContent.setEnabled(true);
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(m_etContent.getWindowToken(), 0);
-                m_btnSend.setEnabled(true);
-                // m_btnDelete.setEnabled(true);
-                iv_delete.setEnabled(true);
-                m_bDeleteSingleEnable = true;
-                m_bSendEnd = true;
-                // TOGO 2017/6/28 
-                m_sendStatus = SendStatus.Fail;
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                String code = error.getCode();
+                if (code.equals(Cons.FAIL_WITH_STORE_SPACE_FULL)) {
+                    String msgRes = ActivitySmsDetail.this.getString(R.string.sms_error_message_full_storage);
+                    ToastUtil.showMessage(ActivitySmsDetail.this, msgRes, Toast.LENGTH_SHORT);
+                    m_progressWaiting.setVisibility(View.GONE);
+                    m_etContent.setEnabled(true);
+                    m_btnSend.setEnabled(true);
+                    iv_delete.setEnabled(true);
+                    m_bDeleteSingleEnable = true;
+                    m_bSendEnd = true;
+                    m_sendStatus = SendStatus.Fail_Memory_Full;
+                    getAllStatus();
+                } else {
+                    String msgRes = ActivitySmsDetail.this.getString(R.string.sms_error_send_error);
+                    Toast.makeText(ActivitySmsDetail.this, msgRes, Toast.LENGTH_SHORT).show();
+                    m_progressWaiting.setVisibility(View.GONE);
+                    m_etContent.setEnabled(true);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(m_etContent.getWindowToken(), 0);
+                    m_btnSend.setEnabled(true);
+                    iv_delete.setEnabled(true);
+                    m_bDeleteSingleEnable = true;
+                    m_bSendEnd = true;
+                    m_sendStatus = SendStatus.Fail;
+                    getAllStatus();
+                }
             }
         });
 
         m_progressWaiting.setVisibility(View.VISIBLE);
-
         m_btnSend.setEnabled(false);
         m_etContent.setEnabled(false);
-        // m_btnDelete.setEnabled(false);
-        iv_delete.setEnabled(true);
+        iv_delete.setEnabled(false);
         m_bDeleteSingleEnable = false;
     }
 
-    private void showNewSmsCnt(CharSequence s) {
-
-    }
-
+    /* **** getOneSmsLenth **** */
     public static int getOneSmsLenth(String strSmsContent) {
         if (null == strSmsContent)
             return 160;
@@ -689,10 +517,6 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
             return 160;
         }
 
-    }
-
-    // TOGO 2017/6/28 
-    public void ShowErrorMsg(String strTitle, String strMsg) {
     }
 
     @Override
@@ -733,99 +557,115 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
 
     }
 
-    // TOGO 2017/6/28 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
     }
 
-    // TOGO 2017/6/28 
     @Override
     public void afterTextChanged(Editable s) {
     }
 
-    // TOGO 2017/6/28 
+    // private void getSmsListData(SmsContentMessagesModel smsContent) {
+    /* **** getSmsListData **** */
     private void getSmsListData(SMSContentList result) {
-        // 排序
+        Collections.sort(result.getSMSContentList(), new SmsSortHelper());
+        m_smsListData.clear();
+
         List<SMSContentList.SMSContentBean> smsContentList = result.getSMSContentList();
-        Collections.sort(smsContentList, new SortSmsListByTime());
-        mSmsListData.clear();
-
-
         for (int i = 0; i < smsContentList.size(); i++) {
             SMSContentList.SMSContentBean smsContentBean = smsContentList.get(i);
-            // 处理日期格式
             Date smsDate = DataUti.formatDateFromString(smsContentBean.getSMSTime());
 
             if (i == 0) {
-                // SMSDetailItem item = new SMSDetailItem();
-                SMSContentNew smsContentNew = new SMSContentNew();
-                smsContentNew.scsb = smsContentBean;
-                smsContentNew.isDateItem = true;
-                
+                SMSDetailItem item = new SMSDetailItem();
+                item.bIsDateItem = true;
                 if (smsDate != null) {
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                    smsContentNew.scsb.setSMSTime(format.format(smsDate));
+                    item.strTime = format.format(smsDate);
                 }
 
-                mSmsListData.add(smsContentNew);
+                m_smsListData.add(item);
             } else {
                 Date preSmsDate = DataUti.formatDateFromString(smsContentList.get(i - 1).getSMSTime());
                 if (!(smsDate.getYear() == preSmsDate.getYear() && smsDate.getMonth() == preSmsDate.getMonth() && smsDate.getDate() == preSmsDate.getDate())) {
-                    // SMSDetailItem item = new SMSDetailItem();
-                    SMSContentNew smsContentNew = new SMSContentNew();
-                    smsContentNew.isDateItem = true;
+                    SMSDetailItem item = new SMSDetailItem();
+                    item.bIsDateItem = true;
                     if (smsDate != null) {
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                        smsContentNew.getScsb().setSMSTime(format.format(smsDate));
+                        item.strTime = format.format(smsDate);
                     }
 
-                    mSmsListData.add(smsContentNew);
+                    m_smsListData.add(item);
                 }
             }
 
-            // SMSDetailItem item = new SMSDetailItem();
-            SMSContentNew smsContentNew = new SMSContentNew();
-            smsContentNew.setDateItem(false);
-            smsContentNew.setContactId(mContactId);
-            smsContentNew.setScsb(smsContentBean);
-            mSmsListData.add(smsContentNew);
+            SMSDetailItem item = new SMSDetailItem();
+            item.bIsDateItem = false;
+            item.strContent = smsContentBean.getSMSContent();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            item.strTime = format.format(smsDate);
+            item.eSMSType = smsContentBean.getSMSType();
+            item.nContactID = m_nContactID;
+            item.nSMSID = smsContentBean.getSMSId();
+            item.selectFlag = false;
+            m_smsListData.add(item);
         }
 
-        // 草稿UI
+        // draft ui
         DarftSMSDisplay();
-        // TODO: 2017/6/28 更新适配器 
+        // refresh adapter
         ((SmsDetailListAdapter) m_smsListView.getAdapter()).notifyDataSetChanged();
+        // set on long click and item click
+        setOnSmsClickAndLongClick();
     }
 
-    // TOGO 2017/6/28 根据短信时间排序
-    private class SortSmsListByTime implements Comparator {
-        public int compare(Object o1, Object o2) {
-            SMSContentList.SMSContentBean c1 = (SMSContentList.SMSContentBean) o1;
-            SMSContentList.SMSContentBean c2 = (SMSContentList.SMSContentBean) o2;
-            Date d1 = DataUti.formatDateFromString(c1.getSMSTime());
-            Date d2 = DataUti.formatDateFromString(c2.getSMSTime());
-            if (d1.after(d2) == true)
-                return 1;
-            if (d1.equals(d2) == true)
-                return 0;
-            return -1;
-        }
+    /* **** setOnSmsClickAndLongClick **** */
+    private void setOnSmsClickAndLongClick() {
+        /* **** set on long click **** */
+        // 1. first user will on long click to the layout
+        m_smsListView.setOnItemLongClickListener((parent, view, position, id) -> {
+            if (position != 0) {// exclude the position == 0 because is the date layout
+                // set delete function is worked
+                rebackStatus(true);
+            }
+            return true;
+        });
+        
+        /* **** set on click **** */
+        m_smsListView.setOnItemClickListener((parent, view, position, id) -> {
+            if (deletedbutton_worked && position != 0) {
+                // init boolean
+                boolean temp = false;
+
+                // add position to poslit or if the postion exist then remove
+                String postrs = String.valueOf(position);
+                if (posList.contains(postrs)) {
+                    posList.remove(postrs);
+                    temp = false;
+                } else {
+                    posList.add(postrs);
+                    temp = true;
+                }
+                // show checkbox ui
+                ImageView sms_checkbox = (ImageView) view.findViewById(R.id.iv_smsdetail_checkbox);
+                sms_checkbox.setImageResource(temp ? R.drawable.checkbox_android_on : R.drawable.checkbox_android_off);
+            }
+        });
     }
 
-    // TOGO 2017/6/28 
+    /* **** DarftSMSDisplay **** */
     private void DarftSMSDisplay() {
-        if (mSmsListData.size() == 0)
+        if (m_smsListData.size() == 0)
             return;
-        // SMSDetailItem item = mSmsListData.get(mSmsListData.size() - 1);
-        SMSContentNew smsContentNew = mSmsListData.get(mSmsListData.size() - 1);
-        if (smsContentNew.getScsb().getSMSType() == Cons.DRAFT && !m_etContent.isFocused()) {
+        SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
+        if (item.eSMSType == Cons.DRAFT && !m_etContent.isFocused()) {
             m_etContent.setEnabled(true);
-            m_etContent.setText(smsContentNew.getScsb().getSMSContent());
+            m_etContent.setText(item.strContent);
         }
     }
 
-    /* -------------------------------------------- Adapter -------------------------------------------- */
+    /* **** SmsDetailListAdapter **** */
     private class SmsDetailListAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
@@ -835,7 +675,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
         }
 
         public int getCount() {
-            return mSmsListData.size();
+            return m_smsListData.size();
         }
 
         public Object getItem(int arg0) {
@@ -847,6 +687,9 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
         }
 
         public final class ViewHolder {
+
+            public ImageView sms_checkbox;
+
             public FrameLayout dateLayout;
             public TextView date;
             public RelativeLayout smsContentLayout;
@@ -858,11 +701,16 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
             public View placeHolder;
         }
 
+        /* **** getView **** */
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(ActivitySmsDetail.this).inflate(R.layout.sms_detail_item, null);
+
+                // check box
+                holder.sms_checkbox = (ImageView) convertView.findViewById(R.id.iv_smsdetail_checkbox);
+
                 holder.dateLayout = (FrameLayout) convertView.findViewById(R.id.sms_detail_date_layout);
                 holder.date = (TextView) convertView.findViewById(R.id.sms_detail_date_textview);
                 holder.smsContentLayout = (RelativeLayout) convertView.findViewById(R.id.sms_detail_content_layout);
@@ -878,16 +726,14 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            if (position == mSmsListData.size() - 1) {
+            if (position == m_smsListData.size() - 1)
                 holder.placeHolder.setVisibility(View.VISIBLE);
-            } else {
+            else
                 holder.placeHolder.setVisibility(View.GONE);
-            }
 
-            SMSContentNew smsContentNew = mSmsListData.get(position);
 
-            if (smsContentNew.isDateItem == true) {
-                holder.date.setText(smsContentNew.getScsb().getSMSTime());
+            if (m_smsListData.get(position).bIsDateItem == true) {
+                holder.date.setText(m_smsListData.get(position).strTime);
                 holder.dateLayout.setVisibility(View.VISIBLE);
                 holder.smsContentLayout.setVisibility(View.GONE);
 
@@ -895,51 +741,13 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
             } else {
                 holder.dateLayout.setVisibility(View.GONE);
                 holder.smsContentLayout.setVisibility(View.VISIBLE);
-                holder.smsDate.setText(smsContentNew.getScsb().getSMSTime());
+                holder.smsDate.setText(m_smsListData.get(position).strTime);
 
-                holder.smsContent.setText(mSmsListData.get(position).getScsb().getSMSContent());
-                holder.smsContentLayout.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        if (m_bDeleteSingleEnable == false)
-                            return true;
-                        final InquireDialog inquireDlg = new InquireDialog(ActivitySmsDetail.this);
-                        inquireDlg.m_titleTextView.setText(R.string.dialog_delete_title);
-                        inquireDlg.m_contentTextView.setText(R.string.dialog_delete_single_sms_content);
-                        inquireDlg.m_contentDescriptionTextView.setText("");
-                        inquireDlg.m_confirmBtn.setText(R.string.delete);
-                        inquireDlg.showDialog(new OnInquireApply() {
-                            @Override
-                            public void onInquireApply() {
-                                m_bDeleteContact = false;
-                                m_progressWaiting.setVisibility(View.VISIBLE);
-                                m_etContent.setEnabled(false);
-                                m_btnSend.setEnabled(false);
-                                // m_btnDelete.setEnabled(false);
-                                iv_delete.setEnabled(true);
-                                m_bDeleteSingleEnable = false;
-                                if (getDeleteMessagesNumber() == 1) {
-                                    m_bIsLastOneMessage = true;
-                                } else {
-                                    m_bIsLastOneMessage = false;
-                                }
-
-
-                                List<Integer> smsIds = new ArrayList<>();
-                                smsIds.add(mSmsListData.get(position).getScsb().getSMSId());
-                                SMSDeleteParam sdp = new SMSDeleteParam(Cons.DELETE_SESSION_SMS, smsIds);
-                                deleteSms(sdp);// deleted sms
-                                inquireDlg.closeDialog();
-                            }
-                        });
-                        return true;
-                    }
-
-                });
+                holder.smsContent.setText((String) m_smsListData.get(position).strContent);
 
                 LayoutParams contentLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-                final int type = mSmsListData.get(position).getScsb().getSMSType();
+                final int type = m_smsListData.get(position).eSMSType;
                 int nContentLayoutBg = R.drawable.selector_sms_detail_receive;
                 holder.smsContentLayout.setVisibility(View.VISIBLE);
                 switch (type) {
@@ -962,7 +770,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
                         holder.smsContentLayout.setPadding(70, 0, 0, 20);
                         break;
                     case Cons.DRAFT:
-                        if (position == mSmsListData.size() - 1) {
+                        if (position == m_smsListData.size() - 1) {
                             holder.smsContentLayout.setVisibility(View.GONE);
                         }
                         holder.smsContentLayout.setLayoutParams(contentLayout);
@@ -1009,24 +817,97 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
                     holder.sentFailLeft.setVisibility(View.GONE);
                 }
 
-                holder.smsContentLayout.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (type == Cons.SENT_FAILED) {
-                            FailedSMSClick(mSmsListData.get(position));
-                        }
-                    }
-                });
+                // TODO: 2017/6/29 when sms had sent failed 
+                // holder.smsContentLayout.setOnClickListener(new OnClickListener() {
+                //     @Override
+                //     public void onClick(View v) {
+                //         if (type == Cons.SENT_FAILED) {
+                //             FailedSMSClick(m_smsListData.get(position));
+                //         }
+                //     }
+                // });
             }
 
             return convertView;
         }
+
     }
 
-    // TOGO 2017/6/28 
-    private void FailedSMSClick(SMSContentNew item) {
+    /* **** deletedSmsFuntion **** */
+    private void deletedSmsFuntion(int DelFlag, List<Integer> smsIds, List<SMSDetailItem> m_smsListData, @Nullable SMSDetailItem item) {
+        SMSDeleteParam sdp = new SMSDeleteParam(DelFlag, smsIds);
+        API.get().deleteSMS(sdp, new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
+                // when deleted success then reset all status
+                rebackStatus(false);
+
+                m_bDeleteEnd = true;
+                m_progressWaiting.setVisibility(View.GONE);
+                Toast.makeText(ActivitySmsDetail.this, getString(R.string.sms_delete_multi_success), Toast.LENGTH_SHORT).show();
+                
+                /* if item is not null it means that just del the single sms */
+                if (item != null && m_smsListData.size() > 0 && m_smsListData.contains(item)) {
+                    m_smsListData.remove(item);
+                }
+
+                if (m_smsListData.size() <= 0) {
+                    ActivitySmsDetail.this.finish();
+                } else {
+                    // 重新获取内容
+                    getAllStatus();
+                }
+
+            }
+
+            @Override
+            protected void onFailure() {
+                super.onFailure();
+                rebackStatus(false);
+                m_progressWaiting.setVisibility(View.GONE);
+                Toast.makeText(ActivitySmsDetail.this, getString(R.string.sms_delete_error), Toast.LENGTH_SHORT).show();
+                // 重新获取内容
+                getAllStatus();
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                rebackStatus(false);
+                String code = error.getCode();
+                if (code.equals(Cons.DELETE_SMS_FAILED)) {
+                    m_progressWaiting.setVisibility(View.GONE);
+                }
+            }
+
+        });
+    }
+
+    /* **** rebackStatus **** */
+    private void rebackStatus(boolean isDeleteWork) {
+        // 1. flag
+        deletedbutton_worked = isDeleteWork;
+        // 2. delete button visible or gone
+        iv_delete.setVisibility(isDeleteWork ? View.VISIBLE : View.GONE);
+        // 3. temp list clear
+        posList.clear();
+        // check box visible or gone
+        for (int i = 0; i < m_smsListData.size(); i++) {
+            if (i == 0) {
+                continue;
+            }
+            View childAt = m_smsListView.getChildAt(i);
+            ImageView sms_checkbox = (ImageView) childAt.findViewById(R.id.iv_smsdetail_checkbox);
+            sms_checkbox.setImageResource(R.drawable.checkbox_android_off);
+            sms_checkbox.setVisibility(isDeleteWork ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    /* **** FailedSMSClick **** */
+    private void FailedSMSClick(SMSDetailItem item) {
         m_etContent.setEnabled(true);
-        m_etContent.setText(item.getScsb().getSMSContent());
+        m_etContent.setText(item.strContent);
     }
 
     @Override

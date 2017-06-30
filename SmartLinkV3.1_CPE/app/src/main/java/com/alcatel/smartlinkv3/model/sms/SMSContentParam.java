@@ -6,8 +6,8 @@ package com.alcatel.smartlinkv3.model.sms;
 
 public class SMSContentParam {
 
-    private int Page;
-    private int ContactId;
+    public  int Page;
+    public int ContactId;
 
     public SMSContentParam(int page, int contactId) {
         Page = page;

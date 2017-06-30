@@ -12,8 +12,9 @@ public class SmsNumHelper {
         for (int i = 0; i < phones.size(); i++) {
             if (i == phones.size() - 1) {
                 sb.append(phones.get(i));
+            } else {
+                sb.append(phones.get(i)).append(";");
             }
-            sb.append(phones.get(i)).append(";");
         }
         return sb.toString();
     }

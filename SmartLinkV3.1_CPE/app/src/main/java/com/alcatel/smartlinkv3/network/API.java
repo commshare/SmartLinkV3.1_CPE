@@ -89,6 +89,7 @@ import rx.schedulers.Schedulers;
 
 import static com.alcatel.smartlinkv3.Constants.SP_KEY_TOKEN;
 
+
 /**
  * Created by tao.j on 2017/6/14.
  */
@@ -570,7 +571,6 @@ public class API {
     public void GetSendSMSResult(MySubscriber<SendSMSResult> subscriber) {
         subscribe(subscriber, smartLinkApi.GetSendSMSResult(new RequestBody(Methods.GET_SEND_SMS_RESULT)));
     }
-
 
     interface SmartLinkApi {
 

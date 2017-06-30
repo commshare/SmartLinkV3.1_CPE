@@ -9,8 +9,8 @@ import java.util.List;
 public class SMSDeleteParam {
 
 
-    private int DelFlag;
-    private List<Integer> SMSArray;
+    public int DelFlag;
+    public List<Integer> SMSArray;
 
     public SMSDeleteParam(int delFlag, List<Integer> SMSArray) {
         DelFlag = delFlag;

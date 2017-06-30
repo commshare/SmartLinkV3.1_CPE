@@ -8,10 +8,11 @@ import java.util.List;
 
 public class SMSSaveParam {
 
-    private int SMSId;
-    private String SMSContent;
-    private String SMSTime;
-    private List<String> PhoneNumber;
+    public int SMSId;
+    public String SMSContent;
+    public String SMSTime;
+    public List<String> PhoneNumber;
+
 
     public SMSSaveParam(int SMSId, String SMSContent, String SMSTime, List<String> phoneNumber) {
         this.SMSId = SMSId;

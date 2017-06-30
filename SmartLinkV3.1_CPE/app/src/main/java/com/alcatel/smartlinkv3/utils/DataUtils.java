@@ -15,4 +15,9 @@ public class DataUtils {
         return sDate.format(now);
     }
 
+    public static String format1(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(date);
+    }
+
 }
