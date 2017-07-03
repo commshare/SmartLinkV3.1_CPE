@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.setupwizard.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.SharedPrefsUtil;
 import com.alcatel.smartlinkv3.ui.activity.NetModeConnectStatusActivity;
 import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
-
+@SuppressLint("ValidFragment")
 public class PukCodeFragment extends Fragment implements View.OnClickListener {
 
 

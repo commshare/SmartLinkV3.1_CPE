@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.sms.fragment.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.model.device.other.ConnectModel;
-import com.alcatel.smartlinkv3.ui.sms.helper.ModelHelper;
 import com.alcatel.smartlinkv3.model.device.response.BlockList;
 import com.alcatel.smartlinkv3.model.device.response.ConnectedList;
 import com.alcatel.smartlinkv3.network.API;
@@ -20,6 +20,7 @@ import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.home.helper.main.TimerHelper;
 import com.alcatel.smartlinkv3.ui.sms.allsetup.ActivityDeviceManager;
 import com.alcatel.smartlinkv3.ui.sms.fragment.connect.ConnectAdapter;
+import com.alcatel.smartlinkv3.ui.sms.helper.ModelHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
+@SuppressLint("ValidFragment")
 public class DeviceConnectFragment extends Fragment {
 
     @BindView(R.id.rcv_deviceconnect)

@@ -195,8 +195,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() == Cons.READY) {
                     // 获取消息数
-                    // TODO: 2017/6/23  获取消息数
-                    // SmsCountHelper.setSmsCount(mTvHomeMessageCount);
+                    SmsCountHelper.setSmsCount(HomeActivity.this, mTvHomeMessageCount);
                 }
 
             }
@@ -225,7 +224,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         } else {
             // 停止定时器
             timerHelper.stop();
-            // m_wifiKeyView.revertWifiModeSetting();
             super.onBackPressed();
             finish();
         }
@@ -266,7 +264,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
 
     private void initView() {
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        SmsCountHelper.setSmsCount(this,mTvHomeMessageCount);// getInstance show sms count
+        SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
 
         mAllShareProxy = AllShareProxy.getInstance(this);
         mBrocastFactory = new DMSDeviceBrocastFactory(this);
@@ -355,7 +353,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
      */
     private void logout() {
         // 1.injust the login status flag
-        // UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {

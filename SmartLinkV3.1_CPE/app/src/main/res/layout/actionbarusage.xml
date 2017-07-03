@@ -11,7 +11,6 @@
         android:background="@color/main_title_background">
 
         <ImageButton
-            android:layout_marginLeft="@dimen/dimen_10dip"
             android:id="@+id/usage_back"
             android:layout_width="@dimen/dimen_18dip"
             android:layout_height="@dimen/dimen_35dip"
@@ -33,7 +32,6 @@
             android:textStyle="normal" />
 
         <Button
-            android:layout_marginRight="@dimen/dimen_10dip"
             android:id="@+id/usage_more"
             android:layout_width="@dimen/dimen_40dip"
             android:layout_height="@dimen/dimen_40dip"

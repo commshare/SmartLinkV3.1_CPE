@@ -19,6 +19,7 @@
 
 package com.alcatel.smartlinkv3.fileexplorer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -64,7 +65,7 @@ import java.util.Collections;
 import java.util.List;
 
 //import android.app.Fragment;
-
+@SuppressLint("ValidFragment")
 public class FtpFileViewFragment extends Fragment implements
 		IFileInteractionListener, OnBackPressedListener, OnRequestExListener {
 

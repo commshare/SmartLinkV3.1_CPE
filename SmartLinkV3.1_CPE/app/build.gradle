@@ -26,8 +26,8 @@ android {
         applicationId "com.alcatel.smartlinkv3"
         minSdkVersion 15
         targetSdkVersion 25
-        versionName '0.0.1'
-        versionCode 1
+        versionName '0.0.2'
+        versionCode 2
 
         setProperty("archivesBaseName", "LinkApp-CPE-Android-$versionName")
         multiDexEnabled true

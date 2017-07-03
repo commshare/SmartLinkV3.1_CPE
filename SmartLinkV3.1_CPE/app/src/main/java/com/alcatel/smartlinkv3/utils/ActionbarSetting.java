@@ -20,23 +20,23 @@ public abstract class ActionbarSetting {
         // initView action bar
         ActionBar supportActionBar = actionBar;
         supportActionBar.setDisplayOptions(0,0);
-        supportActionBar.setDisplayShowHomeEnabled(false);
-        supportActionBar.setDisplayHomeAsUpEnabled(false);
-        supportActionBar.setDefaultDisplayHomeAsUpEnabled(false);
-        supportActionBar.setHomeButtonEnabled(false);
-        disableABCShowHideAnimation(supportActionBar);
+        supportActionBar.setDisplayShowHomeEnabled(false);// set home button gone
+        supportActionBar.setDisplayHomeAsUpEnabled(false);// set home button gone
+        supportActionBar.setDefaultDisplayHomeAsUpEnabled(false);// set home button gone
+        supportActionBar.setHomeButtonEnabled(false);// set home button gone
+        disableABCShowHideAnimation(supportActionBar);// clear the animation for action when show or hide
         
         View inflate = View.inflate(context, layoutId, null);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-        lp.gravity = Gravity.CENTER_HORIZONTAL|Gravity.LEFT|Gravity.FILL;
+        lp.gravity = Gravity.CENTER_HORIZONTAL;
         supportActionBar.setCustomView(inflate, lp);
 
-        supportActionBar.setDisplayShowCustomEnabled(true);
+        supportActionBar.setDisplayShowCustomEnabled(true);/* show customview */
+        supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);/* show customview */
         supportActionBar.setDisplayShowTitleEnabled(false);
-        supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         supportActionBar.show();
         
-        findActionbarView(supportActionBar.getCustomView());
+        findActionbarView(supportActionBar.getCustomView());// you can deliver the customview to outside
     }
 
     /**

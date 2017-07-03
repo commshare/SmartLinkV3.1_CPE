@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.home.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import com.alcatel.smartlinkv3.ui.home.helper.sms.SmsNumHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@SuppressLint("ValidFragment")
 public class SmsFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private View m_view;

@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.setupwizard.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,7 +36,7 @@ import static android.content.ContentValues.TAG;
 /**
  * Created by qianli.ma on 2017/6/14.
  */
-
+@SuppressLint("ValidFragment")
 public class NetModeFragment extends Fragment implements View.OnClickListener {
 
     public final static int MODE_DHCP = 0;

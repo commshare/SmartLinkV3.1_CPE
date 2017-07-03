@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.home.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ import com.alcatel.smartlinkv3.utils.DataUtils;
 
 import java.util.Locale;
 
-
+@SuppressLint("ValidFragment")
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* frame_connect */

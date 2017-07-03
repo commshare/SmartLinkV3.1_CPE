@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.setupwizard.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,7 +17,6 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.ChangeActivity;
 import com.alcatel.smartlinkv3.common.Constants;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ErrorCode;
@@ -28,7 +28,6 @@ import com.alcatel.smartlinkv3.model.wan.WanSettingsResult;
 import com.alcatel.smartlinkv3.network.API;
 import com.alcatel.smartlinkv3.network.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
-import com.alcatel.smartlinkv3.ui.activity.RefreshWifiActivity;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
@@ -41,8 +40,8 @@ import com.alcatel.smartlinkv3.ui.setupwizard.helper.FraHelper;
 import com.alcatel.smartlinkv3.ui.setupwizard.helper.FragmentEnum;
 import com.alcatel.smartlinkv3.ui.setupwizard.helper.QSBroadcastReceiver;
 
-
-public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver.OnWifiConnectListener, QSBroadcastReceiver.OnLogoutListener, QSBroadcastReceiver.OnLonginErrorListener, QSBroadcastReceiver.OnSimListener, View.OnClickListener {
+@SuppressLint("ValidFragment")
+public class ConnectTypeFragment extends Fragment implements  View.OnClickListener {
 
     TextView mTv_sim;
     TextView mTv_wan;
@@ -64,6 +63,10 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
     private boolean test = false;// 测试开关
     private boolean simInsert;// SIM卡是否插入
     private boolean wanConnect;// WAN口是否连接
+
+    public ConnectTypeFragment() {
+        
+    }
 
     public ConnectTypeFragment(Activity activity) {
         this.activity = (SetupWizardActivity) activity;
@@ -89,12 +92,6 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
     private void inidata() {
         mBusinessMgr = BusinessManager.getInstance();
         mHandler = new Handler();
-
-        mReceiver = new QSBroadcastReceiver();
-        mReceiver.setOnWifiConnectListener(this);
-        mReceiver.setOnLogoutListener(this);
-        mReceiver.setOnLoginErrorListener(this);
-        mReceiver.setOnSimListener(this);
 
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
@@ -145,28 +142,6 @@ public class ConnectTypeFragment extends Fragment implements QSBroadcastReceiver
                 FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.WAN_NETMODE_CHOICE_FRA);
                 break;
         }
-    }
-
-
-    @Override
-    public void wifiConnect() {// WIFI连接状态改变--> CPE_WIFI_CONNECT_CHANGE
-        // to refresh activity
-        ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, true, true, false, 0);
-    }
-
-    @Override
-    public void logouts() {// 登出--> USER_HEARTBEAT_REQUEST || USER_COMMON_ERROR_32604_REQUEST
-        kickoffLogout();
-    }
-
-    @Override
-    public void loginError() {// 登陆错误--> USER_LOGOUT_REQUEST
-        handleLoginError(R.string.qs_title, R.string.login_kickoff_logout_successful, true, false);
-    }
-
-    @Override
-    public void showSim() {// SIM卡状态改变--> SIM_GET_SIM_STATUS_ROLL_REQUSET
-//        showSimCard(mBusinessMgr.getSimStatus());
     }
 
     @Override

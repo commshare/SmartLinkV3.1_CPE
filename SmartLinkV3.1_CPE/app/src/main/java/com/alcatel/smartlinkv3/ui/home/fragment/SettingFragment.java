@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.home.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -51,7 +52,7 @@ import rx.Subscriber;
 /**
  * Created by qianli.ma on 2017/6/16.
  */
-
+@SuppressLint("ValidFragment")
 public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private final static String TAG = "SettingFragment";

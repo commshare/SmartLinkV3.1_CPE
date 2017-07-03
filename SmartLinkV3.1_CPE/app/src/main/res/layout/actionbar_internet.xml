@@ -15,7 +15,6 @@
             android:layout_width="@dimen/dimen_18dip"
             android:layout_height="@dimen/dimen_35dip"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_10dip"
             android:background="@null"
             android:contentDescription="@null"
             android:scaleType="fitXY"

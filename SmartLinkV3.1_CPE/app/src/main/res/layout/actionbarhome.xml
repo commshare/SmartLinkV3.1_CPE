@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_15dip"
             android:text="Logout"
             android:textColor="@color/color_white"
             android:textSize="@dimen/font_size_normal"
@@ -43,7 +42,6 @@
             android:layout_height="@dimen/dimen_40dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_15dip"
             android:src="@drawable/actionbar_edit_icon"
             android:visibility="gone" />
     </RelativeLayout>

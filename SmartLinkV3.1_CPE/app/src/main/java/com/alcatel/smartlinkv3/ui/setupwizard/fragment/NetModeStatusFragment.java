@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.ui.setupwizard.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +18,7 @@ import com.alcatel.smartlinkv3.ui.setupwizard.allsetup.SetupWizardActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
+@SuppressLint("ValidFragment")
 public class NetModeStatusFragment extends Fragment {
 
     private SetupWizardActivity activity;
