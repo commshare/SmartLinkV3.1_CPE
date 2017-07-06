@@ -47,7 +47,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_usage);
         // init action bar
-        initActionBar();
+//        initActionBar();
         // init layout ui
         initView();
         // init status

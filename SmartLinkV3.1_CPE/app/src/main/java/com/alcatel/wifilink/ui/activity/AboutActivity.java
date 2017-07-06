@@ -2,6 +2,9 @@ package com.alcatel.wifilink.ui.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +50,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         mQuickGuide.setOnClickListener(this);
         setTitle(R.string.setting_title_about);
         getDataFromNet();
+        displayVersion();
     }
 
     private void getDataFromNet() {
@@ -63,7 +67,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 mDeviceNameTxt.setText(result.getDeviceName());
                 mImeiTxt.setText(result.getIMEI());
                 mMacAddressTxt.setText(result.getMacAddress());
-                mAppVersionTxt.setText(result.getAppVersion());
+//                mAppVersionTxt.setText(result.getAppVersion());
             }
 
             @Override
@@ -98,6 +102,19 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         mProgressDialog.dismiss();
     }
 
+    private void displayVersion() {
+        PackageManager pm = getPackageManager();
+        try {
+            PackageInfo info = pm.getPackageInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS);
+            ApplicationInfo appInfo = getApplicationInfo();
+            boolean isDebuggable = (appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+            mAppVersionTxt.setText("v" + info.versionName + (isDebuggable ? "(debug)" : ""));
+            Log.d(TAG, "version: " + info.versionName);
+            mIvPoint.setVisibility(View.GONE);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onClick(View view) {
