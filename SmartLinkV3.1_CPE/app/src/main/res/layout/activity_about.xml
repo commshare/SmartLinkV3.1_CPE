@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backup_name_bg"
-    tools:context="com.alcatel.smartlinkv3.ui.activity.AboutActivity">
+    tools:context="com.alcatel.wifilink.ui.activity.AboutActivity">
 
     <ScrollView
         android:layout_width="match_parent"

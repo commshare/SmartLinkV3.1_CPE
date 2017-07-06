@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/netmode_status_BG"
-    tools:context="com.alcatel.smartlinkv3.ui.activity.NetModeConnectStatusActivity">
+    tools:context="com.alcatel.wifilink.ui.activity.NetModeConnectStatusActivity">
 
     <!-- 连接成功页 -->
     <RelativeLayout
@@ -81,7 +81,7 @@
             android:textColor="@color/grey_text"
             android:textSize="@dimen/font_size_normal" />
 
-        <com.alcatel.smartlinkv3.appwidget.RippleView
+        <com.alcatel.wifilink.appwidget.RippleView
             android:id="@+id/mRp_connectStatus_tryagain"
             android:layout_width="@dimen/dimen_120dip"
             android:layout_height="@dimen/dimen_36dip"

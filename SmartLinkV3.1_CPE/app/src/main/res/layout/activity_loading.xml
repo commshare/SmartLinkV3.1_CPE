@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.alcatel.smartlinkv3.ui.view.CirclePageIndicator
+    <com.alcatel.wifilink.ui.view.CirclePageIndicator
         android:id="@+id/page_indicator"
         android:layout_width="match_parent"
         android:layout_height="20dp"

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.alcatel.smartlinkv3.ui.activity.SettingNetModeActivity">
+    tools:context="com.alcatel.wifilink.ui.activity.SettingNetModeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
             />
 
         <!-- 按钮 -->
-        <com.alcatel.smartlinkv3.appwidget.RippleView
+        <com.alcatel.wifilink.appwidget.RippleView
             android:id="@+id/mBt_netmode_connect"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_45dip"

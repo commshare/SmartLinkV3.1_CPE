@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
 
-                    <com.alcatel.smartlinkv3.ui.view.CircleProgress
+                    <com.alcatel.wifilink.ui.view.CircleProgress
                         android:id="@+id/home_circleProgress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
 
-                    <com.alcatel.smartlinkv3.ui.view.WaveLoadingView
+                    <com.alcatel.wifilink.ui.view.WaveLoadingView
                         android:id="@+id/connected_button"
                         android:layout_width="@dimen/dimen_180dip"
                         android:layout_height="@dimen/dimen_180dip"
@@ -198,7 +198,7 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <com.alcatel.smartlinkv3.ui.view.DynamicWave
+    <com.alcatel.wifilink.ui.view.DynamicWave
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_16dip"
         android:background="@color/home_connect_background_blue" />

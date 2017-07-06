@@ -83,6 +83,7 @@
     <dimen name="dimen_textsize_36sp">36sp</dimen>
     <dimen name="dimen_textsize_40sp">40sp</dimen>
     <dimen name="dimen_textsize_48sp">48sp</dimen>
+    <dimen name="dimen_textsize_50sp">50sp</dimen>
     <dimen name="dimen_textsize_76sp">76sp</dimen>
     <dimen name="dimen_flux_use_text_padding">3dip</dimen>
 

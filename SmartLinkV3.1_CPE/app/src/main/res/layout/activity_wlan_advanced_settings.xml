@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
-    tools:context="com.alcatel.smartlinkv3.ui.activity.WlanAdvancedSettingsActivity">
+    tools:context="com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"

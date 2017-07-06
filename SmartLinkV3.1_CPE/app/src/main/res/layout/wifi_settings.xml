@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/password" />
 
-                <com.alcatel.smartlinkv3.ui.view.ShowPasswordEditText
+                <com.alcatel.wifilink.ui.view.ShowPasswordEditText
                     android:id="@+id/edit_key_2g"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/password" />
 
-                <com.alcatel.smartlinkv3.ui.view.ShowPasswordEditText
+                <com.alcatel.wifilink.ui.view.ShowPasswordEditText
                     android:id="@+id/edit_key_5g"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

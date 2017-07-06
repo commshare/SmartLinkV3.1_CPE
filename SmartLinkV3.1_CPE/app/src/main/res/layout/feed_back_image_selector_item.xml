@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.alcatel.smartlinkv3.ui.view.SquareLinearLayout
+    <com.alcatel.wifilink.ui.view.SquareLinearLayout
         android:id="@+id/image_selector_image_icon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.alcatel.smartlinkv3.ui.activity.InternetStatusActivity">
+    tools:context="com.alcatel.wifilink.ui.activity.InternetStatusActivity">
 
     <!-- IP_ADDRESS -->
     <RelativeLayout
@@ -117,7 +117,7 @@
     </RelativeLayout>
 
     <!-- Renew -->
-    <com.alcatel.smartlinkv3.appwidget.RippleView
+    <com.alcatel.wifilink.appwidget.RippleView
         android:id="@+id/rv_internet_renew"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dip"

@@ -22,7 +22,7 @@
             android:textSize="18sp"
             android:text="@string/cancel"
             android:visibility="visible" />
-        <com.alcatel.smartlinkv3.ui.view.SearchEditText
+        <com.alcatel.wifilink.ui.view.SearchEditText
             android:id="@+id/search_edit_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

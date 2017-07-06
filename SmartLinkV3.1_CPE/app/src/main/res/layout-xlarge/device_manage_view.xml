@@ -88,14 +88,15 @@
 		            android:contentDescription="@null" />
 		    </RelativeLayout>
 	        
-	        <com.alcatel.smartlinkv3.ui.view.NoScrollListView android:id="@+id/connected_devices"
-			    android:divider="@color/color_divider"
-			    android:dividerHeight="1dip"
-			   	android:listSelector="@android:color/transparent"
-			    android:cacheColorHint="#00000000"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:overScrollMode="never"/>
+	        <com.alcatel.wifilink.ui.view.NoScrollListView
+                android:id="@+id/connected_devices"
+                android:divider="@color/color_divider"
+                android:dividerHeight="1dip"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="#00000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"/>
 	        <View android:layout_width="fill_parent"
 			        android:layout_height="1dip"
 			        android:background="@color/color_divider"/>
@@ -111,14 +112,15 @@
 	            android:textSize="24sp"
 	            android:textStyle="bold" 
 	            android:background="@color/color_connected_view_refresh_bg" />
-	        <com.alcatel.smartlinkv3.ui.view.NoScrollListView android:id="@+id/block_devices"
-			    android:divider="@color/color_divider"
-			    android:dividerHeight="1dip"
-			   	android:listSelector="@android:color/transparent"
-			    android:cacheColorHint="#00000000"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:overScrollMode="never"/>
+	        <com.alcatel.wifilink.ui.view.NoScrollListView
+                android:id="@+id/block_devices"
+                android:divider="@color/color_divider"
+                android:dividerHeight="1dip"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="#00000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"/>
 		</LinearLayout>
 	</ScrollView>
 	

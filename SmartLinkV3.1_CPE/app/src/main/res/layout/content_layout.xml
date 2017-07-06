@@ -62,7 +62,7 @@
             android:contentDescription="@null"
             android:src="@drawable/microsd_item_folder" >
         </ImageView>
-        <com.alcatel.smartlinkv3.ui.view.PathIndicatorDlna
+        <com.alcatel.wifilink.ui.view.PathIndicatorDlna
             android:id="@+id/path_indicator_dlna"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <!-- *** circle logo *** -->
+        <!-- *** CONNECT BUTTON *** -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,14 +26,14 @@
                 android:id="@+id/connected_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
 
-                    <com.alcatel.smartlinkv3.ui.view.CircleProgress
+                    <com.alcatel.wifilink.ui.view.CircleProgress
                         android:id="@+id/home_circleProgress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -47,11 +47,12 @@
                     android:src="@drawable/home_ic_bg" />
 
                 <LinearLayout
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
 
-                    <com.alcatel.smartlinkv3.ui.view.WaveLoadingView
+                    <com.alcatel.wifilink.ui.view.WaveLoadingView
                         android:id="@+id/connected_button"
                         android:layout_width="@dimen/dimen_180dip"
                         android:layout_height="@dimen/dimen_180dip"
@@ -60,9 +61,12 @@
                         app:wlv_progressValue="40"
                         app:wlv_round_rectangle="true"
                         app:wlv_shapeType="circle"
-                        app:wlv_titleCenter="76"
+                        app:wlv_titleBottom="KB"
+                        app:wlv_titleBottomColor="@color/white"
+                        app:wlv_titleBottomSize="@dimen/dimen_textsize_24sp"
+                        app:wlv_titleCenter="0"
                         app:wlv_titleCenterColor="@color/color_white"
-                        app:wlv_titleCenterSize="@dimen/dimen_textsize_76sp"
+                        app:wlv_titleCenterSize="@dimen/dimen_textsize_50sp"
                         app:wlv_triangle_direction="north"
                         app:wlv_waveAmplitude="80"
                         app:wlv_waveColor="@color/circle_green"
@@ -76,12 +80,12 @@
                     android:gravity="bottom|center">
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/home_battery_image"
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
                         android:contentDescription="@null"
-                        android:src="@drawable/home_ic_battery4" />
+                        android:src="@drawable/home_ic_battery4"
+                        android:visibility="gone" />
                 </LinearLayout>
             </FrameLayout>
 
@@ -91,7 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/dimen_180dip"
@@ -190,6 +195,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+        <!-- sim卡网络类型(移动|联通|电信) -->
         <TextView
             android:id="@+id/connect_network"
             android:layout_width="match_parent"
@@ -199,11 +205,12 @@
             android:gravity="center"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_textsize_24sp"
-            android:visibility="invisible" />
+            android:text="MOBILE"
+            android:visibility="visible" />
     </LinearLayout>
 
     <!-- *** wave view *** -->
-    <com.alcatel.smartlinkv3.ui.view.DynamicWave
+    <com.alcatel.wifilink.ui.view.DynamicWave
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_16dip"
         android:background="@color/home_connect_background_blue" />
@@ -305,11 +312,11 @@
                     android:id="@+id/access_status"
                     android:layout_width="@dimen/dimen_70dip"
                     android:layout_height="@dimen/dimen_70dip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/home_ic_person_none"
                     android:clickable="true"
-                    android:contentDescription="@null"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:contentDescription="@null" />
 
                 <RelativeLayout
                     android:id="@+id/access_num_layout"
