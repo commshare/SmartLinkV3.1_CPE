@@ -35,6 +35,7 @@ import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTR
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_BANDWIDTH;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_CHANNEL;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_COUNTRY;
+import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_FRE;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_MODE_80211;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_SSID_BROADCAST;
 
@@ -345,6 +346,7 @@ public class WifiFragment extends Fragment implements CompoundButton.OnCheckedCh
     public void onClick(View v) {
         if (v.getId() == R.id.text_advanced_settings_2g) {
             Intent intent = new Intent(mContext, WlanAdvancedSettingsActivity.class);
+            intent.putExtra(EXTRA_FRE, 2);
             intent.putExtra(EXTRA_SSID_BROADCAST, mEditedSettings.getAP2G().isSsidHiden());
             intent.putExtra(EXTRA_CHANNEL, mEditedSettings.getAP2G().Channel);
             intent.putExtra(EXTRA_COUNTRY, mEditedSettings.getAP2G().CountryCode);
@@ -354,6 +356,7 @@ public class WifiFragment extends Fragment implements CompoundButton.OnCheckedCh
             startActivityForResult(intent, REQUEST_CODE_ADVANCED_SETTINGS_2_4G);
         } else if (v.getId() == R.id.text_advanced_settings_5g) {
             Intent intent = new Intent(mContext, WlanAdvancedSettingsActivity.class);
+            intent.putExtra(EXTRA_FRE, 5);
             intent.putExtra(EXTRA_SSID_BROADCAST, mEditedSettings.getAP5G().isSsidHiden());
             intent.putExtra(EXTRA_CHANNEL, mEditedSettings.getAP5G().Channel);
             intent.putExtra(EXTRA_COUNTRY, mEditedSettings.getAP5G().CountryCode);

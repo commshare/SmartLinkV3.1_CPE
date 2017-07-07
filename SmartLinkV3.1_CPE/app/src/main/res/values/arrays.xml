@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="setting_wep_mode_array">
-        <item >open</item>
-        <item >share</item>
+        <item>open</item>
+        <item>share</item>
     </string-array>
 
     <string-array name="wlan_settings_security">
@@ -12,13 +12,25 @@
         <item>WPA2</item>
         <item>WPA/WPA2</item>
     </string-array>
-
-
     <string-array name="wlan_settings_80211">
         <item>Auto</item>
         <item>802.11b</item>
         <item>802.11b/g</item>
         <item>802.11b/g/n</item>
+        <item>802.11a</item>
+        <item>802.11a/n</item>
+        <item>802.11a/c</item>
+    </string-array>
+
+    <string-array name="wlan_settings_80211_2g">
+        <item>Auto</item>
+        <item>802.11b</item>
+        <item>802.11b/g</item>
+        <item>802.11b/g/n</item>
+    </string-array>
+
+    <string-array name="wlan_settings_80211_5g">
+        <item>Auto</item>
         <item>802.11a</item>
         <item>802.11a/n</item>
         <item>802.11a/c</item>
@@ -41,7 +53,7 @@
         <item>13</item>
         <item>14</item>
     </string-array>
-    
+
     <string-array name="wlan_settings_wpa_type">
         <item>TKIP</item>
         <item>AES</item>

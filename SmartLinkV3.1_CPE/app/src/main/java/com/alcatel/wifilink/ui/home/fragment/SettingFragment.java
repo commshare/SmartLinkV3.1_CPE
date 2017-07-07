@@ -1,13 +1,16 @@
 package com.alcatel.wifilink.ui.home.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -16,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -82,8 +86,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private TextView mDeviceVersion;
     private AlertDialog mCheckVersionDlg;
     private AlertDialog mUpdatingDlg;
-    private final static String mSaveUrl = "/TCL/LINKHUB/Backup";
-
+    private final static String mSaveUrl = "/tcl/linkhub/backup";
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Nullable
     @Override
@@ -157,6 +162,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 popDialogFromBottom(RESTART_RESET);
                 break;
             case R.id.setting_backup:
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    verifyStoragePermissions(getActivity());
+                }
                 popDialogFromBottom(Backup_Restore);
                 break;
             case R.id.setting_about:
@@ -325,11 +333,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showBackupSuccessDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.backup_current_settings_to);
-        TextView textView = new TextView(getActivity());
-        textView.setText(mSaveUrl);
-        builder.setView(textView);
+        EditText editText = new EditText(getActivity());
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        editText.setLayoutParams(layoutParams);
+        editText.setText(mSaveUrl);
+        builder.setView(editText);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -339,15 +350,33 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         builder.setPositiveButton(R.string.backup, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                downLoadConfigureFile(mSaveUrl);
+                downLoadConfigureFile(editText.getText().toString());
             }
         });
         builder.show();
     }
 
-    private void downLoadConfigureFile(String saveUrl) {
+    private void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
+    }
+
+    private void downLoadConfigureFile(String saveUrl) {
+        if (!saveUrl.startsWith("/")) {
+            saveUrl = "/" + saveUrl;
+        }
         File file = new File(FileUtils.createFilePath(saveUrl), "configure.bin");
+        if (file.exists()) {
+            file.delete();
+        }
+        Log.d(TAG, "downLoadConfigureFile:  " + file.getAbsolutePath());
         String downloadFileUrl = "/cfgbak/configure.bin";
         API.get().downConfigureFile(new Subscriber() {
             @Override
@@ -359,19 +388,19 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCompleted() {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), "downLoadConfigureFile:onCompleted");
+                ToastUtil.showMessage(getActivity(), "onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), "downLoadConfigureFile:onError");
+                ToastUtil.showMessage(getActivity(), "onError");
             }
 
             @Override
             public void onNext(Object o) {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), "downLoadConfigureFile:onNext");
+                ToastUtil.showMessage(getActivity(), "onNext");
 
             }
         }, downloadFileUrl, file);
@@ -515,8 +544,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showLoadingDialog() {
         mProgressDialog = new ProgressDialog(getActivity());
-        //        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        //        mProgressDialog.setMessage("Resetting … 50%");
+        mProgressDialog.setMessage(getActivity().getString(R.string.video_loading));
         mProgressDialog.show();
 
     }
