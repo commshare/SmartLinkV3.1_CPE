@@ -34,6 +34,7 @@ import com.alcatel.wifilink.network.MySubscriber;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener ,AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
+    private LinearLayout mMobileNetwork;
     private LinearLayout mSetDataPlan;
     private LinearLayout mChangePin;
     private RelativeLayout mRoamingRl;
@@ -55,6 +56,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private AppCompatSpinner mBillingDaySpinner;
     private AppCompatSpinner mUsageAlertSpinner;
     private SwitchCompat mDisconnectCompat;
+    private LinearLayout mTimeLimitLl;
     private SwitchCompat mTimeLimitCompat;
     private TextView mSetTimeLimitText;
     private SwitchCompat mLimitAutoDisaconectCompat;
@@ -79,6 +81,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         findViewById(R.id.rl_set_time_limit).setOnClickListener(this);
         findViewById(R.id.relativelayout_network_profile).setOnClickListener(this);
 
+        mMobileNetwork = (LinearLayout) findViewById(R.id.ll_mobile_network);
         mSetDataPlan = (LinearLayout) findViewById(R.id.sett_data_plan);
         mChangePin = (LinearLayout) findViewById(R.id.linear_network_change_pin);
         mRoamingRl = (RelativeLayout) findViewById(R.id.relativelayout_network_roaming);
@@ -133,11 +136,30 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 setUsageSetting(mUsageSetting);
             }
         });
+        mTimeLimitLl = (LinearLayout) findViewById(R.id.ll_time_limit);
         mTimeLimitCompat = (SwitchCompat) findViewById(R.id.setdataplan_timelimit);
         mTimeLimitCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
                 Log.d(TAG, "mTimeLimitCompat = " + enable);
+                if(enable) {
+//                    mUsageSetting.setTimeLimitFlag(1);
+                    mTimeLimitLl.setVisibility(View.VISIBLE);
+                } else {
+                    mTimeLimitLl.setVisibility(View.GONE);
+                    if(mUsageSetting.getTimeLimitFlag() == 1) {
+                        mUsageSetting.setTimeLimitFlag(0);
+                        setUsageSetting(mUsageSetting);
+                    }
+                }
+            }
+        });
+        mSetTimeLimitText = (TextView) findViewById(R.id.textview_set_time_limit);
+        mLimitAutoDisaconectCompat = (SwitchCompat) findViewById(R.id.setdataplan_limit_auto_disaconect);
+        mLimitAutoDisaconectCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
+                Log.d(TAG, "mLimitAutoDisaconectCompat = " + enable);
                 if(enable) {
                     mUsageSetting.setTimeLimitFlag(1);
                 } else {
@@ -146,9 +168,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 setUsageSetting(mUsageSetting);
             }
         });
-        mSetTimeLimitText = (TextView) findViewById(R.id.textview_set_time_limit);
-        mLimitAutoDisaconectCompat = (SwitchCompat) findViewById(R.id.setdataplan_limit_auto_disaconect);
-
         //change sim pin
         mCurrentSimPin = (EditText) findViewById(R.id.current_sim_pin);
         mNewSimPin = (EditText) findViewById(R.id.new_sim_pin);
@@ -421,16 +440,11 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     mDisconnectCompat.setChecked(true);
                 }
                 if(result.getTimeLimitFlag() == 0) {
-                    mTimeLimitCompat.setChecked(false);
-                } else if(result.getTimeLimitFlag() == 1) {
-                    mTimeLimitCompat.setChecked(true);
-                }
-                mSetTimeLimitText.setText(result.getTimeLimitTimes()+"mins(s)");
-                if(result.getAutoDisconnFlag() == 0) {
                     mLimitAutoDisaconectCompat.setChecked(false);
-                } else if(result.getAutoDisconnFlag() == 1) {
+                } else if(result.getTimeLimitFlag() == 1) {
                     mLimitAutoDisaconectCompat.setChecked(true);
                 }
+                mSetTimeLimitText.setText(result.getTimeLimitTimes()+"mins(s)");
             }
             @Override
             protected void onFailure() {
@@ -446,6 +460,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         switch (nID) {
             case R.id.network_set_data_plan:
                 mSetDataPlan.setVisibility(View.VISIBLE);
+                mMobileNetwork.setVisibility(View.GONE);
                 setTitle("Set data plan");
                 getUsageSetting();
                 break;
@@ -457,6 +472,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 break;
             case R.id.network_change_pin:
                 mChangePin.setVisibility(View.VISIBLE);
+                mMobileNetwork.setVisibility(View.GONE);
                 setTitle("Change Pin");
                 invalidateOptionsMenu();
                 break;
@@ -644,10 +660,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     public void onBackPressed() {
         if (mSetDataPlan.getVisibility() == View.VISIBLE) {
             mSetDataPlan.setVisibility(View.GONE);
+            mMobileNetwork.setVisibility(View.VISIBLE);
             setTitle(R.string.setting_mobile_network);
             return;
         } else if (mChangePin.getVisibility() == View.VISIBLE) {
             mChangePin.setVisibility(View.GONE);
+            mMobileNetwork.setVisibility(View.VISIBLE);
             setTitle(R.string.setting_mobile_network);
             invalidateOptionsMenu();
             return;
