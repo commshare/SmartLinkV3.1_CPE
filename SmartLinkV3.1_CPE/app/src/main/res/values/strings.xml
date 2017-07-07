@@ -848,5 +848,7 @@
     <string name="fail_with_memory_full">fail with Memory full</string>
     <string name="none">none</string>
     <string name="host">Host</string>
+    <string name="check_your_wan_cabling">Check your WAN cabling</string>
+    <string name="usb_printers_nearby">USB Printers nearby</string>
 
 </resources>

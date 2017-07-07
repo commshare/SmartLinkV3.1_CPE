@@ -78,4 +78,32 @@ public class Constants {
         public static final int ROAMING_DISABLE = 0;
         public static final int ROAMING_ENABLE = 1;
     }
+
+    public class WanSettingsStatus{
+        public static final int DISCONNECTED = 0;
+        public static final int CONNECTING = 1;
+        public static final int CONNECTED = 2;
+        public static final int DISCONNECTING = 3;
+    }
+
+    public class DeviceUpgradeStatus{
+        public static final int DEVICE_UPGRADE_NOT_START = 0;
+        public static final int DEVICE_UPGRADE_UPDATING = 1;
+        public static final int DEVICE_UPGRADE_COMPLETE = 2;
+    }
+
+    public class DeviceVersionCheckState{
+        public static final int DEVICE_CHECKING = 0;
+        public static final int DEVICE_NEW_VERSION = 1;
+        public static final int DEVICE_NO_NEW_VERSION = 2;
+        public static final int DEVICE_NO_CONNECT = 3;
+        public static final int SERVICE_NOT_AVAILABLE = 4;
+        public static final int DEVICE_CHECK_ERROR = 5;
+    }
+
+    public class DeviceUSBStatus{
+        public static final int NOT_INSERT = 0;
+        public static final int USB_STORAGE = 1;
+        public static final int USB_PRINT = 2;
+    }
 }

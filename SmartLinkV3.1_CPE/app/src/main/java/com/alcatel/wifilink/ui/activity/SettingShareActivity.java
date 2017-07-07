@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -10,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.business.BusinessManager;
+import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.model.sharing.DLNASettings;
 import com.alcatel.wifilink.model.sharing.FTPSettings;
 import com.alcatel.wifilink.model.sharing.SambaSettings;
+import com.alcatel.wifilink.model.system.SysStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -21,9 +23,6 @@ import com.alcatel.wifilink.network.ResponseBody;
 public class SettingShareActivity extends BaseActivityWithBack implements OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private final String TAG = "SettingShareActivity";
-    private final int USB_STATUS_ON_INSERT = 0;
-    private final int USB_STATUS_USB_STORAGE = 1;
-    private final int USB_STATUS_USB_PRINT = 2;
     private TextView mUSBStorageText;
     private SwitchCompat mFTPSwitch;
     private SwitchCompat mSambaSwitch;
@@ -57,19 +56,40 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     }
 
     private void initData() {
-
-        int usbStatus = BusinessManager.getInstance().getSystemStatus().getUsbStatus();
-        Log.d(TAG,"initData,usb status:"+usbStatus);
-        switch (usbStatus){
-            case USB_STATUS_ON_INSERT:
-                mUSBStorageText.setText(R.string.no_insert);break;
-            case USB_STATUS_USB_STORAGE: mUSBStorageText.setText(R.string.setting_usb_storage);break;
-            case USB_STATUS_USB_PRINT:mUSBStorageText.setText(R.string.usb_printer);break;
-        }
+        requestGetSystemStatus();
         requestGetFTPSettings();
         requestGetSambaSettings();
         requestGetDLNASettings();
 
+    }
+
+    private void requestGetSystemStatus(){
+        Log.d(TAG,"requestGetSystemStatus");
+        API.get().getSystemStatus(new MySubscriber<SysStatus>() {
+            @Override
+            protected void onSuccess(SysStatus result) {
+                Log.d(TAG,"requestGetSystemStatus,usb status:"+result.getUsbStatus());
+                Log.d(TAG,"requestGetSystemStatus,usb name:"+result.getUsbName());
+                switch (result.getUsbStatus()){
+                    case Constants.DeviceUSBStatus.NOT_INSERT:
+                        mUSBStorageText.setText(R.string.no_insert);break;
+                    case Constants.DeviceUSBStatus.USB_STORAGE: mUSBStorageText.setText(R.string.setting_usb_storage);break;
+                    case Constants.DeviceUSBStatus.USB_PRINT:
+                        mUSBStorageText.setText(R.string.usb_printer);
+                        showPrinterNameDlg(result.getUsbName());break;
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+            }
+
+            @Override
+            protected void onFailure() {
+                super.onFailure();
+            }
+        });
     }
 
     private void requestGetFTPSettings() {
@@ -218,6 +238,13 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         });
     }
 
+    private void showPrinterNameDlg(String printerName){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setNegativeButton(R.string.cancel,null);
+        builder.setTitle(R.string.usb_printers_nearby);
+        builder.setMessage(printerName);
+        builder.create().show();
+    }
     @Override
     protected void onResume() {
         super.onResume();

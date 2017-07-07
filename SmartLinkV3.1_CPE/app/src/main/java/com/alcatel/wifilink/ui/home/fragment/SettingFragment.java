@@ -24,9 +24,11 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.ENUM;
+import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.model.connection.ConnectionState;
+import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
 import com.alcatel.wifilink.network.API;
@@ -149,13 +151,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.setting_firmware_upgrade:
-                Log.d(TAG, "onClick,ConnectionStatus:" + BusinessManager.getInstance().getWanConnectStatus().m_connectionStatus);
-                if (BusinessManager.getInstance().getWanConnectStatus().m_connectionStatus != ENUM.ConnectionStatus.Connected) {
-                    ToastUtil_m.show(getActivity(), getString(R.string.setting_upgrade_no_connection));
-                } else {
-                    requestSetCheckNewVersion();
-                }
-
+                requestGetConnectionStatus();
                 break;
             case R.id.setting_restart:
                 popDialogFromBottom(RESTART_RESET);
@@ -169,6 +165,66 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+
+    private void requestGetConnectionStatus() {
+        Log.d(TAG, "requestGetConnectionStatus");
+        API.get().getConnectionState(new MySubscriber<ConnectionState>() {
+            @Override
+            protected void onSuccess(ConnectionState result) {
+                Log.d(TAG, "requestGetConnectionStatus,ConnectionStatus:" + result.getConnectionStatus());
+                if (result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTED || result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTING) {
+                    requestGetWanSetingRequest();
+                } else {
+                    ToastUtil_m.show(getActivity(), getString(R.string.setting_upgrade_no_connection));
+                }
+
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                Log.d(TAG, "requestGetConnectionStatus,onResultError:" + error);
+
+            }
+
+            @Override
+            protected void onFailure() {
+                super.onFailure();
+                Log.d(TAG, "requestGetConnectionStatus");
+            }
+        });
+
+
+    }
+
+    private void requestGetWanSetingRequest() {
+        Log.d(TAG, "requestSetCheckNewVersion," + BusinessManager.getInstance().getWanConnectStatus().m_connectionStatus);
+        API.get().getWanSeting(new MySubscriber<WanSetting>() {
+            @Override
+            protected void onSuccess(WanSetting result) {
+                Log.d(TAG, "requestGetWanSetingRequest,onSuccess:" + result.getStatus());
+                if (result.getStatus() == Constants.WanSettingsStatus.CONNECTED || result.getStatus() == Constants.WanSettingsStatus.CONNECTING) {
+                    requestSetCheckNewVersion();
+                } else {
+                    ToastUtil_m.show(getActivity(), getString(R.string.check_your_wan_cabling));
+                }
+
+            }
+
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "requestGetWanSetingRequest,onFailure");
+                super.onFailure();
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Log.d(TAG, "requestGetWanSetingRequest,onResultError:" + error);
+                super.onResultError(error);
+            }
+        });
     }
 
     private void popDialogFromBottom(int itemType) {
@@ -543,8 +599,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         String message = "";
         String positiveButtonStr = getString(R.string.ok);
         String negativeButtonStr = "";
-        ENUM.EnumDeviceCheckingStatus eStatus = ENUM.EnumDeviceCheckingStatus.build(result.getState());
-        if (eStatus == ENUM.EnumDeviceCheckingStatus.DEVICE_CHECKING) {
+        int eStatus = result.getState();
+        if (eStatus == Constants.DeviceVersionCheckState.DEVICE_CHECKING) {
             message = getString(R.string.checking_for_update);
             positiveButtonStr = " ";
             new Handler().postDelayed(new Runnable() {
@@ -552,19 +608,19 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     requestGetDeviceNewVersion();
                 }
             }, 2 * 1000);
-        } else if (ENUM.EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == eStatus) {
+        } else if (Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION == eStatus) {
             message = result.getVersion() + getString(R.string.available);
             positiveButtonStr = getString(R.string.update);
             negativeButtonStr = getString(R.string.cancel);
 
-        } else if (ENUM.EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
+        } else if (Constants.DeviceVersionCheckState.DEVICE_NO_NEW_VERSION == eStatus) {
             message = BusinessManager.getInstance().getSystemInfo().getSwVersion() + "\n" + getString(R.string.your_firmware_is_up_to_date);
             positiveButtonStr = getString(R.string.ok);
 
-        } else if (ENUM.EnumDeviceCheckingStatus.DEVICE_NO_CONNECT == eStatus || ENUM.EnumDeviceCheckingStatus.SERVICE_NOT_AVAILABLE == eStatus) {
+        } else if (Constants.DeviceVersionCheckState.DEVICE_NO_CONNECT == eStatus || Constants.DeviceVersionCheckState.SERVICE_NOT_AVAILABLE == eStatus) {
             message = getString(R.string.setting_upgrade_check_firmware_failed);
             positiveButtonStr = getString(R.string.ok);
-        } else if (ENUM.EnumDeviceCheckingStatus.DEVICE_CHECK_ERROR == eStatus) {
+        } else if (Constants.DeviceVersionCheckState.DEVICE_CHECK_ERROR == eStatus) {
             message = getString(R.string.setting_upgrade_check_error);
             positiveButtonStr = getString(R.string.ok);
         }
@@ -575,7 +631,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         builder.setPositiveButton(positiveButtonStr, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (eStatus == ENUM.EnumDeviceCheckingStatus.DEVICE_NEW_VERSION) {
+                if (eStatus == Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION) {
                     requestSetFOTAStartDownload();
                 } else {
                     mCheckVersionDlg.dismiss();
@@ -590,7 +646,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             mCheckVersionDlg = builder.create();
             mCheckVersionDlg.show();
         } else {
-            if (eStatus != ENUM.EnumDeviceCheckingStatus.DEVICE_CHECKING) {
+            if (eStatus != Constants.DeviceVersionCheckState.DEVICE_CHECKING) {
                 mCheckVersionDlg.dismiss();
                 mCheckVersionDlg.cancel();
                 mCheckVersionDlg = builder.create();
@@ -617,10 +673,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             mUpgradeStatus.setText(R.string.could_not_update_try_again);
             builder.setPositiveButton(R.string.ok, null);
         } else {
-            ENUM.EnumDeviceUpgradeStatus status = ENUM.EnumDeviceUpgradeStatus.build(result.getStatus());
-            if (ENUM.EnumDeviceUpgradeStatus.DEVICE_UPGRADE_NOT_START == status) {
-
-            } else if (ENUM.EnumDeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
+            int status = result.getStatus();
+            if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_NOT_START == status) {
+                Log.d(TAG, "requestGetDeviceUpgradeState,device upgrade not start");
+            } else if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
                 mUpgradeBar.setVisibility(View.VISIBLE);
                 mUpgradeStatus.setVisibility(View.GONE);
                 mContentText.setText(getString(R.string.updating) + result.getProcess());
@@ -632,7 +688,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     }
                 }, 2 * 1000);
 
-            } else if (ENUM.EnumDeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
+            } else if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
                 requestSetDeviceStartUpdate();
                 mUpgradeStatus.setVisibility(View.VISIBLE);
                 mUpgradeBar.setVisibility(View.GONE);
