@@ -12,7 +12,7 @@
             android:id="@+id/et_sim_pin_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="4"
+            android:maxLength="8"
             android:inputType="number"
             android:digits="1234567890"
             android:hint="Sim pin code"/>

@@ -185,6 +185,41 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/setting_language"
+                android:layout_marginTop="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/setting_language_pic"
+                    android:layout_marginTop="@dimen/dimen_20dip"
+                    android:layout_marginBottom="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:layout_width="@dimen/dimen_30dip"
+                    android:layout_height="@dimen/dimen_30dip"/>
+
+                <TextView
+                    android:textSize="@dimen/font_size_normal"
+                    android:textColor="@color/black_text"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/setting_language_pic"
+                    android:text="Language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/setting_wifi"
+                    android:layout_marginRight="@dimen/common_margin"
+                    android:src="@drawable/right_arrow_big"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/setting_firmware_upgrade"
                 android:layout_marginTop="@dimen/dimen_10dip"
                 android:background="@color/color_white"

@@ -2,6 +2,8 @@ package com.alcatel.wifilink.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
@@ -21,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.model.connection.ConnectionSettings;
@@ -31,6 +34,7 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener ,AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
@@ -51,6 +55,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private Network mNetworkSettings;
     private ConnectionSettings mConnectionSettings;
     private UsageSetting mUsageSetting;
+    private SimStatus mSimStatus;
     //set data plan
     private TextView mMonthlyDataPlanText;
     private AppCompatSpinner mBillingDaySpinner;
@@ -76,6 +81,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mNetworkSettings = new Network();
         mConnectionSettings = new ConnectionSettings();
         mUsageSetting = new UsageSetting();
+        mSimStatus = new SimStatus();
         //set data plan
         findViewById(R.id.rl_monthly_data_plan).setOnClickListener(this);
         findViewById(R.id.rl_set_time_limit).setOnClickListener(this);
@@ -343,6 +349,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 mSimPinCompat.setChecked(enable == 1);
             }
             @Override
+            protected void onResultError(ResponseBody.Error error) {
+                int remainTimes = mSimStatus.getPinRemainingTimes()-1;
+                Toast.makeText(SettingNetworkActivity.this, error.getMessage() + " " + getString(R.string.can_also_enter_times,remainTimes+"") , Toast.LENGTH_SHORT).show();
+                getSimStatus();
+            }
+            @Override
             protected void onFailure() {
                 Log.d(TAG, "changePinState error");
                 mSimPinCompat.setChecked(enable == 1? false: true);
@@ -356,6 +368,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             protected void onSuccess(SimStatus result) {
                 // PinState: 0: unknown 1: enable but not verified 2: PIN enable verified 3: PIN disable 4: PUK required 5: PUK times used out;
                 Log.v(TAG, "getSimStatus"+result.getPinState());
+                mSimStatus = result;
                 if(result.getPinState() == 2){
                     mSimPinCompat.setChecked(true);
                 } else if(result.getPinState() == 3) {
@@ -409,7 +422,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 mNewSimPin.setText(null);
                 mConfirmNewSimPin.setText(null);
             }
-
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                int remainTimes = mSimStatus.getPinRemainingTimes()-1;
+                Toast.makeText(SettingNetworkActivity.this, error.getMessage() + " " + getString(R.string.can_also_enter_times,remainTimes+"") , Toast.LENGTH_SHORT).show();
+                getSimStatus();
+            }
             @Override
             protected void onFailure() {
                 Log.d(TAG, "changePinCode error");
@@ -473,10 +491,14 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             case R.id.network_change_pin:
                 mChangePin.setVisibility(View.VISIBLE);
                 mMobileNetwork.setVisibility(View.GONE);
-                setTitle("Change Pin");
+                setTitle(getString(R.string.change_pin));
                 invalidateOptionsMenu();
                 break;
             case R.id.network_sim_pin_switch:
+                if(mSimStatus.getPinRemainingTimes() == 0) {
+                    ChangeActivity.toActivity(this, PukUnlockActivity.class, true, true, false, 0);
+                    return;
+                }
                 mSimPinCompat.setChecked(mSimPinCompat.isChecked()?false:true);
                 showSimPinEnableDialog();
                 break;
@@ -567,6 +589,16 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private void showProfileLinkDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.dialog_profile_link, null);
+        v.findViewById(R.id.tv_web_edit_profile).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse("http://192.168.1.1");
+                intent.setData(content_url);
+                startActivity(intent);
+            }
+        });
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
         builder.setNegativeButton(R.string.cancel, null);
@@ -575,26 +607,30 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void doneChangePinCode() {
+        if(mSimStatus.getPinRemainingTimes() == 0) {
+            ChangeActivity.toActivity(this, PukUnlockActivity.class, true, true, false, 0);
+            return;
+        }
         String currentPin = mCurrentSimPin.getText().toString();
         String newPin = mNewSimPin.getText().toString();
         String confirmPin = mConfirmNewSimPin.getText().toString();
         if (currentPin.length() == 0) {
-            String strInfo = "Please input your current pin code";
+            String strInfo = getString(R.string.please_input_your_current_pin_code);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
             return;
         }
         if (newPin.length() == 0) {
-            String strInfo = "Please input your new pin code!";
+            String strInfo = getString(R.string.please_input_your_new_pin_code);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
             return;
         }
         if (!newPin.equals(confirmPin)) {
-            String strInfo = "Inconsistent new pin code!";
+            String strInfo = getString(R.string.inconsistent_new_pin_code);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (confirmPin.length() != 4) {
-            String strInfo = "The pin code should be 4 characters";
+        if (confirmPin.length() < 4 || confirmPin.length() > 8) {
+            String strInfo = getString(R.string.the_pin_code_should_be_4_8_characters);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
             return;
         }

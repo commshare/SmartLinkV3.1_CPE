@@ -29,9 +29,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_12dip"
                     android:background="@null"
-                    android:hint="Current SIM PIN"
+                    android:hint="@string/current_sim_pin"
                     android:imeOptions="flagNoExtractUi"
-                    android:maxLength="4"
+                    android:maxLength="8"
                     android:inputType="number"
                     android:digits="1234567890"
                     android:paddingBottom="@dimen/dimen_12dip"
@@ -58,9 +58,9 @@
                     android:layout_height = "wrap_content"
                     android:layout_marginLeft = "@dimen/dimen_12dip"
                     android:background = "@null"
-                    android:hint = "New SIM PIN"
+                    android:hint = "@string/new_sim_pin"
                     android:imeOptions = "flagNoExtractUi"
-                    android:maxLength="4"
+                    android:maxLength="8"
                     android:inputType="number"
                     android:digits="1234567890"
                     android:paddingBottom = "15dp"
@@ -89,9 +89,9 @@
                     android:layout_marginLeft = "@dimen/dimen_12dip"
                     android:layout_weight = "1"
                     android:background = "@null"
-                    android:hint = "Confirm New SIM PIN"
+                    android:hint = "@string/confirm_new_sim_pin"
                     android:imeOptions = "flagNoExtractUi"
-                    android:maxLength="4"
+                    android:maxLength="8"
                     android:inputType="number"
                     android:digits="1234567890"
                     android:paddingBottom = "@dimen/dimen_15dip"
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/remember_sim_pin"
                 android:layout_marginTop="4dp"
-                android:text="Remember SIM PIN"/>
+                android:text="@string/remember_sim_pin"/>
 
         </LinearLayout>
     </ScrollView>

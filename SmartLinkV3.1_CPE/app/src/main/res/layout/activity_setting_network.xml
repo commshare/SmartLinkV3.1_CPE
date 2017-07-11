@@ -115,7 +115,7 @@
                         style="@style/WlanSettingTitle"
                         android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:text="@string/setting_set_data_plan"/>
+                        android:text="@string/setting_set_data_plan" />
                     <ImageView
                         android:id="@+id/network_set_data_plan_arrow"
                         android:layout_marginRight="@dimen/dimen_10dip"
@@ -175,7 +175,7 @@
                         style="@style/WlanSettingTitle"
                         android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:text="Profile"/>
+                        android:text="@string/profile"/>
 
                     <ImageView
                         android:id="@+id/network_selected_profile_arrow"

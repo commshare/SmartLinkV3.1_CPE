@@ -853,6 +853,17 @@
     <string name="host">Host</string>
     <string name="check_your_wan_cabling">Check your WAN cabling</string>
     <string name="usb_printers_nearby">USB Printers nearby</string>
+    <string name="profile">Profile</string>
+    <string name="current_sim_pin">Current SIM PIN</string>
+    <string name="new_sim_pin">New SIM PIN</string>
+    <string name="confirm_new_sim_pin">Confirm New SIM PIN</string>
+    <string name="remember_sim_pin">Remember SIM PIN</string>
+    <string name="change_pin">Change Pin</string>
+    <string name="please_input_your_current_pin_code">Please input your current pin code</string>
+    <string name="please_input_your_new_pin_code">Please input your new pin code</string>
+    <string name="inconsistent_new_pin_code">Inconsistent new pin code</string>
+    <string name="the_pin_code_should_be_4_8_characters">The pin code should be 4-8 characters</string>
+    <string name="can_also_enter_times">Can also enter %1$s times</string>
 
     <!-- home activity sim pop -->
     <string name="pop_sim_locked">SIM lock</string>
