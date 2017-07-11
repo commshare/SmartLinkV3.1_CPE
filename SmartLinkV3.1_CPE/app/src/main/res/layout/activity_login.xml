@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/login_center_line"
@@ -12,21 +12,24 @@
 
     <ImageView
         android:id="@+id/login_pic_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dimen_60dip"
+        android:layout_height="@dimen/dimen_60dip"
         android:layout_above="@id/login_center_line"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dimen_50dip"
+        android:layout_marginBottom="@dimen/dimen_100dip"
         android:src="@drawable/ic_launcher" />
 
     <EditText
         android:id="@+id/login_edit_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_45dip"
         android:layout_below="@+id/login_center_line"
+        android:layout_margin="@dimen/dimen_15dip"
+        android:background="@drawable/login_psd_bg"
         android:hint="@string/login_enter_password"
-        android:imeOptions="flagNoExtractUi"
         android:inputType="textPassword"
+        android:lines="1"
+        android:paddingLeft="@dimen/dimen_8dip"
         android:textSize="@dimen/dimen_textsize_13sp" />
 
     <TextView
@@ -34,19 +37,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_edit_view"
-        android:textColor="@color/error_font_color"
+        android:layout_marginLeft="@dimen/dimen_15dip"
+        android:text="@string/login_enter_password_tip"
+        android:textColor="@color/gray11"
         android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_login_remenberPsd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_time_remain"
+        android:layout_margin="@dimen/dimen_15dip">
+
+        <ImageView
+            android:id="@+id/iv_login_checkbox"
+            android:layout_width="@dimen/dimen_20dip"
+            android:layout_height="@dimen/dimen_20dip"
+            android:src="@drawable/general_btn_remember_nor" />
+
+        <TextView
+            android:id="@+id/tv_login_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_toRightOf="@id/iv_login_checkbox"
+            android:text="@string/login_remenber_psd"
+            android:textSize="@dimen/dimen_textsize_16sp" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/login_apply_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_time_remain"
-        android:layout_marginTop="12dp"
+        android:layout_below="@id/rl_login_remenberPsd"
+        android:layout_marginLeft="@dimen/dimen_15dip"
+        android:layout_marginRight="@dimen/dimen_15dip"
         android:background="@drawable/selector_conner_btn_login_blue"
         android:enabled="false"
         android:gravity="center"
         android:text="@string/login_login_btn"
         android:textColor="@color/color_white"
         android:textSize="@dimen/font_size_normal" />
+
+    <TextView
+        android:id="@+id/tv_login_forgotPsd"
+        android:layout_width="@dimen/dimen_150dip"
+        android:layout_height="@dimen/dimen_30dip"
+        android:layout_below="@id/login_apply_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_15dip"
+        android:gravity="center"
+        android:text="@string/login_forgot_password"
+        android:textSize="@dimen/dimen_textsize_16sp" />
 </RelativeLayout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alcatel.wifilink.ui.activity.SimUnlockActivity">
+
+    <!-- SIM PIN -->
+    <EditText
+        android:id="@+id/et_sim_unlock"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_45dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/dimen_30dip"
+        android:layout_marginRight="@dimen/dimen_30dip"
+        android:layout_marginTop="@dimen/dimen_50dip"
+        android:background="@drawable/sim_unlock_bg"
+        android:hint="@string/qs_hint_sim_pin"
+        android:inputType="numberPassword"
+        android:lines="1"
+        android:maxLength="12"
+        android:paddingLeft="@dimen/dimen_8dip"
+        android:textSize="@dimen/dimen_textsize_16sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_sim_unlock"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_30dip">
+
+        <!-- remain -->
+        <TextView
+            android:id="@+id/tv_sim_unlock_remainCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/dimen_textsize_16sp" />
+
+        <!-- remain -->
+        <TextView
+            android:id="@+id/tv_sim_unlock_remainDes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/tv_sim_unlock_remainCount"
+            android:text="@string/sim_unlocked_attempts"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/dimen_textsize_16sp" />
+
+    </RelativeLayout>
+
+    <!-- DONE -->
+    <com.alcatel.wifilink.appwidget.RippleView
+        android:id="@+id/rv_sim_unlock_done"
+        android:layout_width="@dimen/dimen_200dip"
+        android:layout_height="@dimen/dimen_45dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_60dip"
+        android:background="@drawable/pop_simdone"
+        android:gravity="center"
+        android:text="@string/done"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_18dip"
+        app:alphaFactor="0.8"
+        app:hover="true"
+        app:rippleColor="@color/white" />
+
+</RelativeLayout>

@@ -23,17 +23,26 @@
             android:textColor="@color/color_white"
             android:textSize="20sp" />
 
-        <!-- LogOut -->
-        <TextView
-            android:id="@+id/mTv_home_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/mRl_home_logout"
+            android:layout_width="@dimen/dimen_70dip"
+            android:layout_height="@dimen/dimen_40dip"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Logout"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/font_size_normal"
-            android:visibility="gone" />
+            android:layout_centerVertical="true">
+
+            <!-- LogOut -->
+            <TextView
+                android:id="@+id/mTv_home_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="Logout"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/font_size_normal"
+                android:visibility="visible" />
+
+        </RelativeLayout>
 
         <!-- edit message button -->
         <ImageView

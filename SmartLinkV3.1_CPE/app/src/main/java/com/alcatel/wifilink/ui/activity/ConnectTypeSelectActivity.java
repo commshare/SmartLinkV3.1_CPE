@@ -781,7 +781,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
     public void kickoffLogout() {
         ENUM.UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == ENUM.UserLoginStatus.Logout) {
-            HomeActivity.setKickoffLogoutFlag(true);
+            // HomeActivity.setKickoffLogoutFlag(true);
             BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGOUT_REQUEST, null);
         }
     }

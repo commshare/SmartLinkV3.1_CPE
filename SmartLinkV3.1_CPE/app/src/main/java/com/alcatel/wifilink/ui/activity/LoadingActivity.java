@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
@@ -153,10 +154,11 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private void launchLoginActivity(int remainTimes) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("remain_times", remainTimes);
-        startActivity(intent);
-        finish();
+        // Intent intent = new Intent(this, LoginActivity.class);
+        // intent.putExtra("remain_times", remainTimes);
+        // startActivity(intent);
+        // finish();
+        ChangeActivity.toActivity(this, LoginActivity.class, true, true, false, 0);
     }
 
 

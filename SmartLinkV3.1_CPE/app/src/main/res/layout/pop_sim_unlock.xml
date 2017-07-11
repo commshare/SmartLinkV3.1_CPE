@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_120dip"
+        android:background="@drawable/pop_sim_bg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <!-- title -->
+        <TextView
+            android:id="@+id/tv_pop_sim_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:text="@string/pop_sim_locked"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_textsize_16sp" />
+
+        <!-- buttons -->
+        <LinearLayout
+            android:id="@+id/ll_pop_sim_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <!-- cancel -->
+            <com.alcatel.wifilink.appwidget.RippleView
+                android:id="@+id/tv_pop_sim_cancel"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_50dip"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/pop_sim_bg"
+                android:gravity="center"
+                android:text="@string/pop_sim_cancel"
+                android:textColor="@color/pop_sim_text"
+                android:textSize="@dimen/dimen_textsize_16sp"
+                app:alphaFactor="0.8"
+                app:hover="true"
+                app:rippleColor="@color/gray" />
+
+            <!-- unlock -->
+            <com.alcatel.wifilink.appwidget.RippleView
+                android:id="@+id/tv_pop_sim_unlock"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_50dip"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/pop_sim_bg"
+                android:gravity="center"
+                android:text="@string/pop_sim_unlock"
+                android:textColor="@color/pop_sim_text"
+                android:textSize="@dimen/dimen_textsize_16sp"
+                app:alphaFactor="0.8"
+                app:hover="true"
+                app:rippleColor="@color/gray" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

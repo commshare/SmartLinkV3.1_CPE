@@ -20,6 +20,8 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
+
 public class SettingShareActivity extends BaseActivityWithBack implements OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private final String TAG = "SettingShareActivity";
@@ -63,20 +65,24 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
 
     }
 
-    private void requestGetSystemStatus(){
-        Log.d(TAG,"requestGetSystemStatus");
+    private void requestGetSystemStatus() {
+        Log.d(TAG, "requestGetSystemStatus");
         API.get().getSystemStatus(new MySubscriber<SysStatus>() {
             @Override
             protected void onSuccess(SysStatus result) {
-                Log.d(TAG,"requestGetSystemStatus,usb status:"+result.getUsbStatus());
-                Log.d(TAG,"requestGetSystemStatus,usb name:"+result.getUsbName());
-                switch (result.getUsbStatus()){
+                Log.d(TAG, "requestGetSystemStatus,usb status:" + result.getUsbStatus());
+                Log.d(TAG, "requestGetSystemStatus,usb name:" + result.getUsbName());
+                switch (result.getUsbStatus()) {
                     case Constants.DeviceUSBStatus.NOT_INSERT:
-                        mUSBStorageText.setText(R.string.no_insert);break;
-                    case Constants.DeviceUSBStatus.USB_STORAGE: mUSBStorageText.setText(R.string.setting_usb_storage);break;
+                        mUSBStorageText.setText(R.string.no_insert);
+                        break;
+                    case Constants.DeviceUSBStatus.USB_STORAGE:
+                        mUSBStorageText.setText(R.string.setting_usb_storage);
+                        break;
                     case Constants.DeviceUSBStatus.USB_PRINT:
                         mUSBStorageText.setText(R.string.usb_printer);
-                        showPrinterNameDlg(result.getUsbName());break;
+                        showPrinterNameDlg(result.getUsbName());
+                        break;
                 }
             }
 
@@ -238,13 +244,14 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         });
     }
 
-    private void showPrinterNameDlg(String printerName){
+    private void showPrinterNameDlg(String printerName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setNegativeButton(R.string.cancel,null);
+        builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.usb_printers_nearby);
         builder.setMessage(printerName);
         builder.create().show();
     }
+
     @Override
     protected void onResume() {
         super.onResume();

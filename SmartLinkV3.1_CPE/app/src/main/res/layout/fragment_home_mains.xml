@@ -6,208 +6,106 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/frame_connect"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="7"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_350dip"
         android:background="@color/home_connect_background_blue"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:gravity="center">
 
         <!-- *** CONNECT BUTTON *** -->
-        <FrameLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/rl_connectlogo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_50dip">
+            android:layout_centerInParent="true">
 
             <!-- 已连接UI connected -->
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/connected_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="visible">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                <!-- 圆形LOGO -->
+                <com.alcatel.wifilink.ui.view.CircleProgress
+                    android:id="@+id/home_circleProgress"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_centerInParent="true" />
 
-                    <com.alcatel.wifilink.ui.view.CircleProgress
-                        android:id="@+id/home_circleProgress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
+                <!-- 圆形背景 -->
                 <ImageView
                     android:layout_width="@dimen/dimen_211dip"
                     android:layout_height="@dimen/dimen_211dip"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
                     android:src="@drawable/home_ic_bg" />
 
-                <LinearLayout
-                    android:visibility="visible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                <!-- 波浪进度条 -->
+                <com.alcatel.wifilink.ui.view.WaveLoadingView
+                    android:id="@+id/connected_button"
+                    android:layout_width="@dimen/dimen_180dip"
+                    android:layout_height="@dimen/dimen_180dip"
+                    android:layout_centerInParent="true"
+                    app:wlv_borderColor="@color/circle_green"
+                    app:wlv_borderWidth="0dp"
+                    app:wlv_progressValue="40"
+                    app:wlv_round_rectangle="true"
+                    app:wlv_shapeType="circle"
+                    app:wlv_titleBottom="KB"
+                    app:wlv_titleBottomColor="@color/white"
+                    app:wlv_titleBottomSize="@dimen/dimen_textsize_24sp"
+                    app:wlv_titleCenter="0"
+                    app:wlv_titleCenterColor="@color/color_white"
+                    app:wlv_titleCenterSize="@dimen/dimen_textsize_50sp"
+                    app:wlv_triangle_direction="north"
+                    app:wlv_waveAmplitude="80"
+                    app:wlv_waveColor="@color/circle_green"
+                    app:wlv_wave_background_Color="@color/circle_bac_blue" />
 
-                    <com.alcatel.wifilink.ui.view.WaveLoadingView
-                        android:id="@+id/connected_button"
-                        android:layout_width="@dimen/dimen_180dip"
-                        android:layout_height="@dimen/dimen_180dip"
-                        app:wlv_borderColor="@color/circle_green"
-                        app:wlv_borderWidth="0dp"
-                        app:wlv_progressValue="40"
-                        app:wlv_round_rectangle="true"
-                        app:wlv_shapeType="circle"
-                        app:wlv_titleBottom="KB"
-                        app:wlv_titleBottomColor="@color/white"
-                        app:wlv_titleBottomSize="@dimen/dimen_textsize_24sp"
-                        app:wlv_titleCenter="0"
-                        app:wlv_titleCenterColor="@color/color_white"
-                        app:wlv_titleCenterSize="@dimen/dimen_textsize_50sp"
-                        app:wlv_triangle_direction="north"
-                        app:wlv_waveAmplitude="80"
-                        app:wlv_waveColor="@color/circle_green"
-                        app:wlv_wave_background_Color="@color/circle_bac_blue" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="@dimen/dimen_240dip"
-                    android:layout_height="@dimen/dimen_240dip"
-                    android:layout_gravity="center"
-                    android:gravity="bottom|center">
-
-                    <ImageView
-                        android:id="@+id/home_battery_image"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"
-                        android:contentDescription="@null"
-                        android:src="@drawable/home_ic_battery4"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </FrameLayout>
+            </RelativeLayout>
 
             <!-- 未连接UI connect -->
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/connect_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:visibility="gone">
 
+                <!-- 背景 -->
                 <ImageView
                     android:layout_width="@dimen/dimen_180dip"
                     android:layout_height="@dimen/dimen_180dip"
-                    android:layout_gravity="center"
+                    android:layout_centerInParent="true"
                     android:contentDescription="@null"
                     android:src="@drawable/home_ic_bg" />
 
+                <!-- CONNECT BUTTON -->
                 <Button
                     android:id="@+id/connect_button"
                     android:layout_width="@dimen/dimen_180dip"
                     android:layout_height="@dimen/dimen_180dip"
-                    android:layout_gravity="center"
+                    android:layout_centerInParent="true"
                     android:background="@drawable/home_btn_connected_nor" />
-            </FrameLayout>
-        </FrameLayout>
+            </RelativeLayout>
+        </RelativeLayout>
 
-        <!-- *** unlocked sim layout *** -->
-        <LinearLayout
-            android:id="@+id/sim_card_locked_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="6dip"
-            android:paddingTop="6dip"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/home_failed1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sms_failed_white_bg"
-                    android:contentDescription="@null" />
-
-                <TextView
-                    android:id="@+id/sim_card_locked_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="@string/home_sim_loched"
-                    android:textColor="@color/color_white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/unlock_sim_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/btn_unlock"
-                android:gravity="center"
-                android:paddingLeft="15dip"
-                android:paddingRight="15dip"
-                android:text="@string/Home_unlock_pin"
-                android:textColor="@color/color_white"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/no_sim_card_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="6dip"
-            android:paddingTop="6dip"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/home_failed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/sms_failed_white_bg"
-                android:contentDescription="@null" />
-
-            <TextView
-                android:id="@+id/no_sim_card_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/home_no_sim"
-                android:textColor="@color/color_white"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <!-- sim卡网络类型(移动|联通|电信) -->
+        <!-- *** sim卡网络类型(移动|联通|电信) *** -->
         <TextView
             android:id="@+id/connect_network"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_30dip"
-            android:layout_marginTop="@dimen/dimen_20dip"
+            android:layout_below="@id/rl_connectlogo"
+            android:layout_marginTop="@dimen/dimen_10dip"
             android:gravity="center"
+            android:text="MOBILE"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_textsize_24sp"
-            android:text="MOBILE"
             android:visibility="visible" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- *** wave view *** -->
     <com.alcatel.wifilink.ui.view.DynamicWave
@@ -224,13 +122,14 @@
         android:fillViewport="true"
         android:overScrollMode="never">
 
+        <!-- *** signal layout *** -->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
-            <!-- *** signal layout *** -->
+            <!-- signal -->
             <RelativeLayout
                 android:id="@+id/sigel_panel"
                 android:layout_width="0dip"
@@ -292,7 +191,7 @@
                 </RelativeLayout>
             </RelativeLayout>
 
-            <!-- *** connected layout *** -->
+            <!-- devices -->
             <RelativeLayout
                 android:id="@+id/access_panel"
                 android:layout_width="0dip"
@@ -302,12 +201,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp">
 
-                <TextView
-                    android:id="@+id/txtHide3"
-                    android:layout_width="0dip"
-                    android:layout_height="0dip"
-                    android:layout_alignParentRight="true" />
-
+                <!-- connected logo -->
                 <ImageView
                     android:id="@+id/access_status"
                     android:layout_width="@dimen/dimen_70dip"
@@ -329,6 +223,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
+                    <!-- device count -->
                     <TextView
                         android:id="@+id/access_num_label"
                         android:layout_width="wrap_content"
@@ -339,6 +234,7 @@
                         android:textColor="@color/grey_text"
                         android:textSize="@dimen/dimen_textsize_18sp" />
 
+                    <!-- CONNECTED DES -->
                     <TextView
                         android:id="@+id/access_label"
                         android:layout_width="wrap_content"

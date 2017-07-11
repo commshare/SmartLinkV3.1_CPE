@@ -1,16 +1,10 @@
 package com.alcatel.wifilink.ui.home.allsetup;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.Formatter;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,42 +14,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.business.BusinessManager;
+import com.alcatel.wifilink.appwidget.PopupWindows;
+import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.business.FeatureVersionManager;
-import com.alcatel.wifilink.business.model.SimStatusModel;
-import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.ENUM.SIMState;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
-import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
-import com.alcatel.wifilink.mediaplayer.proxy.IDeviceChangeListener;
-import com.alcatel.wifilink.mediaplayer.upnp.DMSDeviceBrocastFactory;
-import com.alcatel.wifilink.mediaplayer.util.ThumbnailLoader;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginState;
+import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
-import com.alcatel.wifilink.ui.dialog.AutoForceLoginProgressDialog;
-import com.alcatel.wifilink.ui.dialog.AutoLoginProgressDialog;
-import com.alcatel.wifilink.ui.dialog.ErrorDialog;
-import com.alcatel.wifilink.ui.dialog.LoginDialog;
-import com.alcatel.wifilink.ui.dialog.PinDialog;
-import com.alcatel.wifilink.ui.dialog.PukDialog;
+import com.alcatel.wifilink.ui.activity.LoginActivity;
+import com.alcatel.wifilink.ui.activity.PukUnlockActivity;
+import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
 import com.alcatel.wifilink.ui.home.fragment.MainFragment;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.home.helper.pop.SimPopHelper;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.utils.FraHomeHelper;
 import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeEnum;
-import com.alcatel.wifilink.ui.view.ViewMicroSD;
+import com.alcatel.wifilink.utils.ActionbarSetting;
+import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ScreenSize;
 
 import org.cybergarage.upnp.Device;
 
 import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,10 +62,11 @@ import static com.alcatel.wifilink.R.drawable.tab_wifi_pre;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
+import static com.alcatel.wifilink.fileexplorer.FileSortHelper.SortMethod.size;
 import static com.alcatel.wifilink.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
-import static com.alcatel.wifilink.ui.home.fragment.MainFragment.PRESSBUTTON;
+import static com.alcatel.wifilink.ui.home.helper.main.ApiEngine.getSimStatus;
 
-public class HomeActivity extends AppCompatActivity implements IDeviceChangeListener, View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.layout_main)
     RelativeLayout layoutMain;// 父布局
@@ -99,7 +88,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     TextView mTvHomeShareSD;// SD卡按钮
 
     @BindView(R.id.mRl_home_messagebutton)
-    RelativeLayout mRlHomeMessagebutton;// sms按钮
+    RelativeLayout mRl_smsButton;// sms按钮
     @BindView(R.id.mIv_home_message)
     ImageView mIv_home_message;
     //@BindView(R.id.mTv_home_messageCount)
@@ -124,18 +113,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     private FragmentManager fm;
     private ImageView[] groupButtons;
 
-    // dialog
-    private LoginDialog m_loginDlg;
-    private AutoForceLoginProgressDialog m_ForceloginDlg;
-    private AutoLoginProgressDialog m_autoLoginDialog;
-    private PinDialog m_dlgPin;
-    private PukDialog m_dlgPuk;
-    private ErrorDialog m_dlgError;
-
-    private DMSDeviceBrocastFactory mBrocastFactory;
-    private AllShareProxy mAllShareProxy;
-    private ThumbnailLoader thumbnailLoader;
-
     /* -------------------------------------------- TEMP -------------------------------------------- */
     public static boolean m_blLogout;
     public static boolean m_blkickoff_Logout;
@@ -143,12 +120,23 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     private static Device mDevice;
     public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
     protected boolean m_bNeedBack = true;//whether need to back main activity.
-    public static ActionBar supportActionBar;
+    public ActionBar supportActionBar;
 
-    private OnTimerStatus onTimerStatus;
     private TimerHelper timerHelper;
 
     public static HomeActivity hac;
+
+    /* action bar 的按钮 */
+    private TextView barTitle;
+    private RelativeLayout barLogout;
+    private ImageView barSms;
+
+
+    /* 弹出的按钮 */
+    private PopupWindows simPop;
+    private RippleView tv_cancel;
+    private RippleView tv_unlock;
+    private ActionbarSetting barSetting;
 
 
     @Override
@@ -156,64 +144,27 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homes);
         hac = this;
-        // get action bar
         supportActionBar = getSupportActionBar();
         fm = getSupportFragmentManager();
         ButterKnife.bind(this);
+        initActionbar();
         initView();
-        initDialog();
         initUi();
-        // 启动定时器
-        startTimer();
     }
 
-    /**
-     * 心跳定时器
-     */
-    private void startTimer() {
-        timerHelper = new TimerHelper(this) {
+    /* **** initActionbar **** */
+    private void initActionbar() {
+        barSetting = new ActionbarSetting() {
             @Override
-            public void doSomething() {
-                // 检测sim状态
-                // getAllStatus();
-                getSmsCount();
-
-                if (onTimerStatus != null) {
-                    onTimerStatus.sendTimerFlag();
-                }
+            public void findActionbarView(View view) {
+                barTitle = (TextView) view.findViewById(R.id.mTv_home_Title);
+                barLogout = (RelativeLayout) view.findViewById(R.id.mRl_home_logout);
+                barSms = (ImageView) view.findViewById(R.id.mIv_home_editSms);
+                barLogout.setOnClickListener(HomeActivity.this);
+                barSms.setOnClickListener(HomeActivity.this);
             }
         };
-        timerHelper.start(5000);
-    }
-
-    /**
-     * 获取sms未读消息数量
-     */
-    private void getSmsCount() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
-            @Override
-            protected void onSuccess(SimStatus result) {
-                if (result.getSIMState() == Cons.READY) {
-                    // 获取消息数
-                    SmsCountHelper.setSmsCount(HomeActivity.this, mTvHomeMessageCount);
-                }
-
-            }
-        });
-    }
-
-    public interface OnTimerStatus {
-        void sendTimerFlag();
-    }
-
-    public void setOnTimerStatus(OnTimerStatus onTimerStatus) {
-        this.onTimerStatus = onTimerStatus;
-    }
-
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+        barSetting.settingActionbarAttr(this, supportActionBar, R.layout.actionbarhome);
     }
 
     @Override
@@ -222,8 +173,7 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
             mkeyTime = System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
         } else {
-            // 停止定时器
-            timerHelper.stop();
+            OtherUtils.kill();
             super.onBackPressed();
             finish();
         }
@@ -232,44 +182,19 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     @Override
     protected void onResume() {
         super.onResume();
-        updateBtnState();
-        toPageHomeWhenPinSimNoOk();
+        // start timer
+        startTimer();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPrefsUtil.getInstance(this).putBoolean(MainFragment.PRESSBUTTON, false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        destroyDialogs();
-        mBrocastFactory.unRegisterListener();
-        mAllShareProxy.exitSearch();
-        thumbnailLoader.clearCache();
-        SharedPrefsUtil.getInstance(this).putBoolean(PRESSBUTTON, false);
-    }
-
-
-    private void destroyDialogs() {
-        m_dlgPin.destroyDialog();
-        m_dlgPuk.destroyDialog();
-        m_dlgError.destroyDialog();
-        m_loginDlg.destroyDialog();
-        m_ForceloginDlg.destroyDialog();
-        m_autoLoginDialog.destroyDialog();
+        timerHelper.stop();
     }
 
     private void initView() {
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
         SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
-
-        mAllShareProxy = AllShareProxy.getInstance(this);
-        mBrocastFactory = new DMSDeviceBrocastFactory(this);
-        mBrocastFactory.registerListener(this);
-        thumbnailLoader = new ThumbnailLoader(this);
     }
 
     private void initUi() {
@@ -279,20 +204,29 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         refreshUi_fragment(FragmentHomeEnum.MAIN);
     }
 
+
     /* action bar click */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             /* topbanner buttons */
-            case R.id.mTv_home_logout:// logout
+            case R.id.mRl_home_logout:// logout
                 logout();
                 break;
             case R.id.mIv_home_editSms:// edit message
-                // to message send ui
                 toSmsActivity();
+                break;
+            case R.id.tv_pop_sim_cancel:// sim pop cancel
+                OtherUtils.kill();
+                finish();
+                break;
+            case R.id.tv_pop_sim_unlock:
+                // check the sim is insert
+                isSimInsert();
                 break;
         }
     }
+
 
     /* bottom group click */
     @OnClick({R.id.mRl_home_mainbutton,// home
@@ -304,16 +238,13 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         switch (view.getId()) {
             
             /* group groupButtons */
-
             case R.id.mRl_home_mainbutton:// home button
                 refreshUi_fragment(FragmentHomeEnum.MAIN);
                 break;
-
             case R.id.mRl_home_wifibutton:// wifi button
                 refreshUi_fragment(FragmentHomeEnum.WIFI);
-
                 break;
-            case R.id.mRl_home_messagebutton:// message button
+            case R.id.mRl_home_messagebutton:// sms button
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
@@ -322,8 +253,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
                         }
                     }
                 });
-
-
                 break;
             case R.id.mRl_home_settingbutton:// setting button
                 refreshUi_fragment(FragmentHomeEnum.SETTING);
@@ -337,18 +266,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
     /* -------------------------------------------- BUSINESS -------------------------------------------- */
 
     /**
-     * A0.初始话必需的弹窗
-     */
-    public void initDialog() {
-        m_dlgPin = PinDialog.getInstance(this);
-        m_dlgPuk = PukDialog.getInstance(this);
-        m_dlgError = ErrorDialog.getInstance(this);
-        m_loginDlg = new LoginDialog(this);
-        m_ForceloginDlg = new AutoForceLoginProgressDialog(this);
-        m_autoLoginDialog = new AutoLoginProgressDialog(this);
-    }
-
-    /**
      * A1.登出
      */
     private void logout() {
@@ -357,13 +274,13 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
             @Override
             protected void onSuccess(LoginState result) {
                 if (result.getState() == Cons.LOGIN) {
-                    setLogoutFlag(true);// set logout flag = true
-                    SharedPrefsUtil.getInstance(HomeActivity.this).putBoolean(LOGOUT_FLAG, true);
                     // 2. logout action
                     API.get().logout(new MySubscriber() {
                         @Override
                         protected void onSuccess(Object result) {
                             ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
+                            // 3. when logout finish --> to the login Acitvity
+                            ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, true, true, false, 0);
                         }
 
                         @Override
@@ -371,15 +288,6 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
                             ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_failed));
                         }
                     });
-                    // 3.injust is force login --> set to the main fragment
-                    if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
-                        setActionBarUi(false, -1, false, false);
-                        refreshUi_fragment(FragmentHomeEnum.MAIN);
-                    }
-                    // 4.reset the logout flag in CPEconfig
-                    CPEConfig.getInstance().userLogout();
-                    // 登出后--> 显示登陆界面
-                    m_loginDlg.showDialog();
                 }
             }
         });
@@ -427,73 +335,29 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
 
     }
 
-    /**
-     * H3.刷新ui以及切换Fragment
-     *
-     * @param en 枚举
-     */
+    /* **** 定时器 **** */
+    private void startTimer() {
+        timerHelper = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                // is wan or sim
+                isWanInsert();
+            }
+        };
+        timerHelper.start(5000);
+    }
+
+    /* 刷新ui以及切换Fragment */
     private void refreshUi_fragment(FragmentHomeEnum en) {
         // 0.actionbar ui
-        refreshActionbar(en);
         // 1.groupbutton change
+        refreshActionbar(en);
         setGroupButtonUi(en);
         // 2.transfer the fragment
         FraHomeHelper.commit(this, fm, R.id.mFl_home_container, en);
     }
 
-
-    /* +++++++++++++++++++++++++++++++++++++++++++ action bar +++++++++++++++++++++++++++++++++++++++++++++ */
-
-    /**
-     * H6.设置action各项属性
-     *
-     * @param isshow
-     */
-    private void setActionBarUi(boolean isshow, int titleId, boolean isLogout, boolean isSMS) {
-        // 1.clear the animation
-        disableABCShowHideAnimation(supportActionBar);
-        // 2.show attrs-self view
-        supportActionBar.setDisplayShowCustomEnabled(isshow);
-        if (isshow) {
-            supportActionBar.setCustomView(R.layout.actionbarhome);
-            supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            supportActionBar.show();
-            findActionBarView(titleId, isLogout, isSMS);
-        } else {
-            supportActionBar.hide();
-        }
-
-    }
-
-    /**
-     * H7.Actionbar 视图元素
-     *
-     * @param titleId
-     * @param isLogout
-     * @param isSMS
-     */
-    private void findActionBarView(int titleId, boolean isLogout, boolean isSMS) {
-        // 1.get view
-        View customView = supportActionBar.getCustomView();
-        // 2.find widget
-        TextView tv_title = (TextView) customView.findViewById(R.id.mTv_home_Title);
-        TextView tv_logout = (TextView) customView.findViewById(R.id.mTv_home_logout);
-        ImageView iv_smsedit = (ImageView) customView.findViewById(R.id.mIv_home_editSms);
-        // 3.set title
-        tv_title.setText(titleId < 0 ? "" : getString(titleId));
-        // 4.set right function ui 
-        tv_logout.setVisibility(isLogout ? VISIBLE : GONE);
-        iv_smsedit.setVisibility(isSMS ? VISIBLE : GONE);
-        // 5.set right function click
-        tv_logout.setOnClickListener(this);
-        iv_smsedit.setOnClickListener(this);
-    }
-
-    /**
-     * H8.更新Actionui
-     *
-     * @param en
-     */
+    /* **** ACTION BAR根据切换改变UI **** */
     private void refreshActionbar(FragmentHomeEnum en) {
         switch (en) {
             case MAIN:
@@ -512,246 +376,113 @@ public class HomeActivity extends AppCompatActivity implements IDeviceChangeList
         }
     }
 
-    /**
-     * H9.消除ActionBar隐藏|显示时候的动画
-     *
-     * @param actionBar
-     */
-    public static void disableABCShowHideAnimation(ActionBar actionBar) {
-        try {
-            actionBar.getClass().getDeclaredMethod("setShowHideAnimationEnabled", boolean.class).invoke(actionBar, false);
-        } catch (Exception exception) {
-            try {
-                Field mActionBarField = actionBar.getClass().getSuperclass().getDeclaredField("mActionBar");
-                mActionBarField.setAccessible(true);
-                Object icsActionBar = mActionBarField.get(actionBar);
-                Field mShowHideAnimationEnabledField = icsActionBar.getClass().getDeclaredField("mShowHideAnimationEnabled");
-                mShowHideAnimationEnabledField.setAccessible(true);
-                mShowHideAnimationEnabledField.set(icsActionBar, false);
-                Field mCurrentShowAnimField = icsActionBar.getClass().getDeclaredField("mCurrentShowAnim");
-                mCurrentShowAnimField.setAccessible(true);
-                mCurrentShowAnimField.set(icsActionBar, null);
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    /* +++++++++++++++++++++++++++++++++++++++++++ action bar +++++++++++++++++++++++++++++++++++++++++++++ */
-
-
-    /* -------------------------------------------- TEMP -------------------------------------------- */
-    /* -------------------------------------------- TEMP -------------------------------------------- */
-    public static void setLogoutFlag(boolean blLogout) {
-        m_blLogout = blLogout;
-    }
-
-    public static void setKickoffLogoutFlag(boolean blLogout) {
-        m_blkickoff_Logout = blLogout;
-    }
-
-    private void updateBtnState() {
-        //SimStatusModel simState = BusinessManager.getInstance().getSimStatus();
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
-            @Override
-            protected void onSuccess(SimStatus result) {
-                mRlHomeMessagebutton.setEnabled(result.getSIMState() == Cons.READY ? true : false);
-            }
-        });
-    }
-
-    private void toPageHomeWhenPinSimNoOk() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
-            @Override
-            protected void onSuccess(SimStatus result) {
-                if (result.getSIMState() != Cons.READY) {
-                    refreshUi_fragment(FragmentHomeEnum.MAIN);
-                    unlockSimBtnClick(false);
-                }
-            }
-        });
-    }
-
-    public void unlockSimBtnClick(boolean blCancelUserClose) {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
-            @Override
-            protected void onSuccess(SimStatus result) {
-                if (result.getSIMState() == Cons.PIN_REQUIRED) {
-                    if (blCancelUserClose) {
-                        m_dlgPin.cancelUserClose();
-                        m_dlgPuk.cancelUserClose();
-                    }
-                    ShowPinDialog();
-                } else if (result.getSIMState() == Cons.PUK_REQUIRED) {
-                    if (blCancelUserClose) {
-                        m_dlgPin.cancelUserClose();
-                        m_dlgPuk.cancelUserClose();
-                    }
-                    ShowPukDialog();
-                }
-            }
-        });
-    }
-
-    public void ShowPinDialog() {
-        // close PUK dialog
-        if (null != m_dlgPuk && PukDialog.m_isShow) {
-            m_dlgPuk.closeDialog();
-        }
-
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
-            @Override
-            protected void onSuccess(SimStatus result) {
-                // set the remain times
-                if (null != m_dlgPin) {
-                    m_dlgPin.updateRemainTimes(result.getPinRemainingTimes());
-                }
-                if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
-                    if (!PinDialog.m_isShow) {
-                        m_dlgPin.showDialog(result.getPinRemainingTimes(), () -> {
-                            String strMsg = getString(R.string.pin_error_waring_title);
-                            m_dlgError.showDialog(strMsg, () -> {
-                                m_dlgPin.showDialog();
-                            });
-                        });
-                    }
-                }
-            }
-        });
-
-    }
-
-    public void ShowPukDialog() {
-        // close PIN dialog
-        if (null != m_dlgPin && PinDialog.m_isShow) {
-            m_dlgPin.closeDialog();
-        }
-
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
-            @Override
-            protected void onSuccess(SimStatus result) {
-                // set the remain times
-                if (null != m_dlgPuk) {
-                    m_dlgPuk.updateRemainTimes(result.getPukRemainingTimes());
-                }
-                if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
-                    if (!PukDialog.m_isShow) {
-                        m_dlgPuk.showDialog(result.getPinRemainingTimes(), () -> {
-                            String strMsg = getString(R.string.puk_error_waring_title);
-                            m_dlgError.showDialog(strMsg, () -> {
-                                m_dlgPuk.showDialog();
-                            });
-                        });
-                    }
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onDeviceChange(boolean isSelDeviceChange) {
-        updateDeviceList();
-    }
-
-    private void simRollRequest() {
-        updateBtnState();
-        SimStatusModel sim = BusinessManager.getInstance().getSimStatus();
-        toPageHomeWhenPinSimNoOk();
-
-        if (sim.m_SIMState == SIMState.PinRequired) {
-            // close PUK dialog
-            if (null != m_dlgPuk && PukDialog.m_isShow)
-                m_dlgPuk.closeDialog();
-            // set the remain times
-            if (null != m_dlgPin)
-                m_dlgPin.updateRemainTimes(sim.m_nPinRemainingTimes);
-
-            if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
-                if (!PinDialog.m_isShow) {
-                    m_dlgPin.showDialog(sim.m_nPinRemainingTimes, new PinDialog.OnPINError() {
-                        @Override
-                        public void onPinError() {
-                            String strMsg = getString(R.string.pin_error_waring_title);
-                            m_dlgError.showDialog(strMsg, new ErrorDialog.OnClickBtnRetry() {
-                                @Override
-                                public void onRetry() {
-                                    m_dlgPin.showDialog();
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    m_dlgPin.onSimStatusReady(sim);
-                }
-            }
-        } else if (sim.m_SIMState == SIMState.PukRequired) {// puk
-            // close PIN dialog
-            if (null != m_dlgPin && PinDialog.m_isShow)
-                m_dlgPin.closeDialog();
-
-            // set the remain times
-            if (null != m_dlgPuk)
-                m_dlgPuk.updateRemainTimes(sim.m_nPukRemainingTimes);
-
-            if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
-                if (!PukDialog.m_isShow) {
-                    m_dlgPuk.showDialog(sim.m_nPukRemainingTimes, new PukDialog.OnPUKError() {
-
-                        @Override
-                        public void onPukError() {
-                            String strMsg = getString(R.string.puk_error_waring_title);
-                            m_dlgError.showDialog(strMsg, new ErrorDialog.OnClickBtnRetry() {
-
-                                @Override
-                                public void onRetry() {
-                                    m_dlgPuk.showDialog();
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    m_dlgPuk.onSimStatusReady(sim);
-                }
-            }
+    /* **** ACTION BAR切换不同的标题和UI样式 **** */
+    private void setActionBarUi(boolean isShowBar, int titleID, boolean isLogout, boolean isSms) {
+        // show or hide
+        if (isShowBar) {
+            barSetting.showActionbar(supportActionBar);
         } else {
-            closePinAndPukDialog();
+            barSetting.hideActionbar(supportActionBar);
         }
+        // title
+        barTitle.setText(titleID < 0 ? "" : getString(titleID));
+        // logout button effect?
+        barLogout.setVisibility(isLogout ? VISIBLE : GONE);
+        barLogout.setClickable(isLogout);
+        // is sms effect?
+        barSms.setVisibility(isSms ? VISIBLE : GONE);
+        barSms.setClickable(isSms);
     }
 
-    private void closePinAndPukDialog() {
-        if (m_dlgPin != null)
-            m_dlgPin.closeDialog();
+    /* **** 获取SIM卡状态 **** */
+    private void getSimStatus() {
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                int simState = result.getSIMState();
+                mRl_smsButton.setEnabled(simState == Cons.READY ? true : false);
+                
+                /* 需要输入PIN码 */
+                if (simState == Cons.PIN_REQUIRED) {
+                    // show pop to check pin
+                    showSimPop();
+                }
 
-        if (m_dlgPuk != null)
-            m_dlgPuk.closeDialog();
-
-        if (m_dlgError != null)
-            m_dlgError.closeDialog();
-    }
-
-    private String getServerAddress(Context ctx) {
-        WifiManager wifi_service = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
-        DhcpInfo dhcpInfo = wifi_service.getDhcpInfo();
-        return Formatter.formatIpAddress(dhcpInfo.gateway);
-    }
-
-    private void updateDeviceList() {
-        List<Device> list = mAllShareProxy.getDMSDeviceList();
-        String str1;
-        String str2;
-        Iterator<Device> iterator = list.iterator();
-
-
-        for (Device tmp : list) {
-            str1 = tmp.getLocation().substring(7);
-            str2 = str1.substring(0, str1.indexOf(":"));
-            if (str2.equalsIgnoreCase(getServerAddress(this))) {
-                mDevice = tmp;
+                /* 需要输入PUK码 */
+                if (simState == Cons.PUK_REQUIRED) {
+                    ChangeActivity.toActivity(HomeActivity.this, PukUnlockActivity.class, true, true, false, 0);
+                }
+                
+                /* SIM卡已经插入并且已经准备好 */
+                if (simState == Cons.READY && simPop != null && simState != Cons.PIN_REQUIRED) {
+                    // 获取消息数
+                    SmsCountHelper.setSmsCount(HomeActivity.this, mTvHomeMessageCount);
+                    // pop dismiss
+                    if (simPop != null) {
+                        simPop.dismiss();
+                    }
+                }
             }
-        }
 
-        mAllShareProxy.setDMSSelectedDevice(mDevice);
-        Intent msdIntent = new Intent(ViewMicroSD.DLNA_DEVICES_SUCCESS);
-        sendBroadcast(msdIntent);
+            @Override
+            public void onError(Throwable e){
+                
+            }
+        });
     }
+
+    /* **** showSimPop: 显示SIM卡弹窗 **** */
+    private void showSimPop() {
+        simPop = new SimPopHelper() {
+            @Override
+            public void getView(View pop) {
+                tv_cancel = (RippleView) pop.findViewById(R.id.tv_pop_sim_cancel);
+                tv_unlock = (RippleView) pop.findViewById(R.id.tv_pop_sim_unlock);
+                tv_cancel.setOnClickListener(HomeActivity.this);
+                tv_unlock.setOnClickListener(HomeActivity.this);
+            }
+        }.showPop(this);
+    }
+
+    /* **** WAN口是否有效 **** */
+    public void isWanInsert() {
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+            @Override
+            protected void onSuccess(WanSettingsResult result) {
+                int wanStatus = result.getStatus();
+                if (wanStatus == Cons.CONNECTING || wanStatus == Cons.CONNECTED) {// wan insert
+                    if (simPop != null) {
+                        simPop.dismiss();
+                    }
+                } else {// sim insert
+                    getSimStatus();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e){
+                
+            }
+        });
+    }
+
+    /* **** SIM卡是否插入 **** */
+    private void isSimInsert() {
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                int simState = result.getSIMState();
+                if (simState == Cons.PIN_REQUIRED) {
+                    // sim pop to unlock activity
+                    ChangeActivity.toActivity(HomeActivity.this, SimUnlockActivity.class, true, false, false, 0);
+                    return;
+                }
+                if (simState == Cons.NOWN) {
+                    ToastUtil_m.show(HomeActivity.this, getString(R.string.Home_no_sim));
+                }
+
+            }
+        });
+    }
+
 }

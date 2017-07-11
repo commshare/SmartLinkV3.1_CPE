@@ -1,172 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name = "colorPrimary">#009AFF</color>
-    <color name = "colorPrimaryDark">#009AFF</color>
-    <color name = "colorAccent">#009AFF</color>
+    <color name="colorPrimary">#009AFF</color>
+    <color name="colorPrimaryDark">#009AFF</color>
+    <color name="colorAccent">#009AFF</color>
 
-    <color name = "colorPrimaryText">#212121</color>
-    <color name = "color_transparent">#00000000</color>
-    <color name = "color_bg_grey">#F5F5F5</color>
-    <color name = "color_divider">#ffcccccc</color>
-    <color name = "color_black">#ff000000</color>
-    <color name = "color_light_gray">#ff848484</color>
-    <color name = "color_white">#ffffffff</color>
-    <color name = "color_yellow">#ffe7aa29</color>
-    <color name = "color_red">#ffff0000</color>
-    <color name = "color_green">#ff21b600</color>
-    <color name = "item_bg_selected">#ff84a239</color>
-    <color name = "btn_shadow">#ffffffff</color>
-    <color name = "btn_text_pressed">#ff945700</color>
-    <color name = "btn_text_dialog">#ff0ca800</color>
-    <color name = "grey_disable">#ff848484</color>
-    <color name = "color_deep_grey">#ff303030</color>
-    <color name = "light_blue">#ff64d2ff</color>
-    <color name = "color_disable_grey">#ffcccccc</color>
-    <color name = "color_setting_wifi_background">#efeff4</color>
-    <color name = "mg_blue">#009AFF</color>
-    <color name = "circle_green">#10FF90</color>
-    <color name = "circle_yellow">#FFC467</color>
-    <color name = "circle_bac_blue">#3866c2</color>
-    <color name = "wave_yellow">#FFAE13</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="color_transparent">#00000000</color>
+    <color name="color_bg_grey">#F5F5F5</color>
+    <color name="color_divider">#ffcccccc</color>
+    <color name="color_black">#ff000000</color>
+    <color name="color_light_gray">#ff848484</color>
+    <color name="color_white">#ffffffff</color>
+    <color name="color_yellow">#ffe7aa29</color>
+    <color name="color_red">#ffff0000</color>
+    <color name="color_green">#ff21b600</color>
+    <color name="item_bg_selected">#ff84a239</color>
+    <color name="btn_shadow">#ffffffff</color>
+    <color name="btn_text_pressed">#ff945700</color>
+    <color name="btn_text_dialog">#ff0ca800</color>
+    <color name="grey_disable">#ff848484</color>
+    <color name="color_deep_grey">#ff303030</color>
+    <color name="light_blue">#ff64d2ff</color>
+    <color name="color_disable_grey">#ffcccccc</color>
+    <color name="color_setting_wifi_background">#efeff4</color>
+    <color name="mg_blue">#009AFF</color>
+    <color name="circle_green">#10FF90</color>
+    <color name="circle_yellow">#FFC467</color>
+    <color name="circle_bac_blue">#3866c2</color>
+    <color name="wave_yellow">#FFAE13</color>
 
-    <color name = "grey_text">#666666</color>
-    <color name = "black_text">#222222</color>
-    <color name = "deep_black_text">#333333</color>
-    <color name = "deep_grey_text">#999999</color>
-    <color name = "grey_line">#DDDDDD</color>
-    <color name = "not_wifi_background">#ece8e8</color>
-    <color name = "quick_setting_background">#E9EAED</color>
-    <color name = "quick_setting_skip_background">#555555</color>
-    <color name = "orange_textColor">#FF7E00</color>
-    <color name = "black_three_color">#333333</color>
-    <color name = "sms_green">#00cd3a</color>
+    <color name="grey_text">#666666</color>
+    <color name="black_text">#222222</color>
+    <color name="deep_black_text">#333333</color>
+    <color name="deep_grey_text">#999999</color>
+    <color name="grey_line">#DDDDDD</color>
+    <color name="not_wifi_background">#ece8e8</color>
+    <color name="quick_setting_background">#E9EAED</color>
+    <color name="quick_setting_skip_background">#555555</color>
+    <color name="orange_textColor">#FF7E00</color>
+    <color name="black_three_color">#333333</color>
+    <color name="sms_green">#00cd3a</color>
 
     <!-- call log start -->
-    <color name = "call_log_item_selected">#ff4a4a4a</color>
+    <color name="call_log_item_selected">#ff4a4a4a</color>
     <!-- call log end -->
 
-    <color name = "main_title_background">#009AFF</color>
-    <color name = "main_top_divider">#ff2ba8e7</color>
-    <color name = "main_bottom_divider">#ffdbdbdb</color>
-    <color name = "main_tabbar_background">#fff9f9f9</color>
-    <color name = "color_blue">#ff0089cf</color>
-    <color name = "color_grey">#ffa8a8a8</color>
+    <color name="main_title_background">#009AFF</color>
+    <color name="main_top_divider">#ff2ba8e7</color>
+    <color name="main_bottom_divider">#ffdbdbdb</color>
+    <color name="main_tabbar_background">#fff9f9f9</color>
+    <color name="color_blue">#ff0089cf</color>
+    <color name="color_grey">#ffa8a8a8</color>
 
     <!-- home start -->
-    <color name = "home_connect_background_blue">#49bcf7</color>
-    <color name = "home_connect_status">#ff80c4e7</color>
+    <color name="home_connect_background_blue">#49bcf7</color>
+    <color name="home_connect_status">#ff80c4e7</color>
     <!-- home end -->
 
     <!-- usage start -->
     <!-- usage end -->
 
     <!-- sms start -->
-    <color name = "color_sms_detail_send_grey">#ff8dd3f7</color>
+    <color name="color_sms_detail_send_grey">#ff8dd3f7</color>
     <!-- sms end -->
 
     <!-- connected view start -->
-    <color name = "color_connected_view_refresh_bg">#fff8f8f8</color>
+    <color name="color_connected_view_refresh_bg">#fff8f8f8</color>
     <!-- connected view end -->
 
     <!-- setting start -->
     <!-- setting end -->
 
     <!-- custom view start -->
-    <color name = "mask_color">#00ffffff</color>
-    <color name = "data_color">#ff64d2ff</color>
-    <color name = "mask_color_test">#ff64d2ff</color>
+    <color name="mask_color">#00ffffff</color>
+    <color name="data_color">#ff64d2ff</color>
+    <color name="mask_color_test">#ff64d2ff</color>
     <!-- custom view end -->
 
     <!-- custom spinner start -->
-    <color name = "custom_spinner_divider_line">#ff545454</color>
-    <color name = "custom_spinner_bg">#ffffff</color>
+    <color name="custom_spinner_divider_line">#ff545454</color>
+    <color name="custom_spinner_bg">#ffffff</color>
     <!-- custom spinner end -->
 
     <!-- temp pad -->
-    <color name = "red">#f00</color>
-    <color name = "green">#0f0</color>
-    <color name = "blue">#00f</color>
-    <color name = "black">#ff000000</color>
-    <color name = "gray">#aaa</color>
-    <color name = "white">#ffffff</color>
-    <color name = "visualize_fx">#44b121</color>
-    <color name = "lyrics">#a3bfe5</color>
-    <color name = "lyrics_hl">#7aba78</color>
+    <color name="red">#f00</color>
+    <color name="green">#0f0</color>
+    <color name="blue">#00f</color>
+    <color name="black">#ff000000</color>
+    <color name="gray">#aaa</color>
+    <color name="white">#ffffff</color>
+    <color name="visualize_fx">#44b121</color>
+    <color name="lyrics">#a3bfe5</color>
+    <color name="lyrics_hl">#7aba78</color>
     <!-- temp pad end -->
 
     <!-- NetMode -->
-    <color name = "netmode">#e9eaed</color>
+    <color name="netmode">#e9eaed</color>
 
     <!-- FTP FILE EXPLORER -->
-    <color name = "yellow">#FFF000</color>
-    <color name = "gray11">#A6A6A0</color>
-    <color name = "orange">#ff9900</color>
-    <color name = "deepcolor">#faaa5f</color>
-    <color name = "shadowcolor">#333333</color>
-    <color name = "naming">#ABABAB</color>
-    <color name = "red1">#FF0000</color>
-    <color name = "background">#272727</color>
-    <color name = "orange_yellow">#9b9ba0</color>
-    <color name = "light_gray">#f2f2f2</color>
+    <color name="yellow">#FFF000</color>
+    <color name="gray11">#A6A6A0</color>
+    <color name="orange">#ff9900</color>
+    <color name="deepcolor">#faaa5f</color>
+    <color name="shadowcolor">#333333</color>
+    <color name="naming">#ABABAB</color>
+    <color name="red1">#FF0000</color>
+    <color name="background">#272727</color>
+    <color name="orange_yellow">#9b9ba0</color>
+    <color name="light_gray">#f2f2f2</color>
 
-    <drawable name = "semi_black">#80000000</drawable>
+    <drawable name="semi_black">#80000000</drawable>
 
-    <color name = "remote_connect_text">#FFe78018</color>
-    <color name = "remote_disconnect_text">#FF901821</color>
-    <color name = "path_indicator_top_line">#ff007ad2</color>
-    <color name = "path_indicator_button_divider">#ffb2b2b2</color>
-    <color name = "path_indicator_button_text_selected">#ff58d2ff</color>
-    <color name = "path_indicator_button_text_enabled">#ff0089cf</color>
-    <color name = "path_indicator_button_text_disabled">#ff000000</color>
-    <color name = "path_indicator_button_text_shadow_color">#ff000000</color>
+    <color name="remote_connect_text">#FFe78018</color>
+    <color name="remote_disconnect_text">#FF901821</color>
+    <color name="path_indicator_top_line">#ff007ad2</color>
+    <color name="path_indicator_button_divider">#ffb2b2b2</color>
+    <color name="path_indicator_button_text_selected">#ff58d2ff</color>
+    <color name="path_indicator_button_text_enabled">#ff0089cf</color>
+    <color name="path_indicator_button_text_disabled">#ff000000</color>
+    <color name="path_indicator_button_text_shadow_color">#ff000000</color>
 
-    <color name = "transparent">#0000</color>
+    <color name="transparent">#0000</color>
     <!-- FTP FILE END -->
     <!-- DLNA start -->
-    <color name = "setting_background_color">#efeff4</color>
+    <color name="setting_background_color">#efeff4</color>
     <!-- DLNA end -->
 
     <!-- DLNA start -->
-    <color name = "media_tool_background_color">#ff808080</color>
+    <color name="media_tool_background_color">#ff808080</color>
     <!-- DLNA end -->
 
     <!--add start 2016.12.27-->
 
-    <color name = "blue_btn">#009AFF</color>
-    <color name = "blue_dark_btn">#3581FF</color>
-    <color name = "system_information_gray_font">#999999</color>
-    <color name = "network_selection_light_gray_font">#CCCCCC</color>
-    <color name = "backup_name_bg">#EEEEEE</color>
-    <color name = "upgrade_progress_grey">#DDDDDD</color>
-    <color name = "upgrade_progress_blue">#009AFF</color>
+    <color name="blue_btn">#009AFF</color>
+    <color name="blue_dark_btn">#3581FF</color>
+    <color name="system_information_gray_font">#999999</color>
+    <color name="network_selection_light_gray_font">#CCCCCC</color>
+    <color name="backup_name_bg">#EEEEEE</color>
+    <color name="upgrade_progress_grey">#DDDDDD</color>
+    <color name="upgrade_progress_blue">#009AFF</color>
 
     <!--add end 2016.12.27-->
-    
+
     <!-- netmode_status -->
-    <color name = "netmode_status_des2">#999999</color>
-    <color name = "netmode_status_BG">#e6e6e6</color>
-    <color name = "netmode_status_tryagain">#009aff</color>
-    <color name = "netmode_status_home">#666666</color>
+    <color name="netmode_status_des2">#999999</color>
+    <color name="netmode_status_BG">#e6e6e6</color>
+    <color name="netmode_status_tryagain">#009aff</color>
+    <color name="netmode_status_home">#666666</color>
 
     <!-- PIN color start -->
-    <color name = "error_font_color">#ffff0000</color>
-    <color name = "font_color">#ffffffff</color>
-    <color name = "pin_hint">#666666</color>
+    <color name="error_font_color">#ffff0000</color>
+    <color name="font_color">#ffffffff</color>
+    <color name="pin_hint">#666666</color>
     <!-- PIN color end -->
-    
+
     <!-- PUK -->
-    <color name = "puk_bg">#e9eaed</color>
-    <color name = "puk_remain_tv">#999999</color>
-    <color name = "puk_normal">#CCCCCC</color>
-    <color name = "puk_unable">#dddddd</color>
-    
+    <color name="puk_bg">#e9eaed</color>
+    <color name="puk_remain_tv">#999999</color>
+    <color name="puk_normal">#CCCCCC</color>
+    <color name="puk_unable">#dddddd</color>
+
     <!--login forgot password -->
-    <color name = "login_forgotpassword_ok">#009aff</color>
+    <color name="login_forgotpassword_ok">#009aff</color>
     <color name="pink">#e64a4a</color>
 
     <color name="color_bg_selected">#009aff</color>
     <color name="color_bg_normal">#e7e7e8</color>
     <color name="color_text_selected">#ffffff</color>
     <color name="color_text_normal">#000000</color>
+
+    <!-- sim pop colors -->
+    <color name="pop_sim_text">#009aff</color>
+
+    <!-- sim unlocked activity -->
+    <color name="sim_unlock">#009aff</color>
+
 </resources>

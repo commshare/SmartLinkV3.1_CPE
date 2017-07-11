@@ -7,6 +7,8 @@ package com.alcatel.wifilink.ui.home.helper.cons;
 public class Cons {
 
     public static String ISCONNECT = "isConnect";
+    public static String LOGIN_CHECK = "LOGIN_CHECK";
+    public static String LOGIN_PSD = "LOGIN_PSD";
 
     /* login */
     public static int LOGOUT = 0;
@@ -105,5 +107,10 @@ public class Cons {
     public static final String GET_SMS_CONTACT_LIST_FAILED = "060201";
     public static final String GET_SMS_CONTENT_LIST_FAILED = "060301";
     public static final String GET_SEND_SMS_STATUS_FAILED = "060701";
-    
+
+    public static final String PASSWORD_IS_NOT_CORRECT = "010101";
+    public static final String OTHER_USER_IS_LOGIN = "010102";
+    public static final String DEVICE_REBOOT = "010103";
+    public static final String GUEST_AP_OR_WEBUI = "010104";
+
 }

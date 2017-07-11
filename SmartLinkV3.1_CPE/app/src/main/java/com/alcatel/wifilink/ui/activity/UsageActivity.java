@@ -16,6 +16,7 @@ import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.DataUtils;
@@ -47,7 +48,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_usage);
         // init action bar
-//        initActionBar();
+        //        initActionBar();
         // init layout ui
         initView();
         // init status
@@ -154,6 +155,11 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
     /* **** getUsageRecord **** */
     private void getUsageRecord() {
         API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
+            @Override
+            public void onError(Throwable e) {
+                
+            }
+
             @Override
             protected void onSuccess(UsageRecord results) {
                 updateUsageRecord(results);

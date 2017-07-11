@@ -588,7 +588,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
     private void kickoffLogout() {
         UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
-            HomeActivity.setKickoffLogoutFlag(true);
+            // HomeActivity.setKickoffLogoutFlag(true);
             BusinessManager.getInstance().sendRequestMessage(
                     MessageUti.USER_LOGOUT_REQUEST, null);
         }

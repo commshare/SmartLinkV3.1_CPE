@@ -96,6 +96,7 @@
     <string name="Home_puk_locked">PUK Locked</string>
     <string name="Home_SimCard_IsIniting">Initializing</string>
     <string name="Home_PukTimes_UsedOut">Puk Times Used Out</string>
+    <string name="Home_PinTimes_UsedOut">Pin Times Used Out</string>
     <string name="Home_SimLock_Required">SIM Lock required</string>
     <string name="Home_SimCard_Detected">SIM Card detected</string>
     <string name="Home_zero_time">0Hrs 0Mins</string>
@@ -362,9 +363,9 @@
     <string name="setting_change_login_password">Change Login Password</string>
     <string name="setting_log_out">Log Out</string>
     <string name="setting_current_password">Current Password</string>
-    <string name="setting_new_password">New Password(4~16 characters)</string>
+    <string name="setting_new_password">New Password(5~16 characters)</string>
     <string name="setting_confirm_password">Confirm Password</string>
-    <string name="setting_password_note">Note: The password should be 4&#8211;16 characters.</string>
+    <string name="setting_password_note">Note: The password should be 5&#8211;16 characters.</string>
     <string name="setting_network_mode">Network Mode</string>
     <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>
     <string name="setting_network_selection">Network Selection</string>
@@ -475,7 +476,7 @@
     <string name="pin_code_label">PIN Code:</string>
     <string name="pin_error_waring_title">Sorry, the PIN code is wrong!</string>
     <string name="puk_title">Please input the PUK code!</string>
-    <string name="puk_code_label">PUK Code:</string>
+    <string name="puk_code_label">PUK Code</string>
     <string name="puk_remain_three_times">Remain: 3 times</string>
     <string name="puk_new_pin_label">New PIN:</string>
     <string name="puk_confirm_pin_label">Confirmed PIN:</string>
@@ -499,12 +500,12 @@
     <string name="login_check_dialog_title">Login</string>
     <string name="login_check_dialog_content">Login</string>
     <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
-    <string name="login_other_user_logined_error_msg">Other user is login, please relogin after a moment!</string>
+    <string name="login_other_user_logined_error_msg">Other user is login\nplease relogin after a moment!</string>
     <string name="login_other_user_logined_error_forcelogin_msg">Other user already logined, do you still want to login?
         This will kick other user off.
     </string>
-    <string name="login_login_time_used_out_msg">Login times is used out, you can login until the device reboot.
-    </string>
+    <string name="login_login_time_used_out_msg">Login times is used out\nyou can login until the device reboot.</string>
+    <string name="login_login_app_or_webui">If disable guest ap ui access\nguest ap can’t access webui</string>
     <string name="login_warning">Login warning</string>
     <string name="login_logout_successful">Logout successfully!</string>
     <string name="login_logout_failed">Logout failed!</string>
@@ -514,11 +515,12 @@
     <string name="change_password_failed">Change password failed!</string>
     <string name="inconsistent_new_password">Inconsistent new pass word!</string>
     <string name="input_current_password">Please Input Your Current Password!</string>
-    <string name="change_passowrd_invalid_password">The password should be 4&#8211;16 characters</string>
+    <string name="change_passowrd_invalid_password">The password should be 5&#8211;16 characters</string>
     <string name="unknown_error">Unknown error!</string>
 
     <string name="login_login_btn">Login</string>
-    <string name="login_enter_password">Enter administrator password(8-16 characters)</string>
+    <string name="login_enter_password">Enter admin password</string>
+    <string name="login_enter_password_tip">5-16 characters</string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="login_change_password_success_tips">First reset your device,then set a new Confirm password</string>
     <!-- Login view end -->
@@ -774,6 +776,7 @@
 
     <!-- PUK -->
     <string name="puk_newpin">New SIM PIN</string>
+    <string name="puk_newpin_digital">New SIM PIN (4~8 digits)</string>
     <string name="puk_confirmpin">Confirm new SIM PIN</string>
     <string name="puk_limit_strings">(4~8 digits)</string>
     <string name="puk_pinDontMatch">Pins don\'t match</string>
@@ -850,5 +853,30 @@
     <string name="host">Host</string>
     <string name="check_your_wan_cabling">Check your WAN cabling</string>
     <string name="usb_printers_nearby">USB Printers nearby</string>
+
+    <!-- home activity sim pop -->
+    <string name="pop_sim_locked">SIM lock</string>
+    <string name="pop_sim_cancel">Cancel</string>
+    <string name="pop_sim_unlock">Unlock SIM</string>
+
+    <!-- sim unlocked -->
+    <string name="sim_unlocked">Unlock SIM</string>
+    <string name="sim_unlocked_attempts">\   attempts remaining</string>
+    <string name="sim_unlocked_notEmpty">SIM PIN is Empty</string>
+    <string name="sim_unlocked_success">unlock PIN successful</string>
+    <string name="sim_unlocked_failed">unlock PIN failed</string>
+
+    <!-- login acitivity -->
+    <string name="login_remenber_psd">Remenber password</string>
+
+    <!-- puk activity -->
+    <string name="puk_empty">PUK Code is Empty</string>
+    <string name="pin_empty">PIN Code is Empty</string>
+    <string name="pin_confirm_empty">PIN Code Confirm is Empty</string>
+    <string name="pin_no_same">Please confirm the PIN code is same</string>
+    <string name="puk_unlock_success">PUK unlock successful</string>
+    <string name="puk_unlock_failed">PUK unlock failed</string>
+    <string name="puk_remain_1time">1 attempt remaining before the SIM card becomes permanently unusable. Please contact your 
+        network operator if you are unsure of your PUK code</string>
 
 </resources>
