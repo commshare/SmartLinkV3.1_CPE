@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_sms"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_70dip">
+
+        <!-- **** unread point **** -->
+        <ImageView
+            android:id="@+id/iv_smsPoint"
+            android:layout_width="@dimen/dimen_15dip"
+            android:layout_height="@dimen/dimen_15dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:src="@drawable/sms_point_unread" />
+
+        <!-- **** sms info **** -->
+        <RelativeLayout
+            android:id="@+id/rl_smsInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginRight="@dimen/dimen_30dip"
+            android:layout_toRightOf="@id/iv_smsPoint"
+            android:gravity="center_vertical">
+
+            <!-- username -->
+            <TextView
+                android:id="@+id/tv_smsPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PhoneNum"
+                android:textSize="@dimen/dimen_textsize_18sp"
+                android:textStyle="bold" />
+
+            <!-- sms count -->
+            <TextView
+                android:id="@+id/tv_smsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/tv_smsPhone"
+                android:layout_marginLeft="@dimen/dimen_20dip"
+                android:layout_toRightOf="@id/tv_smsPhone"
+                android:text="2"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimen_textsize_16sp" />
+
+            <!-- content -->
+            <TextView
+                android:id="@+id/tv_smsContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_smsPhone"
+                android:lines="1"
+                android:text="contentcontentcontentcontentcontentcontentcontentcontent"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimen_textsize_16sp" />
+
+            <!-- sms date -->
+            <TextView
+                android:id="@+id/tv_smsDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/tv_smsPhone"
+                android:layout_alignParentRight="true"
+                android:text="6/6/2017"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimen_textsize_16sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="@dimen/dimen_15dip"
+            android:layout_height="@dimen/dimen_15dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_10dip"
+            android:src="@drawable/sms_next" />
+
+        <!-- **** split **** -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dip"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginRight="@dimen/dimen_10dip"
+            android:background="@color/gray" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

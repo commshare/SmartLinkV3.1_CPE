@@ -331,7 +331,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
             if (null != item && item.eSMSType == Cons.DRAFT) {
                 ArrayList<Integer> smsids = new ArrayList<>();
                 smsids.add(item.nSMSID);
-                deletedSmsFuntion(Cons.DELETE_MORE_SMS, smsids, m_smsListData, item);
+                //deletedSmsFuntion(Cons.DELETE_MORE_SMS, smsids, m_smsListData, item);
             }
         }
     }

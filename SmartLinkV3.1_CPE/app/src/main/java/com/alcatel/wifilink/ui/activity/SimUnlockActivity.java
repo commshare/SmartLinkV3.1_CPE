@@ -20,7 +20,6 @@ import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
-import com.alcatel.wifilink.utils.OtherUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,7 +105,7 @@ public class SimUnlockActivity extends AppCompatActivity implements View.OnClick
     /* **** unlocksim **** */
     private void unlocksim() {
         // 编辑域为空
-        if (!EditUtils.checkEdit(etSimUnlock)) {
+        if (!EditUtils.isRegular(etSimUnlock)) {
             ToastUtil_m.show(this, getString(R.string.sim_unlocked_notEmpty));
             return;
         }

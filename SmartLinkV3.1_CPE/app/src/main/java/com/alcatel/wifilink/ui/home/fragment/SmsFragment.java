@@ -59,8 +59,6 @@ public class SmsFragment extends Fragment implements AdapterView.OnItemClickList
     @Override
     public void onResume() {
         super.onResume();
-        // initialization all status
-        getSmsAllStatus();
         // start timer
         startTimer();
     }

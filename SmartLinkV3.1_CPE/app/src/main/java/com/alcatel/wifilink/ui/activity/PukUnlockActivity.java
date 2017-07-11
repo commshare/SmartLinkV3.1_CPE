@@ -160,15 +160,15 @@ public class PukUnlockActivity extends AppCompatActivity implements View.OnClick
 
     /* 检查编辑域是否为空 */
     private boolean isEtEmpty() {
-        if (!EditUtils.checkEdit(etPukUnlock)) {
+        if (!EditUtils.isRegular(etPukUnlock)) {
             ToastUtil_m.show(this, getString(R.string.puk_empty));
             return true;
         }
-        if (EditUtils.checkEdit(etPukPinUnlock)) {
+        if (!EditUtils.isRegular(etPukPinUnlock)) {
             ToastUtil_m.show(this, getString(R.string.pin_empty));
             return true;
         }
-        if (EditUtils.checkEdit(etPukPinConfirm)) {
+        if (!EditUtils.isRegular(etPukPinConfirm)) {
             ToastUtil_m.show(this, getString(R.string.pin_confirm_empty));
             return true;
         }

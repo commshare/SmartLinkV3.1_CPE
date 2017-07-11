@@ -335,7 +335,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* get traffic data */
     private void getTrafficData(UsageRecord result) {
-        if (result.getMonthlyPlan() != 0) {
+        if (result.getMonthlyPlan() != 0) {// it must monthly plan is not zero
             long hUseData = result.getHUseData();
             long hMonthlyPlan = result.getMonthlyPlan();
             long circleUseDataProgressValue = (hUseData * 100) / hMonthlyPlan;
@@ -592,9 +592,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             }
                         }
                     });
-                } else if (simState == Cons.PIN_REQUIRED) {
-
-                } else {
+                }
+                if (simState == Cons.NOWN) {
                     ToastUtil_m.show(getActivity(), getString(R.string.Home_no_sim));
                 }
             }
@@ -613,10 +612,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(UsageRecord result) {
+                // if monthly data is 0MB--> no toast
+                if (result.getMonthlyPlan() <= 0) {
+                    return;
+                }
                 // the traffic have over monthly used
                 if ((result.getHUseData() + result.getRoamUseData()) >= result.getMonthlyPlan()) {
-                    String msgRes = activity.getString(R.string.home_usage_over_redial_message);
-                    Toast.makeText(activity, msgRes, Toast.LENGTH_LONG).show();
+                    ToastUtil_m.show(getActivity(), getString(R.string.home_usage_over_redial_message));
                 }
             }
         });
@@ -628,7 +630,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             API.get().connect(new MySubscriber() {
                 @Override
                 protected void onSuccess(Object result) {
-
                 }
             });
         } else {
