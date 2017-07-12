@@ -160,8 +160,8 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
         mWifi2GSwitch.setChecked(mWlanSettings.getAP2G().isApEnabled());
         mWifi5GSwitch.setChecked(mWlanSettings.getAP5G().isApEnabled());
 
-        mSsid2GEdit.setText(mWlanSettings.getAP2G().Ssid);
-        int securityMode = mWlanSettings.getAP2G().SecurityMode;
+        mSsid2GEdit.setText(mWlanSettings.getAP2G().getSsid());
+        int securityMode = mWlanSettings.getAP2G().getSecurityMode();
         mSecurity2GSpinner.setSelection(securityMode);
         if (securityMode == ENUM.SecurityMode.Disable.ordinal()) {
             mEncryption2GGroup.setVisibility(View.GONE);
@@ -171,32 +171,32 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
         } else if (securityMode == ENUM.SecurityMode.WEP.ordinal()) {
             mEncryption2GGroup.setVisibility(View.VISIBLE);
             mKey2GGroup.setVisibility(View.VISIBLE);
-            mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WepType);
-            mKey2GEdit.setText(mWlanSettings.getAP2G().WepKey);
+            mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().getWepType());
+            mKey2GEdit.setText(mWlanSettings.getAP2G().getWepKey());
         } else {
             mEncryption2GGroup.setVisibility(View.VISIBLE);
             mKey2GGroup.setVisibility(View.VISIBLE);
-            mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WpaType);
-            mKey2GEdit.setText(mWlanSettings.getAP2G().WpaKey);
+            mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().getWpaType());
+            mKey2GEdit.setText(mWlanSettings.getAP2G().getWpaKey());
         }
 
-        mSsid5GEdit.setText(mWlanSettings.getAP5G().Ssid);
-        mSecurity5GSpinner.setSelection(mWlanSettings.getAP5G().SecurityMode);
-        if (mWlanSettings.getAP5G().SecurityMode == ENUM.SecurityMode.Disable.ordinal()) {
+        mSsid5GEdit.setText(mWlanSettings.getAP5G().getSsid());
+        mSecurity5GSpinner.setSelection(mWlanSettings.getAP5G().getSecurityMode());
+        if (mWlanSettings.getAP5G().getSecurityMode() == ENUM.SecurityMode.Disable.ordinal()) {
             mEncryption5GGroup.setVisibility(View.GONE);
             mKey5GGroup.setVisibility(View.GONE);
             mEncryption5GSpinner.setSelection(-1);
             mKey5GEdit.setText("");
-        } else if (mWlanSettings.getAP5G().SecurityMode == ENUM.SecurityMode.WEP.ordinal()) {
+        } else if (mWlanSettings.getAP5G().getSecurityMode() == ENUM.SecurityMode.WEP.ordinal()) {
             mEncryption5GGroup.setVisibility(View.VISIBLE);
             mKey5GGroup.setVisibility(View.VISIBLE);
-            mEncryption5GSpinner.setSelection(mWlanSettings.getAP5G().WepType);
-            mKey5GEdit.setText(mWlanSettings.getAP5G().WepKey);
+            mEncryption5GSpinner.setSelection(mWlanSettings.getAP5G().getWepType());
+            mKey5GEdit.setText(mWlanSettings.getAP5G().getWepKey());
         } else {
             mEncryption5GGroup.setVisibility(View.VISIBLE);
             mKey5GGroup.setVisibility(View.VISIBLE);
-            mEncryption5GSpinner.setSelection(mWlanSettings.getAP5G().WpaType);
-            mKey5GEdit.setText(mWlanSettings.getAP5G().WpaKey);
+            mEncryption5GSpinner.setSelection(mWlanSettings.getAP5G().getWpaType());
+            mKey5GEdit.setText(mWlanSettings.getAP5G().getWpaKey());
         }
 
         m2GSettingsGroup.setVisibility(mWlanSettings.getAP2G().isApEnabled() ? View.VISIBLE : View.GONE);
@@ -418,34 +418,35 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
                 ToastUtil.showMessage(m_context, "Name(2.4G) is missing!");
                 return;
             }
-            newSettings.getAP2G().Ssid = newSsid2G;
-            newSettings.getAP2G().SecurityMode = newSecurity2GMode;
+            newSettings.getAP2G().setSsid(newSsid2G);
+            ;
+            newSettings.getAP2G().setSecurityMode(newSecurity2GMode);
             //disable
             if (newSecurity2GMode == 0) {
-                newSettings.getAP2G().WepKey = "";
-                newSettings.getAP2G().WepType = 0;
-                newSettings.getAP2G().WpaType = 0;
-                newSettings.getAP2G().WpaKey = "";
+                newSettings.getAP2G().setWepKey("");
+                newSettings.getAP2G().setWepType(0);
+                newSettings.getAP2G().setWpaType(0);
+                newSettings.getAP2G().setWpaKey("");
                 //wep
             } else if (newSecurity2GMode == 1) {
                 if (newKey2G.length() != 5 || newKey2G.length() != 13) {
                     ToastUtil.showMessage(m_context, "Wep password(2.4G) length must be 5 or 13!");
                     return;
                 }
-                newSettings.getAP2G().WepType = newEncryption2G;
-                newSettings.getAP2G().WepKey = newKey2G;
-                newSettings.getAP2G().WpaType = 0;
-                newSettings.getAP2G().WpaKey = "";
+                newSettings.getAP2G().setWepType(newEncryption2G);
+                newSettings.getAP2G().setWepKey(newKey2G);
+                newSettings.getAP2G().setWpaType(0);
+                newSettings.getAP2G().setWpaKey("");
                 //wpa
             } else {
                 if (newKey2G.length() < 8 || newKey2G.length() > 63) {
                     ToastUtil.showMessage(m_context, "Password(2.4G) length must be 8-63!");
                     return;
                 }
-                newSettings.getAP2G().WepType = 0;
-                newSettings.getAP2G().WepKey = "";
-                newSettings.getAP2G().WpaType = newEncryption2G;
-                newSettings.getAP2G().WpaKey = newKey2G;
+                newSettings.getAP2G().setWepType(0);
+                newSettings.getAP2G().setWepKey("");
+                newSettings.getAP2G().setWpaType(newEncryption2G);
+                newSettings.getAP2G().setWpaKey(newKey2G);
             }
         }
 
@@ -462,39 +463,39 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
                 ToastUtil.showMessage(m_context, "Name(5G) is missing!");
                 return;
             }
-            newSettings.getAP5G().Ssid = newSsid5G;
-            newSettings.getAP5G().SecurityMode = newSecurity5GMode;
+            newSettings.getAP5G().setSsid(newSsid5G);
+            newSettings.getAP5G().setSecurityMode(newSecurity5GMode);
             //disable
             if (newSecurity5GMode == 0) {
-                newSettings.getAP5G().WepKey = "";
-                newSettings.getAP5G().WepType = 0;
-                newSettings.getAP5G().WpaType = 0;
-                newSettings.getAP5G().WpaKey = "";
+                newSettings.getAP5G().setWepKey("");
+                newSettings.getAP5G().setWepType(0);
+                newSettings.getAP5G().setWpaType(0);
+                newSettings.getAP5G().setWpaKey("");
                 //wep
             } else if (newSecurity5GMode == 1) {
                 if (newKey5G.length() != 5 || newKey5G.length() != 13) {
                     ToastUtil.showMessage(m_context, "Wep password(5G) length must be 5 or 13!");
                     return;
                 }
-                newSettings.getAP5G().WepType = newEncryption5G;
-                newSettings.getAP5G().WepKey = newKey5G;
-                newSettings.getAP5G().WpaType = 0;
-                newSettings.getAP5G().WpaKey = "";
+                newSettings.getAP5G().setWepType(newEncryption5G);
+                newSettings.getAP5G().setWepKey(newKey5G);
+                newSettings.getAP5G().setWpaType(0);
+                newSettings.getAP5G().setWpaKey("");
                 //wpa
             } else {
                 if (newKey5G.length() < 8 || newKey5G.length() > 63) {
                     ToastUtil.showMessage(m_context, "Password(5G) length must be 8-63!");
                     return;
                 }
-                newSettings.getAP5G().WepType = 0;
-                newSettings.getAP5G().WepKey = "";
-                newSettings.getAP5G().WpaType = newEncryption5G;
-                newSettings.getAP5G().WpaKey = newKey5G;
+                newSettings.getAP5G().setWepType(0);
+                newSettings.getAP5G().setWepKey("");
+                newSettings.getAP5G().setWpaType(newEncryption5G);
+                newSettings.getAP5G().setWpaKey(newKey5G);
             }
         }
         Log.d(TAG, "newSettings, " + newSettings);
 
-        API.get().setWlanSettings(newSettings, new MySubscriber(){
+        API.get().setWlanSettings(newSettings, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil.showMessage(m_context, "Success");
@@ -518,14 +519,14 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
                 mEncryption2GGroup.setVisibility(View.VISIBLE);
                 mEncryption2GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
                 if (mWlanSettings != null) {
-                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WepType);
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().getWepType());
                 }
                 mKey2GGroup.setVisibility(View.VISIBLE);
             } else {
                 mEncryption2GGroup.setVisibility(View.VISIBLE);
                 mEncryption2GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
                 if (mWlanSettings != null) {
-                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().WpaType);
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP2G().getWpaType());
                 }
                 mKey2GGroup.setVisibility(View.VISIBLE);
             }
@@ -537,14 +538,14 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
                 mEncryption5GGroup.setVisibility(View.VISIBLE);
                 mEncryption5GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
                 if (mWlanSettings != null) {
-                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP5G().WepType);
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP5G().getWepType());
                 }
                 mKey5GGroup.setVisibility(View.VISIBLE);
             } else {
                 mEncryption5GGroup.setVisibility(View.VISIBLE);
                 mEncryption5GSpinner.setAdapter(new ArrayAdapter<>(m_context, android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
                 if (mWlanSettings != null) {
-                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP5G().WpaType);
+                    mEncryption2GSpinner.setSelection(mWlanSettings.getAP5G().getWpaType());
                 }
                 mKey5GGroup.setVisibility(View.VISIBLE);
             }

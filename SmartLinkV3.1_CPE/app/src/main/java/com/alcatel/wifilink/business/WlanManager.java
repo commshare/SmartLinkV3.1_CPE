@@ -85,22 +85,22 @@ public class WlanManager extends BaseManager {
 
 
     public String getSsid() {
-        return mWlanSettings.AP2G.Ssid;
+        return mWlanSettings.AP2G.getSsid();
     }
 
     public String getSsid_5G() {
-        return mWlanSettings.AP5G.Ssid;
+        return mWlanSettings.AP5G.getSsid();
     }
 
     public String getWifiPwd() {
         switch (getSecurityMode()) {
             case WEP:
             case Disable:
-                return mWlanSettings.AP2G.WepKey;
+                return mWlanSettings.AP2G.getWepKey();
             case WPA:
             case WPA2:
             case WPA_WPA2:
-                return mWlanSettings.AP2G.WpaKey;
+                return mWlanSettings.AP2G.getWpaKey();
 
             default:
                 return "";
@@ -111,11 +111,11 @@ public class WlanManager extends BaseManager {
         switch (getSecurityMode_5G()) {
             case WEP:
             case Disable:
-                return mWlanSettings.AP5G.WepKey;
+                return mWlanSettings.AP5G.getWepKey();
             case WPA:
             case WPA2:
             case WPA_WPA2:
-                return mWlanSettings.AP5G.WpaKey;
+                return mWlanSettings.AP5G.getWpaKey();
             default:
                 return "";
         }
@@ -126,35 +126,35 @@ public class WlanManager extends BaseManager {
     }
 
     public SecurityMode getSecurityMode() {
-        return SecurityMode.build(mWlanSettings.AP2G.SecurityMode);
+        return SecurityMode.build(mWlanSettings.AP2G.getSecurityMode());
     }
 
     public SecurityMode getSecurityMode_5G() {
-        return SecurityMode.build(mWlanSettings.AP5G.SecurityMode);
+        return SecurityMode.build(mWlanSettings.AP5G.getSecurityMode());
     }
 
     public WPAEncryption getWPAEncryption() {
-        return WPAEncryption.build(mWlanSettings.AP2G.WpaType);
+        return WPAEncryption.build(mWlanSettings.AP2G.getWpaType());
     }
 
     public WPAEncryption getWPAEncryption_5G() {
-        return WPAEncryption.build(mWlanSettings.AP5G.WpaType);
+        return WPAEncryption.build(mWlanSettings.AP5G.getWpaType());
     }
 
     public WEPEncryption getWEPEncryption() {
-        return WEPEncryption.build(mWlanSettings.AP2G.WepType);
+        return WEPEncryption.build(mWlanSettings.AP2G.getWepType());
     }
 
     public WEPEncryption getWEPEncryption_5G() {
-        return WEPEncryption.build(mWlanSettings.AP5G.WepType);
+        return WEPEncryption.build(mWlanSettings.AP5G.getWepType());
     }
 
     public WModeEnum getWMode() {
-        return WModeEnum.build(mWlanSettings.AP2G.WMode);
+        return WModeEnum.build(mWlanSettings.AP2G.getWMode());
     }
 
     public WModeEnum getWMode_5G() {
-        return WModeEnum.build(mWlanSettings.AP5G.WMode);
+        return WModeEnum.build(mWlanSettings.AP5G.getWMode());
     }
 
     public WlanFrequency getWlanFrequency() {
@@ -166,19 +166,19 @@ public class WlanManager extends BaseManager {
     }
 
     public SsidHiddenEnum getSsidHidden() {
-        return SsidHiddenEnum.build(mWlanSettings.AP2G.SsidHidden);
+        return SsidHiddenEnum.build(mWlanSettings.AP2G.getSsidHidden());
     }
 
     public SsidHiddenEnum getSsidHidden_5G() {
-        return SsidHiddenEnum.build(mWlanSettings.AP5G.SsidHidden);
+        return SsidHiddenEnum.build(mWlanSettings.AP5G.getSsidHidden());
     }
 
     public String getCountryCode() {
-        return mWlanSettings.AP2G.CountryCode;
+        return mWlanSettings.AP2G.getCountryCode();
     }
 
     public String getCountryCode_5G() {
-        return mWlanSettings.AP5G.CountryCode;
+        return mWlanSettings.AP5G.getCountryCode();
     }
 
 //	private void getInfoByWansetting() {

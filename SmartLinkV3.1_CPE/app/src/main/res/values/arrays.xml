@@ -66,14 +66,17 @@
         <item>Share</item>
     </string-array>
 
-    <string-array name="wlan_settings_bandwidth">
-        <item>20MHz/40MHz</item>
+    <string-array name="wlan_settings_bandwidth_2g">
+        <item>Auto</item>
+        <item>20MHz</item>
+        <item>40MHz</item>
+    </string-array>
+    <string-array name="wlan_settings_bandwidth_5g">
+        <item>Auto</item>
         <item>20MHz</item>
         <item>40MHz</item>
         <item>80MHz</item>
-        <item>40MHz/80MHz</item>
     </string-array>
-
     <string-array name="wlan_settings_country">
         <item>GB</item>
         <item>IT</item>

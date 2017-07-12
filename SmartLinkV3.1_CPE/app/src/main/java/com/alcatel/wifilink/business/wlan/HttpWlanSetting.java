@@ -32,7 +32,7 @@ public class HttpWlanSetting {
 
     public static class GetWlanSettingResponse extends BaseResponse {
         private static final String TAG = "GetWlanSettingResponse";
-//        WlanSettingResult m_result = new WlanSettingResult();
+        //        WlanSettingResult m_result = new WlanSettingResult();
         WlanNewSettingResult m_New_result = new WlanNewSettingResult();
 
         public GetWlanSettingResponse(String action, IHttpFinishListener callback) {
@@ -41,12 +41,12 @@ public class HttpWlanSetting {
 
         @Override
         protected void parseContent(String strJsonResult) {
-            Log.d(TAG, "parseContent, strJsonResult: "+strJsonResult);
+            Log.d(TAG, "parseContent, strJsonResult: " + strJsonResult);
 
             Gson gson = new Gson();
             m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
-            Log.d(TAG, "parseContent, ap2g: "+m_New_result.AP2G);
-            Log.d(TAG, "parseContent, ap5g: "+m_New_result.AP5G);
+            Log.d(TAG, "parseContent, ap2g: " + m_New_result.AP2G);
+            Log.d(TAG, "parseContent, ap5g: " + m_New_result.AP5G);
 //            if (m_result.CountryCode.isEmpty()) {
 //                m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
 //                parseNewSettingResult(m_result, m_New_result);
@@ -152,25 +152,25 @@ public class HttpWlanSetting {
         }
 
 
-        private JSONObject buildAPJsonObject(AP ap) throws JSONException{
+        private JSONObject buildAPJsonObject(AP ap) throws JSONException {
             JSONObject object = new JSONObject();
 
-            object.put("ApStatus", ap.ApStatus);
-            object.put("WMode", ap.WMode);
-            object.put("Ssid", ap.Ssid);
-            object.put("SsidHidden", ap.SsidHidden);
-            object.put("SecurityMode", ap.SecurityMode);
-            object.put("WpaType", ap.WpaType);
-            object.put("WpaKey", ap.WpaKey);
-            object.put("WepType", ap.WepType);
-            object.put("WepKey", ap.WepKey);
-            object.put("Channel", ap.Channel);
-            object.put("ApIsolation", ap.ApIsolation);
-            object.put("max_numsta", ap.max_numsta);
-            object.put("curr_num", ap.curr_num);
-            object.put("CurChannel", ap.CurChannel);
-            object.put("Bandwidth", ap.Bandwidth);
-            object.put("CountryCode", ap.CountryCode);
+            object.put("ApStatus", ap.getApStatus());
+            object.put("WMode", ap.getWMode());
+            object.put("Ssid", ap.getSsid());
+            object.put("SsidHidden", ap.getSsidHidden());
+            object.put("SecurityMode", ap.getSecurityMode());
+            object.put("WpaType", ap.getWpaType());
+            object.put("WpaKey", ap.getWpaKey());
+            object.put("WepType", ap.getWepType());
+            object.put("WepKey", ap.getWepKey());
+            object.put("Channel", ap.getChannel());
+            object.put("ApIsolation", ap.getApIsolation());
+            object.put("max_numsta", ap.getMax_numsta());
+            object.put("curr_num", ap.getCurr_num());
+            object.put("CurChannel", ap.getCurChannel());
+            object.put("Bandwidth", ap.getBandwidth());
+            object.put("CountryCode", ap.getCountryCode());
 
             return object;
         }

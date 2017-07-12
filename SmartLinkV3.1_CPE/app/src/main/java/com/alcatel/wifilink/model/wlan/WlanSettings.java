@@ -6,11 +6,11 @@ import com.alcatel.wifilink.business.wlan.AP;
  * Created by tao.j on 2017/6/15.
  */
 
-public class WlanSettings implements Cloneable{
+public class WlanSettings implements Cloneable {
     private int WiFiOffTime;
 
-    private AP AP2G = new AP();
-    private AP AP5G = new AP();
+    private AP AP2G;
+    private AP AP5G;
 
     public int getWiFiOffTime() {
         return WiFiOffTime;
@@ -46,7 +46,7 @@ public class WlanSettings implements Cloneable{
     }
 
     @Override
-    public WlanSettings clone()  {
+    public WlanSettings clone() {
         WlanSettings wlanSettings = null;
         try {
             wlanSettings = (WlanSettings) super.clone();

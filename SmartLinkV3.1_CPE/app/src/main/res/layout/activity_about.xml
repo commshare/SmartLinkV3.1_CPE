@@ -136,7 +136,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_12dip"
-                    android:text="@string/management_ip_adress"
+                    android:text="@string/management_ip_address"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/dimen_textsize_16sp"/>
 

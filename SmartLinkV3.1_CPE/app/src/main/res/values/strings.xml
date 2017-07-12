@@ -818,7 +818,7 @@
     <string name="device_name">Device name</string>
     <string name="imei">IMEI</string>
     <string name="mac_address">MAC Address</string>
-    <string name="management_ip_adress">Management IP adress</string>
+    <string name="management_ip_address">Management IP address</string>
     <string name="web_manager">Web manager</string>
     <string name="app_version">APP version</string>
     <string name="quick_guide_user_manual"><![CDATA[Quick guide & User manual]]></string>
