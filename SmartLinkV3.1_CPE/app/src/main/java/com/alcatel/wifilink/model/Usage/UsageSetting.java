@@ -18,7 +18,7 @@ public class UsageSetting {
      */
 
     private int BillingDay;
-    private int MonthlyPlan;
+    private long MonthlyPlan;
     private int UsedData;
     private int Unit;
     private int TimeLimitFlag;
@@ -34,11 +34,11 @@ public class UsageSetting {
         this.BillingDay = BillingDay;
     }
 
-    public int getMonthlyPlan() {
+    public long getMonthlyPlan() {
         return MonthlyPlan;
     }
 
-    public void setMonthlyPlan(int MonthlyPlan) {
+    public void setMonthlyPlan(long MonthlyPlan) {
         this.MonthlyPlan = MonthlyPlan;
     }
 

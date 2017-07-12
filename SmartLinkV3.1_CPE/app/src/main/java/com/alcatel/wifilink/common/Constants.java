@@ -106,4 +106,10 @@ public class Constants {
         public static final int USB_STORAGE = 1;
         public static final int USB_PRINT = 2;
     }
+
+    public class UsageSetting{
+        public static final int UNIT_MB = 0;
+        public static final int UNIT_GB = 1;
+        public static final int UNIT_KB = 2;
+    }
 }

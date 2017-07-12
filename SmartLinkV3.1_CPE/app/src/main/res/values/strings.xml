@@ -889,5 +889,7 @@
     <string name="puk_unlock_failed">PUK unlock failed</string>
     <string name="puk_remain_1time">1 attempt remaining before the SIM card becomes permanently unusable. Please contact your 
         network operator if you are unsure of your PUK code</string>
+    <string name="input_a_data_value_between_0_1024">Input a data value between 0-1024</string>
+    <string name="please_enable_sim_pin">Please enable sim pin</string>
 
 </resources>

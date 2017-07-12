@@ -106,8 +106,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
         });
         mConnectionModeSpinner = (AppCompatSpinner) findViewById(R.id.spinner_connection_mode);
+        mConnectionModeSpinner.setSelection(0, true);
         mConnectionModeSpinner.setOnItemSelectedListener(this);
         mNetworkModeSpinner = (AppCompatSpinner) findViewById(R.id.settings_network_mode);
+        mNetworkModeSpinner.setSelection(0, true);
         mNetworkModeSpinner.setOnItemSelectedListener(this);
         mRoamingSwitchCompat = (SwitchCompat) findViewById(R.id.network_roaming_switch);
         mSimPinCompat = (SwitchCompat) findViewById(R.id.network_sim_pin_switch);
@@ -127,6 +129,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         //set data plan
         mMonthlyDataPlanText = (TextView) findViewById(R.id.textview_monthly_data_plan);
         mBillingDaySpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_billing_day);
+        mBillingDaySpinner.setSelection(0, true);
         mBillingDaySpinner.setOnItemSelectedListener(this);
         mUsageAlertSpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_usagealert);
         mDisconnectCompat = (SwitchCompat) findViewById(R.id.setdataplan_auto_disconnect);
@@ -441,14 +444,16 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             protected void onSuccess(UsageSetting result) {
                 mUsageSetting = result;
                 String unit = "";
-                if(result.getUnit() == 0) {
+                if(result.getUnit() == Constants.UsageSetting.UNIT_MB) {
                     unit = "MB";
-                } else if(result.getUnit() == 1) {
+                } else if(result.getUnit() == Constants.UsageSetting.UNIT_GB) {
                     unit = "GB";
-                } else if(result.getUnit() == 2) {
+                } else if(result.getUnit() == Constants.UsageSetting.UNIT_KB) {
                     unit = "KB";
                 }
-                mMonthlyDataPlanText.setText(result.getMonthlyPlan() + " "+unit);
+                int dataPlanByte = getDataPlanByte(result.getUnit());
+                long monthPlan = result.getMonthlyPlan()/dataPlanByte;
+                mMonthlyDataPlanText.setText(monthPlan + " "+unit);
                 mBillingDaySpinner.setSelection(result.getBillingDay());
                 isCodeSelectBillingDay = true;
 //                mUsageAlertSpinner
@@ -463,6 +468,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     mLimitAutoDisaconectCompat.setChecked(true);
                 }
                 mSetTimeLimitText.setText(result.getTimeLimitTimes()+"mins(s)");
+            }
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Toast.makeText(SettingNetworkActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
             @Override
             protected void onFailure() {
@@ -489,10 +498,14 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 showSetTimeLimitDialog();
                 break;
             case R.id.network_change_pin:
-                mChangePin.setVisibility(View.VISIBLE);
-                mMobileNetwork.setVisibility(View.GONE);
-                setTitle(getString(R.string.change_pin));
-                invalidateOptionsMenu();
+                if(mSimPinCompat.isChecked()){
+                    mChangePin.setVisibility(View.VISIBLE);
+                    mMobileNetwork.setVisibility(View.GONE);
+                    setTitle(getString(R.string.change_pin));
+                    invalidateOptionsMenu();
+                } else {
+                    Toast.makeText(SettingNetworkActivity.this, R.string.please_enable_sim_pin, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.network_sim_pin_switch:
                 if(mSimStatus.getPinRemainingTimes() == 0) {
@@ -514,16 +527,18 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.dialog_monthly_data_plan, null);
         final EditText monthlyNumber = (EditText) v.findViewById(R.id.monthly_number);
-        monthlyNumber.setText(mUsageSetting.getMonthlyPlan()+"");
+        int dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
+        long monthPlan = mUsageSetting.getMonthlyPlan()/dataPlanByte;
+        monthlyNumber.setText(monthPlan + "");
         RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.radiogroup_monthly_plan);
         RadioButton radioButtonGb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_gb);
         RadioButton radioButtonMb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_mb);
         RadioButton radioButtonKb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_kb);
-        if(mUsageSetting.getUnit() == 0) {
+        if(mUsageSetting.getUnit() == Constants.UsageSetting.UNIT_MB) {
             radioButtonMb.setChecked(true);
-        } else if(mUsageSetting.getUnit() == 1) {
+        } else if(mUsageSetting.getUnit() == Constants.UsageSetting.UNIT_GB) {
             radioButtonGb.setChecked(true);
-        } else if(mUsageSetting.getUnit() == 2) {
+        } else if(mUsageSetting.getUnit() == Constants.UsageSetting.UNIT_KB) {
             radioButtonKb.setChecked(true);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -531,21 +546,37 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mUsageSetting.setMonthlyPlan(Integer.parseInt(monthlyNumber.getText().toString()));
-                mUsageSetting.setUnit(radioGroup.getCheckedRadioButtonId());
-                if(radioButtonMb.getId() == radioGroup.getCheckedRadioButtonId()){
-                    mUsageSetting.setUnit(0);
-                } else if(radioButtonGb.getId() == radioGroup.getCheckedRadioButtonId()){
-                    mUsageSetting.setUnit(1);
-                } else if(radioButtonKb.getId() == radioGroup.getCheckedRadioButtonId()){
-                    mUsageSetting.setUnit(2);
+                if(Integer.parseInt(monthlyNumber.getText().toString()) > 0 && Integer.parseInt(monthlyNumber.getText().toString()) <= 1024) {
+                    if(radioButtonMb.getId() == radioGroup.getCheckedRadioButtonId()){
+                        mUsageSetting.setUnit(Constants.UsageSetting.UNIT_MB);
+                    } else if(radioButtonGb.getId() == radioGroup.getCheckedRadioButtonId()){
+                        mUsageSetting.setUnit(Constants.UsageSetting.UNIT_GB);
+                    } else if(radioButtonKb.getId() == radioGroup.getCheckedRadioButtonId()){
+                        mUsageSetting.setUnit(Constants.UsageSetting.UNIT_KB);
+                    }
+                    int dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
+                    mUsageSetting.setMonthlyPlan((Long.parseLong(monthlyNumber.getText().toString())*dataPlanByte));
+                    setUsageSetting(mUsageSetting);
+                } else {
+                    Toast.makeText(SettingNetworkActivity.this, R.string.input_a_data_value_between_0_1024, Toast.LENGTH_SHORT).show();
                 }
-                setUsageSetting(mUsageSetting);
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
         builder.create();
         builder.show();
+    }
+
+    private int getDataPlanByte(int unit) {
+        int dataPlanByte = 1;
+        if(unit == Constants.UsageSetting.UNIT_MB) {
+            dataPlanByte = dataPlanByte * 1024 * 1024;
+        } else if(unit == Constants.UsageSetting.UNIT_GB) {
+            dataPlanByte = dataPlanByte * 1024 * 1024 * 1024;
+        } else if(unit == Constants.UsageSetting.UNIT_KB) {
+            dataPlanByte = dataPlanByte * 1024;
+        }
+        return dataPlanByte;
     }
 
     private void showSetTimeLimitDialog() {
