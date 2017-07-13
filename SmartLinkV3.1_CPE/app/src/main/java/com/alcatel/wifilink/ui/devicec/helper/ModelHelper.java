@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.helper;
+package com.alcatel.wifilink.ui.devicec.helper;
 
 import com.alcatel.wifilink.model.device.other.BlockModel;
 import com.alcatel.wifilink.model.device.other.ConnectModel;

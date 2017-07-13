@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.fragment.connect;
+package com.alcatel.wifilink.ui.devicec.fragment.connect;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,9 +21,9 @@ import com.alcatel.wifilink.model.device.response.ConnectedList;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.sms.allsetup.ActivityDeviceManager;
-import com.alcatel.wifilink.ui.sms.fragment.ui.DeviceConnectFragment;
-import com.alcatel.wifilink.ui.sms.helper.MacHelper;
+import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
+import com.alcatel.wifilink.ui.devicec.fragment.ui.DeviceConnectFragment;
+import com.alcatel.wifilink.ui.devicec.helper.MacHelper;
 
 import java.util.List;
 

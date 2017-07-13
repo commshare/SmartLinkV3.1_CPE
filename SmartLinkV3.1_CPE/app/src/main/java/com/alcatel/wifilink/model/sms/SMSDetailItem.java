@@ -9,7 +9,7 @@ public class SMSDetailItem {
     public String strTime = new String();
     public int eSMSType = Cons.READ;
     public int nContactID = 0;
-    public int nSMSID = 0;
+    public long nSMSID = 0;
     public boolean selectFlag;
 
     public boolean isSelectFlag() {
@@ -60,11 +60,11 @@ public class SMSDetailItem {
         this.nContactID = nContactID;
     }
 
-    public int getnSMSID() {
+    public long getnSMSID() {
         return nSMSID;
     }
 
-    public void setnSMSID(int nSMSID) {
+    public void setnSMSID(long nSMSID) {
         this.nSMSID = nSMSID;
     }
 }

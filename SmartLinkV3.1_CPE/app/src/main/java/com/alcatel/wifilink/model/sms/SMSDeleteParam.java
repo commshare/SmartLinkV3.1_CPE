@@ -10,9 +10,9 @@ public class SMSDeleteParam {
 
 
     public int DelFlag;
-    public List<Integer> SMSArray;
+    public List<Long> SMSArray;
 
-    public SMSDeleteParam(int delFlag, List<Integer> SMSArray) {
+    public SMSDeleteParam(int delFlag, List<Long> SMSArray) {
         DelFlag = delFlag;
         this.SMSArray = SMSArray;
     }
@@ -25,11 +25,11 @@ public class SMSDeleteParam {
         this.DelFlag = DelFlag;
     }
 
-    public List<Integer> getSMSArray() {
+    public List<Long> getSMSArray() {
         return SMSArray;
     }
 
-    public void setSMSArray(List<Integer> SMSArray) {
+    public void setSMSArray(List<Long> SMSArray) {
         this.SMSArray = SMSArray;
     }
 }

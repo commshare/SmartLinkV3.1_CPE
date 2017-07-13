@@ -41,6 +41,7 @@ import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
 import com.alcatel.wifilink.model.sms.SendSMSResult;
 import com.alcatel.wifilink.model.sms.SmsInitState;
+import com.alcatel.wifilink.model.sms.SmsSingle;
 import com.alcatel.wifilink.model.system.SysStatus;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.system.WanSetting;
@@ -572,6 +573,10 @@ public class API {
         subscribe(subscriber, smartLinkApi.GetSendSMSResult(new RequestBody(Methods.GET_SEND_SMS_RESULT)));
     }
 
+    public void getSingleSMS(long SMSId, MySubscriber<SmsSingle> subscriber) {
+        subscribe(subscriber, smartLinkApi.GetSingleSMS(new RequestBody(Methods.GET_SEND_SMS_RESULT, SMSId)));
+    }
+
     interface SmartLinkApi {
 
         @POST("/jrd/webapi")
@@ -687,5 +692,8 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<SendSMSResult>> GetSendSMSResult(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SmsSingle>> GetSingleSMS(@Body RequestBody requestBody);
     }
 }

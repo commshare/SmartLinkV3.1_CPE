@@ -66,7 +66,7 @@ public class QSBroadcastReceiver extends BroadcastReceiver {
         } else if (action.equalsIgnoreCase(MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
             if (ok) {
                 //PIN解码成功
-                // TOAT: 2017/6/12 pin unlocked success 
+                // TOAT: 2017/6/12 pin unlocked sendAgainSuccess 
                 if (onPinSuccessListener != null) {
                     onPinSuccessListener.pinSuccess();
                 }
@@ -160,7 +160,7 @@ public class QSBroadcastReceiver extends BroadcastReceiver {
         onSimListener = OnSimListener;
     }
 
-    // pin success
+    // pin sendAgainSuccess
     public interface OnPinSuccessListener {
         void pinSuccess();
     }

@@ -310,7 +310,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(Object result) {
                 dismissLoadingDialog();
-                Log.d(TAG, "backup" + "success");
+                Log.d(TAG, "backup" + "sendAgainSuccess");
                 showBackupSuccessDialog();
             }
 
@@ -437,7 +437,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil.showMessage(getActivity(), "restart device success");
+                ToastUtil.showMessage(getActivity(), "restart device sendAgainSuccess");
                 dismissLoadingDialog();
             }
 

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
@@ -28,8 +27,7 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.sms.allsetup.ActivityDeviceManager;
+import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.activity.InternetStatusActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
 import com.alcatel.wifilink.ui.activity.UsageActivity;

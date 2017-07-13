@@ -410,7 +410,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 /* 需要输入PUK码 */
                 if (simState == Cons.PUK_REQUIRED) {
-                    ChangeActivity.toActivity(HomeActivity.this, PukUnlockActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(HomeActivity.this, PukUnlockActivity.class, true, false, false, 0);
                 }
                 
                 /* SIM卡已经插入并且已经准备好 */

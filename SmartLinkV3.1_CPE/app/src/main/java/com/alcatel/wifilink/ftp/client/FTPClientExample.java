@@ -268,7 +268,7 @@ public final class FTPClientExample
             System.out.println("Connected to " + server + " on " + (port>0 ? port : ftp.getDefaultPort()));
 
             // After connection attempt, you should check the reply code to verify
-            // success.
+            // sendAgainSuccess.
             reply = ftp.getReplyCode();
 
             if (!FTPReply.isPositiveCompletion(reply))

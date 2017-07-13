@@ -149,7 +149,7 @@ public class SetupWizardActivity extends BaseActivity {
         transferHead(HeadEnum.GONE, getString(R.string.main_header_linkhub));
         // 1. change to the connecttype activity
         FraHelper.commit(this, fm, flid_setupWizard, FragmentEnum.CONNECTTYPE_FRA);
-        // 2. success | failed | waitting dismiss
+        // 2. sendAgainSuccess | failed | waitting dismiss
         mRl_Success.setVisibility(View.GONE);
         mRl_Failed.setVisibility(View.GONE);
         mRl_waitting.setVisibility(View.GONE);

@@ -25,6 +25,10 @@ public class PopupWindows extends PopupWindow {
 
     private Context context;
 
+    public PopupWindow getPopupWindow() {
+        return this;
+    }
+
     /**
      * 不可设置底版颜色的弹窗(点击空白不消失)
      *

@@ -175,89 +175,10 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 
         return true;
     }
-//
-//    @Override
-//    protected void onBroadcastReceive(Context context, Intent intent) {
-//        String action = intent.getAction();
-//        BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
-//        Boolean ok = response != null && response.isOk();
-//        super.onBroadcastReceive(context, intent);
-//
-//        if (intent.getAction().equalsIgnoreCase(MessageUti.SMS_SAVE_SMS_REQUSET)) {
-//            String msgRes;
-//            if (ok) {
-//                msgRes = this.getString(R.string.sms_save_success);
-//            } else if (response != null && response.getErrorCode().endsWith(ErrorCode.ERR_SAVE_SMS_SIM_IS_FULL)) {
-//                msgRes = this.getString(R.string.sms_error_message_full_storage);
-//            } else {
-//                msgRes = this.getString(R.string.sms_save_error);
-//            }
-//            Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-//            this.finish();
-//        }
-//
-//        if (MessageUti.SMS_SEND_SMS_REQUSET.equals(action)) {
-//            if (ok) {
-//                //BusinessManager.getInstance().refreshSmsListAtOnce();
-//            } else if (response != null && response.getErrorCode().endsWith(ErrorCode.ERR_SMS_SIM_IS_FULL)) {
-//                String msgRes = this.getString(R.string.sms_error_message_full_storage);
-//                Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-//                resetUI();
-//                this.finish();
-//            } else {
-//                String msgRes = this.getString(R.string.sms_error_send_error);
-//                Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-//                resetUI();
-//            }
-//        }
-//
-//        if (MessageUti.SMS_GET_SEND_STATUS_REQUSET.equals(action)) {
-//            if (ok) {
-//                int nSendReslt = intent.getIntExtra(Const.SMS_SNED_STATUS, 0);
-//                SendStatus sendStatus = SendStatus.build(nSendReslt);
-//                m_sendStatus = sendStatus;
-//                boolean bEnd = false;
-//                if (sendStatus == SendStatus.Fail) {
-//                    String msgRes = this.getString(R.string.sms_error_send_error);
-//                    Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-//                    bEnd = true;
-//                }
-//                if (sendStatus == SendStatus.Fail_Memory_Full) {
-//                    String msgRes = this.getString(R.string.sms_error_message_full_storage);
-//                    Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-//                    bEnd = true;
-//                    this.finish();
-//                }
-//                if (sendStatus == SendStatus.Success) {
-//                    String msgRes = this.getString(R.string.sms_send_success);
-//                    Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
-//                    this.finish();
-//                    bEnd = true;
-//                }
-//
-//                if (bEnd) {
-//                    m_bSendEnd = true;
-//                    //BusinessManager.getInstance().refreshSmsListAtOnce();
-//
-//                    resetUI();
-//                }
-//            } else {
-//                resetUI();
-//            }
-//        }
-//    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SEND_SMS_REQUSET));
-        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_GET_SEND_STATUS_REQUSET));
-        this.registerReceiver(this.m_msgReceiver, new IntentFilter(MessageUti.SMS_SAVE_SMS_REQUSET));
     }
 
     @Override
@@ -268,9 +189,6 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
             m_btnSend.setEnabled(true);
         m_etNumber.setEnabled(true);
         m_etContent.setEnabled(true);
-        //m_etNumber.setText("");
-        //m_etContent.setText("");
-
         m_bSendEnd = false;
     }
 
@@ -284,6 +202,8 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 
             case R.id.send_btn:
                 OnBtnSend();
+                m_etContent.setText("");
+                finish();
                 break;
             default:
                 break;
@@ -414,7 +334,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
         API.get().GetSendSMSResult(new MySubscriber<SendSMSResult>() {
             @Override
             protected void onSuccess(SendSMSResult result) {
-                //0 : none 1 : sending 2 : success 3: fail still sending last message 4 : fail with Memory full 5: fail
+                //0 : none 1 : sending 2 : sendAgainSuccess 3: fail still sending last message 4 : fail with Memory full 5: fail
                 resetUI();
                 int sendStatus = result.getSendStatus();
                 if (sendStatus == 0) {

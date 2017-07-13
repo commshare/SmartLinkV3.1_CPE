@@ -1,10 +1,10 @@
-package com.alcatel.wifilink.ui.sms.helper;
+package com.alcatel.wifilink.ui.devicec.helper;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
-import com.alcatel.wifilink.ui.sms.fragment.ui.DeviceBlockFragment;
-import com.alcatel.wifilink.ui.sms.fragment.ui.DeviceConnectFragment;
+import com.alcatel.wifilink.ui.devicec.fragment.ui.DeviceBlockFragment;
+import com.alcatel.wifilink.ui.devicec.fragment.ui.DeviceConnectFragment;
 
 /**
  * @作者 qianli

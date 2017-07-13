@@ -338,7 +338,7 @@ public class ENUM {
     }
 
     /*
-     * 0 : none 1 : sending 2 : success 3 : fail still sending last message 4 :
+     * 0 : none 1 : sending 2 : sendAgainSuccess 3 : fail still sending last message 4 :
      * fail with Memory full 5 : fail
      */
     public enum SendStatus {

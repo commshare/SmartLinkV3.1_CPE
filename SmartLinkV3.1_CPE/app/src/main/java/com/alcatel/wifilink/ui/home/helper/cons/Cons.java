@@ -113,4 +113,11 @@ public class Cons {
     public static final String DEVICE_REBOOT = "010103";
     public static final String GUEST_AP_OR_WEBUI = "010104";
 
+    public static final int NONE = 0;
+    public static final int SENDING = 1;
+    public static final int SUCCESS = 2;
+    public static final int FAIL_STILL_SENDING_LAST_MSG = 3;
+    public static final int FAIL_WITH_MEMORY_FULL = 4;
+    public static final int FAIL = 5;
+
 }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_smsdetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_10dip"
+        android:layout_marginTop="@dimen/dimen_10dip">
+
+        <!-- **** checkbox **** -->
+        <ImageView
+            android:id="@+id/iv_smsdetail_selected"
+            android:layout_width="@dimen/dimen_15dip"
+            android:layout_height="@dimen/dimen_15dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:src="@drawable/checkbox_android_on"
+            android:visibility="gone" />
+
+        <!-- **** Receiver_Layout **** -->
+        <RelativeLayout
+            android:id="@+id/rl_smsdetail_receiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:layout_toRightOf="@id/iv_smsdetail_selected"
+            android:visibility="gone">
+
+            <!-- content -->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sms_receive_normal">
+
+                <!-- text -->
+                <TextView
+                    android:id="@+id/tv_smsdetail_text_receiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/dimen_250dip"
+                    android:text="smscontentsmscaasdfsdfontentsmsconte"
+                    android:textColor="@color/sms_detail_text"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
+
+                <!-- date -->
+                <TextView
+                    android:id="@+id/tv_smsdetail_date_receiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_smsdetail_text_receiver"
+                    android:maxWidth="@dimen/dimen_250dip"
+                    android:text="6/6/2017 18:50"
+                    android:textColor="@color/orange_textColor"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!-- **** Send_Layout **** -->
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/rl_smsdetail_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:layout_toRightOf="@id/iv_smsdetail_selected"
+            android:gravity="right">
+
+            <!-- send failed -->
+            <ImageView
+                android:id="@+id/iv_smsdetail_failed_send"
+                android:layout_width="@dimen/dimen_15dip"
+                android:layout_height="@dimen/dimen_15dip"
+                android:layout_centerVertical="true"
+                android:src="@drawable/sms_prompt" />
+
+            <!-- content -->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_15dip"
+                android:layout_marginRight="@dimen/dimen_15dip"
+                android:layout_toRightOf="@id/iv_smsdetail_failed_send"
+                android:background="@drawable/sms_out_normal">
+
+                <!-- text -->
+                <TextView
+                    android:id="@+id/tv_smsdetail_text_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/dimen_250dip"
+                    android:text="sendcontendcontentent"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
+
+                <!-- date -->
+                <TextView
+                    android:id="@+id/tv_smsdetail_date_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_smsdetail_text_send"
+                    android:maxWidth="@dimen/dimen_250dip"
+                    android:text="6/6/2017 18:00"
+                    android:textColor="@color/yellow"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

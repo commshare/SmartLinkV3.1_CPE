@@ -21,6 +21,7 @@ import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ENUM;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -71,6 +72,7 @@ public class LoadingActivity extends AppCompatActivity {
         mViews.add(inflater.inflate(R.layout.what_new_two, null));
         View view = inflater.inflate(R.layout.what_new_three, null);
         view.findViewById(R.id.btn_start).setOnClickListener(v -> {
+            SharedPrefsUtil.getInstance(this).putBoolean(Constants.KEY_FIRST_RUN, false);
             launchNextActivity();
         });
         mViews.add(view);
@@ -98,7 +100,8 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private void startApp() {
-        mIsFirstRun = mSharedPrefs.getBoolean(Constants.KEY_FIRST_RUN, true);
+        // mIsFirstRun = mSharedPrefs.getBoolean(Constants.KEY_FIRST_RUN, true);
+        mIsFirstRun = SharedPrefsUtil.getInstance(this).getBoolean(Constants.KEY_FIRST_RUN, false);
         Log.d(TAG, "startApp, mIsFirstRun:" + mIsFirstRun);
         if (mIsFirstRun) {
             showGuidePager();

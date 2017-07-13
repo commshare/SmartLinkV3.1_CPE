@@ -121,7 +121,7 @@ public class SSDPSearchResponseSocketList extends Vector
 					log.e("SSDPSearchResponseSocket.getSocket() == null!!!");
 					continue;
 				}
-				log.i("SSDPSearchResponseSocket create success!!!bindAddresses = " + bindAddresses[j]);
+				log.i("SSDPSearchResponseSocket create sendAgainSuccess!!!bindAddresses = " + bindAddresses[j]);
 				add(socket);
 				flag = true;
 				continue;

@@ -186,7 +186,7 @@
         <!-- android:theme="@android:style/Theme.Black.NoTitleBar"> -->
         <!-- </activity> -->
         <activity
-            android:name=".ui.sms.allsetup.ActivityDeviceManager"
+            android:name=".ui.devicec.allsetup.ActivityDeviceManager"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
@@ -309,6 +309,8 @@
         <activity
             android:name=".ui.activity.PukUnlockActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ui.sms.activity.SmsDetailActivity">
         </activity>
     </application>
 

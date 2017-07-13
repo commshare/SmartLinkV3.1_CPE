@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.helper;
+package com.alcatel.wifilink.ui.devicec.helper;
 
 /**
  * Created by qianli.ma on 2017/6/13.

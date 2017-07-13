@@ -56,17 +56,17 @@ public class SMSContentList {
     }
 
     public static class SMSContentBean {
-        private int SMSId;
+        private long SMSId;
         private int SMSType;
         private int ReportStatus;
         private String SMSContent;
         private String SMSTime;
 
-        public int getSMSId() {
+        public long getSMSId() {
             return SMSId;
         }
 
-        public void setSMSId(int SMSId) {
+        public void setSMSId(long SMSId) {
             this.SMSId = SMSId;
         }
 

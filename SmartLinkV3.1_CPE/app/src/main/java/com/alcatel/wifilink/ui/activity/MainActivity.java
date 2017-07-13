@@ -51,7 +51,7 @@ import com.alcatel.wifilink.ui.dialog.PinDialog;
 import com.alcatel.wifilink.ui.dialog.PinDialog.OnPINError;
 import com.alcatel.wifilink.ui.dialog.PukDialog;
 import com.alcatel.wifilink.ui.dialog.PukDialog.OnPUKError;
-import com.alcatel.wifilink.ui.sms.allsetup.ActivityDeviceManager;
+import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.view.ViewHome;
 import com.alcatel.wifilink.ui.view.ViewIndex;
 import com.alcatel.wifilink.ui.view.ViewMicroSD;

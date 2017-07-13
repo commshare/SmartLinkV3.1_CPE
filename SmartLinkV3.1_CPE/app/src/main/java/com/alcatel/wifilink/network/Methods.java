@@ -79,7 +79,7 @@ public interface Methods {
     String GET_USAGESETTING = "GetUsageSettings";
     String GET_USAGERECORD = "GetUsageRecord";
     String SET_USAGERECORDCLEAR = "SetUsageRecordClear";
-    
+
     String GET_CONNECTEDDEVICELIST = "GetConnectedDeviceList";
     String GET_BLOCKDEVICELIST = "GetBlockDeviceList";
     String SET_CONNECTEDDEVICEBLOCK = "SetConnectedDeviceBlock";
@@ -88,14 +88,16 @@ public interface Methods {
 
     //profile
     String GET_PROFILE_LIST = "GetProfileList";
-    
+
     String GET_SMSCONTACTLIST = "GetSMSContactList";
     String GET_SMSINITSTATE = "getSmsInitState";
-    
+
     String GET_SMSCONTENTLIST = "GetSMSContentList";
     String SAVESMS = "SaveSMS";
     String DELETESMS = "DeleteSMS";
     String SENDSMS = "SendSMS";
     String GET_SEND_SMS_RESULT = "GetSendSMSResult";
+    String GET_SINGLE_SMS = "GetSingleSMS";
     
+
 }

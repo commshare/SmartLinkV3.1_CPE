@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import com.alcatel.wifilink.ui.home.fragment.MainFragment;
-import com.alcatel.wifilink.ui.home.fragment.SmsFragment;
 import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
+import com.alcatel.wifilink.ui.home.fragment.SmsFragments;
 import com.alcatel.wifilink.ui.home.fragment.WifiFragment;
 
 /**
@@ -32,7 +32,8 @@ public class FragmentHomeBucket {
         } else if (flag.equals(FragmentHomeEnum.WIFI)) {
             fragment = new WifiFragment();
         } else if (flag.equals(FragmentHomeEnum.SMS)) {
-            fragment = new SmsFragment();
+            // fragment = new SmsFragment();
+            fragment = new SmsFragments();
         } else if (flag.equals(FragmentHomeEnum.SETTING)) {
             fragment = new SettingFragment();
         }

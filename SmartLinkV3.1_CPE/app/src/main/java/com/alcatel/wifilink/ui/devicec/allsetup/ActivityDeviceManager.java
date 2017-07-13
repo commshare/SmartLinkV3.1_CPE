@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.allsetup;
+package com.alcatel.wifilink.ui.devicec.allsetup;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -13,8 +13,8 @@ import com.alcatel.wifilink.model.device.response.BlockList;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
-import com.alcatel.wifilink.ui.sms.helper.FraDeviceHelper;
-import com.alcatel.wifilink.ui.sms.helper.FragmentDeviceEnum;
+import com.alcatel.wifilink.ui.devicec.helper.FraDeviceHelper;
+import com.alcatel.wifilink.ui.devicec.helper.FragmentDeviceEnum;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 
 import butterknife.BindView;

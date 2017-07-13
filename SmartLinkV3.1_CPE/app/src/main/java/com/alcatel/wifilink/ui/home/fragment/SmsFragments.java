@@ -12,7 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.model.sms.SMSContactList;
+import com.alcatel.wifilink.network.API;
+import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.home.helper.rcv.SmsRcvAdapter;
+import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +32,9 @@ public class SmsFragments extends Fragment {
     Unbinder unbinder;
     private HomeActivity activity;
     private View inflate;
+    private SmsRcvAdapter smsRcvAdapter;
+    private TimerHelper timerHelper;
+    private SMSContactList smsContactList;
 
     public SmsFragments() {
 
@@ -44,9 +53,51 @@ public class SmsFragments extends Fragment {
         return inflate;
     }
 
+    /* **** initView **** */
     private void initView() {
         rcvSms.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        rcvSms.setAdapter(null);
+        smsRcvAdapter = new SmsRcvAdapter(getActivity(), smsContactList);
+        rcvSms.setAdapter(smsRcvAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startTimer();
+    }
+
+    private void startTimer() {
+        timerHelper = new TimerHelper(getActivity()) {
+            @Override
+            public void doSomething() {
+                getSmsContactList();
+            }
+        };
+        timerHelper.start(2000);
+    }
+
+    /* **** getSmsContactList **** */
+    private void getSmsContactList() {
+        // get sms list
+        API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
+            @Override
+            protected void onSuccess(SMSContactList result) {
+                smsContactList = result;
+                smsRcvAdapter.notifys(smsContactList);
+                SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHelper.stop();
     }
 
     @Override

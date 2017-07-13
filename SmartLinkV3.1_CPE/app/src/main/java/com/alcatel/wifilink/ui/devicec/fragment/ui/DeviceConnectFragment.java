@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.fragment.ui;
+package com.alcatel.wifilink.ui.devicec.fragment.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,9 +18,9 @@ import com.alcatel.wifilink.model.device.response.ConnectedList;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.ui.sms.allsetup.ActivityDeviceManager;
-import com.alcatel.wifilink.ui.sms.fragment.connect.ConnectAdapter;
-import com.alcatel.wifilink.ui.sms.helper.ModelHelper;
+import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
+import com.alcatel.wifilink.ui.devicec.fragment.connect.ConnectAdapter;
+import com.alcatel.wifilink.ui.devicec.helper.ModelHelper;
 
 import java.util.ArrayList;
 import java.util.List;

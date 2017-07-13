@@ -1,7 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.telephony.SmsMessage;
@@ -329,7 +328,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
                 return;
             SMSDetailItem item = m_smsListData.get(m_smsListData.size() - 1);
             if (null != item && item.eSMSType == Cons.DRAFT) {
-                ArrayList<Integer> smsids = new ArrayList<>();
+                ArrayList<Long> smsids = new ArrayList<>();
                 smsids.add(item.nSMSID);
                 //deletedSmsFuntion(Cons.DELETE_MORE_SMS, smsids, m_smsListData, item);
             }
@@ -364,7 +363,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
 
                 if (bHaveSms == true) {
                     // prepare a list for smsId
-                    List<Integer> smsids = new ArrayList<>();
+                    List<Long> smsids = new ArrayList<>();
                     // foreach poslist for who have selected
                     for (String position : posList) {
                         smsids.add(m_smsListData.get(Integer.valueOf(position)).getnSMSID());
@@ -811,13 +810,14 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
     }
 
     /* **** deletedSmsFuntion **** */
-    private void deletedSmsFuntion(int DelFlag, List<Integer> smsIds, List<SMSDetailItem> m_smsListData, @Nullable SMSDetailItem item) {
+    private void deletedSmsFuntion(int DelFlag, List<Long> smsIds, List<SMSDetailItem> m_smsListData, @Nullable SMSDetailItem 
+                                                                                                            item) {
         SMSDeleteParam sdp = new SMSDeleteParam(DelFlag, smsIds);
         API.get().deleteSMS(sdp, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
 
-                // when deleted success then reset all status
+                // when deleted sendAgainSuccess then reset all status
                 rebackStatus(false);
 
                 m_bDeleteEnd = true;

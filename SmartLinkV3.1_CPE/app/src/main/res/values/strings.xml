@@ -892,4 +892,9 @@
     <string name="input_a_data_value_between_0_1024">Input a data value between 0-1024</string>
     <string name="please_enable_sim_pin">Please enable sim pin</string>
 
+    <!-- smsdetail -->
+    <string name="smsdetail_tryagain">You message was not send</string>
+    <string name="smsdetail_tryagain_confirm">Try again</string>
+    <string name="smsdetail_new_message">You got a new message</string>
+
 </resources>

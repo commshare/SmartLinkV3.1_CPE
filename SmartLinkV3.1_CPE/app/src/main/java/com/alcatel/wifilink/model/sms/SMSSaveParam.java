@@ -8,13 +8,13 @@ import java.util.List;
 
 public class SMSSaveParam {
 
-    public int SMSId;
+    public long SMSId;
     public String SMSContent;
     public String SMSTime;
     public List<String> PhoneNumber;
 
 
-    public SMSSaveParam(int SMSId, String SMSContent, String SMSTime, List<String> phoneNumber) {
+    public SMSSaveParam(long SMSId, String SMSContent, String SMSTime, List<String> phoneNumber) {
         this.SMSId = SMSId;
         this.SMSContent = SMSContent;
         this.SMSTime = SMSTime;
@@ -24,11 +24,11 @@ public class SMSSaveParam {
     public SMSSaveParam() {
     }
 
-    public int getSMSId() {
+    public long getSMSId() {
         return SMSId;
     }
 
-    public void setSMSId(int SMSId) {
+    public void setSMSId(long SMSId) {
         this.SMSId = SMSId;
     }
 

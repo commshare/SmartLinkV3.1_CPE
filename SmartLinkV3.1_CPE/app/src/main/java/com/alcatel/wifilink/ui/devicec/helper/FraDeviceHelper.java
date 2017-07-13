@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.helper;
+package com.alcatel.wifilink.ui.devicec.helper;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;

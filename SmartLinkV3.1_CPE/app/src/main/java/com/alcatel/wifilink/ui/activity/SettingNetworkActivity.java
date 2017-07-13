@@ -348,7 +348,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().changePinState(pinCode, enable, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "changePinState success");
+                Log.d(TAG, "changePinState sendAgainSuccess");
                 mSimPinCompat.setChecked(enable == 1);
             }
             @Override
@@ -404,7 +404,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().setUsageSetting(usageSetting, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "setUsageSetting success");
+                Log.d(TAG, "setUsageSetting sendAgainSuccess");
                 getUsageSetting();
             }
 
@@ -419,7 +419,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().changePinCode(newPin, currentPin, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "changePinCode success");
+                Log.d(TAG, "changePinCode sendAgainSuccess");
                 Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 mCurrentSimPin.setText(null);
                 mNewSimPin.setText(null);

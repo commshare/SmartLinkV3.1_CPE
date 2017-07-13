@@ -114,7 +114,7 @@ public class SSDPNotifySocketList extends Vector
 					log.e("ssdpNotifySocket.getSocket() == null!!!");
 					return false;
 				}
-				log.i("ssdpNotifySocket create success!!!bindAddresses = " + bindAddresses[i]);
+				log.i("ssdpNotifySocket create sendAgainSuccess!!!bindAddresses = " + bindAddresses[i]);
 				add(ssdpNotifySocket);
 				continue;
 			}

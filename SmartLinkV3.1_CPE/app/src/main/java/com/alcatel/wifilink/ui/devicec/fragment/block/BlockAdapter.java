@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.fragment.block;
+package com.alcatel.wifilink.ui.devicec.fragment.block;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,8 @@ import com.alcatel.wifilink.model.device.other.BlockModel;
 import com.alcatel.wifilink.model.device.response.BlockList;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.ui.sms.allsetup.ActivityDeviceManager;
-import com.alcatel.wifilink.ui.sms.helper.FragmentDeviceEnum;
+import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
+import com.alcatel.wifilink.ui.devicec.helper.FragmentDeviceEnum;
 
 import java.util.List;
 

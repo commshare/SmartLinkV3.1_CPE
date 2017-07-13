@@ -305,7 +305,7 @@ public class FtpManager {
 		if (iStatus) {
 			ftpManagerListener.onStatus(FtpMessage.FILE_DOWNLOAD_SUCCESS,
 					ERROR.SUCCESS);
-			logger.i("delete file [" + remoteFilePath + "]" + "success!");
+			logger.i("delete file [" + remoteFilePath + "]" + "sendAgainSuccess!");
 		} else {
 			logger.i("delete file [" + remoteFilePath + "]" + "fail!");
 		}

@@ -48,6 +48,11 @@ public class SMSContactList {
         public int UnreadCount;
         public int TSMSCount;
 
+        @Override
+        public String toString() {
+            return "SMSContact{" + "ContactId=" + ContactId + ", PhoneNumber=" + PhoneNumber + ", SMSId=" + SMSId + ", SMSType=" + SMSType + ", ReportStatus=" + ReportStatus + ", SMSContent='" + SMSContent + '\'' + ", SMSTime='" + SMSTime + '\'' + ", UnreadCount=" + UnreadCount + ", TSMSCount=" + TSMSCount + '}';
+        }
+
         public int getContactId() {
             return ContactId;
         }

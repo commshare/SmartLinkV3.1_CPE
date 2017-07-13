@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.sms.fragment.connect;
+package com.alcatel.wifilink.ui.devicec.fragment.connect;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

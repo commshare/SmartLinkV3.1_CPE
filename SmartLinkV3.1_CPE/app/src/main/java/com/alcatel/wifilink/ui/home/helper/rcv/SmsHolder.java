@@ -20,6 +20,7 @@ public class SmsHolder extends RecyclerView.ViewHolder {
     public RelativeLayout rl_smsInfo;// 内容区
     public TextView tv_smsPhone;// 电话号码
     public TextView tv_smsCount;// 信息数量
+    public ImageView iv_smsSendFailed;// 发送失败的LOGO
     public TextView tv_smsContent;// 信息浏览
     public TextView tv_smsDate;// 信息日期
 
@@ -30,6 +31,7 @@ public class SmsHolder extends RecyclerView.ViewHolder {
         rl_smsInfo = (RelativeLayout) itemView.findViewById(R.id.rl_smsInfo);
         tv_smsPhone = (TextView) itemView.findViewById(R.id.tv_smsPhone);
         tv_smsCount = (TextView) itemView.findViewById(R.id.tv_smsCount);
+        iv_smsSendFailed = (ImageView) itemView.findViewById(R.id.iv_smsSendFailed);
         tv_smsContent = (TextView) itemView.findViewById(R.id.tv_smsContent);
         tv_smsDate = (TextView) itemView.findViewById(R.id.tv_smsDate);
     }

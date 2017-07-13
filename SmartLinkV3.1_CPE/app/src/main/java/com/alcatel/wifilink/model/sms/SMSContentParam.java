@@ -6,10 +6,18 @@ package com.alcatel.wifilink.model.sms;
 
 public class SMSContentParam {
 
-    public  int Page;
-    public int ContactId;
+    public int Page;
+    public long ContactId;
 
-    public SMSContentParam(int page, int contactId) {
+    public long getContactId() {
+        return ContactId;
+    }
+
+    public void setContactId(long contactId) {
+        ContactId = contactId;
+    }
+
+    public SMSContentParam(int page, long contactId) {
         Page = page;
         ContactId = contactId;
     }
@@ -22,11 +30,4 @@ public class SMSContentParam {
         this.Page = Page;
     }
 
-    public int getContactId() {
-        return ContactId;
-    }
-
-    public void setContactId(int ContactId) {
-        this.ContactId = ContactId;
-    }
 }

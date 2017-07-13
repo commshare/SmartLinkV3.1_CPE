@@ -128,7 +128,7 @@ public class PinCodeFragment extends Fragment {
 
 //        // PIN解锁成功(broadcast形式):预留
 //        mReceiver.setOnPinSuccessListener(() -> {
-//            // 1.show success ui
+//            // 1.show sendAgainSuccess ui
 //            activity.mRl_Success.setVisibility(View.VISIBLE);
 //            // 2. save the pin password to sp
 //            SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, isRememberPassword ? mEt_Pin_Password.getText().toString() : "");

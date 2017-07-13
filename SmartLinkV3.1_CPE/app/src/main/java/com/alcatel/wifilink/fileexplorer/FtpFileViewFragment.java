@@ -340,7 +340,7 @@ public class FtpFileViewFragment extends Fragment implements
 				}
 				break;
 			case MSG_TYPE.MSG_END_DOWNLOAD:
-				logger.i("download success!");
+				logger.i("download sendAgainSuccess!");
 				mDlDialog.dismiss();
 				break;
 			case MSG_TYPE.MSG_PAUSE_DOWNLOAD:
