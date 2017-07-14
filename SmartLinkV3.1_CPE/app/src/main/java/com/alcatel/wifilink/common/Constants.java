@@ -5,6 +5,14 @@ package com.alcatel.wifilink.common;
  */
 
 public class Constants {
+    public class Language {
+        public static final String ENGLISH = "en";
+        public static final String ARABIC = "ar";
+        public static final String ESPANYOL = "es";
+        public static final String GERMENIC = "de";
+        public static final String ITALIAN = "it";
+        public static final String FRENCH = "fr";
+    }
     public class SIMState {
         public static final int NOWN = 0;
         public static final int SIM_CARD_DETECTED = 1;

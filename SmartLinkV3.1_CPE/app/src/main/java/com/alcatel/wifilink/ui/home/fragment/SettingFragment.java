@@ -42,6 +42,7 @@ import com.alcatel.wifilink.ui.activity.AboutActivity;
 import com.alcatel.wifilink.ui.activity.EthernetWanConnectionActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
 import com.alcatel.wifilink.ui.activity.SettingDeviceActivity;
+import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.utils.FileUtils;
@@ -71,6 +72,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mMobileNetwork;
     private RelativeLayout mEthernetWan;
     private RelativeLayout mSharingService;
+    private RelativeLayout mLanguage;
     private RelativeLayout mFirmwareUpgrade;
     private RelativeLayout mRestart;
     private RelativeLayout mBackup;
@@ -113,6 +115,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         mMobileNetwork = (RelativeLayout) m_view.findViewById(R.id.setting_mobile_network);
         mEthernetWan = (RelativeLayout) m_view.findViewById(R.id.setting_ethernet_wan);
         mSharingService = (RelativeLayout) m_view.findViewById(R.id.setting_sharing_service);
+        mLanguage = (RelativeLayout) m_view.findViewById(R.id.setting_language);
         mFirmwareUpgrade = (RelativeLayout) m_view.findViewById(R.id.setting_firmware_upgrade);
         mRestart = (RelativeLayout) m_view.findViewById(R.id.setting_restart);
         mBackup = (RelativeLayout) m_view.findViewById(R.id.setting_backup);
@@ -126,6 +129,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         mMobileNetwork.setOnClickListener(this);
         mEthernetWan.setOnClickListener(this);
         mSharingService.setOnClickListener(this);
+        mLanguage.setOnClickListener(this);
         mFirmwareUpgrade.setOnClickListener(this);
         mRestart.setOnClickListener(this);
         mBackup.setOnClickListener(this);
@@ -152,6 +156,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.setting_not_support_sharing_service));
                 }
+                break;
+            case R.id.setting_language:
+                goSettingLanguagePage();
                 break;
             case R.id.setting_firmware_upgrade:
                 requestGetConnectionStatus();
@@ -811,6 +818,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 showUpgradeStateDlg(null);
             }
         });
+    }
+
+    private void goSettingLanguagePage() {
+        Intent intent = new Intent(getActivity(), SettingLanguageActivity.class);
+        getActivity().startActivity(intent);
     }
 
     private void goToAccountSettingPage() {
