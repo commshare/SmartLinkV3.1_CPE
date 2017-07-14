@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen_24dip"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingLeft="24dp"
+              android:paddingRight="24dp"
+              android:paddingTop="@dimen/dimen_24dip">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="5">
+
         <EditText
             android:id="@+id/monthly_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center_vertical"
-            android:inputType="number"
             android:digits="1234567890"
-            android:hint="number"/>
+            android:gravity="center_vertical"
+            android:hint="number"
+            android:inputType="number"/>
+
         <RadioGroup
             android:id="@+id/radiogroup_monthly_plan"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_weight="3"
-            android:layout_marginLeft="5dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
             android:fadingEdge="none"
             android:gravity="center_vertical"
-            android:layout_centerVertical="true"
             android:orientation="horizontal">
 
             <RadioButton
@@ -37,23 +39,23 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/radio_group_selector"
                 android:button="@color/transparent"
+                android:checked="true"
                 android:gravity="center"
                 android:text="MB"
-                android:checked="true"
-                android:textColor="@color/color_radiobutton"
-                android:background="@drawable/radio_group_selector"/>
+                android:textColor="@color/color_radiobutton"/>
 
             <RadioButton
                 android:id="@+id/radio_monthly_plan_gb"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/radio_group_selector"
                 android:button="@color/transparent"
                 android:gravity="center"
                 android:text="GB"
                 android:textColor="@color/color_radiobutton"
-                android:background="@drawable/radio_group_selector"
                 />
 
             <RadioButton
@@ -61,22 +63,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/radio_group_selector"
                 android:button="@color/transparent"
+                android:checked="true"
                 android:gravity="center"
                 android:text="KB"
-                android:checked="true"
-                android:textColor="@color/color_radiobutton"
-                android:background="@drawable/radio_group_selector"/>
+                android:textColor="@color/color_radiobutton"/>
         </RadioGroup>
 
     </LinearLayout>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:text="(If blank, data unlimited)"/>
 
 </LinearLayout>

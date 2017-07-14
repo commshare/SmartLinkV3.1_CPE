@@ -4,7 +4,7 @@
     <string name="app_name">Alcatel WiFi Link</string>
 
     <!-- common start -->
-    <string name="cancel">Cancel</string>
+    <string name="cancel">CANCEL</string>
     <string name="ok">OK</string>
     <string name="done">Done</string>
     <string name="back">Back</string>
@@ -54,7 +54,7 @@
     </string>
     <string name="qs_puk_code">PUK Code:</string>
     <string name="qs_pin_code_new">New PIN:</string>
-    <string name="qs_pin_code_confirm">Confirm PIN:</string>
+    <string name="qs_pin_code_confirm">Confirm new PIN:</string>
 
     <string name="qs_hint_sim_pin">SIM PIN</string>
     <string name="qs_pin_times_des">attempts remaining</string>
@@ -62,7 +62,7 @@
     <string name="qs_pin_connect">Connect</string>
     <string name="qs_pin_unlock_congratulations">Congratulations!</string>
     <string name="qs_pin_unlock_congratulations_des">You\'re successfully connected to the Internet</string>
-    <string name="qs_pin_unlock_can_not_connect">Couldn\'t connect</string>
+    <string name="qs_pin_unlock_can_not_connect">Network disconnected</string>
     <string name="qs_pin_unlock_can_not_connect_des">Check your WAN cabling or SIM card.</string>
     <string name="qs_pin_unlock_try_again">Try again</string>
     <string name="qs_pin_unlock_to_home">Home ></string>
@@ -90,10 +90,10 @@
     <string name="home_MB">MB</string>
     <string name="home_B">B</string>
     <string name="Home_unlock_pin">Unlock</string>
-    <string name="Home_no_sim">No sim card, function can not be used</string>
+    <string name="Home_no_sim">No SIM card inserted</string>
     <string name="Home_sim_invalid">Invalid SIM</string>
     <string name="Home_pin_locked">PIN Locked</string>
-    <string name="Home_puk_locked">PUK Locked</string>
+    <string name="Home_puk_locked">locked</string>
     <string name="Home_SimCard_IsIniting">Initializing</string>
     <string name="Home_PukTimes_UsedOut">Puk Times Used Out</string>
     <string name="Home_PinTimes_UsedOut">Pin Times Used Out</string>
@@ -125,7 +125,7 @@
         change the monthly values or reset consumption.
     </string>
 
-    <string name="home_exit_app">Tap again to exit app</string>
+    <string name="home_exit_app">Touch again to exit app</string>
     <!-- Home view end -->
 
     <!-- pop dialog start -->
@@ -148,21 +148,21 @@
     <!-- Usage setting start -->
     <string name="usage_setting_mobile_data">Mobile data</string>
     <string name="usage_setting_title">Usage Settings</string>
-    <string name="usage_setting_timelimit">Time Limit</string>
+    <string name="usage_setting_timelimit">limit</string>
     <string name="usage_setting_settimelimit">Set Time Limit:</string>
     <string name="usage_setting_timeunit">min(s)</string>
     <string name="usage_setting_usage">Usage</string>
-    <string name="usage_setting_billingday">Billing Day:</string>
-    <string name="usage_setting_usagealert">Usage Alert</string>
+    <string name="usage_setting_billingday">Billing cycle:</string>
+    <string name="usage_setting_usagealert">Usage alert</string>
     <string name="usage_setting_dayunit">day</string>
     <string name="usage_setting_usagealertunit">%</string>
-    <string name="usage_setting_monthlysataplan">Monthly Data Plan:</string>
+    <string name="usage_setting_monthlysataplan">Monthly data limit:</string>
     <string name="usage_setting_monthlyunit">MB</string>
     <string name="usage_setting_monthlyunitgb">GB</string>
     <string name="usage_setting_dataconsunption">Data Consumption:</string>
-    <string name="usage_setting_roaming">Roaming</string>
+    <string name="usage_setting_roaming">Data roaming</string>
     <string name="roaming_descrition">Automatically connect even when in roaming.</string>
-    <string name="usage_setting_autodisconnected">Auto Disconnected</string>
+    <string name="usage_setting_autodisconnected">Disconnect automatically</string>
     <string name="auto_disconnect">Auto disconnect</string>
     <!-- Usage setting end -->
 
@@ -175,8 +175,8 @@
     <string name="unEdit_wifi_name">Name(SSID)</string>
     <string name="password">Password</string>
     <string name="wifi_name">Wi-Fi Network Name(SSID)</string>
-    <string name="wifi_password">Wi-Fi Password</string>
-    <string name="ssid_broadcast">SSID Broadcast</string>
+    <string name="wifi_password">Wi-Fi bassword</string>
+    <string name="ssid_broadcast">SSID broadcast</string>
     <string name="security_type">Security_Type</string>
     <string name="encryption_type">Encryption Type</string>
     <string name="channel">Channel</string>
@@ -191,7 +191,7 @@
     <string name="sms_send_fail">Fail</string>
     <string name="sms_report_message">delivered!</string>
     <string name="sms_to">To:</string>
-    <string name="sms_new_title">New Message</string>
+    <string name="sms_new_title">message</string>
     <string name="sms_error_send_error">Send SMS error!</string>
     <string name="sms_send_success">Send SMS success.</string>
     <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new
@@ -210,7 +210,7 @@
     <!-- connect connectDeviceList start -->
     <string name="setting_imsi">IMSI</string>
     <string name="setting_sim_number">SIM number</string>
-    <string name="setting_change_pin">Change PIN</string>
+    <string name="setting_change_pin">Change SIM PIN</string>
     <string name="usage_setting_sim_pin">SIM PIN</string>
     <string name="setting_set_data_plan">Set data plan</string>
     <string name="setting_network_connect_mode">Connection mode</string>
@@ -219,7 +219,7 @@
     <string name="device_manage_connected_des">Connected Devices</string>
     <string name="device_manage_block">Block Devices (%1$d)</string>
     <string name="device_manage_block_des">Block Devices</string>
-    <string name="device_manage_block_btn">Blocked</string>
+    <string name="device_manage_block_btn">BLOCK</string>
     <string name="device_manage_unblock_btn">Unblock</string>
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
@@ -243,10 +243,10 @@
     <string name="setting_ethernet_wan_connection">Ethernet WAN connection</string>
     <string name="setting_on_state">On</string>
     <string name="setting_off_state">Off</string>
-    <string name="setting_share">Sharing Service</string>
-    <string name="setting_firmware_upgrade">Firmware upgrade</string>
-    <string name="setting_restart_reset">Restart &amp; Reset</string>
-    <string name="setting_backup_restore">Backup &amp; Restore</string>
+    <string name="setting_share">Sharing service</string>
+    <string name="setting_firmware_upgrade">Firmware updates</string>
+    <string name="setting_restart_reset">Restart &amp; reset</string>
+    <string name="setting_backup_restore">Backup &amp; restore</string>
     <string name="setting_not_support_sharing_service">Your device does not support shared services</string>
     <string name="setting_device">Device</string>
     <string name="setting_printer">Printer</string>
@@ -313,7 +313,7 @@
     <string name="setting_upgrade_firmware_warning">The upgrade process will continue for a few minutes, please don\'t
         power off. Are you sure want to upgrade the system?
     </string>
-    <string name="setting_upgrade_check_error">Check error</string>
+    <string name="setting_upgrade_check_error">No updates found</string>
     <string name="setting_upgrade_btn_upgrade">Upgrade</string>
     <string name="setting_upgrade_not_start">Upgrade not start</string>
     <string name="setting_upgrade_complete">Download complete, please wait until upgrading finished</string>
@@ -362,11 +362,11 @@
     <string name="setting_wifi_error_title">Change Password</string>
     <string name="setting_change_login_password">Change Login Password</string>
     <string name="setting_log_out">Log Out</string>
-    <string name="setting_current_password">Current Password</string>
-    <string name="setting_new_password">New Password(5~16 characters)</string>
-    <string name="setting_confirm_password">Confirm Password</string>
+    <string name="setting_current_password">Current password</string>
+    <string name="setting_new_password">New password (4-16 characters)</string>
+    <string name="setting_confirm_password">Confirm new password</string>
     <string name="setting_password_note">Note: The password should be 5&#8211;16 characters.</string>
-    <string name="setting_network_mode">Network Mode</string>
+    <string name="setting_network_mode">mode</string>
     <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>
     <string name="setting_network_selection">Network Selection</string>
     <string name="setting_network_wifi_network_title">WiFi Network</string>
@@ -436,7 +436,7 @@
 
     <!-- notification start -->
     <string name="usage_limit_notification_title">Data usage warning</string>
-    <string name="usage_limit_over_notification_content">Data usage reaches Monthly Data Plan.</string>
+    <string name="usage_limit_over_notification_content">Monthly data usage limit reached</string>
     <string name="usage_limit_less_notification_content">Your usage has less than %1$s.</string>
     <string name="usage_maximum_monthly_plan_notice">The maximum monthly plan is</string>
     <string name="battery_limit_notification_title">Battery warning</string>
@@ -475,8 +475,8 @@
     <string name="pin_title">Please input the PIN code!</string>
     <string name="pin_code_label">PIN Code:</string>
     <string name="pin_error_waring_title">Sorry, the PIN code is wrong!</string>
-    <string name="puk_title">Please input the PUK code!</string>
-    <string name="puk_code_label">PUK Code</string>
+    <string name="puk_title">Enter PUK code</string>
+    <string name="puk_code_label">PUK code</string>
     <string name="puk_remain_three_times">Remain: 3 times</string>
     <string name="puk_new_pin_label">New PIN:</string>
     <string name="puk_confirm_pin_label">Confirmed PIN:</string>
@@ -488,7 +488,7 @@
     <string name="IDS_PUK_LOCKED">PUK Locked</string>
     <string name="IDS_PIN_CHECK_PIN_PROGRESS">Checking PIN</string>
     <string name="IDS_PIN_CHECK_PUK_PROGRESS">Checking PUK</string>
-    <string name="remain_times">Remain: %1$d time(s)</string>
+    <string name="remain_times">%1$d attempt(s) remaining</string>
     <!-- PIN end -->
 
     <!-- Login view start -->
@@ -513,16 +513,16 @@
     <string name="change_password_successful">Change password successfully!</string>
     <string name="wrong_current_password">The current password is wrong!</string>
     <string name="change_password_failed">Change password failed!</string>
-    <string name="inconsistent_new_password">Inconsistent new pass word!</string>
+    <string name="inconsistent_new_password">New passwords don\'t match</string>
     <string name="input_current_password">Please Input Your Current Password!</string>
     <string name="change_passowrd_invalid_password">The password should be 5&#8211;16 characters</string>
-    <string name="unknown_error">Unknown error!</string>
+    <string name="unknown_error">Unknown error</string>
 
-    <string name="login_login_btn">Login</string>
+    <string name="login_login_btn">LOG IN</string>
     <string name="login_enter_password">Enter admin password</string>
     <string name="login_enter_password_tip">5-16 characters</string>
     <string name="login_forgot_password">Forgot password?</string>
-    <string name="login_change_password_success_tips">First reset your device,then set a new Confirm password</string>
+    <string name="login_change_password_success_tips">f you have forgotten your password you will need to reset your router. You will then be able to log in using the default password (admin).</string>
     <!-- Login view end -->
 
     <!-- Refresh WIFI start -->
@@ -530,7 +530,7 @@
     <string name="refresh_wifi_tip">Please connect the mobile hotspot first!</string>
     <string name="refresh">Refresh</string>
 
-    <string name="refresh_no_device_manage">"No device can be managed."</string>
+    <string name="refresh_no_device_manage">No device found</string>
     <string name="refresh_get_connected">Get connected</string>
     <string name="refresh_manage_device_tips">To manage your device, make sure your phone is connected to the device\'s Wi-Fi</string>
     <!-- Refresh WIFI end -->
@@ -795,45 +795,45 @@
     <string name="country_region">County/Region</string>
     <string name="mode_802_11">802.11 mode</string>
     <string name="ap_isolation">AP isolation</string>
-    <string name="bandwidth">bandwidth</string>
+    <string name="bandwidth">Bandwidth</string>
     <string name="auto">Auto</string>
 
     <string name="times_remain_zero">No attempt remaining, please reboot device and try again</string>
     <string name="times_remain_one">1 attempt remaining</string>
     <string name="times_remain_many">%d attempts remaining</string>
-    <string name="restart">Restart</string>
-    <string name="reset_to_factory_settings">Reset to factory settings</string>
-    <string name="backup">Backup</string>
-    <string name="restore">Restore</string>
-    <string name="reset_device">Reset device?</string>
-    <string name="this_will_erase_all_settings_from_your_device_and_reset_to_factory_defaults_this_action_cannot_be_undone">This will erase all settings from your device and reset to factory defaults. This action cannot be undone.</string>
+    <string name="restart">RESTART</string>
+    <string name="reset_to_factory_settings">RESET TO FACTORY SETTINGS</string>
+    <string name="backup">BACK UP</string>
+    <string name="restore">RESTORE</string>
+    <string name="reset_router">Reset router?</string>
+    <string name="This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone">This will reset all settings on your router to factory defaults. This action can not be undone.</string>
     <string name="reset">Reset</string>
     <string name="couldn_t_reset_try_again">Couldn’t reset. Try again.</string>
     <string name="couldn_t_backup_try_again">Couldn’t backup. Try again.</string>
     <string name="couldn_t_restore_try_again">Couldn’t restore. Try again.</string>
     <string name="couldn_t_update_try_again">Couldn’t update. Try again.</string>
-    <string name="backup_current_settings_to">Backup current settings to</string>
+    <string name="back_up_settings">Back up settings</string>
     <string name="complete">Complete</string>
     <string name="device">Device</string>
     <string name="device_name">Device name</string>
     <string name="imei">IMEI</string>
-    <string name="mac_address">MAC Address</string>
+    <string name="mac_address">MAC address</string>
     <string name="management_ip_address">Management IP address</string>
     <string name="web_manager">Web manager</string>
     <string name="app_version">APP version</string>
-    <string name="quick_guide_user_manual"><![CDATA[Quick guide & User manual]]></string>
+    <string name="quick_guide_user_manual"><![CDATA[Quick guide & user manual]]></string>
 
     <string name="usb">USB</string>
     <string name="share_usb_storage_content">Share USB storage content</string>
     <string name="samba">Samba</string>
     <string name="share_service_dlna_tips">Real-time displaying content from other \nDLNA-supported devices in the LAN;or provide content for other DLNA-supported devices in the LAN to display.</string>
-    <string name="checking_for_update">Checking for update</string>
+    <string name="checking_for_update">Checking for update...</string>
     <string name="your_firmware_is_up_to_date">Your firmware is up to date</string>
     <string name="available">available</string>
     <string name="update">Update</string>
     <string name="updating">Updating...</string>
     <string name="could_not_update_try_again">Couldn\'t update.Try again.</string>
-    <string name="no_insert">NO insert</string>
+    <string name="not_inserted">Not inserted</string>
     <string name="usb_printer">USB printer</string>
     <string name="internet_status">Internet Status</string>
     <string name="disconnect">Disconnect</string>
@@ -856,9 +856,9 @@
     <string name="profile">Profile</string>
     <string name="current_sim_pin">Current SIM PIN</string>
     <string name="new_sim_pin">New SIM PIN</string>
-    <string name="confirm_new_sim_pin">Confirm New SIM PIN</string>
+    <string name="confirm_new_sim_pin">Confirm new SIM PIN</string>
     <string name="remember_sim_pin">Remember SIM PIN</string>
-    <string name="change_pin">Change Pin</string>
+    <string name="change_pin">Change SIM PIN</string>
     <string name="please_input_your_current_pin_code">Please input your current pin code</string>
     <string name="please_input_your_new_pin_code">Please input your new pin code</string>
     <string name="inconsistent_new_pin_code">Inconsistent new pin code</string>
@@ -897,4 +897,19 @@
     <string name="smsdetail_tryagain_confirm">Try again</string>
     <string name="smsdetail_new_message">You got a new message</string>
 
+    <string name="new_password_saved">New password saved</string>
+    <string name="incorrect_current_password">Incorrect current password</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="connection_timed_out">Connection timed out</string>
+    <string name="network_disconnected">Network disconnected</string>
+    <string name="enter_sim_pin">Enter SIM PIN</string>
+    <string name="to_edit_profile_go_to_settings_about_web_manager"><![CDATA[To edit profile, go to Settings > About > Web manager.]]></string>
+    <string name="send">SEND</string>
+    <string name="couldnt_restore_try_again">Couldn\'t restore. Try again</string>
+    <string name="do_not_change_default_connection_type_unless_necessary">Do not change default connection type unless necessary</string>
+    <string name="wep_password_must_be_5_13_characters">WEP password must be 5-13 characters</string>
+    <string name="password_2_4g_length_must_be_8_63">Password(2.4G) length must be 8-63!</string>
+    <string name="connectedlist_will_be_restarted_to_apply_new_settings">ConnectedList will be restarted to apply new settings.</string>
+    <string name="warning">Warning</string>
+    <string name="enter_2_4ghzssid">Enter 2.4GHz SSID</string>
 </resources>

@@ -20,8 +20,6 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 
-import java.io.UnsupportedEncodingException;
-
 public class SettingShareActivity extends BaseActivityWithBack implements OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private final String TAG = "SettingShareActivity";
@@ -74,7 +72,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
                 Log.d(TAG, "requestGetSystemStatus,usb name:" + result.getUsbName());
                 switch (result.getUsbStatus()) {
                     case Constants.DeviceUSBStatus.NOT_INSERT:
-                        mUSBStorageText.setText(R.string.no_insert);
+                        mUSBStorageText.setText(R.string.not_inserted);
                         break;
                     case Constants.DeviceUSBStatus.USB_STORAGE:
                         mUSBStorageText.setText(R.string.setting_usb_storage);

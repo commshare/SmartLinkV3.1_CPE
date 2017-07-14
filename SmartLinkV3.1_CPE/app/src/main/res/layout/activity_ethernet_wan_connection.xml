@@ -48,6 +48,7 @@
                     android:textSize="@dimen/dimen_textsize_14sp"
                     android:layout_marginLeft="@dimen/dimen_20dip"/>
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Need account and password given by network operator"
@@ -94,6 +95,7 @@
                     android:textSize="@dimen/dimen_textsize_14sp"
                     android:layout_marginLeft="@dimen/dimen_20dip"/>
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No need to set Internet parameters"
@@ -142,6 +144,7 @@
                     android:textSize="@dimen/dimen_textsize_14sp"
                     android:layout_marginLeft="@dimen/dimen_20dip"/>
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Need IP address and related info given by network operator"
@@ -268,7 +271,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Do not change default if not necessary"
+                    android:text="@string/do_not_change_default_connection_type_unless_necessary"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_textsize_12sp"
                     android:layout_marginLeft="@dimen/dimen_20dip"/>

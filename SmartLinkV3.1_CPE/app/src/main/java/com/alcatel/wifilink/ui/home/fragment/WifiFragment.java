@@ -357,8 +357,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
 
     private void showApplySettingsDlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Warning");
-        builder.setMessage("ConnectedList will be restarted to apply new settings.");
+        builder.setTitle(R.string.warning);
+        builder.setMessage(R.string.connectedlist_will_be_restarted_to_apply_new_settings);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             applySettings();
         });
@@ -381,7 +381,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                 String newKey2G = mKey2GEdit.getText().toString().trim();
 
                 if (newSsid2G.isEmpty()) {
-                    ToastUtil.showMessage(mContext, "Name(2.4G) is missing!");
+                    ToastUtil.showMessage(mContext, R.string.enter_2_4ghzssid);
                     return;
                 }
                 mEditedSettings.getAP2G().setSsid(newSsid2G);
@@ -395,7 +395,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                     //wep
                 } else if (newSecurity2GMode == 1) {
                     if (newKey2G.length() != 5 || newKey2G.length() != 13) {
-                        ToastUtil.showMessage(mContext, "Wep password(2.4G) length must be 5 or 13!");
+                        ToastUtil.showMessage(mContext, R.string.wep_password_must_be_5_13_characters);
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(newEncryption2G);
@@ -405,7 +405,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                     //wpa
                 } else {
                     if (newKey2G.length() < 8 || newKey2G.length() > 63) {
-                        ToastUtil.showMessage(mContext, "Password(2.4G) length must be 8-63!");
+                        ToastUtil.showMessage(mContext, R.string.password_2_4g_length_must_be_8_63);
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(0);

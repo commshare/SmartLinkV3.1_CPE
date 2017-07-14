@@ -126,7 +126,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="@dimen/dimen_35dip"
 			        android:background="@drawable/bg_conner_bottom_normal"
-					android:text="Send"
+					android:text="@string/send"
 					android:textColor="@color/color_white"
 					android:textSize="@dimen/dimen_textsize_16sp"
 			        android:layout_alignParentRight="true"

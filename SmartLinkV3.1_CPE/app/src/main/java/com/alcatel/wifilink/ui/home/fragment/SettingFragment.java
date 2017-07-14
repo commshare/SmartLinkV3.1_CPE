@@ -47,8 +47,6 @@ import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.utils.FileUtils;
 
 import java.io.File;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -335,7 +333,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private void showBackupSuccessDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.backup_current_settings_to);
+        builder.setTitle(R.string.back_up_settings);
         EditText editText = new EditText(getActivity());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(layoutParams);
@@ -409,8 +407,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showDialogResetFactorySetting() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.reset_device);
-        builder.setMessage(R.string.this_will_erase_all_settings_from_your_device_and_reset_to_factory_defaults_this_action_cannot_be_undone);
+        builder.setTitle(R.string.reset_router);
+        builder.setMessage(R.string.This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -508,15 +506,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "onResultError " + e);
-                if (e instanceof SocketTimeoutException) {
-                    ToastUtil.showMessage(getActivity(), "Time out");
-                } else if (e instanceof ConnectException) {
-                    ToastUtil.showMessage(getActivity(), "Couldn't connect");
-                } else {
-                    ToastUtil.showMessage(getActivity(), "Failed");
-                }
+                ToastUtil.showMessage(getActivity(), R.string.couldn_t_restore_try_again);
                 dismissLoadingDialog();
-                showFailedDialog(R.string.couldn_t_restore_try_again);
             }
 
             @Override

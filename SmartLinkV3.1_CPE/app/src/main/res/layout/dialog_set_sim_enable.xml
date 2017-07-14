@@ -15,7 +15,7 @@
             android:maxLength="8"
             android:inputType="number"
             android:digits="1234567890"
-            android:hint="Sim pin code"/>
+            android:hint="@string/enter_sim_pin"/>
 
     </LinearLayout>
 

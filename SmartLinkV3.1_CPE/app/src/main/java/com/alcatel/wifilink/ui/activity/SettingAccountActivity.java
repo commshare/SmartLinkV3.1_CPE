@@ -48,6 +48,8 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         String currentPwd = mCurrentPassword.getText().toString();
         String newPwd = mNewPassword.getText().toString();
         String confirmPwd = mConfirmPassword.getText().toString();
+
+
         if (currentPwd.length() == 0) {
             String strInfo = getString(R.string.input_current_password);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
@@ -128,7 +130,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         API.get().changePassword(UserName, CurrentPassword, NewPassword ,new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(SettingAccountActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingAccountActivity.this, R.string.new_password_saved, Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -3,6 +3,7 @@ package com.alcatel.wifilink.network;
 import android.content.Context;
 import android.util.Log;
 
+import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 
@@ -41,9 +42,9 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
         Log.e(TAG, "onResultError " + e);
 
         if (e instanceof SocketTimeoutException) {
-            ToastUtil.showMessage(mAppContext, "Time out");
+            ToastUtil.showMessage(mAppContext, R.string.connection_timed_out);
         } else if (e instanceof ConnectException) {
-            ToastUtil.showMessage(mAppContext, "Couldn't connect");
+            ToastUtil.showMessage(mAppContext, R.string.network_disconnected);
         }
 
         onFailure();
