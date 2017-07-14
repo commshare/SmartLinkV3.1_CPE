@@ -26,12 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.connection.ConnectionState;
+import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
@@ -118,7 +118,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         mBackup = (RelativeLayout) m_view.findViewById(R.id.setting_backup);
         mAbout = (RelativeLayout) m_view.findViewById(R.id.setting_about);
         mDeviceVersion = (TextView) m_view.findViewById(R.id.setting_firmware_upgrade_version);
-        mDeviceVersion.setText(BusinessManager.getInstance().getSystemInfo().getSwVersion());
+        getDeviceFWCurrentVersion();
     }
 
     private void initEvent() {
@@ -206,7 +206,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void requestGetWanSetingRequest() {
-        Log.d(TAG, "requestSetCheckNewVersion," + BusinessManager.getInstance().getWanConnectStatus().m_connectionStatus);
+        Log.d(TAG, "requestSetCheckNewVersion");
         API.get().getWanSeting(new MySubscriber<WanSetting>() {
             @Override
             protected void onSuccess(WanSetting result) {
@@ -559,6 +559,25 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         getActivity().startActivity(intent);
     }
 
+    private  void getDeviceFWCurrentVersion(){
+        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+            @Override
+            protected void onSuccess(SystemInfo result) {
+                Log.d(TAG,"getDeviceFWCurrentVersion,fw current version:"+result.getSwVersion());
+                mDeviceVersion.setText(result.getSwVersion());
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+            }
+
+            @Override
+            protected void onFailure() {
+                super.onFailure();
+            }
+        });
+    }
 
     private void requestSetCheckNewVersion() {
         Log.d(TAG, "requestSetCheckNewVersion,");
@@ -633,7 +652,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             negativeButtonStr = getString(R.string.cancel);
 
         } else if (Constants.DeviceVersionCheckState.DEVICE_NO_NEW_VERSION == eStatus) {
-            message = BusinessManager.getInstance().getSystemInfo().getSwVersion() + "\n" + getString(R.string.your_firmware_is_up_to_date);
+            message = mDeviceVersion.getText().toString() + "\n" + getString(R.string.your_firmware_is_up_to_date);
             positiveButtonStr = getString(R.string.ok);
 
         } else if (Constants.DeviceVersionCheckState.DEVICE_NO_CONNECT == eStatus || Constants.DeviceVersionCheckState.SERVICE_NOT_AVAILABLE == eStatus) {
