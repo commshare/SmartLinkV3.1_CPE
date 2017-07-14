@@ -197,7 +197,8 @@
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_centerVertical="true"
                     android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"/>
+                    android:layout_height="@dimen/dimen_30dip"
+                    android:src="@drawable/setting_language"/>
 
                 <TextView
                     android:textSize="@dimen/font_size_normal"

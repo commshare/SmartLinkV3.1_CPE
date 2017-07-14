@@ -752,7 +752,7 @@
     <string name="wan_connection">Ethernet WAN connection</string>
     <string name="preferred_dns">Preferred DNS</string>
     <string name="secondary_dns">Secondary DNS</string>
-    <string name="default_gateway">Default gateway</string>
+    <string name="default_gateway">Default gateway(optional)</string>
     <string name="subnet_mask">Subnet mask</string>
     <string name="ip_address">IP address</string>
     <string name="prompt_not_change">Do not change default if not necessary</string>
@@ -891,6 +891,17 @@
         network operator if you are unsure of your PUK code</string>
     <string name="input_a_data_value_between_0_1024">Input a data value between 0-1024</string>
     <string name="please_enable_sim_pin">Please enable sim pin</string>
+    <string name="ethernet_wan_connection">Ethernet WAN connection</string>
+    <string name="it_is_connected_you_can_switch_other_connection_mode_page">It is connected, You can switch other connection mode page</string>
+    <string name="connect">Connect</string>
+    <string name="do_not_change_default_if_not_necessary">Do not change default if not necessary</string>
+    <string name="account">Account</string>
+    <string name="need_ip_address_and_related_info_given_by_network_operator">Need IP address and related info given by network operator</string>
+    <string name="static_ip">Static IP</string>
+    <string name="no_need_to_set_internet_parameters">No need to set Internet parameters</string>
+    <string name="dhcp">DHCP</string>
+    <string name="need_account_and_password_given_by_network_operator">Need account and password given by network operator</string>
+    <string name="pppoe">PPPoE</string>
 
     <!-- smsdetail -->
     <string name="smsdetail_tryagain">You message was not send</string>
