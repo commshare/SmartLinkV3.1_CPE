@@ -1,9 +1,10 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.content.Context;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.Selection;
@@ -13,14 +14,13 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
-import com.alcatel.wifilink.common.MessageUti;
 import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
@@ -28,15 +28,14 @@ import com.alcatel.wifilink.model.sms.SendSMSResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.DataUtils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ActivityNewSms extends BaseActivity implements OnClickListener {
-    private TextView m_btnCancel = null;
-    private LinearLayout m_btnBack = null;
+public class ActivityNewSms extends BaseActivityWithBack implements OnClickListener {
     private Button m_btnSend = null;
     private EditText m_etNumber = null;
     private EditText m_etContent = null;
@@ -47,17 +46,21 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 
     private SendStatus m_sendStatus = SendStatus.None;
     private boolean m_bSendEnd = false;
+    private ActionbarSetting actionbarSetting;
+    private ActionBar actionBar;
+    private ImageButton ib_back;
+    private TextView tv_cancel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sms_new_view);
         getWindow().setBackgroundDrawable(null);
+
+        // init actionbar
+        initActionbar();
+
         // get controls
-        m_btnCancel = (TextView) findViewById(R.id.cancel);
-        m_btnCancel.setOnClickListener(this);
-        m_btnBack = (LinearLayout) findViewById(R.id.back_layout);
-        m_btnBack.setOnClickListener(this);
         m_btnSend = (Button) findViewById(R.id.send_btn);
         m_btnSend.setEnabled(false);
         m_btnSend.setOnClickListener(this);
@@ -70,6 +73,21 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
         String text = ActivitySmsDetail.getOneSmsLenth(new String()) + "/1";
 
         m_progressWaiting = (ProgressBar) this.findViewById(R.id.sms_new_waiting_progress);
+    }
+
+    private void initActionbar() {
+        actionBar = getSupportActionBar();
+        actionbarSetting = new ActionbarSetting() {
+            @Override
+            protected void findActionbarView(View view) {
+                ib_back = (ImageButton) view.findViewById(R.id.ib_newsms_back);
+                tv_cancel = (TextView) view.findViewById(R.id.tv_newsms_cancel);
+                ib_back.setOnClickListener(ActivityNewSms.this);
+                tv_cancel.setOnClickListener(ActivityNewSms.this);
+
+            }
+        };
+        actionbarSetting.settingActionbarAttr(this, actionBar, R.layout.actionbar_newsms);
     }
 
     private void setEditTextChangedListener() {
@@ -195,17 +213,19 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
     public void onClick(View arg0) {
         // TODO Auto-generated method stub
         switch (arg0.getId()) {
-            case R.id.cancel:
-            case R.id.back_layout:
-                OnBtnCancel();
+
+            case R.id.ib_newsms_back:
+                finish();
+                break;
+
+            case R.id.tv_newsms_cancel:
+                finish();
                 break;
 
             case R.id.send_btn:
                 OnBtnSend();
                 m_etContent.setText("");
                 finish();
-                break;
-            default:
                 break;
         }
     }

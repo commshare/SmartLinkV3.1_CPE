@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.common.CommonUtil;
-import com.alcatel.wifilink.common.DataUti;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContactList;
@@ -27,12 +25,14 @@ import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.sms.adapter.SmsDetatilAdapter;
 import com.alcatel.wifilink.ui.sms.helper.SmsDeletePop;
 import com.alcatel.wifilink.ui.sms.helper.SmsDraftHelper;
 import com.alcatel.wifilink.ui.sms.helper.SmsSendHelper;
+import com.alcatel.wifilink.ui.sms.helper.SmsContentSortHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -41,16 +41,17 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.offset;
+import static android.R.id.list;
 
-public class SmsDetailActivity extends AppCompatActivity implements View.OnClickListener, SmsDetatilAdapter.OnSmsSelectedListener, SmsDetatilAdapter.OnSmsLongClickListener, SmsDetatilAdapter.OnSendSuccessListener {
+public class SmsDetailActivity extends BaseActivityWithBack implements View.OnClickListener, SmsDetatilAdapter.OnSmsSelectedListener, 
+                                                            SmsDetatilAdapter.OnSmsLongClickListener, SmsDetatilAdapter.OnSendSuccessListener {
 
     @BindView(R.id.tv_smsdetail_date)
     TextView tvSmsdetailDate;// 路由器日期
@@ -81,6 +82,7 @@ public class SmsDetailActivity extends AppCompatActivity implements View.OnClick
     private SmsDeletePop deletePop;
     private LinearLayoutManager linearLayoutManager;
     private boolean toastFlag = true;
+    private String dateTimebanner = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +202,7 @@ public class SmsDetailActivity extends AppCompatActivity implements View.OnClick
     private void setRecycleView() {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvSmsdetail.setLayoutManager(linearLayoutManager);
-        adapter = new SmsDetatilAdapter(this, smsContentList, smsContact.getPhoneNumber());
+        adapter = new SmsDetatilAdapter(this, linearLayoutManager, smsContentList, smsContact.getPhoneNumber());
         adapter.setOnSmsSelectedListener(this);// 监听item被选中
         adapter.setOnSmsLongClickListener(this);// 短信被长按
         adapter.setOnSendSuccessListener(this);
@@ -220,13 +222,11 @@ public class SmsDetailActivity extends AppCompatActivity implements View.OnClick
                     } else {
                         tvSmsdetailDate.setAlpha(0.8f);
                     }
-                    // 2. set time according the first item who can see
-                    int lastItemPositon = linearLayoutManager.findLastVisibleItemPosition();
-                    String currentMessageTime = smsContentList.getSMSContentList().get(lastItemPositon).getSMSTime();
-                    tvSmsdetailDate.setText(currentMessageTime);
                 } else {
                     tvSmsdetailDate.setAlpha(0.3f);
                 }
+                // 2. set time according the first item who can see
+                setPositionTextTime();
             }
 
             @Override
@@ -234,6 +234,29 @@ public class SmsDetailActivity extends AppCompatActivity implements View.OnClick
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    /* **** setPositionTextTime: 根据当前第一个可视的SMS显示对应的短信时间 **** */
+    private void setPositionTextTime() {
+        runOnUiThread(() -> {
+            List<SMSContentList.SMSContentBean> list = filterDraft(smsContentList);
+            int pos = linearLayoutManager.findFirstVisibleItemPosition();
+            dateTimebanner = list.get(pos).getSMSTime();
+            tvSmsdetailDate.setText(dateTimebanner);
+        });
+    }
+
+    /* 提出草稿短信后按日期排序 */
+    public List<SMSContentList.SMSContentBean> filterDraft(SMSContentList smsContentList) {
+        List<SMSContentList.SMSContentBean> list = new ArrayList();
+        for (SMSContentList.SMSContentBean scb : smsContentList.getSMSContentList()) {
+            if (scb.getSMSType() == Cons.DRAFT) {
+                continue;
+            }
+            list.add(scb);
+        }
+        Collections.sort(list, new SmsContentSortHelper());
+        return list;
     }
 
     /* **** setRecyclePositionToLast: 定位到最后 **** */
@@ -267,8 +290,8 @@ public class SmsDetailActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            protected void onResultError(ResponseBody.Error error) {
-
+            public void onError(Throwable e) {
+                
             }
         });
 
@@ -284,7 +307,7 @@ public class SmsDetailActivity extends AppCompatActivity implements View.OnClick
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
-                    int contactId = smsContact.getContactId();
+                    long contactId = smsContact.getContactId();
                     SMSContentParam ssp = new SMSContentParam(0, contactId);
                     API.get().getSMSContentList(ssp, new MySubscriber<SMSContentList>() {
                         @Override
@@ -292,11 +315,10 @@ public class SmsDetailActivity extends AppCompatActivity implements View.OnClick
                             // 1. refresh the list
                             smsContentList = result;
                             if (adapter != null) {
-                                adapter.notifys(smsContentList);
+                                adapter.notifys(smsContentList, isSetRcvToLast);
                             }
                             // 2. refresh the router time
-                            SMSContentList.SMSContentBean scb = smsContentList.getSMSContentList().get(0);
-                            tvSmsdetailDate.setText(scb.getSMSTime());
+                            setPositionTextTime();
                             // 3. force to  set rcv position to last
                             if (isSetRcvToLast) {
                                 setRecyclePositionToLast(adapter.getItemCount() - 1);

@@ -3,6 +3,7 @@ package com.alcatel.wifilink.ui.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,11 +12,15 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.alcatel.wifilink.EncryptionUtil;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.LinkAppSettings;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.utils.OtherUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,36 +50,37 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void doneChangePassword() {
+        // 1.get the psd info
         String currentPwd = mCurrentPassword.getText().toString();
         String newPwd = mNewPassword.getText().toString();
         String confirmPwd = mConfirmPassword.getText().toString();
 
-
-        if (currentPwd.length() == 0) {
-            String strInfo = getString(R.string.input_current_password);
-            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(currentPwd)) {
+            Toast.makeText(this, getString(R.string.input_current_password), Toast.LENGTH_SHORT).show();
             return;
         }
         if (!newPwd.equals(confirmPwd)) {
-            String strInfo = getString(R.string.inconsistent_new_password);
-            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.inconsistent_new_password), Toast.LENGTH_SHORT).show();
             return;
         }
-        if (confirmPwd.length() < 4 || confirmPwd.length() > 16) {
-            String strInfo = getString(R.string.change_passowrd_invalid_password);
-            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+        if (confirmPwd.length() < 5 || confirmPwd.length() > 16) {
+            Toast.makeText(this, getString(R.string.change_passowrd_invalid_password), Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // setting the direct condition psd
         String splChrs = "[^a-zA-Z0-9-\\+!@\\$#\\^&\\*]";
         Pattern pattern = Pattern.compile(splChrs);
         Matcher matcher = pattern.matcher(confirmPwd);
         if (matcher.find()) {
-            String strInfo = getString(R.string.login_invalid_password);
-            Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.login_invalid_password), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        userChangePassword(LinkAppSettings.USER_NAME, currentPwd, confirmPwd);
+        // 是否需要加密
+        OtherUtils otherUtils = new OtherUtils();
+        otherUtils.setOnVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
+        otherUtils.getDeviceVersion();
 
         mCurrentPassword.setText(null);
         mNewPassword.setText(null);
@@ -96,7 +102,6 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         int nID = v.getId();
         switch (nID) {
             case R.id.password_notice:
@@ -126,8 +131,17 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         return super.onOptionsItemSelected(item);
     }
 
-    public void userChangePassword(String UserName, String CurrentPassword, String NewPassword) {
-        API.get().changePassword(UserName, CurrentPassword, NewPassword ,new MySubscriber() {
+    public void changePsd(boolean needEncrypt, String UserName, String CurrentPassword, String NewPassword) {
+
+        // TODO: 2017/7/13 加密算法--> FW完成加密机制后将下一句代码注释
+        //needEncrypt = false;// FW完成加密机制后将该句代码注释
+
+        UserName = needEncrypt ? EncryptionUtil.encryptUser(UserName) : UserName;
+        CurrentPassword = needEncrypt ? EncryptionUtil.encryptUser(CurrentPassword) : CurrentPassword;
+        
+        NewPassword = needEncrypt ? EncryptionUtil.encrypt(NewPassword) : NewPassword;
+
+        API.get().changePassword(UserName, CurrentPassword, NewPassword, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingAccountActivity.this, R.string.new_password_saved, Toast.LENGTH_SHORT).show();

@@ -32,6 +32,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
     private Context context;
     private SMSContactList smsContactListTotal;
     private List<SMSContactList.SMSContact> smsContactList;
+    private OnRcvLongClickListener onRcvLongClickListener;
 
     public SmsRcvAdapter(Context context, SMSContactList smsContactListTotal) {
         this.context = context;
@@ -63,6 +64,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
             setSmsSendFailed(holder, position);// set sms send failed logo
             setSmsDate(holder, position);// set date
             setSmsClick(holder, position);// to sms detail
+            setSmsLongClick(holder, position);// to show delete pop
         }
     }
 
@@ -123,11 +125,23 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
         });
     }
 
+    /* **** setSmsLongClick **** */
+    private void setSmsLongClick(SmsHolder holder, int position) {
+        holder.rl_sms.setOnLongClickListener(v -> {
+            System.out.println("long click");
+            if (onRcvLongClickListener != null) {
+                onRcvLongClickListener.getPosition(position);
+            }
+            return true;
+        });
+    }
+
     /* **** setSmsSendFailed **** */
     private void setSmsSendFailed(SmsHolder holder, int position) {
         SMSContactList.SMSContact smsContact = smsContactList.get(position);
         holder.iv_smsSendFailed.setVisibility(smsContact.getSMSType() == Cons.SENT_FAILED ? VISIBLE : GONE);
     }
+
 
     /* 调用此方法, 路由器自动设置为已读 */
     private void setReaded(SMSContactList.SMSContact smsContact) {
@@ -137,6 +151,14 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
             }
         });
+    }
+
+    public interface OnRcvLongClickListener {
+        void getPosition(int position);
+    }
+
+    public void setOnRcvLongClickListener(OnRcvLongClickListener onRcvLongClickListener) {
+        this.onRcvLongClickListener = onRcvLongClickListener;
     }
 
 }

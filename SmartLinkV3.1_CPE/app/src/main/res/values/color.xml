@@ -181,5 +181,8 @@
     <color name="sms_detail_send">#009aff</color>
     <color name="sms_detail_sendtext">#e6e6e6</color>
     <color name="sms_detail_tryagain">#009aff</color>
+    
+    <!-- delete pop -->
+    <color name="pop_cancel">#AA009aff</color>
 
 </resources>

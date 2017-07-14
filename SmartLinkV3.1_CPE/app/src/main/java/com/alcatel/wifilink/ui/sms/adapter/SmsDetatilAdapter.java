@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.sms.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,7 @@ import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.sms.helper.SmsReSendHelper;
-import com.alcatel.wifilink.ui.sms.helper.SmsSortHelper;
+import com.alcatel.wifilink.ui.sms.helper.SmsContentSortHelper;
 import com.alcatel.wifilink.ui.sms.helper.SmsTryAgainPop;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.alcatel.wifilink.R.drawable.checkbox_android_off;
 import static com.alcatel.wifilink.R.drawable.checkbox_android_on;
@@ -29,6 +31,7 @@ import static com.alcatel.wifilink.ui.home.helper.cons.Cons.SENT_FAILED;
 public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
 
     private Context context;
+    private LinearLayoutManager lm;
     private SMSContentList smsContentList;
     private List<String> phoneNums;
     public boolean isLongClick;// 是否被长按
@@ -45,8 +48,9 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
     private PopupWindows pop;
     private OnSendSuccessListener onSendSuccessListener;
 
-    public SmsDetatilAdapter(Context context, SMSContentList smsContentList, List<String> phoneNums) {
+    public SmsDetatilAdapter(Context context, LinearLayoutManager lm, SMSContentList smsContentList, List<String> phoneNums) {
         this.context = context;
+        this.lm = lm;
         this.smsContentList = smsContentList;
         this.phoneNums = phoneNums;
         sortScbList = new ArrayList<>();
@@ -56,11 +60,18 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
     }
 
 
-    public void notifys(SMSContentList smsContentList) {
+    /**
+     * @param smsContentList 信息列表
+     * @param toLast         是否需要recycle定位到最后？
+     */
+    public void notifys(SMSContentList smsContentList, boolean toLast) {
         clearAll();// 1. clear all first
         this.smsContentList = smsContentList;// 2.deliver data
         refreshAll();// 3.operate all data ui
         notifyDataSetChanged();// 4.refresh ui 
+        if (toLast) {
+            lm.scrollToPositionWithOffset(getItemCount() - 1, 0);
+        }
     }
 
     @Override
@@ -114,7 +125,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
         SMSContentList.SMSContentBean scb = nscb.smsContentBean;
         int smsType = scb.getSMSType();
         boolean receiver = smsType == Cons.READ || smsType == Cons.UNREAD;
-        holder.rl_smsdetail_receiver.setVisibility(receiver ? VISIBLE : GONE);
+        holder.rl_smsdetail_receiver.setVisibility(receiver ? VISIBLE : INVISIBLE);
     }
 
     /* **** setSend **** */
@@ -123,7 +134,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
         SMSContentList.SMSContentBean scb = nscb.smsContentBean;
         int smsType = scb.getSMSType();
         boolean receiver = smsType == Cons.SENT || smsType == SENT_FAILED;
-        holder.rl_smsdetail_send.setVisibility(receiver ? VISIBLE : GONE);
+        holder.rl_smsdetail_send.setVisibility(receiver ? VISIBLE : INVISIBLE);
     }
 
     /* **** setReceiverText **** */
@@ -238,7 +249,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
 
     /* A2-根据日期排序 */
     private void sortSmsByDate() {
-        Collections.sort(sortScbList, new SmsSortHelper());
+        Collections.sort(sortScbList, new SmsContentSortHelper());
     }
 
     /* A3-重新封装出新的内容对象 */
@@ -302,7 +313,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
 
             @Override
             public void failed() {
-                
+
             }
         };
     }

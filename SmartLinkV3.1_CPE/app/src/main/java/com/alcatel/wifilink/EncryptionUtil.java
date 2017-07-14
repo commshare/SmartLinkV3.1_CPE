@@ -1,6 +1,8 @@
 package com.alcatel.wifilink;
 
+import static android.R.attr.key;
 import static com.alcatel.wifilink.network.API.AUTHORIZATION_KEY;
+import static com.alcatel.wifilink.network.API.USER_KEY;
 
 /**
  * Created by tao.j on 2017/6/22.
@@ -8,9 +10,10 @@ import static com.alcatel.wifilink.network.API.AUTHORIZATION_KEY;
 
 public class EncryptionUtil {
 
-    public static String encrypt(String info){
+    public static String encrypt(String info) {
 
-        char[] key = AUTHORIZATION_KEY.toCharArray();
+        // char[] key = AUTHORIZATION_KEY.toCharArray();
+        char[] key = USER_KEY.toCharArray();
         char str1[] = new char[info.length() * 2];
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < info.length(); i++) {
@@ -23,6 +26,24 @@ public class EncryptionUtil {
             builder.append(aStr1);
         }
 
-        return  builder.toString();
+        return builder.toString();
+    }
+
+    public static String encryptUser(String info) {
+
+        char[] key = USER_KEY.toCharArray();
+        char str1[] = new char[info.length() * 2];
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < info.length(); i++) {
+            char char_i = info.charAt(i);
+            str1[2 * i] = (char) ((key[i % key.length] & 0xf0) | ((char_i & 0xf) ^ (key[i % key.length] & 0xf)));
+            str1[2 * i + 1] = (char) ((key[i % key.length] & 0xf0) | ((char_i >> 4) ^ (key[i % key.length] & 0xf)));
+        }
+
+        for (char aStr1 : str1) {
+            builder.append(aStr1);
+        }
+
+        return builder.toString();
     }
 }

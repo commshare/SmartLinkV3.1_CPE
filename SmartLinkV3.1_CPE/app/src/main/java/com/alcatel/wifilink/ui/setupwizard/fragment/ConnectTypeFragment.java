@@ -35,13 +35,14 @@ import com.alcatel.wifilink.ui.dialog.ErrorDialog;
 import com.alcatel.wifilink.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.wifilink.ui.dialog.LoginDialog;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
 import com.alcatel.wifilink.ui.setupwizard.helper.FraHelper;
 import com.alcatel.wifilink.ui.setupwizard.helper.FragmentEnum;
 import com.alcatel.wifilink.ui.setupwizard.helper.QSBroadcastReceiver;
 
 @SuppressLint("ValidFragment")
-public class ConnectTypeFragment extends Fragment implements  View.OnClickListener {
+public class ConnectTypeFragment extends Fragment implements View.OnClickListener {
 
     TextView mTv_sim;
     TextView mTv_wan;
@@ -65,7 +66,7 @@ public class ConnectTypeFragment extends Fragment implements  View.OnClickListen
     private boolean wanConnect;// WAN口是否连接
 
     public ConnectTypeFragment() {
-        
+
     }
 
     public ConnectTypeFragment(Activity activity) {
@@ -194,25 +195,38 @@ public class ConnectTypeFragment extends Fragment implements  View.OnClickListen
         simInsert = true;
 
         // 获取SIM状态
+
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                int simState = result.getSIMState();
+                if (simState == Cons.NOWN || simState == Cons.ILLEGAL) {
+                    simInsert = false;
+                    // TOAT: 测试阶段强制为true START 
+                    if (test) {
+                        simInsert = test;
+                    }
+                    // TOAT: 测试阶段强制为true END 
+
+                    // TOAT: 测试单模式请打开此代码
+                    // simInsert = false;
+                    getActivity().runOnUiThread(() -> {
+                        mTv_sim.setTextColor(getResources().getColor(simInsert ? R.color.black_text : R.color.red));
+                        mTv_sim.setText(simInsert ? R.string.connect_type_select_sim_card_enable : R.string.connect_type_select_sim_card_disable);
+                        mTv_sim.setEnabled(simInsert);
+
+                        mTv_sim.setOnClickListener(simInsert ? ConnectTypeFragment.this : null);
+                        mTv_sim.setCompoundDrawablesWithIntrinsicBounds(0, simInsert ? R.drawable.results_sim_nor : R.drawable.results_sim_dis, 0, 0);
+                    });
+                }
+            }
+        });
+
         if (simStatus == Constants.SIMState.NOWN || simStatus == Constants.SIMState.SIM_CARD_ILLEGAL) {
-            simInsert = false;
+
         }
 
-        // TOAT: 测试阶段强制为true START 
-        if (test) {
-            simInsert = test;
-        }
-        // TOAT: 测试阶段强制为true END 
 
-        // TOAT: 测试单模式请打开此代码
-        // simInsert = false;
-
-        mTv_sim.setTextColor(getResources().getColor(simInsert ? R.color.black_text : R.color.red));
-        mTv_sim.setText(simInsert ? R.string.connect_type_select_sim_card_enable : R.string.connect_type_select_sim_card_disable);
-        mTv_sim.setEnabled(simInsert);
-
-        mTv_sim.setOnClickListener(simInsert ? (View.OnClickListener) this : null);
-        mTv_sim.setCompoundDrawablesWithIntrinsicBounds(0, simInsert ? R.drawable.results_sim_nor : R.drawable.results_sim_dis, 0, 0);
     }
 
     /**
@@ -404,17 +418,25 @@ public class ConnectTypeFragment extends Fragment implements  View.OnClickListen
         if (test) {
             sim = test;
         } else {
+
+            API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                @Override
+                protected void onSuccess(SimStatus result) {
+                    getActivity().runOnUiThread(() -> {
+                        int simState = result.getSIMState();
+                        if (simState == Cons.PIN_REQUIRED) {
+                            // to pin code fragment
+                            SetupWizardActivity activity = (SetupWizardActivity) getActivity();
+                            FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PIN_FRA);
+                        } else {
+                            finishQuickSetup(false);
+                        }
+                    });
+                }
+            });
             sim = (mBusinessMgr.getSimStatus().m_SIMState == ENUM.SIMState.PinRequired) ? true : false;
         }
         // TOAT: 测试时暂时使用标记位为true END
-
-        if (sim) {
-            // to pin code fragment
-            SetupWizardActivity activity = (SetupWizardActivity) getActivity();
-            FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PIN_FRA);
-        } else {
-            finishQuickSetup(false);
-        }
     }
 
     /**

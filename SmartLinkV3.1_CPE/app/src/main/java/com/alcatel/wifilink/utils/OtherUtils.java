@@ -1,13 +1,17 @@
 package com.alcatel.wifilink.utils;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.DataUti;
+import com.alcatel.wifilink.model.system.SystemInfo;
+import com.alcatel.wifilink.network.API;
+import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +20,8 @@ import java.util.List;
  */
 
 public class OtherUtils {
+
+    private OnVersionListener onVersionListener;
 
     /**
      * 线程自关
@@ -77,5 +83,47 @@ public class OtherUtils {
         }
         return strTimeText;
     }
+
+    /**
+     * 获取设备的版本号
+     */
+    public void getDeviceVersion() {
+        // 1.需要加密的版本
+        List<String> needEncryptVersions = new ArrayList<String>();
+        needEncryptVersions.add("HH70_E1_02.00_13");
+        // 2.获取当前版本
+        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+            @Override
+            protected void onSuccess(SystemInfo result) {
+                String currentVersion = result.getSwVersion();
+                if (onVersionListener != null) {
+                    // 如果加密集合中的版本元素,包含当前获取的版本--> 则传递加密信号为true
+                    if (needEncryptVersions.contains(currentVersion)) {
+                        onVersionListener.getVersion(true);
+                    } else {
+                        onVersionListener.getVersion(false);
+                    }
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                // 如果出错--> 则是需要加密的版本
+                if (onVersionListener != null) {
+                    onVersionListener.getVersion(true);
+                }
+            }
+        });
+    }
+
+    /* -------------------------------------------- INTERFACE -------------------------------------------- */
+    public interface OnVersionListener {
+        void getVersion(boolean needToEncrypt);
+    }
+
+    public void setOnVersionListener(OnVersionListener onVersionListener) {
+        this.onVersionListener = onVersionListener;
+    }
+
 
 }

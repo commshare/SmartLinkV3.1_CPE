@@ -38,7 +38,7 @@ public class SMSContactList {
 
     public class SMSContact {
 
-        public int ContactId;
+        public long ContactId;
         public List<String> PhoneNumber;
         public long SMSId;
         public int SMSType;
@@ -53,11 +53,11 @@ public class SMSContactList {
             return "SMSContact{" + "ContactId=" + ContactId + ", PhoneNumber=" + PhoneNumber + ", SMSId=" + SMSId + ", SMSType=" + SMSType + ", ReportStatus=" + ReportStatus + ", SMSContent='" + SMSContent + '\'' + ", SMSTime='" + SMSTime + '\'' + ", UnreadCount=" + UnreadCount + ", TSMSCount=" + TSMSCount + '}';
         }
 
-        public int getContactId() {
+        public long getContactId() {
             return ContactId;
         }
 
-        public void setContactId(int contactId) {
+        public void setContactId(long contactId) {
             ContactId = contactId;
         }
 

@@ -44,12 +44,13 @@ public class FeatureVersionManager {
         if (strModule.equals(BaseRequest.ANY_MODULE))
             return true;
 
+        // TODO: 2017/7/14 不在获取feature
         // 判断获取 硬件节点模块的所有API
-        ArrayList<String> apiLst = BusinessManager.getInstance().getFeatures().getFeatures().get(strModule);
-        if (null != apiLst && apiLst.size() > 0) {
-            if (apiLst.contains(strApi))
-                bSupport = true;
-        }
+        // ArrayList<String> apiLst = BusinessManager.getInstance().getFeatures().getFeatures().get(strModule);
+        // if (null != apiLst && apiLst.size() > 0) {
+        //     if (apiLst.contains(strApi))
+        //         bSupport = true;
+        // }
         //Log.d("SystemManager", "bSupport: " + bSupport);
         return bSupport;
     }

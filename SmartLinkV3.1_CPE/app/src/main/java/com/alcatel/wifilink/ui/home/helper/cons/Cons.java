@@ -120,4 +120,7 @@ public class Cons {
     public static final int FAIL_WITH_MEMORY_FULL = 4;
     public static final int FAIL = 5;
 
+    public static final String HH70 = "HH70";
+    public static final String HH40 = "HH40";
+
 }

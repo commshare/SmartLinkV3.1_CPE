@@ -80,7 +80,6 @@
             android:name=".ui.activity.ActivityNewSms"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.activity.ActivitySmsDetail"

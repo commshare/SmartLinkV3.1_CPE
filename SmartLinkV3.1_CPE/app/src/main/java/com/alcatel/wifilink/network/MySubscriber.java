@@ -64,8 +64,10 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
     protected abstract void onSuccess(T result);
 
     protected void onResultError(ResponseBody.Error error) {
+        Log.d(TAG, "onResultError: " + error.getMessage().toString());
         ToastUtil.showMessage(mAppContext, error.message);
     }
 
-    protected void onFailure(){}
+    protected void onFailure() {
+    }
 }

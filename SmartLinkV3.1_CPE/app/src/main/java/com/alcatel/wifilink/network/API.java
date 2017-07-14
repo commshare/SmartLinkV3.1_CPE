@@ -98,6 +98,7 @@ import static com.alcatel.wifilink.Constants.SP_KEY_TOKEN;
 public class API {
 
     public static final String AUTHORIZATION_KEY = "KSDHSDFOGQ5WERYTUIQWERTYUISDFG1HJZXCVCXBN2GDSMNDHKVKFsVBNf";
+    public static final String USER_KEY = "e5dl12XYVggihggafXWf0f2YSf2Xngd1";
 
     private SmartLinkApi smartLinkApi;
 

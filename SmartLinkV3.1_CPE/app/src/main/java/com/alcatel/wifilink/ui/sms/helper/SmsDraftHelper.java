@@ -2,8 +2,6 @@ package com.alcatel.wifilink.ui.sms.helper;
 
 import android.app.Activity;
 
-import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSContentParam;
@@ -13,7 +11,6 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.sms.activity.SmsDetailActivity;
 import com.alcatel.wifilink.utils.DataUtils;
 
 import java.util.ArrayList;
@@ -102,7 +99,7 @@ public class SmsDraftHelper {
                 activity.runOnUiThread(() -> {
                     String draft = "";
                     if (scbs.size() > 0) {
-                        Collections.sort(scbs, new SmsSortHelper());
+                        Collections.sort(scbs, new SmsContentSortHelper());
                         SMSContentList.SMSContentBean scb = scbs.get(0);
                         draft = scb.getSMSContent();
                     }

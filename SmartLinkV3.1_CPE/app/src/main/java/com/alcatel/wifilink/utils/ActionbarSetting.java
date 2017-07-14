@@ -1,11 +1,15 @@
 package com.alcatel.wifilink.utils;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.support.v7.app.ActionBar;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 /**
  * Created by qianli.ma on 2017/6/23.
@@ -13,6 +17,7 @@ import java.lang.reflect.Field;
 
 public abstract class ActionbarSetting {
 
+    private Context context;
     private ActionBar actionBar;
 
     /**
@@ -23,6 +28,7 @@ public abstract class ActionbarSetting {
      * @param layoutId
      */
     public void settingActionbarAttr(Context context, ActionBar actionBar, int layoutId) {
+        this.context = context;
         this.actionBar = actionBar;
         // initView action bar
         ActionBar supportActionBar = actionBar;

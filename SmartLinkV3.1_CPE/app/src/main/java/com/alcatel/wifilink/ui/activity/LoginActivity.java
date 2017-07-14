@@ -1,10 +1,8 @@
 package com.alcatel.wifilink.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.Constants;
+import com.alcatel.wifilink.EncryptionUtil;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
-import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.user.LoginResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -32,6 +31,7 @@ import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
 import com.alcatel.wifilink.utils.EditUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 
+import static android.R.attr.version;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_nor;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_pre;
 
@@ -116,41 +116,62 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.login_apply_btn:// 登陆按钮
-                String passwd = mPasswdEdit.getText().toString().trim();
-                // get data
-                API.get().login(Constants.USER_NAME_ADMIN, passwd, new MySubscriber<LoginResult>() {
-                    @Override
-                    protected void onSuccess(LoginResult result) {
-                        Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                        boolean quickSetupFlag = CPEConfig.getInstance().getQuickSetupFlag();
-                        if (quickSetupFlag) {
-                            launchHomeActivity();
-                        } else {
-                            ChangeActivity.toActivity(LoginActivity.this, SetupWizardActivity.class, true, true, false, 0);
-                        }
-                        Log.d(TAG, "token = " + result.getToken());
-                        API.get().updateToken(result.getToken());
-                        // remember psd
-                        SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, passwd);
-                    }
-
-                    @Override
-                    protected void onResultError(ResponseBody.Error error) {
-                        if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
-                            // mRemainingTimes--;
-                            // updatePromptText(mRemainingTimes);
-                            ToastUtil_m.show(LoginActivity.this, getString(R.string.login_psd_error_msg));
-                        } else if (Cons.OTHER_USER_IS_LOGIN.equals(error.getCode())) {
-                            ToastUtil_m.show(LoginActivity.this, getString(R.string.login_other_user_logined_error_msg));
-                        } else if (Cons.DEVICE_REBOOT.equals(error.getCode())) {
-                            ToastUtil_m.show(LoginActivity.this, getString(R.string.login_login_time_used_out_msg));
-                        } else if (Cons.GUEST_AP_OR_WEBUI.equals(error.getCode())) {
-                            ToastUtil_m.show(LoginActivity.this, getString(R.string.login_login_app_or_webui));
-                        }
-                    }
-                });
+                OtherUtils otherUtils = new OtherUtils();
+                otherUtils.setOnVersionListener(needToEncrypt -> toLogin(needToEncrypt));
+                otherUtils.getDeviceVersion();
                 break;
         }
+    }
+
+    /* **** 登陆: toLogin **** */
+    private void toLogin(boolean needEncrypt) {
+
+        // TODO: 2017/7/13 加密算法--> FW完成加密机制后将下一句代码注释
+        //needEncrypt = false;// FW完成加密机制后将该句代码注释
+
+        // 明文用户+密码
+        String account = Constants.USER_NAME_ADMIN;
+        String oriAccount = account;
+        String passwd = mPasswdEdit.getText().toString().trim();
+        String oriPasswd = passwd;
+        // 加密
+        account = needEncrypt ? EncryptionUtil.encryptUser(account) : account;
+        passwd = needEncrypt ? EncryptionUtil.encryptUser(passwd) : passwd;
+
+        // get data
+        String finalPasswd = passwd;
+        API.get().login(account, passwd, new MySubscriber<LoginResult>() {
+            @Override
+            protected void onSuccess(LoginResult result) {
+                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                boolean quickSetupFlag = CPEConfig.getInstance().getQuickSetupFlag();
+                if (quickSetupFlag) {
+                    launchHomeActivity();
+                } else {
+                    ChangeActivity.toActivity(LoginActivity.this, SetupWizardActivity.class, true, true, false, 0);
+                }
+                Log.d(TAG, "token = " + result.getToken());
+                // commit the token
+                API.get().updateToken(result.getToken());
+                // remember psd
+                SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
+                    // mRemainingTimes--;
+                    // updatePromptText(mRemainingTimes);
+                    ToastUtil_m.show(LoginActivity.this, getString(R.string.login_psd_error_msg));
+                } else if (Cons.OTHER_USER_IS_LOGIN.equals(error.getCode())) {
+                    ToastUtil_m.show(LoginActivity.this, getString(R.string.login_other_user_logined_error_msg));
+                } else if (Cons.DEVICE_REBOOT.equals(error.getCode())) {
+                    ToastUtil_m.show(LoginActivity.this, getString(R.string.login_login_time_used_out_msg));
+                } else if (Cons.GUEST_AP_OR_WEBUI.equals(error.getCode())) {
+                    ToastUtil_m.show(LoginActivity.this, getString(R.string.login_login_app_or_webui));
+                }
+            }
+        });
     }
 
     private void updatePromptText(int remainingTimes) {

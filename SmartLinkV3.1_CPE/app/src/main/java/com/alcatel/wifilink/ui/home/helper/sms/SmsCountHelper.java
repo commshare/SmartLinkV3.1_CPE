@@ -27,25 +27,23 @@ public class SmsCountHelper {
      */
     public static void setSmsCount(Activity activity, TextView tv) {
         SmsCountHelper.activity = activity;
-        SmsCountHelper.tv = tv;
         // check the init state
         API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
-                    getSmsContactList();
+                    getSmsContactList(tv);
                 }
             }
         });
 
     }
 
-    private static void getSmsContactList() {
+    private static void getSmsContactList(TextView mTvSmsCount) {
         API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
             @Override
             protected void onSuccess(SMSContactList result) {
                 activity.runOnUiThread(() -> {
-                    TextView mTvSmsCount = tv;
                     // caculate the sms count
                     int unReadCount = 0;
                     for (SMSContactList.SMSContact smsContact : result.getSMSContactList()) {

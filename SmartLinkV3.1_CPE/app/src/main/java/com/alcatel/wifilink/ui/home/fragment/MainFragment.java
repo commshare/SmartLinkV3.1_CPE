@@ -131,16 +131,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 // TOAT: ********** 断网时先走此方法 ***********
-                // TODO: 2017/7/11  
                 Log.d("ma", "getWanSettings : " + e.getMessage().toString());
                 connectUi(false);// set button logo
-                m_connectToNetworkTextView.setVisibility(View.GONE);
-                m_signalImageView.setImageResource(R.drawable.home_signal_0);
+                m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo_disconnect);
+                m_connectToNetworkTextView.setText(getString(R.string.unknown));
+                m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
                 m_networkTypeTextView.setVisibility(View.GONE);
                 m_networkLabelTextView.setText(getString(R.string.signal));
-                m_accessImageView.setImageResource(R.drawable.home_ic_person_none);
+                m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_none);
                 m_accessnumTextView.setVisibility(View.GONE);
-                m_accessstatusTextView.setText(getString(R.string.home_connected_to));
+                m_accessstatusTextView.setText(getString(R.string.home_disconnected_to));
             }
 
             @Override
@@ -149,7 +149,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 /* connected || connecting means that wan is connect successful */
                 // TOAT: force to wan
                 // status = Cons.CONNECTED;
-                if (status == Cons.CONNECTED || status == Cons.CONNECTING) {
+                if (status == Cons.CONNECTED) {
                     // wan connect
                     wan_ui_setting();
                 } else {
@@ -172,11 +172,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         // wan logic
         m_connectLayout.setVisibility(View.VISIBLE);
         m_connectedLayout.setVisibility(View.GONE);
+        m_connectToNetworkTextView.setVisibility(View.VISIBLE);
+        m_connectToNetworkTextView.setText(getString(R.string.Ethernet));
         m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
         m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
-        // m_signalImageView.setBackgroundResource(R.drawable.storage_toolbar_download_normal);
         mRl_sigelPanel.setVisibility(View.GONE);
-        m_networkLabelTextView.setText("Ethernet");
+        m_networkLabelTextView.setText(getString(R.string.Ethernet));
     }
 
     /* sim ui setting */
@@ -234,7 +235,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         protected void onSuccess(ConnectionStates result) {
 
                             int stats = result.getConnectionStatus();
-                            if (stats == Cons.CONNECTED || stats == Cons.CONNECTING) {
+                            if (stats == Cons.CONNECTED) {
                                 connectUi(true);
                             } else if (stats == Cons.DISCONNECTED || stats == Cons.DISCONNECTING) {
                                 connectUi(false);
@@ -291,7 +292,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int stats = result.getConnectionStatus();
-                if (stats == Cons.CONNECTED || stats == Cons.CONNECTING) {
+                if (stats == Cons.CONNECTED) {
                     /* get usage record */
                     API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
                         @Override

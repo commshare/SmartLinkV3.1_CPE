@@ -27,6 +27,7 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
+import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.activity.PukUnlockActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
@@ -66,7 +67,7 @@ import static com.alcatel.wifilink.fileexplorer.FileSortHelper.SortMethod.size;
 import static com.alcatel.wifilink.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
 import static com.alcatel.wifilink.ui.home.helper.main.ApiEngine.getSimStatus;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
     @BindView(R.id.layout_main)
     RelativeLayout layoutMain;// 父布局
@@ -344,7 +345,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 isWanInsert();
             }
         };
-        timerHelper.start(5000);
+        timerHelper.start(3000);
     }
 
     /* 刷新ui以及切换Fragment */
@@ -414,7 +415,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 
                 /* SIM卡已经插入并且已经准备好 */
-                if (simState == Cons.READY && simPop != null && simState != Cons.PIN_REQUIRED) {
+                if (simState == Cons.READY && simPop == null && simState != Cons.PIN_REQUIRED) {
                     // 获取消息数
                     SmsCountHelper.setSmsCount(HomeActivity.this, mTvHomeMessageCount);
                     // pop dismiss
@@ -450,7 +451,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 int wanStatus = result.getStatus();
-                if (wanStatus == Cons.CONNECTING || wanStatus == Cons.CONNECTED) {// wan insert
+                if (wanStatus == Cons.CONNECTED) {// wan insert
                     if (simPop != null) {
                         simPop.dismiss();
                     }

@@ -195,7 +195,7 @@
             android:gravity="center"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_textsize_24sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </LinearLayout>
 
     <com.alcatel.wifilink.ui.view.DynamicWave

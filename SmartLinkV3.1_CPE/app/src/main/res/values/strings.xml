@@ -4,7 +4,7 @@
     <string name="app_name">Alcatel WiFi Link</string>
 
     <!-- common start -->
-    <string name="cancel">CANCEL</string>
+    <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="done">Done</string>
     <string name="back">Back</string>
@@ -71,7 +71,7 @@
     <string name="qs_wifi_setting_account">Account</string>
     <string name="qs_wifi_setting_password">Password</string>
     <string name="connect_internet">Connect Internet</string>
-    <string name="ppp_over_ethernet" translatable="false">PPPoE</string>
+    <string name="ppp_over_ethernet">PPPoE</string>
     <string name="mtu">MTU</string>
     <string name="statics_ip">Statics IP</string>
     <!-- Quick Setup End -->
@@ -516,7 +516,9 @@
     <string name="inconsistent_new_password">New passwords don\'t match</string>
     <string name="input_current_password">Please Input Your Current Password!</string>
     <string name="change_passowrd_invalid_password">The password should be 5&#8211;16 characters</string>
-    <string name="unknown_error">Unknown error</string>
+    <string name="unknown_error">Unknown error!</string>
+    <string name="unknown">Unknown</string>
+    <string name="Ethernet">Ethernet</string>
 
     <string name="login_login_btn">LOG IN</string>
     <string name="login_enter_password">Enter admin password</string>
@@ -673,18 +675,15 @@
     <!-- SMART WIDGET END -->
 
     <!-- Welcome Guide -->
-    <string name="guide1_title">REMOTE CONTROL</string>
-    <string name="guide1_description">Link APP is compatible with all ALCATEL ONETOUCH mobile WiFi supporting 4G LTE
-        High Speed. Thanks to this app you can easily manage your mobile WiFi directly from smartphone or tablet.
+    <string name="guide1_title">TOTAL CONTROL</string>
+    <string name="guide1_description">Manage your mobile Wi-Fi directly from your smartphone or tablet.
     </string>
     <string name="guide2_title">ALWAYS UP TO DATE</string>
-    <string name="guide2_description">LINK APP displays in real time the status of the connection and data speeds,
-        battery life and SMS. Through the app you can set monthly data usage plan and you\'ll be automatically
-        disconnected once you reach preset limit.
+    <string name="guide2_description">Quickly view your connection status and data usage statistics. Set a monthly data plan so
+        that you don\'t exceed your limit.
     </string>
-    <string name="guide3_title">SECURITY MANAGER</string>
-    <string name="guide3_description">Through LINK APP you can block any device trying to connect to your WiFi hotspot
-        with no permission. And you\'ll also be free to edit user\'s name to easily recognize them.
+    <string name="guide3_title">SECURE CONNECTION</string>
+    <string name="guide3_description">Easily manage connected users and block those you don\'t want connecting to your network.
     </string>
     <string name="what_new_btn_text">Start</string>
     <!-- Welcome Guide End -->
@@ -907,6 +906,7 @@
     <string name="smsdetail_tryagain">You message was not send</string>
     <string name="smsdetail_tryagain_confirm">Try again</string>
     <string name="smsdetail_new_message">You got a new message</string>
+    <string name="no_sim_or_wan">No SIM/No WAN</string>
 
     <string name="new_password_saved">New password saved</string>
     <string name="incorrect_current_password">Incorrect current password</string>

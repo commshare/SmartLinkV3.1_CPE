@@ -25,7 +25,7 @@
                 android:id="@+id/connected_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <!-- 圆形LOGO -->
                 <com.alcatel.wifilink.ui.view.CircleProgress
@@ -101,7 +101,7 @@
             android:layout_below="@id/rl_connectlogo"
             android:layout_marginTop="@dimen/dimen_10dip"
             android:gravity="center"
-            android:text="MOBILE"
+            android:text="@string/no_sim_or_wan"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_textsize_24sp"
             android:visibility="visible" />

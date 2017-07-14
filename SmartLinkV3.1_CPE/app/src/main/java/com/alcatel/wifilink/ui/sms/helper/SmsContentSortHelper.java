@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by qianli.ma on 2017/6/29.
  */
 
-public class SmsSortHelper implements Comparator {
+public class SmsContentSortHelper implements Comparator {
 
     @Override
     public int compare(Object o1, Object o2) {

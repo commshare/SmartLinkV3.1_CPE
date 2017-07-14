@@ -101,7 +101,7 @@ public class LoadingActivity extends AppCompatActivity {
 
     private void startApp() {
         // mIsFirstRun = mSharedPrefs.getBoolean(Constants.KEY_FIRST_RUN, true);
-        mIsFirstRun = SharedPrefsUtil.getInstance(this).getBoolean(Constants.KEY_FIRST_RUN, false);
+        mIsFirstRun = SharedPrefsUtil.getInstance(this).getBoolean(Constants.KEY_FIRST_RUN, true);
         Log.d(TAG, "startApp, mIsFirstRun:" + mIsFirstRun);
         if (mIsFirstRun) {
             showGuidePager();
@@ -157,10 +157,6 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private void launchLoginActivity(int remainTimes) {
-        // Intent intent = new Intent(this, LoginActivity.class);
-        // intent.putExtra("remain_times", remainTimes);
-        // startActivity(intent);
-        // finish();
         ChangeActivity.toActivity(this, LoginActivity.class, true, true, false, 0);
     }
 

@@ -27,7 +27,7 @@ import butterknife.OnClick;
 
 import static com.alcatel.wifilink.R.id.et_sim_unlock;
 
-public class SimUnlockActivity extends AppCompatActivity implements View.OnClickListener {
+public class SimUnlockActivity extends BaseActivityWithBack implements View.OnClickListener {
 
     @BindView(et_sim_unlock)
     EditText etSimUnlock;// SIM PIN

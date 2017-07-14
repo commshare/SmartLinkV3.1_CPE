@@ -4,158 +4,6 @@
     android:layout_height="fill_parent"
     android:background="@color/color_white" >
 	<RelativeLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
-	    <RelativeLayout
-	        android:id="@+id/top_layout"
-	    	android:background="@color/color_blue"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content">
-	
-	        <LinearLayout android:id="@+id/back_layout"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:clickable="true"
-	            android:layout_alignParentLeft="true"
-	            android:layout_centerVertical="true"
-	            android:orientation="horizontal"
-	            android:layout_marginLeft="10dip" >
-
-		         <ImageView
-		             android:id="@+id/back_button"
-		             android:layout_width="wrap_content"
-		             android:layout_height="wrap_content"
-		             android:background="@drawable/back"
-		             android:layout_gravity="center_vertical"
-		             android:contentDescription="@null" />
-	        </LinearLayout>
-	
-	        <TextView
-	            android:id="@+id/cancel"
-	            android:clickable="true"
-	            android:layout_alignParentRight="true"
-	            android:layout_centerVertical="true"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginRight="10dip"
-	            android:text="@string/cancel"
-	            android:textColor="@color/color_white"
-	            android:textSize="18sp" />
-	
-	        <TextView
-	            android:id="@+id/title"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_centerInParent="true"
-	            android:layout_marginLeft="13dip"
-	            android:layout_marginRight="8dip"
-	            android:gravity="center"
-	            android:text="@string/sms_new_title"
-	            android:singleLine="true"
-	            android:textColor="@color/color_white"
-	            android:textSize="18sp"
-	            android:textStyle="bold" />
-	     </RelativeLayout>
-	       
-	     <LinearLayout
-	        android:id="@+id/to_layout"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_below="@id/top_layout"
-	        android:orientation="vertical" 
-	        android:background="@color/main_tabbar_background">
-			<RelativeLayout
-			    android:id="@+id/to_layout_r"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginLeft="20dip"
-			    android:layout_marginRight="10dip"
-			    android:layout_marginTop="10dip"
-			    android:layout_marginBottom="10dip" >
-	            
-			    <TextView
-		            android:id="@+id/sms_to_view"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_centerVertical="true"
-		            android:text="@string/sms_to"
-		            android:textColor="@color/grey_text"
-					android:textSize="@dimen/dimen_textsize_18sp"/>
-			
-			    <EditText
-			        android:id="@+id/edit_number"
-			        android:layout_width="match_parent"
-			        android:layout_height="35dip"
-			        android:background="@color/color_white"
-			        android:layout_centerVertical="true"
-			        android:layout_marginLeft="10dip"
-			        android:layout_marginRight="10dip"
-			        android:layout_toRightOf="@id/sms_to_view"
-			        android:inputType="none"
-			        android:scrollbarStyle="outsideOverlay"
-			        android:imeOptions="flagNoExtractUi"
-			        android:scrollbars="vertical"
-			        android:textSize="20sp" />
-			</RelativeLayout>
-			<View android:layout_width="fill_parent"
-		        android:layout_height="1dip"
-		        android:background="@color/main_bottom_divider"/>
-		</LinearLayout>
-		
-	    <LinearLayout
-	        android:id="@+id/send_layout"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true"
-	        android:orientation="vertical" 
-	        android:background="@color/main_tabbar_background">
-
-	        <View android:layout_width="fill_parent"
-		        android:layout_height="1dip"
-		        android:background="@color/main_bottom_divider"/>
-
-			<RelativeLayout
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginTop="5dip"
-			    android:layout_marginBottom="5dip"
-				android:background="@color/color_white">
-			
-			    <Button
-			        android:id="@+id/send_btn"
-			        android:layout_width="wrap_content"
-			        android:layout_height="@dimen/dimen_35dip"
-			        android:background="@drawable/bg_conner_bottom_normal"
-					android:text="@string/send"
-					android:textColor="@color/color_white"
-					android:textSize="@dimen/dimen_textsize_16sp"
-			        android:layout_alignParentRight="true"
-			        android:layout_centerVertical="true"
-			        android:layout_marginRight="20dip"
-			        android:paddingLeft="15dip"
-	                android:paddingRight="15dip"
-			        android:enabled="false" />
-			
-			    <EditText
-			        android:id="@+id/edit_content"
-			        android:layout_width="match_parent"
-			        android:layout_height="35dip"
-					android:background="@color/backup_name_bg"
-			        android:layout_centerVertical="true"
-			        android:layout_marginLeft="20dip"
-			        android:layout_marginRight="10dip"
-			        android:layout_toLeftOf="@id/send_btn"
-			        android:inputType="none"
-			        android:maxLength="1600"
-			        android:scrollbarStyle="outsideOverlay"
-			        android:imeOptions="flagNoExtractUi"
-			        android:scrollbars="vertical"
-			        android:textSize="20sp" />
-			</RelativeLayout>
-		</LinearLayout>
-	</RelativeLayout>
-
-	<RelativeLayout
 		android:id="@+id/sms_new_waiting_layout"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
@@ -167,5 +15,115 @@
 			android:layout_centerInParent="true"
 			android:indeterminateDrawable="@drawable/progerss_blue"
 			android:visibility="gone"/>
+
+		<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@+id/sms_new_waiting_progress"
+			android:layout_toEndOf="@+id/sms_new_waiting_progress">
+
+
+			<LinearLayout
+				android:id="@+id/to_layout"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/top_layout"
+				android:background="@color/main_tabbar_background"
+				android:orientation="vertical">
+
+				<RelativeLayout
+					android:id="@+id/to_layout_r"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="10dip"
+					android:layout_marginLeft="20dip"
+					android:layout_marginRight="10dip"
+					android:layout_marginTop="10dip">
+
+					<TextView
+						android:id="@+id/sms_to_view"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerVertical="true"
+						android:text="@string/sms_to"
+						android:textColor="@color/grey_text"
+						android:textSize="@dimen/dimen_textsize_18sp" />
+
+					<EditText
+						android:id="@+id/edit_number"
+						android:layout_width="match_parent"
+						android:layout_height="35dip"
+						android:layout_centerVertical="true"
+						android:layout_marginLeft="10dip"
+						android:layout_marginRight="10dip"
+						android:layout_toRightOf="@id/sms_to_view"
+						android:background="@color/color_white"
+						android:imeOptions="flagNoExtractUi"
+						android:inputType="none"
+						android:scrollbarStyle="outsideOverlay"
+						android:scrollbars="vertical"
+						android:textSize="20sp" />
+				</RelativeLayout>
+
+				<View
+					android:layout_width="fill_parent"
+					android:layout_height="1dip"
+					android:background="@color/main_bottom_divider" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/send_layout"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:background="@color/main_tabbar_background"
+				android:orientation="vertical">
+
+				<View
+					android:layout_width="fill_parent"
+					android:layout_height="1dip"
+					android:background="@color/main_bottom_divider" />
+
+				<RelativeLayout
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dip"
+					android:layout_marginTop="5dip"
+					android:background="@color/color_white">
+
+					<Button
+						android:id="@+id/send_btn"
+						android:layout_width="wrap_content"
+						android:layout_height="@dimen/dimen_35dip"
+						android:layout_alignParentRight="true"
+						android:layout_centerVertical="true"
+						android:layout_marginRight="20dip"
+						android:background="@drawable/bg_conner_bottom_normal"
+						android:enabled="false"
+						android:paddingLeft="15dip"
+						android:paddingRight="15dip"
+						android:text="Send"
+						android:textColor="@color/color_white"
+						android:textSize="@dimen/dimen_textsize_16sp" />
+
+					<EditText
+						android:id="@+id/edit_content"
+						android:layout_width="match_parent"
+						android:layout_height="35dip"
+						android:layout_centerVertical="true"
+						android:layout_marginLeft="20dip"
+						android:layout_marginRight="10dip"
+						android:layout_toLeftOf="@id/send_btn"
+						android:background="@color/backup_name_bg"
+						android:imeOptions="flagNoExtractUi"
+						android:inputType="none"
+						android:maxLength="1600"
+						android:scrollbarStyle="outsideOverlay"
+						android:scrollbars="vertical"
+						android:textSize="20sp" />
+				</RelativeLayout>
+			</LinearLayout>
+		</RelativeLayout>
 	</RelativeLayout>
 </FrameLayout>

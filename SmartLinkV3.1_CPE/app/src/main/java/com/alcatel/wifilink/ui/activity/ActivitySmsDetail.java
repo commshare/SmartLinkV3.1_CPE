@@ -47,7 +47,7 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.InquireDialog.OnInquireApply;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.ui.sms.helper.SmsSortHelper;
+import com.alcatel.wifilink.ui.sms.helper.SmsContentSortHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.DataUtils;
 
@@ -554,7 +554,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
     // private void getSmsListData(SmsContentMessagesModel smsContent) {
     /* **** getSmsListData **** */
     private void getSmsListData(SMSContentList result) {
-        Collections.sort(result.getSMSContentList(), new SmsSortHelper());
+        Collections.sort(result.getSMSContentList(), new SmsContentSortHelper());
         m_smsListData.clear();
 
         List<SMSContentList.SMSContentBean> smsContentList = result.getSMSContentList();

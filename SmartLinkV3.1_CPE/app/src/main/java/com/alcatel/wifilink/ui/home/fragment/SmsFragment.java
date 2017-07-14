@@ -29,6 +29,7 @@ import com.alcatel.wifilink.ui.home.helper.sms.SmsNumHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 @SuppressLint("ValidFragment")
 public class SmsFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
@@ -158,7 +159,7 @@ public class SmsFragment extends Fragment implements AdapterView.OnItemClickList
 
         SMSContactList.SMSContact smsContact = smsContactList.get(position);
         String phonenums = SmsNumHelper.getNew(smsContact.getPhoneNumber());// phone nums
-        int contactId = smsContact.getContactId();// contactId
+        long contactId = smsContact.getContactId();// contactId
 
         intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_SMS_NUMBER, phonenums);
         intent.putExtra(ActivitySmsDetail.INTENT_EXTRA_CONTACT_ID, contactId);

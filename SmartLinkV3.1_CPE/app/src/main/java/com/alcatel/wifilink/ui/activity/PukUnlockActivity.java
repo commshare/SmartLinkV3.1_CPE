@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PukUnlockActivity extends AppCompatActivity implements View.OnClickListener {
+public class PukUnlockActivity extends BaseActivityWithBack implements View.OnClickListener {
 
     @BindView(R.id.et_puk_unlock)
     EditText etPukUnlock;// PUK CODE
