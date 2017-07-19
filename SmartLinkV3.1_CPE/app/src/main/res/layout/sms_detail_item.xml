@@ -47,7 +47,6 @@
 
         <!-- message rl -->
         <RelativeLayout
-            android:id="@+id/sms_detail_content_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/iv_smsdetail_checkbox">
@@ -118,7 +117,7 @@
                         android:layout_toRightOf="@id/sms_sent_fail_image"
                         android:gravity="left"
                         android:singleLine="false"
-                        android:text="@string/sms_send_fail"
+                        android:text="@string/fail"
                         android:textColor="@color/color_grey"
                         android:textSize="16sp" />
                 </RelativeLayout>

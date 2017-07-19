@@ -777,7 +777,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                                 //finishQuickSetup(true);
                             }
                         });
-                        mConfirmDialog.showDialog(getString(R.string.qs_puk_code_title),
+                        mConfirmDialog.showDialog(getString(R.string.puk_code_label),
                                 getString(R.string.puk_error_waring_title));
                     }
                 }
@@ -1133,7 +1133,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         @Override
         public void setupViews() {
             setViewsVisibility(true, false, true, false, false);
-            mSetupTitle.setText(getString(R.string.qs_puk_code_title));
+            mSetupTitle.setText(getString(R.string.puk_code_label));
             mPromptText.setText(getString(R.string.qs_puk_code_prompt, mPUKTryTimes));
             mNavigatorLeft.setClickable(false);
             mNavigatorRight.setText(R.string.skip);
@@ -1189,7 +1189,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                         //finishQuickSetup(true);
                     }
                 });
-                mConfirmDialog.showDialog(getString(R.string.qs_puk_code_title),
+                mConfirmDialog.showDialog(getString(R.string.puk_code_label),
                         getString(R.string.puk_prompt_str));
             }
 

@@ -129,7 +129,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			updateNewDeviceInfo(true);
 		}
 		if (m_blHasNewApp) {
-			m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_upgrade);
+			m_btn_upgrade_app.setText(R.string.setting_upgrade);
 		}else {
 			m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_check);
 		}
@@ -217,7 +217,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	private void onBtnFirmwareUpdate()
 	{	
 			final InquireDialog inquireDlg = new InquireDialog(this);
-			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade);
 			inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
 			inquireDlg.m_contentTextView.setText(R.string.setting_upgrade_firmware_warning);
 			inquireDlg.m_contentDescriptionTextView.setText("");
@@ -242,7 +242,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		if (m_blHasNewFirmware) {
 			m_nUpdradeFWProgress = 0;
 			final InquireDialog inquireDlg = new InquireDialog(this);
-			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+			inquireDlg.m_titleTextView.setText(R.string.setting_upgrade);
 			inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
 			inquireDlg.m_contentTextView
 			.setText(R.string.setting_upgrade_firmware_warning);
@@ -431,7 +431,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 			if (blNeedBackupNewVersionInfo) {
 				m_strNewFirmwareInfo = strNew;
 			}
-			m_btn_check_firmware.setText(R.string.setting_upgrade_btn_upgrade);
+			m_btn_check_firmware.setText(R.string.setting_upgrade);
 			showCheckFWWaiting(false);
 		}else if (EnumDeviceCheckingStatus.DEVICE_NO_NEW_VERSION == eStatus) {
 			showCheckFWWaiting(false);
@@ -525,7 +525,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 
 	private void showStopUpdateDialog(){
 		final InquireDialog inquireDlg = new InquireDialog(this);
-		inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+		inquireDlg.m_titleTextView.setText(R.string.setting_upgrade);
 		inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
 		inquireDlg.m_contentTextView
 		.setText(R.string.setting_upgrade_firmware_warning);
@@ -559,7 +559,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 						msg.getData().getString("version"));												
 				if(currVer.compareToIgnoreCase(strNewVersion) < 0)
 				{
-					m_btn_upgrade_app.setText(R.string.setting_upgrade_btn_upgrade);
+					m_btn_upgrade_app.setText(R.string.setting_upgrade);
 					m_blHasNewApp = true;
 				}else {
 					m_tv_new_app_version.setText(R.string.setting_upgrade_no_new_version);

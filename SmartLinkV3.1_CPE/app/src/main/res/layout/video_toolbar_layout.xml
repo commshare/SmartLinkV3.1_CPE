@@ -132,9 +132,8 @@
 		</RelativeLayout>       		
 	</RelativeLayout>
 	
-	<RelativeLayout 
-	    android:id="@+id/up_toolview"
-	    android:layout_width="fill_parent"
+	<RelativeLayout
+        android:layout_width="fill_parent"
 	    android:layout_height="30dp"
 	    android:layout_alignParentTop="true">
 	    

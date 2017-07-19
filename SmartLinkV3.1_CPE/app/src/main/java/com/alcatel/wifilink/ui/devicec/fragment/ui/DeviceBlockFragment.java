@@ -27,6 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 @SuppressLint("ValidFragment")
 public class DeviceBlockFragment extends Fragment {
 
@@ -57,6 +58,13 @@ public class DeviceBlockFragment extends Fragment {
         // start timer
         startTimer();
         return inflate;
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHelper.stop();
     }
 
     private void startTimer() {

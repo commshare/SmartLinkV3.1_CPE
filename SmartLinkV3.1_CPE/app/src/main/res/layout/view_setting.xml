@@ -37,7 +37,6 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
-                    android:id="@+id/setting_login_password_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
@@ -97,7 +96,6 @@
                         android:layout_height="wrap_content"/>
 
                     <ImageView
-                        android:id="@+id/setting_mobile_network_line"
                         android:visibility="visible"
                         android:layout_toRightOf="@id/setting_mobile_network_pic"
                         android:layout_alignParentBottom="true"
@@ -130,7 +128,7 @@
                         android:layout_marginLeft="@dimen/dimen_10dip"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/setting_ethernet_wan_pic"
-                        android:text="@string/setting_ethernet_wan_connection"
+                        android:text="@string/ethernet_wan_connection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -184,7 +182,6 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
-                    android:id="@+id/setting_sharing_service_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
@@ -242,7 +239,6 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
-                    android:id="@+id/setting_firmware_upgrade_line"
                     android:visibility="visible"
                     android:layout_alignParentBottom="true"
                     android:background="@color/grey_line"
@@ -277,7 +273,6 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
-                    android:id="@+id/setting_restart_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
@@ -287,7 +282,6 @@
                     android:src="@drawable/right_arrow_big"/>
 
                 <ImageView
-                    android:id="@+id/setting_restart_line"
                     android:visibility="visible"
                     android:layout_alignParentBottom="true"
                     android:background="@color/grey_line"
@@ -322,7 +316,6 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
-                    android:id="@+id/setting_backup_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
@@ -360,7 +353,6 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
-                    android:id="@+id/setting_about_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"

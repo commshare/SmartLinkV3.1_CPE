@@ -27,17 +27,19 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.activity.InternetStatusActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
 import com.alcatel.wifilink.ui.activity.UsageActivity;
+import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
+import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
-import com.alcatel.wifilink.ui.view.WaveLoadingView;
 import com.alcatel.wifilink.utils.DataUtils;
 
 import java.util.Locale;
+
+import me.itangqi.waveloadingview.WaveLoadingView;
 
 @SuppressLint("ValidFragment")
 public class MainFragment extends Fragment implements View.OnClickListener {
@@ -92,7 +94,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         m_view = View.inflate(getActivity(), R.layout.fragment_home_mains, null);
         typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Light.ttf");
-        mConnectedView = ((WaveLoadingView) m_view.findViewById(R.id.connected_button));
+        mConnectedView = (WaveLoadingView) m_view.findViewById(R.id.connected_button);
         mConnectedView.setOnClickListener(this);
 
         m_connectLayout = (RelativeLayout) m_view.findViewById(R.id.connect_layout);
@@ -141,6 +143,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_none);
                 m_accessnumTextView.setVisibility(View.GONE);
                 m_accessstatusTextView.setText(getString(R.string.home_disconnected_to));
+                HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
             }
 
             @Override
@@ -178,6 +181,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
         mRl_sigelPanel.setVisibility(View.GONE);
         m_networkLabelTextView.setText(getString(R.string.Ethernet));
+        HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);// sms count view gone
     }
 
     /* sim ui setting */
@@ -204,21 +208,21 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             protected void onSuccess(SimStatus simStatus) {
                 // 1.is sim can be work
                 if (simStatus.getSIMState() != Cons.READY) {
-                    connectUi(false);
+                    connectUi(false);// sim 卡没有准备好
                 } else {
                     // 2. is network can be work
-                    isNetworkInfo();
+                    getTrafficInfo();// sim 卡已经准备好
                 }
             }
         });
     }
 
     /* is network can be worked */
-    private void isNetworkInfo() {
+    private void getTrafficInfo() {
         API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "isNetworkInfo : " + e.getMessage().toString());
+                Log.d("ma", "getTrafficInfo : " + e.getMessage().toString());
             }
 
             @Override
@@ -227,7 +231,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 // // doesn't worked--> show 0MB
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
                     connectUi(false);
-                    ToastUtil_m.show(getActivity(), getString(R.string.home_no_service));
+                    // ToastUtil_m.show(getActivity(), getString(R.string.home_no_service));
                 } else {
                     // is press the connect button ?
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
@@ -237,10 +241,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             int stats = result.getConnectionStatus();
                             if (stats == Cons.CONNECTED) {
                                 connectUi(true);
-                            } else if (stats == Cons.DISCONNECTED || stats == Cons.DISCONNECTING) {
+                            } else {
                                 connectUi(false);
                             }
                             mConnectedView.setCenterTitle(upOrDownByteData);
+                            getNetworkedInfo();
                         }
                     });
                 }
@@ -298,10 +303,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         @Override
                         protected void onSuccess(UsageRecord result) {
                             // get usage record
-                            CommonUtil.TrafficBean tb = CommonUtil.ConvertTraffic(getActivity(), result.getHUseData());
-                            upOrDownByteData = String.valueOf(tb.num);
-                            mConnectedView.setCenterTitle(upOrDownByteData);
-                            mConnectedView.setBottomTitle(tb.type);
+                            getTrafficData(result);
                         }
                     });
                 }
@@ -311,7 +313,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    
     /* --------------------------------------------- 2.UNLOCKED/LOCKED STATUS ---------------------------------------- */
     
     /* --------------------------------------------- 3.TRAFFIC STATUS ---------------------------------------- */
@@ -334,6 +335,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* get traffic data */
     private void getTrafficData(UsageRecord result) {
+        // 1.set wave degree
         if (result.getMonthlyPlan() != 0) {// it must monthly plan is not zero
             long hUseData = result.getHUseData();
             long hMonthlyPlan = result.getMonthlyPlan();
@@ -352,6 +354,33 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
             mConnectedView.setProgressValue(92);
         }
+        // 2.set number
+        showTrafficData(result);
+
+    }
+
+    /* 显示已用流量 */
+    private void showTrafficData(UsageRecord result) {
+        System.out.println("result = " + result.getMonthlyPlan());
+        getActivity().runOnUiThread(() -> {
+            CommonUtil.TrafficBean hadUse = CommonUtil.ConvertTraffic(getActivity(), result.getHUseData(), 1);
+            CommonUtil.TrafficBean monthUse = CommonUtil.ConvertTraffic(getActivity(), result.getMonthlyPlan(), 0);
+            String monthplan = "";
+            if (monthUse.num <= 0) {
+                monthplan = getString(R.string.no_month_plan);
+            } else {
+                monthplan = getString(R.string.used_of) + " " + monthUse.num + monthUse.type;
+                monthplan = String.valueOf(Integer.valueOf(monthplan));
+            }
+
+
+            upOrDownByteData = String.valueOf(hadUse.num);
+            mConnectedView.setCenterTitle(upOrDownByteData);// have used
+            mConnectedView.setCenterTitleSize(hadUse.num >= 999 ? 30 : 60);
+            mConnectedView.setTopTitle(hadUse.type);// unit
+            mConnectedView.setBottomTitle(monthplan);// month plan
+            mConnectedView.setBottomTitleSize(monthUse.num >= 999 ? 10 : 14);
+        });
     }
     
     /* --------------------------------------------- 3.TRAFFIC STATUS ---------------------------------------- */
@@ -521,6 +550,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.connect_button:
                 if (canClick) {// when the connect type is not sure--> can't click
+                    ToastUtil_m.show(getActivity(), getString(R.string.connecting));
                     if (!isWan) {/* sim button click logic */
                         // operater the button click function
                         simButtonConnect();
@@ -641,6 +671,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * true:connected visible
+     * false:connect visible
+     *
+     * @param isConnected
+     */
     /* connected ui helper */
     public void connectUi(boolean isConnected) {
         // connect--> true:gone; false:visible

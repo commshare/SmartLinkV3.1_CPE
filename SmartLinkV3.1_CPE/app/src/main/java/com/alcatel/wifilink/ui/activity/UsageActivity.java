@@ -157,7 +157,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
         API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
             @Override
             public void onError(Throwable e) {
-                
+
             }
 
             @Override

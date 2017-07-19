@@ -91,6 +91,7 @@ public class OtherUtils {
         // 1.需要加密的版本
         List<String> needEncryptVersions = new ArrayList<String>();
         needEncryptVersions.add("HH70_E1_02.00_13");
+        needEncryptVersions.add("HH70_00_02.00_09");
         // 2.获取当前版本
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
             @Override

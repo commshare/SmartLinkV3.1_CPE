@@ -23,6 +23,13 @@ import java.util.regex.Pattern;
 
 
 public class CommonUtil {
+    /**
+     * 转换流量(带单位)
+     *
+     * @param context
+     * @param traffic
+     * @return
+     */
     public static String ConvertTrafficMB(Context context, long traffic) {
         BigDecimal trafficMB;
         BigDecimal trafficGB;
@@ -33,35 +40,46 @@ public class CommonUtil {
         trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
         if (trafficMB.compareTo(divide) >= 0) {
             trafficGB = trafficMB.divide(divide, 2, BigDecimal.ROUND_HALF_UP);
-            return trafficGB + context.getResources().getString(R.string.home_GB);
+            return trafficGB + context.getResources().getString(R.string.g_unit);
         } else {
-            return trafficMB + context.getResources().getString(R.string.home_MB);
+            return trafficMB + context.getResources().getString(R.string.m_unit);
         }
     }
 
-    public static TrafficBean ConvertTraffic(Context context, long traffic) {
+
+    /**
+     * 转换流量(纯数字)
+     *
+     * @param context
+     * @param traffic
+     * @return
+     */
+    public static TrafficBean ConvertTraffic(Context context, long traffic, int dimen) {
+        if (dimen > 2) {
+            dimen = 2;
+        }
         BigDecimal trafficMB;
         BigDecimal trafficGB;
 
         BigDecimal temp = new BigDecimal(traffic);
         BigDecimal divide = new BigDecimal(1024);
         BigDecimal divideM = new BigDecimal(1024l * 1024l);
-        trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
+        trafficMB = temp.divide(divideM, dimen, BigDecimal.ROUND_HALF_UP);
         TrafficBean tb = new CommonUtil().new TrafficBean();
         if (trafficMB.compareTo(divide) >= 0) {
-            trafficGB = trafficMB.divide(divide, 2, BigDecimal.ROUND_HALF_UP);
-            tb.num = trafficGB.intValue();
+            trafficGB = trafficMB.divide(divide, dimen, BigDecimal.ROUND_HALF_UP);
+            tb.num = trafficGB.floatValue();
             tb.type = "GB";
             return tb;
         } else {
-            tb.num = trafficMB.intValue();
+            tb.num = trafficMB.floatValue();
             tb.type = "MB";
             return tb;
         }
     }
 
     public class TrafficBean {
-        public int num;
+        public float num;
         public String type;
     }
 

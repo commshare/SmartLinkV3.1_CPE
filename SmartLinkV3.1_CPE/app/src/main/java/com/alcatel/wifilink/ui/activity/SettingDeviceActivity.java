@@ -120,7 +120,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
 
     private void controlTitlebar() {
         m_tv_title = (TextView) findViewById(R.id.tv_title_title);
-        m_tv_title.setText(R.string.setting_device);
+        m_tv_title.setText(R.string.device);
         //back button and text
         m_ib_back = (ImageButton) findViewById(R.id.ib_title_back);
         m_tv_back = (TextView) findViewById(R.id.tv_title_back);
@@ -266,10 +266,10 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             final InquireReplaceDialog inquireDlg = new InquireReplaceDialog(
                     SettingDeviceActivity.this);
             inquireDlg.setCancelDisabled();
-            inquireDlg.m_titleTextView.setText(R.string.dialog_warning_title);
+            inquireDlg.m_titleTextView.setText(R.string.warning);
             inquireDlg.m_contentTextView
                     .setText(R.string.dialog_warning_error_pin_code_error_3times);
-            inquireDlg.m_confirmBtn.setText(R.string.confirm);
+            inquireDlg.m_confirmBtn.setText(R.string.ok);
             inquireDlg.showDialog(new OnInquireApply() {
 
                 @Override
@@ -973,7 +973,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
             m_nUpdradeFWProgress = 0;
             final com.alcatel.wifilink.ui.dialog.InquireDialog inquireDlg = new com.alcatel.wifilink.ui.dialog
                     .InquireDialog(this);
-            inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+            inquireDlg.m_titleTextView.setText(R.string.setting_upgrade);
             inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
             inquireDlg.m_contentTextView
                     .setText(R.string.setting_upgrade_firmware_warning);
@@ -1035,7 +1035,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
     //停止更新
     private void showStopUpdateDialog() {
         final InquireDialog inquireDlg =  new InquireDialog(this);
-        inquireDlg.m_titleTextView.setText(R.string.setting_upgrade_btn_upgrade);
+        inquireDlg.m_titleTextView.setText(R.string.setting_upgrade);
         inquireDlg.m_contentTextView.setGravity(Gravity.LEFT);
         inquireDlg.m_contentTextView
                 .setText(R.string.setting_upgrade_firmware_warning);

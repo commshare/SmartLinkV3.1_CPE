@@ -41,7 +41,6 @@
                     android:textSize="@dimen/font_size_normal" />
 
                 <ImageView
-                    android:id="@+id/setting_login_password_arrow"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
@@ -103,7 +102,6 @@
                         android:textSize="@dimen/font_size_normal" />
 
                     <ImageView
-                        android:id="@+id/setting_mobile_network_line"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_0.5dip"
                         android:layout_alignParentBottom="true"
@@ -137,7 +135,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_10dip"
                         android:layout_toRightOf="@id/setting_ethernet_wan_pic"
-                        android:text="@string/setting_ethernet_wan_connection"
+                        android:text="@string/ethernet_wan_connection"
                         android:textColor="@color/black_text"
                         android:textSize="@dimen/font_size_normal" />
 
@@ -182,7 +180,6 @@
                     android:textSize="@dimen/font_size_normal" />
 
                 <ImageView
-                    android:id="@+id/setting_sharing_service_arrow"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
@@ -278,7 +275,6 @@
                     android:textSize="@dimen/dimen_textsize_10sp" />
 
                 <ImageView
-                    android:id="@+id/setting_firmware_upgrade_line"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_0.5dip"
                     android:layout_alignParentBottom="true"
@@ -314,7 +310,6 @@
                     android:textSize="@dimen/font_size_normal" />
 
                 <ImageView
-                    android:id="@+id/setting_restart_arrow"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
@@ -324,7 +319,6 @@
                     android:src="@drawable/right_arrow_big" />
 
                 <ImageView
-                    android:id="@+id/setting_restart_line"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_0.5dip"
                     android:layout_alignParentBottom="true"
@@ -360,7 +354,6 @@
                     android:textSize="@dimen/font_size_normal" />
 
                 <ImageView
-                    android:id="@+id/setting_backup_arrow"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
@@ -399,7 +392,6 @@
                     android:textSize="@dimen/font_size_normal" />
 
                 <ImageView
-                    android:id="@+id/setting_about_arrow"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"

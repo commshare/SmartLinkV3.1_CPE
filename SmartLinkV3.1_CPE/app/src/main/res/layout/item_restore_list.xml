@@ -23,7 +23,7 @@
             android:singleLine="true"
             android:gravity="center_vertical"
             android:layout_alignParentLeft="true"
-            android:text="@string/setting_restore_btn_restore"
+            android:text="@string/restore"
             android:textSize="@dimen/font_size_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

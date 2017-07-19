@@ -27,7 +27,6 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/device_backup_restore_container"
         android:layout_below="@id/device_backup_backup_container"
         android:layout_marginTop="@dimen/dimen_20dip"
         android:layout_width="match_parent"
@@ -58,7 +57,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_backup_waiting"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 

@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/setting_titlebar_text_done"
+            android:text="@string/done"
             android:textColor="@color/color_white"
             android:textSize="24sp"
             android:visibility="gone" />

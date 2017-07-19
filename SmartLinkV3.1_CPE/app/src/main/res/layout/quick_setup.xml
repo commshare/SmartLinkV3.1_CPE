@@ -6,8 +6,7 @@
     android:orientation="vertical" >
 
 	<RelativeLayout
-		android:id="@+id/navigator"
-		android:layout_width="match_parent"
+        android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/dimen_30dip"
 		android:layout_marginBottom="8sp"
@@ -98,8 +97,7 @@
 	        android:orientation="horizontal"
 	        android:visibility="gone">
 		    <TextView
-	            android:id="@+id/qs_item_puk_prompt"
-	            android:layout_width="@dimen/quick_setup_puk_textview_width"
+                android:layout_width="@dimen/quick_setup_puk_textview_width"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center"
 	            android:gravity="center_vertical"
@@ -131,12 +129,11 @@
 	        android:orientation="horizontal"
 	        android:visibility="gone">
 		    <TextView
-	            android:id="@+id/qs_item_new_pin_prompt"
-	            android:layout_width="@dimen/quick_setup_puk_textview_width"
+                android:layout_width="@dimen/quick_setup_puk_textview_width"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center"
 	            android:gravity="center_vertical"
-	            android:text="@string/qs_pin_code_new"
+	            android:text="@string/puk_new_pin_label"
 	            android:textColor="@color/color_black" />
 		    <com.alcatel.wifilink.ui.view.ClearEditText
 	            android:id="@+id/new_pin_code"
@@ -163,8 +160,7 @@
 	        android:orientation="horizontal"
 	        android:visibility="gone">
 		    <TextView
-	            android:id="@+id/qs_item_pin_confirm_prompt"
-	            android:layout_width="@dimen/quick_setup_puk_textview_width"
+                android:layout_width="@dimen/quick_setup_puk_textview_width"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center"
 	            android:gravity="center_vertical"

@@ -27,7 +27,6 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/connect_type_waiting_progress"
             android:layout_width="@dimen/dimen_40dip"
             android:layout_height="@dimen/dimen_40dip"
             android:layout_centerInParent="true"
@@ -81,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/qs_pin_unlock_can_not_connect"
+            android:text="@string/network_disconnected"
             android:textSize="@dimen/font_size_large" />
 
         <ImageView
@@ -111,7 +110,7 @@
             android:layout_marginTop="@dimen/dimen_30dip"
             android:background="@drawable/selector_nowifi_button"
             android:gravity="center"
-            android:text="@string/qs_pin_unlock_try_again"
+            android:text="@string/smsdetail_tryagain_confirm"
             android:textColor="@color/mg_blue"
             android:textSize="@dimen/dimen_textsize_16sp"
             android:textStyle="bold" />

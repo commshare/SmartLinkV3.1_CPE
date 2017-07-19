@@ -5,9 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-
     <RelativeLayout
-        android:id="@+id/home_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -23,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:src="@drawable/home_connected_ic_home"/>
+            android:src="@drawable/home_connected_ic_home" />
 
         <TextView
             android:id="@+id/home_title"
@@ -38,7 +36,7 @@
             android:maxLines="1"
             android:text="@string/home_network"
             android:textColor="@color/black_text"
-            android:textSize="@dimen/dimen_textsize_18sp"/>
+            android:textSize="@dimen/dimen_textsize_18sp" />
 
         <TextView
             android:id="@+id/home_data"
@@ -47,9 +45,9 @@
             android:layout_alignBottom="@+id/home_icon"
             android:layout_alignLeft="@+id/home_title"
             android:layout_alignStart="@+id/home_title"
-            android:text="sssss"
+            android:text="0.00M"
             android:textColor="@color/deep_grey_text"
-            android:textSize="@dimen/dimen_textsize_14sp"/>
+            android:textSize="@dimen/dimen_textsize_14sp" />
 
         <TextView
             android:id="@+id/tv_home_time"
@@ -58,23 +56,20 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="sssss"
+            android:text="0.00M"
             android:textColor="@color/black_text"
-            android:textSize="@dimen/dimen_textsize_14sp"/>
-
+            android:textSize="@dimen/dimen_textsize_14sp" />
 
     </RelativeLayout>
-
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:background="@color/grey_line"
         android:paddingBottom="6dip"
-        android:paddingTop="6dip"/>
+        android:paddingTop="6dip" />
 
     <RelativeLayout
-        android:id="@+id/roaming_panel"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:src="@drawable/home_connected_ic_roaming"/>
+            android:src="@drawable/home_connected_ic_roaming" />
 
         <TextView
             android:id="@+id/roaming_title"
@@ -106,7 +101,7 @@
             android:maxLines="1"
             android:text="@string/usage_setting_roaming"
             android:textColor="@color/black_text"
-            android:textSize="@dimen/dimen_textsize_18sp"/>
+            android:textSize="@dimen/dimen_textsize_18sp" />
 
         <TextView
             android:id="@+id/roaming_data"
@@ -115,9 +110,9 @@
             android:layout_alignBottom="@+id/roaming_icon"
             android:layout_alignLeft="@+id/roaming_title"
             android:layout_alignStart="@+id/roaming_title"
-            android:text="sssss"
+            android:text="0.00M"
             android:textColor="@color/deep_grey_text"
-            android:textSize="@dimen/dimen_textsize_14sp"/>
+            android:textSize="@dimen/dimen_textsize_14sp" />
 
         <TextView
             android:id="@+id/tv_roaming_time"
@@ -126,9 +121,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="sssss"
+            android:text="0.00M"
             android:textColor="@color/black_text"
-            android:textSize="@dimen/dimen_textsize_14sp"/>
+            android:textSize="@dimen/dimen_textsize_14sp" />
     </RelativeLayout>
 
     <Button
@@ -142,7 +137,7 @@
         android:text="@string/reset_statistics"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="@dimen/dimen_textsize_18sp"/>
+        android:textSize="@dimen/dimen_textsize_18sp" />
 
     <TextView
         android:id="@+id/tv_network_settings"
@@ -151,6 +146,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dimen_20dip"
         android:drawableRight="@drawable/right_arrow_small"
-        android:text="@string/mobile_network_settings"/>
+        android:text="@string/mobile_network_settings" />
 </LinearLayout>
 

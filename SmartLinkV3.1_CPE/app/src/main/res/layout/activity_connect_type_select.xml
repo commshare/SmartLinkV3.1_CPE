@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_connect_type_select"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.alcatel.wifilink.ui.activity.ConnectTypeSelectActivity">
@@ -38,7 +37,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/center_line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -177,13 +175,12 @@
                 android:src="@drawable/general_btn_remember_pre" />
 
             <TextView
-                android:id="@+id/handle_pin_remember_pin_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_10dip"
                 android:layout_toRightOf="@id/handle_pin_remember_pin_select"
-                android:text="@string/qs_pin_remember_pin_des"
+                android:text="@string/remember_sim_pin"
                 android:textColor="@color/black_text"
                 android:textSize="@dimen/font_size_normal" />
         </RelativeLayout>
@@ -199,7 +196,7 @@
             android:background="@drawable/selector_conner_btn_blue"
             android:clickable="true"
             android:gravity="center"
-            android:text="@string/qs_pin_connect"
+            android:text="@string/connect"
             android:textColor="@color/color_white"
             android:textSize="@dimen/font_size_normal" />
 
@@ -213,7 +210,6 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/connect_type_waiting_progress"
             android:layout_width="@dimen/dimen_40dip"
             android:layout_height="@dimen/dimen_40dip"
             android:layout_centerInParent="true"
@@ -267,7 +263,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/qs_pin_unlock_can_not_connect"
+            android:text="@string/network_disconnected"
             android:textSize="@dimen/font_size_large" />
 
         <ImageView
@@ -297,7 +293,7 @@
             android:layout_marginTop="@dimen/dimen_30dip"
             android:background="@drawable/selector_nowifi_button"
             android:gravity="center"
-            android:text="@string/qs_pin_unlock_try_again"
+            android:text="@string/smsdetail_tryagain_confirm"
             android:textColor="@color/mg_blue"
             android:textSize="@dimen/dimen_textsize_16sp"
             android:textStyle="bold" />
@@ -317,7 +313,6 @@
 
     <!-- WIFI设置页 -->
     <LinearLayout
-        android:id="@+id/wifi_setting_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/mHead_setupWizard"
@@ -340,7 +335,6 @@
                 android:textSize="@dimen/font_size_normal" />
 
             <ImageView
-                android:id="@+id/wifi_setting_2g_switch"
                 android:layout_width="@dimen/dimen_40dip"
                 android:layout_height="@dimen/dimen_40dip"
                 android:layout_alignParentRight="true"
@@ -359,11 +353,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/qs_wifi_setting_account"
+                android:text="@string/account"
                 android:textSize="@dimen/font_size_normal" />
 
             <EditText
-                android:id="@+id/wifi_setting_2g_account"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_40dip"
                 android:layout_alignParentRight="true"
@@ -378,7 +371,6 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/wifi_setting_2g_line"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0.5dip"
                 android:layout_marginLeft="@dimen/dimen_10dip" />
@@ -405,11 +397,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/qs_wifi_setting_password"
+                android:text="@string/password"
                 android:textSize="@dimen/font_size_normal" />
 
             <EditText
-                android:id="@+id/wifi_setting_2g_password"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_40dip"
                 android:layout_marginRight="@dimen/dimen_10dip"

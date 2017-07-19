@@ -6,7 +6,6 @@
               android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/rl_about_version"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1.2" >
@@ -21,7 +20,6 @@
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_about_app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_about_app"
@@ -37,7 +35,6 @@
 
     <!--条栏-->
     <RelativeLayout
-        android:id="@+id/rl_about_copyright"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="3" >
@@ -64,7 +61,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <ImageView
-                    android:id="@+id/setting_about_link_app_arrow"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
                     android:layout_alignParentRight="true"
@@ -84,7 +80,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/setting_item_height">
                 <TextView
-                    android:id="@+id/setting_about_link_website_desc"
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/font_size_normal"
                     android:textColor="@color/color_black"
@@ -92,7 +87,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <ImageView
-                    android:id="@+id/setting_about_link_website_arrow"
                     android:src="@drawable/right_arrow_big"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
@@ -112,11 +106,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/setting_item_height">
                 <TextView
-                    android:id="@+id/setting_about_link_upgrade_desc"
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/font_size_normal"
                     android:textColor="@color/color_black"
-                    android:text="@string/setting_upgrade_btn_upgrade"
+                    android:text="@string/setting_upgrade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <ImageView

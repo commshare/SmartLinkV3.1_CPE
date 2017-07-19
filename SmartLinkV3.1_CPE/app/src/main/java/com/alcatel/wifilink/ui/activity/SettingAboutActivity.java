@@ -208,7 +208,7 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
                             msg.getData().getString("version"));
                     if(currVer.compareToIgnoreCase(strNewVersion) < 0)
                     {
-                        mUpgrade.setText(R.string.setting_upgrade_btn_upgrade);
+                        mUpgrade.setText(R.string.setting_upgrade);
                         m_blHasNewApp = true;
                     }else {
                         mVersion.setText(R.string.setting_upgrade_no_new_version);

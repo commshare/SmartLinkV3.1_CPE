@@ -10,11 +10,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:id="@+id/rl_ssid_broadcast">
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_ssid_broadcast"
             android:text="@string/ssid_broadcast"
             android:textColor="@color/black"
             android:layout_alignParentLeft="true"
@@ -87,11 +86,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:id="@+id/rl_country">
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_country"
             android:text="@string/country_region"
             android:textColor="@color/black"
             android:layout_alignParentLeft="true"
@@ -112,11 +110,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:id="@+id/rl_channel">
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_channel"
             android:text="@string/channel"
             android:textColor="@color/black"
             android:layout_alignParentLeft="true"
@@ -137,11 +134,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:id="@+id/rl_802_11">
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_802_11"
             android:text="@string/mode_802_11"
             android:textColor="@color/black"
             android:layout_alignParentLeft="true"
@@ -162,11 +158,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:id="@+id/rl_ap_isolation">
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_ap_isolation"
             android:text="@string/ap_isolation"
             android:textColor="@color/black"
             android:layout_alignParentLeft="true"
@@ -185,11 +180,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:id="@+id/rl_bandwidth">
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_bandwidth"
             android:text="@string/bandwidth"
             android:textColor="@color/black"
             android:layout_alignParentLeft="true"
@@ -208,7 +202,6 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btn_ok"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ok"

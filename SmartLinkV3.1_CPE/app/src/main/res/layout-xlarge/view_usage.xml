@@ -6,8 +6,7 @@
 	android:background="@color/white" >
 
 	<RelativeLayout
-		android:id="@+id/usage_layout_top"
-		android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/main_title_background" >
 
@@ -23,8 +22,7 @@
 			android:background="@null"/>
 
 		<TextView
-			android:id="@+id/usage_title"
-			android:layout_width="fill_parent"
+            android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:gravity="center"
@@ -53,8 +51,7 @@
 			android:orientation="vertical" >
 
 			<RelativeLayout
-				android:id="@+id/home_panel"
-				android:layout_width="match_parent"
+                android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal"
 				android:paddingBottom="@dimen/dimen_24dip"
@@ -76,8 +73,7 @@
 						android:src="@drawable/home_connected_ic_home"/>
 
 					<LinearLayout
-						android:id="@+id/home_ll"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:orientation="vertical"
 						android:layout_toRightOf="@id/home_icon"
@@ -89,7 +85,7 @@
 							android:layout_height="wrap_content"
 							android:ellipsize="end"
 							android:maxLines="1"
-							android:text="@string/usage_view_home"
+							android:text="@string/main_home"
 							android:textColor="@color/black_text"
 							android:textSize="@dimen/dimen_textsize_36sp" />
 
@@ -102,8 +98,7 @@
 					</LinearLayout>
 
 					<ImageView
-						android:id="@+id/home_warn"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="@dimen/dimen_20dip"
 						android:contentDescription="@null"
@@ -123,16 +118,14 @@
 						android:orientation="vertical">
 
 						<ImageView
-							android:id="@+id/home_data_up"
-							android:layout_width="wrap_content"
+                            android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:contentDescription="@null"
 							android:visibility="visible"
 							android:background="@drawable/home_connected_ic_usage_on" />
 
 						<ImageView
-							android:id="@+id/home_data_down"
-							android:layout_width="wrap_content"
+                            android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="@dimen/dimen_20dip"
 							android:contentDescription="@null"
@@ -146,8 +139,7 @@
 						android:orientation="vertical">
 
 						<TextView
-							android:id="@+id/home_data_up_status"
-							android:layout_width="wrap_content"
+                            android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="@dimen/dimen_20dip"
 							android:ellipsize="end"
@@ -156,8 +148,7 @@
 							android:textColor="@color/deep_black_text"
 							android:textSize="@dimen/dimen_textsize_36sp" />
 						<TextView
-							android:id="@+id/home_data_down_status"
-							android:layout_width="wrap_content"
+                            android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="@dimen/dimen_20dip"
 							android:paddingLeft="@dimen/dimen_20dip"
@@ -172,8 +163,7 @@
 			</RelativeLayout>
 
 			<FrameLayout
-				android:id="@+id/usage_home_progress_panel"
-				android:layout_alignParentLeft="true"
+                android:layout_alignParentLeft="true"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal"
@@ -182,8 +172,7 @@
 				android:paddingRight="@dimen/dimen_20dip">
 
 				<ProgressBar
-					android:id="@+id/usage_status_progress"
-					style="?android:attr/progressBarStyleHorizontal"
+                    style="?android:attr/progressBarStyleHorizontal"
 					android:layout_width="@dimen/dimen_400dip"
 					android:layout_height="@dimen/dimen_20dip"
 					android:max="100"
@@ -191,8 +180,7 @@
 					android:progressDrawable="@drawable/progress_bar_drawable" />
 
 				<TextView
-					android:id="@+id/usage_status_describtion"
-					android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
 					android:gravity="center"
@@ -213,8 +201,7 @@
 			android:background="@color/grey_line" />
 
 		<RelativeLayout
-			android:id="@+id/roaming_panel"
-			android:layout_width="match_parent"
+            android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 			android:paddingBottom="@dimen/dimen_24dip"
@@ -236,8 +223,7 @@
 					android:src="@drawable/home_connected_ic_roaming" />
 
 				<LinearLayout
-					android:id="@+id/roaming_ll"
-					android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:layout_marginLeft="@dimen/dimen_20dip">
@@ -262,8 +248,7 @@
 				</LinearLayout>
 
 				<ImageView
-					android:id="@+id/roaming_warn"
-					android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="@dimen/dimen_20dip"
 					android:contentDescription="@null"
@@ -285,16 +270,14 @@
 					android:orientation="vertical">
 
 					<ImageView
-						android:id="@+id/roaming_data_up"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:contentDescription="@null"
 						android:visibility="visible"
 						android:background="@drawable/home_connected_ic_usage_on" />
 
 					<ImageView
-						android:id="@+id/roaming_data_down"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginTop="@dimen/dimen_20dip"
 						android:contentDescription="@null"
@@ -308,8 +291,7 @@
 					android:orientation="vertical">
 
 					<TextView
-						android:id="@+id/roaming_data_up_status"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:paddingLeft="@dimen/dimen_20dip"
 						android:ellipsize="end"
@@ -319,8 +301,7 @@
 						android:textSize="@dimen/dimen_textsize_36sp" />
 
 					<TextView
-						android:id="@+id/roaming_data_down_status"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginTop="@dimen/dimen_20dip"
 						android:paddingLeft="@dimen/dimen_20dip"
@@ -340,8 +321,7 @@
 			android:background="@color/grey_line" />
 
 		<RelativeLayout
-			android:id="@+id/duration_panel"
-			android:layout_width="match_parent"
+            android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 			android:paddingBottom="@dimen/dimen_24dip"
@@ -356,22 +336,19 @@
 				android:layout_centerVertical="true">
 
 				<ImageView
-					android:id="@+id/duration_icon"
-					android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:contentDescription="@null"
 					android:src="@drawable/home_connected_ic_clock"/>
 
 				<LinearLayout
-					android:id="@+id/duration_ll"
-					android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:layout_marginLeft="@dimen/dimen_20dip">
 
 					<TextView
-						android:id="@+id/duration_title"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:ellipsize="end"
 						android:maxLines="1"
@@ -380,16 +357,14 @@
 						android:textSize="@dimen/dimen_textsize_36sp" />
 
 					<TextView
-						android:id="@+id/duration_time_status"
-						android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:textSize="@dimen/dimen_textsize_28sp"
 						android:textColor="@color/deep_grey_text"/>
 				</LinearLayout>
 
 				<ImageView
-					android:id="@+id/duration_warn"
-					android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="@dimen/dimen_20dip"
 					android:contentDescription="@null"
@@ -398,8 +373,7 @@
 			</LinearLayout>
 
 			<TextView
-				android:id="@+id/duration_total_time"
-				android:layout_width="wrap_content"
+                android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:ellipsize="end"
 				android:maxLines="1"

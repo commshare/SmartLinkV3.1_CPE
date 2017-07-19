@@ -4,8 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@color/color_white" >
 	<RelativeLayout
-		android:id="@+id/sms_new_waiting_layout"
-		android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 
 		<ProgressBar
@@ -25,16 +24,14 @@
 
 
 			<LinearLayout
-				android:id="@+id/to_layout"
-				android:layout_width="fill_parent"
+                android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/top_layout"
 				android:background="@color/main_tabbar_background"
 				android:orientation="vertical">
 
 				<RelativeLayout
-					android:id="@+id/to_layout_r"
-					android:layout_width="fill_parent"
+                    android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="10dip"
 					android:layout_marginLeft="20dip"
@@ -73,8 +70,7 @@
 			</LinearLayout>
 
 			<LinearLayout
-				android:id="@+id/send_layout"
-				android:layout_width="fill_parent"
+                android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_alignParentBottom="true"
 				android:background="@color/main_tabbar_background"

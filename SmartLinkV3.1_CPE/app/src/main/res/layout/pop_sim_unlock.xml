@@ -15,7 +15,6 @@
 
         <!-- title -->
         <TextView
-            android:id="@+id/tv_pop_sim_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -26,7 +25,6 @@
 
         <!-- buttons -->
         <LinearLayout
-            android:id="@+id/ll_pop_sim_buttons"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dip"
             android:layout_alignParentBottom="true"
@@ -42,7 +40,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/pop_sim_bg"
                 android:gravity="center"
-                android:text="@string/pop_sim_cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/pop_sim_text"
                 android:textSize="@dimen/dimen_textsize_16sp"
                 app:alphaFactor="0.8"
@@ -59,7 +57,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/pop_sim_bg"
                 android:gravity="center"
-                android:text="@string/pop_sim_unlock"
+                android:text="@string/sim_unlocked"
                 android:textColor="@color/pop_sim_text"
                 android:textSize="@dimen/dimen_textsize_16sp"
                 app:alphaFactor="0.8"

@@ -56,9 +56,9 @@ public class WaveLoadingView extends View {
     private static final int DEFAULT_WAVE_SHAPE = ShapeType.CIRCLE.ordinal();
     private static final int DEFAULT_TRIANGLE_DIRECTION = TriangleDirection.NORTH.ordinal();
     private static final int DEFAULT_ROUND_RECTANGLE_X_AND_Y = 30;
-    private static final float DEFAULT_TITLE_TOP_SIZE = 18.0f;
-    private static final float DEFAULT_TITLE_CENTER_SIZE = 22.0f;
-    private static final float DEFAULT_TITLE_BOTTOM_SIZE = 18.0f;
+    private static final float DEFAULT_TITLE_TOP_SIZE = 16.0f;
+    private static final float DEFAULT_TITLE_CENTER_SIZE = 16.0f;
+    private static final float DEFAULT_TITLE_BOTTOM_SIZE = 16.0f;
 
     public enum ShapeType {
         TRIANGLE, CIRCLE, SQUARE, RECTANGLE
@@ -326,9 +326,10 @@ public class WaveLoadingView extends View {
                 canvas.drawText(mTopTitle, (getWidth() - top) / 2, getHeight() * 2 / 10.0f, mTopTitlePaint);
             }
 
+            // TODO: 2017/7/19 
             if (!TextUtils.isEmpty(mCenterTitle)) {
                 float middle = mCenterTitlePaint.measureText(mCenterTitle);
-                int mCenterNum = Integer.parseInt(mCenterTitle);
+                float mCenterNum = Float.parseFloat(mCenterTitle);
                 if (mCenterNum < 10) {
                     setCenterText(canvas, 176, 62, mCenterTitle, "", middle, 0.5, 0.75);
                 } else if (mCenterNum >= 10 && mCenterNum < 100) {
@@ -352,6 +353,16 @@ public class WaveLoadingView extends View {
         }
     }
 
+    /**
+     * @param canvas
+     * @param titleSize 标题尺寸
+     * @param unitSize 单元
+     * @param mCenterTitle 中心标题
+     * @param unitValue 值
+     * @param middle
+     * @param titleWidthRatio
+     * @param unitWidthRatio
+     */
     private void setCenterText(Canvas canvas, int titleSize, int unitSize, String mCenterTitle, String unitValue, float middle, double titleWidthRatio, double unitWidthRatio) {
         mCenterTitlePaint.setTextSize(titleSize);
         // Draw the stroke of centered text

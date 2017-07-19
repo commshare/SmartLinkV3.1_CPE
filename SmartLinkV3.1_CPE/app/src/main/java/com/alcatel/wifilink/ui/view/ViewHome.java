@@ -299,7 +299,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				nStatusId = R.string.Home_PukTimes_UsedOut;
 				m_unlockSimBtn.setVisibility(View.GONE);
 			} else if (SIMState.SimCardIsIniting == simStatus) {
-				nStatusId = R.string.Home_SimCard_IsIniting;
+				nStatusId = R.string.home_initializing;
 				m_unlockSimBtn.setVisibility(View.GONE);
 			} else if (SIMState.PinRequired == simStatus) {
 				nStatusId = R.string.Home_pin_locked;

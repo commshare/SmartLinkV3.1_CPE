@@ -52,7 +52,6 @@
         android:overScrollMode="never" >
     
         <LinearLayout
-            android:id="@+id/frame_roaming"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical" >

@@ -48,14 +48,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/setting_titlebar_text_done"
+            android:text="@string/done"
             android:textColor="@color/color_white"
             android:textSize="@dimen/font_size_normal"
             android:visibility="gone" />
     </FrameLayout>
     
     <LinearLayout
-        android:id="@+id/fl_add_and_delete"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
@@ -65,7 +64,6 @@
         android:visibility="gone" >
 
         <TextView
-            android:id="@+id/tv_titlebar_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -75,7 +73,6 @@
             android:text="        " />
         
         <TextView
-            android:id="@+id/tv_titlebar_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

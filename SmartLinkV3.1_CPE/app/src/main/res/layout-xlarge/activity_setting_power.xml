@@ -9,7 +9,6 @@
         android:layout_height="match_parent"
         >
         <LinearLayout
-            android:id="@+id/rl_power_saving_bottom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -21,7 +20,6 @@
                 android:orientation="vertical" >
 
                 <FrameLayout
-                    android:id="@+id/fl_power_show"
                     android:layout_width="160dp"
                     android:layout_height="240dp"
                     android:layout_gravity="center" 
@@ -58,20 +56,17 @@
             </LinearLayout>
             
              <ImageView
-                android:id="@+id/iv_power_seperator_3"
-                android:layout_width="match_parent"
+                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:contentDescription="@string/setting_power" />
             
             <RelativeLayout
-                android:id="@+id/rl_power_smart_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp" >
 
                 <TextView
-                    android:id="@+id/tx_power_smart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -91,7 +86,6 @@
             </RelativeLayout>
 
             <ImageView
-                android:id="@+id/iv_power_seperator_2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
@@ -104,7 +98,6 @@
                 android:layout_margin="15dp" >
 
                 <TextView
-                    android:id="@+id/tx_power_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -144,7 +137,6 @@
     </ScrollView>
 
         <RelativeLayout
-            android:id="@+id/rl_power_waiting"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 

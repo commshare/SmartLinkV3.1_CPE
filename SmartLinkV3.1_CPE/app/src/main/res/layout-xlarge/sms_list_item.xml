@@ -23,8 +23,7 @@
 		android:orientation="vertical">
 
 		<RelativeLayout
-			android:id="@+id/sms_item_number_row_layout"
-			android:layout_width="fill_parent"
+            android:layout_width="fill_parent"
 			android:layout_height="@dimen/dimen_60dip"
 			android:layout_marginLeft="@dimen/dimen_20dip"
 			android:gravity="center_vertical">
@@ -115,8 +114,7 @@
 		</RelativeLayout>
 
 		<RelativeLayout
-			android:id="@+id/sms_item_content_row_layout"
-			android:layout_width="fill_parent"
+            android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="@dimen/dimen_20dip" >
 			<TextView

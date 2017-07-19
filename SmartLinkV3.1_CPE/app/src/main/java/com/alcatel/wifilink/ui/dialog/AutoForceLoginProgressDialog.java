@@ -30,7 +30,7 @@ public class AutoForceLoginProgressDialog {
     public AutoForceLoginProgressDialog(Context context) {
         m_context = context;
         loginCheckDialogTitle = m_context.getString(R.string.login_check_dialog_title);
-        loginCheckDialogContent = m_context.getString(R.string.login_check_dialog_content) + "...";
+        loginCheckDialogContent = m_context.getString(R.string.login_check_dialog_title) + "...";
 
         m_auReceiver = new AuthenticationBroadcastReceiver();
 

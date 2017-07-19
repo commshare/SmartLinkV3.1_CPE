@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
-    android:layout_width="match_parent"
+              android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
@@ -11,7 +10,6 @@
     <!-- signal -->
 
     <RelativeLayout
-        android:id="@+id/ll_widget_signal"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" 
@@ -40,7 +38,6 @@
     <!-- SMS status -->
 
     <RelativeLayout
-        android:id="@+id/rl_widget_sms"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" >
@@ -88,7 +85,6 @@
 
     
     <RelativeLayout
-        android:id="@+id/rl_widget_usage"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1.3" >
@@ -118,7 +114,6 @@
     <!-- Internet status -->
 
     <RelativeLayout
-        android:id="@+id/rl_widget_internet"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" >
@@ -178,7 +173,6 @@
     <!-- battery status -->
 
     <RelativeLayout
-        android:id="@+id/rl_widget_battery"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" 
@@ -217,7 +211,6 @@
             android:contentDescription="@string/app_name"
             android:visibility="gone" />
         <ImageButton
-            android:id="@+id/ib_widget_charge_front"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

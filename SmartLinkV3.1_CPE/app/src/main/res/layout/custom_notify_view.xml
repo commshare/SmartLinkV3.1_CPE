@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout"
-    android:layout_width="fill_parent"
+                android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/color_light_gray"
     android:padding="6dip" >
@@ -10,8 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <ImageView
-	        android:id="@+id/image_logo"
-	        android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_vertical"
 	        android:src="@drawable/ic_launcher"/>

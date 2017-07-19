@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rl_actionbar_newsms"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_60dip"
         android:background="@color/main_title_background">
@@ -21,13 +20,12 @@
             android:src="@drawable/back" />
 
         <TextView
-            android:id="@+id/tv_newsms_title"
             android:layout_width="@dimen/dimen_200dip"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:maxLength="12"
-            android:text="@string/sms_new_title"
+            android:text="@string/sms_title"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_20dip"
             android:textStyle="normal" />

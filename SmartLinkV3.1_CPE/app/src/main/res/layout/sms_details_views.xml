@@ -69,13 +69,11 @@
 		    android:transcriptMode="alwaysScroll"
 		    android:stackFromBottom="false"
 		    android:layout_above="@id/ID_SMS_DETAIL_REPLY_LAYOUT"
-		    android:layout_below="@id/ID_SMS_DETAIL_TOP_LAYOUT"
 		    android:overScrollMode="never"/>
 	</RelativeLayout>
 
 	<RelativeLayout
-	    android:id="@+id/sms_waiting_layout"
-	    android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	    <ProgressBar
              android:id="@+id/sms_waiting_progress"

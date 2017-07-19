@@ -41,7 +41,7 @@
                 android:layout_marginLeft="@dimen/dimen_20dip"
                 android:layout_marginRight="@dimen/dimen_20dip"
                 android:button="@null"
-                android:text="@string/ppp_over_ethernet"
+                android:text="@string/pppoe"
                 android:textSize="@dimen/dimen_textsize_16sp" />
 
             <RadioButton
@@ -96,7 +96,6 @@
         tools:context=".ui.activity.RefreshWifiActivity">
 
         <ScrollView
-            android:id="@+id/ScrollView01"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentBottom="true"
@@ -122,14 +121,13 @@
                     android:scaleType="fitXY" />
 
                 <TextView
-                    android:id="@+id/textview_refresh_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/image_connection"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/NETMODE_DETEING_INTERNET"
+                    android:text="@string/netmode_deteing_internet"
                     android:textColor="@color/color_deep_grey"
                     android:textSize="@dimen/font_size_normal"
                     android:textStyle="bold" />

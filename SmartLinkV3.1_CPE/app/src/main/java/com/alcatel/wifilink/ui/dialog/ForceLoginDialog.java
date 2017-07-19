@@ -328,7 +328,7 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
         imm.hideSoftInputFromWindow(m_vForceLogin.getWindowToken(), 0);
 
         String strTitle = m_context.getString(R.string.login_check_dialog_title);
-        String strContent = m_context.getString(R.string.login_check_dialog_content) + "...";
+        String strContent = m_context.getString(R.string.login_check_dialog_title) + "...";
         m_dlgProgress = ProgressDialog.show(m_context, strTitle, strContent, true, false);
         m_dlgProgress.setCancelable(true);
         m_tvPasswordError.setVisibility(View.GONE);

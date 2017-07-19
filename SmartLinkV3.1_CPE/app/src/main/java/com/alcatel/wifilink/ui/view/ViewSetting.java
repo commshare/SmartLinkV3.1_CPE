@@ -144,12 +144,12 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
         upgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
         if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(upgradeStatus)) {
             //DEVICE_NEW_VERSION
-            item = new SettingItem(context.getString(R.string.setting_device), true);
+            item = new SettingItem(context.getString(R.string.device), true);
             list.add(item);
             //保存升级标志到本地SP
             SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
         } else {
-            item = new SettingItem(context.getString(R.string.setting_device), false);
+            item = new SettingItem(context.getString(R.string.device), false);
             list.add(item);
             //保存升级标志到本地SP
             SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);

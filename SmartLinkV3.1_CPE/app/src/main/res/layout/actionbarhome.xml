@@ -6,7 +6,6 @@
 
     <!-- 1.顶部栏 -->
     <RelativeLayout
-        android:id="@+id/mRl_home_topbanner"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/action_bar_height"
         android:background="@color/main_title_background"
@@ -28,12 +27,12 @@
             android:id="@+id/mRl_home_logout"
             android:layout_width="@dimen/dimen_70dip"
             android:layout_height="@dimen/dimen_40dip"
+            android:clickable="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true">
 
             <!-- LogOut -->
             <TextView
-                android:id="@+id/mTv_home_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/usage_panel"
-    android:layout_width="match_parent"
+              android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -13,7 +12,6 @@
             android:paddingTop="9dip" >
 
         <TextView
-            android:id="@+id/usage_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/usage_setting_usage"
@@ -47,7 +45,6 @@
             android:paddingTop="6dip" >
 
             <TextView
-                android:id="@+id/billing_plan_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -99,7 +96,6 @@
             android:paddingTop="6dip">
 
             <TextView
-                android:id="@+id/monthly_plan_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -136,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/usage_setting_monthlyunit"
+                android:text="@string/m_unit"
                 android:textSize="@dimen/dimen_textsize_18sp"
                 android:textColor="@color/deep_grey_text"
                 android:layout_toLeftOf="@+id/unit_selector"
@@ -164,7 +160,6 @@
 	            android:paddingBottom="12dip">
 
                 <TextView
-                    android:id="@+id/usage_consumption_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -202,7 +197,6 @@
             android:paddingTop="6dip" >
 
             <TextView
-                android:id="@+id/usage_alert_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -243,7 +237,6 @@
             android:layout_marginLeft="@dimen/dimen_corner_8dip"/>
 
         <RelativeLayout
-            android:id="@+id/frame_auto_disconnected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -261,7 +254,6 @@
                 android:clickable="true" />
 
             <TextView
-                android:id="@+id/enable_auto_disconnected_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -280,7 +272,6 @@
         android:background="@color/grey_line" />
 
     <TextView
-        android:id="@+id/enable_disconnected_descrition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_5dip"

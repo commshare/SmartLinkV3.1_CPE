@@ -731,7 +731,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             rl_top.setVisibility(View.VISIBLE);
             m_titleTextView.setText(R.string.main_setting);
             mActionText.setVisibility(View.VISIBLE);
-            mActionText.setText(R.string.setting_log_out);
+            mActionText.setText(R.string.log_out);
 //            m_Btnbar.setVisibility(View.GONE);
             setMainBtnStatus(R.id.main_setting);
         } else if (viewIndex == ViewIndex.VIEW_MICROSD) {

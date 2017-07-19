@@ -65,7 +65,6 @@ import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
 import static com.alcatel.wifilink.fileexplorer.FileSortHelper.SortMethod.size;
 import static com.alcatel.wifilink.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
-import static com.alcatel.wifilink.ui.home.helper.main.ApiEngine.getSimStatus;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 

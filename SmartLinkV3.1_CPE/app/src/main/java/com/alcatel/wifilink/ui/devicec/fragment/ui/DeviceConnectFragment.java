@@ -28,6 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 @SuppressLint("ValidFragment")
 public class DeviceConnectFragment extends Fragment {
 
@@ -68,6 +69,12 @@ public class DeviceConnectFragment extends Fragment {
             }
         };
         timerHelper.start(3000);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHelper.stop();
     }
 
     /* **** getDevicesStatus **** */

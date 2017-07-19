@@ -475,7 +475,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			new AlertDialog.Builder(mActivity)
 					.setMessage(
 							mActivity.getString(R.string.fail_to_create_folder))
-					.setPositiveButton(R.string.confirm, null).create().show();
+					.setPositiveButton(R.string.ok, null).create().show();
 			return false;
 		}
 
@@ -606,7 +606,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			if (f.IsDir) {
 				AlertDialog dialog = new AlertDialog.Builder(mActivity)
 						.setMessage(R.string.error_info_cant_send_folder)
-						.setPositiveButton(R.string.confirm, null).create();
+						.setPositiveButton(R.string.ok, null).create();
 				dialog.show();
 				return;
 			}
@@ -628,7 +628,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
             if (f.IsDir) {
                 AlertDialog dialog = new AlertDialog.Builder(mActivity)
                         .setMessage(R.string.error_info_cant_send_folder)
-                        .setPositiveButton(R.string.confirm, null).create();
+                        .setPositiveButton(R.string.ok, null).create();
                 dialog.show();
                 return;
             }
@@ -705,7 +705,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		} else {
 			new AlertDialog.Builder(mActivity)
 					.setMessage(mActivity.getString(R.string.fail_to_rename))
-					.setPositiveButton(R.string.confirm, null).create().show();
+					.setPositiveButton(R.string.ok, null).create().show();
 			return false;
 		}
 
@@ -944,7 +944,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 					R.string.operation_move);
 			addMenuItem(menu, MENU_SEND, 0, R.string.operation_send);
 			addMenuItem(menu, MENU_RENAME, 0, R.string.operation_rename);
-			addMenuItem(menu, MENU_DELETE, 0, R.string.operation_delete);
+			addMenuItem(menu, MENU_DELETE, 0, R.string.delete);
 			addMenuItem(menu, MENU_INFO, 0, R.string.operation_info);
 
 			if (!canPaste()) {
@@ -1222,7 +1222,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		//addMenuItem(menu, GlobalConsts.MENU_SHOWHIDE, 2,
 		//		R.string.operation_show_sys, R.drawable.ic_menu_show_sys);
 
-		addMenuItem(menu, GlobalConsts.MENU_EDIT, 3, R.string.operation_edit,
+		addMenuItem(menu, GlobalConsts.MENU_EDIT, 3, R.string.setting_titlebar_text_edit,
 				R.drawable.storage_toolbar_rename_normal);
 
 		addMenuItem(menu, GlobalConsts.MENU_NEW_FOLDER, 4,
@@ -1291,7 +1291,7 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		//menuItem.setTitle(isHidden ? R.string.operation_hide_sys
 		//		: R.string.operation_show_sys);
 		menu.findItem(GlobalConsts.MENU_EDIT).setTitle(
-		        canEditCheckBox() ? R.string.operation_cancel_edit : R.string.operation_edit);
+		        canEditCheckBox() ? R.string.operation_cancel_edit : R.string.setting_titlebar_text_edit);
 
 	}
 

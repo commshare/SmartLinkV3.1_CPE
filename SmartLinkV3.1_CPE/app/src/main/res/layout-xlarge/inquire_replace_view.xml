@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/inquire_dialog"
-    android:layout_width="480dip"
+                android:layout_width="480dip"
     android:layout_height="280dip"
     android:background="@drawable/dialog_bg" >
 

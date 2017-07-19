@@ -159,17 +159,17 @@ public class NetModeUiHelper {
     private void changePPPoEUi(LinearLayout mllNetMode, Context context) {
         mllNetMode.removeAllViews();// 清空
 
-        NetModeUiItemHelper.ItemNetMode item_Account = NetModeUiItemHelper.getInstance(context).show(R.string.NETMODE_ACCOUNT);
+        NetModeUiItemHelper.ItemNetMode item_Account = NetModeUiItemHelper.getInstance(context).show(R.string.account);
         item_Account.itemEd.setCursorVisible(true);
         item_Account.itemEd.setText(wanInfo.getAccount());
         mllNetMode.addView(item_Account.itemView);
 
-        NetModeUiItemHelper.ItemNetMode item_Password = NetModeUiItemHelper.getInstance(context).show(R.string.NETMODE_PASSWORD);
+        NetModeUiItemHelper.ItemNetMode item_Password = NetModeUiItemHelper.getInstance(context).show(R.string.password);
         item_Password.itemEd.setInputType(0x81);// 密码类型
         item_Password.itemEd.setText(wanInfo.getPassword());
         mllNetMode.addView(item_Password.itemView);
 
-        NetModeUiItemHelper.ItemNetMode item_MTU = NetModeUiItemHelper.getInstance(context).show(R.string.NETMODE_MTU);
+        NetModeUiItemHelper.ItemNetMode item_MTU = NetModeUiItemHelper.getInstance(context).show(R.string.netmode_mtu);
         item_MTU.itemSubTv.setVisibility(View.VISIBLE);
         item_MTU.itemEd.setText(MTU);
         item_MTU.itemEd.setEnabled(false);
@@ -190,12 +190,12 @@ public class NetModeUiHelper {
      */
     private void changeStaticIpUi(LinearLayout mllNetMode, Context context) {
         mllNetMode.removeAllViews();// 清空
-        NetModeUiItemHelper.ItemNetMode item_ipAddress = NetModeUiItemHelper.getInstance(context).show(R.string.NETMODE_IPADDRESS);
+        NetModeUiItemHelper.ItemNetMode item_ipAddress = NetModeUiItemHelper.getInstance(context).show(R.string.ip_address);
         item_ipAddress.itemEd.setCursorVisible(true);
         item_ipAddress.itemEd.setText(wanInfo.getIpAddress());
         mllNetMode.addView(item_ipAddress.itemView);
 
-        NetModeUiItemHelper.ItemNetMode item_subMask = NetModeUiItemHelper.getInstance(context).show(R.string.NETMODE_SUBNETMASK);
+        NetModeUiItemHelper.ItemNetMode item_subMask = NetModeUiItemHelper.getInstance(context).show(R.string.subnet_mask);
         item_subMask.itemEd.setText(wanInfo.getSubNetMask());
         mllNetMode.addView(item_subMask.itemView);
 

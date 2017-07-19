@@ -11,7 +11,6 @@
         android:orientation="vertical" >
 
         <RelativeLayout
-            android:id="@+id/rl_check_firmware"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" >
@@ -90,7 +89,6 @@
             android:contentDescription="@string/setting_upgrade" />
 
         <RelativeLayout
-            android:id="@+id/rl_upgrade_app"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" >
@@ -163,7 +161,6 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_upgrade_waiting"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 

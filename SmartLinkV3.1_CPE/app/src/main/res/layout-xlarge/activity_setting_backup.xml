@@ -11,7 +11,6 @@
         android:orientation="vertical" >
 
         <RelativeLayout
-            android:id="@+id/rl_backup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" >
@@ -26,7 +25,6 @@
                 android:contentDescription="@string/setting_backup" />
 
             <TextView
-                android:id="@+id/tv_backup_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/iv_center_position_up"
@@ -41,7 +39,6 @@
 
             <Button
                 android:padding="5dp"
-                android:id="@+id/btn_backup"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_center_position_up"
@@ -62,7 +59,6 @@
             android:contentDescription="@string/setting_backup_description" />
 
         <RelativeLayout
-            android:id="@+id/rl_restore"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" >
@@ -77,7 +73,6 @@
                 android:contentDescription="@string/setting_backup" />
 
             <TextView
-                android:id="@+id/tv_restore_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/iv_center_position_down"
@@ -92,7 +87,6 @@
 
             <Button
                 android:padding="5dp"
-                android:id="@+id/btn_restore"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_center_position_down"
@@ -100,14 +94,13 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/selector_common_button"
                 android:gravity="center"
-                android:text="@string/setting_restore_btn_restore"
+                android:text="@string/restore"
                 android:textColor="@drawable/common_button_text"
                 android:textSize="24sp" />
         </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_backup_waiting"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 

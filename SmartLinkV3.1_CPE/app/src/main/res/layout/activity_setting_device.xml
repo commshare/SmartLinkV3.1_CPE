@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:background="@color/setting_background_color"
-    android:id="@+id/setting_device"
-    android:paddingBottom="20dp">
+             android:paddingBottom="20dp">
     
 	<ScrollView
 	    android:layout_width="match_parent"
@@ -20,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0.5dip"
                 android:background="@color/main_bottom_divider"
-                android:contentDescription="@string/setting_device" />
+                android:contentDescription="@string/device" />
             <FrameLayout
                 android:id="@+id/device_system_info"
                 android:layout_width="match_parent"
@@ -50,18 +49,18 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_0.5dip"
               android:background="@color/main_bottom_divider"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <ImageView
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_15dip"
-              android:contentDescription="@string/setting_device"/>
+              android:contentDescription="@string/device"/>
 
             <ImageView
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_0.5dip"
               android:background="@color/main_bottom_divider"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <FrameLayout
                 android:id="@+id/device_upgrade_system"
@@ -115,14 +114,14 @@
                      android:layout_marginLeft="@dimen/dimen_15dip"
                      android:layout_width="match_parent"
                      android:background="@color/main_bottom_divider"
-                     android:contentDescription="@string/setting_device" />
+                     android:contentDescription="@string/device" />
                  <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:padding="@dimen/dimen_15dip"
                    android:textColor="@color/color_black"
                    android:textSize="@dimen/dimen_textsize_20sp"
-                   android:text="@string/setting_title_backup"
+                   android:text="@string/setting_backup"
                    />
                 <ImageView
                     android:layout_width="@dimen/dimen_20dip"
@@ -169,18 +168,18 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_0.5dip"
               android:background="@color/main_bottom_divider"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <ImageView
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_15dip"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <ImageView
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_0.5dip"
               android:background="@color/main_bottom_divider"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -194,7 +193,7 @@
                    android:padding="@dimen/dimen_15dip"
                    android:textColor="@color/color_black"
                    android:textSize="@dimen/dimen_textsize_20sp"
-                   android:text="@string/setting_device_pin_code"
+                   android:text="@string/qs_item_pin_code"
                    android:layout_gravity="start"
                    />
 
@@ -219,11 +218,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_0.5dip"
                     android:background="@color/main_bottom_divider"
-                    android:contentDescription="@string/setting_device" />
+                    android:contentDescription="@string/device" />
 
                 <TextView
-                   android:id="@+id/device_web_version_desc"
-                   android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:padding="@dimen/dimen_15dip"
                    android:textColor="@color/color_black"
@@ -245,18 +243,18 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_0.5dip"
               android:background="@color/main_bottom_divider"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <ImageView
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_15dip"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <ImageView
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_0.5dip"
               android:background="@color/main_bottom_divider"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -270,7 +268,7 @@
                    android:padding="@dimen/dimen_15dip"
                    android:textColor="@color/color_black"
                    android:textSize="@dimen/dimen_textsize_20sp"
-                   android:text="@string/setting_device_btn_restart"
+                   android:text="@string/restart"
                    android:layout_gravity="start"
                    />
 
@@ -288,7 +286,7 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/dimen_0.5dip"
               android:background="@color/main_bottom_divider"
-              android:contentDescription="@string/setting_device" />
+              android:contentDescription="@string/device" />
 
             <!--<FrameLayout
                 android:id="@+id/device_power_off"
@@ -363,8 +361,7 @@
 	</LinearLayout>
 	
     <RelativeLayout
-            android:id="@+id/setting_device_waiting"
-            android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
             <ProgressBar

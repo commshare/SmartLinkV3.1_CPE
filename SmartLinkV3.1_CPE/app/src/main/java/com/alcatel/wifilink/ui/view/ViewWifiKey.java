@@ -185,8 +185,8 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
             }
 
         } else {
-            m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
-            m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
+            m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
+            m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
             ENUM.WPAEncryption wpaType;
             if (is_2G)
                 wpaType = BusinessManager.getInstance().getWPAEncryption();
@@ -846,8 +846,8 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
             }
             m_et_password.setText(m_curWEPPassword);
         } else {
-            m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
-            m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
+            m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
+            m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
             ENUM.WPAEncryption wpaType = BusinessManager.getInstance().getWPAEncryption();
             ENUM.WModeEnum wmode = BusinessManager.getInstance().getWMode();
             m_curWPAPassword = BusinessManager.getInstance().getWifiPwd();

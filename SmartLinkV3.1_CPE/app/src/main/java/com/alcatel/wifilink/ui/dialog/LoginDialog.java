@@ -387,7 +387,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
         imm.hideSoftInputFromWindow(m_vLogin.getWindowToken(), 0);
 
         String strTitle = m_context.getString(R.string.login_check_dialog_title);
-        String strContent = m_context.getString(R.string.login_check_dialog_content) + "...";
+        String strContent = m_context.getString(R.string.login_check_dialog_title) + "...";
         m_dlgProgress = ProgressDialog.show(m_context, strTitle, strContent, true, false);
         m_dlgProgress.setCancelable(true);
         m_tvPasswordError.setVisibility(View.GONE);

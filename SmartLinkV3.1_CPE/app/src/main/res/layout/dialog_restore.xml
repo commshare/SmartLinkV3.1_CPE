@@ -5,7 +5,6 @@
     android:background="@drawable/edit_normal">
 
     <RelativeLayout
-        android:id="@+id/restore_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_260dip">
         <ImageView
@@ -23,7 +22,7 @@
             android:layout_centerInParent="true"
             android:textColor="@color/color_black"
             android:layout_below="@id/restore_cancel"
-            android:text="@string/setting_restore_btn_restore"
+            android:text="@string/restore"
             android:textSize="@dimen/font_size_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

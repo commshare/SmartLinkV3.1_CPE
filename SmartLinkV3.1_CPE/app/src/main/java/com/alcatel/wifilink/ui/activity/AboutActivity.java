@@ -48,7 +48,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         mAppVersionTxt = (TextView) findViewById(R.id.app_version_txt);
         mWebManager.setOnClickListener(this);
         mQuickGuide.setOnClickListener(this);
-        setTitle(R.string.setting_title_about);
+        setTitle(R.string.setting_about);
         getDataFromNet();
         displayVersion();
     }

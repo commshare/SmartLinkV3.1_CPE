@@ -98,13 +98,12 @@
                 android:src="@drawable/general_btn_remember_pre" />
 
             <TextView
-                android:id="@+id/handle_pin_remember_pin_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_10dip"
                 android:layout_toRightOf="@id/handle_pin_remember_pin_select"
-                android:text="@string/qs_pin_remember_pin_des"
+                android:text="@string/remember_sim_pin"
                 android:textColor="@color/black_text"
                 android:textSize="@dimen/font_size_normal" />
         </RelativeLayout>
@@ -121,7 +120,7 @@
             android:background="@drawable/selector_conner_btn_blue"
             android:clickable="true"
             android:gravity="center"
-            android:text="@string/qs_pin_connect"
+            android:text="@string/connect"
             android:textColor="@color/color_white"
             android:textSize="@dimen/font_size_normal" />
 

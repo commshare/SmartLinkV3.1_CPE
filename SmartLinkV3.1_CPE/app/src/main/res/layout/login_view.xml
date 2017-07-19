@@ -51,7 +51,6 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/login_pic_iv"
             android:layout_above="@id/login_edit_view"
             android:layout_marginBottom="@dimen/dimen_50dip"
             android:layout_centerHorizontal="true"

@@ -89,7 +89,7 @@
         android:layout_marginRight="@dimen/dimen_30dip"
         android:layout_marginTop="@dimen/dimen_15dip"
         android:background="@drawable/sim_unlock_bg"
-        android:hint="@string/puk_confirmpin"
+        android:hint="@string/confirm_new_sim_pin"
         android:inputType="numberPassword"
         android:lines="1"
         android:maxLength="12"

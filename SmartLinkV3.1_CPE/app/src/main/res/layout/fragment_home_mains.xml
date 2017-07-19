@@ -6,8 +6,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
+    <!-- 主要布局 -->
     <RelativeLayout
-        android:id="@+id/frame_connect"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_350dip"
         android:background="@color/home_connect_background_blue"
@@ -25,7 +25,7 @@
                 android:id="@+id/connected_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <!-- 圆形LOGO -->
                 <com.alcatel.wifilink.ui.view.CircleProgress
@@ -44,7 +44,8 @@
                     android:src="@drawable/home_ic_bg" />
 
                 <!-- 波浪进度条 -->
-                <com.alcatel.wifilink.ui.view.WaveLoadingView
+
+                <me.itangqi.waveloadingview.WaveLoadingView
                     android:id="@+id/connected_button"
                     android:layout_width="@dimen/dimen_180dip"
                     android:layout_height="@dimen/dimen_180dip"
@@ -54,16 +55,22 @@
                     app:wlv_progressValue="40"
                     app:wlv_round_rectangle="true"
                     app:wlv_shapeType="circle"
-                    app:wlv_titleBottom="KB"
+                    app:wlv_titleBottom="used of 0G"
                     app:wlv_titleBottomColor="@color/white"
-                    app:wlv_titleBottomSize="@dimen/dimen_textsize_24sp"
+                    app:wlv_titleBottomSize="@dimen/dimen_textsize_14sp"
                     app:wlv_titleCenter="0"
                     app:wlv_titleCenterColor="@color/color_white"
-                    app:wlv_titleCenterSize="@dimen/dimen_textsize_50sp"
+                    app:wlv_titleCenterSize="@dimen/dimen_textsize_60sp"
+                    app:wlv_titleTop="MB"
+                    app:wlv_titleTopColor="@color/white"
+                    app:wlv_titleTopSize="@dimen/dimen_24dip"
                     app:wlv_triangle_direction="north"
                     app:wlv_waveAmplitude="80"
                     app:wlv_waveColor="@color/circle_green"
-                    app:wlv_wave_background_Color="@color/circle_bac_blue" />
+                    app:wlv_wave_background_Color="@color/circle_bac_blue"
+                    >
+
+                </me.itangqi.waveloadingview.WaveLoadingView>
 
             </RelativeLayout>
 
@@ -101,7 +108,7 @@
             android:layout_below="@id/rl_connectlogo"
             android:layout_marginTop="@dimen/dimen_10dip"
             android:gravity="center"
-            android:text="@string/no_sim_or_wan"
+            android:text="@string/connecting"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_textsize_24sp"
             android:visibility="visible" />
@@ -193,7 +200,6 @@
 
             <!-- devices -->
             <RelativeLayout
-                android:id="@+id/access_panel"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

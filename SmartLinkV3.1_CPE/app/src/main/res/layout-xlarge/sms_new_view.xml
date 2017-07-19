@@ -14,8 +14,8 @@
 			android:layout_width="fill_parent"
 			android:layout_height="@dimen/dimen_80dip">
 
-			<LinearLayout android:id="@+id/back_layout"
-				android:layout_width="wrap_content"
+			<LinearLayout
+                android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:clickable="true"
 				android:layout_alignParentLeft="true"
@@ -24,8 +24,7 @@
 				android:layout_marginLeft="@dimen/dimen_20dip" >
 
 				<ImageView
-					android:id="@+id/back_button"
-					android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:background="@drawable/back"
 					android:layout_gravity="center_vertical"
@@ -33,8 +32,7 @@
 			</LinearLayout>
 
 			<TextView
-				android:id="@+id/cancel"
-				android:clickable="true"
+                android:clickable="true"
 				android:layout_alignParentRight="true"
 				android:layout_centerVertical="true"
 				android:layout_width="wrap_content"
@@ -52,7 +50,7 @@
 				android:layout_marginLeft="@dimen/dimen_26dip"
 				android:layout_marginRight="@dimen/dimen_16dip"
 				android:gravity="center"
-				android:text="@string/sms_new_title"
+				android:text="@string/sms_title"
 				android:singleLine="true"
 				android:textColor="@color/color_white"
 				android:textSize="@dimen/dimen_textsize_36sp"
@@ -60,15 +58,13 @@
 		</RelativeLayout>
 
 		<LinearLayout
-			android:id="@+id/to_layout"
-			android:layout_width="fill_parent"
+            android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/top_layout"
 			android:orientation="vertical"
 			android:background="@color/main_tabbar_background">
 			<RelativeLayout
-				android:id="@+id/to_layout_r"
-				android:layout_width="fill_parent"
+                android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="@dimen/dimen_40dip"
 				android:layout_marginRight="@dimen/dimen_20dip"
@@ -106,8 +102,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:id="@+id/send_layout"
-			android:layout_width="fill_parent"
+            android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:orientation="vertical"
@@ -159,8 +154,7 @@
 	</RelativeLayout>
 
 	<RelativeLayout
-		android:id="@+id/sms_new_waiting_layout"
-		android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 		<ProgressBar
 			android:id="@+id/sms_new_waiting_progress"

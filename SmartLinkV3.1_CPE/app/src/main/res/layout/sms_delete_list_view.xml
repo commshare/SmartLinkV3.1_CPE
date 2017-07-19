@@ -15,7 +15,7 @@
             android:paddingBottom="5dip"
             android:paddingTop="5dip" >
 
-            <LinearLayout android:id="@+id/back_layout"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -24,8 +24,7 @@
                 android:orientation="horizontal"
                 android:layout_marginLeft="10dip" >
 	            <ImageView
-	                android:id="@+id/back_button"
-	                android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:background="@drawable/back"
 	                android:layout_gravity="center_vertical"
@@ -43,7 +42,6 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/delete_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dip"
@@ -75,9 +73,8 @@
 		    android:layout_below="@id/top_layout"
 		    android:overScrollMode="never"/>
 	</RelativeLayout>
-	<RelativeLayout 
-	    android:id="@+id/sms_waiting_layout"
-	    android:layout_width="fill_parent"
+	<RelativeLayout
+        android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	    <ProgressBar
              android:id="@+id/sms_waiting_progress"

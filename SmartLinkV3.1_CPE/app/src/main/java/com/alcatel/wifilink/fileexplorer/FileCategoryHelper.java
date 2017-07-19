@@ -55,9 +55,7 @@ public class FileCategoryHelper {
 
     private static String APK_EXT = "apk";
     private static String THEME_EXT = "mtz";
-    private static String[] ZIP_EXTS  = new String[] {
-            "zip", "rar"
-    };
+    private static String[] ZIP_EXTS = new String[]{"zip", "rar"};
 
     public static HashMap<FileCategory, FilenameExtFilter> filters = new HashMap<FileCategory, FilenameExtFilter>();
 
@@ -65,8 +63,8 @@ public class FileCategoryHelper {
 
     static {
         categoryNames.put(FileCategory.All, R.string.category_all);
-        categoryNames.put(FileCategory.Music, R.string.category_music);
-        categoryNames.put(FileCategory.Video, R.string.category_video);
+        categoryNames.put(FileCategory.Music, R.string.microsd_music);
+        categoryNames.put(FileCategory.Video, R.string.microsd_videos);
         categoryNames.put(FileCategory.Picture, R.string.category_picture);
         categoryNames.put(FileCategory.Theme, R.string.category_theme);
         categoryNames.put(FileCategory.Doc, R.string.category_document);
@@ -76,10 +74,7 @@ public class FileCategoryHelper {
         categoryNames.put(FileCategory.Favorite, R.string.category_favorite);
     }
 
-    public static FileCategory[] sCategories = new FileCategory[] {
-            FileCategory.Music, FileCategory.Video, FileCategory.Picture, FileCategory.Theme,
-            FileCategory.Doc, FileCategory.Zip, FileCategory.Apk, FileCategory.Other
-    };
+    public static FileCategory[] sCategories = new FileCategory[]{FileCategory.Music, FileCategory.Video, FileCategory.Picture, FileCategory.Theme, FileCategory.Doc, FileCategory.Zip, FileCategory.Apk, FileCategory.Other};
 
     private FileCategory mCategory;
 
@@ -152,10 +147,10 @@ public class FileCategoryHelper {
     private String buildDocSelection() {
         StringBuilder selection = new StringBuilder();
         Iterator<String> iter = Util.sDocMimeTypesSet.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             selection.append("(" + FileColumns.MIME_TYPE + "=='" + iter.next() + "') OR ");
         }
-        return  selection.substring(0, selection.lastIndexOf(")") + 1);
+        return selection.substring(0, selection.lastIndexOf(")") + 1);
     }
 
     private String buildSelectionByCategory(FileCategory cat) {
@@ -182,7 +177,7 @@ public class FileCategoryHelper {
     private Uri getContentUriByCategory(FileCategory cat) {
         Uri uri;
         String volumeName = "external";
-        switch(cat) {
+        switch (cat) {
             case Theme:
             case Doc:
             case Zip:
@@ -198,8 +193,8 @@ public class FileCategoryHelper {
             case Picture:
                 uri = Images.Media.getContentUri(volumeName);
                 break;
-           default:
-               uri = null;
+            default:
+                uri = null;
         }
         return uri;
     }
@@ -233,9 +228,7 @@ public class FileCategoryHelper {
             return null;
         }
 
-        String[] columns = new String[] {
-                FileColumns._ID, FileColumns.DATA, FileColumns.SIZE, FileColumns.DATE_MODIFIED
-        };
+        String[] columns = new String[]{FileColumns._ID, FileColumns.DATA, FileColumns.SIZE, FileColumns.DATE_MODIFIED};
 
         return mContext.getContentResolver().query(uri, columns, selection, null, sortOrder);
     }
@@ -266,9 +259,7 @@ public class FileCategoryHelper {
     }
 
     private boolean refreshMediaCategory(FileCategory fc, Uri uri) {
-        String[] columns = new String[] {
-                "COUNT(*)", "SUM(_size)"
-        };
+        String[] columns = new String[]{"COUNT(*)", "SUM(_size)"};
         Cursor c = mContext.getContentResolver().query(uri, columns, buildSelectionByCategory(fc), null, null);
         if (c == null) {
             Log.e(LOG_TAG, "fail to query uri:" + uri);
@@ -288,10 +279,14 @@ public class FileCategoryHelper {
     public static FileCategory getCategoryFromPath(String path) {
         MediaFileType type = MediaFile.getFileType(path);
         if (type != null) {
-            if (MediaFile.isAudioFileType(type.fileType)) return FileCategory.Music;
-            if (MediaFile.isVideoFileType(type.fileType)) return FileCategory.Video;
-            if (MediaFile.isImageFileType(type.fileType)) return FileCategory.Picture;
-            if (Util.sDocMimeTypesSet.contains(type.mimeType)) return FileCategory.Doc;
+            if (MediaFile.isAudioFileType(type.fileType))
+                return FileCategory.Music;
+            if (MediaFile.isVideoFileType(type.fileType))
+                return FileCategory.Video;
+            if (MediaFile.isImageFileType(type.fileType))
+                return FileCategory.Picture;
+            if (Util.sDocMimeTypesSet.contains(type.mimeType))
+                return FileCategory.Doc;
         }
 
         int dotPosition = path.lastIndexOf('.');

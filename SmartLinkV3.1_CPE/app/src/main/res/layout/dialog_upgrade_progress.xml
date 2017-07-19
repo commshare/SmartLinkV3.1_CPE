@@ -5,7 +5,6 @@
     android:background="@drawable/edit_normal">
 
     <RelativeLayout
-        android:id="@+id/upgrade_progress_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_120dip">
         <ImageView

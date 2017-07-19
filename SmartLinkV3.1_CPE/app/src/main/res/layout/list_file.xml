@@ -5,7 +5,6 @@
     android:orientation="vertical" >
     
     <LinearLayout
-        android:id="@+id/list_file_navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/layout_border_normal"
@@ -39,7 +38,6 @@
         android:layout_weight="8" />
     
     <LinearLayout
-        android:id="@+id/button_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

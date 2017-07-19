@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_save"
         android:orderInCategory="100"
-        android:title="@string/setting_titlebar_text_done"
+        android:title="@string/done"
         app:showAsAction="always"/>
 </menu>

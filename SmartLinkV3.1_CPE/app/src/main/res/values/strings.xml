@@ -5,23 +5,16 @@
 
     <!-- common start -->
     <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
-    <string name="done">Done</string>
     <string name="back">Back</string>
     <string name="delete">Delete</string>
-    <string name="upload">Upload</string>
-    <string name="deleting">Deleting</string>
     <string name="yes">Yes</string>
-    <string name="sending">Sending</string>
     <string name="apply">Apply</string>
     <string name="skip">Skip</string>
-    <string name="next">Next</string>
-    <string name="finish">FINISH</string>
+    <string name="finish">Finish</string>
     <string name="continue_anyway">Continue</string>
     <!-- common end -->
 
     <!-- networkinfo -->
-    <string name="networktype">Unknown</string>
 
     <!-- Qucik Setup -->
     <string name="qs_title">Quick Setup</string>
@@ -41,38 +34,25 @@
     </string>
     <string name="qs_completed">Setup Completed</string>
     <string name="qs_summary">Your device is ready to use.</string>
-    <string name="qs_wifi_ssid">Wi-Fi Network Name (SSID):
-        <xliff:g id="SSID">%1$s</xliff:g>
-    </string>
-    <string name="qs_wifi_passwd">Wi-Fi Password:
-        <xliff:g id="PASSWD">%1$s</xliff:g>
-    </string>
-    <string name="qs_puk_code_title">PUK Code</string>
+    <string name="puk_code_label">PUK Code</string>
     <string name="qs_puk_code_prompt">Please input the PUK code\nRemain:
         <xliff:g id="INPUTTIMES">%1$d</xliff:g>
         time(s)
     </string>
     <string name="qs_puk_code">PUK Code:</string>
-    <string name="qs_pin_code_new">New PIN:</string>
     <string name="qs_pin_code_confirm">Confirm new PIN:</string>
 
     <string name="qs_hint_sim_pin">SIM PIN</string>
     <string name="qs_pin_times_des">attempts remaining</string>
-    <string name="qs_pin_remember_pin_des">Remember SIM PIN</string>
-    <string name="qs_pin_connect">Connect</string>
+    <string name="remember_sim_pin">Remember SIM PIN</string>
     <string name="qs_pin_unlock_congratulations">Congratulations!</string>
     <string name="qs_pin_unlock_congratulations_des">You\'re successfully connected to the Internet</string>
-    <string name="qs_pin_unlock_can_not_connect">Network disconnected</string>
+    <string name="network_disconnected">Network disconnected</string>
     <string name="qs_pin_unlock_can_not_connect_des">Check your WAN cabling or SIM card.</string>
-    <string name="qs_pin_unlock_try_again">Try again</string>
     <string name="qs_pin_unlock_to_home">Home ></string>
     <string name="qs_wifi_setting_2G_wifi">2.4GHz Wi-Fi</string>
     <string name="qs_wifi_setting_5G_wifi">5GHz Wi-Fi</string>
-    <string name="qs_wifi_setting_account">Account</string>
-    <string name="qs_wifi_setting_password">Password</string>
     <string name="connect_internet">Connect Internet</string>
-    <string name="ppp_over_ethernet">PPPoE</string>
-    <string name="mtu">MTU</string>
     <string name="statics_ip">Statics IP</string>
     <!-- Quick Setup End -->
 
@@ -82,45 +62,30 @@
     <string name="wifi_settings">Wi-Fi settings</string>
     <string name="main_setting">Settings</string>
     <string name="main_sms">SMS</string>
-    <string name="main_usage">Usage</string>
 
     <!-- Home view start -->
-    <string name="home_GB">GB</string>
-    <string name="home_KB">KB</string>
-    <string name="home_MB">MB</string>
-    <string name="home_B">B</string>
     <string name="Home_unlock_pin">Unlock</string>
     <string name="Home_no_sim">No SIM card inserted</string>
     <string name="Home_sim_invalid">Invalid SIM</string>
-    <string name="Home_pin_locked">PIN Locked</string>
     <string name="Home_puk_locked">locked</string>
-    <string name="Home_SimCard_IsIniting">Initializing</string>
     <string name="Home_PukTimes_UsedOut">Puk Times Used Out</string>
     <string name="Home_PinTimes_UsedOut">Pin Times Used Out</string>
     <string name="Home_SimLock_Required">SIM Lock required</string>
     <string name="Home_SimCard_Detected">SIM Card detected</string>
-    <string name="Home_zero_time">0Hrs 0Mins</string>
     <string name="Home_zero_data">0</string>
     <string name="home_no_service">No Service</string>
     <string name="signal">SIGNAL</string>
     <string name="home_initializing">Initializing</string>
     <string name="home_disconnected_to">Disconnected</string>
-    <string name="home_connected_to">Connected</string>
-    <string name="home_connecting_to">Connecting</string>
-    <string name="home_disconnecting_to">Disconnecting</string>
     <string name="home_network_type_2g">2G</string>
     <string name="home_network_type_3g">3G</string>
     <string name="home_network_type_3g_plus">3G+</string>
     <string name="home_network_type_4g">4G</string>
-    <string name="home_battery_ischarging">Charging</string>
-    <string name="home_battery_completed">Charge completed</string>
-    <string name="home_connected_duration">%1$sHrs %2$sMins</string>
     <string name="access_lable">CONNECTED</string>
     <string name="home_sim_loched">Sim Card Locked</string>
     <string name="home_pin_locked_notice">Please verify your PIN code at the home menu first.</string>
     <string name="home_no_sim">no sim card</string>
     <string name="home_sim_not_accessible">Sim card is not accessible</string>
-    <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Monthly data plan has been used up. If you want to re-dial, please
         change the monthly values or reset consumption.
     </string>
@@ -134,15 +99,12 @@
     <!-- pop dialog end -->
 
     <!-- Usage view start -->
-    <string name="usage_view_home">Home</string>
     <string name="usage_view_duration">Duration</string>
-    <string name="bt_set_monthlydata">Set Monthly Data Plan</string>
     <string name="usage_status_des">No data plan set yet</string>
     <string name="usage_duration">%1$dh %2$dm</string>
     <string name="disconnected_descrition">When data usage reaches Monthly Data Plan.</string>
     <string name="usage_clear_history_success">Clear usage history successfully!</string>
     <string name="usage_clear_history_fail">Clear usage history failed!</string>
-    <string name="usage_comsumptionexplain_label">If enable clear function, please disconnect first.</string>
     <!-- Usage view end -->
 
     <!-- Usage setting start -->
@@ -157,28 +119,18 @@
     <string name="usage_setting_dayunit">day</string>
     <string name="usage_setting_usagealertunit">%</string>
     <string name="usage_setting_monthlysataplan">Monthly data limit:</string>
-    <string name="usage_setting_monthlyunit">MB</string>
-    <string name="usage_setting_monthlyunitgb">GB</string>
     <string name="usage_setting_dataconsunption">Data Consumption:</string>
     <string name="usage_setting_roaming">Data roaming</string>
-    <string name="roaming_descrition">Automatically connect even when in roaming.</string>
     <string name="usage_setting_autodisconnected">Disconnect automatically</string>
     <string name="auto_disconnect">Auto disconnect</string>
     <!-- Usage setting end -->
 
     <!-- Wifi Key start -->
-    <string name="wifi_key_edit">Edit</string>
-    <string name="wifi_key_Done">Done</string>
     <string name="wifi_network">Wi-Fi NETWORK</string>
-    <string name="first_wifi">2.4G WiFi</string>
-    <string name="second_wifi">5G WiFi</string>
     <string name="unEdit_wifi_name">Name(SSID)</string>
     <string name="password">Password</string>
     <string name="wifi_name">Wi-Fi Network Name(SSID)</string>
-    <string name="wifi_password">Wi-Fi bassword</string>
     <string name="ssid_broadcast">SSID broadcast</string>
-    <string name="security_type">Security_Type</string>
-    <string name="encryption_type">Encryption Type</string>
     <string name="channel">Channel</string>
     <string name="country">Country</string>
     <!-- Wifi Keya end -->
@@ -188,17 +140,15 @@
     <string name="sms_empty">No SMS</string>
     <string name="sms_init">SMS Unavailable</string>
     <string name="sms_list_view_draft">%1$d,draft</string>
-    <string name="sms_send_fail">Fail</string>
+    <string name="fail">Fail</string>
     <string name="sms_report_message">delivered!</string>
     <string name="sms_to">To:</string>
-    <string name="sms_new_title">message</string>
     <string name="sms_error_send_error">Send SMS error!</string>
     <string name="sms_send_success">Send SMS success.</string>
     <string name="sms_error_message_full_storage">SMS box is full, please delete some SMS to be able to send/save new
         SMS.
     </string>
     <string name="sms_delete_multi_success">Delete conversation success!</string>
-    <string name="sms_delete_multi_error">Delete conversation failed!</string>
     <string name="sms_delete_error">Delete SMS error!</string>
     <string name="sms_delete_success">Delete SMS success!</string>
     <string name="sms_number_invalid">Error! Only 3 phone numbers are allowed.</string>
@@ -210,22 +160,17 @@
     <!-- connect connectDeviceList start -->
     <string name="setting_imsi">IMSI</string>
     <string name="setting_sim_number">SIM number</string>
-    <string name="setting_change_pin">Change SIM PIN</string>
-    <string name="usage_setting_sim_pin">SIM PIN</string>
+    <string name="change_pin">Change SIM PIN</string>
     <string name="setting_set_data_plan">Set data plan</string>
     <string name="setting_network_connect_mode">Connection mode</string>
     <string name="device_manage_title">Devices</string>
     <string name="device_manage_connected">Connected Devices (%1$d)</string>
-    <string name="device_manage_connected_des">Connected Devices</string>
     <string name="device_manage_block">Block Devices (%1$d)</string>
-    <string name="device_manage_block_des">Block Devices</string>
     <string name="device_manage_block_btn">BLOCK</string>
     <string name="device_manage_unblock_btn">Unblock</string>
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
-    <string name="device_manage_set_name_failed">Set failed!</string>
     <string name="device_manage_name_empty">Device name is invalid.</string>
-    <string name="device_set_success">Setting Successful</string>
     <!-- connect device end -->
 
     <!-- microsd start -->
@@ -240,7 +185,7 @@
     <string name="setting_account">Login password</string>
     <string name="setting_network">Network</string>
     <string name="setting_mobile_network">Mobile network</string>
-    <string name="setting_ethernet_wan_connection">Ethernet WAN connection</string>
+    <string name="ethernet_wan_connection">Ethernet WAN connection</string>
     <string name="setting_on_state">On</string>
     <string name="setting_off_state">Off</string>
     <string name="setting_share">Sharing service</string>
@@ -248,8 +193,7 @@
     <string name="setting_restart_reset">Restart &amp; reset</string>
     <string name="setting_backup_restore">Backup &amp; restore</string>
     <string name="setting_not_support_sharing_service">Your device does not support shared services</string>
-    <string name="setting_device">Device</string>
-    <string name="setting_printer">Printer</string>
+    <string name="device">Device</string>
     <string name="setting_usb_storage">USB Storage</string>
     <string name="setting_about">About</string>
     <string name="setting_wifi">WiFi</string>
@@ -257,21 +201,16 @@
     <string name="setting_sharing">FTP&amp;DLNA</string>
     <string name="setting_sharing_ftp">FTP</string>
     <string name="setting_sharing_dlna">DLNA</string>
-    <string name="setting_upgrade">Upgrade</string>
     <string name="setting_upgrading">Upgrading</string>
     <string name="setting_backup">Backup&amp;Restore</string>
     <string name="setting_text_2point4G_wifi">2.4G WiFi</string>
     <string name="setting_text_5G_wifi">5G WiFi</string>
     <string name="setting_text_ssid">SSID:</string>
-    <string name="setting_text_ssid_broadcast">SSID Broadcast</string>
     <string name="setting_text_passwrod">Password:</string>
-    <string name="setting_set_default">Set Default</string>
     <string name="setting_text_no_passwrod">No Password</string>
     <string name="setting_wifi_set_success">Change Wifi Settings successfully!</string>
     <string name="setting_wifi_set_failed">Change Wifi Settings failed!</string>
     <string name="setting_wifi_password_security_tip">Security Type:</string>
-    <string name="setting_wifi_password_wpa_encryption_tip">Encryption Type:</string>
-    <string name="setting_wifi_password_wpa_psw_tip">Wifi Password:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Encryption Type:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wifi Password:</string>
     <string name="setting_wep_password_error_prompt">Wep Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits
@@ -280,15 +219,7 @@
     <string name="setting_wpa_password_error_prompt">The WPA Pre&#8211;Shared Key (PSK) should be 8&#8211;63 ASCII
         characters and WPA PSK should be ASCII characters ranging from 32&#8211;127, except for: , \" : ; &#38; \\.
     </string>
-    <string name="setting_password_error_prompt">Change Wifi Password Error, please retry after a moment!</string>
-    <string name="setting_disable_password_error_prompt">Disable Wifi Password failed!</string>
-    <string name="setting_titlebar_text_edit">Edit</string>
-    <string name="setting_titlebar_text_done">Done</string>
-    <string name="setting_title_power">Power Saving</string>
-    <string name="setting_title_backup">Backup&amp;Restore</string>
-    <string name="setting_title_upgrade">Upgrade</string>
-    <string name="setting_title_device">Device</string>
-    <string name="setting_title_about">About</string>
+    <string name="done">Done</string>
     <string name="setting_power_smart">Smart</string>
     <string name="setting_power_wifi">WiFi Sleep</string>
     <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is idle for 30
@@ -297,11 +228,8 @@
     <string name="setting_backup_description">Backup the configuration.</string>
     <string name="setting_backup_btn_backup">Backup</string>
     <string name="setting_restore_description">Restore the configuration.</string>
-    <string name="setting_restore_btn_restore">Restore</string>
     <string name="setting_about_version">Version</string>
     <string name="setting_about_official_website">Official website</string>
-    <string name="setting_about_management_page">Management page</string>
-    <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. All right reserved.</string>
     <string name="setting_upgrade_device_version">Current Version:</string>
     <string name="setting_upgrade_new_device_version">Find a new version</string>
     <string name="setting_upgrade_btn_check">Check</string>
@@ -314,7 +242,7 @@
         power off. Are you sure want to upgrade the system?
     </string>
     <string name="setting_upgrade_check_error">No updates found</string>
-    <string name="setting_upgrade_btn_upgrade">Upgrade</string>
+    <string name="setting_upgrade">Upgrade</string>
     <string name="setting_upgrade_not_start">Upgrade not start</string>
     <string name="setting_upgrade_complete">Download complete, please wait until upgrading finished</string>
     <string name="setting_upgrade_stop_error">Upgrade stop error</string>
@@ -333,12 +261,8 @@
     <string name="setting_device_ip">IP Address:</string>
     <string name="setting_device_subnet">Subnet Mask:</string>
     <string name="setting_device_btn_power_off">Power Off</string>
-    <string name="setting_device_btn_reboot">Reboot</string>
-    <string name="setting_device_btn_restart">Restart</string>
-    <string name="setting_device_btn_reset">Reset</string>
+    <string name="restart">Restart</string>
     <string name="setting_device_upgrade_system">Upgrade System</string>
-    <string name="setting_device_backup_and_reset">Backup&amp;Reset</string>
-    <string name="setting_device_pin_code">PIN Code</string>
     <string name="setting_device_web_version">Web Version</string>
     <string name="setting_device_pin_code_edit">PIN Enable</string>
     <string name="setting_device_backup_path">Path:Phone/CPE/Backup/</string>
@@ -360,55 +284,20 @@
         space. It\'s length should be less than 32.
     </string>
     <string name="setting_wifi_error_title">Change Password</string>
-    <string name="setting_change_login_password">Change Login Password</string>
-    <string name="setting_log_out">Log Out</string>
     <string name="setting_current_password">Current password</string>
     <string name="setting_new_password">New password (4-16 characters)</string>
     <string name="setting_confirm_password">Confirm new password</string>
     <string name="setting_password_note">Note: The password should be 5&#8211;16 characters.</string>
     <string name="setting_network_mode">mode</string>
-    <string name="setting_network_searching">NETWORK SEARCHING&#8230;</string>
     <string name="setting_network_selection">Network Selection</string>
-    <string name="setting_network_wifi_network_title">WiFi Network</string>
-    <string name="setting_network_profile_list">Profile List</string>
-    <string name="setting_network_add_profile">Add Profile</string>
     <string name="setting_network_disconnect_first">Please disconect your network first</string>
     <string name="setting_network_try_again">Disconnecting, please try again later</string>
     <string name="setting_network_profile_management">Profile Management</string>
-    <string name="setting_network_profile_management_profile_red_tag">*</string>
-    <string name="setting_network_profile_management_profile_name">Profile Name</string>
-    <string name="setting_network_profile_management_dial_number">Dial Number</string>
-    <string name="setting_network_profile_management_apn">APN</string>
-    <string name="setting_network_profile_management_user_name">User Name</string>
-    <string name="setting_network_profile_management_password">Password</string>
-    <string name="setting_network_profile_management_protocol">Protocol</string>
-    <string name="setting_network_profile_management_protocol_none">None</string>
-    <string name="setting_network_profile_management_protocol_tcp">TCP</string>
-    <string name="setting_network_profile_management_protocol_udp">UDP</string>
-    <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
-    <string name="setting_network_profile_management_profile_detail">Profile Detail</string>
-    <string name="setting_network_profile_management_delete_profile">Delete Profile</string>
-    <string name="setting_network_profile_dial_number_wrong">The length of your dial number can not be larger than 24
-    </string>
-    <string name="setting_network_profile_dial_number_empty">Dial number can not be empty</string>
-    <string name="setting_network_profile_input_profile_name">Profile name can not be empty</string>
-    <string name="setting_network_profile_error_profile_name">Profile name can not inlude some special tokens</string>
     <string name="setting_network_mode_auto">Auto</string>
-    <string name="setting_network_mode_manual">Manual</string>
     <string name="setting_network_mode_2G_only">2G Only</string>
     <string name="setting_network_mode_3G_only">3G Only</string>
-    <string name="setting_network_mode_4G_only">4G Only</string>
     <string name="setting_network_mode_LTE_only">4G Only</string>
     <string name="other_login_warning_title">Login warning</string>
-    <string name="setting_network_profile_management_auth_type_pap">PAP</string>
-    <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
-    <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&#038;CHAP</string>
-    <string name="setting_network_profile_management_cannot_delete_predefined_profile">Can not delete predefined
-        profile
-    </string>
-    <string name="setting_network_profile_management_cannot_delete_default_profile">Can not delete default profile
-    </string>
-    <string name="setting_network_profile_management_already_default">Profile has already been set to default</string>
     <string name="setting_wifi_wep">WEP</string>
     <string name="setting_wifi_wpa">WPA</string>
     <string name="setting_wifi_wpa2">WPA2</string>
@@ -421,12 +310,6 @@
     <string name="setting_wifi_ssid_can_not_be_empty">SSID can not be empty!</string>
 
     <string name="setting_item_link_app_version">LINK APP Version</string>
-    <string name="setting_network_selection_available">Available</string>
-    <string name="setting_network_selection_forbidden">Forbidden</string>
-    <string name="setting_network_selection_unknown">Unknown</string>
-    <string name="setting_network_selection_selected">Selected</string>
-
-    <string name="setting_profile_note">Note: The max number of the profile you can create is 15.</string>
 
     <string name="setting_backup_path_tag">Path: Phone</string>
     <string name="setting_backup_path">/CPE/Backup/</string>
@@ -440,10 +323,7 @@
     <string name="usage_limit_less_notification_content">Your usage has less than %1$s.</string>
     <string name="usage_maximum_monthly_plan_notice">The maximum monthly plan is</string>
     <string name="battery_limit_notification_title">Battery warning</string>
-    <string name="battery_limit_notification_content1">Low battery, %d%% of battery remaining.</string>
-    <string name="battery_limit_notification_content2">Low battery, %d%% of battery remaining.</string>
-    <string name="new_message_notification_title">New Message</string>
-    <string name="new_message_notification_content">There is a new message..</string>
+    <string name="battery_limit_notification_content">Low battery, %d%% of battery remaining.</string>
     <string name="upgrade_notification_title">Upgrade</string>
     <string name="upgrade_notification_content">There is a new version..</string>
     <!-- notification end -->
@@ -453,13 +333,10 @@
     <string name="dialog_delete_content">Confirm deletion of this chat\'s history</string>
     <string name="dialog_delete_content_description">If you want to delete one SMS, long press it then choose delete.
     </string>
-    <string name="dialog_delete_button">Delete Chat History</string>
-    <string name="dialog_delete_single_sms_content">Delete this message?</string>
     <string name="dialog_delete_multi_sms_content">Delete this message(s)?</string>
     <string name="dialog_warning_5g">If your phone doses not supply 5G, you might not be able to use all 5G features.
     </string>
     <string name="dialog_change_to_5g">Change your WIFI to 5G</string>
-    <string name="dialog_warning_title">Warning</string>
     <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, please enter
         the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly.
     </string>
@@ -476,7 +353,6 @@
     <string name="pin_code_label">PIN Code:</string>
     <string name="pin_error_waring_title">Sorry, the PIN code is wrong!</string>
     <string name="puk_title">Enter PUK code</string>
-    <string name="puk_code_label">PUK code</string>
     <string name="puk_remain_three_times">Remain: 3 times</string>
     <string name="puk_new_pin_label">New PIN:</string>
     <string name="puk_confirm_pin_label">Confirmed PIN:</string>
@@ -492,13 +368,9 @@
     <!-- PIN end -->
 
     <!-- Login view start -->
-    <string name="login_title">Please input password</string>
-    <string name="login_content">Same with Web UI password.You can find default passoword on QG.</string>
     <string name="login_prompt_str">Your password is wrong!</string>
-    <string name="login_user_name">admin</string>
     <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
     <string name="login_check_dialog_title">Login</string>
-    <string name="login_check_dialog_content">Login</string>
     <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg">Other user is login\nplease relogin after a moment!</string>
     <string name="login_other_user_logined_error_forcelogin_msg">Other user already logined, do you still want to login?
@@ -506,13 +378,9 @@
     </string>
     <string name="login_login_time_used_out_msg">Login times is used out\nyou can login until the device reboot.</string>
     <string name="login_login_app_or_webui">If disable guest ap ui access\nguest ap can’t access webui</string>
-    <string name="login_warning">Login warning</string>
     <string name="login_logout_successful">Logout successfully!</string>
     <string name="login_logout_failed">Logout failed!</string>
     <string name="login_kickoff_logout_successful">Sorry, you are kicked off!</string>
-    <string name="change_password_successful">Change password successfully!</string>
-    <string name="wrong_current_password">The current password is wrong!</string>
-    <string name="change_password_failed">Change password failed!</string>
     <string name="inconsistent_new_password">New passwords don\'t match</string>
     <string name="input_current_password">Please Input Your Current Password!</string>
     <string name="change_passowrd_invalid_password">The password should be 5&#8211;16 characters</string>
@@ -524,12 +392,9 @@
     <string name="login_enter_password">Enter admin password</string>
     <string name="login_enter_password_tip">5-16 characters</string>
     <string name="login_forgot_password">Forgot password?</string>
-    <string name="login_change_password_success_tips">f you have forgotten your password you will need to reset your router. You will then be able to log in using the default password (admin).</string>
     <!-- Login view end -->
 
     <!-- Refresh WIFI start -->
-    <string name="refresh_wifi_title">No Wi-Fi Connected</string>
-    <string name="refresh_wifi_tip">Please connect the mobile hotspot first!</string>
     <string name="refresh">Refresh</string>
 
     <string name="refresh_no_device_manage">No device found</string>
@@ -546,10 +411,7 @@
     <string name="toast_musicplay_fail">music play error</string>
     <string name="toast_videoplay_fail">video play error</string>
     <string name="video_loading">Loading…</string>
-    <string name="video_speed_unit_second">S</string>
-    <string name="buffering">Loading…</string>
     <string name="mp_unknown_artist">Unknow Artist</string>
-    <string name="mp_unknown_album">Unknow Album</string>
     <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
     <string name="mp_lyrics_tips">***&#160;&#160;&#160;the lrc come from internet，just be
         reference&#160;&#160;&#160;***
@@ -560,28 +422,18 @@
     <!-- DLNA end -->
 
     <!-- FTP FILE EXPLORER -->
-    <string name="ftpfile_app_name">File Explorer</string>
-    <string name="ftpfile_cancel">Cancel</string>
     <string name="category_all">All</string>
     <string name="category_apk">APKs</string>
     <string name="category_document">Docs</string>
-    <string name="category_music">Music</string>
     <string name="category_other">Misc</string>
     <string name="category_picture">Pics</string>
     <string name="category_theme">Themes</string>
-    <string name="category_video">Videos</string>
     <string name="category_zip">Zips</string>
-    <string name="confirm">OK</string>
-    <string name="confirm_know">OK</string>
+    <string name="ok">OK</string>
     <string name="error_info_cant_send_folder">Unable to send the folder</string>
     <string name="fail_to_create_folder">Failed:The folder already exists or Ftp failed.</string>
     <string name="fail_to_rename">Failed to rename the file or folder as it already exists</string>
-    <string name="file_info_canread">Readable:</string>
-    <string name="file_info_location">Path:</string>
-    <string name="file_info_size">Size:</string>
     <string name="file_size">%d Bytes</string>
-    <string name="instruction">Enter the following address into your FTP Client:</string>
-    <string name="menu_item_search">Search</string>
     <string name="menu_item_sort">Sort by</string>
     <string name="menu_item_sort_date">Date</string>
     <string name="menu_item_sort_name">Name</string>
@@ -589,19 +441,11 @@
     <string name="menu_item_sort_type">Type</string>
     <string name="menu_item_sort_by_name">Sort by name</string>
     <string name="menu_item_sort_by_type">Sort by type</string>
-    <string name="new_folder_name">New folder</string>
-    <string name="no">No</string>
-    <string name="notif_server_starting">FTP Server started</string>
-    <string name="notif_title">FTP Server</string>
-    <string name="operation_cancel">Cancel</string>
     <string name="operation_copy">Copy</string>
     <string name="operation_copy_path">Copy file path</string>
     <string name="operation_create_folder">New folder</string>
     <string name="operation_create_folder_message">Enter the name of folder</string>
     <string name="operation_download">Download</string>
-    <string name="operation_delete">Delete</string>
-    <string name="operation_delete_confirm_message">Confirm Deletion?</string>
-    <string name="operation_deleting">Deleting...</string>
     <string name="operation_info">Details</string>
     <string name="operation_move">Move</string>
     <string name="operation_move_to">Move to</string>
@@ -610,60 +454,32 @@
     <string name="operation_pasting">Pasting...</string>
     <string name="operation_refresh">Refresh</string>
     <string name="operation_rename">Rename</string>
-    <string name="operation_rename_message">Enter a new name</string>
     <string name="operation_upload">Upload</string>
     <string name="operation_selectall">Select All</string>
     <string name="operation_send">Send</string>
-    <string name="operation_share">Share</string>
     <string name="operation_show_sys">Show hidden files</string>
-    <string name="operation_edit">Edit</string>
+    <string name="setting_titlebar_text_edit">Edit</string>
     <string name="operation_cancel_edit">Cancel edit</string>
     <string name="operation_add_file">Add file</string>
-    <string name="sd_folder">SD card</string>
-    <string name="tab_ftp_client">Ftp Client</string>
-    <string name="tab_remote">FTP</string>
-    <string name="tab_sd">File</string>
-    <string name="ftpfile_yes">Yes</string>
     <string name="dialog_select_type">Select file type</string>
     <string name="dialog_type_text">Text</string>
     <string name="dialog_type_audio">Audio</string>
     <string name="dialog_type_video">Video</string>
     <string name="dialog_type_image">Image</string>
-    <string name="favorite_photo">Photo</string>
-    <string name="favorite_sdcard">SD Card</string>
     <string name="multi_select_title">Selected
         <xliff:g id="number">%1$s</xliff:g>
         item(s)
     </string>
     <string name="menu_exit">Exit</string>
-    <string name="pref_primary_folder">Home folder</string>
-    <string name="pref_read_root">Read root</string>
-    <string name="default_primary_folder">/mnt/sdcard</string>
-    <string name="pref_primary_folder_summary">The folder that appears when the app starts, and current value is
-        <xliff:g id="string">%1$s</xliff:g>
-    </string>
-    <string name="custom_delete_dlg_text1">Delete</string>
     <string name="custom_delete_dlg_text2">Selected file will be deleted?</string>
     <string name="details_text_size">Size:</string>
     <string name="details_text_create_date">Create Date:</string>
     <string name="details_text_modified_date">Modified Date:</string>
     <string name="choose">Choose folder</string>
     <string name="new_foler">New foler</string>
-    <string name="foler_name">foler name</string>
     <string name="sdcard">Sd Card</string>
-    <string name="fail">Fail</string>
     <string name="no_file">Empty directory</string>
-    <string-array name="fail_cause">
-        <item>[cause 1] Foler is exists!</item>
-        <item>[cause 2] Failed to create the folder!</item>
-    </string-array>
-
     <string name="succeed">Succeed</string>
-
-    <string-array name="succeed_desc">
-        <item>Create folder successfully!</item>
-    </string-array>
-
     <string name="download_text_dling">Downloading...</string>
     <string name="download_text_path">Path:</string>
     <!-- FTP FILE END -->
@@ -688,47 +504,15 @@
     <string name="what_new_btn_text">Start</string>
     <!-- Welcome Guide End -->
 
-    <string-array name="usage_unit">
-        <item>MB</item>
-        <item>GB</item>
-    </string-array>
-
     <string name="added_favorite">Added to Favorites</string>
     <string name="category_favorite">Favorites</string>
     <string name="enable_sd_card">SD card is not available, please connect one</string>
-    <string name="file_info_canwrite">Writable:</string>
-    <string name="file_info_ishidden">Hidden:</string>
-    <string name="file_info_modified">Modified:</string>
-    <string name="install_failed">Installation failed</string>
-    <string name="install_successful">Installation successful</string>
-    <string name="instruction_pre">Start service to enable FTP server</string>
-    <string name="no_wifi">No Wi-Fi network</string>
-    <string name="no_wifi_hint">No Wi-Fi network, press to check WiFi settings</string>
     <string name="operation_cancel_selectall">Deselect All</string>
     <string name="operation_favorite">Add to Favorites</string>
     <string name="operation_hide_sys">Hide hidden files</string>
     <string name="operation_unfavorite">Remove from Favorites</string>
     <string name="removed_favorite">Removed from Favorites</string>
-    <string name="sd_card_available">
-        <xliff:g id="available_size">%1$s</xliff:g>
-        Available
-    </string>
-    <string name="sd_card_size">SD Size:
-        <xliff:g id="total_size">%1$s</xliff:g>
-    </string>
-    <string name="search_hint">Search Files</string>
-    <string name="search_title">Search Files</string>
-    <string name="start_server">Start Service</string>
-    <string name="stop_server">Stop Service</string>
-    <string name="storage_warning">External storage is not available or cannot be read</string>
-    <string name="tab_category">Browse</string>
-    <string name="wifi_state">WLAN Status</string>
-    <string name="favourite_root">Root</string>
-    <string name="favorite_ringtone">Ringtone</string>
     <string name="menu_setting">Preferences</string>
-    <string name="preference_title">General Settings</string>
-    <string name="pref_show_real_path">Display real path</string>
-    <string name="pref_show_real_path_summary">Show real path in navigation bar</string>
 
     <!-- Usage Settings dialog data -->
     <string name="m_unit">MB</string>
@@ -748,38 +532,22 @@
     <string name="UserAccount_Disable">UserAccount Disable</string>
 
     <string name="dhcp_renew">Renew</string>
-    <string name="wan_connection">Ethernet WAN connection</string>
     <string name="preferred_dns">Preferred DNS</string>
     <string name="secondary_dns">Secondary DNS</string>
     <string name="default_gateway">Default gateway(optional)</string>
     <string name="subnet_mask">Subnet mask</string>
-    <string name="ip_address">IP address</string>
-    <string name="prompt_not_change">Do not change default if not necessary</string>
 
     <!-- netmode -->
     <string name="netmode_connect">Connect</string>
-    <string name="NETMODE_ACCOUNT">Account</string>
-    <string name="NETMODE_PASSWORD">Password</string>
-    <string name="NETMODE_MTU">MTU</string>
-    <string name="NETMODE_IPADDRESS">IP Address</string>
-    <string name="NETMODE_SUBNETMASK">Subnet mask</string>
-    <string name="NETMODE_STATUS_SUCCESS_DES2">You\'re successfully to connect the Internet</string>
-    <string name="NETMODE_STATUS_FAILED_DES1">Couldn\'t connect</string>
-    <string name="NETMODE_STATUS_FAILED_DES2">Check your WAN cabling or SIM card</string>
-    <string name="NETMODE_STATUS_FAILED_TRYAGAIN">Try again</string>
-    <string name="NETMODE_STATUS_FAILED_HOME">Home ></string>
-    <string name="NETMODE_FAILED_TO_CONNECT">Failed to Connect</string>
-    <string name="NETMODE_FAILED_CONNECTING">Connecting...</string>
-    <string name="NETMODE_FAILED_CONNECTING_DES">Please wait a minute</string>
-    <string name="NETMODE_DETEING_INTERNET">Detecting Internet connection type</string>
+    <string name="netmode_mtu">MTU</string>
+    <string name="ip_address">IP Address</string>
+    <string name="netmode_deteing_internet">Detecting Internet connection type</string>
 
     <!-- PUK -->
-    <string name="puk_newpin">New SIM PIN</string>
     <string name="puk_newpin_digital">New SIM PIN (4~8 digits)</string>
-    <string name="puk_confirmpin">Confirm new SIM PIN</string>
+    <string name="confirm_new_sim_pin">Confirm new SIM PIN</string>
     <string name="puk_limit_strings">(4~8 digits)</string>
     <string name="puk_pinDontMatch">Pins don\'t match</string>
-    <string name="puk_connect">Connect</string>
     <string name="puk_alarm_des1">
         You have incorrectly entered the PUK code more than 10 times.\nThe SIM card has been permanently blocked.Please connect your network operator.
     </string>
@@ -795,12 +563,10 @@
     <string name="mode_802_11">802.11 mode</string>
     <string name="ap_isolation">AP isolation</string>
     <string name="bandwidth">Bandwidth</string>
-    <string name="auto">Auto</string>
 
     <string name="times_remain_zero">No attempt remaining, please reboot device and try again</string>
     <string name="times_remain_one">1 attempt remaining</string>
     <string name="times_remain_many">%d attempts remaining</string>
-    <string name="restart">RESTART</string>
     <string name="reset_to_factory_settings">RESET TO FACTORY SETTINGS</string>
     <string name="backup">BACK UP</string>
     <string name="restore">RESTORE</string>
@@ -810,10 +576,8 @@
     <string name="couldn_t_reset_try_again">Couldn’t reset. Try again.</string>
     <string name="couldn_t_backup_try_again">Couldn’t backup. Try again.</string>
     <string name="couldn_t_restore_try_again">Couldn’t restore. Try again.</string>
-    <string name="couldn_t_update_try_again">Couldn’t update. Try again.</string>
     <string name="back_up_settings">Back up settings</string>
     <string name="complete">Complete</string>
-    <string name="device">Device</string>
     <string name="device_name">Device name</string>
     <string name="imei">IMEI</string>
     <string name="mac_address">MAC address</string>
@@ -837,8 +601,6 @@
     <string name="internet_status">Internet Status</string>
     <string name="disconnect">Disconnect</string>
     <string name="select_your_internet_connection_type">Select your Internet connection type</string>
-    <string name="for_internet_connection">For Internet connection</string>
-    <string name="always_use_ethernet_connection">Always use Ethernet connection</string>
     <string name="monthly_data_usage">Monthly data usage</string>
     <string name="home_network">Home network</string>
     <string name="reset_statistics">Reset statistics</string>
@@ -855,9 +617,6 @@
     <string name="profile">Profile</string>
     <string name="current_sim_pin">Current SIM PIN</string>
     <string name="new_sim_pin">New SIM PIN</string>
-    <string name="confirm_new_sim_pin">Confirm new SIM PIN</string>
-    <string name="remember_sim_pin">Remember SIM PIN</string>
-    <string name="change_pin">Change SIM PIN</string>
     <string name="please_input_your_current_pin_code">Please input your current pin code</string>
     <string name="please_input_your_new_pin_code">Please input your new pin code</string>
     <string name="inconsistent_new_pin_code">Inconsistent new pin code</string>
@@ -866,8 +625,6 @@
 
     <!-- home activity sim pop -->
     <string name="pop_sim_locked">SIM lock</string>
-    <string name="pop_sim_cancel">Cancel</string>
-    <string name="pop_sim_unlock">Unlock SIM</string>
 
     <!-- sim unlocked -->
     <string name="sim_unlocked">Unlock SIM</string>
@@ -890,7 +647,6 @@
         network operator if you are unsure of your PUK code</string>
     <string name="input_a_data_value_between_0_1024">Input a data value between 0-1024</string>
     <string name="please_enable_sim_pin">Please enable sim pin</string>
-    <string name="ethernet_wan_connection">Ethernet WAN connection</string>
     <string name="it_is_connected_you_can_switch_other_connection_mode_page">It is connected, You can switch other connection mode page</string>
     <string name="connect">Connect</string>
     <string name="do_not_change_default_if_not_necessary">Do not change default if not necessary</string>
@@ -905,22 +661,22 @@
     <!-- smsdetail -->
     <string name="smsdetail_tryagain">You message was not send</string>
     <string name="smsdetail_tryagain_confirm">Try again</string>
-    <string name="smsdetail_new_message">You got a new message</string>
     <string name="no_sim_or_wan">No SIM/No WAN</string>
 
     <string name="new_password_saved">New password saved</string>
-    <string name="incorrect_current_password">Incorrect current password</string>
-    <string name="log_out">LOG OUT</string>
+    <string name="log_out">LogOut</string>
     <string name="connection_timed_out">Connection timed out</string>
-    <string name="network_disconnected">Network disconnected</string>
     <string name="enter_sim_pin">Enter SIM PIN</string>
     <string name="to_edit_profile_go_to_settings_about_web_manager"><![CDATA[To edit profile, go to Settings > About > Web manager.]]></string>
-    <string name="send">SEND</string>
-    <string name="couldnt_restore_try_again">Couldn\'t restore. Try again</string>
-    <string name="do_not_change_default_connection_type_unless_necessary">Do not change default connection type unless necessary</string>
     <string name="wep_password_must_be_5_13_characters">WEP password must be 5-13 characters</string>
     <string name="password_2_4g_length_must_be_8_63">Password(2.4G) length must be 8-63!</string>
     <string name="connectedlist_will_be_restarted_to_apply_new_settings">ConnectedList will be restarted to apply new settings.</string>
     <string name="warning">Warning</string>
     <string name="enter_2_4ghzssid">Enter 2.4GHz SSID</string>
+    
+    <!-- 新增的字符: 2017-07-19 -->
+    <string name="connecting">Connecting...</string>
+    <string name="used_of">used of</string>
+    <string name="no_month_plan">No set month plan</string>
+
 </resources>

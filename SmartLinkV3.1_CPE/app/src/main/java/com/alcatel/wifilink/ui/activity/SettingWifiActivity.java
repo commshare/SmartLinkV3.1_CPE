@@ -186,8 +186,8 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
             }
 
         } else {
-            m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
-            m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
+            m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
+            m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
             WPAEncryption wpaType;
             if (is_2G == true)
                 wpaType = BusinessManager.getInstance().getWPAEncryption();
@@ -823,8 +823,8 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
             m_encription_mode.setText(wepType == WEPEncryption.Open ? R.string.setting_wifi_open : R.string.setting_wifi_share);
             m_et_password.setText(m_password);
         } else {
-            m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
-            m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
+            m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
+            m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
             WPAEncryption wpaType = BusinessManager.getInstance().getWPAEncryption();
             WModeEnum wmode = BusinessManager.getInstance().getWMode();
             m_password = BusinessManager.getInstance().getWifiPwd();

@@ -15,7 +15,6 @@
         android:layout_alignParentBottom="true">
 
         <View
-            android:id="@+id/v_smsdetail_split"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dip"
             android:alpha="0.3"

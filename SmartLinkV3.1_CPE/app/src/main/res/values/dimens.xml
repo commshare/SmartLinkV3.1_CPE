@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="dimen_divider_1px">1.0px</dimen>
     <dimen name="dimen_0.5dip">0.5dip</dimen>
     <dimen name="dimen_1dip">1dip</dimen>
     <dimen name="dimen_1.5dip">1.5dip</dimen>
     <dimen name="dimen_2dip">2dip</dimen>
-    <dimen name="dimen_3dip">3dip</dimen>
     <dimen name="dimen_4dip">4dip</dimen>
     <dimen name="dimen_5dip">5dip</dimen>
     <dimen name="dimen_6dip">6dip</dimen>
@@ -14,7 +12,6 @@
     <dimen name="dimen_9dip">9dip</dimen>
     <dimen name="dimen_10dip">10dip</dimen>
     <dimen name="dimen_12dip">12dip</dimen>
-    <dimen name="dimen_14dip">14dip</dimen>
     <dimen name="dimen_15dip">15dip</dimen>
     <dimen name="dimen_16dip">16dip</dimen>
     <dimen name="dimen_18dip">18dip</dimen>
@@ -27,42 +24,29 @@
     <dimen name="dimen_35dip">35dip</dimen>
     <dimen name="dimen_36dip">36dip</dimen>
     <dimen name="dimen_40dip">40dip</dimen>
-    <dimen name="dimen_42dip">42dip</dimen>
     <dimen name="dimen_45dip">45dip</dimen>
     <dimen name="dimen_50dip">50dip</dimen>
     <dimen name="dimen_55dip">55dip</dimen>
     <dimen name="dimen_60dip">60dip</dimen>
-    <dimen name="dimen_65dip">65dip</dimen>
     <dimen name="dimen_70dip">70dip</dimen>
     <dimen name="dimen_80dip">80dip</dimen>
-    <dimen name="dimen_90dip">90dip</dimen>
     <dimen name="dimen_100dip">100dip</dimen>
     <dimen name="dimen_110dip">110dip</dimen>
     <dimen name="dimen_120dip">120dip</dimen>
     <dimen name="dimen_140dip">140dip</dimen>
     <dimen name="dimen_150dip">150dip</dimen>
-    <dimen name="dimen_160dip">160dip</dimen>
     <dimen name="dimen_180dip">180dip</dimen>
     <dimen name="dimen_200dip">200dip</dimen>
-    <dimen name="dimen_210dip">210dip</dimen>
     <dimen name="dimen_211dip">211dip</dimen>
-    <dimen name="dimen_214dip">214dip</dimen>
     <dimen name="dimen_220dip">220dip</dimen>
-    <dimen name="dimen_230dip">230dip</dimen>
-    <dimen name="dimen_233dip">233dip</dimen>
     <dimen name="dimen_240dip">240dip</dimen>
     <dimen name="dimen_250dip">250dip</dimen>
     <dimen name="dimen_260dip">260dip</dimen>
-    <dimen name="dimen_280dip">280dip</dimen>
-    <dimen name="dimen_300dip">300dip</dimen>
-    <dimen name="dimen_315dip">315dip</dimen>
     <dimen name="dimen_350dip">350dip</dimen>
     <dimen name="dimen_360dip">360dip</dimen>
     <dimen name="dimen_400dip">400dip</dimen>
     <dimen name="dimen_422dip">422dip</dimen>
     <dimen name="dimen_480dip">480dip</dimen>
-    <dimen name="dimen_new_sms_edit_number">280dip</dimen>
-    <dimen name="dimen_new_sms_edit_content">240dip</dimen>
 
     <dimen name="dimen_corner_8dip">8dip</dimen>
 
@@ -74,21 +58,16 @@
     <dimen name="dimen_textsize_18sp">18sp</dimen>
     <dimen name="dimen_textsize_24sp">24sp</dimen>
     <dimen name="dimen_textsize_28sp">28sp</dimen>
-    <dimen name="dimen_textsize_30sp">30sp</dimen>
     <dimen name="dimen_textsize_20sp">20sp</dimen>
-    <dimen name="dimen_textsize_19sp">19sp</dimen>
-    <dimen name="dimen_textsize_22sp">22sp</dimen>
     <dimen name="dimen_textsize_32sp">32sp</dimen>
     <dimen name="dimen_textsize_34sp">34sp</dimen>
     <dimen name="dimen_textsize_36sp">36sp</dimen>
     <dimen name="dimen_textsize_40sp">40sp</dimen>
     <dimen name="dimen_textsize_48sp">48sp</dimen>
     <dimen name="dimen_textsize_50sp">50sp</dimen>
+    <dimen name="dimen_textsize_60sp">60sp</dimen>
     <dimen name="dimen_textsize_76sp">76sp</dimen>
-    <dimen name="dimen_flux_use_text_padding">3dip</dimen>
 
-    <dimen name="path_indicator_height">32.0dip</dimen>
-    <dimen name="path_indicator_top_line_thick">2.0dip</dimen>
     <dimen name="path_indicator_button_margin_left">-3.0dip</dimen>
     <dimen name="path_indicator_button_text_size">22.0dip</dimen>
     <dimen name="path_indicator_first_button_padding_left">6.0dip</dimen>
@@ -99,21 +78,14 @@
     <dimen name="title_bar_height">35.0dip</dimen>
 
     <dimen name="textview_horizontal_margin">16dp</dimen>
-    <dimen name="quick_setup_edittext_width">250dip</dimen>
     <dimen name="quick_setup_puk_edittext_width">180dip</dimen>
     <dimen name="quick_setup_puk_textview_width">90dip</dimen>
     <dimen name="quick_setup_edittext_height">40dip</dimen>
 
-    <dimen name="setting_name_size_s">20sp</dimen>
-    <dimen name="setting_prompt_size_s">15sp</dimen>
-    <dimen name="setting_padding_s">20dp</dimen>
-    <dimen name="setting_padding_5_dp">5dp</dimen>
     <dimen name="setting_padding_10_dp">10dp</dimen>
 
     <!--增加几个常用的尺寸-->
-    <dimen name="common_padding_middle">8dp</dimen>
     <dimen name="common_padding">16dp</dimen>
-    <dimen name="common_margin_middle">8dp</dimen>
     <dimen name="common_margin">16dp</dimen>
 
     <dimen name="action_bar_height">60dp</dimen>
