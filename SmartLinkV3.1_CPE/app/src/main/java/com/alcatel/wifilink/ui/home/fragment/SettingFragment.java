@@ -46,6 +46,7 @@ import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.utils.FileUtils;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import java.io.File;
 
@@ -122,6 +123,20 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         mAbout = (RelativeLayout) m_view.findViewById(R.id.setting_about);
         mDeviceVersion = (TextView) m_view.findViewById(R.id.setting_firmware_upgrade_version);
         getDeviceFWCurrentVersion();
+        showSharingService();
+    }
+
+    private void showSharingService() {
+       OtherUtils otherUtils = new OtherUtils();
+       otherUtils.setOnDeviceVersionListener(new OtherUtils.OnDeviceVersionListener() {
+           @Override
+           public void getVersion(String deviceVersion) {
+               if(deviceVersion.contains("HH40")){
+                   mSharingService.setVisibility(View.GONE);
+               }
+           }
+       });
+        otherUtils.getDeviceHWVersion();
     }
 
     private void initEvent() {

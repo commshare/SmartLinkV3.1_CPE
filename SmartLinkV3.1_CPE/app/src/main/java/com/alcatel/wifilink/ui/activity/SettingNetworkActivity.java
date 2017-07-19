@@ -480,7 +480,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 } else if (result.getTimeLimitFlag() == 1) {
                     mLimitAutoDisaconectCompat.setChecked(true);
                 }
-                mSetTimeLimitText.setText(result.getTimeLimitTimes() + "mins(s)");
+                mSetTimeLimitText.setText(result.getTimeLimitTimes() + "min(s)");
             }
 
             @Override
