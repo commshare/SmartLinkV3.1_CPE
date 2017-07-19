@@ -20,7 +20,6 @@ import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
-import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.user.LoginResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -31,7 +30,6 @@ import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
 import com.alcatel.wifilink.utils.EditUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 
-import static android.R.attr.version;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_nor;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_pre;
 
@@ -118,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login_apply_btn:// 登陆按钮
                 OtherUtils otherUtils = new OtherUtils();
                 otherUtils.setOnVersionListener(needToEncrypt -> toLogin(needToEncrypt));
-                otherUtils.getDeviceVersion();
+                otherUtils.getDeviceSwVersion();
                 break;
         }
     }

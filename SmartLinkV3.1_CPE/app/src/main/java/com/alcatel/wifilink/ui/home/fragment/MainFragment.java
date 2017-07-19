@@ -224,14 +224,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             public void onError(Throwable e) {
                 Log.d("ma", "getTrafficInfo : " + e.getMessage().toString());
             }
-
             @Override
             protected void onSuccess(NetworkInfos result) {
-
                 // // doesn't worked--> show 0MB
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
                     connectUi(false);
-                    // ToastUtil_m.show(getActivity(), getString(R.string.home_no_service));
                 } else {
                     // is press the connect button ?
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {

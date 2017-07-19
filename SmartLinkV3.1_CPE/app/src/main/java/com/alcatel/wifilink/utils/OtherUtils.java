@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.utils;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
@@ -22,6 +23,7 @@ import java.util.List;
 public class OtherUtils {
 
     private OnVersionListener onVersionListener;
+    private OnDeviceVersionListener onDeviceVersionListener;
 
     /**
      * 线程自关
@@ -87,11 +89,10 @@ public class OtherUtils {
     /**
      * 获取设备的版本号
      */
-    public void getDeviceVersion() {
+    public void getDeviceSwVersion() {
         // 1.需要加密的版本
         List<String> needEncryptVersions = new ArrayList<String>();
         needEncryptVersions.add("HH70_E1_02.00_13");
-        needEncryptVersions.add("HH70_00_02.00_09");
         // 2.获取当前版本
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
             @Override
@@ -117,6 +118,26 @@ public class OtherUtils {
         });
     }
 
+    public void getDeviceHWVersion() {
+        // 1.需要加密的版本
+        List<String> needEncryptVersions = new ArrayList<String>();
+        needEncryptVersions.add("HH70");
+        // 2.获取当前版本
+        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+            @Override
+            protected void onSuccess(SystemInfo result) {
+                if (onDeviceVersionListener != null) {
+                    onDeviceVersionListener.getVersion(result.getSwVersion());
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
+            }
+        });
+    }
+
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
     public interface OnVersionListener {
         void getVersion(boolean needToEncrypt);
@@ -124,6 +145,14 @@ public class OtherUtils {
 
     public void setOnVersionListener(OnVersionListener onVersionListener) {
         this.onVersionListener = onVersionListener;
+    }
+
+    public interface OnDeviceVersionListener {
+        void getVersion(String deviceVersion);
+    }
+
+    public void setOnDeviceVersionListener(OnDeviceVersionListener onDeviceVersionListener) {
+        this.onDeviceVersionListener = onDeviceVersionListener;
     }
 
 
