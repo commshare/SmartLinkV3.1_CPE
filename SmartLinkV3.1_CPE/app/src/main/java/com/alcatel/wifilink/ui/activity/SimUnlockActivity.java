@@ -120,6 +120,13 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
             toPukActivity();
             return;
         }
+
+        // 输入4~8为PIN码
+        if (etSimUnlock.getText().toString().length() < 4) {
+            ToastUtil_m.show(this, "Please input 4 ~ 8 digits pin code");
+            return;
+        }
+
         // 一切正常
         String pincode = EditUtils.getContent(etSimUnlock);
         unlockPin(pincode);// to puk ui
@@ -162,6 +169,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(SimStatus result) {
                 pinRemainingTimes = result.getPinRemainingTimes();
+                System.out.println("pinRemainingTimes = " + pinRemainingTimes);
                 runOnUiThread(() -> {
                     tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes));
                 });

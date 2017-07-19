@@ -35,6 +35,7 @@ import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
+import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -45,6 +46,7 @@ import com.alcatel.wifilink.ui.activity.SettingDeviceActivity;
 import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -127,15 +129,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showSharingService() {
-       OtherUtils otherUtils = new OtherUtils();
-       otherUtils.setOnDeviceVersionListener(new OtherUtils.OnDeviceVersionListener() {
-           @Override
-           public void getVersion(String deviceVersion) {
-               if(deviceVersion.contains("HH40")){
-                   mSharingService.setVisibility(View.GONE);
-               }
-           }
-       });
+        OtherUtils otherUtils = new OtherUtils();
+        otherUtils.setOnDeviceVersionListener(new OtherUtils.OnDeviceVersionListener() {
+            @Override
+            public void getVersion(String deviceVersion) {
+                if (deviceVersion.contains("HH40")) {
+                    mSharingService.setVisibility(View.GONE);
+                }
+            }
+        });
         otherUtils.getDeviceHWVersion();
     }
 
@@ -197,60 +199,46 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private void requestGetConnectionStatus() {
-        Log.d(TAG, "requestGetConnectionStatus");
+
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+            @Override
+            protected void onSuccess(WanSettingsResult result) {
+                if (result.getStatus() == Cons.CONNECTED) {
+                    requestSetCheckNewVersion();   // wan连接--> 直接更新
+                } else {
+                    checkSimConnection();// 没有连接--> 检查sim卡是否有连
+                }
+            }
+        });
+    }
+
+    /* 检查SIM是否有连接 */
+    private void checkSimConnection() {
         API.get().getConnectionState(new MySubscriber<ConnectionState>() {
             @Override
             protected void onSuccess(ConnectionState result) {
-                Log.d(TAG, "requestGetConnectionStatus,ConnectionStatus:" + result.getConnectionStatus());
-                if (result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTED || result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTING) {
-                    requestGetWanSetingRequest();
+                int connStatus = result.getConnectionStatus();
+                Log.d(TAG, "requestGetConnectionStatus,ConnectionStatus:" + connStatus);
+                if (connStatus == Constants.ConnectionStatus.CONNECTED) {
+                    requestSetCheckNewVersion();// sim卡连接成功--> 更新
+                } else if (connStatus == Cons.DISCONNECTED || connStatus == Cons.DISCONNECTING) {
+                    ToastUtil_m.show(getActivity(), getString(R.string.check_your_wan_cabling));
                 } else {
-                    ToastUtil_m.show(getActivity(), getString(R.string.setting_upgrade_no_connection));
+                    ToastUtil_m.show(getActivity(), getString(R.string.connecting));
                 }
-
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
                 Log.d(TAG, "requestGetConnectionStatus,onResultError:" + error);
-
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
                 Log.d(TAG, "requestGetConnectionStatus");
-            }
-        });
-
-
-    }
-
-    private void requestGetWanSetingRequest() {
-        Log.d(TAG, "requestSetCheckNewVersion");
-        API.get().getWanSeting(new MySubscriber<WanSetting>() {
-            @Override
-            protected void onSuccess(WanSetting result) {
-                Log.d(TAG, "requestGetWanSetingRequest,onSuccess:" + result.getStatus());
-                if (result.getStatus() == Constants.WanSettingsStatus.CONNECTED || result.getStatus() == Constants.WanSettingsStatus.CONNECTING) {
-                    requestSetCheckNewVersion();
-                } else {
-                    ToastUtil_m.show(getActivity(), getString(R.string.check_your_wan_cabling));
-                }
-
-            }
-
-            @Override
-            protected void onFailure() {
-                Log.d(TAG, "requestGetWanSetingRequest,onFailure");
-                super.onFailure();
-            }
-
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                Log.d(TAG, "requestGetWanSetingRequest,onResultError:" + error);
-                super.onResultError(error);
+                ToastUtil_m.show(getActivity(), getString(R.string.check_your_wan_cabling));
             }
         });
     }
@@ -378,13 +366,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
         }
     }
 
@@ -581,11 +567,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         getActivity().startActivity(intent);
     }
 
-    private  void getDeviceFWCurrentVersion(){
+    private void getDeviceFWCurrentVersion() {
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
-                Log.d(TAG,"getDeviceFWCurrentVersion,fw current version:"+result.getSwVersion());
+                Log.d(TAG, "getDeviceFWCurrentVersion,fw current version:" + result.getSwVersion());
                 mDeviceVersion.setText(result.getSwVersion());
             }
 

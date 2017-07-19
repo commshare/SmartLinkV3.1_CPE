@@ -55,11 +55,15 @@ public class DeviceBlockFragment extends Fragment {
         blockAdapter = new BlockAdapter(activity, blockList);
         rcv_block.setAdapter(blockAdapter);
         updateBlockDeviceUI();// init ui
-        // start timer
-        startTimer();
         return inflate;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // start timer
+        startTimer();
+    }
 
     @Override
     public void onPause() {

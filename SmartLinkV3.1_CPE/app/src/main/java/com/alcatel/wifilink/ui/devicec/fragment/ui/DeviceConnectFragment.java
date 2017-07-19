@@ -55,9 +55,15 @@ public class DeviceConnectFragment extends Fragment {
         rvAdapter = new ConnectAdapter(activity, this, connectModelList);
         rcv_deviceConnect.setAdapter(rvAdapter);
         getDevicesStatus();// init
+        
+        return inflate;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         // start timer
         startTime();
-        return inflate;
     }
 
     /* **** startTime **** */

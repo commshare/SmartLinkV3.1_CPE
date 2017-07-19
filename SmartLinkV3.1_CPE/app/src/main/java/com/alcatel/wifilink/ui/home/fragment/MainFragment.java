@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
@@ -36,6 +37,7 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.DataUtils;
+import com.alcatel.wifilink.utils.ScreenSize;
 
 import java.util.Locale;
 
@@ -81,6 +83,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public static String PRESSBUTTON = "PRESSBUTTON";// true: the sim button have pressed.
 
     public String TAGS = "ma";
+    private RelativeLayout mRl_main_wait;
 
     public MainFragment() {
     }
@@ -114,14 +117,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_accessstatusTextView = (TextView) m_view.findViewById(R.id.access_label);
 
         m_accessDeviceLayout = (RelativeLayout) m_view.findViewById(R.id.access_num_layout);
+        mRl_main_wait = (RelativeLayout) m_view.findViewById(R.id.rl_main_wait);
 
         zeroMB = getString(R.string.Home_zero_data);
 
+        // 0. wait show
         // 1. 初始化获取
-        getStatus();
-
+        // getStatus();
         return m_view;
     }
+
 
     /* -------------------------------------------- 0.GET ALL STATUS -------------------------------------------- */
     // TOAT: all status
@@ -162,11 +167,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 // device count layout
                 setAccessDeviceStatus();
                 // when type check is finish , logo button can be click
-                canClick = true;
+                // canClick = true;
             }
         });
-
-
     }
 
     /* wan ui setting */
@@ -182,6 +185,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mRl_sigelPanel.setVisibility(View.GONE);
         m_networkLabelTextView.setText(getString(R.string.Ethernet));
         HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);// sms count view gone
+        // when type check is finish , logo button can be click
+        canClick = true;
+        mRl_main_wait.setVisibility(View.GONE);
     }
 
     /* sim ui setting */
@@ -224,6 +230,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             public void onError(Throwable e) {
                 Log.d("ma", "getTrafficInfo : " + e.getMessage().toString());
             }
+
             @Override
             protected void onSuccess(NetworkInfos result) {
                 // // doesn't worked--> show 0MB
@@ -242,7 +249,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                                 connectUi(false);
                             }
                             mConnectedView.setCenterTitle(upOrDownByteData);
-                            getNetworkedInfo();
+                            // when type check is finish , logo button can be click
+                            canClick = true;
+                            mRl_main_wait.setVisibility(View.GONE);
                         }
                     });
                 }
@@ -333,23 +342,21 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     /* get traffic data */
     private void getTrafficData(UsageRecord result) {
         // 1.set wave degree
-        if (result.getMonthlyPlan() != 0) {// it must monthly plan is not zero
-            long hUseData = result.getHUseData();
-            long hMonthlyPlan = result.getMonthlyPlan();
-            long circleUseDataProgressValue = (hUseData * 100) / hMonthlyPlan;
-            if (circleUseDataProgressValue >= 80) {
-                mConnectedView.setWaveColor(activity.getResources().getColor(R.color.wave_yellow));
-            } else {
-                mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
-            }
-            if (circleUseDataProgressValue <= 100) {
-                mConnectedView.setProgressValue((int) circleUseDataProgressValue - 8);
-            } else {
-                mConnectedView.setProgressValue(92);
-            }
-        } else {
+        if (result.getMonthlyPlan() == 0) {// 没有设置流量
             mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
             mConnectedView.setProgressValue(92);
+        } else {// 设置了流量
+            long hUseData = result.getHUseData();
+            long hMonthlyPlan = result.getMonthlyPlan();
+            // get remain percent
+            if (hUseData < hMonthlyPlan) {// 未超出流量: 用户流量 < 月计划流量
+                float percent = ((hMonthlyPlan - hUseData) * 100f / hMonthlyPlan);
+                mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
+                mConnectedView.setProgressValue((int) percent);
+            } else {// 超出流量: 用户流量 > 月计划流量
+                mConnectedView.setWaveColor(activity.getResources().getColor(R.color.wave_yellow));
+                mConnectedView.setProgressValue(90);
+            }
         }
         // 2.set number
         showTrafficData(result);
@@ -358,22 +365,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* 显示已用流量 */
     private void showTrafficData(UsageRecord result) {
-        System.out.println("result = " + result.getMonthlyPlan());
-        getActivity().runOnUiThread(() -> {
+        activity.runOnUiThread(() -> {
+
             CommonUtil.TrafficBean hadUse = CommonUtil.ConvertTraffic(getActivity(), result.getHUseData(), 1);
             CommonUtil.TrafficBean monthUse = CommonUtil.ConvertTraffic(getActivity(), result.getMonthlyPlan(), 0);
+
             String monthplan = "";
             if (monthUse.num <= 0) {
                 monthplan = getString(R.string.no_month_plan);
             } else {
-                monthplan = getString(R.string.used_of) + " " + monthUse.num + monthUse.type;
-                monthplan = String.valueOf(Integer.valueOf(monthplan));
+                monthplan = getString(R.string.used_of) + " " + (int) monthUse.num + monthUse.type;
             }
-
 
             upOrDownByteData = String.valueOf(hadUse.num);
             mConnectedView.setCenterTitle(upOrDownByteData);// have used
             mConnectedView.setCenterTitleSize(hadUse.num >= 999 ? 30 : 60);
+
             mConnectedView.setTopTitle(hadUse.type);// unit
             mConnectedView.setBottomTitle(monthplan);// month plan
             mConnectedView.setBottomTitleSize(monthUse.num >= 999 ? 10 : 14);
@@ -502,23 +509,35 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* **** setAccessDeviceStatus **** */
     private void setAccessDeviceStatus() {
-        API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
-
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
-            public void onError(Throwable e) {
-                Log.d("ma", "setAccessDeviceStatus : " + e.getMessage().toString());
-            }
+            protected void onSuccess(SimStatus result) {
+                if (result.getSIMState() == Cons.READY) {
+                    API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
 
-            @Override
-            protected void onSuccess(ConnectedList result) {
-                m_accessnumTextView.setTypeface(typeFace);
-                m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", result.getConnectedList().size()));
-                m_accessnumTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
-                m_accessImageView.setImageResource(R.drawable.home_ic_person_many);
-                String strOfficial = activity.getString(R.string.access_lable);
-                m_accessstatusTextView.setText(strOfficial);
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d("ma", "setAccessDeviceStatus : " + e.getMessage().toString());
+                        }
+
+                        @Override
+                        protected void onSuccess(ConnectedList result) {
+                            m_accessnumTextView.setTypeface(typeFace);
+                            m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", result.getConnectedList().size()));
+                            m_accessnumTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
+                            m_accessImageView.setImageResource(R.drawable.home_ic_person_many);
+                            String strOfficial = activity.getString(R.string.access_lable);
+                            m_accessstatusTextView.setText(strOfficial);
+                        }
+                    });
+                } else {
+                    m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_none);
+                    m_accessnumTextView.setVisibility(View.GONE);
+                    m_accessstatusTextView.setText(getString(R.string.connect));
+                }
             }
         });
+
     }
     
     /* -------------------------------------------- 5.DEVICES STATUS ------------------------------------------ */
@@ -526,6 +545,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        // 1. show wait
+        showWait();
         // 2. 启动定时器
         timerHelper = new TimerHelper(activity) {
             @Override
@@ -534,6 +555,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             }
         };
         timerHelper.start(5000);
+    }
+
+    private void showWait() {
+        mRl_main_wait.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -556,7 +581,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, true, false, false, 0);
                     }
                 } else {
-                    ToastUtil_m.show(getActivity(), "Please wait...");
+                    ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
                 }
                 break;
             case R.id.connected_button:
@@ -564,6 +589,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     if (!isWan) {/* sim button click logic */
                         connectedBtnClick();
                     }
+                } else {
+                    ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
                 }
                 break;
             case R.id.access_status:

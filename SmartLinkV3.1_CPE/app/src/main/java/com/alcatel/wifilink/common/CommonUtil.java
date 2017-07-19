@@ -55,27 +55,50 @@ public class CommonUtil {
      * @return
      */
     public static TrafficBean ConvertTraffic(Context context, long traffic, int dimen) {
-        if (dimen > 2) {
-            dimen = 2;
-        }
-        BigDecimal trafficMB;
-        BigDecimal trafficGB;
+        float tempTB = traffic * 1f / 1024 / 1024 / 1024 / 1024;
+        float tempGB = traffic * 1f / 1024 / 1024 / 1024;
+        float tempMB = traffic * 1f / 1024 / 1024;
+        float tempKB = traffic * 1f / 1024;
 
-        BigDecimal temp = new BigDecimal(traffic);
-        BigDecimal divide = new BigDecimal(1024);
-        BigDecimal divideM = new BigDecimal(1024l * 1024l);
-        trafficMB = temp.divide(divideM, dimen, BigDecimal.ROUND_HALF_UP);
-        TrafficBean tb = new CommonUtil().new TrafficBean();
-        if (trafficMB.compareTo(divide) >= 0) {
-            trafficGB = trafficMB.divide(divide, dimen, BigDecimal.ROUND_HALF_UP);
-            tb.num = trafficGB.floatValue();
-            tb.type = "GB";
-            return tb;
+        String num = "";
+        String type = "";
+        if (tempTB >= 1) {
+            num = String.format("%.1f",tempTB);
+            type = "TB";
+        } else if (tempGB >= 1) {
+            num = String.format("%.1f",tempGB);
+            type = "GB";
+        } else if (tempMB >= 1) {
+            num = String.format("%.1f",tempMB);
+            type = "MB";
         } else {
-            tb.num = trafficMB.floatValue();
-            tb.type = "MB";
-            return tb;
+            num = String.format("%.1f",tempKB);
+            type = "KB";
         }
+
+        TrafficBean tb = new CommonUtil().new TrafficBean();
+        tb.num = Float.valueOf(num);
+        tb.type = type;
+
+        return tb;
+        // BigDecimal trafficMB;
+        // BigDecimal trafficGB;
+        //
+        // BigDecimal temp = new BigDecimal(traffic);
+        // BigDecimal divide = new BigDecimal(1024);
+        // BigDecimal divideM = new BigDecimal(1024l * 1024l);
+        // trafficMB = temp.divide(divideM, dimen, BigDecimal.ROUND_HALF_UP);
+        // TrafficBean tb = new CommonUtil().new TrafficBean();
+        // if (trafficMB.compareTo(divide) >= 0) {
+        //     trafficGB = trafficMB.divide(divide, dimen, BigDecimal.ROUND_HALF_UP);
+        //     tb.num = trafficGB.floatValue();
+        //     tb.type = "GB";
+        //     return tb;
+        // } else {
+        //     tb.num = trafficMB.floatValue();
+        //     tb.type = "MB";
+        //     return tb;
+        // }
     }
 
     public class TrafficBean {

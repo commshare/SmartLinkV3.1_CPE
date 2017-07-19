@@ -167,6 +167,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     ToastUtil_m.show(LoginActivity.this, getString(R.string.login_login_time_used_out_msg));
                 } else if (Cons.GUEST_AP_OR_WEBUI.equals(error.getCode())) {
                     ToastUtil_m.show(LoginActivity.this, getString(R.string.login_login_app_or_webui));
+                } else {
+                    ToastUtil_m.show(LoginActivity.this, getString(R.string.login_failed));
                 }
             }
         });

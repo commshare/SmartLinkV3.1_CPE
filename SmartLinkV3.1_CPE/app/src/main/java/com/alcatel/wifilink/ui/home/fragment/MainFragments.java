@@ -13,6 +13,7 @@ import com.alcatel.wifilink.R;
  * Created by qianli.ma on 2017/7/19.
  */
 
+@Deprecated
 public class MainFragments extends Fragment {
 
     private View inflate;

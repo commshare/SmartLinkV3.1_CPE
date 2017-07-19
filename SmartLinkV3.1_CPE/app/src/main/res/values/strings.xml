@@ -630,8 +630,8 @@
     <string name="sim_unlocked">Unlock SIM</string>
     <string name="sim_unlocked_attempts">\   attempts remaining</string>
     <string name="sim_unlocked_notEmpty">SIM PIN is Empty</string>
-    <string name="sim_unlocked_success">unlock PIN successful</string>
-    <string name="sim_unlocked_failed">unlock PIN failed</string>
+    <string name="sim_unlocked_success">Unlock PIN successful</string>
+    <string name="sim_unlocked_failed">Unlock PIN failed</string>
 
     <!-- login acitivity -->
     <string name="login_remenber_psd">Remenber password</string>
@@ -678,5 +678,7 @@
     <string name="connecting">Connecting...</string>
     <string name="used_of">used of</string>
     <string name="no_month_plan">No set month plan</string>
+    <string name="login_failed">Login failed</string>
+    <string name="insert_sim_or_wan">Try again after insert sim or wan</string>
 
 </resources>
