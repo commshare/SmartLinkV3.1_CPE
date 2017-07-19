@@ -680,5 +680,6 @@
     <string name="no_month_plan">No set month plan</string>
     <string name="login_failed">Login failed</string>
     <string name="insert_sim_or_wan">Try again after insert sim or wan</string>
+    <string name="Home_pin_locked">PIN need unlock</string>
 
 </resources>
