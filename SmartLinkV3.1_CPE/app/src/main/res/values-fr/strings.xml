@@ -292,7 +292,7 @@
 
     <!-- Login view start -->
     <string name="login_prompt_str">Mot de passe incorrect !</string>
-    <string name="login_psd_error_msg">Mot de passe incorrect !</string>
+    <string name="login_psd_error_msg">Mot de passe incorrect !\n%1$d attempt(s) remaining</string>
     <string name="login_check_dialog_title">Connexion</string>
     <string name="login_invalid_password">Mot de passe non valide ! Il ne peut inclure que les caractères 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg"> Un autre utilisateur ouvre une session en ce moment. Reconnectez-vous un peu plus tard.</string>

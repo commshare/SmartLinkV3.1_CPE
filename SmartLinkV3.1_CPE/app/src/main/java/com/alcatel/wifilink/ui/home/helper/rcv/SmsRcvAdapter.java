@@ -61,7 +61,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
             setPhoneNum(holder, position);// set telphone
             setSmsCount(holder, position);// set sms count
             setSmsContent(holder, position);// set sms simple content
-            setSmsSendFailed(holder, position);// set sms send failed logo
+            // setSmsSendFailed(holder, position);// set sms send failed logo (keep it)
             setSmsDate(holder, position);// set date
             setSmsClick(holder, position);// to sms detail
             setSmsLongClick(holder, position);// to show delete pop

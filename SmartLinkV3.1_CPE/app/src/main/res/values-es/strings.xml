@@ -292,7 +292,7 @@
 
     <!-- Login view start -->
     <string name="login_prompt_str">La contraseña es incorrecta.</string>
-    <string name="login_psd_error_msg">Lo sentimos, la contraseña es incorrecta.</string>
+    <string name="login_psd_error_msg">Lo sentimos, la contraseña es incorrecta.\n%1$d attempt(s) remaining</string>
     <string name="login_check_dialog_title">Inicio de sesión</string>
     <string name="login_invalid_password">Contraseña no válida La contraseña solo puede contener 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg"> Otro usuario está iniciando sesión, vuelva a intentarlo en unos momentos.</string>

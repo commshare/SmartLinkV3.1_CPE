@@ -341,7 +341,7 @@
     <!-- PIN end -->
     <!-- Login view start -->
     <string name="login_prompt_str">Your password is wrong!</string>
-    <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
+    <string name="login_psd_error_msg">Sorry, your password is wrong!\n%1$d attempt(s) remaining</string>
     <string name="login_check_dialog_title">Login</string>
     <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&amp;*\"</string>
     <string name="login_other_user_logined_error_msg">Other user is login\nplease relogin after a moment!</string>

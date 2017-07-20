@@ -260,6 +260,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:clickable="true"
         android:id="@+id/rl_main_wait"
         android:layout_width="match_parent"

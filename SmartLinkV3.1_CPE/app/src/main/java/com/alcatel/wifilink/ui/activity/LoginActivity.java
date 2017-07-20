@@ -16,11 +16,13 @@ import android.widget.Toast;
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.business.wlan.AP;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginResult;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -158,9 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
-                    // mRemainingTimes--;
-                    // updatePromptText(mRemainingTimes);
-                    ToastUtil_m.show(LoginActivity.this, getString(R.string.login_psd_error_msg));
+                    showRemainTimes();
                 } else if (Cons.OTHER_USER_IS_LOGIN.equals(error.getCode())) {
                     ToastUtil_m.show(LoginActivity.this, getString(R.string.login_other_user_logined_error_msg));
                 } else if (Cons.DEVICE_REBOOT.equals(error.getCode())) {
@@ -172,6 +172,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+    }
+
+    // 显示剩余次数
+    private void showRemainTimes() {
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                int remainingTimes = result.getLoginRemainingTimes();
+                String tips = getString(R.string.login_psd_error_msg);
+                String remainTips = String.format(tips, remainingTimes);
+                ToastUtil_m.show(LoginActivity.this, remainTips);
+            }
+        });
+
     }
 
     private void updatePromptText(int remainingTimes) {
@@ -187,9 +201,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void launchHomeActivity() {
-        // Intent intent = new Intent(this, HomeActivity.class);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        // this.startActivity(intent);
         ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
     }
 }

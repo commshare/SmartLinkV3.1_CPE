@@ -182,7 +182,6 @@
     <!-- microsd end -->
 
     <!-- setting start -->
-    <string name="setting_account">Login password</string>
     <string name="setting_network">Network</string>
     <string name="setting_mobile_network">Mobile network</string>
     <string name="ethernet_wan_connection">Ethernet WAN connection</string>
@@ -369,7 +368,6 @@
 
     <!-- Login view start -->
     <string name="login_prompt_str">Your password is wrong!</string>
-    <string name="login_psd_error_msg">Sorry, your password is wrong!</string>
     <string name="login_check_dialog_title">Login</string>
     <string name="login_invalid_password">Invalid password! The password only can include 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg">Other user is login\nplease relogin after a moment!</string>
@@ -391,7 +389,6 @@
     <string name="login_login_btn">LOG IN</string>
     <string name="login_enter_password">Enter admin password</string>
     <string name="login_enter_password_tip">5-16 characters</string>
-    <string name="login_forgot_password">Forgot password?</string>
     <!-- Login view end -->
 
     <!-- Refresh WIFI start -->
@@ -673,13 +670,17 @@
     <string name="connectedlist_will_be_restarted_to_apply_new_settings">ConnectedList will be restarted to apply new settings.</string>
     <string name="warning">Warning</string>
     <string name="enter_2_4ghzssid">Enter 2.4GHz SSID</string>
-    
+    <string name="login_forgot_password">Forgot password?</string>
+
     <!-- 新增的字符: 2017-07-19 -->
     <string name="connecting">Connecting...</string>
     <string name="used_of">used of</string>
     <string name="no_month_plan">No set month plan</string>
     <string name="login_failed">Login failed</string>
     <string name="insert_sim_or_wan">Try again after insert sim or wan</string>
-    <string name="Home_pin_locked">PIN need unlock</string>
+
+    <!-- 变动的字符 -->
+    <string name="setting_account">Change password</string>
+    <string name="login_psd_error_msg">Sorry, your password is wrong!\n%1$d attempt(s) remaining</string>
 
 </resources>

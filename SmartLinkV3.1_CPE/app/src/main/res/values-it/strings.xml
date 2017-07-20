@@ -290,7 +290,7 @@
 
     <!-- Login view start -->
     <string name="login_prompt_str">Password errata.</string>
-    <string name="login_psd_error_msg">Password errata.</string>
+    <string name="login_psd_error_msg">Password errata.\n%1$d attempt(s) remaining</string>
     <string name="login_check_dialog_title">Accedi</string>
     <string name="login_invalid_password">Password non valida. La password può contenere solo i seguenti caratteri 0-9, a-z, A-Z, \"-+!@$#^&#038;*\"</string>
     <string name="login_other_user_logined_error_msg"> Un altro utente sta effettuando l\'accesso. Riprovare ad accedere tra un momento.</string>
