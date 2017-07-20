@@ -55,7 +55,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
     }
 
     private void loadSettings() {
-
         Intent intent = getIntent();
         if (intent != null) {
             mSsidBroadcast = intent.getBooleanExtra(EXTRA_SSID_BROADCAST, false);
@@ -71,7 +70,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
 
     private void initViews() {
         mBroadcastSwitch = (SwitchCompat) findViewById(R.id.switch_ssid_broadcast);
-
         mCountrySpinner = (AppCompatSpinner) findViewById(R.id.spinner_country_type);
         mChannelSpinner = (AppCompatSpinner) findViewById(R.id.spinner_channel_type);
         m80211Spinner = (AppCompatSpinner) findViewById(R.id.spinner_802_11_mode);
@@ -176,9 +174,9 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
     public void OnOKClick(View view) {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_SSID_BROADCAST, mBroadcastSwitch.isChecked());
-        intent.putExtra(EXTRA_CHANNEL, mBandwidth);
+        intent.putExtra(EXTRA_CHANNEL, mChannelSpinner.getSelectedItemPosition());
         intent.putExtra(EXTRA_COUNTRY, mCountrySettings[mCountrySpinner.getSelectedItemPosition()]);
-        intent.putExtra(EXTRA_BANDWIDTH, mBandwidthSpinner.getSelectedItemPosition());
+        intent.putExtra(EXTRA_BANDWIDTH, mBandwidth);
         intent.putExtra(EXTRA_MODE_80211, mMode);
         intent.putExtra(EXTRA_AP_ISOLATION, mIsolationSwitch.isChecked());
         setResult(RESULT_OK, intent);

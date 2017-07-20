@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -32,7 +33,6 @@ import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.connection.ConnectionState;
 import com.alcatel.wifilink.model.system.SystemInfo;
-import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
@@ -345,8 +345,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.back_up_settings);
         EditText editText = new EditText(getActivity());
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        editText.setLayoutParams(layoutParams);
+        LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams.setMargins(20, 0, 20, 0);
+        editText.setLayoutParams(LayoutParams);
         editText.setText(mSaveUrl);
         builder.setView(editText);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -365,11 +366,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void verifyStoragePermissions(Activity activity) {
-        // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
         }
     }
@@ -394,19 +392,18 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCompleted() {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), "onCompleted");
+                ToastUtil.showMessage(getActivity(), R.string.succeed);
             }
 
             @Override
             public void onError(Throwable e) {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), "onError");
+                ToastUtil.showMessage(getActivity(), R.string.fail);
             }
 
             @Override
             public void onNext(Object o) {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), "onNext");
 
             }
         }, downloadFileUrl, file);
@@ -443,19 +440,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil.showMessage(getActivity(), "restart device sendAgainSuccess");
+                ToastUtil.showMessage(getActivity(), R.string.succeed);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
+                ToastUtil.showMessage(getActivity(), R.string.fail);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
+                ToastUtil.showMessage(getActivity(), R.string.fail);
                 dismissLoadingDialog();
             }
         });
@@ -507,10 +506,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCompleted() {
                 dismissLoadingDialog();
+                ToastUtil.showMessage(getActivity(), R.string.succeed);
                 showSuccessDialog();
-                Log.d(TAG, " restore onCompleted");
             }
-
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "onResultError " + e);

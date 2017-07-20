@@ -309,14 +309,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:text="@string/apply"/>
+                android:background="@drawable/selector_conner_btn_login_blue"
+                android:text="@string/apply"
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dip"
                 android:layout_weight="1.0"
-                android:text="@string/cancel"/>
+                android:background="@drawable/selector_conner_btn_login_blue"
+                android:text="@string/cancel"
+                android:textColor="@color/white"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
