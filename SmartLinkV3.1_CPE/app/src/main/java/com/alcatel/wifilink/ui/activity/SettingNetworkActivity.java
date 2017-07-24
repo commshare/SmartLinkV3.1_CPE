@@ -97,6 +97,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mMobileDataSwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
+                if(!mMobileDataSwitchCompat.isPressed())return;
                 Log.d(TAG, "mMobileDataSwitchCompat = " + enable);
                 if (mOldMobileDataEnable != enable) {
                     if (enable) {
