@@ -134,13 +134,16 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private PopupWindows simPop;
     private RippleView tv_cancel;
     private RippleView tv_unlock;
+
     private ActionbarSetting barSetting;
     private int container;
+    private FragmentHomeEnum temp_en;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("ma_home", "onCreate: ");
         setContentView(R.layout.activity_homes);
         hac = this;
         supportActionBar = getSupportActionBar();
@@ -149,6 +152,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initActionbar();
         initView();
         initUi();
+        startTimer();
     }
 
     /* **** initActionbar **** */
@@ -183,20 +187,26 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        // start timer
-        startTimer();
+        Log.d("ma_home", "onResume: " + temp_en);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         timerHelper.stop();
     }
 
     private void initView() {
         container = R.id.mFl_home_container;
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        if (MainFragment.type==Cons.TYPE_SIM) {
+        if (MainFragment.type == Cons.TYPE_SIM) {
             SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
         }
     }
@@ -298,7 +308,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
      * A2.切换到SMS编辑界面
      */
     private void toSmsActivity() {
-        ChangeActivity.toActivity(this, ActivityNewSms.class, true, false, false, 0);
+        ChangeActivity.toActivity(this, ActivityNewSms.class, false, false, false, 0);
     }
 
     /* -------------------------------------------- HELPER -------------------------------------------- */
@@ -345,11 +355,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 isWanInsert();
             }
         };
-        timerHelper.start(3000);
+        timerHelper.start(2000);
     }
 
     /* 刷新ui以及切换Fragment */
     private void refreshUi_fragment(FragmentHomeEnum en) {
+        temp_en = en;
         // 0.actionbar ui
         // 1.groupbutton change
         refreshActionbar(en);

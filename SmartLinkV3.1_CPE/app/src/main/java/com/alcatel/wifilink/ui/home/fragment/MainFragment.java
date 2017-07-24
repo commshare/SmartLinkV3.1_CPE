@@ -34,6 +34,7 @@ import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
 import com.alcatel.wifilink.utils.DataUtils;
@@ -90,7 +91,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public String TAGS = "ma";
     private RelativeLayout mRl_main_wait;
     public static String type = new String();
-    private int wanStatusOnTime;// 实时WAN口检测
+    private int wanStatusOnTime = -1;// 实时WAN口检测
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getConnType(TypeBean tb) {
@@ -183,6 +184,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
 
                 Log.d("ma_main", "onSuccess: " + result.getStatus());
+                Log.d("ma_main", "wanStatusOnTime: " + wanStatusOnTime);
+
 
                 if (type == Cons.TYPE_SIM) {/* 用户主动点击SIM */
                     sim_ui_setting();
@@ -249,6 +252,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         setNetWorkType();// unicom | mobile | telcom
         setTrafficLayout();// traffic 0MB...layout
         setSignStatus();// sign level layout
+        SmsCountHelper.setSmsCount(getActivity(),HomeActivity.mTvHomeMessageCount);
     }
 
     /* -------------------------------------------- 0.GET ALL STATUS -------------------------------------------- */

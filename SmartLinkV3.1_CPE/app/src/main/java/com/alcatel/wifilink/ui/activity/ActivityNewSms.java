@@ -1,10 +1,10 @@
 package com.alcatel.wifilink.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.Selection;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
-import com.alcatel.wifilink.common.ToastUtil;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
 import com.alcatel.wifilink.model.sms.SendSMSResult;
@@ -50,6 +50,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
     private ActionBar actionBar;
     private ImageButton ib_back;
     private TextView tv_cancel;
+    private ProgressDialog pd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -222,12 +223,19 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                 finish();
                 break;
 
-            case R.id.send_btn:
-                OnBtnSend();
-                m_etContent.setText("");
-                finish();
+            case R.id.send_btn:/* 发送短信 */
+                showSendingDialog();
+                OnBtnSend();// 发送
+                m_etContent.setText("");// 清空编辑域
                 break;
         }
+    }
+
+     /* **** showSendingDialog **** */
+    private void showSendingDialog() {
+        pd = new ProgressDialog(this);
+        pd.setMessage(getString(R.string.sms_sending));
+        pd.show();
     }
 
     @Override
@@ -250,7 +258,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                 API.get().saveSMS(new SMSSaveParam(-1, m_etContent.getText().toString(), DataUtils.getCurrent(), numList), new MySubscriber() {
                     @Override
                     protected void onSuccess(Object result) {
-                        ToastUtil.showMessage(ActivityNewSms.this, R.string.sms_save_success);
+                        ToastUtil_m.show(ActivityNewSms.this, getString(R.string.sms_save_success));
                         finish();
                     }
 
@@ -259,10 +267,10 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                         super.onResultError(error);
                         //060801: Save SMS failed. 060802: Fail with store space full.
                         if (error.getCode().equals("060801")) {
-                            ToastUtil.showMessage(ActivityNewSms.this, R.string.sms_save_error);
+                            ToastUtil_m.show(ActivityNewSms.this, getString(R.string.sms_save_error));
 
                         } else if (error.getCode().equals("060802")) {
-                            ToastUtil.showMessage(ActivityNewSms.this, R.string.sms_error_message_full_storage);
+                            ToastUtil_m.show(ActivityNewSms.this, getString(R.string.sms_error_message_full_storage));
                         }
                         finish();
                     }
@@ -309,13 +317,13 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                     resetUI();
                     switch (error.getCode()) {
                         case "060601":
-                            ToastUtil.showMessage(ActivityNewSms.this, R.string.send_sms_failed);
+                            ToastUtil_m.show(ActivityNewSms.this, getString(R.string.send_sms_failed));
                             break;
                         case "060602":
-                            ToastUtil.showMessage(ActivityNewSms.this, R.string.fail_still_sending_last_message);
+                            ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail_still_sending_last_message));
                             break;
                         case "060603":
-                            ToastUtil.showMessage(ActivityNewSms.this, R.string.fail_with_store_space_full);
+                            ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail_with_store_space_full));
                             break;
                         default:
                             break;
@@ -359,21 +367,29 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                 int sendStatus = result.getSendStatus();
                 if (sendStatus == 0) {
                     m_progressWaiting.setVisibility(View.GONE);
-                    ToastUtil.showMessage(ActivityNewSms.this, getString(R.string.none));
+                    ToastUtil_m.show(ActivityNewSms.this, getString(R.string.none));
+                    finish();
                 } else if (sendStatus == 1) {
                     getSendSMSResult();
                 } else if (sendStatus == 2) {
                     m_progressWaiting.setVisibility(View.GONE);
-                    ToastUtil.showMessage(ActivityNewSms.this, R.string.succeed);
+                    ToastUtil_m.show(ActivityNewSms.this, getString(R.string.succeed));
+                    finish();// 结束界面
                 } else if (sendStatus == 3) {
                     m_progressWaiting.setVisibility(View.GONE);
-                    ToastUtil.showMessage(ActivityNewSms.this, R.string.fail_still_sending_last_message);
+                    ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail_still_sending_last_message));
+                    finish();// 结束界面
                 } else if (sendStatus == 4) {
                     m_progressWaiting.setVisibility(View.GONE);
-                    ToastUtil.showMessage(ActivityNewSms.this, R.string.fail_with_memory_full);
+                    ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail_with_memory_full));
+                    finish();// 结束界面
                 } else if (sendStatus == 5) {
                     m_progressWaiting.setVisibility(View.GONE);
-                    ToastUtil.showMessage(ActivityNewSms.this, R.string.fail);
+                    ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail));
+                    finish();// 结束界面
+                }
+                if (pd != null) {
+                    pd.dismiss();
                 }
 
             }
@@ -382,6 +398,9 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
             protected void onFailure() {
                 super.onFailure();
                 resetUI();
+                if (pd != null) {
+                    pd.dismiss();
+                }
             }
 
             @Override

@@ -684,6 +684,7 @@
     <string name="wifi_5g_missing">Name(5G) is missing!</string>
     <string name="wep_psd_length_must_5_or_13">Wep password(5G) length must be 5 or 13!</string>
     <string name="psd_length_must_be_8_63">Password(5G) length must be 8-63!</string>
+    <string name="sms_sending">Sending...</string>
 
     <!-- 变动的字符 -->
     <string name="setting_account">Change password</string>
