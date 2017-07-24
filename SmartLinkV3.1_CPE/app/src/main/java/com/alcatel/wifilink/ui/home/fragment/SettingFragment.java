@@ -29,7 +29,6 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
-import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.connection.ConnectionState;
 import com.alcatel.wifilink.model.system.SystemInfo;
@@ -49,6 +48,7 @@ import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.SPUtils;
 
 import java.io.File;
 
@@ -64,6 +64,8 @@ import rx.Subscriber;
 public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private final static String TAG = "SettingFragment";
+    private final static String CONFIG_SPNAME = "config";
+    private final static String CONFIG_FILE_PATH = "configFilePath";
     public static boolean isFtpSupported = false;
     public static boolean isDlnaSupported = false;
     public static boolean isSharingSupported = true;
@@ -89,7 +91,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private TextView mDeviceVersion;
     private AlertDialog mCheckVersionDlg;
     private AlertDialog mUpdatingDlg;
-    private final static String mSaveUrl = "/tcl/linkhub/backup";
+    private final static String mdefaultSaveUrl = "/tcl/linkhub/backup";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -337,7 +339,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-
     }
 
     private void showBackupSuccessDialog() {
@@ -348,7 +349,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LayoutParams.setMargins(20, 0, 20, 0);
         editText.setLayoutParams(LayoutParams);
-        editText.setText(mSaveUrl);
+        editText.setText(mdefaultSaveUrl);
         builder.setView(editText);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -359,7 +360,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         builder.setPositiveButton(R.string.backup, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                downLoadConfigureFile(editText.getText().toString());
+                String savePath = editText.getText().toString();
+                SPUtils.getInstance(CONFIG_SPNAME, getActivity()).put(CONFIG_FILE_PATH, savePath);
+                downLoadConfigureFile(savePath);
             }
         });
         builder.show();
@@ -392,13 +395,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCompleted() {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), R.string.succeed);
+                ToastUtil_m.show(getActivity(), R.string.succeed);
             }
 
             @Override
             public void onError(Throwable e) {
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), R.string.fail);
+                ToastUtil_m.show(getActivity(), R.string.fail);
             }
 
             @Override
@@ -440,21 +443,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil.showMessage(getActivity(), R.string.succeed);
+                ToastUtil_m.show(getActivity(), R.string.succeed);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
-                ToastUtil.showMessage(getActivity(), R.string.fail);
+                ToastUtil_m.show(getActivity(), R.string.fail);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                ToastUtil.showMessage(getActivity(), R.string.fail);
+                ToastUtil_m.show(getActivity(), R.string.fail);
                 dismissLoadingDialog();
             }
         });
@@ -493,7 +496,16 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void restore() {
-        File file = new File(FileUtils.createFilePath(mSaveUrl), "configure.bin");
+        String savePath = SPUtils.getInstance(CONFIG_SPNAME, getActivity()).getString(CONFIG_FILE_PATH);
+        if (savePath.equals("")) {
+            ToastUtil_m.show(getActivity(), "no backupFile");
+            return;
+        }
+        File file = new File(FileUtils.createFilePath(savePath), "configure.bin");
+        if (!file.exists()) {
+            ToastUtil_m.show(getActivity(), "No this file");
+            return;
+        }
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("iptUpload", file.getName(), requestFile);
         API.get().uploadFile(new Subscriber() {
@@ -505,15 +517,17 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onCompleted() {
+                Log.d(TAG, "onCompleted ");
                 dismissLoadingDialog();
-                ToastUtil.showMessage(getActivity(), R.string.succeed);
-                showSuccessDialog();
+                ToastUtil_m.show(getActivity(), R.string.succeed);
             }
+
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onResultError " + e);
-                ToastUtil.showMessage(getActivity(), R.string.couldn_t_restore_try_again);
+                Log.d(TAG, "onResultError " + e.toString());
                 dismissLoadingDialog();
+                ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
+
             }
 
             @Override
