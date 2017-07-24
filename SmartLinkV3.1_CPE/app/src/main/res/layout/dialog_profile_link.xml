@@ -15,4 +15,10 @@
         android:gravity="center"
         android:text="@string/to_edit_profile_go_to_settings_about_web_manager"/>
 
+    <ImageView
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dip"/>
+
 </LinearLayout>
