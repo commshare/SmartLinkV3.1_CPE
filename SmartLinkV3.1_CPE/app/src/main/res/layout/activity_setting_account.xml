@@ -112,10 +112,11 @@
         <TextView
             android:id = "@+id/password_notice"
             android:layout_width = "match_parent"
-            android:layout_height = "wrap_content"
+            android:layout_height = "48dp"
             android:layout_marginLeft = "@dimen/dimen_12dip"
             android:layout_marginTop = "@dimen/dimen_10dip"
             android:text = "@string/login_forgot_password"
+            android:gravity="center"
             android:textColor = "@color/color_light_gray"
             android:textSize = "@dimen/font_size_normal"
             />
