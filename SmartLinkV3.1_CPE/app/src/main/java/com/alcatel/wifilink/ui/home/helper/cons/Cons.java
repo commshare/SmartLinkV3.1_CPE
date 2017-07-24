@@ -6,6 +6,9 @@ package com.alcatel.wifilink.ui.home.helper.cons;
 
 public class Cons {
 
+    public static String TYPE_SIM = "SIM";// 以SIM卡模式连接
+    public static String TYPE_WAN = "WAN";// 以WAN模式连接
+
     public static String ISCONNECT = "isConnect";
     public static String LOGIN_CHECK = "LOGIN_CHECK";
     public static String LOGIN_PSD = "LOGIN_PSD";
@@ -122,5 +125,9 @@ public class Cons {
 
     public static final String HH70 = "HH70";
     public static final String HH40 = "HH40";
+
+    public static final int PPPOE = 0;
+    public static final int DHCP = 1;
+    public static final int STATIC = 2;
 
 }

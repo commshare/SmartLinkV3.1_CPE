@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dip"
+        android:background="@color/main_title_background">
+
+        <ImageButton
+            android:id="@+id/ib_wanmode_back"
+            android:layout_width="@dimen/dimen_18dip"
+            android:layout_height="@dimen/dimen_35dip"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/connect_internet"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_20dip"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tv_wanmode_skip"
+            android:layout_width="@dimen/dimen_60dip"
+            android:layout_height="@dimen/dimen_40dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center|right"
+            android:text="@string/skip"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_textsize_18sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

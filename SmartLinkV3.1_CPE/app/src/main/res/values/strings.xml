@@ -678,9 +678,16 @@
     <string name="no_month_plan">No set month plan</string>
     <string name="login_failed">Login failed</string>
     <string name="insert_sim_or_wan">Try again after insert sim or wan</string>
+    <string name="no_sim_no_wan">No SIM/No WAN</string>
+    <string name="not_empty">Not permit empty</string>
+    <string name="quick_setup">quick_setup</string>
+    <string name="wifi_5g_missing">Name(5G) is missing!</string>
+    <string name="wep_psd_length_must_5_or_13">Wep password(5G) length must be 5 or 13!</string>
+    <string name="psd_length_must_be_8_63">Password(5G) length must be 8-63!</string>
 
     <!-- 变动的字符 -->
     <string name="setting_account">Change password</string>
     <string name="login_psd_error_msg">Sorry, your password is wrong!\n%1$d attempt(s) remaining</string>
+    
 
 </resources>

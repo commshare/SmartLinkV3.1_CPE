@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/image_connection"
+                    android:id="@+id/iv_detect_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_200dip"
                     android:layout_centerHorizontal="true"
@@ -123,7 +123,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/image_connection"
+                    android:layout_below="@id/iv_detect_logo"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:gravity="center"

@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
@@ -36,12 +35,18 @@ import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
 import com.alcatel.wifilink.utils.DataUtils;
-import com.alcatel.wifilink.utils.ScreenSize;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Locale;
 
 import me.itangqi.waveloadingview.WaveLoadingView;
+
+import static android.content.ContentValues.TAG;
 
 @SuppressLint("ValidFragment")
 public class MainFragment extends Fragment implements View.OnClickListener {
@@ -84,8 +89,17 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     public String TAGS = "ma";
     private RelativeLayout mRl_main_wait;
+    public static String type = new String();
+    private int wanStatusOnTime;// 实时WAN口检测
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void getConnType(TypeBean tb) {
+        type = tb.getType();
+        Log.d("ma_mainfragment", tb.getType());
+    }
 
     public MainFragment() {
+
     }
 
     public MainFragment(Activity activity) {
@@ -95,6 +109,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        EventBus.getDefault().register(this);
+
         m_view = View.inflate(getActivity(), R.layout.fragment_home_mains, null);
         typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Light.ttf");
         mConnectedView = (WaveLoadingView) m_view.findViewById(R.id.connected_button);
@@ -122,6 +139,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         zeroMB = getString(R.string.Home_zero_data);
 
         // 0. wait show
+        showWait();
         // 1. 初始化获取
         // getStatus();
         return m_view;
@@ -137,32 +155,66 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable e) {
-                // TOAT: ********** 断网时先走此方法 ***********
-                Log.d("ma", "getWanSettings : " + e.getMessage().toString());
-                connectUi(false);// set button logo
-                m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo_disconnect);
-                m_connectToNetworkTextView.setText(getString(R.string.unknown));
-                m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
-                m_networkTypeTextView.setVisibility(View.GONE);
-                m_networkLabelTextView.setText(getString(R.string.signal));
-                m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_none);
-                m_accessnumTextView.setVisibility(View.GONE);
-                m_accessstatusTextView.setText(getString(R.string.home_disconnected_to));
-                HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
+                Log.d("ma_main", "wan had not connect");
+                if (type == Cons.TYPE_WAN) {
+                    // TOAT: ********** 断网时先走此方法 ***********
+                    Log.d("ma", "getWanSettings : " + e.getMessage().toString());
+                    connectUi(false);// set button logo
+                    m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo_disconnect);
+                    m_connectToNetworkTextView.setText(getString(R.string.unknown));
+                    m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
+                    // m_networkTypeTextView.setVisibility(View.GONE);
+                    m_networkLabelTextView.setText(getString(R.string.no_sim_no_wan));
+                    m_networkLabelTextView.setText(getString(R.string.signal));
+                    m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_none);
+                    m_accessnumTextView.setVisibility(View.GONE);
+                    m_accessstatusTextView.setText(getString(R.string.home_disconnected_to));
+                    HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
+                }
+
+                if (type == Cons.TYPE_SIM) {
+                    sim_ui_setting();
+                    setAccessDeviceStatus();
+                }
             }
 
             @Override
             protected void onSuccess(WanSettingsResult result) {
-                int status = result.getStatus();
-                /* connected || connecting means that wan is connect successful */
-                // TOAT: force to wan
-                // status = Cons.CONNECTED;
-                if (status == Cons.CONNECTED) {
-                    // wan connect
-                    wan_ui_setting();
-                } else {
-                    // sim connect
+
+
+                Log.d("ma_main", "onSuccess: " + result.getStatus());
+
+                if (type == Cons.TYPE_SIM) {/* 用户主动点击SIM */
                     sim_ui_setting();
+                    // 1.如果用户主动使用SIM连接--> 此时把WAN口断开的状态记录--> 同时标志位type设置为SIM卡连接
+                    if (result.getStatus() == Cons.DISCONNECTED || result.getStatus() == Cons.DISCONNECTING) {
+                        wanStatusOnTime = result.getStatus();
+                        type = Cons.TYPE_SIM;
+                    }
+                    // 2.当检测到WAN口连接的时候--> 同时查看上一次的wan口状态是否为断开,如果是;--> 则说明用户插入了网线--> 将标志位改为WAN口连接
+                    if (result.getStatus() == Cons.CONNECTED && (wanStatusOnTime == Cons.DISCONNECTED || wanStatusOnTime == Cons.DISCONNECTING)) {
+                        type = Cons.TYPE_WAN;
+                    }
+
+                } else if (type == Cons.TYPE_WAN) {/* 用户主动点击WAN */
+                    if (result.getStatus() == Cons.CONNECTED) {
+                        wan_ui_setting();
+                        type = Cons.TYPE_WAN;// 如果WAN口连上, 把标志位修改为WAN连接
+                    }
+                    if (result.getStatus() == Cons.DISCONNECTING || result.getStatus() == Cons.DISCONNECTED) {
+                        sim_ui_setting();
+                        type = Cons.TYPE_SIM;// 如果WAN口断开, 把标志位修改为SIM卡连接
+                    }
+                } else {/* 状态不明 */
+                    int status = result.getStatus();
+                    // status = Cons.CONNECTED;
+                    if (status == Cons.CONNECTED) {
+                        // wan connect
+                        wan_ui_setting();
+                    } else {
+                        // sim connect
+                        sim_ui_setting();
+                    }
                 }
                 // device count layout
                 setAccessDeviceStatus();
@@ -208,6 +260,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d(TAGS, "setSimButtonLogo: " + e.getMessage().toString());
+                HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
             }
 
             @Override
@@ -215,6 +268,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 // 1.is sim can be work
                 if (simStatus.getSIMState() != Cons.READY) {
                     connectUi(false);// sim 卡没有准备好
+                    HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
                 } else {
                     // 2. is network can be work
                     getTrafficInfo();// sim 卡已经准备好
@@ -431,6 +485,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* setsignui according the networkstatus */
     private void setSignUi(NetworkInfos result) {
+        mRl_sigelPanel.setVisibility(View.VISIBLE);
         if (result != null) {
             if (result.getNetworkType() == Cons.NOSERVER) {
                 m_networkTypeTextView.setVisibility(View.GONE);
@@ -509,32 +564,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* **** setAccessDeviceStatus **** */
     private void setAccessDeviceStatus() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
+
             @Override
-            protected void onSuccess(SimStatus result) {
-                if (result.getSIMState() == Cons.READY) {
-                    API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
+            public void onError(Throwable e) {
+                Log.d("ma", "setAccessDeviceStatus : " + e.getMessage().toString());
+            }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d("ma", "setAccessDeviceStatus : " + e.getMessage().toString());
-                        }
-
-                        @Override
-                        protected void onSuccess(ConnectedList result) {
-                            m_accessnumTextView.setTypeface(typeFace);
-                            m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", result.getConnectedList().size()));
-                            m_accessnumTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
-                            m_accessImageView.setImageResource(R.drawable.home_ic_person_many);
-                            String strOfficial = activity.getString(R.string.access_lable);
-                            m_accessstatusTextView.setText(strOfficial);
-                        }
-                    });
-                } else {
-                    m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_none);
-                    m_accessnumTextView.setVisibility(View.GONE);
-                    m_accessstatusTextView.setText(getString(R.string.connect));
-                }
+            @Override
+            protected void onSuccess(ConnectedList result) {
+                m_accessnumTextView.setVisibility(View.VISIBLE);
+                m_accessnumTextView.setTypeface(typeFace);
+                m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", result.getConnectedList().size()));
+                m_accessnumTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
+                m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_many);
+                String strOfficial = activity.getString(R.string.access_lable);
+                m_accessstatusTextView.setText(strOfficial);
             }
         });
 
@@ -545,8 +590,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        // 1. show wait
-        showWait();
         // 2. 启动定时器
         timerHelper = new TimerHelper(activity) {
             @Override
@@ -554,7 +597,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 getStatus();
             }
         };
-        timerHelper.start(5000);
+        timerHelper.start(2000);
     }
 
     private void showWait() {
@@ -564,6 +607,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
+        EventBus.getDefault().unregister(this);
         timerHelper.stop();
     }
 

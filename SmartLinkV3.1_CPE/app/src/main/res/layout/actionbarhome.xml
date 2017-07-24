@@ -9,7 +9,10 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/action_bar_height"
         android:background="@color/main_title_background"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <!-- 标题 -->
         <TextView
@@ -33,6 +36,7 @@
 
             <!-- LogOut -->
             <TextView
+                android:id="@+id/tv_home_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

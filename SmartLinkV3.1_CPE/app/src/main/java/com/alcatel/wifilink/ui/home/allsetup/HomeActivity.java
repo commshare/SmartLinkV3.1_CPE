@@ -2,9 +2,10 @@ package com.alcatel.wifilink.ui.home.allsetup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,16 +17,13 @@ import android.widget.Toast;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.business.FeatureVersionManager;
 import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
@@ -36,15 +34,15 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.pop.SimPopHelper;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
-import com.alcatel.wifilink.ui.home.helper.utils.FraHomeHelper;
+import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeBucket;
 import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeEnum;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.OtherUtils;
-import com.alcatel.wifilink.utils.ScreenSize;
 
 import org.cybergarage.upnp.Device;
-
-import java.lang.reflect.Field;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,11 +58,10 @@ import static com.alcatel.wifilink.R.drawable.tab_sms_nor;
 import static com.alcatel.wifilink.R.drawable.tab_sms_pre;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_nor;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_pre;
+import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
-import static com.alcatel.wifilink.fileexplorer.FileSortHelper.SortMethod.size;
-import static com.alcatel.wifilink.ui.activity.SettingAccountActivity.LOGOUT_FLAG;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -103,7 +100,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @BindView(R.id.mView_split_bottom)
     View mViewSplitBottom;// 底部分割线
 
-    @BindView(R.id.mFl_home_container)
+    @BindView(mFl_home_container)
     FrameLayout mFlHomeContainer;/* 切换容器 */
 
     // group buttons
@@ -129,6 +126,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     /* action bar 的按钮 */
     private TextView barTitle;
     private RelativeLayout barLogout;
+    private TextView tv_logout;
     private ImageView barSms;
 
 
@@ -137,6 +135,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private RippleView tv_cancel;
     private RippleView tv_unlock;
     private ActionbarSetting barSetting;
+    private int container;
 
 
     @Override
@@ -159,8 +158,10 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             public void findActionbarView(View view) {
                 barTitle = (TextView) view.findViewById(R.id.mTv_home_Title);
                 barLogout = (RelativeLayout) view.findViewById(R.id.mRl_home_logout);
+                tv_logout = (TextView) view.findViewById(R.id.tv_home_logout);
                 barSms = (ImageView) view.findViewById(R.id.mIv_home_editSms);
                 barLogout.setOnClickListener(HomeActivity.this);
+                tv_logout.setOnClickListener(HomeActivity.this);
                 barSms.setOnClickListener(HomeActivity.this);
             }
         };
@@ -193,15 +194,22 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     }
 
     private void initView() {
+        container = R.id.mFl_home_container;
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
+        if (MainFragment.type==Cons.TYPE_SIM) {
+            SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
+        }
     }
 
     private void initUi() {
         // 1.getInstance button ui arrays
         initRes();
         // 2.getInstance main button ui & refresh fragment
-        refreshUi_fragment(FragmentHomeEnum.MAIN);
+        // 首次commit
+        refreshActionbar(FragmentHomeEnum.MAIN);
+        setGroupButtonUi(FragmentHomeEnum.MAIN);
+        Fragment mainFragment = new MainFragment(this);
+        fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
     }
 
 
@@ -210,6 +218,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             /* topbanner buttons */
+            case R.id.tv_home_logout:
             case R.id.mRl_home_logout:// logout
                 logout();
                 break;
@@ -248,7 +257,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
-                        if (result.getSIMState() == Cons.READY) {
+                        if (result.getSIMState() == Cons.READY && MainFragment.type == Cons.TYPE_SIM) {
                             refreshUi_fragment(FragmentHomeEnum.SMS);
                         }
                     }
@@ -269,26 +278,18 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
      * A1.登出
      */
     private void logout() {
-        // 1.injust the login status flag
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        // 2. logout action
+        API.get().logout(new MySubscriber() {
             @Override
-            protected void onSuccess(LoginState result) {
-                if (result.getState() == Cons.LOGIN) {
-                    // 2. logout action
-                    API.get().logout(new MySubscriber() {
-                        @Override
-                        protected void onSuccess(Object result) {
-                            ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
-                            // 3. when logout finish --> to the login Acitvity
-                            ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, true, true, false, 0);
-                        }
+            protected void onSuccess(Object result) {
+                ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
+                // 3. when logout finish --> to the login Acitvity
+                ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, true, true, false, 0);
+            }
 
-                        @Override
-                        protected void onFailure() {
-                            ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_failed));
-                        }
-                    });
-                }
+            @Override
+            protected void onFailure() {
+                ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_failed));
             }
         });
     }
@@ -354,7 +355,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         refreshActionbar(en);
         setGroupButtonUi(en);
         // 2.transfer the fragment
-        FraHomeHelper.commit(this, fm, R.id.mFl_home_container, en);
+        FragmentHomeBucket.showOrHideFragment(this, fm, container, en);
     }
 
     /* **** ACTION BAR根据切换改变UI **** */
@@ -388,10 +389,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         barTitle.setText(titleID < 0 ? "" : getString(titleID));
         // logout button effect?
         barLogout.setVisibility(isLogout ? VISIBLE : GONE);
-        barLogout.setClickable(isLogout);
         // is sms effect?
         barSms.setVisibility(isSms ? VISIBLE : GONE);
-        barSms.setClickable(isSms);
     }
 
     /* **** 获取SIM卡状态 **** */
@@ -425,8 +424,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             }
 
             @Override
-            public void onError(Throwable e){
-                
+            public void onError(Throwable e) {
+
             }
         });
     }
@@ -460,8 +459,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             }
 
             @Override
-            public void onError(Throwable e){
-                
+            public void onError(Throwable e) {
+
             }
         });
     }

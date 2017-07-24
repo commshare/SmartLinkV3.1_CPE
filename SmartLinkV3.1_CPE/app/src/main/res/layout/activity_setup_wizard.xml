@@ -35,14 +35,14 @@
 
     <!-- 连接成功页 -->
     <RelativeLayout
-        android:id="@+id/mRl_setupWizard_success"
+        android:id="@+id/rl_success"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/mTv_setupWizard_des_success"
+            android:id="@+id/tv_connect_des1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -52,14 +52,14 @@
         <ImageView
             android:layout_width="@dimen/dimen_200dip"
             android:layout_height="@dimen/dimen_200dip"
-            android:layout_above="@id/mTv_setupWizard_des_success"
+            android:layout_above="@id/tv_connect_des1"
             android:layout_centerHorizontal="true"
             android:src="@drawable/connected" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mTv_setupWizard_des_success"
+            android:layout_below="@id/tv_connect_des1"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_10dip"
             android:text="@string/qs_pin_unlock_congratulations_des"
@@ -73,10 +73,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/mTv_setupWizard_des_failed"
+            android:id="@+id/tv_disconnect_des1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -86,15 +86,15 @@
         <ImageView
             android:layout_width="@dimen/dimen_200dip"
             android:layout_height="@dimen/dimen_150dip"
-            android:layout_above="@id/mTv_setupWizard_des_failed"
+            android:layout_above="@id/tv_disconnect_des1"
             android:layout_centerHorizontal="true"
             android:src="@drawable/not_connected" />
 
         <TextView
-            android:id="@+id/mTv_connectStatus_des2_failed"
+            android:id="@+id/tv_disconnect_des2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mTv_setupWizard_des_failed"
+            android:layout_below="@id/tv_disconnect_des1"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_10dip"
             android:text="@string/qs_pin_unlock_can_not_connect_des"
@@ -102,10 +102,10 @@
             android:textSize="@dimen/font_size_normal" />
 
         <Button
-            android:id="@+id/mRp_setupWizard_tryagain"
+            android:id="@+id/bt_tryagain"
             android:layout_width="@dimen/dimen_120dip"
             android:layout_height="@dimen/dimen_36dip"
-            android:layout_below="@id/mTv_connectStatus_des2_failed"
+            android:layout_below="@id/tv_disconnect_des2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_30dip"
             android:background="@drawable/selector_nowifi_button"
@@ -116,10 +116,10 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mTv_setupWizard_home"
+            android:id="@+id/tv_toHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mRp_setupWizard_tryagain"
+            android:layout_below="@id/bt_tryagain"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_20dip"
             android:clickable="true"

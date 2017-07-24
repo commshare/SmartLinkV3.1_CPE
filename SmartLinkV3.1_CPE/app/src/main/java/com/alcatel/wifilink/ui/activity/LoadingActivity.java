@@ -1,8 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -10,157 +8,140 @@ import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.view.CirclePageIndicator;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadingActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
+
+public class LoadingActivity extends AppCompatActivity implements View.OnClickListener {
+
     private static final String TAG = "LoadingActivity";
     private final int SPLASH_DELAY = 1000;
-
     private Handler mHandler = new Handler();
-
-    private SharedPreferences mSharedPrefs;
-    private boolean mIsFirstRun = true;
-
-    private ImageView mLogoImg;
-
-    private ViewPager mViewPager;
+    
+    private boolean isFirstRun = true;
     private PagerAdapter mPagerAdapter;
-    private List<View> mViews;
+    private List<View> mViews = new ArrayList<>();;
+    private String firstRun = Constants.KEY_FIRST_RUN;
 
-    private CirclePageIndicator mPageIndicator;
+    @BindView(R.id.iv_logo)
+    ImageView mLogoImg;// 启屏图片
+    @BindView(R.id.vp_guide)
+    ViewPager mViewPager;// 切换器
+    @BindView(R.id.page_indicator)
+    CirclePageIndicator mPageIndicator;// 指示点
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ButterKnife.bind(this);
+        getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);
         initViews();
-
-        mSharedPrefs = getSharedPreferences(LoadingActivity.class.getSimpleName(), MODE_PRIVATE);
-        mHandler.postDelayed(this::startApp, SPLASH_DELAY);
+        mHandler.postDelayed(this::startApp, SPLASH_DELAY);// 延迟启动
     }
 
     private void initViews() {
-        mLogoImg = (ImageView) findViewById(R.id.iv_logo);
-        mViewPager = (ViewPager) findViewById(R.id.vp_guide);
-        mPageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        mViews = new ArrayList<>();
-        mViews.add(inflater.inflate(R.layout.what_new_one, null));
-        mViews.add(inflater.inflate(R.layout.what_new_two, null));
-        View view = inflater.inflate(R.layout.what_new_three, null);
-        view.findViewById(R.id.btn_start).setOnClickListener(v -> {
-            SharedPrefsUtil.getInstance(this).putBoolean(Constants.KEY_FIRST_RUN, false);
-            launchNextActivity();
-        });
-        mViews.add(view);
-
+        // get page view
+        mViews.addAll(OtherUtils.getGuidePages(this));
+        View pageLast = mViews.get(mViews.size() - 1);// 获取最后一页
+        Button bt_start = (Button) pageLast.findViewById(R.id.btn_start);
+        bt_start.setOnClickListener(this);
+        // set adapter
         mPagerAdapter = new GuidePagerAdapter(mViews);
         mViewPager.setAdapter(mPagerAdapter);
         mPageIndicator.setViewPager(mViewPager);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onClick(View v) {// 点击start button后
+        SharedPrefsUtil.getInstance(this).putBoolean(firstRun, false);
+        toNextOperation();
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
+    /* 判断wifi是否连接 */
     private boolean isWifiConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
         return NetworkInfo.State.CONNECTED == wifiState;
     }
 
+    /* 启动APP */
     private void startApp() {
-        // mIsFirstRun = mSharedPrefs.getBoolean(Constants.KEY_FIRST_RUN, true);
-        mIsFirstRun = SharedPrefsUtil.getInstance(this).getBoolean(Constants.KEY_FIRST_RUN, true);
-        Log.d(TAG, "startApp, mIsFirstRun:" + mIsFirstRun);
-        if (mIsFirstRun) {
-            showGuidePager();
+        //  判断是否为第一次使用
+        isFirstRun = SharedPrefsUtil.getInstance(this).getBoolean(firstRun, true);
+        if (isFirstRun) {
+            showGuidePager();// 显示引导页
         } else {
-            launchNextActivity();
+            toNextOperation();// 不显示引导页
         }
     }
 
-    private void launchNextActivity() {
-
-        if (!isWifiConnected()) {
-            launchRefreshWifiActivity();
-            return;
-        }
-
-        API.get().getLoginState(new MySubscriber<LoginState>() {
-            @Override
-            protected void onSuccess(LoginState result) {
-                Log.d(TAG, "login state:" + result.getState());
-                if (result.getState() == ENUM.UserLoginStatus.LOGIN.ordinal()) {
-                    launchHomeActivity();
-                } else {
-                    launchLoginActivity(result.getLoginRemainingTimes());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onResultError " + e);
-                if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
-                    launchRefreshWifiActivity();
-                }
-            }
-        });
-    }
-
+    /* 显示向导视图 */
     private void showGuidePager() {
         mLogoImg.setVisibility(View.GONE);
         mViewPager.setVisibility(View.VISIBLE);
         mPageIndicator.setVisibility(View.VISIBLE);
     }
 
-    private void launchHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        this.startActivity(intent);
+    /* 点击start之后的跳转状态 */
+    private void toNextOperation() {
+
+        // 1.if no wifi or wifi ssid is not correct
+        if (!isWifiConnected()) {
+            // to RefreshWifiActivity
+            ChangeActivity.toActivity(this, RefreshWifiActivity.class, true, true, false, 0);
+            return;
+        }
+
+        // 2.login
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                if (result.getState() == Cons.LOGIN) {
+                    // to HomeActivity
+                    ChangeActivity.toActivity(LoadingActivity.this, WizardActivity.class, true, true, false, 0);
+                } else {
+                    // to LoginActivity
+                    ChangeActivity.toActivity(LoadingActivity.this, LoginActivity.class, true, true, false, 0);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
+                    // to RefreshWifiActivity
+                    ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, true, true, false, 0);
+                }
+            }
+        });
     }
 
-    private void launchRefreshWifiActivity() {
-        Intent intent = new Intent(this, RefreshWifiActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void launchLoginActivity(int remainTimes) {
-        ChangeActivity.toActivity(this, LoginActivity.class, true, true, false, 0);
-    }
-
-
+    /* -------------------------------------------- Adapter -------------------------------------------- */
     private class GuidePagerAdapter extends PagerAdapter {
         List<View> mList;
 

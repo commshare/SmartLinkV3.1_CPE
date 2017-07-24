@@ -24,7 +24,7 @@ import com.alcatel.wifilink.ui.setupwizard.helper.FragmentEnum;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
+@Deprecated
 public class SetupWizardActivity extends BaseActivity {
 
     public RelativeLayout mainHeaderTopbanner;// 顶部标题容器
@@ -42,14 +42,14 @@ public class SetupWizardActivity extends BaseActivity {
     @BindView(R.id.mFl_Setupwizard_container)
     public FrameLayout mFlSetupwizard;/* 切换容器 */
 
-    @BindView(R.id.mRl_setupWizard_success)
+    @BindView(R.id.rl_success)
     public RelativeLayout mRl_Success;// 成功UI
 
     @BindView(R.id.mRl_setupWizard_failed)
     public RelativeLayout mRl_Failed;// 失败UI
-    @BindView(R.id.mRp_setupWizard_tryagain)
+    @BindView(R.id.bt_tryagain)
     public Button mRp_Tryagain;// try again button
-    @BindView(R.id.mTv_setupWizard_home)
+    @BindView(R.id.tv_toHome)
     public TextView mTv_Home;// home button
 
 
@@ -98,7 +98,7 @@ public class SetupWizardActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.main_header_back_iv, R.id.main_header_right_text, R.id.mRp_setupWizard_tryagain, R.id.mTv_setupWizard_home})
+    @OnClick({R.id.main_header_back_iv, R.id.main_header_right_text, R.id.bt_tryagain, R.id.tv_toHome})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.main_header_back_iv:/* back button*/
@@ -111,11 +111,11 @@ public class SetupWizardActivity extends BaseActivity {
                 // 2.to wifi setting activity
                 ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 0);
                 break;
-            case R.id.mRp_setupWizard_tryagain:/* try again button */
+            case R.id.bt_tryagain:/* try again button */
                 // 1.to connecttype fragment + refresh topbanner
                 refreshUi();
                 break;
-            case R.id.mTv_setupWizard_home:/* home button */
+            case R.id.tv_toHome:/* home button */
                 // to Main Activity
                 CPEConfig.getInstance().setQuickSetupFlag();
                 ChangeActivity.toActivity(this, MainActivity.class, true, true, false, 0);

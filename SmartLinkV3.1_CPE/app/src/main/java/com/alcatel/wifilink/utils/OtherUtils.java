@@ -87,7 +87,7 @@ public class OtherUtils {
     }
 
     /**
-     * 获取设备的版本号
+     * 获取设备的驱动版本号
      */
     public void getDeviceSwVersion() {
         // 1.需要加密的版本
@@ -118,6 +118,10 @@ public class OtherUtils {
         });
     }
 
+
+    /**
+     * 获取硬件版本: HH70 OR HH40
+     */
     public void getDeviceHWVersion() {
         // 1.需要加密的版本
         List<String> needEncryptVersions = new ArrayList<String>();
@@ -133,9 +137,26 @@ public class OtherUtils {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                
+
             }
         });
+    }
+
+
+    /**
+     * 获取引导页的view
+     * @param context
+     * @return
+     */
+    public static List<View> getGuidePages(Context context) {
+        List<View> pages = new ArrayList<View>();
+        View page1 = View.inflate(context, R.layout.what_new_one, null);
+        View page2 = View.inflate(context, R.layout.what_new_two, null);
+        View page3 = View.inflate(context, R.layout.what_new_three, null);
+        pages.add(page1);
+        pages.add(page2);
+        pages.add(page3);
+        return pages;
     }
 
     /* -------------------------------------------- INTERFACE -------------------------------------------- */

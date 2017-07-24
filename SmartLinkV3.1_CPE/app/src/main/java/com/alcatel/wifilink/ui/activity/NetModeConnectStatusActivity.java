@@ -43,7 +43,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
     ImageView mIvConnectStatusLogoFailed;
     @BindView(R.id.mTv_connectStatus_des1_failed)
     TextView mTvConnectStatusDes1Failed;
-    @BindView(R.id.mTv_connectStatus_des2_failed)
+    @BindView(R.id.tv_disconnect_des2)
     TextView mTvConnectStatusDes2Failed;
     @BindView(R.id.mRl_connectStatus_failed)
     RelativeLayout mRlConnectStatusFailed;

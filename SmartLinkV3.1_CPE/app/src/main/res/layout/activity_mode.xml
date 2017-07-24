@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alcatel.wifilink.ui.activity.SettingNetModeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/netmode"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/rg_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <RadioButton
+                android:id="@+id/rb_dhcp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_height"
+                android:layout_marginLeft="@dimen/dimen_20dip"
+                android:layout_marginRight="@dimen/dimen_20dip"
+                android:button="@null"
+                android:text="DHCP"
+                android:textSize="@dimen/dimen_textsize_16sp" />
+
+            <RadioButton
+                android:id="@+id/rb_pppoe"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_height"
+                android:layout_marginLeft="@dimen/dimen_20dip"
+                android:layout_marginRight="@dimen/dimen_20dip"
+                android:button="@null"
+                android:text="@string/pppoe"
+                android:textSize="@dimen/dimen_textsize_16sp" />
+
+            <RadioButton
+                android:id="@+id/rb_staticIp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_height"
+                android:layout_marginLeft="@dimen/dimen_20dip"
+                android:layout_marginRight="@dimen/dimen_20dip"
+                android:button="@null"
+                android:text="@string/statics_ip"
+                android:textSize="@dimen/dimen_textsize_16sp" />
+
+        </RadioGroup>
+
+        <!-- 待变容器 -->
+        <LinearLayout
+            android:id="@+id/ll_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:visibility="gone"
+            />
+
+        <!-- 按钮 -->
+        <com.alcatel.wifilink.appwidget.RippleView
+            android:id="@+id/rv_connect"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_45dip"
+            android:layout_marginLeft="@dimen/dimen_20dip"
+            android:layout_marginRight="@dimen/dimen_20dip"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:background="@drawable/netmode_normal"
+            android:gravity="center"
+            android:text="@string/connect"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_textsize_16sp"
+            app:alphaFactor="0.8"
+            app:hover="true"
+            app:rippleColor="@color/white" />
+
+    </LinearLayout>
+
+    <!-- detecting internet connection type -->
+    <RelativeLayout
+        android:id="@+id/rl_detecting"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/not_wifi_background"
+        android:visibility="visible"
+        tools:context=".ui.activity.RefreshWifiActivity">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_detect_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_200dip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dimen_30dip"
+                android:layout_marginRight="@dimen/dimen_30dip"
+                android:layout_marginTop="@dimen/dimen_30dip"
+                android:background="@drawable/device_ic"
+                android:contentDescription="@null"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_detect_logo"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/netmode_deteing_internet"
+                android:textColor="@color/color_deep_grey"
+                android:textSize="@dimen/font_size_normal"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- 连接失败页 -->
+    <RelativeLayout
+        android:id="@+id/rl_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_disconnect_des1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/network_disconnected"
+            android:textSize="@dimen/font_size_large" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_150dip"
+            android:layout_above="@id/tv_disconnect_des1"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/not_connected" />
+
+        <TextView
+            android:id="@+id/tv_disconnect_des2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_disconnect_des1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:text="@string/qs_pin_unlock_can_not_connect_des"
+            android:textColor="@color/grey_text"
+            android:textSize="@dimen/font_size_normal" />
+
+        <Button
+            android:id="@+id/bt_tryagain"
+            android:layout_width="@dimen/dimen_120dip"
+            android:layout_height="@dimen/dimen_36dip"
+            android:layout_below="@id/tv_disconnect_des2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_30dip"
+            android:background="@drawable/selector_nowifi_button"
+            android:gravity="center"
+            android:text="@string/smsdetail_tryagain_confirm"
+            android:textColor="@color/mg_blue"
+            android:textSize="@dimen/dimen_textsize_16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_toHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bt_tryagain"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_20dip"
+            android:clickable="true"
+            android:text="@string/qs_pin_unlock_to_home"
+            android:textColor="@color/grey_text"
+            android:textSize="@dimen/font_size_normal" />
+    </RelativeLayout>
+
+    <!-- 连接成功页 -->
+    <RelativeLayout
+        android:id="@+id/rl_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_connect_des1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/qs_pin_unlock_congratulations"
+            android:textSize="@dimen/font_size_large" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_200dip"
+            android:layout_height="@dimen/dimen_200dip"
+            android:layout_above="@id/tv_connect_des1"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/connected" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_connect_des1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:text="@string/qs_pin_unlock_congratulations_des"
+            android:textColor="@color/grey_text" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

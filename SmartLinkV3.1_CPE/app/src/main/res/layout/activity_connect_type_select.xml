@@ -274,7 +274,7 @@
             android:src="@drawable/not_connected" />
 
         <TextView
-            android:id="@+id/mTv_connectStatus_des2_failed"
+            android:id="@+id/tv_disconnect_des2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mTv_connectStatus_des1_failed"
@@ -288,7 +288,7 @@
             android:id="@+id/mRp_connectStatus_tryagain"
             android:layout_width="@dimen/dimen_120dip"
             android:layout_height="@dimen/dimen_36dip"
-            android:layout_below="@id/mTv_connectStatus_des2_failed"
+            android:layout_below="@id/tv_disconnect_des2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_30dip"
             android:background="@drawable/selector_nowifi_button"

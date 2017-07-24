@@ -2,7 +2,6 @@ package com.alcatel.wifilink.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,8 +17,12 @@ import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +77,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_simUnlock_back:
-                finish();
+                ChangeActivity.toActivity(SimUnlockActivity.this, WizardActivity.class, true, true, false, 0);
                 break;
         }
     }
@@ -153,6 +156,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
+                EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
                 ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, true, true, false, 0);
             }
 
@@ -169,7 +173,6 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(SimStatus result) {
                 pinRemainingTimes = result.getPinRemainingTimes();
-                System.out.println("pinRemainingTimes = " + pinRemainingTimes);
                 runOnUiThread(() -> {
                     tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes));
                 });

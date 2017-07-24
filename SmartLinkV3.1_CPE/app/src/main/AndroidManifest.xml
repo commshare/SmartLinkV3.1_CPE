@@ -316,6 +316,12 @@
         </activity>
         <activity android:name=".ui.sms.activity.SmsDetailActivity">
         </activity>
+        <activity android:name=".ui.type.ui.WanModeActivity">
+        </activity>
+        <activity android:name=".ui.setupwizard.allsetup.WizardActivity">
+        </activity>
+        <activity android:name=".ui.setupwizard.allsetup.WifiGuideActivity">
+        </activity>
     </application>
 
 </manifest>

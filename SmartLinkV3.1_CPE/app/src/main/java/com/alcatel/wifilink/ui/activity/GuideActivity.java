@@ -18,6 +18,7 @@ import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +139,7 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
                         //                         mActivity.startActivity(intent);
                         //                         mActivity.finish();
                         // to setupwizard activity
-                        ChangeActivity.toActivity(GuideActivity.this, SetupWizardActivity.class, true, true, false, 0);
+                        ChangeActivity.toActivity(GuideActivity.this, WizardActivity.class, true, true, false, 0);
                     }
                 });
             }

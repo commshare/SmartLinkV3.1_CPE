@@ -7,7 +7,7 @@
     tools:context=".ui.activity.RefreshWifiActivity">
 
     <ImageView
-        android:id="@+id/image_connection"
+        android:id="@+id/iv_detect_logo"
         android:layout_width="299dp"
         android:layout_height="173dp"
         android:layout_marginTop="48dp"
@@ -18,7 +18,7 @@
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image_connection"
+        android:layout_below="@id/iv_detect_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:text="@string/refresh_no_device_manage"

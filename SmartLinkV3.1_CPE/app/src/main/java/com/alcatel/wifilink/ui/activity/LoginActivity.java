@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -21,16 +22,23 @@ import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginResult;
 import com.alcatel.wifilink.model.user.LoginState;
+import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
+import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
+import com.alcatel.wifilink.ui.type.ui.WanModeActivity;
 import com.alcatel.wifilink.utils.EditUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_nor;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_pre;
@@ -46,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private RelativeLayout rl_remenberPsd;
 
     // private int mRemainingTimes;
-    private boolean ischeck;
+    private boolean ischeck = false;
     private ImageView iv_loginCheckbox;
     private TextView mTv_forgotPsd;
 
@@ -54,7 +62,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        // is remember checkbox check
+        ischeck = SharedPrefsUtil.getInstance(this).getBoolean(Cons.LOGIN_CHECK, false);
         // mRemainingTimes = getIntent().getIntExtra("remain_times", 0);
         mApplyBtn = (Button) findViewById(R.id.login_apply_btn);
         mApplyBtn.setOnClickListener(this);
@@ -62,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mPasswdEdit = (EditText) findViewById(R.id.login_edit_view);
         // get remember psd
         String psd_remember = SharedPrefsUtil.getInstance(this).getString(Cons.LOGIN_PSD, "");
-        mPasswdEdit.setText(psd_remember);
+        mPasswdEdit.setText(ischeck ? psd_remember : "");
         mApplyBtn.setEnabled(psd_remember.length() >= 5);
         OtherUtils.setLastSelection(mPasswdEdit);
         // set text watcher
@@ -90,7 +99,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         rl_remenberPsd = (RelativeLayout) findViewById(R.id.rl_login_remenberPsd);
         rl_remenberPsd.setOnClickListener(this);
         iv_loginCheckbox = (ImageView) findViewById(R.id.iv_login_checkbox);
-        ischeck = SharedPrefsUtil.getInstance(this).getBoolean(Cons.LOGIN_CHECK, false);
         iv_loginCheckbox.setImageResource(ischeck ? general_btn_remember_pre : general_btn_remember_nor);
 
         // 忘记密码
@@ -106,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 iv_loginCheckbox.setImageResource(ischeck ? general_btn_remember_pre : general_btn_remember_nor);
                 // remember flag
                 SharedPrefsUtil.getInstance(this).putBoolean(Cons.LOGIN_CHECK, ischeck);
-                // psd
+                // password
                 SharedPrefsUtil.getInstance(this).putString(Cons.LOGIN_PSD, ischeck ? EditUtils.getContent(mPasswdEdit) : "");
                 break;
 
@@ -144,17 +152,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             protected void onSuccess(LoginResult result) {
                 Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                boolean quickSetupFlag = CPEConfig.getInstance().getQuickSetupFlag();
-                if (quickSetupFlag) {
-                    launchHomeActivity();
-                } else {
-                    ChangeActivity.toActivity(LoginActivity.this, SetupWizardActivity.class, true, true, false, 0);
-                }
-                Log.d(TAG, "token = " + result.getToken());
                 // commit the token
                 API.get().updateToken(result.getToken());
                 // remember psd
                 SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
+                // 判断连接模式( SIM | WAN )
+                checkConnectMode();
             }
 
             @Override
@@ -170,6 +173,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     ToastUtil_m.show(LoginActivity.this, getString(R.string.login_failed));
                 }
+            }
+        });
+    }
+
+    // TODO: 2017/7/21  
+    private void checkConnectMode() {
+
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+            @Override
+            protected void onSuccess(WanSettingsResult result) {
+                int wanStatus = result.getStatus();
+                API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                    @Override
+                    protected void onSuccess(SimStatus result) {
+                        int simState = result.getSIMState();
+                        boolean simflag = simState == Cons.READY || simState == Cons.PIN_REQUIRED || simState == Cons.PUK_REQUIRED;
+                        if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
+                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, true, true, false, 0);
+                            return;
+                        }
+                        if (wanStatus != Cons.CONNECTED && simflag) {/* 只有SIM卡 */
+                            if (simState == Cons.PIN_REQUIRED) {
+                                ChangeActivity.toActivity(LoginActivity.this, SimUnlockActivity.class, true, true, false, 0);
+                            } else if (simState == Cons.PUK_REQUIRED) {
+                                ChangeActivity.toActivity(LoginActivity.this, PukUnlockActivity.class, true, true, false, 0);
+                            } else if (simState == Cons.READY) {
+                                EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
+                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, true, true, false, 0);
+                            }
+                            return;
+                        }
+                        if (wanStatus == Cons.CONNECTED & !simflag) {/* 只有WAN口 */
+                            ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, true, true, false, 0);
+                            return;
+                        }
+                        if (wanStatus != Cons.CONNECTED & !simflag) {/* 都没有 */
+                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, true, true, false, 0);
+                            return;
+                        }
+
+                    }
+                });
             }
         });
     }

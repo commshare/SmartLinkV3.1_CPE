@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Dimension;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,12 +12,14 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
 
@@ -42,7 +43,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
     EditText etPukPinConfirm;// confirm new pin
     @BindView(R.id.rv_puk_unlock_done)
     RippleView rvPukUnlockDone;// done button
-    
+
     private ActionBar actionbar;
     private ImageView iv_back;
     private int pukRemain;// PUK剩余次数
@@ -111,7 +112,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
         tvPukUnlockRemainCount.setText(textCount + "");
         tvPukUnlockRemainCount.setTextSize(Dimension.SP, fontsize);
         tvPukUnlockRemainCount.setTextColor(colorId);
-        
+
         tvPukUnlockRemainDes.setTextSize(Dimension.SP, fontsize);
         tvPukUnlockRemainDes.setTextColor(colorId);
         tvPukUnlockRemainDes.setText(textDes);
@@ -146,7 +147,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(PukUnlockActivity.this, getString(R.string.puk_unlock_success));
-                PukUnlockActivity.this.finish();
+                ChangeActivity.toActivity(PukUnlockActivity.this, LoadingActivity.class, true, true, false, 0);
             }
 
             @Override
@@ -185,7 +186,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_simUnlock_back:
-                finish();
+                ChangeActivity.toActivity(PukUnlockActivity.this, LoadingActivity.class, true, true, false, 0);
                 break;
         }
 

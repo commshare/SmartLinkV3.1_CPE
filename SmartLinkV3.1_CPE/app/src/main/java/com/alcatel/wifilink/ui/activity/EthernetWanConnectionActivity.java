@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
@@ -84,34 +85,34 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
     }
 
     private void getWanSettings() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>(){
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
-                Log.v(TAG,"account"+result);
                 mWanSettingsResult = result;
-                if(result.getStatus() == 1 && mIsConnecting) {
+                if (result.getStatus() == 1 && mIsConnecting) {
                     getWanSettings();
                     return;
-                } else if(result.getStatus() == 2) {
+                } else if (result.getStatus() == 2) {
                     mIsConnecting = false;
                 }
-                if(result.getConnectType() == 0) {
+                if (result.getConnectType() == 0) {
                     showConnectPppoe();
-                } else if(result.getConnectType() == 1) {
+                } else if (result.getConnectType() == 1) {
                     showConnectDhcp();
-                } else if(result.getConnectType() == 2) {
+                } else if (result.getConnectType() == 2) {
                     showConnectStaticIp();
                 }
                 mPppoeAccount.setText(result.getAccount().toString());
                 mPppoePassword.setText(result.getPassword().toString());
-                mPppoeMtu.setText(result.getPppoeMtu()+"");
+                mPppoeMtu.setText(result.getPppoeMtu() + "");
                 mStaticIpAddress.setText(result.getIpAddress().toString());
                 mStaticIpSubnetMask.setText(result.getSubNetMask().toString());
                 mStaticIpDefaultGateway.setText(result.getGateway().toString());
                 mStaticIpPreferredDns.setText(result.getPrimaryDNS().toString());
                 mStaticIpSecondaryDns.setText(result.getSecondaryDNS().toString());
-                mStaticIpMtu.setText(result.getMtu()+"");
+                mStaticIpMtu.setText(result.getMtu() + "");
             }
+
             @Override
             protected void onFailure() {
                 Log.d(TAG, "getWanSettings error");
@@ -126,6 +127,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
                 Toast.makeText(EthernetWanConnectionActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 getWanSettings();
             }
+
             @Override
             protected void onFailure() {
                 mIsConnecting = false;
@@ -149,7 +151,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
                 showConnectStaticIp();
                 break;
             case R.id.btn_connect:
-                if(mConnectOrDisconnect.getText().toString().equals(getString(R.string.connect))) {
+                if (mConnectOrDisconnect.getText().toString().equals(getString(R.string.connect))) {
                     connectWan();
                 } else {
                     Toast.makeText(EthernetWanConnectionActivity.this, R.string.it_is_connected_you_can_switch_other_connection_mode_page, Toast.LENGTH_SHORT).show();
@@ -176,7 +178,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
     }
 
     private void showConnectStaticIp() {
-        if(mWanSettingsResult.getConnectType() == 2 && mWanSettingsResult.getStatus() == 2){
+        if (mWanSettingsResult.getConnectType() == 2 && mWanSettingsResult.getStatus() == 2) {
             mConnectOrDisconnect.setText(R.string.disconnect);
         } else {
             mConnectOrDisconnect.setText(R.string.connect);
@@ -191,7 +193,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
     }
 
     private void showConnectDhcp() {
-        if(mWanSettingsResult.getConnectType() == 1 && mWanSettingsResult.getStatus() == 2){
+        if (mWanSettingsResult.getConnectType() == 1 && mWanSettingsResult.getStatus() == 2) {
             mConnectOrDisconnect.setText(R.string.disconnect);
         } else {
             mConnectOrDisconnect.setText(R.string.connect);
@@ -206,7 +208,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
     }
 
     private void showConnectPppoe() {
-        if(mWanSettingsResult.getConnectType() == 0 && mWanSettingsResult.getStatus() == 2){
+        if (mWanSettingsResult.getConnectType() == 0 && mWanSettingsResult.getStatus() == 2) {
             mConnectOrDisconnect.setText(R.string.disconnect);
         } else {
             mConnectOrDisconnect.setText(R.string.connect);
