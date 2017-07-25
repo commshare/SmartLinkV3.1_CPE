@@ -56,18 +56,18 @@
                     android:orientation = "horizontal">
 
                     <EditText
-                        android:id = "@+id/new_password"
-                        android:layout_width = "match_parent"
-                        android:layout_height = "wrap_content"
-                        android:layout_marginLeft = "@dimen/dimen_12dip"
-                        android:background = "@null"
-                        android:hint = "@string/setting_new_password"
-                        android:imeOptions = "flagNoExtractUi"
-                        android:inputType = "textPassword"
-                        android:paddingBottom = "15dp"
-                        android:paddingTop = "@dimen/dimen_15dip"
-                        android:textColor = "@color/grey_text"
-                        android:textSize = "@dimen/dimen_textsize_16sp"
+                        android:id="@+id/new_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_12dip"
+                        android:background="@null"
+                        android:hint="@string/setting_new_password"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="textPassword"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="@dimen/dimen_15dip"
+                        android:textColor="@color/grey_text"
+                        android:textSize="@dimen/dimen_textsize_16sp"
                         />
                 </LinearLayout>
 

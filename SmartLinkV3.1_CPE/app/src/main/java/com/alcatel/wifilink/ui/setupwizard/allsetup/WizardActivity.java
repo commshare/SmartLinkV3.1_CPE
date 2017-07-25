@@ -109,7 +109,9 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
             @Override
             protected void findActionbarView(View view) {
                 View ib_back = view.findViewById(R.id.ib_wizard_back);
+                View tv_skip = view.findViewById(R.id.tv_main_skip);
                 ib_back.setOnClickListener(WizardActivity.this);
+                tv_skip.setOnClickListener(WizardActivity.this);
             }
         }.settingActionbarAttr(this, actionbar, R.layout.actionbar_wizard);
     }
@@ -159,6 +161,14 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        finish();
+        switch (v.getId()) {
+            case R.id.ib_wizard_back:
+                finish();
+                break;
+            case R.id.tv_main_skip:
+                ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
+                break;
+        }
+
     }
 }

@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // get remember psd
         String psd_remember = SharedPrefsUtil.getInstance(this).getString(Cons.LOGIN_PSD, "");
         mPasswdEdit.setText(ischeck ? psd_remember : "");
-        mApplyBtn.setEnabled(psd_remember.length() >= 5);
+        mApplyBtn.setEnabled(psd_remember.length() >= 4);
         OtherUtils.setLastSelection(mPasswdEdit);
         // set text watcher
         mPasswdEdit.addTextChangedListener(new TextWatcher() {
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String passwd = mPasswdEdit.getText().toString().trim();
-                mApplyBtn.setEnabled(passwd.length() >= 5);
+                mApplyBtn.setEnabled(passwd.length() >= 4);
             }
 
             @Override

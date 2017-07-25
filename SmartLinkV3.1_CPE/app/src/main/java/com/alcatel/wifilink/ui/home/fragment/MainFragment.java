@@ -37,6 +37,7 @@ import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
+import com.alcatel.wifilink.ui.view.DynamicWave;
 import com.alcatel.wifilink.utils.DataUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -92,6 +93,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mRl_main_wait;
     public static String type = new String();
     private int wanStatusOnTime = -1;// 实时WAN口检测
+    private DynamicWave dw_main;
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getConnType(TypeBean tb) {
@@ -136,6 +138,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         m_accessDeviceLayout = (RelativeLayout) m_view.findViewById(R.id.access_num_layout);
         mRl_main_wait = (RelativeLayout) m_view.findViewById(R.id.rl_main_wait);
+
+        dw_main = (DynamicWave) m_view.findViewById(R.id.dw_main);
 
         zeroMB = getString(R.string.Home_zero_data);
 
@@ -182,11 +186,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(WanSettingsResult result) {
 
-
-                Log.d("ma_main", "onSuccess: " + result.getStatus());
-                Log.d("ma_main", "wanStatusOnTime: " + wanStatusOnTime);
-
-
                 if (type == Cons.TYPE_SIM) {/* 用户主动点击SIM */
                     sim_ui_setting();
                     // 1.如果用户主动使用SIM连接--> 此时把WAN口断开的状态记录--> 同时标志位type设置为SIM卡连接
@@ -209,6 +208,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         type = Cons.TYPE_SIM;// 如果WAN口断开, 把标志位修改为SIM卡连接
                     }
                 } else {/* 状态不明 */
+                    type = Cons.TYPE_SIM;
                     int status = result.getStatus();
                     // status = Cons.CONNECTED;
                     if (status == Cons.CONNECTED) {
@@ -221,6 +221,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 }
                 // device count layout
                 setAccessDeviceStatus();
+                mRl_main_wait.setVisibility(View.GONE);
                 // when type check is finish , logo button can be click
                 // canClick = true;
             }
@@ -252,7 +253,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         setNetWorkType();// unicom | mobile | telcom
         setTrafficLayout();// traffic 0MB...layout
         setSignStatus();// sign level layout
-        SmsCountHelper.setSmsCount(getActivity(),HomeActivity.mTvHomeMessageCount);
+        SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
     }
 
     /* -------------------------------------------- 0.GET ALL STATUS -------------------------------------------- */
@@ -265,6 +266,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             public void onError(Throwable e) {
                 Log.d(TAGS, "setSimButtonLogo: " + e.getMessage().toString());
                 HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -287,6 +289,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "getTrafficInfo : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -311,7 +314,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             canClick = true;
                             mRl_main_wait.setVisibility(View.GONE);
                         }
+
                     });
+
+
                 }
             }
         });
@@ -332,6 +338,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "getNetworkInfo : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -356,6 +363,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "isConnectStatus : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -387,6 +395,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "getUsageRecord : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -455,6 +464,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "setSignStatus : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -478,6 +488,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "issignNetworked : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -573,10 +584,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "setAccessDeviceStatus : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
             protected void onSuccess(ConnectedList result) {
+                mRl_main_wait.setVisibility(View.GONE);
                 m_accessnumTextView.setVisibility(View.VISIBLE);
                 m_accessnumTextView.setTypeface(typeFace);
                 m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", result.getConnectedList().size()));
@@ -673,6 +686,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "connect : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
@@ -709,6 +723,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma", "getMonthlyPlan : " + e.getMessage().toString());
+                mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override

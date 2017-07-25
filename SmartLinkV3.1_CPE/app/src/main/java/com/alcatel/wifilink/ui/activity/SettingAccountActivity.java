@@ -63,7 +63,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
             Toast.makeText(this, getString(R.string.inconsistent_new_password), Toast.LENGTH_SHORT).show();
             return;
         }
-        if (confirmPwd.length() < 5 || confirmPwd.length() > 16) {
+        if (confirmPwd.length() < 4 || confirmPwd.length() > 16) {
             Toast.makeText(this, getString(R.string.change_passowrd_invalid_password), Toast.LENGTH_SHORT).show();
             return;
         }

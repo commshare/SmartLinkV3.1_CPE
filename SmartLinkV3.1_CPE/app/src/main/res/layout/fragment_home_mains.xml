@@ -31,7 +31,7 @@
                     android:id="@+id/connected_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <!-- 圆形LOGO -->
                     <com.alcatel.wifilink.ui.view.CircleProgress
@@ -122,6 +122,7 @@
 
         <!-- *** wave view *** -->
         <com.alcatel.wifilink.ui.view.DynamicWave
+            android:id="@+id/dw_main"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_16dip"
             android:background="@color/home_connect_background_blue" />
