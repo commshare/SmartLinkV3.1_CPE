@@ -253,12 +253,31 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
         API.get().setWanSettings(wsp, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                success();
+                getWanStatus();
+
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 UiChange(false, false, true);
+            }
+        });
+    }
+
+    /* 获取WAN口是否连接(迭代调用) */
+    private void getWanStatus() {
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+            @Override
+            protected void onSuccess(WanSettingsResult result) {
+                int status = result.getStatus();
+                if (status == Cons.CONNECTED) {/* 连上 */
+                    success();
+                } else if (status == Cons.CONNECTING) {/* 正在连接 */
+                    getWanStatus();
+                } else {/* 没有连上 */
+                    UiChange(false, false, true);
+                }
+
             }
         });
     }

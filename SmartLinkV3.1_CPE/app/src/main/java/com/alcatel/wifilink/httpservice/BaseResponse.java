@@ -118,7 +118,7 @@ public class BaseResponse implements Parcelable {
     public void parseResult(Context context, JSONObject jsonResult) {
         if (jsonResult == null) {
             m_response_result = RESPONSE_INVALID;
-            Log.d("SmartLinkServerResponse", "%s: Empty response!" + this.getClass().getName());
+            //Log.d("SmartLinkServerResponse", "%s: Empty response!" + this.getClass().getName());
             return;
         }
 
@@ -169,7 +169,7 @@ public class BaseResponse implements Parcelable {
 
     public void setIntent(Intent intent) {
         if (intent == null) {
-            Log.e(TAG, "null intent parameter");
+            //Log.e(TAG, "null intent parameter");
             return;
         }
         m_intent = intent;
@@ -180,7 +180,7 @@ public class BaseResponse implements Parcelable {
             if (action != null && !action.isEmpty()) {
                 m_intent = new Intent(action);
             } else if (broadcastAction == null || broadcastAction.isEmpty()) {
-                Log.e(TAG, "invalid broadcast action");
+                //Log.e(TAG, "invalid broadcast action");
                 m_intent = new Intent();
             } else {
                 m_intent = new Intent(broadcastAction);
@@ -201,10 +201,10 @@ public class BaseResponse implements Parcelable {
         if (isBroadcast()) {
             Intent intent = getIntent(null);
             intent.putExtra(MessageUti.HTTP_RESPONSE, this);
-            Log.d(TAG, "enter sendBroadcast, the action is " + intent.getAction());
+            //Log.d(TAG, "enter sendBroadcast, the action is " + intent.getAction());
             context.sendBroadcast(intent);
         } else {
-            Log.d(TAG, "do not send broadcast");
+            //Log.d(TAG, "do not send broadcast");
         }
     }
 }

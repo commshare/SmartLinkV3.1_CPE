@@ -1,16 +1,16 @@
-<RelativeLayout
+<com.zhy.android.percent.support.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <LinearLayout
+    <com.zhy.android.percent.support.PercentLinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
         <!-- 主要布局 -->
         <RelativeLayout
@@ -121,25 +121,30 @@
         </RelativeLayout>
 
         <!-- *** wave view *** -->
-        <com.alcatel.wifilink.ui.view.DynamicWave
-            android:id="@+id/dw_main"
+        <com.zhy.android.percent.support.PercentRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_16dip"
-            android:background="@color/home_connect_background_blue" />
+            android:layout_height="wrap_content"
+            app:layout_heightPercent="5%h">
+
+            <com.alcatel.wifilink.ui.view.DynamicWave
+                android:id="@+id/dw_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/home_connect_background_blue" />
+        </com.zhy.android.percent.support.PercentRelativeLayout>
 
         <!-- *** signal and connected *** -->
         <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@color/color_white"
             android:fillViewport="true"
             android:overScrollMode="never">
 
             <!-- *** signal layout *** -->
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -261,16 +266,17 @@
             </LinearLayout>
         </ScrollView>
 
-    </LinearLayout>
+    </com.zhy.android.percent.support.PercentLinearLayout>
 
+    <!-- 等待 -->
     <RelativeLayout
-        android:visibility="gone"
-        android:clickable="true"
         android:id="@+id/rl_main_wait"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.7"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:clickable="true"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/dimen_40dip"
@@ -279,4 +285,4 @@
             android:src="@drawable/waiting_progress_blue" />
     </RelativeLayout>
 
-</RelativeLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

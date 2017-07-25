@@ -122,4 +122,5 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'me.itangqi.waveloadingview:library:0.3.5'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'com.zhy:percent-support-extends:1.1.1'
 }

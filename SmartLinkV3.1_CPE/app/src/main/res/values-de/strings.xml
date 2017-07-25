@@ -130,7 +130,6 @@
     <string name="microsd_music">Musik</string>
     <string name="microsd_pictures">Bilder</string>
     <string name="microsd_no_sdcard">SD-Karte einlegen</string>
-    <string name="setting_account">Anmeldepasswort</string>
     <string name="setting_network">Netzwerk</string>
     <string name="setting_mobile_network">Mobiles Netz</string>
     <string name="ethernet_wan_connection">Ethernet-WAN-Verbindung</string>
@@ -286,7 +285,6 @@
     <string name="IDS_PIN_CHECK_PUK_PROGRESS">Super-PIN wird überprüft</string>
     <string name="remain_times">%1$d Versuch(e) verbleibend</string>
     <string name="login_prompt_str">Das Passwort ist falsch.</string>
-    <string name="login_psd_error_msg">Das Passwort ist falsch!\n%1$d attempt(s) remaining</string>
     <string name="login_check_dialog_title">Anmelden</string>
     <string name="login_invalid_password">Ungültiges Passwort. Das Passwort darf nur folgende Zeichen enthalten: 0 - 9, a - z, A - Z, \&quot;-+!@$#^&amp;*\&quot;</string>
     <string name="login_other_user_logined_error_msg">Ein anderer Nutzer ist angemeldet.\nWarten Sie einen Moment.</string>
@@ -529,4 +527,18 @@
     <string name="connectedlist_will_be_restarted_to_apply_new_settings">Die Liste mit den angeschlossenen Geräten wird neu gestartet, um neue Einstellungen anzuwenden.</string>
     <string name="warning">Warnung</string>
     <string name="enter_2_4ghzssid">SSID (2,4 GHz) eingeben</string>
+    <string name="connecting">Verbinde…</string>
+    <string name="used_of">Verwendet von</string>
+    <string name="no_month_plan">Kein Monats Plan gesetzt</string>
+    <string name="login_failed">Anmeldung fehlgeschlagen</string>
+    <string name="insert_sim_or_wan">Versuchen Sie es erneut nach dem Einsetzen von SIM oder WAN</string>
+    <string name="no_sim_no_wan">Keine SIM/Kein WAN</string>
+    <string name="not_empty">Darf nicht leer sein</string>
+    <string name="quick_setup">Schnelles Setup</string>
+    <string name="wifi_5g_missing">Name (5G) fehlt.</string>
+    <string name="wep_psd_length_must_5_or_13">Das WEP-Passwort (5G) muss zwischen 5 und 13 Zeichen lang sein.</string>
+    <string name="psd_length_must_be_8_63">Das Passwort (5G) muss zwischen 8 und 63 Zeichen lang sein.</string>
+    <string name="sms_sending">Senden…</string>
+    <string name="setting_account">Passwort ändern</string>
+    <string name="login_psd_error_msg">Ihr Password ist falsch. Noch \n%1$d Versuch(e)</string>
 </resources>

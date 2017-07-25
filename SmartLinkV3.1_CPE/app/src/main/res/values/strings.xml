@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Alcatel Wi-Fi Link</string>
+    <string name="app_name">Alcatel WiFi Link app</string>
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
     <string name="delete">Delete</string>
@@ -206,7 +206,7 @@
     <string name="setting_device_pin_code_edit">PIN Enable</string>
     <string name="setting_device_backup_path">Path:Phone/CPE/Backup/</string>
     <string name="setting_about_app_name">LINK</string>
-    <string name="setting_success">Success</string>
+    <string name="setting_success">Successful</string>
     <string name="setting_failed">Failed</string>
     <string name="setting_backup_failed">Couldn\'t set device back up.</string>
     <string name="setting_backup_success">Set device back up completed.</string>
@@ -248,8 +248,8 @@
     <string name="setting_item_link_app_version">LINK APP Version</string>
     <string name="setting_backup_path_tag">Path: Phone</string>
     <string name="setting_backup_path">/CPE/Backup/</string>
-    <string name="setting_backup_waring">Please enter a name!</string>
-    <string name="setting_restore_waring">Backup file not found!</string>
+    <string name="setting_backup_waring">Enter a name.</string>
+    <string name="setting_restore_waring">Backup file not found.</string>
     <string name="usage_limit_notification_title">Data usage warning</string>
     <string name="usage_limit_over_notification_content">Monthly data usage limit reached</string>
     <string name="usage_limit_less_notification_content">Your usage has less than %1$s.</string>
@@ -302,7 +302,7 @@
     <string name="Ethernet">Ethernet</string>
     <string name="login_login_btn">LOG IN</string>
     <string name="login_enter_password">Enter admin password</string>
-    <string name="login_enter_password_tip">4-16 characters</string>
+    <string name="login_enter_password_tip">5-16 characters</string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="refresh">Refresh</string>
     <string name="refresh_no_device_manage">No device found</string>
@@ -517,6 +517,7 @@
     <string name="smsdetail_tryagain">You message was not send</string>
     <string name="smsdetail_tryagain_confirm">Try again</string>
     <string name="no_sim_or_wan">No SIM/No WAN</string>
+    <string name="new_password_saved">Saved</string>
     <string name="log_out">LOG OUT</string>
     <string name="connection_timed_out">Connection timed out</string>
     <string name="enter_sim_pin">Enter SIM PIN</string>
@@ -526,26 +527,18 @@
     <string name="connectedlist_will_be_restarted_to_apply_new_settings">Connected List will be restarted to apply new settings.</string>
     <string name="warning">Warning</string>
     <string name="enter_2_4ghzssid">Enter 2.4GHz SSID</string>
-
-    <!-- 新增的字符: 2017-07-19 -->
     <string name="connecting">Connecting...</string>
     <string name="used_of">used of</string>
     <string name="no_month_plan">No set month plan</string>
-    <string name="login_failed">Login failed</string>
-    <string name="insert_sim_or_wan">Try again after insert sim or wan</string>
+    <string name="login_failed">Couldn\'t login</string>
+    <string name="insert_sim_or_wan">Try again after insert SIM or WAN</string>
     <string name="no_sim_no_wan">No SIM/No WAN</string>
     <string name="not_empty">Not permit empty</string>
-    <string name="quick_setup">quick_setup</string>
-    <string name="wifi_5g_missing">Name(5G) is missing!</string>
-    <string name="wep_psd_length_must_5_or_13">Wep password(5G) length must be 5 or 13!</string>
-    <string name="psd_length_must_be_8_63">Password(5G) length must be 8-63!</string>
+    <string name="quick_setup">Quick set up</string>
+    <string name="wifi_5g_missing">Name(5G) is missing.</string>
+    <string name="wep_psd_length_must_5_or_13">WEP password(5G) length must be 5-13.</string>
+    <string name="psd_length_must_be_8_63">Password(5G) length must be 8-63.</string>
     <string name="sms_sending">Sending...</string>
-
-    <!-- chang string: 2017-07-19 -->
     <string name="setting_account">Change password</string>
-    <string name="login_psd_error_msg">Sorry, your password is wrong!\n%1$d attempt(s) remaining</string>
-    
-    <!-- chang string: 2017-07-25 -->
-    <string name="new_password_saved">Saved</string>
-
+    <string name="login_psd_error_msg">Your password is wrong. \n%1$d attempt(s) remaining</string>
 </resources>

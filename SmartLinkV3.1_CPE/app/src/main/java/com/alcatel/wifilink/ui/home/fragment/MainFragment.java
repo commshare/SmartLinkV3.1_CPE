@@ -48,10 +48,11 @@ import java.util.Locale;
 
 import me.itangqi.waveloadingview.WaveLoadingView;
 
-import static android.content.ContentValues.TAG;
+import static com.alcatel.wifilink.R.id.connected_button;
 
 @SuppressLint("ValidFragment")
 public class MainFragment extends Fragment implements View.OnClickListener {
+
 
     /* frame_connect */
     private RelativeLayout m_connectLayout = null;
@@ -93,7 +94,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mRl_main_wait;
     public static String type = new String();
     private int wanStatusOnTime = -1;// 实时WAN口检测
-    private DynamicWave dw_main;
+    private DynamicWave dw;
+    // private DynamicWave dw_main;
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getConnType(TypeBean tb) {
@@ -117,7 +119,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         m_view = View.inflate(getActivity(), R.layout.fragment_home_mains, null);
         typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Light.ttf");
-        mConnectedView = (WaveLoadingView) m_view.findViewById(R.id.connected_button);
+        mConnectedView = (WaveLoadingView) m_view.findViewById(connected_button);
         mConnectedView.setOnClickListener(this);
 
         m_connectLayout = (RelativeLayout) m_view.findViewById(R.id.connect_layout);
@@ -139,14 +141,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_accessDeviceLayout = (RelativeLayout) m_view.findViewById(R.id.access_num_layout);
         mRl_main_wait = (RelativeLayout) m_view.findViewById(R.id.rl_main_wait);
 
-        dw_main = (DynamicWave) m_view.findViewById(R.id.dw_main);
-
+        // dw_main = (DynamicWave) m_view.findViewById(R.id.dw_main);
         zeroMB = getString(R.string.Home_zero_data);
 
         // 0. wait show
         showWait();
         // 1. 初始化获取
         // getStatus();
+        mConnectedView.setAnimDuration(4000);// 设置波浪滚动速度
+
+
         return m_view;
     }
 
@@ -161,7 +165,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
                 Log.d("ma_main", "wan had not connect");
-                if (type == Cons.TYPE_WAN) {
+                if (Cons.TYPE_WAN.equalsIgnoreCase(type)) {
                     // TOAT: ********** 断网时先走此方法 ***********
                     Log.d("ma", "getWanSettings : " + e.getMessage().toString());
                     connectUi(false);// set button logo
@@ -177,7 +181,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
                 }
 
-                if (type == Cons.TYPE_SIM) {
+                if (Cons.TYPE_SIM.equalsIgnoreCase(type)) {
                     sim_ui_setting();
                     setAccessDeviceStatus();
                 }
@@ -186,7 +190,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(WanSettingsResult result) {
 
-                if (type == Cons.TYPE_SIM) {/* 用户主动点击SIM */
+                if (Cons.TYPE_SIM.equalsIgnoreCase(type)) {/* 用户主动点击SIM */
                     sim_ui_setting();
                     // 1.如果用户主动使用SIM连接--> 此时把WAN口断开的状态记录--> 同时标志位type设置为SIM卡连接
                     if (result.getStatus() == Cons.DISCONNECTED || result.getStatus() == Cons.DISCONNECTING) {
@@ -198,7 +202,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         type = Cons.TYPE_WAN;
                     }
 
-                } else if (type == Cons.TYPE_WAN) {/* 用户主动点击WAN */
+                } else if (Cons.TYPE_WAN.equalsIgnoreCase(type)) {/* 用户主动点击WAN */
                     if (result.getStatus() == Cons.CONNECTED) {
                         wan_ui_setting();
                         type = Cons.TYPE_WAN;// 如果WAN口连上, 把标志位修改为WAN连接
@@ -345,7 +349,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             protected void onSuccess(NetworkInfos result) {
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
                     connectUi(false);
-                    m_connectToNetworkTextView.setVisibility(View.GONE);
                 } else {
                     m_connectToNetworkTextView.setText(result.getNetworkName());
                     m_connectToNetworkTextView.setVisibility(View.VISIBLE);
@@ -391,6 +394,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* **** settrafficlayout **** */
     private void setTrafficLayout() {
+
         API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
             @Override
             public void onError(Throwable e) {
@@ -408,8 +412,28 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* get traffic data */
     private void getTrafficData(UsageRecord result) {
-        // 1.set wave degree
-        if (result.getMonthlyPlan() == 0) {// 没有设置流量
+        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+            @Override
+            protected void onSuccess(NetworkInfos netInfos) {// TOAT: 加入漫游的判断
+                // 0: roaming 1: no roaming
+                float roaming = netInfos.getRoaming();
+                if (roaming == Cons.ROAMING) {/* 当前是漫游状态 */
+                    usageShow(true, result);
+                } else {/* 非漫游状态 */
+                    usageShow(false, result);
+                }
+            }
+        });
+
+
+    }
+
+    /* **** usageShow: 非漫游状态的显示 **** */
+    private void usageShow(boolean isRoaming, UsageRecord result) {
+        if (isRoaming) {
+            mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
+            mConnectedView.setProgressValue(92);
+        } else if (result.getMonthlyPlan() == 0) {// 没有设置流量
             mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
             mConnectedView.setProgressValue(92);
         } else {// 设置了流量
@@ -426,27 +450,34 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             }
         }
         // 2.set number
-        showTrafficData(result);
-
+        showTraffic(isRoaming, result);
     }
 
-    /* 显示已用流量 */
-    private void showTrafficData(UsageRecord result) {
+    /* 显示已用流量(非漫游) */
+    private void showTraffic(boolean isRoaming, UsageRecord result) {
         activity.runOnUiThread(() -> {
 
+            // 漫游
+            CommonUtil.TrafficBean roamingUse = CommonUtil.ConvertTraffic(getActivity(), result.getRoamUseData(), 1);
+            // 非漫游
             CommonUtil.TrafficBean hadUse = CommonUtil.ConvertTraffic(getActivity(), result.getHUseData(), 1);
             CommonUtil.TrafficBean monthUse = CommonUtil.ConvertTraffic(getActivity(), result.getMonthlyPlan(), 0);
 
             String monthplan = "";
-            if (monthUse.num <= 0) {
-                monthplan = getString(R.string.no_month_plan);
+            if (isRoaming) {
+                monthplan = getString(R.string.usage_setting_roaming);
             } else {
-                monthplan = getString(R.string.used_of) + " " + (int) monthUse.num + monthUse.type;
+                if (monthUse.num <= 0) {
+                    monthplan = getString(R.string.no_month_plan);
+                } else {
+                    monthplan = getString(R.string.used_of) + " " + (int) monthUse.num + monthUse.type;
+                }
             }
 
-            upOrDownByteData = String.valueOf(hadUse.num);
+            float centerData = isRoaming ? roamingUse.num : hadUse.num;
+            upOrDownByteData = String.valueOf(centerData);
             mConnectedView.setCenterTitle(upOrDownByteData);// have used
-            mConnectedView.setCenterTitleSize(hadUse.num >= 999 ? 30 : 60);
+            mConnectedView.setCenterTitleSize(centerData >= 999 ? 30 : 60);
 
             mConnectedView.setTopTitle(hadUse.type);// unit
             mConnectedView.setBottomTitle(monthplan);// month plan
@@ -508,31 +539,26 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 m_networkLabelTextView.setVisibility(View.VISIBLE);
                 return;
             }
-            //show roaming
-            if (result.getRoaming() == Cons.ROAMING) {
+
+            // TOAT: 漫游测试
+            /* 如果有漫游, 则显示漫游 */
+            float roaming = result.getRoaming();
+            if (roaming == Cons.ROAMING) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g_r);
-            }
-
-            //show signal strength
-            if (result.getSignalStrength() == Cons.LEVEL_0) {
+            } else if (result.getSignalStrength() == Cons.LEVEL_0) {/* 否则显示检测强度 */
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
-            }
-            if (result.getSignalStrength() == Cons.LEVEL_1) {
+            } else if (result.getSignalStrength() == Cons.LEVEL_1) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g1);
-            }
-
-            if (result.getSignalStrength() == Cons.LEVEL_2) {
+            } else if (result.getSignalStrength() == Cons.LEVEL_2) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g2);
-            }
-            if (result.getSignalStrength() == Cons.LEVEL_3) {
+            } else if (result.getSignalStrength() == Cons.LEVEL_3) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g3);
-            }
-            if (result.getSignalStrength() == Cons.LEVEL_4) {
+            } else if (result.getSignalStrength() == Cons.LEVEL_4) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g4);
-            }
-            if (result.getSignalStrength() == Cons.LEVEL_5) {
+            } else if (result.getSignalStrength() == Cons.LEVEL_5) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g5);
             }
+
             //show network type
             if (result.getNetworkType() == Cons.UNKNOW) {
                 m_networkTypeTextView.setVisibility(View.GONE);
@@ -645,7 +671,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
                 }
                 break;
-            case R.id.connected_button:
+            case connected_button:
                 if (canClick) {// when the connect type is not sure--> can't click
                     if (!isWan) {/* sim button click logic */
                         connectedBtnClick();
@@ -772,4 +798,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectedLayout.setVisibility(isConnected ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }
