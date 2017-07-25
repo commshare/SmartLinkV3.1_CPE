@@ -367,9 +367,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
     }
 
     private void applySettings() {
-        boolean isAP2GStateChanged = mWifi2GSwitch.isChecked() != mOriginSettings.getAP2G().isApEnabled();
-        boolean isAP5GStateChanged = mWifi5GSwitch.isChecked() != mOriginSettings.getAP5G().isApEnabled();
         if (mSupportMode == ENUM.WlanSupportMode.Mode2Point4G.ordinal() || mSupportMode == ENUM.WlanSupportMode.Mode2Point4GAnd5G.ordinal()) {
+            boolean isAP2GStateChanged = mWifi2GSwitch.isChecked() != mOriginSettings.getAP2G().isApEnabled();
             // check 2.4g settings
             if (isAP2GStateChanged && !mWifi2GSwitch.isChecked()) {
                 mEditedSettings.getAP2G().setApEnabled(false);
@@ -416,6 +415,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
             }
         }
         if (mSupportMode == ENUM.WlanSupportMode.Mode5G.ordinal() || mSupportMode == ENUM.WlanSupportMode.Mode2Point4GAnd5G.ordinal()) {
+            boolean isAP5GStateChanged = mWifi5GSwitch.isChecked() != mOriginSettings.getAP5G().isApEnabled();
             // check 5g settings
             if (isAP5GStateChanged && !mWifi5GSwitch.isChecked()) {
                 mEditedSettings.getAP5G().setApEnabled(false);
