@@ -26,8 +26,8 @@ android {
         applicationId "com.alcatel.wifilink"
         minSdkVersion 15
         targetSdkVersion 25
-        versionName '0.0.4'
-        versionCode 4
+        versionName '0.0.5'
+        versionCode 5
 
         setProperty("archivesBaseName", "LinkApp-CPE-Android-$versionName")
         multiDexEnabled true
