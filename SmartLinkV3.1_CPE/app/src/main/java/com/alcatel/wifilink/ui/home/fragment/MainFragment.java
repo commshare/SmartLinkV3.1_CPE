@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.appwidget.PopupWindows;
+import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
@@ -29,11 +31,13 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.activity.InternetStatusActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
+import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
 import com.alcatel.wifilink.ui.activity.UsageActivity;
 import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.home.helper.pop.SimPopHelper;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
@@ -95,6 +99,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public static String type = new String();
     private int wanStatusOnTime = -1;// 实时WAN口检测
     private DynamicWave dw;
+    private PopupWindows simPop;
     // private DynamicWave dw_main;
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -124,6 +129,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         m_connectLayout = (RelativeLayout) m_view.findViewById(R.id.connect_layout);
         m_connectedLayout = ((RelativeLayout) m_view.findViewById(R.id.connected_layout));
+
         m_connectToNetworkTextView = (TextView) m_view.findViewById(R.id.connect_network);
         m_connectBtn = (Button) m_view.findViewById(R.id.connect_button);
         m_connectBtn.setOnClickListener(this);
@@ -276,10 +282,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(SimStatus simStatus) {
                 // 1.is sim can be work
-                if (simStatus.getSIMState() != Cons.READY) {
+                int simState = simStatus.getSIMState();
+                if (simState != Cons.READY) {
                     connectUi(false);// sim 卡没有准备好
                     HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
-                } else {
+                }
+                if (simState == Cons.PIN_REQUIRED) {
+                    canClick = true;
+                }
+                if (simState == Cons.READY) {
                     // 2. is network can be work
                     getTrafficInfo();// sim 卡已经准备好
                 }
@@ -347,11 +358,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(NetworkInfos result) {
-                if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
+                m_connectToNetworkTextView.setVisibility(View.VISIBLE);
+                if (result.getNetworkType() == Cons.NOSERVER) {
                     connectUi(false);
+                    m_connectToNetworkTextView.setText(getString(R.string.home_no_service));
                 } else {
                     m_connectToNetworkTextView.setText(result.getNetworkName());
-                    m_connectToNetworkTextView.setVisibility(View.VISIBLE);
                     // 3.injudge the connect status
                     isConnectStatus();
                 }
@@ -690,13 +702,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* 初始状态: 未按下--> 去按下 */
     private void simButtonConnect() {
-        //if (LinkAppSettings.isLoginSwitchOff()) {// test temp file flag
-        // TOAT: 测试阶段将其强制为true
-        if (true) {// test temp file flag
-            connect();
-        } else {
-            ToastUtil_m.show(activity, getString(R.string.UserAccount_Disable));
-        }
+        connect();
     }
 
     /* 初始状态: 已按下--> 再次按下 */
@@ -718,7 +724,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
-                if (simState == Cons.READY) {
+                if (simState == Cons.PIN_REQUIRED) {
+                    showPop();
+                } else if (simState == Cons.READY) {
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
@@ -733,13 +741,30 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             }
                         }
                     });
-                }
-                if (simState == Cons.NOWN) {
+                } else if (simState == Cons.NOWN) {
                     ToastUtil_m.show(getActivity(), getString(R.string.Home_no_sim));
                 }
             }
         });
 
+    }
+
+    private void showPop() {
+        simPop = new SimPopHelper() {
+
+            private RippleView tv_unlock;
+            private RippleView tv_cancel;
+
+            @Override
+            public void getView(View pop) {
+                tv_cancel = (RippleView) pop.findViewById(R.id.tv_pop_sim_cancel);
+                tv_unlock = (RippleView) pop.findViewById(R.id.tv_pop_sim_unlock);
+                tv_cancel.setOnClickListener(v -> {
+                    simPop.dismiss();
+                });
+                tv_unlock.setOnClickListener(v -> isSimInsert());
+            }
+        }.showPop(getActivity());
     }
 
 
@@ -798,8 +823,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectedLayout.setVisibility(isConnected ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    /* **** SIM卡是否插入 **** */
+    private void isSimInsert() {
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                int simState = result.getSIMState();
+                if (simState == Cons.PIN_REQUIRED) {
+                    // sim pop to unlock activity
+                    ChangeActivity.toActivity(getActivity(), SimUnlockActivity.class, true, false, false, 0);
+                    return;
+                }
+                if (simState == Cons.NOWN) {
+                    ToastUtil_m.show(getActivity(), getString(R.string.Home_no_sim));
+                }
+
+            }
+        });
     }
 }

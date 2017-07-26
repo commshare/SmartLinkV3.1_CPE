@@ -26,10 +26,13 @@ import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WifiGuideActivity;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.type.helper.WanModeHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -181,7 +184,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     private void connectToWan() {
         int type = result.getConnectType();
         if (type == Cons.DHCP) {
-            success();
+            getWanStatus();
         } else if (type == Cons.PPPOE) {
             if (isEmptyEd(eds[0], eds[1], eds[2])) {
                 ToastUtil_m.show(this, getString(R.string.not_empty));
@@ -220,7 +223,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
         API.get().setWanSettings(wsp, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                success();
+                getWanStatus();
             }
 
             @Override
@@ -254,7 +257,6 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
             @Override
             protected void onSuccess(Object result) {
                 getWanStatus();
-
             }
 
             @Override
@@ -287,6 +289,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
      */
     private void success() {
         UiChange(false, true, false);
+        EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_WAN));
         ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, DELAY);
     }
 

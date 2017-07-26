@@ -527,11 +527,9 @@
     <string name="connectedlist_will_be_restarted_to_apply_new_settings">Connected List will be restarted to apply new settings.</string>
     <string name="warning">Warning</string>
     <string name="enter_2_4ghzssid">Enter 2.4GHz SSID</string>
-    <string name="connecting">Connecting...</string>
     <string name="used_of">used of</string>
     <string name="no_month_plan">No set month plan</string>
     <string name="login_failed">Couldn\'t login</string>
-    <string name="insert_sim_or_wan">Try again after insert SIM or WAN</string>
     <string name="no_sim_no_wan">No SIM/No WAN</string>
     <string name="not_empty">Not permit empty</string>
     <string name="quick_setup">Quick set up</string>
@@ -541,4 +539,9 @@
     <string name="sms_sending">Sending...</string>
     <string name="setting_account">Change password</string>
     <string name="login_psd_error_msg">Your password is wrong. \n%1$d attempt(s) remaining</string>
+    
+    <!-- 2017/07/26 -->
+    <string name="connecting">Please Wait...</string>
+    <string name="insert_sim_or_wan">Try again</string>
+    
 </resources>

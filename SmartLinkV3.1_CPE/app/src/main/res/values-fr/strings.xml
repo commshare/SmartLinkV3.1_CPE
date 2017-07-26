@@ -20,7 +20,6 @@
     <string name="qs_exit_query">Fermer Configuration rapide</string>
     <string name="qs_item_pin_code">Code PIN</string>
     <string name="qs_pin_code_prompt">Saisissez le code PIN.\nTentatives restantes :  %1$d</string>
-    <string name="qs_pin_code_prompt_num"><xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
     <string name="qs_item_wifi_ssid">Nom du réseau Wi-Fi (SSID)</string>
     <string name="qs_wifi_ssid_prompt">Le SSID doit être de 1&#8211;32 caractères.</string>
     <string name="qs_item_wifi_passwd">Mot de passe Wi-Fi</string>

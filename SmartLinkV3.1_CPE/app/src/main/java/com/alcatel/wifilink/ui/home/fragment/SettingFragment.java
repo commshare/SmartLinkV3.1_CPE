@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.business.wlan.AP;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil_m;
@@ -180,6 +181,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 goSettingLanguagePage();
                 break;
             case R.id.setting_firmware_upgrade:
+                testUpgrade();
                 requestGetConnectionStatus();
                 break;
             case R.id.setting_restart:
@@ -197,6 +199,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    private void testUpgrade() {
+        API.get().getDeviceUpgradeState(new MySubscriber<DeviceUpgradeState>() {
+            @Override
+            protected void onSuccess(DeviceUpgradeState result) {
+                int status = result.getStatus();
+            }
+        });
     }
 
 

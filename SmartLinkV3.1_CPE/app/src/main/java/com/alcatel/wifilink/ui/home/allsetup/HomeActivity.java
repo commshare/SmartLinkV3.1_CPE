@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,6 @@ import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -36,13 +36,10 @@ import com.alcatel.wifilink.ui.home.helper.pop.SimPopHelper;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeBucket;
 import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeEnum;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.cybergarage.upnp.Device;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -138,6 +135,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private ActionbarSetting barSetting;
     private int container;
     private FragmentHomeEnum temp_en;
+    private boolean isSimPop;// 是否允许弹窗
+    private PopupWindow pop;
 
 
     @Override
@@ -148,6 +147,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         hac = this;
         supportActionBar = getSupportActionBar();
         fm = getSupportFragmentManager();
+        isSimPop = true;
         ButterKnife.bind(this);
         initActionbar();
         initView();
@@ -236,8 +236,10 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 toSmsActivity();
                 break;
             case R.id.tv_pop_sim_cancel:// sim pop cancel
-                OtherUtils.kill();
-                finish();
+                if (simPop != null) {
+                    isSimPop = false;
+                    popdismiss();
+                }
                 break;
             case R.id.tv_pop_sim_unlock:
                 // check the sim is insert
@@ -355,7 +357,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 isWanInsert();
             }
         };
-        timerHelper.start(2000);
+        timerHelper.start(1000);
     }
 
     /* 刷新ui以及切换Fragment */
@@ -410,12 +412,17 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
+                Log.d("ma_issimpop", "ma_issimpop: " + isSimPop);
                 mRl_smsButton.setEnabled(simState == Cons.READY ? true : false);
                 
                 /* 需要输入PIN码 */
-                if (simState == Cons.PIN_REQUIRED) {
+                if (simState == Cons.PIN_REQUIRED && isSimPop) {
                     // show pop to check pin
                     showSimPop();
+                }
+
+                if (simState == Cons.NOWN) {
+                    isSimPop = true;
                 }
 
                 /* 需要输入PUK码 */
@@ -429,7 +436,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                     SmsCountHelper.setSmsCount(HomeActivity.this, mTvHomeMessageCount);
                     // pop dismiss
                     if (simPop != null) {
-                        simPop.dismiss();
+                        popdismiss();
                     }
                 }
             }
@@ -443,15 +450,19 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** showSimPop: 显示SIM卡弹窗 **** */
     private void showSimPop() {
-        simPop = new SimPopHelper() {
-            @Override
-            public void getView(View pop) {
-                tv_cancel = (RippleView) pop.findViewById(R.id.tv_pop_sim_cancel);
-                tv_unlock = (RippleView) pop.findViewById(R.id.tv_pop_sim_unlock);
-                tv_cancel.setOnClickListener(HomeActivity.this);
-                tv_unlock.setOnClickListener(HomeActivity.this);
-            }
-        }.showPop(this);
+
+        if (pop == null) {
+            simPop = new SimPopHelper() {
+                @Override
+                public void getView(View pop) {
+                    tv_cancel = (RippleView) pop.findViewById(R.id.tv_pop_sim_cancel);
+                    tv_unlock = (RippleView) pop.findViewById(R.id.tv_pop_sim_unlock);
+                    tv_cancel.setOnClickListener(HomeActivity.this);
+                    tv_unlock.setOnClickListener(HomeActivity.this);
+                }
+            }.showPop(this);
+            pop = simPop.getPopupWindow();
+        }
     }
 
     /* **** WAN口是否有效 **** */
@@ -462,7 +473,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 int wanStatus = result.getStatus();
                 if (wanStatus == Cons.CONNECTED) {// wan insert
                     if (simPop != null) {
-                        simPop.dismiss();
+                        popdismiss();
                     }
                 } else {// sim insert
                     getSimStatus();
@@ -495,4 +506,9 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         });
     }
 
+    /* 注销弹窗 */
+    public void popdismiss() {
+        simPop.dismiss();
+        pop = null;
+    }
 }
