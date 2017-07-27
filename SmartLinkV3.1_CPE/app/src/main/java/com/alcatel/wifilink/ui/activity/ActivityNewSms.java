@@ -48,9 +48,9 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
     private boolean m_bSendEnd = false;
     private ActionbarSetting actionbarSetting;
     private ActionBar actionBar;
-    private ImageButton ib_back;
-    private TextView tv_cancel;
     private ProgressDialog pd;
+    private ImageButton ib_back;
+    // private TextView tv_cancel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,10 +82,9 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
             @Override
             protected void findActionbarView(View view) {
                 ib_back = (ImageButton) view.findViewById(R.id.ib_newsms_back);
-                tv_cancel = (TextView) view.findViewById(R.id.tv_newsms_cancel);
                 ib_back.setOnClickListener(ActivityNewSms.this);
-                tv_cancel.setOnClickListener(ActivityNewSms.this);
-
+                //tv_cancel = (TextView) view.findViewById(R.id.tv_newsms_cancel);
+                // tv_cancel.setOnClickListener(ActivityNewSms.this);
             }
         };
         actionbarSetting.settingActionbarAttr(this, actionBar, R.layout.actionbar_newsms);
@@ -219,9 +218,9 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                 finish();
                 break;
 
-            case R.id.tv_newsms_cancel:
-                finish();
-                break;
+            // case R.id.tv_newsms_cancel:
+            //     finish();
+            //     break;
 
             case R.id.send_btn:/* 发送短信 */
                 showSendingDialog();
@@ -231,7 +230,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
         }
     }
 
-     /* **** showSendingDialog **** */
+    /* **** showSendingDialog **** */
     private void showSendingDialog() {
         pd = new ProgressDialog(this);
         pd.setMessage(getString(R.string.sms_sending));

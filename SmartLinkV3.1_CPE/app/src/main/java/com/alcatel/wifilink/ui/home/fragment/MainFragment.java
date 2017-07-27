@@ -29,6 +29,7 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.InternetStatusActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
@@ -173,7 +174,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 Log.d("ma_main", "wan had not connect");
                 if (Cons.TYPE_WAN.equalsIgnoreCase(type)) {
                     // TOAT: ********** 断网时先走此方法 ***********
-                    Log.d("ma", "getWanSettings : " + e.getMessage().toString());
+                    Log.d("ma_main", "getWanSettings : " + e.getMessage().toString());
                     connectUi(false);// set button logo
                     m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo_disconnect);
                     m_connectToNetworkTextView.setText(getString(R.string.unknown));
@@ -231,9 +232,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 }
                 // device count layout
                 setAccessDeviceStatus();
-                mRl_main_wait.setVisibility(View.GONE);
-                // when type check is finish , logo button can be click
-                // canClick = true;
+                // mRl_main_wait.setVisibility(View.GONE);
             }
         });
     }
@@ -274,7 +273,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             public void onError(Throwable e) {
-                Log.d(TAGS, "setSimButtonLogo: " + e.getMessage().toString());
+                Log.d("ma_main", "setSimButtonLogo: " + e.getMessage().toString());
                 HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
                 mRl_main_wait.setVisibility(View.GONE);
             }
@@ -303,7 +302,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "getTrafficInfo : " + e.getMessage().toString());
+                Log.d("ma_main", "getTrafficInfo : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -312,6 +311,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 // // doesn't worked--> show 0MB
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
                     connectUi(false);
+                    mRl_main_wait.setVisibility(View.GONE);
                 } else {
                     // is press the connect button ?
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
@@ -330,6 +330,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             mRl_main_wait.setVisibility(View.GONE);
                         }
 
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            super.onResultError(error);
+                            mRl_main_wait.setVisibility(View.GONE);
+                        }
                     });
 
 
@@ -352,7 +357,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "getNetworkInfo : " + e.getMessage().toString());
+                Log.d("ma_main", "getNetworkInfo : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -362,10 +367,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (result.getNetworkType() == Cons.NOSERVER) {
                     connectUi(false);
                     m_connectToNetworkTextView.setText(getString(R.string.home_no_service));
+                    mRl_main_wait.setVisibility(View.GONE);
                 } else {
                     m_connectToNetworkTextView.setText(result.getNetworkName());
                     // 3.injudge the connect status
                     isConnectStatus();
+                    mRl_main_wait.setVisibility(View.GONE);
                 }
 
             }
@@ -377,7 +384,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "isConnectStatus : " + e.getMessage().toString());
+                Log.d("ma_main", "isConnectStatus : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -391,6 +398,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         protected void onSuccess(UsageRecord result) {
                             // get usage record
                             getTrafficData(result);
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            super.onResultError(error);
+                            mRl_main_wait.setVisibility(View.GONE);
                         }
                     });
                 }
@@ -410,7 +423,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "getUsageRecord : " + e.getMessage().toString());
+                Log.d("ma_main", "getUsageRecord : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -434,6 +447,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 } else {/* 非漫游状态 */
                     usageShow(false, result);
                 }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                mRl_main_wait.setVisibility(View.GONE);
             }
         });
 
@@ -485,6 +504,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     monthplan = getString(R.string.used_of) + " " + (int) monthUse.num + monthUse.type;
                 }
             }
+            mRl_main_wait.setVisibility(View.GONE);
 
             float centerData = isRoaming ? roamingUse.num : hadUse.num;
             upOrDownByteData = String.valueOf(centerData);
@@ -506,7 +526,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "setSignStatus : " + e.getMessage().toString());
+                Log.d("ma_main", "setSignStatus : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -530,7 +550,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "issignNetworked : " + e.getMessage().toString());
+                Log.d("ma_main", "issignNetworked : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -544,6 +564,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     /* setsignui according the networkstatus */
     private void setSignUi(NetworkInfos result) {
         mRl_sigelPanel.setVisibility(View.VISIBLE);
+        mRl_main_wait.setVisibility(View.GONE);
         if (result != null) {
             if (result.getNetworkType() == Cons.NOSERVER) {
                 m_networkTypeTextView.setVisibility(View.GONE);
@@ -621,7 +642,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "setAccessDeviceStatus : " + e.getMessage().toString());
+                Log.d("ma_main", "setAccessDeviceStatus : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -717,7 +738,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "connect : " + e.getMessage().toString());
+                Log.d("ma_main", "connect : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
@@ -739,6 +760,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                                 // set logo button layout
                                 setSimButtonLogo();
                             }
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            super.onResultError(error);
+                            mRl_main_wait.setVisibility(View.GONE);
                         }
                     });
                 } else if (simState == Cons.NOWN) {
@@ -773,12 +800,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("ma", "getMonthlyPlan : " + e.getMessage().toString());
+                Log.d("ma_main", "getMonthlyPlan : " + e.getMessage().toString());
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
             protected void onSuccess(UsageRecord result) {
+                mRl_main_wait.setVisibility(View.GONE);
                 // if monthly data is 0MB--> no toast
                 if (result.getMonthlyPlan() <= 0) {
                     return;
@@ -797,6 +825,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             API.get().connect(new MySubscriber() {
                 @Override
                 protected void onSuccess(Object result) {
+                }
+
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    Log.d("ma_main", "connectHelper: " + error.getMessage().toString());
+                    ToastUtil_m.show(getActivity(), getString(R.string.connect_failed));
                 }
             });
         } else {
@@ -828,6 +862,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
+                mRl_main_wait.setVisibility(View.GONE);
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
                     // sim pop to unlock activity
@@ -837,7 +872,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (simState == Cons.NOWN) {
                     ToastUtil_m.show(getActivity(), getString(R.string.Home_no_sim));
                 }
+            }
 
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                mRl_main_wait.setVisibility(View.GONE);
             }
         });
     }

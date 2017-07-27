@@ -543,5 +543,6 @@
     <!-- 2017/07/26 -->
     <string name="connecting">Please Wait...</string>
     <string name="insert_sim_or_wan">Try again</string>
-    
+    <string name="connect_failed">Connect failed</string>
+
 </resources>

@@ -181,7 +181,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 goSettingLanguagePage();
                 break;
             case R.id.setting_firmware_upgrade:
-                testUpgrade();
                 requestGetConnectionStatus();
                 break;
             case R.id.setting_restart:
@@ -200,16 +199,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
-    private void testUpgrade() {
-        API.get().getDeviceUpgradeState(new MySubscriber<DeviceUpgradeState>() {
-            @Override
-            protected void onSuccess(DeviceUpgradeState result) {
-                int status = result.getStatus();
-            }
-        });
-    }
-
 
     private void requestGetConnectionStatus() {
 
