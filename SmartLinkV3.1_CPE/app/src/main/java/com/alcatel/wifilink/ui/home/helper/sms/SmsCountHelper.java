@@ -11,7 +11,10 @@ import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+
+import java.util.Set;
 
 /**
  * Created by qianli.ma on 2017/6/17.
@@ -40,7 +43,7 @@ public class SmsCountHelper {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                
+
             }
         });
 
@@ -54,11 +57,22 @@ public class SmsCountHelper {
                     // caculate the sms count
                     int unReadCount = 0;
                     for (SMSContactList.SMSContact smsContact : result.getSMSContactList()) {
-                        unReadCount += smsContact.getUnreadCount();
+
+                        // 到缓冲区去查看是否有缓冲的未读短信数量
+                        int unreadCache = getUnreadCache(smsContact.getContactId());
+                        int unreadCount = smsContact.getUnreadCount();
+                        // 取得两者当中数量不为0的那一个值
+                        if (unreadCache > 0) {
+                            unReadCount += unreadCache;
+                        } else if (unreadCount > 0) {
+                            unReadCount += unreadCount;
+                        } else {
+                            unReadCount += unreadCount;
+                        }
                     }
 
                     Log.d("ma_smscount", "unReadCount: " + unReadCount);
-                    
+
                     // show sms ui according the count
                     if (unReadCount <= 0) {
                         mTvSmsCount.setVisibility(View.GONE);
@@ -79,9 +93,26 @@ public class SmsCountHelper {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                
+
             }
         });
+    }
+
+    /**
+     * 获取缓冲区里的未读短信
+     *
+     * @param contactId
+     * @return
+     */
+    public static int getUnreadCache(long contactId) {
+        int unreadCache = 0;
+        Set<Long> contactIds = HomeActivity.smsUnreadMap.keySet();
+        for (Long id : contactIds) {
+            if (id == contactId) {
+                unreadCache = HomeActivity.smsUnreadMap.get(id);
+            }
+        }
+        return unreadCache;
     }
 
 }

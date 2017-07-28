@@ -63,13 +63,13 @@ public class CommonUtil {
         String num = "";
         String type = "";
         if (tempTB >= 1) {
-            num = String.format("%.1f",tempTB);
+            num = String.format("%.2f",tempTB);
             type = "TB";
         } else if (tempGB >= 1) {
-            num = String.format("%.1f",tempGB);
+            num = String.format("%.2f",tempGB);
             type = "GB";
         } else if (tempMB >= 1) {
-            num = String.format("%.1f",tempMB);
+            num = String.format("%.2f",tempMB);
             type = "MB";
         } else {
             num = String.format("%.1f",tempKB);

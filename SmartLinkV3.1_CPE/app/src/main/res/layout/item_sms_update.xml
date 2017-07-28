@@ -14,10 +14,9 @@
             android:id="@+id/iv_smsPoint"
             android:layout_width="@dimen/dimen_15dip"
             android:layout_height="@dimen/dimen_15dip"
-            android:src="@drawable/sms_point_unread"
-            android:layout_alignTop="@+id/imageView2"
             android:layout_alignLeft="@+id/view"
-            android:layout_alignStart="@+id/view" />
+            android:layout_alignStart="@+id/view"
+            android:layout_alignTop="@+id/imageView2" />
 
         <!-- **** sms info **** -->
         <RelativeLayout
@@ -84,23 +83,23 @@
         </RelativeLayout>
 
         <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="@dimen/dimen_15dip"
             android:layout_height="@dimen/dimen_15dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_10dip"
-            android:src="@drawable/sms_next"
-            android:id="@+id/imageView2" />
+            android:src="@drawable/sms_next" />
 
         <!-- **** split **** -->
         <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dip"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/dimen_10dip"
             android:layout_marginRight="@dimen/dimen_10dip"
-            android:background="@color/gray"
-            android:id="@+id/view" />
+            android:background="@color/gray" />
 
     </RelativeLayout>
 

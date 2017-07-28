@@ -38,11 +38,14 @@ public abstract class SmsSendHelper {
         API.get().sendSMS(ssp, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                getSendStatus();
+                getSendStatus();/* 发送完毕获取短信状态 */
             }
         });
     }
 
+    /**
+     * 发送完毕获取短信状态
+     */
     private void getSendStatus() {
         API.get().GetSendSMSResult(new MySubscriber<SendSMSResult>() {
             @Override
@@ -52,13 +55,13 @@ public abstract class SmsSendHelper {
                     ToastUtil.showMessage(context, context.getString(R.string.none));
                 } else if (sendStatus == Cons.SENDING) {
                     getSendStatus();
-                } else if (sendStatus == 2) {
+                } else if (sendStatus == Cons.SUCCESS) {
                     ToastUtil.showMessage(context, R.string.succeed);
-                } else if (sendStatus == 3) {
+                } else if (sendStatus == Cons.FAIL_STILL_SENDING_LAST_MSG) {
                     ToastUtil.showMessage(context, R.string.fail_still_sending_last_message);
-                } else if (sendStatus == 4) {
+                } else if (sendStatus == Cons.FAIL_WITH_MEMORY_FULL) {
                     ToastUtil.showMessage(context, R.string.fail_with_memory_full);
-                } else if (sendStatus == 5) {
+                } else if (sendStatus == Cons.FAIL) {
                     ToastUtil.showMessage(context, R.string.fail);
                 }
                 sendFinish(result.getSendStatus());

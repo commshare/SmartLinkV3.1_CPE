@@ -1,6 +1,8 @@
 package com.alcatel.wifilink.ui.sms.activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +28,7 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
+import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.sms.adapter.SmsDetatilAdapter;
@@ -48,6 +51,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.R.id.home;
 import static android.R.id.list;
 
 public class SmsDetailActivity extends BaseActivityWithBack implements View.OnClickListener, SmsDetatilAdapter.OnSmsSelectedListener, SmsDetatilAdapter.OnSmsLongClickListener, SmsDetatilAdapter.OnSendSuccessListener {
@@ -82,6 +86,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
     private LinearLayoutManager linearLayoutManager;
     private boolean toastFlag = true;
     private String dateTimebanner = "";
+    private String ActivityName = "SmsDetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -306,31 +311,63 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
-                    long contactId = smsContact.getContactId();
-                    SMSContentParam ssp = new SMSContentParam(0, contactId);
-                    API.get().getSMSContentList(ssp, new MySubscriber<SMSContentList>() {
+                    // TODO: 2017/7/28  
+                    // 重新获取当前号码是否有未读消息
+                    API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
                         @Override
-                        protected void onSuccess(SMSContentList result) {
-                            // 1. refresh the list
-                            smsContentList = result;
-                            if (adapter != null) {
-                                adapter.notifys(smsContentList, isSetRcvToLast);
-                            }
-                            // 2. refresh the router time
-                            setPositionTextTime();
-                            // 3. force to  set rcv position to last
-                            if (isSetRcvToLast) {
-                                setRecyclePositionToLast(adapter.getItemCount() - 1);
-                            }
-                        }
+                        protected void onSuccess(SMSContactList result) {
+                            for (SMSContactList.SMSContact scc : result.getSMSContactList()) {
+                                long contactId = scc.getContactId();
+                                if (contactId == smsContact.getContactId()) {
+                                    // 获取当前号码的未读消息数
+                                    int unreadCount = scc.getUnreadCount();
+                                    if (unreadCount > 0) {/* 如果有未读消息 */
+                                        // 用户是否停留在短信详情页
+                                        if (HomeActivity.CURRENT_ACTIVITY.equalsIgnoreCase(ActivityName)) {// 当前
+                                            realToGetContent();// 向接口发起请求
+                                        } else {// 用户离开
+                                            // 把未读消息数量保存到MAP中
+                                            HomeActivity.smsUnreadMap.put(contactId,unreadCount);
+                                        }
+                                    } else {/* 没有未读消息, 直接获取内容--> 正常显示已读的消息 */
+                                        realToGetContent();// 向接口发起请求
+                                    }
+                                }
 
-                        @Override
-                        protected void onResultError(ResponseBody.Error error) {
-                            // when the current number have no sms, then close it
-                            finish();
+                            }
                         }
                     });
                 }
+            }
+
+            /**
+             * 向接口发起请求
+             */
+            private void realToGetContent() {
+                long contactId = smsContact.getContactId();
+                SMSContentParam ssp = new SMSContentParam(0, contactId);
+                API.get().getSMSContentList(ssp, new MySubscriber<SMSContentList>() {
+                    @Override
+                    protected void onSuccess(SMSContentList result) {
+                        // 1. refresh the list
+                        smsContentList = result;
+                        if (adapter != null) {
+                            adapter.notifys(smsContentList, isSetRcvToLast);
+                        }
+                        // 2. refresh the router time
+                        setPositionTextTime();
+                        // 3. force to  set rcv position to last
+                        if (isSetRcvToLast) {
+                            setRecyclePositionToLast(adapter.getItemCount() - 1);
+                        }
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        // when the current number have no sms, then close it
+                        finish();
+                    }
+                });
             }
         });
     }
@@ -373,8 +410,11 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
         // 2. send sms
         new SmsSendHelper(this, smsContact.getPhoneNumber(), content) {
             @Override
-            public void sendFinish(int status) {
-                getSmsContents(true);// 注意此处, 一调用即为标记为已读
+            public void sendFinish(int status) {/* 发送完成 */
+                if (status == Cons.SUCCESS) {
+                    // 注意此处, 一调用即为标记为已读
+                    getSmsContents(true);
+                }
             }
         };
         // 3. clear the et
@@ -460,7 +500,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                     ToastUtil_m.show(SmsDetailActivity.this, getString(R.string.sms_delete_success));
                 }
                 resetLongClickFlag();
-                getSmsContents(false);
+                getSmsContents(false);/* 删除短信后无需跳到最后一条 */
             }
         });
     }

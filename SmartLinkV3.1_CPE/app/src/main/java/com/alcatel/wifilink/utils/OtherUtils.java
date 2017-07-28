@@ -170,7 +170,8 @@ public class OtherUtils {
      */
     public static boolean checkWifiConnect(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+        NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo.State wifiState = networkInfo.getState();
         return NetworkInfo.State.CONNECTED == wifiState;
     }
 

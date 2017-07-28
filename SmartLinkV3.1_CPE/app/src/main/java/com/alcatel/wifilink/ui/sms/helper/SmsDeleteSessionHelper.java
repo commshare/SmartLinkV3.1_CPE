@@ -28,9 +28,7 @@ public abstract class SmsDeleteSessionHelper {
         API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
-                if (result.getState() == Cons.SMS_COMPLETE) {
-                    getSessionSmss();// 获取一个会话里的所有短信
-                }
+                getSessionSmss();// 获取一个会话里的所有短信
             }
 
             /* 获取一个会话中所有的短信ID */

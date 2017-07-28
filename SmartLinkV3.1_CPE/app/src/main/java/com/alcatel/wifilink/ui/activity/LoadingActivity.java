@@ -126,6 +126,7 @@ public class LoadingActivity extends BaseActivityWithBack implements View.OnClic
 
             @Override
             public void onError(Throwable e) {
+                // System.out.println(e.getMessage().toString());
                 if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
                     // to RefreshWifiActivity
                     ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, true, true, false, 0);

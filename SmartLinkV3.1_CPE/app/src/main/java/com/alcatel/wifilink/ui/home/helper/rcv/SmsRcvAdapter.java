@@ -12,7 +12,9 @@ import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.sms.SmsSingle;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.sms.activity.SmsDetailActivity;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -77,13 +79,19 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
     private void setSmsPoint(SmsHolder holder, int position) {
         SMSContactList.SMSContact smsContact = smsContactList.get(position);
         int smsType = smsContact.getSMSType();
-        holder.iv_smsPoint.setVisibility(smsType == UNREAD || smsType == SENT_FAILED || smsType == DRAFT ? VISIBLE : GONE);
+        // 查看缓冲区是否有当前contactid对应的未读短信数量
+        int unreadCache = SmsCountHelper.getUnreadCache(smsContact.getContactId());
+        // 以下4种情况均需要显示对应的点
+        boolean pointShow = smsType == UNREAD || smsType == SENT_FAILED || smsType == DRAFT || unreadCache > 0;
+        holder.iv_smsPoint.setVisibility(pointShow ? VISIBLE : GONE);
         if (smsType == UNREAD) {
             holder.iv_smsPoint.setImageResource(R.drawable.sms_point_unread);
         } else if (smsType == DRAFT) {
             holder.iv_smsPoint.setImageResource(R.drawable.sms_edit);
         } else if (smsType == SENT_FAILED) {
             holder.iv_smsPoint.setImageResource(R.drawable.sms_prompt);
+        } else if (unreadCache > 0) {
+            holder.iv_smsPoint.setImageResource(R.drawable.sms_point_unread);
         }
     }
 
@@ -129,7 +137,6 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
     /* **** setSmsLongClick **** */
     private void setSmsLongClick(SmsHolder holder, int position) {
         holder.rl_sms.setOnLongClickListener(v -> {
-            System.out.println("long click");
             if (onRcvLongClickListener != null) {
                 onRcvLongClickListener.getPosition(position);
             }
@@ -146,6 +153,9 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     /* 调用此方法, 路由器自动设置为已读 */
     private void setReaded(SMSContactList.SMSContact smsContact) {
+        // 清空缓冲区短信未读数量
+        HomeActivity.smsUnreadMap.put(smsContact.getContactId(), 0);
+        // 调用此接口的目的是为了告知路由器该ID下的短信已读
         API.get().getSingleSMS(smsContact.getSMSId(), new MySubscriber<SmsSingle>() {
             @Override
             protected void onSuccess(SmsSingle result) {

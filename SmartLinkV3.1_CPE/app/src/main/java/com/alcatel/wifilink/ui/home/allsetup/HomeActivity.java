@@ -1,12 +1,17 @@
 package com.alcatel.wifilink.ui.home.allsetup;
 
+import android.content.Context;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,9 +44,12 @@ import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeBucket;
 import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeEnum;
 import com.alcatel.wifilink.utils.ActionbarSetting;
+import com.alcatel.wifilink.utils.AppInfo;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.cybergarage.upnp.Device;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,10 +66,10 @@ import static com.alcatel.wifilink.R.drawable.tab_sms_pre;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_nor;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_pre;
 import static com.alcatel.wifilink.R.id.mFl_home_container;
+import static com.alcatel.wifilink.R.id.window;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
-import static rx.schedulers.Schedulers.test;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -141,6 +149,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private boolean isSimPop;// 是否允许弹窗
     private PopupWindow pop;
 
+    public static String CURRENT_ACTIVITY = "";// 当前正在运行的activity
+    private TimerHelper curActTimer;// 定时器:实时监控当前顶层的activity
+    public static HashMap<Long, Integer> smsUnreadMap = new HashMap<>();// 未读消息缓冲集合
+    private WindowManager windowManager;
+    private View inflate;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -156,6 +170,36 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initView();
         initUi();
         startTimer();// 定时器在此处而不是在Onresume是为了防止界面重复刷新
+        getCurrentActivity();// 定时获取当前位于顶层运行的ACTIVITY
+
+        touchWindowManager();
+
+    }
+
+    private void touchWindowManager() {
+        // windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        // WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+        // params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        // params.flags = WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
+        // params.format = PixelFormat.TRANSLUCENT;
+        // params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        // params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        // params.gravity = Gravity.CENTER;
+        // inflate = View.inflate(getApplicationContext(), R.layout.window_layout, null);
+        // RelativeLayout rl_window = (RelativeLayout) inflate.findViewById(R.id.window);
+        // windowManager.addView(inflate, params);
+    }
+
+
+    /* **** getCurrentActivity:循环获取当前顶层的ACTIVITY(用于辅助未读短信的判断) **** */
+    private void getCurrentActivity() {
+        curActTimer = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                CURRENT_ACTIVITY = AppInfo.getCurrentActivitySimpleName(HomeActivity.this);
+            }
+        };
+        curActTimer.start(200);
     }
 
     /* **** initActionbar **** */
@@ -201,7 +245,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // 停止所有的定时器
         timerHelper.stop();
+        curActTimer.stop();
+        // 取消窗体
+        // windowManager.removeView(inflate);
+
     }
 
     private void initView() {
@@ -368,7 +417,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                     }
                 });
             }
-        }; timerHelper.start(1000);
+        };
+        timerHelper.start(1000);
     }
 
     /* 检测WIFI是否有连接 */

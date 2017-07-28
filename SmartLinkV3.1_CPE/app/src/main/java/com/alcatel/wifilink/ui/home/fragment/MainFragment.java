@@ -509,7 +509,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             float centerData = isRoaming ? roamingUse.num : hadUse.num;
             upOrDownByteData = String.valueOf(centerData);
             mConnectedView.setCenterTitle(upOrDownByteData);// have used
-            mConnectedView.setCenterTitleSize(centerData >= 999 ? 30 : 60);
+            mConnectedView.setCenterTitleSize(centerData >= 999 ? 25 : 50);
 
             mConnectedView.setTopTitle(hadUse.type);// unit
             mConnectedView.setBottomTitle(monthplan);// month plan
@@ -578,7 +578,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             float roaming = result.getRoaming();
             if (roaming == Cons.ROAMING) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g_r);
-            } else if (result.getSignalStrength() == Cons.LEVEL_0) {/* 否则显示检测强度 */
+            } else if (result.getSignalStrength() == Cons.NOSERVICE) {/* 否则显示检测强度 */
+                m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
+            } else if (result.getSignalStrength() == Cons.LEVEL_0) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
             } else if (result.getSignalStrength() == Cons.LEVEL_1) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g1);
