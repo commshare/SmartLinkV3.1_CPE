@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_180dip"
-    android:gravity="center"
-    android:padding="@dimen/activity_horizontal_margin">
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dimen_16dip"
+    android:paddingBottom="@dimen/dimen_16dip">
     <ProgressBar
         android:layout_width="match_parent"
         android:id="@+id/pb_update_progress"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:progress="60"
-        android:layout_marginBottom="@dimen/dimen_10dip"
+        android:layout_height="@dimen/dimen_26dip"
+        android:layout_marginLeft="@dimen/dimen_10dip"
+        android:layout_marginRight="@dimen/dimen_10dip"
+        android:max="100"
+        android:progress="30"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/dimen_40dip"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:id="@+id/pb_update_waiting"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_16dip"
+        android:indeterminate="true"
+        android:layout_centerInParent="true"
         android:visibility="gone"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_content"
         android:textColor="@color/deep_black_text"
-        android:text="Checking for update"
+        android:text="updating"
         android:gravity="center"
         android:layout_below="@id/pb_update_progress"
         android:visibility="gone"
         android:textSize="@dimen/dimen_textsize_16sp"/>
 
     <TextView
-        android:id="@+id/tv_update_status"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/general_ic_check"
-        android:textColor="@color/deep_black_text"
-        android:textSize="@dimen/dimen_textsize_16sp"
+        android:id="@+id/complete_tip"
+        android:gravity="center"
         android:visibility="gone"
-        android:drawablePadding="@dimen/dimen_10dip"
-        android:text="update"/>
+        android:layout_marginTop="@dimen/dimen_6dip"
+        android:layout_below="@id/tv_content"
+        android:text="@string/device_will_restart_later"/>
 
 
 </RelativeLayout>

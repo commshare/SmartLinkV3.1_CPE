@@ -19,6 +19,7 @@ import com.alcatel.wifilink.model.system.SysStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 
 public class SettingShareActivity extends BaseActivityWithBack implements OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -30,6 +31,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     private ImageView mFTPStorageAccessImage;
     private ImageView mSambaStorageAccessImage;
     private ImageView mDLNAStorageAccessImage;
+    private TimerHelper timerHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         initView();
         initData();
     }
+
 
     private void initView() {
         mUSBStorageText = (TextView) findViewById(R.id.tv_usb_storage);
@@ -70,20 +73,25 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
             protected void onSuccess(SysStatus result) {
                 Log.d(TAG, "requestGetSystemStatus,usb status:" + result.getUsbStatus());
                 Log.d(TAG, "requestGetSystemStatus,usb name:" + result.getUsbName());
-                switch (result.getUsbStatus()) {
-                    case Constants.DeviceUSBStatus.NOT_INSERT:
-                        mUSBStorageText.setText(R.string.not_inserted);
-                        break;
-                    case Constants.DeviceUSBStatus.USB_STORAGE:
-                        mUSBStorageText.setText(R.string.setting_usb_storage);
-                        break;
-                    case Constants.DeviceUSBStatus.USB_PRINT:
-                        mUSBStorageText.setText(R.string.usb_printer);
-                        showPrinterNameDlg(result.getUsbName());
-                        break;
-                }
-            }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (result.getUsbStatus()) {
+                            case Constants.DeviceUSBStatus.NOT_INSERT:
+                                mUSBStorageText.setText(R.string.not_inserted);
+                                break;
+                            case Constants.DeviceUSBStatus.USB_STORAGE:
+                                mUSBStorageText.setText(R.string.setting_usb_storage);
+                                break;
+                            case Constants.DeviceUSBStatus.USB_PRINT:
+                                mUSBStorageText.setText(R.string.usb_printer);
+                                showPrinterNameDlg(result.getUsbName());
+                                break;
+                        }
+                    }
+                });
 
+            }
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
@@ -253,6 +261,26 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     @Override
     protected void onResume() {
         super.onResume();
+        if(timerHelper == null){
+
+            timerHelper = new TimerHelper(SettingShareActivity.this) {
+                @Override
+                public void doSomething() {
+                    requestGetSystemStatus();
+                }
+            };
+            timerHelper.start(10*1000);
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (timerHelper != null) {
+            timerHelper.stop();
+            timerHelper = null;
+        }
     }
 
     @Override

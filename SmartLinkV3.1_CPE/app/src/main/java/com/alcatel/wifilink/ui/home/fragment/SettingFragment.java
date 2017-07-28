@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -27,15 +28,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.business.wlan.AP;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.fileexplorer.Util;
 import com.alcatel.wifilink.model.connection.ConnectionState;
 import com.alcatel.wifilink.model.system.SystemInfo;
+import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
-import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -46,7 +47,7 @@ import com.alcatel.wifilink.ui.activity.SettingDeviceActivity;
 import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
-import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
@@ -90,11 +91,18 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private ProgressDialog mProgressDialog;
 
     private TextView mDeviceVersion;
-    private AlertDialog mCheckVersionDlg;
-    private AlertDialog mUpdatingDlg;
     private final static String mdefaultSaveUrl = "/tcl/linkhub/backup";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    private ProgressDialog mCheckingDlg;
+    private TimerHelper timerHelper;
+    private AlertDialog mUpgradingDlg;
+    private AlertDialog mUpgradedDlg;
+    private final int PROGRESS_STYLE_WAITING = -1;
+    ProgressBar mUpgradingProgressBar;
+    TextView mUpgradingProgressValue;
+
 
     @Nullable
     @Override
@@ -181,7 +189,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 goSettingLanguagePage();
                 break;
             case R.id.setting_firmware_upgrade:
-                requestGetConnectionStatus();
+                requestGetWanSettingRequest();
                 break;
             case R.id.setting_restart:
                 popDialogFromBottom(RESTART_RESET);
@@ -201,46 +209,60 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void requestGetConnectionStatus() {
-
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
-            @Override
-            protected void onSuccess(WanSettingsResult result) {
-                if (result.getStatus() == Cons.CONNECTED) {
-                    requestSetCheckNewVersion();   // wan连接--> 直接更新
-                } else {
-                    checkSimConnection();// 没有连接--> 检查sim卡是否有连
-                }
-            }
-        });
-    }
-
-    /* 检查SIM是否有连接 */
-    private void checkSimConnection() {
+        Log.d(TAG, "requestGetConnectionStatus");
         API.get().getConnectionState(new MySubscriber<ConnectionState>() {
             @Override
             protected void onSuccess(ConnectionState result) {
-                int connStatus = result.getConnectionStatus();
-                Log.d(TAG, "requestGetConnectionStatus,ConnectionStatus:" + connStatus);
-                if (connStatus == Constants.ConnectionStatus.CONNECTED) {
-                    requestSetCheckNewVersion();// sim卡连接成功--> 更新
-                } else if (connStatus == Cons.DISCONNECTED || connStatus == Cons.DISCONNECTING) {
-                    ToastUtil_m.show(getActivity(), getString(R.string.check_your_wan_cabling));
+                Log.d(TAG, "requestGetConnectionStatus,ConnectionStatus:" + result.getConnectionStatus());
+                if (result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTED) {
+                    requestSetCheckNewVersion();
                 } else {
-                    ToastUtil_m.show(getActivity(), getString(R.string.connecting));
+                    ToastUtil_m.show(getActivity(), getString(R.string.setting_upgrade_no_connection));
                 }
+
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
                 Log.d(TAG, "requestGetConnectionStatus,onResultError:" + error);
+
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
                 Log.d(TAG, "requestGetConnectionStatus");
-                ToastUtil_m.show(getActivity(), getString(R.string.check_your_wan_cabling));
+            }
+        });
+
+
+    }
+
+    private void requestGetWanSettingRequest() {
+        Log.d(TAG, "requestSetCheckNewVersion");
+        API.get().getWanSeting(new MySubscriber<WanSetting>() {
+            @Override
+            protected void onSuccess(WanSetting result) {
+                Log.d(TAG, "requestGetWanSettingRequest,onSuccess:" + result.getStatus());
+                if (result.getStatus() == Constants.WanSettingsStatus.CONNECTED) {
+                    requestSetCheckNewVersion();
+                } else {
+                    requestGetConnectionStatus();
+                }
+
+            }
+
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "requestGetWanSettingRequest,onFailure");
+                super.onFailure();
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Log.d(TAG, "requestGetWanSettingRequest,onResultError:" + error);
+                super.onResultError(error);
             }
         });
     }
@@ -605,21 +627,45 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(Object result) {
                 Log.d(TAG, "requestSetCheckNewVersion,onSuccess:" + result);
+                timerHelper = null;
                 requestGetDeviceNewVersion();
             }
 
             @Override
             protected void onFailure() {
                 Log.d(TAG, "requestSetCheckNewVersion,onFailure");
+                ToastUtil_m.show(getActivity(), R.string.fail);
                 super.onFailure();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                ToastUtil_m.show(getActivity(), R.string.fail);
                 Log.d(TAG, "requestSetCheckNewVersion,onResultError:" + error);
                 super.onResultError(error);
             }
         });
+    }
+
+
+    private void getDeviceNewVersionTask() {
+        timerHelper = new TimerHelper(getActivity()) {
+            @Override
+            public void doSomething() {
+                requestGetDeviceNewVersion();
+            }
+        };
+        timerHelper.start(2 * 1000);
+    }
+
+    private void getUpgradeProgressTask() {
+        timerHelper = new TimerHelper(getActivity()) {
+            @Override
+            public void doSomething() {
+                requestGetDeviceUpgradeState();
+            }
+        };
+        timerHelper.start(2 * 1000);
     }
 
     private void requestGetDeviceNewVersion() {
@@ -629,7 +675,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 Log.d(TAG, "requestGetDeviceNewVersion, state:" + result.getState());
                 Log.d(TAG, "requestGetDeviceNewVersion, version:" + result.getVersion());
                 Log.d(TAG, "requestGetDeviceNewVersion, size:" + result.getTotal_size());
-                showCheckVersionDlg(result);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        processCheckVersionResult(result);
+                    }
+                });
+
             }
 
             @Override
@@ -645,131 +697,211 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    private void showCheckVersionDlg(DeviceNewVersion result) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.dialog_firmware_update, null);
-        builder.setView(view);
+    private void showCheckingDlg() {
+        if (getActivity().isFinishing()) {
+            Log.d(TAG, "showCheckingDlg, activity is finishing.");
+            return;
+        }
+        if (mCheckingDlg == null) {
+            mCheckingDlg = new ProgressDialog(getActivity());
+            mCheckingDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mCheckingDlg.setMessage(getString(R.string.checking_for_update));
+            mCheckingDlg.setTitle("");
+            mCheckingDlg.setCancelable(false);
+            mCheckingDlg.setCanceledOnTouchOutside(false);
+            mCheckingDlg.show();
+        } else if (!mCheckingDlg.isShowing()) {
+            mCheckingDlg.show();
+        }
+    }
+
+    private void showCheckResultDlg(String message, int state) {
+        if (getActivity().isFinishing()) {
+            Log.d(TAG, "showCheckResultDlg, activity is finishing.");
+            return;
+        }
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setTitle("");
         builder.setCancelable(false);
-        TextView mMessageContent = (TextView) view.findViewById(R.id.tv_content);
-        mMessageContent.setVisibility(View.VISIBLE);
-        String message = "";
-        String positiveButtonStr = getString(R.string.ok);
-        String negativeButtonStr = "";
-        int eStatus = result.getState();
-        if (eStatus == Constants.DeviceVersionCheckState.DEVICE_CHECKING) {
-            message = getString(R.string.checking_for_update);
-            positiveButtonStr = " ";
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    requestGetDeviceNewVersion();
-                }
-            }, 2 * 1000);
-        } else if (Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION == eStatus) {
-            message = result.getVersion() + getString(R.string.available);
-            positiveButtonStr = getString(R.string.update);
-            negativeButtonStr = getString(R.string.cancel);
-
-        } else if (Constants.DeviceVersionCheckState.DEVICE_NO_NEW_VERSION == eStatus) {
-            message = mDeviceVersion.getText().toString() + "\n" + getString(R.string.your_firmware_is_up_to_date);
-            positiveButtonStr = getString(R.string.ok);
-
-        } else if (Constants.DeviceVersionCheckState.DEVICE_NO_CONNECT == eStatus || Constants.DeviceVersionCheckState.SERVICE_NOT_AVAILABLE == eStatus) {
-            message = getString(R.string.setting_upgrade_check_firmware_failed);
-            positiveButtonStr = getString(R.string.ok);
-        } else if (Constants.DeviceVersionCheckState.DEVICE_CHECK_ERROR == eStatus) {
-            message = getString(R.string.setting_upgrade_check_error);
-            positiveButtonStr = getString(R.string.ok);
-        }
-
-        mMessageContent.setText(message);
-
-
-        builder.setPositiveButton(positiveButtonStr, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (eStatus == Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION) {
+        if (state == Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION) {
+            builder.setNegativeButton(R.string.cancel, null);
+            builder.setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
                     requestSetFOTAStartDownload();
-                } else {
-                    mCheckVersionDlg.dismiss();
-                    mCheckVersionDlg.cancel();
-                    mCheckVersionDlg = null;
                 }
-            }
-        });
-
-        builder.setNegativeButton(negativeButtonStr, null);
-        if (mCheckVersionDlg == null) {
-            mCheckVersionDlg = builder.create();
-            mCheckVersionDlg.show();
+            });
         } else {
-            if (eStatus != Constants.DeviceVersionCheckState.DEVICE_CHECKING) {
-                mCheckVersionDlg.dismiss();
-                mCheckVersionDlg.cancel();
-                mCheckVersionDlg = builder.create();
-                mCheckVersionDlg.show();
-            }
-
+            builder.setPositiveButton(R.string.ok, null);
         }
-
+        builder.create().show();
 
     }
 
-    private void showUpgradeStateDlg(DeviceUpgradeState result) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+    private void processCheckVersionResult(DeviceNewVersion result) {
+
+        String message = "";
+        int eStatus = result.getState();
+        if (eStatus == Constants.DeviceVersionCheckState.DEVICE_CHECKING) {
+            showCheckingDlg();
+            if (timerHelper == null) {
+                getDeviceNewVersionTask();
+            }
+        } else {
+            if (timerHelper != null) {
+                timerHelper.stop();
+                timerHelper = null;
+            }
+            if(mCheckingDlg!=null && mCheckingDlg.isShowing()){
+                mCheckingDlg.dismiss();
+            }
+            if (Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION == eStatus) {
+                Log.d(TAG, "processCheckVersionResult,size:" + result.getTotal_size());
+                message = getString(R.string.setting_about_version) + ":" + result.getVersion() + " " + getString(R.string.available) + "\n" + getString(R.string.size) + ":" + Util.convertStorage(result.getTotal_size());
+                showCheckResultDlg(message, eStatus);
+
+            } else if (Constants.DeviceVersionCheckState.DEVICE_NO_NEW_VERSION == eStatus) {
+                message = mDeviceVersion.getText().toString() + "\n" + getString(R.string.your_firmware_is_up_to_date);
+                showCheckResultDlg(message, eStatus);
+
+            } else if (Constants.DeviceVersionCheckState.DEVICE_NO_CONNECT == eStatus || Constants.DeviceVersionCheckState.SERVICE_NOT_AVAILABLE == eStatus) {
+                message = getString(R.string.setting_upgrade_check_firmware_failed);
+                showCheckResultDlg(message, eStatus);
+            } else if (Constants.DeviceVersionCheckState.DEVICE_CHECK_ERROR == eStatus) {
+                message = getString(R.string.setting_upgrade_check_error);
+                showCheckResultDlg(message, eStatus);
+            }
+        }
+    }
+
+
+    private void showUpgradeStateResultDlg(String message, int state) {
+        if (getActivity().isFinishing()) {
+            Log.d(TAG, "showUpgradeStateResultDlg, activity is finishing.");
+            return;
+        }
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.dialog_firmware_update, null);
-        TextView mContentText = (TextView) view.findViewById(R.id.tv_content);
-        mContentText.setText("");
-        ProgressBar mUpgradeBar = (ProgressBar) view.findViewById(R.id.pb_update_progress);
-        TextView mUpgradeStatus = (TextView) view.findViewById(R.id.tv_update_status);
+        TextView messageText = (TextView) view.findViewById(R.id.tv_content);
+        messageText.setText(message);
+        messageText.setVisibility(View.VISIBLE);
+        Drawable drawable;
+
+        if (state == Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE) {
+            drawable = getResources().getDrawable(R.drawable.general_ic_check);
+            view.findViewById(R.id.complete_tip).setVisibility(View.VISIBLE);
+        } else {
+            drawable = getResources().getDrawable(R.drawable.sms_prompt);
+        }
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        messageText.setCompoundDrawables(null,drawable,null,null);
+        builder.setView(view);
+        builder.setTitle("");
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.ok, null);
+        builder.create().show();
+
+    }
+
+
+
+    private void showUpgradeProgressDlg(int state, int progress) {
+        if (getActivity().isFinishing()) {
+            Log.d(TAG, "showUpgradeStateResultDlg, activity is finishing.");
+            return;
+        }
+        if (state == PROGRESS_STYLE_WAITING) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            View view = inflater.inflate(R.layout.dialog_firmware_update, null);
+            ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_update_waiting);
+            progressBar.setVisibility(View.VISIBLE);
+            builder.setView(view);
+            mUpgradedDlg = builder.create();
+            mUpgradedDlg.show();
+            if (mUpgradingDlg != null) {
+                mUpgradingDlg.dismiss();
+            }
+
+        } else {
+            Log.d(TAG, "showUpgradeProgressDlg,mUpgradingDlg:" + mUpgradingDlg);
+            if (mUpgradingDlg == null) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = LayoutInflater.from(getActivity());
+                View view = inflater.inflate(R.layout.dialog_firmware_update, null);
+                mUpgradingProgressBar = (ProgressBar) view.findViewById(R.id.pb_update_progress);
+                mUpgradingProgressBar.setVisibility(View.VISIBLE);
+                mUpgradingProgressValue = (TextView) view.findViewById(R.id.tv_content);
+                mUpgradingProgressValue.setVisibility(View.VISIBLE);
+                mUpgradingProgressBar.setMax(100);
+                mUpgradingProgressBar.setProgress(progress);
+                mUpgradingProgressValue.setText(getString(R.string.updating) + progress + "%");
+                builder.setView(view);
+                builder.setCancelable(false);
+                mUpgradingDlg = builder.create();
+                mUpgradingDlg.show();
+            } else {
+                Log.d(TAG, "showUpgradeProgressDlg,mUpgradingDlg.isShowing():" + mUpgradingDlg.isShowing());
+                if (mUpgradingDlg.isShowing()) {
+                    mUpgradingProgressValue.setText(getString(R.string.updating) + progress + "%");
+                    mUpgradingProgressBar.setProgress(progress);
+                } else {
+                    mUpgradingDlg.show();
+                    mUpgradingProgressValue.setText(getString(R.string.updating) + progress + "%");
+                    mUpgradingProgressBar.setProgress(progress);
+                }
+            }
+        }
+    }
+
+    private void processUpgradeStateResult(DeviceUpgradeState result) {
         if (result == null) {
-            mUpgradeStatus.setVisibility(View.VISIBLE);
-            mUpgradeBar.setVisibility(View.GONE);
-            mUpgradeStatus.setCompoundDrawables(null, getResources().getDrawable(R.drawable.sms_prompt), null, null);
-            mUpgradeStatus.setText(R.string.could_not_update_try_again);
-            builder.setPositiveButton(R.string.ok, null);
+            if (timerHelper != null) {
+                timerHelper.stop();
+                timerHelper = null;
+            }
+            showUpgradeStateResultDlg(getString(R.string.could_not_update_try_again), -1);
         } else {
             int status = result.getStatus();
             if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_NOT_START == status) {
-                Log.d(TAG, "requestGetDeviceUpgradeState,device upgrade not start");
+                if(result.getProcess() >= 99){
+                    showUpgradeProgressDlg(status, result.getProcess());
+//                    if (timerHelper != null) {
+//                        timerHelper.stop();
+//                        timerHelper = null;
+//                    }
+//                    if (mUpgradingDlg != null) {
+//                        mUpgradingDlg.dismiss();
+//                    }
+//                    requestSetDeviceStartUpdate();
+                }
+                Log.d(TAG, "requestGetDeviceUpgradeState,device upgrade not start,progress:"+result.getProcess());
+
+//                showUpgradeStateResultDlg(getString(R.string.could_not_update_try_again),status);
             } else if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
-                mUpgradeBar.setVisibility(View.VISIBLE);
-                mUpgradeStatus.setVisibility(View.GONE);
-                mContentText.setText(getString(R.string.updating) + result.getProcess());
-                mUpgradeBar.setProgress(result.getProcess());
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        requestGetDeviceUpgradeState();
-                    }
-                }, 2 * 1000);
+                showUpgradeProgressDlg(status, result.getProcess());
+                if (timerHelper == null) {
+                    getUpgradeProgressTask();
+                }
 
             } else if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE == status) {
+                if (timerHelper != null) {
+                    timerHelper.stop();
+                    timerHelper = null;
+                }
+                if (mUpgradingProgressBar != null) {
+                    mUpgradingProgressBar.setProgress(100);
+                    mUpgradingProgressValue.setText(getString(R.string.updating) + 100 + "%");
+                }
+                if (mUpgradingDlg != null) {
+                    mUpgradingDlg.dismiss();
+                }
                 requestSetDeviceStartUpdate();
-                mUpgradeStatus.setVisibility(View.VISIBLE);
-                mUpgradeBar.setVisibility(View.GONE);
-                mUpgradeStatus.setCompoundDrawables(null, getResources().getDrawable(R.drawable.general_ic_check), null, null);
-                mUpgradeStatus.setText(R.string.complete);
-
-                builder.setPositiveButton(R.string.ok, null);
             }
-        }
-
-        builder.setView(view);
-        builder.setCancelable(false);
-        if (mUpdatingDlg == null) {
-            mUpdatingDlg = builder.create();
-            mUpdatingDlg.show();
-        } else {
-            if (result != null && result.getStatus() != 1) {
-                mUpdatingDlg.dismiss();
-                mUpdatingDlg.cancel();
-                mUpdatingDlg = builder.create();
-                mUpdatingDlg.show();
-            }
-
         }
 
 
@@ -781,28 +913,56 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(Object result) {
                 Log.d(TAG, "requestSetFOTAStartDownload,onSuccess:" + result);
+                timerHelper = null;
                 requestGetDeviceUpgradeState();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
+                ToastUtil_m.show(getActivity(), R.string.fail);
                 Log.d(TAG, "requestSetFOTAStartDownload,onResultError:" + error);
             }
         });
     }
 
     private void requestSetDeviceStartUpdate() {
+
+        showUpgradeProgressDlg(PROGRESS_STYLE_WAITING, 0);
         API.get().setDeviceStartUpdate(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
                 Log.d(TAG, "requestSetDeviceStartUpdate,onSuccess:" + result);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mUpgradedDlg != null) {
+                                    mUpgradedDlg.dismiss();
+                                }
+                                showUpgradeStateResultDlg(getString(R.string.complete), Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_COMPLETE);
+                            }
+                        });
+                    }
+                }, 10 * 1000);
 
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mUpgradedDlg != null) {
+                            mUpgradedDlg.dismiss();
+                        }
+                        showUpgradeStateResultDlg(getString(R.string.could_not_update_try_again), -1);
+                    }
+                });
+
                 Log.d(TAG, "requestSetDeviceStartUpdate,onResultError:" + error);
             }
         });
@@ -816,7 +976,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             protected void onSuccess(DeviceUpgradeState result) {
                 Log.d(TAG, "requestGetDeviceUpgradeState, status:" + result.getStatus());
                 Log.d(TAG, "requestGetDeviceUpgradeState, process:" + result.getProcess());
-                showUpgradeStateDlg(result);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        processUpgradeStateResult(result);
+                    }
+                });
+
             }
 
             @Override
@@ -828,7 +994,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
                 Log.d(TAG, "requestGetDeviceUpgradeState, onResultError:" + error);
-                showUpgradeStateDlg(null);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        processUpgradeStateResult(null);
+                    }
+                });
+
             }
         });
     }
