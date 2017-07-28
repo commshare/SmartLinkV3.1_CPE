@@ -85,7 +85,7 @@
 
     <string-array name="settings_connection_mode">
         <item>Auto</item>
-        <item>Manual</item>
+        <item>@string/maunal</item>
     </string-array>
 
     <string-array name="settings_network_mode">
@@ -96,37 +96,37 @@
     </string-array>
 
     <string-array name="settings_data_plan_billing_day">
-        <item>Day 1</item>
-        <item>Day 2</item>
-        <item>Day 3</item>
-        <item>Day 4</item>
-        <item>Day 5</item>
-        <item>Day 6</item>
-        <item>Day 7</item>
-        <item>Day 8</item>
-        <item>Day 9</item>
-        <item>Day 10</item>
-        <item>Day 11</item>
-        <item>Day 12</item>
-        <item>Day 13</item>
-        <item>Day 14</item>
-        <item>Day 15</item>
-        <item>Day 16</item>
-        <item>Day 17</item>
-        <item>Day 18</item>
-        <item>Day 19</item>
-        <item>Day 20</item>
-        <item>Day 21</item>
-        <item>Day 22</item>
-        <item>Day 23</item>
-        <item>Day 24</item>
-        <item>Day 25</item>
-        <item>Day 26</item>
-        <item>Day 27</item>
-        <item>Day 28</item>
-        <item>Day 29</item>
-        <item>Day 30</item>
-        <item>Day 31</item>
+        <item>@string/day_1</item>
+        <item>@string/day_2</item>
+        <item>@string/day_3</item>
+        <item>@string/day_4</item>
+        <item>@string/day_5</item>
+        <item>@string/day_6</item>
+        <item>@string/day_7</item>
+        <item>@string/day_8</item>
+        <item>@string/day_9</item>
+        <item>@string/day_10</item>
+        <item>@string/day_11</item>
+        <item>@string/day_12</item>
+        <item>@string/day_13</item>
+        <item>@string/day_14</item>
+        <item>@string/day_15</item>
+        <item>@string/day_16</item>
+        <item>@string/day_17</item>
+        <item>@string/day_18</item>
+        <item>@string/day_19</item>
+        <item>@string/day_20</item>
+        <item>@string/day_21</item>
+        <item>@string/day_22</item>
+        <item>@string/day_23</item>
+        <item>@string/day_24</item>
+        <item>@string/day_25</item>
+        <item>@string/day_26</item>
+        <item>@string/day_27</item>
+        <item>@string/day_28</item>
+        <item>@string/day_29</item>
+        <item>@string/day_30</item>
+        <item>@string/day_31</item>
     </string-array>
 
     <string-array name="settings_data_plan_usage_alert">

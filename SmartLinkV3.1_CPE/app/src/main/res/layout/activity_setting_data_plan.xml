@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/setting_padding_10_dp"
-                android:text="Set time limit" />
+                android:text="@string/usage_setting_settimelimit" />
 
             <ImageView
                 android:id="@+id/img_set_time_limit"

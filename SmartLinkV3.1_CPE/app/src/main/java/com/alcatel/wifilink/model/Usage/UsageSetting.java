@@ -89,4 +89,18 @@ public class UsageSetting {
     public void setAutoDisconnFlag(int AutoDisconnFlag) {
         this.AutoDisconnFlag = AutoDisconnFlag;
     }
+
+    @Override
+    public String toString() {
+        return "UsageSetting{" +
+                "BillingDay=" + BillingDay +
+                ", MonthlyPlan=" + MonthlyPlan +
+                ", UsedData=" + UsedData +
+                ", Unit=" + Unit +
+                ", TimeLimitFlag=" + TimeLimitFlag +
+                ", TimeLimitTimes=" + TimeLimitTimes +
+                ", UsedTimes=" + UsedTimes +
+                ", AutoDisconnFlag=" + AutoDisconnFlag +
+                '}';
+    }
 }

@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="hr(s)"/>
+            android:text="@string/hr_s"/>
         <EditText
             android:id="@+id/dialog_time_limit_min"
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="min(s)"/>
+            android:text="@string/min_s"/>
 
     </LinearLayout>
 

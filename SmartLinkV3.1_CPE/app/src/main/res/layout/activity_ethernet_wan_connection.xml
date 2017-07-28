@@ -349,7 +349,9 @@
                         android:background="@null"
                         android:hint="@string/ip_address"
                         android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp" />
+                        android:textSize="@dimen/dimen_textsize_14sp"
+                        android:digits="1234567890."
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <View
@@ -384,7 +386,9 @@
                         android:background="@null"
                         android:hint="@string/subnet_mask"
                         android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp" />
+                        android:textSize="@dimen/dimen_textsize_14sp"
+                        android:digits="1234567890."
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <View
@@ -419,7 +423,9 @@
                         android:background="@null"
                         android:hint="@string/default_gateway"
                         android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp" />
+                        android:textSize="@dimen/dimen_textsize_14sp"
+                        android:digits="1234567890."
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <View
@@ -454,7 +460,9 @@
                         android:background="@null"
                         android:hint="@string/preferred_dns"
                         android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp" />
+                        android:textSize="@dimen/dimen_textsize_14sp"
+                        android:digits="1234567890."
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <View
@@ -489,7 +497,9 @@
                         android:background="@null"
                         android:hint="@string/secondary_dns"
                         android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp" />
+                        android:textSize="@dimen/dimen_textsize_14sp"
+                        android:digits="1234567890."
+                        android:inputType="number"/>
                 </LinearLayout>
 
                 <View
@@ -549,5 +559,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textAllCaps="false"
-        android:text=""/>
+        android:textColor="@color/black"
+        android:text="@string/apply"/>
 </RelativeLayout>

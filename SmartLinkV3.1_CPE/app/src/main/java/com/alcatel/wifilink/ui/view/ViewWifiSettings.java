@@ -498,7 +498,7 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
         API.get().setWlanSettings(newSettings, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil.showMessage(m_context, "Success");
+                ToastUtil.showMessage(m_context, m_context.getString(R.string.success));
             }
 
             @Override

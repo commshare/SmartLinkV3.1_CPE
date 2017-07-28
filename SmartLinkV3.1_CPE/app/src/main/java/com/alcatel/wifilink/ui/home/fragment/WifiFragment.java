@@ -477,7 +477,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(Object result) {
                 mProgressDialog.dismiss();
-                ToastUtil.showMessage(mContext, "Success");
+                ToastUtil.showMessage(mContext, getString(R.string.success));
             }
 
             @Override

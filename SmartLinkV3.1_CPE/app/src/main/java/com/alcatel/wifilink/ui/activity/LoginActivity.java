@@ -151,7 +151,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         API.get().login(account, passwd, new MySubscriber<LoginResult>() {
             @Override
             protected void onSuccess(LoginResult result) {
-                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 // commit the token
                 API.get().updateToken(result.getToken());
                 // remember psd

@@ -261,24 +261,18 @@
                         android:padding="@dimen/setting_padding_10_dp"
                         android:background="@color/color_white"
                         android:text="@string/setting_sim_number"/>
-                    <ImageView
-                        android:id="@+id/network_sim_number_arrow"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"
-                        android:layout_marginRight="@dimen/dimen_10dip"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/right_arrow_big"/>
 
                     <TextView
                         android:id="@+id/textview_sim_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/network_sim_number_arrow"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:textColor="@color/color_light_gray"
                         android:textSize="12sp"
                         android:layout_gravity="end"/>
+
                     <ImageView
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
@@ -291,30 +285,23 @@
                     android:layout_height="60dp">
 
                     <TextView
+                        style="@style/WlanSettingTitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        style="@style/WlanSettingTitle"
+                        android:background="@color/color_white"
                         android:gravity="center_vertical"
                         android:padding="@dimen/setting_padding_10_dp"
-                        android:background="@color/color_white"
-                        android:text="@string/setting_imsi"/>
-                    <ImageView
-                        android:id="@+id/network_imsi_arrow"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"
-                        android:layout_marginRight="@dimen/dimen_10dip"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/right_arrow_big"/>
+                        android:text="@string/setting_imsi" />
 
                     <TextView
                         android:id="@+id/textview_network_imsi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/network_imsi_arrow"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:textColor="@color/color_light_gray"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </RelativeLayout>
 
                 <ImageView

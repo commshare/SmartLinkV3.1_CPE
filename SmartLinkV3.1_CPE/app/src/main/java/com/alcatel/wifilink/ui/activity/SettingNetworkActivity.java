@@ -67,7 +67,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private SwitchCompat mTimeLimitCompat;
     private TextView mSetTimeLimitText;
     private SwitchCompat mLimitAutoDisaconectCompat;
-    private boolean isCodeSelectBillingDay;
 
     //change sim pin
     private EditText mCurrentSimPin;
@@ -140,6 +139,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
                 Log.d(TAG, "mDisconnectCompat = " + enable);
+                if(!compoundButton.isPressed())return;
                 if (enable) {
                     mUsageSetting.setAutoDisconnFlag(1);
                 } else {
@@ -191,7 +191,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().connect(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = true;
             }
 
@@ -208,7 +208,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().disConnect(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = false;
             }
 
@@ -252,7 +252,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().setConnectionSettings(mConnectionSettings, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 if (connectMode == 0) {
                     mRoamingRl.setVisibility(View.VISIBLE);
                 } else if (connectMode == 1) {
@@ -300,7 +300,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().setNetworkSettings(mNetworkSettings, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -413,6 +413,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void setUsageSetting(UsageSetting usageSetting) {
+        Log.d(TAG,"setUsageSetting = " + usageSetting.toString());
         API.get().setUsageSetting(usageSetting, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
@@ -432,7 +433,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(Object result) {
                 Log.d(TAG, "changePinCode sendAgainSuccess");
-                Toast.makeText(SettingNetworkActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mCurrentSimPin.setText(null);
                 mNewSimPin.setText(null);
                 mConfirmNewSimPin.setText(null);
@@ -457,6 +458,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(UsageSetting result) {
                 mUsageSetting = result;
+                Log.d(TAG,"getUsageSetting = " + result.toString());
                 String unit = "";
                 if (result.getUnit() == Constants.UsageSetting.UNIT_MB) {
                     unit = "MB";
@@ -469,7 +471,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 long monthPlan = result.getMonthlyPlan() / dataPlanByte;
                 mMonthlyDataPlanText.setText(monthPlan + " " + unit);
                 mBillingDaySpinner.setSelection(result.getBillingDay());
-                isCodeSelectBillingDay = true;
                 //                mUsageAlertSpinner
                 if (result.getAutoDisconnFlag() == 0) {
                     mDisconnectCompat.setChecked(false);
@@ -481,7 +482,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 } else if (result.getTimeLimitFlag() == 1) {
                     mLimitAutoDisaconectCompat.setChecked(true);
                 }
-                mSetTimeLimitText.setText(result.getTimeLimitTimes() + "min(s)");
+                mSetTimeLimitText.setText(result.getTimeLimitTimes() + getString(R.string.min_s));
             }
 
             @Override
@@ -711,12 +712,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_2G);
             }
         } else if (parent.getId() == R.id.setdataplan_billing_day) {
-            if (isCodeSelectBillingDay) {
-                isCodeSelectBillingDay = false;
-            } else {
+//            if (isCodeSelectBillingDay) {
+//                isCodeSelectBillingDay = false;
+//            } else {
                 mUsageSetting.setBillingDay(position);
                 setUsageSetting(mUsageSetting);
-            }
+//            }
         }
     }
 

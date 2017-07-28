@@ -16,6 +16,7 @@ import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 
 public class EthernetWanConnectionActivity extends BaseActivityWithBack implements OnClickListener {
     private static final String TAG = "EthernetWanConnectionActivity";
@@ -112,7 +113,10 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
                 mStaticIpSecondaryDns.setText(result.getSecondaryDNS().toString());
                 mStaticIpMtu.setText(result.getMtu() + "");
             }
-
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Toast.makeText(EthernetWanConnectionActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
             @Override
             protected void onFailure() {
                 Log.d(TAG, "getWanSettings error");
@@ -124,7 +128,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
         API.get().setWanSettings(mWanSettingsParams, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(EthernetWanConnectionActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EthernetWanConnectionActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 getWanSettings();
             }
 
@@ -151,7 +155,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
                 showConnectStaticIp();
                 break;
             case R.id.btn_connect:
-                if (mConnectOrDisconnect.getText().toString().equals(getString(R.string.connect))) {
+                if (mConnectOrDisconnect.getCurrentTextColor() == getResources().getColor(R.color.black)) {
                     connectWan();
                 } else {
                     Toast.makeText(EthernetWanConnectionActivity.this, R.string.it_is_connected_you_can_switch_other_connection_mode_page, Toast.LENGTH_SHORT).show();
@@ -179,9 +183,9 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
 
     private void showConnectStaticIp() {
         if (mWanSettingsResult.getConnectType() == 2 && mWanSettingsResult.getStatus() == 2) {
-            mConnectOrDisconnect.setText(R.string.disconnect);
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.gray));
         } else {
-            mConnectOrDisconnect.setText(R.string.connect);
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.black));
         }
         mWanSettingsParams.setConnectType(2);
         mSelectedPppopImg.setVisibility(View.GONE);
@@ -194,9 +198,9 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
 
     private void showConnectDhcp() {
         if (mWanSettingsResult.getConnectType() == 1 && mWanSettingsResult.getStatus() == 2) {
-            mConnectOrDisconnect.setText(R.string.disconnect);
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.gray));
         } else {
-            mConnectOrDisconnect.setText(R.string.connect);
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.black));
         }
         mWanSettingsParams.setConnectType(1);
         mSelectedPppopImg.setVisibility(View.GONE);
@@ -209,9 +213,9 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
 
     private void showConnectPppoe() {
         if (mWanSettingsResult.getConnectType() == 0 && mWanSettingsResult.getStatus() == 2) {
-            mConnectOrDisconnect.setText(R.string.disconnect);
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.gray));
         } else {
-            mConnectOrDisconnect.setText(R.string.connect);
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.black));
         }
         mWanSettingsParams.setConnectType(0);
         mSelectedPppopImg.setVisibility(View.VISIBLE);

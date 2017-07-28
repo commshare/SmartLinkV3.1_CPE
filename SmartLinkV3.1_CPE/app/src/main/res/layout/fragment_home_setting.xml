@@ -212,7 +212,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_language_pic"
-                    android:text="Language"
+                    android:text="@string/language"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
 
@@ -249,6 +249,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_firmware_upgrade_pic"
+                    android:layout_toLeftOf="@+id/setting_firmware_upgrade_version"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/setting_firmware_upgrade"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
