@@ -545,4 +545,7 @@
     <string name="insert_sim_or_wan">Try again</string>
     <string name="connect_failed">Connect failed</string>
 
+    <!-- 2017/07/28 -->
+    <string name="disabled">Disabled</string>
+
 </resources>

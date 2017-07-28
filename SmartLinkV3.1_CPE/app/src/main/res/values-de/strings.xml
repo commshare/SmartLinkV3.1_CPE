@@ -427,7 +427,7 @@
     <string name="only_phones_supported_5ghz_wi_fi_can_connect_5ghz_wi_fi_network">Nur Telefone, auf denen ein WLAN mit 5 GHz unterstützt wird, können eine Verbindung mit einem WLAN-Netzwerk dieser Art herstellen.</string>
     <string name="security">Sicherheit</string>
     <string name="encryption">Verschlüsselung</string>
-    <string name="country_region">Landkreis/Region</string>
+    <string name="country_region">Land/Region</string>
     <string name="mode_802_11">802.11-Modus</string>
     <string name="ap_isolation">AP-Isolierung</string>
     <string name="bandwidth">Bandbreite</string>
@@ -541,4 +541,5 @@
     <string name="sms_sending">Senden…</string>
     <string name="setting_account">Passwort ändern</string>
     <string name="login_psd_error_msg">Ihr Password ist falsch. Noch \n%1$d Versuch(e)</string>
+    <string name="disabled">Deaktiviert</string>
 </resources>

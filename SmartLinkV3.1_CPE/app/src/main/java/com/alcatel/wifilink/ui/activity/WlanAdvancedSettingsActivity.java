@@ -57,7 +57,7 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
     private void loadSettings() {
         Intent intent = getIntent();
         if (intent != null) {
-            mSsidBroadcast = intent.getBooleanExtra(EXTRA_SSID_BROADCAST, false);
+            mSsidBroadcast = intent.getBooleanExtra(EXTRA_SSID_BROADCAST, true);
             mChannel = intent.getIntExtra(EXTRA_CHANNEL, 0);
             mFrequency = intent.getIntExtra(EXTRA_FRE, 0);
             mCountry = intent.getStringExtra(EXTRA_COUNTRY);

@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.home.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,6 +78,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
     private int mSupportMode;
+    private ProgressDialog mProgressDialog;
 
     public WifiFragment() {
 
@@ -85,14 +87,14 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.d(TAG, "onAttach");
+        Log.i(TAG, "onAttach");
         mContext = activity;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated");
+        Log.i(TAG, "onActivityCreated");
         requestWlanSupportMode();
 
     }
@@ -149,27 +151,27 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
+        Log.i(TAG, "onResume");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG, "onDestroyView");
+        Log.i(TAG, "onDestroyView");
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
+        Log.i(TAG, "onDestroy");
 
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(TAG, "onDetach");
+        Log.i(TAG, "onDetach");
 
     }
 
@@ -180,6 +182,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                 mOriginSettings = result;
                 mEditedSettings = mOriginSettings.clone();
                 updateUIWithWlanSettings();
+                Log.i(TAG, mOriginSettings.toString());
+                Log.i(TAG, "SSID_BROADCAST" + mEditedSettings.getAP2G().getSsidHidden());
             }
 
             @Override
@@ -206,7 +210,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateUIWithWlanSettings() {
-        Log.d(TAG, "updateUIWithWlanSettings");
+        Log.i(TAG, "updateUIWithWlanSettings");
         if (mOriginSettings == null) {
             return;
         }
@@ -289,7 +293,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause");
+        Log.i(TAG, "onPause");
     }
 
 
@@ -324,7 +328,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "requestCode:" + requestCode);
+        Log.i(TAG, "requestCode:" + requestCode);
         if ((REQUEST_CODE_ADVANCED_SETTINGS_2_4G == requestCode || REQUEST_CODE_ADVANCED_SETTINGS_5G == requestCode)
                 && resultCode == RESULT_OK) {
             boolean broadcast = data.getBooleanExtra(EXTRA_SSID_BROADCAST, false);
@@ -334,12 +338,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
             int mode80211 = data.getIntExtra(EXTRA_MODE_80211, 0);
             boolean isolation = data.getBooleanExtra(EXTRA_AP_ISOLATION, false);
 
-            Log.d(TAG, "broadcast:" + broadcast);
-            Log.d(TAG, "channel:" + channel);
-            Log.d(TAG, "countryCode:" + countryCode);
-            Log.d(TAG, "bandwidth:" + bandwidth);
-            Log.d(TAG, "mode80211:" + mode80211);
-            Log.d(TAG, "isolation:" + isolation);
+            Log.i(TAG, "broadcast:" + broadcast);
+            Log.i(TAG, "channel:" + channel);
+            Log.i(TAG, "countryCode:" + countryCode);
+            Log.i(TAG, "bandwidth:" + bandwidth);
+            Log.i(TAG, "mode80211:" + mode80211);
+            Log.i(TAG, "isolation:" + isolation);
 
             AP ap = requestCode == REQUEST_CODE_ADVANCED_SETTINGS_2_4G ? mEditedSettings.getAP2G() : mEditedSettings.getAP5G();
             ap.setSsidHidden(broadcast);
@@ -461,18 +465,33 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                 }
             }
         }
-        Log.d(TAG, "mEditedSettings, " + mEditedSettings);
+        Log.i(TAG, "mEditedSettings, " + mEditedSettings);
 
         API.get().setWlanSettings(mEditedSettings, new MySubscriber() {
             @Override
+            public void onStart() {
+                super.onStart();
+                showLoadingDialog();
+            }
+
+            @Override
             protected void onSuccess(Object result) {
+                mProgressDialog.dismiss();
                 ToastUtil.showMessage(mContext, "Success");
             }
 
             @Override
             protected void onFailure() {
-
+                mProgressDialog.dismiss();
             }
         });
+    }
+
+    private void showLoadingDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(mContext);
+        }
+        mProgressDialog.setTitle(R.string.setting_upgrading);
+        mProgressDialog.show();
     }
 }

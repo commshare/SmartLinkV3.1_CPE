@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="wlan_settings_security">
-        <item>Disabled</item>
+        <item>@string/disabled</item>
         <item>WEP</item>
         <item>WPA</item>
         <item>WPA2</item>
@@ -47,7 +47,6 @@
         <item>11</item>
         <item>12</item>
         <item>13</item>
-        <item>14</item>
     </string-array>
 
     <string-array name="wlan_settings_wpa_type">
@@ -74,14 +73,14 @@
         <item>80MHz</item>
     </string-array>
     <string-array name="wlan_settings_country">
-        <item>GB</item>
-        <item>IT</item>
-        <item>FR</item>
-        <item>PT</item>
-        <item>ES</item>
-        <item>US</item>
-        <item>HK</item>
-        <item>CN</item>
+        <item>UNITED KINGDOM</item>
+        <item>ITALY</item>
+        <item>FRANCE</item>
+        <item>PORTUGAL</item>
+        <item>ESPAÑA</item>
+        <item>UNITED STATES</item>
+        <item>HONG KONG</item>
+        <item>CHINA</item>
     </string-array>
 
     <string-array name="settings_connection_mode">
