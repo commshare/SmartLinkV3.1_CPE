@@ -696,5 +696,6 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<SmsSingle>> GetSingleSMS(@Body RequestBody requestBody);
+        
     }
 }

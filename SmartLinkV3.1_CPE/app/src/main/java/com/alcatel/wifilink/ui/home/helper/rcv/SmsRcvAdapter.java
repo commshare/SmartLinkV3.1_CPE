@@ -80,8 +80,9 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
         holder.iv_smsPoint.setVisibility(smsType == UNREAD || smsType == SENT_FAILED || smsType == DRAFT ? VISIBLE : GONE);
         if (smsType == UNREAD) {
             holder.iv_smsPoint.setImageResource(R.drawable.sms_point_unread);
-        }
-        if (smsType == SENT_FAILED) {
+        } else if (smsType == DRAFT) {
+            holder.iv_smsPoint.setImageResource(R.drawable.sms_edit);
+        } else if (smsType == SENT_FAILED) {
             holder.iv_smsPoint.setImageResource(R.drawable.sms_prompt);
         }
     }

@@ -224,7 +224,7 @@
     <string name="setting_current_password">Current password</string>
     <string name="setting_new_password">New password (4-16 characters)</string>
     <string name="setting_confirm_password">Confirm new password</string>
-    <string name="setting_password_note">Note: The password should be 5–16 characters.</string>
+    <string name="setting_password_note">Note: The password should be 4–16 characters.</string>
     <string name="setting_network_mode">mode</string>
     <string name="setting_network_selection">Network Selection</string>
     <string name="setting_network_disconnect_first">Disconect your network first</string>
@@ -296,13 +296,13 @@
     <string name="login_kickoff_logout_successful">You are kicked off.</string>
     <string name="inconsistent_new_password">New passwords don\'t match.</string>
     <string name="input_current_password">Enter your current password.</string>
-    <string name="change_passowrd_invalid_password">The password should be 5–16 characters.</string>
+    <string name="change_passowrd_invalid_password">The password should be 4–16 characters.</string>
     <string name="unknown_error">Unknown error!</string>
     <string name="unknown">Unknown</string>
     <string name="Ethernet">Ethernet</string>
     <string name="login_login_btn">LOG IN</string>
     <string name="login_enter_password">Enter admin password</string>
-    <string name="login_enter_password_tip">5-16 characters</string>
+    <string name="login_enter_password_tip">4-16 characters</string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="refresh">Refresh</string>
     <string name="refresh_no_device_manage">No device found</string>

@@ -146,12 +146,8 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(SMSContactList result) {
                 smsContactList = result;
-                for (SMSContactList.SMSContact sc : smsContactList.getSMSContactList()) {
-                    Log.d("ma_sms", "onSuccess: " + sc.getSMSType());
-                }
-
                 smsRcvAdapter.notifys(smsContactList);
-                SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
+                //SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
                 noSms.setVisibility(smsContactList.getSMSContactList().size() > 0 ? View.GONE : View.VISIBLE);
             }
 

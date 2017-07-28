@@ -21,6 +21,7 @@ import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
+import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -28,6 +29,7 @@ import com.alcatel.wifilink.ui.activity.ActivityNewSms;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.activity.PukUnlockActivity;
+import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
 import com.alcatel.wifilink.ui.home.fragment.MainFragment;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -59,6 +61,7 @@ import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
+import static rx.schedulers.Schedulers.test;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -152,7 +155,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initActionbar();
         initView();
         initUi();
-        startTimer();
+        startTimer();// 定时器在此处而不是在Onresume是为了防止界面重复刷新
     }
 
     /* **** initActionbar **** */
@@ -188,13 +191,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         Log.d("ma_home", "onResume: " + temp_en);
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
@@ -353,11 +354,32 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                // is wan or sim
-                isWanInsert();
+                testsms();
+                checkWifi();
             }
-        };
-        timerHelper.start(1000);
+
+            private void testsms() {
+                API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
+                    @Override
+                    protected void onSuccess(SMSContactList result) {
+                        for (SMSContactList.SMSContact sccc : result.getSMSContactList()) {
+                            Log.d("ma_smss", "ma_smss:" + sccc.getUnreadCount() + "");
+                        }
+                    }
+                });
+            }
+        }; timerHelper.start(1000);
+    }
+
+    /* 检测WIFI是否有连接 */
+    private void checkWifi() {
+        boolean isWifi = OtherUtils.checkWifiConnect(this);
+        if (isWifi) {
+            // is wan or sim
+            isWanInsert();
+        } else {
+            ChangeActivity.toActivity(this, RefreshWifiActivity.class, true, true, false, 0);
+        }
     }
 
     /* 刷新ui以及切换Fragment */

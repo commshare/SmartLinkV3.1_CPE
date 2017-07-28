@@ -23,7 +23,7 @@ import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuideActivity extends Activity implements OnPageChangeListener {
+public class GuideActivity extends BaseActivityWithBack implements OnPageChangeListener {
     private ViewPager mVP;
     private ViewPagerAdapter mVPAdapter;
     private List<View> mViews;

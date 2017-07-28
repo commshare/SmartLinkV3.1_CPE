@@ -50,8 +50,7 @@ import butterknife.OnClick;
 
 import static android.R.id.list;
 
-public class SmsDetailActivity extends BaseActivityWithBack implements View.OnClickListener, SmsDetatilAdapter.OnSmsSelectedListener, 
-                                                            SmsDetatilAdapter.OnSmsLongClickListener, SmsDetatilAdapter.OnSendSuccessListener {
+public class SmsDetailActivity extends BaseActivityWithBack implements View.OnClickListener, SmsDetatilAdapter.OnSmsSelectedListener, SmsDetatilAdapter.OnSmsLongClickListener, SmsDetatilAdapter.OnSendSuccessListener {
 
     @BindView(R.id.tv_smsdetail_date)
     TextView tvSmsdetailDate;// 路由器日期
@@ -281,17 +280,17 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
-                if (result.getSIMState() != Cons.READY) {// no sim
-                    ToastUtil_m.show(SmsDetailActivity.this, getString(R.string.home_no_sim));
-                    finish();
-                } else {// normal
+                if (result.getSIMState() == Cons.READY) {// no sim
                     getContent(isSetRcvToLast);
+                } else {// normal
+                    // ToastUtil_m.show(SmsDetailActivity.this, getString(R.string.home_no_sim));
+                    finish();
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                
+
             }
         });
 
@@ -346,6 +345,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
         });
         sdfp.setOnGetDraftListener(draft -> {
             etSmsdetailSend.setText(draft);
+            etSmsdetailSend.setSelection(draft.length());
         });
         sdfp.getDraftSms();
     }
@@ -374,7 +374,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
         new SmsSendHelper(this, smsContact.getPhoneNumber(), content) {
             @Override
             public void sendFinish(int status) {
-                getSmsContents(true);
+                getSmsContents(true);// 注意此处, 一调用即为标记为已读
             }
         };
         // 3. clear the et

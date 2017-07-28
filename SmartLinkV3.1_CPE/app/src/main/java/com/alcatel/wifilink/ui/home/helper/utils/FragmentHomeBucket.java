@@ -57,7 +57,7 @@ public class FragmentHomeBucket {
      * @param en
      */
     public static void showOrHideFragment(Context context, FragmentManager fm, int containerId, FragmentHomeEnum en) {
-        FragmentTransaction ft = fm.beginTransaction();
+        FragmentTransaction ft = fm.beginTransaction();// transation
         Fragment mainFragment = fm.findFragmentByTag(MAIN_FRA);
         Fragment wifiFragment = fm.findFragmentByTag(WIFI_FRA);
         Fragment smsFragment = fm.findFragmentByTag(SMS_FRA);
@@ -75,7 +75,7 @@ public class FragmentHomeBucket {
             ft.hide(settingFragment);
         }
         switch (en) {
-            case MAIN:
+            case MAIN:/* main */
                 if (mainFragment == null) {
                     mainFragment = new MainFragment((Activity) context);
                     ft.add(containerId, mainFragment, MAIN_FRA);
@@ -83,7 +83,7 @@ public class FragmentHomeBucket {
                     ft.show(mainFragment);
                 }
                 break;
-            case WIFI:
+            case WIFI:/* wifi */
                 if (wifiFragment == null) {
                     wifiFragment = new WifiFragment();
                     ft.add(containerId, wifiFragment, WIFI_FRA);
@@ -91,7 +91,7 @@ public class FragmentHomeBucket {
                     ft.show(wifiFragment);
                 }
                 break;
-            case SMS:
+            case SMS:/* sms */
                 if (smsFragment == null) {
                     smsFragment = new SmsFragments((Activity) context);
                     ft.add(containerId, smsFragment, SMS_FRA);
@@ -99,7 +99,7 @@ public class FragmentHomeBucket {
                     ft.show(smsFragment);
                 }
                 break;
-            case SETTING:
+            case SETTING:/* setting */
                 if (settingFragment == null) {
                     settingFragment = new SettingFragment();
                     ft.add(containerId, settingFragment, SETTING_FRA);

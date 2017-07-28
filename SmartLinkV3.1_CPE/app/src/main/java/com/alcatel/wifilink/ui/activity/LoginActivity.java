@@ -43,7 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_nor;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_pre;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivityWithBack implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
 

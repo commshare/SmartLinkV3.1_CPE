@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.home.helper.sms;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
 /**
@@ -35,6 +37,11 @@ public class SmsCountHelper {
                     getSmsContactList(tv);
                 }
             }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
+            }
         });
 
     }
@@ -49,6 +56,9 @@ public class SmsCountHelper {
                     for (SMSContactList.SMSContact smsContact : result.getSMSContactList()) {
                         unReadCount += smsContact.getUnreadCount();
                     }
+
+                    Log.d("ma_smscount", "unReadCount: " + unReadCount);
+                    
                     // show sms ui according the count
                     if (unReadCount <= 0) {
                         mTvSmsCount.setVisibility(View.GONE);
@@ -65,6 +75,11 @@ public class SmsCountHelper {
                     }
                 });
 
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
             }
         });
     }

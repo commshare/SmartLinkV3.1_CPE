@@ -36,7 +36,7 @@ import butterknife.ButterKnife;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 
-public class LoadingActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoadingActivity extends BaseActivityWithBack implements View.OnClickListener {
 
     private static final String TAG = "LoadingActivity";
     private final int SPLASH_DELAY = 1000;
@@ -83,13 +83,6 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
         toNextOperation();
     }
 
-    /* 判断wifi是否连接 */
-    private boolean isWifiConnected() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-        return NetworkInfo.State.CONNECTED == wifiState;
-    }
-
     /* 启动APP */
     private void startApp() {
         //  判断是否为第一次使用
@@ -112,7 +105,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     private void toNextOperation() {
 
         // 1.if no wifi or wifi ssid is not correct
-        if (!isWifiConnected()) {
+        if (!OtherUtils.checkWifiConnect(this)) {
             // to RefreshWifiActivity
             ChangeActivity.toActivity(this, RefreshWifiActivity.class, true, true, false, 0);
             return;

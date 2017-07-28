@@ -107,7 +107,7 @@ public class SmsFragment extends Fragment implements AdapterView.OnItemClickList
     /* **** RefreshNewSmsNumber **** */
     private void RefreshNewSmsNumber() {
         // show the sms count in homeactivity group
-        SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
+        //SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
     }
 
     /* **** getSmsContactList **** */

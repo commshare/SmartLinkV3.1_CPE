@@ -296,7 +296,7 @@
     <string name="login_kickoff_logout_successful">Ihre Sitzung wurde beendet.</string>
     <string name="inconsistent_new_password">Die neuen Passwörter stimmen nicht überein.</string>
     <string name="input_current_password">Geben Sie Ihr aktuelles Passwort ein.</string>
-    <string name="change_passowrd_invalid_password">Das Passwort muss zwischen 5 und 16 Zeichen lang sein.</string>
+    <string name="change_passowrd_invalid_password">Das Passwort muss zwischen 4 und 16 Zeichen lang sein.</string>
     <string name="unknown_error">Unbekannter Fehler!</string>
     <string name="unknown">Unbekannt</string>
     <string name="Ethernet">Ethernet</string>

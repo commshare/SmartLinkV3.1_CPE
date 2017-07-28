@@ -262,7 +262,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         setNetWorkType();// unicom | mobile | telcom
         setTrafficLayout();// traffic 0MB...layout
         setSignStatus();// sign level layout
-        SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
+        //SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
     }
 
     /* -------------------------------------------- 0.GET ALL STATUS -------------------------------------------- */

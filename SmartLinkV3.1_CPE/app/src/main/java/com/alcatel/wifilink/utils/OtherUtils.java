@@ -1,6 +1,8 @@
 package com.alcatel.wifilink.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.EditText;
 
@@ -145,6 +147,7 @@ public class OtherUtils {
 
     /**
      * 获取引导页的view
+     *
      * @param context
      * @return
      */
@@ -157,6 +160,18 @@ public class OtherUtils {
         pages.add(page2);
         pages.add(page3);
         return pages;
+    }
+
+    /**
+     * 检查WIFI是否有链接
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkWifiConnect(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+        return NetworkInfo.State.CONNECTED == wifiState;
     }
 
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
