@@ -112,4 +112,34 @@ public class FragmentHomeBucket {
         }
         ft.commit();
     }
+
+    public static void afterSwitchLanguageReloadPage(Context context, FragmentManager fm, int containerId) {
+        FragmentTransaction ft = fm.beginTransaction();// transation
+        Fragment mainFragment = fm.findFragmentByTag(MAIN_FRA);
+        Fragment wifiFragment = fm.findFragmentByTag(WIFI_FRA);
+        Fragment smsFragment = fm.findFragmentByTag(SMS_FRA);
+        Fragment settingFragment = fm.findFragmentByTag(SETTING_FRA);
+        if (mainFragment != null) {
+            ft.remove(mainFragment);
+            mainFragment = new MainFragment((Activity) context);
+            ft.add(containerId, mainFragment, MAIN_FRA);
+        }
+        if (wifiFragment != null) {
+            ft.remove(wifiFragment);
+            wifiFragment = new WifiFragment();
+            ft.add(containerId, wifiFragment, WIFI_FRA);
+        }
+        if (smsFragment != null) {
+            ft.remove(smsFragment);
+            smsFragment = new SmsFragments((Activity) context);
+            ft.add(containerId, smsFragment, SMS_FRA);
+        }
+        if (settingFragment != null) {
+            ft.remove(settingFragment);
+            settingFragment = new SettingFragment();
+            ft.add(containerId, settingFragment, SETTING_FRA);
+        }
+        ft.show(settingFragment);
+        ft.commit();
+    }
 }

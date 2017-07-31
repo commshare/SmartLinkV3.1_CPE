@@ -272,6 +272,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
     }
 
+    public void afterSwitchLanguageReloadPage() {
+        FragmentHomeBucket.afterSwitchLanguageReloadPage(this, fm, container);
+        refreshActionbar(FragmentHomeEnum.SETTING);
+        setGroupButtonUi(FragmentHomeEnum.SETTING);
+    }
 
     /* action bar click */
     @Override
@@ -467,6 +472,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         // show or hide
         if (isShowBar) {
             barSetting.showActionbar(supportActionBar);
+            tv_logout.setText(R.string.log_out);
         } else {
             barSetting.hideActionbar(supportActionBar);
         }

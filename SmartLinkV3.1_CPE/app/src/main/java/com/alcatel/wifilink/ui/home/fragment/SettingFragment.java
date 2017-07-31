@@ -48,6 +48,8 @@ import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
@@ -68,6 +70,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private final static String TAG = "SettingFragment";
     private final static String CONFIG_SPNAME = "config";
     private final static String CONFIG_FILE_PATH = "configFilePath";
+    public final static int SET_LANGUAGE_REQUEST = 0x001;
     public static boolean isFtpSupported = false;
     public static boolean isDlnaSupported = false;
     public static boolean isSharingSupported = true;
@@ -1007,7 +1010,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void goSettingLanguagePage() {
         Intent intent = new Intent(getActivity(), SettingLanguageActivity.class);
-        getActivity().startActivity(intent);
+        startActivityForResult(intent, SET_LANGUAGE_REQUEST);
     }
 
     private void goToAccountSettingPage() {
@@ -1038,4 +1041,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         getActivity().startActivity(intent);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == SettingFragment.SET_LANGUAGE_REQUEST) {
+            if (data != null && data.getBooleanExtra(SettingLanguageActivity.IS_SWITCH_LANGUAGE, false)) {
+                HomeActivity parentActivity = (HomeActivity ) getActivity();
+                parentActivity.afterSwitchLanguageReloadPage();
+            }
+        }
+    }
 }

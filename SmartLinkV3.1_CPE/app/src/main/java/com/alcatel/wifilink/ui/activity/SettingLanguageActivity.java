@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -20,31 +19,30 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.Constants;
+import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
 import com.alcatel.wifilink.utils.PreferenceUtil;
 
 import java.util.Locale;
 
-public class SettingLanguageActivity extends BaseActivityWithBack implements OnClickListener {
+public class SettingLanguageActivity extends BaseActivityWithBack {
     private static final String TAG = "SettingLanguageActivity";
+    public static final String IS_SWITCH_LANGUAGE = "is_switch_language";
     private String[] mLanguageStrings = {Constants.Language.ENGLISH, Constants.Language.ARABIC, Constants.Language.ESPANYOL,
             Constants.Language.GERMENIC, Constants.Language.ITALIAN, Constants.Language.FRENCH};
     private ListView mLanguageListView;
     private LanguageAdapter mLanguageAdapter;
     private String mCurrentLanguage;
     private String mChangeLanguage;
-//    private ImageView mEnglishImg;
-//    private ImageView mEspanyolImg;
-//    private ImageView mArabicImg;
-//    private ImageView mGermanicImg;
-//    private ImageView mItalianImg;
-//    private ImageView mFrenchImg;
+
+    private boolean mIsSwitchLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_language);
-        setTitle("Language");
+        setTitle(R.string.language);
+        mIsSwitchLanguage = getIntent().getBooleanExtra(IS_SWITCH_LANGUAGE, false);
         mCurrentLanguage = PreferenceUtil.getString("language", "en");
         mChangeLanguage = mCurrentLanguage;
         mLanguageListView = (ListView)findViewById(R.id.listview_language);
@@ -58,70 +56,6 @@ public class SettingLanguageActivity extends BaseActivityWithBack implements OnC
         });
         mLanguageAdapter = new LanguageAdapter(this, mLanguageStrings);
         mLanguageListView.setAdapter(mLanguageAdapter);
-//        findViewById(R.id.language_english).setOnClickListener(this);
-//        findViewById(R.id.language_espanyol).setOnClickListener(this);
-//        findViewById(R.id.language_arabic).setOnClickListener(this);
-//        findViewById(R.id.language_germanic).setOnClickListener(this);
-//        findViewById(R.id.language_italian).setOnClickListener(this);
-//        findViewById(R.id.language_french).setOnClickListener(this);
-//        mEnglishImg = (ImageView) findViewById(R.id.language_english_img);
-//        mEspanyolImg = (ImageView) findViewById(R.id.language_espanyol_img);
-//        mArabicImg = (ImageView) findViewById(R.id.language_arabic_img);
-//        mGermanicImg = (ImageView) findViewById(R.id.language_germanic_img);
-//        mItalianImg = (ImageView) findViewById(R.id.language_italian_img);
-//        mFrenchImg = (ImageView) findViewById(R.id.language_french_img);
-
-//        String language = PreferenceUtil.getString("language", "en");
-//        if (language.equals("en")) {
-//            mEnglishImg.setVisibility(View.VISIBLE);
-//        } else if(language.equals("ar")){
-//            // 阿拉伯语
-//            mArabicImg.setVisibility(View.VISIBLE);
-//        } else if(language.equals("de")){
-//            // 德语
-//            mGermanicImg.setVisibility(View.VISIBLE);
-//        } else if(language.equals("es")){
-//            // 西班牙语
-//            mEspanyolImg.setVisibility(View.VISIBLE);
-//        } else if(language.equals("it")){
-//            // 意大利语
-//            mItalianImg.setVisibility(View.VISIBLE);
-//        } else if(language.equals("fr")){
-//            // 法语
-//            mFrenchImg.setVisibility(View.VISIBLE);
-//        }
-    }
-
-    @Override
-    public void onClick(View v) {
-//        // TODO Auto-generated method stub
-//        int nID = v.getId();
-//        switch (nID) {
-//            case R.id.language_english:
-//                switchLanguage("en");
-//                break;
-//            case R.id.language_arabic:
-//                switchLanguage("ar");
-//                break;
-//            case R.id.language_espanyol:
-//                switchLanguage("es");
-//                break;
-//            case R.id.language_germanic:
-//                switchLanguage("de");
-//                break;
-//            case R.id.language_italian:
-//                switchLanguage("it");
-//                break;
-//            case R.id.language_french:
-//                switchLanguage("fr");
-//                break;
-//            default:
-//                break;
-//        }
-//        //更新语言后，destroy当前页面，重新绘制
-//        finish();
-//        Intent it = new Intent(SettingLanguageActivity.this, SettingLanguageActivity.class);
-//        startActivity(it);
     }
 
     @Override
@@ -136,20 +70,31 @@ public class SettingLanguageActivity extends BaseActivityWithBack implements OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
             switchLanguage(mChangeLanguage);
-            finish();
-            Intent it = new Intent(SettingLanguageActivity.this, SettingLanguageActivity.class);
-            startActivity(it);
+            mIsSwitchLanguage = true;
+            setTitle(R.string.language);
+            mCurrentLanguage = mChangeLanguage;
+            invalidateOptionsMenu();
+//            finish();
+//            Intent it = new Intent(SettingLanguageActivity.this, SettingLanguageActivity.class);
+//            it.putExtra(IS_SWITCH_LANGUAGE, true);
+//            startActivity(it);
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onDestroy() {
+        Log.d(TAG,"onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG,"onBackPressed");
+        Intent intent = new Intent();
+        intent.putExtra(IS_SWITCH_LANGUAGE, mIsSwitchLanguage);
+        setResult(SettingFragment.SET_LANGUAGE_REQUEST, intent);
+        finish();
         super.onBackPressed();
     }
 
@@ -174,6 +119,7 @@ public class SettingLanguageActivity extends BaseActivityWithBack implements OnC
     @Override
     public void onStop() {
         // TODO Auto-generated method stub
+        Log.d(TAG,"onStop");
         super.onStop();
     }
 

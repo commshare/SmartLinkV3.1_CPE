@@ -26,6 +26,11 @@ public class BaseActivityWithBack extends AppCompatActivity {
             baseActionBar.setDisplayHomeAsUpEnabled(true);
             baseActionBar.setElevation(0);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         // 初始化PreferenceUtil
         PreferenceUtil.init(this);
         // 根据上次的语言设置，重新设置语言

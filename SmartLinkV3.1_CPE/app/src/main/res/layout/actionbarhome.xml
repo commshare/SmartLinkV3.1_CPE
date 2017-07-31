@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="@string/log_out"
                 android:textColor="@color/color_white"
                 android:textStyle="bold"
                 android:textSize="@dimen/font_size_normal"
