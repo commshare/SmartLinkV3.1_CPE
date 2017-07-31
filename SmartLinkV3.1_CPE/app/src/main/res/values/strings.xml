@@ -575,10 +575,12 @@
     <string name="day_29">Day 29</string>
     <string name="day_30">Day 30</string>
     <string name="day_31">Day 31</string>
+    <string name="insert_sim_or_wan">Try again after insert SIM or WAN</string>
+    <string name="connecting">Connecting...</string>
 
     <!-- 2017/07/26 -->
-    <string name="connecting">Please Wait...</string>
-    <string name="insert_sim_or_wan">Try again</string>
+
+
     <string name="connect_failed">Connect failed</string>
     <string name="size">Size</string>
     <string name="device_will_restart_later">The device will  restart later.</string>

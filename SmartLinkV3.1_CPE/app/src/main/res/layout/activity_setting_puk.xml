@@ -195,6 +195,7 @@
         android:text = "@string/connect"
         android:textColor = "@android:color/white"
         android:textSize = "@dimen/dimen_16dip"
+        android:textAllCaps="false"
         app:alphaFactor = "0.8"
         app:hover = "true"
         app:rippleColor = "@android:color/white" />

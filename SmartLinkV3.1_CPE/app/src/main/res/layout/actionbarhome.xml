@@ -45,6 +45,7 @@
                 android:textColor="@color/color_white"
                 android:textStyle="bold"
                 android:textSize="@dimen/font_size_normal"
+                android:maxLines="1"
                 android:visibility="visible" />
 
         </RelativeLayout>

@@ -75,6 +75,7 @@
             android:text="@string/connect"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_textsize_16sp"
+            android:textAllCaps="false"
             app:alphaFactor="0.8"
             app:hover="true"
             app:rippleColor="@color/white" />

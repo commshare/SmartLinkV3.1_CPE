@@ -13,6 +13,7 @@
         android:max="100"
         android:progress="30"
         android:layout_centerInParent="true"
+        android:progressDrawable="@drawable/progress_bar_drawable"
         android:layout_marginBottom="@dimen/dimen_40dip"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:visibility="gone"/>
