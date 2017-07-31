@@ -27,9 +27,11 @@ import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContactList;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
@@ -65,6 +67,7 @@ import static com.alcatel.wifilink.R.drawable.tab_sms_nor;
 import static com.alcatel.wifilink.R.drawable.tab_sms_pre;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_nor;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_pre;
+import static com.alcatel.wifilink.R.id.home;
 import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.id.window;
 import static com.alcatel.wifilink.R.string.main_setting;
@@ -154,12 +157,15 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     public static HashMap<Long, Integer> smsUnreadMap = new HashMap<>();// 未读消息缓冲集合
     private WindowManager windowManager;
     private View inflate;
+    private TimerHelper loginTimer;
+    public static Context staticContext;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("ma_home", "onCreate: ");
+        staticContext = this;
         setContentView(R.layout.activity_homes);
         hac = this;
         supportActionBar = getSupportActionBar();
@@ -171,23 +177,25 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initUi();
         startTimer();// 定时器在此处而不是在Onresume是为了防止界面重复刷新
         getCurrentActivity();// 定时获取当前位于顶层运行的ACTIVITY
-
-        touchWindowManager();
-
+        autoLogout();// 自动退出登陆
     }
 
-    private void touchWindowManager() {
-        // windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        // WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-        // params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-        // params.flags = WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
-        // params.format = PixelFormat.TRANSLUCENT;
-        // params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        // params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        // params.gravity = Gravity.CENTER;
-        // inflate = View.inflate(getApplicationContext(), R.layout.window_layout, null);
-        // RelativeLayout rl_window = (RelativeLayout) inflate.findViewById(R.id.window);
-        // windowManager.addView(inflate, params);
+    /* 自动到达5分钟后退出 */
+    private void autoLogout() {
+        new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                API.get().getLoginState(new MySubscriber<LoginState>() {
+                    @Override
+                    protected void onSuccess(LoginState result) {
+                        if (result.getState() == Cons.LOGOUT) {
+                            ToastUtil_m.show(HomeActivity.this, getString(R.string.log_out));
+                            ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, true, true, false, 0);
+                        }
+                    }
+                });
+            }
+        }.start(5 * 60 * 1000);
     }
 
 
@@ -256,7 +264,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private void initView() {
         container = R.id.mFl_home_container;
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        if (MainFragment.type == Cons.TYPE_SIM) {
+        if (MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
             SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
         }
     }
@@ -324,7 +332,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
-                        if (result.getSIMState() == Cons.READY && MainFragment.type == Cons.TYPE_SIM) {
+                        if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
                             refreshUi_fragment(FragmentHomeEnum.SMS);
                         }
                     }

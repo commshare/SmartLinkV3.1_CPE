@@ -84,7 +84,6 @@ public class BusinessManager {
 
     public static synchronized BusinessManager getInstance() {
         if (m_instance == null) {
-            Log.d(TAG, "new BusinessManager()");
             m_instance = new BusinessManager();
             m_instance.init();
         }
@@ -154,14 +153,12 @@ public class BusinessManager {
     //param:strMessageId: MessageUti defined message string
     public void sendRequestMessage(String strMessageId, DataValue data) {
         if (!isAllowedSendRequest()) {
-            Log.d(TAG, "Do not allowed send http request!!!");
             return;
         }
 
         try {
             HttpMethodUti httpMethodUtils = MessageUti.httpMethods.get(strMessageId);
             if (httpMethodUtils == null) {
-                Log.d(TAG, "MessageUti.httpMethods map have not http message:" + strMessageId);
             } else {
                 BaseManager mclass = m_class.get(httpMethodUtils.getManagerClassName());
                 Method method = mclass.getClass().getMethod(httpMethodUtils.getMethodString(), DataValue.class);
@@ -244,58 +241,46 @@ public class BusinessManager {
                 //to add manager
             }
         } catch (NoSuchMethodException e) {
-            Log.e(TAG, "1 No have this method:" + strMessageId);
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
-            Log.e(TAG, "1 IllegalArgumentException:" + strMessageId);
             e.printStackTrace();
         } catch (IllegalAccessException e) {
 
-            Log.e(TAG, "1 IllegalAccessException:" + strMessageId);
             e.printStackTrace();
         } catch (InvocationTargetException e) {
 
-            Log.e(TAG, "1 InvocationTargetException:" + strMessageId);
             e.printStackTrace();
         } catch (Exception e) {
 
-            Log.e(TAG, "1 Exception:" + strMessageId);
             e.printStackTrace();
         }
     }
 
     public void sendRequestMessage(String strMessageId) {
         if (!isAllowedSendRequest()) {
-            Log.d(TAG, "Do not allowed send http request!!!");
             return;
         }
 
         try {
             HttpMethodUti httpMethod = MessageUti.httpMethods.get(strMessageId);
             if (httpMethod == null) {
-                Log.d(TAG, "MessageUti.httpMethods map have not http message:" + strMessageId);
             } else {
                 BaseManager mclass = m_class.get(httpMethod.getManagerClassName());
                 Method method = mclass.getClass().getMethod(httpMethod.getMethodString());
                 method.invoke(mclass);
             }
         } catch (NoSuchMethodException e) {
-            Log.e(TAG, "2 No have this method:" + strMessageId);
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
-            Log.e(TAG, "2 IllegalArgumentException:" + strMessageId);
             e.printStackTrace();
         } catch (IllegalAccessException e) {
 
-            Log.e(TAG, "2 IllegalAccessException:" + strMessageId);
             e.printStackTrace();
         } catch (InvocationTargetException e) {
 
-            Log.e(TAG, "2 InvocationTargetException:" + strMessageId);
             e.printStackTrace();
         } catch (Exception e) {
 
-            Log.e(TAG, "2 Exception:" + strMessageId);
             e.printStackTrace();
         }
     }

@@ -103,7 +103,6 @@ public abstract class BaseManager {
 			};
 			observable = Observable.create(f);
 			observable = observable.subscribeOn(Schedulers.io()).doOnError(error -> {
-				Log.e(TAG, "e.getMessage()-->:" + error.getMessage());
 //				if (error instanceof NotFoundTException) {
 //					NotFoundTException notFoundTException = (NotFoundTException) error;
 //					if (notFoundTException.ErrorCode != -1) {

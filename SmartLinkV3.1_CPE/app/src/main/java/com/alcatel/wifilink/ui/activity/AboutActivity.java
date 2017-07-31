@@ -85,7 +85,6 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         API.get().getWanSeting(new MySubscriber<WanSetting>() {
             @Override
             protected void onSuccess(WanSetting result) {
-                Log.d(TAG, "getWanSeting: " + result.toString());
                 mManagementIpTxt.setText(result.getIpAddress());
                 mSubnetMaskTxt.setText(result.getSubNetMask());
             }
@@ -109,7 +108,6 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
             ApplicationInfo appInfo = getApplicationInfo();
             boolean isDebuggable = (appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
             mAppVersionTxt.setText("v" + info.versionName + (isDebuggable ? "(debug)" : ""));
-            Log.d(TAG, "version: " + info.versionName);
             mIvPoint.setVisibility(View.GONE);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

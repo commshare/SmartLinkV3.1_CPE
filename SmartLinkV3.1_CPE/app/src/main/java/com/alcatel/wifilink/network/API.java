@@ -2,9 +2,11 @@ package com.alcatel.wifilink.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.model.Usage.UsageParams;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.Usage.UsageRecordParam;
@@ -137,10 +139,14 @@ public class API {
     }
 
     private void createSmartLinkApi() {
-        Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl("http://192.168.1.1").client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        smartLinkApi = retrofit.create(SmartLinkApi.class);
+        try {
+            Retrofit.Builder builder = new Retrofit.Builder();
+            builder.baseUrl("http://192.168.1.1").client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
+            Retrofit retrofit = builder.build();
+            smartLinkApi = retrofit.create(SmartLinkApi.class);
+        } catch (Exception e) {
+            Log.d("ma_api", "okhttpClient error");
+        }
     }
 
     //    private API(DownloadProgressListener listener) {
@@ -696,6 +702,6 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<SmsSingle>> GetSingleSMS(@Body RequestBody requestBody);
-        
+
     }
 }

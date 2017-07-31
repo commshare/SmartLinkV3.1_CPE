@@ -2,6 +2,7 @@ package com.alcatel.wifilink.business;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.alcatel.wifilink.business.user.HttpUser;
 import com.alcatel.wifilink.business.user.LoginStateResult;
@@ -143,7 +144,7 @@ public class UserManager extends BaseManager {
             if (response.isOk()) {
                 m_loginStatus = UserLoginStatus.Logout;
             }
-
+            Log.d("","");
             //				sendBroadcast(response, MessageUti.USER_LOGOUT_REQUEST);
         }));
     }

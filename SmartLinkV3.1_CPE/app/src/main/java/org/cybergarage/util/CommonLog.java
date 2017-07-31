@@ -48,7 +48,6 @@ public class CommonLog {
 	    if (logLevel <= Log.INFO) {	        
 	        String name = getFunctionName();
 	        String ls=(name==null?str.toString():(name+" - "+str));
-	        Log.i(tag, ls);
 	    }
 	}
 	
@@ -62,7 +61,6 @@ public class CommonLog {
         if (logLevel <= Log.VERBOSE) {
             String name = getFunctionName();
             String ls=(name==null?str.toString():(name+" - "+str));
-            Log.v(tag, ls);    
         }
 	}
 	
@@ -76,7 +74,6 @@ public class CommonLog {
 	    if (logLevel <= Log.WARN) {
             String name = getFunctionName();
             String ls=(name==null?str.toString():(name+" - "+str));
-            Log.w(tag, ls);
 	    }
 	}
 	
@@ -90,7 +87,6 @@ public class CommonLog {
         if (logLevel <= Log.ERROR) {            
             String name = getFunctionName();
             String ls=(name==null?str.toString():(name+" - "+str));
-            Log.e(tag, ls);
         }
 	}
 	
@@ -114,7 +110,6 @@ public class CommonLog {
 	            }
 	        }
 
-	        Log.e(tag, sb.toString());
 	    }
 	}
 	
@@ -134,7 +129,6 @@ public class CommonLog {
         if (logLevel <= Log.DEBUG) {
             String name = getFunctionName();
             String ls = (name == null?str.toString():(name+" - "+str));
-            Log.d(tag, ls);
         }
 	}
 	

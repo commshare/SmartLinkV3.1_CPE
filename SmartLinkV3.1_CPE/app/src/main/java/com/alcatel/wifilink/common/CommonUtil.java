@@ -225,7 +225,6 @@ public class CommonUtil {
                 file.mkdirs();
             }
         } catch (Exception e) {
-            Log.i("error:", e + "");
         }
     }
 
