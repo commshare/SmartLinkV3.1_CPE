@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.wlan.AP;
 import com.alcatel.wifilink.common.ENUM;
-import com.alcatel.wifilink.common.ToastUtil;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.API;
@@ -384,9 +384,10 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                 String newKey2G = mKey2GEdit.getText().toString().trim();
 
                 if (newSsid2G.isEmpty()) {
-                    ToastUtil.showMessage(mContext, R.string.enter_2_4ghzssid);
+                    ToastUtil_m.show(mContext, R.string.enter_2_4ghzssid);
                     return;
                 }
+
                 mEditedSettings.getAP2G().setSsid(newSsid2G);
                 mEditedSettings.getAP2G().setSecurityMode(newSecurity2GMode);
                 //disable
@@ -398,7 +399,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                     //wep
                 } else if (newSecurity2GMode == 1) {
                     if (newKey2G.length() != 5 || newKey2G.length() != 13) {
-                        ToastUtil.showMessage(mContext, R.string.wep_password_must_be_5_13_characters);
+                        ToastUtil_m.show(mContext, R.string.wep_password_must_be_5_13_characters);
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(newEncryption2G);
@@ -408,7 +409,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                     //wpa
                 } else {
                     if (newKey2G.length() < 8 || newKey2G.length() > 63) {
-                        ToastUtil.showMessage(mContext, R.string.password_2_4g_length_must_be_8_63);
+                        ToastUtil_m.show(mContext, R.string.password_2_4g_length_must_be_8_63);
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(0);
@@ -431,9 +432,10 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                 String newKey5G = mKey5GEdit.getText().toString().trim();
 
                 if (newSsid5G.isEmpty()) {
-                    ToastUtil.showMessage(mContext, "Name(5G) is missing!");
+                    ToastUtil_m.show(mContext, "Name(5G) is missing!");
                     return;
                 }
+
                 mEditedSettings.getAP5G().setSsid(newSsid5G);
                 mEditedSettings.getAP5G().setSecurityMode(newSecurity5GMode);
                 //disable
@@ -445,7 +447,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                     //wep
                 } else if (newSecurity5GMode == 1) {
                     if (newKey5G.length() != 5 || newKey5G.length() != 13) {
-                        ToastUtil.showMessage(mContext, "Wep password(5G) length must be 5 or 13!");
+                        ToastUtil_m.show(mContext, "Wep password(5G) length must be 5 or 13!");
                         return;
                     }
                     mEditedSettings.getAP5G().setWepType(newEncryption5G);
@@ -455,7 +457,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
                     //wpa
                 } else {
                     if (newKey5G.length() < 8 || newKey5G.length() > 63) {
-                        ToastUtil.showMessage(mContext, "Password(5G) length must be 8-63!");
+                        ToastUtil_m.show(mContext, "Password(5G) length must be 8-63!");
                         return;
                     }
                     mEditedSettings.getAP5G().setWepType(0);
@@ -477,7 +479,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(Object result) {
                 mProgressDialog.dismiss();
-                ToastUtil.showMessage(mContext, getString(R.string.success));
+                ToastUtil_m.show(mContext, getString(R.string.success));
             }
 
             @Override

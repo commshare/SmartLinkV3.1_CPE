@@ -47,9 +47,8 @@ import com.alcatel.wifilink.ui.activity.SettingDeviceActivity;
 import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
-import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
-import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
@@ -531,7 +530,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             ToastUtil_m.show(getActivity(), "No this file");
             return;
         }
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
         MultipartBody.Part body = MultipartBody.Part.createFormData("iptUpload", file.getName(), requestFile);
         API.get().uploadFile(new Subscriber() {
             @Override
@@ -549,9 +551,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable e) {
-                Log.d(TAG, "onResultError " + e.toString());
+                Log.e(TAG, "restore,onResultError " + e.toString());
                 dismissLoadingDialog();
-                ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
+//                ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
 
             }
 

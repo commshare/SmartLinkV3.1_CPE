@@ -95,11 +95,11 @@ public class AP implements Cloneable{
     }
 //
     public boolean isSsidHiden() {
-        return SsidHidden == 1;
+        return SsidHidden == 0;
     }
 
     public void setSsidHidden(boolean hidden) {
-        SsidHidden = hidden ? 1 : 0;
+        SsidHidden = hidden ? 0 : 1;
     }
 
     public boolean isApIsolated() {

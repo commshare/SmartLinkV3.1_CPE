@@ -1,8 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -14,9 +12,9 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
+import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.DataUtils;
@@ -176,10 +174,24 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
         String durationformat = getResources().getString(R.string.usage_duration);
         int connectTime = result.getCurrConnTimes();
         int totalTime = result.getTConnTimes();
-        String strCurrDuration = String.format(durationformat, connectTime / 3600, (connectTime % 3600) / 60);
+        String strCurrDuration = String.format(durationformat, totalTime / 3600, (totalTime % 3600) / 60);
         mTvHomeTime.setText(strCurrDuration);
-        String strTotalDuration = String.format(durationformat, totalTime / 3600, (totalTime % 3600) / 60);
-        mTvRoamingTime.setText(strTotalDuration);
+
+
+        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+            @Override
+            protected void onSuccess(NetworkInfos result) {
+                //0: roaming   1: no roaming
+                if (result.getRoaming() == 0) {
+                    String strTotalDuration = String.format(durationformat, connectTime / 3600, (connectTime % 3600) / 60);
+                    mTvRoamingTime.setText(strTotalDuration);
+                } else {
+                    String strTotalDuration = String.format(durationformat, 0, 0);
+                    mTvRoamingTime.setText(strTotalDuration);
+                }
+            }
+        });
+
     }
 }
 
