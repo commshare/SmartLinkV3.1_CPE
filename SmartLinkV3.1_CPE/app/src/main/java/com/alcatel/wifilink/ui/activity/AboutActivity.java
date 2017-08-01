@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -85,8 +84,8 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         API.get().getWanSeting(new MySubscriber<WanSetting>() {
             @Override
             protected void onSuccess(WanSetting result) {
-                mManagementIpTxt.setText(result.getIpAddress());
-                mSubnetMaskTxt.setText(result.getSubNetMask());
+                mManagementIpTxt.setText(result.getIpAddress().isEmpty() ? "0.0.0.0" : result.getIpAddress());
+                mSubnetMaskTxt.setText(result.getSubNetMask().isEmpty() ? "0.0.0.0" : result.getSubNetMask());
             }
         });
 

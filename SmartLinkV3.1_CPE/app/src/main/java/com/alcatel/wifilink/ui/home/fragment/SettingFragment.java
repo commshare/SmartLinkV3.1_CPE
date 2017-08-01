@@ -54,6 +54,7 @@ import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
 
 import java.io.File;
+import java.net.SocketTimeoutException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -551,10 +552,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "restore,onResultError " + e.toString());
                 dismissLoadingDialog();
-//                ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
-
+                Log.e(TAG, "restore,onResultError " + e.toString());
+                if (e instanceof SocketTimeoutException) {
+                    ToastUtil_m.show(getActivity(), R.string.succeed);
+                } else {
+                    ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
+                }
             }
 
             @Override
@@ -760,7 +764,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 timerHelper.stop();
                 timerHelper = null;
             }
-            if(mCheckingDlg!=null && mCheckingDlg.isShowing()){
+            if (mCheckingDlg != null && mCheckingDlg.isShowing()) {
                 mCheckingDlg.dismiss();
             }
             if (Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION == eStatus) {
@@ -803,7 +807,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             drawable = getResources().getDrawable(R.drawable.sms_prompt);
         }
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        messageText.setCompoundDrawables(null,drawable,null,null);
+        messageText.setCompoundDrawables(null, drawable, null, null);
         builder.setView(view);
         builder.setTitle("");
         builder.setCancelable(true);
@@ -811,7 +815,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         builder.create().show();
 
     }
-
 
 
     private void showUpgradeProgressDlg(int state, int progress) {
@@ -873,7 +876,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         } else {
             int status = result.getStatus();
             if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_NOT_START == status) {
-                if(result.getProcess() >= 99){
+                if (result.getProcess() >= 99) {
                     showUpgradeProgressDlg(status, result.getProcess());
 //                    if (timerHelper != null) {
 //                        timerHelper.stop();
@@ -884,7 +887,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 //                    }
 //                    requestSetDeviceStartUpdate();
                 }
-                Log.d(TAG, "requestGetDeviceUpgradeState,device upgrade not start,progress:"+result.getProcess());
+                Log.d(TAG, "requestGetDeviceUpgradeState,device upgrade not start,progress:" + result.getProcess());
 
 //                showUpgradeStateResultDlg(getString(R.string.could_not_update_try_again),status);
             } else if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
@@ -1048,7 +1051,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == SettingFragment.SET_LANGUAGE_REQUEST) {
             if (data != null && data.getBooleanExtra(SettingLanguageActivity.IS_SWITCH_LANGUAGE, false)) {
-                HomeActivity parentActivity = (HomeActivity ) getActivity();
+                HomeActivity parentActivity = (HomeActivity) getActivity();
                 parentActivity.afterSwitchLanguageReloadPage();
             }
         }
