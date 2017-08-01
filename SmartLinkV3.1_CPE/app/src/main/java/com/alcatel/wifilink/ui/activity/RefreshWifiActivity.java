@@ -24,6 +24,7 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
 public class RefreshWifiActivity extends AppCompatActivity {
     private static final String TAG = "RefreshWifiActivity";
@@ -120,7 +121,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
         }
         mIsRefreshing = true;
         updateRefreshingUI(true);
-        WifiManager wifiManager = (WifiManager) SmartLinkV3App.getInstance().getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         if (!wifiManager.isWifiEnabled()) {
             wifiManager.setWifiEnabled(true);
             mCount = 0;
@@ -142,8 +143,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
         API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
-                Log.d(TAG, "login state:" + result.getState());
-                if (result.getState() == ENUM.UserLoginStatus.LOGIN.ordinal()) {
+                if (result.getState() == Cons.LOGIN) {
                     launchHomeActivity();
                 } else {
                     launchLoginActivity(result.getLoginRemainingTimes());

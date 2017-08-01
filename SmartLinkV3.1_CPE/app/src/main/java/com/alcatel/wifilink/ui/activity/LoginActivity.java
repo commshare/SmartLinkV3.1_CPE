@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.business.wlan.AP;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
@@ -37,6 +39,8 @@ import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.type.ui.WanModeActivity;
 import com.alcatel.wifilink.utils.EditUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ProgressUtils;
+import com.alcatel.wifilink.utils.ScreenSize;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -57,6 +61,8 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     private boolean ischeck = false;
     private ImageView iv_loginCheckbox;
     private TextView mTv_forgotPsd;
+    private PopupWindows resetPop;
+    private ProgressDialog progressPop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,16 +125,56 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                 break;
 
             case R.id.tv_login_forgotPsd:
-                // to reset account activity
-                ChangeActivity.toActivity(this, SettingAccountActivity.class, true, false, false, 0);
+                showResetPop();
                 break;
 
             case R.id.login_apply_btn:// 登陆按钮
+                progressPop = new ProgressUtils(this).getProgressPop("Login device...");
                 OtherUtils otherUtils = new OtherUtils();
                 otherUtils.setOnVersionListener(needToEncrypt -> toLogin(needToEncrypt));
                 otherUtils.getDeviceSwVersion();
                 break;
         }
+    }
+
+    /* **** showResetPop **** */
+    private void showResetPop() {
+        ScreenSize.SizeBean size = ScreenSize.getSize(this);
+        int width = (int) (size.width * 0.75f);
+        int height = (int) (size.height * 0.20f);
+        View inflate = View.inflate(this, R.layout.pop_resetdevice, null);
+        View cancel_reset = inflate.findViewById(R.id.tv_pop_forgot_cancel);
+        View ok_reset = inflate.findViewById(R.id.tv_pop_forgot_ok);
+        cancel_reset.setOnClickListener(v -> resetPop.dismiss());
+        ok_reset.setOnClickListener(v -> resetDevice());/* 重启设备 */
+        resetPop = new PopupWindows(this, inflate, width, height, true);
+    }
+
+    /* 重启设备 */
+    private void resetDevice() {
+        if (resetPop != null) {
+            resetPop.dismiss();
+        }
+
+        ProgressDialog progressPop = new ProgressUtils(this).getProgressPop(getString(R.string.resetting));
+        API.get().resetDevice(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                if (progressPop != null) {
+                    progressPop.dismiss();
+                }
+                ToastUtil_m.show(LoginActivity.this, getString(R.string.setting_reset_success));
+                ChangeActivity.toActivity(LoginActivity.this, LoadingActivity.class, true, true, false, 0);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                if (progressPop != null) {
+                    progressPop.dismiss();
+                }
+                ToastUtil_m.show(LoginActivity.this, getString(R.string.setting_reset_failed));
+            }
+        });
     }
 
     /* **** 登陆: toLogin **** */
@@ -151,6 +197,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         API.get().login(account, passwd, new MySubscriber<LoginResult>() {
             @Override
             protected void onSuccess(LoginResult result) {
+                progressPop.dismiss();
                 Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 // commit the token
                 API.get().updateToken(result.getToken());
@@ -162,6 +209,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                progressPop.dismiss();
                 if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
                     showRemainTimes();
                 } else if (Cons.OTHER_USER_IS_LOGIN.equals(error.getCode())) {

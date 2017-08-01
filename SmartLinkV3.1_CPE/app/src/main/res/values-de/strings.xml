@@ -216,7 +216,7 @@
     <string name="setting_reboot_failed">Neustart nicht möglich</string>
     <string name="setting_reboot_success">Einstellung vorgenommen. Das Gerät wird neu gestartet.</string>
     <string name="setting_reset_failed">Zurücksetzung nicht möglich</string>
-    <string name="setting_reset_success">Einstellung vorgenommen. Das Gerät wird zurückgesetzt.</string>
+    <string name="setting_reset_success">Einstellung vorgenommen\nDas Gerät wird zurückgesetzt.</string>
     <string name="setting_power_off_failed">Ausschalten nicht möglich</string>
     <string name="setting_power_off_success">Einstellung vorgenommen. Das Gerät wird ausgeschaltet.</string>
     <string name="setting_ssid_invalid">Die SSID darf nur die Zeichen a - z, A - Z, 0 - 9, - . _ und Leerzeichen enthalten und sollte weniger als 32 Zeichen lang sein.</string>
@@ -529,7 +529,7 @@
     <string name="enter_2_4ghzssid">SSID (2,4 GHz) eingeben</string>
     <string name="connecting">Verbinde…</string>
     <string name="used_of">Verwendet von</string>
-    <string name="no_month_plan">Kein Monats Plan gesetzt</string>
+    <string name="no_month_plan">Kein Monats\nPlan gesetzt</string>
     <string name="login_failed">Anmeldung fehlgeschlagen</string>
     <string name="insert_sim_or_wan">Versuchen Sie es erneut nach dem Einsetzen von SIM oder WAN</string>
     <string name="no_sim_no_wan">Keine SIM/Kein WAN</string>

@@ -75,7 +75,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private TextView m_accessstatusTextView;
     private ImageView m_accessImageView;
 
-    private WaveLoadingView mConnectedView;
+    private com.alcatel.wifilink.appwidget.waveprogress.WaveLoadingView mConnectedView;
     private RelativeLayout m_connectedLayout;
     private RelativeLayout m_accessDeviceLayout;
 
@@ -125,7 +125,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         m_view = View.inflate(getActivity(), R.layout.fragment_home_mains, null);
         typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Light.ttf");
-        mConnectedView = (WaveLoadingView) m_view.findViewById(connected_button);
+        mConnectedView = (com.alcatel.wifilink.appwidget.waveprogress.WaveLoadingView) m_view.findViewById(connected_button);
         mConnectedView.setOnClickListener(this);
 
         m_connectLayout = (RelativeLayout) m_view.findViewById(R.id.connect_layout);
@@ -463,16 +463,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private void usageShow(boolean isRoaming, UsageRecord result) {
         if (isRoaming) {
             mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
-            mConnectedView.setProgressValue(92);
+            mConnectedView.setProgressValue(8);
         } else if (result.getMonthlyPlan() == 0) {// 没有设置流量
             mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
-            mConnectedView.setProgressValue(92);
+            mConnectedView.setProgressValue(8);
         } else {// 设置了流量
             long hUseData = result.getHUseData();
             long hMonthlyPlan = result.getMonthlyPlan();
             // get remain percent
             if (hUseData < hMonthlyPlan) {// 未超出流量: 用户流量 < 月计划流量
-                float percent = ((hMonthlyPlan - hUseData) * 100f / hMonthlyPlan);
+                float percent = (hUseData * 100f / hMonthlyPlan);
                 mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
                 mConnectedView.setProgressValue((int) percent);
             } else {// 超出流量: 用户流量 > 月计划流量

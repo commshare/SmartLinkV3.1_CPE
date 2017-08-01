@@ -1,15 +1,11 @@
 package com.alcatel.wifilink.ui.home.allsetup;
 
-import android.content.Context;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -67,9 +63,7 @@ import static com.alcatel.wifilink.R.drawable.tab_sms_nor;
 import static com.alcatel.wifilink.R.drawable.tab_sms_pre;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_nor;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_pre;
-import static com.alcatel.wifilink.R.id.home;
 import static com.alcatel.wifilink.R.id.mFl_home_container;
-import static com.alcatel.wifilink.R.id.window;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
@@ -157,15 +151,13 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     public static HashMap<Long, Integer> smsUnreadMap = new HashMap<>();// 未读消息缓冲集合
     private WindowManager windowManager;
     private View inflate;
-    private TimerHelper loginTimer;
-    public static Context staticContext;
+    private TimerHelper logoutTimer;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("ma_home", "onCreate: ");
-        staticContext = this;
         setContentView(R.layout.activity_homes);
         hac = this;
         supportActionBar = getSupportActionBar();
@@ -182,7 +174,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* 自动到达5分钟后退出 */
     private void autoLogout() {
-        new TimerHelper(this) {
+        logoutTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
                 API.get().getLoginState(new MySubscriber<LoginState>() {
@@ -195,7 +187,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                     }
                 });
             }
-        }.start(5 * 60 * 1000);
+        };
+        logoutTimer.start(300, 300);
     }
 
 
@@ -233,9 +226,20 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             mkeyTime = System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
         } else {
-            OtherUtils.kill();
-            super.onBackPressed();
-            finish();
+            API.get().logout(new MySubscriber() {
+                @Override
+                protected void onSuccess(Object result) {
+                    OtherUtils.kill();
+                    finish();
+                }
+
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    OtherUtils.kill();
+                    finish();
+                }
+            });
+
         }
     }
 
@@ -255,10 +259,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         super.onDestroy();
         // 停止所有的定时器
         timerHelper.stop();
+        logoutTimer.stop();
         curActTimer.stop();
-        // 取消窗体
-        // windowManager.removeView(inflate);
-
     }
 
     private void initView() {
@@ -567,7 +569,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             }
 
             @Override
-            public void onError(Throwable e) {
+            protected void onResultError(ResponseBody.Error error) {
 
             }
         });
@@ -587,6 +589,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 if (simState == Cons.NOWN) {
                     ToastUtil_m.show(HomeActivity.this, getString(R.string.Home_no_sim));
                 }
+
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
 
             }
         });

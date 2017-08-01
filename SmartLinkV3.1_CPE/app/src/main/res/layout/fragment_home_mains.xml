@@ -13,13 +13,14 @@
         android:orientation="vertical">
 
         <!-- 主要布局 -->
-        <RelativeLayout
+        <com.zhy.android.percent.support.PercentRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_350dip"
+            android:layout_height="wrap_content"
             android:background="@color/home_connect_background_blue"
-            android:gravity="center">
+            android:gravity="center"
+            app:layout_heightPercent="55%h">
 
-            <!-- *** CONNECT BUTTON *** -->
+            <!-- *** 1.CONNECT BUTTON *** -->
             <RelativeLayout
                 android:id="@+id/rl_connectlogo"
                 android:layout_width="wrap_content"
@@ -50,15 +51,38 @@
                         android:src="@drawable/home_ic_bg" />
 
                     <!-- 波浪进度条 -->
-
-                    <me.itangqi.waveloadingview.WaveLoadingView
+                    <!--<me.itangqi.waveloadingview.WaveLoadingView-->
+                        <!--android:id="@+id/connected_button"-->
+                        <!--android:layout_width="@dimen/dimen_180dip"-->
+                        <!--android:layout_height="@dimen/dimen_180dip"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--app:wlv_borderColor="@color/circle_green"-->
+                        <!--app:wlv_borderWidth="0dp"-->
+                        <!--app:wlv_progressValue="0"-->
+                        <!--app:wlv_round_rectangle="true"-->
+                        <!--app:wlv_shapeType="circle"-->
+                        <!--app:wlv_titleBottom="used of 0G"-->
+                        <!--app:wlv_titleBottomColor="@color/white"-->
+                        <!--app:wlv_titleBottomSize="@dimen/dimen_textsize_14sp"-->
+                        <!--app:wlv_titleCenter="0"-->
+                        <!--app:wlv_titleCenterColor="@color/color_white"-->
+                        <!--app:wlv_titleCenterSize="@dimen/dimen_textsize_60sp"-->
+                        <!--app:wlv_titleTop="MB"-->
+                        <!--app:wlv_titleTopColor="@color/white"-->
+                        <!--app:wlv_titleTopSize="@dimen/dimen_24dip"-->
+                        <!--app:wlv_triangle_direction="north"-->
+                        <!--app:wlv_waveAmplitude="20"-->
+                        <!--app:wlv_waveColor="@color/circle_green"-->
+                        <!--app:wlv_wave_background_Color="@color/circle_bac_blue"-->
+                        <!--&gt;-->
+                    <com.alcatel.wifilink.appwidget.waveprogress.WaveLoadingView
                         android:id="@+id/connected_button"
                         android:layout_width="@dimen/dimen_180dip"
                         android:layout_height="@dimen/dimen_180dip"
                         android:layout_centerInParent="true"
                         app:wlv_borderColor="@color/circle_green"
                         app:wlv_borderWidth="0dp"
-                        app:wlv_progressValue="40"
+                        app:wlv_progressValue="0"
                         app:wlv_round_rectangle="true"
                         app:wlv_shapeType="circle"
                         app:wlv_titleBottom="used of 0G"
@@ -71,12 +95,12 @@
                         app:wlv_titleTopColor="@color/white"
                         app:wlv_titleTopSize="@dimen/dimen_24dip"
                         app:wlv_triangle_direction="north"
-                        app:wlv_waveAmplitude="80"
+                        app:wlv_waveAmplitude="20"
                         app:wlv_waveColor="@color/circle_green"
                         app:wlv_wave_background_Color="@color/circle_bac_blue"
                         >
 
-                    </me.itangqi.waveloadingview.WaveLoadingView>
+                    </com.alcatel.wifilink.appwidget.waveprogress.WaveLoadingView>
 
                 </RelativeLayout>
 
@@ -106,7 +130,7 @@
                 </RelativeLayout>
             </RelativeLayout>
 
-            <!-- *** sim卡网络类型(移动|联通|电信) *** -->
+            <!-- *** 2.sim卡网络类型(移动|联通|电信) *** -->
             <TextView
                 android:id="@+id/connect_network"
                 android:layout_width="match_parent"
@@ -118,9 +142,9 @@
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/dimen_textsize_24sp"
                 android:visibility="visible" />
-        </RelativeLayout>
+        </com.zhy.android.percent.support.PercentRelativeLayout>
 
-        <!-- *** wave view *** -->
+        <!-- *** 3.wave view *** -->
         <com.zhy.android.percent.support.PercentRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -133,7 +157,7 @@
                 android:background="@color/home_connect_background_blue" />
         </com.zhy.android.percent.support.PercentRelativeLayout>
 
-        <!-- *** signal and connected *** -->
+        <!-- *** 4.signal and connected *** -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

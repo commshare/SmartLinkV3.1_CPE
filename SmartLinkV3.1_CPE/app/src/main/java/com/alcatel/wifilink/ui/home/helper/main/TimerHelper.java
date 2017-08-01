@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.home.helper.main;
 
 import android.content.Context;
+import android.view.View;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,6 +34,21 @@ public abstract class TimerHelper {
             }
         };
         timer.schedule(timerTask, 0, period);
+    }
+
+    /**
+     * @param delay  单位秒
+     * @param period 单位秒
+     */
+    public void start(int delay, int period) {
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                doSomething();
+            }
+        };
+        timer.schedule(timerTask, delay * 1000, period * 1000);
     }
 
     /**

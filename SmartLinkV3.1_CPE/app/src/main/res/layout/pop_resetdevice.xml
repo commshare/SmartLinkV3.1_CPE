@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_150dip"
+        android:background="@drawable/pop_sim_bg">
+
+        <!-- buttons -->
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <!-- cancel -->
+            <com.alcatel.wifilink.appwidget.RippleView
+                android:id="@+id/tv_pop_forgot_cancel"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_50dip"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/pop_sim_bg"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/pop_sim_text"
+                android:textSize="@dimen/dimen_textsize_16sp"
+                app:alphaFactor="0.8"
+                app:hover="true"
+                app:rippleColor="@color/gray" />
+
+            <!-- unlock -->
+            <com.alcatel.wifilink.appwidget.RippleView
+                android:id="@+id/tv_pop_forgot_ok"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_50dip"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/pop_sim_bg"
+                android:gravity="center"
+                android:text="@string/ok"
+                android:textColor="@color/pop_sim_text"
+                android:textSize="@dimen/dimen_textsize_16sp"
+                app:alphaFactor="0.8"
+                app:hover="true"
+                app:rippleColor="@color/gray" />
+
+        </LinearLayout>
+
+        <!-- title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginRight="@dimen/dimen_10dip"
+            android:text="@string/This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_textsize_16sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
