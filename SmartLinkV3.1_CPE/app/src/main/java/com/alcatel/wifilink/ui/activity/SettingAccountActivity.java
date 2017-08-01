@@ -144,7 +144,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         API.get().changePassword(UserName, CurrentPassword, NewPassword, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Toast.makeText(SettingAccountActivity.this, R.string.new_password_saved, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingAccountActivity.this, R.string.succeed, Toast.LENGTH_SHORT).show();
             }
 
             @Override

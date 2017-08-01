@@ -521,7 +521,7 @@
     <string name="log_out">LOG OUT</string>
     <string name="connection_timed_out">Connection timed out</string>
     <string name="enter_sim_pin">Enter SIM PIN</string>
-    <string name="to_edit_profile_go_to_settings_about_web_manager">To edit profile, go to Settings &gt; About &gt; Web manager.</string>
+    <string name="to_edit_profile_go_to_settings_about_web_manager">To edit profile, go to web manager &gt;</string>
     <string name="wep_password_must_be_5_13_characters">WEP password must be 5-13 characters</string>
     <string name="password_2_4g_length_must_be_8_63">Password(2.4G) length must be 8-63.</string>
     <string name="connectedlist_will_be_restarted_to_apply_new_settings">Connected List will be restarted to apply new settings.</string>
