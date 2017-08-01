@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.system.SystemInfo;
-import com.alcatel.wifilink.model.system.WanSetting;
+import com.alcatel.wifilink.model.wlan.LanSettings;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -81,11 +81,11 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 dismissLoadingDialog();
             }
         });
-        API.get().getWanSeting(new MySubscriber<WanSetting>() {
+        API.get().getLanSettings(new MySubscriber<LanSettings>() {
             @Override
-            protected void onSuccess(WanSetting result) {
-                mManagementIpTxt.setText(result.getIpAddress().isEmpty() ? "0.0.0.0" : result.getIpAddress());
-                mSubnetMaskTxt.setText(result.getSubNetMask().isEmpty() ? "0.0.0.0" : result.getSubNetMask());
+            protected void onSuccess(LanSettings result) {
+                mManagementIpTxt.setText(result.getIPv4IPAddress().isEmpty() ? "0.0.0.0" : result.getIPv4IPAddress());
+                mSubnetMaskTxt.setText(result.getSubnetMask().isEmpty() ? "0.0.0.0" : result.getSubnetMask());
             }
         });
 
@@ -122,6 +122,23 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 Uri content_url = Uri.parse("http://192.168.1.1");
                 intent.setData(content_url);
                 startActivity(intent);
+                break;
+            case R.id.quick_guide:
+                String version = mDeviceNameTxt.getText().toString();
+                Intent intent1 = new Intent();
+                intent1.setAction("android.intent.action.VIEW");
+                String able = getResources().getConfiguration().locale.getLanguage();
+                String urlString = null;
+                if (version.equals("HH70")) {
+                    urlString = "http://www.alcatel-move.com/um/url.html?project=HH70&custom=Generic&lang=" + able;
+                } else if (version.equals("HH41")) {
+                    urlString = "http://www.alcatel-move.com/um/url.html?project=HH41&custom=Generic&lang=" + able;
+                } else {
+                    urlString = "http://www.alcatel-move.com/um/url.html?project=HH40&custom=Generic&lang=" + able;
+                }
+                Uri contenturl = Uri.parse(urlString);
+                intent1.setData(contenturl);
+                startActivity(intent1);
                 break;
             default:
                 break;

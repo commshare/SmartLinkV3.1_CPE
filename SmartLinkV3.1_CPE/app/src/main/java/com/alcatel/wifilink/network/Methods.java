@@ -58,7 +58,7 @@ public interface Methods {
     //Wan
     String GET_WAN_SETTINGS = "GetWanSettings";
     String SET_WAN_SETTINGS = "SetWanSettings";
-
+    String GET_LAN_SETTINGS = "GetLanSettings";
     //update
     String GET_DEVICE_NEW_VERSION = "GetDeviceNewVersion";
     String SET_CHECK_NEW_VERSION = "SetCheckNewVersion";
@@ -98,6 +98,6 @@ public interface Methods {
     String SENDSMS = "SendSMS";
     String GET_SEND_SMS_RESULT = "GetSendSMSResult";
     String GET_SINGLE_SMS = "GetSingleSMS";
-    
+
 
 }

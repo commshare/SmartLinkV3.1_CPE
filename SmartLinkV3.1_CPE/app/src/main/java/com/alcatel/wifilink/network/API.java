@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
-import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.model.Usage.UsageParams;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.Usage.UsageRecordParam;
@@ -55,6 +54,7 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.user.NewPasswdParams;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
+import com.alcatel.wifilink.model.wlan.LanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanState;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
@@ -584,6 +584,10 @@ public class API {
         subscribe(subscriber, smartLinkApi.GetSingleSMS(new RequestBody(Methods.GET_SEND_SMS_RESULT, SMSId)));
     }
 
+    public void getLanSettings(MySubscriber<LanSettings> subscriber) {
+        subscribe(subscriber, smartLinkApi.GetLanSettings(new RequestBody(Methods.GET_LAN_SETTINGS)));
+    }
+
     interface SmartLinkApi {
 
         @POST("/jrd/webapi")
@@ -703,5 +707,7 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody<SmsSingle>> GetSingleSMS(@Body RequestBody requestBody);
 
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<LanSettings>> GetLanSettings(@Body RequestBody requestBody);
     }
 }

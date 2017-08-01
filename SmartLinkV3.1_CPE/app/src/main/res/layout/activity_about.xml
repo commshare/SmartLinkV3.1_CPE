@@ -147,7 +147,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
-                    android:text="LINKHUB HH70"
+                    android:text="0.0.0.0"
                     android:textSize="@dimen/dimen_textsize_12sp"/>
 
                 <View
@@ -182,7 +182,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
-                    android:text="LINKHUB HH70"
+                    android:text="0.0.0.0"
                     android:textSize="@dimen/dimen_textsize_12sp"/>
 
                 <View
