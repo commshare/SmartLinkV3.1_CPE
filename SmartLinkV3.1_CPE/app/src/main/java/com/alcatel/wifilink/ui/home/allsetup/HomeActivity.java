@@ -188,7 +188,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 });
             }
         };
-        logoutTimer.start(300, 300);
+        logoutTimer.start(600, 600);
     }
 
 

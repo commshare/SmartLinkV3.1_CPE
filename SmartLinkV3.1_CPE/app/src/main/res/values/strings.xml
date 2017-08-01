@@ -575,6 +575,7 @@
     <string name="day_29">Day 29</string>
     <string name="day_30">Day 30</string>
     <string name="day_31">Day 31</string>
+    <string name="disabled">Disabled</string>
 
     <!-- add new not translate yet -->
     <string name="connecting">Please Wait...</string>
@@ -582,7 +583,6 @@
     <string name="connect_failed">Connect failed</string>
     <string name="size">Size</string>
     <string name="device_will_restart_later">The device will  restart later.</string>
-    <string name="disabled">Disabled</string>
     <string name="resetting">Resetting...</string>
 
 </resources>

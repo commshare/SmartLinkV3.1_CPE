@@ -349,8 +349,8 @@ public class WaveLoadingView extends View {
                 // Draw the stroke of bottom text
                 canvas.drawText(mBottomTitle, (getWidth() - bottom) / 2, getHeight() * 8 / 10.0f - ((mBottomTitleStrokePaint.descent() + mBottomTitleStrokePaint.ascent()) / 2), mBottomTitleStrokePaint);
                 // Draw the bottom text
-                canvas.drawText(mBottomTitle, (getWidth() - bottom) / 2, getHeight() * 8 / 10.0f - ((mBottomTitlePaint.descent() + mBottomTitlePaint.ascent()) / 2), mBottomTitlePaint);
-
+                canvas.drawText(mBottomTitle, (getWidth() - bottom) / 2, getHeight() * 7 / 10.0f - ((mBottomTitlePaint.descent
+                                                                                                                               () + mBottomTitlePaint.ascent()) / 2), mBottomTitlePaint);
                 // sl.draw(canvas);
             }
         } else {
