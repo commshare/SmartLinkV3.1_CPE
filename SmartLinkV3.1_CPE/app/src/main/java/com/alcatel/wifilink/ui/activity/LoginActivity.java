@@ -1,12 +1,10 @@
 package com.alcatel.wifilink.ui.activity;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +17,6 @@ import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
-import com.alcatel.wifilink.business.wlan.AP;
-import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
@@ -33,7 +29,6 @@ import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.type.ui.WanModeActivity;
@@ -47,7 +42,7 @@ import org.greenrobot.eventbus.EventBus;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_nor;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_pre;
 
-public class LoginActivity extends BaseActivityWithBack implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
 

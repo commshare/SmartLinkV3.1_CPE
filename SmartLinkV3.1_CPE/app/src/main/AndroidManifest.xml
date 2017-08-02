@@ -303,7 +303,8 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />

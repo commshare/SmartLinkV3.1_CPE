@@ -1,8 +1,5 @@
 package com.alcatel.wifilink.ui.activity;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -20,7 +17,6 @@ import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.view.CirclePageIndicator;
@@ -36,7 +32,7 @@ import butterknife.ButterKnife;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 
-public class LoadingActivity extends BaseActivityWithBack implements View.OnClickListener {
+public class LoadingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoadingActivity";
     private final int SPLASH_DELAY = 1000;
