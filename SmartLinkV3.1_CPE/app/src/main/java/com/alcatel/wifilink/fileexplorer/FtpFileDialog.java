@@ -143,7 +143,6 @@ public class FtpFileDialog extends FileDialog {
     
     @Override
     protected boolean doOperationNewFoler(String folerPath) {
-        System.out.println("ftp,doOperationNewFoler "+folerPath);
         mCmdTask.ftp_create_folder(folerPath);
         
         return true;

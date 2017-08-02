@@ -120,8 +120,6 @@ public class GetMetaDataProxy {
 			return items;
 		} else {
 			UPnPStatus err = action.getControlStatus();
-			System.out.println("Error Code = " + err.getCode());
-			System.out.println("Error Desc = " + err.getDescription());
 		}
 		return null;
 	}

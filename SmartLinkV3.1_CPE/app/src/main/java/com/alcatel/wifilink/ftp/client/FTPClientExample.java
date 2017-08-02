@@ -184,7 +184,6 @@ public final class FTPClientExample
         }
         if (remain < minParams) // server, user, pass, remote, local [protocol]
         {
-            System.err.println(USAGE);
             System.exit(1);
         }
 
@@ -213,7 +212,6 @@ public final class FTPClientExample
         final FTPClient ftp;
         if (protocol == null ) {
             if(proxyHost !=null) {
-                System.out.println("Using HTTP proxy server: " + proxyHost);
                 ftp = new FTPHTTPClient(proxyHost, proxyPort, proxyUser, proxyPassword);
             }
             else {
@@ -265,7 +263,6 @@ public final class FTPClientExample
             } else {
                 ftp.connect(server);
             }
-            System.out.println("Connected to " + server + " on " + (port>0 ? port : ftp.getDefaultPort()));
 
             // After connection attempt, you should check the reply code to verify
             // sendAgainSuccess.
@@ -306,7 +303,6 @@ __main:
                 break __main;
             }
 
-            System.out.println("Remote system is " + ftp.getSystemType());
 
             if (binaryTransfer) {
                 ftp.setFileType(FTP.BINARY_FILE_TYPE);
@@ -345,28 +341,22 @@ __main:
                 }
 
                 for (FTPFile f : ftp.listFiles(remote)) {
-                    System.out.println(f.getRawListing());
-                    System.out.println(f.toFormattedString());
                 }
             }
             else if (mlsd)
             {
                 for (FTPFile f : ftp.mlistDir(remote)) {
-                    System.out.println(f.getRawListing());
-                    System.out.println(f.toFormattedString());
                 }
             }
             else if (mlst)
             {
                 FTPFile f = ftp.mlistFile(remote);
                 if (f != null){
-                    System.out.println(f.toFormattedString());
                 }
             }
             else if (listNames)
             {
                 for (String s : ftp.listNames(remote)) {
-                    System.out.println(s);
                 }
             }
             else if (feat)
@@ -374,12 +364,9 @@ __main:
                 // boolean feature check
                 if (remote != null) { // See if the command is present
                     if (ftp.hasFeature(remote)) {
-                        System.out.println("Has feature: "+remote);
                     } else {
                         if (FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
-                            System.out.println("FEAT "+remote+" was not detected");
                         } else {
-                            System.out.println("Command failed: "+ftp.getReplyString());
                         }
                     }
 
@@ -387,20 +374,16 @@ __main:
                     String []features = ftp.featureValues(remote);
                     if (features != null) {
                         for(String f : features) {
-                            System.out.println("FEAT "+remote+"="+f+".");
                         }
                     } else {
                         if (FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
-                            System.out.println("FEAT "+remote+" is not present");
                         } else {
-                            System.out.println("Command failed: "+ftp.getReplyString());
                         }
                     }
                 } else {
                     if (ftp.features()) {
 //                        Command listener has already printed the output
                     } else {
-                        System.out.println("Failed: "+ftp.getReplyString());
                     }
                 }
             }
@@ -412,7 +395,6 @@ __main:
 //                        System.out.println(s);
 //                    }
                 } else {
-                    System.out.println("Failed: "+ftp.getReplyString());
                 }
             }
             else
@@ -433,7 +415,6 @@ __main:
         catch (FTPConnectionClosedException e)
         {
             error = true;
-            System.err.println("Server closed connection.");
             e.printStackTrace();
         }
         catch (IOException e)
@@ -472,7 +453,6 @@ __main:
                     int bytesTransferred, long streamSize) {
                 long megs = totalBytesTransferred / 1000000;
                 for (long l = megsTotal; l < megs; l++) {
-                    System.err.print("#");
                 }
                 megsTotal = megs;
             }

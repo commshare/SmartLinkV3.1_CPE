@@ -523,6 +523,5 @@ public class HTTPRequest extends HTTPPacket
 
 	public void print()
 	{
-		System.out.println(toString());
 	}
 }

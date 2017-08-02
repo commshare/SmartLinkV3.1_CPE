@@ -2,6 +2,7 @@ package com.alcatel.wifilink.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.alcatel.wifilink.Constants;
@@ -61,8 +62,10 @@ import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.downloadfile.DownloadProgressInterceptor;
 import com.alcatel.wifilink.network.downloadfile.DownloadProgressListener;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.FileUtils;
+import com.alcatel.wifilink.utils.WifiUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -163,7 +166,6 @@ public class API {
     //    }
 
     private OkHttpClient buildOkHttpClient() {
-
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -175,8 +177,17 @@ public class API {
             Request.Builder reqBuilder = request.newBuilder();
             reqBuilder.addHeader("_TclRequestVerificationKey", AUTHORIZATION_KEY);
             if (token != null) {
+                /* token */
                 reqBuilder.addHeader("_TclRequestVerificationToken", token);
             }
+
+            // 获取当前连接的IP
+            Context context = SmartLinkV3App.getInstance().getApplicationContext();
+            WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
+            String ip = Cons.ipPre + WifiUtils.getWifiIp(wifiManager);
+            /* referer */
+            reqBuilder.addHeader("Referer", ip);
+
             request = reqBuilder.build();
             return chain.proceed(request);
         });

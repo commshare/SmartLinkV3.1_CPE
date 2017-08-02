@@ -174,6 +174,7 @@ public class OtherUtils {
         NetworkInfo.State wifiState = networkInfo.getState();
         return NetworkInfo.State.CONNECTED == wifiState;
     }
+    
 
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
     public interface OnVersionListener {

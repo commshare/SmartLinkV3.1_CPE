@@ -5,6 +5,8 @@ package com.alcatel.wifilink.ui.home.helper.cons;
  */
 
 public class Cons {
+    
+    public static String ipPre = "http://";
 
     public static String TYPE_SIM = "SIM";// 以SIM卡模式连接
     public static String TYPE_WAN = "WAN";// 以WAN模式连接

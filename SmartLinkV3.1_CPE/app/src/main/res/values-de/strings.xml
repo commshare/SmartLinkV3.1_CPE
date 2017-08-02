@@ -582,5 +582,6 @@
     <string name="size">Größe</string>
     <string name="device_will_restart_later">Das Gerät wird später neugestartet.</string>
     <string name="resetting">Wird zurückgesetzt...</string>
+    <string name="back_up_progress">Bitte 5-60 Sekunden warten</string>
 
 </resources>

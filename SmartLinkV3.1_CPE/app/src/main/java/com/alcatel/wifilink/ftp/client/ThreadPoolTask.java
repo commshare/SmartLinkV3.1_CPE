@@ -33,7 +33,6 @@ public class ThreadPoolTask implements Runnable {
 			}
 		}
 
-		System.out.println("ftp-" + name + " executed OK!");
 		mOnCallResponse.taskCallResponse(null);
 	}
 

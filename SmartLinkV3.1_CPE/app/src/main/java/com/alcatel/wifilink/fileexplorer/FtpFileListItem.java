@@ -192,12 +192,10 @@ public class FtpFileListItem {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			switch (item.getItemId()) {
 			case R.id.action_download:
-				System.out.println("ftp,click download button");
 				mFileViewInteractionHub.onFtpDownload();
 				mode.finish();
 				break;
 			case 1: // TODO
-				System.out.println("ftp,click upload button");
 				mFileViewInteractionHub.onFtpUpload();
 				mode.finish();
 				break;

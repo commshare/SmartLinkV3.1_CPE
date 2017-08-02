@@ -365,6 +365,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 } else {
                     backupDevice();
                 }
+                requestTimes = 0;
                 Log.d("ma_back", "repeatTimes: " + requestTimes);
             }
 
@@ -608,13 +609,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showLoadingDialog() {
         mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage(getActivity().getString(R.string.video_loading));
+        mProgressDialog.setMessage(getActivity().getString(R.string.back_up_progress));
         mProgressDialog.show();
 
     }
 
     private void dismissLoadingDialog() {
         mProgressDialog.dismiss();
+        mProgressDialog = null;
     }
 
     public void backgroundAlpha(Activity context, float bgAlpha) {
