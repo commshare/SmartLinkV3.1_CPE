@@ -36,6 +36,17 @@ public abstract class TimerHelper {
         timer.schedule(timerTask, 0, period);
     }
 
+    public void startDelay(int delay) {
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                doSomething();
+            }
+        };
+        timer.schedule(timerTask, delay);
+    }
+
     /**
      * @param delay  单位秒
      * @param period 单位秒

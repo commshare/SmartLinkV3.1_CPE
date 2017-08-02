@@ -12,6 +12,7 @@ import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -174,7 +175,20 @@ public class OtherUtils {
         NetworkInfo.State wifiState = networkInfo.getState();
         return NetworkInfo.State.CONNECTED == wifiState;
     }
-    
+
+    public static void stopAutoTimer() {
+        if (HomeActivity.autoTask != null) {
+            HomeActivity.autoTask.cancel();
+            HomeActivity.autoTask = null;
+        }
+
+        if (HomeActivity.autoTimer != null) {
+            HomeActivity.autoTimer.cancel();
+            HomeActivity.autoTimer.purge();
+            HomeActivity.autoTimer = null;
+        }
+    }
+
 
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
     public interface OnVersionListener {

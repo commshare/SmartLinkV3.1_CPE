@@ -54,6 +54,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OtherUtils.stopAutoTimer();
         setContentView(R.layout.activity_loading);
         ButterKnife.bind(this);
         getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);

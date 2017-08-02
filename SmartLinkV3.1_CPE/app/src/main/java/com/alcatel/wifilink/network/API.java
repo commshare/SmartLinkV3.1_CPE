@@ -184,7 +184,7 @@ public class API {
             // 获取当前连接的IP
             Context context = SmartLinkV3App.getInstance().getApplicationContext();
             WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
-            String ip = Cons.ipPre + WifiUtils.getWifiIp(wifiManager);
+            String ip = Cons.IP_PRE + WifiUtils.getWifiIp(wifiManager);
             /* referer */
             reqBuilder.addHeader("Referer", ip);
 

@@ -17,8 +17,8 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,7 @@ public class GuideActivity extends BaseActivityWithBack implements OnPageChangeL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OtherUtils.stopAutoTimer();
         setContentView(R.layout.guide);
         initViews();
         initDots();

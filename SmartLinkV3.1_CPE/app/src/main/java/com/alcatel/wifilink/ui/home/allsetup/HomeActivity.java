@@ -23,7 +23,6 @@ import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContactList;
-import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -48,6 +47,8 @@ import com.alcatel.wifilink.utils.OtherUtils;
 import org.cybergarage.upnp.Device;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,7 +64,6 @@ import static com.alcatel.wifilink.R.drawable.tab_sms_nor;
 import static com.alcatel.wifilink.R.drawable.tab_sms_pre;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_nor;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_pre;
-import static com.alcatel.wifilink.R.id.home;
 import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
@@ -154,6 +154,9 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private View inflate;
     private TimerHelper logoutTimer;
 
+    public static TimerTask autoTask;
+    public static Timer autoTimer;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,8 +173,19 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initUi();
         startTimer();// 定时器在此处而不是在Onresume是为了防止界面重复刷新
         getCurrentActivity();// 定时获取当前位于顶层运行的ACTIVITY
-        // autoLogout();// 自动退出登陆
         heartBeanTimer();// 心跳包发送
+        autoTimer();// 启动定时退出计时器
+    }
+
+    private void autoTimer() {
+        autoTask = new TimerTask() {
+            @Override
+            public void run() {
+                logout();
+            }
+        };
+        autoTimer = new Timer();
+        autoTimer.schedule(autoTask, Cons.AUTO_LOGOUT_PERIOD);
     }
 
     /* **** heartBeanTimer:心跳包 **** */
@@ -193,24 +207,6 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             }
         }.start(5000);
     }
-
-    /* 自动到达5分钟后退出 */
-    // private void autoLogout() {
-    //     logoutTimer = new TimerHelper(this) {
-    //         @Override
-    //         public void doSomething() {
-    //             API.get().getLoginState(new MySubscriber<LoginState>() {
-    //                 @Override
-    //                 protected void onSuccess(LoginState result) {
-    //                     if (result.getState() == Cons.LOGOUT) {
-    //                         logout();
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //     };
-    //     logoutTimer.start(30, 600);// 延迟30秒启动, 间隔10分钟轮询
-    // }
 
 
     /* **** getCurrentActivity:循环获取当前顶层的ACTIVITY(用于辅助未读短信的判断) **** */
