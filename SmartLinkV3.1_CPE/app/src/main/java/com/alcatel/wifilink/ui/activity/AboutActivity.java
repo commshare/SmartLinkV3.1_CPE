@@ -7,7 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +34,9 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
     private TextView mAppVersionTxt;
     private ProgressDialog mProgressDialog;
 
+    private String mCustom;
+    private String mProject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
 
     private void getDataFromNet() {
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+
+
             @Override
             public void onStart() {
                 super.onStart();
@@ -66,6 +71,11 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
             @Override
             protected void onSuccess(SystemInfo result) {
                 dismissLoadingDialog();
+                String swVersion = result.getSwVersion();
+                String[] split = swVersion.split("_");
+                mProject = split[0];
+                mCustom = split[1];
+                Log.i(TAG, "swVersion :" + swVersion);
                 mDeviceNameTxt.setText(result.getDeviceName());
                 mImeiTxt.setText(result.getIMEI());
                 mMacAddressTxt.setText(result.getMacAddress());
@@ -127,8 +137,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.quick_guide:
-                String url = "";
-                userChrome(url);
+                userChrome();
                 break;
             default:
                 break;
@@ -136,10 +145,10 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
     }
 
     /* **** userChrome **** */
-    private void userChrome(String url) {
-        if (TextUtils.isEmpty(url)) {
-            url = "http://www.alcatel-move.com/um/url.html?project=HH70&custom=Generic&lang=en";
-        }
+    private void userChrome() {
+        String lang = getResources().getConfiguration().locale.getLanguage();
+        String url = "http://www.alcatel-move.com/um/url.html?project=" + mProject + "&custom=" + mCustom + "&lang=" + lang;
+        Log.i(TAG, "url: " + url);
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
         Uri content_url = Uri.parse(url);
