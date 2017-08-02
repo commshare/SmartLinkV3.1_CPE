@@ -63,6 +63,7 @@ import static com.alcatel.wifilink.R.drawable.tab_sms_nor;
 import static com.alcatel.wifilink.R.drawable.tab_sms_pre;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_nor;
 import static com.alcatel.wifilink.R.drawable.tab_wifi_pre;
+import static com.alcatel.wifilink.R.id.home;
 import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
@@ -169,27 +170,47 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initUi();
         startTimer();// 定时器在此处而不是在Onresume是为了防止界面重复刷新
         getCurrentActivity();// 定时获取当前位于顶层运行的ACTIVITY
-        autoLogout();// 自动退出登陆
+        // autoLogout();// 自动退出登陆
+        heartBeanTimer();// 心跳包发送
     }
 
-    /* 自动到达5分钟后退出 */
-    private void autoLogout() {
-        logoutTimer = new TimerHelper(this) {
+    /* **** heartBeanTimer:心跳包 **** */
+    private void heartBeanTimer() {
+        new TimerHelper(this) {
             @Override
             public void doSomething() {
-                API.get().getLoginState(new MySubscriber<LoginState>() {
+                API.get().heartBeat(new MySubscriber() {
                     @Override
-                    protected void onSuccess(LoginState result) {
-                        if (result.getState() == Cons.LOGOUT) {
-                            ToastUtil_m.show(HomeActivity.this, getString(R.string.log_out));
-                            ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, true, true, false, 0);
-                        }
+                    protected void onSuccess(Object result) {
+
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        logout();
                     }
                 });
             }
-        };
-        logoutTimer.start(600, 600);
+        }.start(5000);
     }
+
+    /* 自动到达5分钟后退出 */
+    // private void autoLogout() {
+    //     logoutTimer = new TimerHelper(this) {
+    //         @Override
+    //         public void doSomething() {
+    //             API.get().getLoginState(new MySubscriber<LoginState>() {
+    //                 @Override
+    //                 protected void onSuccess(LoginState result) {
+    //                     if (result.getState() == Cons.LOGOUT) {
+    //                         logout();
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //     };
+    //     logoutTimer.start(30, 600);// 延迟30秒启动, 间隔10分钟轮询
+    // }
 
 
     /* **** getCurrentActivity:循环获取当前顶层的ACTIVITY(用于辅助未读短信的判断) **** */
@@ -259,7 +280,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         super.onDestroy();
         // 停止所有的定时器
         timerHelper.stop();
-        logoutTimer.stop();
+        // logoutTimer.stop();
         curActTimer.stop();
     }
 

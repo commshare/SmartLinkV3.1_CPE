@@ -243,18 +243,33 @@
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/settings_ic_upgrade" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dimen_10dip"
-                    android:layout_toRightOf="@id/setting_firmware_upgrade_pic"
-                    android:layout_toLeftOf="@+id/setting_firmware_upgrade_version"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/setting_firmware_upgrade"
-                    android:textColor="@color/black_text"
-                    android:textSize="@dimen/font_size_normal" />
+                    android:layout_toRightOf="@id/setting_firmware_upgrade_pic">
+
+                    <TextView
+                        android:id="@+id/tv_firmware_update"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:maxLines="1"
+                        android:text="@string/setting_firmware_upgrade"
+                        android:textColor="@color/black_text"
+                        android:textSize="@dimen/font_size_normal" />
+
+                    <TextView
+                        android:id="@+id/setting_firmware_upgrade_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/tv_firmware_update"
+                        android:layout_below="@id/tv_firmware_update"
+                        android:layout_marginTop="3dp"
+                        android:text="1.2.4"
+                        android:textColor="@color/grey_text"
+                        android:textSize="@dimen/dimen_textsize_10sp" />
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/setting_firmware_upgrade_arrow"
@@ -265,17 +280,6 @@
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
-
-                <TextView
-                    android:id="@+id/setting_firmware_upgrade_version"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dimen_4dip"
-                    android:layout_toLeftOf="@id/setting_firmware_upgrade_arrow"
-                    android:text="1.2.4"
-                    android:textColor="@color/grey_text"
-                    android:textSize="@dimen/dimen_textsize_10sp" />
 
                 <ImageView
                     android:layout_width="match_parent"

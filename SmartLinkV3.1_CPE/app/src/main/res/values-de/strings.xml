@@ -27,7 +27,7 @@
     <string name="qs_hint_sim_pin">SIM-PIN</string>
     <string name="qs_pin_times_des">Versuche verbleibend</string>
     <string name="remember_sim_pin">SIM-PIN speichern</string>
-    <string name="qs_pin_unlock_congratulations">Glückwunsch!</string>
+    <string name="qs_pin_unlock_congratulations">Glückwunsch.</string>
     <string name="qs_pin_unlock_congratulations_des">Internetverbindung wurde hergestellt</string>
     <string name="network_disconnected">Netzwerkverbindung getrennt</string>
     <string name="qs_pin_unlock_can_not_connect_des">Überprüfen Sie das WAN-Kabel bzw. die SIM-Karte.</string>
@@ -578,4 +578,9 @@
     <string name="day_29">29 Tage</string>
     <string name="day_30">30 Tage</string>
     <string name="day_31">31 Tage</string>
+    <string name="connect_failed">Verbindung konnte nicht hergestellt werden</string>
+    <string name="size">Größe</string>
+    <string name="device_will_restart_later">Das Gerät wird später neugestartet.</string>
+    <string name="resetting">Wird zurückgesetzt...</string>
+
 </resources>

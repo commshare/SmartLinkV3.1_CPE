@@ -27,7 +27,7 @@
     <string name="qs_hint_sim_pin">SIM PIN</string>
     <string name="qs_pin_times_des">attempts remaining</string>
     <string name="remember_sim_pin">Remember SIM PIN</string>
-    <string name="qs_pin_unlock_congratulations">Congratulations!</string>
+    <string name="qs_pin_unlock_congratulations">Congratulations.</string>
     <string name="qs_pin_unlock_congratulations_des">Connected to the Internet completed</string>
     <string name="network_disconnected">Network disconnected</string>
     <string name="qs_pin_unlock_can_not_connect_des">Check your WAN cabling or SIM card.</string>
@@ -576,11 +576,9 @@
     <string name="day_30">Day 30</string>
     <string name="day_31">Day 31</string>
     <string name="disabled">Disabled</string>
-
-    <!-- add new not translate yet -->
     <string name="connecting">Please Wait...</string>
     <string name="insert_sim_or_wan">Try again</string>
-    <string name="connect_failed">Connect failed</string>
+    <string name="connect_failed">Couldn\'t connect</string>
     <string name="size">Size</string>
     <string name="device_will_restart_later">The device will  restart later.</string>
     <string name="resetting">Resetting...</string>

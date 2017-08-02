@@ -175,7 +175,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 goToAccountSettingPage();
                 break;
             case R.id.setting_mobile_network:
-                // TODO
                 goToMobileNetworkSettingPage();
                 break;
             case R.id.setting_ethernet_wan:
@@ -277,6 +276,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         TextView mFirstTxt = (TextView) view.findViewById(R.id.first_txt);
         TextView mSecondTxt = (TextView) view.findViewById(R.id.second_txt);
         TextView mCancelTxt = (TextView) view.findViewById(R.id.cancel_txt);
+
         popupWindow.setContentView(view);
         if (itemType == RESTART_RESET) {
             mFirstTxt.setText(R.string.restart);
@@ -333,34 +333,44 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    // TODO: 2017/8/1 备份文件
+    public int requestTimes = 0;
+
     private void backupDevice() {
 
         API.get().backupDevice(new MySubscriber() {
             @Override
             public void onStart() {
                 super.onStart();
-                showLoadingDialog();
+                if (mProgressDialog == null) {
+                    showLoadingDialog();
+                }
             }
 
             @Override
             protected void onSuccess(Object result) {
+                requestTimes = 0;
                 dismissLoadingDialog();
                 Log.d(TAG, "backup" + "sendAgainSuccess");
                 showBackupSuccessDialog();
             }
 
             @Override
-            protected void onFailure() {
-                super.onFailure();
-                dismissLoadingDialog();
-                showFailedDialog(R.string.couldn_t_backup_try_again);
+            public void onError(Throwable e) {
+                requestTimes++;
+                if (requestTimes > 12) {
+                    super.onError(e);
+                    dismissLoadingDialog();
+                    showFailedDialog(R.string.couldn_t_backup_try_again);
+                } else {
+                    backupDevice();
+                }
+                Log.d("ma_back", "repeatTimes: " + requestTimes);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
-                dismissLoadingDialog();
-                showFailedDialog(R.string.couldn_t_backup_try_again);
+
             }
         });
 
@@ -520,6 +530,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    public int restoreTimes = 0;
+
     private void restore() {
         String savePath = SPUtils.getInstance(CONFIG_SPNAME, getActivity()).getString(CONFIG_FILE_PATH);
         if (savePath.equals("")) {
@@ -533,18 +545,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         }
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        // RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         MultipartBody.Part body = MultipartBody.Part.createFormData("iptUpload", file.getName(), requestFile);
         API.get().uploadFile(new Subscriber() {
             @Override
             public void onStart() {
                 super.onStart();
-                showLoadingDialog();
+                if (mProgressDialog == null) {
+                    showLoadingDialog();
+                }
             }
 
             @Override
             public void onCompleted() {
+                restoreTimes = 0;
                 Log.d(TAG, "onCompleted ");
                 dismissLoadingDialog();
                 ToastUtil_m.show(getActivity(), R.string.succeed);
@@ -552,13 +567,20 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable e) {
-                dismissLoadingDialog();
-                Log.e(TAG, "restore,onResultError " + e.toString());
-                if (e instanceof SocketTimeoutException) {
-                    ToastUtil_m.show(getActivity(), R.string.succeed);
+
+                if (restoreTimes > 12) {
+                    dismissLoadingDialog();
+                    Log.e(TAG, "restore,onResultError " + e.toString());
+                    if (e instanceof SocketTimeoutException) {
+                        ToastUtil_m.show(getActivity(), R.string.succeed);
+                    } else {
+                        ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
+                    }
                 } else {
-                    ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
+                    restore();
                 }
+
+
             }
 
             @Override
@@ -878,18 +900,18 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_NOT_START == status) {
                 if (result.getProcess() >= 99) {
                     showUpgradeProgressDlg(status, result.getProcess());
-//                    if (timerHelper != null) {
-//                        timerHelper.stop();
-//                        timerHelper = null;
-//                    }
-//                    if (mUpgradingDlg != null) {
-//                        mUpgradingDlg.dismiss();
-//                    }
-//                    requestSetDeviceStartUpdate();
+                    //                    if (timerHelper != null) {
+                    //                        timerHelper.stop();
+                    //                        timerHelper = null;
+                    //                    }
+                    //                    if (mUpgradingDlg != null) {
+                    //                        mUpgradingDlg.dismiss();
+                    //                    }
+                    //                    requestSetDeviceStartUpdate();
                 }
                 Log.d(TAG, "requestGetDeviceUpgradeState,device upgrade not start,progress:" + result.getProcess());
 
-//                showUpgradeStateResultDlg(getString(R.string.could_not_update_try_again),status);
+                //                showUpgradeStateResultDlg(getString(R.string.could_not_update_try_again),status);
             } else if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
                 showUpgradeProgressDlg(status, result.getProcess());
                 if (timerHelper == null) {

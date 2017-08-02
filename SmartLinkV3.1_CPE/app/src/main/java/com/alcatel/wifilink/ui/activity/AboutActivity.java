@@ -7,16 +7,19 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.wlan.LanSettings;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.quickum.QuickUmActivity;
 
 public class AboutActivity extends BaseActivityWithBack implements View.OnClickListener {
     private final static String TAG = "AboutActivity";
@@ -66,7 +69,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 mDeviceNameTxt.setText(result.getDeviceName());
                 mImeiTxt.setText(result.getIMEI());
                 mMacAddressTxt.setText(result.getMacAddress());
-//                mAppVersionTxt.setText(result.getAppVersion());
+                //                mAppVersionTxt.setText(result.getAppVersion());
             }
 
             @Override
@@ -124,24 +127,28 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.quick_guide:
-                String version = mDeviceNameTxt.getText().toString();
-                Intent intent1 = new Intent();
-                intent1.setAction("android.intent.action.VIEW");
-                String able = getResources().getConfiguration().locale.getLanguage();
-                String urlString = null;
-                if (version.equals("HH70")) {
-                    urlString = "http://www.alcatel-move.com/um/url.html?project=HH70&custom=Generic&lang=" + able;
-                } else if (version.equals("HH41")) {
-                    urlString = "http://www.alcatel-move.com/um/url.html?project=HH41&custom=Generic&lang=" + able;
-                } else {
-                    urlString = "http://www.alcatel-move.com/um/url.html?project=HH40&custom=Generic&lang=" + able;
-                }
-                Uri contenturl = Uri.parse(urlString);
-                intent1.setData(contenturl);
-                startActivity(intent1);
+                String url = "";
+                userChrome(url);
                 break;
             default:
                 break;
         }
+    }
+
+    /* **** userChrome **** */
+    private void userChrome(String url) {
+        if (TextUtils.isEmpty(url)) {
+            url = "http://www.alcatel-move.com/um/url.html?project=HH70&custom=Generic&lang=en";
+        }
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
+        startActivity(intent);
+    }
+
+    /* 前往PDF展示页 */
+    private void toPdfActivity() {
+        ChangeActivity.toActivity(this, QuickUmActivity.class, true, false, false, 0);
     }
 }

@@ -167,9 +167,9 @@ public class API {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(5, TimeUnit.SECONDS);
-        builder.readTimeout(5, TimeUnit.SECONDS);
-        builder.writeTimeout(5, TimeUnit.SECONDS);
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(10, TimeUnit.SECONDS);
         builder.addInterceptor(chain -> {
             Request request = chain.request();
             Request.Builder reqBuilder = request.newBuilder();
@@ -187,9 +187,7 @@ public class API {
 
     private OkHttpClient createDownloadHttpClient(DownloadProgressListener listener) {
         DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(listener);
-
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(5, TimeUnit.SECONDS).build();
-
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(10, TimeUnit.SECONDS).build();
         return client;
     }
 

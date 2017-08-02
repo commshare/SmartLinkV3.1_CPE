@@ -121,6 +121,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.6.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'me.itangqi.waveloadingview:library:0.3.5'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.zhy:percent-support-extends:1.1.1'
+    compile 'org.xutils:xutils:3.3.38'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
 }
