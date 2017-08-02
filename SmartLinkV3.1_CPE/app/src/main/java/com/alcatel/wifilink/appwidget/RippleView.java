@@ -38,7 +38,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
 @SuppressLint("ClickableViewAccessibility")
-public class RippleView extends Button {
+public class RippleView extends android.support.v7.widget.AppCompatButton {
 
     private float mDownX;
     private float mDownY;

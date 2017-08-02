@@ -5,8 +5,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import static com.alcatel.wifilink.R.id.wv;
-
 public abstract class WebviewUtils {
 
     private WebView wv_detailNews;

@@ -19,7 +19,6 @@ import com.alcatel.wifilink.model.wlan.LanSettings;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.quickum.QuickUmActivity;
 
 public class AboutActivity extends BaseActivityWithBack implements View.OnClickListener {
     private final static String TAG = "AboutActivity";
@@ -156,8 +155,4 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         startActivity(intent);
     }
 
-    /* 前往PDF展示页 */
-    private void toPdfActivity() {
-        ChangeActivity.toActivity(this, QuickUmActivity.class, true, false, false, 0);
-    }
 }

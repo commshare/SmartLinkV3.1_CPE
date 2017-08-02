@@ -6,8 +6,6 @@ import android.util.Log;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.NotificationService;
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
-import com.tencent.smtt.sdk.QbSdk;
-import com.tencent.smtt.sdk.TbsListener;
 
 import org.cybergarage.upnp.ControlPoint;
 import org.xutils.x;
@@ -32,44 +30,6 @@ public class SmartLinkV3App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         x.Ext.init(this);
-
-        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
-
-            @Override
-            public void onViewInitFinished(boolean arg0) {
-                // 网页加载完毕的回调
-                Log.e("apptbs", " onViewInitFinished is " + arg0);
-            }
-
-            @Override
-            public void onCoreInitFinished() {
-                // 核心类初始化完毕回调
-                Log.e("apptbs", " onCoreInitFinished " );
-            }
-        };
-
-        QbSdk.setTbsListener(new TbsListener() {
-            @Override
-            public void onDownloadFinish(int i) {
-                // H5内核下载完成回调
-                Log.d("apptbs", "onDownloadFinish");
-            }
-
-            @Override
-            public void onInstallFinish(int i) {
-                // H5内核安装完成回调
-                Log.d("apptbs", "onInstallFinish");
-            }
-
-            @Override
-            public void onDownloadProgress(int i) {
-                // 下载进度回调
-                Log.d("apptbs", "onDownloadProgress:" + i);
-            }
-        });
-
-        QbSdk.initX5Environment(getApplicationContext(), cb);
-        
         
         // CrashHandler crashHandler = CrashHandler.getInstance();
         // crashHandler.init(getApplicationContext());
