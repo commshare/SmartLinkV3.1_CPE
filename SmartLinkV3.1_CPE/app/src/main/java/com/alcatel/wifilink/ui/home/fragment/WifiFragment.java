@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -37,7 +38,7 @@ import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTR
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_MODE_80211;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_SSID_BROADCAST;
 
-public class WifiFragment extends Fragment implements View.OnClickListener {
+public class WifiFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "WifiFragment";
 
@@ -132,6 +133,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
 
         mSecurity2GSpinner = (AppCompatSpinner) view.findViewById(R.id.spinner_security_2g);
         mSecurity5GSpinner = (AppCompatSpinner) view.findViewById(R.id.spinner_security_5g);
+        mSecurity2GSpinner.setOnItemSelectedListener(this);
+        mSecurity5GSpinner.setOnItemSelectedListener(this);
 
         mEncryption2GSpinner = (AppCompatSpinner) view.findViewById(R.id.spinner_encryption_2g);
         mEncryption5GSpinner = (AppCompatSpinner) view.findViewById(R.id.spinner_encryption_5g);
@@ -495,5 +498,33 @@ public class WifiFragment extends Fragment implements View.OnClickListener {
         }
         mProgressDialog.setTitle(R.string.setting_upgrading);
         mProgressDialog.show();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        switch (adapterView.getId()) {
+            case R.id.spinner_security_2g:
+                if (i == 0) {
+                    mKey2GGroup.setVisibility(View.GONE);
+                } else if (mKey2GGroup.getVisibility() == view.GONE) {
+                    mKey2GGroup.setVisibility(View.VISIBLE);
+                }
+
+                break;
+            case R.id.spinner_security_5g:
+                if (i == 0) {
+                    mKey5GGroup.setVisibility(View.GONE);
+                } else if (mKey5GGroup.getVisibility() == view.GONE) {
+                    mKey5GGroup.setVisibility(View.VISIBLE);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
