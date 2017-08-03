@@ -26,6 +26,7 @@ import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
@@ -483,6 +484,9 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             protected void onSuccess(Object result) {
                 mProgressDialog.dismiss();
                 ToastUtil_m.show(mContext, getString(R.string.success));
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), RefreshWifiActivity.class);
+                startActivity(intent);
             }
 
             @Override
@@ -491,6 +495,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             }
         });
     }
+
 
     private void showLoadingDialog() {
         if (mProgressDialog == null) {
@@ -508,6 +513,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mKey2GGroup.setVisibility(View.GONE);
                 } else if (mKey2GGroup.getVisibility() == view.GONE) {
                     mKey2GGroup.setVisibility(View.VISIBLE);
+                    mEncryption2GGroup.setVisibility(View.VISIBLE);
+                    mEncryption2GSpinner.setSelection(2);
                 }
 
                 break;
@@ -516,6 +523,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mKey5GGroup.setVisibility(View.GONE);
                 } else if (mKey5GGroup.getVisibility() == view.GONE) {
                     mKey5GGroup.setVisibility(View.VISIBLE);
+                    mEncryption5GGroup.setVisibility(View.VISIBLE);
+                    mEncryption5GSpinner.setSelection(2);
                 }
                 break;
             default:
