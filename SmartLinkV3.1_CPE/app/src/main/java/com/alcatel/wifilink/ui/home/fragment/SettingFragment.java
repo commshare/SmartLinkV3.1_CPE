@@ -615,8 +615,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void dismissLoadingDialog() {
-        mProgressDialog.dismiss();
-        mProgressDialog = null;
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     public void backgroundAlpha(Activity context, float bgAlpha) {

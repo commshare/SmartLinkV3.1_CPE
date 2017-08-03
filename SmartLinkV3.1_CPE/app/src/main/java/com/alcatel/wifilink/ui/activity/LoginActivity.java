@@ -197,7 +197,9 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     @Override
                     protected void onSuccess(LoginState loginState) {
                         if (loginState.getState() == Cons.LOGIN) {
-                            progressPop.dismiss();
+                            if (progressPop != null) {
+                                progressPop.dismiss();
+                            }
                             Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                             // commit the token
                             API.get().updateToken(loginResult.getToken());
@@ -211,7 +213,9 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
                         super.onResultError(error);
-                        progressPop.dismiss();
+                        if (progressPop != null) {
+                            progressPop.dismiss();
+                        }
                         if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
                             ToastUtil_m.show(LoginActivity.this, getString(R.string.connection_timed_out));
                         }
@@ -221,7 +225,9 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                progressPop.dismiss();
+                if (progressPop != null) {
+                    progressPop.dismiss();
+                }
                 if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
                     showRemainTimes();
                 } else if (Cons.OTHER_USER_IS_LOGIN.equals(error.getCode())) {
