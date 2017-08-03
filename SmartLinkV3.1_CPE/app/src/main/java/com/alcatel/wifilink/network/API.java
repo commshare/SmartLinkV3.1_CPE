@@ -110,6 +110,7 @@ public class API {
     private static API api;
 
     private String token;
+    private int TIMEOUT = 10;
 
     private API() {
         if (smartLinkApi == null) {
@@ -169,9 +170,9 @@ public class API {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(10, TimeUnit.SECONDS);
-        builder.readTimeout(10, TimeUnit.SECONDS);
-        builder.writeTimeout(10, TimeUnit.SECONDS);
+        builder.connectTimeout(TIMEOUT, TimeUnit.SECONDS);
+        builder.readTimeout(TIMEOUT, TimeUnit.SECONDS);
+        builder.writeTimeout(TIMEOUT, TimeUnit.SECONDS);
         builder.addInterceptor(chain -> {
             Request request = chain.request();
             Request.Builder reqBuilder = request.newBuilder();
@@ -183,7 +184,7 @@ public class API {
 
             // 获取当前连接的IP
             Context context = SmartLinkV3App.getInstance().getApplicationContext();
-            WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
+            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             String ip = Cons.IP_PRE + WifiUtils.getWifiIp(wifiManager);
             /* referer */
             reqBuilder.addHeader("Referer", ip);
@@ -198,7 +199,7 @@ public class API {
 
     private OkHttpClient createDownloadHttpClient(DownloadProgressListener listener) {
         DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(listener);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(10, TimeUnit.SECONDS).build();
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(TIMEOUT, TimeUnit.SECONDS).build();
         return client;
     }
 

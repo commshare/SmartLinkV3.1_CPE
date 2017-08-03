@@ -177,6 +177,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         autoTimer();// 启动定时退出计时器
     }
 
+    /* 启动定时退出 */
     private void autoTimer() {
         autoTask = new TimerTask() {
             @Override

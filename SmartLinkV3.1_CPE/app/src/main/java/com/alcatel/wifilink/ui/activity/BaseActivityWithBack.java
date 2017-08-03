@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
@@ -111,12 +112,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
         if (MotionEvent.ACTION_DOWN == ev.getAction()) {
             Log.e(TAG, "dispatchTouchEvent,action_down");
             // 每次点击时候判断是否为以下三个界面--> 是则不启动定时器--> 只有进入Home界面才启用定时器
-            String currentActivity = AppInfo.getCurrentActivityName(this);
-            Log.d("ma_currentActivity", currentActivity);
-            boolean la = currentActivity.contains("LoadingActivity");
-            boolean ga = currentActivity.contains("GuideActivity");
-            boolean loa = currentActivity.contains("LoginActivity");
-            if (la | ga | loa) {
+            if (isThreeAct()) {
                 Log.d("ma_base", "no need to reset");
             } else {
                 OtherUtils.stopAutoTimer();
@@ -133,6 +129,20 @@ public class BaseActivityWithBack extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
+    /* 是否为指定的三个界面--> true: 是 */
+    public boolean isThreeAct() {
+        String currentActivity = AppInfo.getCurrentActivityName(this);
+        Log.d("ma_currentActivity", currentActivity);
+        boolean la = currentActivity.contains("LoadingActivity");
+        boolean ga = currentActivity.contains("GuideActivity");
+        boolean loa = currentActivity.contains("LoginActivity");
+        if (la | ga | loa) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     class ScreenStateChangeReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -146,7 +156,11 @@ public class BaseActivityWithBack extends AppCompatActivity {
                     case Intent.ACTION_SCREEN_OFF:
                         Log.e(TAG, "ACTION_SCREEN_OFF");
                         OtherUtils.stopAutoTimer();
-                        logout();/* 锁屏后登出 */
+                        if (!isThreeAct()) {
+                            logout();/* 锁屏后登出 */
+                        }else {
+                            OtherUtils.stopAutoTimer();
+                        }
                         break;
                     case Intent.ACTION_USER_PRESENT:
                         Log.e(TAG, "ACTION_USER_PRESENT");
