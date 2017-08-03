@@ -112,130 +112,129 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
                     mChannelSpinner.setAdapter(channelAdapter);
                 }
             }
-
-            Log.i(TAG, "mFrequency : mChannel" + mChannel);
-
-            // 0: Auto
-            // 1: 802.11b
-            // 2: 802.11b/g
-            // 3: 802.11b/g/n
-            // 4: 802.11a
-            // 5: 802.11a/n
-            ArrayAdapter<String> modeAdapter = null;
-            if (mFrequency == 2) {
-                modeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mMode2GStrings);
-                modeAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                m80211Spinner.setAdapter(modeAdapter);
-            } else if (mFrequency == 5) {
-                if (mMode > 3) {
-                    mMode = mMode - 3;
-                }
-                modeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mMode5GStrings);
-                modeAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                m80211Spinner.setAdapter(modeAdapter);
-            }
-            //0: 20MHz/40MHz
-            //1: 20MHz
-            //2: 40MHz
-            //3: 80MHz
-            //4: 40MHz/80MHz
-            ArrayAdapter<String> bandwidthAdapter = null;
-            if (mFrequency == 2) {
-                bandwidthAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mBandwidth2GStrings);
-                bandwidthAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                mBandwidthSpinner.setAdapter(bandwidthAdapter);
-            } else if (mFrequency == 5) {
-                if (mBandwidth == 4) {
-                    mBandwidth = 0;
-                }
-                bandwidthAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mBandwidth5GStrings);
-                bandwidthAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                mBandwidthSpinner.setAdapter(bandwidthAdapter);
-            }
-
-            m80211Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    mMode = i;
-                    if (mFrequency == 5 && mMode != 0) {
-                        mMode = mMode + 3;
-                    }
-                    Log.i(TAG, "onItemSelected  mMode: " + mMode);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-            mBandwidthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    mBandwidth = i;
-                    if (mFrequency == 5 && mBandwidth == 0) {
-                        mBandwidth = 4;
-                    }
-                    Log.i(TAG, "onItemSelected  mBandwidth: " + mBandwidth);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-
-            final int[] time = {0};
-            if (mFrequency == 5) {
-                mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        String countryCode = getCountryCode(mAllCountryNames[i]);
-                        if (mChannel5gFiveCountryCodes.contains(countryCode)) {
-                            ArrayAdapter<String> channelAdapter = new ArrayAdapter(WlanAdvancedSettingsActivity.this, android.R.layout.simple_list_item_1, mChannel5gfive);
-                            channelAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                            mChannelSpinner.setAdapter(channelAdapter);
-                        } else if (mChannel5gOneCountryCodes.contains(countryCode)) {
-                            ArrayAdapter<String> channelAdapter = new ArrayAdapter(WlanAdvancedSettingsActivity.this, android.R.layout.simple_list_item_1, mChannel5gOne);
-                            channelAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                            mChannelSpinner.setAdapter(channelAdapter);
-                        }
-                        if (time[0] == 0) {
-                            mChannelSpinner.setSelection(mChannel);
-                            time[0]++;
-                        }
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-            }
-
-            mChannelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (mFrequency == 5) {
-                        mChannel5g = Integer.decode((String) mChannelSpinner.getAdapter().getItem(i));
-                        Log.i(TAG, "Channel5g: " + mChannel5g + " i: " + i + " long: " + l);
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-            Log.i(TAG, "show: mChannel" + mChannel);
-
-            mBroadcastSwitch.setChecked(mSsidBroadcast);
-            mChannelSpinner.setSelection(mChannel);
-            mCountrySpinner.setSelection(getCountryPos(mCountry));
-            m80211Spinner.setSelection(mMode);
-            mIsolationSwitch.setChecked(mApIsolation);
-            mBandwidthSpinner.setSelection(mBandwidth);
         }
+        Log.i(TAG, "mFrequency : mChannel" + mChannel);
+
+        // 0: Auto
+        // 1: 802.11b
+        // 2: 802.11b/g
+        // 3: 802.11b/g/n
+        // 4: 802.11a
+        // 5: 802.11a/n
+        ArrayAdapter<String> modeAdapter = null;
+        if (mFrequency == 2) {
+            modeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mMode2GStrings);
+            modeAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            m80211Spinner.setAdapter(modeAdapter);
+        } else if (mFrequency == 5) {
+            if (mMode > 3) {
+                mMode = mMode - 3;
+            }
+            modeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mMode5GStrings);
+            modeAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            m80211Spinner.setAdapter(modeAdapter);
+        }
+        //0: 20MHz/40MHz
+        //1: 20MHz
+        //2: 40MHz
+        //3: 80MHz
+        //4: 40MHz/80MHz
+        ArrayAdapter<String> bandwidthAdapter = null;
+        if (mFrequency == 2) {
+            bandwidthAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mBandwidth2GStrings);
+            bandwidthAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            mBandwidthSpinner.setAdapter(bandwidthAdapter);
+        } else if (mFrequency == 5) {
+            if (mBandwidth == 4) {
+                mBandwidth = 0;
+            }
+            bandwidthAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mBandwidth5GStrings);
+            bandwidthAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            mBandwidthSpinner.setAdapter(bandwidthAdapter);
+        }
+
+        m80211Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mMode = i;
+                if (mFrequency == 5 && mMode != 0) {
+                    mMode = mMode + 3;
+                }
+                Log.i(TAG, "onItemSelected  mMode: " + mMode);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        mBandwidthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mBandwidth = i;
+                if (mFrequency == 5 && mBandwidth == 0) {
+                    mBandwidth = 4;
+                }
+                Log.i(TAG, "onItemSelected  mBandwidth: " + mBandwidth);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        final int[] time = {0};
+        if (mFrequency == 5) {
+            mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String countryCode = getCountryCode(mAllCountryNames[i]);
+                    if (mChannel5gFiveCountryCodes.contains(countryCode)) {
+                        ArrayAdapter<String> channelAdapter = new ArrayAdapter(WlanAdvancedSettingsActivity.this, android.R.layout.simple_list_item_1, mChannel5gfive);
+                        channelAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                        mChannelSpinner.setAdapter(channelAdapter);
+                    } else if (mChannel5gOneCountryCodes.contains(countryCode)) {
+                        ArrayAdapter<String> channelAdapter = new ArrayAdapter(WlanAdvancedSettingsActivity.this, android.R.layout.simple_list_item_1, mChannel5gOne);
+                        channelAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                        mChannelSpinner.setAdapter(channelAdapter);
+                    }
+                    if (time[0] == 0) {
+                        mChannelSpinner.setSelection(mChannel);
+                        time[0]++;
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+
+        mChannelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mFrequency == 5) {
+                    mChannel5g = Integer.decode((String) mChannelSpinner.getAdapter().getItem(i));
+                    Log.i(TAG, "Channel5g: " + mChannel5g + " i: " + i + " long: " + l);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        Log.i(TAG, "show: mChannel" + mChannel);
+        Log.i(TAG, "mSsidBroadcast: " + mSsidBroadcast);
+        mBroadcastSwitch.setChecked(mSsidBroadcast);
+        mChannelSpinner.setSelection(mChannel);
+        mCountrySpinner.setSelection(getCountryPos(mCountry));
+        m80211Spinner.setSelection(mMode);
+        mIsolationSwitch.setChecked(mApIsolation);
+        mBandwidthSpinner.setSelection(mBandwidth);
     }
 
     private int getCountryPos(String countryStr) {
