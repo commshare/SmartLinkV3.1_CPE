@@ -133,4 +133,6 @@ public class Cons {
     public static final int DHCP = 1;
     public static final int STATIC = 2;
 
+    public static final String GET_LOGIN_STATE_FAILED = "010301";
+
 }

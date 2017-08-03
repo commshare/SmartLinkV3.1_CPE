@@ -192,15 +192,31 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         String finalPasswd = passwd;
         API.get().login(account, passwd, new MySubscriber<LoginResult>() {
             @Override
-            protected void onSuccess(LoginResult result) {
-                progressPop.dismiss();
-                Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                // commit the token
-                API.get().updateToken(result.getToken());
-                // remember psd
-                SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
-                // 判断连接模式( SIM | WAN )
-                checkConnectMode();
+            protected void onSuccess(LoginResult loginResult) {
+                API.get().getLoginState(new MySubscriber<LoginState>() {
+                    @Override
+                    protected void onSuccess(LoginState loginState) {
+                        if (loginState.getState() == Cons.LOGIN) {
+                            progressPop.dismiss();
+                            Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                            // commit the token
+                            API.get().updateToken(loginResult.getToken());
+                            // remember psd
+                            SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
+                            // 判断连接模式( SIM | WAN )
+                            checkConnectMode();
+                        }
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        super.onResultError(error);
+                        progressPop.dismiss();
+                        if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
+                            ToastUtil_m.show(LoginActivity.this, getString(R.string.connection_timed_out));
+                        }
+                    }
+                });
             }
 
             @Override
