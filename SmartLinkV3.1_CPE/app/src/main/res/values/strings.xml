@@ -576,12 +576,11 @@
     <string name="day_30">Day 30</string>
     <string name="day_31">Day 31</string>
     <string name="disabled">Disabled</string>
-    <string name="connecting">Please Wait...</string>
+    <string name="connecting">Connecting...</string>
     <string name="insert_sim_or_wan">Try again</string>
     <string name="connect_failed">Couldn\'t connect</string>
     <string name="size">Size</string>
     <string name="device_will_restart_later">The device will  restart later.</string>
     <string name="resetting">Resetting...</string>
     <string name="back_up_progress">Wait for 5~60 seconds</string>
-
 </resources>
