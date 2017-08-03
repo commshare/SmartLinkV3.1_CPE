@@ -276,7 +276,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                 getSmsContents(false);
             }
         };
-        timerHelper.start(2000);
+        timerHelper.start(Cons.PERIOD);
     }
 
     /* **** timertask: getSmsContents **** */

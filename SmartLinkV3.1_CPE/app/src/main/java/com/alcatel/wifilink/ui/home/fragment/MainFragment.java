@@ -675,7 +675,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 getStatus();
             }
         };
-        timerHelper.start(2000);
+        timerHelper.start(5000);
     }
 
     private void showWait() {

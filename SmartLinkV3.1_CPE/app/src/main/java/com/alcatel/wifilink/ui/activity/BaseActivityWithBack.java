@@ -109,7 +109,8 @@ public class BaseActivityWithBack extends AppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (MotionEvent.ACTION_DOWN == ev.getAction()) {
+        int action = ev.getAction();
+        if (MotionEvent.ACTION_DOWN == action || MotionEvent.ACTION_UP == action) {
             Log.e(TAG, "dispatchTouchEvent,action_down");
             // 每次点击时候判断是否为以下三个界面--> 是则不启动定时器--> 只有进入Home界面才启用定时器
             if (isThreeAct()) {
@@ -158,7 +159,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
                         OtherUtils.stopAutoTimer();
                         if (!isThreeAct()) {
                             logout();/* 锁屏后登出 */
-                        }else {
+                        } else {
                             OtherUtils.stopAutoTimer();
                         }
                         break;

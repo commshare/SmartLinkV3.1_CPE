@@ -206,7 +206,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                     }
                 });
             }
-        }.start(5000);
+        }.start(Cons.PERIOD);
     }
 
 
