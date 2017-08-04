@@ -75,7 +75,11 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 // 注：项目名只取前四位
                 // 实例1：软件版本号为HH40_E4_02.00_01，则取出的项目名为HH40,定制ID为E4
                 // 实例2：软件版本号为HH40V_00_02.00_11，则取出的项目名为HH40,定制ID为00
-                mProject = split[0].substring(0, split[0].length() - 1);
+                mProject = split[0];
+                Log.d(TAG, "mProject: " + mProject);
+                if (mProject.length() > 4) {
+                    mProject = mProject.substring(0, 4);
+                }
                 mCustom = split[1];
                 Log.i(TAG, "swVersion :" + swVersion);
                 mDeviceNameTxt.setText(result.getDeviceName());
@@ -154,6 +158,10 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
         Uri content_url = Uri.parse(url);
+        String path = content_url.getPath();
+        String query = content_url.getQuery();
+        Log.i(TAG, "getpath: " + path);
+        Log.i(TAG, "getQuery: " + query);
         intent.setData(content_url);
         startActivity(intent);
     }
