@@ -72,13 +72,16 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 dismissLoadingDialog();
                 String swVersion = result.getSwVersion();
                 String[] split = swVersion.split("_");
-                mProject = split[0];
+                // 注：项目名只取前四位
+                // 实例1：软件版本号为HH40_E4_02.00_01，则取出的项目名为HH40,定制ID为E4
+                // 实例2：软件版本号为HH40V_00_02.00_11，则取出的项目名为HH40,定制ID为00
+                mProject = split[0].substring(0, split[0].length() - 1);
                 mCustom = split[1];
                 Log.i(TAG, "swVersion :" + swVersion);
                 mDeviceNameTxt.setText(result.getDeviceName());
                 mImeiTxt.setText(result.getIMEI());
                 mMacAddressTxt.setText(result.getMacAddress());
-                //                mAppVersionTxt.setText(result.getAppVersion());
+                // mAppVersionTxt.setText(result.getAppVersion());
             }
 
             @Override

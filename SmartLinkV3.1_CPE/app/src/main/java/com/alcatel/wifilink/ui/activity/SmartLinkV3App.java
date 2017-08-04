@@ -6,10 +6,9 @@ import android.util.Log;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.NotificationService;
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
-import com.alcatel.wifilink.utils.WifiUtils;
 
 import org.cybergarage.upnp.ControlPoint;
-import org.xutils.x;
+
 
 public class SmartLinkV3App extends MultiDexApplication {
 
@@ -30,7 +29,6 @@ public class SmartLinkV3App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        x.Ext.init(this);
         m_instance = this;
         Log.d("HttpService", "Application onCreate ");
         BusinessManager.getInstance();

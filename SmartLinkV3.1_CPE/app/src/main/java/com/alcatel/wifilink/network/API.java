@@ -72,6 +72,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -192,6 +196,16 @@ public class API {
             request = reqBuilder.build();
             return chain.proceed(request);
         });
+        
+        // /* google play request online ssl verify */
+        // builder.hostnameVerifier((hostname, session) -> {
+        //     if (hostname.equalsIgnoreCase("http://192.168.1.1") || hostname.equalsIgnoreCase("192.168.1.1")) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // });
+        
         builder.addInterceptor(httpLoggingInterceptor);
         return builder.build();
     }
