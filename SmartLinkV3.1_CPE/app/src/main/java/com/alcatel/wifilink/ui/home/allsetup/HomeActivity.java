@@ -156,6 +156,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     public static TimerTask autoTask;
     public static Timer autoTimer;
+    private TimerHelper heartBeatTimer;
 
 
     @Override
@@ -191,7 +192,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** heartBeanTimer:心跳包 **** */
     private void heartBeanTimer() {
-        new TimerHelper(this) {
+        heartBeatTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
                 API.get().heartBeat(new MySubscriber() {
@@ -202,11 +203,17 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
-                        logout();
+                        Log.d("ma_home", "heartbeat error");
+                        if (heartBeatTimer != null) {
+                            heartBeatTimer.stop();
+                            heartBeanTimer();
+                        }
+                        // logout();
                     }
                 });
             }
-        }.start(Cons.PERIOD);
+        };
+        heartBeatTimer.start(Cons.PERIOD);
     }
 
 

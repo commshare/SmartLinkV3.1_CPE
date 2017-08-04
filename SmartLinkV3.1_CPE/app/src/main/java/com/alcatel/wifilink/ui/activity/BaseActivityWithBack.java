@@ -34,7 +34,6 @@ import java.util.TimerTask;
 public class BaseActivityWithBack extends AppCompatActivity {
 
     private static final String TAG = "BaseActivityWithBack";
-    private static final int LOG_OUT_DELAY = 5 * 60 * 1000;//5min中无操作 退到登录页
     private TimerTask mLogOutTask;
     private Timer mLogOutTimer;
     private BroadcastReceiver screenLockReceiver;
