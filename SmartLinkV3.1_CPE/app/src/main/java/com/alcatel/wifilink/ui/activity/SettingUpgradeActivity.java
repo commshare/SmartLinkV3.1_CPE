@@ -34,6 +34,7 @@ import com.alcatel.wifilink.common.MessageUti;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.dialog.InquireDialog;
 import com.alcatel.wifilink.ui.dialog.InquireDialog.OnInquireApply;
+import com.alcatel.wifilink.utils.HostnameUtils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -48,6 +49,8 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class SettingUpgradeActivity extends BaseActivity implements OnClickListener{
 
@@ -476,7 +479,7 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 				HttpConnectionParams.setConnectionTimeout(myParams, 2000);
 				HttpConnectionParams.setSoTimeout(myParams, 2000);
 				HttpClient httpclient = new DefaultHttpClient(myParams);
-
+				HostnameUtils.setVerifyHostName();
 				HttpPost post = new HttpPost("https://play.google.com/store/apps/details?id=com.alcatel.smartlinkv3");
 
 				HttpResponse response;

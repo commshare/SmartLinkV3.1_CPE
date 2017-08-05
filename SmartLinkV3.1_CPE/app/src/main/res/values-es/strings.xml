@@ -20,7 +20,6 @@
     <string name="qs_exit_query">Salir de la configuración rápida</string>
     <string name="qs_item_pin_code">Código PIN</string>
     <string name="qs_pin_code_prompt">Introduzca el código PIN\nRestantes:%1$d</string>
-    <string name="qs_pin_code_prompt_num">%1$d vez/veces</string>
     <string name="qs_item_wifi_ssid">Nombre de la red Wi-Fi (SSID)</string>
     <string name="qs_wifi_ssid_prompt">El SSID debería tener 1&#8211;32 caracteres.</string>
     <string name="qs_item_wifi_passwd">Contraseña Wi-Fi</string>
@@ -44,7 +43,6 @@
     <string name="Home_unlock_pin">Desbloquear</string>
     <string name="Home_no_sim">No hay tarjeta SIM</string>
     <string name="Home_sim_invalid">SIM no válida</string>
-    <string name="Home_pin_locked">PIN bloqueado</string>
     <string name="Home_puk_locked">PUK bloqueado</string>
     <string name="Home_PukTimes_UsedOut">Ha agotado los intentos de introducir el PUK</string>
     <string name="Home_SimLock_Required">Se requiere bloqueo de la SIM</string>

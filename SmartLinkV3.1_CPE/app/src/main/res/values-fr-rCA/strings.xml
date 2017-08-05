@@ -43,7 +43,6 @@
     <string name="Home_unlock_pin">Déverrouiller</string>
     <string name="Home_no_sim">Aucune carte SIM</string>
     <string name="Home_sim_invalid">Carte SIM non valide</string>
-    <string name="Home_pin_locked">Verrouillé par NIP</string>
     <string name="Home_puk_locked">Verrouillé par PUK</string>
     <string name="Home_PukTimes_UsedOut">Nombre d\'essais PUK dépassé</string>
     <string name="Home_SimLock_Required">Verrouillage SIM requis</string>

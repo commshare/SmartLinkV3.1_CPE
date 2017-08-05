@@ -2,12 +2,12 @@ package com.alcatel.wifilink.httpservice;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.business.FeatureVersionManager;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
+import com.alcatel.wifilink.utils.HostnameUtils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -29,9 +29,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class LegacyHttpClient {
     private static final String TAG = "LegacyHttpClient";
@@ -298,6 +299,7 @@ public class LegacyHttpClient {
 
                 // get default LegacyHttpClient
                 org.apache.http.client.HttpClient httpclient = new DefaultHttpClient(httpParameters);
+                HostnameUtils.setVerifyHostName();
 
                 // get HttpResponse--> 真正提交请求
                 // TOIN 2017/6/7 真正提交请求

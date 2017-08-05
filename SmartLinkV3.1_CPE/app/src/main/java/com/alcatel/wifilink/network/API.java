@@ -65,6 +65,7 @@ import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.FileUtils;
+import com.alcatel.wifilink.utils.HostnameUtils;
 import com.alcatel.wifilink.utils.WifiUtils;
 
 import java.io.File;
@@ -197,15 +198,9 @@ public class API {
             return chain.proceed(request);
         });
         
-        // /* google play request online ssl verify */
-        // builder.hostnameVerifier((hostname, session) -> {
-        //     if (hostname.equalsIgnoreCase("http://192.168.1.1") || hostname.equalsIgnoreCase("192.168.1.1")) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // });
-        
+        /* google play request online ssl verify */
+        builder.hostnameVerifier(HostnameUtils.getVerify());
+
         builder.addInterceptor(httpLoggingInterceptor);
         return builder.build();
     }

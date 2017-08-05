@@ -41,7 +41,6 @@
     <string name="Home_unlock_pin">Sblocca</string>
     <string name="Home_no_sim">Nessuna scheda SIM</string>
     <string name="Home_sim_invalid">SIM non valida</string>
-    <string name="Home_pin_locked">PIN bloccato</string>
     <string name="Home_puk_locked">PUK bloccato</string>
     <string name="Home_PukTimes_UsedOut">Tentativi PUK terminati</string>
     <string name="Home_SimLock_Required">Blocco SIM richiesto</string>

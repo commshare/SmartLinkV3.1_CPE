@@ -6,8 +6,11 @@ import android.util.Log;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.NotificationService;
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.wifilink.utils.HostnameUtils;
 
 import org.cybergarage.upnp.ControlPoint;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class SmartLinkV3App extends MultiDexApplication {
@@ -35,6 +38,8 @@ public class SmartLinkV3App extends MultiDexApplication {
         NotificationService.startService();
         HandlerUtils.replaceHandler();
         mAllShareProxy = AllShareProxy.getInstance(this);
+        /* checked hostNameVerify  */
+        HostnameUtils.setVerifyHostName();
     }
 
     public void setControlPoint(ControlPoint controlPoint) {

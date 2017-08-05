@@ -82,7 +82,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="@dimen/dimen_24dip"
 				android:gravity="center"
-				android:text="@string/qs_pin_code_prompt_num"
+				android:text="%1$d vez/veces"
 				android:textSize="@dimen/dimen_textsize_14sp"
 				android:textColor="@color/orange_textColor"/>
 		</LinearLayout>

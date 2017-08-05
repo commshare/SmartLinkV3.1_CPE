@@ -1,35 +1,42 @@
 package com.alcatel.wifilink.mediaplayer.music.lrc;
 
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.params.HttpConnectionParams;
+import android.text.TextUtils;
+
+import com.alcatel.wifilink.utils.HostnameUtils;
+
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpVersion;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.params.ConnRouteParams;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ClientConnectionManager;
-import android.text.TextUtils;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 
 
 public class HttpManager {
@@ -42,15 +49,17 @@ public class HttpManager {
 		HttpConnectionParams.setConnectionTimeout(params, 15 * 1000);
 		HttpConnectionParams.setSoTimeout(params,15 * 1000);
 		HttpConnectionParams.setSocketBufferSize(params, 50 * 1024);
+		HostnameUtils.setVerifyHostName();
 		HttpClientParams.setRedirecting(params, false);
 		SchemeRegistry schemeRegistry = new SchemeRegistry();
 		schemeRegistry.register(new Scheme("http", PlainSocketFactory
 				.getSocketFactory(), 80));
-		schemeRegistry.register(new Scheme("https", SSLSocketFactory
-				.getSocketFactory(), 443));
+		// schemeRegistry.register(new Scheme("https", SSLSocketFactory
+		// 		.getSocketFactory(), 443));
 		ClientConnectionManager manager = new ThreadSafeClientConnManager(
 				params, schemeRegistry);
 		sClient = new DefaultHttpClient(manager, params);
+		HostnameUtils.setVerifyHostName();
 	}
 
 	private HttpManager() {
@@ -161,6 +170,7 @@ public class HttpManager {
 				ConnManagerParams.setTimeout(hcp, TIMEOUT_MS);
 				HttpConnectionParams.setSoTimeout(hcp, TIMEOUT_MS);
 				HttpConnectionParams.setConnectionTimeout(hcp, TIMEOUT_MS);
+				HostnameUtils.setVerifyHostName();
 				ConnRouteParams.setDefaultProxy(hcp, null);
 			}
 			HttpEntity resEntity = null;

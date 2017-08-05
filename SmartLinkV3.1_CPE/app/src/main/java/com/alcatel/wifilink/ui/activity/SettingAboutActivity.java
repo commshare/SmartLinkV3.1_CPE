@@ -23,6 +23,7 @@ import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.business.model.WanConnectStatusModel;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.common.ENUM;
+import com.alcatel.wifilink.utils.HostnameUtils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -37,6 +38,8 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class SettingAboutActivity extends BaseActivity implements OnClickListener{
 
@@ -263,6 +266,7 @@ public class SettingAboutActivity extends BaseActivity implements OnClickListene
                 HttpConnectionParams.setConnectionTimeout(myParams, 5000);
                 HttpConnectionParams.setSoTimeout(myParams, 5000);
                 HttpClient httpclient = new DefaultHttpClient(myParams);
+                HostnameUtils.setVerifyHostName();
 
                 HttpPost post = new HttpPost("https://play.google.com/store/apps/details?id=com.alcatel.smartlinkv3");
 
