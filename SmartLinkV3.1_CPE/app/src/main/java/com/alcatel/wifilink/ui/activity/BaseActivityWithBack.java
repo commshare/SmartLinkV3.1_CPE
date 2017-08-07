@@ -112,10 +112,10 @@ public class BaseActivityWithBack extends AppCompatActivity {
         if (MotionEvent.ACTION_DOWN == action || MotionEvent.ACTION_UP == action) {
             Log.e(TAG, "dispatchTouchEvent,action_down");
             // 每次点击时候判断是否为以下三个界面--> 是则不启动定时器--> 只有进入Home界面才启用定时器
+            OtherUtils.stopAutoTimer();
             if (isThreeAct()) {
                 Log.d("ma_base", "no need to reset");
             } else {
-                OtherUtils.stopAutoTimer();
                 HomeActivity.autoTask = new TimerTask() {
                     @Override
                     public void run() {
@@ -175,8 +175,8 @@ public class BaseActivityWithBack extends AppCompatActivity {
         API.get().logout(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_successful));
-                ChangeActivity.toActivity(BaseActivityWithBack.this, LoginActivity.class, true, true, false, 0);
+                // ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_successful));
+                ChangeActivity.toActivity(BaseActivityWithBack.this, LoginActivity.class, false, true, false, 0);
             }
 
             @Override

@@ -766,7 +766,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                         @Override
                         protected void onResultError(ResponseBody.Error error) {
-                            super.onResultError(error);
+                            ToastUtil_m.show(getActivity(), getString(R.string.restart_device_tip));
                             mRl_main_wait.setVisibility(View.GONE);
                         }
                     });

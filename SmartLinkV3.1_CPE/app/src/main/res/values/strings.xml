@@ -583,4 +583,6 @@
     <string name="device_will_restart_later">The device will  restart later.</string>
     <string name="resetting">Resetting...</string>
     <string name="back_up_progress">Wait for 5~60 seconds</string>
+    <!-- 20170807 -->
+    <string name="restart_device_tip">Please restart the device and try again</string>
 </resources>

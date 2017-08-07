@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.model.connection.ConnectionSettings;
 import com.alcatel.wifilink.model.connection.ConnectionState;
@@ -96,7 +97,8 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mMobileDataSwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
-                if(!mMobileDataSwitchCompat.isPressed())return;
+                if (!mMobileDataSwitchCompat.isPressed())
+                    return;
                 Log.d(TAG, "mMobileDataSwitchCompat = " + enable);
                 if (mOldMobileDataEnable != enable) {
                     if (enable) {
@@ -139,7 +141,8 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
                 Log.d(TAG, "mDisconnectCompat = " + enable);
-                if(!compoundButton.isPressed())return;
+                if (!compoundButton.isPressed())
+                    return;
                 if (enable) {
                     mUsageSetting.setAutoDisconnFlag(1);
                 } else {
@@ -196,7 +199,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                Toast.makeText(SettingNetworkActivity.this, getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.restart_device_tip), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = false;
                 mMobileDataSwitchCompat.setChecked(false);
             }
@@ -423,7 +426,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void setUsageSetting(UsageSetting usageSetting) {
-        Log.d(TAG,"setUsageSetting = " + usageSetting.toString());
+        Log.d(TAG, "setUsageSetting = " + usageSetting.toString());
         API.get().setUsageSetting(usageSetting, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
@@ -468,7 +471,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(UsageSetting result) {
                 mUsageSetting = result;
-                Log.d(TAG,"getUsageSetting = " + result.toString());
+                Log.d(TAG, "getUsageSetting = " + result.toString());
                 String unit = "";
                 if (result.getUnit() == Constants.UsageSetting.UNIT_MB) {
                     unit = "MB";
@@ -722,12 +725,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_2G);
             }
         } else if (parent.getId() == R.id.setdataplan_billing_day) {
-//            if (isCodeSelectBillingDay) {
-//                isCodeSelectBillingDay = false;
-//            } else {
-                mUsageSetting.setBillingDay(position);
-                setUsageSetting(mUsageSetting);
-//            }
+            //            if (isCodeSelectBillingDay) {
+            //                isCodeSelectBillingDay = false;
+            //            } else {
+            mUsageSetting.setBillingDay(position);
+            setUsageSetting(mUsageSetting);
+            //            }
         }
     }
 

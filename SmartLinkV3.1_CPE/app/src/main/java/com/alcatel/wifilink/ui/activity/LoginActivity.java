@@ -62,7 +62,6 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OtherUtils.stopAutoTimer();
         setContentView(R.layout.activity_login);
         // is remember checkbox check
         ischeck = SharedPrefsUtil.getInstance(this).getBoolean(Cons.LOGIN_CHECK, false);
@@ -106,6 +105,12 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         // 忘记密码
         mTv_forgotPsd = (TextView) findViewById(R.id.tv_login_forgotPsd);
         mTv_forgotPsd.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        OtherUtils.stopAutoTimer();
     }
 
     @Override
