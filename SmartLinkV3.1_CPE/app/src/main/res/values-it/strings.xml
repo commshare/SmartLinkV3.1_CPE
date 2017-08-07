@@ -130,7 +130,6 @@
     <string name="microsd_music">Musica</string>
     <string name="microsd_pictures">Immagini</string>
     <string name="microsd_no_sdcard">Inserire scheda SD.</string>
-    <string name="setting_account">Password di accesso</string>
     <string name="setting_network">Rete</string>
     <string name="setting_mobile_network">Rete mobile</string>
     <string name="ethernet_wan_connection">Connessione Ethernet WAN</string>
@@ -286,7 +285,6 @@
     <string name="IDS_PIN_CHECK_PUK_PROGRESS">Verifica PUK in corso</string>
     <string name="remain_times">%1$d tentativi rimanenti</string>
     <string name="login_prompt_str">La password è errata.</string>
-    <string name="login_psd_error_msg">La password è errata.</string>
     <string name="login_check_dialog_title">Accedi</string>
     <string name="login_invalid_password">Password non valida. La password può contenere solo i seguenti caratteri 0-9, a-z, A-Z, \&quot;-+.@$#^&amp;*\&quot;</string>
     <string name="login_other_user_logined_error_msg">Un altro utente sta effettuando l\'accesso\nRiprovare ad accedere tra un momento.</string>
@@ -551,8 +549,7 @@ di rete se non si è sicuri del codice PUK</string>
     <string name="size">Dimensione</string>
     <string name="device_will_restart_later">Il dispositivo si riavvia più tardi.</string>
     <string name="resetting">Ripristino …</string>
-    <string name="back_up_progress
-">Attendere 5-60 secondi</string>
+    <string name="back_up_progress">Attendere 5-60 secondi</string>
     <string name="day_1">Giorno 1</string>
     <string name="day_10">Giorno 10</string>
     <string name="day_11">Giorno 11</string>

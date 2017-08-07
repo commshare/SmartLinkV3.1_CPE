@@ -130,7 +130,6 @@
     <string name="microsd_music">Musique</string>
     <string name="microsd_pictures">Images</string>
     <string name="microsd_no_sdcard">Insérez la carte SD.</string>
-    <string name="setting_account">Mot de passe de connexion</string>
     <string name="setting_network">Réseau</string>
     <string name="setting_mobile_network">Réseau mobile</string>
     <string name="ethernet_wan_connection">Connexion Ethernet WAN</string>
@@ -286,7 +285,6 @@
     <string name="IDS_PIN_CHECK_PUK_PROGRESS">Vérification du code PUK</string>
     <string name="remain_times">%1$d tentative(s) restante(s)</string>
     <string name="login_prompt_str">Mot de passe incorrect.</string>
-    <string name="login_psd_error_msg">Mot de passe incorrect.</string>
     <string name="login_check_dialog_title">Connexion</string>
     <string name="login_invalid_password">Mot de passe incorrect. Il ne peut inclure que les caractères 0-9, a-z, A-Z, \&quot;-+.@$#^&amp;*\&quot;</string>
     <string name="login_other_user_logined_error_msg">Un autre utilisateur est connecté.\nVeuillez réessayer un peu plus tard.</string>
@@ -547,8 +545,7 @@
     <string name="size">Taille</string>
     <string name="device_will_restart_later">L\'appareil redémarre plus tard.</string>
     <string name="resetting">Réinitialisation …</string>
-    <string name="back_up_progress
-">Attendez 5-60 secondes</string>
+    <string name="back_up_progress">Attendez 5-60 secondes</string>
     <string name="day_1">Jour 1</string>
     <string name="day_10">Jour 10</string>
     <string name="day_11">Jour 11</string>
