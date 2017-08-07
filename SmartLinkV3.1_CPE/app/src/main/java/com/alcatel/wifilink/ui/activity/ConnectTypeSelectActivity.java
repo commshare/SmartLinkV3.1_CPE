@@ -387,7 +387,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             // 跳到home页按钮
             case R.id.mTv_connectStatus_home:
                 CPEConfig.getInstance().setQuickSetupFlag();
-                ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
 
             default:

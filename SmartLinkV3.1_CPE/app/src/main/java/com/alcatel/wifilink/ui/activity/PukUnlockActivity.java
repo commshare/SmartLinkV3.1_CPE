@@ -22,6 +22,7 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +52,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OtherUtils.stopAutoTimer();
         setContentView(R.layout.activity_unlockpuk);
         actionbar = getSupportActionBar();
         ButterKnife.bind(this);

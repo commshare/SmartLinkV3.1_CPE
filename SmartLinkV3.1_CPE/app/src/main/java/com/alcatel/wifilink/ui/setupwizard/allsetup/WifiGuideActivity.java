@@ -215,7 +215,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
      * 设置快速进入(下次启动忽略该界面)
      */
     public void setQuickAndSkip() {
-        ChangeActivity.toActivity(WifiGuideActivity.this, HomeActivity.class, true, true, false, 0);
+        ChangeActivity.toActivity(WifiGuideActivity.this, HomeActivity.class, false, true, false, 0);
     }
 
     private void updateUIWithWlanSettings() {

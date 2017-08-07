@@ -286,7 +286,7 @@
     <string name="IDS_PIN_CHECK_PUK_PROGRESS">التحقق من PUK</string>
     <string name="remain_times">%1$d المحاولة (المحاولات) المتبقية</string>
     <string name="login_prompt_str">كلمة المرور خطأ.</string>
-    <string name="login_psd_error_msg">كلمة المرور خطأ.</string>
+    <string name="login_psd_error_msg">كلمة المرور خطأ.عدد  المتبقي %1$d</string>
     <string name="login_check_dialog_title">تسجيل الدخول</string>
     <string name="login_invalid_password">كلمة مرور غير صالحة. لا يمكن أن تحتوي كلمات المرور إلا على 0-9، a-z، A-Z، \&quot;-+.@$#^&amp;*\&quot;</string>
     <string name="login_other_user_logined_error_msg">مستخدم آخر مسجل الدخول\nيرجى تسجيل الدخول مرة أخرى بعد لحظة.</string>

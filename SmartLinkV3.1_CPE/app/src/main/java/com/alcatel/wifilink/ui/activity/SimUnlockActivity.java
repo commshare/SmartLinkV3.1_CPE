@@ -21,6 +21,7 @@ import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -48,6 +49,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OtherUtils.stopAutoTimer();
         setContentView(R.layout.activity_sim_unlock);
         ButterKnife.bind(this);
         actionbar = getSupportActionBar();
@@ -157,7 +159,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-                ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
             }
 
             @Override

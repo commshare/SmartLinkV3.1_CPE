@@ -266,7 +266,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                                 ChangeActivity.toActivity(LoginActivity.this, PukUnlockActivity.class, true, true, false, 0);
                             } else if (simState == Cons.READY) {
                                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
-                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, true, true, false, 0);
+                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
                             }
                             return;
                         }
@@ -312,6 +312,6 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     }
 
     private void launchHomeActivity() {
-        ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
+        ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
     }
 }

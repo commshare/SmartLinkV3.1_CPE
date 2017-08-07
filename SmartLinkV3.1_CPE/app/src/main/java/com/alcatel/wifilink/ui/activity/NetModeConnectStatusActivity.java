@@ -128,7 +128,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             /*home--> 跳转至主页*/
             case R.id.mTv_connectStatus_home:
                 CPEConfig.getInstance().setQuickSetupFlag();/* 跳转到主页先初始化跳转标记, 否则--> loadingActivity */
-                ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
         }
     }

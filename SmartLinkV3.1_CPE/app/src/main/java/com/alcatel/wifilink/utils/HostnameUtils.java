@@ -12,7 +12,7 @@ import javax.net.ssl.SSLSession;
 
 public class HostnameUtils {
 
-    private static HostNameImpl hostName;
+    private static HostNameImpl hostName;// hostname接口
 
     /* 设置SSL安全性验证 */
     public static void setVerifyHostName() {
@@ -29,7 +29,7 @@ public class HostnameUtils {
 
     /* 验证SSL类 */
     private static class HostNameImpl implements HostnameVerifier {
-
+        
         @Override
         public boolean verify(String hostname, SSLSession session) {
             String ip = "192.168.1.1";

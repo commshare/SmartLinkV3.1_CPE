@@ -386,7 +386,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
                 // 3. when logout finish --> to the login Acitvity
-                ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -540,7 +540,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
                 /* 需要输入PUK码 */
                 if (simState == Cons.PUK_REQUIRED) {
-                    ChangeActivity.toActivity(HomeActivity.this, PukUnlockActivity.class, true, false, false, 0);
+                    ChangeActivity.toActivity(HomeActivity.this, PukUnlockActivity.class, false, false, false, 0);
                 }
                 
                 /* SIM卡已经插入并且已经准备好 */
@@ -608,7 +608,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
                     // sim pop to unlock activity
-                    ChangeActivity.toActivity(HomeActivity.this, SimUnlockActivity.class, true, false, false, 0);
+                    ChangeActivity.toActivity(HomeActivity.this, SimUnlockActivity.class, false, false, false, 0);
                     return;
                 }
                 if (simState == Cons.NOWN) {

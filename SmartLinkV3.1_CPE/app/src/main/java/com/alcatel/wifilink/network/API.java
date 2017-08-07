@@ -210,7 +210,7 @@ public class API {
         DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(listener);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(TIMEOUT, TimeUnit.SECONDS).build();
         return client;
-    }
+}
 
     public static API get() {
         if (api == null) {

@@ -136,7 +136,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
                 initData();
                 break;
             case R.id.tv_toHome:// 跳到主页
-                ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
         }
     }
@@ -290,7 +290,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     private void success() {
         UiChange(false, true, false);
         EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_WAN));
-        ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, DELAY);
+        ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, DELAY);
     }
 
     /**

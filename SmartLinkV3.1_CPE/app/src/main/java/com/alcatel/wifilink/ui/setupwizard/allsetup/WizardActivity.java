@@ -146,7 +146,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
 
                 if (simState == Cons.READY) {
                     EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-                    ChangeActivity.toActivity(WizardActivity.this, HomeActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(WizardActivity.this, HomeActivity.class, false, true, false, 0);
                     return;
                 }
             }
@@ -166,7 +166,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
                 finish();
                 break;
             case R.id.tv_main_skip:
-                ChangeActivity.toActivity(this, HomeActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
         }
 
