@@ -194,7 +194,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = true;
             }
-
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
+                mOldMobileDataEnable = false;
+                mMobileDataSwitchCompat.setChecked(false);
+            }
             @Override
             protected void onFailure() {
                 Log.d(TAG, "connect error");
@@ -211,7 +216,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = false;
             }
-
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Toast.makeText(SettingNetworkActivity.this, getString(R.string.setting_failed), Toast.LENGTH_SHORT).show();
+                mOldMobileDataEnable = true;
+                mMobileDataSwitchCompat.setChecked(true);
+            }
             @Override
             protected void onFailure() {
                 Log.d(TAG, "disConnect error");
