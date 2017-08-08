@@ -26,7 +26,7 @@ public abstract class SmsDeletePop {
     public PopupWindows show() {
         View inflate = View.inflate(context, R.layout.pop_smsdetail_deleted, null);
         int width = (int) (ScreenSize.getSize(context).width * 0.75f);
-        int height = (int) (ScreenSize.getSize(context).height * 0.20f);
+        int height = (int) (ScreenSize.getSize(context).height * 0.17f);
         getView(inflate);
         pop = new PopupWindows(context, inflate, width, height, true);
         return pop;

@@ -1,77 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sett_data_plan"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_bg_normal"
     android:orientation="vertical"
-    android:visibility="gone"
-    android:id="@+id/sett_data_plan"
-    android:background="@color/color_bg_normal">
-        <RelativeLayout
-            android:id="@+id/rl_monthly_data_plan"
+    android:visibility="gone">
+
+    <RelativeLayout
+        android:id="@+id/rl_monthly_data_plan"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/WlanSettingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/setting_padding_10_dp"
+            android:text="@string/usage_setting_monthlysataplan"
+            android:textDirection="locale" />
+
+        <ImageView
+            android:id="@+id/img_monthly_data_plan"
+            android:layout_width="@dimen/dimen_20dip"
+            android:layout_height="@dimen/dimen_20dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_10dip"
+            android:src="@drawable/right_arrow_big"
+            android:textDirection="locale" />
+
+        <TextView
+            android:id="@+id/textview_monthly_data_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/img_monthly_data_plan"
+            android:textColor="@color/color_light_gray"
+            android:textDirection="locale"
+            android:textSize="12sp" />
+
+        <ImageView
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="60dp">
-
-            <TextView
-                style="@style/WlanSettingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/setting_padding_10_dp"
-                android:text="@string/usage_setting_monthlysataplan" />
-
-            <ImageView
-                android:id="@+id/img_monthly_data_plan"
-                android:layout_width="@dimen/dimen_20dip"
-                android:layout_height="@dimen/dimen_20dip"
-                android:layout_marginRight="@dimen/dimen_10dip"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/right_arrow_big"/>
-
-            <TextView
-                android:id="@+id/textview_monthly_data_plan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/img_monthly_data_plan"
-                android:textColor="@color/color_light_gray"
-                android:textSize="12sp"/>
-            <ImageView
-                android:layout_alignParentBottom="true"
-                android:background="@color/grey_line"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_0.5dip"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/white">
-
-            <TextView
-                style="@style/WlanSettingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/setting_padding_10_dp"
-                android:text="@string/usage_setting_billingday" />
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/setdataplan_billing_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:entries="@array/settings_data_plan_billing_day"
-                android:spinnerMode="dialog" />
-            <ImageView
-                android:layout_alignParentBottom="true"
-                android:background="@color/grey_line"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_0.5dip"/>
-        </RelativeLayout>
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:layout_alignParentBottom="true"
+            android:background="@color/grey_line"
+            android:textDirection="locale" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -84,7 +63,40 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="@dimen/setting_padding_10_dp"
-            android:text="@string/usage_setting_usagealert" />
+            android:text="@string/usage_setting_billingday"
+            android:textDirection="locale" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/setdataplan_billing_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:entries="@array/settings_data_plan_billing_day"
+            android:spinnerMode="dialog"
+            android:textDirection="locale" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:layout_alignParentBottom="true"
+            android:background="@color/grey_line"
+            android:textDirection="locale" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/WlanSettingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/setting_padding_10_dp"
+            android:text="@string/usage_setting_usagealert"
+            android:textDirection="locale" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/setdataplan_usagealert"
@@ -93,12 +105,15 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:entries="@array/settings_data_plan_usage_alert"
-            android:spinnerMode="dialog" />
+            android:spinnerMode="dialog"
+            android:textDirection="locale" />
+
         <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
             android:layout_alignParentBottom="true"
             android:background="@color/grey_line"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_0.5dip"/>
+            android:textDirection="locale" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -112,7 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="@dimen/setting_padding_10_dp"
-            android:text="@string/auto_disconnect" />
+            android:text="@string/auto_disconnect"
+            android:textDirection="locale" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/setdataplan_auto_disconnect"
@@ -120,9 +136,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:textDirection="locale"
             app:showText="false" />
     </RelativeLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -136,20 +152,24 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="@dimen/setting_padding_10_dp"
-            android:text="@string/usage_setting_timelimit" />
+            android:text="@string/usage_setting_timelimit"
+            android:textDirection="locale" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/setdataplan_timelimit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:checked="true"
-            android:layout_centerVertical="true" />
+            android:textDirection="locale" />
+
         <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
             android:layout_alignParentBottom="true"
             android:background="@color/grey_line"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_0.5dip"/>
+            android:textDirection="locale" />
     </RelativeLayout>
 
     <LinearLayout
@@ -170,16 +190,18 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/setting_padding_10_dp"
-                android:text="@string/usage_setting_settimelimit" />
+                android:text="@string/usage_setting_settimelimit"
+                android:textDirection="locale" />
 
             <ImageView
                 android:id="@+id/img_set_time_limit"
-                android:layout_marginRight="@dimen/dimen_10dip"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/right_arrow_big"
                 android:layout_width="@dimen/dimen_20dip"
-                android:layout_height="@dimen/dimen_20dip"/>
+                android:layout_height="@dimen/dimen_20dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:src="@drawable/right_arrow_big"
+                android:textDirection="locale" />
 
             <TextView
                 android:id="@+id/textview_set_time_limit"
@@ -188,12 +210,15 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/img_set_time_limit"
                 android:textColor="@color/color_light_gray"
-                android:textSize="12sp"/>
+                android:textDirection="locale"
+                android:textSize="12sp" />
+
             <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
                 android:layout_alignParentBottom="true"
                 android:background="@color/grey_line"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_0.5dip"/>
+                android:textDirection="locale" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -207,7 +232,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/setting_padding_10_dp"
-                android:text="@string/auto_disconnect" />
+                android:text="@string/auto_disconnect"
+                android:textDirection="locale" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/setdataplan_limit_auto_disaconect"
@@ -215,6 +241,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:textDirection="locale"
                 app:showText="false" />
         </RelativeLayout>
 

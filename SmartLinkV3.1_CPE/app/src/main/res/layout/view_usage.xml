@@ -140,9 +140,10 @@
         android:textSize="@dimen/dimen_textsize_18sp" />
 
     <TextView
+        android:gravity="center_vertical"
         android:id="@+id/tv_network_settings"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_30dip"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dimen_20dip"
         android:drawableRight="@drawable/right_arrow_small"

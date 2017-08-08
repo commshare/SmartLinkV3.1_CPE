@@ -302,7 +302,7 @@
     <string name="Ethernet">Ethernet</string>
     <string name="login_login_btn">ANMELDEN</string>
     <string name="login_enter_password">Administratorpasswort eingeben</string>
-    <string name="login_enter_password_tip">5 - 16 Zeichen</string>
+    <string name="login_enter_password_tip">4 - 16 Zeichen</string>
     <string name="login_forgot_password">Passwort vergessen?</string>
     <string name="refresh">Aktualisieren</string>
     <string name="refresh_no_device_manage">Kein Gerät gefunden</string>

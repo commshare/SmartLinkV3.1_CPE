@@ -17,13 +17,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:textDirection="locale"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dimen_10dip"
                 android:text="@string/device"
                 android:textColor="@color/black_text"
-                android:textSize="@dimen/dimen_textsize_16sp"/>
+                android:textSize="@dimen/dimen_textsize_16sp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -38,7 +39,8 @@
                     android:paddingLeft="@dimen/dimen_12dip"
                     android:text="@string/device_name"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <TextView
                     android:id="@+id/device_name_txt"
@@ -48,13 +50,14 @@
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
                     android:text="LINKHUB HH70"
-                    android:textSize="@dimen/dimen_textsize_12sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
 
@@ -71,7 +74,8 @@
                     android:paddingLeft="@dimen/dimen_12dip"
                     android:text="@string/imei"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <TextView
                     android:id="@+id/imei_txt"
@@ -81,13 +85,14 @@
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
                     android:text="LINKHUB HH70"
-                    android:textSize="@dimen/dimen_textsize_12sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
 
@@ -104,7 +109,8 @@
                     android:paddingLeft="@dimen/dimen_12dip"
                     android:text="@string/mac_address"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <TextView
                     android:id="@+id/mac_address_txt"
@@ -114,13 +120,14 @@
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
                     android:text="LINKHUB HH70"
-                    android:textSize="@dimen/dimen_textsize_12sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
 
@@ -138,7 +145,8 @@
                     android:paddingLeft="@dimen/dimen_12dip"
                     android:text="@string/management_ip_address"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <TextView
                     android:id="@+id/management_ip_txt"
@@ -148,13 +156,14 @@
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
                     android:text="0.0.0.0"
-                    android:textSize="@dimen/dimen_textsize_12sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
 
@@ -173,7 +182,8 @@
                     android:paddingLeft="@dimen/dimen_12dip"
                     android:text="@string/subnet_mask"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <TextView
                     android:id="@+id/subnet_mask_txt"
@@ -183,13 +193,14 @@
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
                     android:text="0.0.0.0"
-                    android:textSize="@dimen/dimen_textsize_12sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
 
@@ -210,14 +221,14 @@
                     android:paddingRight="@dimen/dimen_12dip"
                     android:text="@string/web_manager"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
-
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
 
@@ -237,14 +248,14 @@
                     android:paddingRight="@dimen/dimen_12dip"
                     android:text="@string/quick_guide_user_manual"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
-
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
 
@@ -263,7 +274,8 @@
                     android:paddingRight="@dimen/dimen_12dip"
                     android:text="@string/app_version"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/dimen_textsize_16sp"/>
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_16sp" />
 
                 <ImageView
                     android:id="@+id/iv_point"
@@ -272,7 +284,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/dimen_8dip"
                     android:layout_toLeftOf="@+id/app_version_txt"
-                    android:src="@drawable/point_red"/>
+                    android:src="@drawable/point_red"
+                    android:textDirection="locale" />
 
                 <TextView
                     android:id="@+id/app_version_txt"
@@ -282,14 +295,14 @@
                     android:layout_marginRight="@dimen/dimen_12dip"
                     android:gravity="center_vertical"
                     android:text="LINKHUB HH70"
-                    android:textSize="@dimen/dimen_textsize_12sp"/>
-
+                    android:textDirection="locale"
+                    android:textSize="@dimen/dimen_textsize_12sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/background"/>
+                    android:background="@color/background" />
 
             </RelativeLayout>
         </LinearLayout>
