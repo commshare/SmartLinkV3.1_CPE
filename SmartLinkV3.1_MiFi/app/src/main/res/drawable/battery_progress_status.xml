@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"> 
 	<item android:id="@android:id/progress"  > 
 	    <clip android:clipOrientation="horizontal"
-	        android:gravity="end|right"
+	        android:gravity="end|start"
 	        android:drawable="@drawable/battery_progress_data"
 	        >
 	    </clip> 

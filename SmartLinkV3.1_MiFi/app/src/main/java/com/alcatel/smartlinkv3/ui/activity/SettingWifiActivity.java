@@ -324,7 +324,7 @@ implements OnClickListener{
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_wifi_waiting_progress);
 		m_tv_ssid = (TextView)findViewById(R.id.tv_ssid);
 		strSSID=(TextView)findViewById(R.id.strSSID);
-		if(Locale.getDefault().getLanguage().equals("ar"));
+		if(Locale.getDefault().getLanguage().equals("ar"))
 		{
 			m_tv_ssid.setGravity(Gravity.START);
 			strSSID.setGravity(Gravity.END);

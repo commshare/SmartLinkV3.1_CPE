@@ -76,7 +76,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		m_tv_mac_value = (TextView)findViewById(R.id.tv_mac_address_info);
 		m_tv_ip_value = (TextView)findViewById(R.id.tv_ip_address_info);
 		m_tv_subnet_value = (TextView)findViewById(R.id.tv_subnet_mask_info);
-		if(Locale.getDefault().getLanguage().equals("ar"));
+		if(Locale.getDefault().getLanguage().equals("ar"))
 		{
 			strImeiTextView.setGravity(Gravity.END);
 			//m_tv_hwVersion_value.setGravity(Gravity.END);
