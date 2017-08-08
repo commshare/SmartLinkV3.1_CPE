@@ -586,4 +586,7 @@
     <string name="success">Success</string>
     <string name="restart_device_tip">Please restart the device and try again</string>
     
+    <string name="send">SEND</string>
+    <string name="message">message</string>
+
 </resources>
