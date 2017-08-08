@@ -160,7 +160,7 @@
     <string name="setting_wifi_password_security_tip">Tipo di sicurezza:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Tipo di codifica:</string>
     <string name="setting_wifi_password_wep_psw_tip">Password Wi-Fi:</string>
-    <string name="setting_wep_password_error_prompt">La chiave WEP deve essere composta da 5 o 13 caratteri ASCII oppure da 10 o 26 cifre esadecimali; la chiave WEP deve essere composta da 32-127 caratteri ASCII, ad eccezione di: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">La chiave WEP deve essere composta da 4 o 13 caratteri ASCII oppure da 10 o 26 cifre esadecimali; la chiave WEP deve essere composta da 32-127 caratteri ASCII, ad eccezione di: , \&quot; : ; &amp; \\.</string>
     <string name="setting_wpa_password_error_prompt">La chiave WPA precondivisa (PSK) deve essere composta da 8-63 caratteri ASCII; la chiave WPA PSK deve essere composta da 32-127 caratteri ASCII, ad eccezione di: , \&quot; : ; &amp; \\.</string>
     <string name="done">Fine</string>
     <string name="setting_power_smart">Smart</string>
@@ -224,7 +224,7 @@
     <string name="setting_current_password">Password attuale</string>
     <string name="setting_new_password">Nuova password (4-16 caratteri)</string>
     <string name="setting_confirm_password">Conferma nuova password</string>
-    <string name="setting_password_note">Nota: la password deve contenere 5-16 caratteri.</string>
+    <string name="setting_password_note">Nota: la password deve contenere 4-16 caratteri.</string>
     <string name="setting_network_mode">modalità</string>
     <string name="setting_network_selection">Selezione rete</string>
     <string name="setting_network_disconnect_first">Prima disconnettersi dalla rete</string>

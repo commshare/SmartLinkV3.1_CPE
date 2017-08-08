@@ -327,7 +327,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                                             realToGetContent();// 向接口发起请求
                                         } else {// 用户离开
                                             // 把未读消息数量保存到MAP中
-                                            HomeActivity.smsUnreadMap.put(contactId,unreadCount);
+                                            HomeActivity.smsUnreadMap.put(contactId, unreadCount);
                                         }
                                     } else {/* 没有未读消息, 直接获取内容--> 正常显示已读的消息 */
                                         realToGetContent();// 向接口发起请求
@@ -414,6 +414,8 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                 if (status == Cons.SUCCESS) {
                     // 注意此处, 一调用即为标记为已读
                     getSmsContents(true);
+                } else {
+                    finish();
                 }
             }
         };

@@ -111,6 +111,5 @@ public class HTTPResponse extends HTTPPacket
 
 	public void print()
 	{
-		System.out.println(toString());
 	}
 }

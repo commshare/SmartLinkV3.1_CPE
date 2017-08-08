@@ -18,6 +18,7 @@ public class ProgressUtils extends ProgressDialog {
     }
 
     public ProgressDialog getProgressPop(String msg) {
+        setCanceledOnTouchOutside(false);
         setMessage(msg);
         show();
         return this;

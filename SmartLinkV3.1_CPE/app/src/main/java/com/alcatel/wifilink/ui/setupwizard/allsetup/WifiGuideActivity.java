@@ -444,7 +444,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(mContext, getString(R.string.setting_success));
                 // TOAT: 点击APPLY设置完毕后
-                ChangeActivity.toActivity(WifiGuideActivity.this, LoadingActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(WifiGuideActivity.this, LoadingActivity.class, false, true, false, 0);
             }
 
             @Override

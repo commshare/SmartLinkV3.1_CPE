@@ -130,7 +130,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
             setReaded(smsContact);
             // 跳转
             EventBus.getDefault().postSticky(smsContact);
-            ChangeActivity.toActivity(context, SmsDetailActivity.class, true, false, false, 0);
+            ChangeActivity.toActivity(context, SmsDetailActivity.class, false, false, false, 0);
         });
     }
 

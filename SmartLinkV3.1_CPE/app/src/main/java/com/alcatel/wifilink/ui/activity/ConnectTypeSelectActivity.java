@@ -191,7 +191,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             simClick();// --> execute the sim logic
         } else if (!simInsert && wanConnect) {// only wan
             // 只有WAN口的模式下的跳转
-            ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
+            ChangeActivity.toActivity(this, SettingNetModeActivity.class, false, true, false, 0);
         }
     }
 
@@ -289,14 +289,14 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             //WAN口
             case R.id.connect_type_wan_port_tv:
                 // 显示WIFI设置页面
-                ChangeActivity.toActivity(this, SettingNetModeActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, SettingNetModeActivity.class, false, true, false, 0);
 
                 break;
 
             // TOGO 2017/6/14 to setupwizard
             // skip按钮
             case R.id.main_header_right_text:
-                ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
                 break;
             
             
@@ -356,12 +356,14 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                             SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, pinPassword);
                             mPinSuccessContainer.setVisibility(View.VISIBLE);
                             // 跳转到wifi setting
-                            ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingWifiActivity.class, true, true, false, 2000);
+                            ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingWifiActivity.class, false, true, 
+                                    false, 2000);
                         } else {
                             // 输入错误后--> 并当前剩余次数 < 0
                             if (!currentRemain()) {
                                 // 跳转到PUK设置界面
-                                ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingPukActivity.class, true, true, false, 0);
+                                ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingPukActivity.class, false, true, 
+                                        false, 0);
                             }
                         }
 

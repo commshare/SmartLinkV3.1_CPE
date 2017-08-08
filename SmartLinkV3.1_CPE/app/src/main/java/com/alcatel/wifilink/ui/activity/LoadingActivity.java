@@ -104,7 +104,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
         // 1.if no wifi or wifi ssid is not correct
         if (!OtherUtils.checkWifiConnect(this)) {
             // to RefreshWifiActivity
-            ChangeActivity.toActivity(this, RefreshWifiActivity.class, true, true, false, 0);
+            ChangeActivity.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
             return;
         }
 
@@ -114,10 +114,10 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
             protected void onSuccess(LoginState result) {
                 if (result.getState() == Cons.LOGIN) {
                     // to HomeActivity
-                    ChangeActivity.toActivity(LoadingActivity.this, WizardActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(LoadingActivity.this, WizardActivity.class, false, true, false, 0);
                 } else {
                     // to LoginActivity
-                    ChangeActivity.toActivity(LoadingActivity.this, LoginActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(LoadingActivity.this, LoginActivity.class, false, true, false, 0);
                 }
             }
 
@@ -126,7 +126,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                 // System.out.println(e.getMessage().toString());
                 if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
                     // to RefreshWifiActivity
-                    ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                 }
             }
         });

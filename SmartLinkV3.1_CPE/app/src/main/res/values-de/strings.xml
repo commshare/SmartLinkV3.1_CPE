@@ -17,7 +17,7 @@
     <string name="qs_wifi_ssid_prompt">Die SSID muss zwischen 1 und 32 Zeichen lang sein.</string>
     <string name="qs_item_wifi_passwd">WLAN-Passwort</string>
     <string name="qs_wifi_passwd_prompt">Das Passwort muss zwischen 8 und 63 Zeichen lang sein.</string>
-    <string name="qs_wifi_wep_passwd_prompt">Das Passwort sollte aus 5 oder 13 ASCII-Zeichen bestehen bzw. 10 oder 26 Ziffern lang sein.</string>
+    <string name="qs_wifi_wep_passwd_prompt">Das Passwort sollte aus 5 - 13 ASCII-Zeichen bestehen bzw. 10 - 26 Ziffern lang sein.</string>
     <string name="qs_completed">Einrichtung abgeschlossen</string>
     <string name="qs_summary">Sie können das Gerät verwenden.</string>
     <string name="puk_code_label">Super-PIN</string>
@@ -108,7 +108,7 @@
     <string name="sms_delete_multi_success">Das Löschen der Unterhaltung ist abgeschlossen.</string>
     <string name="sms_delete_error">Die SMS konnte nicht gelöscht werden.</string>
     <string name="sms_delete_success">Das Löschen der SMS ist abgeschlossen.</string>
-    <string name="sms_number_invalid">Fehler! Es sind nur drei Telefonnummern zulässig.</string>
+    <string name="sms_number_invalid">Fehler. Es sind nur drei Telefonnummern zulässig.</string>
     <string name="sms_save_success">Die SMS wurde als Entwurf gespeichert.</string>
     <string name="sms_save_error">Die SMS konnte nicht gespeichert werden.</string>
     <string name="sms_unread_num">(%1$d)</string>
@@ -160,7 +160,7 @@
     <string name="setting_wifi_password_security_tip">Sicherheitstyp:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Verschlüsselungstyp:</string>
     <string name="setting_wifi_password_wep_psw_tip">WLAN-Passwort:</string>
-    <string name="setting_wep_password_error_prompt">Der WEP-Schlüssel besteht aus 5 oder 13 ASCII-Zeichen bzw. 10 oder 26 hexadezimalen Ziffern. Der WEP-Schlüssel sollte aus 32 bis 127 ASCII-Zeichen bestehen. Ausgenommen sind folgende Zeichen: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">Der WEP-Schlüssel besteht aus 4 - 13 ASCII-Zeichen bzw. 10 - 26 hexadezimalen Ziffern. Der WEP-Schlüssel sollte aus 32 bis 127 ASCII-Zeichen bestehen. Ausgenommen sind folgende Zeichen: , \&quot; : ; &amp; \\.</string>
     <string name="setting_wpa_password_error_prompt">Der WPA-Pre-Shared Key (PSK) sollte aus 8 bis 63 ASCII-Zeichen bestehen. Der WPA-PSK-Schlüssel sollte aus 32 bis 127 ASCII-Zeichen bestehen. Ausgenommen sind folgende Zeichen: , \&quot; : ; &amp; \\.</string>
     <string name="done">Fertig</string>
     <string name="setting_power_smart">Smart</string>
@@ -216,7 +216,7 @@
     <string name="setting_reboot_failed">Neustart nicht möglich</string>
     <string name="setting_reboot_success">Einstellung vorgenommen. Das Gerät wird neu gestartet.</string>
     <string name="setting_reset_failed">Zurücksetzung nicht möglich</string>
-    <string name="setting_reset_success">Einstellung vorgenommen\nDas Gerät wird zurückgesetzt.</string>
+    <string name="setting_reset_success">Einstellung vorgenommen. Das Gerät wird zurückgesetzt.</string>
     <string name="setting_power_off_failed">Ausschalten nicht möglich</string>
     <string name="setting_power_off_success">Einstellung vorgenommen. Das Gerät wird ausgeschaltet.</string>
     <string name="setting_ssid_invalid">Die SSID darf nur die Zeichen a - z, A - Z, 0 - 9, - . _ und Leerzeichen enthalten und sollte weniger als 32 Zeichen lang sein.</string>
@@ -224,7 +224,7 @@
     <string name="setting_current_password">Aktuelles Passwort</string>
     <string name="setting_new_password">Neues Passwort (4 - 16 Zeichen)</string>
     <string name="setting_confirm_password">Neues Passwort bestätigen</string>
-    <string name="setting_password_note">Hinweis: Das Passwort muss zwischen 5 und 16 Zeichen lang sein.</string>
+    <string name="setting_password_note">Hinweis: Das Passwort muss zwischen 4 und 16 Zeichen lang sein.</string>
     <string name="setting_network_mode">Modus</string>
     <string name="setting_network_selection">Netzwerkauswahl</string>
     <string name="setting_network_disconnect_first">Netzwerk zuerst trennen</string>
@@ -244,12 +244,12 @@
     <string name="setting_wifi_open">Öffnen</string>
     <string name="setting_wifi_share">Freigeben</string>
     <string name="setting_wifi_save">Speichern</string>
-    <string name="setting_wifi_ssid_can_not_be_empty">SSID darf nicht leer sein!</string>
+    <string name="setting_wifi_ssid_can_not_be_empty">SSID darf nicht leer sein.</string>
     <string name="setting_item_link_app_version">LINK-APP-Version</string>
     <string name="setting_backup_path_tag">Pfad: Phone</string>
     <string name="setting_backup_path">/CPE/Backup/</string>
     <string name="setting_backup_waring">Geben Sie einen Namen ein.</string>
-    <string name="setting_restore_waring">Sicherungsdatei nicht gefunden!</string>
+    <string name="setting_restore_waring">Sicherungsdatei nicht gefunden.</string>
     <string name="usage_limit_notification_title">Warnung zur Datennutzung</string>
     <string name="usage_limit_over_notification_content">Monatliches Limit für Datennutzung erreicht</string>
     <string name="usage_limit_less_notification_content">Ihr Nutzungswert liegt unter %1$s.</string>
@@ -286,7 +286,7 @@
     <string name="remain_times">%1$d Versuch(e) verbleibend</string>
     <string name="login_prompt_str">Das Passwort ist falsch.</string>
     <string name="login_check_dialog_title">Anmelden</string>
-    <string name="login_invalid_password">Ungültiges Passwort. Das Passwort darf nur folgende Zeichen enthalten: 0 - 9, a - z, A - Z, \&quot;-+!@$#^&amp;*\&quot;</string>
+    <string name="login_invalid_password">Ungültiges Passwort. Das Passwort darf nur folgende Zeichen enthalten: 0 - 9, a - z, A - Z, \&quot;-+.@$#^&amp;*\&quot;</string>
     <string name="login_other_user_logined_error_msg">Ein anderer Nutzer ist angemeldet.\nWarten Sie einen Moment.</string>
     <string name="login_other_user_logined_error_forcelogin_msg">Es ist bereits ein anderer Nutzer angemeldet. Möchten Sie sich trotzdem anmelden? Hierdurch wird die Anmeldung des anderen Nutzers beendet.</string>
     <string name="login_login_time_used_out_msg">Anmeldeversuche aufgebraucht\nSie können sich nach dem Neustart des Geräts wieder anmelden.</string>
@@ -297,7 +297,7 @@
     <string name="inconsistent_new_password">Die neuen Passwörter stimmen nicht überein.</string>
     <string name="input_current_password">Geben Sie Ihr aktuelles Passwort ein.</string>
     <string name="change_passowrd_invalid_password">Das Passwort muss zwischen 4 und 16 Zeichen lang sein.</string>
-    <string name="unknown_error">Unbekannter Fehler!</string>
+    <string name="unknown_error">Unbekannter Fehler.</string>
     <string name="unknown">Unbekannt</string>
     <string name="Ethernet">Ethernet</string>
     <string name="login_login_btn">ANMELDEN</string>
@@ -427,7 +427,7 @@
     <string name="only_phones_supported_5ghz_wi_fi_can_connect_5ghz_wi_fi_network">Nur Telefone, auf denen ein WLAN mit 5 GHz unterstützt wird, können eine Verbindung mit einem WLAN-Netzwerk dieser Art herstellen.</string>
     <string name="security">Sicherheit</string>
     <string name="encryption">Verschlüsselung</string>
-    <string name="country_region">Land/Region</string>
+    <string name="country_region">Landkreis/Region</string>
     <string name="mode_802_11">802.11-Modus</string>
     <string name="ap_isolation">AP-Isolierung</string>
     <string name="bandwidth">Bandbreite</string>
@@ -529,7 +529,7 @@
     <string name="enter_2_4ghzssid">SSID (2,4 GHz) eingeben</string>
     <string name="connecting">Verbinde…</string>
     <string name="used_of">Verwendet von</string>
-    <string name="no_month_plan">Kein Monats\nPlan gesetzt</string>
+    <string name="no_month_plan">Kein Monats Plan gesetzt</string>
     <string name="login_failed">Anmeldung fehlgeschlagen</string>
     <string name="insert_sim_or_wan">Versuchen Sie es erneut nach dem Einsetzen von SIM oder WAN</string>
     <string name="no_sim_no_wan">Keine SIM/Kein WAN</string>
@@ -541,21 +541,12 @@
     <string name="sms_sending">Senden…</string>
     <string name="setting_account">Passwort ändern</string>
     <string name="login_psd_error_msg">Ihr Password ist falsch. Noch \n%1$d Versuch(e)</string>
-    <string name="disabled">Deaktiviert</string>
-    <string name="hr_s">Std.</string>
-    <string name="min_s">Min.</string>
-    <string name="language">Sprache</string>
-    <string name="maunal">Manuell</string>
-    <string name="success">Erfolgreich</string>
+    <string name="connect_failed">Verbindung konnte nicht hergestellt werden</string>
+    <string name="size">Größe</string>
+    <string name="device_will_restart_later">Das Gerät wird später neugestartet.</string>
+    <string name="resetting">Wird zurückgesetzt…</string>
+    <string name="back_up_progress">Bitte 5-60 Sekunden warten</string>
     <string name="day_1">1 Tag</string>
-    <string name="day_2">2 Tage</string>
-    <string name="day_3">3 Tage</string>
-    <string name="day_4">4 Tage</string>
-    <string name="day_5">5 Tage</string>
-    <string name="day_6">6 Tage</string>
-    <string name="day_7">7 Tage</string>
-    <string name="day_8">8 Tage</string>
-    <string name="day_9">9 Tage</string>
     <string name="day_10">10 Tage</string>
     <string name="day_11">11 Tage</string>
     <string name="day_12">12 Tage</string>
@@ -566,6 +557,7 @@
     <string name="day_17">17 Tage</string>
     <string name="day_18">18 Tage</string>
     <string name="day_19">19 Tage</string>
+    <string name="day_2">2 Tage</string>
     <string name="day_20">20 Tage</string>
     <string name="day_21">21 Tage</string>
     <string name="day_22">22 Tage</string>
@@ -576,12 +568,13 @@
     <string name="day_27">27 Tage</string>
     <string name="day_28">28 Tage</string>
     <string name="day_29">29 Tage</string>
+    <string name="day_3">3 Tage</string>
     <string name="day_30">30 Tage</string>
     <string name="day_31">31 Tage</string>
-    <string name="connect_failed">Verbindung konnte nicht hergestellt werden</string>
-    <string name="size">Größe</string>
-    <string name="device_will_restart_later">Das Gerät wird später neugestartet.</string>
-    <string name="resetting">Wird zurückgesetzt...</string>
-    <string name="back_up_progress">Bitte 5-60 Sekunden warten</string>
-
+    <string name="day_4">4 Tage</string>
+    <string name="day_5">5 Tage</string>
+    <string name="day_6">6 Tage</string>
+    <string name="day_7">7 Tage</string>
+    <string name="day_8">8 Tage</string>
+    <string name="day_9">9 Tage</string>
 </resources>

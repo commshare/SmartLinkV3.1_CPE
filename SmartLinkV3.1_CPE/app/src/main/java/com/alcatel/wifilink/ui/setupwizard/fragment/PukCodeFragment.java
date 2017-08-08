@@ -151,7 +151,7 @@ public class PukCodeFragment extends Fragment implements View.OnClickListener {
                             mRlPukWaitting.setVisibility(View.GONE);
                             if (isSuccess) {/* 成功后--> 保存PIN到文件--> 跳转到状态页 */
                                 SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, getEtContent(mEtPukConfirmPin));
-                                ChangeActivity.toActivity(getActivity(), NetModeConnectStatusActivity.class, true, true, false, 0);
+                                ChangeActivity.toActivity(getActivity(), NetModeConnectStatusActivity.class, false, true, false, 0);
                             } else {/* PUK码错误--> 获取剩余次数 */
                                 getActivity().runOnUiThread(() -> {
                                     // 不同次数的UI显示

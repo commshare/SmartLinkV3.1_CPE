@@ -145,10 +145,10 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_wanmode_skip:
-                ChangeActivity.toActivity(this, WifiGuideActivity.class, true, false, false, 0);
+                ChangeActivity.toActivity(this, WifiGuideActivity.class, false, false, false, 0);
                 break;
             case R.id.ib_wanmode_back:// 回退按钮
-                ChangeActivity.toActivity(this, WizardActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, WizardActivity.class, false, true, false, 0);
                 break;
         }
     }

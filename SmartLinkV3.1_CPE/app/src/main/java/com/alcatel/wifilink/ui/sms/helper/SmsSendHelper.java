@@ -69,16 +69,18 @@ public abstract class SmsSendHelper {
                     getSendStatus();
                 } else if (sendStatus == Cons.SUCCESS) {
                     ToastUtil.showMessage(context, R.string.succeed);
+                    popDismiss();
                 } else if (sendStatus == Cons.FAIL_STILL_SENDING_LAST_MSG) {
                     // ToastUtil.showMessage(context, R.string.fail_still_sending_last_message);
                     getSendStatus();
                 } else if (sendStatus == Cons.FAIL_WITH_MEMORY_FULL) {
                     ToastUtil.showMessage(context, R.string.fail_with_memory_full);
+                    popDismiss();
                 } else if (sendStatus == Cons.FAIL) {
                     ToastUtil.showMessage(context, R.string.fail);
+                    popDismiss();
                 }
                 sendFinish(result.getSendStatus());
-                popDismiss();
             }
 
             @Override

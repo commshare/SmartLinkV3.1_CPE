@@ -140,7 +140,7 @@ public class GuideActivity extends BaseActivityWithBack implements OnPageChangeL
                         //                         mActivity.startActivity(intent);
                         //                         mActivity.finish();
                         // to setupwizard activity
-                        ChangeActivity.toActivity(GuideActivity.this, WizardActivity.class, true, true, false, 0);
+                        ChangeActivity.toActivity(GuideActivity.this, WizardActivity.class, false, true, false, 0);
                     }
                 });
             }

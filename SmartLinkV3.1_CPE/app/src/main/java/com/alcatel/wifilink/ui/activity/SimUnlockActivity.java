@@ -79,7 +79,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_simUnlock_back:
-                ChangeActivity.toActivity(SimUnlockActivity.this, WizardActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(SimUnlockActivity.this, WizardActivity.class, false, true, false, 0);
                 break;
         }
     }
@@ -192,7 +192,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** toPukActivity **** */
     public void toPukActivity() {
-        ChangeActivity.toActivity(this, PukUnlockActivity.class, true, true, false, 0);
+        ChangeActivity.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
     }
 
 

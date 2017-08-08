@@ -1063,7 +1063,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void goToDeviceSettingPage() {
         // to setting connectDeviceList activity
-        ChangeActivity.toActivity(getActivity(), SettingDeviceActivity.class, true, true, false, 0);
+        ChangeActivity.toActivity(getActivity(), SettingDeviceActivity.class, false, true, false, 0);
     }
 
     private void goToAboutSettingPage() {

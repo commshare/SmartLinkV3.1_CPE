@@ -160,7 +160,7 @@
     <string name="setting_wifi_password_security_tip">Tipo de seguridad:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Tipo de encriptación:</string>
     <string name="setting_wifi_password_wep_psw_tip">Contraseña de Wi-Fi:</string>
-    <string name="setting_wep_password_error_prompt">La clave WEP tiene entre 5 y 13 caracteres ASCII, o bien entre 10 y 26 caracteres hexadecimales, y debe estar formada por caracteres ASCII entre 32 y 127, sin incluir: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">La clave WEP tiene entre 4 y 13 caracteres ASCII, o bien entre 10 y 26 caracteres hexadecimales, y debe estar formada por caracteres ASCII entre 32 y 127, sin incluir: , \&quot; : ; &amp; \\.</string>
     <string name="setting_wpa_password_error_prompt">La clave precompartida (PSK) del WPA debe contener entre 8 y 63 caracteres y debe estar formada por caracteres ASCII entre 32 y 127, sin incluir: , \&quot; : ; &amp; \\.</string>
     <string name="done">Hecho</string>
     <string name="setting_power_smart">Inteligente</string>
@@ -224,7 +224,7 @@
     <string name="setting_current_password">Contraseña actual</string>
     <string name="setting_new_password">Nueva contraseña (4-16 caracteres):</string>
     <string name="setting_confirm_password">Confirmar nueva contraseña</string>
-    <string name="setting_password_note">Nota: la contraseña debería tener entre 5 y 16 caracteres.</string>
+    <string name="setting_password_note">Nota: la contraseña debería tener entre 4 y 16 caracteres.</string>
     <string name="setting_network_mode">modo</string>
     <string name="setting_network_selection">Selección de red</string>
     <string name="setting_network_disconnect_first">Desconecte primero la red</string>
@@ -296,7 +296,7 @@
     <string name="login_kickoff_logout_successful">Se cerrará su sesión.</string>
     <string name="inconsistent_new_password">Las contraseñas nuevas no coinciden.</string>
     <string name="input_current_password">Introduzca su nueva contraseña.</string>
-    <string name="change_passowrd_invalid_password">La contraseña debería tener entre 5 y 16 caracteres.</string>
+    <string name="change_passowrd_invalid_password">La contraseña debería tener entre 4 y 16 caracteres.</string>
     <string name="unknown_error">Error desconocido</string>
     <string name="unknown">Desconocido</string>
     <string name="Ethernet">Ethernet</string>

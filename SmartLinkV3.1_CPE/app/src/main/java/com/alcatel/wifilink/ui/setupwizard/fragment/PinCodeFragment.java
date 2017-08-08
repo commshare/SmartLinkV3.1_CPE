@@ -219,7 +219,7 @@ public class PinCodeFragment extends Fragment {
                 SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
                 activity.mRl_Success.setVisibility(View.VISIBLE);
                 // to --> wifi setting
-                ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 2000);
+                ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, false, true, false, 2000);
             }
 
             @Override

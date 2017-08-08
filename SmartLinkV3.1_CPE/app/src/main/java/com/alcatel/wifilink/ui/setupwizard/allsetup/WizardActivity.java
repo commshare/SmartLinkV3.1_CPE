@@ -136,11 +136,11 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
-                    ChangeActivity.toActivity(WizardActivity.this, SimUnlockActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(WizardActivity.this, SimUnlockActivity.class, false, true, false, 0);
                     return;
                 }
                 if (simState == Cons.PUK_REQUIRED) {
-                    ChangeActivity.toActivity(WizardActivity.this, PukUnlockActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(WizardActivity.this, PukUnlockActivity.class, false, true, false, 0);
                     return;
                 }
 

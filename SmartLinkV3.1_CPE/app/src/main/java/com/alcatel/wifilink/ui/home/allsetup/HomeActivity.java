@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,6 +21,8 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContactList;
@@ -34,6 +37,9 @@ import com.alcatel.wifilink.ui.activity.PukUnlockActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
 import com.alcatel.wifilink.ui.home.fragment.MainFragment;
+import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
+import com.alcatel.wifilink.ui.home.fragment.SmsFragments;
+import com.alcatel.wifilink.ui.home.fragment.WifiFragment;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.pop.SimPopHelper;
@@ -157,7 +163,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     public static TimerTask autoTask;
     public static Timer autoTimer;
     private TimerHelper heartBeatTimer;
-
+    private String SP_PAGE_FILE = "SP_PAGE_FILE";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -172,6 +178,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initActionbar();
         initView();
         initUi();
+
         startTimer();// 定时器在此处而不是在Onresume是为了防止界面重复刷新
         getCurrentActivity();// 定时获取当前位于顶层运行的ACTIVITY
         heartBeanTimer();// 心跳包发送
@@ -251,6 +258,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             mkeyTime = System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
         } else {
+            destroyOperate();/* 用户退出销毁定时器 */
             API.get().logout(new MySubscriber() {
                 @Override
                 protected void onSuccess(Object result) {
@@ -271,7 +279,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("ma_home", "onResume: " + temp_en);
+        int page = getPage();
+        // int page = SharedPrefsUtil.getInstance(this).getInt(Cons.PAGE, Cons.MAIN);
+        Log.d("ma_home", "page: " + page);
+        // TODO: 2017/8/7 切换到对应的界面 
+        setLastPage(page);
     }
 
     @Override
@@ -282,11 +294,10 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 停止所有的定时器
-        timerHelper.stop();
-        // logoutTimer.stop();
-        curActTimer.stop();
+        Log.d("ma_home", "onDestroy: ");
+        // destroyOperate();
     }
+
 
     private void initView() {
         container = R.id.mFl_home_container;
@@ -299,12 +310,47 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private void initUi() {
         // 1.getInstance button ui arrays
         initRes();
-        // 2.getInstance main button ui & refresh fragment
-        // 首次commit
-        refreshActionbar(FragmentHomeEnum.MAIN);
-        setGroupButtonUi(FragmentHomeEnum.MAIN);
-        Fragment mainFragment = new MainFragment(this);
-        fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
+        // 3.其他界面返回时会触发该方法
+        int page = getPage();
+        setFirstPage(page);
+    }
+
+    private void setFirstPage(int page) {
+        switch (page) {
+            case Cons.MAIN:
+                // 2.getInstance main button ui & refresh fragment
+                // 首次commit
+                refreshActionbar(FragmentHomeEnum.MAIN);
+                setGroupButtonUi(FragmentHomeEnum.MAIN);
+                Fragment mainFragment = new MainFragment(this);
+                fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
+                break;
+            case Cons.WIFI:
+                // 2.getInstance main button ui & refresh fragment
+                // 首次commit
+                refreshActionbar(FragmentHomeEnum.WIFI);
+                setGroupButtonUi(FragmentHomeEnum.WIFI);
+                Fragment wifiFragment = new WifiFragment();
+                fm.beginTransaction().replace(container, wifiFragment, FragmentHomeBucket.WIFI_FRA).commit();
+                break;
+            case Cons.SMS:
+                // 2.getInstance main button ui & refresh fragment
+                // 首次commit
+                refreshActionbar(FragmentHomeEnum.SMS);
+                setGroupButtonUi(FragmentHomeEnum.SMS);
+                Fragment smsfragment = new SmsFragments(this);
+                fm.beginTransaction().replace(container, smsfragment, FragmentHomeBucket.SMS_FRA).commit();
+                break;
+            case Cons.SETTING:
+                // 2.getInstance main button ui & refresh fragment
+                // 首次commit
+                refreshActionbar(FragmentHomeEnum.SETTING);
+                setGroupButtonUi(FragmentHomeEnum.SETTING);
+                Fragment settingfragment = new SettingFragment();
+                fm.beginTransaction().replace(container, settingfragment, FragmentHomeBucket.SETTING_FRA).commit();
+                break;
+        }
+
     }
 
     public void afterSwitchLanguageReloadPage() {
@@ -423,13 +469,13 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private void setGroupButtonUi(FragmentHomeEnum enums) {
 
         if (enums.equals(FragmentHomeEnum.MAIN)) {
-            index = 0;
+            index = Cons.MAIN;
         } else if (enums.equals(FragmentHomeEnum.WIFI)) {
-            index = 1;
+            index = Cons.WIFI;
         } else if (enums.equals(FragmentHomeEnum.SMS)) {
-            index = 2;
+            index = Cons.SMS;
         } else if (enums.equals(FragmentHomeEnum.SETTING)) {
-            index = 3;
+            index = Cons.SETTING;
         }
 
         for (int i = 0; i < groupButtons.length; i++) {
@@ -468,19 +514,42 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             // is wan or sim
             isWanInsert();
         } else {
-            ChangeActivity.toActivity(this, RefreshWifiActivity.class, true, true, false, 0);
+            ChangeActivity.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
         }
     }
 
     /* 刷新ui以及切换Fragment */
     private void refreshUi_fragment(FragmentHomeEnum en) {
         temp_en = en;
+        // -1.set page flag
+        setPageFlag(en);
         // 0.actionbar ui
         // 1.groupbutton change
         refreshActionbar(en);
         setGroupButtonUi(en);
         // 2.transfer the fragment
         FragmentHomeBucket.showOrHideFragment(this, fm, container, en);
+
+    }
+
+    /* 提交当前的fragment page标记 */
+    private void setPageFlag(FragmentHomeEnum en) {
+        switch (en) {
+            case MAIN:
+                ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.MAIN);
+                break;
+            case WIFI:
+                ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.WIFI);
+                break;
+            case SMS:
+                ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.SMS);
+                break;
+            case SETTING:
+                ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.SETTING);
+                break;
+        }
+        Log.d("ma_page", "保存的页面: " + SharedPrefsUtil.getInstance(this).getInt(Cons.PAGE, Cons.MAIN));
+
     }
 
     /* **** ACTION BAR根据切换改变UI **** */
@@ -628,5 +697,41 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     public void popdismiss() {
         simPop.dismiss();
         pop = null;
+    }
+
+    /**
+     * 跳转到上一次界面(避免其他activity回来时总是跳到首页)
+     *
+     * @param page
+     */
+    private void setLastPage(int page) {
+        switch (page) {
+            case Cons.MAIN:
+                refreshUi_fragment(FragmentHomeEnum.MAIN);
+                break;
+            case Cons.WIFI:
+                refreshUi_fragment(FragmentHomeEnum.WIFI);
+                break;
+            case Cons.SMS:
+                refreshUi_fragment(FragmentHomeEnum.SMS);
+                break;
+            case Cons.SETTING:
+                refreshUi_fragment(FragmentHomeEnum.SETTING);
+                break;
+        }
+    }
+
+    private int getPage() {
+        String sp = ShareperfrenceUtil.getSp(this, SP_PAGE_FILE, Cons.PAGE);
+        return TextUtils.isEmpty(sp) ? Cons.MAIN : Integer.valueOf(sp);
+    }
+
+    private void destroyOperate() {
+        // 复位page标记
+        ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.MAIN);
+        // 停止所有的定时器
+        timerHelper.stop();
+        // logoutTimer.stop();
+        curActTimer.stop();
     }
 }

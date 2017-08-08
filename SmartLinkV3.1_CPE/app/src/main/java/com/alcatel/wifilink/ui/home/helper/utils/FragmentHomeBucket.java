@@ -23,9 +23,9 @@ import com.alcatel.wifilink.ui.home.fragment.WifiFragment;
 public class FragmentHomeBucket {
 
     public static final String MAIN_FRA = "MAIN";
-    private static final String WIFI_FRA = "WIFI";
-    private static final String SMS_FRA = "SMS";
-    private static final String SETTING_FRA = "SETTING";
+    public static final String WIFI_FRA = "WIFI";
+    public static final String SMS_FRA = "SMS";
+    public static final String SETTING_FRA = "SETTING";
 
     /**
      * 根据当前位置返回对应的Fragment

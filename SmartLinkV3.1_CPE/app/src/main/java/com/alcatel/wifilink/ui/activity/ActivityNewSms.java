@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
@@ -28,8 +27,10 @@ import com.alcatel.wifilink.model.sms.SendSMSResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.DataUtils;
+import com.alcatel.wifilink.utils.ProgressUtils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -232,9 +233,10 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
 
     /* **** showSendingDialog **** */
     private void showSendingDialog() {
-        pd = new ProgressDialog(this);
-        pd.setMessage(getString(R.string.sms_sending));
-        pd.show();
+        // pd = new ProgressDialog(this);
+        // pd.setMessage(getString(R.string.sms_sending));
+        // pd.show();
+        pd = new ProgressUtils(this).getProgressPop(getString(R.string.sms_sending));
     }
 
     @Override
@@ -364,48 +366,49 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                 //0 : none 1 : sending 2 : sendAgainSuccess 3: fail still sending last message 4 : fail with Memory full 5: fail
                 resetUI();
                 int sendStatus = result.getSendStatus();
-                if (sendStatus == 0) {
+                if (sendStatus == Cons.NONE) {
                     m_progressWaiting.setVisibility(View.GONE);
+                    pd.dismiss();
                     ToastUtil_m.show(ActivityNewSms.this, getString(R.string.none));
                     finish();
-                } else if (sendStatus == 1) {
+                } else if (sendStatus == Cons.SENDING) {
                     getSendSMSResult();
-                } else if (sendStatus == 2) {
+                } else if (sendStatus == Cons.SUCCESS) {
+                    pd.dismiss();
                     m_progressWaiting.setVisibility(View.GONE);
                     ToastUtil_m.show(ActivityNewSms.this, getString(R.string.succeed));
                     finish();// 结束界面
-                } else if (sendStatus == 3) {
+                } else if (sendStatus == Cons.FAIL_STILL_SENDING_LAST_MSG) {
                     m_progressWaiting.setVisibility(View.GONE);
-                    ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail_still_sending_last_message));
-                    finish();// 结束界面
-                } else if (sendStatus == 4) {
+                    getSendSMSResult();
+                    // ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail_still_sending_last_message));
+                    // finish();// 结束界面
+                } else if (sendStatus == Cons.FAIL_WITH_MEMORY_FULL) {
+                    pd.dismiss();
                     m_progressWaiting.setVisibility(View.GONE);
                     ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail_with_memory_full));
                     finish();// 结束界面
-                } else if (sendStatus == 5) {
+                } else if (sendStatus == Cons.FAIL) {
+                    pd.dismiss();
                     m_progressWaiting.setVisibility(View.GONE);
                     ToastUtil_m.show(ActivityNewSms.this, getString(R.string.fail));
                     finish();// 结束界面
                 }
-                if (pd != null) {
-                    pd.dismiss();
-                }
-
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
                 resetUI();
-                if (pd != null) {
-                    pd.dismiss();
-                }
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
                 resetUI();
+                if (pd != null) {
+                    pd.dismiss();
+                }
             }
         });
     }

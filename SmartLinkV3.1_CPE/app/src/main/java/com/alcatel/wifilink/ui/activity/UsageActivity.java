@@ -147,7 +147,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
 
     /* **** goToMobileNetworkSettingPage **** */
     private void goToMobileNetworkSettingPage() {
-        ChangeActivity.toActivity(this, SettingNetworkActivity.class, true, true, false, 0);
+        ChangeActivity.toActivity(this, SettingNetworkActivity.class, false, true, false, 0);
     }
 
     /* **** getUsageRecord **** */

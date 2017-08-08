@@ -55,7 +55,7 @@ public class NetModeStatusFragment extends Fragment {
             // 1.1.设置成功略过选择页--> 进入快速启动
             CPEConfig.getInstance().setQuickSetupFlag();
             // 2.延迟2秒跳转到setting页
-            ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 2000);
+            ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, false, true, false, 2000);
         } else if (status == FAILED) {
             // 显示失败页
             activity.mRl_Failed.setVisibility(View.VISIBLE);

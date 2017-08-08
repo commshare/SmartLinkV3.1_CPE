@@ -335,7 +335,7 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
                 break;
             case R.id.ib_title_back:
                 //finish();
-                ChangeActivity.toActivity(this, LoadingActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, LoadingActivity.class, false, true, false, 0);
                 break;
             case R.id.tv_title_back:
                 //hide keyboard

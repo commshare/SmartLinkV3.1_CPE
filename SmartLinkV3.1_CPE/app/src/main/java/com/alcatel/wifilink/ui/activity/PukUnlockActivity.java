@@ -149,7 +149,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(PukUnlockActivity.this, getString(R.string.puk_unlock_success));
-                ChangeActivity.toActivity(PukUnlockActivity.this, LoadingActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(PukUnlockActivity.this, LoadingActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -188,7 +188,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_simUnlock_back:
-                ChangeActivity.toActivity(PukUnlockActivity.this, LoadingActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(PukUnlockActivity.this, LoadingActivity.class, false, true, false, 0);
                 break;
         }
 

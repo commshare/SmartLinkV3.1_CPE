@@ -9,6 +9,12 @@ public class Cons {
     public static String IP_PRE = "http://";
     public static int AUTO_LOGOUT_PERIOD = 5 * 60 * 1000;
     public static int PERIOD = 5000;// 5秒获取
+    public static String PAGE = "PAGE";// 主页的fragment切换标记
+
+    public static final int MAIN = 0;
+    public static final int WIFI = 1;
+    public static final int SMS = 2;
+    public static final int SETTING = 3;
 
     public static String TYPE_SIM = "SIM";// 以SIM卡模式连接
     public static String TYPE_WAN = "WAN";// 以WAN模式连接

@@ -125,7 +125,7 @@ public class SettingNetModeActivity extends BaseActivity {
     /* 回退按钮 */
     @OnClick(R.id.main_header_back_iv)
     public void back() {
-        ChangeActivity.toActivity(this, ConnectTypeSelectActivity.class, true, true, false, 0);
+        ChangeActivity.toActivity(this, ConnectTypeSelectActivity.class, false, true, false, 0);
         overridePendingTransition(0, 0);
     }
 
@@ -162,7 +162,7 @@ public class SettingNetModeActivity extends BaseActivity {
     @OnClick(R.id.main_header_right_text)
     public void skip() {
         // 跳转--> wifi setting界面
-        ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 0);
+        ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
     }
 
     /* --------------------------------------------------- HELPER ------------------------------------------------*/
@@ -213,7 +213,7 @@ public class SettingNetModeActivity extends BaseActivity {
             @Override
             public void getStatusBean(StatusBean statusBean) {
                 EventBus.getDefault().postSticky(statusBean);
-                ChangeActivity.toActivity(SettingNetModeActivity.this, NetModeConnectStatusActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(SettingNetModeActivity.this, NetModeConnectStatusActivity.class, false, true, false, 0);
             }
         }.commit(statusBean);
 

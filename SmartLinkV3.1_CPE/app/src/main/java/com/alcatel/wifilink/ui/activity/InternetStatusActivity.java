@@ -107,7 +107,7 @@ public class InternetStatusActivity extends BaseActivityWithBack {
 
             // to connect type ui [pppoe | static | dhcp]
             case R.id.tv_internet_ethernetWanConnect:
-                ChangeActivity.toActivity(this, EthernetWanConnectionActivity.class, true, false, false, 0);
+                ChangeActivity.toActivity(this, EthernetWanConnectionActivity.class, false, false, false, 0);
                 break;
         }
     }

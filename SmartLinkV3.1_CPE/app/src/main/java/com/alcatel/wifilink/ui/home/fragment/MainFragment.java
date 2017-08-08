@@ -700,7 +700,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         simButtonConnect();
                     } else {/* wan button click logic */
                         // to internet status activity
-                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, true, false, false, 0);
+                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
                     }
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
@@ -716,7 +716,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.access_status:
-                ChangeActivity.toActivity(activity, ActivityDeviceManager.class, true, false, false, 0);
+                ChangeActivity.toActivity(activity, ActivityDeviceManager.class, false, false, false, 0);
                 break;
             default:
                 break;
@@ -868,7 +868,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
                     // sim pop to unlock activity
-                    ChangeActivity.toActivity(getActivity(), SimUnlockActivity.class, true, false, false, 0);
+                    ChangeActivity.toActivity(getActivity(), SimUnlockActivity.class, false, false, false, 0);
                     return;
                 }
                 if (simState == Cons.NOWN) {

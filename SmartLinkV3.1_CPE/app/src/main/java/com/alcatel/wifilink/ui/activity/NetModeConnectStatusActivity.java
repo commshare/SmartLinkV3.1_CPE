@@ -79,7 +79,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             // 1.1.设置成功略过选择页--> 进入快速启动
             CPEConfig.getInstance().setQuickSetupFlag();
             // 2.延迟2秒跳转到setting页
-            ChangeActivity.toActivity(this, SettingWifiActivity.class, true, true, false, 2000);
+            ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 2000);
         } else if (status == FAILED) {
             // 显示失败页
             switchStatus(View.GONE, View.VISIBLE);
@@ -106,7 +106,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             /*Try again*/
             case R.id.mRp_connectStatus_tryagain:
                 // 方案一:直接跳转会类型选择界面(当前)
-                ChangeActivity.toActivity(this, ConnectTypeSelectActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(this, ConnectTypeSelectActivity.class, false, true, false, 0);
 
                 // 方案二:当前界面直接进行连接
                 /*// 显示正在连接中...

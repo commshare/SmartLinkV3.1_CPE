@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Alcatel WiFi Link app</string>
+    <string name="app_name">Alcatel Wi-Fi Link</string>
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
     <string name="delete">Delete</string>
@@ -17,7 +17,7 @@
     <string name="qs_wifi_ssid_prompt">The SSID should be 1–32 characters.</string>
     <string name="qs_item_wifi_passwd">Wi-Fi Password</string>
     <string name="qs_wifi_passwd_prompt">The password should be 8–63 characters.</string>
-    <string name="qs_wifi_wep_passwd_prompt">The password should be 5 to 13 ASCII characters, or 10 to 26 digits</string>
+    <string name="qs_wifi_wep_passwd_prompt">The password should be 5 - 13 ASCII characters, or 10 - 26 digits</string>
     <string name="qs_completed">Setup completed</string>
     <string name="qs_summary">Your device is ready to use.</string>
     <string name="puk_code_label">PUK Code</string>
@@ -108,7 +108,7 @@
     <string name="sms_delete_multi_success">Delete conversation completed.</string>
     <string name="sms_delete_error">Couldn\'t delete SMS.</string>
     <string name="sms_delete_success">Delete SMS completed.</string>
-    <string name="sms_number_invalid">Error! Only 3 phone numbers are allowed.</string>
+    <string name="sms_number_invalid">Error. Only 3 phone numbers are allowed.</string>
     <string name="sms_save_success">SMS is saved as a draft.</string>
     <string name="sms_save_error">Couldn\'t save SMS.</string>
     <string name="sms_unread_num">(%1$d)</string>
@@ -122,8 +122,8 @@
     <string name="device_manage_block">Block Devices (%1$d)</string>
     <string name="device_manage_block_btn">BLOCK</string>
     <string name="device_manage_unblock_btn">UNBLOCK</string>
-    <string name="device_manage_ip">IP:%1$s</string>
-    <string name="device_manage_mac">MAC:%1$s</string>
+    <string name="device_manage_ip">IP: %1$s</string>
+    <string name="device_manage_mac">MAC: %1$s</string>
     <string name="device_manage_name_empty">Device name is invalid.</string>
     <string name="microsd_file">File</string>
     <string name="microsd_videos">Videos</string>
@@ -160,7 +160,7 @@
     <string name="setting_wifi_password_security_tip">Security Type:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Encryption Type:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wi-Fi Password:</string>
-    <string name="setting_wep_password_error_prompt">Wep Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32–127, except for: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">WEP Key is 4 - 13 ASCII characters, or 10 - 26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32–127, except for: , \&quot; : ; &amp; \\.</string>
     <string name="setting_wpa_password_error_prompt">The WPA Pre–Shared Key (PSK) should be 8–63 ASCII characters and WPA PSK should be ASCII characters ranging from 32–127, except for: , \&quot; : ; &amp; \\.</string>
     <string name="done">Done</string>
     <string name="setting_power_smart">Smart</string>
@@ -201,10 +201,10 @@
     <string name="setting_device_subnet">Subnet Mask:</string>
     <string name="setting_device_btn_power_off">Power Off</string>
     <string name="restart">Restart</string>
-    <string name="setting_device_upgrade_system">Upgrade System</string>
+    <string name="setting_device_upgrade_system">Update System</string>
     <string name="setting_device_web_version">Web Version</string>
     <string name="setting_device_pin_code_edit">PIN Enable</string>
-    <string name="setting_device_backup_path">Path:Phone/CPE/Backup/</string>
+    <string name="setting_device_backup_path">Path: Phone/CPE/Backup/</string>
     <string name="setting_about_app_name">LINK</string>
     <string name="setting_success">Successful</string>
     <string name="setting_failed">Failed</string>
@@ -216,7 +216,7 @@
     <string name="setting_reboot_failed">Couldn\'t reboot.</string>
     <string name="setting_reboot_success">Set completed, device will reboot immediately.</string>
     <string name="setting_reset_failed">Couldn\'t reset.</string>
-    <string name="setting_reset_success">Set completed\ndevice will reset immediately.</string>
+    <string name="setting_reset_success">Set completed, device will reset immediately.</string>
     <string name="setting_power_off_failed">Couldn\'t power off.</string>
     <string name="setting_power_off_success">Set completed, device will power off immediately.</string>
     <string name="setting_ssid_invalid">SSID can contain only a–z, A–Z, 0–9, - . _ and space. Length should be less than 32.</string>
@@ -227,7 +227,7 @@
     <string name="setting_password_note">Note: The password should be 4–16 characters.</string>
     <string name="setting_network_mode">mode</string>
     <string name="setting_network_selection">Network Selection</string>
-    <string name="setting_network_disconnect_first">Disconect your network first</string>
+    <string name="setting_network_disconnect_first">Disconnect your network first</string>
     <string name="setting_network_try_again">Disconnecting... Try again later.</string>
     <string name="setting_network_profile_management">Profile Management</string>
     <string name="setting_network_mode_auto">Auto</string>
@@ -244,7 +244,7 @@
     <string name="setting_wifi_open">Open</string>
     <string name="setting_wifi_share">Share</string>
     <string name="setting_wifi_save">Save</string>
-    <string name="setting_wifi_ssid_can_not_be_empty">SSID can not be empty!</string>
+    <string name="setting_wifi_ssid_can_not_be_empty">SSID can\'t be empty.</string>
     <string name="setting_item_link_app_version">LINK APP Version</string>
     <string name="setting_backup_path_tag">Path: Phone</string>
     <string name="setting_backup_path">/CPE/Backup/</string>
@@ -264,10 +264,10 @@
     <string name="dialog_delete_multi_sms_content">Delete this message(s)?</string>
     <string name="dialog_warning_5g">If your phone doses not supply 5G, you might not be able to use all 5G features.</string>
     <string name="dialog_change_to_5g">Change your Wi-Fi to 5G</string>
-    <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, enter the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly.</string>
+    <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code had been entered 3 times, enter the product unlock key(PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled permanently.</string>
     <string name="confirm_folder_replace">confirm replace</string>
     <string name="confirm_folder_content">File name already exists.</string>
-    <string name="puk_prompt_str">The comfirmed PIN code should be the same as new PIN code.</string>
+    <string name="puk_prompt_str">The confirmed PIN code should be the same as new PIN code.</string>
     <string name="pin_title">Enter the PIN code.</string>
     <string name="pin_code_label">PIN Code:</string>
     <string name="pin_error_waring_title">The PIN code is wrong.</string>
@@ -286,9 +286,9 @@
     <string name="remain_times">%1$d attempt(s) remaining</string>
     <string name="login_prompt_str">Your password is wrong.</string>
     <string name="login_check_dialog_title">Login</string>
-    <string name="login_invalid_password">Invalid password. The password only can include 0-9, a-z, A-Z, \&quot;-+!@$#^&amp;*\&quot;</string>
-    <string name="login_other_user_logined_error_msg">Other user is login\nplease relogin after a moment.</string>
-    <string name="login_other_user_logined_error_forcelogin_msg">Other user already logined, do you still want to login? This will kick other user off.</string>
+    <string name="login_invalid_password">Invalid password. The password only can include 0-9, a-z, A-Z, \&quot;-+.@$#^&amp;*\&quot;</string>
+    <string name="login_other_user_logined_error_msg">Other user is login\nplease log in again after a moment.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg">Other user already loged in, do you still want to login? This will kick other user off.</string>
     <string name="login_login_time_used_out_msg">Login times used out\nyou can login until the device reboot.</string>
     <string name="login_login_app_or_webui">If disable guest AP UI access\nguest AP can’t access WEB UI</string>
     <string name="login_logout_successful">Logout completed.</string>
@@ -297,7 +297,7 @@
     <string name="inconsistent_new_password">New passwords don\'t match.</string>
     <string name="input_current_password">Enter your current password.</string>
     <string name="change_passowrd_invalid_password">The password should be 4–16 characters.</string>
-    <string name="unknown_error">Unknown error!</string>
+    <string name="unknown_error">Unknown error</string>
     <string name="unknown">Unknown</string>
     <string name="Ethernet">Ethernet</string>
     <string name="login_login_btn">LOG IN</string>
@@ -316,7 +316,7 @@
     <string name="toast_musicplay_fail">music play error</string>
     <string name="toast_videoplay_fail">video play error</string>
     <string name="video_loading">Loading…</string>
-    <string name="mp_unknown_artist">Unknow Artist</string>
+    <string name="mp_unknown_artist">Unknown Artist</string>
     <string name="mp_cant_find_lyrics">the lrc can\'t be found</string>
     <string name="mp_lyrics_tips">***   the lrc comes from internet，just be reference   ***</string>
     <string name="ftp_not_open">Open FTP function in settings.</string>
@@ -330,7 +330,7 @@
     <string name="category_zip">Zips</string>
     <string name="ok">OK</string>
     <string name="error_info_cant_send_folder">Unable to send the folder</string>
-    <string name="fail_to_create_folder">Failed: The folder already exists or Ftp failed.</string>
+    <string name="fail_to_create_folder">Failed: The folder already exists or FTP failed.</string>
     <string name="fail_to_rename">Couldn\'t rename the file or folder as it already exists</string>
     <string name="file_size">%d Bytes</string>
     <string name="menu_item_sort">Sort by</string>
@@ -372,7 +372,7 @@
     <string name="details_text_create_date">Create Date:</string>
     <string name="details_text_modified_date">Modified Date:</string>
     <string name="choose">Choose folder</string>
-    <string name="new_foler">New foler</string>
+    <string name="new_foler">New folder</string>
     <string name="sdcard">SD Card</string>
     <string name="no_file">Empty directory</string>
     <string name="succeed">Succeed</string>
@@ -407,7 +407,7 @@
     <string name="main_header_linkhub">LINKHUB</string>
     <string name="main_header_mobile_broadband">Mobile Broadband</string>
     <string name="or">Or</string>
-    <string name="UserAccount_Disable">UserAccount Disable</string>
+    <string name="UserAccount_Disable">User Account Disable</string>
     <string name="dhcp_renew">Renew</string>
     <string name="preferred_dns">Preferred DNS</string>
     <string name="secondary_dns">Secondary DNS</string>
@@ -417,11 +417,11 @@
     <string name="netmode_mtu">MTU</string>
     <string name="ip_address">IP Address</string>
     <string name="netmode_deteing_internet">Detecting Internet connection type</string>
-    <string name="puk_newpin_digital">New SIM PIN (4~8 digits)</string>
+    <string name="puk_newpin_digital">New SIM PIN (4-8 digits)</string>
     <string name="confirm_new_sim_pin">Confirm new SIM PIN</string>
-    <string name="puk_limit_strings">(4~8 digits)</string>
+    <string name="puk_limit_strings">(4-8 digits)</string>
     <string name="puk_pinDontMatch">PINs don\'t match</string>
-    <string name="puk_alarm_des1">You have incorrectly entered the PUK code more than 10 times.\nThe SIM card has been permanently blocked.Please connect your network operator.</string>
+    <string name="puk_alarm_des1">You have incorrectly entered the PUK code more than 10 times.\nThe SIM card has been permanently blocked. Please connect your network operator.</string>
     <string name="login_forgotpassword_des">Reset your device and set a new confirm password</string>
     <string name="advanced_settings">Advanced settings</string>
     <string name="only_phones_supported_5ghz_wi_fi_can_connect_5ghz_wi_fi_network">Only phones supported 5GHZ Wi-Fi can connect 5GHZ Wi-Fi network</string>
@@ -434,11 +434,11 @@
     <string name="times_remain_zero">No attempt remaining, reboot your device and try again.</string>
     <string name="times_remain_one">1 attempt remaining</string>
     <string name="times_remain_many">%d attempts remaining</string>
-    <string name="reset_to_factory_settings">Reset to factory settings</string>
-    <string name="backup">Back up</string>
-    <string name="restore">Restore</string>
+    <string name="reset_to_factory_settings">RESET TO FACTORY SETTINGS</string>
+    <string name="backup">BACK UP</string>
+    <string name="restore">RESTORE</string>
     <string name="reset_router">Reset router?</string>
-    <string name="This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone">This will reset all settings on your router to factory defaults. This action can not be undone.</string>
+    <string name="This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone">This will reset all settings on your router to factory defaults. This action can\'t be undone.</string>
     <string name="reset">Reset</string>
     <string name="couldn_t_reset_try_again">Couldn’t reset. Try again.</string>
     <string name="couldn_t_backup_try_again">Couldn’t backup. Try again.</string>
@@ -455,13 +455,13 @@
     <string name="usb">USB</string>
     <string name="share_usb_storage_content">Share USB storage content</string>
     <string name="samba">Samba</string>
-    <string name="share_service_dlna_tips">Real-time displaying content from other \nDLNA-supported devices in the LAN;or provide content for other DLNA-supported devices in the LAN to display.</string>
+    <string name="share_service_dlna_tips">Real-time displaying content from other \nDLNA-supported devices in the LAN; or provide content for other DLNA-supported devices in the LAN to display.</string>
     <string name="checking_for_update">Checking for update...</string>
     <string name="your_firmware_is_up_to_date">Your firmware is up to date</string>
     <string name="available">available</string>
     <string name="update">Update</string>
     <string name="updating">Updating...</string>
-    <string name="could_not_update_try_again">Couldn\'t update.Try again.</string>
+    <string name="could_not_update_try_again">Couldn\'t update. Try again.</string>
     <string name="not_inserted">Not inserted</string>
     <string name="usb_printer">USB printer</string>
     <string name="internet_status">Internet Status</string>
@@ -517,19 +517,21 @@
     <string name="smsdetail_tryagain">You message was not send</string>
     <string name="smsdetail_tryagain_confirm">Try again</string>
     <string name="no_sim_or_wan">No SIM/No WAN</string>
-    <string name="new_password_saved">Saved</string>
+    <string name="new_password_saved">New password saved</string>
     <string name="log_out">LOG OUT</string>
     <string name="connection_timed_out">Connection timed out</string>
     <string name="enter_sim_pin">Enter SIM PIN</string>
-    <string name="to_edit_profile_go_to_settings_about_web_manager">To edit profile, go to web manager &gt;</string>
+    <string name="to_edit_profile_go_to_settings_about_web_manager">To edit profile, go to Settings &gt; About &gt; Web manager.</string>
     <string name="wep_password_must_be_5_13_characters">WEP password must be 5-13 characters</string>
     <string name="password_2_4g_length_must_be_8_63">Password(2.4G) length must be 8-63.</string>
     <string name="connectedlist_will_be_restarted_to_apply_new_settings">Connected List will be restarted to apply new settings.</string>
     <string name="warning">Warning</string>
     <string name="enter_2_4ghzssid">Enter 2.4GHz SSID</string>
+    <string name="connecting">Connecting...</string>
     <string name="used_of">used of</string>
     <string name="no_month_plan">No set month plan</string>
     <string name="login_failed">Couldn\'t login</string>
+    <string name="insert_sim_or_wan">Try again after insert SIM or WAN</string>
     <string name="no_sim_no_wan">No SIM/No WAN</string>
     <string name="not_empty">Not permit empty</string>
     <string name="quick_setup">Quick set up</string>
@@ -539,20 +541,12 @@
     <string name="sms_sending">Sending...</string>
     <string name="setting_account">Change password</string>
     <string name="login_psd_error_msg">Your password is wrong. \n%1$d attempt(s) remaining</string>
-    <string name="hr_s">Hr(s)</string>
-    <string name="min_s">Min(s)</string>
-    <string name="language">Language</string>
-    <string name="maunal">Manual</string>
-    <string name="success">Success</string>
+    <string name="connect_failed">Couldn\'t connect</string>
+    <string name="size">Size</string>
+    <string name="device_will_restart_later">The device will  restart later.</string>
+    <string name="resetting">Resetting...</string>
+    <string name="back_up_progress">Wait for 5-60 seconds</string>
     <string name="day_1">Day 1</string>
-    <string name="day_2">Day 2</string>
-    <string name="day_3">Day 3</string>
-    <string name="day_4">Day 4</string>
-    <string name="day_5">Day 5</string>
-    <string name="day_6">Day 6</string>
-    <string name="day_7">Day 7</string>
-    <string name="day_8">Day 8</string>
-    <string name="day_9">Day 9</string>
     <string name="day_10">Day 10</string>
     <string name="day_11">Day 11</string>
     <string name="day_12">Day 12</string>
@@ -563,6 +557,7 @@
     <string name="day_17">Day 17</string>
     <string name="day_18">Day 18</string>
     <string name="day_19">Day 19</string>
+    <string name="day_2">Day 2</string>
     <string name="day_20">Day 20</string>
     <string name="day_21">Day 21</string>
     <string name="day_22">Day 22</string>
@@ -573,16 +568,22 @@
     <string name="day_27">Day 27</string>
     <string name="day_28">Day 28</string>
     <string name="day_29">Day 29</string>
+    <string name="day_3">Day 3</string>
     <string name="day_30">Day 30</string>
     <string name="day_31">Day 31</string>
+    <string name="day_4">Day 4</string>
+    <string name="day_5">Day 5</string>
+    <string name="day_6">Day 6</string>
+    <string name="day_7">Day 7</string>
+    <string name="day_8">Day 8</string>
+    <string name="day_9">Day 9</string>
+
+    <string name="hr_s">Hr(s)</string>
+    <string name="min_s">Min(s)</string>
+    <string name="maunal">Manual</string>
     <string name="disabled">Disabled</string>
-    <string name="connecting">Connecting...</string>
-    <string name="insert_sim_or_wan">Try again</string>
-    <string name="connect_failed">Couldn\'t connect</string>
-    <string name="size">Size</string>
-    <string name="device_will_restart_later">The device will  restart later.</string>
-    <string name="resetting">Resetting...</string>
-    <string name="back_up_progress">Wait for 5~60 seconds</string>
-    <!-- 20170807 -->
+    <string name="language">Language</string>
+    <string name="success">Success</string>
     <string name="restart_device_tip">Please restart the device and try again</string>
+    
 </resources>

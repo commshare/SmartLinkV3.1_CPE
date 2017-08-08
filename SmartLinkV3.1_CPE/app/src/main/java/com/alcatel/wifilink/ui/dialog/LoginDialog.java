@@ -490,7 +490,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
         switch (v.getId()) {
 
             case R.id.login_forget_password:// 忘记密码按钮
-                ChangeActivity.toActivity(m_context, SettingAccountActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(m_context, SettingAccountActivity.class, false, true, false, 0);
                 break;
 
             case R.id.login_apply_btn:

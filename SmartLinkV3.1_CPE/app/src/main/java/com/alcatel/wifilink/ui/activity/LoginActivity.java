@@ -165,7 +165,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     progressPop.dismiss();
                 }
                 ToastUtil_m.show(LoginActivity.this, getString(R.string.setting_reset_success));
-                ChangeActivity.toActivity(LoginActivity.this, LoadingActivity.class, true, true, false, 0);
+                ChangeActivity.toActivity(LoginActivity.this, LoadingActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -261,14 +261,14 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                         int simState = result.getSIMState();
                         boolean simflag = simState == Cons.READY || simState == Cons.PIN_REQUIRED || simState == Cons.PUK_REQUIRED;
                         if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
-                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, true, true, false, 0);
+                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
                             return;
                         }
                         if (wanStatus != Cons.CONNECTED && simflag) {/* 只有SIM卡 */
                             if (simState == Cons.PIN_REQUIRED) {
-                                ChangeActivity.toActivity(LoginActivity.this, SimUnlockActivity.class, true, true, false, 0);
+                                ChangeActivity.toActivity(LoginActivity.this, SimUnlockActivity.class, false, true, false, 0);
                             } else if (simState == Cons.PUK_REQUIRED) {
-                                ChangeActivity.toActivity(LoginActivity.this, PukUnlockActivity.class, true, true, false, 0);
+                                ChangeActivity.toActivity(LoginActivity.this, PukUnlockActivity.class, false, true, false, 0);
                             } else if (simState == Cons.READY) {
                                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
                                 ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
@@ -276,11 +276,11 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             return;
                         }
                         if (wanStatus == Cons.CONNECTED & !simflag) {/* 只有WAN口 */
-                            ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, true, true, false, 0);
+                            ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, false, true, false, 0);
                             return;
                         }
                         if (wanStatus != Cons.CONNECTED & !simflag) {/* 都没有 */
-                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, true, true, false, 0);
+                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
                             return;
                         }
 

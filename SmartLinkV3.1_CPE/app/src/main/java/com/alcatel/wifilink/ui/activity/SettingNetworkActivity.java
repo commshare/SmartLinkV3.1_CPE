@@ -539,7 +539,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 break;
             case R.id.network_sim_pin_switch:
                 if (mSimStatus.getPinRemainingTimes() == 0) {
-                    ChangeActivity.toActivity(this, PukUnlockActivity.class, true, true, false, 0);
+                    ChangeActivity.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
                     return;
                 }
                 mSimPinCompat.setChecked(mSimPinCompat.isChecked() ? false : true);
@@ -671,7 +671,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
     private void doneChangePinCode() {
         if (mSimStatus.getPinRemainingTimes() == 0) {
-            ChangeActivity.toActivity(this, PukUnlockActivity.class, true, true, false, 0);
+            ChangeActivity.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
             return;
         }
         String currentPin = mCurrentSimPin.getText().toString();
