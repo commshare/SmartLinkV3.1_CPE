@@ -1,43 +1,19 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
-import java.util.regex.Pattern;
-
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
-import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
-import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
-import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
-import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
-import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
-import android.text.TextUtils.TruncateAt;
-import android.util.Log;
-import android.view.View.OnClickListener;
+import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -48,6 +24,26 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.SecurityMode;
+import com.alcatel.smartlinkv3.common.ENUM.SsidHiddenEnum;
+import com.alcatel.smartlinkv3.common.ENUM.WEPEncryption;
+import com.alcatel.smartlinkv3.common.ENUM.WModeEnum;
+import com.alcatel.smartlinkv3.common.ENUM.WPAEncryption;
+import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
+import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
+import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
+import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
+
+import java.util.Locale;
 
 public class SettingWifiActivity extends BaseFragmentActivity 
 implements OnClickListener{
@@ -81,7 +77,7 @@ implements OnClickListener{
 	private TextView m_tv_no_password;
 	private TextView m_btn_psd_switch;
 	private ProgressBar m_pb_waiting=null;
-	private TextView m_tv_ssid;
+	private TextView m_tv_ssid,strSSID;
 	
 	private LinearLayout m_ll_edit_ssid_broadcast;
 	private TextView m_btn_ssid_broadcast_switch;
@@ -327,7 +323,15 @@ implements OnClickListener{
 		m_err_dialog = CommonErrorInfoDialog.getInstance(this);//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_wifi_waiting_progress);
 		m_tv_ssid = (TextView)findViewById(R.id.tv_ssid);
-		
+		strSSID=(TextView)findViewById(R.id.strSSID);
+		if(Locale.getDefault().getLanguage().equals("ar"));
+		{
+			m_tv_ssid.setGravity(Gravity.START);
+			strSSID.setGravity(Gravity.END);
+			m_rb_2point4G_wifi.setGravity(Gravity.END);
+			m_rb_5G_wifi.setGravity(Gravity.END);
+		}
+
 		m_ll_edit_ssid_broadcast = (LinearLayout)findViewById(R.id.ll_edit_ssid_broadcast);
 		m_ll_edit_ssid_broadcast.setOnClickListener(this);
 		m_ll_edit_ssid_broadcast.setEnabled(false);

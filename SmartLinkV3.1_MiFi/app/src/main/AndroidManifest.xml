@@ -5,8 +5,8 @@
     android:versionName="3.2.8" >
 
     <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="18"
+        android:targetSdkVersion="25" />
     
      <supports-screens
 		android:resizeable="true"
@@ -38,6 +38,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.alcatel.smartlinkv3.ui.activity.LoadingActivity"

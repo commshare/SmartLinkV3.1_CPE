@@ -33,8 +33,8 @@
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/setting_upgrade_new_app_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />
@@ -46,8 +46,8 @@
                 android:layout_above="@id/tv_new_firmware_version"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/setting_upgrade_device_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />
@@ -74,8 +74,8 @@
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="2dp"
-                    android:layout_toRightOf="@id/btn_check_firmware"
+                    android:layout_marginStart="2dp"
+                    android:layout_toEndOf="@id/btn_check_firmware"
                     android:indeterminateDrawable="@drawable/progerss_blue"
                     android:padding="5dip"
                     android:visibility="gone" />
@@ -85,7 +85,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:background="@color/main_bottom_divider"
             android:contentDescription="@string/setting_upgrade" />
 
@@ -112,8 +112,8 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:layout_marginBottom="20dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/setting_upgrade_new_app_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />
@@ -125,8 +125,8 @@
                 android:layout_above="@id/tv_new_app_version"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/setting_upgrade_current_app_version"
                 android:textColor="@color/color_black"
                 android:textSize="16sp" />
@@ -153,8 +153,8 @@
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="2dp"
-                    android:layout_toRightOf="@id/btn_app_upgrade"
+                    android:layout_marginStart="2dp"
+                    android:layout_toEndOf="@id/btn_app_upgrade"
                     android:indeterminateDrawable="@drawable/progerss_blue"
                     android:padding="5dip"
                     android:visibility="gone" />
@@ -172,7 +172,7 @@
             android:layout_width="40dip"
             android:layout_height="40dip"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:indeterminateDrawable="@drawable/progerss_blue"
             android:visibility="gone" />
         <TextView 
@@ -181,9 +181,9 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/color_black"
-            android:layout_toRightOf="@id/pb_upgrade_waiting_progress"
+            android:layout_toEndOf="@id/pb_upgrade_waiting_progress"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone"/>
         <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
     </RelativeLayout>

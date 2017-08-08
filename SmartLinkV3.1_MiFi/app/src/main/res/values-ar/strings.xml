@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">تطبيق LINK APP</string>
+    <!-- common start -->
+    <string name="cancel">إلغاء</string>
+    <string name="ok">موافق</string>
+    <string name="done">تم</string>
+    <string name="back">رجوع</string>
+    <string name="delete">حذف</string>
+    <string name="upload">تحميل</string>
+    <string name="deleting">جارٍ الحذف</string>
+    <string name="yes">نعم</string>
+    <string name="sending">جارٍ الإرسال</string>
+    <string name="apply">تطبيق</string>
+    <string name="skip">تخطٍ</string>
+    <string name="next">التالي</string>
+    <string name="finish">إنهاء</string>
+    <string name="continue_anyway">متابعة</string>
+    <!-- common end -->
+    <!-- Qucik Setup -->
+    <string name="qs_title">إعداد سريع</string>
+    <string name="qs_exit_query">الخروج من الإعداد السريع</string>
+    <string name="qs_item_pin_code">رمز PIN</string>
+    <string name="qs_pin_code_prompt">أدخل رمز PIN \nالمتبقي: <xliff:g id="INPUTTIMES">%1$d</xliff:g>مرة(مرات)</string>
+    <string name="qs_item_wifi_ssid">اسم شبكة Wi-Fi (SSID)</string>
+    <string name="qs_wifi_ssid_prompt">يجب أن تكون SSID 1-32 حرفًا.</string>
+    <string name="qs_item_wifi_passwd">كلمة مرور Wi-Fi</string>
+    <string name="qs_wifi_passwd_prompt">يجب أن تكون كلمة المرور 8-63 حرفًا.</string>
+    <string name="qs_wifi_wep_passwd_prompt">يجب أن تكون كلمة المرور 5 أو 13 رمزًا من رموز ASCII، أو 10 أو 26 رقمًا سداسيًا عشريًا</string>
+    <string name="qs_completed">اكتمل الإعداد</string>
+    <string name="qs_summary">جهازك جاهز للاستخدام.</string>
+    <string name="qs_wifi_ssid">اسم شبكة Wi-Fi (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>
+    <string name="qs_wifi_passwd">كلمة مرور Wi-Fi: <xliff:g id="PASSWD">%1$s</xliff:g></string>
+    <string name="qs_puk_code_title">رمز PUK</string>
+    <string name="qs_puk_code_prompt">أدخل رمز PUK \nالمتبقي: <xliff:g id="INPUTTIMES">%1$d</xliff:g>مرة(مرات)</string>
+    <string name="qs_puk_code">رمز PUK:</string>
+    <string name="qs_pin_code_new">رمز PIN جديد:</string>
+    <string name="qs_pin_code_confirm">تأكيد رمز PIN:</string>
+    <!-- Quick Setup End -->
+    <!-- main fram start -->
+    <string name="main_home">القائمة الرئيسية</string>
+    <string name="main_sdsharing">مشاركة SD</string>
+    <string name="main_usage">الاستخدام</string>
+    <string name="main_setting">الإعدادات</string>
+    <string name="main_sms">رسالة SMS</string>
+    <!-- Home view start -->
+    <string name="home_GB">غيغابايت</string>
+    <string name="home_KB">كيلوبايت</string>
+    <string name="home_MB">ميغابايت</string>
+    <string name="home_B">بايت</string>
+    <string name="Home_unlock_pin">إلغاء تأمين</string>
+    <string name="Home_no_sim">لا توجد بطاقة SIM</string>
+    <string name="Home_sim_invalid">بطاقة SIM غير صالحة</string>
+    <string name="Home_pin_locked">رمز PIN مقفل</string>
+    <string name="Home_puk_locked">رمز PUK مقفل</string>
+    <string name="Home_SimCard_IsIniting">جارٍ التهيئة</string>
+    <string name="Home_PukTimes_UsedOut">تم استنفاد مرات PUK</string>
+    <string name="Home_SimLock_Required">يلزم توفير قفل SIM</string>
+    <string name="Home_SimCard_Detected">تم اكتشاف بطاقة SIM</string>
+    <string name="Home_zero_time">0ساعات 0دقائق</string>
+    <string name="Home_zero_data">%1$sميجابايت</string>
+    <string name="home_no_service">لا توجد خدمة</string>
+    <string name="home_initializing">جارٍ التهيئة</string>
+    <string name="home_disconnected_to">تم قطع الاتصال</string>
+    <string name="home_connected_to">تم الاتصال</string>
+    <string name="home_connecting_to">جارٍ الاتصال</string>
+    <string name="home_disconnecting_to">جارٍ قطع الاتصال</string>
+    <string name="home_network_type_2g">2G</string>
+    <string name="home_network_type_3g">3G</string>
+    <string name="home_network_type_3g_plus">+3G</string>
+    <string name="home_network_type_4g">4G</string>
+    <string name="home_battery_ischarging">جارٍ الشحن</string>
+    <string name="home_battery_completed">اكتمل الشحن</string>
+    <string name="home_connected_duration">%1$sساعات %2$sدقائق</string>
+    <string name="access_lable">متصل</string>
+    <string name="home_sim_loched">تم قفل بطاقة SIM</string>
+    <string name="home_no_sim">لا توجد بطاقة SIM</string>
+    <string name="home_pin_locked_notice">تحقق من صحة رمز PIN في القائمة الرئيسية أولاً.</string>
+    <string name="home_sim_not_accessible">تعذر الدخول إلى بطاقة SIM</string>
+    <string name="home_battery_unit">%</string>
+    <string name="home_usage_over_redial_message">تم استنفاد خطة البيانات الشهرية. إذا كنت ترغب في إعادة الطلب، فيرجى تغيير القيم الشهرية أو إعادة ضبط الاستهلاك.</string>
+    <!-- Home view end -->
+    <!-- pop dialog start -->
+    <string name="pop_dialog_usagesetting">إعداد الاستخدام</string>
+    <string name="pop_dialog_clearhistory">محو السجل</string>
+    <!-- pop dialog end -->
+    <!-- Usage view end -->
+    <string name="usage_view_home">القائمة الرئيسية</string>
+    <string name="usage_view_duration">المدة</string>
+    <string name="bt_set_monthlydata">تعيين خطة بيانات شهرية</string>
+    <string name="usage_status_des">لم يتم تحديد خطة بيانات بعد</string>
+    <string name="usage_duration">%1$sساعات %2$sدقائق</string>
+    <string name="disconnected_descrition">عند بلوغ استخدام البيانات حد خطة البيانات الشهرية.</string>
+    <string name="usage_clear_history_success">تم محو سجل الاستخدام.</string>
+    <string name="usage_clear_history_fail">تعذر محو سجل الاستخدام.</string>
+    <string name="usage_comsumptionexplain_label">إذا تم تمكين وظيفة المحو، فيرجى قطع الاتصال أولاً.</string>
+    <!-- Usage view end -->
+    <!-- Usage setting start -->
+    <string name="usage_setting_title">إعدادات الاستخدام</string>
+    <string name="usage_setting_timelimit">حد الوقت</string>
+    <string name="usage_setting_settimelimit">تعيين حد الوقت:</string>
+    <string name="usage_setting_timeunit">دقيقة (دقائق)</string>
+    <string name="usage_setting_usage">الاستخدام</string>
+    <string name="usage_setting_billingday">يوم الفوترة:</string>
+    <string name="usage_setting_dayunit">يوم</string>
+    <string name="usage_setting_monthlysataplan">خطة بيانات شهرية:</string>
+    <string name="usage_setting_monthlyunit">ميجابايت</string>
+    <string name="usage_setting_dataconsunption">استهلاك البيانات:</string>
+    <string name="usage_setting_roaming">التجوال</string>
+    <string name="roaming_descrition">الاتصال تلقائيًا حتى في حالة التجوال.</string>
+    <string name="usage_setting_autodisconnected">انقطاع الاتصال تلقائيًا</string>
+    <!-- Usage setting end -->
+    <!-- sms start -->
+    <string name="sms_title">الرسالة</string>
+    <string name="sms_empty">لا توجد رسائل SMS</string>
+    <string name="sms_init">رسائل SMS غير متوفرة</string>
+    <string name="sms_list_view_draft">%1$dمسودة</string>
+    <string name="sms_send_fail">فشل</string>
+    <string name="sms_report_message">تم تسليم</string>
+    <string name="sms_to">إلى:</string>
+    <string name="sms_new_title">الرسالة</string>
+    <string name="sms_error_send_error">تعذر إرسال رسالة SMS.</string>
+    <string name="sms_send_success">نحج إرسال رسالة SMS.</string>
+    <string name="sms_error_message_full_storage">صندوق رسائل SMS ممتلئ، يرجى حذف بعض رسائل SMS لتتمكن من إرسال/حفظ رسائل SMS جديدة.</string>
+    <string name="sms_delete_multi_success">تم حذف المحادثة.</string>
+    <string name="sms_delete_multi_error">تعذر حذف المحادثة.</string>
+    <string name="sms_delete_error">تعذر حذف رسالة SMS.</string>
+    <string name="sms_delete_success">تم حذف رسالة SMS.</string>
+    <string name="sms_number_invalid">خطأ. يُسمح فقط بـ 3 أرقام هاتف.</string>
+    <string name="sms_save_success">تم حفظ رسالة SMS كمسودة.</string>
+    <string name="sms_save_error">تعذر حفظ رسالة SMS.</string>
+    <!-- sms end -->
+    <!-- connect device start -->
+    <string name="device_manage_title">أجهزة</string>
+    <string name="device_manage_connected">الأجهزة المتصلة (%1$d)</string>
+    <string name="device_manage_block">حظر الأجهزة (%1$d)</string>
+    <string name="device_manage_block_btn">حظر</string>
+    <string name="device_manage_unblock_btn">إلغاء الحظر</string>
+    <string name="device_manage_ip">IP:%1$s</string>
+    <string name="device_manage_mac">MAC:%1$s</string>
+    <string name="device_manage_set_name_failed">تعذر الضبط.</string>
+	<string name="device_manage_name_empty">اسم الجهاز غير صالح.</string>
+    <!-- connect device end -->
+    <!-- microsd start -->
+    <string name="microsd_file">الملف</string>
+    <string name="microsd_videos">مقاطع الفيديو</string>
+    <string name="microsd_music">الموسيقى</string>
+    <string name="microsd_pictures">الصور</string>
+    <string name="microsd_no_sdcard">أدخل بطاقة SIM</string>
+    <!-- microsd end -->
+    <!-- setting start -->
+    <string name="setting_wifi">Wi-Fi</string>
+    <string name="setting_account">الحساب</string>
+    <string name="setting_network">الشبكة</string>
+    <string name="setting_power">توفير الطاقة</string>
+    <string name="setting_sharing">FTP وDLNA</string>
+    <string name="setting_sharing_ftp">FTP</string>
+    <string name="setting_sharing_dlna">DLNA</string>
+    <string name="setting_upgrade">تحديث</string>
+    <string name="setting_device">الجهاز</string>
+    <string name="setting_about">حول</string>
+    <string name="setting_backup">النسخ الاحتياطي والاستعادة</string>
+    <string name="setting_text_2point4G_wifi">Wi-Fi 2.4 جيجابايت</string>
+    <string name="setting_text_5G_wifi">Wi-Fi 5 جيجابايت</string>
+    <string name="setting_text_ssid">SSID:</string>
+    <string name="setting_text_ssid_broadcast">بث خدمة SSID</string>
+    <string name="setting_text_passwrod">كلمة المرور:</string>
+    <string name="setting_set_default">افتراضي</string>
+    <string name="setting_text_no_passwrod">لا توجد كلمة المرور</string>
+    <string name="setting_wifi_set_success">اكتمل تغيير إعدادات Wi-Fi.</string>
+    <string name="setting_wifi_set_failed">تعذر تغيير إعدادات Wi-Fi.</string>
+    <string name="setting_wifi_password_security_tip">نوع الأمن:</string>
+    <string name="setting_wifi_password_wpa_encryption_tip">نوع التشفير:</string>
+    <string name="setting_wifi_password_wpa_psw_tip">كلمة مرور Wi-Fi:</string>
+    <string name="setting_wifi_password_wep_encryption_tip">نوع التشفير:</string>
+    <string name="setting_wifi_password_wep_psw_tip">كلمة مرور Wi-Fi:</string>
+    <string name="setting_wep_password_error_prompt">يتكون مفتاح Wep Key من رموز ASCII، أو من 10 إلى 26 رقمًا سداسيًا عشريًا وينبغي أن يتكون WEP Key من رموز ASCII تتراوح بين 32-127، باستثناء: , \" : ;&amp;\.</string>
+    <string name="setting_wpa_password_error_prompt">يجب أن يتكون مفتاح WPA المشارك مسبقًا (PSK) من 8-63 رمزًا من رموز ASCII وينبغي أن يتكون مفتاح WPA PSK من رموز ASCII تتراوح بين 32-127، باستثناء: , \" : ;&amp;\.</string>
+    <string name="setting_password_error_prompt">خطأ في تغيير كلمة مرور Wi-Fi، يرجى إعادة المحاولة بعد قليل!</string>
+    <string name="setting_disable_password_error_prompt">تعذر تعطيل كلمة مرور Wi-Fi</string>
+    <string name="setting_titlebar_text_edit">تحرير</string>
+    <string name="setting_titlebar_text_done">تم</string>
+    <string name="setting_title_power">توفير الطاقة</string>
+    <string name="setting_title_backup">النسخ الاحتياطي والاستعادة</string>
+    <string name="setting_title_upgrade">تحديث</string>
+    <string name="setting_title_device">الجهاز</string>
+    <string name="setting_title_about">حول</string>
+    <string name="setting_power_smart">ذكي</string>
+    <string name="setting_power_wifi">سكون Wi-Fi</string>
+    <string name="setting_power_wifi_description">سيتوقف Wi-Fi عن التشغيل تلقائيًا إذا كان الاتصال معطلاً لمدة 30 دقيقة، اضغط على أي زر للتنبيه.</string>
+    <string name="setting_backup_description">قم بإجراء نسخ احتياطي للتكوين.</string>
+    <string name="setting_backup_btn_backup">نسخ احتياطي</string>
+    <string name="setting_restore_description">استعادة التكوين.</string>
+    <string name="setting_restore_btn_restore">الاستعادة</string>
+    <string name="setting_about_version">الإصدار</string>
+    <string name="setting_about_official_website">موقع الويب الرسمي</string>
+    <string name="setting_about_management_page">صفحة الإدارة</string>
+    <string name="setting_about_copyright">حقوق النشر © 2014–2016 TCL Communication Ltd.جميع الحقوق محفوظة.</string>
+    <string name="setting_upgrade_device_version">الجهاز: الإصدار الحالي</string>
+    <string name="setting_upgrade_new_device_version">البحث عن إصدار جديد</string>
+    <string name="setting_upgrade_btn_check">الفحص</string>
+    <string name="setting_upgrade_current_app_version">تطبيقات الهاتف المحمول: الإصدار الحالي v</string>
+    <string name="setting_upgrade_new_app_version">البحث عن إصدار جديد v</string>
+    <string name="setting_upgrade_check_failed">تعذر التحقق</string>
+    <string name="setting_upgrade_no_new_version">لا توجد إصدارات جديدة</string>
+    <string name="setting_upgrade_no_connection">لا يوجد اتصال</string>
+    <string name="setting_upgrade_firmware_warning">ستستمر عملية التحديث لبضع دقائق، فلا توقف التشغيل. أترغب في تحديث النظام؟</string>
+    <string name="setting_upgrade_check_error">تعذر التحقق</string>
+    <string name="setting_upgrade_btn_upgrade">تحديث</string>
+    <string name="setting_upgrade_not_start">لم يبدأ التحديث</string>
+    <string name="setting_upgrade_complete">اكتمل التنزيل، يرجى الانتظار حتى ينتهي التحديث.</string>
+    <string name="setting_upgrade_stop_error">خطأ في إيقاف الترقية</string>
+    <string name="setting_upgrade_not_available">الخدمة غير متاحة</string>
+    <string name="setting_upgrade_get_update_state_failed">تعذر الحصول على حالة التحديث.</string>
+    <string name="setting_upgrade_start_update_failed">تعذر بدء الجهاز للتحديث.</string>
+    <string name="setting_upgrade_check_firmware_failed">تعذر الحصول على الإصدار الجديد.</string>
+    <string name="setting_upgrade_set_check_new_version_failed">تعذر التحقق من الإصدار الجديد.</string>
+    <string name="setting_upgrade_config_google_play">تكوين تطبيق Google Play.</string>
+    <string name="setting_device_title">معلومات النظام</string>
+    <string name="setting_device_software_version">إصدار البرنامج:</string>
+    <string name="setting_device_hadrware_version">إصدار الجهاز:</string>
+    <string name="setting_device_device_name">اسم الجهاز:</string>
+    <string name="setting_device_imei">IMEI:</string>
+    <string name="setting_device_mac_address">عنوان MAC:</string>
+    <string name="setting_device_ip">عنوان IP:</string>
+    <string name="setting_device_subnet">قناع الشبكة الفرعية:</string>
+    <string name="setting_device_btn_power_off">إيقاف التشغيل</string>
+    <string name="setting_device_btn_reboot">إعادة التشغيل</string>
+    <string name="setting_device_btn_restart">إعادة التشغيل</string>
+    <string name="setting_device_btn_reset">إعادة الضبط</string>
+    <string name="setting_device_upgrade_system">تحديث النظام</string>
+    <string name="setting_device_backup_and_reset">النسخ الاحتياطي وإعادة الضبط</string>
+    <string name="setting_device_pin_code">رمز PIN</string>
+    <string name="setting_device_web_version">إصدار الويب</string>
+    <string name="setting_device_pin_code_edit">تمكين رمز PIN</string>
+    <string name="setting_about_app_name">ALCATELONETOUCH</string>
+    <string name="setting_success">ناجح</string>
+    <string name="setting_failed">فشل</string>
+    <string name="setting_backup_failed">تعذر ضبط النسخة الاحتياطية للجهاز.</string>
+    <string name="setting_backup_success">اكتمل ضبط النسخة الاحتياطية للجهاز.</string>
+    <string name="setting_restore_failed">تعذرت الاستعادة.</string>
+    <string name="setting_restore_success">اكتملت الاستعادة، سيعيد الجهاز التشغيل فورًا.</string>
+    <string name="setting_restore_no_backup_file">لا يوجد ملف نسخ احتياطي.</string>
+    <string name="setting_reboot_failed">فشلت إعادة التشغيل.</string>
+    <string name="setting_reboot_success">تم الضبط بنجاح، سيعيد الجهاز التشغيل فورًا.</string>
+    <string name="setting_reset_failed">تعذرت إعادة الضبط.</string>
+    <string name="setting_reset_success">اكتمل الضبط، سيعيد الجهاز التشغيل فورًا.</string>
+    <string name="setting_power_off_failed">فشل إيقاف التشغيل.</string>
+    <string name="setting_power_off_success">تم الضبط بنجاح، سيتوقف الجهاز عن التشغيل فورًا.</string>
+    <string name="setting_ssid_invalid">يمكن أن يحتوي SSID على أ-ي، وأ-ي، و0-9، ومسافة. ينبغي أن يكون طوله أقل من 32.</string>
+    <string name="setting_wifi_error_title">تغيير كلمة المرور</string>
+    <string name="setting_change_login_password">تغيير كلمة مرور تسجيل الدخول</string>
+    <string name="setting_log_out">تسجيل الخروج</string>
+    <string name="setting_current_password">كلمة المرور الحالية:</string>
+    <string name="setting_new_password">كلمة مرور جديدة:</string>
+    <string name="setting_confirm_password">تأكيد كلمة المرور:</string>
+    <string name="setting_password_note">ملاحظة: يجب أن تكون كلمة المرور 4-16 حرفًا.</string>
+    <string name="setting_network_mode">وضع الشبكة</string>
+    <string name="setting_network_searching">جارٍ البحث عن شبكة...</string>
+    <string name="setting_network_selection">اختيار الشبكة</string>
+    <string name="setting_network_wifi_network_title">شبكة Wi-Fi</string>
+    <string name="setting_network_profile_list">قائمة ملفات التعريف</string>
+    <string name="setting_network_add_profile">إضافة ملف تعريف</string>
+    <string name="setting_network_disconnect_first">اقطع اتصال شبكتك أولاً</string>
+    <string name="setting_network_try_again">جارٍ قطع الاتصال، أعد المحاولة لاحقًا.</string>
+    <string name="setting_network_profile_management">إدارة ملف التعريف</string>
+    <string name="setting_network_profile_management_profile_name">*اسم ملف التعريف</string>
+    <string name="setting_network_profile_management_dial_number">*رقم الاتصال</string>
+    <string name="setting_network_profile_management_apn">اسم نقطة الوصول (APN)</string>
+    <string name="setting_network_profile_management_user_name">اسم المستخدم</string>
+    <string name="setting_network_profile_management_password">كلمة المرور</string>
+    <string name="setting_network_profile_management_protocol">البروتوكول</string>
+    <string name="setting_network_profile_management_protocol_none">لا شيء</string>
+    <string name="setting_network_profile_management_protocol_tcp">TCP</string>
+    <string name="setting_network_profile_management_protocol_udp">UDP</string>
+    <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
+    <string name="setting_network_profile_management_profile_detail">تفاصيل ملف التعريف</string>
+    <string name="setting_network_profile_management_delete_profile">حذف ملف التعريف</string>
+    <string name="setting_network_profile_dial_number_wrong">يجب ألا يكون طول رقم الاتصال الخاص بك أكبر من 24</string>
+    <string name="setting_network_profile_dial_number_empty">لا يمكن ترك رقم الاتصال فارغًا</string>
+    <string name="setting_network_profile_input_profile_name">يجب ألا يكون اسم ملف التعريف فارغًا</string>
+    <string name="setting_network_profile_error_profile_name">يجب ألا يشمل اسم ملف التعريف  بعض الرموز المميزة</string>
+    <string name="setting_network_mode_auto">تلقائي</string>
+    <string name="setting_network_mode_manual">يدوي</string>
+    <string name="setting_network_mode_2G_only">‎2G فقط</string>
+    <string name="setting_network_mode_3G_only">‎3G فقط</string>
+    <string name="setting_network_mode_4G_only">4G فقط</string>
+    <string name="setting_network_mode_LTE_only">4G فقط</string>
+    <string name="other_login_warning_title">تحذير تسجيل الدخول</string>
+    <string name="setting_network_profile_management_auth_type_pap">PAP</string>
+    <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
+    <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&amp;CHAP</string>
+    <string name="setting_network_profile_management_cannot_delete_predefined_profile">تعذر حذف ملف التعريف المعرّف مسبقًا</string>
+    <string name="setting_network_profile_management_cannot_delete_default_profile">تعذر حذف ملف التعريف الافتراضي</string>
+    <string name="setting_network_profile_management_already_default">تم تعيين ملف التعريف بالفعل على الوضع الافتراضي</string>
+    <string name="setting_wifi_wep">WEP</string>
+    <string name="setting_wifi_wpa">WPA</string>
+    <string name="setting_wifi_wpa2">WPA2</string>
+    <string name="setting_wifi_wpa_or_wpa2">WPA/WPA2</string>
+    <string name="setting_wifi_aes">AES</string>
+    <string name="setting_wifi_tkip">TKIP</string>
+    <string name="setting_wifi_open">فتح</string>
+    <string name="setting_wifi_share">مشاركة</string>
+    <string name="setting_wifi_save">حفظ</string>
+    <string name="setting_wifi_ssid_can_not_be_empty">لا يمكن أن يكون SSID فارغًا.</string>
+    <!-- setting end -->
+    <!-- notification start -->
+    <string name="usage_limit_notification_title">تحذير استخدام البيانات</string>
+    <string name="usage_limit_over_notification_content">يصل استخدام البيانات إلى حد خطة البيانات الشهرية.</string>
+    <string name="usage_limit_less_notification_content">الاستخدام المتاح لك به أقل من %1$s.</string>
+    <string name="usage_maximum_monthly_plan_notice">الخطة الشهرية القصوى هي</string>
+    <string name="battery_limit_notification_title">تحذير بخصوص البطارية</string>
+    <string name="battery_limit_notification_content1">البطارية منخفضة، %dباقٍ %% من البطارية.</string>
+    <string name="battery_limit_notification_content2">البطارية منخفضة، %dباقٍ %% من البطارية.</string>
+    <string name="new_message_notification_title">رسالة جديدة</string>
+    <string name="new_message_notification_content">هناك رسالة جديدة..</string>
+    <string name="upgrade_notification_title">ترقية</string>
+    <string name="upgrade_notification_content">هناك إصدار جديد..</string>
+    <!-- notification end -->
+    <!-- Dialog start -->
+    <string name="dialog_delete_title">تأكيد الحذف</string>
+    <string name="dialog_delete_content">تأكيد حذف سجل الدردشة هذا</string>
+    <string name="dialog_delete_content_description">إذا كنت ترغب في حذف رسالة SMS واحدة، فاضغط عليها ضغطةً طويلة ثم اختر (حذف).</string>
+    <string name="dialog_delete_button">حذف سجل الدردشة</string>
+    <string name="dialog_delete_single_sms_content">هل تريد حذف هذه الرسالة؟</string>
+    <string name="dialog_delete_multi_sms_content">هل تريد حذف هذه الرسالة (الرسائل)؟</string>
+    <string name="dialog_warning_5g">إذا لم يكن هاتفك يدعم 5G، فقد لا تتمكن من استخدم كل خصائص 5G.</string>
+    <string name="dialog_change_to_5g">غيّر Wi-Fi الخاص بك إلى 5G</string>
+    <string name="dialog_warning_title">تحذير</string>
+    <string name="dialog_warning_error_pin_code_error_3times">تم إدخال رمز PIN غير صحيح 3 مرات، يرجى إدخال مفتاح إلغاء قفل المنتج (PUK). إذا أدخلت رمز PUK غير صحيح 10 مرات، فسيتم تعطيل بطاقة SIM هذه بشكلٍ دائم.</string>
+    <!-- Dialog end -->
+    <!-- PIN start -->
+    <string name="puk_prompt_str">يجب أن يكون رمز PIN المؤكد هو نفس رمز PIN الجديد.</string>
+    <string name="pin_title">أدخل رمز PIN</string>
+    <string name="pin_code_label">رمز PIN:</string>
+    <string name="pin_error_waring_title">رمز PUK خاطئ.</string>
+    <string name="puk_title">يرجى إدخال رمز PUK!</string>
+    <string name="puk_code_label">رمز PUK:</string>
+    <string name="puk_remain_three_times">المتبقي: 3 مرات</string>
+    <string name="puk_new_pin_label">رمز PIN جديد:</string>
+    <string name="puk_confirm_pin_label">رمز PIN المؤكد:</string>
+    <string name="puk_format_wrong_msg">ينبغي أن يكون رمز PUK من 8 أرقام.</string>
+    <string name="puk_error_waring_title">عذرًا، رمز PUK خاطئ!</string>
+    <string name="error_info">خطأ</string>
+    <string name="btn_reply">إعادة المحاولة</string>
+    <string name="IDS_PIN_LOCKED">رمز PIN مقفل</string>
+    <string name="IDS_PUK_LOCKED">رمز PUK مقفل</string>
+    <string name="IDS_PIN_CHECK_PIN_PROGRESS">جارٍ التحقق من رمز PIN</string>
+    <string name="IDS_PIN_CHECK_PUK_PROGRESS">جارٍ التحقق من رمز PUK</string>
+    <string name="remain_times">المتبقي: %1$d مرة(مرات)</string>
+    <!-- PIN end -->
+    <!-- Login view start -->
+    <string name="login_title">أدخل كلمة مرور المسؤول.</string>
+    <string name="login_prompt_str">كلمة المرور الخاصة بك خاطئة.</string>
+    <string name="login_user_name">المسؤول</string>
+    <string name="login_psd_error_msg">كلمة المرور الخاصة بك خاطئة.</string>
+    <string name="login_check_dialog_title">تسجيل الدخول</string>
+    <string name="login_check_dialog_content">تسجيل الدخول</string>
+    <string name="login_invalid_password">كلمة مرور غير صالحة. يمكن أن تشتمل كلمة المرور فقط على 0-9، وأ-ي، وأ-ي، و\"-+!@$#^&amp;*\"</string>
+    <string name="login_other_user_logined_error_msg">لقد سجل مستخدم آخر دخوله، أعد تسجيل الدخول بعد قليل.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg">سجل مستخدم آخر دخوله بالفعل، هل لا زلت ترغب في تسجيل الدخول؟ سيُخرج هذا المستخدم الآخر.</string>
+    <string name="login_login_time_used_out_msg">تم استنفاد أوقات تسجيل الدخول، يمكنك تسجيل الدخول حتى يعيد الجهاز تشغيل نفسه.</string>
+    <string name="login_warning">تحذير تسجيل الدخول</string>
+    <string name="login_logout_successful">اكتمل تسجيل الخروج.</string>
+    <string name="login_kickoff_logout_successful">لقد تم طردك.</string>
+    <string name="change_password_successful">اكتمل تغيير كلمة المرور.</string>
+    <string name="wrong_current_password">كلمة المرور الحالية خاطئة.</string>
+    <string name="change_password_failed">تعذر تغيير كلمة المرور.</string>
+    <string name="inconsistent_new_password">كلمة المرور الجديدة غير مطابقة.</string>
+    <string name="input_current_password">أدخل كلمة مرورك الحالية.</string>
+    <string name="change_passowrd_invalid_password">يجب أن تكون كلمة المرور 4-16 حرفًا.</string>
+    <string name="unknown_error">خطأ غير معروف</string>
+    <!-- Login view end -->
+    <!-- Refresh WIFI start -->
+    <string name="refresh_wifi_title">لا يوجد Wi-Fi متصل</string>
+    <string name="refresh_wifi_tip">قم بتوصيل نقطة اتصال الهاتف الجوال أولاً</string>
+    <string name="refresh">تحديث</string>
+    <!-- Refresh WIFI end -->
+    <!-- DLNA start -->
+    <string name="second">S</string>
+    <string name="separate">/</string>
+    <string name="init_time">12:00 ص</string>
+    <string name="load_image_fail">تعذر تحميل الصورة</string>
+    <string name="parse_image_fail">تعذر توزيع الصورة</string>
+    <string name="toast_musicplay_fail">خطأ في تشغيل الموسيقى</string>
+    <string name="toast_videoplay_fail">خطأ في تشغيل الفيديو</string>
+    <string name="video_loading">جارٍ التحميل…</string>
+    <string name="video_speed_unit_second">S</string>
+    <string name="buffering">جارٍ التحميل…</string>
+    <string name="mp_unknown_artist">فنان غير معروف</string>
+    <string name="mp_unknown_album">ألبوم غير معروف</string>
+    <string name="mp_cant_find_lyrics">تعذر العثور على lrc</string>
+    <string name="mp_lyrics_tips">***يأتي lrc من الإنترنت ،فقط ليكون مرجعًا***</string>
+    <string name="ftp_not_open">فتح وظيفة FTP في الإعدادات.</string>
+    <string name="dlna_not_open">فتح وظيفة DLNA في الإعدادات!</string>
+    <!-- DLNA end -->
+    <!-- FTP FILE EXPLORER -->
+    <string name="ftpfile_app_name">مستكشف الملفات</string>
+    <string name="ftpfile_cancel">إلغاء</string>
+    <string name="category_all">الكل</string>
+    <string name="category_apk">APKs</string>
+    <string name="category_document">المستندات</string>
+    <string name="category_music">الموسيقى</string>
+    <string name="category_other">متنوع</string>
+    <string name="category_picture">الصور</string>
+    <string name="category_theme">السمات</string>
+    <string name="category_video">مقاطع الفيديو</string>
+    <string name="category_zip">الملفات المضغوطة</string>
+    <string name="confirm">موافق</string>
+    <string name="confirm_know">موافق</string>
+    <string name="error_info_cant_send_folder">تعذر إرسال المجلد</string>
+    <string name="fail_to_create_folder">فشل: المجلد موجود بالفعل أو فشل FTP.</string>
+    <string name="fail_to_rename">تعذر إعادة تسمية الملف أو المجلد لأنه موجود بالفعل</string>
+    <string name="file_info_canread">قابل للقراءة:</string>
+    <string name="file_info_location">المسار:</string>
+    <string name="file_info_size">الحجم:</string>
+    <string name="file_size">%d وحدات البايت</string>
+    <string name="instruction">أدخل العنوان التالي في حقل عميل FTP الخاص بك:</string>
+    <string name="menu_item_search">بحث</string>
+    <string name="menu_item_sort">فرز حسب</string>
+    <string name="menu_item_sort_date">التاريخ</string>
+    <string name="menu_item_sort_name">الاسم</string>
+    <string name="menu_item_sort_size">الحجم</string>
+    <string name="menu_item_sort_type">النوع</string>
+    <string name="menu_item_sort_by_name">فرز حسب الاسم</string>
+    <string name="menu_item_sort_by_type">فرز حسب النوع</string>
+    <string name="multi_select_title">العنصر (العناصر) <xliff:g id="number">%1$s</xliff:g>المحدد</string>
+    <string name="new_folder_name">مجلد جديد</string>
+    <string name="no">لا</string>
+    <string name="notif_server_starting">بدأ خادم FTP</string>
+    <string name="notif_title">خادم FTP</string>
+    <string name="operation_cancel">إلغاء</string>
+    <string name="operation_copy">نسخ</string>
+    <string name="operation_copy_path">نسخ مسار الملف</string>
+    <string name="operation_create_folder">مجلد جديد</string>
+    <string name="operation_create_folder_message">أدخل اسم المجلد</string>
+    <string name="operation_download">تنزيل</string>
+    <string name="operation_delete">حذف</string>
+    <string name="operation_delete_confirm_message">تأكيد الحذف؟</string>
+    <string name="operation_deleting">جارٍ الحذف...</string>
+    <string name="operation_info">التفاصيل</string>
+    <string name="operation_move">نقل</string>
+    <string name="operation_move_to">نقل إلى</string>
+    <string name="operation_moving">جارٍ النقل...</string>
+    <string name="operation_paste">لصق</string>
+    <string name="operation_pasting">جارٍ اللصق...</string>
+    <string name="operation_refresh">تحديث</string>
+    <string name="operation_rename">إعادة تسمية</string>
+    <string name="operation_rename_message">إدخال اسم جديد</string>
+    <string name="operation_upload">تحميل</string>
+    <string name="operation_selectall">تحديد الكل</string>
+    <string name="operation_send">إرسال</string>
+    <string name="operation_share">مشاركة</string>
+    <string name="operation_show_sys">إظهار الملفات المخفية</string>
+    <string name="operation_edit">تحرير</string>
+    <string name="operation_cancel_edit">إلغاء التحرير</string>
+    <string name="operation_add_file">إضافة ملف</string>
+    <string name="sd_folder">بطاقة SD</string>
+    <string name="tab_ftp_client">عميل Ftp</string>
+    <string name="tab_remote">FTP</string>
+    <string name="tab_sd">الملف</string>
+    <string name="ftpfile_yes">نعم</string>
+    <string name="dialog_select_type">تحديد نوع الملف</string>
+    <string name="dialog_type_text">نص</string>
+    <string name="dialog_type_audio">الصوت</string>
+    <string name="dialog_type_video">فيديو</string>
+    <string name="dialog_type_image">الصورة</string>
+    <string name="favorite_photo">صورة</string>
+    <string name="favorite_sdcard">بطاقة SD</string>
+    <string name="menu_exit">خروج</string>
+    <string name="pref_primary_folder">المجلد الرئيسي</string>
+    <string name="pref_read_root">قراءة الجذر</string>
+    <string name="default_primary_folder">/mnt/بطاقة sd</string>
+    <string name="pref_primary_folder_summary">المجلد الذي يظهر عندما يبدأ التطبيق، والقيمة الحالية هي <xliff:g id="string">%1$s</xliff:g></string>
+    <string name="custom_delete_dlg_text1">حذف</string>
+    <string name="custom_delete_dlg_text2">سيتم حذف الملف المحدد!</string>
+    <string name="details_text_size">الحجم:</string>
+    <string name="details_text_create_date">إنشاء تاريخ:</string>
+    <string name="details_text_modified_date">التاريخ المعدل:</string>
+    <string name="choose">اختر مجلدًا</string>
+    <string name="new_foler">مجلد جديد</string>
+    <string name="foler_name">اسم المجلد</string>
+    <string name="sdcard">بطاقة SD</string>
+    <string name="fail">فشل</string>
+    <string-array name="fail_cause">
+        <item>[cause 1] Dossier déjà existant !</item>
+        <item>[cause 2] Échec de création du dossier !</item>
+    </string-array>
+    <string name="succeed">مكتمل</string>
+    <string-array name="succeed_desc">
+        <item>Création du dossier effectuée ! </item>
+    </string-array>
+    <string name="download_text_dling">جارٍ التنزيل...</string>
+    <string name="download_text_path">المسار:</string>
+    <!-- FTP FILE END -->
+    <!-- SMART WIDGET START -->
+    <string name="widget_usage_left">يسار</string>
+    <string name="widget_usage_excess">زيادة</string>
+    <string name="widget_usage_used">المستخدمة</string>
+    <!-- SMART WIDGET END -->
+    <!-- Welcome Guide -->
+    <string name="guide1_title">التحكم عن بعد</string>
+    <string name="guide1_description">يتوافق تطبيق LINK APP مع كل أجهزة محمول ALCATEL ONETOUCH التي تدعم 4G LTE عالي السرعة. يمكنك بفضل هذا التطبيق أن تدير بسهولة Wi-Fi الخاص بجوالك مباشرةً من هاتف ذكي أو حاسب لوحي.</string>
+    <string name="guide2_title">محدّث دائمًا</string>
+    <string name="guide2_description">يعرض تطبيق LINK APP حالة الاتصال وسرعات البيانات وعمر البطارية ورسائل SMS في الوقت الفعلي. ويمكنك عبر التطبيق ضبط خطة استخدام بيانات شهرية وسيتم قطع اتصالك تلقائيًا عندما تصل إلى الحد المضبوط مسبقًا.</string>
+    <string name="guide3_title">مدير الأمن</string>
+    <string name="guide3_description">يمكنك من خلال تطبيق LINK APP حجب أي جهاز يحاول الاتصال بنقطة اتصال Wi-Fi الخاصة بك دون إذن. وستكون لك حرية تحرير اسم المستخدم للتعرف عليهم بسهولة.</string>
+    <string name="what_new_btn_text">بدء</string>
+    <!-- Welcome Guide End -->
+    <string-array name="usage_unit">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+	<string name="enable_sd_card">بطاقة SD غير متاحة، يرجى توصيلها</string>
+    <string name="sms_unread_num">(%1$d)</string>
+    <string name="confirm_folder_replace">تأكيد الاستبدال</string>
+    <string name="confirm_folder_content">اسم الملف موجود بالفعل.</string>
+    <string name="no_file">دليل فارغ</string>
+    <string name="added_favorite">تمت الإضافة إلى المفضلات</string>
+    <string name="category_favorite">المفضلات</string>
+    <string name="file_info_canwrite">قابل للكتابة:</string>
+    <string name="file_info_ishidden">مخفي:</string>
+    <string name="file_info_modified">تم التعديل:</string>
+    <string name="install_failed">فشل التثبيت</string>
+    <string name="install_successful">اكتمل التثبيت</string>
+    <string name="instruction_pre">ابدأ الخدمة لتمكين خادم FTP</string>
+    <string name="pref_show_real_path_summary">إظهار المسار الحقيقي في شريط التنقل</string>
+    <string name="no_wifi">لا توجد شبكة Wi-Fi</string>
+    <string name="pref_show_real_path">عرض المسار الحقيقي</string>
+    <string name="no_wifi_hint">لا توجد شبكة Wi-Fi، اضغط للتحقق من إعدادات Wi-Fi</string>
+    <string name="operation_cancel_selectall">إلغاء تحديد الكل</string>
+    <string name="operation_favorite">إضافة إلى المفضلات</string>
+    <string name="operation_hide_sys">إخفاء الملفات المخفية</string>
+    <string name="operation_unfavorite">إزالة من المفضلات</string>
+    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g>متاح</string>
+    <string name="removed_favorite">تمت الإزالة من المفضلات</string>
+    <string name="sd_card_size">حجم SD: <xliff:g id="total_size">%1$s</xliff:g></string>
+    <string name="search_hint">البحث في الملفات</string>
+    <string name="search_title">البحث في الملفات</string>
+    <string name="start_server">بدء الخدمة</string>
+    <string name="stop_server">إيقاف الخدمة</string>
+    <string name="storage_warning">التخزين الخارجي غير متوفر أو تتعذر قراءته</string>
+    <string name="tab_category">استعراض</string>
+    <string name="wifi_state">حالة شبكة WLAN</string>
+    <string name="favourite_root">التمهيد</string>
+    <string name="favorite_ringtone">نغمة الرنين</string>
+    <string name="menu_setting">التفضيلات</string>
+    <string name="preference_title">الإعدادات العامة</string>
+  <string name="setting_wep_mode_array">
+      <item>فتح</item>
+      <item>مشاركة</item>
+  </string>
+</resources>

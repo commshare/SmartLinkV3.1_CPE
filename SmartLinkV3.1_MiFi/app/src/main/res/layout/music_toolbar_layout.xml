@@ -14,7 +14,7 @@
 		         android:id="@+id/btn_back"
 		         android:layout_width="wrap_content"
 		         android:layout_height="wrap_content"
-		         android:layout_alignParentLeft="true"
+		         android:layout_alignParentStart="true"
 		         android:layout_centerVertical="true"
 		         android:padding="5dip"
 		         android:src="@drawable/back"
@@ -24,7 +24,7 @@
 			         android:layout_width="fill_parent"
 			         android:layout_height="wrap_content"
 			         android:layout_centerVertical="true"
-			         android:layout_toRightOf="@id/btn_back"
+			         android:layout_toEndOf="@id/btn_back"
 			         android:text="@string/back"
 			         android:textColor="@color/color_white"
 			         android:textSize="16sp" /> 
@@ -35,7 +35,7 @@
 			        android:layout_centerInParent="true"
 			        android:gravity="center"
 			        android:singleLine="true"
-			        android:paddingLeft="23dip"
+			        android:paddingStart="23dip"
 			        android:textColor="@color/color_white"
 			        android:textSize="18sp"
 			        android:textStyle="bold" />
@@ -80,18 +80,18 @@
 	    <RelativeLayout 
 	    android:layout_width="wrap_content" 
 	    android:layout_height="fill_parent"
-	    android:layout_toRightOf="@id/miniplayLayout">		
+	    android:layout_toEndOf="@id/miniplayLayout">
       
             <TextView 
 		    android:text="@string/init_time" 
 		    android:id="@+id/tv_totalTime" 
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_marginRight="8dp"
+		    android:layout_marginEnd="8dp"
 		    android:layout_centerVertical="true"
 			android:textColor="@android:color/white"
 			android:textSize="20sp"
-		    android:layout_alignParentRight="true">
+		    android:layout_alignParentEnd="true">
 		    </TextView>
 		    
             <TextView 
@@ -102,7 +102,7 @@
 		    android:layout_centerVertical="true"
 	    	android:textColor="@android:color/white"
 	    	android:textSize="20sp"
-		    android:layout_toLeftOf="@id/tv_totalTime">
+		    android:layout_toStartOf="@id/tv_totalTime">
 		    </TextView>
               
             <TextView 
@@ -113,7 +113,7 @@
 		    android:layout_centerVertical="true"
 	    	android:textColor="@android:color/white"
 	    	android:textSize="20sp"
-		    android:layout_toLeftOf="@id/tv_line">
+		    android:layout_toStartOf="@id/tv_line">
 		    </TextView>
 		    
 		  
@@ -122,10 +122,10 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"	  
 	        android:layout_centerVertical="true"
-	        android:layout_toLeftOf="@id/tv_curTime"
-	        android:layout_marginRight="2dp"
-	        android:paddingLeft="10.0dip" 
-		    android:paddingRight="10.0dip"
+	        android:layout_toStartOf="@id/tv_curTime"
+	        android:layout_marginEnd="2dp"
+	        android:paddingStart="10.0dip"
+		    android:paddingEnd="10.0dip"
 	        android:maxHeight="39.0dip" 
 		    android:minHeight="39.0dip" 
 	        android:max="100"
@@ -144,8 +144,8 @@
         android:layout_height="50dip"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_above="@id/down_toolview"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"/>
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"/>
 	     
 	
 	<LinearLayout
@@ -166,7 +166,7 @@
 		    android:layout_width="wrap_content" 
 		    android:layout_height="fill_parent"
 		   	android:orientation="vertical"
-		   	android:layout_marginLeft="20dp">
+		   	android:layout_marginStart="20dp">
            
 		        
 		          <TextView 

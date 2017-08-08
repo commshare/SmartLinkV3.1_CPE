@@ -19,8 +19,8 @@
 	           android:layout_width="wrap_content"
 	           android:layout_height="wrap_content"
 	           android:background="@color/color_white"
-	           android:paddingLeft="15dip"
-	           android:paddingRight="15dip"
+	           android:paddingStart="15dip"
+	           android:paddingEnd="15dip"
 	           android:layout_gravity="center"
 	           android:gravity="center"
 	           android:text="10 July 2014"
@@ -36,8 +36,8 @@
 	    android:background="@drawable/selector_sms_detail_receive"
 	    android:paddingTop="12dip"
 	    android:paddingBottom="12dip"
-	    android:paddingLeft="15dip"
-	    android:paddingRight="15dip" >
+	    android:paddingStart="15dip"
+	    android:paddingEnd="15dip" >
 	    <TextView 
             android:id="@+id/sms_detail_content"
             android:layout_width="wrap_content"
@@ -64,8 +64,8 @@
 		    <ImageView android:id="@+id/sms_sent_fail_image"
 		        android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_marginRight="5dip"
-	            android:layout_toRightOf="@id/sms_detail_date"
+	            android:layout_marginEnd="5dip"
+	            android:layout_toEndOf="@id/sms_detail_date"
 	            android:layout_alignBottom="@id/sms_detail_date"
 	            android:src="@drawable/sms_failed_white_bg"
 	            android:contentDescription="@null"/>
@@ -75,7 +75,7 @@
 	            android:layout_height="wrap_content"
 	            android:singleLine="false"
 	            android:gravity="left"
-	            android:layout_toRightOf="@id/sms_sent_fail_image"
+	            android:layout_toEndOf="@id/sms_sent_fail_image"
 	            android:layout_alignBottom="@id/sms_detail_date"
 	            android:text="@string/sms_send_fail"
 	            android:textSize="24sp"

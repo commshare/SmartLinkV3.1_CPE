@@ -5,8 +5,8 @@ android {
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.alcatel.smartlinkv3"
-        minSdkVersion 11
-        targetSdkVersion 17
+        minSdkVersion 18
+        targetSdkVersion 25
         versionName '3.2.8'
         versionCode 23
     }

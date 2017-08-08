@@ -1,23 +1,24 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.SystemInfoModel;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.Locale;
 
 public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 
@@ -29,7 +30,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 	private TextView m_tv_device_name_value=null;
 	private TextView m_tv_imei_value=null;
 	private TextView m_tv_mac_value=null;
-	private TextView m_tv_ip_value=null;
+	private TextView m_tv_ip_value=null,strImeiTextView=null;
 	private TextView m_tv_subnet_value=null;
 //	private Button m_btn_PowerOff=null;
 //	private Button m_btn_reboot=null;
@@ -59,12 +60,15 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		//back button and text
 		m_ib_back = (ImageButton)findViewById(R.id.ib_title_back);
 		m_tv_back = (TextView)findViewById(R.id.tv_title_back);
+
 		m_ib_back.setOnClickListener(this);
 		m_tv_back.setOnClickListener(this);
+
 	}
 
 	private void createControls(){
 		//system information values
+		strImeiTextView=(TextView)findViewById(R.id.str_Imei);
 		m_tv_swVersion_value = (TextView)findViewById(R.id.tv_sw_version_info);
 		m_tv_hwVersion_value = (TextView)findViewById(R.id.tv_hw_version_info);
 		m_tv_device_name_value = (TextView)findViewById(R.id.tv_device_name_info);
@@ -72,6 +76,18 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		m_tv_mac_value = (TextView)findViewById(R.id.tv_mac_address_info);
 		m_tv_ip_value = (TextView)findViewById(R.id.tv_ip_address_info);
 		m_tv_subnet_value = (TextView)findViewById(R.id.tv_subnet_mask_info);
+		if(Locale.getDefault().getLanguage().equals("ar"));
+		{
+			strImeiTextView.setGravity(Gravity.END);
+			//m_tv_hwVersion_value.setGravity(Gravity.END);
+			m_tv_swVersion_value.setGravity(Gravity.END);
+			m_tv_device_name_value.setGravity(Gravity.END);
+			m_tv_imei_value.setGravity(Gravity.START);
+			//m_tv_ip_value.setGravity(Gravity.END);
+			m_tv_mac_value.setGravity(Gravity.END);
+			//m_tv_subnet_value.setGravity(Gravity.END);
+
+		}
 		//buttons
 //		m_btn_PowerOff = (Button)findViewById(R.id.btn_power_off);
 //		m_btn_reboot = (Button)findViewById(R.id.btn_reboot);

@@ -16,10 +16,10 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:clickable="true"
-	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentStart="true"
 	            android:layout_centerVertical="true"
 	            android:orientation="horizontal"
-	            android:layout_marginLeft="10dip" >
+	            android:layout_marginStart="10dip" >
 		         <ImageView
 		             android:id="@+id/back_button"
 		             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
 		             android:gravity="center"
 		             android:text="@string/back"
 		             android:singleLine="true"
-		             android:layout_marginLeft="5dip"
+		             android:layout_marginStart="5dip"
 		             android:textColor="@color/color_white"
 		             android:textSize="18sp" />
 	        </LinearLayout>
@@ -42,11 +42,11 @@
 	        <TextView
 	            android:id="@+id/cancel"
 	            android:clickable="true"
-	            android:layout_alignParentRight="true"
+	            android:layout_alignParentEnd="true"
 	            android:layout_centerVertical="true"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_marginRight="10dip"
+	            android:layout_marginEnd="10dip"
 	            android:text="@string/cancel"
 	            android:textColor="@color/color_white"
 	            android:textSize="18sp" />
@@ -56,8 +56,8 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_centerInParent="true"
-	            android:layout_marginLeft="13dip"
-	            android:layout_marginRight="8dip"
+	            android:layout_marginStart="13dip"
+	            android:layout_marginEnd="8dip"
 	            android:gravity="center"
 	            android:text="@string/sms_new_title"
 	            android:singleLine="true"
@@ -77,8 +77,8 @@
 			    android:id="@+id/to_layout_r"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
-			    android:layout_marginLeft="20dip"
-			    android:layout_marginRight="10dip"
+			    android:layout_marginStart="20dip"
+			    android:layout_marginEnd="10dip"
 			    android:layout_marginTop="10dip"
 			    android:layout_marginBottom="10dip" >
 	            
@@ -96,9 +96,9 @@
 			        android:layout_height="35dip"
 			        android:background="@drawable/selector_edit_bg"
 			        android:layout_centerVertical="true"
-			        android:layout_marginLeft="10dip"
-			        android:layout_marginRight="10dip"
-			        android:layout_toRightOf="@id/sms_to_view"
+			        android:layout_marginStart="10dip"
+			        android:layout_marginEnd="10dip"
+			        android:layout_toEndOf="@id/sms_to_view"
 			        android:inputType="none"
 			        android:scrollbarStyle="outsideOverlay"
 			        android:imeOptions="flagNoExtractUi"
@@ -125,7 +125,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="right"
-	            android:layout_marginRight="25dip"
+	            android:layout_marginEnd="25dip"
 	            android:layout_marginTop="5dip"
 	            android:text="160/1"
 	            android:textColor="@color/color_black" />
@@ -140,11 +140,11 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:background="@drawable/selector_send_btn"
-			        android:layout_alignParentRight="true"
+			        android:layout_alignParentEnd="true"
 			        android:layout_centerVertical="true"
-			        android:layout_marginRight="20dip"
-			        android:paddingLeft="15dip"
-	                android:paddingRight="15dip"
+			        android:layout_marginEnd="20dip"
+			        android:paddingStart="15dip"
+	                android:paddingEnd="15dip"
 			        android:enabled="false" />
 			
 			    <EditText
@@ -153,9 +153,9 @@
 			        android:layout_height="35dip"
 			        android:background="@drawable/selector_edit_bg"
 			        android:layout_centerVertical="true"
-			        android:layout_marginLeft="20dip"
-			        android:layout_marginRight="10dip"
-			        android:layout_toLeftOf="@id/send_btn"
+			        android:layout_marginStart="20dip"
+			        android:layout_marginEnd="10dip"
+			        android:layout_toStartOf="@id/send_btn"
 			        android:inputType="none"
 			        android:maxLength="1600"
 			        android:scrollbarStyle="outsideOverlay"

@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">ALCATEL LINK</string>
+    <!-- common start -->
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="done">Готово</string>
+    <string name="back">Назад</string>
+    <string name="delete">Удалить\</string>
+    <string name="upload">Загрузить</string>
+    <string name="deleting">Удаление…</string>
+    <string name="yes">Да</string>
+    <string name="sending">Отправка</string>
+    <string name="apply">Применить</string>
+    <string name="skip">Пропустить</string>
+    <string name="next">Далее</string>
+    <string name="finish">Завершить</string>
+    <string name="continue_anyway">Продолжить</string>
+    <!-- common end -->
+    <!-- Qucik Setup -->
+    <string name="qs_title">Мастер настройки</string>
+    <string name="qs_exit_query">Выйти из мастера</string>
+    <string name="qs_item_pin_code">PIN-код</string>
+    <string name="qs_pin_code_prompt">Введите PIN-код\nОсталось попыток: <xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
+    <string name="qs_item_wifi_ssid">Имя Wi-Fi-сети (SSID)</string>
+    <string name="qs_wifi_ssid_prompt">Длина имени сети (SSID) не должна превышать 32 символов.</string>
+    <string name="qs_item_wifi_passwd">Ключ сети</string>
+    <string name="qs_wifi_passwd_prompt">Ключ сети должен содержать от 8 до 63 символов.</string>
+    <string name="qs_wifi_wep_passwd_prompt">Ключ WEP должен содержать 5 или 13 символов ASCII или 10 или 26 шестнадцатеричных символов.</string>
+    <string name="qs_completed">Настройка завершена</string>
+    <string name="qs_summary">Устройство готово к использованию.</string>
+    <string name="qs_wifi_ssid">Имя Wi-Fi-сети (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>
+    <string name="qs_wifi_passwd">Ключ сети: <xliff:g id="PASSWD">%1$s</xliff:g></string>
+    <string name="qs_puk_code_title">PUK-код</string>
+    <string name="qs_puk_code_prompt">Введите PUK-код\nОсталось попыток: <xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
+    <string name="qs_puk_code">PUK-код:</string>
+    <string name="qs_pin_code_new">Новый PIN-код:</string>
+    <string name="qs_pin_code_confirm">Подтвердите PIN-код:</string>
+    <!-- Quick Setup End -->
+    <!-- main fram start -->
+    <string name="main_home">Домой</string>
+    <string name="main_sdsharing">Общий доступ к SD-карте</string>
+    <string name="main_usage">Статистика</string>
+    <string name="main_setting">Настройки</string>
+    <string name="main_sms">SMS</string>
+    <!-- Home view start -->
+    <string name="home_GB">ГБ</string>
+    <string name="home_KB">КБ</string>
+    <string name="home_MB">МБ</string>
+    <string name="home_B">Б</string>
+    <string name="Home_unlock_pin">Разблокировать</string>
+    <string name="Home_no_sim">Нет SIM-карты</string>
+    <string name="Home_sim_invalid">Недействительная SIM-карта</string>
+    <string name="Home_pin_locked">Введите PIN-код</string>
+    <string name="Home_puk_locked">Введите PUK-код</string>
+    <string name="Home_SimCard_IsIniting">Инициализация…</string>
+    <string name="Home_PukTimes_UsedOut">Использованы все попытки ввода PUK-кода</string>
+    <string name="Home_SimLock_Required">Введите NCK-код</string>
+    <string name="Home_SimCard_Detected">SIM-карта обнаружена</string>
+    <string name="Home_zero_time">0 ч 0 мин</string>
+    <string name="Home_zero_data">%1$s МБ</string>
+    <string name="home_no_service">Нет сети</string>
+    <string name="home_initializing">Инициализация…</string>
+    <string name="home_disconnected_to">Отключено</string>
+    <string name="home_connected_to">Подключено</string>
+    <string name="home_connecting_to">Подключение…</string>
+    <string name="home_disconnecting_to">Отключение…</string>
+    <string name="home_network_type_2g">2G</string>
+    <string name="home_network_type_3g">3G</string>
+    <string name="home_network_type_3g_plus">H+</string>
+    <string name="home_network_type_4g">4G</string>
+    <string name="home_battery_ischarging">Зарядка</string>
+    <string name="home_battery_completed">Батарея заряжена</string>
+    <string name="home_connected_duration">%1$s ч %2$s мин</string>
+    <string name="access_lable">подключено</string>
+    <string name="home_sim_loched">SIM-карта заблокирована</string>
+    <string name="home_no_sim">Нет SIM-карты</string>
+    <string name="home_pin_locked_notice">Сначала введите PIN-код.</string>
+    <string name="home_sim_not_accessible">Нет доступа к SIM-карте</string>
+    <string name="home_battery_unit">%</string>
+    <string name="home_usage_over_redial_message">Достигнут месячный лимит по трафику. Чтобы подключиться к Интернету, измените лимит или удалите статистику.</string>
+    <!-- Home view end -->
+    <!-- pop dialog start -->
+    <string name="pop_dialog_usagesetting">Настройка ограничений</string>
+    <string name="pop_dialog_clearhistory">Удалить статистику</string>
+    <!-- pop dialog end -->
+    <!-- Usage view end -->
+    <string name="usage_view_home">Домой</string>
+    <string name="usage_view_duration">Длительность</string>
+    <string name="bt_set_monthlydata">Установить лимит</string>
+    <string name="usage_status_des">Лимиты не установлен</string>
+    <string name="usage_duration">%1$s ч %2$s мин</string>
+    <string name="disconnected_descrition">При достижении месячного лимита по суммарному трафику.</string>
+    <string name="usage_clear_history_success">Статистика удалена.</string>
+    <string name="usage_clear_history_fail">Не удалось удалить статистику.</string>
+    <string name="usage_comsumptionexplain_label">Чтобы удалить статистику, отключитесь от Интернета.</string>
+    <!-- Usage view end -->
+    <!-- Usage setting start -->
+    <string name="usage_setting_title">Настройка ограничений</string>
+    <string name="usage_setting_timelimit">Длительность подключения</string>
+    <string name="usage_setting_settimelimit">Месячный лимит:</string>
+    <string name="usage_setting_timeunit">мин</string>
+    <string name="usage_setting_usage">Статистика</string>
+    <string name="usage_setting_billingday">Начало отчётного периода:</string>
+    <string name="usage_setting_dayunit">д</string>
+    <string name="usage_setting_monthlysataplan">Месячный лимит:</string>
+    <string name="usage_setting_monthlyunit">МБ</string>
+    <string name="usage_setting_dataconsunption">Суммарный трафик:</string>
+    <string name="usage_setting_roaming">Роуминг</string>
+    <string name="roaming_descrition">Автоматическое подключение к сети Интернет в роуминге</string>
+    <string name="usage_setting_autodisconnected">Автоотключение от Интернета</string>
+    <!-- Usage setting end -->
+    <!-- sms start -->
+    <string name="sms_title">Сообщение</string>
+    <string name="sms_empty">Нет сообщений</string>
+    <string name="sms_init">Нет доступа к сообщениям</string>
+    <string name="sms_list_view_draft">%1$d, черновик</string>
+    <string name="sms_send_fail">Ошибка</string>
+    <string name="sms_report_message">доставлено</string>
+    <string name="sms_to">Кому:</string>
+    <string name="sms_new_title">Сообщение</string>
+    <string name="sms_error_send_error">Не удалось отправить сообщение.</string>
+    <string name="sms_send_success">Сообщение отправлено.</string>
+    <string name="sms_error_message_full_storage">Память SMS переполнена. Удалите часть сообщений, чтобы снова получить возможность отправлять и принимать SMS.</string>
+    <string name="sms_delete_multi_success">Цепочка сообщений удалена.</string>
+    <string name="sms_delete_multi_error">Не удалось удалить цепочку сообщений.</string>
+    <string name="sms_delete_error">Не удалось удалить сообщение.</string>
+    <string name="sms_delete_success">Сообщение удалено.</string>
+    <string name="sms_number_invalid">Ошибка. Можно добавить не более 3-х номеров.</string>
+    <string name="sms_save_success">Черновик сообщения сохранён.</string>
+    <string name="sms_save_error">Не удалось сохранить сообщение.</string>
+    <!-- sms end -->
+    <!-- connect device start -->
+    <string name="device_manage_title">Устройства</string>
+    <string name="device_manage_connected">Подключено устройств: %1$d</string>
+    <string name="device_manage_block">Заблокировано устройств: %1$d</string>
+    <string name="device_manage_block_btn">Блокировать</string>
+    <string name="device_manage_unblock_btn">Разблокировать</string>
+    <string name="device_manage_ip">IP: %1$s</string>
+    <string name="device_manage_mac">MAC: %1$s</string>
+    <string name="device_manage_set_name_failed">Ошибка установки.</string>
+	<string name="device_manage_name_empty">Некорректное имя устройства.</string>
+    <!-- connect device end -->
+    <!-- microsd start -->
+    <string name="microsd_file">Файл</string>
+    <string name="microsd_videos">Видео</string>
+    <string name="microsd_music">Музыка</string>
+    <string name="microsd_pictures">Изображения</string>
+    <string name="microsd_no_sdcard">Подключите SD-карту</string>
+    <!-- microsd end -->
+    <!-- setting start -->
+    <string name="setting_wifi">Wi-Fi</string>
+    <string name="setting_account">Аккаунт</string>
+    <string name="setting_network">Мобильная сеть</string>
+    <string name="setting_power">Энергосбережение</string>
+    <string name="setting_sharing">FTP и DLNA</string>
+    <string name="setting_sharing_ftp">FTP</string>
+    <string name="setting_sharing_dlna">DLNA</string>
+    <string name="setting_upgrade">Обновить</string>
+    <string name="setting_device">Устройство</string>
+    <string name="setting_about">О приложении</string>
+    <string name="setting_backup">Архивация и восстановление</string>
+    <string name="setting_text_2point4G_wifi">Wi-Fi 2,4 ГГц</string>
+    <string name="setting_text_5G_wifi">Wi-Fi 5 ГГц</string>
+    <string name="setting_text_ssid">Имя сети (SSID):</string>
+    <string name="setting_text_ssid_broadcast">Вещание SSID</string>
+    <string name="setting_text_passwrod">Ключ сети:</string>
+    <string name="setting_set_default">По умолчанию</string>
+    <string name="setting_text_no_passwrod">Ключ не задан</string>
+    <string name="setting_wifi_set_success">Настройки Wi-Fi изменены.</string>
+    <string name="setting_wifi_set_failed">Не удалось изменить настройки Wi-Fi.</string>
+    <string name="setting_wifi_password_security_tip">Тип безопасности:</string>
+    <string name="setting_wifi_password_wpa_encryption_tip">Тип безопасности:</string>
+    <string name="setting_wifi_password_wpa_psw_tip">Ключ сети:</string>
+    <string name="setting_wifi_password_wep_encryption_tip">Тип безопасности:</string>
+    <string name="setting_wifi_password_wep_psw_tip">Ключ сети:</string>
+    <string name="setting_wep_password_error_prompt">Ключ WEP должен содержать 5 или 13 символов ASCII или 10 или 26 шестнадцатеричных символов  и должен состоять из символов ASCII из диапазона 32-127. Нельзя использовать символы: , \" : ; &amp;.</string>
+    <string name="setting_wpa_password_error_prompt">Предварительный ключ (PSK) WPA должен содержать от 8 до 63 символов ASCII и должен состоять из символов ASCII из диапазона 32-127. Нельзя использовать символы: , \" : ; &amp;.</string>
+    <string name="setting_password_error_prompt">Не удалось изменить ключ сети. Повторите попытку.</string>
+    <string name="setting_disable_password_error_prompt">Не удалось отключить ключ сети</string>
+    <string name="setting_titlebar_text_edit">Изменить</string>
+    <string name="setting_titlebar_text_done">Готово</string>
+    <string name="setting_title_power">Энергосбережение</string>
+    <string name="setting_title_backup">Архивация и восстановление</string>
+    <string name="setting_title_upgrade">Обновить</string>
+    <string name="setting_title_device">Устройство</string>
+    <string name="setting_title_about">О приложении</string>
+    <string name="setting_power_smart">Интеллектуальное энергосбережение</string>
+    <string name="setting_power_wifi">Автовыключение Wi-Fi</string>
+    <string name="setting_power_wifi_description">Если в течение 30 минут передача данных по Wi-Fi не использовалась, то все LED-индикаторы автоматически выключаются вместе с Wi-Fi. Нажмите любую клавишу на устройстве, чтобы включить Wi-Fi.</string>
+    <string name="setting_backup_description">Архивация параметров.</string>
+    <string name="setting_backup_btn_backup">Архивация</string>
+    <string name="setting_restore_description">Восстановление параметров.</string>
+    <string name="setting_restore_btn_restore">Восстановление</string>
+    <string name="setting_about_version">Версия</string>
+    <string name="setting_about_official_website">Официальный веб-сайт</string>
+    <string name="setting_about_management_page">Страница управления</string>
+    <string name="setting_about_copyright">Все права защищены. © 2014–2016 TCL Communication Ltd.</string>
+    <string name="setting_upgrade_device_version">Текущая версия ПО устройства: </string>
+    <string name="setting_upgrade_new_device_version">Доступна новая версия ПО</string>
+    <string name="setting_upgrade_btn_check">Проверить</string>
+    <string name="setting_upgrade_current_app_version">Текущая версия приложения: </string>
+    <string name="setting_upgrade_new_app_version">Доступна новая версия ПО: </string>
+    <string name="setting_upgrade_check_failed">Проверка не удалась</string>
+    <string name="setting_upgrade_no_new_version">У вас установлена самая новая версия ПО</string>
+    <string name="setting_upgrade_no_connection">Нет подключения</string>
+    <string name="setting_upgrade_firmware_warning">Обновление займёт несколько минут. Не выключайте устройство в процессе обновления. Установить обновление?</string>
+    <string name="setting_upgrade_check_error">Проверка не удалась</string>
+    <string name="setting_upgrade_btn_upgrade">Обновить</string>
+    <string name="setting_upgrade_not_start">Обновление не начато</string>
+    <string name="setting_upgrade_complete">Загрузка завершена. Дождитесь окончания процесса обновления.</string>
+    <string name="setting_upgrade_stop_error">Ошибка. Установка обновления остановлена.</string>
+    <string name="setting_upgrade_not_available">Служба недоступна</string>
+    <string name="setting_upgrade_get_update_state_failed">Не удалось получить состояние обновления.</string>
+    <string name="setting_upgrade_start_update_failed">Не удалось обновить устройство.</string>
+    <string name="setting_upgrade_check_firmware_failed">Не удалось проверить наличие обновления.</string>
+    <string name="setting_upgrade_set_check_new_version_failed">Не удалось проверить наличие обновления.</string>
+    <string name="setting_upgrade_config_google_play">Google Play Маркет.</string>
+    <string name="setting_device_title">Об устройстве</string>
+    <string name="setting_device_software_version">Версия ПО:</string>
+    <string name="setting_device_hadrware_version">Версия оборудования:</string>
+    <string name="setting_device_device_name">Модель:</string>
+    <string name="setting_device_imei">IMEI:</string>
+    <string name="setting_device_mac_address">MAC-адрес:</string>
+    <string name="setting_device_ip">IP-адрес:</string>
+    <string name="setting_device_subnet">Маска подсети:</string>
+    <string name="setting_device_btn_power_off">Выключить</string>
+    <string name="setting_device_btn_reboot">Перезагрузка</string>
+    <string name="setting_device_btn_restart">Перезагрузка</string>
+    <string name="setting_device_btn_reset">Сброс</string>
+    <string name="setting_device_upgrade_system">Обновление</string>
+    <string name="setting_device_backup_and_reset">Восстановление и сброс</string>
+    <string name="setting_device_pin_code">PIN-код</string>
+    <string name="setting_device_web_version">Веб-интерфейс</string>
+    <string name="setting_device_pin_code_edit">Запрашивать PIN-код</string>
+    <string name="setting_about_app_name">ALCATEL ONETOUCH</string>
+    <string name="setting_success">Готово</string>
+    <string name="setting_failed">Ошибка</string>
+    <string name="setting_backup_failed">Не удалось создать резервную копию настроек роутера.</string>
+    <string name="setting_backup_success">Создана резервная копия настроек роутера.</string>
+    <string name="setting_restore_failed">Не удалось восстановить.</string>
+    <string name="setting_restore_success">Восстановление завершено. Устройство будет перезагружено.</string>
+    <string name="setting_restore_no_backup_file">Архив не найден</string>
+    <string name="setting_reboot_failed">Не удалось перезагрузить устройство.</string>
+    <string name="setting_reboot_success">Готово. Устройство будет перезагружено.</string>
+    <string name="setting_reset_failed">Не удалось выполнить сброс.</string>
+    <string name="setting_reset_success">Готово. Настройки устройства будут сброшены к заводским значениям.</string>
+    <string name="setting_power_off_failed">Ошибка выключения.</string>
+    <string name="setting_power_off_success">Готово. Устройство будет выключено.</string>
+    <string name="setting_ssid_invalid">Длина имени сети (SSID) не должна превышать 32 символов. Можно использовать символы: 0-9, a-z, A-Z, "-", "_", "." и пробел.</string>
+    <string name="setting_wifi_error_title">Изменить ключ</string>
+    <string name="setting_change_login_password">Изменить пароль</string>
+    <string name="setting_log_out">Выйти</string>
+    <string name="setting_current_password">Текущий пароль:</string>
+    <string name="setting_new_password">Новый пароль:</string>
+    <string name="setting_confirm_password">Подтвердите новый пароль:</string>
+    <string name="setting_password_note">Внимание! Пароль должен состоять из 4–16 символов.</string>
+    <string name="setting_network_mode">Режим сети</string>
+    <string name="setting_network_searching">ПОИСК СЕТИ…</string>
+    <string name="setting_network_selection">Выбор сети</string>
+    <string name="setting_network_wifi_network_title">Сеть Wi-Fi</string>
+    <string name="setting_network_profile_list">Список профилей</string>
+    <string name="setting_network_add_profile">Добавить профиль</string>
+    <string name="setting_network_disconnect_first">Для продолжения отключитесь от Интернета</string>
+    <string name="setting_network_try_again">Отключение… Повторите попытку позже.</string>
+    <string name="setting_network_profile_management">Управление профилем</string>
+    <string name="setting_network_profile_management_profile_name">*Имя профиля</string>
+    <string name="setting_network_profile_management_dial_number">*Номер дозвона</string>
+    <string name="setting_network_profile_management_apn">APN</string>
+    <string name="setting_network_profile_management_user_name">Имя пользователя</string>
+    <string name="setting_network_profile_management_password">Пароль</string>
+    <string name="setting_network_profile_management_protocol">Протокол</string>
+    <string name="setting_network_profile_management_protocol_none">Нет</string>
+    <string name="setting_network_profile_management_protocol_tcp">TCP</string>
+    <string name="setting_network_profile_management_protocol_udp">UDP</string>
+    <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
+    <string name="setting_network_profile_management_profile_detail">Информация о профиле</string>
+    <string name="setting_network_profile_management_delete_profile">Удалить профиль</string>
+    <string name="setting_network_profile_dial_number_wrong">Номер дозвона должен содержать не более 24 символов</string>
+    <string name="setting_network_profile_dial_number_empty">Введите номер дозвона</string>
+    <string name="setting_network_profile_input_profile_name">Введите имя профиля</string>
+    <string name="setting_network_profile_error_profile_name">Имя профиля не может содержать специальные символы</string>
+    <string name="setting_network_mode_auto">LTE/UMTS/GSM (авто)</string>
+    <string name="setting_network_mode_manual">Вручную</string>
+    <string name="setting_network_mode_2G_only">Только GSM</string>
+    <string name="setting_network_mode_3G_only">Только UMTS</string>
+    <string name="setting_network_mode_4G_only">Только LTE</string>
+    <string name="setting_network_mode_LTE_only">Только LTE</string>
+    <string name="other_login_warning_title">Предупреждение о входе</string>
+    <string name="setting_network_profile_management_auth_type_pap">PAP</string>
+    <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
+    <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP и CHAP</string>
+    <string name="setting_network_profile_management_cannot_delete_predefined_profile">Нельзя удалить предустановленный профиль</string>
+    <string name="setting_network_profile_management_cannot_delete_default_profile">Нельзя удалить профиль по умолчанию</string>
+    <string name="setting_network_profile_management_already_default">Профиль установлен в качестве профиля по умолчанию.</string>
+    <string name="setting_wifi_wep">WEP</string>
+    <string name="setting_wifi_wpa">WPA</string>
+    <string name="setting_wifi_wpa2">WPA2</string>
+    <string name="setting_wifi_wpa_or_wpa2">WPA/WPA2</string>
+    <string name="setting_wifi_aes">AES</string>
+    <string name="setting_wifi_tkip">TKIP</string>
+    <string name="setting_wifi_open">Не защищена</string>
+    <string name="setting_wifi_share">Общий доступ</string>
+    <string name="setting_wifi_save">Сохранить</string>
+    <string name="setting_wifi_ssid_can_not_be_empty">Имя сети (SSID) не может быть пустым.</string>
+    <!-- setting end -->
+    <!-- notification start -->
+    <string name="usage_limit_notification_title">Заканчивается трафик</string>
+    <string name="usage_limit_over_notification_content">Месячный лимит почти исчерпан.</string>
+    <string name="usage_limit_less_notification_content">Осталось менее %1$s.</string>
+    <string name="usage_maximum_monthly_plan_notice">Месячный лимит:</string>
+    <string name="battery_limit_notification_title">Батарея</string>
+    <string name="battery_limit_notification_content1">Низкий заряд батареи. Осталось %d%%.</string>
+    <string name="battery_limit_notification_content2">Низкий заряд батареи. Осталось %d%%.</string>
+    <string name="new_message_notification_title">Новое сообщение</string>
+    <string name="new_message_notification_content">Новое сообщение</string>
+    <string name="upgrade_notification_title">Обновить</string>
+    <string name="upgrade_notification_content">Доступна новая версия ПО.</string>
+    <!-- notification end -->
+    <!-- Dialog start -->
+    <string name="dialog_delete_title">Подтверждение удаления</string>
+    <string name="dialog_delete_content">Подтвердите удаление этой цепочки сообщений.</string>
+    <string name="dialog_delete_content_description">Чтобы удалить одно сообщение, нажмите и удерживайте его.</string>
+    <string name="dialog_delete_button">Удалить цепочку сообщений</string>
+    <string name="dialog_delete_single_sms_content">Удалить?</string>
+    <string name="dialog_delete_multi_sms_content">Удалить?</string>
+    <string name="dialog_warning_5g">Если ваш телефон не поддерживает Wi-Fi 5 ГГц, вам не будут доступны возможности Wi-Fi 5 ГГц.</string>
+    <string name="dialog_change_to_5g">Переключиться на Wi-Fi 5 ГГц</string>
+    <string name="dialog_warning_title">Внимание!</string>
+    <string name="dialog_warning_error_pin_code_error_3times">Некорректный PIN-код введён 3 раза. Введите PUK-код. Если PUK-код будет введён неверно 10 раз, SIM-карта будет полностью заблокирована.</string>
+    <!-- Dialog end -->
+    <!-- PIN start -->
+    <string name="puk_prompt_str">PIN-коды не совпадают.</string>
+    <string name="pin_title">Введите PIN-код</string>
+    <string name="pin_code_label">PIN-код:</string>
+    <string name="pin_error_waring_title">Введён некорректный PIN-код.</string>
+    <string name="puk_title">Введите PUK-код.</string>
+    <string name="puk_code_label">PUK-код:</string>
+    <string name="puk_remain_three_times">Осталось попыток: 3</string>
+    <string name="puk_new_pin_label">Новый PIN-код:</string>
+    <string name="puk_confirm_pin_label">Подтвердите PIN-код:</string>
+    <string name="puk_format_wrong_msg">PUK-код должен состоять из 8 цифр.</string>
+    <string name="puk_error_waring_title">Введён некорректный PUK-код.</string>
+    <string name="error_info">Ошибка</string>
+    <string name="btn_reply">Повторить</string>
+    <string name="IDS_PIN_LOCKED">Введите PIN-код</string>
+    <string name="IDS_PUK_LOCKED">Введите PUK-код</string>
+    <string name="IDS_PIN_CHECK_PIN_PROGRESS">Проверка PIN-кода</string>
+    <string name="IDS_PIN_CHECK_PUK_PROGRESS">Проверка PUK-кода</string>
+    <string name="remain_times">Осталось попыток: %1$d</string>
+    <!-- PIN end -->
+    <!-- Login view start -->
+    <string name="login_title">Введите пароль администратора.</string>
+    <string name="login_prompt_str">Некорректный пароль.</string>
+    <string name="login_user_name">admin</string>
+    <string name="login_psd_error_msg">Некорректный пароль.</string>
+    <string name="login_check_dialog_title">Вход</string>
+    <string name="login_check_dialog_content">Вход</string>
+    <string name="login_invalid_password">Некорректный пароль. Пароль должен состоять только из символов: 0-9, a-z, A-Z,-+!@$#^&amp;*.</string>
+    <string name="login_other_user_logined_error_msg">К роутеру уже подключён администратор. Выполняется смена администраторов.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg">К роутеру уже подключён администратор. Выполнить вход? Это приведёт к отключению уже подключённого администратора.</string>
+    <string name="login_login_time_used_out_msg">Использованы все попытки входа. Перезагрузите устройство и попробуйте снова.</string>
+    <string name="login_warning">Предупреждение о входе</string>
+    <string name="login_logout_successful">Выход выполнен.</string>
+    <string name="login_kickoff_logout_successful">Вы отключены.</string>
+    <string name="change_password_successful">Пароль изменён.</string>
+    <string name="wrong_current_password">Некорректный текущий пароль.</string>
+    <string name="change_password_failed">Не удалось изменить пароль.</string>
+    <string name="inconsistent_new_password">Введённые пароли не совпадают.</string>
+    <string name="input_current_password">Введите текущий пароль.</string>
+    <string name="change_passowrd_invalid_password">Пароль должен содержать от 4 до 16 символов</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <!-- Login view end -->
+    <!-- Refresh WIFI start -->
+    <string name="refresh_wifi_title">Не подключено к Wi-Fi</string>
+    <string name="refresh_wifi_tip">Подключитесь к Wi-Fi-роутеру Alcatel</string>
+    <string name="refresh">Обновить</string>
+    <!-- Refresh WIFI end -->
+    <!-- DLNA start -->
+    <string name="second">с</string>
+    <string name="separate">/</string>
+    <string name="init_time">00:00</string>
+    <string name="load_image_fail">Не удалось загрузить. Изображение</string>
+    <string name="parse_image_fail">Не удалось обработать изображение</string>
+    <string name="toast_musicplay_fail">ошибка воспроизведения аудио</string>
+    <string name="toast_videoplay_fail">ошибка воспроизведения видео</string>
+    <string name="video_loading">Загрузка…</string>
+    <string name="video_speed_unit_second">с</string>
+    <string name="buffering">Загрузка…</string>
+    <string name="mp_unknown_artist">Неизвестный артист</string>
+    <string name="mp_unknown_album">Неизвестный альбом</string>
+    <string name="mp_cant_find_lyrics">не удалось найти файл с текстом песни</string>
+    <string name="mp_lyrics_tips">***файлы с текстами песен загружаются из Интернета, это пример***</string>
+    <string name="ftp_not_open">Включите FTP в настройках.</string>
+    <string name="dlna_not_open">Включите DLNA в настройках.</string>
+    <!-- DLNA end -->
+    <!-- FTP FILE EXPLORER -->
+    <string name="ftpfile_app_name">Файлы</string>
+    <string name="ftpfile_cancel">Отмена</string>
+    <string name="category_all">Все</string>
+    <string name="category_apk">Приложения</string>
+    <string name="category_document">Документы</string>
+    <string name="category_music">Музыка</string>
+    <string name="category_other">Другое</string>
+    <string name="category_picture">Изображения</string>
+    <string name="category_theme">Темы</string>
+    <string name="category_video">Видео</string>
+    <string name="category_zip">Архивы</string>
+    <string name="confirm">ОК</string>
+    <string name="confirm_know">ОК</string>
+    <string name="error_info_cant_send_folder">Нельзя отправить папку</string>
+    <string name="fail_to_create_folder">Ошибка: папка уже существует или сбой FTP.</string>
+    <string name="fail_to_rename">Файл или папка с таким именем уже существует</string>
+    <string name="file_info_canread">Читаемый:</string>
+    <string name="file_info_location">Путь:</string>
+    <string name="file_info_size">Размер:</string>
+    <string name="file_size">%d Б</string>
+    <string name="instruction">Введите этот адрес в своём FTP-клиенте:</string>
+    <string name="menu_item_search">Поиск</string>
+    <string name="menu_item_sort">Сортировка</string>
+    <string name="menu_item_sort_date">Дата</string>
+    <string name="menu_item_sort_name">Имя</string>
+    <string name="menu_item_sort_size">Размер</string>
+    <string name="menu_item_sort_type">Тип</string>
+    <string name="menu_item_sort_by_name">Сортировка по имени</string>
+    <string name="menu_item_sort_by_type">Сортировка по типу</string>
+    <string name="multi_select_title">Выбрано: <xliff:g id="number">%1$s</xliff:g></string>
+    <string name="new_folder_name">Новая папка</string>
+    <string name="no">Нет</string>
+    <string name="notif_server_starting">FTP-сервер запущен</string>
+    <string name="notif_title">FTP-сервер</string>
+    <string name="operation_cancel">Отмена</string>
+    <string name="operation_copy">Копировать</string>
+    <string name="operation_copy_path">Скопировать путь к файлу</string>
+    <string name="operation_create_folder">Новая папка</string>
+    <string name="operation_create_folder_message">Введите имя папки</string>
+    <string name="operation_download">Загрузить</string>
+    <string name="operation_delete">Удалить</string>
+    <string name="operation_delete_confirm_message">Удалить?</string>
+    <string name="operation_deleting">Удаление…</string>
+    <string name="operation_info">Сведения</string>
+    <string name="operation_move">Переместить</string>
+    <string name="operation_move_to">Переместить в</string>
+    <string name="operation_moving">Перемещение…</string>
+    <string name="operation_paste">Вставить</string>
+    <string name="operation_pasting">Копирование…</string>
+    <string name="operation_refresh">Обновить</string>
+    <string name="operation_rename">Переименовать</string>
+    <string name="operation_rename_message">Введите новое имя</string>
+    <string name="operation_upload">Отправка</string>
+    <string name="operation_selectall">Выбрать все</string>
+    <string name="operation_send">Отправить</string>
+    <string name="operation_share">Отправить</string>
+    <string name="operation_show_sys">Показывать скрытые файлы</string>
+    <string name="operation_edit">Изменить</string>
+    <string name="operation_cancel_edit">Отменить изменения</string>
+    <string name="operation_add_file">Добавить файл</string>
+    <string name="sd_folder">SD-карта</string>
+    <string name="tab_ftp_client">FTP-клиент</string>
+    <string name="tab_remote">FTP</string>
+    <string name="tab_sd">Файл</string>
+    <string name="ftpfile_yes">Да</string>
+    <string name="dialog_select_type">Выберите тип файла</string>
+    <string name="dialog_type_text">Текст</string>
+    <string name="dialog_type_audio">Аудио</string>
+    <string name="dialog_type_video">Видео</string>
+    <string name="dialog_type_image">Изображение</string>
+    <string name="favorite_photo">Фото</string>
+    <string name="favorite_sdcard">SD-карта</string>
+    <string name="menu_exit">Выход</string>
+    <string name="pref_primary_folder">Домашняя папка</string>
+    <string name="pref_read_root">Корневая папка</string>
+    <string name="default_primary_folder">/mnt/sdcard</string>
+    <string name="pref_primary_folder_summary">Папка, которая будет открываться при запуске приложения. Текущее значение: <xliff:g id="string">%1$s</xliff:g></string>
+    <string name="custom_delete_dlg_text1">Удалить</string>
+    <string name="custom_delete_dlg_text2">Удалить выбранный файл?</string>
+    <string name="details_text_size">Размер:</string>
+    <string name="details_text_create_date">Создан:</string>
+    <string name="details_text_modified_date">Изменён:</string>
+    <string name="choose">Выберите папку</string>
+    <string name="new_foler">Новая папка</string>
+    <string name="foler_name">имя папки</string>
+    <string name="sdcard">SD-карта</string>
+    <string name="fail">Файл</string>
+    <string-array name="fail_cause">
+        <item>[cause 1] Dossier déjà existant !</item>
+        <item>[cause 2] Échec de création du dossier !</item>
+    </string-array>
+    <string name="succeed">Готово</string>
+    <string-array name="succeed_desc">
+        <item>Création du dossier effectuée ! </item>
+    </string-array>
+    <string name="download_text_dling">Загрузка…</string>
+    <string name="download_text_path">Путь:</string>
+    <!-- FTP FILE END -->
+    <!-- SMART WIDGET START -->
+    <string name="widget_usage_left">Осталось</string>
+    <string name="widget_usage_excess">Превышение</string>
+    <string name="widget_usage_used">Использовано</string>
+    <!-- SMART WIDGET END -->
+    <!-- Welcome Guide -->
+    <string name="guide1_title">УПРАВЛЯЙТЕ УДАЛЁННО</string>
+    <string name="guide1_description">Приложение «ALCATEL LINK» совместимо с высокоскоростными 4G Wi-Fi-роутерами Alcatel. Легко и просто управляйте роутером со смартфона или планшетного ПК!</string>
+    <string name="guide2_title">БУДЬТЕ В КУРСЕ</string>
+    <string name="guide2_description">Приложение «ALCATEL LINK» в реальном времени отображает состояние подключения, трафик, SMS и уровень заряда батареи. Установите ограничение на месячное потребление трафика в приложении – при достижении этого ограничения роутер будет отключён от сети Интернет.</string>
+    <string name="guide3_title">УПРАВЛЯЙТЕ БЕЗОПАСНОСТЬЮ</string>
+    <string name="guide3_description">Приложение «ALCATEL LINK» позволяет блокировать устройства, подключающиеся к роутеру без разрешения. А подключённым устройствам присвойте имена на ваш вкус!</string>
+    <string name="what_new_btn_text">Приступить</string>
+    <!-- Welcome Guide End -->
+    <string-array name="usage_unit">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+	<string name="enable_sd_card">Нет доступа к SD-карте. Пожалуйста, подключите её.</string>
+    <string name="sms_unread_num">(%1$d)</string>
+    <string name="confirm_folder_replace">подтверждение замены</string>
+    <string name="confirm_folder_content">Файл с таким именем уже существует.</string>
+    <string name="no_file">Пустая папка</string>
+    <string name="added_favorite">Добавить в избранное</string>
+    <string name="category_favorite">Избранное</string>
+    <string name="file_info_canwrite">Перезаписываемый:</string>
+    <string name="file_info_ishidden">Скрытый:</string>
+    <string name="file_info_modified">Изменено:</string>
+    <string name="install_failed">Ошибка установки</string>
+    <string name="install_successful">Установка завершена</string>
+    <string name="instruction_pre">Запустить службу FTP-сервера</string>
+    <string name="pref_show_real_path_summary">Показывать полный путь в адресной строке</string>
+    <string name="no_wifi">Не подключено к Wi-Fi</string>
+    <string name="pref_show_real_path">Показывать полный путь</string>
+    <string name="no_wifi_hint">Не подключено к Wi-Fi. Проверьте настройки Wi-Fi</string>
+    <string name="operation_cancel_selectall">Отменить выбор</string>
+    <string name="operation_favorite">Добавить в избранное</string>
+    <string name="operation_hide_sys">Скрывать скрытые файлы</string>
+    <string name="operation_unfavorite">Удалить из избранного</string>
+    <string name="sd_card_available">Доступно: <xliff:g id="available_size">%1$s</xliff:g></string>
+    <string name="removed_favorite">Удалено из избранного</string>
+    <string name="sd_card_size">Ёмкость SD-карты: <xliff:g id="total_size">%1$s</xliff:g></string>
+    <string name="search_hint">Поиск файлов</string>
+    <string name="search_title">Поиск файлов</string>
+    <string name="start_server">Запустить службу</string>
+    <string name="stop_server">Остановить службу</string>
+    <string name="storage_warning">Внешний накопитель не доступен или не может быть прочитан</string>
+    <string name="tab_category">Просмотр</string>
+    <string name="wifi_state">Статус Wi-Fi</string>
+    <string name="favourite_root">Корневая папка</string>
+    <string name="favorite_ringtone">Мелодия звонка</string>
+    <string name="menu_setting">Предпочтения</string>
+    <string name="preference_title">Основные настройки</string>
+  <string name="setting_wep_mode_array">
+      <item>не защищена</item>
+      <item>общий ключ</item>
+  </string>
+</resources>

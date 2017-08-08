@@ -7,18 +7,18 @@
         android:id="@+id/select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:button="@null"
-        android:layout_marginRight="10dip"
-        android:layout_marginLeft="5dip"
+        android:layout_marginEnd="10dip"
+        android:layout_marginStart="5dip"
         android:background="@drawable/selector_checkbox" />
 	<LinearLayout 
 	    android:id="@+id/content"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_toLeftOf="@id/select"
+	    android:layout_alignParentStart="true"
+	    android:layout_toStartOf="@id/select"
 	    android:orientation="vertical" >
 	    <RelativeLayout
 	        android:id="@+id/row_layout"
@@ -32,8 +32,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 				android:layout_centerVertical="true"
-	            android:layout_alignParentLeft="true"
-	            android:layout_marginLeft="10dip"
+	            android:layout_alignParentStart="true"
+	            android:layout_marginStart="10dip"
 	            android:ellipsize="end"
 	            android:singleLine="true"
 	            android:textStyle="bold" 
@@ -44,8 +44,8 @@
 	            android:id="@+id/sms_item_count_layout"
 			    android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="10dip"
-		       	android:layout_toRightOf="@id/sms_item_number"
+		        android:layout_marginStart="10dip"
+		       	android:layout_toEndOf="@id/sms_item_number"
 		        android:layout_alignBottom="@id/sms_item_number" >
 		        <TextView
 		            android:id="@+id/sms_item_count"
@@ -71,8 +71,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 				android:layout_alignBottom="@id/sms_item_number"
-	            android:layout_toRightOf="@id/sms_item_count_layout"
-	            android:layout_alignParentRight="true"
+	            android:layout_toEndOf="@id/sms_item_count_layout"
+	            android:layout_alignParentEnd="true"
 	            android:ellipsize="end"
 	            android:singleLine="true"
 	            android:text="2014-8-12 12:15"
@@ -85,12 +85,12 @@
 	        android:id="@+id/sms_item_content_row_layout"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dip" >
+	        android:layout_marginStart="10dip" >
 		    <TextView
 		        android:id="@+id/sms_item_content"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentStart="true"
 		        android:ellipsize="end"
 		        android:singleLine="true"
 		        android:textSize="16sp"
@@ -102,8 +102,8 @@
 	<View android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:layout_marginTop="5dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
+        android:layout_marginStart="10dip"
+        android:layout_marginEnd="10dip"
         android:layout_below="@id/content"
         android:background="@color/color_divider"/>
 </RelativeLayout>

@@ -16,13 +16,13 @@
              android:id="@+id/mode_auto"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="25dp"
-             android:layout_marginRight="25dp"
+             android:layout_marginStart="25dp"
+             android:layout_marginEnd="25dp"
              android:background="@android:color/transparent"
               android:textSize="30sp" 
              android:button="@null"
              android:checked="true"
-             android:drawableLeft="@drawable/radiobutton"
+             android:drawableStart="@drawable/radiobutton"
              android:enabled="true"
              android:paddingBottom="25dip"
              android:paddingTop="25dip"
@@ -38,13 +38,13 @@
              android:id="@+id/mode_manual"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="25dp"
-             android:layout_marginRight="25dp"
+             android:layout_marginStart="25dp"
+             android:layout_marginEnd="25dp"
              android:background="@android:color/transparent"
               android:textSize="30sp" 
              android:button="@null"
              android:checked="false"
-             android:drawableLeft="@drawable/radiobutton"
+             android:drawableStart="@drawable/radiobutton"
              android:enabled="true"
              android:paddingBottom="25dip"
              android:paddingTop="25dip"
@@ -64,7 +64,7 @@
 	        android:textColor="@color/color_deep_grey"
 	        android:textSize="18sp"
 	        android:text="@string/setting_network_searching"
-	        android:layout_marginLeft="30dp"/>
+	        android:layout_marginStart="30dp"/>
     </LinearLayout>
      
     <FrameLayout

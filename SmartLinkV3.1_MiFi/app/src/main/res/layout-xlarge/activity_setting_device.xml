@@ -37,7 +37,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
+		        android:layout_marginEnd="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -76,7 +76,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
+		        android:layout_marginEnd="25dp"
 		        android:layout_gravity="center|end"/>
          </FrameLayout>
             
@@ -104,7 +104,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
+		        android:layout_marginEnd="25dp"
 		        android:layout_gravity="center|end"/>
          </FrameLayout>
          
@@ -135,7 +135,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
+		        android:layout_marginEnd="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -177,7 +177,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
+		        android:layout_marginEnd="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -209,7 +209,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="25dp"
+		        android:layout_marginEnd="25dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -303,7 +303,7 @@
 
           <TextView
               android:id="@+id/btn_default_switch"
-              android:layout_marginRight="25dp"
+              android:layout_marginEnd="25dp"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="end|center_vertical"
@@ -320,7 +320,7 @@
 		    android:text="@string/dialog_warning_error_pin_code_error_3times"
 		    android:textSize="24sp"
 		    android:textColor="@color/red"
-		    android:layout_marginLeft="25dp"
+		    android:layout_marginStart="25dp"
 		    android:visibility="gone"/>
 	</LinearLayout>
 	
