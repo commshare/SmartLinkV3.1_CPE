@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/pin_error_waring_title"
-                android:paddingLeft="12dip"
+                android:paddingStart="12dip"
                 android:textSize="20sp"
                 android:textStyle="bold" 
                 android:textColor="@color/color_black" />
@@ -59,7 +59,7 @@
 		        android:layout_height="45dip"
 				android:gravity="center"
 				android:textSize="24sp"
-				android:layout_toLeftOf="@id/txtHide" 
+				android:layout_toStartOf="@id/txtHide"
 		        android:background="@drawable/selector_common_button"
 		        android:text="@string/btn_reply"
 		        android:textColor="@drawable/common_button_text"/>  
@@ -75,7 +75,7 @@
 	            android:layout_width="120dip"
 		        android:layout_height="45dip"
 		        android:textSize="24sp"
-		        android:layout_toRightOf="@id/txtHide" 
+		        android:layout_toEndOf="@id/txtHide"
 		        android:background="@drawable/selector_common_button"
 		        android:text="@string/cancel"
 		        android:textColor="@drawable/common_button_text"/>

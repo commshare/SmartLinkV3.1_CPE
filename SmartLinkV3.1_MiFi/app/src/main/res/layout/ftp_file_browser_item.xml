@@ -14,7 +14,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:paddingLeft="10dip">
+        android:paddingStart="10dip">
 
         <ImageView
             android:id="@+id/file_checkbox"
@@ -55,7 +55,7 @@
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="5dip">
+        android:paddingStart="5dip">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -71,7 +71,7 @@
             <TextView
                 android:id="@+id/file_count"
                 android:layout_width="wrap_content"
-                android:layout_marginLeft="5dip"
+                android:layout_marginStart="5dip"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="14px"
+                android:layout_marginStart="14px"
                 android:gravity="left"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 

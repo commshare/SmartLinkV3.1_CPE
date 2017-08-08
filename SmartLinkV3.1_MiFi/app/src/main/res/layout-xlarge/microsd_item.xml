@@ -13,7 +13,7 @@
 	    android:id="@+id/microsdItemIcon" 
 		android:layout_width="75dip" 
 		android:layout_height="75dip"
-		android:layout_marginLeft="5dip"
+		android:layout_marginStart="5dip"
 		android:visibility="visible" 
 		android:layout_gravity="center">
 	</ImageView>
@@ -31,8 +31,8 @@
 	    android:layout_width="fill_parent"
 	        android:layout_height="1dip"
 	        android:layout_marginTop="8dip"
-	        android:layout_marginLeft="8dip"
-	        android:layout_marginRight="8dip"
+	        android:layout_marginStart="8dip"
+	        android:layout_marginEnd="8dip"
 	        android:layout_below="@id/content"
 	        android:background="@color/color_divider"/>
      </RelativeLayout>

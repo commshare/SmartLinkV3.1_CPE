@@ -7,7 +7,7 @@
 		    android:id="@+id/imageView" 
 			android:layout_width="50dip" 
 			android:layout_height="50dip"
-			android:layout_marginLeft="3dip"
+			android:layout_marginStart="3dip"
 			android:layout_gravity="center">
 		</ImageView>
 		<TextView 
@@ -17,7 +17,7 @@
 			android:padding="10dp"
 			android:text="test"
 			android:textSize="20sp"  
-			android:layout_toRightOf="@id/imageView"
+			android:layout_toEndOf="@id/imageView"
 			android:gravity="center"
 			android:textColor="#ff000000">
 		</TextView>
@@ -27,8 +27,8 @@
 		    android:layout_below="@id/imageView"
 	        android:layout_height="1dip"
 	        android:layout_marginTop="5dip"
-	        android:layout_marginLeft="5dip"
-	        android:layout_marginRight="5dip"
+	        android:layout_marginStart="5dip"
+	        android:layout_marginEnd="5dip"
 	        android:background="@color/color_divider"/>
 		
 </RelativeLayout>

@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="@string/pop_dialog_usagesetting"
                 android:textColor="@color/color_black"
@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="@string/pop_dialog_clearhistory"
                 android:textColor="@color/color_black"

@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Aplikacja LINK</string>
+    <!-- common start -->
+    <string name="cancel">Anuluj</string>
+    <string name="ok">OK</string>
+    <string name="done">Gotowe</string>
+    <string name="back">Wstecz</string>
+    <string name="delete">Usuń</string>
+    <string name="upload">Wczytaj</string>
+    <string name="deleting">Usuwanie</string>
+    <string name="yes">Tak</string>
+    <string name="sending">Wysyłanie</string>
+    <string name="apply">Zastosuj</string>
+    <string name="skip">Pomiń</string>
+    <string name="next">Dalej</string>
+    <string name="finish">Zakończ</string>
+    <string name="continue_anyway">Kontynuuj</string>
+    <!-- common end -->
+    <!-- Qucik Setup -->
+    <string name="qs_title">Szybka konfiguracja</string>
+    <string name="qs_exit_query">Wyjdź z okna szybkiej konfiguracji</string>
+    <string name="qs_item_pin_code">Kod PIN</string>
+    <string name="qs_pin_code_prompt">Wprowadź kod PIN\nPozostało prób: <xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
+    <string name="qs_item_wifi_ssid">Nazwa sieci Wi-Fi (SSID)</string>
+    <string name="qs_wifi_ssid_prompt">Identyfikator SSID powinien zawierać od 1 do 32 znaków.</string>
+    <string name="qs_item_wifi_passwd">Hasło Wi-Fi</string>
+    <string name="qs_wifi_passwd_prompt">Hasło powinno zawierać od 8 do 63 znaków.</string>
+    <string name="qs_wifi_wep_passwd_prompt">Hasło powinno zawierać 5 lub 13 znaków ASCII bądź 10 lub 26 znaków szesnastkowych</string>
+    <string name="qs_completed">Konfiguracja zakończona</string>
+    <string name="qs_summary">Urządzenie jest gotowe do użytku.</string>
+    <string name="qs_wifi_ssid">Nazwa sieci Wi-Fi (SSID): <xliff:g id="SSID">%1$s</xliff:g></string>
+    <string name="qs_wifi_passwd">Hasło Wi-Fi: <xliff:g id="PASSWD">%1$s</xliff:g></string>
+    <string name="qs_puk_code_title">Kod PUK</string>
+    <string name="qs_puk_code_prompt">Wprowadź kod PUK\nPozostało prób: <xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
+    <string name="qs_puk_code">Kod PUK:</string>
+    <string name="qs_pin_code_new">Nowy kod PIN:</string>
+    <string name="qs_pin_code_confirm">Potwierdź kod PIN:</string>
+    <!-- Quick Setup End -->
+    <!-- main fram start -->
+    <string name="main_home">Ekran główny</string>
+    <string name="main_sdsharing">Udostępnianie SD</string>
+    <string name="main_usage">Transmisja danych</string>
+    <string name="main_setting">Ustawienia</string>
+    <string name="main_sms">SMS</string>
+    <!-- Home view start -->
+    <string name="home_GB">GB</string>
+    <string name="home_KB">kB</string>
+    <string name="home_MB">MB</string>
+    <string name="home_B">B</string>
+    <string name="Home_unlock_pin">Odblokuj</string>
+    <string name="Home_no_sim">Brak karty SIM</string>
+    <string name="Home_sim_invalid">Nieprawidłowa karta SIM</string>
+    <string name="Home_pin_locked">Blokada kodem PIN</string>
+    <string name="Home_puk_locked">Blokada kodem PUK</string>
+    <string name="Home_SimCard_IsIniting">Inicjalizacja</string>
+    <string name="Home_PukTimes_UsedOut">Wykorzystano wszystkie próby wprowadzenia kodu PUK</string>
+    <string name="Home_SimLock_Required">Wymagana blokada karty SIM</string>
+    <string name="Home_SimCard_Detected">Wykryto kartę SIM</string>
+    <string name="Home_zero_time">0 godz. 0 min</string>
+    <string name="Home_zero_data">%1$sMB</string>
+    <string name="home_no_service">Brak usługi</string>
+    <string name="home_initializing">Inicjalizacja</string>
+    <string name="home_disconnected_to">Rozłączono</string>
+    <string name="home_connected_to">Połączono</string>
+    <string name="home_connecting_to">Łączenie</string>
+    <string name="home_disconnecting_to">Rozłączanie</string>
+    <string name="home_network_type_2g">2G</string>
+    <string name="home_network_type_3g">3G</string>
+    <string name="home_network_type_3g_plus">3G+</string>
+    <string name="home_network_type_4g">4G</string>
+    <string name="home_battery_ischarging">Ładowanie</string>
+    <string name="home_battery_completed">Ładowanie zakończone</string>
+    <string name="home_connected_duration">%1$sgodz. %2$smin</string>
+    <string name="access_lable">połączono</string>
+    <string name="home_sim_loched">Blokada karty SIM</string>
+    <string name="home_no_sim">Brak karty SIM</string>
+    <string name="home_pin_locked_notice">Najpierw sprawdź kod PIN w menu głównym.</string>
+    <string name="home_sim_not_accessible">Karta SIM jest niedostępna</string>
+    <string name="home_battery_unit">%</string>
+    <string name="home_usage_over_redial_message">Miesięczny plan danych został wykorzystany. Jeżeli chcesz ponownie wybrać numer, zmień wartości planu miesięcznego lub zresetuj zużycie danych.</string>
+    <!-- Home view end -->
+    <!-- pop dialog start -->
+    <string name="pop_dialog_usagesetting">Ustawienie transmisji danych</string>
+    <string name="pop_dialog_clearhistory">Wyczyść historię</string>
+    <!-- pop dialog end -->
+    <!-- Usage view end -->
+    <string name="usage_view_home">Ekran główny</string>
+    <string name="usage_view_duration">Czas trwania</string>
+    <string name="bt_set_monthlydata">Skonfiguruj miesięczny plan danych</string>
+    <string name="usage_status_des">Nie ustawiono planu danych</string>
+    <string name="usage_duration">%1$sgodz. %2$s min</string>
+    <string name="disconnected_descrition">Kiedy zużycie danych będzie równe wartości miesięcznego planu danych.</string>
+    <string name="usage_clear_history_success">Historia użycia została wyczyszczona.</string>
+    <string name="usage_clear_history_fail">Nie można wyczyścić historii użycia.</string>
+    <string name="usage_comsumptionexplain_label">Zakończ połączenie przed włączeniem funkcji czyszczenia.</string>
+    <!-- Usage view end -->
+    <!-- Usage setting start -->
+    <string name="usage_setting_title">Ustawienia transmisji danych</string>
+    <string name="usage_setting_timelimit">Limit czasowy</string>
+    <string name="usage_setting_settimelimit">Ustaw limit czasowy:</string>
+    <string name="usage_setting_timeunit">min</string>
+    <string name="usage_setting_usage">Transmisja danych</string>
+    <string name="usage_setting_billingday">Doba rozliczeniowa:</string>
+    <string name="usage_setting_dayunit">dzień</string>
+    <string name="usage_setting_monthlysataplan">Miesięczny plan danych:</string>
+    <string name="usage_setting_monthlyunit">MB</string>
+    <string name="usage_setting_dataconsunption">Użycie danych:</string>
+    <string name="usage_setting_roaming">Roaming</string>
+    <string name="roaming_descrition">Połącz automatycznie nawet w roamingu.</string>
+    <string name="usage_setting_autodisconnected">Rozłączanie automatyczne</string>
+    <!-- Usage setting end -->
+    <!-- sms start -->
+    <string name="sms_title">Wiadomość</string>
+    <string name="sms_empty">Brak wiadomości SMS</string>
+    <string name="sms_init">Wiadomość SMS niedostępna</string>
+    <string name="sms_list_view_draft">%1$d, kopia robocza</string>
+    <string name="sms_send_fail">Błąd</string>
+    <string name="sms_report_message">dostarczono</string>
+    <string name="sms_to">Do:</string>
+    <string name="sms_new_title">Wiadomość</string>
+    <string name="sms_error_send_error">Nie można wysłać wiadomości SMS</string>
+    <string name="sms_send_success">Wysyłanie wiadomości SMS zakończone powodzeniem.</string>
+    <string name="sms_error_message_full_storage">Skrzynka SMS jest pełna. Usuń niektóre wiadomości SMS, żeby wysyłać/zapisywać nowe.</string>
+    <string name="sms_delete_multi_success">Konwersacja została usunięta.</string>
+    <string name="sms_delete_multi_error">Nie można usunąć konwersacji.</string>
+    <string name="sms_delete_error">Nie można usunąć wiadomości SMS</string>
+    <string name="sms_delete_success">Wiadomość SMS została usunięta.</string>
+    <string name="sms_number_invalid">Błąd. Można wprowadzić tylko 3 numery telefonu.</string>
+    <string name="sms_save_success">Wiadomość SMS została zapisana w Roboczych.</string>
+    <string name="sms_save_error">Nie można zapisać wiadomości SMS.</string>
+    <!-- sms end -->
+    <!-- connect device start -->
+    <string name="device_manage_title">Urządzenia</string>
+    <string name="device_manage_connected">Połączone urządzenia (%1$d)</string>
+    <string name="device_manage_block">Zablokuj urządzenia (%1$d)</string>
+    <string name="device_manage_block_btn">Zablokuj</string>
+    <string name="device_manage_unblock_btn">Odblokuj</string>
+    <string name="device_manage_ip">IP:%1$s</string>
+    <string name="device_manage_mac">MAC:%1$s</string>
+    <string name="device_manage_set_name_failed">Nie można ustawić.</string>
+	<string name="device_manage_name_empty">Nazwa urządzenia jest nieprawidłowa.</string>
+    <!-- connect device end -->
+    <!-- microsd start -->
+    <string name="microsd_file">Plik</string>
+    <string name="microsd_videos">Wideo</string>
+    <string name="microsd_music">Muzyka</string>
+    <string name="microsd_pictures">Zdjęcia</string>
+    <string name="microsd_no_sdcard">Włóż kartę SD</string>
+    <!-- microsd end -->
+    <!-- setting start -->
+    <string name="setting_wifi">Wi-Fi</string>
+    <string name="setting_account">Konto</string>
+    <string name="setting_network">Sieć</string>
+    <string name="setting_power">Oszczędzanie energii</string>
+    <string name="setting_sharing">FTP&amp;DLNA</string>
+    <string name="setting_sharing_ftp">FTP</string>
+    <string name="setting_sharing_dlna">DLNA</string>
+    <string name="setting_upgrade">Aktualizuj</string>
+    <string name="setting_device">Urządzenie</string>
+    <string name="setting_about">Informacje</string>
+    <string name="setting_backup">Tworzenie kopii zapasowej i przywracanie</string>
+    <string name="setting_text_2point4G_wifi">Wi-Fi 2,4G</string>
+    <string name="setting_text_5G_wifi">Wi-Fi 5G</string>
+    <string name="setting_text_ssid">SSID:</string>
+    <string name="setting_text_ssid_broadcast">Przesyłanie SSID</string>
+    <string name="setting_text_passwrod">Hasło:</string>
+    <string name="setting_set_default">Domyślny</string>
+    <string name="setting_text_no_passwrod">Brak hasła</string>
+    <string name="setting_wifi_set_success">Ustawienia Wi-Fi zostały zmienione.</string>
+    <string name="setting_wifi_set_failed">Nie można zmienić ustawień Wi-Fi.</string>
+    <string name="setting_wifi_password_security_tip">Typ zabezpieczeń:</string>
+    <string name="setting_wifi_password_wpa_encryption_tip">Typ szyfrowania:</string>
+    <string name="setting_wifi_password_wpa_psw_tip">Hasło Wi-Fi:</string>
+    <string name="setting_wifi_password_wep_encryption_tip">Typ szyfrowania:</string>
+    <string name="setting_wifi_password_wep_psw_tip">Hasło Wi-Fi:</string>
+    <string name="setting_wep_password_error_prompt">Klucz WEP zawiera znaki ASCII z zakresu 5 – 13 bądź znaki szesnastkowe z zakresu 10 – 26. Klucz WEP powinien składać się ze znaków ASCII z zakresu 32 – 127 z wyjątkiem: , \" : ;&amp;\.</string>
+    <string name="setting_wpa_password_error_prompt">Klucz wstępny WPA (PSK) powinien składać się ze znaków ASCII z zakresu 8-63, a klucz WPA PSK powinien składać się ze znaków ASCII z zakresu 32-127 z wyjątkiem: , \" : ;&amp;\.</string>
+    <string name="setting_password_error_prompt">Błąd zmiany hasła Wi-Fi, spróbuj ponownie za chwilę!</string>
+    <string name="setting_disable_password_error_prompt">Nie można wyłączyć hasła Wi-Fi</string>
+    <string name="setting_titlebar_text_edit">Edytuj</string>
+    <string name="setting_titlebar_text_done">Gotowe</string>
+    <string name="setting_title_power">Oszczędzanie energii</string>
+    <string name="setting_title_backup">Tworzenie kopii zapasowej i przywracanie</string>
+    <string name="setting_title_upgrade">Aktualizuj</string>
+    <string name="setting_title_device">Urządzenie</string>
+    <string name="setting_title_about">Informacje</string>
+    <string name="setting_power_smart">Inteligentny</string>
+    <string name="setting_power_wifi">Wi-Fi w trybie uśpienia</string>
+    <string name="setting_power_wifi_description">Wi-Fi wyłączy się automatycznie, jeżeli połączenie będzie bezczynne przez 30 minut. Wciśnij dowolny przycisk, aby włączyć Wi-Fi.</string>
+    <string name="setting_backup_description">Tworzenie kopii zapasowej konfiguracji.</string>
+    <string name="setting_backup_btn_backup">Kopia zapasowa</string>
+    <string name="setting_restore_description">Przywracanie konfiguracji.</string>
+    <string name="setting_restore_btn_restore">Przywróć</string>
+    <string name="setting_about_version">Wersja</string>
+    <string name="setting_about_official_website">Oficjalna strona internetowa</string>
+    <string name="setting_about_management_page">Strona zarządzania</string>
+    <string name="setting_about_copyright">Copyright © 2014-2016 TCL Communication Ltd. Wszelkie prawa zastrzeżone.</string>
+    <string name="setting_upgrade_device_version">Urządzenie: bieżąca wersja</string>
+    <string name="setting_upgrade_new_device_version">Znaleziono nową wersję</string>
+    <string name="setting_upgrade_btn_check">Sprawdź</string>
+    <string name="setting_upgrade_current_app_version">Aplikacje na telefonie: bieżąca wersja</string>
+    <string name="setting_upgrade_new_app_version">Znaleziono nową wersję aplikacji</string>
+    <string name="setting_upgrade_check_failed">Nie można sprawdzić</string>
+    <string name="setting_upgrade_no_new_version">Brak nowej wersji</string>
+    <string name="setting_upgrade_no_connection">Brak połączenia</string>
+    <string name="setting_upgrade_firmware_warning">Proces aktualizacji będzie trwać kilka minut, nie wyłączaj urządzenia. Zaktualizować system?</string>
+    <string name="setting_upgrade_check_error">Nie można sprawdzić</string>
+    <string name="setting_upgrade_btn_upgrade">Aktualizuj</string>
+    <string name="setting_upgrade_not_start">Aktualizacja nie rozpoczęła się</string>
+    <string name="setting_upgrade_complete">Pobieranie zakończone, zaczekaj na zakończenie aktualizacji.</string>
+    <string name="setting_upgrade_stop_error">Błąd zatrzymania uaktualniania</string>
+    <string name="setting_upgrade_not_available">Usługa niedostępna</string>
+    <string name="setting_upgrade_get_update_state_failed">Nie można pobrać stanu aktualizacji.</string>
+    <string name="setting_upgrade_start_update_failed">Nie można rozpocząć aktualizacji.</string>
+    <string name="setting_upgrade_check_firmware_failed">Nie można pobrać nowej wersji.</string>
+    <string name="setting_upgrade_set_check_new_version_failed">Nie można sprawdzić nowej wersji.</string>
+    <string name="setting_upgrade_config_google_play">Skonfiguruj aplikację Google Play.</string>
+    <string name="setting_device_title">Informacje o systemie</string>
+    <string name="setting_device_software_version">Wersja oprogramowania:</string>
+    <string name="setting_device_hadrware_version">Wersja sprzętu:</string>
+    <string name="setting_device_device_name">Nazwa urządzenia:</string>
+    <string name="setting_device_imei">IMEI:</string>
+    <string name="setting_device_mac_address">Adres MAC:</string>
+    <string name="setting_device_ip">Adres IP:</string>
+    <string name="setting_device_subnet">Maska podsieci:</string>
+    <string name="setting_device_btn_power_off">Wyłącz</string>
+    <string name="setting_device_btn_reboot">Uruchom ponownie</string>
+    <string name="setting_device_btn_restart">Uruchom ponownie</string>
+    <string name="setting_device_btn_reset">Resetuj</string>
+    <string name="setting_device_upgrade_system">Aktualizuj system</string>
+    <string name="setting_device_backup_and_reset">Tworzenie kopii zapasowej i resetowanie</string>
+    <string name="setting_device_pin_code">Kod PIN</string>
+    <string name="setting_device_web_version">Wersja internetowa</string>
+    <string name="setting_device_pin_code_edit">Włączanie zabezpieczenia kodem PIN</string>
+    <string name="setting_about_app_name">ALCATEL ONETOUCH</string>
+    <string name="setting_success">Zakończono powodzeniem</string>
+    <string name="setting_failed">Niepowodzenie</string>
+    <string name="setting_backup_failed">Nie można skonfigurować kopii zapasowej urządzenia.</string>
+    <string name="setting_backup_success">Konfigurowanie kopii zapasowej urządzenia zostało zakończone.</string>
+    <string name="setting_restore_failed">Nie można przywrócić.</string>
+    <string name="setting_restore_success">Przywracanie zakończone, urządzenie zostanie natychmiast uruchomione ponownie.</string>
+    <string name="setting_restore_no_backup_file">Brak pliku kopii zapasowej.</string>
+    <string name="setting_reboot_failed">Ponowne uruchamianie nie powiodło się.</string>
+    <string name="setting_reboot_success">Zakończono powodzeniem, urządzenie zostanie natychmiast uruchomione ponownie.</string>
+    <string name="setting_reset_failed">Nie można zresetować.</string>
+    <string name="setting_reset_success">Konfiguracja zakończona, urządzenie zostanie natychmiast uruchomione ponownie.</string>
+    <string name="setting_power_off_failed">Wyłączanie nie powiodło się.</string>
+    <string name="setting_power_off_success">Zakończono powodzeniem, urządzenie zostanie natychmiast wyłączone.</string>
+    <string name="setting_ssid_invalid">Identyfikator SSID może zawierać maksymalnie 32 znaki z zakresu a – z, A – Z, 0 – 9, -._i spacje.</string>
+    <string name="setting_wifi_error_title">Zmień hasło</string>
+    <string name="setting_change_login_password">Zmień hasło logowania</string>
+    <string name="setting_log_out">Wyloguj</string>
+    <string name="setting_current_password">Aktualne hasło:</string>
+    <string name="setting_new_password">Nowe hasło:</string>
+    <string name="setting_confirm_password">Potwierdź hasło:</string>
+    <string name="setting_password_note">Uwaga: hasło powinno zawierać od 4 do 16 znaków.</string>
+    <string name="setting_network_mode">Tryb sieci</string>
+    <string name="setting_network_searching">WYSZUKIWANIE SIECI…</string>
+    <string name="setting_network_selection">Wybór sieci</string>
+    <string name="setting_network_wifi_network_title">Sieć Wi-Fi</string>
+    <string name="setting_network_profile_list">Lista profili</string>
+    <string name="setting_network_add_profile">Dodaj profil</string>
+    <string name="setting_network_disconnect_first">Najpierw odłącz sieć</string>
+    <string name="setting_network_try_again">Rozłączanie, spróbuj ponownie później</string>
+    <string name="setting_network_profile_management">Zarządzanie profilami</string>
+    <string name="setting_network_profile_management_profile_name">*Nazwa profilu</string>
+    <string name="setting_network_profile_management_dial_number">*Wybierany numer</string>
+    <string name="setting_network_profile_management_apn">APN</string>
+    <string name="setting_network_profile_management_user_name">Nazwa użytkownika</string>
+    <string name="setting_network_profile_management_password">Hasło</string>
+    <string name="setting_network_profile_management_protocol">Protokół</string>
+    <string name="setting_network_profile_management_protocol_none">Brak</string>
+    <string name="setting_network_profile_management_protocol_tcp">TCP</string>
+    <string name="setting_network_profile_management_protocol_udp">UDP</string>
+    <string name="setting_network_profile_management_protocol_tcp_or_udp">TCP/UDP</string>
+    <string name="setting_network_profile_management_profile_detail">Szczegóły profilu</string>
+    <string name="setting_network_profile_management_delete_profile">Usuń profil</string>
+    <string name="setting_network_profile_dial_number_wrong">Wybierany numer nie może zawierać więcej niż 24 znaki</string>
+    <string name="setting_network_profile_dial_number_empty">Wybierany numer nie może być pusty</string>
+    <string name="setting_network_profile_input_profile_name">Nazwa profilu nie może być pusta</string>
+    <string name="setting_network_profile_error_profile_name">Nazwa profilu nie może zawierać znaków specjalnych</string>
+    <string name="setting_network_mode_auto">Automatycznie</string>
+    <string name="setting_network_mode_manual">Ręcznie</string>
+    <string name="setting_network_mode_2G_only">Tylko 2G</string>
+    <string name="setting_network_mode_3G_only">Tylko 3G</string>
+    <string name="setting_network_mode_4G_only">Tylko 4G</string>
+    <string name="setting_network_mode_LTE_only">Tylko 4G</string>
+    <string name="other_login_warning_title">Ostrzeżenie o logowaniu</string>
+    <string name="setting_network_profile_management_auth_type_pap">PAP</string>
+    <string name="setting_network_profile_management_auth_type_chap">CHAP</string>
+    <string name="setting_network_profile_management_auth_type_pap_and_chap">PAP&amp;CHAP</string>
+    <string name="setting_network_profile_management_cannot_delete_predefined_profile">Nie można usunąć profilu predefiniowanego</string>
+    <string name="setting_network_profile_management_cannot_delete_default_profile">Nie można usunąć profilu domyślnego</string>
+    <string name="setting_network_profile_management_already_default">Profil został już ustawiony jako domyślny</string>
+    <string name="setting_wifi_wep">WEP</string>
+    <string name="setting_wifi_wpa">WPA</string>
+    <string name="setting_wifi_wpa2">WPA2</string>
+    <string name="setting_wifi_wpa_or_wpa2">WPA/WPA2</string>
+    <string name="setting_wifi_aes">AES</string>
+    <string name="setting_wifi_tkip">TKIP</string>
+    <string name="setting_wifi_open">Otwórz</string>
+    <string name="setting_wifi_share">Udostępnij</string>
+    <string name="setting_wifi_save">Zapisz</string>
+    <string name="setting_wifi_ssid_can_not_be_empty">Pole SSID nie może być puste.</string>
+    <!-- setting end -->
+    <!-- notification start -->
+    <string name="usage_limit_notification_title">Ostrzeżenie o zużyciu danych</string>
+    <string name="usage_limit_over_notification_content">Zużycie danych jest równe wartości miesięcznego planu danych.</string>
+    <string name="usage_limit_less_notification_content">Zużycie danych wynosi mniej niż %1$s.</string>
+    <string name="usage_maximum_monthly_plan_notice">Maksymalna wartość miesięcznego planu danych wynosi</string>
+    <string name="battery_limit_notification_title">Ostrzeżenie o stanie baterii</string>
+    <string name="battery_limit_notification_content1">Niski poziom naładowania baterii, pozostało %d%%.</string>
+    <string name="battery_limit_notification_content2">Niski poziom naładowania baterii, pozostało %d%%.</string>
+    <string name="new_message_notification_title">Nowa wiadomość</string>
+    <string name="new_message_notification_content">Dostępna jest nowa wiadomość.</string>
+    <string name="upgrade_notification_title">Uaktualnij</string>
+    <string name="upgrade_notification_content">Dostępna jest nowa wersja.</string>
+    <!-- notification end -->
+    <!-- Dialog start -->
+    <string name="dialog_delete_title">Potwierdź usunięcie</string>
+    <string name="dialog_delete_content">Potwierdź usunięcie historii tej konwersacji</string>
+    <string name="dialog_delete_content_description">Jeżeli chcesz usunąć jedną wiadomość SMS, przytrzymaj ją i wybierz opcję Usuń.</string>
+    <string name="dialog_delete_button">Usuń historię konwersacji</string>
+    <string name="dialog_delete_single_sms_content">Usunąć tę wiadomość?</string>
+    <string name="dialog_delete_multi_sms_content">Usunąć te wiadomości?</string>
+    <string name="dialog_warning_5g">Jeżeli telefon nie obsługuje sieci 5G, korzystanie z wszystkich funkcji 5G nie będzie możliwe.</string>
+    <string name="dialog_change_to_5g">Zmień Wi-Fi na 5G</string>
+    <string name="dialog_warning_title">Ostrzeżenie</string>
+    <string name="dialog_warning_error_pin_code_error_3times">Nieprawidłowy kod PIN został wprowadzony 3 razy. Wprowadź kod PUK. Jeżeli nieprawidłowy kod PUK zostanie wprowadzony 10 razy, karta SIM zostanie zablokowana na stałe.</string>
+    <!-- Dialog end -->
+    <!-- PIN start -->
+    <string name="puk_prompt_str">Potwierdzony kod PIN powinien być taki sam jak nowy kod PIN.</string>
+    <string name="pin_title">Wprowadź kod PIN</string>
+    <string name="pin_code_label">Kod PIN:</string>
+    <string name="pin_error_waring_title">Błędny kod PIN.</string>
+    <string name="puk_title">Wprowadź kod PUK!</string>
+    <string name="puk_code_label">Kod PUK:</string>
+    <string name="puk_remain_three_times">Pozostało prób: 3</string>
+    <string name="puk_new_pin_label">Nowy kod PIN:</string>
+    <string name="puk_confirm_pin_label">Potwierdzony kod PIN:</string>
+    <string name="puk_format_wrong_msg">Kod PUK powinien zawierać 8 cyfr.</string>
+    <string name="puk_error_waring_title">Błędny kod PUK!</string>
+    <string name="error_info">Błąd</string>
+    <string name="btn_reply">Spróbuj ponownie</string>
+    <string name="IDS_PIN_LOCKED">Blokada kodem PIN</string>
+    <string name="IDS_PUK_LOCKED">Blokada kodem PUK</string>
+    <string name="IDS_PIN_CHECK_PIN_PROGRESS">Sprawdzanie kodu PIN</string>
+    <string name="IDS_PIN_CHECK_PUK_PROGRESS">Sprawdzanie kodu PUK</string>
+    <string name="remain_times">Pozostało prób: %1$d</string>
+    <!-- PIN end -->
+    <!-- Login view start -->
+    <string name="login_title">Wprowadź hasło administratora.</string>
+    <string name="login_prompt_str">Hasło jest nieprawidłowe.</string>
+    <string name="login_user_name">admin</string>
+    <string name="login_psd_error_msg">Hasło jest nieprawidłowe.</string>
+    <string name="login_check_dialog_title">Zaloguj się</string>
+    <string name="login_check_dialog_content">Zaloguj się</string>
+    <string name="login_invalid_password">Hasło nieprawidłowe. Hasło może zawierać jedynie znaki z zakresu 0 – 9, a – z, A – Z, oraz \"-+!@$#^&amp;*\"</string>
+    <string name="login_other_user_logined_error_msg">Aktualnie zalogowany jest inny użytkownik, spróbuj się zalogować za chwilę.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg">Aktualnie zalogowany jest inny użytkownik, czy chcesz się zalogować? Spowoduje to wylogowanie drugiego użytkownika.</string>
+    <string name="login_login_time_used_out_msg">Przekroczono limit prób logowania, zalogowanie się będzie możliwe po ponownym uruchomieniu urządzenia.</string>
+    <string name="login_warning">Ostrzeżenie o logowaniu</string>
+    <string name="login_logout_successful">Wylogowanie zakończone.</string>
+    <string name="login_kickoff_logout_successful">Zostałeś wylogowany.</string>
+    <string name="change_password_successful">Zmiana hasła zakończona.</string>
+    <string name="wrong_current_password">Bieżące hasło jest nieprawidłowe.</string>
+    <string name="change_password_failed">Nie można zmienić hasła.</string>
+    <string name="inconsistent_new_password">Nowe hasło jest niezgodne.</string>
+    <string name="input_current_password">Wprowadź bieżące hasło.</string>
+    <string name="change_passowrd_invalid_password">Hasło powinno zawierać od 4 do 16 znaków.</string>
+    <string name="unknown_error">Nieznany błąd</string>
+    <!-- Login view end -->
+    <!-- Refresh WIFI start -->
+    <string name="refresh_wifi_title">Brak połączenia Wi-Fi</string>
+    <string name="refresh_wifi_tip">Najpierw połącz z mobilnym hotspotem</string>
+    <string name="refresh">Odśwież</string>
+    <!-- Refresh WIFI end -->
+    <!-- DLNA start -->
+    <string name="second">s</string>
+    <string name="separate">/</string>
+    <string name="init_time">00:00</string>
+    <string name="load_image_fail">„Nie można wczytać zdjęcia”</string>
+    <string name="parse_image_fail">„Nie można parsować obrazu”</string>
+    <string name="toast_musicplay_fail">błąd odtwarzania muzyki</string>
+    <string name="toast_videoplay_fail">błąd odtwarzania wideo</string>
+    <string name="video_loading">Wczytywanie...</string>
+    <string name="video_speed_unit_second">s</string>
+    <string name="buffering">Wczytywanie...</string>
+    <string name="mp_unknown_artist">Nieznany wykonawca</string>
+    <string name="mp_unknown_album">Nieznany album</string>
+    <string name="mp_cant_find_lyrics">nie można odnaleźć tekstu</string>
+    <string name="mp_lyrics_tips">***Tekst pobrany z Internetu, tylko jako odniesienie***</string>
+    <string name="ftp_not_open">Otwórz funkcję FTP w ustawieniach.</string>
+    <string name="dlna_not_open">Otwórz funkcję DLNA w ustawieniach!</string>
+    <!-- DLNA end -->
+    <!-- FTP FILE EXPLORER -->
+    <string name="ftpfile_app_name">Eksplorator plików</string>
+    <string name="ftpfile_cancel">Anuluj</string>
+    <string name="category_all">Wszystko</string>
+    <string name="category_apk">Aplikacje</string>
+    <string name="category_document">Dokumenty</string>
+    <string name="category_music">Muzyka</string>
+    <string name="category_other">Inne</string>
+    <string name="category_picture">Obrazy</string>
+    <string name="category_theme">Motywy</string>
+    <string name="category_video">Wideo</string>
+    <string name="category_zip">Pliki zip</string>
+    <string name="confirm">OK</string>
+    <string name="confirm_know">OK</string>
+    <string name="error_info_cant_send_folder">Wysyłanie folderu nie powiodło się</string>
+    <string name="fail_to_create_folder">Niepowodzenie: folder już istnieje lub wystąpił błąd FTP.</string>
+    <string name="fail_to_rename">Nie można zmienić nazwy pliku lub folderu, ponieważ nazwa ta już istnieje</string>
+    <string name="file_info_canread">Odczytywalne:</string>
+    <string name="file_info_location">Ścieżka:</string>
+    <string name="file_info_size">Rozmiar:</string>
+    <string name="file_size">%d B</string>
+    <string name="instruction">Wpisz w kliencie FTP następujący adres:</string>
+    <string name="menu_item_search">Szukaj</string>
+    <string name="menu_item_sort">Sortuj wg</string>
+    <string name="menu_item_sort_date">Data</string>
+    <string name="menu_item_sort_name">Nazwa</string>
+    <string name="menu_item_sort_size">Rozmiar</string>
+    <string name="menu_item_sort_type">Typ</string>
+    <string name="menu_item_sort_by_name">Sortuj wg nazwy</string>
+    <string name="menu_item_sort_by_type">Sortuj wg typu</string>
+    <string name="multi_select_title">Wybrane elementy: <xliff:g id="number">%1$s</xliff:g></string>
+    <string name="new_folder_name">Nowy folder</string>
+    <string name="no">Nie</string>
+    <string name="notif_server_starting">Uruchomiono serwer FTP</string>
+    <string name="notif_title">Serwer FTP</string>
+    <string name="operation_cancel">Anuluj</string>
+    <string name="operation_copy">Kopiuj</string>
+    <string name="operation_copy_path">Skopiuj ścieżkę dostępu</string>
+    <string name="operation_create_folder">Nowy folder</string>
+    <string name="operation_create_folder_message">Wprowadź nazwę folderu</string>
+    <string name="operation_download">Pobierz</string>
+    <string name="operation_delete">Usuń</string>
+    <string name="operation_delete_confirm_message">Potwierdzić usunięcie?</string>
+    <string name="operation_deleting">Usuwanie...</string>
+    <string name="operation_info">Szczegóły</string>
+    <string name="operation_move">Przenieś</string>
+    <string name="operation_move_to">Przenieś do</string>
+    <string name="operation_moving">Przenoszenie...</string>
+    <string name="operation_paste">Wklej</string>
+    <string name="operation_pasting">Wklejanie...</string>
+    <string name="operation_refresh">Odśwież</string>
+    <string name="operation_rename">Zmień nazwę</string>
+    <string name="operation_rename_message">Podaj nową nazwę</string>
+    <string name="operation_upload">Wczytaj</string>
+    <string name="operation_selectall">Zaznacz wszystko</string>
+    <string name="operation_send">Wyślij</string>
+    <string name="operation_share">Udostępnij</string>
+    <string name="operation_show_sys">Pokaż pliki ukryte</string>
+    <string name="operation_edit">Edytuj</string>
+    <string name="operation_cancel_edit">Anuluj edycję</string>
+    <string name="operation_add_file">Dodaj plik</string>
+    <string name="sd_folder">Karta SD</string>
+    <string name="tab_ftp_client">Klient Ftp</string>
+    <string name="tab_remote">FTP</string>
+    <string name="tab_sd">Plik</string>
+    <string name="ftpfile_yes">Tak</string>
+    <string name="dialog_select_type">Wybierz typ pliku</string>
+    <string name="dialog_type_text">Tekst</string>
+    <string name="dialog_type_audio">Dźwięk</string>
+    <string name="dialog_type_video">Wideo</string>
+    <string name="dialog_type_image">Obraz</string>
+    <string name="favorite_photo">Zdjęcie</string>
+    <string name="favorite_sdcard">Karta SD</string>
+    <string name="menu_exit">Wyjdź</string>
+    <string name="pref_primary_folder">Folder macierzysty</string>
+    <string name="pref_read_root">Uprawnienia odczytu</string>
+    <string name="default_primary_folder">/mnt/kartasd</string>
+    <string name="pref_primary_folder_summary">Folder pojawiający się po uruchomieniu aplikacji, bieżąca wartość wynosi <xliff:g id="string">%1$s</xliff:g></string>
+    <string name="custom_delete_dlg_text1">Usuń</string>
+    <string name="custom_delete_dlg_text2">Usunąć wybrany plik?</string>
+    <string name="details_text_size">Rozmiar:</string>
+    <string name="details_text_create_date">Data utworzenia:</string>
+    <string name="details_text_modified_date">Data modyfikacji:</string>
+    <string name="choose">Wybierz folder</string>
+    <string name="new_foler">Nowy folder</string>
+    <string name="foler_name">Nazwa folderu</string>
+    <string name="sdcard">Karta SD</string>
+    <string name="fail">Błąd</string>
+    <string-array name="fail_cause">
+        <item>[cause 1] Dossier déjà existant !</item>
+        <item>[cause 2] Échec de création du dossier !</item>
+    </string-array>
+    <string name="succeed">Zakończ</string>
+    <string-array name="succeed_desc">
+        <item>Création du dossier effectuée ! </item>
+    </string-array>
+    <string name="download_text_dling">Pobieranie...</string>
+    <string name="download_text_path">Ścieżka:</string>
+    <!-- FTP FILE END -->
+    <!-- SMART WIDGET START -->
+    <string name="widget_usage_left">Pozostało</string>
+    <string name="widget_usage_excess">Nadwyżka</string>
+    <string name="widget_usage_used">Wykorzystano</string>
+    <!-- SMART WIDGET END -->
+    <!-- Welcome Guide -->
+    <string name="guide1_title">ZDALNE STEROWANIE</string>
+    <string name="guide1_description">Aplikacja Link jest kompatybilna z wszystkimi urządzeniami Wi-Fi ALCATEL ONETOUCH obsługującymi LTE High Speed 4G. Dzięki aplikacji możesz z łatwością zarządzać swoimi sieciami Wi-Fi bezpośrednio ze smartfona lub tabletu.</string>
+    <string name="guide2_title">ZAWSZE AKTUALNE DANE</string>
+    <string name="guide2_description">Aplikacja LINK wyświetla w czasie rzeczywistym stan połączenia oraz szybkości przesyłania danych, poziom naładowania baterii i wiadomości SMS. W aplikacji można ustawić miesięczny plan zużycia danych. Po osiągnięciu limitu przesyłanie danych zostanie automatycznie wyłączone.</string>
+    <string name="guide3_title">MENEDŻER BEZPIECZEŃSTWA</string>
+    <string name="guide3_description">Poprzez aplikację LINK możesz zablokować każde urządzenie, które bez zgody spróbuje się połączyć z Twoim hotspotem Wi-Fi. Możesz również zmieniać nazwy użytkowników, aby później łatwo je rozpoznawać.</string>
+    <string name="what_new_btn_text">Start</string>
+    <!-- Welcome Guide End -->
+    <string-array name="usage_unit">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+	<string name="enable_sd_card">Karta SD niedostępna. Podłącz kartę SD</string>
+    <string name="sms_unread_num">(%1$d)</string>
+    <string name="confirm_folder_replace">potwierdź zamianę</string>
+    <string name="confirm_folder_content">Plik o takiej nazwie już istnieje.</string>
+    <string name="no_file">Pusty katalog</string>
+    <string name="added_favorite">Dodano do ulubionych</string>
+    <string name="category_favorite">Ulubione</string>
+    <string name="file_info_canwrite">Zapisywalne:</string>
+    <string name="file_info_ishidden">Ukryte:</string>
+    <string name="file_info_modified">Zmodyfikowano:</string>
+    <string name="install_failed">Instalacja nieudana</string>
+    <string name="install_successful">Instalacja zakończona</string>
+    <string name="instruction_pre">Uruchom usługę, aby włączyć serwer FTP</string>
+    <string name="pref_show_real_path_summary">Pokaż rzeczywistą ścieżkę dostępu na pasku nawigacyjnym</string>
+    <string name="no_wifi">Brak sieci Wi-Fi</string>
+    <string name="pref_show_real_path">Wyświetl rzeczywistą ścieżkę dostępu</string>
+    <string name="no_wifi_hint">Brak sieci Wi-Fi, sprawdź ustawienia Wi-Fi</string>
+    <string name="operation_cancel_selectall">Odznacz wszystko</string>
+    <string name="operation_favorite">Dodaj do Ulubionych</string>
+    <string name="operation_hide_sys">Ukryj pliki ukryte</string>
+    <string name="operation_unfavorite">Usuń z Ulubionych</string>
+    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g>dostępnego miejsca</string>
+    <string name="removed_favorite">Usunięto z Ulubionych</string>
+    <string name="sd_card_size">Rozmiar karty SD: <xliff:g id="total_size">%1$s</xliff:g></string>
+    <string name="search_hint">Znajdź plik</string>
+    <string name="search_title">Znajdź plik</string>
+    <string name="start_server">Uruchom usługę</string>
+    <string name="stop_server">Zatrzymaj usługę</string>
+    <string name="storage_warning">Pamięć zewnętrzna jest niedostępna lub nie można jej odczytać</string>
+    <string name="tab_category">Przeglądaj</string>
+    <string name="wifi_state">Stan WLAN</string>
+    <string name="favourite_root">Rootowanie</string>
+    <string name="favorite_ringtone">Dzwonek</string>
+    <string name="menu_setting">Preferencje</string>
+    <string name="preference_title">Ustawienia ogólne</string>
+  <string name="setting_wep_mode_array">
+      <item>otwórz</item>
+<item>udostępnij</item>
+  </string>
+</resources>

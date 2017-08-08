@@ -37,7 +37,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginEnd="15dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -76,7 +76,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginEnd="15dp"
 		        android:layout_gravity="center|end"/>
          </FrameLayout>
             
@@ -104,7 +104,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginEnd="15dp"
 		        android:layout_gravity="center|end"/>
          </FrameLayout>
          
@@ -135,7 +135,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginEnd="15dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -177,7 +177,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginEnd="15dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -210,7 +210,7 @@
 		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/setting_wifi"
 		        android:src="@drawable/right_arrow_big"
-		        android:layout_marginRight="15dp"
+		        android:layout_marginEnd="15dp"
 		        android:layout_gravity="center|end"/>
         </FrameLayout>
         
@@ -321,7 +321,7 @@
 		    android:text="@string/dialog_warning_error_pin_code_error_3times"
 		    android:textSize="16sp"
 		    android:textColor="@color/red"
-		    android:layout_marginLeft="15dp"
+		    android:layout_marginStart="15dp"
 		    android:visibility="gone"/>
 	</LinearLayout>
 	

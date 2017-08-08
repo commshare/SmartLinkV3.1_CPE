@@ -37,7 +37,7 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="5dip">
+        android:paddingStart="5dip">
 
         <TextView
             android:id="@+id/file_name"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_gravity="left"
-                android:layout_marginLeft="14px"
+                android:layout_marginStart="14px"
                 android:gravity="left"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
