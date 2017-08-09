@@ -33,7 +33,6 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
     private LanguageAdapter mLanguageAdapter;
     private String mCurrentLanguage;
     private String mChangeLanguage;
-
     private boolean mIsSwitchLanguage;
 
     @Override
@@ -42,8 +41,10 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_language);
         setTitle(R.string.language);
-        mIsSwitchLanguage = getIntent().getBooleanExtra(IS_SWITCH_LANGUAGE, false);
-        mCurrentLanguage = PreferenceUtil.getString("language", "en");
+        mCurrentLanguage = PreferenceUtil.getString("language", "");
+        if("".equals(mCurrentLanguage)) {
+            mCurrentLanguage = Locale.getDefault().getLanguage();
+        }
         mChangeLanguage = mCurrentLanguage;
         mLanguageListView = (ListView)findViewById(R.id.listview_language);
         mLanguageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

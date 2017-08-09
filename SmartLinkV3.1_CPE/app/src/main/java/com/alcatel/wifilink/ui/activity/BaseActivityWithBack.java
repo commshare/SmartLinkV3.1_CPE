@@ -62,7 +62,9 @@ public class BaseActivityWithBack extends AppCompatActivity {
         // 初始化PreferenceUtil
         PreferenceUtil.init(this);
         // 根据上次的语言设置，重新设置语言
-        switchLanguage(PreferenceUtil.getString("language", "en"));
+        if(!"".equals(PreferenceUtil.getString("language", ""))) {
+            switchLanguage(PreferenceUtil.getString("language", ""));
+        }
     }
 
     /**
