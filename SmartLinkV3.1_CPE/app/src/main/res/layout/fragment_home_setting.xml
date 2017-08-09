@@ -277,6 +277,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/setting_firmware_upgrade_pic"
                     android:layout_toRightOf="@id/setting_firmware_upgrade_pic">
 
                     <TextView

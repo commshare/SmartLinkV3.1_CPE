@@ -13,8 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_45dip"
         android:layout_centerHorizontal="true"
+        android:layout_marginEnd="@dimen/dimen_30dip"
         android:layout_marginLeft="@dimen/dimen_30dip"
         android:layout_marginRight="@dimen/dimen_30dip"
+        android:layout_marginStart="@dimen/dimen_30dip"
         android:layout_marginTop="@dimen/dimen_50dip"
         android:background="@drawable/sim_unlock_bg"
         android:hint="@string/puk_code_label"
@@ -25,15 +27,15 @@
         android:textSize="@dimen/dimen_textsize_16sp" />
 
     <RelativeLayout
-        android:gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/dimen_30dip"
-        android:layout_marginRight="@dimen/dimen_30dip"
         android:id="@+id/rl_puk_remain"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_45dip"
         android:layout_below="@id/et_puk_unlock"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dimen_20dip">
+        android:layout_marginLeft="@dimen/dimen_30dip"
+        android:layout_marginRight="@dimen/dimen_30dip"
+        android:layout_marginTop="@dimen/dimen_20dip"
+        android:gravity="center_horizontal">
 
         <!-- remain-count -->
         <TextView
@@ -53,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@id/tv_puk_unlock_remainCount"
             android:layout_toRightOf="@id/tv_puk_unlock_remainCount"
             android:text="@string/sim_unlocked_attempts"
             android:textColor="@color/gray"
@@ -62,14 +65,16 @@
 
     <!-- NEW SIM PIN -->
     <EditText
-        android:layout_marginTop="@dimen/dimen_20dip"
         android:id="@+id/et_puk_pinUnlock"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_45dip"
         android:layout_below="@id/rl_puk_remain"
         android:layout_centerHorizontal="true"
+        android:layout_marginEnd="@dimen/dimen_30dip"
         android:layout_marginLeft="@dimen/dimen_30dip"
         android:layout_marginRight="@dimen/dimen_30dip"
+        android:layout_marginStart="@dimen/dimen_30dip"
+        android:layout_marginTop="@dimen/dimen_20dip"
         android:background="@drawable/sim_unlock_bg"
         android:hint="@string/puk_newpin_digital"
         android:inputType="numberPassword"
@@ -85,8 +90,10 @@
         android:layout_height="@dimen/dimen_45dip"
         android:layout_below="@id/et_puk_pinUnlock"
         android:layout_centerHorizontal="true"
+        android:layout_marginEnd="@dimen/dimen_30dip"
         android:layout_marginLeft="@dimen/dimen_30dip"
         android:layout_marginRight="@dimen/dimen_30dip"
+        android:layout_marginStart="@dimen/dimen_30dip"
         android:layout_marginTop="@dimen/dimen_15dip"
         android:background="@drawable/sim_unlock_bg"
         android:hint="@string/confirm_new_sim_pin"
@@ -94,6 +101,7 @@
         android:lines="1"
         android:maxLength="12"
         android:paddingLeft="@dimen/dimen_8dip"
+        android:paddingStart="@dimen/dimen_8dip"
         android:textSize="@dimen/dimen_textsize_16sp" />
 
     <!-- DONE -->

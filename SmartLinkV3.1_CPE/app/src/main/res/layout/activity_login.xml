@@ -32,6 +32,7 @@
         android:inputType="textPassword"
         android:lines="1"
         android:paddingLeft="@dimen/dimen_8dip"
+        android:paddingStart="@dimen/dimen_8dip"
         android:textSize="@dimen/dimen_textsize_13sp" />
 
     <TextView
@@ -40,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_edit_view"
         android:layout_marginLeft="@dimen/dimen_15dip"
+        android:layout_marginStart="@dimen/dimen_15dip"
         android:text="@string/login_enter_password_tip"
         android:textColor="@color/gray11"
         android:textSize="12sp" />
@@ -61,7 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginStart="@dimen/dimen_10dip"
             android:layout_toRightOf="@id/iv_login_checkbox"
+            android:layout_toEndOf="@id/iv_login_checkbox"
             android:text="@string/login_remenber_psd"
             android:textSize="@dimen/dimen_textsize_16sp" />
 

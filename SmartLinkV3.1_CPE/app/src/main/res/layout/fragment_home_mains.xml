@@ -154,13 +154,16 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal"
+                    android:paddingEnd="@dimen/dimen_20dip"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
+                    android:paddingRight="20dp"
+                    android:paddingStart="@dimen/dimen_20dip">
 
                     <TextView
                         android:id="@+id/txtHide1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true" />
 
                     <RelativeLayout
@@ -168,7 +171,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_toLeftOf="@id/txtHide1">
+                        android:layout_toLeftOf="@id/txtHide1"
+                        android:layout_toStartOf="@id/txtHide1">
 
                         <ImageView
                             android:id="@+id/connct_signal"
@@ -193,6 +197,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="28dp"
+                            android:layout_marginStart="28dp"
                             android:text="@string/home_network_type_4g"
                             android:textColor="@color/grey_text"
                             android:textSize="@dimen/dimen_textsize_18sp" />
@@ -202,6 +210,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dimen_10dip"
+                            android:layout_marginStart="@dimen/dimen_10dip"
+                            android:layout_toEndOf="@id/connct_network_type"
                             android:layout_toRightOf="@id/connct_network_type"
                             android:text="@string/signal"
                             android:textColor="@color/grey_text"
@@ -216,7 +226,9 @@
                     android:layout_weight="1"
                     android:orientation="horizontal"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
+                    android:paddingStart="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingEnd="@dimen/dimen_20dip">
 
                     <!-- connected logo -->
                     <ImageView
@@ -246,7 +258,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_centerInParent="true"
+                            android:layout_marginEnd="@dimen/dimen_4dip"
                             android:layout_marginRight="@dimen/dimen_4dip"
                             android:textColor="@color/grey_text"
                             android:textSize="@dimen/dimen_textsize_18sp" />
@@ -256,6 +270,7 @@
                             android:id="@+id/access_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/access_num_label"
                             android:layout_toRightOf="@id/access_num_label"
                             android:text="@string/access_lable"
                             android:textColor="@color/grey_text"

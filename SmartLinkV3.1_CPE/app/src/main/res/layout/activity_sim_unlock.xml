@@ -15,7 +15,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/dimen_30dip"
+        android:layout_marginStart="@dimen/dimen_30dip"
         android:layout_marginRight="@dimen/dimen_30dip"
+        android:layout_marginEnd="@dimen/dimen_30dip"
         android:layout_marginTop="@dimen/dimen_50dip"
         android:background="@drawable/sim_unlock_bg"
         android:hint="@string/qs_hint_sim_pin"
@@ -23,6 +25,7 @@
         android:lines="1"
         android:maxLength="12"
         android:paddingLeft="@dimen/dimen_8dip"
+        android:paddingStart="@dimen/dimen_8dip"
         android:textSize="@dimen/dimen_textsize_16sp" />
 
     <RelativeLayout
@@ -48,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_toRightOf="@id/tv_sim_unlock_remainCount"
+            android:layout_toEndOf="@id/tv_sim_unlock_remainCount"
             android:text="@string/sim_unlocked_attempts"
             android:textColor="@color/gray"
             android:textSize="@dimen/dimen_textsize_16sp" />

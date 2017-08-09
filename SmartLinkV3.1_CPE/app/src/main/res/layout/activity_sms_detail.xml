@@ -12,7 +12,9 @@
         android:id="@+id/rl_smsdetail_layout_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <View
             android:layout_width="match_parent"
@@ -25,8 +27,10 @@
             android:id="@+id/rv_smsdetail_send"
             android:layout_width="@dimen/dimen_80dip"
             android:layout_height="@dimen/dimen_40dip"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
             android:layout_marginRight="@dimen/dimen_10dip"
             android:layout_marginTop="@dimen/dimen_10dip"
             android:background="@drawable/smsdetail_send_bg"
@@ -46,11 +50,13 @@
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/dimen_10dip"
             android:layout_toLeftOf="@id/rv_smsdetail_send"
+            android:layout_toStartOf="@id/rv_smsdetail_send"
             android:background="@drawable/smsdetail_sendtext_bg"
             android:hint="@string/message"
             android:maxHeight="@dimen/dimen_80dip"
             android:minHeight="@dimen/dimen_40dip"
-            android:paddingLeft="@dimen/dimen_8dip" />
+            android:paddingLeft="@dimen/dimen_8dip"
+            android:paddingStart="@dimen/dimen_8dip" />
 
     </RelativeLayout>
 

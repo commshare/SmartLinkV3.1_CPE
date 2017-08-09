@@ -23,8 +23,11 @@
             android:id="@+id/rl_smsInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dimen_30dip"
             android:layout_marginLeft="@dimen/dimen_10dip"
             android:layout_marginRight="@dimen/dimen_30dip"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_toEndOf="@id/iv_smsPoint"
             android:layout_toRightOf="@id/iv_smsPoint"
             android:gravity="center_vertical">
 
@@ -33,6 +36,8 @@
                 android:id="@+id/tv_smsPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:text="PhoneNum"
                 android:textSize="@dimen/dimen_textsize_18sp"
                 android:textStyle="bold" />
@@ -43,6 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_20dip"
+                android:layout_marginStart="@dimen/dimen_20dip"
+                android:layout_toEndOf="@id/tv_smsPhone"
                 android:layout_toRightOf="@id/tv_smsPhone"
                 android:text="2"
                 android:textColor="@color/gray"
@@ -54,7 +61,9 @@
                 android:layout_width="@dimen/dimen_15dip"
                 android:layout_height="@dimen/dimen_15dip"
                 android:layout_marginLeft="@dimen/dimen_20dip"
+                android:layout_marginStart="@dimen/dimen_20dip"
                 android:layout_toRightOf="@id/tv_smsCount"
+                android:layout_toEndOf="@id/tv_smsCount"
                 android:src="@drawable/sms_prompt"
                 android:visibility="gone" />
 
@@ -63,6 +72,8 @@
                 android:id="@+id/tv_smsContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_below="@id/tv_smsPhone"
                 android:lines="1"
                 android:text="contentcontentcontentcontentcontentcontentcontentcontent"
@@ -75,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/tv_smsPhone"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:text="6/6/2017"
                 android:textColor="@color/gray"
@@ -86,8 +98,10 @@
             android:id="@+id/imageView2"
             android:layout_width="@dimen/dimen_15dip"
             android:layout_height="@dimen/dimen_15dip"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
             android:layout_marginRight="@dimen/dimen_10dip"
             android:src="@drawable/sms_next" />
 

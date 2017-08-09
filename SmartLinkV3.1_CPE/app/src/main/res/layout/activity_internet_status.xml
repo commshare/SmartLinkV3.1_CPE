@@ -16,11 +16,15 @@
         <TextView
             android:id="@+id/tv_internet_title_IPAddress"
             style="@style/internet_tv_title"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:layout_marginStart="@dimen/dimen_15dip"
             android:text="@string/ip_address" />
 
         <TextView
             android:id="@+id/tv_internet_content_IPAddress"
             style="@style/internet_tv_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:text="0.0.0.0" />
 
         <View
@@ -38,11 +42,15 @@
         <TextView
             android:id="@+id/tv_internet_title_SubnetMask"
             style="@style/internet_tv_title"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:layout_marginStart="@dimen/dimen_15dip"
             android:text="@string/subnet_mask" />
 
         <TextView
             android:id="@+id/tv_internet_content_subnetmask"
             style="@style/internet_tv_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:text="0.0.0.0" />
 
         <View
@@ -60,11 +68,15 @@
         <TextView
             android:id="@+id/tv_internet_title_gateway"
             style="@style/internet_tv_title"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:layout_marginStart="@dimen/dimen_15dip"
             android:text="@string/default_gateway" />
 
         <TextView
             android:id="@+id/tv_internet_content_gateway"
             style="@style/internet_tv_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:text="0.0.0.0" />
 
         <View
@@ -82,11 +94,15 @@
         <TextView
             android:id="@+id/tv_internet_title_dns"
             style="@style/internet_tv_title"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:layout_marginStart="@dimen/dimen_15dip"
             android:text="@string/preferred_dns" />
 
         <TextView
             android:id="@+id/tv_internet_content_dns"
             style="@style/internet_tv_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:text="0.0.0.0" />
 
         <View
@@ -104,11 +120,16 @@
         <TextView
             android:id="@+id/tv_internet_title_secondDns"
             style="@style/internet_tv_title"
+            android:layout_alignTop="@+id/tv_internet_content_secondDns"
+            android:layout_marginLeft="@dimen/dimen_15dip"
+            android:layout_marginStart="@dimen/dimen_15dip"
             android:text="@string/secondary_dns" />
 
         <TextView
             android:id="@+id/tv_internet_content_secondDns"
             style="@style/internet_tv_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:text="0.0.0.0" />
 
         <View
