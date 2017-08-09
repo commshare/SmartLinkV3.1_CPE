@@ -21,6 +21,7 @@
             android:textColor="@color/deep_black_text"
             android:textSize="@dimen/dimen_textsize_18sp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:gravity="center" />
 
         <TextView
@@ -30,10 +31,12 @@
             android:textColor="@color/grey_text"
             android:textSize="@dimen/dimen_textsize_12sp"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:gravity="center"
             android:id="@+id/tv_usb_storage"
             android:drawablePadding="@dimen/dimen_6dip"
-            android:drawableRight="@drawable/right_arrow_small" />
+            android:drawableRight="@drawable/right_arrow_small"
+            android:drawableEnd="@drawable/right_arrow_small"/>
     </RelativeLayout>
 
     <TextView
@@ -42,6 +45,7 @@
         android:text="@string/setting_share"
         android:textSize="@dimen/dimen_textsize_20sp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/dimen_10dip"
         android:paddingBottom="@dimen/dimen_8dip" />
 
@@ -51,7 +55,9 @@
         android:orientation="vertical"
         android:background="@color/color_white"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/dimen_6dip">
 
         <RelativeLayout
@@ -66,6 +72,7 @@
                 android:textColor="@color/deep_black_text"
                 android:textSize="@dimen/dimen_textsize_18sp"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:gravity="center" />
 
             <android.support.v7.widget.SwitchCompat
@@ -73,7 +80,9 @@
                 android:layout_height="match_parent"
                 android:id="@+id/switch_ftp"
                 android:layout_toLeftOf="@+id/iv_ftp_access_storage"
+                android:layout_toStartOf="@+id/iv_ftp_access_storage"
                 android:layout_marginRight="@dimen/dimen_40dip"
+                android:layout_marginEnd="@dimen/dimen_40dip"
                 android:checked="false" />
 
             <ImageView
@@ -82,7 +91,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:src="@drawable/selector_access_storage_image"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
 
@@ -104,7 +114,9 @@
         android:orientation="vertical"
         android:background="@color/color_white"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/dimen_6dip">
 
         <RelativeLayout
@@ -119,13 +131,16 @@
                 android:textColor="@color/deep_black_text"
                 android:textSize="@dimen/dimen_textsize_18sp"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:gravity="center" />
 
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@+id/iv_samba_access_storage"
+                android:layout_toStartOf="@+id/iv_samba_access_storage"
                 android:layout_marginRight="@dimen/dimen_40dip"
+                android:layout_marginEnd="@dimen/dimen_40dip"
                 android:id="@+id/switch_samba"
                 android:checked="false" />
 
@@ -135,7 +150,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:src="@drawable/selector_access_storage_image"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
 
@@ -157,6 +173,8 @@
         android:orientation="vertical"
         android:background="@color/color_white"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/dimen_6dip">
 
@@ -172,13 +190,16 @@
                 android:textColor="@color/deep_black_text"
                 android:textSize="@dimen/dimen_textsize_18sp"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:gravity="center" />
 
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@+id/iv_dlna_access_storage"
+                android:layout_toStartOf="@+id/iv_dlna_access_storage"
                 android:layout_marginRight="@dimen/dimen_40dip"
+                android:layout_marginEnd="@dimen/dimen_40dip"
                 android:id="@+id/switch_dlna"
                 android:checked="false" />
 
@@ -188,7 +209,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:src="@drawable/selector_access_storage_image"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
 
