@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
@@ -63,42 +64,32 @@ public class CommonUtil {
         String num = "";
         String type = "";
         if (tempTB >= 1) {
-            num = String.format("%.2f",tempTB);
+            num = String.valueOf(mathRound(tempTB));
             type = "TB";
         } else if (tempGB >= 1) {
-            num = String.format("%.2f",tempGB);
+            num = String.valueOf(mathRound(tempGB));
             type = "GB";
         } else if (tempMB >= 1) {
-            num = String.format("%.2f",tempMB);
+            num = String.valueOf(mathRound(tempMB));
             type = "MB";
         } else {
-            num = String.format("%.1f",tempKB);
+            num = String.valueOf(mathRound(tempKB));
             type = "KB";
         }
+
+        Log.d("ma_traffic", "traffci_: " + num);
 
         TrafficBean tb = new CommonUtil().new TrafficBean();
         tb.num = Float.valueOf(num);
         tb.type = type;
 
         return tb;
-        // BigDecimal trafficMB;
-        // BigDecimal trafficGB;
-        //
-        // BigDecimal temp = new BigDecimal(traffic);
-        // BigDecimal divide = new BigDecimal(1024);
-        // BigDecimal divideM = new BigDecimal(1024l * 1024l);
-        // trafficMB = temp.divide(divideM, dimen, BigDecimal.ROUND_HALF_UP);
-        // TrafficBean tb = new CommonUtil().new TrafficBean();
-        // if (trafficMB.compareTo(divide) >= 0) {
-        //     trafficGB = trafficMB.divide(divide, dimen, BigDecimal.ROUND_HALF_UP);
-        //     tb.num = trafficGB.floatValue();
-        //     tb.type = "GB";
-        //     return tb;
-        // } else {
-        //     tb.num = trafficMB.floatValue();
-        //     tb.type = "MB";
-        //     return tb;
-        // }
+    }
+
+    /* 保留两位小数 */
+    public static float mathRound(float value) {
+        long dimension = 100;// 两位小数此处为100, 4位小数, 此处为10000....依此类推
+        return (float) (Math.round(value * dimension)) / dimension;
     }
 
     public class TrafficBean {

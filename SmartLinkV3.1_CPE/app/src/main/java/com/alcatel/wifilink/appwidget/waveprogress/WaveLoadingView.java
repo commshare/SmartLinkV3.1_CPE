@@ -64,6 +64,7 @@ public class WaveLoadingView extends View {
     private static final float DEFAULT_TITLE_CENTER_SIZE = 22.0f;
     private static final float DEFAULT_TITLE_BOTTOM_SIZE = 18.0f;
     private TypedArray attributes;
+    private float scaleX;
 
     public enum ShapeType {
         TRIANGLE, CIRCLE, SQUARE, RECTANGLE
@@ -349,8 +350,7 @@ public class WaveLoadingView extends View {
                 // Draw the stroke of bottom text
                 canvas.drawText(mBottomTitle, (getWidth() - bottom) / 2, getHeight() * 8 / 10.0f - ((mBottomTitleStrokePaint.descent() + mBottomTitleStrokePaint.ascent()) / 2), mBottomTitleStrokePaint);
                 // Draw the bottom text
-                canvas.drawText(mBottomTitle, (getWidth() - bottom) / 2, getHeight() * 7 / 10.0f - ((mBottomTitlePaint.descent
-                                                                                                                               () + mBottomTitlePaint.ascent()) / 2), mBottomTitlePaint);
+                canvas.drawText(mBottomTitle, (getWidth() - bottom) / 2, getHeight() * 7 / 10.0f - ((mBottomTitlePaint.descent() + mBottomTitlePaint.ascent()) / 2), mBottomTitlePaint);
                 // sl.draw(canvas);
             }
         } else {
@@ -608,6 +608,10 @@ public class WaveLoadingView extends View {
 
     public void setBottomTitle(String bottomTitle) {
         mBottomTitle = bottomTitle;
+    }
+
+    public void setTextScaleX(float scaleX) {
+        this.scaleX = scaleX;
     }
 
     public String getBottomTitle() {

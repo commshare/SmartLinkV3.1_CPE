@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -324,6 +325,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             } else {
                                 connectUi(false);
                             }
+                            // TOAT: 流量显示
+                            // tv_traffic.setText(upOrDownByteData);
+                            // mConnectedView.setCenterTitle(" ");
                             mConnectedView.setCenterTitle(upOrDownByteData);
                             // when type check is finish , logo button can be click
                             canClick = true;
@@ -499,7 +503,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 monthplan = getString(R.string.usage_setting_roaming);
             } else {
                 if (monthUse.num <= 0) {
-                    monthplan = getString(R.string.no_month_plan);
+                    // monthplan = getString(R.string.no_month_plan);
+                    monthplan = getString(R.string.used_of) + " " + "0MB";
                 } else {
                     monthplan = getString(R.string.used_of) + " " + (int) monthUse.num + monthUse.type;
                 }
@@ -508,6 +513,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             float centerData = isRoaming ? roamingUse.num : hadUse.num;
             upOrDownByteData = String.valueOf(centerData);
+            // TOAT: 流量显示
+            // tv_traffic.setText(upOrDownByteData);
+            // tv_traffic.setTextSize(Dimension.SP, centerData > 999 ? 24 : 48);
+            // mConnectedView.setCenterTitle(" ");
             mConnectedView.setCenterTitle(upOrDownByteData);// have used
             mConnectedView.setCenterTitleSize(centerData >= 999 ? 25 : 50);
 

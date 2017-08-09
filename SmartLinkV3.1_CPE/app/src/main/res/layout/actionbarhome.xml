@@ -44,7 +44,7 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/color_white"
                 android:textStyle="bold"
-                android:textSize="@dimen/font_size_normal"
+                android:textSize="@dimen/dimen_12dip"
                 android:maxLines="1"
                 android:visibility="visible" />
 

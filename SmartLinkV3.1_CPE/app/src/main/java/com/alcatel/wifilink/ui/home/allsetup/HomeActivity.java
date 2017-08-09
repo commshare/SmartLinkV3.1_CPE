@@ -366,6 +366,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             /* topbanner buttons */
             case R.id.tv_home_logout:
             case R.id.mRl_home_logout:// logout
+                ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.MAIN);
                 logout();
                 break;
             case R.id.mIv_home_editSms:// edit message
