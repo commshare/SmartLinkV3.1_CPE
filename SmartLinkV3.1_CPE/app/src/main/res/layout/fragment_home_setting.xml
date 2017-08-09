@@ -27,6 +27,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/settings_ic_account" />
 
@@ -35,7 +36,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_login_password_pic"
+                    android:layout_toEndOf="@id/setting_login_password_pic"
                     android:text="@string/setting_account"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -44,8 +47,10 @@
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
@@ -68,6 +73,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="@dimen/dimen_20dip"
                         android:layout_marginLeft="@dimen/dimen_20dip"
+                        android:layout_marginStart="@dimen/dimen_20dip"
                         android:layout_marginTop="@dimen/dimen_20dip"
                         android:src="@drawable/settings_ic_mobile" />
 
@@ -76,7 +82,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:layout_marginStart="@dimen/dimen_10dip"
                         android:layout_toRightOf="@id/setting_mobile_network_pic"
+                        android:layout_toEndOf="@id/setting_mobile_network_pic"
                         android:text="@string/setting_mobile_network"
                         android:textColor="@color/black_text"
                         android:textSize="@dimen/font_size_normal" />
@@ -86,8 +94,10 @@
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/common_margin"
+                        android:layout_marginEnd="@dimen/common_margin"
                         android:contentDescription="@string/setting_wifi"
                         android:src="@drawable/right_arrow_big" />
 
@@ -96,7 +106,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/dimen_10dip"
+                        android:layout_marginEnd="@dimen/dimen_10dip"
                         android:layout_toLeftOf="@id/setting_mobile_network_arrow"
+                        android:layout_toStartOf="@id/setting_mobile_network_arrow"
                         android:text="@string/setting_on_state"
                         android:textColor="@color/grey_text"
                         android:textSize="@dimen/font_size_normal" />
@@ -106,7 +118,9 @@
                         android:layout_height="@dimen/dimen_0.5dip"
                         android:layout_alignParentBottom="true"
                         android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:layout_marginStart="@dimen/dimen_10dip"
                         android:layout_toRightOf="@id/setting_mobile_network_pic"
+                        android:layout_toEndOf="@id/setting_mobile_network_pic"
                         android:background="@color/grey_line"
                         android:visibility="visible" />
 
@@ -126,6 +140,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="@dimen/dimen_20dip"
                         android:layout_marginLeft="@dimen/dimen_20dip"
+                        android:layout_marginStart="@dimen/dimen_20dip"
                         android:layout_marginTop="@dimen/dimen_20dip"
                         android:src="@drawable/settings_ic_wan" />
 
@@ -134,7 +149,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:layout_marginStart="@dimen/dimen_10dip"
                         android:layout_toRightOf="@id/setting_ethernet_wan_pic"
+                        android:layout_toEndOf="@id/setting_ethernet_wan_pic"
                         android:text="@string/ethernet_wan_connection"
                         android:textColor="@color/black_text"
                         android:textSize="@dimen/font_size_normal" />
@@ -144,8 +161,10 @@
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/common_margin"
+                        android:layout_marginEnd="@dimen/common_margin"
                         android:contentDescription="@string/setting_wifi"
                         android:src="@drawable/right_arrow_big" />
 
@@ -166,6 +185,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/settings_ic_sharing" />
 
@@ -174,7 +194,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_sharing_service_pic"
+                    android:layout_toEndOf="@id/setting_sharing_service_pic"
                     android:text="@string/setting_share"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -183,8 +205,10 @@
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
@@ -203,6 +227,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/setting_language" />
 
@@ -211,7 +236,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_language_pic"
+                    android:layout_toEndOf="@id/setting_language_pic"
                     android:text="@string/language"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -220,8 +247,10 @@
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
@@ -240,6 +269,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/settings_ic_upgrade" />
 
@@ -254,6 +284,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_10dip"
+                        android:layout_marginStart="@dimen/dimen_10dip"
                         android:maxLines="1"
                         android:text="@string/setting_firmware_upgrade"
                         android:textColor="@color/black_text"
@@ -264,6 +295,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@id/tv_firmware_update"
+                        android:layout_alignStart="@id/tv_firmware_update"
                         android:layout_below="@id/tv_firmware_update"
                         android:layout_marginTop="3dp"
                         android:text="1.2.4"
@@ -276,8 +308,10 @@
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 
@@ -303,6 +337,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/settings_ic_restart" />
 
@@ -311,7 +346,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_restart_pic"
+                    android:layout_toEndOf="@id/setting_restart_pic"
                     android:text="@string/setting_restart_reset"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -320,8 +357,10 @@
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 
@@ -347,6 +386,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/settings_ic_backup" />
 
@@ -355,7 +395,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_backup_pic"
+                    android:layout_toEndOf="@id/setting_backup_pic"
                     android:text="@string/setting_backup_restore"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -364,8 +406,10 @@
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 
@@ -385,6 +429,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:layout_marginTop="@dimen/dimen_20dip"
                     android:src="@drawable/settings_ic_about" />
 
@@ -393,7 +438,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
                     android:layout_toRightOf="@id/setting_about_pic"
+                    android:layout_toEndOf="@id/setting_about_pic"
                     android:text="@string/setting_about"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -402,8 +449,10 @@
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 

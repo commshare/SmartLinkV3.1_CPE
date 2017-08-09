@@ -32,6 +32,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_12dip"
+                        android:layout_marginStart="@dimen/dimen_12dip"
                         android:background="@null"
                         android:hint="@string/setting_current_password"
                         android:imeOptions="flagNoExtractUi"
@@ -48,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_0.5dip"
                     android:layout_marginLeft="@dimen/dimen_12dip"
+                    android:layout_marginStart="@dimen/dimen_12dip"
                     android:background="@color/main_bottom_divider"
                     android:contentDescription="@string/setting_account" />
 
@@ -77,6 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_0.5dip"
                     android:layout_marginLeft="@dimen/dimen_12dip"
+                    android:layout_marginStart="@dimen/dimen_12dip"
                     android:background="@color/main_bottom_divider"
                     android:contentDescription="@string/setting_account"
                     android:textDirection="locale" />
@@ -91,6 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_12dip"
+                        android:layout_marginStart="@dimen/dimen_12dip"
                         android:layout_weight="1"
                         android:background="@null"
                         android:hint="@string/setting_confirm_password"
@@ -119,6 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginLeft="@dimen/dimen_12dip"
+            android:layout_marginStart="@dimen/dimen_12dip"
             android:layout_marginTop="@dimen/dimen_10dip"
             android:gravity="center"
             android:text="@string/login_forgot_password"

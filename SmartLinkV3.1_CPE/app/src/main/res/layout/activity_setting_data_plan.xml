@@ -29,8 +29,10 @@
             android:layout_width="@dimen/dimen_20dip"
             android:layout_height="@dimen/dimen_20dip"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_10dip"
+            android:layout_marginEnd="@dimen/dimen_10dip"
             android:src="@drawable/right_arrow_big"
             android:textDirection="locale" />
 
@@ -40,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/img_monthly_data_plan"
+            android:layout_toStartOf="@id/img_monthly_data_plan"
             android:textColor="@color/color_light_gray"
             android:textDirection="locale"
             android:textSize="12sp" />
@@ -71,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:entries="@array/settings_data_plan_billing_day"
             android:spinnerMode="dialog"
@@ -103,6 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:entries="@array/settings_data_plan_usage_alert"
             android:spinnerMode="dialog"
@@ -135,6 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:textDirection="locale"
             app:showText="false" />
@@ -160,6 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:checked="true"
             android:textDirection="locale" />
@@ -198,8 +205,10 @@
                 android:layout_width="@dimen/dimen_20dip"
                 android:layout_height="@dimen/dimen_20dip"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dimen_10dip"
+                android:layout_marginEnd="@dimen/dimen_10dip"
                 android:src="@drawable/right_arrow_big"
                 android:textDirection="locale" />
 
@@ -209,6 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/img_set_time_limit"
+                android:layout_toStartOf="@id/img_set_time_limit"
                 android:textColor="@color/color_light_gray"
                 android:textDirection="locale"
                 android:textSize="12sp" />
@@ -240,6 +250,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:textDirection="locale"
                 app:showText="false" />
