@@ -31,6 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/dimen_40dip"
             android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginStart="@dimen/dimen_10dip"
             android:layout_weight="1.0"
             android:background="@drawable/selector_conner_btn_login_blue"
             android:text="@string/cancel"
@@ -74,6 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         app:showText="false" />
                 </RelativeLayout>
@@ -171,6 +173,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
                         android:drawableRight="@drawable/password_hide"
+                        android:drawableEnd="@drawable/password_hide"
                         android:inputType="textPassword"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -219,6 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         app:showText="false" />
                 </RelativeLayout>
@@ -314,6 +318,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
+                        android:drawableEnd="@drawable/password_hide"
                         android:drawableRight="@drawable/password_hide"
                         android:inputType="textPassword"
                         android:textSize="16sp" />

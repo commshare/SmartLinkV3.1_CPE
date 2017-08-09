@@ -511,6 +511,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             case R.id.spinner_security_2g:
                 if (i == 0) {
                     mKey2GGroup.setVisibility(View.GONE);
+                    mEncryption2GGroup.setVisibility(View.GONE);
+                    mEncryption2GSpinner.setSelection(-1);
                 } else if (mKey2GGroup.getVisibility() == view.GONE) {
                     mKey2GGroup.setVisibility(View.VISIBLE);
                     mEncryption2GGroup.setVisibility(View.VISIBLE);
@@ -521,6 +523,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             case R.id.spinner_security_5g:
                 if (i == 0) {
                     mKey5GGroup.setVisibility(View.GONE);
+                    mEncryption5GGroup.setVisibility(View.GONE);
+                    mEncryption5GSpinner.setSelection(-1);
                 } else if (mKey5GGroup.getVisibility() == view.GONE) {
                     mKey5GGroup.setVisibility(View.VISIBLE);
                     mEncryption5GGroup.setVisibility(View.VISIBLE);
