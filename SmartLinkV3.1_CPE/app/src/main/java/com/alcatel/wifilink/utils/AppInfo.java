@@ -60,12 +60,12 @@ public class AppInfo {
     /**
      * 获取全部正在运行中的包名
      *
-     * @param activity
+     * @param context
      * @return
      */
-    public static List<String> getAllRunningPackage(Activity activity) {
+    public static List<String> getAllRunningPackage(Context context) {
         List<String> pkgs = new ArrayList<String>();
-        ActivityManager am = (ActivityManager) activity.getApplication().getSystemService(Activity.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
         List<RunningTaskInfo> runningTasks = am.getRunningTasks(1000);
         for (RunningTaskInfo rti : runningTasks) {
             String pkgName = rti.topActivity.getPackageName();

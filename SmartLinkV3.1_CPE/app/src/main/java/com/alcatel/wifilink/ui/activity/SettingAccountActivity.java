@@ -79,7 +79,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
 
         // 是否需要加密
         OtherUtils otherUtils = new OtherUtils();
-        otherUtils.setOnVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
+        otherUtils.setOnSwVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
         otherUtils.getDeviceSwVersion();
 
         mCurrentPassword.setText(null);

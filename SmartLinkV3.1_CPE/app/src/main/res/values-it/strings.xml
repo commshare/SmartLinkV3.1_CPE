@@ -581,4 +581,13 @@ di rete se non si è sicuri del codice PUK</string>
     <string name="day_7">Giorno 7</string>
     <string name="day_8">Giorno 8</string>
     <string name="day_9">Giorno 9</string>
+    <string name="hr_s">h</string>
+    <string name="min_s">min</string>
+    <string name="maunal">Manuale</string>
+    <string name="disabled">Disabilitato</string>
+    <string name="language">Lingua</string>
+    <string name="success">Riuscito</string>
+    <string name="restart_device_tip">Riavviare il dispositivo e riprovare</string>
+    <string name="SEND">INVIA</string>
+    <string name="message">messaggio</string>
 </resources>

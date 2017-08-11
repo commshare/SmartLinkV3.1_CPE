@@ -110,13 +110,14 @@
                 android:id="@+id/connect_network"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_connectlogo"
-                android:layout_marginTop="@dimen/dimen_5dip"
                 android:gravity="center"
                 android:text="@string/connecting"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/dimen_textsize_20sp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:layout_below="@+id/rl_connectlogo"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
         </com.zhy.android.percent.support.PercentRelativeLayout>
 
         <!-- *** 3.wave view *** -->

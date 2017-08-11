@@ -100,9 +100,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mRl_main_wait;
     public static String type = new String();
     private int wanStatusOnTime = -1;// 实时WAN口检测
-    private DynamicWave dw;
     private PopupWindows simPop;
-    // private DynamicWave dw_main;
+    private DynamicWave dw_main;// 下方波浪
+    private int rate = 2;// 下方波浪高度倍率
+    private int duration = 4000;// 上方波浪滚动速率
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getConnType(TypeBean tb) {
@@ -149,16 +150,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_accessDeviceLayout = (RelativeLayout) m_view.findViewById(R.id.access_num_layout);
         mRl_main_wait = (RelativeLayout) m_view.findViewById(R.id.rl_main_wait);
 
-        // dw_main = (DynamicWave) m_view.findViewById(R.id.dw_main);
+        dw_main = (DynamicWave) m_view.findViewById(R.id.dw_main);
+        dw_main.setDelY(rate);
+
         zeroMB = getString(R.string.Home_zero_data);
-
-        // 0. wait show
-        showWait();
-        // 1. 初始化获取
-        // getStatus();
-        mConnectedView.setAnimDuration(4000);// 设置波浪滚动速度
-
-
+        showWait();// 等待对话框
+        mConnectedView.setAnimDuration(duration);// 设置波浪滚动速度
+        
         return m_view;
     }
 

@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,10 +38,11 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     private static final String TAG = "LoadingActivity";
     private final int SPLASH_DELAY = 1000;
     private Handler mHandler = new Handler();
-    
+
     private boolean isFirstRun = true;
     private PagerAdapter mPagerAdapter;
-    private List<View> mViews = new ArrayList<>();;
+    private List<View> mViews = new ArrayList<>();
+    ;
     private String firstRun = Constants.KEY_FIRST_RUN;
 
     @BindView(R.id.iv_logo)
@@ -49,7 +51,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     ViewPager mViewPager;// 切换器
     @BindView(R.id.page_indicator)
     CirclePageIndicator mPageIndicator;// 指示点
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     private void toNextOperation() {
 
         // 1.if no wifi or wifi ssid is not correct
-        if (!OtherUtils.checkWifiConnect(this)) {
+        if (!OtherUtils.isWiFiActive(this)) {
             // to RefreshWifiActivity
             ChangeActivity.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
             return;
@@ -123,7 +125,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable e) {
-                // System.out.println(e.getMessage().toString());
+                Log.d("ma_load", "load_err: " + e.getMessage().toString());
                 if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
                     // to RefreshWifiActivity
                     ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);

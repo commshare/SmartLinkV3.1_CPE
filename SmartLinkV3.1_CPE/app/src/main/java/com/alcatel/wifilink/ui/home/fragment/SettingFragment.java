@@ -144,7 +144,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showSharingService() {
         OtherUtils otherUtils = new OtherUtils();
-        otherUtils.setOnDeviceVersionListener(new OtherUtils.OnDeviceVersionListener() {
+        otherUtils.setOnHwVersionListener(new OtherUtils.OnHwVersionListener() {
             @Override
             public void getVersion(String deviceVersion) {
                 if (deviceVersion.contains("HH40")) {
@@ -548,6 +548,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/octet-stream"), file);
         // RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
+        // TODO: 2017/8/11 多添加一个参数 [ _TclRequestVerificationToken ]
         MultipartBody.Part body = MultipartBody.Part.createFormData("iptUpload", file.getName(), requestFile);
         API.get().uploadFile(new Subscriber() {
             @Override

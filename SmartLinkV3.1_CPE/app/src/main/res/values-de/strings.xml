@@ -577,4 +577,13 @@
     <string name="day_7">7 Tage</string>
     <string name="day_8">8 Tage</string>
     <string name="day_9">9 Tage</string>
+    <string name="hr_s">Stunde(n)</string>
+    <string name="min_s">Minute(n)</string>
+    <string name="maunal">Manuell</string>
+    <string name="disabled">Behindert</string>
+    <string name="language">Sprache</string>
+    <string name="success">Erfolgreich</string>
+    <string name="restart_device_tip">Starten Sie das Gerät neu und versuchen Sie es erneut</string>
+    <string name="SEND">SENDEN</string>
+    <string name="message">Nachricht</string>
 </resources>

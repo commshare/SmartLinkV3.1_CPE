@@ -150,7 +150,7 @@ public class API {
     private void createSmartLinkApi() {
         try {
             Retrofit.Builder builder = new Retrofit.Builder();
-            builder.baseUrl("http://192.168.1.1").client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
+            builder.baseUrl(Cons.GATEWAY).client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
             Retrofit retrofit = builder.build();
             smartLinkApi = retrofit.create(SmartLinkApi.class);
         } catch (Exception e) {
@@ -189,8 +189,8 @@ public class API {
 
             // 获取当前连接的IP
             Context context = SmartLinkV3App.getInstance().getApplicationContext();
-            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            String ip = Cons.IP_PRE + WifiUtils.getWifiIp(wifiManager);
+            // 形式: http://网关如192.168.3.1/
+            String ip = Cons.IP_PRE + WifiUtils.getWifiGateWay(context) + Cons.IP_SUFFIX;
             /* referer */
             reqBuilder.addHeader("Referer", ip);
 
@@ -210,7 +210,7 @@ public class API {
         DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(listener);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(TIMEOUT, TimeUnit.SECONDS).build();
         return client;
-}
+    }
 
     public static API get() {
         if (api == null) {

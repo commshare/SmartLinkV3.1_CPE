@@ -577,16 +577,14 @@
     <string name="day_7">Day 7</string>
     <string name="day_8">Day 8</string>
     <string name="day_9">Day 9</string>
-
     <string name="hr_s">Hr(s)</string>
     <string name="min_s">Min(s)</string>
     <string name="maunal">Manual</string>
     <string name="disabled">Disabled</string>
     <string name="language">Language</string>
-    <string name="success">Success</string>
-    <string name="restart_device_tip">Please restart the device and try again</string>
-    
-    <string name="send">SEND</string>
+    <string name="success">Successful</string>
+    <string name="restart_device_tip">Restart the device and try again</string>
+    <string name="SEND">SEND</string>
     <string name="message">message</string>
-
+    <string name="notMatch">The password is not match the rule</string>
 </resources>

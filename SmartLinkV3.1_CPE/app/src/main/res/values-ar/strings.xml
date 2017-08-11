@@ -577,4 +577,13 @@
     <string name="day_7">يوم 7</string>
     <string name="day_8">يوم 8</string>
     <string name="day_9">يوم 9</string>
+    <string name="hr_s">ساعات</string>
+    <string name="min_s">دقيقة (دقائق)</string>
+    <string name="maunal">يدوي</string>
+    <string name="disabled">معاق</string>
+    <string name="language">اللغة</string>
+    <string name="success">ناجح</string>
+    <string name="restart_device_tip">أعد تشغيل الجهاز وحاول مرة أخرى</string>
+    <string name="SEND">إرسال</string>
+    <string name="message">رسالة</string>
 </resources>

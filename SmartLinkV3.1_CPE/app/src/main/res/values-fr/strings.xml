@@ -577,4 +577,13 @@
     <string name="day_7">Jour 7</string>
     <string name="day_8">Jour 8</string>
     <string name="day_9">Jour 9</string>
+    <string name="hr_s">h</string>
+    <string name="min_s">min</string>
+    <string name="maunal">Manuel</string>
+    <string name="disabled">Désactivé</string>
+    <string name="language">Langue</string>
+    <string name="success">Réussi</string>
+    <string name="restart_device_tip">Redémarrez l\'appareil et réessayez</string>
+    <string name="SEND">ENVOYER</string>
+    <string name="message">Message</string>
 </resources>

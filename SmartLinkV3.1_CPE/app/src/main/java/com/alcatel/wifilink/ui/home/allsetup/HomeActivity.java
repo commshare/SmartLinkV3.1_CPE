@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.ui.home.allsetup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,6 @@ import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -183,6 +183,18 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         getCurrentActivity();// 定时获取当前位于顶层运行的ACTIVITY
         heartBeanTimer();// 心跳包发送
         autoTimer();// 启动定时退出计时器
+        startAPPPackageService();// 后台服务: 检测当前APP是否被杀死
+    }
+    
+    
+
+    private void startAPPPackageService() {
+        // 查看正在运行的服务
+        boolean homeServiceWorked = OtherUtils.isServiceWork(this, HomeService.class);
+        if (!homeServiceWorked) {// 指定的服务没有运行--> 创建(用于检测APP是否被杀死)
+            Intent intent = new Intent(this, HomeService.class);
+            startService(intent);
+        }
     }
 
     /* 启动定时退出 */
@@ -199,23 +211,20 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** heartBeanTimer:心跳包 **** */
     private void heartBeanTimer() {
+        // TODO: 2017/8/10 单点登陆--> 待FW确定
         heartBeatTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
                 API.get().heartBeat(new MySubscriber() {
                     @Override
                     protected void onSuccess(Object result) {
-
+                        Log.d("ma_home", "heartbeat success");
                     }
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        logout();
                         Log.d("ma_home", "heartbeat error");
-                        if (heartBeatTimer != null) {
-                            heartBeatTimer.stop();
-                            heartBeanTimer();
-                        }
-                        // logout();
                     }
                 });
             }
@@ -294,6 +303,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        heartBeatTimer.stop();
         Log.d("ma_home", "onDestroy: ");
         // destroyOperate();
     }
@@ -490,27 +500,15 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                testsms();
                 checkWifi();
             }
-
-            private void testsms() {
-                API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
-                    @Override
-                    protected void onSuccess(SMSContactList result) {
-                        for (SMSContactList.SMSContact sccc : result.getSMSContactList()) {
-                            Log.d("ma_smss", "ma_smss:" + sccc.getUnreadCount() + "");
-                        }
-                    }
-                });
-            }
         };
-        timerHelper.start(1000);
+        timerHelper.start(2000);
     }
 
     /* 检测WIFI是否有连接 */
     private void checkWifi() {
-        boolean isWifi = OtherUtils.checkWifiConnect(this);
+        boolean isWifi = OtherUtils.checkConnect(this);
         if (isWifi) {
             // is wan or sim
             isWanInsert();

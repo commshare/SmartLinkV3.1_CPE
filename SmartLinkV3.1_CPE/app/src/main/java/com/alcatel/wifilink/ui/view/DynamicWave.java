@@ -41,7 +41,7 @@ public class DynamicWave extends View {
 
     private Paint mWavePaint;
     private DrawFilter mDrawFilter;
-    private float delY = 0f;
+    private float rate = 1f;
 
     public DynamicWave(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -61,9 +61,15 @@ public class DynamicWave extends View {
         mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     }
 
-    /* 设置高度偏差 */
-    public void setDelY(float delY) {
-        this.delY = delY;
+    /* 设置高度缩放倍率 */
+    public void setDelY(float rate) {
+        if (rate < 0) {
+            rate = 1f;
+        }
+        if (rate > 5) {
+            rate = 5f;
+        }
+        this.rate = rate;
     }
 
     @Override
@@ -76,13 +82,13 @@ public class DynamicWave extends View {
 
             // 减400只是为了控制波纹绘制的y的在屏幕的位置，大家可以改成一个变量，然后动态改变这个变量，从而形成波纹上升下降效果
             // 绘制第一条水波纹
-            canvas.drawLine(i, mTotalHeight - mResetOneYPositions[i] - delY, i, mTotalHeight, mWavePaint);
+            canvas.drawLine(i, mTotalHeight - mResetOneYPositions[i] / rate, i, mTotalHeight, mWavePaint);
 
             // 绘制第二条水波纹
-            canvas.drawLine(i, mTotalHeight - mResetTwoYPositions[i] - delY, i, mTotalHeight, mWavePaint);
+            canvas.drawLine(i, mTotalHeight - mResetTwoYPositions[i] / rate, i, mTotalHeight, mWavePaint);
 
             //绘制第三条水波纹
-            canvas.drawLine(i, mTotalHeight - mResetThreePositions[i] - delY, i, mTotalHeight, mWavePaint);
+            canvas.drawLine(i, mTotalHeight - mResetThreePositions[i] / rate, i, mTotalHeight, mWavePaint);
         }
 
         // 改变两条波纹的移动点

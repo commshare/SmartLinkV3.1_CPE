@@ -74,8 +74,8 @@
                         android:id="@+id/switch_wifi_2g"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         app:showText="false" />
                 </RelativeLayout>
@@ -98,6 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
+                        android:layout_marginStart="@dimen/dimen_24dip"
                         android:maxLength="32"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -172,8 +173,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
-                        android:drawableRight="@drawable/password_hide"
+                        android:layout_marginStart="24dp"
                         android:drawableEnd="@drawable/password_hide"
+                        android:drawableRight="@drawable/password_hide"
                         android:inputType="textPassword"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -221,8 +223,8 @@
                         android:id="@+id/switch_wifi_5g"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         app:showText="false" />
                 </RelativeLayout>
@@ -245,6 +247,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
+                        android:layout_marginStart="@dimen/dimen_24dip"
                         android:maxLength="32"
                         android:textSize="16sp" />
 

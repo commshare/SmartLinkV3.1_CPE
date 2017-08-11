@@ -85,9 +85,12 @@ public class SystemManager extends BaseManager {
 
     @Override
     protected void clearData() {
-        m_features.clear();
-        m_systemInfo.clear();
-        m_systemInfo.clear();
+        if (m_features != null) {
+            m_features.clear();
+        }
+        if (m_systemInfo != null) {
+            m_systemInfo.clear();
+        }
     }
 
     @Override

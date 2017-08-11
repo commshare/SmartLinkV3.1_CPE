@@ -56,13 +56,12 @@
 
         <!-- title -->
         <TextView
+            android:layout_margin="@dimen/dimen_20dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/linearLayout"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="12dp"
-            android:layout_marginLeft="@dimen/dimen_10dip"
-            android:layout_marginRight="@dimen/dimen_10dip"
             android:text="@string/This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_textsize_16sp" />

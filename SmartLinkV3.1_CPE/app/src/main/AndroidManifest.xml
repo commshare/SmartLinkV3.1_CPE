@@ -306,12 +306,14 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.InternetStatusActivity" />
+
+        <activity
+            android:name=".ui.activity.InternetStatusActivity"
+            android:screenOrientation="portrait" />
 
         <!-- PIN UNLOCK -->
         <activity
@@ -324,14 +326,30 @@
             android:name=".ui.activity.PukUnlockActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.sms.activity.SmsDetailActivity">
+
+        <activity
+            android:name=".ui.sms.activity.SmsDetailActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.type.ui.WanModeActivity">
+
+        <activity
+            android:name=".ui.type.ui.WanModeActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.setupwizard.allsetup.WizardActivity">
+
+        <activity
+            android:name=".ui.setupwizard.allsetup.WizardActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.setupwizard.allsetup.WifiGuideActivity">
+
+        <activity
+            android:name=".ui.setupwizard.allsetup.WifiGuideActivity"
+            android:screenOrientation="portrait">
         </activity>
+
+        <!-- checked the package is front process -->
+        <service android:name=".ui.home.allsetup.HomeService" />
+
     </application>
 
 </manifest>

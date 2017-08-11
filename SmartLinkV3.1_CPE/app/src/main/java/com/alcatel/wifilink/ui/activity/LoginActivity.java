@@ -2,9 +2,9 @@ package com.alcatel.wifilink.ui.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -130,9 +130,9 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                 break;
 
             case R.id.login_apply_btn:// 登陆按钮
-                progressPop = new ProgressUtils(this).getProgressPop("Login device...");
+                progressPop = new ProgressUtils(this).getProgressPop(getString(R.string.connecting));
                 OtherUtils otherUtils = new OtherUtils();
-                otherUtils.setOnVersionListener(needToEncrypt -> toLogin(needToEncrypt));
+                otherUtils.setOnSwVersionListener(needToEncrypt -> toLogin(needToEncrypt));
                 otherUtils.getDeviceSwVersion();
                 break;
         }
@@ -180,7 +180,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
     /* **** 登陆: toLogin **** */
     private void toLogin(boolean needEncrypt) {
-
+        Log.d("ma_encry", "needEncrypt: " + needEncrypt);
         // TODO: 2017/7/13 加密算法--> FW完成加密机制后将下一句代码注释
         //needEncrypt = false;// FW完成加密机制后将该句代码注释
 
@@ -201,10 +201,10 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                 API.get().getLoginState(new MySubscriber<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState loginState) {
+                        if (progressPop != null) {
+                            progressPop.dismiss();
+                        }
                         if (loginState.getState() == Cons.LOGIN) {
-                            if (progressPop != null) {
-                                progressPop.dismiss();
-                            }
                             Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                             // commit the token
                             API.get().updateToken(loginResult.getToken());
@@ -217,12 +217,13 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
-                        super.onResultError(error);
                         if (progressPop != null) {
                             progressPop.dismiss();
                         }
                         if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
                             ToastUtil_m.show(LoginActivity.this, getString(R.string.connection_timed_out));
+                        } else {
+                            ToastUtil_m.show(LoginActivity.this, getString(R.string.login_failed));
                         }
                     }
                 });

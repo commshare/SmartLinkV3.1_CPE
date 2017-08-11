@@ -1,9 +1,13 @@
 package com.alcatel.wifilink.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.lang.reflect.Field;
 
@@ -13,6 +17,12 @@ import java.lang.reflect.Field;
 
 public class WifiUtils {
 
+    /**
+     * 获取设备的WIFI ip
+     *
+     * @param wifiMan
+     * @return
+     */
     public static String getWifiIp(WifiManager wifiMan) {
         WifiInfo info = wifiMan.getConnectionInfo();
         int ipAddress = info.getIpAddress();
@@ -34,6 +44,51 @@ public class WifiUtils {
             }
         }
         return ipString;
+    }
+
+    /**
+     * 检查WIFI是否有链接
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkWifiConnect(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo.State wifiState = networkInfo.getState();
+        return NetworkInfo.State.CONNECTED == wifiState;
+    }
+
+    /**
+     * 获取wifi网关
+     *
+     * @param context
+     * @return
+     */
+    public static String getWifiGateWay(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        String gateWay = transferNetMask(dhcp.gateway);
+        Log.d("ma_gate", "gate: " + gateWay);
+        return gateWay;
+    }
+
+    /**
+     * 转换16进制的WIFI网关
+     *
+     * @param gateWayHex 16进制的网关
+     * @return
+     */
+    private static String transferNetMask(long gateWayHex) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(String.valueOf((int) (gateWayHex & 0xff)));
+        sb.append('.');
+        sb.append(String.valueOf((int) ((gateWayHex >> 8) & 0xff)));
+        sb.append('.');
+        sb.append(String.valueOf((int) ((gateWayHex >> 16) & 0xff)));
+        sb.append('.');
+        sb.append(String.valueOf((int) ((gateWayHex >> 24) & 0xff)));
+        return sb.toString();
     }
 
 }

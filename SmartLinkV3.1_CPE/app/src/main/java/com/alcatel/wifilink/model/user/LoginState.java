@@ -6,12 +6,22 @@ package com.alcatel.wifilink.model.user;
 
 public class LoginState {
 
-    int State;
-    int LoginRemainingTimes;
-    int LockedRemainingTime;
+    private int State;
+    private int LoginRemainingTimes;
+    private int LockedRemainingTime;
+    private int PwEncrypt;// 1:需要加密 0:不需要加密
+
+    public int getPwEncrypt() {
+        return PwEncrypt;
+    }
+
+    public void setPwEncrypt(int pwEncrypt) {
+        PwEncrypt = pwEncrypt;
+    }
 
     /**
-     *get login state
+     * get login state
+     *
      * @return 0: logout 1: login 2: the login times used out.
      */
     public int getState() {
@@ -28,10 +38,6 @@ public class LoginState {
 
     @Override
     public String toString() {
-        return "LoginState{" +
-                "State=" + State +
-                ", LoginRemainingTimes=" + LoginRemainingTimes +
-                ", LockedRemainingTime=" + LockedRemainingTime +
-                '}';
+        return "LoginState{" + "State=" + State + ", LoginRemainingTimes=" + LoginRemainingTimes + ", LockedRemainingTime=" + LockedRemainingTime + '}';
     }
 }

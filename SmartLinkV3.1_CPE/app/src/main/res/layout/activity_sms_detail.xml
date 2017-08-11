@@ -35,7 +35,7 @@
             android:layout_marginTop="@dimen/dimen_10dip"
             android:background="@drawable/smsdetail_send_bg"
             android:gravity="center"
-            android:text="@string/send"
+            android:text="@string/SEND"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:alphaFactor="0.8"

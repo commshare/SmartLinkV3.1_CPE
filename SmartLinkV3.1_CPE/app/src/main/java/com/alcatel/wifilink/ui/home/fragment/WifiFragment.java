@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
@@ -28,6 +29,12 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
+import com.alcatel.wifilink.utils.OtherUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.app.Activity.RESULT_OK;
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
@@ -333,8 +340,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "requestCode:" + requestCode);
-        if ((REQUEST_CODE_ADVANCED_SETTINGS_2_4G == requestCode || REQUEST_CODE_ADVANCED_SETTINGS_5G == requestCode)
-                && resultCode == RESULT_OK) {
+        if ((REQUEST_CODE_ADVANCED_SETTINGS_2_4G == requestCode || REQUEST_CODE_ADVANCED_SETTINGS_5G == requestCode) && resultCode == RESULT_OK) {
             boolean broadcast = data.getBooleanExtra(EXTRA_SSID_BROADCAST, false);
             int channel = data.getIntExtra(EXTRA_CHANNEL, 0);
             String countryCode = data.getStringExtra(EXTRA_COUNTRY);
@@ -472,7 +478,15 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             }
         }
         Log.i(TAG, "mEditedSettings, " + mEditedSettings);
+        setWlanRequest();
+    }
 
+    
+
+    /**
+     * 真正发送请求
+     */
+    private void setWlanRequest() {
         API.get().setWlanSettings(mEditedSettings, new MySubscriber() {
             @Override
             public void onStart() {

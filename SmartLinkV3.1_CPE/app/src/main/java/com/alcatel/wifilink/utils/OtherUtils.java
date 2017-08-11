@@ -1,18 +1,25 @@
 package com.alcatel.wifilink.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.DataUti;
 import com.alcatel.wifilink.model.system.SystemInfo;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,8 +32,9 @@ import java.util.List;
 
 public class OtherUtils {
 
-    private OnVersionListener onVersionListener;
-    private OnDeviceVersionListener onDeviceVersionListener;
+    private OnSwVersionListener onSwVersionListener;
+    private OnHwVersionListener onHwVersionListener;
+    private OnCustomizedVersionListener onCustomizedVersionListener;
 
     /**
      * 线程自关
@@ -90,33 +98,75 @@ public class OtherUtils {
     }
 
     /**
-     * 获取设备的驱动版本号
+     * 是否为定制的版本
      */
-    public void getDeviceSwVersion() {
-        // 1.需要加密的版本
-        List<String> needEncryptVersions = new ArrayList<String>();
-        needEncryptVersions.add("HH70_E1_02.00_13");
-        // 2.获取当前版本
+    public void isCustomVersion() {
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
-                String currentVersion = result.getSwVersion();
-                if (onVersionListener != null) {
-                    // 如果加密集合中的版本元素,包含当前获取的版本--> 则传递加密信号为true
-                    if (needEncryptVersions.contains(currentVersion)) {
-                        onVersionListener.getVersion(true);
-                    } else {
-                        onVersionListener.getVersion(false);
-                    }
+                String customId = result.getSwVersion().split("_")[1];
+                if (onCustomizedVersionListener != null) {
+                    onCustomizedVersionListener.getCustomizedStatus(customId.equalsIgnoreCase(Cons.CUSTOM_ID_1));
                 }
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                // 如果出错--> 则是需要加密的版本
-                if (onVersionListener != null) {
-                    onVersionListener.getVersion(true);
+                super.onResultError(error);
+                if (onCustomizedVersionListener != null) {
+                    onCustomizedVersionListener.getCustomizedStatus(false);
                 }
+            }
+        });
+    }
+
+    /**
+     * 获取设备的软件版本号
+     */
+    public void getDeviceSwVersion() {
+
+        // 1.需要加密的定制版本
+        String needEncryptVersionCustomId = Cons.CUSTOM_ID_1;
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                // 字段值为1: 一定需要加密
+                if (result.getPwEncrypt() == Cons.NEED_ENCRYPT) {
+                    onSwVersionListener.getVersion(true);
+                } else {
+                    // 否则--> 获取系统信息:能使用systeminfo接口--> 判断是否为E1版本
+                    // 否则--> 获取系统信息:不能使用systeminfo接口--> 一定需要加密
+                    getSystemInfoImpl();
+                }
+
+            }
+
+            /* 访问systeminfo接口 */
+            private void getSystemInfoImpl() {
+                API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+                    @Override
+                    protected void onSuccess(SystemInfo result) {
+                        // 2.获取当前版本
+                        String currentVersion = result.getSwVersion();
+                        String customId = currentVersion.split("_")[1];// customId:E1、IA、01....
+                        if (onSwVersionListener != null) {
+                            // 如能获取到版本,则判断是否为[E1]定制版本
+                            if (customId.equalsIgnoreCase(needEncryptVersionCustomId) || customId.contains(needEncryptVersionCustomId)) {
+                                onSwVersionListener.getVersion(true);
+                            } else {
+                                onSwVersionListener.getVersion(false);
+                            }
+                        }
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        // 如获取不到则一定是需要加密的
+                        if (onSwVersionListener != null) {
+                            onSwVersionListener.getVersion(true);
+                        }
+                    }
+                });
             }
         });
     }
@@ -133,8 +183,8 @@ public class OtherUtils {
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
-                if (onDeviceVersionListener != null) {
-                    onDeviceVersionListener.getVersion(result.getSwVersion());
+                if (onHwVersionListener != null) {
+                    onHwVersionListener.getVersion(result.getSwVersion());
                 }
             }
 
@@ -169,11 +219,55 @@ public class OtherUtils {
      * @param context
      * @return
      */
-    public static boolean checkWifiConnect(Context context) {
+    public static boolean checkConnect(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo.State wifiState = networkInfo.getState();
         return NetworkInfo.State.CONNECTED == wifiState;
+    }
+
+    public static boolean isWiFiActive(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifi.getConnectionInfo();
+        int ipAddress = wifiInfo == null ? 0 : wifiInfo.getIpAddress();
+        if (wifi.isWifiEnabled() && ipAddress != 0) {
+            Log.d("ma_wifi", "Wifi Connect");
+            return true;
+        } else {
+            Log.d("ma_wifi", "Wifi not Connect");
+            return false;
+        }
+    }
+
+    /**
+     * 获取wifi网关
+     *
+     * @param context
+     * @return
+     */
+    public static String getWifiGateWay(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        String gateWay = transferNetMask(dhcp.gateway);
+        return gateWay;
+    }
+
+    /**
+     * 转换16进制的WIFI网关
+     *
+     * @param gateWayHex 16进制的网关
+     * @return
+     */
+    private static String transferNetMask(long gateWayHex) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(String.valueOf((int) (gateWayHex & 0xff)));
+        sb.append('.');
+        sb.append(String.valueOf((int) ((gateWayHex >> 8) & 0xff)));
+        sb.append('.');
+        sb.append(String.valueOf((int) ((gateWayHex >> 16) & 0xff)));
+        sb.append('.');
+        sb.append(String.valueOf((int) ((gateWayHex >> 24) & 0xff)));
+        return sb.toString();
     }
 
     public static void stopAutoTimer() {
@@ -189,23 +283,53 @@ public class OtherUtils {
         }
     }
 
+    /**
+     * 判断某个服务是否正在运行的方法
+     *
+     * @param mContext
+     * @param sClass   服务的类名
+     * @return true:代表正在运行，false代表服务没有正在运行
+     */
+    public static boolean isServiceWork(Context mContext, Class sClass) {
+        String serviceName = sClass.getName();// 获取服务的全类名
+        Log.d("ma_servicename", "servicename: " + serviceName);
+        ActivityManager myAM = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);// 获取系统服务对象
+        List<ActivityManager.RunningServiceInfo> myList = myAM.getRunningServices(1000);// 获取正在运行中的服务集合 -->1000为可能获取到的个数
+        if (myList.size() <= 0) {// 判断集合是否有对象
+            return false;
+        }
+        for (int i = 0; i < myList.size(); i++) {// 遍历每一个服务对象
+            String mName = myList.get(i).service.getClassName().toString();// 获取服务的类名
+            if (mName.equalsIgnoreCase(serviceName) || mName.contains(serviceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
-    public interface OnVersionListener {
+    public interface OnSwVersionListener {
         void getVersion(boolean needToEncrypt);
     }
 
-    public void setOnVersionListener(OnVersionListener onVersionListener) {
-        this.onVersionListener = onVersionListener;
+    public void setOnSwVersionListener(OnSwVersionListener onSwVersionListener) {
+        this.onSwVersionListener = onSwVersionListener;
     }
 
-    public interface OnDeviceVersionListener {
+    public interface OnHwVersionListener {
         void getVersion(String deviceVersion);
     }
 
-    public void setOnDeviceVersionListener(OnDeviceVersionListener onDeviceVersionListener) {
-        this.onDeviceVersionListener = onDeviceVersionListener;
+    public void setOnHwVersionListener(OnHwVersionListener onHwVersionListener) {
+        this.onHwVersionListener = onHwVersionListener;
     }
 
+    public interface OnCustomizedVersionListener {
+        void getCustomizedStatus(boolean isCustomized);
+    }
 
+    public void setOnCustomizedVersionListener(OnCustomizedVersionListener onCustomizedVersionListener) {
+        this.onCustomizedVersionListener = onCustomizedVersionListener;
+    }
 }
