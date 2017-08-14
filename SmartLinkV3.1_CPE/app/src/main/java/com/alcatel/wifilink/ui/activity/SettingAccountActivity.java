@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,21 +13,21 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.alcatel.wifilink.EncryptionUtil;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.LinkAppSettings;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.utils.OtherUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SettingAccountActivity extends BaseActivityWithBack implements OnClickListener {
 
     public static final String LOGOUT_FLAG = "LogoutFlag";
+    public static final String TAG = "SettingAccountActivity";
     private EditText mCurrentPassword;
     private EditText mNewPassword;
     private EditText mConfirmPassword;
@@ -68,23 +69,31 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
             return;
         }
 
-        // setting the direct condition psd
-        String splChrs = "[^a-zA-Z0-9-\\+!@\\$#\\^&\\*]";
-        Pattern pattern = Pattern.compile(splChrs);
-        Matcher matcher = pattern.matcher(confirmPwd);
-        if (matcher.find()) {
-            Toast.makeText(this, getString(R.string.login_invalid_password), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // 是否需要加密
         OtherUtils otherUtils = new OtherUtils();
-        otherUtils.setOnSwVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
-        otherUtils.getDeviceSwVersion();
-
-        mCurrentPassword.setText(null);
-        mNewPassword.setText(null);
-        mConfirmPassword.setText(null);
+        otherUtils.setOnCustomizedVersionListener(new OtherUtils.OnCustomizedVersionListener() {
+            @Override
+            public void getCustomizedStatus(boolean isCustomized) {
+                // isCustomized: true--> 则为定制版
+                if(isCustomized) {
+                    // setting the direct condition psd
+                    String splChrs = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\\-\\+\\!\\^\\$\\@\\#\\&\\*])[A-Za-z0-9\\-\\+\\!\\^\\$\\@\\#\\&\\*]{4,16}$";
+                    Pattern pattern = Pattern.compile(splChrs);
+                    Matcher matcher = pattern.matcher(confirmPwd);
+                    if (matcher.find()) {
+                        // 是否需要加密
+                        otherUtils.setOnSwVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
+                        otherUtils.getDeviceSwVersion();
+                    } else {
+                        Toast.makeText(SettingAccountActivity.this, getString(R.string.login_invalid_password), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // 是否需要加密
+                    otherUtils.setOnSwVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
+                    otherUtils.getDeviceSwVersion();
+                }
+            }
+        });
+        otherUtils.isCustomVersion();
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mCurrentPassword.getWindowToken(), 0);
@@ -145,12 +154,40 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingAccountActivity.this, R.string.succeed, Toast.LENGTH_SHORT).show();
+                logout();
+                // TODO: 2017/8/14
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 if ("010101".equals(error.getCode())) {
                 }
+                Toast.makeText(SettingAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            protected void onFailure() {
+                Log.d(TAG, "changepassword error");
+                Toast.makeText(SettingAccountActivity.this, R.string.setting_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * A1.登出
+     */
+    private void logout() {
+        // 2. logout action
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+//                ToastUtil_m.show(SettingAccountActivity.this, getString(R.string.login_logout_successful));
+                // 3. when logout finish --> to the login Acitvity
+//                ChangeActivity.toActivity(SettingAccountActivity.this, LoginActivity.class, false, true, false, 0);
+            }
+
+            @Override
+            protected void onFailure() {
+                ToastUtil_m.show(SettingAccountActivity.this, getString(R.string.login_logout_failed));
             }
         });
     }
