@@ -7,8 +7,8 @@ android {
         applicationId "com.alcatel.smartlinkv3"
         minSdkVersion 18
         targetSdkVersion 25
-        versionName '3.2.9'
-        versionCode 24
+        versionName '3.3.0'
+        versionCode 25
     }
     buildTypes {
         release {
