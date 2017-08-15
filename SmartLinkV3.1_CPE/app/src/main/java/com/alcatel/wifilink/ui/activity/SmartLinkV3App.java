@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
+import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -10,7 +11,8 @@ import com.alcatel.wifilink.utils.HostnameUtils;
 
 import org.cybergarage.upnp.ControlPoint;
 
-import javax.net.ssl.HttpsURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SmartLinkV3App extends MultiDexApplication {
@@ -24,15 +26,21 @@ public class SmartLinkV3App extends MultiDexApplication {
     private String mapp_password = new String();
     private String mapp_username = new String();
     private boolean mapp_changeisforce = false;
+    private static List<Context> contexts;
 
     public static SmartLinkV3App getInstance() {
         return m_instance;
+    }
+
+    public static List<Context> getContextInstance() {
+        return contexts;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         m_instance = this;
+        contexts = new ArrayList<>();
         Log.d("HttpService", "Application onCreate ");
         BusinessManager.getInstance();
         NotificationService.startService();

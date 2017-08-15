@@ -36,6 +36,7 @@ import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.activity.PukUnlockActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
+import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.fragment.MainFragment;
 import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
 import com.alcatel.wifilink.ui.home.fragment.SmsFragments;
@@ -168,6 +169,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SmartLinkV3App.getContextInstance().add(this);
         Log.d("ma_home", "onCreate: ");
         setContentView(R.layout.activity_homes);
         hac = this;
@@ -185,8 +187,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         autoTimer();// 启动定时退出计时器
         startAPPPackageService();// 后台服务: 检测当前APP是否被杀死
     }
-    
-    
+
 
     private void startAPPPackageService() {
         // 查看正在运行的服务

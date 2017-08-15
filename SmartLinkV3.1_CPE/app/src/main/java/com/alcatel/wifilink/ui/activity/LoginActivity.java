@@ -111,6 +111,12 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     protected void onResume() {
         super.onResume();
         OtherUtils.stopAutoTimer();
+        OtherUtils.clearContexts();
+    }
+
+    @Override
+    public void onBackPressed() {
+        OtherUtils.kill();
     }
 
     @Override
@@ -201,9 +207,6 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                 API.get().getLoginState(new MySubscriber<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState loginState) {
-                        if (progressPop != null) {
-                            progressPop.dismiss();
-                        }
                         if (loginState.getState() == Cons.LOGIN) {
                             Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                             // commit the token
@@ -259,6 +262,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
+                        popDismiss();
                         int simState = result.getSIMState();
                         boolean simflag = simState == Cons.READY || simState == Cons.PIN_REQUIRED || simState == Cons.PUK_REQUIRED;
                         if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
@@ -266,11 +270,14 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             return;
                         }
                         if (wanStatus != Cons.CONNECTED && simflag) {/* 只有SIM卡 */
-                            if (simState == Cons.PIN_REQUIRED) {
+                            if (simState == Cons.PIN_REQUIRED) {// 要求PIN码
                                 ChangeActivity.toActivity(LoginActivity.this, SimUnlockActivity.class, false, true, false, 0);
-                            } else if (simState == Cons.PUK_REQUIRED) {
+                            } else if (simState == Cons.PUK_REQUIRED) {// 要求PUK码
                                 ChangeActivity.toActivity(LoginActivity.this, PukUnlockActivity.class, false, true, false, 0);
-                            } else if (simState == Cons.READY) {
+                            } else if (simState == Cons.READY) {// SIM卡已经准备好
+                                EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
+                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
+                            } else {// 其他情况
                                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
                                 ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
                             }
@@ -287,6 +294,13 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
                     }
                 });
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                popDismiss();
+                ToastUtil_m.show(LoginActivity.this, getString(R.string.login_failed));
             }
         });
     }
@@ -319,5 +333,11 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
     private void launchHomeActivity() {
         ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
+    }
+
+    public void popDismiss() {
+        if (progressPop != null) {
+            progressPop.dismiss();
+        }
     }
 }

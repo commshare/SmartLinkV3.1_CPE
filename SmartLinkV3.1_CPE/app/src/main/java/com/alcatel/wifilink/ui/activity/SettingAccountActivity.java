@@ -13,14 +13,17 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.alcatel.wifilink.EncryptionUtil;
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.LinkAppSettings;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.utils.OtherUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,7 +77,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
             @Override
             public void getCustomizedStatus(boolean isCustomized) {
                 // isCustomized: true--> 则为定制版
-                if(isCustomized) {
+                if (isCustomized) {
                     // setting the direct condition psd
                     String splChrs = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\\-\\+\\!\\^\\$\\@\\#\\&\\*])[A-Za-z0-9\\-\\+\\!\\^\\$\\@\\#\\&\\*]{4,16}$";
                     Pattern pattern = Pattern.compile(splChrs);
@@ -147,7 +150,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
 
         UserName = needEncrypt ? EncryptionUtil.encryptUser(UserName) : UserName;
         CurrentPassword = needEncrypt ? EncryptionUtil.encryptUser(CurrentPassword) : CurrentPassword;
-        
+
         NewPassword = needEncrypt ? EncryptionUtil.encrypt(NewPassword) : NewPassword;
 
         API.get().changePassword(UserName, CurrentPassword, NewPassword, new MySubscriber() {
@@ -155,7 +158,6 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingAccountActivity.this, R.string.succeed, Toast.LENGTH_SHORT).show();
                 logout();
-                // TODO: 2017/8/14
             }
 
             @Override
@@ -164,6 +166,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
                 }
                 Toast.makeText(SettingAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             protected void onFailure() {
                 Log.d(TAG, "changepassword error");
@@ -180,9 +183,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         API.get().logout(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-//                ToastUtil_m.show(SettingAccountActivity.this, getString(R.string.login_logout_successful));
-                // 3. when logout finish --> to the login Acitvity
-//                ChangeActivity.toActivity(SettingAccountActivity.this, LoginActivity.class, false, true, false, 0);
+                ChangeActivity.toActivity(SettingAccountActivity.this, LoginActivity.class, false, true, false, 0);
             }
 
             @Override

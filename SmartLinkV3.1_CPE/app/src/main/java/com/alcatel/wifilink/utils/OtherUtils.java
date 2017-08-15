@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -18,6 +19,7 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
@@ -270,6 +272,9 @@ public class OtherUtils {
         return sb.toString();
     }
 
+    /**
+     * 停止全局定时器
+     */
     public static void stopAutoTimer() {
         if (HomeActivity.autoTask != null) {
             HomeActivity.autoTask.cancel();
@@ -280,6 +285,18 @@ public class OtherUtils {
             HomeActivity.autoTimer.cancel();
             HomeActivity.autoTimer.purge();
             HomeActivity.autoTimer = null;
+        }
+    }
+
+    /**
+     * 清除域
+     */
+    public static  void clearContexts() {
+        for (Context context : SmartLinkV3App.getContextInstance()) {
+            Activity ac = (Activity) context;
+            if (ac != null & !ac.isFinishing()) {
+                ac.finish();
+            }
         }
     }
 
