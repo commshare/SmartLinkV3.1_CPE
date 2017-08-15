@@ -436,7 +436,7 @@ Rivolgersi all\'operatore di rete.</string>
     <string name="times_remain_zero">Non sono disponibili altri tentativi. Riavviare il dispositivo e riprovare.</string>
     <string name="times_remain_one">1 tentativo rimanente</string>
     <string name="times_remain_many">%d tentativi rimanenti</string>
-    <string name="reset_to_factory_settings">RIPRISTINA IMPOSTAZIONI DI FABBRICA</string>
+    <string name="reset_to_factory_settings">Ripristina impostazioni di fabbrica</string>
     <string name="backup">BACKUP</string>
     <string name="restore">RECUPERA</string>
     <string name="reset_router">Ripristinare il router?</string>
