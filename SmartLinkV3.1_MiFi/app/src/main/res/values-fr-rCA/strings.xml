@@ -546,8 +546,5 @@
   <string name="confirm_folder_replace">Confirmer remplacement</string>
   <string name="confirm_folder_content">Nom du fichier existe déjà!</string>
     <string name="sms_unread_num">(%1$d)</string>
-  <string name="setting_wep_mode_array">
-      <item>ouvrir</item>
-      <item>partager</item>
-  </string>
+
 </resources>

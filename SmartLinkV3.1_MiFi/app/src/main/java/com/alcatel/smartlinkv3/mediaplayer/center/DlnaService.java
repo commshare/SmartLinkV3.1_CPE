@@ -1,12 +1,5 @@
 package com.alcatel.smartlinkv3.mediaplayer.center;
 
-import org.cybergarage.upnp.ControlPoint;
-import org.cybergarage.upnp.Device;
-import org.cybergarage.upnp.device.DeviceChangeListener;
-import org.cybergarage.upnp.device.SearchResponseListener;
-import org.cybergarage.upnp.ssdp.SSDPPacket;
-import org.cybergarage.util.CommonLog;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,17 +9,26 @@ import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.LogFactory;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
+import org.cybergarage.upnp.ControlPoint;
+import org.cybergarage.upnp.Device;
+import org.cybergarage.upnp.device.DeviceChangeListener;
+import org.cybergarage.upnp.device.SearchResponseListener;
+import org.cybergarage.upnp.ssdp.SSDPPacket;
+import org.cybergarage.util.CommonLog;
+
 public class DlnaService extends Service implements IBaseEngine,
 													DeviceChangeListener,
 													ControlCenterWorkThread.ISearchDeviceListener{
 	
 	private static final CommonLog log = LogFactory.createLog();
+	public static  final String TAG="DlnaService";
 	
 	public static final String SEARCH_DEVICES = "com.alcatel.smartlinkv3.allshare.search_device";
 	public static final String RESET_SEARCH_DEVICES = "com.alcatel.smartlinkv3.allshare.reset_search_device";
@@ -51,14 +53,14 @@ public class DlnaService extends Service implements IBaseEngine,
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		log.e("DlnaService onCreate");
+		Log.d(TAG,"DlnaService onCreate");
 		init();
 	}
 	
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		
+		Log.d(TAG,"onStartCommand: " + intent);
 		if (intent != null && intent.getAction() != null){
 			String action = intent.getAction();
 			if (DlnaService.SEARCH_DEVICES.equals(action)) {
@@ -67,7 +69,7 @@ public class DlnaService extends Service implements IBaseEngine,
 				restartEngine();
 			}
 		}else{
-			log.e("intent = " + intent);
+			Log.d(TAG,"intent = " + intent);
 		}
 
 		return super.onStartCommand(intent, flags, startId);
@@ -75,7 +77,7 @@ public class DlnaService extends Service implements IBaseEngine,
 
 	@Override
 	public void onDestroy() {
-		log.e("DlnaService onDestroy");
+		Log.d(TAG,"DlnaService onDestroy");
 		unInit();
 		super.onDestroy();
 	}
@@ -111,7 +113,7 @@ public class DlnaService extends Service implements IBaseEngine,
 		registerNetworkStatusBR();
 		
 		boolean ret = CommonUtil.openWifiBrocast(this);
-		log.e("openWifiBrocast = " + ret);
+		Log.d(TAG,"openWifiBrocast = " + ret);
 	}
 	
 	private void unInit(){
@@ -153,7 +155,7 @@ public class DlnaService extends Service implements IBaseEngine,
 
 	@Override
 	public void deviceRemoved(Device dev) {
-		log.e("deviceRemoved dev = " + dev.getUDN());
+		Log.d(TAG,"deviceRemoved dev = " + dev.getUDN());
 		mAllShareProxy.removeDevice(dev);
 	}
 	
@@ -179,7 +181,7 @@ public class DlnaService extends Service implements IBaseEngine,
 				}
 			}
 			long time2 = System.currentTimeMillis();
-			log.e("exitCenterWorkThread cost time:" + (time2 - time1));
+			Log.d(TAG,"exitCenterWorkThread cost time:" + (time2 - time1));
 			mCenterWorkThread = null;
 		}
 	}
@@ -195,7 +197,7 @@ public class DlnaService extends Service implements IBaseEngine,
 	
 	public static final String SEARCH_DEVICES_FAIL = "com.geniusgithub.allshare.search_devices_fail";
 	public static void sendSearchDeviceFailBrocast(Context context){
-		log.e("sendSearchDeviceFailBrocast");
+		Log.d(TAG,"sendSearchDeviceFailBrocast");
 		Intent intent = new Intent(SEARCH_DEVICES_FAIL);
 		context.sendBroadcast(intent);
 	}
@@ -233,7 +235,7 @@ public class DlnaService extends Service implements IBaseEngine,
 	
 	private void sendNetworkChangeMessage(){
 		if (firstReceiveNetworkChangeBR){
-			log.e("first receive the NetworkChangeMessage, so drop it...");
+			Log.d(TAG,"first receive the NetworkChangeMessage, so drop it...");
 			firstReceiveNetworkChangeBR = false;
 			return ;
 		}

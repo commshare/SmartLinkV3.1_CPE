@@ -3,6 +3,7 @@ package com.alcatel.smartlinkv3.mediaplayer.proxy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.alcatel.smartlinkv3.mediaplayer.center.DlnaService;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.AbstractMediaMng;
@@ -40,7 +41,12 @@ public class AllShareProxy implements IDeviceOperator,
 	}
 
 	public void startSearch(){
-		mContext.startService(new Intent(DlnaService.SEARCH_DEVICES));
+	
+		Intent intent=new Intent(DlnaService.SEARCH_DEVICES);
+		intent.setPackage(mContext.getPackageName());
+		mContext.startService(intent);
+		//mContext.startService(new Intent(DlnaService.SEARCH_DEVICES));
+	
 	}
 	
 	public void resetSearch(){

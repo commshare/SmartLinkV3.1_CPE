@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">تعذر الضبط.</string>
-	<string name="device_manage_name_empty">اسم الجهاز غير صالح.</string>
+    <string name="device_manage_name_empty">اسم الجهاز غير صالح.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">الملف</string>
@@ -483,12 +483,12 @@
     <string name="sdcard">بطاقة SD</string>
     <string name="fail">فشل</string>
     <string-array name="fail_cause">
-        <item>[cause 1] Dossier déjà existant !</item>
-        <item>[cause 2] Échec de création du dossier !</item>
+        <item>[السبب الأول] المجلد موجود!</item>
+        <item>[السبب الثاني] فشل إنشاء المجلد!</item>
     </string-array>
     <string name="succeed">مكتمل</string>
     <string-array name="succeed_desc">
-        <item>Création du dossier effectuée ! </item>
+        <item>تم إنشاء مجلد</item>
     </string-array>
     <string name="download_text_dling">جارٍ التنزيل...</string>
     <string name="download_text_path">المسار:</string>
@@ -511,7 +511,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">بطاقة SD غير متاحة، يرجى توصيلها</string>
+    <string name="enable_sd_card">بطاقة SD غير متاحة، يرجى توصيلها</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">تأكيد الاستبدال</string>
     <string name="confirm_folder_content">اسم الملف موجود بالفعل.</string>
@@ -546,8 +546,5 @@
     <string name="favorite_ringtone">نغمة الرنين</string>
     <string name="menu_setting">التفضيلات</string>
     <string name="preference_title">الإعدادات العامة</string>
-  <string name="setting_wep_mode_array">
-      <item>فتح</item>
-      <item>مشاركة</item>
-  </string>
+
 </resources>

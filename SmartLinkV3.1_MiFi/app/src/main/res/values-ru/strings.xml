@@ -546,8 +546,5 @@
     <string name="favorite_ringtone">Мелодия звонка</string>
     <string name="menu_setting">Предпочтения</string>
     <string name="preference_title">Основные настройки</string>
-  <string name="setting_wep_mode_array">
-      <item>не защищена</item>
-      <item>общий ключ</item>
-  </string>
+
 </resources>

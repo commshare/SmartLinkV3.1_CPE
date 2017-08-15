@@ -20,6 +20,7 @@ import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
@@ -216,7 +217,7 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener{
 		String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes/3600, (m_UsageRecordResult.TConnTimes%3600)/60);
 		m_durationtotaltime.setText(strTotalDuration);
 		
-		if(m_UsageRecordResult.CurrConnTimes > (statistic.HTimeLimitTimes*60))
+		if(m_UsageRecordResult.CurrConnTimes > (statistic.HTimeLimitTimes*60)&&statistic.HTimeLimitFlag== ENUM.OVER_TIME_STATE.Enable)
 		{
 			m_durationwarn.setVisibility(View.VISIBLE);
 		}else

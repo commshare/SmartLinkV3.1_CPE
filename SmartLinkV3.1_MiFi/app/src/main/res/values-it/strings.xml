@@ -546,8 +546,5 @@
     <string name="favorite_ringtone">Ringtone</string>
     <string name="menu_setting">Preferences</string>
     <string name="preference_title">General Settings</string>
-  <string name="setting_wep_mode_array">
-      <item>apri</item>
-      <item>condividi</item>
-  </string>
+
 </resources>

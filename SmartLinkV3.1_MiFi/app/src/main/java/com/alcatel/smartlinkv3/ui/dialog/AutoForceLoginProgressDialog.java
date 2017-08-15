@@ -1,5 +1,11 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
@@ -8,13 +14,6 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
-
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.util.Log;
 
 public class AutoForceLoginProgressDialog 
 {

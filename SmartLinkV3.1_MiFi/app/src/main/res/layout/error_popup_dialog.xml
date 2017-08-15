@@ -50,7 +50,7 @@
 
     <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="43dip" 
+            android:layout_height="53dip"
             android:layout_centerHorizontal="true" 
             android:layout_below="@id/ID_ERROR_DIALOG_IMAGE_LAYOUT">
         
@@ -63,9 +63,10 @@
 		    <Button
 		        android:id="@+id/ID_BUTTON_RETRY"
 		        android:layout_width="80dip"
-		        android:layout_height="30dip"
+		        android:layout_height="40dip"
 				android:gravity="center"
 				android:layout_toStartOf="@id/txtHide"
+				android:textSize="12dp"
 		        android:background="@drawable/selector_common_button"
 		        android:text="@string/btn_reply"
 		        android:textColor="@drawable/common_button_text"/>  
@@ -75,8 +76,9 @@
 	        <Button
 	            android:id="@+id/error_dialog_close_btn"
 	            android:layout_width="80dip"
-		        android:layout_height="30dip"
+		        android:layout_height="40dip"
 		        android:layout_toEndOf="@id/txtHide"
+				android:textSize="12dp"
 		        android:background="@drawable/selector_common_button"
 		        android:text="@string/cancel"
 		        android:textColor="@drawable/common_button_text"/>

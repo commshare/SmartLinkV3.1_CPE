@@ -10,7 +10,16 @@ public class SystemInfo extends BaseResult{
 	private String HttpApiVersion = new String();
 	private String WebUiVersion = new String();
 	private String MacAddress = new String();
-	
+	private String  MSISDN= new String();
+
+	public String getMSISDN() {
+		return MSISDN;
+	}
+
+	public void setMSISDN(String MSISDN) {
+		this.MSISDN = MSISDN;
+	}
+
 	@Override
 	public void clear(){
 		MacAddress = "";
@@ -20,6 +29,8 @@ public class SystemInfo extends BaseResult{
 		SwVersion = "";
 		HttpApiVersion = "";
 		WebUiVersion = "";
+		MSISDN="";
+
 	}
 	public String getMacAddress() {
 		return MacAddress;

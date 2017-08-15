@@ -28,7 +28,7 @@
 			         android:layout_toEndOf="@id/btn_back"
 			         android:text="@string/back"
 			         android:textColor="@color/color_white"
-			         android:textSize="16sp" /> 
+			         android:textSize="15sp" />
 			    <TextView
 			        android:id="@+id/title"
 			        android:layout_width="fill_parent"
@@ -39,7 +39,7 @@
 			        android:paddingStart="23dip"
 			        android:text="@string/usage_setting_title"
 			        android:textColor="@color/color_white"
-			        android:textSize="18sp"
+			        android:textSize="15sp"
 			        android:textStyle="bold" />
 	    </RelativeLayout>  
 	</LinearLayout>
