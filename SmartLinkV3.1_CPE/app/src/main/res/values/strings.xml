@@ -434,7 +434,7 @@
     <string name="times_remain_zero">No attempt remaining, reboot your device and try again.</string>
     <string name="times_remain_one">1 attempt remaining</string>
     <string name="times_remain_many">%d attempts remaining</string>
-    <string name="reset_to_factory_settings">RESET TO FACTORY SETTINGS</string>
+    <string name="reset_to_factory_settings">Reset to factory settings</string>
     <string name="backup">BACK UP</string>
     <string name="restore">RESTORE</string>
     <string name="reset_router">Reset router?</string>

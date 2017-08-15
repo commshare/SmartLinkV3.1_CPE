@@ -220,9 +220,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
-                        if (progressPop != null) {
-                            progressPop.dismiss();
-                        }
+                        popDismiss();
                         if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
                             ToastUtil_m.show(LoginActivity.this, getString(R.string.connection_timed_out));
                         } else {

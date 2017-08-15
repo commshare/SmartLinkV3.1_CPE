@@ -434,7 +434,7 @@
     <string name="times_remain_zero">No queda ningún intento, reinicie su dispositivo e inténtelo de nuevo.</string>
     <string name="times_remain_one">1 intento restante</string>
     <string name="times_remain_many">%d intentos restantes</string>
-    <string name="reset_to_factory_settings">RESTABLECER AJUSTES DE FÁBRICA</string>
+    <string name="reset_to_factory_settings">Restablecer ajustes de fábrica</string>
     <string name="backup">RESPALDAR</string>
     <string name="restore">RESTAURAR</string>
     <string name="reset_router">¿Restablecer el rúter?</string>

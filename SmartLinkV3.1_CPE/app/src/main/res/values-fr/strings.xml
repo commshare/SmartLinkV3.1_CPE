@@ -434,7 +434,7 @@
     <string name="times_remain_zero">Aucune tentative restante, redémarrez votre appareil et réessayez.</string>
     <string name="times_remain_one">1 tentative restante</string>
     <string name="times_remain_many">%d tentatives restantes</string>
-    <string name="reset_to_factory_settings">RÉTABLIR LES PARAMÈTRES PAR DÉFAUT</string>
+    <string name="reset_to_factory_settings">Rétablir les paramètres par défaut</string>
     <string name="backup">SAUVEGARDER</string>
     <string name="restore">RESTAURER</string>
     <string name="reset_router">Réinitialiser le routeur ?</string>

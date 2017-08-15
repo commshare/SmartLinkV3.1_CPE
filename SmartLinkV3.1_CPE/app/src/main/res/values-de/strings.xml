@@ -434,7 +434,7 @@
     <string name="times_remain_zero">Keine verbleibenden Versuche. Starten Sie das Gerät neu und wiederholen Sie den Vorgang.</string>
     <string name="times_remain_one">1 Versuch verbleibend</string>
     <string name="times_remain_many">%d Versuche verbleibend</string>
-    <string name="reset_to_factory_settings">AUF WERKSEINSTELLUNGEN ZURÜCKSETZEN</string>
+    <string name="reset_to_factory_settings">Auf werkseinstellungen zurücksetzen</string>
     <string name="backup">SICHERN</string>
     <string name="restore">WIEDERHERSTELLEN</string>
     <string name="reset_router">Router zurücksetzen?</string>
