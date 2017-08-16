@@ -159,7 +159,7 @@
     <string name="setting_upgrade">Aktualizuj</string>
     <string name="setting_device">Urządzenie</string>
     <string name="setting_about">Informacje</string>
-    <string name="setting_backup">Tworzenie kopii zapasowej i przywracanie</string>
+    <string name="setting_backup">Kopia zapasowa i przywracanie</string>
     <string name="setting_text_2point4G_wifi">Wi-Fi 2,4G</string>
     <string name="setting_text_5G_wifi">Wi-Fi 5G</string>
     <string name="setting_text_ssid">SSID:</string>
@@ -546,5 +546,5 @@
     <string name="favorite_ringtone">Dzwonek</string>
     <string name="menu_setting">Preferencje</string>
     <string name="preference_title">Ustawienia ogólne</string>
-
+    <string name="str_LTE">LTE</string>
 </resources>

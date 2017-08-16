@@ -414,7 +414,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         m_nNewCount = nNewSmsCount;
         int nActiveBtnId = m_preButton;
         /*int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_placeholder
-				: R.drawable.main_sms_placeholder;
+                : R.drawable.main_sms_placeholder;
 		Drawable d = getResources().getDrawable(nDrawable);
 		d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
 		m_smsTextView.setCompoundDrawables(null, d, null, null);
@@ -702,7 +702,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                         m_loginDlg.showDialog(new OnLoginFinishedListener() {
                             @Override
                             public void onLoginFinished() {
-                                startDeviceManagerActivity();
+                                //  startDeviceManagerActivity();   //remove by zhanghao fix bug 5182173
                             }
                         });
                     }

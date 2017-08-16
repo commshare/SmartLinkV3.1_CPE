@@ -1,29 +1,10 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.common.Const;
-import com.alcatel.smartlinkv3.common.DataValue;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
-import com.alcatel.smartlinkv3.common.ENUM.EnumSMSType;
-import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
-import com.alcatel.smartlinkv3.common.ErrorCode;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.ActivitySmsDetail.SMSDetailItem;
-import com.alcatel.smartlinkv3.ui.activity.InquireDialog.OnInquireApply;
-
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.Selection;
@@ -38,6 +19,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.Const;
+import com.alcatel.smartlinkv3.common.DataValue;
+import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
+import com.alcatel.smartlinkv3.common.ErrorCode;
+import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private TextView m_btnCancel = null;
 	private LinearLayout m_btnBack = null;
@@ -46,6 +40,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private EditText m_etContent = null;
 	private static final String NUMBER_REG_Ex = "^([+*#\\d;]){1}(\\d|[;*#]){0,}$";
 	private String m_preMatchNumber = new String();
+	private boolean sendFail=false;
 	
 	private TextView m_tvCnt = null;
 	
@@ -59,6 +54,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms_new_view);
 		getWindow().setBackgroundDrawable(null);
+		sendFail=false;
 		// get controls
 		m_btnCancel = (TextView) findViewById(R.id.cancel);
 		m_btnCancel.setOnClickListener(this);
@@ -224,6 +220,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 			else {
 				String msgRes = this.getString(R.string.sms_error_send_error);
     			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
+
     			m_progressWaiting.setVisibility(View.GONE);
     			m_btnSend.setEnabled(true);
     			m_etNumber.setEnabled(true);
@@ -240,6 +237,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 				m_sendStatus = sendStatus;
 				boolean bEnd = false;
 				if(sendStatus == SendStatus.Fail){
+					sendFail=true;
 					String msgRes = this.getString(R.string.sms_error_send_error);
 	    			Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
 	    			bEnd = true;
@@ -330,7 +328,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 		String strNumber = m_etNumber.getText().toString();
 		if(strContent != null)
 			strContent = strContent.trim();
-		if(strContent != null && strContent.length() > 0 && strNumber != null && strNumber.length() > 0) {
+		if(strContent != null && strContent.length() > 0 && strNumber != null && strNumber.length() > 0&&sendFail==false) {
 			if(checkNumbers() == true) {
 				DataValue data = new DataValue();
 				data.addParam("SMSId", -1);
@@ -353,6 +351,7 @@ public class ActivityNewSms extends BaseActivity implements OnClickListener {
 	private void OnBtnSend() {
 		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+		sendFail=false;
 
 		if(checkNumbers() == true) {
 			DataValue data = new DataValue();

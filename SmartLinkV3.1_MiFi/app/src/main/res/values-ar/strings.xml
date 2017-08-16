@@ -546,5 +546,6 @@
     <string name="favorite_ringtone">نغمة الرنين</string>
     <string name="menu_setting">التفضيلات</string>
     <string name="preference_title">الإعدادات العامة</string>
+    <string name="str_LTE">LTE</string>
 
 </resources>

@@ -465,22 +465,22 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (s.toString().length() == 1
-						&& s.toString().equalsIgnoreCase("0")) {
+				if (s.toString().length() == 1 && s.toString().equalsIgnoreCase("0"))
+				{
 					m_monthlyValue.setText("");
 				}
+
 			}
 
 		});
 
 		m_monthlyValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+			{
 
 				// EditorInfo.IME_ACTION_UNSPECIFIED use for 3-rd input
-				if (actionId == EditorInfo.IME_ACTION_DONE
-						|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+				if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
 					setSettingMonthly();
 					// temporary behavior :just cancel edit focus
 					m_timeLimitDisconnectBtn.requestFocusFromTouch();

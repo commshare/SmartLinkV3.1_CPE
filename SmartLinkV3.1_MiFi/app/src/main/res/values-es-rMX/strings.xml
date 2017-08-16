@@ -546,5 +546,5 @@
     <string name="favorite_ringtone">Tono de llamada</string>
     <string name="menu_setting">Preferencias</string>
     <string name="preference_title">Ajustes generales</string>
-
+    <string name="str_LTE">LTE</string>
 </resources>

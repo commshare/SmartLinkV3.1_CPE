@@ -89,7 +89,7 @@
 			android:layout_toStartOf="@id/txtHide"
 			android:layout_centerVertical="true"
             android:background="@drawable/selector_common_button"
-            android:text="@string/apply"
+            android:text="@string/confirm"
             android:textColor="@drawable/common_button_text" />
 
         <Button

@@ -64,7 +64,7 @@
     <string name="home_disconnected_to">Desconectado</string>
     <string name="home_connected_to">Conectado</string>
     <string name="home_connecting_to">Conectando</string>
-    <string name="home_disconnecting_to">Disconnecting</string>
+    <string name="home_disconnecting_to">Desconectado</string>
     <string name="home_network_type_2g">2G</string>
     <string name="home_network_type_3g">3G</string>
     <string name="home_network_type_3g_plus">3G+</string>
@@ -546,5 +546,5 @@
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">confirm replace</string>
     <string name="confirm_folder_content">File name already exists.</string>
-
+    <string name="str_LTE">LTE</string>
 </resources>

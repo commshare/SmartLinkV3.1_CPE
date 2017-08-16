@@ -546,5 +546,5 @@
     <string name="favorite_ringtone">Toque</string>
     <string name="menu_setting">Preferências</string>
     <string name="preference_title">Definições gerais</string>
-
+    <string name="str_LTE">LTE</string>
 </resources>
