@@ -1,17 +1,18 @@
 package com.alcatel.smartlinkv3.common;
 
-import java.math.BigDecimal;
-
-import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.model.UsageDataMode;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.DhcpInfo;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
+
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.business.model.UsageDataMode;
+import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
+
+import java.math.BigDecimal;
 
 
 public class CommonUtil {
@@ -29,6 +30,17 @@ public class CommonUtil {
 		}else{
 			return trafficMB + context.getResources().getString(R.string.home_MB);
 		}
+	}
+
+	public static String getDataValueFor901(Context context,UsageSettingModel statistic){
+		String value="";
+
+		if(statistic.HUnit == 0)
+			value=String.valueOf(statistic.HMonthlyPlan)+context.getResources().getString(R.string.home_MB);
+		else
+			if(statistic.HUnit == 1)
+			value=String.valueOf(statistic.HMonthlyPlan)+context.getResources().getString(R.string.home_GB);
+		return value;
 	}
 	
 	public static UsageDataMode ConvertTrafficToUsageModelFromMB(long traffic){
