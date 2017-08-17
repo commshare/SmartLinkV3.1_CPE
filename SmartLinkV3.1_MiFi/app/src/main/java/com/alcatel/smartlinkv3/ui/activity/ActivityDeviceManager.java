@@ -54,7 +54,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
     private boolean m_bIsWorking = false;
     private boolean m_bEnableRefresh = false;
 
-    private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
+    private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData;// = new ArrayList<ConnectedDeviceItemModel>();
     private ArrayList<ConnectedDeviceItemModel> m_blockedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
     private DeviceReceiver m_deviceReceiver = null;
     private String m_strLocalMac = new String();
@@ -71,6 +71,8 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
                     if (m_bEnableRefresh == true || haveEditItem() == false) {
                         resetConnectEditFlag();
                         m_bEnableRefresh = false;
+                        setM_connecedDeviceList();
+                        Log.i("ActivityDeviceManager","DEVICE_GET_CONNECTED_DEVICE_LIST");
                         updateConnectedDeviceUI();
                     }
                 }
@@ -85,7 +87,8 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
-                    getListData();
+                    BusinessMannager.getInstance().getGetBlockDeviceListTaskAtOnceRequest();
+                    //getListData();
                 }
                 m_bIsWorking = false;
                 m_waiting.setVisibility(View.GONE);
@@ -131,6 +134,11 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
         getWindow().setBackgroundDrawable(null);
         m_bNeedBack = false;
 
+        m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
+        setM_connecedDeviceList();
+        // m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
+
+
         m_back = (LinearLayout) this.findViewById(R.id.back_layout);
         m_back.setOnClickListener(this);
 
@@ -138,6 +146,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
                 .findViewById(R.id.connected_devices);
         ConnectedDevAdapter connectedDevAdapter = new ConnectedDevAdapter(this);
         m_connecedDeviceList.setAdapter(connectedDevAdapter);
+
 
         m_blockedDeviceList = (ListView) this.findViewById(R.id.block_devices);
         BlockedDevAdapter blockedDevAdapter = new BlockedDevAdapter(this);
@@ -148,11 +157,9 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
         String strConnectedCnt = this.getResources().getString(R.string.device_manage_connected);
         strConnectedCnt = String.format(strConnectedCnt, 0);
         m_txConnectedCnt.setText(strConnectedCnt);
-
         String strBlockdCnt = this.getResources().getString(R.string.device_manage_block);
         strBlockdCnt = String.format(strBlockdCnt, 0);
         m_txBlockCnt.setText(strBlockdCnt);
-
         m_refresh = (ImageView) this.findViewById(R.id.refresh);
         m_refresh.setOnClickListener(this);
 
@@ -236,9 +243,23 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
         BusinessMannager.getInstance().getGetBlockDeviceListTaskAtOnceRequest();
     }
 
+    private void setM_connecedDeviceList() {
+        if (m_connecedDeviceLstData != null)
+            m_connecedDeviceLstData.clear();
+
+        ArrayList<ConnectedDeviceItemModel> temp = BusinessMannager.getInstance().getConnectedDeviceList();
+        if (temp != null)
+            for (int i = 0; i < temp.size(); i++) {
+                m_connecedDeviceLstData.add(temp.get(i));
+            }
+    }
+
+
     private void updateConnectedDeviceUI() {
         ArrayList<ConnectedDeviceItemModel> data = (ArrayList<ConnectedDeviceItemModel>) m_connecedDeviceLstData.clone();
-        m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
+
+        // m_connecedDeviceLstData = BusinessMannager.getInstance().getConnectedDeviceList();
+        Log.i("ActivityDeviceManager", "" + m_connecedDeviceLstData.size());
         for (int i = 0; i < m_connecedDeviceLstData.size(); i++) {
             ConnectedDeviceItemModel item = m_connecedDeviceLstData.get(i);
             if (item.MacAddress.equalsIgnoreCase(m_strLocalMac)) {
@@ -483,7 +504,9 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
                     resetConnectEditFlag();
                     setConnectedDeviceBlock(displayName, mac);
                     m_connecedDeviceLstData.remove(position);
-                    ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
+                    updateConnectedDeviceUI();
+                    Log.i("ActivityDeviceManager","===="+m_connecedDeviceLstData.size());
+                  //  ((ConnectedDevAdapter) m_connecedDeviceList.getAdapter()).notifyDataSetChanged();
                     ((BlockedDevAdapter) m_blockedDeviceList.getAdapter()).notifyDataSetChanged();
                 }
 
