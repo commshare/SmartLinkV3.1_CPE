@@ -1,26 +1,33 @@
 package com.alcatel.smartlinkv3.ui.view;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.cybergarage.upnp.Device;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
-import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.fileexplorer.FtpFileExplorerTabActivity;
-import com.alcatel.smartlinkv3.fileexplorer.FtpFileViewFragment;
-import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.mediaplayer.activity.Go2ContentActivity;
 import com.alcatel.smartlinkv3.mediaplayer.music.MusicPlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.picture.PicturePlayerActivity;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy;
-import com.alcatel.smartlinkv3.mediaplayer.proxy.MediaManager;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.BrowseDMSProxy.BrowseRequestCallback;
+import com.alcatel.smartlinkv3.mediaplayer.proxy.MediaManager;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItem;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.MediaItemFactory;
@@ -28,23 +35,11 @@ import com.alcatel.smartlinkv3.mediaplayer.upnp.UpnpUtil;
 import com.alcatel.smartlinkv3.mediaplayer.util.CommonUtil;
 import com.alcatel.smartlinkv3.mediaplayer.video.VideoPlayerActivity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import org.cybergarage.upnp.Device;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,BrowseRequestCallback{
 	
@@ -174,8 +169,8 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 			list.add(item);
 		}else if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
-			item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
-			list.add(item);
+			//item = new MicrosdItem(context.getString(R.string.microsd_file), context.getResources().getDrawable(R.drawable.microsd_item_folder), false);
+			//list.add(item);
 			
 			item = new MicrosdItem(context.getString(R.string.microsd_music), context.getResources().getDrawable(R.drawable.microsd_item_music), false);
 			list.add(item);
@@ -422,18 +417,30 @@ public class ViewMicroSD extends BaseViewImpl implements OnItemClickListener,Bro
 		}else if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))
 		{
 			switch(position){
-			case 0:
-				goToFilePage();
-				break;
-			case 1:
-				onGetItemList(ITEM_MUSIC);
-				break;
-			case 2:
-				onGetItemList(ITEM_PICTURES);
-				break;
-			case 3:
-				onGetItemList(ITEM_VIDEO);
-				break;
+				//change by zhanghao for FTP file cannot work 20170818
+//			case 0:
+//				goToFilePage();
+//				break;
+//			case 1:
+//				onGetItemList(ITEM_MUSIC);
+//				break;
+//			case 2:
+//				onGetItemList(ITEM_PICTURES);
+//				break;
+//			case 3:
+//				onGetItemList(ITEM_VIDEO);
+//				break;
+
+
+				case 0:
+					onGetItemList(ITEM_MUSIC);
+					break;
+				case 1:
+					onGetItemList(ITEM_PICTURES);
+					break;
+				case 2:
+					onGetItemList(ITEM_VIDEO);
+					break;
 			}
 		}else
 		{

@@ -1,37 +1,29 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.ProfileManager;
-import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItem;
 import com.alcatel.smartlinkv3.business.profile.HttpGetProfileList.ProfileItem;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+
+import java.util.List;
 
 public class FragmentProfileManagement extends Fragment implements OnClickListener{
 	
@@ -145,7 +137,8 @@ private class ProfileListAdapter extends BaseAdapter{
 			else{
 				holder = (ViewHolder)convertView.getTag();
 			}
-			holder.m_profile_title.setText(m_data.get(position).Default == 1 ? "Default" : "");
+			String tem=getString(R.string.setting_set_default);
+			holder.m_profile_title.setText(m_data.get(position).Default == 1 ? tem: "");
 			holder.m_profile_radiobutton.setText(m_data.get(position).ProfileName);
 			holder.m_profile_radiobutton.setOnClickListener(new OnClickListener(){
 
