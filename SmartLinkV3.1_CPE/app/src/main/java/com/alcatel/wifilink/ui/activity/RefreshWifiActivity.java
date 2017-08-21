@@ -44,9 +44,9 @@ public class RefreshWifiActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             if (msg.what == MSG_REFRESHING) {
                 Log.d(TAG, "check wifi connected:" + isWifiConnected());
-                if (isWifiConnected()) {
+                if (isWifiConnected()) {/* wifi is connect */
                     requestLoginState();
-                } else {
+                } else {/* wifi is not connect */
                     Log.d(TAG, "mCount:" + mCount);
                     if (mCount < 5) {
                         mHandler.sendEmptyMessageDelayed(MSG_REFRESHING, REFRESH_DELAY_MILLIS);
@@ -59,6 +59,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
             }
         }
     };
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +72,17 @@ public class RefreshWifiActivity extends AppCompatActivity {
     }
 
     private void showGetConnectedDlg() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.refresh_get_connected);
-        builder.setMessage(R.string.refresh_manage_device_tips);
-        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-            gotoWifiSettings();
-        });
-        builder.create().show();
+        if (alertDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.refresh_get_connected);
+            builder.setMessage(R.string.refresh_manage_device_tips);
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                gotoWifiSettings();
+            });
+            alertDialog = builder.create();
+            alertDialog.setOnDismissListener(dialog -> alertDialog = null);
+            alertDialog.show();
+        }
     }
 
     private void gotoWifiSettings() {
@@ -122,19 +127,18 @@ public class RefreshWifiActivity extends AppCompatActivity {
         mIsRefreshing = true;
         updateRefreshingUI(true);
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled()) {
+        if (!wifiManager.isWifiEnabled()) {/* wifi not connect */
             wifiManager.setWifiEnabled(true);
             mCount = 0;
             mHandler.sendEmptyMessageDelayed(MSG_REFRESHING, 2000);
-        } else {
+        } else {/* wifi connect */
             requestLoginState();
         }
     }
 
     private boolean isWifiConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-                .getState();
+        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
         return NetworkInfo.State.CONNECTED == wifiState;
     }
 
@@ -155,6 +159,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
                 Log.e(TAG, "onError " + e);
                 mIsRefreshing = false;
                 updateRefreshingUI(false);
+                showGetConnectedDlg();
             }
 
             @Override
