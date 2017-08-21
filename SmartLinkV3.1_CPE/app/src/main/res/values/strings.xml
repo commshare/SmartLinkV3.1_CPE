@@ -587,4 +587,6 @@
     <string name="SEND">SEND</string>
     <string name="message">message</string>
     <string name="notMatch">The password is not match the rule</string>
+    <string name="incorrect_wifi">Incorrect WiFi</string>
+    <string name="please_switch_the_correct_wifi">Please switch the correct WiFi</string>
 </resources>

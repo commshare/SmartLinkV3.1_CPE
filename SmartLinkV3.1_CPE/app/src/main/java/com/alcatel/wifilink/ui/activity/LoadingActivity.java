@@ -15,9 +15,11 @@ import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.view.CirclePageIndicator;
@@ -30,8 +32,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
+import static com.alcatel.wifilink.R.style.dialog;
 
 public class LoadingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -126,9 +130,20 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onError(Throwable e) {
                 Log.d("ma_load", "load_err: " + e.getMessage().toString());
-                if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
+                if (e instanceof SocketTimeoutException || e instanceof ConnectException) {/* 连接超时 */
                     // to RefreshWifiActivity
                     ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                if (Cons.GET_LOGIN_STATE_FAILED.equalsIgnoreCase(error.getCode())) {/* 错误的的登陆码 */
+                    ToastUtil_m.show(LoadingActivity.this, getString(R.string.login_failed));
+                } else {
+                    /* 未知的错误--> 手机没有连接上对应的路由器 */
+                    showErrorDialog();
                 }
             }
         });
@@ -163,5 +178,19 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
             container.addView(view);
             return view;
         }
+    }
+
+    /**
+     * 显示wifi连接错误对话框
+     */
+    private void showErrorDialog() {
+        SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)// type
+                                          .setTitleText(getString(R.string.incorrect_wifi))// title
+                                          .setContentText(getString(R.string.please_switch_the_correct_wifi));// content
+        dialog.setOnDismissListener(dialog1 -> {
+            finish();
+            OtherUtils.kill();
+        });// 对话框消失--> 结束界面
+        dialog.show();
     }
 }
