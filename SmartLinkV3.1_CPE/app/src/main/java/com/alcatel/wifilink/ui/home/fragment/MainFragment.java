@@ -822,7 +822,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 }
                 // the traffic have over monthly used
                 if ((result.getHUseData() + result.getRoamUseData()) >= result.getMonthlyPlan()) {
-                    ToastUtil_m.show(getActivity(), getString(R.string.home_usage_over_redial_message));
+                    ToastUtil_m.showLong(getActivity(), getString(R.string.home_usage_over_redial_message));
                 }
             }
         });
