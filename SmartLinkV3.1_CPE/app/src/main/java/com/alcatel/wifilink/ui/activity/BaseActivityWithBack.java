@@ -12,10 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.webkit.WebView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -62,8 +62,8 @@ public class BaseActivityWithBack extends AppCompatActivity {
         // 初始化PreferenceUtil
         PreferenceUtil.init(this);
         // 根据上次的语言设置，重新设置语言
-        if(!"".equals(PreferenceUtil.getString("language", ""))) {
-            switchLanguage(PreferenceUtil.getString("language", ""));
+        if(!"".equals(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""))) {
+            switchLanguage(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""));
         }
     }
 
@@ -78,28 +78,37 @@ public class BaseActivityWithBack extends AppCompatActivity {
         Resources resources = getResources();
         Configuration config = resources.getConfiguration();
         DisplayMetrics dm = resources.getDisplayMetrics();
-        if (language.equals("en")) {
+        if (language.equals(Constants.Language.ENGLISH)) {
             config.locale = Locale.ENGLISH;
-        } else if (language.equals("ar")) {
+        } else if (language.equals(Constants.Language.ARABIC)) {
             // 阿拉伯语
-            config.locale = new Locale("ar");
-        } else if (language.equals("de")) {
+            config.locale = new Locale(Constants.Language.ARABIC);
+        } else if (language.equals(Constants.Language.GERMENIC)) {
             // 德语
             config.locale = Locale.GERMANY;
-        } else if (language.equals("es")) {
+        } else if (language.equals(Constants.Language.ESPANYOL)) {
             // 西班牙语
-            config.locale = new Locale("es");
-        } else if (language.equals("it")) {
+            config.locale = new Locale(Constants.Language.ESPANYOL);
+        } else if (language.equals(Constants.Language.ITALIAN)) {
             // 意大利语
             config.locale = Locale.ITALIAN;
-        } else if (language.equals("fr")) {
+        } else if (language.equals(Constants.Language.FRENCH)) {
             // 法语
             config.locale = Locale.FRENCH;
+        } else if (language.equals(Constants.Language.SERBIAN)) {
+            // 塞尔维亚
+            config.locale =new Locale(Constants.Language.SERBIAN);
+        } else if (language.equals(Constants.Language.CROATIAN)) {
+            // 克罗地亚
+            config.locale = new Locale(Constants.Language.CROATIAN);
+        } else if (language.equals(Constants.Language.SLOVENIAN)) {
+            // 斯洛文尼亚
+            config.locale = new Locale(Constants.Language.SLOVENIAN);
         }
         resources.updateConfiguration(config, dm);
 
         // 保存设置语言的类型
-        PreferenceUtil.commitString("language", language);
+        PreferenceUtil.commitString(Constants.Language.LANGUAGE, language);
     }
 
     @Override

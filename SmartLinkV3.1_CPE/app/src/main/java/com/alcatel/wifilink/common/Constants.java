@@ -6,12 +6,16 @@ package com.alcatel.wifilink.common;
 
 public class Constants {
     public class Language {
+        public static final String LANGUAGE = "language";
         public static final String ENGLISH = "en";
         public static final String ARABIC = "ar";
         public static final String ESPANYOL = "es";
         public static final String GERMENIC = "de";
         public static final String ITALIAN = "it";
         public static final String FRENCH = "fr";
+        public static final String SERBIAN = "sr";
+        public static final String CROATIAN = "hr";
+        public static final String SLOVENIAN = "sl";
     }
     public class SIMState {
         public static final int NOWN = 0;

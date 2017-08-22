@@ -27,8 +27,10 @@ import java.util.Locale;
 public class SettingLanguageActivity extends BaseActivityWithBack {
     private static final String TAG = "SettingLanguageActivity";
     public static final String IS_SWITCH_LANGUAGE = "is_switch_language";
-    private String[] mLanguageStrings = {Constants.Language.ENGLISH, Constants.Language.ARABIC, Constants.Language.ESPANYOL,
-            Constants.Language.GERMENIC, Constants.Language.ITALIAN, Constants.Language.FRENCH};
+    private String[] mLanguageStrings = {
+            Constants.Language.ENGLISH, Constants.Language.ARABIC, Constants.Language.ESPANYOL,
+            Constants.Language.GERMENIC, Constants.Language.ITALIAN, Constants.Language.FRENCH,
+            Constants.Language.SERBIAN, Constants.Language.CROATIAN, Constants.Language.SLOVENIAN};
     private ListView mLanguageListView;
     private LanguageAdapter mLanguageAdapter;
     private String mCurrentLanguage;
@@ -41,7 +43,7 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_language);
         setTitle(R.string.language);
-        mCurrentLanguage = PreferenceUtil.getString("language", "");
+        mCurrentLanguage = PreferenceUtil.getString(Constants.Language.LANGUAGE, "");
         if("".equals(mCurrentLanguage)) {
             mCurrentLanguage = Locale.getDefault().getLanguage();
         }
@@ -75,10 +77,6 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
             setTitle(R.string.language);
             mCurrentLanguage = mChangeLanguage;
             invalidateOptionsMenu();
-//            finish();
-//            Intent it = new Intent(SettingLanguageActivity.this, SettingLanguageActivity.class);
-//            it.putExtra(IS_SWITCH_LANGUAGE, true);
-//            startActivity(it);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -166,23 +164,32 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
             viewHolder = (ViewHolder) convertView.getTag();
             Resources resources = getResources();
             Configuration config = resources.getConfiguration();
-            if (languages[position].equals("en")) {
+            if (languages[position].equals(Constants.Language.ENGLISH)) {
                 config.locale = Locale.ENGLISH;
-            } else if(languages[position].equals("ar")){
+            } else if (languages[position].equals(Constants.Language.ARABIC)) {
                 // 阿拉伯语
-                config.locale = new Locale("ar");
-            } else if(languages[position].equals("de")){
+                config.locale = new Locale(Constants.Language.ARABIC);
+            } else if (languages[position].equals(Constants.Language.GERMENIC)) {
                 // 德语
                 config.locale = Locale.GERMANY;
-            } else if(languages[position].equals("es")){
+            } else if (languages[position].equals(Constants.Language.ESPANYOL)) {
                 // 西班牙语
-                config.locale =  new Locale("es");
-            } else if(languages[position].equals("it")){
+                config.locale = new Locale(Constants.Language.ESPANYOL);
+            } else if (languages[position].equals(Constants.Language.ITALIAN)) {
                 // 意大利语
                 config.locale = Locale.ITALIAN;
-            } else if(languages[position].equals("fr")){
+            } else if (languages[position].equals(Constants.Language.FRENCH)) {
                 // 法语
                 config.locale = Locale.FRENCH;
+            } else if (languages[position].equals(Constants.Language.SERBIAN)) {
+                // 塞尔维亚
+                config.locale =new Locale(Constants.Language.SERBIAN);
+            } else if (languages[position].equals(Constants.Language.CROATIAN)) {
+                // 克罗地亚
+                config.locale = new Locale(Constants.Language.CROATIAN);
+            } else if (languages[position].equals(Constants.Language.SLOVENIAN)) {
+                // 斯洛文尼亚
+                config.locale = new Locale(Constants.Language.SLOVENIAN);
             }
             viewHolder.languageNameTv.setText(config.locale.getDisplayName(config.locale));
             if (mChangeLanguage.equals(languages[position])) {
