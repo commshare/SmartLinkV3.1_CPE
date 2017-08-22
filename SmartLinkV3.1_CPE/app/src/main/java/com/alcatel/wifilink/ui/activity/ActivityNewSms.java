@@ -233,9 +233,9 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
 
     /* **** showSendingDialog **** */
     private void showSendingDialog() {
-        // pd = new ProgressDialog(this);
-        // pd.setMessage(getString(R.string.sms_sending));
-        // pd.show();
+        // pdDialog = new ProgressDialog(this);
+        // pdDialog.setMessage(getString(R.string.sms_sending));
+        // pdDialog.show();
         pd = new ProgressUtils(this).getProgressPop(getString(R.string.sms_sending));
     }
 

@@ -228,6 +228,12 @@ public class OtherUtils {
         return NetworkInfo.State.CONNECTED == wifiState;
     }
 
+    /**
+     * WIFI是否有连接
+     *
+     * @param context
+     * @return
+     */
     public static boolean isWiFiActive(Context context) {
         WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifi.getConnectionInfo();
@@ -239,6 +245,17 @@ public class OtherUtils {
             Log.d("ma_wifi", "Wifi not Connect");
             return false;
         }
+    }
+
+    /**
+     * 打开并连接WIFI
+     *
+     * @param context
+     * @return
+     */
+    public static boolean setWifiActive(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        return wifi.setWifiEnabled(true);
     }
 
     /**
@@ -291,7 +308,7 @@ public class OtherUtils {
     /**
      * 清除域
      */
-    public static  void clearContexts() {
+    public static void clearContexts() {
         for (Context context : SmartLinkV3App.getContextInstance()) {
             Activity ac = (Activity) context;
             if (ac != null & !ac.isFinishing()) {

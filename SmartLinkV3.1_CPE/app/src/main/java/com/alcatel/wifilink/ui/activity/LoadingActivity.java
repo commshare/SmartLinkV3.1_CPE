@@ -143,7 +143,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                     ToastUtil_m.show(LoadingActivity.this, getString(R.string.login_failed));
                 } else {
                     /* 未知的错误--> 手机没有连接上对应的路由器 */
-                    showErrorDialog();
+                    ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                 }
             }
         });
@@ -178,19 +178,5 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
             container.addView(view);
             return view;
         }
-    }
-
-    /**
-     * 显示wifi连接错误对话框
-     */
-    private void showErrorDialog() {
-        SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)// type
-                                          .setTitleText(getString(R.string.incorrect_wifi))// title
-                                          .setContentText(getString(R.string.please_switch_the_correct_wifi));// content
-        dialog.setOnDismissListener(dialog1 -> {
-            finish();
-            OtherUtils.kill();
-        });// 对话框消失--> 结束界面
-        dialog.show();
     }
 }

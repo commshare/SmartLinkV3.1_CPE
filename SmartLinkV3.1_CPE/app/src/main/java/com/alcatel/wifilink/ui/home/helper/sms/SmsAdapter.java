@@ -15,6 +15,7 @@ import com.alcatel.wifilink.model.sms.SMSContactList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class SmsAdapter extends BaseAdapter {
     private LayoutInflater mInflater;

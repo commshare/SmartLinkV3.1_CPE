@@ -1,187 +1,120 @@
 package com.alcatel.wifilink.ui.activity;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ENUM;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.utils.OtherUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RefreshWifiActivity extends AppCompatActivity {
-    private static final String TAG = "RefreshWifiActivity";
-    private static final int MSG_REFRESHING = 0x1001;
-    public static final int REFRESH_DELAY_MILLIS = 2000;
 
-    private Button mRefreshBtn;
-    private TextView mTipText;
-    private ProgressBar mProgressBar;
+    @BindView(R.id.iv_detect_logo)
+    ImageView iv_logo;
+    @BindView(R.id.tv_tip)
+    TextView tv_noDevice;
+    @BindView(R.id.pb_refreshing)
+    ProgressBar pg;
+    @BindView(R.id.btn_refresh)
+    Button bt_refresh;
 
-    private boolean mIsRefreshing;
-
-    private int mCount = 0;
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == MSG_REFRESHING) {
-                Log.d(TAG, "check wifi connected:" + isWifiConnected());
-                if (isWifiConnected()) {/* wifi is connect */
-                    requestLoginState();
-                } else {/* wifi is not connect */
-                    Log.d(TAG, "mCount:" + mCount);
-                    if (mCount < 5) {
-                        mHandler.sendEmptyMessageDelayed(MSG_REFRESHING, REFRESH_DELAY_MILLIS);
-                        mCount++;
-                    } else {
-                        mIsRefreshing = false;
-                        updateRefreshingUI(false);
-                    }
-                }
-            }
-        }
-    };
-    private AlertDialog alertDialog;
+    ProgressDialog pdDialog;// wait dialog
+    AlertDialog connectDialog;// connect dialog
+    Activity refreshContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refresh);
-        mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
-        mTipText = (TextView) findViewById(R.id.tv_tip);
-        mProgressBar = (ProgressBar) findViewById(R.id.pb_refreshing);
-        showGetConnectedDlg();
-    }
-
-    private void showGetConnectedDlg() {
-        if (alertDialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.refresh_get_connected);
-            builder.setMessage(R.string.refresh_manage_device_tips);
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-                gotoWifiSettings();
-            });
-            alertDialog = builder.create();
-            alertDialog.setOnDismissListener(dialog -> alertDialog = null);
-            alertDialog.show();
-        }
-    }
-
-    private void gotoWifiSettings() {
-        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-        startActivity(intent);
+        ButterKnife.bind(this);
+        pdDialog = new ProgressDialog(this);
+        refreshContext = this;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        initDate();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void initDate() {
+        checkBoardIsConn();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    @OnClick(R.id.btn_refresh)
+    public void refreshClick() {
+        initDate();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mHandler.hasMessages(MSG_REFRESHING)) {
-            mHandler.removeMessages(MSG_REFRESHING);
+    /* -------------------------------------------- helper -------------------------------------------- */
+
+    /**
+     * 显示连接失败对话框
+     */
+    public void showConnDialog() {
+        if (connectDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.refresh_get_connected);
+            builder.setMessage(R.string.refresh_manage_device_tips);
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                // 前往wifi选择界面
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            });
+            connectDialog = builder.create();
+            connectDialog.setOnDismissListener(dialog -> connectDialog = null);
+            connectDialog.show();
         }
     }
 
-    private void updateRefreshingUI(boolean refreshing) {
-        mProgressBar.setVisibility(refreshing ? View.VISIBLE : View.GONE);
-        mRefreshBtn.setVisibility(refreshing ? View.GONE : View.VISIBLE);
-        mTipText.setVisibility(refreshing ? View.GONE : View.VISIBLE);
-    }
-
-    public void OnRefreshClick(View view) {
-        if (mIsRefreshing) {
-            return;
-        }
-        mIsRefreshing = true;
-        updateRefreshingUI(true);
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled()) {/* wifi not connect */
-            wifiManager.setWifiEnabled(true);
-            mCount = 0;
-            mHandler.sendEmptyMessageDelayed(MSG_REFRESHING, 2000);
-        } else {/* wifi connect */
-            requestLoginState();
-        }
-    }
-
-    private boolean isWifiConnected() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo.State wifiState = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-        return NetworkInfo.State.CONNECTED == wifiState;
-    }
-
-
-    private void requestLoginState() {
+    /**
+     * 检测路由器端口
+     */
+    private void checkBoardIsConn() {
+        // 1.检测接口是否有数据返回--> success连接正确 failed连接不正确
         API.get().getLoginState(new MySubscriber<LoginState>() {
+
+            @Override
+            public void onStart() {
+                pdDialog.setMessage(getString(R.string.connecting));
+                pdDialog.show();
+            }
+
             @Override
             protected void onSuccess(LoginState result) {
-                if (result.getState() == Cons.LOGIN) {
-                    launchHomeActivity();
-                } else {
-                    launchLoginActivity(result.getLoginRemainingTimes());
-                }
+                pdDialog.dismiss();
+                ChangeActivity.toActivity(refreshContext, LoginActivity.class, false, true, false, 0);
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError " + e);
-                mIsRefreshing = false;
-                updateRefreshingUI(false);
-                showGetConnectedDlg();
+                pdDialog.dismiss();
+                showConnDialog();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                mIsRefreshing = false;
-                updateRefreshingUI(false);
+                pdDialog.dismiss();
             }
         });
     }
 
-    private void launchHomeActivity() {
-        Intent intent = new Intent(this, LoadingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        this.startActivity(intent);
-    }
-
-
-    private void launchLoginActivity(int remainTimes) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("remain_times", remainTimes);
-        startActivity(intent);
-        finish();
-    }
 
 }

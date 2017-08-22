@@ -599,7 +599,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
 
         // draft ui
         DarftSMSDisplay();
-        // refresh adapter
+        // refreshContext adapter
         ((SmsDetailListAdapter) m_smsListView.getAdapter()).notifyDataSetChanged();
         // set on long click and item click
         setOnSmsClickAndLongClick();
