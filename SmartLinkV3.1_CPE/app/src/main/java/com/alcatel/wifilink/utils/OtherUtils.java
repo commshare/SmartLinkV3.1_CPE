@@ -13,7 +13,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.DataUti;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
@@ -22,6 +24,9 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.DataPlanActivity;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.WifiGuideActivity;
+import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -339,6 +344,26 @@ public class OtherUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 某些界面的跳转
+     *
+     * @param context
+     */
+    public static void skip(Context context) {
+        boolean isWifiGuide = SharedPrefsUtil.getInstance(context).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
+        if (isWifiGuide) {/* 进入过了 */
+            // 是否进入过流量设置界面
+            boolean isDataPlan = SharedPrefsUtil.getInstance(context).getBoolean(Cons.DATA_PLAN_FLAG, false);
+            if (isDataPlan) {
+                ChangeActivity.toActivity(context, HomeActivity.class, false, true, false, 0);
+            } else {
+                ChangeActivity.toActivity(context, DataPlanActivity.class, false, true, false, 0);
+            }
+        } else {/* 没有进入过 */
+            ChangeActivity.toActivity(context, WifiGuideActivity.class, false, true, false, 0);
+        }
     }
 
 

@@ -221,6 +221,18 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     }
 
                     @Override
+                    protected void onFailure() {
+                        super.onFailure();
+                        popDismiss();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        popDismiss();
+                    }
+
+                    @Override
                     protected void onResultError(ResponseBody.Error error) {
                         popDismiss();
                         if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
@@ -276,10 +288,12 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                                 ChangeActivity.toActivity(LoginActivity.this, PukUnlockActivity.class, false, true, false, 0);
                             } else if (simState == Cons.READY) {// SIM卡已经准备好
                                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
-                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
+                                // ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
+                                OtherUtils.skip(LoginActivity.this);
                             } else {// 其他情况
                                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
-                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
+                                // ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
+                                OtherUtils.skip(LoginActivity.this);
                             }
                             return;
                         }

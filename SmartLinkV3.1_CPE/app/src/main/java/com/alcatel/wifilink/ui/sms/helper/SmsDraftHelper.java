@@ -80,6 +80,11 @@ public class SmsDraftHelper {
                     getDraftContent(activity, contactId);
                 }
             }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
+            }
         });
     }
 
@@ -109,6 +114,11 @@ public class SmsDraftHelper {
                 });
 
             }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
+            }
         });
     }
 
@@ -124,6 +134,11 @@ public class SmsDraftHelper {
                 } else {
                     clearSms(contactId);
                 }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
             }
         });
 
@@ -164,6 +179,11 @@ public class SmsDraftHelper {
                 });
 
             }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
+            }
         });
     }
 
@@ -176,6 +196,11 @@ public class SmsDraftHelper {
                 if (onSaveDraftListener != null) {
                     onSaveDraftListener.success();
                 }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
             }
         });
     }

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <!-- limit -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_monthly_data_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_heightPercent="8%h"
+        app:layout_marginLeftPercent="3%w"
+        app:layout_marginTopPercent="2%h">
+        <!-- monthly date limit -->
+        <TextView
+            android:id="@+id/tv_limitdes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/usage_setting_monthlysataplan"
+            android:textColor="@color/black"
+            android:textDirection="locale"
+            android:textStyle="bold"
+            app:layout_textSizePercent="35%h" />
+
+        <!-- 0 -->
+        <EditText
+            android:id="@+id/et_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_limitdes"
+            android:layout_toRightOf="@id/tv_limitdes"
+            android:gravity="center"
+            android:hint="@string/Home_zero_data"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textDirection="locale"
+            app:layout_marginLeftPercent="3%w"
+            app:layout_textSizePercent="45%h"
+            app:layout_widthPercent="15%w" />
+
+        <!-- KB -->
+        <TextView
+            android:id="@+id/tv_limit_kb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/et_limit"
+            android:layout_toRightOf="@id/et_limit"
+            android:background="@color/AA009AFF"
+            android:gravity="center"
+            android:text="KB"
+            android:textColor="@color/white"
+            android:textDirection="locale"
+            android:textStyle="bold"
+            app:layout_heightPercent="7.5%w"
+            app:layout_textSizePercent="40%h"
+            app:layout_widthPercent="15%w" />
+        <!-- MB -->
+        <TextView
+            android:id="@+id/tv_limit_mb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_limit_kb"
+            android:layout_toRightOf="@id/tv_limit_kb"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:text="@string/m_unit"
+            android:textColor="@color/white"
+            android:textDirection="locale"
+            android:textStyle="bold"
+            app:layout_heightPercent="7.5%w"
+            app:layout_textSizePercent="40%h"
+            app:layout_widthPercent="15%w" />
+        <!-- GB -->
+        <TextView
+            android:id="@+id/tv_limit_gb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_limit_mb"
+            android:layout_toRightOf="@id/tv_limit_mb"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:text="@string/g_unit"
+            android:textColor="@color/white"
+            android:textDirection="locale"
+            android:textStyle="bold"
+            app:layout_heightPercent="7.5%w"
+            app:layout_textSizePercent="40%h"
+            app:layout_widthPercent="15%w" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- if blank data unlimited -->
+    <TextView
+        android:id="@+id/tv_ifblank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/rl_monthly_data_plan"
+        android:text="@string/if_blank_data_unlimited"
+        android:textColor="@color/gray11"
+        android:textDirection="locale"
+        app:layout_marginRightPercent="10%w"
+        app:layout_textSizePercent="2.5%h" />
+
+    <!-- Disconnect -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_ifblank"
+        app:layout_heightPercent="8%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/auto_disconnect"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_marginLeftPercent="3%w"
+            app:layout_textSizePercent="35%h" />
+
+        <RelativeLayout
+            android:id="@+id/rl_sc_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:layout_marginRightPercent="5%w">
+
+            <ImageView
+                android:id="@+id/sc_limit_autodisconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pwd_switcher_on"
+                />
+        </RelativeLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- Done -->
+    <com.alcatel.wifilink.appwidget.RippleView
+        android:id="@+id/rp_limit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/AA009AFF"
+        android:gravity="center"
+        android:text="@string/done"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:alphaFactor="0.8"
+        app:hover="true"
+        app:layout_heightPercent="10%h"
+        app:layout_marginPercent="2%w"
+        app:layout_textSizePercent="3.5%h"
+        app:rippleColor="@color/gray" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

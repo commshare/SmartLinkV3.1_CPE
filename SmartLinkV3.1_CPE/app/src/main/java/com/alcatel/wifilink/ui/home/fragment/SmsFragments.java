@@ -19,6 +19,7 @@ import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.rcv.SmsRcvAdapter;
@@ -154,6 +155,11 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable e) {
 
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Log.d("ma_getSmsContactlist", "error: " + error.getMessage().toString());
             }
         });
     }

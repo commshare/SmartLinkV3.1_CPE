@@ -40,7 +40,7 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
     @Override
     public void onError(Throwable e) {
         Log.e(TAG, "onResultError " + e);
-
+        Log.d("ma_api", "onError: " + e.getMessage().toString());
         if (e instanceof SocketTimeoutException) {
             ToastUtil.showMessage(mAppContext, R.string.connection_timed_out);
         } else if (e instanceof ConnectException) {

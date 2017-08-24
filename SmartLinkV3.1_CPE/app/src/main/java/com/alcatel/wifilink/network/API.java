@@ -524,7 +524,7 @@ public class API {
         subscribe(subscriber, smartLinkApi.getBatteryState(new RequestBody(Methods.GET_BATTERYSTATE)));
     }
 
-    public void setUsageSetting(UsageSetting usageSettingParams, Subscriber<UsageSetting> subscriber) {
+    public void setUsageSetting(UsageSetting usageSettingParams, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, usageSettingParams)));
     }
 

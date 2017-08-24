@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_bg_normal"
     android:orientation="vertical"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <RelativeLayout
         android:id="@+id/rl_monthly_data_plan"

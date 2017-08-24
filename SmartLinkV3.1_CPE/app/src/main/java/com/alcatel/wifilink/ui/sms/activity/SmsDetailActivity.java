@@ -294,7 +294,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
             }
 
             @Override
-            public void onError(Throwable e) {
+            protected void onResultError(ResponseBody.Error error) {
 
             }
         });
@@ -311,7 +311,6 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
-                    // TODO: 2017/7/28  
                     // 重新获取当前号码是否有未读消息
                     API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
                         @Override
@@ -336,8 +335,18 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
 
                             }
                         }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+
+                        }
                     });
                 }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+
             }
 
             /**
@@ -503,6 +512,11 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                 }
                 resetLongClickFlag();
                 getSmsContents(false);/* 删除短信后无需跳到最后一条 */
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                ToastUtil_m.show(SmsDetailActivity.this, getString(R.string.sms_delete_error));
             }
         });
     }

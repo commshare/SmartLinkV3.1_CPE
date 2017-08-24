@@ -310,7 +310,6 @@
         <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.InternetStatusActivity"
             android:screenOrientation="portrait" />
@@ -326,22 +325,18 @@
             android:name=".ui.activity.PukUnlockActivity"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name=".ui.sms.activity.SmsDetailActivity"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name=".ui.type.ui.WanModeActivity"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name=".ui.setupwizard.allsetup.WizardActivity"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name=".ui.setupwizard.allsetup.WifiGuideActivity"
             android:screenOrientation="portrait">
@@ -350,6 +345,8 @@
         <!-- checked the package is front process -->
         <service android:name=".ui.home.allsetup.HomeService" />
 
+        <activity android:name=".ui.setupwizard.allsetup.DataPlanActivity">
+        </activity>
     </application>
 
 </manifest>

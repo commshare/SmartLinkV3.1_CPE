@@ -1,5 +1,7 @@
 package com.alcatel.wifilink.ui.home.helper.cons;
 
+import java.util.Set;
+
 /**
  * Created by qianli.ma on 2017/6/19.
  */
@@ -13,6 +15,8 @@ public class Cons {
     public static int PERIOD = 5000;// 5秒获取
     public static String PAGE = "PAGE";// 主页的fragment切换标记
     public static String GATEWAY = "http://192.168.1.1";// 默认网关
+    public static String WIFI_GUIDE_FLAG = "WIFI_GUIDE_FLAG";// WIFI向导标记
+    public static String DATA_PLAN_FLAG = "DATA_PLAN_FLAG";// 月流量向导标记
 
     public static String CUSTOM_ID_1 = "E1";// 需要定制的版本customId
 
@@ -147,4 +151,9 @@ public class Cons {
     public static final int STATIC = 2;
 
     public static final String GET_LOGIN_STATE_FAILED = "010301";
+
+    public static final String SET_WLAN_SETTINGS_FAILED = "050501";
+    public static final String WIFI_IS_OFF = "050502";
+    public static final String WPS_IS_WORKING = "050503";
+
 }

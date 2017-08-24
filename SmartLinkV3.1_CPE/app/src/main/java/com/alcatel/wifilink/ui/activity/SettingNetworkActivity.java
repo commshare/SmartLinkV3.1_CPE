@@ -438,6 +438,11 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             protected void onFailure() {
                 Log.d(TAG, "setUsageSetting error");
             }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
+            }
         });
     }
 

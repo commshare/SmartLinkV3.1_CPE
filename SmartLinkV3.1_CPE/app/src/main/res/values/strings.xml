@@ -587,4 +587,8 @@
     <string name="SEND">SEND</string>
     <string name="message">message</string>
     <string name="notMatch">The password is not match the rule</string>
+    
+    <string name="if_blank_data_unlimited">(if blank, data unlimited)</string>
+    <string name="Blocked">Blocked(0)</string>
+    
 </resources>

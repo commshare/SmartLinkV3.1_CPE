@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
@@ -21,6 +22,7 @@ import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.ui.type.ui.WanModeActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -146,7 +148,8 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
 
                 if (simState == Cons.READY) {
                     EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-                    ChangeActivity.toActivity(WizardActivity.this, HomeActivity.class, false, true, false, 0);
+                    /* 检测是否设置过WIFI-GUIDE向导页 */
+                    OtherUtils.skip(WizardActivity.this);
                     return;
                 }
             }
@@ -166,7 +169,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
                 finish();
                 break;
             case R.id.tv_main_skip:
-                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
+                OtherUtils.skip(WizardActivity.this);
                 break;
         }
 

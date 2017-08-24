@@ -49,7 +49,6 @@ public abstract class SmsSendHelper {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
                 popDismiss();
             }
         });
@@ -85,7 +84,6 @@ public abstract class SmsSendHelper {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
                 popDismiss();
             }
         });

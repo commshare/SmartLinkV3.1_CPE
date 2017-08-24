@@ -38,7 +38,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="Blocked (0)"
+            android:text="@string/Blocked"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_textsize_18sp" />
 
