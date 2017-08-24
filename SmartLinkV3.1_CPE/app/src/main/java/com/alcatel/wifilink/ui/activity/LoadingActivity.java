@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -55,6 +56,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     ViewPager mViewPager;// 切换器
     @BindView(R.id.page_indicator)
     CirclePageIndicator mPageIndicator;// 指示点
+    private ProgressDialog pd;
 
 
     @Override
@@ -82,6 +84,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {// 点击start button后
+        pd = OtherUtils.showProgressPop(this);
         SharedPrefsUtil.getInstance(this).putBoolean(firstRun, false);
         toNextOperation();
     }
@@ -118,6 +121,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
         API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
+                OtherUtils.hideProgressPop(pd);
                 if (result.getState() == Cons.LOGIN) {
                     // to HomeActivity
                     ChangeActivity.toActivity(LoadingActivity.this, WizardActivity.class, false, true, false, 0);
@@ -129,11 +133,20 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable e) {
+                OtherUtils.hideProgressPop(pd);
                 Log.d("ma_load", "load_err: " + e.getMessage().toString());
                 if (e instanceof SocketTimeoutException || e instanceof ConnectException) {/* 连接超时 */
                     // to RefreshWifiActivity
                     ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                } else {
+                    ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                 }
+            }
+
+            @Override
+            protected void onFailure() {
+                OtherUtils.hideProgressPop(pd);
+                ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override

@@ -2,6 +2,7 @@ package com.alcatel.wifilink.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
@@ -363,6 +364,30 @@ public class OtherUtils {
             }
         } else {/* 没有进入过 */
             ChangeActivity.toActivity(context, WifiGuideActivity.class, false, true, false, 0);
+        }
+    }
+
+    /**
+     * 显示等待进度条
+     *
+     * @param context
+     */
+    public static ProgressDialog showProgressPop(Context context) {
+        ProgressDialog pgd = new ProgressDialog(context);
+        pgd.setMessage(context.getString(R.string.connecting));
+        pgd.show();
+        return pgd;
+    }
+
+    /**
+     * 隐藏等待进度条
+     *
+     * @param pd
+     */
+    public static void hideProgressPop(ProgressDialog pd) {
+        if (pd != null) {
+            pd.dismiss();
+            pd = null;
         }
     }
 

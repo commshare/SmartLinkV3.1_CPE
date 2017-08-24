@@ -209,7 +209,6 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     @Override
                     protected void onSuccess(LoginState loginState) {
                         if (loginState.getState() == Cons.LOGIN) {
-                            Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                             // commit the token
                             API.get().updateToken(loginResult.getToken());
                             Log.d("ma_token", "token2: " + loginResult.getToken());
@@ -274,7 +273,6 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
-                        popDismiss();
                         int simState = result.getSIMState();
                         boolean simflag = simState == Cons.READY || simState == Cons.PIN_REQUIRED || simState == Cons.PUK_REQUIRED;
                         if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
@@ -305,7 +303,8 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
                             return;
                         }
-
+                        popDismiss();
+                        Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

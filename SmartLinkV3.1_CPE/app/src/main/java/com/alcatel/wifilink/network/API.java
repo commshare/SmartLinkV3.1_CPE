@@ -80,6 +80,7 @@ import javax.net.ssl.SSLSocketFactory;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -189,13 +190,15 @@ public class API {
 
             // 获取当前连接的IP
             Context context = SmartLinkV3App.getInstance().getApplicationContext();
+            Log.i("ma_gateway", "gateway: " + WifiUtils.getWifiGateWay(context));
             // 形式: http://网关如192.168.3.1/
             String ip = Cons.IP_PRE + WifiUtils.getWifiGateWay(context) + Cons.IP_SUFFIX;
             /* referer */
             reqBuilder.addHeader("Referer", ip);
 
             request = reqBuilder.build();
-            return chain.proceed(request);
+            Response proceed = chain.proceed(request);
+            return proceed;
         });
         
         /* google play request online ssl verify */

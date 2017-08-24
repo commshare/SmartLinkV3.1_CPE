@@ -408,7 +408,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mEditedSettings.getAP2G().setWpaKey("");
                     //wep
                 } else if (newSecurity2GMode == 1) {
-                    if (newKey2G.length() != 5 || newKey2G.length() != 13) {
+                    if (newKey2G.length() < 5 || newKey2G.length() > 13) {
                         ToastUtil_m.show(mContext, R.string.wep_password_must_be_5_13_characters);
                         return;
                     }
@@ -456,7 +456,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mEditedSettings.getAP5G().setWpaKey("");
                     //wep
                 } else if (newSecurity5GMode == 1) {
-                    if (newKey5G.length() != 5 || newKey5G.length() != 13) {
+                    if (newKey5G.length() < 5 || newKey5G.length() > 13) {
                         ToastUtil_m.show(mContext, "Wep password(5G) length must be 5 or 13!");
                         return;
                     }
@@ -501,6 +501,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), RefreshWifiActivity.class);
                 startActivity(intent);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mProgressDialog.dismiss();
             }
 
             @Override

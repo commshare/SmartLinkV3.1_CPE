@@ -368,7 +368,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                     mEditedSettings.getAP2G().setWpaKey("");
                     //wep
                 } else if (newSecurity2GMode == 1) {
-                    if (newKey2G.length() != 5 || newKey2G.length() != 13) {
+                    if (newKey2G.length() < 5 || newKey2G.length() > 13) {
                         ToastUtil_m.show(mContext, R.string.wep_password_must_be_5_13_characters);
                         return;
                     }

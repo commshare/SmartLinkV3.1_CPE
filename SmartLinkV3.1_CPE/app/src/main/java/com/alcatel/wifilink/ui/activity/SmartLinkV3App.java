@@ -48,6 +48,8 @@ public class SmartLinkV3App extends MultiDexApplication {
         mAllShareProxy = AllShareProxy.getInstance(this);
         /* checked hostNameVerify  */
         HostnameUtils.setVerifyHostName();
+        // CrashHandler crashHandler = CrashHandler.getInstance();
+        // crashHandler.init(getApplicationContext());
     }
 
     public void setControlPoint(ControlPoint controlPoint) {
