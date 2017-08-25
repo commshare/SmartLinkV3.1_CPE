@@ -128,7 +128,6 @@ public abstract class AbstractMediaPlayEngine implements IBasePlayEngine, OnComp
 
 	@Override
 	public void onCompletion(MediaPlayer mp) {
-		log.e("onCompletion...");
 		if (mPlayerEngineListener != null){
 			mPlayerEngineListener.onTrackPlayComplete(mMediaInfo);
 		}
@@ -219,7 +218,6 @@ public abstract class AbstractMediaPlayEngine implements IBasePlayEngine, OnComp
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 
 
-		log.e("onError --> what = " + what);
 		
 		return false;
 	}

@@ -48,7 +48,6 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 	private void testWebServer(Context context) {
 		if(ConnectivityUtils.checkHaveWifi(context)) {
 			String strServerIp = ConnectivityUtils.getServerAddress(context);
-			Log.d("strServerIp", strServerIp);
 			if(!strServerIp.equalsIgnoreCase("0.0.0.0")) {
 				LegacyHttpClient.getInstance().setServerAddress(strServerIp);
 				RestHttpClient.getInstance().setServerAddress(strServerIp);
@@ -67,7 +66,6 @@ public class WifiNetworkReceiver extends BroadcastReceiver{
 		m_nType = ConnectivityUtils.getActiveConnectedType(context);
 		//if(nPreType == m_nType)
 		//	return;
-		Log.d("strServerIp", String.valueOf(m_nType));
 		if(m_nType == ConnectivityUtils.TYPE_NONE) {
 			DataConnectManager.getInstance().setNoConnected();
 			stopBusiness(context);

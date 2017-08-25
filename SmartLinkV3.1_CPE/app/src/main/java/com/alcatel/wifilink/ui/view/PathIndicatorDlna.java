@@ -116,8 +116,6 @@ public class PathIndicatorDlna extends HorizontalScrollView
 
     folderButton.setEnabled(true);
 
-    Log.v(TAG, "folderName:" + folderName + ", index : " + index + 
-        ", totalSize : " + totalSize + ", isAdd: " + isAdd);
     if (index != totalSize ||isAdd)
     	 mPreFolderNameList.add(getAbsoluteFolderName(folderName));
 

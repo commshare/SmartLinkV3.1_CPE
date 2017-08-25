@@ -170,7 +170,6 @@ public class FtpFileExplorerTabActivity extends BaseFragmentActivity
                 
             case IntentBuilder.REQUEST_EX :
                 Uri uri = data.getData();
-                Log.d("Moveto", uri.toString());
                 if (mRequestExListener != null)
                     mRequestExListener.onRequestResult(reqCode, uri);
                 break;

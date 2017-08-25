@@ -107,7 +107,6 @@ public class MusicPlayEngineImpl extends AbstractMediaPlayEngine{
 				mMediaPlayer.setOnBufferingUpdateListener(mBufferingUpdateListener);
 			}
 			mMediaPlayer.prepareAsync();
-			log.e("mMediaPlayer.prepareAsync path = " + mMediaInfo.getRes());
 
 			mPlayState = PlayState.MPS_PARESYNC;
 			performPlayListener(mPlayState);
@@ -125,7 +124,6 @@ public class MusicPlayEngineImpl extends AbstractMediaPlayEngine{
 
 	@Override
 	protected boolean prepareComplete(MediaPlayer mp) {
-		log.e("prepareComplete");	
 		mPlayState = PlayState.MPS_PARECOMPLETE;
 		if (mPlayerEngineListener != null){
 			mPlayerEngineListener.onTrackPrepareComplete(mMediaInfo);

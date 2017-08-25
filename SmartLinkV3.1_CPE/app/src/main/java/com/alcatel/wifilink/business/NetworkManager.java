@@ -155,13 +155,11 @@ public class NetworkManager extends BaseManager {
     public void getNetworkSearchState() {
         LegacyHttpClient.getInstance().sendPostRequest(new HttpSearchNetwork.SearchNetwork(response -> {
             if (response.isOk()) {
-                Log.v("NetworkSearchResult", "Success");
                 if (m_searchNetworkResultTask == null) {
                     m_searchNetworkResultTask = new SearchNetworkResultTask();
                     m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_searchNetworkResultTask, 0, 5 * 1000);
                 }
             } else {
-                Log.v("NetworkSearchResult", "Failed");
             }
 
 //    			sendBroadcast(response, MessageUti.NETWORK_SEARCH_NETWORK_REQUSET);
@@ -176,9 +174,6 @@ public class NetworkManager extends BaseManager {
         LegacyHttpClient.getInstance().sendPostRequest(new HttpGetNetworkSettings.GetNetworkSettings(response -> {
             if (response.isOk()) {
                 m_network_setting_result = response.getModelResult();
-//                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetselectionMode);
-//                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetworkMode);
-//                			Log.v("GetNetworkSettingsTest", "" + m_network_setting_result.NetworkBand);
                 m_network_mode = m_network_setting_result.NetworkMode;
                 m_network_selection = m_network_setting_result.NetselectionMode;
             }
@@ -195,7 +190,6 @@ public class NetworkManager extends BaseManager {
                 netselectionMode,
                 response -> {
                     if (response.isOk()) {
-//                		Log.v("GetNetworkSettingsTest", "Yes");
                         m_network_mode = networkMode;
                         m_network_selection = netselectionMode;
                     }
@@ -266,7 +260,6 @@ public class NetworkManager extends BaseManager {
             LegacyHttpClient.getInstance().sendPostRequest(new HttpGetNetworkRegisterState.GetNetworkRegisterState(response -> {
                 if (response.isOk()) {
                     NetworkRegisterStateResult registerResult = response.getModelResult();
-//		                    		Log.v("NetworkRegisterTest", "" + registerResult.State);
                     if (registerResult.State == 0 || registerResult.State == 2 || registerResult.State == 3) {
                         stopGetNetworkRegisterState();
                     }

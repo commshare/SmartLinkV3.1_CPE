@@ -392,7 +392,6 @@ __main:
                 if (ftp.doCommand(doCommand, remote)) {
 //                  Command listener has already printed the output
 //                    for(String s : ftp.getReplyStrings()) {
-//                        System.out.println(s);
 //                    }
                 } else {
                 }

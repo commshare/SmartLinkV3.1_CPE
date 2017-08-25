@@ -85,7 +85,6 @@ public class GetMetaDataProxy {
 		
 		Device selDevice = AllShareProxy.getInstance(context).getDMSSelectedDevice();
 		if (selDevice == null) {
-			log.e("no selDevice!!!");
 			return null;
 		}
 	
@@ -93,14 +92,12 @@ public class GetMetaDataProxy {
 		.getService("urn:schemas-upnp-org:service:ContentDirectory:1");
 		if (selDevice == null)
 		{
-			log.e("no service for ContentDirectory!!!");
 			return null;
 		}
 		
 		Action action = service.getAction("GetMetaData");
 		if(action == null)
 		{
-			log.e("action for GetMetaData is null");
 			return null;
 		}
 	
@@ -113,10 +110,8 @@ public class GetMetaDataProxy {
 		if (action.postControlAction()) {
 			ArgumentList outArgList = action.getOutputArgumentList();
 			Argument result = outArgList.getArgument("Result");
-			log.d("result value = \n" + result.getValue());	
 			
 			List<MediaItem> items = ParseUtil.parseResult(result);
-			log.d("path:" + path + " item:" + items.get(0).getRes() + "size = "+items.size());
 			return items;
 		} else {
 			UPnPStatus err = action.getControlStatus();

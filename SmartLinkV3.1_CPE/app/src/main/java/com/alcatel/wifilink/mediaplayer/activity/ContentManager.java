@@ -35,14 +35,12 @@ public class ContentManager {
 	public void pushListItem(List<MediaItem> dataList)
 	{
 		if (dataList != null){
-	//		log.e("mStack.add data.size = " + dataList.size());
 			mStack.add(dataList);
 		}
 	}
 	public void pushTitle(String title)
 	{
 		if (title != null){
-	//		log.e("mStack.add data.size = " + dataList.size());
 			mStackTitle.add(title);
 		}
 	}

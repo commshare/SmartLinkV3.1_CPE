@@ -41,12 +41,9 @@ public class HttpWlanSetting {
 
         @Override
         protected void parseContent(String strJsonResult) {
-            Log.d(TAG, "parseContent, strJsonResult: " + strJsonResult);
 
             Gson gson = new Gson();
             m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
-            Log.d(TAG, "parseContent, ap2g: " + m_New_result.AP2G);
-            Log.d(TAG, "parseContent, ap5g: " + m_New_result.AP5G);
 //            if (m_result.CountryCode.isEmpty()) {
 //                m_New_result = gson.fromJson(strJsonResult, WlanNewSettingResult.class);
 //                parseNewSettingResult(m_result, m_New_result);
@@ -58,9 +55,7 @@ public class HttpWlanSetting {
 //            m_result.curr_num = m_New_result.curr_num;
 //            m_result.WlanAPMode = m_New_result.WlanAPMode;
 //            int size = m_New_result.APList.size();
-//            Log.e(TAG, "ap list size = " +size);
 //            if (size > 2 || size <= 0) {
-//                Log.e(TAG, "error, invalid ap list size = " +size);
 //            }
 //            for (AP ap : m_New_result.APList) {
 //                //WlanAPID_2G

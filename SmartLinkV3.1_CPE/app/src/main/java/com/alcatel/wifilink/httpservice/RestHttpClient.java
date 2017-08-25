@@ -73,7 +73,6 @@ public class RestHttpClient {
 
     public static RestHttpClient getInstance() {
         if (m_instance == null) {
-            Log.d(TAG, "Create Http Client instance");
             m_instance = new RestHttpClient();
         }
         return m_instance;
@@ -114,7 +113,6 @@ public class RestHttpClient {
 
         setSniffHttpServer(false);
 
-        Log.d(TAG, mServerUrl);
         HttpAccessLog.getInstance().writeLogToFile("Server address:" + mServerUrl);
     }
 

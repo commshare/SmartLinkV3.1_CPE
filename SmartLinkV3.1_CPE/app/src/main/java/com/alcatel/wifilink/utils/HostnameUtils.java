@@ -35,10 +35,8 @@ public class HostnameUtils {
             String ip = "192.168.1.1";
             String http_ip = "http://" + ip;
             if (hostname.equalsIgnoreCase(http_ip) || hostname.equalsIgnoreCase(ip) || hostname.contains(ip)) {
-                Log.d("ma_verify", "verfify");
                 return true;
             } else {
-                Log.d("ma_verify", "no-verfify");
                 return false;
             }
         }

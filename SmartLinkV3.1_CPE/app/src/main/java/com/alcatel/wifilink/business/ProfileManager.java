@@ -29,16 +29,6 @@ public class ProfileManager extends BaseManager{
 							GetProfileListResult profileList = response.getModelResult();
 							m_profile_list = profileList.ProfileList;
 //							for(ProfileItem tmp : profileList.ProfileList){
-//            					Log.v("GetProfileResultAPN", tmp.APN);
-//            					Log.v("GetProfileResultDialNumber", tmp.DailNumber);
-////            					Log.v("GetProfileResultIPAdress", tmp.IPAddress);
-//            					Log.v("GetProfileResultPassword", tmp.Password);
-//            					Log.v("GetProfileResultProfileName", tmp.ProfileName);
-//            					Log.v("GetProfileResultUserName", tmp.UserName);
-//            					Log.v("GetProfileResultAuthType", "" + tmp.AuthType);
-//            					Log.v("GetProfileResultDefault", "" + tmp.Default);
-//            					Log.v("GetProfileResultIsPredefine","" +  tmp.IsPredefine);
-//            					Log.v("GetProfileResultProfileID", "" + tmp.ProfileID);
 //            				}
 
 //    			sendBroadcast(response, MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST);

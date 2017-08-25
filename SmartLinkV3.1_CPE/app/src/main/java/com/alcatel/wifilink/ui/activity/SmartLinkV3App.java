@@ -41,7 +41,6 @@ public class SmartLinkV3App extends MultiDexApplication {
         super.onCreate();
         m_instance = this;
         contexts = new ArrayList<>();
-        Log.d("HttpService", "Application onCreate ");
         BusinessManager.getInstance();
         NotificationService.startService();
         HandlerUtils.replaceHandler();

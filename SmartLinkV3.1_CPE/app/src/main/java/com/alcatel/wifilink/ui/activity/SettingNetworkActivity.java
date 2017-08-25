@@ -99,7 +99,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
                 if (!mMobileDataSwitchCompat.isPressed())
                     return;
-                Log.d(TAG, "mMobileDataSwitchCompat = " + enable);
                 if (mOldMobileDataEnable != enable) {
                     if (enable) {
                         connect();
@@ -140,7 +139,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mDisconnectCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
-                Log.d(TAG, "mDisconnectCompat = " + enable);
                 if (!compoundButton.isPressed())
                     return;
                 if (enable) {
@@ -156,7 +154,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mTimeLimitCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
-                Log.d(TAG, "mTimeLimitCompat = " + enable);
                 if (enable) {
                     //                    mUsageSetting.setTimeLimitFlag(1);
                     mTimeLimitLl.setVisibility(View.VISIBLE);
@@ -174,7 +171,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mLimitAutoDisaconectCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
-                Log.d(TAG, "mLimitAutoDisaconectCompat = " + enable);
                 if (enable) {
                     mUsageSetting.setTimeLimitFlag(1);
                 } else {
@@ -205,7 +201,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
             @Override
             protected void onFailure() {
-                Log.d(TAG, "connect error");
                 mOldMobileDataEnable = false;
                 mMobileDataSwitchCompat.setChecked(false);
             }
@@ -227,7 +222,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
             @Override
             protected void onFailure() {
-                Log.d(TAG, "disConnect error");
                 mOldMobileDataEnable = true;
                 mMobileDataSwitchCompat.setChecked(true);
             }
@@ -239,7 +233,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(ConnectionState result) {
                 // 0: disconnected  1: connecting 2: connected 3: disconnecting
-                Log.v(TAG, "getConnectionState" + result.getConnectionStatus());
                 if (result.getConnectionStatus() == Constants.ConnectionStatus.DISCONNECTED) {
                     mMobileDataSwitchCompat.setChecked(false);
                     mOldMobileDataEnable = false;
@@ -251,7 +244,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getConnectionState error");
             }
         });
     }
@@ -275,7 +267,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "setConnectionSettings error");
             }
         });
     }
@@ -286,7 +277,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             protected void onSuccess(ConnectionSettings result) {
                 //  0: manual connect 1: auto connect
                 mConnectionSettings = result;
-                Log.v(TAG, "getConnectionSettings" + result.getConnectMode());
                 if (result.getConnectMode() == Constants.ConnectionSettings.CONNECTION_MODE_AUTO) {
                     mConnectionModeSpinner.setSelection(0);
                     mRoamingRl.setVisibility(View.VISIBLE);
@@ -303,7 +293,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getConnectionSettings error");
             }
         });
     }
@@ -319,7 +308,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "setNetworkSettings error");
             }
         });
     }
@@ -330,7 +318,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             protected void onSuccess(Network result) {
                 //  0: auto mode 1: 2G only 2: 3G only 3: LTE only
 
-                Log.v(TAG, "getNetworkModeSettings" + result.getNetworkMode());
                 mNetworkSettings = result;
                 if (result.getNetworkMode() == Constants.SetNetWorkSeting.NET_WORK_MODE_AUTO) {
                     mNetworkModeSpinner.setSelection(0);
@@ -345,7 +332,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getNetworkModeSettings error");
             }
         });
     }
@@ -360,7 +346,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getRoaming error");
             }
         });
     }
@@ -369,7 +354,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().changePinState(pinCode, enable, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "changePinState sendAgainSuccess");
                 mSimPinCompat.setChecked(enable == 1);
             }
 
@@ -382,7 +366,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "changePinState error");
                 mSimPinCompat.setChecked(enable == 1 ? false : true);
             }
         });
@@ -393,7 +376,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(SimStatus result) {
                 // PinState: 0: unknown 1: enable but not verified 2: PIN enable verified 3: PIN disable 4: PUK required 5: PUK times used out;
-                Log.v(TAG, "getSimStatus" + result.getPinState());
                 mSimStatus = result;
                 if (result.getPinState() == 2) {
                     mSimPinCompat.setChecked(true);
@@ -404,7 +386,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getSimStatus error");
             }
         });
     }
@@ -413,30 +394,25 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
-                Log.v(TAG, "IMSI=" + result.getIMSI() + "---sim number" + result.getMSISDN());
                 mSimNumberTextView.setText(result.getMSISDN());
                 mImsiTextView.setText(result.getIMSI());
             }
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getSystemInfo error");
             }
         });
     }
 
     private void setUsageSetting(UsageSetting usageSetting) {
-        Log.d(TAG, "setUsageSetting = " + usageSetting.toString());
         API.get().setUsageSetting(usageSetting, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "setUsageSetting sendAgainSuccess");
                 getUsageSetting();
             }
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "setUsageSetting error");
             }
 
             @Override
@@ -450,7 +426,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().changePinCode(newPin, currentPin, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "changePinCode sendAgainSuccess");
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mCurrentSimPin.setText(null);
                 mNewSimPin.setText(null);
@@ -466,7 +441,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "changePinCode error");
             }
         });
     }
@@ -476,7 +450,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(UsageSetting result) {
                 mUsageSetting = result;
-                Log.d(TAG, "getUsageSetting = " + result.toString());
                 String unit = "";
                 if (result.getUnit() == Constants.UsageSetting.UNIT_MB) {
                     unit = "MB";
@@ -510,7 +483,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getUsageSetting error");
             }
         });
     }

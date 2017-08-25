@@ -78,7 +78,6 @@ public class DataUti {
 		} else if (time.matches("\\d{4}\\.\\d{2}\\.\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
 			pattern = "yyyy.MM.dd HH:mm:ss";
 		} else {
-			Log.e(TAG, "unspport time format " + time);
 			return null;
 		}
 		SimpleDateFormat sDate = new SimpleDateFormat(pattern);
@@ -87,10 +86,8 @@ public class DataUti {
 		try {
 			smsDate = sDate.parse(time);
 		} catch (ParseException e) {
-			Log.e(TAG, "formatDateFromString ParseException " + time);
 			e.printStackTrace();
 		} catch (Exception e) {
-			Log.e(TAG, "formatDateFromString exception " + time);
 			e.printStackTrace();
 		}
 

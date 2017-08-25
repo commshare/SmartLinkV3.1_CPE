@@ -300,11 +300,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.button_operation_download:
-				Log.v("ftp", "click download button");
 				mUICmdListener.download(getSelectedFileList(), null);
 				break;
 			case R.id.button_operation_copy:
-				Log.v("ftp", "click copy button");
 				onOperationCopy();
 				break;
 			case R.id.button_operation_move:
@@ -314,7 +312,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 				onOperationSend();
 				break;
 			case R.id.button_operation_delete:
-				Log.v("ftp", "click delete button");
 				mUICmdListener.delete(getSelectedFileList());
 				// onOperationDelete();
 				break;
@@ -353,7 +350,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 //			try {
 //				mActivity.startActivity(intent);
 //			} catch (ActivityNotFoundException e) {
-//				Log.e(LOG_TAG, "fail to start setting: " + e.toString());
 //			}
 //		}
 //	}
@@ -617,7 +613,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 			try {
 				mFileViewListener.startActivity(intent);
 			} catch (ActivityNotFoundException e) {
-				Log.e(LOG_TAG, "fail to view file: " + e.toString());
 			}
 		}
 		clearSelection();
@@ -633,12 +628,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
                 return;
             }
         }
-        Log.d("Send", selectedFileList.toString());
-        Log.d("Send", String.valueOf(selectedFileList.size()));
         mUICmdListener.share(selectedFileList, new FtpFileCommandTask.OnCallResponse() {           
             @Override
             public void callResponse(Object obj) {
-                Log.d("Send", "response share.");
                 try {
                     @SuppressWarnings("unchecked")
                     final ArrayList<ShareFileInfo> list = (ArrayList<ShareFileInfo>) obj;
@@ -651,7 +643,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
                                 try {
                                     mFileViewListener.startActivity(intent);
                                 } catch (ActivityNotFoundException e) {
-                                    Log.e(LOG_TAG, "fail to view file: " + e.toString());
                                 }
                             }
                         }
@@ -714,7 +705,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	private boolean doRename(final FileInfo f, String text) {
         if (TextUtils.isEmpty(text))
             return false;
-        Log.d("fileexplorer", "rename : old file is " + f.filePath + " new file is " + text);
         String fromFile = Util.makePath(f.filePath, f.fileName);
         String toFile = Util.makePath(f.filePath, text);
         mUICmdListener.rename(fromFile, toFile);
@@ -735,12 +725,9 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 					"com.android.providers.media.MediaScannerReceiver");
 			intent.setData(Uri.fromFile(Environment
 					.getExternalStorageDirectory()));
-			Log.v(LOG_TAG,
-					"directory changed, send broadcast:" + intent.toString());
 		} else {
 			intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 			intent.setData(Uri.fromFile(new File(path)));
-			Log.v(LOG_TAG, "file changed, send broadcast:" + intent.toString());
 		}
 		mActivity.sendBroadcast(intent);
 	}
@@ -780,7 +767,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						mUICmdListener.delete(list);
-						Log.d(LOG_TAG, "selected file list size is " + String.valueOf(list.size()));
 						dialog.dismiss();
 						
 					}
@@ -804,7 +790,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 	public void onOperationDelete() {
 		//doOperationDelete(getSelectedFileList());
 	    ArrayList<FileInfo> list = new ArrayList<FileInfo>(getSelectedFileList());
-	    Log.d(LOG_TAG, "selected file list size is " + String.valueOf(list.size()));
 	    onFtpDelete(list);
 	    clearSelection();
 	}
@@ -876,7 +861,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
                 @Override
                 public void onGetFiles(ArrayList<File> list) {
                     // TODO Auto-generated method stub
-                    Log.i("ADD_FILE", "upload file" + list.toString() + " to " + mCurrentPath);
                     mUICmdListener.upload(list, mCurrentPath);
                 }
             });
@@ -1312,7 +1296,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		FileInfo lFileInfo = mFileViewListener.getItem(position);
 
 		if (lFileInfo == null) {
-			Log.e(LOG_TAG, "file does not exist on position:" + position);
 			return;
 		}
 
@@ -1454,7 +1437,6 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
 		    String filePath = Util.makePath(lFileInfo.filePath, lFileInfo.fileName);
 			IntentBuilder.viewFile(mActivity, filePath);
 		} catch (ActivityNotFoundException e) {
-			Log.e(LOG_TAG, "fail to view file: " + e.toString());
 		}
 	}
 	
@@ -1514,14 +1496,12 @@ public class FtpFileViewInteractionHub implements IOperationProgressListener,
                     ShareFileInfo info = list.get(0);
                     if (info == null) return;                    
                     final String filePath = info.filePath;
-                    Log.d("view", "view file path : " + filePath);
                     mFileViewListener.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 IntentBuilder.viewMediaFile(mActivity, filePath);
                             } catch (ActivityNotFoundException e) {
-                                Log.e(LOG_TAG, "fail to view file: " + e.toString());
                             }
                         }
                     });

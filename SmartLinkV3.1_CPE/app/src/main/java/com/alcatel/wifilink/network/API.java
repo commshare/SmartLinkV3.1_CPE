@@ -190,7 +190,6 @@ public class API {
 
             // 获取当前连接的IP
             Context context = SmartLinkV3App.getInstance().getApplicationContext();
-            Log.i("ma_gateway", "gateway: " + WifiUtils.getWifiGateWay(context));
             // 形式: http://网关如192.168.3.1/
             String ip = Cons.IP_PRE + WifiUtils.getWifiGateWay(context) + Cons.IP_SUFFIX;
             /* referer */

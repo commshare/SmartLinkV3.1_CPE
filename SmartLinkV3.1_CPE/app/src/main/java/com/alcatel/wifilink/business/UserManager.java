@@ -144,7 +144,6 @@ public class UserManager extends BaseManager {
             if (response.isOk()) {
                 m_loginStatus = UserLoginStatus.Logout;
             }
-            Log.d("","");
             //				sendBroadcast(response, MessageUti.USER_LOGOUT_REQUEST);
         }));
     }

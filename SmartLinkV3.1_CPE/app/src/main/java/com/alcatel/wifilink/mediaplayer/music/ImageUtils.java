@@ -38,7 +38,6 @@ public class ImageUtils {
 
 		Bitmap bitmap = ((BitmapDrawable)resId).getBitmap();
 		if (bitmap != null) {
-			log.e("bitmap is not null");
 			return createRotateReflectedMap(bitmap);
 		}
 		return null;

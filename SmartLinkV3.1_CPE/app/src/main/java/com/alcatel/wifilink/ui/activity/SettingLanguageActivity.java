@@ -83,13 +83,11 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG,"onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        Log.d(TAG,"onBackPressed");
         Intent intent = new Intent();
         intent.putExtra(IS_SWITCH_LANGUAGE, mIsSwitchLanguage);
         setResult(SettingFragment.SET_LANGUAGE_REQUEST, intent);
@@ -118,7 +116,6 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
     @Override
     public void onStop() {
         // TODO Auto-generated method stub
-        Log.d(TAG,"onStop");
         super.onStop();
     }
 

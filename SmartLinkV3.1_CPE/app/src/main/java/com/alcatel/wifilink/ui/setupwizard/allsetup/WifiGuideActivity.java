@@ -160,8 +160,6 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                 mOriginSettings = result;
                 mEditedSettings = mOriginSettings.clone();
                 updateUIWithWlanSettings();
-                Log.i(TAG, mOriginSettings.toString());
-                Log.i(TAG, "SSID_BROADCAST" + mEditedSettings.getAP2G().getSsidHidden());
             }
 
             @Override
@@ -188,7 +186,6 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     }
 
     private void updateUIWithWlanSettings() {
-        Log.i(TAG, "updateUIWithWlanSettings");
         if (mOriginSettings == null) {
             return;
         }
@@ -299,7 +296,6 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG, "requestCode:" + requestCode);
         if ((REQUEST_CODE_ADVANCED_SETTINGS_2_4G == requestCode || REQUEST_CODE_ADVANCED_SETTINGS_5G == requestCode) && resultCode == RESULT_OK) {
             boolean broadcast = data.getBooleanExtra(EXTRA_SSID_BROADCAST, false);
             int channel = data.getIntExtra(EXTRA_CHANNEL, 0);
@@ -308,12 +304,6 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
             int mode80211 = data.getIntExtra(EXTRA_MODE_80211, 0);
             boolean isolation = data.getBooleanExtra(EXTRA_AP_ISOLATION, false);
 
-            Log.i(TAG, "broadcast:" + broadcast);
-            Log.i(TAG, "channel:" + channel);
-            Log.i(TAG, "countryCode:" + countryCode);
-            Log.i(TAG, "bandwidth:" + bandwidth);
-            Log.i(TAG, "mode80211:" + mode80211);
-            Log.i(TAG, "isolation:" + isolation);
 
             AP ap = requestCode == REQUEST_CODE_ADVANCED_SETTINGS_2_4G ? mEditedSettings.getAP2G() : mEditedSettings.getAP5G();
             ap.setSsidHidden(broadcast);
@@ -437,7 +427,6 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                 }
             }
         }
-        Log.i(TAG, "mEditedSettings, " + mEditedSettings);
         setWlanRequest();
     }
 

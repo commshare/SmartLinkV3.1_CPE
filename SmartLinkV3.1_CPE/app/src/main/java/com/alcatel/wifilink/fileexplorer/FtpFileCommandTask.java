@@ -781,8 +781,6 @@ public class FtpFileCommandTask {
 
 		@Override
 		public void onStart() {
-			Log.d("", "onStart.............");
-			// getEVE();
 		}
 
 		@Override
@@ -799,7 +797,6 @@ public class FtpFileCommandTask {
 
 		@Override
 		public void onCancel(Object obj) {
-			Log.d("", "onCancel...............");
 		}
 	};
 

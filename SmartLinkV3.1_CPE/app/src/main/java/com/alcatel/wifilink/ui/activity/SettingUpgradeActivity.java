@@ -292,8 +292,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 		AccountManager accountManager = AccountManager.get(this);
 		Account[] accounts = accountManager.getAccounts();
 		for (Account account:accounts) {
-			Log.d("Account", "account.name="+account.name);
-			Log.d("Account", "account.type="+account.type);
 			if (account.type.equalsIgnoreCase("com.google")) {
 				blHas = true;
 				break;
@@ -492,13 +490,11 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 						String strRes = EntityUtils.toString(response.getEntity(), "utf-8");	
 						int nPos = strRes.indexOf("softwareVersion");						
 						if (nPos != -1) {
-							Log.e("@@@", strRes);
 							strRes = strRes.substring(nPos);
 							int start = strRes.indexOf(">");						
 							int end = strRes.indexOf("<");
 							strRes = strRes.substring(start+1, end);			
 							strRes = strRes.trim();
-							Log.e("@@@", strRes);
 							nMsgId = MSG_GET_NEW_VERSION;
 							strNewVersionString = strRes;
 						}
@@ -582,7 +578,6 @@ public class SettingUpgradeActivity extends BaseActivity implements OnClickListe
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		Log.v("UpgradeActivity", "OnKeyDown:"+event.getKeyCode());
 		if (KeyEvent.KEYCODE_BACK == keyCode) {
 			onBtnBack();
 		}

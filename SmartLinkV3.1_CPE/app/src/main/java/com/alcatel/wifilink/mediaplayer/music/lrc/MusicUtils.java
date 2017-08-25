@@ -140,7 +140,6 @@ public class MusicUtils {
 //			m.prepare();
 //			return true;
 //		} catch (IOException e) {
-//			Log.v(TAG, "is can playing.");
 //			return false;
 //		} catch (IllegalArgumentException e) {
 //			return false;
@@ -181,7 +180,6 @@ public class MusicUtils {
 
 	public static String getLyricFile(String song, String artist) {
 		String lyricDir = getLyricDir();
-		log.e("getLyricDir = " + getLyricDir());
 		if (lyricDir == null) {
 			return null;
 		}
@@ -192,7 +190,6 @@ public class MusicUtils {
 			throws IOException {
 		boolean result = false;
 		if (filePath != null && inputStream != null) {
-			Log.d(TAG, "filePath:" + filePath);
 			File file = new File(filePath);
 			if (file.exists()) {
 				file.delete();
@@ -219,7 +216,6 @@ public class MusicUtils {
 			throws IOException {
 		boolean result = false;
 		if (filePath != null && str != null) {
-			Log.d(TAG, "filePath:" + filePath);
 			File file = new File(filePath);
 			if (file.exists()) {
 				file.delete();

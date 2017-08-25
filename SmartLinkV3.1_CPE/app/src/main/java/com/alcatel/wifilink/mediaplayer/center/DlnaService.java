@@ -51,7 +51,6 @@ public class DlnaService extends Service implements IBaseEngine,
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		log.e("DlnaService onCreate");
 		init();
 	}
 	
@@ -67,7 +66,6 @@ public class DlnaService extends Service implements IBaseEngine,
 				restartEngine();
 			}
 		}else{
-			log.e("intent = " + intent);
 		}
 
 		return super.onStartCommand(intent, flags, startId);
@@ -75,7 +73,6 @@ public class DlnaService extends Service implements IBaseEngine,
 
 	@Override
 	public void onDestroy() {
-		log.e("DlnaService onDestroy");
 		unInit();
 		super.onDestroy();
 	}
@@ -111,7 +108,6 @@ public class DlnaService extends Service implements IBaseEngine,
 		registerNetworkStatusBR();
 		
 		boolean ret = CommonUtil.openWifiBrocast(this);
-		log.e("openWifiBrocast = " + ret);
 	}
 	
 	private void unInit(){
@@ -153,7 +149,6 @@ public class DlnaService extends Service implements IBaseEngine,
 
 	@Override
 	public void deviceRemoved(Device dev) {
-		log.e("deviceRemoved dev = " + dev.getUDN());
 		mAllShareProxy.removeDevice(dev);
 	}
 	
@@ -179,7 +174,6 @@ public class DlnaService extends Service implements IBaseEngine,
 				}
 			}
 			long time2 = System.currentTimeMillis();
-			log.e("exitCenterWorkThread cost time:" + (time2 - time1));
 			mCenterWorkThread = null;
 		}
 	}
@@ -195,7 +189,6 @@ public class DlnaService extends Service implements IBaseEngine,
 	
 	public static final String SEARCH_DEVICES_FAIL = "com.geniusgithub.allshare.search_devices_fail";
 	public static void sendSearchDeviceFailBrocast(Context context){
-		log.e("sendSearchDeviceFailBrocast");
 		Intent intent = new Intent(SEARCH_DEVICES_FAIL);
 		context.sendBroadcast(intent);
 	}
@@ -233,7 +226,6 @@ public class DlnaService extends Service implements IBaseEngine,
 	
 	private void sendNetworkChangeMessage(){
 		if (firstReceiveNetworkChangeBR){
-			log.e("first receive the NetworkChangeMessage, so drop it...");
 			firstReceiveNetworkChangeBR = false;
 			return ;
 		}

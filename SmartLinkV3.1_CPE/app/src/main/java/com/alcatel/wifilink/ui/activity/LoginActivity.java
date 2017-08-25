@@ -185,7 +185,6 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
     /* **** 登陆: toLogin **** */
     private void toLogin(boolean needEncrypt) {
-        Log.d("ma_encry", "needEncrypt: " + needEncrypt);
         // TODO: 2017/7/13 加密算法--> FW完成加密机制后将下一句代码注释
         //needEncrypt = false;// FW完成加密机制后将该句代码注释
 
@@ -203,14 +202,12 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         API.get().login(account, passwd, new MySubscriber<LoginResult>() {
             @Override
             protected void onSuccess(LoginResult loginResult) {
-                Log.d("ma_token", "token1: " + loginResult.getToken());
                 API.get().getLoginState(new MySubscriber<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState loginState) {
                         if (loginState.getState() == Cons.LOGIN) {
                             // commit the token
                             API.get().updateToken(loginResult.getToken());
-                            Log.d("ma_token", "token2: " + loginResult.getToken());
                             // remember psd
                             SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
                             // 判断连接模式( SIM | WAN )

@@ -59,7 +59,6 @@ public class NetModeConnectStatusActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, TAG);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         EventBus.getDefault().register(this);
         setContentView(R.layout.activity_netmode_status);
@@ -69,7 +68,6 @@ public class NetModeConnectStatusActivity extends BaseActivity {
 
     private void initData() {
         int status = statusBean.getStatus();
-        Log.d(TAG, "current connect status: " + status);
         //
         //status = 0;
         // 根据连接状态切换界面

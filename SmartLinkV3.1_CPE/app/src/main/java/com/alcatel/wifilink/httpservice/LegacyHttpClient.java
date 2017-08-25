@@ -51,17 +51,11 @@ public class LegacyHttpClient {
 
     public static LegacyHttpClient getInstance() {
         if (m_instance == null) {
-            // Log.d(TAG, "Create Http Client instance");
             m_instance = new LegacyHttpClient();
         }
         return m_instance;
     }
 
-	/*
-                 * //fix bug:changed device public static void RecreateInstance() {
-	 * Log.d(TAG, "Recreate requestManaget"); m_instance = new
-	 * LegacyHttpClient(); }
-	 */
 
     private LegacyHttpClient() {
         m_request_list = new LinkedList<>();
@@ -75,7 +69,6 @@ public class LegacyHttpClient {
         m_server_address = String.format(ConstValue.HTTP_SERVER_ADDRESS, strIp);
         // m_server_address = "http://172.24.222.48/cgi-bin/luci/jrd/webapi";
         // test
-        // Log.d(TAG, m_server_address);
         HttpAccessLog.getInstance().writeLogToFile("Server address:" + m_server_address);
     }
 
@@ -104,7 +97,6 @@ public class LegacyHttpClient {
                     counter++;
             }
 
-            // Log.d(TAG, String.format(Locale.getDefault(), "Cpu Counter: %d", counter));
             return counter;
         } catch (FileNotFoundException e) {
             // e.printStackTrace();
@@ -145,7 +137,6 @@ public class LegacyHttpClient {
             filterRequest(request);
             m_request_list.addLast(request);
         }
-        //Log.e("request_list", "request_list size : " + String.valueOf(m_request_list.size()) + "   append message:" + request.m_requestParamJson.toString());
         HttpAccessLog.getInstance().writeLogToFile("request_list size : " + String.valueOf(m_request_list.size() + "   append message:" + request.m_requestParamJson.toString()));
     }
 
@@ -172,7 +163,6 @@ public class LegacyHttpClient {
         synchronized (m_response_list) {
             m_response_list.addLast(response);
         }
-        // Log.d("response_list", "response_list size : " + String.valueOf(m_response_list.size()));
         HttpAccessLog.getInstance().writeLogToFile("response_list size : " + String.valueOf(m_response_list.size()));
 
         Message msg = new Message();
@@ -277,15 +267,12 @@ public class LegacyHttpClient {
         public void run() {
             if (isStop())
                 return;
-            // Log.d(TAG, String.format("%d", Thread.currentThread().getId()));
             BaseRequest request = getRequest();
             BaseResponse response_obj = request.createResponseObject();
 
             String body = request.getRequestParamJson().toString();
             try {
                 //				String httpUrl = request.getHttpUrl();
-                // Log.d(TAG, "--> "+m_server_address);
-                // Log.d(TAG, body);
                 HttpAccessLog.getInstance().writeLogToFile("Request:" + body + " httpUrl:" + m_server_address);
                 // HttpPost connect object
                 HttpPost httpRequest = new HttpPost(m_server_address);
@@ -309,7 +296,6 @@ public class LegacyHttpClient {
                 if (nStatusCode == HttpStatus.SC_OK) {
                     // get response string
                     String response = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
-                    // Log.d(TAG, "<-- " + request.getMethod() + ", " + response);
                     JSONObject responseJson = new JSONObject(response);
                     HttpAccessLog.getInstance().writeLogToFile("Response:" + response);
                     response_obj.parseResult(SmartLinkV3App.getInstance().getApplicationContext(), responseJson);

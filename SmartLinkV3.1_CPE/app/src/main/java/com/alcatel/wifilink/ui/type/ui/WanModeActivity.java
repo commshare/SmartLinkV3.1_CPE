@@ -110,7 +110,6 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
 
             @Override
             protected void onSuccess(WanSettingsResult result) {
-                Log.d("ma_wanmode", result.getConnectType() + "");
                 WanModeActivity.this.result = result;
                 UiChange(false, false, false);// 切换状态UI
                 initActionbar();// show actionbar

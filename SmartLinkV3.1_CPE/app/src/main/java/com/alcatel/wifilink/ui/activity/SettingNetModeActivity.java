@@ -82,7 +82,6 @@ public class SettingNetModeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, TAG);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting_netmode);
         ButterKnife.bind(this);
@@ -95,7 +94,6 @@ public class SettingNetModeActivity extends BaseActivity {
     }
 
     private void initData() {
-        Log.d(TAG, "choice the mode");
         /*自动检测当前的上网模式*/
 
         mRlNetmodeDetecting.setVisibility(View.VISIBLE);
@@ -108,7 +106,6 @@ public class SettingNetModeActivity extends BaseActivity {
                 });
                 // 1.获取WanInfo
                 SettingNetModeActivity.this.wanInfo = wanInfo;
-                Log.d(TAG, "getWanInfos: " + wanInfo.toString());
                 
                 // 2.根据类型进行判断
                 // TOAT: 此处可以测试不同类型的效果

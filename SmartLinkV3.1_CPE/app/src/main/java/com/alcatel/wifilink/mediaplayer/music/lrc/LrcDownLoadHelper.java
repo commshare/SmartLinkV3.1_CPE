@@ -71,7 +71,6 @@ public class LrcDownLoadHelper {
 		@Override
 		public void run() {
 			boolean ret = LyricHelper.searchLryics(mSong, mArtist);
-			log.e(" LyricHelper.searchLryics mSong = " + mSong + ", mArtist = " + mArtist + ", ret = " + ret);
 			
 			if (mCallback != null){
 				mCallback.lrcDownLoadComplete(ret, mSong, mArtist); 

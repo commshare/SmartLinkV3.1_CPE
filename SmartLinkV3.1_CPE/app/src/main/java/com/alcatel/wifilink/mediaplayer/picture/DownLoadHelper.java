@@ -48,7 +48,6 @@ public class DownLoadHelper {
 		if (mExecutorService == null){
 			return false;
 		}
-		log.d("syncDownLoadFile  requestUrl = "  + requestUrl);
 		FileDownTask fTask = new FileDownTask(requestUrl, saveUrl, callback);
 		mExecutorService.execute(fTask);
 	

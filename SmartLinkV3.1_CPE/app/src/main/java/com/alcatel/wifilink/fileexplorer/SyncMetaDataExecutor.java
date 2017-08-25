@@ -70,11 +70,8 @@ class SyncMetaDataExecutor implements Executor {
         @Override
         public void onGetItemMetaData(MediaItem item) {
             if(item != null) {
-                Log.d(TAG, "item res is " + item.getRes());
-                Log.d(TAG, "file name is " + mInfo.fileName);
                 mInfo.item = item;
             } else
-                Log.d(TAG, "GetMetaData failed!");
             actionRun(this.runnable);
         }
     }

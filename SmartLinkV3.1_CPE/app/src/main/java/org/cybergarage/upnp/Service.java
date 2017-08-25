@@ -410,10 +410,8 @@ public class Service
 			return null;
 		
 		String scpdURLStr = getSCPDURL();
-//		log.e("scpdURLStr = " + scpdURLStr);
 		try {
 			URL scpdUrl = new URL(rootDev.getAbsoluteURL(scpdURLStr));
-//			log.e("scpdUrl = " + scpdUrl.toString());
 			scpdNode = getSCPDNode(scpdUrl);		
 			if (scpdNode != null) {
 				data.setSCPDNode(scpdNode);
@@ -423,7 +421,6 @@ public class Service
 		catch (Exception e) {}
 		
 		String newScpdURLStr = rootDev.getDescriptionFilePath() + HTTP.toRelativeURL(scpdURLStr);
-//		log.e("newScpdURLStr = " + newScpdURLStr);
 		try {
 			scpdNode = getSCPDNode(new File(newScpdURLStr));
 		}

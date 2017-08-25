@@ -69,7 +69,6 @@ public class WifiUtils {
         WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         DhcpInfo dhcp = wifi.getDhcpInfo();
         String gateWay = transferNetMask(dhcp.gateway);
-        Log.d("ma_gate", "gate: " + gateWay);
         return gateWay;
     }
 

@@ -40,15 +40,12 @@ public class FileDownTask implements Runnable{
 			int count = 0;
 			while(true){
 				ret = request();
-				log.e("request fail,cur ret =" + ret);
 				if (ret || count > 3){			
 					break;
 				}
 				count++;
-				log.e("request fail,cur count = " + count);
 			}			
 		}else{
-			log.e("isParamValid = false!!!");
 		}
 	
 		if (callback != null){
@@ -67,7 +64,6 @@ public class FileDownTask implements Runnable{
 			conn.setConnectTimeout(CONNECT_TIME_OUT); 
 			responsCode = conn.getResponseCode();
 			if (responsCode != 200){
-				log.e("responsCode = " + responsCode + ", so Fail!!!");
 				return false;
 			}
 
@@ -79,10 +75,8 @@ public class FileDownTask implements Runnable{
 			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			log.e("catch MalformedURLException e = " + e.getMessage());
 		}catch (IOException e) {
 			e.printStackTrace();
-			log.e("catch IOException e = " + e.getMessage() + ", inputStream = " + inputStream);
 		}
 	
 		

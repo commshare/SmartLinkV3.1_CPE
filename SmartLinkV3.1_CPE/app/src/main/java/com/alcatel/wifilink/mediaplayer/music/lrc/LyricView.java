@@ -182,7 +182,6 @@ public class LyricView extends View {
 		if (offsetY + (SIZEWORD + INTERVAL) * lrcIndex > 220) {
 			speed = ((offsetY + (SIZEWORD + INTERVAL) * lrcIndex - 220) / 20);
 		} else if (offsetY + (SIZEWORD + INTERVAL) * lrcIndex < 120) {
-			Log.i("speed", "speed is too fast!!!");
 			speed = 0;
 		}
 		// if(speed<0.2){
@@ -321,7 +320,6 @@ public class LyricView extends View {
 					}
 					stream.close();
 				} catch (IOException e) {
-					Log.e(TAG, "Lyric IOException", e);
 				}
 				/*
 				 * 遍历hashmap 计算每句歌词所需要的时间

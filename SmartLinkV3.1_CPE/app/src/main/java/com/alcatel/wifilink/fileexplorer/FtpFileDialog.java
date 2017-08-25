@@ -54,7 +54,6 @@ public class FtpFileDialog extends FileDialog {
             new FtpFileCommandTask.FtpCommandListener() {
                 @Override
                 public void ftpMsgHandler(Message msg) {
-                    Log.d(TAG, "at ftp msg handler" + msg.toString());
                     switch(msg.what) {
                     case MSG_SHOW_TOAST :
                         break;

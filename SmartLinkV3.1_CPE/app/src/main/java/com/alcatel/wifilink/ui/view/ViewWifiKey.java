@@ -1101,7 +1101,6 @@ public class ViewWifiKey extends BaseViewImpl implements OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.e(TAG, "get action is " + action);
             BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
             Boolean ok = response != null && response.isOk();
             if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {

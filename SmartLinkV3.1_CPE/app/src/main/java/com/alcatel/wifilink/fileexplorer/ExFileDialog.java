@@ -90,7 +90,6 @@ class FileDialog extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d(TAG, "on Resume notify data changed. dir is " + mDir);
 		notifyDataChanged();
 	}
 
@@ -188,7 +187,6 @@ class FileDialog extends Activity {
 	}
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Log.d("MyListView4-click", (String) mData.get(position).get("info"));
 		if ((Integer) mData.get(position).get("img") == R.drawable.ex_folder) {
 			mDir = (String) mData.get(position).get("info");
 			notifyDataChanged();

@@ -82,7 +82,6 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 
 	
 	private void refreshIntent(Intent intent){
-		log.e("refreshIntent");
 		int curIndex = 0;
 		if (intent != null){
 			curIndex = intent.getIntExtra(PLAY_INDEX, 0);		
@@ -160,7 +159,6 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 			recycleBitmap = bitmap;
 			mImageView.setImageBitmap(recycleBitmap);
 			
-	//		log.e("	mImageView.setImageBitmap over...");
 		}
 		
 		public void showProgress(boolean bShow)
@@ -238,14 +236,12 @@ public class PicturePlayerActivity extends BaseActivity implements DownLoadHelpe
 		public void run() {
 			
 			long time = System.currentTimeMillis();
-			log.e("DelCacheFileManager run...");
 			try {
 				FileHelper.deleteDirectory(mFilePath);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			long interval = System.currentTimeMillis() - time;
-			log.e("DelCacheFileManager del over, cost time = " + interval);
 		}
 		
 		public boolean start(String directory)

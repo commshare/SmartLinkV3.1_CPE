@@ -64,7 +64,6 @@ public final class Debug{
 	}
 	public static final void warning(String s) {
 		//Debug.debug.getOut().println("CyberGarage warning : " + s);
-		log.e("CyberGarage warning : " + s);
 	}
 	public static final void warning(String m, Exception e) {
 		if(e.getMessage()==null){

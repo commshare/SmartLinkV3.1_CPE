@@ -33,7 +33,6 @@ public class FileHelper {
 	
 	public static boolean fileIsExist(String filePath) {
 		if (filePath == null || filePath.length() < 1) {
-			log.e("param invalid, filePath: " + filePath);
 			return false;
 		}
 
@@ -46,7 +45,6 @@ public class FileHelper {
 	
 	public static InputStream readFile(String filePath) {
 		if (null == filePath) {
-			log.e("Invalid param. filePath: " + filePath);
 			return null;
 		}
 
@@ -60,7 +58,6 @@ public class FileHelper {
 				return null;
 			}
 		} catch (Exception ex) {
-			log.e("Exception, ex: " + ex.toString());
 			return null;
 		}
 		return is;
@@ -82,7 +79,6 @@ public class FileHelper {
 	
 	public static boolean deleteDirectory(String filePath) {
 		if (null == filePath) {
-			log.e("Invalid param. filePath: " + filePath);
 			return false;
 		}
 
@@ -96,7 +92,6 @@ public class FileHelper {
 			File[] list = file.listFiles();
 
 			for (int i = 0; i < list.length; i++) {
-				log.d("delete filePath: " + list[i].getAbsolutePath());
 				if (list[i].isDirectory()) {
 					deleteDirectory(list[i].getAbsolutePath());
 				} else {
@@ -105,7 +100,6 @@ public class FileHelper {
 			}
 		}
 
-		log.d("delete filePath: " + file.getAbsolutePath());
 		file.delete();
 		return true;
 	}
@@ -113,7 +107,6 @@ public class FileHelper {
 	public static boolean writeFile(String filePath, InputStream inputStream) {
 
 		if (null == filePath || filePath.length() < 1) {
-			log.e("Invalid param. filePath: " + filePath);
 			return false;
 		}		
 		
@@ -126,13 +119,11 @@ public class FileHelper {
 		       String pth = filePath.substring(0, filePath.lastIndexOf("/"));
 		       boolean ret = createDirectory(pth);
 		       if (!ret){
-		    	   log.e("createDirectory fail path = " + pth);
 		    	   return false;
 		       }
 		       
 		       boolean ret1 = file.createNewFile();
 		       if (!ret){
-		    	   log.e("createNewFile fail filePath = " + filePath);
 		    	   return false;
 		       } 
 
@@ -164,7 +155,6 @@ public class FileHelper {
 	
 	public static boolean writeFile(String filePath, String fileContent, boolean append) {
 		if (null == filePath || fileContent == null || filePath.length() < 1 || fileContent.length() < 1) {
-			log.e("Invalid param. filePath: " + filePath + ", fileContent: " + fileContent);
 			return false;
 		}
 		
@@ -181,7 +171,6 @@ public class FileHelper {
 	       output.flush();
 	       output.close();
 		} catch (IOException ioe) {
-			log.e("writeFile ioe: " + ioe.toString());
 			return false;
 		}
 		
@@ -190,7 +179,6 @@ public class FileHelper {
 	
 	public static long getFileSize(String filePath) {
 		if (null == filePath) {
-			log.e("Invalid param. filePath: " + filePath);
 			return 0;
 		}
 		
@@ -204,7 +192,6 @@ public class FileHelper {
 	
 	public static long getFileModifyTime(String filePath) {
 		if (null == filePath) {
-			log.e("Invalid param. filePath: " + filePath);
 			return 0;
 		}
 		
@@ -218,7 +205,6 @@ public class FileHelper {
 	
 	public static boolean setFileModifyTime(String filePath, long modifyTime) {
 		if (null == filePath) {
-			log.e("Invalid param. filePath: " + filePath);
 			return false;
 		}
 		
@@ -232,7 +218,6 @@ public class FileHelper {
 	
 	public static boolean copyFile(ContentResolver cr, String fromPath, String destUri) {
 		if (null == cr || null == fromPath || fromPath.length() < 1 || null == destUri || destUri.length() < 1) {
-			log.e("copyFile Invalid param. cr="+cr+", fromPath="+fromPath+", destUri="+destUri);
 			return false;
 		}
 		
@@ -241,7 +226,6 @@ public class FileHelper {
 		try {
 			is = new FileInputStream(fromPath);
 			if (null == is) {
-				log.e("Failed to open inputStream: "+fromPath+"->"+destUri);
 				return false;
 			}
 			
@@ -273,7 +257,6 @@ public class FileHelper {
 	            
 	            if (!pf.exists()) {
 	                if (!pf.mkdirs()) {
-	                    log.e("Can't make dirs, path=" + pth);
 	                }
 	            }
 	            
@@ -307,7 +290,6 @@ public class FileHelper {
 			return true;
 			
 		} catch(Exception ex) {
-			log.e("Exception, ex: " + ex.toString());
 		} finally {
 			if(null != is) {
 				try{is.close();} catch(Exception ex) {};
@@ -334,7 +316,6 @@ public class FileHelper {
 	
 	public static byte[] readFile(Context ctx, Uri uri) {
 		if(null == ctx || null == uri) {
-			log.e("Invalid param. ctx: "+ctx+", uri: "+uri);
 			return null;
 		}
 		
@@ -355,9 +336,7 @@ public class FileHelper {
 			
 			return bret;
 		} catch(FileNotFoundException fne) {
-			log.e("FilNotFoundException, ex: " + fne.toString());
 		} catch(Exception ex) {
-			log.e("Exception, ex: " + ex.toString());
 		} finally {
 			if (null != is) {
 				try {is.close();} catch(Exception ex) {};
@@ -368,7 +347,6 @@ public class FileHelper {
 	
 	public static boolean writeFile(String filePath, byte[] content) {
 		if(null == filePath || null == content) {
-		//	log.e("Invalid param. filePath: "+filePath+", content: "+content);
 			return false;
 		}
 		
@@ -389,7 +367,6 @@ public class FileHelper {
             pf = new File(pth+File.separator);
             if (!pf.exists()) {
                 if (!pf.mkdirs()) {
-                    log.e("Can't make dirs, path=" + pth);
                 }
             }
             
@@ -402,7 +379,6 @@ public class FileHelper {
 			return true;
 			
 		} catch(Exception ex) {
-			log.e("Exception, ex: " + ex.toString());
 		} finally {
 			if(null != fos) {
 				try { fos.close(); } catch(Exception ex) {};
@@ -422,7 +398,6 @@ public class FileHelper {
 	        }
 	        zis.close();
 		} catch (Exception ex) {
-			log.e("Exception: " + ex.toString());
 			return false;
 		}
 		return true;
@@ -430,7 +405,6 @@ public class FileHelper {
 	
 	public static byte[] readGZipFile (String zipFileName) {
 		if (fileIsExist(zipFileName)) {
-			log.i("zipFileName: " + zipFileName);
 			try {
 				FileInputStream fin = new FileInputStream(zipFileName);
 				int size;
@@ -441,7 +415,6 @@ public class FileHelper {
 				}
 				return baos.toByteArray();
 			} catch (Exception ex) {
-				log.i("read zipRecorder file error");
 			}
 		}
 		return null;
@@ -483,14 +456,12 @@ public class FileHelper {
 		ZipFile zipfile = new ZipFile(fileName);
 		Enumeration<?> enumeration = zipfile.entries();
 		byte data[] = new byte[FILE_BUFFER_SIZE];
-		log.i("unZipDir: " + unZipDir);
 
 		while (enumeration.hasMoreElements()) {
 			entry = (ZipEntry)enumeration.nextElement();
 
 			if (entry.isDirectory()) {
 				File f1 = new File(unZipDir + "/" + entry.getName());
-				log.i("entry.isDirectory XXX " + f1.getPath());
 				if (!f1.exists()) {
 					f1.mkdirs();
 				}
@@ -512,7 +483,6 @@ public class FileHelper {
 					try {
 						m_randFile.seek(begin);
 					} catch (Exception ex) {
-						log.e("exception, ex: " + ex.toString());
 					}
 
 					m_randFile.write(data, 0, count);
@@ -545,7 +515,6 @@ public class FileHelper {
            out.closeEntry();
            in.close();
        } catch (IOException e) {
-    	   log.e("Exception, ex: " + e.toString());
     	   return false;
        } finally {
            if (out != null) {
@@ -572,7 +541,6 @@ public class FileHelper {
                out.putNextEntry(entry);
                out.closeEntry();
            } catch (IOException e) {
-        	   log.e("Exception, ex: " + e.toString());
            }
        }
        

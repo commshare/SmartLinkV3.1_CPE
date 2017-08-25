@@ -223,7 +223,6 @@ public class StatisticsManager extends BaseManager {
             public void onHttpRequestFinish(BaseResponse response) {
                    if (response.isOk()) {
                         m_usageSettings.setValue(nUsageSettings);
-                        Log.v("CHECKUNIT", "Monthly Plan: " + m_usageSettings.HMonthlyPlan);
                     }
 
                 Intent megIntent = response.getIntent(MessageUti.STATISTICS_SET_UNIT_REQUSET);

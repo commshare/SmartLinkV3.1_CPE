@@ -58,7 +58,6 @@ public class PictureControlCenter implements  DownLoadHelper.IDownLoadCallback{
 						
 						int count = getTaskCount();
 						if (count > 0){
-							log.e("getTaskCount = " + count + ", so don't play it now");
 							return ;
 						}
 						

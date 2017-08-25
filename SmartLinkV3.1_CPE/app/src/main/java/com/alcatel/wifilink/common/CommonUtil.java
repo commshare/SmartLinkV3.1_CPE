@@ -77,7 +77,6 @@ public class CommonUtil {
             type = "KB";
         }
 
-        Log.d("ma_traffic", "traffci_: " + num);
 
         TrafficBean tb = new CommonUtil().new TrafficBean();
         tb.num = Float.valueOf(num);

@@ -162,7 +162,6 @@ public class SystemManager extends BaseManager {
                     Set<String> strings = m_features.getFeatures().keySet();
                     Iterator<String> iterator = strings.iterator();
                     while (iterator.hasNext()) {
-                        Log.d(TAG, "getFeatures: " + iterator.next());
                     }
                     /* ******************************* 所有API方法 END ********************************* */
 

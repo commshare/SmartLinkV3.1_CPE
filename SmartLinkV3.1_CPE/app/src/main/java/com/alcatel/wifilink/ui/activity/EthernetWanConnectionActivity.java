@@ -119,7 +119,6 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
             }
             @Override
             protected void onFailure() {
-                Log.d(TAG, "getWanSettings error");
             }
         });
     }
@@ -135,7 +134,6 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
             @Override
             protected void onFailure() {
                 mIsConnecting = false;
-                Log.d(TAG, "setConnectionSettings error");
             }
         });
     }

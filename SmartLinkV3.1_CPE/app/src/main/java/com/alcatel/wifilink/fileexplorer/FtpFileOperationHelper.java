@@ -77,7 +77,6 @@ public class FtpFileOperationHelper {
 	}
 
 	public boolean CreateFolder(String path, String name) {
-		Log.v(LOG_TAG, "CreateFolder >>> " + path + "," + name);
 
 		File f = new File(Util.makePath(path, name));
 		if (f.exists())
@@ -235,7 +234,6 @@ public class FtpFileOperationHelper {
 
 	public boolean Rename(FileInfo f, String newName) {
 		if (f == null || newName == null) {
-			Log.e(LOG_TAG, "Rename: null parameter");
 			return false;
 		}
 
@@ -248,13 +246,10 @@ public class FtpFileOperationHelper {
 		try {
 			// boolean ret = file.renameTo(new File(newPath));
 			// TODO : rename file api
-			Log.e(LOG_TAG, "Rename: " + f.fileName + " to " + newPath);
-			Log.e(LOG_TAG, "fromFile:"+fromFile);
 
 			mUICmdListener.rename(fromFile, newName);
 			return true;
 		} catch (Exception e) {
-			Log.e(LOG_TAG, "Fail to rename file," + e.toString());
 		}
 		return false;
 	}
@@ -263,7 +258,6 @@ public class FtpFileOperationHelper {
 	@Deprecated
 	public boolean Rename(FileInfo f, String newName, boolean _OLD_MARK) {
 		if (f == null || newName == null) {
-			Log.e(LOG_TAG, "Rename: null parameter");
 			return false;
 		}
 
@@ -281,7 +275,6 @@ public class FtpFileOperationHelper {
 			}
 			return ret;
 		} catch (SecurityException e) {
-			Log.e(LOG_TAG, "Fail to rename file," + e.toString());
 		}
 		return false;
 	}
@@ -317,7 +310,6 @@ public class FtpFileOperationHelper {
 	@Deprecated
 	protected void DeleteFile(FileInfo f, boolean _OLD_MARK) {
 		if (f == null) {
-			Log.e(LOG_TAG, "DeleteFile: null parameter");
 			return;
 		}
 
@@ -333,12 +325,10 @@ public class FtpFileOperationHelper {
 
 		file.delete();
 
-		Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
 	}
 
 	protected void DeleteFile(FileInfo f) {
 		if (f == null) {
-			Log.e(LOG_TAG, "DeleteFile: null parameter");
 			return;
 		}
 
@@ -346,14 +336,12 @@ public class FtpFileOperationHelper {
 		list.add(f);
 		mUICmdListener.delete(list);
 
-		Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
 	}
 
 	// TODO : 废除，被替代
 	@Deprecated
 	private void CopyFile(FileInfo f, String dest, boolean _OLD_MARK) {
 		if (f == null || dest == null) {
-			Log.e(LOG_TAG, "CopyFile: null parameter");
 			return;
 		}
 
@@ -379,28 +367,23 @@ public class FtpFileOperationHelper {
 		} else {
 			String destFile = Util.copyFile(f.filePath, dest);
 		}
-		Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
 	}
 
 	private void CopyFile(FileInfo f, String dest) {
 		if (f == null || dest == null) {
-			Log.e(LOG_TAG, "CopyFile: null parameter");
 			return;
 		}
 
 		ArrayList<FileInfo> list = new ArrayList<FileInfo>();
 		list.add(f);
 		mUICmdListener.copy(list, dest);
-		Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
 	}
 
 	// TODO : 废除，被替代
 	@Deprecated
 	private boolean MoveFile(FileInfo f, String dest, boolean _OLD_MARK) {
-		Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
 
 		if (f == null || dest == null) {
-			Log.e(LOG_TAG, "CopyFile: null parameter");
 			return false;
 		}
 
@@ -409,16 +392,13 @@ public class FtpFileOperationHelper {
 		try {
 			return file.renameTo(new File(newPath));
 		} catch (SecurityException e) {
-			Log.e(LOG_TAG, "Fail to move file," + e.toString());
 		}
 		return false;
 	}
 
 	private boolean MoveFile(FileInfo f, String dest) {
-		Log.v(LOG_TAG, "Move File " + f.filePath + "/" + f.fileName + " to " + dest);
 
 		if (f == null || dest == null) {
-			Log.e(LOG_TAG, "CopyFile: null parameter");
 			return false;
 		}
 

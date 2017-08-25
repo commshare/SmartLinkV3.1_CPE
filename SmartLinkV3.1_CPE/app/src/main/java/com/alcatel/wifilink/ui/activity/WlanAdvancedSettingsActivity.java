@@ -76,7 +76,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
             mMode = intent.getIntExtra(EXTRA_MODE_80211, 0);
             mApIsolation = intent.getBooleanExtra(EXTRA_AP_ISOLATION, false);
         }
-        Log.i(TAG, "loadSettings: mChannel" + mChannel);
     }
 
     private void initViews() {
@@ -113,7 +112,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
                 }
             }
         }
-        Log.i(TAG, "mFrequency : mChannel" + mChannel);
 
         // 0: Auto
         // 1: 802.11b
@@ -160,7 +158,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
                 if (mFrequency == 5 && mMode != 0) {
                     mMode = mMode + 3;
                 }
-                Log.i(TAG, "onItemSelected  mMode: " + mMode);
             }
 
             @Override
@@ -175,7 +172,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
                 if (mFrequency == 5 && mBandwidth == 0) {
                     mBandwidth = 4;
                 }
-                Log.i(TAG, "onItemSelected  mBandwidth: " + mBandwidth);
             }
 
             @Override
@@ -218,7 +214,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (mFrequency == 5) {
                     mChannel5g = Integer.decode((String) mChannelSpinner.getAdapter().getItem(i));
-                    Log.i(TAG, "Channel5g: " + mChannel5g + " i: " + i + " long: " + l);
                 }
             }
 
@@ -227,8 +222,6 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
 
             }
         });
-        Log.i(TAG, "show: mChannel" + mChannel);
-        Log.i(TAG, "mSsidBroadcast: " + mSsidBroadcast);
         mBroadcastSwitch.setChecked(mSsidBroadcast);
         mChannelSpinner.setSelection(mChannel);
         mCountrySpinner.setSelection(getCountryPos(mCountry));

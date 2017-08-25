@@ -67,12 +67,9 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     }
 
     private void requestGetSystemStatus() {
-        Log.d(TAG, "requestGetSystemStatus");
         API.get().getSystemStatus(new MySubscriber<SysStatus>() {
             @Override
             protected void onSuccess(SysStatus result) {
-                Log.d(TAG, "requestGetSystemStatus,usb status:" + result.getUsbStatus());
-                Log.d(TAG, "requestGetSystemStatus,usb name:" + result.getUsbName());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -108,22 +105,17 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         API.get().getFTPSettings(new MySubscriber<FTPSettings>() {
             @Override
             protected void onSuccess(FTPSettings result) {
-                Log.d(TAG, "requestGetFTPSettings, status:" + result.getFtpStatus());
-                Log.d(TAG, "requestGetFTPSettings, anonymous:" + result.getAnonymous());
-                Log.d(TAG, "requestGetFTPSettings, auth type:" + result.getAuthType());
                 mFTPSwitch.setChecked(result.getFtpStatus() == 1 ? true : false);
 
             }
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "requestGetFTPSettings, onFailure:");
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestGetFTPSettings, onResultError:" + error);
             }
         });
     }
@@ -132,21 +124,16 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         API.get().getSambaSettings(new MySubscriber<SambaSettings>() {
             @Override
             protected void onSuccess(SambaSettings result) {
-                Log.d(TAG, "requestGetSambaSettings, status:" + result.getSambaStatus());
-                Log.d(TAG, "requestGetSambaSettings, anonymous:" + result.getAnonymous());
-                Log.d(TAG, "requestGetSambaSettings, auth type:" + result.getAuthType());
                 mSambaSwitch.setChecked(result.getSambaStatus() == 1 ? true : false);
             }
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "requestGetSambaSettings, onFailure:");
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestGetSambaSettings, onResultError:" + error);
             }
         });
     }
@@ -155,20 +142,16 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         API.get().getDLNASettings(new MySubscriber<DLNASettings>() {
             @Override
             protected void onSuccess(DLNASettings result) {
-                Log.d(TAG, "requestGetDLNASettings, status:" + result.getDlnaStatus());
-                Log.d(TAG, "requestGetDLNASettings, name:" + result.getDlnaName());
                 mDLNASwitch.setChecked(result.getDlnaStatus() == 1 ? true : false);
             }
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "requestGetDLNASettings, onFailure:");
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestGetDLNASettings, onResultError:" + error);
             }
         });
     }
@@ -178,23 +161,19 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         settings.setFtpStatus(mFTPSwitch.isChecked() ? 1 : 0);
         settings.setAnonymous(0);
         settings.setAuthType(0);
-        Log.d(TAG, "requestSetFTPSettings,settings:" + settings);
         API.get().setFTPSettings(settings, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "requestSetFTPSettings, result:" + result);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestSetFTPSettings, error:" + error);
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
-                Log.d(TAG, "requestSetFTPSettings, onFailure");
             }
         });
     }
@@ -204,23 +183,19 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         settings.setSambaStatus(mSambaSwitch.isChecked() ? 1 : 0);
         settings.setAnonymous(0);
         settings.setAuthType(0);
-        Log.d(TAG, "requestSetSambaSettings,settings:" + settings);
         API.get().setSambaSettings(settings, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "requestSetSambaSettings, result:" + result);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestSetSambaSettings, error:" + error);
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
-                Log.d(TAG, "requestSetSambaSettings, onFailure");
             }
         });
     }
@@ -229,23 +204,19 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         DLNASettings settings = new DLNASettings();
         settings.setDlnaStatus(mDLNASwitch.isChecked() ? 1 : 0);
         settings.setDlnaName("");
-        Log.d(TAG, "requestSetDLNASettings,settings:" + settings);
         API.get().setDLNASettings(settings, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "requestSetDLNASettings, result:" + result);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestSetDLNASettings, error:" + error);
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
-                Log.d(TAG, "requestSetDLNASettings, onFailure");
             }
         });
     }

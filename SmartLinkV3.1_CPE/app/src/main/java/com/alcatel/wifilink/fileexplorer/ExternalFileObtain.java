@@ -69,7 +69,6 @@ class ExternalFileObtain {
         }
         
         if (filePath != null) {
-            Log.i("PICK", filePath);
             ArrayList<File> list = new ArrayList<File>();
             list.add(new File(filePath));
             if (mListener != null) mListener.onGetFiles(list);

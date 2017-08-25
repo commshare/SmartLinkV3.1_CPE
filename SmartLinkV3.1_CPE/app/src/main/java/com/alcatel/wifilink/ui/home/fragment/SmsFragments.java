@@ -159,7 +159,6 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                Log.d("ma_getSmsContactlist", "error: " + error.getMessage().toString());
             }
         });
     }

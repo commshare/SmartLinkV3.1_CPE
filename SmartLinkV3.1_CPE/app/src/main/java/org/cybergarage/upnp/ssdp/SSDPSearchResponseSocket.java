@@ -83,7 +83,6 @@ public class SSDPSearchResponseSocket extends HTTPUSocket implements Runnable
 				ctrlPoint.searchResponseReceived(packet); 
 		}
 		
-//		log.e("SSDPSearchResponseSocket runOver...");
 
 	}
 	

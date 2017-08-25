@@ -50,7 +50,6 @@ public class PictureUtil {
 		      return bitmap;
 		      
 		  } catch (FileNotFoundException e) {
-		  		log.e("fileNotFoundException, e: " + e.toString());
 		  }
 		  return null;
 	}

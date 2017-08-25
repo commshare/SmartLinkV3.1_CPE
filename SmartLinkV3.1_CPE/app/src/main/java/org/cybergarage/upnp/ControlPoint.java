@@ -165,7 +165,6 @@ public class ControlPoint implements HTTPRequestListener
 
 	public void finalize()
 	{
-		log.e("finalize");
 		stop();
 	}
 
@@ -262,7 +261,6 @@ public class ControlPoint implements HTTPRequestListener
 			return;
 			
 		if (!isValidLocation(ssdpPacket.getLocation())){
-			log.e("ssdpPacket.getLocation() = " + ssdpPacket.getLocation() + ", so drop it!!!");
 			return ;
 		}
 		
@@ -540,10 +538,8 @@ public class ControlPoint implements HTTPRequestListener
 	{	
 		if (packet.isRootDevice() == true) {
 			if (packet.isAlive() == true){
-			//	log.e("is Alive message , packet = " + packet.toString());
 				addDevice(packet);
 			}else if (packet.isByeBye() == true){ 
-				log.e("is byebye message , packet = "+ packet.toString());
 				removeDevice(packet);
 			}else{
 
@@ -555,7 +551,6 @@ public class ControlPoint implements HTTPRequestListener
 	public void searchResponseReceived(SSDPPacket packet)
 	{		
 		if (packet.isRootDevice() == true){
-		//s	log.e("searchResponseReceived SSDPPacket = \n" + packet.toString());
 			addDevice(packet);
 		}
 		
@@ -580,7 +575,6 @@ public class ControlPoint implements HTTPRequestListener
 
 	public boolean search(String target, int mx)
 	{
-	//	log.e("search target = " + target + ", mx = " + mx);
 		SSDPSearchRequest msReq = new SSDPSearchRequest(target, mx);
 		SSDPSearchResponseSocketList ssdpSearchResponseSocketList = getSSDPSearchResponseSocketList();
 		boolean ret = ssdpSearchResponseSocketList.post(msReq);
@@ -859,7 +853,6 @@ public class ControlPoint implements HTTPRequestListener
 
 	public boolean start(String target, int mx)
 	{
-		log.e("start target = " + target + ", mx = " + mx);
 		stop();
 		
 		////////////////////////////////////////
@@ -947,7 +940,6 @@ public class ControlPoint implements HTTPRequestListener
 	
 	public boolean stop()
 	{ 
-		log.e("stop");
 		unsubscribe();
 		
 		SSDPNotifySocketList ssdpNotifySocketList = getSSDPNotifySocketList();
@@ -992,7 +984,6 @@ public class ControlPoint implements HTTPRequestListener
 			e.printStackTrace();
 		}
 		
-		log.e("ready to clear devNodeList...devNodeList.size = " + devNodeList.size());
 		try {
 			if (devNodeList != null){
 				synchronized (devNodeList) {

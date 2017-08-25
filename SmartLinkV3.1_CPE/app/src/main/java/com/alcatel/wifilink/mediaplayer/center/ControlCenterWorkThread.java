@@ -57,7 +57,6 @@ private static final CommonLog log = LogFactory.createLog();
 	
 	@Override
 	public void run() {
-		log.e("ControlCenterThread is running...");		
 		
 		while(true)
 		{
@@ -81,11 +80,9 @@ private static final CommonLog log = LogFactory.createLog();
 			}
 		}
 		
-		log.e("ControlCenterThread is over...");		
 	}
 	
 	private void refreshDevices(){
-		log.e("refreshDevices...");
 		if (!CommonUtil.checkNetworkState(mContext)){
 			return ;
 		}
@@ -93,13 +90,11 @@ private static final CommonLog log = LogFactory.createLog();
 		try {
 			if (mStartComplete){
 				boolean searchRet = mCP.search();	
-				log.e("mCP.search() ret = "  + searchRet);
 				if (mSearchDeviceListener != null){
 					mSearchDeviceListener.onSearchComplete(searchRet);
 				}
 			}else{
 				boolean startRet = mCP.start();
-				log.e("mCP.start() ret = "  + startRet);
 				if (startRet){
 					mStartComplete = true;
 				}

@@ -71,7 +71,6 @@ public class SmsCountHelper {
                         }
                     }
 
-                    Log.d("ma_smscount", "unReadCount: " + unReadCount);
 
                     // show sms ui according the count
                     if (unReadCount <= 0) {

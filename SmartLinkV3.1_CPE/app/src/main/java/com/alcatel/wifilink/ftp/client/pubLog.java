@@ -71,7 +71,6 @@ public class pubLog {
 	public void i(String msg) {
 		if (debug) {
 			String message = createMessage(msg);
-			Log.i(tag, message);
 		}
 	}
 
@@ -81,7 +80,6 @@ public class pubLog {
 	public void v(String msg) {
 		if (debug) {
 			String message = createMessage(msg);
-			Log.v(tag, message);
 		}
 	}
 
@@ -91,7 +89,6 @@ public class pubLog {
 	public void d(String msg) {
 		if (debug) {
 			String message = createMessage(msg);
-			Log.d(tag, message);
 		}
 	}
 
@@ -101,7 +98,6 @@ public class pubLog {
 	public void e(String msg) {
 		if (debug) {
 			String message = createMessage(msg);
-			Log.e(tag, message);
 		}
 	}
 
@@ -127,7 +123,6 @@ public class pubLog {
 					}
 				}
 			}
-			Log.e(tag, sb.toString());
 		}
 	}
 
@@ -137,7 +132,6 @@ public class pubLog {
 	public void w(String msg) {
 		if (debug) {
 			String message = createMessage(msg);
-			Log.w(tag, message);
 		}
 	}
 

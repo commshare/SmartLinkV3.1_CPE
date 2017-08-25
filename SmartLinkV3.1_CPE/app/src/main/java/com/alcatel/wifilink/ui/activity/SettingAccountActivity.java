@@ -169,7 +169,6 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "changepassword error");
                 Toast.makeText(SettingAccountActivity.this, R.string.setting_failed, Toast.LENGTH_SHORT).show();
             }
         });

@@ -211,11 +211,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void requestGetConnectionStatus() {
-        Log.d(TAG, "requestGetConnectionStatus");
         API.get().getConnectionState(new MySubscriber<ConnectionState>() {
             @Override
             protected void onSuccess(ConnectionState result) {
-                Log.d(TAG, "requestGetConnectionStatus,ConnectionStatus:" + result.getConnectionStatus());
                 if (result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTED) {
                     requestSetCheckNewVersion();
                 } else {
@@ -227,14 +225,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestGetConnectionStatus,onResultError:" + error);
 
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
-                Log.d(TAG, "requestGetConnectionStatus");
             }
         });
 
@@ -242,11 +238,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void requestGetWanSettingRequest() {
-        Log.d(TAG, "requestSetCheckNewVersion");
         API.get().getWanSeting(new MySubscriber<WanSetting>() {
             @Override
             protected void onSuccess(WanSetting result) {
-                Log.d(TAG, "requestGetWanSettingRequest,onSuccess:" + result.getStatus());
                 if (result.getStatus() == Constants.WanSettingsStatus.CONNECTED) {
                     requestSetCheckNewVersion();
                 } else {
@@ -257,13 +251,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "requestGetWanSettingRequest,onFailure");
                 super.onFailure();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                Log.d(TAG, "requestGetWanSettingRequest,onResultError:" + error);
                 super.onResultError(error);
             }
         });
@@ -351,7 +343,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             protected void onSuccess(Object result) {
                 requestTimes = 0;
                 dismissLoadingDialog();
-                Log.d(TAG, "backup" + "sendAgainSuccess");
                 showBackupSuccessDialog();
             }
 
@@ -366,7 +357,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     backupDevice();
                 }
                 requestTimes = 0;
-                Log.d("ma_back", "repeatTimes: " + requestTimes);
             }
 
             @Override
@@ -419,7 +409,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         if (file.exists()) {
             file.delete();
         }
-        Log.d(TAG, "downLoadConfigureFile:  " + file.getAbsolutePath());
         String downloadFileUrl = "/cfgbak/configure.bin";
         API.get().downConfigureFile(new Subscriber() {
             @Override
@@ -562,7 +551,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCompleted() {
                 restoreTimes = 0;
-                Log.d(TAG, "onCompleted ");
                 dismissLoadingDialog();
                 ToastUtil_m.show(getActivity(), R.string.succeed);
             }
@@ -572,7 +560,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
                 if (restoreTimes > 12) {
                     dismissLoadingDialog();
-                    Log.e(TAG, "restore,onResultError " + e.toString());
                     if (e instanceof SocketTimeoutException) {
                         ToastUtil_m.show(getActivity(), R.string.succeed);
                     } else {
@@ -641,7 +628,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
-                Log.d(TAG, "getDeviceFWCurrentVersion,fw current version:" + result.getSwVersion());
                 mDeviceVersion.setText(result.getSwVersion());
             }
 
@@ -658,18 +644,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void requestSetCheckNewVersion() {
-        Log.d(TAG, "requestSetCheckNewVersion,");
         API.get().setCheckNewVersion(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "requestSetCheckNewVersion,onSuccess:" + result);
                 timerHelper = null;
                 requestGetDeviceNewVersion();
             }
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "requestSetCheckNewVersion,onFailure");
                 ToastUtil_m.show(getActivity(), R.string.fail);
                 super.onFailure();
             }
@@ -677,7 +660,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 ToastUtil_m.show(getActivity(), R.string.fail);
-                Log.d(TAG, "requestSetCheckNewVersion,onResultError:" + error);
                 super.onResultError(error);
             }
         });
@@ -708,9 +690,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         API.get().getDeviceNewVersion(new MySubscriber<DeviceNewVersion>() {
             @Override
             protected void onSuccess(DeviceNewVersion result) {
-                Log.d(TAG, "requestGetDeviceNewVersion, state:" + result.getState());
-                Log.d(TAG, "requestGetDeviceNewVersion, version:" + result.getVersion());
-                Log.d(TAG, "requestGetDeviceNewVersion, size:" + result.getTotal_size());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -722,13 +701,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "requestGetDeviceNewVersion, onFailure:");
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestGetDeviceNewVersion, onResultError:" + error);
             }
         });
     }
@@ -736,7 +713,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showCheckingDlg() {
         if (getActivity().isFinishing()) {
-            Log.d(TAG, "showCheckingDlg, activity is finishing.");
             return;
         }
         if (mCheckingDlg == null) {
@@ -754,7 +730,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showCheckResultDlg(String message, int state) {
         if (getActivity().isFinishing()) {
-            Log.d(TAG, "showCheckResultDlg, activity is finishing.");
             return;
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -795,7 +770,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 mCheckingDlg.dismiss();
             }
             if (Constants.DeviceVersionCheckState.DEVICE_NEW_VERSION == eStatus) {
-                Log.d(TAG, "processCheckVersionResult,size:" + result.getTotal_size());
                 message = getString(R.string.setting_about_version) + ":" + result.getVersion() + " " + getString(R.string.available) + "\n" + getString(R.string.size) + ":" + Util.convertStorage(result.getTotal_size());
                 showCheckResultDlg(message, eStatus);
 
@@ -816,7 +790,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showUpgradeStateResultDlg(String message, int state) {
         if (getActivity().isFinishing()) {
-            Log.d(TAG, "showUpgradeStateResultDlg, activity is finishing.");
             return;
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -846,7 +819,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showUpgradeProgressDlg(int state, int progress) {
         if (getActivity().isFinishing()) {
-            Log.d(TAG, "showUpgradeStateResultDlg, activity is finishing.");
             return;
         }
         if (state == PROGRESS_STYLE_WAITING) {
@@ -863,7 +835,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             }
 
         } else {
-            Log.d(TAG, "showUpgradeProgressDlg,mUpgradingDlg:" + mUpgradingDlg);
             if (mUpgradingDlg == null) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -880,7 +851,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 mUpgradingDlg = builder.create();
                 mUpgradingDlg.show();
             } else {
-                Log.d(TAG, "showUpgradeProgressDlg,mUpgradingDlg.isShowing():" + mUpgradingDlg.isShowing());
                 if (mUpgradingDlg.isShowing()) {
                     mUpgradingProgressValue.setText(getString(R.string.updating) + progress + "%");
                     mUpgradingProgressBar.setProgress(progress);
@@ -914,7 +884,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     //                    }
                     //                    requestSetDeviceStartUpdate();
                 }
-                Log.d(TAG, "requestGetDeviceUpgradeState,device upgrade not start,progress:" + result.getProcess());
 
                 //                showUpgradeStateResultDlg(getString(R.string.could_not_update_try_again),status);
             } else if (Constants.DeviceUpgradeStatus.DEVICE_UPGRADE_UPDATING == status) {
@@ -947,7 +916,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         API.get().SetFOTAStartDownload(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "requestSetFOTAStartDownload,onSuccess:" + result);
                 timerHelper = null;
                 requestGetDeviceUpgradeState();
             }
@@ -956,7 +924,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
                 ToastUtil_m.show(getActivity(), R.string.fail);
-                Log.d(TAG, "requestSetFOTAStartDownload,onResultError:" + error);
             }
         });
     }
@@ -967,7 +934,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         API.get().setDeviceStartUpdate(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                Log.d(TAG, "requestSetDeviceStartUpdate,onSuccess:" + result);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -998,7 +964,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     }
                 });
 
-                Log.d(TAG, "requestSetDeviceStartUpdate,onResultError:" + error);
             }
         });
 
@@ -1009,8 +974,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         API.get().getDeviceUpgradeState(new MySubscriber<DeviceUpgradeState>() {
             @Override
             protected void onSuccess(DeviceUpgradeState result) {
-                Log.d(TAG, "requestGetDeviceUpgradeState, status:" + result.getStatus());
-                Log.d(TAG, "requestGetDeviceUpgradeState, process:" + result.getProcess());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1022,13 +985,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onFailure() {
-                Log.d(TAG, "requestGetDeviceUpgradeState, onFailure:");
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                Log.d(TAG, "requestGetDeviceUpgradeState, onResultError:" + error);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

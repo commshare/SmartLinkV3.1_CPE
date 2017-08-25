@@ -91,7 +91,6 @@ public class SimManager extends BaseManager {
             if (response.isOk()) {
                 AutoEnterPinStateResult result = response.getModelResult();
                 //                		m_autoPinState.build(result.State);
-                //                		Log.v("PINCHECK", "RESULT " + result.State);
                 if (result.State == 1) {
                     m_autoPinState = AutoPinState.Enable;
                 } else {
@@ -206,7 +205,6 @@ public class SimManager extends BaseManager {
                             SimStatusModel pre = new SimStatusModel();
                             pre.clone(m_simStatus);
                             m_simStatus.setValue(simStatusResult);
-                            //                    		Log.v("PINCHECK", "PINSTATUS " + simStatusResult.PinState);
 
 
                             if (m_bisFastSpeed && m_simStatus.m_SIMState == SIMState.Accessable) {
@@ -215,7 +213,6 @@ public class SimManager extends BaseManager {
 
                             if (!m_simStatus.equalTo(pre)) {
                                 isBroadcast = true;
-                                //        	        			Log.v("PINCHECK", "BROADCAST");
                             }
                         } else if (strErrcode.equalsIgnoreCase("1") || strErrcode.equalsIgnoreCase("6")) {
                             m_simStatus.clear();

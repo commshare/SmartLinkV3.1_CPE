@@ -29,7 +29,6 @@ public class LyricHelper {
 			String songId = searchLyricFromQQ(song, artist);
 			if (songId != null) {
 				String url = buildQQLyricUrl(songId);
-				Log.d(TAG, "search url:" + url);
 				try {
 					HttpResponse response = HttpManager
 							.execute(new HttpGet(url));
@@ -58,14 +57,12 @@ public class LyricHelper {
 						}
 					}
 				} catch (Exception e1) {
-					Log.e(TAG, "Exception", e1);
 				}
 			}
 			if (!result) { // Get lyric failed from QQ
 				String lyricId = searchLyricFromBaidu(song, artist);
 				if (lyricId != null) {
 					String url = buildBaiduLyricUrl(lyricId);
-					Log.d(TAG, "search url:" + url);
 					try {
 						HttpResponse response = HttpManager
 								.execute(new HttpGet(url));
@@ -77,7 +74,6 @@ public class LyricHelper {
 							}
 						}
 					} catch (Exception e1) {
-						Log.e(TAG, "Exception", e1);
 					}
 				}
 			}
@@ -88,7 +84,6 @@ public class LyricHelper {
 	private static String searchLyricFromQQ(String song, String artist) {
 		String lyricID = null;
 		String url = buildQQSearchUrl(song, artist);
-		Log.d(TAG, "search url:" + url);
 		try {
 			HttpResponse response = HttpManager.execute(new HttpGet(url));
 			if (response != null
@@ -107,7 +102,6 @@ public class LyricHelper {
 						if (tag.equals("songcount")) {
 							xpp.next();
 							int count = Integer.parseInt(xpp.getText());
-							Log.i(TAG, "search count:" + count);
 							if (count == 0) {
 								break;
 							}
@@ -126,7 +120,6 @@ public class LyricHelper {
 				}
 			}
 		} catch (Exception e1) {
-			Log.e(TAG, "Exception", e1);
 		}
 
 		return lyricID;
@@ -143,7 +136,6 @@ public class LyricHelper {
 				sb.append("$$");
 				sb.append(URLEncoder.encode(artist, "gbk"));
 			} catch (UnsupportedEncodingException e) {
-				Log.e(TAG, "UnsupportedEncodingException", e);
 			}
 			sb.append("$$$$");
 			return sb.toString();
@@ -177,7 +169,6 @@ public class LyricHelper {
 	private static String searchLyricFromBaidu(String song, String artist) {
 		String lyricID = null;
 		String url = buildBaiduSearchUrl(song, artist);
-		Log.d(TAG, "search url:" + url);
 		if (url != null) {
 			try {
 				HttpResponse response = HttpManager.execute(new HttpGet(url));
@@ -197,7 +188,6 @@ public class LyricHelper {
 							if (tag.equals("count")) {
 								xpp.next();
 								int count = Integer.parseInt(xpp.getText());
-								Log.i(TAG, "search count:" + count);
 								if (count == 0) {
 									break;
 								}
@@ -211,7 +201,6 @@ public class LyricHelper {
 					}
 				}
 			} catch (Exception e1) {
-				Log.e(TAG, "Exception", e1);
 			}
 		}
 		return lyricID;
@@ -229,7 +218,6 @@ public class LyricHelper {
 				sb.append(URLEncoder.encode(artist, "gb18030"));
 			}
 		} catch (UnsupportedEncodingException e) {
-			Log.e(TAG, "UnsupportedEncodingException", e);
 		}
 		sb.append("&from=qqplayer");
 		return sb.toString();

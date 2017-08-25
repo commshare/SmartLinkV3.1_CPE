@@ -250,7 +250,6 @@ public class Util {
 			try {
 				return appInfo.loadIcon(pm);
 			} catch (OutOfMemoryError e) {
-				Log.e(LOG_TAG, e.toString());
 			}
 		}
 		return null;
@@ -292,7 +291,6 @@ public class Util {
 	public static String copyFile(String src, String dest) {
 		File file = new File(src);
 		if (!file.exists() || file.isDirectory()) {
-			Log.v(LOG_TAG, "copyFile: file not exist or is directory, " + src);
 			return null;
 		}
 		FileInputStream fi = null;
@@ -331,10 +329,8 @@ public class Util {
 
 			return destPath;
 		} catch (FileNotFoundException e) {
-			Log.e(LOG_TAG, "copyFile: file not found, " + src);
 			e.printStackTrace();
 		} catch (IOException e) {
-			Log.e(LOG_TAG, "copyFile: " + e.toString());
 		} finally {
 			try {
 				if (fi != null)

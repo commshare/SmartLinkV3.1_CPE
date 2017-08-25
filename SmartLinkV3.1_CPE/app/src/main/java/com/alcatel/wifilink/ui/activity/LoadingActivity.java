@@ -134,7 +134,6 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onError(Throwable e) {
                 OtherUtils.hideProgressPop(pd);
-                Log.d("ma_load", "load_err: " + e.getMessage().toString());
                 if (e instanceof SocketTimeoutException || e instanceof ConnectException) {/* 连接超时 */
                     // to RefreshWifiActivity
                     ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);

@@ -244,7 +244,6 @@ public class WlanManager extends BaseManager {
                 new HttpWlanSetting.GetWlanSetting(new IHttpFinishListener() {
                     @Override
                     public void onHttpRequestFinish(BaseResponse response) {
-                        Log.e(TAG, "getWlanSetting return");
                         if (response.isOk()) {
                             mWlanSettings = response.getModelResult();
 //								getInfoByWansetting();

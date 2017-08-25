@@ -168,7 +168,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
 //    if (savedInstanceState == null)
 //      return false;
 //    String stateName = savedInstanceState.getString(BUNDLE_HANDLER_STATE);
-//    //Log.d(TAG, "stateName:"+stateName);
 //    if (stateName == null)
 //      return false;
 //    State s = null;
@@ -207,7 +206,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
 //          mEnterText.setText(editText);
 //        }
 //      } else {
-//        Log.e(TAG, "can not get state " + s.name() + " handler");
 //      }
 //    }
 //    return true;
@@ -286,7 +284,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
 
             public void onLoginFailed(String error_code) {
                 if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
-                    //Log.d(TAG, "ForceLogin.status:"+FeatureVersionManager.getInstance().isSupportForceLogin());
                     if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
                         forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(mContext);
                         forceLoginSelectDialog.showDialogAndCancel(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
@@ -482,7 +479,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         int visibility = v.getVisibility();
         if (visibility == View.GONE || visibility == View.INVISIBLE)
             return;
-        //Log.d(TAG, "click Tag:"+v.getTag());
         if (v == mNavigatorRight | v == mFinishBtn) {
             nextSetting(true);
         } else if (v == mNavigatorLeft) {
@@ -521,7 +517,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         StateHandler handler = mStateHandler;
 
         if (handler == null || handler.mIsHead == false || (handler.mState != State.PIN_CODE && handler.mState != State.PUK_CODE)) {
-            Log.e(TAG, "Current state is not PIN code or it is not the head sate.");
             return;
         }
         mStateHandler.clearOtherTextListen(mStateHandler);
@@ -533,7 +528,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
             mStateHandler.mPreviousHandler = null;
             mStateHandler.mIsHead = true;
             mStateHandler.setupViews();
-            //Log.d(TAG, "removePINCodePUKCodeSetting:"+ mStateHandler.mIsHead);
         }
     }
 
@@ -637,7 +631,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
             BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
             Boolean ok = response != null && response.isOk();
 
-            Log.d(TAG, "Quick Setup receive broadcase " + action);
             if (action.equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
                 // If WiFi disconnect router, go to Refresh WiFi activity.
                 if (!DataConnectManager.getInstance().getCPEWifiConnected()) {
@@ -701,9 +694,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                     if (mStateHandler == null)
                         return;
                     if (mStateHandler.getState() == State.WIFI_SSID) {
-                        Log.v(TAG, "set wifi ssid failed, return " + response.getErrorCode());
                     } else if (mStateHandler.getState() == State.WIFI_PASSWD) {
-                        Log.v(TAG, "set wifi password failed, return " + response.getErrorCode());
                     }
                 }
             } else if (action.equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
@@ -927,7 +918,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         @Override
         public void afterTextChanged(Editable s) {
             if (this instanceof WiFiSSIDHandler || this instanceof PinCodeHandler) {
-                Log.d(TAG, "afterTextChanged:" + s.toString());
                 boolean isNext = textChangeAction(s, this.mInputMax, this.mInputMin, mEnterText);
                 if (isNext) {
                     mSkipSetup = false;
@@ -948,17 +938,14 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                     mSkipSetup = !confirmPinState;
                 }
 
-                Log.d(TAG, "pukTextValSate:" + confirmPinState + newPinValState + pukValState);
                 if (confirmPinState && newPinValState && pukValState) {
                     mNavigatorRight.setText(R.string.skip);
                 } else {
                     mNavigatorRight.setText(R.string.skip);
                 }
-                Log.d(TAG, "this.mSkipSetup:" + mSkipSetup);
             } else if (this instanceof WiFiPasswdHandler) {
                 boolean isNext = textChangeAction(s, this.mInputMax, this.mInputMin, mEnterText);
                 boolean isVal = ConnectivityUtils.checkPassword(s.toString(), mSecurityMode);
-                //	Log.d(TAG, "------------------s:"+s.toString());
                 if (isNext && isVal) {
                     mSkipSetup = false;
                     mNavigatorRight.setText(R.string.skip);
@@ -970,7 +957,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         }
 
         boolean textChangeAction(Editable s, int iptMax, int iptMin, ClearEditText editText) {
-            Log.d(TAG, "getState():" + this.getState());
             int len = s.length();
             if (len > iptMax) {
                 int nSelStart = editText.getSelectionStart();
@@ -991,7 +977,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                 } else {
                     editText.setTextKeepState(s);
                 }
-                Log.d(TAG, " mEnterText.getSelectionStart():" + editText.getSelectionStart());
 
                 return true;
             } else {
@@ -1165,7 +1150,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
 
         @Override
         public boolean storeSetting() {
-            Log.d(TAG, "mSkipSetup:" + mSkipSetup);
             if (mSkipSetup)
                 return true;
 
@@ -1173,7 +1157,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
             data.addParam("puk", pukCodeText.getText().toString());
             data.addParam("pin", newPinCodeText.getText().toString());
             data.addParam("confirmPin", confirmPinCodeText.getText().toString());
-            Log.d(TAG, "pin == confirmPIN:" + data.getParamByKey("pin").equals(data.getParamByKey("confirmPin")));
             if (data.getParamByKey("pin").equals(data.getParamByKey("confirmPin"))) {
                 mBusinessMgr.sendRequestMessage(MessageUti.SIM_UNLOCK_PUK_REQUEST, data);
                 String strTitle = mContext.getString(R.string.IDS_PUK_LOCKED);
@@ -1249,7 +1232,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                 } else {
                     mEnterText.setTextKeepState(mWiFiSSID);
                 }
-                //Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
             }
             mNavigatorRight.setText(R.string.skip);
         }
@@ -1288,7 +1270,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         @Override
         public void setupViews() {
             setViewsVisibility(true, true, false, true, false);
-            //	Log.d(TAG, "mSecurityMode:---"+mSecurityMode);
             if (mSecurityMode == SecurityMode.WEP) {
                 mPromptText.setText(getString(R.string.qs_wifi_wep_passwd_prompt));
                 mInputMax = 26;
@@ -1313,7 +1294,6 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                     mEnterText.setTextKeepState(mWiFiPasswd);
                 }
             }
-            //Log.d(TAG, "mEnterText.getSelectionStart()-wifi:"+mEnterText.getSelectionStart());
 //      if(mSecurityMode == SecurityMode.Disable){
 //      	mEnterText.setEnabled(false);
 //      	mEnterText.setClearIconVisible(false);

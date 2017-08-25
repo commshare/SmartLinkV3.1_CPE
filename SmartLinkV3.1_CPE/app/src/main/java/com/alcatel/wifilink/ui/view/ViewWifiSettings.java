@@ -152,7 +152,6 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     }
 
     private void updateUIWithWlanSettings() {
-        Log.d(TAG, "updateUIWithWlanSettings");
         if (mWlanSettings == null) {
             return;
         }
@@ -243,7 +242,6 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume");
 //        m_context.registerReceiver(m_msgReceiver,
 //                new IntentFilter(MessageUti.WIFI_KEY_GET_UNEDIT_LIST_REQUEST));
 //        m_context.registerReceiver(m_msgReceiver,
@@ -312,19 +310,16 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause");
 //        m_context.unregisterReceiver(m_msgReceiver);
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
 
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Log.d(TAG, "onCheckedChanged buttonView:" + buttonView + ", isChecked:" + isChecked);
 
         if (buttonView.getId() == R.id.switch_wifi_2g) {
             m2GSettingsGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
@@ -334,14 +329,12 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     }
 
 //    private void setWlanState() {
-//        Log.d(TAG, "setWlanState");
 //        boolean is2GEnabled = mWifi2GSwitch.isChecked();
 //        boolean is5GEnabled = mWifi5GSwitch.isChecked();
 //        WlanState wlanState = new WlanState(is2GEnabled, is5GEnabled);
 //        API.get().setWlanState(wlanState, new MySubscriber() {
 //            @Override
 //            protected void onSuccess(Object result) {
-//                Log.d(TAG, "onSuccess");
 //
 //                mIs2GAPEnabled = is2GEnabled;
 //                mIs5GAPEnabled = is5GEnabled;
@@ -349,7 +342,6 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 //
 //            @Override
 //            protected void onFailure() {
-//                Log.d(TAG, "onFailure");
 //                mWifi2GSwitch.setChecked(mIs2GAPEnabled);
 //                mWifi5GSwitch.setChecked(mIs5GAPEnabled);
 //            }
@@ -493,7 +485,6 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
                 newSettings.getAP5G().setWpaKey(newKey5G);
             }
         }
-        Log.d(TAG, "newSettings, " + newSettings);
 
         API.get().setWlanSettings(newSettings, new MySubscriber() {
             @Override
@@ -510,7 +501,6 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemSelected");
         if (parent.getId() == R.id.spinner_security_2g) {
             if (position == 0) {
                 mEncryption2GGroup.setVisibility(View.GONE);
@@ -561,7 +551,6 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 //        @Override
 //        public void onReceive(Context context, Intent intent) {
 //            String action = intent.getAction();
-//            Log.e(TAG, "get action is " + action);
 //            BaseResponse response = intent.getParcelableExtra(MessageUti.HTTP_RESPONSE);
 //            Boolean ok = response != null && response.isOk();
 //            if (intent.getAction().equalsIgnoreCase(MessageUti.WLAN_GET_WLAN_SETTING_REQUSET)) {

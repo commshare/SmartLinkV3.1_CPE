@@ -179,7 +179,6 @@ public class NotificationService extends Service {
 		super.onCreate();
 		BusinessManager.getInstance();
 		//BusinessManager.getInstance().m_wifiNetworkReceiver.testWebServer(this);
-		Log.d("NotificationService", "pchong   HttpService onCreate");
 		m_msgReceiver = new NotificationBroadcastReceiver();
 		this.registerReceiver(m_msgReceiver, new IntentFilter(
 				MessageUti.CPE_WIFI_CONNECT_CHANGE));

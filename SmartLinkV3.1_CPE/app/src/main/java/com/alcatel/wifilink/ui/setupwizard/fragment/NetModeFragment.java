@@ -89,7 +89,6 @@ public class NetModeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-        Log.d(TAG, "choice the mode");
         /*自动检测当前的上网模式*/
         mRlNetmodeDetecting.setVisibility(View.VISIBLE);
 
@@ -101,7 +100,6 @@ public class NetModeFragment extends Fragment implements View.OnClickListener {
                 });
                 NetModeFragment.this.wanInfo = wanInfo;
                 // 1.获取WanInfo
-                Log.d(TAG, "getWanInfos: " + wanInfo.toString());
                 // 2.根据类型进行判断
 
                 // TOAT: 此处可以测试不同类型的效果

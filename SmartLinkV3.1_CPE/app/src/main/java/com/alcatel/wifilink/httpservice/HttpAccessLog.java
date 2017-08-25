@@ -48,13 +48,10 @@ public class HttpAccessLog {
 		    		fos = null;
 	    		}
     		}catch(FileNotFoundException e){
-    			Log.d("demo","log file is not found");
     			e.printStackTrace();
     		}catch(IOException e){
-    			Log.d("demo","log file IOException");
     			e.printStackTrace();
     		}catch(Exception e){
-    			Log.d("demo","log file Exception");
     			e.printStackTrace();
     		}finally{
     			if(fos != null) {
@@ -67,7 +64,6 @@ public class HttpAccessLog {
     			}
     		}
     	}else{
-    		Log.d("demo","sd card is invalid");
     	}
     }
     

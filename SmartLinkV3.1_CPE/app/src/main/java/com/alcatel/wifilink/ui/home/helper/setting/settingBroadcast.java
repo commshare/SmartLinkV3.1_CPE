@@ -45,20 +45,16 @@ public class settingBroadcast extends BroadcastReceiver {
         } else if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
             if (ok) {
                 if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET)) {
-                    Log.v("CHECKING_SHARING", "FTP");
                     isFtpSupported = true;
                 }
                 if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
-                    Log.v("CHECKING_SHARING", "DLNA");
                     isDlnaSupported = true;
                 }
             } else {
                 if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET)) {
-                    Log.v("CHECKING_SHARING", "NOFTP");
                     isFtpSupported = false;
                 }
                 if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {
-                    Log.v("CHECKING_SHARING", "NODLNA");
                     SettingFragment.isFtpSupported = false;
                 }
             }

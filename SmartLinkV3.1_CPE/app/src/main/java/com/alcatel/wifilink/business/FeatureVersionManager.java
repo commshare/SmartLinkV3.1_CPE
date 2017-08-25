@@ -51,7 +51,6 @@ public class FeatureVersionManager {
         //     if (apiLst.contains(strApi))
         //         bSupport = true;
         // }
-        //Log.d("SystemManager", "bSupport: " + bSupport);
         return bSupport;
     }
 

@@ -246,10 +246,8 @@ public class OtherUtils {
         WifiInfo wifiInfo = wifi.getConnectionInfo();
         int ipAddress = wifiInfo == null ? 0 : wifiInfo.getIpAddress();
         if (wifi.isWifiEnabled() && ipAddress != 0) {
-            Log.d("ma_wifi", "Wifi Connect");
             return true;
         } else {
-            Log.d("ma_wifi", "Wifi not Connect");
             return false;
         }
     }
@@ -333,7 +331,6 @@ public class OtherUtils {
      */
     public static boolean isServiceWork(Context mContext, Class sClass) {
         String serviceName = sClass.getName();// 获取服务的全类名
-        Log.d("ma_servicename", "servicename: " + serviceName);
         ActivityManager myAM = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);// 获取系统服务对象
         List<ActivityManager.RunningServiceInfo> myList = myAM.getRunningServices(1000);// 获取正在运行中的服务集合 -->1000为可能获取到的个数
         if (myList.size() <= 0) {// 判断集合是否有对象

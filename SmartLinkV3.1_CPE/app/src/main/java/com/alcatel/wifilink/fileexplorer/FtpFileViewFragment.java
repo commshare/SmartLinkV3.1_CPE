@@ -112,7 +112,6 @@ public class FtpFileViewFragment extends Fragment implements IFileInteractionLis
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
-            Log.v(LOG_TAG, "received broadcast:" + intent.toString());
             if (action.equals(Intent.ACTION_MEDIA_MOUNTED) || action.equals(Intent.ACTION_MEDIA_UNMOUNTED)) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -199,7 +198,6 @@ public class FtpFileViewFragment extends Fragment implements IFileInteractionLis
             for (FileInfo f : remote1) {
                 files.add(f);
             }
-            Log.d(LOG_TAG, "Ftp Copy:" + files.toString() + "To" + remote2);
             cmdTask.ftp_copy(files, remote2);
         }
 
@@ -244,7 +242,6 @@ public class FtpFileViewFragment extends Fragment implements IFileInteractionLis
 
         @Override
         public void onStart() {
-            Log.d("", "onStart.............");
             // getEVE();
         }
 
@@ -262,7 +259,6 @@ public class FtpFileViewFragment extends Fragment implements IFileInteractionLis
 
         @Override
         public void onCancel(Object obj) {
-            Log.d("", "onCancel...............");
         }
     };
 
@@ -453,7 +449,6 @@ public class FtpFileViewFragment extends Fragment implements IFileInteractionLis
         mFileViewInteractionHub.setRootPath(rootDir);
         String currentDir = rootDir;
         mFileViewInteractionHub.setCurrentPath(currentDir);
-        Log.i(LOG_TAG, "CurrentDir = " + currentDir);
 
         mFileViewInteractionHub.setHostTag(cmdTask.getConfig().host + cmdTask.getConfig().port + "/");
 
@@ -522,11 +517,9 @@ public class FtpFileViewFragment extends Fragment implements IFileInteractionLis
                 int firstVisiblePosition = mFileListView.getFirstVisiblePosition();
                 if (mScrollPositionList.size() != 0 && mPreviousPath.equals(mScrollPositionList.get(mScrollPositionList.size() - 1).path)) {
                     mScrollPositionList.get(mScrollPositionList.size() - 1).pos = firstVisiblePosition;
-                    Log.i(LOG_TAG, "computeScrollPosition: update item: " + mPreviousPath + " " + firstVisiblePosition + " stack count:" + mScrollPositionList.size());
                     pos = firstVisiblePosition;
                 } else {
                     mScrollPositionList.add(new PathScrollPositionItem(mPreviousPath, firstVisiblePosition));
-                    Log.i(LOG_TAG, "computeScrollPosition: add item: " + mPreviousPath + " " + firstVisiblePosition + " stack count:" + mScrollPositionList.size());
                 }
             } else {
                 int i;
@@ -547,7 +540,6 @@ public class FtpFileViewFragment extends Fragment implements IFileInteractionLis
             }
         }
 
-        Log.i(LOG_TAG, "computeScrollPosition: result pos: " + path + " " + pos + " stack count:" + mScrollPositionList.size());
         mPreviousPath = path;
         return pos;
     }

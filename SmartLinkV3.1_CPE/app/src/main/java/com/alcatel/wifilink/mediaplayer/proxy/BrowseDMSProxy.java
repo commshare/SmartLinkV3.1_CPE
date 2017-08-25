@@ -71,7 +71,6 @@ public class BrowseDMSProxy {
 		
 		Device selDevice = AllShareProxy.getInstance(context).getDMSSelectedDevice();
 		if (selDevice == null) {
-			log.e("no selDevice!!!");
 			return null;
 		}
 		
@@ -86,7 +85,6 @@ public class BrowseDMSProxy {
 		.getService("urn:schemas-upnp-org:service:ContentDirectory:1");
 		if (service == null)
 		{
-			log.e("no service for ContentDirectory!!!");
 			return null;
 		}
 		
@@ -98,7 +96,6 @@ public class BrowseDMSProxy {
 		Action action = service.getAction("Browse");
 		if(action == null)
 		{
-			log.e("action for Browse is null!!!");
 			return null;
 		}
 		ArgumentList argumentList = action.getArgumentList();
@@ -120,15 +117,12 @@ public class BrowseDMSProxy {
 			ArgumentList outArgList = action.getOutputArgumentList();
 			Argument result = outArgList.getArgument("Result");
 		
-			log.d("result value = \n" + result.getValue());	
 			
 			
 			List<MediaItem> items = ParseUtil.parseResult(result);
 			return items;
 		} else {
 			UPnPStatus err = action.getControlStatus();
-			log.e("Error Code = " + err.getCode());
-			log.e("Error Desc = " + err.getDescription());
 		}
 		return null;
 	}
@@ -138,7 +132,6 @@ public class BrowseDMSProxy {
 		
 		Device selDevice = AllShareProxy.getInstance(context).getDMSSelectedDevice();
 		if (selDevice == null) {
-			log.e("no selDevice!!!");
 			return null;
 		}
 	
@@ -146,14 +139,12 @@ public class BrowseDMSProxy {
 		.getService("urn:schemas-upnp-org:service:ContentDirectory:1");
 		if (selDevice == null)
 		{
-			log.e("no service for ContentDirectory!!!");
 			return null;
 		}
 		
 		Action action = service.getAction("Browse");
 		if(action == null)
 		{
-			log.e("action for Browse is null");
 			return null;
 		}
 	
@@ -170,7 +161,6 @@ public class BrowseDMSProxy {
 		if (action.postControlAction()) {
 			ArgumentList outArgList = action.getOutputArgumentList();
 			Argument result = outArgList.getArgument("Result");
-			log.d("result value = \n" + result.getValue());	
 			
 			List<MediaItem> items = ParseUtil.parseResult(result);
 			return items;

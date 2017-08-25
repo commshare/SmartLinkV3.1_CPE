@@ -578,7 +578,6 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
 
             public void onLoginFailed(String error_code) {
                 if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
-                    //Log.d(TAG, "ForceLogin.status:"+FeatureVersionManager.getInstance().isSupportApi("User",
                     // "ForceLogin"));
                     if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
                         forceLoginSelectDialog = ForceLoginSelectDialog.getInstance(ConnectTypeSelectActivity.this);

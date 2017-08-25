@@ -63,9 +63,7 @@ public class Disposer extends ThreadCore {
 				long time1 = System.currentTimeMillis();
 				ctrlp.removeExpiredDevices();
 				long time2 = System.currentTimeMillis();		
-		//		log.e("ctrlp.removeExpiredDevices() cost time = " + (time2 - time1));
 			} catch (Exception e) {
-				log.e("catch exception!!!e = " + e.getMessage());
 			}
 			
 

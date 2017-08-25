@@ -37,7 +37,6 @@ public class IntentBuilder {
     
     public static void viewMediaFile(Context context, String filePath) {
         String type = getMimeType(filePath);
-        Log.d("view", "viewFile type : " + type);
         
         if (TextUtils.isEmpty(type))
             return;
@@ -54,7 +53,6 @@ public class IntentBuilder {
 
     public static void viewFile(final Context context, final String filePath) {
         String type = getMimeType(filePath);
-        Log.d("view", "viewFile type : " + type);
         
         if (!TextUtils.isEmpty(type) && !TextUtils.equals(type, "*/*")) {
             /* 设置intent的file与MimeType */

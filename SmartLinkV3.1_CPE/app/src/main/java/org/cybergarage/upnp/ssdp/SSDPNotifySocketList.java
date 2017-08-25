@@ -105,16 +105,13 @@ public class SSDPNotifySocketList extends Vector
 
 		for (int i = 0; i < bindAddresses.length; i++) {
 			if (!isValidAddress(bindAddresses[i])){
-				log.e("ready to create SSDPNotifySocket bindAddresses = " + bindAddresses[i]+ ", it's invalid so drop it!!!" );
 				continue;
 			}
 			if(bindAddresses[i]!=null){
 				SSDPNotifySocket ssdpNotifySocket = new SSDPNotifySocket(bindAddresses[i]);
 				if (ssdpNotifySocket.getSocket() == null){
-					log.e("ssdpNotifySocket.getSocket() == null!!!");
 					return false;
 				}
-				log.i("ssdpNotifySocket create sendAgainSuccess!!!bindAddresses = " + bindAddresses[i]);
 				add(ssdpNotifySocket);
 				continue;
 			}

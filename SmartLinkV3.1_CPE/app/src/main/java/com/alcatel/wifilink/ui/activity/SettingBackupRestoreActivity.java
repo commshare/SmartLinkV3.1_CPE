@@ -607,7 +607,6 @@ public class SettingBackupRestoreActivity extends BaseActivity implements OnClic
                 return false;
             }
 
-//            System.out.println("The response value of token:" + httpResponse.getFirstHeader("token"));
 
             File file = new File(localFileName);
             if (!file.exists()) {

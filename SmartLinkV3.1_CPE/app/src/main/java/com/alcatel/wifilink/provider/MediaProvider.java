@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.alcatel.wifilink.provider;
 
@@ -23,8 +23,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 /**
- * @author 
- *
+ * @author
  */
 public class MediaProvider extends ContentProvider {
     /**
@@ -32,13 +31,13 @@ public class MediaProvider extends ContentProvider {
      */
     public static final String AUTHORITY = "com.alcatel.smartlinkv3.provider.MediaProvider";
 
-	private FileManagerDbHelper mDbhelper;
+    private FileManagerDbHelper mDbhelper;
 
     // A projection map used to select columns from the database
     private final HashMap<String, String> mFilesProjectionMap;
     // Uri matcher to decode incoming URIs.
     private final UriMatcher mUriMatcher;
-    
+
     // The incoming URI matches the file table URI pattern
     public static final int FILE = 1;
     // The incoming URI matches the file table row ID URI pattern
@@ -65,7 +64,7 @@ public class MediaProvider extends ContentProvider {
         mUriMatcher.addURI(AUTHORITY, TABLE_NAME, FILE);
         mUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/#", FILE_ID);
         mUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/" + COLUMN_NAME_LOC + "/#", FILE_LOC);
-        mUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/" + COLUMN_NAME_PATH +"/#", FILE_PATH);
+        mUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/" + COLUMN_NAME_PATH + "/#", FILE_PATH);
         mUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/" + COLUMN_NAME_SIZE + "/#", FILE_SIZE);
         mUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/" + COLUMN_NAME_DATE + "/#", FILE_DATE);
         mUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/" + COLUMN_NAME_MIME + "/#", FILE_MIME);
@@ -93,24 +92,22 @@ public class MediaProvider extends ContentProvider {
     /**
      * Perform provider creation.
      */
-	@Override
-	public boolean onCreate() {
-		mDbhelper = new FileManagerDbHelper(getContext());
+    @Override
+    public boolean onCreate() {
+        mDbhelper = new FileManagerDbHelper(getContext());
         // Assumes that any failures will be reported by a thrown exception.
         return true;
-	}
+    }
 
-	@Override
-	public Cursor query(Uri uri, String[] projection, String selection,
-			String[] selectionArgs, String sortOrder) {
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         // Constructs a new query builder and sets its table name
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(MediaTable.TABLE_NAME);
 
         SQLiteDatabase db = mDbhelper.getReadableDatabase();
         CharSequence inWhere = null;
-        
-        Log.w(TAG, "uri is " + uri + ", match " + mUriMatcher.match(uri));
+
 
         switch (mUriMatcher.match(uri)) {
             case FILE:
@@ -119,104 +116,99 @@ public class MediaProvider extends ContentProvider {
 
             case FILE_ID:
                 // The incoming URI is for a single row.
-            	inWhere = MediaTable._ID;
+                inWhere = MediaTable._ID;
                 break;
-                
+
             case FILE_LOC:
                 // The incoming URI is for a single row.
-            	inWhere = MediaTable.COLUMN_NAME_LOC;
+                inWhere = MediaTable.COLUMN_NAME_LOC;
                 break;
-                
+
             case FILE_PATH:
                 // The incoming URI is for a single row.
-            	inWhere = MediaTable.COLUMN_NAME_PATH;
+                inWhere = MediaTable.COLUMN_NAME_PATH;
                 break;
-                
+
             case FILE_SIZE:
-            	inWhere = MediaTable.COLUMN_NAME_SIZE;
+                inWhere = MediaTable.COLUMN_NAME_SIZE;
                 break;
-                
+
             case FILE_DATE:
-            	inWhere = MediaTable.COLUMN_NAME_DATE;
+                inWhere = MediaTable.COLUMN_NAME_DATE;
                 break;
-                
+
             case FILE_MIME:
-            	inWhere = MediaTable.COLUMN_NAME_MIME;
+                inWhere = MediaTable.COLUMN_NAME_MIME;
                 break;
-                
+
             case FILE_SENDER:
-            	inWhere = MediaTable.COLUMN_NAME_SENDER;
+                inWhere = MediaTable.COLUMN_NAME_SENDER;
                 break;
-                
+
             case FILE_THUMBNAIL:
-            	inWhere = MediaTable.COLUMN_NAME_THUMBNAIL;
+                inWhere = MediaTable.COLUMN_NAME_THUMBNAIL;
                 break;
-            
+
             case FILE_NAME:
-            	inWhere = MediaTable.COLUMN_NAME_NAME;
-            	break;
-            	
+                inWhere = MediaTable.COLUMN_NAME_NAME;
+                break;
+
             case FILE_NEW:
-            	inWhere = MediaTable.COLUMN_NAME_NEW;
-            	break;
-            
+                inWhere = MediaTable.COLUMN_NAME_NEW;
+                break;
+
             case SENDER_LIST:
-                Cursor cursor = db.query(true, MediaTable.TABLE_NAME, 
-                		new String[] { MediaTable.COLUMN_NAME_SENDER}, 
-                		null, null, null, null, 
-                		MediaTable.COLUMN_NAME_SENDER + " ASC " , null);
+                Cursor cursor = db.query(true, MediaTable.TABLE_NAME, new String[]{MediaTable.COLUMN_NAME_SENDER}, null, null, null, null, MediaTable.COLUMN_NAME_SENDER + " ASC ", null);
                 cursor.setNotificationUri(getContext().getContentResolver(), uri);
                 return cursor;
 
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri + ", match " + mUriMatcher.match(uri));
         }
-        
 
-    	qb.setProjectionMap(mFilesProjectionMap);
-		if (inWhere != null) {
-			qb.appendWhere(inWhere + "=?");
-			selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-					new String[] { uri.getLastPathSegment() });
-    	}
+
+        qb.setProjectionMap(mFilesProjectionMap);
+        if (inWhere != null) {
+            qb.appendWhere(inWhere + "=?");
+            selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs, new String[]{uri.getLastPathSegment()});
+        }
 
         if (TextUtils.isEmpty(sortOrder)) {
             sortOrder = MediaTable.DEFAULT_SORT_ORDER;
         }
 
-        Cursor c = qb.query(db, projection, selection, selectionArgs,
-                null /* no group */, null /* no filter */, sortOrder);
+        Cursor c = qb.query(db, projection, selection, selectionArgs, null /* no group */, null /* no filter */, sortOrder);
 
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
-	}
+    }
 
-	@Override
-	public String getType(Uri uri) {
-		switch (mUriMatcher.match(uri)) {
-		case FILE:
-			return MediaTable.CONTENT_TYPE;
-		case FILE_ID:
-		case FILE_PATH:
-		case FILE_LOC:
-		case FILE_DATE:
-		case FILE_SIZE:
-		case FILE_SENDER:
-		case FILE_THUMBNAIL:
-		case FILE_MIME:
-		case FILE_NAME:
-		case FILE_NEW:
-			return MediaTable.CONTENT_ITEM_TYPE;
-		case SENDER_LIST:
-			return MediaTable.CONTENT_SENDER_TYPE;								
-		default:
-			throw new IllegalArgumentException("Unknown URI " + uri);
-		}
-	}
+    @Override
+    public String getType(Uri uri) {
+        switch (mUriMatcher.match(uri)) {
+            case FILE:
+                return MediaTable.CONTENT_TYPE;
+            case FILE_ID:
+            case FILE_PATH:
+            case FILE_LOC:
+            case FILE_DATE:
+            case FILE_SIZE:
+            case FILE_SENDER:
+            case FILE_THUMBNAIL:
+            case FILE_MIME:
+            case FILE_NAME:
+            case FILE_NEW:
+                return MediaTable.CONTENT_ITEM_TYPE;
+            case SENDER_LIST:
+                return MediaTable.CONTENT_SENDER_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+    }
 
 
-	@Override
-	public Uri insert(Uri uri, ContentValues values /*initialValues*/) {
+    @Override
+    public Uri insert(Uri uri, ContentValues values /*initialValues*/) {
         if (mUriMatcher.match(uri) != FILE) {
             // Can only insert into to file URI.
             throw new IllegalArgumentException("Unknown URI " + uri);
@@ -239,8 +231,7 @@ public class MediaProvider extends ContentProvider {
 
         SQLiteDatabase db = mDbhelper.getWritableDatabase();
 
-        long rowId = db.insertWithOnConflict(MediaTable.TABLE_NAME, null, values, 
-        		SQLiteDatabase.CONFLICT_IGNORE);
+        long rowId = db.insertWithOnConflict(MediaTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 
         // If the insert succeeded, the row ID exists.
         if (rowId > 0) {
@@ -248,13 +239,12 @@ public class MediaProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(noteUri, null);
             return noteUri;
         }
-        Log.w(TAG, "Failed to insert row into " + uri);
         return null;
         //throw new SQLException("Failed to insert row into " + uri);
-	}
+    }
 
-	@Override
-	public int delete(Uri uri, String selection, String[] selectionArgs) {
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = mDbhelper.getWritableDatabase();
         String finalWhere;
 
@@ -266,28 +256,26 @@ public class MediaProvider extends ContentProvider {
                 count = db.delete(MediaTable.TABLE_NAME, selection, selectionArgs);
                 break;
 
-                // If the incoming URI matches a single note ID, does the delete based on the
-                // incoming data, but modifies the where clause to restrict it to the
-                // particular note ID.
+            // If the incoming URI matches a single note ID, does the delete based on the
+            // incoming data, but modifies the where clause to restrict it to the
+            // particular note ID.
             case FILE_ID:
                 // If URI is for a particular row ID, delete is based on incoming
                 // data but modified to restrict to the given ID.
-                finalWhere = DatabaseUtils.concatenateWhere(
-                		MediaTable._ID + " = " + ContentUris.parseId(uri), selection);
+                finalWhere = DatabaseUtils.concatenateWhere(MediaTable._ID + " = " + ContentUris.parseId(uri), selection);
                 count = db.delete(MediaTable.TABLE_NAME, finalWhere, selectionArgs);
                 break;
-            case FILE_LOC:  
-            	// If URI is for a particular row ID, delete is based on incoming
+            case FILE_LOC:
+                // If URI is for a particular row ID, delete is based on incoming
                 // data but modified to restrict to the given ID.
-                finalWhere = DatabaseUtils.concatenateWhere(
-                		MediaTable.COLUMN_NAME_LOC + " = " + ContentUris.parseId(uri), selection);
+                finalWhere = DatabaseUtils.concatenateWhere(MediaTable.COLUMN_NAME_LOC + " = " + ContentUris.parseId(uri), selection);
                 count = db.delete(MediaTable.TABLE_NAME, finalWhere, selectionArgs);
                 break;
-                
+
             case FILE_PATH:
-            	//finalWhere = DatabaseUtils.concatenateWhere(
+                //finalWhere = DatabaseUtils.concatenateWhere(
                 //		FileTable._ID + " = " + ContentUris.parseId(uri), selection);
-            	finalWhere = selection;
+                finalWhere = selection;
                 count = db.delete(MediaTable.TABLE_NAME, finalWhere, selectionArgs);
                 break;
 
@@ -298,11 +286,10 @@ public class MediaProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
 
         return count;
-	}
+    }
 
-	@Override
-	public int update(Uri uri, ContentValues values, String selection,
-			String[] selectionArgs) {
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 
         SQLiteDatabase db = mDbhelper.getWritableDatabase();
         int count;
@@ -317,15 +304,14 @@ public class MediaProvider extends ContentProvider {
             case FILE_ID:
                 // If URI is for a particular row ID, update is based on incoming
                 // data but modified to restrict to the given ID.
-                finalWhere = DatabaseUtils.concatenateWhere(
-                		MediaTable._ID + " = " + ContentUris.parseId(uri), selection);
+                finalWhere = DatabaseUtils.concatenateWhere(MediaTable._ID + " = " + ContentUris.parseId(uri), selection);
                 count = db.update(MediaTable.TABLE_NAME, values, finalWhere, selectionArgs);
                 break;
-                
+
             case FILE_PATH:
-            	//finalWhere = DatabaseUtils.concatenateWhere(
+                //finalWhere = DatabaseUtils.concatenateWhere(
                 //		FileTable._ID + " = " + ContentUris.parseId(uri), selection);
-            	finalWhere = selection;
+                finalWhere = selection;
                 count = db.update(MediaTable.TABLE_NAME, values, finalWhere, selectionArgs);
                 break;
 
@@ -336,22 +322,23 @@ public class MediaProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
 
         return count;
-	}
-
-  public static int getDatabaseVersion(Context context) {
-    try {
-      return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-    } catch (NameNotFoundException e) {
-      throw new RuntimeException("couldn't get version code for " + context);
     }
-  }
+
+    public static int getDatabaseVersion(Context context) {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+        } catch (NameNotFoundException e) {
+            throw new RuntimeException("couldn't get version code for " + context);
+        }
+    }
 
     /**
      * Definition of the contract for the main table of our provider.
      */
     public static final class MediaTable implements android.provider.BaseColumns {
         // This class cannot be instantiated
-        private MediaTable() {}
+        private MediaTable() {
+        }
 
         /**
          * The table name offered by this provider
@@ -361,29 +348,25 @@ public class MediaProvider extends ContentProvider {
         /**
          * The content:// style URL for this table
          */
-        public static final Uri CONTENT_URI =  Uri.parse("content://" + AUTHORITY + "/files");
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/files");
 
         /**
          * The content URI base for a single row of data. Callers must
          * append a numeric row id to this Uri to retrieve a row
          */
-        public static final Uri CONTENT_ID_URI_BASE
-                = Uri.parse("content://" + AUTHORITY + "/files/");
+        public static final Uri CONTENT_ID_URI_BASE = Uri.parse("content://" + AUTHORITY + "/files/");
 
         /**
          * The MIME type of {@link #CONTENT_URI}.
          */
-        public static final String CONTENT_TYPE
-                = "vnd.android.cursor.dir/vnd.alcatel.smartlinkv3.media";
-        
-        public static final String CONTENT_SENDER_TYPE
-        		= "vnd.android.cursor.dir/vnd.alcatel.smartlinkv3.media.senderlist";
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.alcatel.smartlinkv3.media";
+
+        public static final String CONTENT_SENDER_TYPE = "vnd.android.cursor.dir/vnd.alcatel.smartlinkv3.media.senderlist";
 
         /**
          * The MIME type of a {@link #CONTENT_URI} sub-directory of a single row.
          */
-        public static final String CONTENT_ITEM_TYPE
-                = "vnd.android.cursor.item/vnd.alcatel.smartlinkv3.media";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.alcatel.smartlinkv3.media";
         /**
          * The default sort order for this table
          */
@@ -396,15 +379,15 @@ public class MediaProvider extends ContentProvider {
          */
         public static final String COLUMN_NAME_PATH = "path";
 
-        public static final String COLUMN_NAME_NAME = "name"; 
+        public static final String COLUMN_NAME_NAME = "name";
         /**
          * Column name for the single column holding file storage location.
          * <P>Type: INTEGER ,
-         * 			1 internal FLASH, 
-         * 			2 external SD card storage,
-         * 			3 USB storage</P>
+         * 1 internal FLASH,
+         * 2 external SD card storage,
+         * 3 USB storage</P>
          */
-        public static final String COLUMN_NAME_LOC = "location"; 
+        public static final String COLUMN_NAME_LOC = "location";
         /**
          * Column name for the single column holding file MIME.
          * <P>Type: TEXT</P>
@@ -414,7 +397,7 @@ public class MediaProvider extends ContentProvider {
          * Column name for the single column holding file size.
          * <P>Type: TEXT</P>
          */
-        public static final String COLUMN_NAME_SENDER = "sender"; 
+        public static final String COLUMN_NAME_SENDER = "sender";
         /**
          * Column name for the single column holding file size.
          * <P>Type: INTEGER</P>
@@ -430,84 +413,69 @@ public class MediaProvider extends ContentProvider {
          * <P>Type: BLOB</P>
          */
         public static final String COLUMN_NAME_THUMBNAIL = "thumbnail";
-        
+
         /**
          * Column name for the single column holding WHETHER USER CHECK THIS FILE.
          * <P>Type: BLOB</P>
          */
         public static final String COLUMN_NAME_NEW = "isNew";
-        
+
         public static final String SENDER_LIST_PATH = "senderlist";
-        
+
         //public static final int FILE_LOC_FLASH = 1;
         //public static final int FILE_LOC_SD = 2;
         //public static final int FILE_LOC_USB = 3;
-    }	
+    }
 
-	public class FileManagerDbHelper extends SQLiteOpenHelper {
-		// database
-		private static final String DB_NAME = "FileManager.db";
-		//ADD new attribute , update from 1 to 2.
-		private static final int DB_VERSION = 2;
+    public class FileManagerDbHelper extends SQLiteOpenHelper {
+        // database
+        private static final String DB_NAME = "FileManager.db";
+        //ADD new attribute , update from 1 to 2.
+        private static final int DB_VERSION = 2;
 
-		// table name
-		public static final String FilesInFlash_Table = "FileInFlash";
+        // table name
+        public static final String FilesInFlash_Table = "FileInFlash";
 
-		// table column
-		public static final int BLOCK_TABLE_ID = 0;
-		public static final int BLOCK_TABLE_NUMBER = 1;
+        // table column
+        public static final int BLOCK_TABLE_ID = 0;
+        public static final int BLOCK_TABLE_NUMBER = 1;
 
-		private Context mContext;
-    private SQLiteDatabase mDatabase;
+        private Context mContext;
+        private SQLiteDatabase mDatabase;
 
-		public FileManagerDbHelper(Context context) {
-			super(context, DB_NAME, null, DB_VERSION);
-			mContext = context;
-		}
+        public FileManagerDbHelper(Context context) {
+            super(context, DB_NAME, null, DB_VERSION);
+            mContext = context;
+        }
 
-		@SuppressWarnings("unused")
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			if (true) {
-				db.execSQL("CREATE TABLE " + MediaTable.TABLE_NAME + " ( "
-						+ MediaTable._ID + " INTEGER PRIMARY KEY,"
-						+ MediaTable.COLUMN_NAME_PATH
-						+ " TEXT NOT NULL UNIQUE,"						
-						+ MediaTable.COLUMN_NAME_NAME + " TEXT,"
-						+ MediaTable.COLUMN_NAME_MIME + " TEXT,"
-						+ MediaTable.COLUMN_NAME_SENDER + " TEXT,"
-						+ MediaTable.COLUMN_NAME_LOC + " INTEGER,"
-						+ MediaTable.COLUMN_NAME_DATE + " INTEGER," // LONG, OR DATE
-						+ MediaTable.COLUMN_NAME_SIZE + " INTEGER,"
-						+ MediaTable.COLUMN_NAME_NEW + " INTEGER,"
-						+ MediaTable.COLUMN_NAME_THUMBNAIL + " BLOB" + " );");
+        @SuppressWarnings("unused")
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            if (true) {
+                db.execSQL("CREATE TABLE " + MediaTable.TABLE_NAME + " ( " + MediaTable._ID + " INTEGER PRIMARY KEY," + MediaTable.COLUMN_NAME_PATH + " TEXT NOT NULL UNIQUE," + MediaTable.COLUMN_NAME_NAME + " TEXT," + MediaTable.COLUMN_NAME_MIME + " TEXT," + MediaTable.COLUMN_NAME_SENDER + " TEXT," + MediaTable.COLUMN_NAME_LOC + " INTEGER," + MediaTable.COLUMN_NAME_DATE + " INTEGER," // LONG, OR DATE
+                                   + MediaTable.COLUMN_NAME_SIZE + " INTEGER," + MediaTable.COLUMN_NAME_NEW + " INTEGER," + MediaTable.COLUMN_NAME_THUMBNAIL + " BLOB" + " );");
 
-			} else {
-				createTable(db);
-			}
-      mDatabase = db;
-		}
+            } else {
+                createTable(db);
+            }
+            mDatabase = db;
+        }
 
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			
-			// Logs that the database is being upgraded
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-					+ newVersion + ", which will destroy all old data");
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-			// Kills the table and existing data
-			db.execSQL("DROP TABLE IF EXISTS " + MediaTable.TABLE_NAME);
 
-			// Recreates the database with a new version
-			onCreate(db);
-		}
-		
-		private void createTable(SQLiteDatabase db) {
-			String sql = "CREATE TABLE "
-					+ FilesInFlash_Table
-					+ "(id INTEGER PRIMARY KEY NOT NULL, path TEXT NOT NULL UNIQUE)";
-			db.execSQL(sql);
-		}
+            // Kills the table and existing data
+            db.execSQL("DROP TABLE IF EXISTS " + MediaTable.TABLE_NAME);
 
-	}
+            // Recreates the database with a new version
+            onCreate(db);
+        }
+
+        private void createTable(SQLiteDatabase db) {
+            String sql = "CREATE TABLE " + FilesInFlash_Table + "(id INTEGER PRIMARY KEY NOT NULL, path TEXT NOT NULL UNIQUE)";
+            db.execSQL(sql);
+        }
+
+    }
 }

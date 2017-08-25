@@ -198,7 +198,6 @@ public class FtpConfig {
 
 		PubPropertiesConfig propConf = new PubPropertiesConfig();
 		Properties prop = propConf.loadConfig(mContext, file);
-		// prop.list(System.out);
 		prop.setProperty(key, value);
 		propConf.saveConfig(mContext, file, prop);
 
@@ -208,7 +207,6 @@ public class FtpConfig {
 			String key) {
 		PubPropertiesConfig propConf = new PubPropertiesConfig();
 		Properties prop = propConf.loadConfig(mContext, file);
-		// prop.list(System.out);
 		return prop.getProperty(key);
 
 	}

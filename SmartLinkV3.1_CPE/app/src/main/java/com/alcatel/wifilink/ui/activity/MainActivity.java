@@ -129,7 +129,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawable(null);
         this.getWindowManager().getDefaultDisplay().getMetrics(m_displayMetrics);
-        Log.d(TAG, "onCreate");
         fm = getFragmentManager();
         rl_top = (RelativeLayout) findViewById(R.id.main_layout_top);
 //        wifi_key_status = getResources().getString(R.string.wifi_key_edit);
@@ -189,15 +188,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
         thumbnailLoader = new ThumbnailLoader(this);
         showMicroView();
-        Log.d(TAG, "onCreate----");
 
     }
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume");
         super.onResume();
-        Log.d(TAG, "onResume----");
 
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
@@ -917,13 +913,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     }
 
 //    private void OnResponseAppWidget() {
-//        Log.d(TAG, ""+DataConnectManager.getInstance().getCPEWifiConnected());
-//        Log.d(TAG, ""+CPEConfig.getInstance().getInitialLaunchedFlag());
-//        Log.d(TAG, ""+CPEConfig.getInstance().getQuickSetupFlag());
 //        if (DataConnectManager.getInstance().getCPEWifiConnected() && CPEConfig.getInstance().getInitialLaunchedFlag() /*&& CPEConfig.getInstance().getQuickSetupFlag()*/) {
 //            Intent it = getIntent();
 //            int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-//            Log.d(TAG, "OnResponseAppWidget:"+nPage);
 //
 //            if (nPage == SMS_PAGE) {
 //                smsBtnClick();

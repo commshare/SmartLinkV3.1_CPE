@@ -48,7 +48,6 @@ public class BaseActivityWithBack extends AppCompatActivity {
             baseActionBar.setDisplayHomeAsUpEnabled(true);
             baseActionBar.setElevation(0);
         }
-        Log.d(TAG, "onCreate");
         screenLockReceiver = new ScreenStateChangeReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -121,11 +120,9 @@ public class BaseActivityWithBack extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
         if (MotionEvent.ACTION_DOWN == action || MotionEvent.ACTION_UP == action) {
-            Log.e(TAG, "dispatchTouchEvent,action_down");
             // 每次点击时候判断是否为以下三个界面--> 是则不启动定时器--> 只有进入Home界面才启用定时器
             OtherUtils.stopAutoTimer();
             if (isThreeAct()) {
-                Log.d("ma_base", "no need to reset");
             } else {
                 HomeActivity.autoTask = new TimerTask() {
                     @Override
@@ -143,7 +140,6 @@ public class BaseActivityWithBack extends AppCompatActivity {
     /* 是否为指定的三个界面--> true: 是 */
     public boolean isThreeAct() {
         String currentActivity = AppInfo.getCurrentActivityName(this);
-        Log.d("ma_currentActivity", currentActivity);
         boolean la = currentActivity.contains("LoadingActivity");
         boolean ga = currentActivity.contains("GuideActivity");
         boolean loa = currentActivity.contains("LoginActivity");
@@ -159,13 +155,10 @@ public class BaseActivityWithBack extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
                 String action = intent.getAction();
-                Log.e(TAG, "action:" + action);
                 switch (action) {
                     case Intent.ACTION_SCREEN_ON:
-                        Log.e(TAG, "ACTION_SCREEN_ON");
                         break;
                     case Intent.ACTION_SCREEN_OFF:
-                        Log.e(TAG, "ACTION_SCREEN_OFF");
                         OtherUtils.stopAutoTimer();
                         if (!isThreeAct()) {
                             logout();/* 锁屏后登出 */
@@ -174,7 +167,6 @@ public class BaseActivityWithBack extends AppCompatActivity {
                         }
                         break;
                     case Intent.ACTION_USER_PRESENT:
-                        Log.e(TAG, "ACTION_USER_PRESENT");
                         break;
                 }
             }
@@ -200,7 +192,6 @@ public class BaseActivityWithBack extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "onDestroy");
         if (screenLockReceiver != null) {
             unregisterReceiver(screenLockReceiver);
             screenLockReceiver = null;

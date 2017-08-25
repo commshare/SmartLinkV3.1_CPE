@@ -81,7 +81,6 @@ public class WanManager extends BaseManager {
         if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
             boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
             if (bCPEWifiConnected == true) {
-                Log.d(TAG, "wanManager successful");
                 getWanInfo();
             } else {
                 clearData();

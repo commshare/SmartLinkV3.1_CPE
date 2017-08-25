@@ -66,9 +66,7 @@ public class RenewSubscriber extends ThreadCore
 				long time1 = System.currentTimeMillis();
 				ctrlp.renewSubscriberService();
 				long time2 = System.currentTimeMillis();
-	//			log.e("ctrlp.renewSubscriberService() cost time = " + (time2 - time1));
 			} catch (Exception e) {
-				log.e("catch exception!!!e = " + e.getMessage());
 			}
 		
 		}

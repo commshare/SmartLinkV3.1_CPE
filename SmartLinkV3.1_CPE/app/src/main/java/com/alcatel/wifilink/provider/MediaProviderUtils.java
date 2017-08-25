@@ -118,12 +118,10 @@ public class MediaProviderUtils {
 				MediaTable.COLUMN_NAME_PATH + "='" + path + "'",
 				(String[]) null, (String) null);
 		if (!cursor.moveToFirst()) {
-			Log.w(TAG, "cursor can not move to the first item.");
 			return null;
 		}
 		
 		if (cursor.getCount() > 1) {
-			Log.w(TAG, "We get more than one thumbnail."); //It is possible?
 		}
 
 		int column = cursor.getColumnIndex(MediaTable.COLUMN_NAME_THUMBNAIL);
@@ -174,7 +172,6 @@ public class MediaProviderUtils {
 						selection, (String[])null, (String)null);        
 				 //FileTable.COLUMN_NAME_PATH + " LIKE '%?%' ", new String[] {"tcloudboa"},
         if(!cursor.moveToFirst()) {
-        	Log.w(TAG, "cursor can not move to the first item.");
         	return null;
         }
         
@@ -198,7 +195,6 @@ public class MediaProviderUtils {
         	//type = MediaFile.getFileType(file.filePath); // we can query MIME column
         	//file.fileType = type;
         	result.add(file);
-        	Log.i(TAG, file.toString());
         }  while(cursor.moveToNext());
         cursor.close();
         return result;
@@ -223,7 +219,6 @@ public class MediaProviderUtils {
         int senderColumn = cursor.getColumnIndex(MediaTable.COLUMN_NAME_SENDER);
        do{
         	senders.add(cursor.getString(senderColumn));
-        	Log.i(TAG, cursor.getString(senderColumn));
         } while (cursor.moveToNext()); 
         cursor.close();
         return senders.toArray(new String[senders.size()]);

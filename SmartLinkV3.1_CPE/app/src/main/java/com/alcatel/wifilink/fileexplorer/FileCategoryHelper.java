@@ -224,7 +224,6 @@ public class FileCategoryHelper {
         String sortOrder = buildSortOrder(sort);
 
         if (uri == null) {
-            Log.e(LOG_TAG, "invalid uri, category:" + fc.name());
             return null;
         }
 
@@ -262,13 +261,11 @@ public class FileCategoryHelper {
         String[] columns = new String[]{"COUNT(*)", "SUM(_size)"};
         Cursor c = mContext.getContentResolver().query(uri, columns, buildSelectionByCategory(fc), null, null);
         if (c == null) {
-            Log.e(LOG_TAG, "fail to query uri:" + uri);
             return false;
         }
 
         if (c.moveToNext()) {
             setCategoryInfo(fc, c.getLong(0), c.getLong(1));
-            Log.v(LOG_TAG, "Retrieved " + fc.name() + " info >>> count:" + c.getLong(0) + " size:" + c.getLong(1));
             c.close();
             return true;
         }

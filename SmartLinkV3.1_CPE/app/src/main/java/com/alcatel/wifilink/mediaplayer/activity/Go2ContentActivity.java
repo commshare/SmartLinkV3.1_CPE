@@ -261,7 +261,6 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 			long id) {
 		
 		MediaItem item = (MediaItem) parent.getItemAtPosition(position);
-		log.e("item = \n" + item.getShowString());		
 		
 		if (UpnpUtil.isAudioItem(item)) {
 			goMusicPlayerActivity(position, item);
@@ -345,14 +344,12 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 		public void run() {
 			
 			long time = System.currentTimeMillis();
-			log.e("DelCacheFileManager run...");
 			try {
 				FileHelper.deleteDirectory(mFilePath);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			long interval = System.currentTimeMillis() - time;
-			log.e("DelCacheFileManager del over, cost time = " + interval);
 		}
 		
 		public boolean start(String directory)

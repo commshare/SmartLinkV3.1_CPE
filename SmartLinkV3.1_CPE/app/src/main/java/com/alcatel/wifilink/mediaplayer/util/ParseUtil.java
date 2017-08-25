@@ -147,7 +147,6 @@ public class ParseUtil {
 						
 				
 						if (testFlag){
-							Log.e("", "Return of the Jedi.2 is true, ready!!!");
 						}
 						MediaItem.ResInfo resInfo = getResInfo(childNode);
 						if (resInfo != null){
@@ -175,7 +174,6 @@ public class ParseUtil {
 				}
 				
 				if (testFlag){
-					Log.e("", "Return of the Jedi.2 = \n" + i.getShowString());
 				}
 					
 		
@@ -280,7 +278,6 @@ public class ParseUtil {
 			size = Long.parseLong(sizeString);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("", "sizeString = " + sizeString);
 		}
 		return size;
 	}

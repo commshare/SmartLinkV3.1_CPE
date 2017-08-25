@@ -24,7 +24,6 @@ public class LanManager extends BaseManager {
         if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
             boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
             if (bCPEWifiConnected == true) {
-                Log.d(TAG, "lanManager successful");
                 getLaninfo(null);
             } else {
                 clearData();
@@ -54,7 +53,6 @@ public class LanManager extends BaseManager {
             LegacyHttpClient.getInstance().sendPostRequest(new HttpLan.getLanSettingsRequest(response -> {
                 if (response.isOk()) {
                     m_lanInfo = response.getModelResult();
-                    Log.d(TAG, "getLaninfo: " + m_lanInfo.toString());
                     BusinessManager.getInstance().getSystemInfoModel().setIP(m_lanInfo.getIPv4IPAddress());
                     BusinessManager.getInstance().getSystemInfoModel().setSubnet(m_lanInfo.getSubnetMask());
                     BusinessManager.getInstance().getSystemInfoModel().setMacAddress(m_lanInfo.getMacAddress());

@@ -108,20 +108,16 @@ public class SSDPSearchResponseSocketList extends Vector
 		
 		boolean flag = false;
 		for(int k = 0; k < bindAddresses.length; k++){
-			log.e("bindAddresses k = " + k + ", addr = " + bindAddresses[k]);
 		}
 		try {
 			for (int j = 0; j < bindAddresses.length; j++) {	
 				if (!isValidAddress(bindAddresses[j])){
-					log.e("ready to create SSDPSearchResponseSocket bindAddresses = " + bindAddresses[j]+ ", it's invalid so drop it!!!" );
 					continue;
 				}
 				SSDPSearchResponseSocket socket = new SSDPSearchResponseSocket(bindAddresses[j], port);
 				if (socket.getDatagramSocket() == null){
-					log.e("SSDPSearchResponseSocket.getSocket() == null!!!");
 					continue;
 				}
-				log.i("SSDPSearchResponseSocket create sendAgainSuccess!!!bindAddresses = " + bindAddresses[j]);
 				add(socket);
 				flag = true;
 				continue;

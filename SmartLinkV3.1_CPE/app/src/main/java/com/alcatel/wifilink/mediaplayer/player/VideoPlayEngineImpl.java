@@ -68,7 +68,6 @@ public class VideoPlayEngineImpl extends AbstractMediaPlayEngine implements OnIn
 			mMediaPlayer.setOnInfoListener(this);
 			
 			mMediaPlayer.prepareAsync();
-			log.e("mMediaPlayer.prepareAsync path = " + mMediaInfo.getRes());
 			mPlayState = PlayState.MPS_PARESYNC;
 			performPlayListener(mPlayState);
 		} catch (Exception e) {
@@ -106,7 +105,6 @@ public class VideoPlayEngineImpl extends AbstractMediaPlayEngine implements OnIn
 	@Override
 	public boolean onInfo(MediaPlayer mp, int what, int extra) {
 	
-		log.e("onInfo --> what = " + what);
 		switch (what) {
 		case 701:
 			//CommonUtil.showToask(mContext, "onInfo 701 --> MEDIA_INFO_BUFFERING_START");

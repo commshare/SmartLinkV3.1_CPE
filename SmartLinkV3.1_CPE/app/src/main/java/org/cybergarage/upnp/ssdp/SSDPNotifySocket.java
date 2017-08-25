@@ -140,7 +140,6 @@ public class SSDPNotifySocket extends HTTPMUSocket implements Runnable
 				ctrlPoint.notifyReceived(packet); 
 		}
 		
-//		log.e("SSDPNotifySocket run over!!!");
 	}
 	
 	public void start(){

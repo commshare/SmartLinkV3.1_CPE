@@ -76,7 +76,6 @@ public static final String PLAY_INDEX = "player_index";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
-		log.e("onCreate");
 		setContentView(R.layout.video_player_layout);
 		m_bNeedBack = false;
 		setupsView();	
@@ -87,7 +86,6 @@ public static final String PLAY_INDEX = "player_index";
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
-		log.e("onNewIntent");
 		refreshIntent(intent);
 
 		super.onNewIntent(intent);
@@ -102,7 +100,6 @@ public static final String PLAY_INDEX = "player_index";
 
 	@Override
 	protected void onDestroy() {
-		log.e("onDestroy");
 		isDestroy = true;
 		mUIManager.unInit();
 		mCheckDelayTimer.stopTimer();
@@ -172,7 +169,6 @@ public static final String PLAY_INDEX = "player_index";
 	
 	
 	private void refreshIntent(Intent intent){
-		log.e("refreshIntent");
 		int curIndex = 0;
 		if (intent != null){
 			curIndex = intent.getIntExtra(PLAY_INDEX, 0);		
@@ -204,7 +200,6 @@ public static final String PLAY_INDEX = "player_index";
 				if (!isDestroy){
 					mPlayerEngineImpl.playMedia(mMediaInfo);
 				}else{
-					log.e("activity destroy...so don't playMedia...");
 				}
 			}
 		}, 1000);
@@ -326,7 +321,6 @@ public static final String PLAY_INDEX = "player_index";
 		
 		@Override
 		public void onTrackStreamError(MediaItem itemInfo) {
-			log.e("onTrackStreamError");
 			mPlayPosTimer.stopTimer();		
 			mVideoControlCenter.stop();	
 			mUIManager.showPlayErrorTip();
@@ -334,7 +328,6 @@ public static final String PLAY_INDEX = "player_index";
 
 		@Override
 		public void onTrackPlayComplete(MediaItem itemInfo) {
-			log.e("onTrackPlayComplete");
 			boolean ret = mVideoControlCenter.next();
 			if (!ret){
 				mUIManager.showPlayErrorTip();
@@ -352,7 +345,6 @@ public static final String PLAY_INDEX = "player_index";
 	
 	@Override
 	public void onBufferingUpdate(MediaPlayer mp, int percent) {
-	//	log.e("onBufferingUpdate --> percen = " + percent + ", curPos = " + mp.getCurrentPosition());
 	  
 		int duration = mPlayerEngineImpl.getDuration();
 		int time = duration * percent / 100;
@@ -362,13 +354,11 @@ public static final String PLAY_INDEX = "player_index";
 	@Override
 	public void onSeekComplete(MediaPlayer mp) {
 	
-		log.e("onSeekComplete ...");
 	}
 
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		mUIManager.showPlayErrorTip();
-		log.e("onError what = " + what + ", extra = " + extra);
 		return false;
 	}
 

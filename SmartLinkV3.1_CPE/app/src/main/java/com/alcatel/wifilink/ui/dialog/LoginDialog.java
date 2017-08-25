@@ -396,7 +396,6 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
         data.addParam("user_name", LinkAppSettings.USER_NAME);
         data.addParam("password", m_password);
         if (SmartLinkV3App.getInstance().IsForcesLogin()) {
-            Log.d("ConnectTypeSelect", "forceLogin");
             BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_FORCE_LOGIN_REQUEST, data);
             closeDialog();
             if (call == null) {
@@ -426,12 +425,10 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
             }
             m_ForceloginDlg.setCallback(call);
         } else {
-            Log.d("ConnectTypeSelect", "not forceLogin");
             //BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGIN_REQUEST, data);
             new LoginHelper(m_context) {
                 @Override
                 public void getLoginStatus(boolean success) {
-                    Log.d("ConnectTypeSelect", "getLoginStatus: " + success);
                     if (onLoginStatusListener != null) {
                         onLoginStatusListener.isSuccess(success);
                     }

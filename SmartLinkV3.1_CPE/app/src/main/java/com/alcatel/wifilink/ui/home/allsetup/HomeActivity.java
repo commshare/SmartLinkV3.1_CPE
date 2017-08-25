@@ -175,7 +175,6 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SmartLinkV3App.getContextInstance().add(this);
-        Log.d("ma_home", "onCreate: ");
         setContentView(R.layout.activity_homes);
         hac = this;
         supportActionBar = getSupportActionBar();
@@ -225,13 +224,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 API.get().heartBeat(new MySubscriber() {
                     @Override
                     protected void onSuccess(Object result) {
-                        Log.d("ma_home", "heartbeat success");
                     }
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
                         logout();
-                        Log.d("ma_home", "heartbeat error");
                     }
                 });
             }
@@ -300,7 +297,6 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         super.onResume();
         int page = getPage();
         // int page = SharedPrefsUtil.getInstance(this).getInt(Cons.PAGE, Cons.MAIN);
-        Log.d("ma_home", "page: " + page);
         // TODO: 2017/8/7 切换到对应的界面 
         setLastPage(page);
     }
@@ -557,7 +553,6 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.SETTING);
                 break;
         }
-        Log.d("ma_page", "保存的页面: " + SharedPrefsUtil.getInstance(this).getInt(Cons.PAGE, Cons.MAIN));
 
     }
 
@@ -603,7 +598,6 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
-                Log.d("ma_issimpop", "ma_issimpop: " + isSimPop);
                 mRl_smsButton.setEnabled(simState == Cons.READY ? true : false);
                 
                 /* 需要输入PIN码 */

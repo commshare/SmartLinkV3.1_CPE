@@ -90,7 +90,6 @@ public class PathIndicator extends HorizontalScrollView
           sb.append(File.separator);
         }
 
-        Log.v(TAG, "onPathSelected : " + sb.toString());
         mPathChangeListener.onPathSelected(0, sb.toString());
       }
 
@@ -132,8 +131,6 @@ public class PathIndicator extends HorizontalScrollView
 
     folderButton.setEnabled(true);
 
-    Log.v(TAG, "folderName:" + folderName + ", index : " + index + 
-        ", totalSize : " + totalSize + ", isAdd: " + isAdd);
     if (index != totalSize ||isAdd)
       mFolderList.add(getAbsoluteFolderName(folderName));
 
@@ -221,7 +218,6 @@ public class PathIndicator extends HorizontalScrollView
     //String folderPath;
     //mContext.getString(resId);
 
-    Log.v(TAG, "getAbsoluteFolderName :" + path);
     return path;    
   }
   
@@ -236,14 +232,12 @@ public class PathIndicator extends HorizontalScrollView
       path.append('/');
     }   
     mCurrentPathIndicatorPath = path.toString();
-    Log.v(TAG, "Current PathIndicator Path :" + mCurrentPathIndicatorPath);
     return mCurrentPathIndicatorPath;
   }
   
   private String getDisPlayedPath(String path){
     //String folderPath = path;
     //String localPath = new StringBuilder().append(File.separator).append(path).toString();
-    //Log.v(TAG, "getDisPlayedPath Path In :" + path + ", Path return :"+ localPath);
     //return localPath;
     return path;
   }
@@ -291,7 +285,6 @@ public class PathIndicator extends HorizontalScrollView
     
     if (folderPath.length() > 0 && getCurPathIndicatorPath().equals(folderPath)
         && !mForceRefreshPathIndicatorBar){
-      Log.v(TAG, "do not need to add folder: " + folderPath);
       return;
     }
     if (folderPath.length() == 0 
@@ -299,22 +292,17 @@ public class PathIndicator extends HorizontalScrollView
         return;
     }    
     
-    Log.v(TAG, " setPath() - folderPath : " + folderPath);
     String[] folders = getDisPlayedPath(folderPath).substring(1).split("/");
     String[] preFolders = new String[]{};    
 
-    Log.v(TAG, "folders:");
     for (String f : folders) {
-      Log.v(TAG, "\t'" + f + "'");
     }
 
     if (mPrePathIndicatorPath != null){
       preFolders = getDisPlayedPath(mPrePathIndicatorPath).substring(1).split("/");
       preFolderName = mPrePathIndicatorPath.substring(mPrePathIndicatorPath.lastIndexOf("/") + 1, 
           mPrePathIndicatorPath.length());
-      Log.v(TAG, "mPrePathIndicatorPath: " + mPrePathIndicatorPath + " split into:");
       for (String f : preFolders) {
-        Log.v(TAG, "\t'" + f + "'");
       }
     }
     
@@ -333,7 +321,6 @@ public class PathIndicator extends HorizontalScrollView
         File preFolder = new File(mPrePathIndicatorPath);
         clear();
         if(preFolder.getParent().equals(currentFolder.getAbsolutePath())){
-          Log.v(TAG, "remove folder " + preFolders[0]);
          // addPath(preFolders, false);
           addPath(folders, true);
         } else {
