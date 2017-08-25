@@ -287,7 +287,6 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                     finish();
                 }
             });
-
         }
     }
     

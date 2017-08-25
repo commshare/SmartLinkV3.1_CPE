@@ -16,6 +16,7 @@ import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -75,6 +76,22 @@ public class DataPlanActivity extends BaseActivityWithBack {
 
             }
         }.settingActionbarAttr(this, getSupportActionBar(), R.layout.actionbar_setdataplan);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+
+            }
+        });
     }
 
     @OnClick({R.id.tv_limit_kb, R.id.tv_limit_mb, R.id.tv_limit_gb, R.id.sc_limit_autodisconnect, R.id.rp_limit, R.id.rl_sc_limit})
@@ -148,7 +165,7 @@ public class DataPlanActivity extends BaseActivityWithBack {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                
+
                 ChangeActivity.toActivity(DataPlanActivity.this, HomeActivity.class, false, true, false, 0);
             }
         });

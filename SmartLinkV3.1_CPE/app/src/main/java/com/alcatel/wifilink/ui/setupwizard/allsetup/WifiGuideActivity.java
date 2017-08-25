@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.alcatel.wifilink.R.id.btn_apply;
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
 import static com.alcatel.wifilink.R.id.view;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_AP_ISOLATION;
@@ -90,6 +92,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     private Context mContext;
     private int mSupportMode;
     private ProgressDialog mProgressDialog;
+    private Button bt_apply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +144,8 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         mEncryption2GSpinner = (AppCompatSpinner) findViewById(R.id.spinner_encryption_2g);
         mEncryption5GSpinner = (AppCompatSpinner) findViewById(R.id.spinner_encryption_5g);
 
-        findViewById(R.id.btn_apply).setOnClickListener(this);
+        bt_apply = (Button) findViewById(R.id.btn_apply);
+        bt_apply.setOnClickListener(this);
         findViewById(R.id.btn_cancel).setOnClickListener(this);
 
         mDividerView = findViewById(R.id.divider);
@@ -444,13 +448,13 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
 
             @Override
             protected void onSuccess(Object result) {
-                mProgressDialog.dismiss();
-                // 提交设置过的标记
-                SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
-                ToastUtil_m.show(mContext, getString(R.string.success));
-                Intent intent = new Intent();
-                intent.setClass(WifiGuideActivity.this, RefreshWifiActivity.class);
-                startActivity(intent);
+                bt_apply.postDelayed(() -> {
+                    mProgressDialog.dismiss();
+                    // 提交设置过的标记
+                    SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
+                    ToastUtil_m.show(mContext, getString(R.string.success));
+                    ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                }, 5000);
             }
 
             @Override
