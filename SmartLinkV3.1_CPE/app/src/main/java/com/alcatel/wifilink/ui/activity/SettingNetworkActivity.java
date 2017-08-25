@@ -74,12 +74,19 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private EditText mNewSimPin;
     private EditText mConfirmNewSimPin;
 
+    private boolean mFirstSetConnectionMode;
+    private boolean mFirstSetNetworkMode;
+    private boolean mFirstSetBillingDay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setTitle(R.string.setting_mobile_network);
         setContentView(R.layout.activity_setting_network);
+        mFirstSetConnectionMode = true;
+        mFirstSetNetworkMode = true;
+        mFirstSetBillingDay = true;
         mNetworkSettings = new Network();
         mConnectionSettings = new ConnectionSettings();
         mUsageSetting = new UsageSetting();
@@ -109,10 +116,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
         });
         mConnectionModeSpinner = (AppCompatSpinner) findViewById(R.id.spinner_connection_mode);
-        mConnectionModeSpinner.setSelection(0, true);
+//        mConnectionModeSpinner.setSelection(0, true);
         mConnectionModeSpinner.setOnItemSelectedListener(this);
         mNetworkModeSpinner = (AppCompatSpinner) findViewById(R.id.settings_network_mode);
-        mNetworkModeSpinner.setSelection(0, true);
+//        mNetworkModeSpinner.setSelection(0, true);
         mNetworkModeSpinner.setOnItemSelectedListener(this);
         mRoamingSwitchCompat = (SwitchCompat) findViewById(R.id.network_roaming_switch);
         mSimPinCompat = (SwitchCompat) findViewById(R.id.network_sim_pin_switch);
@@ -132,7 +139,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         //set data plan
         mMonthlyDataPlanText = (TextView) findViewById(R.id.textview_monthly_data_plan);
         mBillingDaySpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_billing_day);
-        mBillingDaySpinner.setSelection(0, true);
+//        mBillingDaySpinner.setSelection(0, true);
         mBillingDaySpinner.setOnItemSelectedListener(this);
         mUsageAlertSpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_usagealert);
         mDisconnectCompat = (SwitchCompat) findViewById(R.id.setdataplan_auto_disconnect);
@@ -690,8 +697,16 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.spinner_connection_mode) {
+            if(mFirstSetConnectionMode) {
+                mFirstSetConnectionMode = false;
+                return;
+            }
             setConnectionSettings(position);
         } else if (parent.getId() == R.id.settings_network_mode) {
+            if(mFirstSetNetworkMode) {
+                mFirstSetNetworkMode = false;
+                return;
+            }
             if (position == 0) {
                 setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_AUTO);
             } else if (position == 1) {
@@ -702,12 +717,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_2G);
             }
         } else if (parent.getId() == R.id.setdataplan_billing_day) {
-            //            if (isCodeSelectBillingDay) {
-            //                isCodeSelectBillingDay = false;
-            //            } else {
+            if(mFirstSetBillingDay) {
+                mFirstSetBillingDay = false;
+                return;
+            }
             mUsageSetting.setBillingDay(position);
             setUsageSetting(mUsageSetting);
-            //            }
         }
     }
 
