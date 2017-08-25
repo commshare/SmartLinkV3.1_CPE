@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DataPlanActivity extends BaseActivityWithBack {
+public class DataPlanActivity extends BaseActivityWithBack implements View.OnClickListener {
 
     @BindView(R.id.et_limit)
     EditText etLimit;
@@ -52,6 +52,7 @@ public class DataPlanActivity extends BaseActivityWithBack {
     List<TextView> tv_units;
     boolean isAutoDisconnect = true;
     int unit = 2;// 0: MB 1: GB 2: KB
+    private View skip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,25 +74,15 @@ public class DataPlanActivity extends BaseActivityWithBack {
         new ActionbarSetting() {
             @Override
             protected void findActionbarView(View view) {
-
+                skip = view.findViewById(R.id.tv_dataplan_skip);
+                skip.setOnClickListener(DataPlanActivity.this);
             }
         }.settingActionbarAttr(this, getSupportActionBar(), R.layout.actionbar_setdataplan);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        API.get().logout(new MySubscriber() {
-            @Override
-            protected void onSuccess(Object result) {
-
-            }
-
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-
-            }
-        });
+    public void onBackPressed() {
+        toHomeActivity();
     }
 
     @OnClick({R.id.tv_limit_kb, R.id.tv_limit_mb, R.id.tv_limit_gb, R.id.sc_limit_autodisconnect, R.id.rp_limit, R.id.rl_sc_limit})
@@ -119,7 +110,19 @@ public class DataPlanActivity extends BaseActivityWithBack {
         }
     }
 
-   
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_dataplan_skip:
+                toHomeActivity();
+                break;
+        }
+    }
+
+    private void toHomeActivity() {
+        SharedPrefsUtil.getInstance(this).putBoolean(Cons.DATA_PLAN_FLAG,true);
+        ChangeActivity.toActivity(this,HomeActivity.class,false,true,false,0);
+    }
 
     /* -------------------------------------------- helper -------------------------------------------- */
 
@@ -142,7 +145,7 @@ public class DataPlanActivity extends BaseActivityWithBack {
         // 编辑自动掉线
         int autoDisconnect = isAutoDisconnect ? 1 : 0;
         // 提交
-        commit(data, autoDisconnect);
+        commit(data, unit, autoDisconnect);
     }
 
     /**
@@ -151,11 +154,12 @@ public class DataPlanActivity extends BaseActivityWithBack {
      * @param data
      * @param autoDisconnect
      */
-    private void commit(long data, int autoDisconnect) {
+    private void commit(long data, int unit, int autoDisconnect) {
         SharedPrefsUtil.getInstance(DataPlanActivity.this).putBoolean(Cons.DATA_PLAN_FLAG, true);
         UsageSetting us = new UsageSetting();
         us.setAutoDisconnFlag(autoDisconnect);
         us.setMonthlyPlan(data);
+        us.setUnit(unit);
         API.get().setUsageSetting(us, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
@@ -203,4 +207,5 @@ public class DataPlanActivity extends BaseActivityWithBack {
         }
         return data;
     }
+
 }

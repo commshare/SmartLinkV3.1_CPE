@@ -93,6 +93,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     private int mSupportMode;
     private ProgressDialog mProgressDialog;
     private Button bt_apply;
+    private View skip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +109,8 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         new ActionbarSetting() {
             @Override
             protected void findActionbarView(View view) {
-
+                skip = view.findViewById(R.id.tv_wifiguide_skip);
+                skip.setOnClickListener(WifiGuideActivity.this);
             }
         }.settingActionbarAttr(this, getSupportActionBar(), R.layout.actionbar_wifiguide);
     }
@@ -270,7 +272,17 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     }
 
     @Override
+    public void onBackPressed() {
+        toDataplanActicity();
+    }
+
+    @Override
     public void onClick(View v) {
+
+        if (v.getId() == R.id.tv_wifiguide_skip) {
+            toDataplanActicity();
+        }
+
         if (v.getId() == R.id.text_advanced_settings_2g) {
             Intent intent = new Intent(mContext, WlanAdvancedSettingsActivity.class);
             intent.putExtra(EXTRA_FRE, 2);
@@ -296,6 +308,11 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         } else if (v.getId() == R.id.btn_cancel) {/* toat:apply */
             restoreSettings();
         }
+    }
+
+    private void toDataplanActicity() {
+        SharedPrefsUtil.getInstance(this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
+        ChangeActivity.toActivity(this, DataPlanActivity.class, false, true, false, 0);
     }
 
     @Override
@@ -410,7 +427,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                     mEditedSettings.getAP5G().setWpaKey("");
                     //wep
                 } else if (newSecurity5GMode == 1) {
-                    if (newKey5G.length() != 5 || newKey5G.length() != 13) {
+                    if (newKey5G.length() < 5 || newKey5G.length() > 13) {
                         ToastUtil_m.show(mContext, "Wep password(5G) length must be 5 or 13!");
                         return;
                     }

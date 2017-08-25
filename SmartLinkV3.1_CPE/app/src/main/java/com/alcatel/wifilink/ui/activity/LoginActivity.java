@@ -294,7 +294,13 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             return;
                         }
                         if (wanStatus == Cons.CONNECTED & !simflag) {/* 只有WAN口 */
-                            ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, false, true, false, 0);
+                            boolean isWanmode = SharedPrefsUtil.getInstance(LoginActivity.this).getBoolean(Cons.WAN_MODE_FLAG, false);
+                            if (isWanmode) {
+                                OtherUtils.loginSkip(LoginActivity.this);
+                            } else {
+                                ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, false, true, false, 0);
+                            }
+
                             return;
                         }
                         if (wanStatus != Cons.CONNECTED & !simflag) {/* 都没有 */

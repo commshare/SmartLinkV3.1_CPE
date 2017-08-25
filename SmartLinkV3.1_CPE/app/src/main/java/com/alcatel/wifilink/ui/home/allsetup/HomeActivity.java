@@ -169,11 +169,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private TimerHelper heartBeatTimer;
     private String SP_PAGE_FILE = "SP_PAGE_FILE";
 
-    List<Object> timerList = new ArrayList<>();
+    List<Object> timerList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        timerList = new ArrayList<>();
         SmartLinkV3App.getContextInstance().add(this);
         setContentView(R.layout.activity_homes);
         hac = this;
@@ -289,7 +290,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             });
         }
     }
-    
+
 
     @Override
     protected void onResume() {
@@ -310,6 +311,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         super.onDestroy();
         // heartBeatTimer.stop();
         clearAllTimer();
+        timerList = null;
     }
 
 

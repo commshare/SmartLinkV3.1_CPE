@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
@@ -31,6 +32,7 @@ import com.alcatel.wifilink.ui.setupwizard.allsetup.WifiGuideActivity;
 import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.type.helper.WanModeHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -289,7 +291,9 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     private void success() {
         UiChange(false, true, false);
         EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_WAN));
-        ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, DELAY);
+        OtherUtils.loginSkip(this);
+        SharedPrefsUtil.getInstance(this).putBoolean(Cons.WAN_MODE_FLAG, true);
+        // ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, DELAY);
     }
 
     /**
