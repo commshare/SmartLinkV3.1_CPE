@@ -109,9 +109,6 @@ public class RippleView extends android.support.v7.widget.AppCompatButton {
 
     @Override
     public boolean onTouchEvent(final MotionEvent event) {
-        Log.d("TouchEvent", String.valueOf(event.getActionMasked()));
-        Log.d("mIsAnimating", String.valueOf(mIsAnimating));
-        Log.d("mAnimationIsCancel", String.valueOf(mAnimationIsCancel));
         boolean superResult = super.onTouchEvent(event);
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN
                 && this.isEnabled() && mHover) {

@@ -48,6 +48,7 @@ public class OtherUtils {
      * 线程自关
      */
     public static void kill() {
+        System.exit(0);
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
@@ -352,7 +353,7 @@ public class OtherUtils {
      *
      * @param context
      */
-    public static void skip(Context context) {
+    public static void loginSkip(Context context) {
         boolean isWifiGuide = SharedPrefsUtil.getInstance(context).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
         if (isWifiGuide) {/* 进入过了 */
             // 是否进入过流量设置界面
@@ -365,6 +366,13 @@ public class OtherUtils {
         } else {/* 没有进入过 */
             ChangeActivity.toActivity(context, WifiGuideActivity.class, false, true, false, 0);
         }
+    }
+
+    /**
+     * 清除全部的定时器
+     */
+    public static void clearAllTimer() {
+
     }
 
     /**

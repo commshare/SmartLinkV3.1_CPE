@@ -107,7 +107,6 @@ public class SmartLinkWidget extends AppWidgetProvider {
     }
 
     connectControls(context);
-    // Log.d(tagString, "action---------" + intent.getAction());
 
   }
 
@@ -162,15 +161,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
       pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent,
           PendingIntent.FLAG_CANCEL_CURRENT);
       remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
-      // Log.d(tagString, "status----------------" +
-      // status+"--wifi disconnect:"+m_blWifiConnected);
     } else {
       intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
       pendingIntent = PendingIntent.getActivity(context, 5, intent,
           PendingIntent.FLAG_CANCEL_CURRENT);
       remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
-      // Log.d(tagString, "status----------------" +
-      // status+"--wifi connect:"+m_blWifiConnected);
     }
 
     appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
@@ -367,15 +362,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
       pendingIntent = PendingIntent.getBroadcast(context, 5, localIntent,
           PendingIntent.FLAG_CANCEL_CURRENT);
       remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
-      // Log.d(tagString, "status----------------" +
-      // status+"--wifi disconnect:"+blCPEWifiConnected);
     } else {
       intent.putExtra("com.alcatel.smartlinkv3.business.openPage", HOME_PAGE);
       pendingIntent = PendingIntent.getActivity(context, 5, intent,
           PendingIntent.FLAG_CANCEL_CURRENT);
       remoteViews.setOnClickPendingIntent(R.id.ib_widget_internet, pendingIntent);
-      // Log.d(tagString, "status----------------" +
-      // status+"--wifi disconnect:"+blCPEWifiConnected);
     }
 
     am.updateAppWidget(nIds, remoteViews);
@@ -431,7 +422,6 @@ public class SmartLinkWidget extends AppWidgetProvider {
     //float innerCircle = height/2 - ringWidth/2 - maxRingWidth/2;
     
 
-    // Log.d(tagString, "innerCircle" + ":" + innerCircle + "");
     Bitmap circleBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
     Canvas canvas = new Canvas(circleBitmap);
     Paint paint = new Paint();
@@ -521,8 +511,6 @@ public class SmartLinkWidget extends AppWidgetProvider {
   }
 
   public void switchInternetConnection(Context context) {
-    // Log.d(tagString+".switch:",
-    // "-------------action---------internet switch open");
     UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
     UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance()
         .getUsageRecord();
@@ -544,11 +532,9 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
     if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
         || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-      // Log.d(tagString+".switch:", "switch---------disconnect");
       BusinessManager.getInstance().sendRequestMessage(
           MessageUti.WAN_DISCONNECT_REQUSET, null);
     } else {
-      // Log.d(tagString+".switch:", "switch---------connect");
       BusinessManager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET,
           null);
     }

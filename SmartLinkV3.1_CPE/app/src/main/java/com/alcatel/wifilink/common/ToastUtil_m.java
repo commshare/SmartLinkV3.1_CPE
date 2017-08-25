@@ -11,13 +11,7 @@ public class ToastUtil_m {
             Toast.makeText(context, tip, Toast.LENGTH_SHORT).show();
         } else {
             final Activity activity = (Activity) context;
-            activity.runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show();
-                }
-            });
+            activity.runOnUiThread(() -> Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -27,13 +21,7 @@ public class ToastUtil_m {
             Toast.makeText(context, id, Toast.LENGTH_SHORT).show();
         } else {
             final Activity activity = (Activity) context;
-            activity.runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    Toast.makeText(activity, id, Toast.LENGTH_SHORT).show();
-                }
-            });
+            activity.runOnUiThread(() -> Toast.makeText(activity, id, Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -44,13 +32,7 @@ public class ToastUtil_m {
             Toast.makeText(context, tip, Toast.LENGTH_LONG).show();
         } else {
             final Activity activity = (Activity) context;
-            activity.runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show();
-                }
-            });
+            activity.runOnUiThread(() -> Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show());
         }
     }
 }

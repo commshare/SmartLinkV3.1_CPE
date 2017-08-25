@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
@@ -275,6 +274,8 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     protected void onSuccess(SimStatus result) {
                         int simState = result.getSIMState();
                         boolean simflag = simState == Cons.READY || simState == Cons.PIN_REQUIRED || simState == Cons.PUK_REQUIRED;
+                        popDismiss();
+                        ToastUtil_m.show(LoginActivity.this, getString(R.string.succeed));
                         if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
                             ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
                             return;
@@ -287,11 +288,11 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             } else if (simState == Cons.READY) {// SIM卡已经准备好
                                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
                                 // ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
-                                OtherUtils.skip(LoginActivity.this);
+                                OtherUtils.loginSkip(LoginActivity.this);
                             } else {// 其他情况
                                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));
                                 // ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
-                                OtherUtils.skip(LoginActivity.this);
+                                OtherUtils.loginSkip(LoginActivity.this);
                             }
                             return;
                         }
@@ -303,10 +304,15 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
                             return;
                         }
-                        popDismiss();
-                        Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+
+            @Override
+            protected void onFailure() {
+                super.onFailure();
+                popDismiss();
+                ToastUtil_m.show(LoginActivity.this, getString(R.string.login_failed));
             }
 
             @Override

@@ -182,6 +182,11 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
         getSmsContents(true);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerHelper.stop();
+    }
 
     /* **** setActionbar **** */
     private void setActionbar() {

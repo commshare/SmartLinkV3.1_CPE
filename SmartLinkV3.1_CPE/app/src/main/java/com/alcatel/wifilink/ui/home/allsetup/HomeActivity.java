@@ -53,7 +53,10 @@ import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.cybergarage.upnp.Device;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -75,6 +78,7 @@ import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
+import static com.alcatel.wifilink.utils.OtherUtils.clearAllTimer;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -132,8 +136,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     protected boolean m_bNeedBack = true;//whether need to back main activity.
     public ActionBar supportActionBar;
 
-    private TimerHelper timerHelper;
-
+    public TimerHelper homeTimerHelper;// 全局定时器
     public static HomeActivity hac;
 
     /* action bar 的按钮 */
@@ -162,9 +165,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private TimerHelper logoutTimer;
 
     public static TimerTask autoTask;
-    public static Timer autoTimer;
+    public static Timer autoTimer;//
     private TimerHelper heartBeatTimer;
     private String SP_PAGE_FILE = "SP_PAGE_FILE";
+
+    List<Object> timerList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -181,10 +186,10 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initView();
         initUi();
 
-        startTimer();// 定时器在此处而不是在Onresume是为了防止界面重复刷新
-        getCurrentActivity();// 定时获取当前位于顶层运行的ACTIVITY
-        heartBeanTimer();// 心跳包发送
-        autoTimer();// 启动定时退出计时器
+        timerList.add(startTimer()); // 定时器在此处而不是在Onresume是为了防止界面重复刷新
+        timerList.add(getCurrentActivity());// 定时获取当前位于顶层运行的ACTIVITY
+        timerList.add(heartBeanTimer());// 心跳包发送
+        timerList.add(autoLogoutTimer());// 启动定时退出计时器
         startAPPPackageService();// 后台服务: 检测当前APP是否被杀死
     }
 
@@ -199,7 +204,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     }
 
     /* 启动定时退出 */
-    private void autoTimer() {
+    private Timer autoLogoutTimer() {
         autoTask = new TimerTask() {
             @Override
             public void run() {
@@ -208,10 +213,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         };
         autoTimer = new Timer();
         autoTimer.schedule(autoTask, Cons.AUTO_LOGOUT_PERIOD);
+        return autoTimer;
     }
 
     /* **** heartBeanTimer:心跳包 **** */
-    private void heartBeanTimer() {
+    private TimerHelper heartBeanTimer() {
         // TODO: 2017/8/10 单点登陆--> 待FW确定
         heartBeatTimer = new TimerHelper(this) {
             @Override
@@ -231,11 +237,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             }
         };
         heartBeatTimer.start(Cons.PERIOD);
+        return heartBeatTimer;
     }
 
 
     /* **** getCurrentActivity:循环获取当前顶层的ACTIVITY(用于辅助未读短信的判断) **** */
-    private void getCurrentActivity() {
+    private TimerHelper getCurrentActivity() {
         curActTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
@@ -243,6 +250,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             }
         };
         curActTimer.start(200);
+        return curActTimer;
     }
 
     /* **** initActionbar **** */
@@ -285,6 +293,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
         }
     }
+    
 
     @Override
     protected void onResume() {
@@ -304,9 +313,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        heartBeatTimer.stop();
-        Log.d("ma_home", "onDestroy: ");
-        // destroyOperate();
+        // heartBeatTimer.stop();
+        clearAllTimer();
     }
 
 
@@ -497,14 +505,15 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     }
 
     /* **** 定时器 **** */
-    private void startTimer() {
-        timerHelper = new TimerHelper(this) {
+    private TimerHelper startTimer() {
+        homeTimerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
                 checkWifi();
             }
         };
-        timerHelper.start(2000);
+        homeTimerHelper.start(2000);
+        return homeTimerHelper;
     }
 
     /* 检测WIFI是否有连接 */
@@ -730,8 +739,28 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         // 复位page标记
         ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.MAIN);
         // 停止所有的定时器
-        timerHelper.stop();
+        //homeTimerHelper.stop();
         // logoutTimer.stop();
-        curActTimer.stop();
+        //curActTimer.stop();
+        clearAllTimer();
+    }
+
+    /**
+     * 清除全部定时器
+     */
+    public void clearAllTimer() {
+        for (Object o : timerList) {
+            if (o instanceof TimerHelper) {
+                TimerHelper th = (TimerHelper) o;
+                th.stop();
+            }
+            if (o instanceof Timer) {
+                Timer t = (Timer) o;
+                t.cancel();
+                t.purge();
+                t = null;
+            }
+        }
+        timerList.clear();
     }
 }

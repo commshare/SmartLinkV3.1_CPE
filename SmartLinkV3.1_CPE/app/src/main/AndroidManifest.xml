@@ -69,7 +69,6 @@
         <activity
             android:name=".ui.activity.RefreshWifiActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -346,6 +345,8 @@
         <service android:name=".ui.home.allsetup.HomeService" />
 
         <activity android:name=".ui.setupwizard.allsetup.DataPlanActivity">
+        </activity>
+        <activity android:name=".ui.refreshWifi.ReConnectWifi">
         </activity>
     </application>
 
