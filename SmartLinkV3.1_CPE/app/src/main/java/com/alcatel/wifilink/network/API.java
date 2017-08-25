@@ -2,8 +2,6 @@ package com.alcatel.wifilink.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
@@ -66,16 +64,13 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.HostnameUtils;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.WifiUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
 
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -155,7 +150,7 @@ public class API {
             Retrofit retrofit = builder.build();
             smartLinkApi = retrofit.create(SmartLinkApi.class);
         } catch (Exception e) {
-            Log.d("ma_api", "okhttpClient error");
+            Logs.d("ma_api", "okhttpClient error");
         }
     }
 

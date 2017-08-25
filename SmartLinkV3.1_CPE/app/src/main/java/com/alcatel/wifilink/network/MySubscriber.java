@@ -6,6 +6,7 @@ import android.util.Log;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
+import com.alcatel.wifilink.utils.Logs;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -29,17 +30,17 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
 
     @Override
     public void onStart() {
-        Log.d(TAG, "onStart");
+        Logs.d(TAG, "onStart");
     }
 
     @Override
     public void onCompleted() {
-        Log.d(TAG, "onCompleted");
+        Logs.d(TAG, "onCompleted");
     }
 
     @Override
     public void onError(Throwable e) {
-        Log.d("ma_api", "onError: " + e.getMessage().toString());
+        Logs.d("ma_api", "onError: " + e.getMessage().toString());
         if (e instanceof SocketTimeoutException) {
             ToastUtil.showMessage(mAppContext, R.string.connection_timed_out);
         } else if (e instanceof ConnectException) {
@@ -51,7 +52,7 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
 
     @Override
     public void onNext(ResponseBody<T> responseBody) {
-        Log.d(TAG, "onNext");
+        Logs.d(TAG, "onNext");
 
         if (responseBody.getError() != null) {
             onResultError(responseBody.getError());
@@ -63,10 +64,11 @@ public abstract class MySubscriber<T> extends Subscriber<ResponseBody<T>> {
     protected abstract void onSuccess(T result);
 
     protected void onResultError(ResponseBody.Error error) {
-        Log.d(TAG, "onResultError: " + error.getMessage().toString());
+        Logs.d(TAG, "onResultError: " + error.getMessage().toString());
         ToastUtil.showMessage(mAppContext, error.message);
     }
 
     protected void onFailure() {
+        
     }
 }
