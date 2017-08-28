@@ -294,10 +294,12 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             return;
                         }
                         if (wanStatus == Cons.CONNECTED & !simflag) {/* 只有WAN口 */
+
+                            // 是否进入过wan连接模式
                             boolean isWanmode = SharedPrefsUtil.getInstance(LoginActivity.this).getBoolean(Cons.WAN_MODE_FLAG, false);
-                            if (isWanmode) {
+                            if (isWanmode) {// 进入过wan连接界面--> 进入其他界面
                                 OtherUtils.loginSkip(LoginActivity.this);
-                            } else {
+                            } else {// 进入wan类型选择界面
                                 ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, false, true, false, 0);
                             }
 
