@@ -81,6 +81,7 @@
         <item>UNITED STATES</item>
         <item>HONG KONG</item>
         <item>CHINA</item>
+        <item>MEXICO</item>
     </string-array>
 
     <string-array name="settings_connection_mode">

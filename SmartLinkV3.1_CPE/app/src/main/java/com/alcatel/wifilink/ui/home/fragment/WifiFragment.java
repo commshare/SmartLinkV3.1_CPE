@@ -6,16 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -29,12 +28,6 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
-import com.alcatel.wifilink.utils.OtherUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static android.app.Activity.RESULT_OK;
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
@@ -88,6 +81,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     private Context mContext;
     private int mSupportMode;
     private ProgressDialog mProgressDialog;
+    private String[] mWpaEncryptionSettings;
+    private String[] mWepEncryptionSettings;
 
     public WifiFragment() {
 
@@ -149,6 +144,9 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         view.findViewById(R.id.btn_cancel).setOnClickListener(this);
 
         mDividerView = view.findViewById(R.id.divider);
+
+        mWpaEncryptionSettings = getActivity().getResources().getStringArray(R.array.wlan_settings_wpa_type);
+        mWepEncryptionSettings = getActivity().getResources().getStringArray(R.array.wlan_settings_wep_type);
     }
 
     @Override
@@ -237,6 +235,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         } else if (mOriginSettings.getAP5G().getSecurityMode() == ENUM.SecurityMode.WEP.ordinal()) {
             mEncryption5GGroup.setVisibility(View.VISIBLE);
             mKey5GGroup.setVisibility(View.VISIBLE);
+            mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
             mEncryption5GSpinner.setSelection(mOriginSettings.getAP5G().getWepType());
             mKey5GEdit.setText(mOriginSettings.getAP5G().getWepKey());
         } else {
@@ -260,6 +259,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         } else if (securityMode == ENUM.SecurityMode.WEP.ordinal()) {
             mEncryption2GGroup.setVisibility(View.VISIBLE);
             mKey2GGroup.setVisibility(View.VISIBLE);
+            mEncryption2GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
             mEncryption2GSpinner.setSelection(mOriginSettings.getAP2G().getWepType());
             mKey2GEdit.setText(mOriginSettings.getAP2G().getWepKey());
         } else {
@@ -461,7 +461,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         setWlanRequest();
     }
 
-    
 
     /**
      * 真正发送请求
@@ -513,22 +512,34 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mKey2GGroup.setVisibility(View.GONE);
                     mEncryption2GGroup.setVisibility(View.GONE);
                     mEncryption2GSpinner.setSelection(-1);
-                } else if (mKey2GGroup.getVisibility() == view.GONE) {
+                } else {
                     mKey2GGroup.setVisibility(View.VISIBLE);
                     mEncryption2GGroup.setVisibility(View.VISIBLE);
-                    mEncryption2GSpinner.setSelection(2);
-                }
+                    if (i == 1) {
+                        mEncryption2GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
+                        mEncryption2GSpinner.setSelection(0);
 
+                    } else {
+                        mEncryption2GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
+                        mEncryption2GSpinner.setSelection(2);
+                    }
+                }
                 break;
             case R.id.spinner_security_5g:
                 if (i == 0) {
                     mKey5GGroup.setVisibility(View.GONE);
                     mEncryption5GGroup.setVisibility(View.GONE);
                     mEncryption5GSpinner.setSelection(-1);
-                } else if (mKey5GGroup.getVisibility() == view.GONE) {
+                } else {
                     mKey5GGroup.setVisibility(View.VISIBLE);
                     mEncryption5GGroup.setVisibility(View.VISIBLE);
-                    mEncryption5GSpinner.setSelection(2);
+                    if (i == 1) {
+                        mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
+                        mEncryption5GSpinner.setSelection(0);
+                    } else {
+                        mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
+                        mEncryption5GSpinner.setSelection(2);
+                    }
                 }
                 break;
             default:

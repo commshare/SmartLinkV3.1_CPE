@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -252,7 +251,7 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
         mChannel5gfour = getResources().getStringArray(R.array.Channel5g_four);
         mChannel5gfive = getResources().getStringArray(R.array.Channel5g_five);
 
-        String[] oneStrings = {"GB", "IT", "FR", "PT", "ES"};
+        String[] oneStrings = {"GB", "IT", "FR", "PT", "ES", "MX"};
         String[] fiveStrings = new String[]{"US", "HK", "CN"};
         mChannel5gFiveCountryCodes = Arrays.asList(oneStrings);
         mChannel5gOneCountryCodes = Arrays.asList(fiveStrings);
@@ -311,6 +310,9 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
             case "CHINA":
                 countryCode = "CN";//Channel5g.one
                 break;
+            case "MEXICO":
+                countryCode = "MX";
+                break;
         }
         return countryCode;
     }
@@ -342,6 +344,9 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
                 break;
             case "CN":
                 countryName = "CHINA";//Channel5g.one
+                break;
+            case "MX":
+                countryName = "MEXICO";
                 break;
         }
         return countryName;
