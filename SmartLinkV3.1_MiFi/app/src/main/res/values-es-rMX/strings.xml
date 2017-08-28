@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">No se ha podido establecer.</string>
-	<string name="device_manage_name_empty">El nombre del dispositivo es inválido.</string>
+    <string name="device_manage_name_empty">El nombre del dispositivo es inválido.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">Archivo</string>
@@ -358,7 +358,6 @@
     <string name="login_check_dialog_content">Iniciar sesión</string>
     <string name="login_invalid_password">Contraseña inválida. La contraseña sólo puede incluir los caracteres: 0-9, a-z, A-Z, \"-+!@$#^&amp;*\"</string>
     <string name="login_other_user_logined_error_msg">Otro usuario ha iniciado sesión. Vuelva a iniciar sesión en unos instantes.</string>
-    <string name="login_other_user_logined_error_forcelogin_msg">Otro usuario ya ha iniciado sesión. ¿Todavía desea iniciar sesión? Esta acción echará al otro usuario.</string>
     <string name="login_login_time_used_out_msg">Ha superado el número de intentos de inicio de sesión. Puede iniciar sesión cuando se reinicie el dispositivo.</string>
     <string name="login_warning">Advertencia de inicio de sesión</string>
     <string name="login_logout_successful">Cierre de sesión terminado.</string>
@@ -511,7 +510,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">La tarjeta SD no está disponible, conecte una</string>
+    <string name="enable_sd_card">La tarjeta SD no está disponible, conecte una</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">Confirmar sustitución</string>
     <string name="confirm_folder_content">El nombre del archivo ya existe.</string>
@@ -547,4 +546,10 @@
     <string name="menu_setting">Preferencias</string>
     <string name="preference_title">Ajustes generales</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">Todos los LED se apagan automáticamente excepto el LED de encendido cuando no hay acceso Wi-Fi o el funcionamiento es manual durante 30 segundos.</string>
+    <!--
+        <string name="login_other_user_logined_error_forcelogin_msg">Otro usuario ya ha iniciado sesión. ¿Todavía desea iniciar sesión? Esta acción echará al otro usuario.</string>
+ -->
+    <string name="login_other_user_logined_error_forcelogin_msg">Ya existe una sesión de administrador abierta. Por favor, cierre primero esa sesión antes de abrir una nueva.</string>
+
 </resources>

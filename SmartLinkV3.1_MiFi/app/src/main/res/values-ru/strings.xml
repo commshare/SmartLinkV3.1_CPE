@@ -547,4 +547,6 @@
     <string name="menu_setting">Предпочтения</string>
     <string name="preference_title">Основные настройки</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">Все светодиодные индикаторы будут выключены автоматически, кроме индикатора питания, при отсутствии доступа к Wi-Fi или других действий в течении 30 сек.</string>
+
 </resources>

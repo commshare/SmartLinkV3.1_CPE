@@ -547,5 +547,7 @@
     <string name="menu_setting">التفضيلات</string>
     <string name="preference_title">الإعدادات العامة</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">تنطفئ جميع مصابيح LED تلقائيًا باستثناء مصباح LED للطاقة في حالة عدم توفر الوصول إلى WIFI أو تعذر التشغيل اليدوي خلال 30 ثانية.</string>
+
 
 </resources>

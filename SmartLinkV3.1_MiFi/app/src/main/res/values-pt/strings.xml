@@ -547,4 +547,6 @@
     <string name="menu_setting">Preferências</string>
     <string name="preference_title">Definições gerais</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">Todos os LED apagam automaticamente exceto o LED de alimentação quando não existe acesso ao Wi-Fi ou operação manual durante 30 seg.</string>
+
 </resources>

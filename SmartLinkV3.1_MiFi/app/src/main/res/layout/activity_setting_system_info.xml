@@ -105,6 +105,42 @@
                     android:textColor="@color/color_black"
                     android:textSize="17sp" />
             </LinearLayout>
+
+
+            <!-- PHONE NUMBER -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phone_number_layout"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|start"
+                    android:text="@string/str_phone_number"
+                    android:textColor="@color/color_black"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tv_device_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="13927303058"
+                    android:gravity="center_vertical|start"
+                    android:textColor="@color/color_black"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+
+
+
             <!-- IMEI -->
 
             <LinearLayout

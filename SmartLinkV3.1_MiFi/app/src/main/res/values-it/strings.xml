@@ -547,4 +547,5 @@
     <string name="menu_setting">Preferences</string>
     <string name="preference_title">General Settings</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">Tutte le spie LED si spengono automaticamente, tranne la spia LED Accensione, quando non è presente una connessione Wi-Fi o non si effettuano operazioni manuali entro 30 secondi.</string>
 </resources>

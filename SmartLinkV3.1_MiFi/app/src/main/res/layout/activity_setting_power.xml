@@ -2,12 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white" >
+    android:background="@color/color_white">
 
-    <ScrollView 
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/rl_power_saving_bottom"
             android:layout_width="match_parent"
@@ -18,13 +18,13 @@
                 android:id="@+id/rl_power_display"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <FrameLayout
                     android:id="@+id/fl_power_show"
                     android:layout_width="79dp"
                     android:layout_height="130dp"
-                    android:layout_gravity="center" 
+                    android:layout_gravity="center"
                     android:layout_marginTop="30dp">
 
                     <ImageView
@@ -50,25 +50,25 @@
                     android:id="@+id/tv_power_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/color_black"
-                    android:layout_gravity="center"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="10dp" />
+                    android:textSize="16sp" />
             </LinearLayout>
-            
-             <ImageView
+
+            <ImageView
                 android:id="@+id/iv_power_seperator_3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:contentDescription="@string/setting_power" />
-            
+
             <RelativeLayout
                 android:id="@+id/rl_power_smart_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
+                android:layout_margin="10dp">
 
                 <TextView
                     android:id="@+id/tx_power_smart"
@@ -91,17 +91,34 @@
             </RelativeLayout>
 
             <ImageView
+                android:id="@+id/iv_power_seperator_4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:contentDescription="@string/setting_power" />
+
+            <TextView
+                android:id="@+id/tv_smart_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/str_power_save_description"
+                android:textColor="@color/color_grey"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
                 android:id="@+id/iv_power_seperator_2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:contentDescription="@string/setting_power" />
-       
+
             <RelativeLayout
                 android:id="@+id/rl_power_wifi_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
+                android:layout_margin="10dp">
 
                 <TextView
                     android:id="@+id/tx_power_wifi"
@@ -121,7 +138,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/switch_off" />
-            </RelativeLayout>     
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/iv_power_seperator_1"
@@ -129,7 +146,7 @@
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:contentDescription="@string/setting_power" />
-            
+
             <TextView
                 android:id="@+id/tv_wifi_description"
                 android:layout_width="match_parent"
@@ -139,22 +156,22 @@
                 android:textColor="@color/color_grey"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-            
+
         </LinearLayout>
     </ScrollView>
 
-        <RelativeLayout
-            android:id="@+id/rl_power_waiting"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+    <RelativeLayout
+        android:id="@+id/rl_power_waiting"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-            <ProgressBar
-                android:id="@+id/pb_power_waiting_progress"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_centerInParent="true"
-                android:indeterminateDrawable="@drawable/progerss_blue"
-                android:visibility="gone" />
-            <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
-        </RelativeLayout>
-    </FrameLayout>
+        <ProgressBar
+            android:id="@+id/pb_power_waiting_progress"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progerss_blue"
+            android:visibility="gone" />
+        <!-- android:indeterminateDrawable="@drawable/progerss_connect" -->
+    </RelativeLayout>
+</FrameLayout>

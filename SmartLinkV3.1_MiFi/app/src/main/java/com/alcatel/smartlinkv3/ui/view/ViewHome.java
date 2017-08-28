@@ -718,6 +718,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y859NC"))
                     m_networkTypeTextView.setText(R.string.str_LTE);
                 else
+                    if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("MW41MP"))
+                        m_networkTypeTextView.setText(R.string.str_4G_LTE);
+                else
                     m_networkTypeTextView.setText(R.string.home_network_type_4g);
             }
         }

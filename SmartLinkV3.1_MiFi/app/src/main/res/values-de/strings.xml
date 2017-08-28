@@ -547,4 +547,5 @@
     <string name="menu_setting">Voreinstellungen</string>
     <string name="preference_title">Allgemeine Einstellungen</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">Alle LEDs bis auf die Haupt-LED schalten sich innerhalb von 30 Sekunden automatisch aus, wenn keine WLAN-Verbindung besteht oder der manuelle Betrieb aktiviert ist.</string>
 </resources>

@@ -165,6 +165,20 @@
                     android:textSize="16sp" 
                     android:textColor="@color/color_grey"/>
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/consumption_value_tag1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dip"
+                android:layout_marginEnd="10dip"
+                android:paddingTop="6dip"
+                android:paddingBottom="12dip"
+                android:text="@string/str_data_usage"
+                android:textSize="16sp"
+                android:textColor="@color/color_grey"/>
         </LinearLayout>
         
         

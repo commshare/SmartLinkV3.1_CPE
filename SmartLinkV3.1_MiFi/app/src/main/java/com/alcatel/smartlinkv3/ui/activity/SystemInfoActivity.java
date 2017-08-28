@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 	private TextView m_tv_title = null;
 	private ImageButton m_ib_back=null;
 	private TextView m_tv_back=null;
+	private TextView m_tv_phone_number;
 	private TextView m_tv_swVersion_value=null;
 	private TextView m_tv_hwVersion_value=null;
 	private TextView m_tv_device_name_value=null;
@@ -32,6 +34,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 	private TextView m_tv_mac_value=null;
 	private TextView m_tv_ip_value=null,strImeiTextView=null;
 	private TextView m_tv_subnet_value=null;
+	private LinearLayout phoneLayout;
 //	private Button m_btn_PowerOff=null;
 //	private Button m_btn_reboot=null;
 //	private Button m_btn_reset=null;
@@ -45,6 +48,10 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		setContentView(R.layout.activity_setting_system_info);
 		getWindow().setBackgroundDrawable(null);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
+		phoneLayout=(LinearLayout)findViewById(R.id.phone_number_layout) ;
+		m_tv_phone_number=(TextView)findViewById(R.id.tv_device_phone_number);
+		if(BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("MW41MP"))
+			phoneLayout.setVisibility(View.VISIBLE);
 		//control title bar
 		controlTitlebar();
 		//create controls
@@ -159,6 +166,7 @@ public class SystemInfoActivity extends BaseActivity implements OnClickListener{
 		m_tv_swVersion_value.setText(systemInfo.getSwVersion());
 		m_tv_hwVersion_value.setText(systemInfo.getHwVersion());
 		m_tv_device_name_value.setText(systemInfo.getDeviceName());
+		m_tv_phone_number.setText(systemInfo.getMSISDN());
 //		m_tv_imei_value.setText(systemInfo.getIMEI());
 //		m_tv_mac_value.setText(systemInfo.getMacAddress());
 //		m_tv_ip_value.setText(systemInfo.getIP());

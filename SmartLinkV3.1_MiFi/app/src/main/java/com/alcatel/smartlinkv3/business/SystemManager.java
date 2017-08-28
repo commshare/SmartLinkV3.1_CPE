@@ -1,7 +1,11 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Handler;
 
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
@@ -14,13 +18,8 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Handler;
-import android.util.Log;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SystemManager extends BaseManager {
 	private Features m_features = new Features();
@@ -236,6 +235,9 @@ public class SystemManager extends BaseManager {
 								setSwVersion(m_systemInfo.getSwVersion());
 								BusinessMannager.getInstance().getSystemInfoModel().
 								setIMEI(m_systemInfo.getIMEI());
+
+								BusinessMannager.getInstance().getSystemInfoModel().
+										setMSISDN(m_systemInfo.getMSISDN());
 							} else {
 								new Handler().postDelayed(
 										new Runnable() {

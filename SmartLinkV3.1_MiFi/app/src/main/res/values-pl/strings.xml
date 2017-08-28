@@ -547,4 +547,6 @@
     <string name="menu_setting">Preferencje</string>
     <string name="preference_title">Ustawienia ogólne</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">W przypadku braku połączenia Wi-Fi lub naciśnięcia przycisku przez 30 s wszystkie diody LED oprócz diody zasilania zostaną automatycznie wyłączone.</string>
+
 </resources>

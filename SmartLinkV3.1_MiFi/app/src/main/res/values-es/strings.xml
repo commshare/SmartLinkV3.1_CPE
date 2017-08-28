@@ -40,7 +40,7 @@
     <!-- main fram start -->
     <string name="main_home">Inicio</string>
     <string name="main_sdsharing">Compartir SD</string>
-    <string name="main_usage">uso</string>
+    <string name="main_usage">Uso</string>
     <string name="main_setting">Ajustes</string>
     <string name="main_sms">SMS</string>
     <!-- Home view start -->
@@ -358,7 +358,6 @@
     <string name="login_check_dialog_content">Inicio de sesión</string>
     <string name="login_invalid_password">Contraseña no válida La contraseña solo puede contener 0-9, a-z, A-Z, \"-+.@$#^&amp;*\"</string>
     <string name="login_other_user_logined_error_msg">Otro usuario está iniciando sesión, vuelva a intentarlo en unos momentos.</string>
-    <string name="login_other_user_logined_error_forcelogin_msg">Otro usuario ha iniciado sesión, ¿desea iniciar sesión de todos modos? Se cerrará la sesión del otro usuario.</string>
     <string name="login_login_time_used_out_msg">Se han agotado los intentos de inicio de sesión, no podrá iniciar sesión hasta reiniciar el dispositivo.</string>
     <string name="login_warning">Advertencia de inicio de sesión</string>
     <string name="login_logout_successful">Se ha cerrado sesión correctamente.</string>
@@ -547,4 +546,12 @@
     <string name="confirm_folder_replace">confirm replace</string>
     <string name="confirm_folder_content">File name already exists.</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">Todos los ledes se apagan automáticamente excepto el led de encendido cuando no hay acceso Wi-Fi o el funcionamiento es manual durante 30 segundos.</string>
+   <!--
+    <string name="login_other_user_logined_error_forcelogin_msg">Otro usuario ha iniciado sesión, ¿desea iniciar sesión de todos modos? Se cerrará la sesión del otro usuario.</string>
+-->
+
+    <string name="login_other_user_logined_error_forcelogin_msg">Ya existe una sesión de administrador abierta. Por favor, cierre primero esa sesión antes de abrir una nueva.</string>
+
+
 </resources>

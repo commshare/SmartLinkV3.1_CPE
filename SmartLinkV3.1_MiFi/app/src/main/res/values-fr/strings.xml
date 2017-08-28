@@ -547,4 +547,7 @@
     <string name="menu_setting">Preferences</string>
     <string name="preference_title">General Settings</string>
     <string name="str_LTE">LTE</string>
+
+    <string name="str_power_save_description">Toutes les voyants s\'éteignent automatiquement à l\'exception du voyant d\'alimentation en cas d\'absence d\'accès WI-FI ou de fonctionnement manuel pendant 30 s.</string>
+
 </resources>
