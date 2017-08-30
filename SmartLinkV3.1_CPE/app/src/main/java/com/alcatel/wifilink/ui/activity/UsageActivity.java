@@ -167,13 +167,13 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
 
     /* **** updateUsageRecord **** */
     private void updateUsageRecord(UsageRecord result) {
-        int useData = result.getHUseData();
+        long useData = result.getHUseData();
         mHomeData.setText(CommonUtil.ConvertTrafficMB(this, useData));
         mRoamingData.setText(CommonUtil.ConvertTrafficMB(this, (long) result.getRoamUseData()));
 
         String durationformat = getResources().getString(R.string.usage_duration);
-        int connectTime = result.getCurrConnTimes();
-        int totalTime = result.getTConnTimes();
+        long connectTime = result.getCurrConnTimes();
+        long totalTime = result.getTConnTimes();
         String strCurrDuration = String.format(durationformat, totalTime / 3600, (totalTime % 3600) / 60);
         mTvHomeTime.setText(strCurrDuration);
 

@@ -297,7 +297,7 @@
             android:label="@string/advanced_settings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.setupwizard.allsetup.SetupWizardActivity"
+            android:name=".ui.wizard.allsetup.SetupWizardActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.allsetup.HomeActivity"
@@ -333,18 +333,18 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ui.setupwizard.allsetup.WizardActivity"
+            android:name=".ui.wizard.allsetup.WizardActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ui.setupwizard.allsetup.WifiGuideActivity"
+            android:name=".ui.wizard.allsetup.WifiGuideActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- checked the package is front process -->
         <service android:name=".ui.home.allsetup.HomeService" />
 
-        <activity android:name=".ui.setupwizard.allsetup.DataPlanActivity">
+        <activity android:name=".ui.wizard.allsetup.DataPlanActivity">
         </activity>
         <activity android:name=".ui.refreshWifi.ReConnectWifi">
         </activity>

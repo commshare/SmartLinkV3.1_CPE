@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.fragment;
+package com.alcatel.wifilink.ui.wizard.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,7 +23,7 @@ import com.alcatel.wifilink.business.sim.helper.SimPukHelper;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.ui.activity.NetModeConnectStatusActivity;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
+import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
 @SuppressLint("ValidFragment")
 public class PukCodeFragment extends Fragment implements View.OnClickListener {
 

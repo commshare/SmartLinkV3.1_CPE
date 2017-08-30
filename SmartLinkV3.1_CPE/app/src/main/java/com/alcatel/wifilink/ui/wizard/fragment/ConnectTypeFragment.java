@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.fragment;
+package com.alcatel.wifilink.ui.wizard.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -36,10 +36,10 @@ import com.alcatel.wifilink.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.wifilink.ui.dialog.LoginDialog;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
-import com.alcatel.wifilink.ui.setupwizard.helper.FraHelper;
-import com.alcatel.wifilink.ui.setupwizard.helper.FragmentEnum;
-import com.alcatel.wifilink.ui.setupwizard.helper.QSBroadcastReceiver;
+import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
+import com.alcatel.wifilink.ui.wizard.helper.FraHelper;
+import com.alcatel.wifilink.ui.wizard.helper.FragmentEnum;
+import com.alcatel.wifilink.ui.wizard.helper.QSBroadcastReceiver;
 
 @SuppressLint("ValidFragment")
 public class ConnectTypeFragment extends Fragment implements View.OnClickListener {

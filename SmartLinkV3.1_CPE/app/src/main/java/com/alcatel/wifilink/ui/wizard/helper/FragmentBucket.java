@@ -1,13 +1,13 @@
-package com.alcatel.wifilink.ui.setupwizard.helper;
+package com.alcatel.wifilink.ui.wizard.helper;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
-import com.alcatel.wifilink.ui.setupwizard.fragment.ConnectTypeFragment;
-import com.alcatel.wifilink.ui.setupwizard.fragment.NetModeStatusFragment;
-import com.alcatel.wifilink.ui.setupwizard.fragment.PinCodeFragment;
-import com.alcatel.wifilink.ui.setupwizard.fragment.PukCodeFragment;
-import com.alcatel.wifilink.ui.setupwizard.fragment.NetModeFragment;
+import com.alcatel.wifilink.ui.wizard.fragment.ConnectTypeFragment;
+import com.alcatel.wifilink.ui.wizard.fragment.NetModeStatusFragment;
+import com.alcatel.wifilink.ui.wizard.fragment.PinCodeFragment;
+import com.alcatel.wifilink.ui.wizard.fragment.PukCodeFragment;
+import com.alcatel.wifilink.ui.wizard.fragment.NetModeFragment;
 
 /**
  * @作者 qianli

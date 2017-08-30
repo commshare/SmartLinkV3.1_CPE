@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.helper;
+package com.alcatel.wifilink.ui.wizard.helper;
 
 import android.text.Editable;
 import android.text.TextWatcher;

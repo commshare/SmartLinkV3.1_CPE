@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +21,7 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
+import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.view.CirclePageIndicator;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -33,10 +32,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
-import static com.alcatel.wifilink.R.style.dialog;
 
 public class LoadingActivity extends AppCompatActivity implements View.OnClickListener {
 

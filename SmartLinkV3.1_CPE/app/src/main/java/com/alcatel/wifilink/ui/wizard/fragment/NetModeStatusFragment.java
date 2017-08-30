@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.fragment;
+package com.alcatel.wifilink.ui.wizard.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -13,7 +13,7 @@ import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
+import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

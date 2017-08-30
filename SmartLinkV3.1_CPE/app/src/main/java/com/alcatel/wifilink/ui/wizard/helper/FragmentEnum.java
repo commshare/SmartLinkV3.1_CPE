@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.helper;
+package com.alcatel.wifilink.ui.wizard.helper;
 
 /**
  * Created by qianli.ma on 2017/6/13.

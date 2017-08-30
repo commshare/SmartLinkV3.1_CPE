@@ -160,7 +160,8 @@
     <string name="setting_wifi_password_security_tip">Tip sigurnosti:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Tip šifriranja:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wi-Fi lozinka:</string>
-    <string name="setting_wep_password_error_prompt">WEP ključ je 4 - 13 ASCII znakova ili 10 - 26 heksadecimalnih znamenki. WEP ključ treba sadržavati 32 - 127 ASCII znakova, osim: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">WEP ključ je 5 - 13 ASCII znakova ili 10 - 26 heksadecimalnih znamenki. 
+        WEP ključ treba sadržavati 32 - 127 ASCII znakova, osim: , \&quot; : ; &amp; \\.</string>
     <string name="setting_wpa_password_error_prompt">WPA ključ (PSK) treba sadržavati 8–63 ASCII znaka. WPA PSK treba sadržavati 32–127 ASCII znakova, osim: , \&quot; : ; &amp; \\.</string>
     <string name="done">Dovršeno</string>
     <string name="setting_power_smart">Pametno</string>

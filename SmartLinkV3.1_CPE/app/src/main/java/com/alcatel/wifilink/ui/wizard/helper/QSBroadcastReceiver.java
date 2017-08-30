@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.helper;
+package com.alcatel.wifilink.ui.wizard.helper;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

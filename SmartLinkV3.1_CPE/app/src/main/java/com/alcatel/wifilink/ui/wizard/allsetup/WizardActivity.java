@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.allsetup;
+package com.alcatel.wifilink.ui.wizard.allsetup;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;

@@ -9,7 +9,6 @@ import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -25,9 +24,8 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.DataPlanActivity;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.WifiGuideActivity;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
+import com.alcatel.wifilink.ui.wizard.allsetup.DataPlanActivity;
+import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -6,90 +6,85 @@ package com.alcatel.wifilink.model.Usage;
 
 public class UsageRecord {
 
-    public int TConnTimes;
-    public int CurrConnTimes;
-    public int HCurrUseUL;
-    public int HCurrUseDL;
-    public int HUseData;
-    public int RCurrUseUL;
-    public int RCurrUseDL;
-    public int RoamUseData;
-    public int MonthlyPlan;
+    private long TConnTimes;
+    private long CurrConnTimes;
+    private long HCurrUseUL;
+    private long HCurrUseDL;
+    private long HUseData;
+    private long RCurrUseUL;
+    private long RCurrUseDL;
+    private long RoamUseData;
+    private long MonthlyPlan;
 
-    public int getTConnTimes() {
+    public long getTConnTimes() {
         return TConnTimes;
     }
 
-    public void setTConnTimes(int TConnTimes) {
+    public void setTConnTimes(long TConnTimes) {
         this.TConnTimes = TConnTimes;
     }
 
-    public int getCurrConnTimes() {
+    public long getCurrConnTimes() {
         return CurrConnTimes;
     }
 
-    public void setCurrConnTimes(int currConnTimes) {
+    public void setCurrConnTimes(long currConnTimes) {
         CurrConnTimes = currConnTimes;
     }
 
-    public int getHCurrUseUL() {
+    public long getHCurrUseUL() {
         return HCurrUseUL;
     }
 
-    public void setHCurrUseUL(int HCurrUseUL) {
+    public void setHCurrUseUL(long HCurrUseUL) {
         this.HCurrUseUL = HCurrUseUL;
     }
 
-    public int getHCurrUseDL() {
+    public long getHCurrUseDL() {
         return HCurrUseDL;
     }
 
-    public void setHCurrUseDL(int HCurrUseDL) {
+    public void setHCurrUseDL(long HCurrUseDL) {
         this.HCurrUseDL = HCurrUseDL;
     }
 
-    public int getHUseData() {
+    public long getHUseData() {
         return HUseData;
     }
 
-    public void setHUseData(int HUseData) {
+    public void setHUseData(long HUseData) {
         this.HUseData = HUseData;
     }
 
-    public int getRCurrUseUL() {
+    public long getRCurrUseUL() {
         return RCurrUseUL;
     }
 
-    public void setRCurrUseUL(int RCurrUseUL) {
+    public void setRCurrUseUL(long RCurrUseUL) {
         this.RCurrUseUL = RCurrUseUL;
     }
 
-    public int getRCurrUseDL() {
+    public long getRCurrUseDL() {
         return RCurrUseDL;
     }
 
-    public void setRCurrUseDL(int RCurrUseDL) {
+    public void setRCurrUseDL(long RCurrUseDL) {
         this.RCurrUseDL = RCurrUseDL;
     }
 
-    public int getRoamUseData() {
+    public long getRoamUseData() {
         return RoamUseData;
     }
 
-    public void setRoamUseData(int roamUseData) {
+    public void setRoamUseData(long roamUseData) {
         RoamUseData = roamUseData;
     }
 
-    public int getMonthlyPlan() {
+    public long getMonthlyPlan() {
         return MonthlyPlan;
     }
 
-    public void setMonthlyPlan(int monthlyPlan) {
+    public void setMonthlyPlan(long monthlyPlan) {
         MonthlyPlan = monthlyPlan;
-    }
-
-    @Override
-    public String toString() {
-        return "UsageRecord{" + "TConnTimes=" + TConnTimes + ", CurrConnTimes=" + CurrConnTimes + ", HCurrUseUL=" + HCurrUseUL + ", HCurrUseDL=" + HCurrUseDL + ", HUseData=" + HUseData + ", RCurrUseUL=" + RCurrUseUL + ", RCurrUseDL=" + RCurrUseDL + ", RoamUseData=" + RoamUseData + ", MonthlyPlan=" + MonthlyPlan + '}';
     }
 }

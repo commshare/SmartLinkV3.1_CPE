@@ -1,16 +1,12 @@
-package com.alcatel.wifilink.ui.setupwizard.allsetup;
+package com.alcatel.wifilink.ui.wizard.allsetup;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,15 +29,10 @@ import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import static com.alcatel.wifilink.R.id.btn_apply;
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
-import static com.alcatel.wifilink.R.id.view;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_AP_ISOLATION;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_BANDWIDTH;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_CHANNEL;
@@ -379,8 +370,9 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                     mEditedSettings.getAP2G().setWpaKey("");
                     //wep
                 } else if (newSecurity2GMode == 1) {
-                    if (newKey2G.length() < 5 || newKey2G.length() > 13) {
-                        ToastUtil_m.show(mContext, R.string.wep_password_must_be_5_13_characters);
+                    // if (newKey2G.length() < 5 || newKey2G.length() > 13) {
+                    if (!WepPsdHelper.psdMatch(newKey2G)) {
+                        ToastUtil_m.show(mContext, R.string.setting_wep_password_error_prompt);
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(newEncryption2G);
@@ -427,8 +419,9 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                     mEditedSettings.getAP5G().setWpaKey("");
                     //wep
                 } else if (newSecurity5GMode == 1) {
-                    if (newKey5G.length() < 5 || newKey5G.length() > 13) {
-                        ToastUtil_m.show(mContext, "Wep password(5G) length must be 5 or 13!");
+                    // if (newKey5G.length() < 5 || newKey5G.length() > 13) {
+                    if (!WepPsdHelper.psdMatch(newKey5G)) {
+                        ToastUtil_m.show(mContext, getString(R.string.setting_wep_password_error_prompt));
                         return;
                     }
                     mEditedSettings.getAP5G().setWepType(newEncryption5G);
@@ -438,7 +431,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                     //wpa
                 } else {
                     if (newKey5G.length() < 8 || newKey5G.length() > 63) {
-                        ToastUtil_m.show(mContext, "Password(5G) length must be 8-63!");
+                        ToastUtil_m.show(mContext, R.string.password_2_4g_length_must_be_8_63);
                         return;
                     }
                     mEditedSettings.getAP5G().setWepType(0);

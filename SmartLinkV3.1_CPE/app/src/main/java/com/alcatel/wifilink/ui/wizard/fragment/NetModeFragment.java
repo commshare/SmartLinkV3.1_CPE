@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.fragment;
+package com.alcatel.wifilink.ui.wizard.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +24,11 @@ import com.alcatel.wifilink.business.wanguide.NetModeUiHelper;
 import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.business.wanguide.WanInfo;
 import com.alcatel.wifilink.common.ToastUtil_m;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
-import com.alcatel.wifilink.ui.setupwizard.helper.FraHelper;
-import com.alcatel.wifilink.ui.setupwizard.helper.FragmentEnum;
+import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
+import com.alcatel.wifilink.ui.wizard.helper.FraHelper;
+import com.alcatel.wifilink.ui.wizard.helper.FragmentEnum;
 
 import org.greenrobot.eventbus.EventBus;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by qianli.ma on 2017/6/14.

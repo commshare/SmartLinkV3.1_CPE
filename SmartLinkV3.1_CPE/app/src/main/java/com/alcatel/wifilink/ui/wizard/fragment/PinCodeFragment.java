@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.fragment;
+package com.alcatel.wifilink.ui.wizard.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,10 +25,10 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.SetupWizardActivity;
-import com.alcatel.wifilink.ui.setupwizard.helper.EdittextWatcher;
-import com.alcatel.wifilink.ui.setupwizard.helper.FraHelper;
-import com.alcatel.wifilink.ui.setupwizard.helper.FragmentEnum;
+import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
+import com.alcatel.wifilink.ui.wizard.helper.EdittextWatcher;
+import com.alcatel.wifilink.ui.wizard.helper.FraHelper;
+import com.alcatel.wifilink.ui.wizard.helper.FragmentEnum;
 
 @SuppressLint("ValidFragment")
 public class PinCodeFragment extends Fragment {

@@ -28,6 +28,7 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
+import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
 
 import static android.app.Activity.RESULT_OK;
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
@@ -98,7 +99,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         requestWlanSupportMode();
-
     }
 
     @Nullable
@@ -389,8 +389,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mEditedSettings.getAP2G().setWpaKey("");
                     //wep
                 } else if (newSecurity2GMode == 1) {
-                    if (newKey2G.length() < 5 || newKey2G.length() > 13) {
-                        ToastUtil_m.show(mContext, R.string.wep_password_must_be_5_13_characters);
+                    if (!WepPsdHelper.psdMatch(newKey2G)) {
+                        ToastUtil_m.show(mContext, getString(R.string.setting_wep_password_error_prompt));
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(newEncryption2G);
@@ -437,8 +437,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mEditedSettings.getAP5G().setWpaKey("");
                     //wep
                 } else if (newSecurity5GMode == 1) {
-                    if (newKey5G.length() < 5 || newKey5G.length() > 13) {
-                        ToastUtil_m.show(mContext, "Wep password(5G) length must be 5 or 13!");
+                    if (!WepPsdHelper.psdMatch(newKey5G)) {
+                        ToastUtil_m.show(mContext, getString(R.string.setting_wep_password_error_prompt));
                         return;
                     }
                     mEditedSettings.getAP5G().setWepType(newEncryption5G);
@@ -500,7 +500,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(mContext);
         }
-        mProgressDialog.setTitle(R.string.setting_upgrading);
+        mProgressDialog.setMessage(getString(R.string.setting_upgrading));
         mProgressDialog.show();
     }
 

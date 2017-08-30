@@ -19,7 +19,6 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
 import com.alcatel.wifilink.utils.OtherUtils;

@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,19 +38,17 @@ import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.pop.SimPopHelper;
-import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
-import com.alcatel.wifilink.ui.setupwizard.allsetup.TypeBean;
+import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.view.DynamicWave;
 import com.alcatel.wifilink.utils.DataUtils;
+import com.alcatel.wifilink.utils.Logs;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Locale;
-
-import me.itangqi.waveloadingview.WaveLoadingView;
 
 import static com.alcatel.wifilink.R.id.connected_button;
 
@@ -481,7 +477,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     /* 显示已用流量(非漫游) */
     private void showTraffic(boolean isRoaming, UsageRecord result) {
         activity.runOnUiThread(() -> {
-
+            
             // 漫游
             CommonUtil.TrafficBean roamingUse = CommonUtil.ConvertTraffic(getActivity(), result.getRoamUseData(), 1);
             // 非漫游
@@ -825,6 +821,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
+                    Logs.d("ma_main",error.getMessage().toString());
                     ToastUtil_m.show(getActivity(), getString(R.string.connect_failed));
                 }
             });

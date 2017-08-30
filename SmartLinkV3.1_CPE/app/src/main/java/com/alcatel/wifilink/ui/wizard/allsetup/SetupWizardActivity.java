@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.ui.setupwizard.allsetup;
+package com.alcatel.wifilink.ui.wizard.allsetup;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +18,8 @@ import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.ui.activity.BaseActivity;
 import com.alcatel.wifilink.ui.activity.MainActivity;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;
-import com.alcatel.wifilink.ui.setupwizard.helper.FraHelper;
-import com.alcatel.wifilink.ui.setupwizard.helper.FragmentEnum;
+import com.alcatel.wifilink.ui.wizard.helper.FraHelper;
+import com.alcatel.wifilink.ui.wizard.helper.FragmentEnum;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

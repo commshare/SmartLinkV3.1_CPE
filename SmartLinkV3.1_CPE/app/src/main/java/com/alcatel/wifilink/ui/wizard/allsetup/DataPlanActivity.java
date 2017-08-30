@@ -1,7 +1,6 @@
-package com.alcatel.wifilink.ui.setupwizard.allsetup;
+package com.alcatel.wifilink.ui.wizard.allsetup;
 
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -16,7 +15,6 @@ import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
-import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
