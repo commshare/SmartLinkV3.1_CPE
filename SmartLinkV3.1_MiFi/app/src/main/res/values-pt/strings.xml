@@ -187,7 +187,7 @@
     <string name="setting_title_about">Sobre</string>
     <string name="setting_power_smart">Inteligente</string>
     <string name="setting_power_wifi">Suspensão do Wi-Fi</string>
-    <string name="setting_power_wifi_description">O Wi-Fi irá desligar automaticamente se a ligação estiver inativa durante 30 min. Prima qualquer tecla para ativar.</string>
+
     <string name="setting_backup_description">Efetuar cópia de segurança da configuração.</string>
     <string name="setting_backup_btn_backup">Cópia de segurança</string>
     <string name="setting_restore_description">Restaure a configuração.</string>
@@ -548,5 +548,5 @@
     <string name="preference_title">Definições gerais</string>
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Todos os LED apagam automaticamente exceto o LED de alimentação quando não existe acesso ao Wi-Fi ou operação manual durante 30 seg.</string>
-
+    <string name="setting_power_wifi_description">Todos los LEDs se apagarán automáticamente, excepto el LED de batería, cuando no haya acceso Wi-Fi o no haya acceso manual durante 30 segundos.</string>
 </resources>

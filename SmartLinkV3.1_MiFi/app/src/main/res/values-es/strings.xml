@@ -132,7 +132,7 @@
     <!-- sms end -->
     <!-- connect device start -->
     <string name="device_manage_title">Dispositivos</string>
-    <string name="device_manage_connected">Connected Devices (%1$d)</string>
+    <string name="device_manage_connected">Dispositivos conectados (%1$d)</string>
     <string name="device_manage_block">Bloquear dispositivos (%1$d)</string>
     <string name="device_manage_block_btn">Bloquear</string>
     <string name="device_manage_unblock_btn">Desbloquear</string>
@@ -185,8 +185,8 @@
     <string name="setting_title_upgrade">Actualizar</string>
     <string name="setting_title_device">Dispositivo</string>
     <string name="setting_title_about">Acerca de</string>
-    <string name="setting_power_smart">Predictivo</string>
-    <string name="setting_power_wifi">Wi-Fi en espera</string>
+    <string name="setting_power_smart">Iluminación de LEDs</string>
+    <string name="setting_power_wifi">Wi-Fi en suspensión</string>
     <string name="setting_power_wifi_description">Se apagará automáticamente el Wi-Fi si la conexión está inactiva durante 30 minutos; pulse cualquier tecla para activarlo.</string>
     <string name="setting_backup_description">Hacer copia de seguridad de la configuración.</string>
     <string name="setting_backup_btn_backup">Copia de seguridad</string>

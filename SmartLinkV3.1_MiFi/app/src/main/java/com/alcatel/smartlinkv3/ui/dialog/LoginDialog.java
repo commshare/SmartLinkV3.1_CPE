@@ -1,8 +1,29 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
-import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
@@ -18,34 +39,10 @@ import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog.OnClickBottonConfirm;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Environment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Animation.AnimationListener;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher {
 	private Context m_context;
@@ -160,40 +157,40 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
   					}
   					else
   					{
-  					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), 
-					m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
-  							new OnClickBottonConfirm() 
-  					{
-  						public void onConfirm() 
-  						{
-  							
-  							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-  								public void onLoginSuccess() 				
-  								{
-  									closeDialog();
-  								}
-  
-  								public void onLoginFailed(String error_code)
-  								{
-  									if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
-  									{
-  										ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
-  												new OnClickBtnRetry() 
-  										{
-  											@Override
-  											public void onRetry() 
-  											{
-  												showDialog();
-  											}
-  										});
-  									}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
-  									{
-  										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
-  									}
-  								}
-  							});
-  						}
-  					});
+//  					ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title),
+//					m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
+//  							new OnClickBottonConfirm()
+//  					{
+//  						public void onConfirm()
+//  						{
+//
+//  							m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+//  								public void onLoginSuccess()
+//  								{
+//  									closeDialog();
+//  								}
+//
+//  								public void onLoginFailed(String error_code)
+//  								{
+//  									if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD))
+//  									{
+//  										ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+//  												new OnClickBtnRetry()
+//  										{
+//  											@Override
+//  											public void onRetry()
+//  											{
+//  												showDialog();
+//  											}
+//  										});
+//  									}else if(error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT))
+//  									{
+//  										m_dialog_err_info.showDialog(m_context.getString(R.string.other_login_warning_title),	m_strMsgLoginTimeUsedOut);
+//  									}
+//  								}
+//  							});
+//  						}
+//  					});
   					}
 					}
 				
@@ -418,7 +415,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 		m_strMsgWrongPassword = m_context.getResources().getString(
 				R.string.login_prompt_str);
 		m_strMsgOtherUserLogined = m_context.getResources().getString(
-				R.string.login_other_user_logined_error_msg);
+				R.string.login_other_user_logined_error_forcelogin_msg);
 		m_strMsgLoginTimeUsedOut = m_context.getResources().getString(
 				R.string.login_login_time_used_out_msg);
 
