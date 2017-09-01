@@ -151,7 +151,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         zeroMB = getString(R.string.Home_zero_data);
         showWait();// 等待对话框
         mConnectedView.setAnimDuration(duration);// 设置波浪滚动速度
-        
+
         return m_view;
     }
 
@@ -477,7 +477,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     /* 显示已用流量(非漫游) */
     private void showTraffic(boolean isRoaming, UsageRecord result) {
         activity.runOnUiThread(() -> {
-            
+
             // 漫游
             CommonUtil.TrafficBean roamingUse = CommonUtil.ConvertTraffic(getActivity(), result.getRoamUseData(), 1);
             // 非漫游
@@ -731,11 +731,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         SharedPrefsUtil.getInstance(activity).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
-            public void onError(Throwable e) {
-                mRl_main_wait.setVisibility(View.GONE);
-            }
-
-            @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
@@ -765,6 +760,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     ToastUtil_m.show(getActivity(), getString(R.string.Home_no_sim));
                 }
             }
+
+            @Override
+            public void onError(Throwable e) {
+                mRl_main_wait.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                mRl_main_wait.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onFailure() {
+                mRl_main_wait.setVisibility(View.GONE);
+            }
+
         });
 
     }
@@ -817,12 +828,23 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             API.get().connect(new MySubscriber() {
                 @Override
                 protected void onSuccess(Object result) {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                protected void onFailure() {
+
                 }
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
-                    Logs.d("ma_main",error.getMessage().toString());
-                    ToastUtil_m.show(getActivity(), getString(R.string.connect_failed));
+                    Logs.d("ma_main", error.getMessage().toString());
+                    ToastUtil_m.show(getActivity(), getString(R.string.connect_failed) + "\n" + getString(R.string.restart_device_tip));
                 }
             });
         } else {

@@ -20,15 +20,23 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.wlan.AP;
+import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ENUM;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import static android.app.Activity.RESULT_OK;
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
@@ -84,6 +92,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     private ProgressDialog mProgressDialog;
     private String[] mWpaEncryptionSettings;
     private String[] mWepEncryptionSettings;
+    private TimerHelper wifiTimer;
 
     public WifiFragment() {
 
@@ -475,11 +484,26 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
 
             @Override
             protected void onSuccess(Object result) {
-                mProgressDialog.dismiss();
-                ToastUtil_m.show(mContext, getString(R.string.success));
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), RefreshWifiActivity.class);
-                startActivity(intent);
+
+                wifiTimer = new TimerHelper(getActivity()) {
+                    @Override
+                    public void doSomething() {
+                        API.get().getLoginState(new MySubscriber<LoginState>() {
+                            @Override
+                            protected void onSuccess(LoginState result) {
+
+                            }
+
+                            @Override
+                            protected void onResultError(ResponseBody.Error error) {
+                                mProgressDialog.dismiss();
+                                ToastUtil_m.show(mContext, getString(R.string.success));
+                                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+                            }
+                        });
+                    }
+                };
+                wifiTimer.start(5000);
             }
 
             @Override
@@ -501,6 +525,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             mProgressDialog = new ProgressDialog(mContext);
         }
         mProgressDialog.setMessage(getString(R.string.setting_upgrading));
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
     }
 

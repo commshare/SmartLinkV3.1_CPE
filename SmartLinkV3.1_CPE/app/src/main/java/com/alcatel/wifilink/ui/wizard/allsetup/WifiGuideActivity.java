@@ -20,6 +20,7 @@ import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.API;
@@ -29,8 +30,10 @@ import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_AP_ISOLATION;
@@ -85,6 +88,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     private ProgressDialog mProgressDialog;
     private Button bt_apply;
     private View skip;
+    private TimerHelper wifiTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -444,12 +448,18 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         setWlanRequest();
     }
 
+    @Override
+    protected void onDestroy() {
+        wifiTimer.stop();
+        super.onDestroy();
+    }
 
     /**
      * 真正发送请求
      */
     private void setWlanRequest() {
         API.get().setWlanSettings(mEditedSettings, new MySubscriber() {
+
             @Override
             public void onStart() {
                 super.onStart();
@@ -458,13 +468,31 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
 
             @Override
             protected void onSuccess(Object result) {
-                bt_apply.postDelayed(() -> {
-                    mProgressDialog.dismiss();
-                    // 提交设置过的标记
-                    SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
-                    ToastUtil_m.show(mContext, getString(R.string.success));
-                    ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
-                }, 5000);
+
+                // 1.启动wifi检测轮询器--> 检测WIFI是否掉线
+                // 如果WIFI掉线--> 此时才跳转到refresh界面要求用户更新WIFI
+                // 提交设置过的标记
+                wifiTimer = new TimerHelper(WifiGuideActivity.this) {
+                    @Override
+                    public void doSomething() {
+                        API.get().getLoginState(new MySubscriber<LoginState>() {
+                            @Override
+                            protected void onSuccess(LoginState result) {
+                                
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                mProgressDialog.dismiss();
+                                // 提交设置过的标记
+                                SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
+                                ToastUtil_m.show(mContext, getString(R.string.success));
+                                ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                            }
+                        });
+                    }
+                };
+                wifiTimer.start(5000);
             }
 
             @Override
@@ -502,7 +530,8 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(mContext);
         }
-        mProgressDialog.setTitle(R.string.setting_upgrading);
+        mProgressDialog.setMessage(getString(R.string.setting_upgrading));
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
     }
 

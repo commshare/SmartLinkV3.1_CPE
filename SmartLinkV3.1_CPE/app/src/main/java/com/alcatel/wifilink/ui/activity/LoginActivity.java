@@ -37,6 +37,8 @@ import com.alcatel.wifilink.utils.ScreenSize;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_nor;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_pre;
 

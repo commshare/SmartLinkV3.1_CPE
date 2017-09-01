@@ -46,6 +46,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_refresh);
         ButterKnife.bind(this);
         pdDialog = new ProgressDialog(this);
+        pdDialog.setCanceledOnTouchOutside(false);
         refreshContext = this;
     }
 

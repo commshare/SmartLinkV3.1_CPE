@@ -172,7 +172,7 @@ public class NetModeUiHelper {
         NetModeUiItemHelper.ItemNetMode item_MTU = NetModeUiItemHelper.getInstance(context).show(R.string.netmode_mtu);
         item_MTU.itemSubTv.setVisibility(View.VISIBLE);
         item_MTU.itemEd.setText(MTU);
-        item_MTU.itemEd.setEnabled(false);
+        item_MTU.itemEd.setEnabled(true);
         mllNetMode.addView(item_MTU.itemView);
 
         mllNetMode.setVisibility(View.VISIBLE);// 显示

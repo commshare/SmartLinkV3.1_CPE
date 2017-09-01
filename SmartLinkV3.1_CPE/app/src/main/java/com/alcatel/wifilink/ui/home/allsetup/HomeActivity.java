@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -22,7 +21,6 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
@@ -56,7 +54,6 @@ import org.cybergarage.upnp.Device;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -78,7 +75,6 @@ import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
-import static com.alcatel.wifilink.utils.OtherUtils.clearAllTimer;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -515,7 +511,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* 检测WIFI是否有连接 */
     private void checkWifi() {
-        boolean isWifi = OtherUtils.checkConnect(this);
+        boolean isWifi = OtherUtils.isWifiConnect(this);
         if (isWifi) {
             // is wan or sim
             isWanInsert();

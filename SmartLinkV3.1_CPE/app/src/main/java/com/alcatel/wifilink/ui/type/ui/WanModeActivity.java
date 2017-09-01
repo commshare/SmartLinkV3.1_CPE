@@ -237,10 +237,17 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
      * 启动连接(pppoe)
      */
     private void connectPPPOE() {
+
+        int mtu = result.getMtu();
+        if (mtu < 576 || mtu > 1500) {
+            ToastUtil_m.show(this, getString(R.string.mtu_not_match));
+            return;
+        }
+
         WanSettingsParams wsp = new WanSettingsParams();
         wsp.setAccount(getEd(eds[0]));// Account
         wsp.setPassword(getEd(eds[1]));// Password
-        wsp.setMtu(result.getMtu());// MTU
+        wsp.setMtu(mtu);// MTU
 
         wsp.setSubNetMask(result.getSubNetMask());
         wsp.setGateway(result.getGateway());

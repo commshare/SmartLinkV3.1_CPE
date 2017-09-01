@@ -226,7 +226,7 @@ public class OtherUtils {
      * @param context
      * @return
      */
-    public static boolean checkConnect(Context context) {
+    public static boolean isWifiConnect(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo.State wifiState = networkInfo.getState();
@@ -378,6 +378,7 @@ public class OtherUtils {
     public static ProgressDialog showProgressPop(Context context) {
         ProgressDialog pgd = new ProgressDialog(context);
         pgd.setMessage(context.getString(R.string.connecting));
+        pgd.setCanceledOnTouchOutside(false);
         pgd.show();
         return pgd;
     }
