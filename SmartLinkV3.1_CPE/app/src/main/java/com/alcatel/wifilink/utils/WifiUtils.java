@@ -20,11 +20,12 @@ public class WifiUtils {
     /**
      * 获取设备的WIFI ip
      *
-     * @param wifiMan
+     * @param context
      * @return
      */
-    public static String getWifiIp(WifiManager wifiMan) {
-        WifiInfo info = wifiMan.getConnectionInfo();
+    public static String getWifiIp(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
         int ipAddress = info.getIpAddress();
         String ipString = "";// 本机在WIFI状态下路由分配给的IP地址  
 

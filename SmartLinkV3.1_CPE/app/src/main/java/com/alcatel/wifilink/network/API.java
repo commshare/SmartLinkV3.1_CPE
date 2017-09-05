@@ -2,6 +2,8 @@ package com.alcatel.wifilink.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.alcatel.wifilink.Constants;
 import com.alcatel.wifilink.EncryptionUtil;
@@ -186,7 +188,11 @@ public class API {
             // 获取当前连接的IP
             Context context = SmartLinkV3App.getInstance().getApplicationContext();
             // 形式: http://网关如192.168.3.1/
-            String ip = Cons.IP_PRE + WifiUtils.getWifiGateWay(context) + Cons.IP_SUFFIX;
+            String wifiGateWay = WifiUtils.getWifiGateWay(context);
+            // String wifiIp = WifiUtils.getWifiIp(context);
+            Log.d("ma_load", wifiGateWay);
+            String ip = Cons.IP_PRE + wifiGateWay + Cons.IP_SUFFIX;
+            Log.d("ma_load", ip);
             /* referer */
             reqBuilder.addHeader("Referer", ip);
 

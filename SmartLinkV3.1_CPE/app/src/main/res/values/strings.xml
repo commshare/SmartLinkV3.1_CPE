@@ -587,6 +587,7 @@
     <string name="restart_device_tip">Restart the device and try again</string>
     <string name="SEND">SEND</string>
     <string name="message">message</string>
+
     <string name="if_blank_data_unlimited">(if blank, data unlimited)</string>
     <string name="Blocked">Blocked(0)</string>
     <string name="mtu_not_match">MTU must between 576 and 1500</string>

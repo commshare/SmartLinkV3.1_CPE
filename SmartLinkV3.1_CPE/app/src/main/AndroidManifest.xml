@@ -51,11 +51,21 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity
+            android:name=".ui.load.LoadingActivitys"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.activity.GuideActivity"
@@ -345,8 +355,6 @@
         <service android:name=".ui.home.allsetup.HomeService" />
 
         <activity android:name=".ui.wizard.allsetup.DataPlanActivity">
-        </activity>
-        <activity android:name=".ui.refreshWifi.ReConnectWifi">
         </activity>
     </application>
 

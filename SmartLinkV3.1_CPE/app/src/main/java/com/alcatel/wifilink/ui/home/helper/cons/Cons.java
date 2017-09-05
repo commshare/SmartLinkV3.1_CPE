@@ -18,6 +18,7 @@ public class Cons {
     public static String WIFI_GUIDE_FLAG = "WIFI_GUIDE_FLAG";// WIFI向导标记
     public static String DATA_PLAN_FLAG = "DATA_PLAN_FLAG";// 月流量向导标记
     public static String WAN_MODE_FLAG = "WAN_MODE_FLAG";// 连接向导标记
+    public static String FIRST_RUN = "FIRST_RUN";// 连接向导标记
 
     public static String CUSTOM_ID_1 = "E1";// 需要定制的版本customId
 
@@ -156,5 +157,8 @@ public class Cons {
     public static final String SET_WLAN_SETTINGS_FAILED = "050501";
     public static final String WIFI_IS_OFF = "050502";
     public static final String WPS_IS_WORKING = "050503";
+    public static final String GET_SYSTEM_STATUS_FAIL = "050503";
+    
+    
 
 }

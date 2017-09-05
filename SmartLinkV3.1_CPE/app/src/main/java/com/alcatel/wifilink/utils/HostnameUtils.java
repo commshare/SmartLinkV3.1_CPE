@@ -29,12 +29,12 @@ public class HostnameUtils {
 
     /* 验证SSL类 */
     private static class HostNameImpl implements HostnameVerifier {
-        
+
         @Override
         public boolean verify(String hostname, SSLSession session) {
             String ip = "192.168.1.1";
             String http_ip = "http://" + ip;
-            if (hostname.equalsIgnoreCase(http_ip) || hostname.equalsIgnoreCase(ip) || hostname.contains(ip)) {
+            if (hostname.contains(ip) || hostname.equalsIgnoreCase(http_ip) || hostname.equalsIgnoreCase(ip)) {
                 return true;
             } else {
                 return false;
