@@ -591,4 +591,7 @@ di rete se non si è sicuri del codice PUK</string>
     <string name="restart_device_tip">Riavviare il dispositivo e riprovare</string>
     <string name="SEND">INVIA</string>
     <string name="message">messaggio</string>
+    <string name="if_blank_data_unlimited">(Se vuoto, dati illimitati)</string>
+    <string name="Blocked">Bloccato(0) </string>
+    <string name="mtu_not_match">L’MTU deve essere tra 576 e 1500</string>
 </resources>

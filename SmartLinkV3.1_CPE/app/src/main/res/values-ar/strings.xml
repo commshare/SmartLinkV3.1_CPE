@@ -587,4 +587,7 @@
     <string name="restart_device_tip">أعد تشغيل الجهاز وحاول مرة أخرى</string>
     <string name="SEND">إرسال</string>
     <string name="message">رسالة</string>
+    <string name="if_blank_data_unlimited">(إذا كان فارغًا، فالبيانات غير محدودة)</string>
+    <string name="Blocked">محظور(0)</string>
+    <string name="mtu_not_match">يجب أن يكون MTU بين 576 و 1500</string>
 </resources>

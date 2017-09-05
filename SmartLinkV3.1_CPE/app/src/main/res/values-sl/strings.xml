@@ -587,4 +587,7 @@
     <string name="restart_device_tip">Znova zaženite napravo in poskusite znova</string>
     <string name="SEND">POŠLJI</string>
     <string name="message">sporočilo</string>
+    <string name="if_blank_data_unlimited">(Če je prazno, podatki neomejeni)</string>
+    <string name="Blocked">Blokirano(0)</string>
+    <string name="mtu_not_match">MTU mora biti med 576 in 1500</string>
 </resources>

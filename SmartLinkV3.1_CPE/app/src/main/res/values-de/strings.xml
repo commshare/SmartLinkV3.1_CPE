@@ -587,4 +587,7 @@
     <string name="restart_device_tip">Starten Sie das Gerät neu und versuchen Sie es erneut</string>
     <string name="SEND">SENDEN</string>
     <string name="message">Nachricht</string>
+    <string name="if_blank_data_unlimited">(Wenn leer, unbegrenzte Daten)</string>
+    <string name="Blocked">Blockiert(0)</string>
+    <string name="mtu_not_match">MTU muss zwischen 576 und 1500 liegen</string>
 </resources>
