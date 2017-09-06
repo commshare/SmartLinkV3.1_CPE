@@ -256,9 +256,9 @@ public class OtherUtils {
      * @param context
      * @return
      */
-    public static boolean setWifiActive(Context context) {
+    public static boolean setWifiActive(Context context,boolean open) {
         WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        return wifi.setWifiEnabled(true);
+        return wifi.setWifiEnabled(open);
     }
 
     /**

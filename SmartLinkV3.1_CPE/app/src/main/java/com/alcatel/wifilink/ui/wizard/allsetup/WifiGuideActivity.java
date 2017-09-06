@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,7 +22,6 @@ import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
-import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.API;
@@ -90,14 +91,23 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     private View skip;
     private TimerHelper wifiTimer;
 
+    private String[] mWpaEncryptionSettings;
+    private String[] mWepEncryptionSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_guide);
         mContext = this;
+        initSome();
         initActionbar();
         initView();
         requestWlanSupportMode();
+    }
+
+    private void initSome() {
+        mWpaEncryptionSettings = getResources().getStringArray(R.array.wlan_settings_wpa_type);
+        mWepEncryptionSettings = getResources().getStringArray(R.array.wlan_settings_wep_type);
     }
 
     private void initActionbar() {
@@ -146,6 +156,8 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         findViewById(R.id.btn_cancel).setOnClickListener(this);
 
         mDividerView = findViewById(R.id.divider);
+
+        
     }
 
     @Override
@@ -212,6 +224,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         } else if (mOriginSettings.getAP5G().getSecurityMode() == ENUM.SecurityMode.WEP.ordinal()) {
             mEncryption5GGroup.setVisibility(View.VISIBLE);
             mKey5GGroup.setVisibility(View.VISIBLE);
+            mEncryption5GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
             mEncryption5GSpinner.setSelection(mOriginSettings.getAP5G().getWepType());
             mKey5GEdit.setText(mOriginSettings.getAP5G().getWepKey());
         } else {
@@ -235,6 +248,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         } else if (securityMode == ENUM.SecurityMode.WEP.ordinal()) {
             mEncryption2GGroup.setVisibility(View.VISIBLE);
             mKey2GGroup.setVisibility(View.VISIBLE);
+            mEncryption2GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
             mEncryption2GSpinner.setSelection(mOriginSettings.getAP2G().getWepType());
             mKey2GEdit.setText(mOriginSettings.getAP2G().getWepKey());
         } else {
@@ -450,7 +464,9 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
 
     @Override
     protected void onDestroy() {
-        wifiTimer.stop();
+        if (wifiTimer != null) {
+            wifiTimer.stop();
+        }
         super.onDestroy();
     }
 
@@ -469,30 +485,12 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(Object result) {
 
-                // 1.启动wifi检测轮询器--> 检测WIFI是否掉线
-                // 如果WIFI掉线--> 此时才跳转到refresh界面要求用户更新WIFI
-                // 提交设置过的标记
-                wifiTimer = new TimerHelper(WifiGuideActivity.this) {
-                    @Override
-                    public void doSomething() {
-                        API.get().getLoginState(new MySubscriber<LoginState>() {
-                            @Override
-                            protected void onSuccess(LoginState result) {
-                                
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                mProgressDialog.dismiss();
-                                // 提交设置过的标记
-                                SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
-                                ToastUtil_m.show(mContext, getString(R.string.success));
-                                ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
-                            }
-                        });
-                    }
-                };
-                wifiTimer.start(5000);
+                // 1.切断wifi以及跳转
+                Log.d("ma_wififragment", "wififragment success");
+                // checkLoginState();
+                OtherUtils.setWifiActive(WifiGuideActivity.this,false);
+                popDismiss();
+                ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -543,22 +541,38 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                     mKey2GGroup.setVisibility(View.GONE);
                     mEncryption2GGroup.setVisibility(View.GONE);
                     mEncryption2GSpinner.setSelection(-1);
-                } else if (mKey2GGroup.getVisibility() == view.GONE) {
+                } else {
                     mKey2GGroup.setVisibility(View.VISIBLE);
                     mEncryption2GGroup.setVisibility(View.VISIBLE);
-                    mEncryption2GSpinner.setSelection(2);
-                }
+                    if (i == 1) {
+                        mEncryption2GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
+                        int wepType = mOriginSettings.getAP2G().getWepType();
+                        mEncryption2GSpinner.setSelection(wepType);
 
+                    } else {
+                        mEncryption2GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
+                        int wpaType = mOriginSettings.getAP2G().getWpaType();
+                        mEncryption2GSpinner.setSelection(wpaType);
+                    }
+                }
                 break;
             case R.id.spinner_security_5g:
                 if (i == 0) {
                     mKey5GGroup.setVisibility(View.GONE);
                     mEncryption5GGroup.setVisibility(View.GONE);
                     mEncryption5GSpinner.setSelection(-1);
-                } else if (mKey5GGroup.getVisibility() == view.GONE) {
+                } else {
                     mKey5GGroup.setVisibility(View.VISIBLE);
                     mEncryption5GGroup.setVisibility(View.VISIBLE);
-                    mEncryption5GSpinner.setSelection(2);
+                    if (i == 1) {
+                        mEncryption5GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
+                        int wepType = mOriginSettings.getAP5G().getWepType();
+                        mEncryption2GSpinner.setSelection(wepType);
+                    } else {
+                        mEncryption5GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
+                        int wpaType = mOriginSettings.getAP5G().getWpaType();
+                        mEncryption2GSpinner.setSelection(wpaType);
+                    }
                 }
                 break;
             default:

@@ -723,7 +723,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     private int getPage() {
         String sp = ShareperfrenceUtil.getSp(this, SP_PAGE_FILE, Cons.PAGE);
-        return TextUtils.isEmpty(sp) ? Cons.MAIN : Integer.valueOf(sp);
+        return TextUtils.isEmpty(sp) || Integer.valueOf(sp) == Cons.WIFI ? Cons.MAIN : Integer.valueOf(sp);
     }
 
     private void destroyOperate() {

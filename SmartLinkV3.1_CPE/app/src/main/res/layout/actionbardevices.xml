@@ -40,7 +40,7 @@
             android:layout_centerVertical="true"
             android:text="@string/Blocked"
             android:textColor="@color/white"
-            android:textSize="@dimen/dimen_textsize_18sp" />
+            android:textSize="@dimen/dimen_textsize_14sp" />
 
     </RelativeLayout>
 

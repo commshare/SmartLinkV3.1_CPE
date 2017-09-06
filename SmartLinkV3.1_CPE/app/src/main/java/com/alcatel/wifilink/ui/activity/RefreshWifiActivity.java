@@ -18,8 +18,11 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.load.LoadingActivitys;
 import com.alcatel.wifilink.utils.OtherUtils;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +56,9 @@ public class RefreshWifiActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        OtherUtils.setWifiActive(this, true);
+        OtherUtils.stopAutoTimer();
+        OtherUtils.clearContexts();
         initDate();
     }
 
@@ -108,6 +114,12 @@ public class RefreshWifiActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 pdDialog.dismiss();
                 showConnDialog();
+                if (e instanceof SocketTimeoutException) {/* 连接超时 */
+                    // to RefreshWifiActivity
+                } else if (e instanceof ConnectException) {
+                    // to RefreshWifiActivity
+                } else {
+                }
             }
 
             @Override

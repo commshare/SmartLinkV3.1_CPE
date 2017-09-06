@@ -113,7 +113,7 @@ public class API {
     private static API api;
 
     private String token;
-    private int TIMEOUT = 10;
+    private int TIMEOUT = 20;
 
     private API() {
         if (smartLinkApi == null) {

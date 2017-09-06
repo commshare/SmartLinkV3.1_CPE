@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class ActivityDeviceManager extends BaseActivityWithBack implements OnClickListener {
 
-    public String blockPre = "Blocked (";
+    public String blockPre;
     public String blockFix = ")";
     public int blockSize;
 

@@ -581,7 +581,7 @@
     <string name="hr_s">h</string>
     <string name="min_s">min</string>
     <string name="maunal">Manual</string>
-    <string name="disabled">Discapacitado</string>
+    <string name="disabled">Desactivada</string>
     <string name="language">Idioma</string>
     <string name="success">Exitoso</string>
     <string name="restart_device_tip">Reinicie el dispositivo y vuelva a intentarlo</string>

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.wizard.allsetup.DataPlanActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
@@ -484,51 +486,66 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
 
             @Override
             protected void onSuccess(Object result) {
-
-                wifiTimer = new TimerHelper(getActivity()) {
-                    @Override
-                    public void doSomething() {
-                        API.get().getLoginState(new MySubscriber<LoginState>() {
-                            @Override
-                            protected void onSuccess(LoginState result) {
-
-                            }
-
-                            @Override
-                            protected void onResultError(ResponseBody.Error error) {
-                                mProgressDialog.dismiss();
-                                ToastUtil_m.show(mContext, getString(R.string.success));
-                                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
-                            }
-                        });
-                    }
-                };
-                wifiTimer.start(5000);
+                Log.d("ma_wififragment", "wififragment success");
+                // checkLoginState();
+                OtherUtils.setWifiActive(getActivity(),false);
+                popDismiss();
+                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                mProgressDialog.dismiss();
+                popDismiss();
+                // 提交设置过的标记
+                SharedPrefsUtil.getInstance(getActivity()).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
+                // 点击后, router有可能马上掉线, 造成超时错误返回
+                if (e.getMessage().toString().contains("ETIMEDOUT")) {
+                    ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+                } else {
+                    // 跳转到月流量计划界面
+                    ChangeActivity.toActivity(getActivity(), DataPlanActivity.class, false, true, false, 0);
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                popDismiss();
+                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
             protected void onFailure() {
-                mProgressDialog.dismiss();
+                popDismiss();
             }
         });
     }
 
+    private void checkLoginState() {
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                checkLoginState();
+            }
 
-    private void showLoadingDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(mContext);
-        }
-        mProgressDialog.setMessage(getString(R.string.setting_upgrading));
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                error();
+            }
+
+            @Override
+            protected void onFailure() {
+                error();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                error();
+            }
+        });
     }
 
+    /* 列表选项 */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
@@ -542,11 +559,13 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mEncryption2GGroup.setVisibility(View.VISIBLE);
                     if (i == 1) {
                         mEncryption2GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
-                        mEncryption2GSpinner.setSelection(0);
+                        int wepType = mOriginSettings.getAP2G().getWepType();
+                        mEncryption2GSpinner.setSelection(wepType);
 
                     } else {
                         mEncryption2GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
-                        mEncryption2GSpinner.setSelection(2);
+                        int wpaType = mOriginSettings.getAP2G().getWpaType();
+                        mEncryption2GSpinner.setSelection(wpaType);
                     }
                 }
                 break;
@@ -560,10 +579,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     mEncryption5GGroup.setVisibility(View.VISIBLE);
                     if (i == 1) {
                         mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
-                        mEncryption5GSpinner.setSelection(0);
+                        int wepType = mOriginSettings.getAP5G().getWepType();
+                        mEncryption2GSpinner.setSelection(wepType);
                     } else {
                         mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
-                        mEncryption5GSpinner.setSelection(2);
+                        int wpaType = mOriginSettings.getAP5G().getWpaType();
+                        mEncryption2GSpinner.setSelection(wpaType);
                     }
                 }
                 break;
@@ -575,5 +596,28 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    /* -------------------------------------------- helper -------------------------------------------- */
+    private void error() {
+        popDismiss();
+        ToastUtil_m.show(mContext, getString(R.string.success));
+        ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+    }
+
+    private void popDismiss() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+
+    private void showLoadingDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(mContext);
+        }
+        mProgressDialog.setMessage(getString(R.string.setting_upgrading));
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
     }
 }
