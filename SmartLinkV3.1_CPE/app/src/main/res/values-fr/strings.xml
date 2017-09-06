@@ -588,6 +588,6 @@
     <string name="SEND">ENVOYER</string>
     <string name="message">Message</string>
     <string name="if_blank_data_unlimited">Si info vide, la data est illimitée</string>
-    <string name="Blocked">Bloqué (0)</string>
+    <string name="Blocked">Bloqué</string>
     <string name="mtu_not_match">MTU doit être entre 575 et 1500</string>
 </resources>

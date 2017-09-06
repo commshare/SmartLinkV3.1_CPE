@@ -45,12 +45,18 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         setContentView(R.layout.device_manage_view);
         ButterKnife.bind(this);
         fm = getSupportFragmentManager();
+        // init
+        init();
         // init action bar
         initActionbar();
         // init fragment 
         toFragment(FragmentDeviceEnum.CONNECT);
         // get block count
         getblockCount();
+    }
+
+    private void init() {
+        blockPre = getString(R.string.Blocked) + " (";
     }
 
     /* **** getblockCount **** */
@@ -78,6 +84,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
                 // block
                 mblock = (TextView) view.findViewById(R.id.device_block);
                 mblock.setOnClickListener(ActivityDeviceManager.this);
+                mblock.setText(blockPre + "0" + blockFix);
                 // title
                 mTitle = (TextView) view.findViewById(R.id.device_title);
                 mTitle.setText(getString(R.string.device));
