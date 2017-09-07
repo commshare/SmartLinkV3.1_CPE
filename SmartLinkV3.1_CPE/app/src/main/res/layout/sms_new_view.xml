@@ -99,7 +99,7 @@
 						android:enabled="false"
 						android:paddingLeft="15dip"
 						android:paddingRight="15dip"
-						android:text="Send"
+						android:text="@string/SEND"
 						android:textColor="@color/color_white"
 						android:textSize="@dimen/dimen_textsize_16sp" />
 

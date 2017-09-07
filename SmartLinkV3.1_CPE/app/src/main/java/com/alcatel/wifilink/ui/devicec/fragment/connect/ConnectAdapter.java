@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.device.other.ConnectModel;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
 import com.alcatel.wifilink.network.API;
@@ -204,12 +205,12 @@ public class ConnectAdapter extends RecyclerView.Adapter<ConnectHolder> {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
+                ToastUtil_m.show(activity, activity.getString(R.string.Set_connected_device_black_failed));
             }
 
             @Override
             protected void onFailure() {
-                super.onFailure();
+
             }
         });
     }

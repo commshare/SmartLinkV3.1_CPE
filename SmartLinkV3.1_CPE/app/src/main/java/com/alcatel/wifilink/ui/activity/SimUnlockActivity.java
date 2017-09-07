@@ -67,7 +67,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                 runOnUiThread(() -> {
                     isDoneClick = true;
                     pinRemainingTimes = result.getPinRemainingTimes();
-                    tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes));
+                    tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes)+" ");
                 });
             }
         });
@@ -116,7 +116,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
         }
         // 网络还没加载完毕
         if (!isDoneClick) {
-            ToastUtil_m.show(this, "Please wait...");
+            ToastUtil_m.show(this, getString(R.string.connecting));
             return;
         }
         // PIN码次数已经用光

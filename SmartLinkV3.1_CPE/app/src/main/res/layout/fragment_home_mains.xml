@@ -97,6 +97,9 @@
 
                     <!-- CONNECT BUTTON -->
                     <Button
+                        android:textSize="@dimen/dimen_textsize_28sp"
+                        android:textColor="@color/blue_btn"
+                        android:text="@string/connect"
                         android:id="@+id/connect_button"
                         android:layout_width="@dimen/dimen_220dip"
                         android:layout_height="@dimen/dimen_220dip"

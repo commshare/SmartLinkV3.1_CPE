@@ -114,7 +114,7 @@
     <string name="sms_unread_num">(%1$d)</string>
     <string name="setting_imsi">IMSI</string>
     <string name="setting_sim_number">Número de SIM</string>
-    <string name="change_pin">Cambiar PIN de la SIM</string>
+    <string name="change_pin">Cambiar PIN</string>
     <string name="setting_set_data_plan">Establecer plan de datos</string>
     <string name="setting_network_connect_mode">Modo de conexión</string>
     <string name="device_manage_title">Dispositivos</string>
@@ -506,7 +506,7 @@
     <string name="input_a_data_value_between_0_1024">Ingrese un valor de datos de entre 0 y 1024</string>
     <string name="please_enable_sim_pin">Activar PIN de tarjeta SIM</string>
     <string name="it_is_connected_you_can_switch_other_connection_mode_page">Está conectado. Puede cambiar a otra página de modo de conexión.</string>
-    <string name="connect">Conectar</string>
+    <string name="connect">CONECTADO</string>
     <string name="do_not_change_default_if_not_necessary">No cambie el valor predeterminado si no es necesario</string>
     <string name="account">Cuenta</string>
     <string name="need_ip_address_and_related_info_given_by_network_operator">Necesita una dirección IP e información relacionada proporcionadas por el operador de red</string>
@@ -545,7 +545,7 @@
     <string name="connect_failed">No se pudo conectar</string>
     <string name="size">Tamaño</string>
     <string name="device_will_restart_later">El dispositivo se reiniciará más tarde.</string>
-    <string name="resetting">Restablecimiento …</string>
+    <string name="resetting">Restableciendo…</string>
     <string name="back_up_progress">Espere 5-60 segundos</string>
     <string name="day_1">Día 1</string>
     <string name="day_10">Día 10</string>
@@ -588,6 +588,6 @@
     <string name="SEND">ENVIAR</string>
     <string name="message">mensaje</string>
     <string name="if_blank_data_unlimited">(Si está en blanco refiere a datos ilimitados)</string>
-    <string name="Blocked">Bloqueado</string>
+    <string name="Blocked">Bloqueado(s)</string>
     <string name="mtu_not_match">MTU debe ser entre 576 y 1500</string>
 </resources>
