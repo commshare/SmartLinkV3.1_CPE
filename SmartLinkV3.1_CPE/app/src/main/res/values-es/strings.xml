@@ -491,7 +491,7 @@
     <string name="can_also_enter_times">También se puede ingresar %1$s veces</string>
     <string name="pop_sim_locked">SIM bloqueada</string>
     <string name="sim_unlocked">Desbloquear SIM</string>
-    <string name="sim_unlocked_attempts">\ intentos restantes</string>
+    <string name="sim_unlocked_attempts">\ intento(s) restante(s)</string>
     <string name="sim_unlocked_notEmpty">El PIN de la SIM está vacío</string>
     <string name="sim_unlocked_success">desbloqueo de PIN terminado</string>
     <string name="sim_unlocked_failed">No se ha podido desbloquear el PIN</string>

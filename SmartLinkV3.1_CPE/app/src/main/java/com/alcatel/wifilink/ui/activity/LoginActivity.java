@@ -147,8 +147,8 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     /* **** showResetPop **** */
     private void showResetPop() {
         ScreenSize.SizeBean size = ScreenSize.getSize(this);
-        int width = (int) (size.width * 0.75f);
-        int height = (int) (size.height * 0.20f);
+        int width = (int) (size.width * 0.80f);
+        int height = (int) (size.height * 0.25f);
         View inflate = View.inflate(this, R.layout.pop_resetdevice, null);
         View cancel_reset = inflate.findViewById(R.id.tv_pop_forgot_cancel);
         View ok_reset = inflate.findViewById(R.id.tv_pop_forgot_ok);
