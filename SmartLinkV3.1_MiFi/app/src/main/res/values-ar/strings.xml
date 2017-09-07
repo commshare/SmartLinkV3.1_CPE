@@ -189,7 +189,7 @@
     <string name="setting_power_wifi">سكون Wi-Fi</string>
     <string name="setting_power_wifi_description">سيتوقف Wi-Fi عن التشغيل تلقائيًا إذا كان الاتصال معطلاً لمدة 30 دقيقة، اضغط على أي زر للتنبيه.</string>
     <string name="setting_backup_description">قم بإجراء نسخ احتياطي للتكوين.</string>
-    <string name="setting_backup_btn_backup">نسخ احتياطي</string>
+    <string name="setting_backup_btn_backup">النسخ الاحتياطي</string>
     <string name="setting_restore_description">استعادة التكوين.</string>
     <string name="setting_restore_btn_restore">الاستعادة</string>
     <string name="setting_about_version">الإصدار</string>
@@ -549,5 +549,15 @@
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">تنطفئ جميع مصابيح LED تلقائيًا باستثناء مصباح LED للطاقة في حالة عدم توفر الوصول إلى WIFI أو تعذر التشغيل اليدوي خلال 30 ثانية.</string>
 
+  <string name="str_phone_number">رقم الهاتف:</string>
+
+  <string name="str_data_usage">استخدام البيانات تقريبي. للاستخدام الفعلي، يرجى الرجوع إلى مشغل الشبكة</string>
+  <string name="str_4G_LTE">4G لت</string>
+
+
+  <string name="setting_wep_mode_array">
+      <item>فتح</item>
+      <item>مشاركة</item>
+  </string>
 
 </resources>

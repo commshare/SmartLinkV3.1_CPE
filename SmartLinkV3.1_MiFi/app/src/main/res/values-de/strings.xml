@@ -547,5 +547,18 @@
     <string name="menu_setting">Voreinstellungen</string>
     <string name="preference_title">Allgemeine Einstellungen</string>
     <string name="str_LTE">LTE</string>
-    <string name="str_power_save_description">Alle LEDs bis auf die Haupt-LED schalten sich innerhalb von 30 Sekunden automatisch aus, wenn keine WLAN-Verbindung besteht oder der manuelle Betrieb aktiviert ist.</string>
+    <string name="str_power_save_description">Außer der Akku-LED, schalten sich die LED automatisch ab, wenn kein Zugriff auf das WLAN erfolgt oder keine Taste gedrückt wird.</string>
+
+  <string name="str_phone_number">Telefonnummer:</string>
+
+
+
+  <string name="str_data_usage">Der angezeigte Verbrauch kann ungenau sein. Für den tatsächlichen Verbrauch, wenden Sie sich bitte an Ihren Dienstanbieter.</string>
+  <string name="str_4G_LTE">4G LTE</string>
+
+  <string name="setting_wep_mode_array">
+      <item>Öffnen</item>
+      <item>Freigeben</item>
+  </string>
+
 </resources>

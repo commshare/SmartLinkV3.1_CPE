@@ -35,7 +35,7 @@
     <string name="qs_puk_code_prompt">Saisissez le code PUK\nTentatives restantes : <xliff:g id="INPUTTIMES">%1$d</xliff:g></string>
     <string name="qs_puk_code">Code PUK:</string>
     <string name="qs_pin_code_new">Nouveau code PIN:</string>
-    <string name="qs_pin_code_confirm">Confirmation :</string>
+    <string name="qs_pin_code_confirm">Confirmer le PIN:</string>
     <!-- Quick Setup End -->
     <!-- main fram start -->
     <string name="main_home">Accueil</string>
@@ -75,7 +75,7 @@
     <string name="access_lable">connecté</string>
     <string name="home_sim_loched">Carte SIM verrouillée</string>
     <string name="home_no_sim">Aucune carte SIM</string>
-    <string name="home_pin_locked_notice">Please verify your PIN code at the home menu first.</string>
+    <string name="home_pin_locked_notice">Vérifiez d\'abord votre code PIN dans le menu d\'accueil.</string>
     <string name="home_sim_not_accessible">Carte SIM inaccessible</string>
     <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Le forfait données mensuel est atteint. Pour pouvoir recomposer, modifiez ses valeurs ou réinitialisez la consommation.</string>
@@ -138,7 +138,7 @@
     <string name="device_manage_unblock_btn">Débloquer</string>
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
-    <string name="device_manage_set_name_failed">Échec de paramétrage</string>
+    <string name="device_manage_set_name_failed">Réglez Échec!</string>
 	<string name="device_manage_name_empty">Le nom du dispositif n’est pas valide.</string>
     <!-- connect device end -->
     <!-- microsd start -->
@@ -149,7 +149,7 @@
     <string name="microsd_no_sdcard">Insérez une carte SD !</string>
     <!-- microsd end -->
     <!-- setting start -->
-    <string name="setting_wifi">WiFi</string>
+    <string name="setting_wifi">Wi-Fi</string>
     <string name="setting_account">Compte</string>
     <string name="setting_network">Réseau</string>
     <string name="setting_power">Économie d’énergie</string>
@@ -160,8 +160,8 @@
     <string name="setting_device">Appareil</string>
     <string name="setting_about">À propos</string>
     <string name="setting_backup">Sauvegarde et restauration</string>
-    <string name="setting_text_2point4G_wifi">2.4G WiFi</string>
-    <string name="setting_text_5G_wifi">5G WiFi</string>
+    <string name="setting_text_2point4G_wifi">2.4G Wi-Fi</string>
+    <string name="setting_text_5G_wifi">5G Wi-Fi</string>
     <string name="setting_text_ssid">SSID:</string>
     <string name="setting_text_ssid_broadcast">Diffusion SSID</string>
     <string name="setting_text_passwrod">Mot de passe :</string>
@@ -187,7 +187,7 @@
     <string name="setting_title_about">À propos</string>
     <string name="setting_power_smart">Prédictif</string>
     <string name="setting_power_wifi">Mise en veille du Wi-Fi</string>
-    <string name="setting_power_wifi_description">La connexion Wi-Fi se désactivera automatiquement si elle reste en veille 30 minutes. Appuyez sur une touche pour la réactiver.</string>
+    <string name="setting_power_wifi_description">Wi-Fi se éteint automatiquement si la connexion est inactive pendant 30 minutes, appuyez sur une touche pour activer.</string>
     <string name="setting_backup_description">Sauvegardez la configuration.</string>
     <string name="setting_backup_btn_backup">Sauvegarder</string>
     <string name="setting_restore_description">Restaurez la configuration.</string>
@@ -338,7 +338,7 @@
     <string name="puk_code_label">Code PUK:</string>
     <string name="puk_remain_three_times">Tentatives restantes : 3.</string>
     <string name="puk_new_pin_label">Nouveau code PIN:</string>
-    <string name="puk_confirm_pin_label">Confirmation :</string>
+    <string name="puk_confirm_pin_label">PIN confirmé:</string>
     <string name="puk_format_wrong_msg">Le code PUK doit comporter 8 chiffres.</string>
     <string name="puk_error_waring_title">Le code PUK est incorrect !</string>
     <string name="error_info">Erreur</string>
@@ -365,7 +365,7 @@
     <string name="login_kickoff_logout_successful">Désolé, vous venez de vous faire déconnecter !</string>
     <string name="change_password_successful">Changement de mot de passe effectué</string>
     <string name="wrong_current_password">Le mot de passe est incorrect !</string>
-    <string name="change_password_failed">Échec de changement de mot de passe !</string>
+    <string name="change_password_failed">Échec de changement de mot de passe!</string>
     <string name="inconsistent_new_password">Nouveau mot de passe différent !</string>
     <string name="input_current_password">Saisissez votre mot de passe !</string>
     <string name="change_passowrd_invalid_password">Le mot de passe doit être de 4–16 caractères.</string>
@@ -437,7 +437,7 @@
     <string name="operation_download">Télécharger</string>
     <string name="operation_delete">Supprimer</string>
     <string name="operation_delete_confirm_message">Confirmer la suppression ?</string>
-    <string name="operation_deleting">Deleting...</string>
+    <string name="operation_deleting">Suppression de …</string>
     <string name="operation_info">Infos</string>
     <string name="operation_move">Déplacer</string>
     <string name="operation_move_to">Déplacer vers</string>
@@ -490,7 +490,7 @@
     <string-array name="succeed_desc">
         <item>Création du dossier effectuée ! </item>
     </string-array>
-    <string name="download_text_dling">Téléchargement…</string>
+    <string name="download_text_dling">téléchargement...</string>
     <string name="download_text_path">Chemin :</string>
     <!-- FTP FILE END -->
     <!-- SMART WIDGET START -->
@@ -513,41 +513,50 @@
     </string-array>
 	<string name="enable_sd_card">Enable SD card</string>
     <string name="sms_unread_num">(%1$d)</string>
-    <string name="confirm_folder_replace">confirm replace</string>
-    <string name="confirm_folder_content">File name already exists!</string>
-    <string name="no_file">Empty directory</string>
-    <string name="added_favorite">Added to Favorites</string>
+    <string name="confirm_folder_replace">Confirmer remplacer</string>
+    <string name="confirm_folder_content">Le nom du fichier existe déjà.</string>
+    <string name="no_file">Répertoire vide</string>
+    <string name="added_favorite">Ajouté aux favoris</string>
     <string name="category_favorite">Favorites</string>
-    <string name="file_info_canwrite">Writable:</string>
-    <string name="file_info_ishidden">Hidden:</string>
+    <string name="file_info_canwrite">Écriture:</string>
+    <string name="file_info_ishidden">Caché:</string>
     <string name="file_info_modified">Modified:</string>
-    <string name="install_failed">Installation failed</string>
-    <string name="install_successful">Installation successful</string>
-    <string name="instruction_pre">Start service to enable FTP server</string>
-    <string name="pref_show_real_path_summary">Show real path in navigation bar</string>
-    <string name="no_wifi">No Wi-Fi network</string>
-    <string name="pref_show_real_path">Display real path</string>
-    <string name="no_wifi_hint">No Wi-Fi network, press to check WiFi settings</string>
-    <string name="operation_cancel_selectall">Deselect All</string>
-    <string name="operation_favorite">Add to Favorites</string>
-    <string name="operation_hide_sys">Hide hidden files</string>
-    <string name="operation_unfavorite">Remove from Favorites</string>
-    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g>Available</string>
-    <string name="removed_favorite">Removed from Favorites</string>
-    <string name="sd_card_size">SD Size: <xliff:g id="total_size">%1$s</xliff:g></string>
+    <string name="install_failed">L\'installation a échoué</string>
+    <string name="install_successful">Installation complétée</string>
+    <string name="instruction_pre">Démarrez le service pour activer le serveur FTP</string>
+    <string name="pref_show_real_path_summary">Afficher le chemin réel dans la barre de navigation</string>
+    <string name="no_wifi">Pas de réseau Wi-Fi</string>
+    <string name="pref_show_real_path">Afficher le chemin réel</string>
+    <string name="no_wifi_hint">Pas de réseau Wi-Fi, appuyez sur pour vérifier les paramètres Wi-Fi</string>
+    <string name="operation_cancel_selectall">Tout déselectionner</string>
+    <string name="operation_favorite">Ajouter aux Favoris</string>
+    <string name="operation_hide_sys">Masquer les fichiers cachés</string>
+    <string name="operation_unfavorite">Retirer des favoris</string>
+    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g>Disponible</string>
+    <string name="removed_favorite">Supprimé des Favoris</string>
+    <string name="sd_card_size">Taille SD: <xliff:g id="total_size">%1$s</xliff:g></string>
     <string name="search_hint">Search Files</string>
     <string name="search_title">Search Files</string>
-    <string name="start_server">Start Service</string>
-    <string name="stop_server">Stop Service</string>
-    <string name="storage_warning">External storage is not available or cannot be read</string>
+    <string name="start_server">Le start - service</string>
+    <string name="stop_server">Arrête de service</string>
+    <string name="storage_warning">Le stockage externe n\'est pas disponible ou ne peut pas être lu</string>
     <string name="tab_category">Browse</string>
     <string name="wifi_state">WLAN Status</string>
-    <string name="favourite_root">Root</string>
-    <string name="favorite_ringtone">Ringtone</string>
-    <string name="menu_setting">Preferences</string>
-    <string name="preference_title">General Settings</string>
+    <string name="favourite_root">Racine</string>
+    <string name="favorite_ringtone">Sonnerie</string>
+    <string name="menu_setting">Préférences</string>
+    <string name="preference_title">Réglages généraux</string>
     <string name="str_LTE">LTE</string>
+    <string name="str_power_save_description">Tous les LED s’éteignent automatiquement lorsqu’il n’y a pas d’accès Wi-Fi ou de manipulation au delà de 30s.</string>
 
-    <string name="str_power_save_description">Toutes les voyants s\'éteignent automatiquement à l\'exception du voyant d\'alimentation en cas d\'absence d\'accès WI-FI ou de fonctionnement manuel pendant 30 s.</string>
+  <string name="str_phone_number">Numéro de telephone:</string>
+
+  <string name="str_data_usage">La conso de données est approximative. Pour avoir la conso de données actuelle, veuillez contacter votre opérateur de réseau.</string>
+  <string name="str_4G_LTE">LTE 4G</string>
+
+  <string name="setting_wep_mode_array">
+      <item>ouvrir</item>
+      <item>partager</item>
+  </string>
 
 </resources>

@@ -175,7 +175,7 @@
     <string name="setting_wifi_password_wpa_psw_tip">Wi-Fi Password:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Encryption Type:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wi-Fi Password:</string>
-    <string name="setting_wep_password_error_prompt">Wep Key is 5-13 ASCII characters, or 10-26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32–127, except for: , \" : ;&amp;\.</string>
+    <string name="setting_wep_password_error_prompt">WEP Key is 5-13 ASCII characters, or 10-26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32–127, except for: , \" : ;&amp;\.</string>
     <string name="setting_wpa_password_error_prompt">The WPA Pre–Shared Key (PSK) should be 8–63 ASCII characters and WPA PSK should be ASCII characters ranging from 32–127, except for: , \" : ;&amp;\.</string>
     <string name="setting_password_error_prompt">Change Wi-Fi Password Error, please retry after a few minutes!</string>
     <string name="setting_disable_password_error_prompt">Couldn\'t disable Wi-Fi Password</string>
@@ -188,7 +188,6 @@
     <string name="setting_title_about">About</string>
     <string name="setting_power_smart">Smart</string>
     <string name="setting_power_wifi">Wi-Fi Sleep</string>
-
     <string name="setting_backup_description">Back up the configuration.</string>
     <string name="setting_backup_btn_backup">Back up</string>
     <string name="setting_restore_description">Restore the configuration.</string>
@@ -230,7 +229,7 @@
     <string name="setting_device_btn_restart">Restart</string>
     <string name="setting_device_btn_reset">Reset</string>
     <string name="setting_device_upgrade_system">Update System</string>
-    <string name="setting_device_backup_and_reset">Back up &amp; reset</string>
+    <string name="setting_device_backup_and_reset">Back up&amp;reset</string>
     <string name="setting_device_pin_code">PIN Code</string>
     <string name="setting_device_web_version">Web Version</string>
     <string name="setting_device_pin_code_edit">PIN Enable</string>
@@ -262,7 +261,7 @@
     <string name="setting_network_wifi_network_title">Wi-Fi Network</string>
     <string name="setting_network_profile_list">Profile List</string>
     <string name="setting_network_add_profile">Add Profile</string>
-    <string name="setting_network_disconnect_first">Disconect your network first</string>
+    <string name="setting_network_disconnect_first">Disconnect your network first</string>
     <string name="setting_network_try_again">Disconnecting,  try again later</string>
     <string name="setting_network_profile_management">Profile Management</string>
     <string name="setting_network_profile_management_profile_name">*Profile Name</string>
@@ -280,7 +279,7 @@
     <string name="setting_network_profile_dial_number_wrong">The length of your dial number cannot be larger than 24</string>
     <string name="setting_network_profile_dial_number_empty">Dial number cannot be empty</string>
     <string name="setting_network_profile_input_profile_name">Profile name cannot be empty</string>
-    <string name="setting_network_profile_error_profile_name">Profile name cannot inlude special tokens</string>
+    <string name="setting_network_profile_error_profile_name">Profile name can\'t include special tokens</string>
     <string name="setting_network_mode_auto">Auto</string>
     <string name="setting_network_mode_manual">Manual</string>
     <string name="setting_network_mode_2G_only">2G Only</string>
@@ -328,14 +327,14 @@
     <string name="dialog_warning_5g">If your phone does not support 5G, you might not be able to use all 5G features.</string>
     <string name="dialog_change_to_5g">Change your Wi-Fi to 5G</string>
     <string name="dialog_warning_title">Warning</string>
-    <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code has been entered 3 times, please enter the  personal unlock key (PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled perminantly.</string>
+    <string name="dialog_warning_error_pin_code_error_3times">Incorrect PIN code has been entered 3 times, please enter the  personal unlock key (PUK). If you enter incorrect PUK 10 times, this SIM card will be disabled permanently.</string>
     <!-- Dialog end -->
     <!-- replace folder dialog start -->
     <string name="confirm_folder_replace">Confirm replace</string>
     <string name="confirm_folder_content">File name already exists.</string>
     <!-- replace folder dialog end -->
     <!-- PIN start -->
-    <string name="puk_prompt_str">The comfirmed PIN code should be the same as new PIN code.</string>
+    <string name="puk_prompt_str">The confirmed PIN code should be the same as new PIN code.</string>
     <string name="pin_title">Enter the PIN code</string>
     <string name="pin_code_label">PIN Code:</string>
     <string name="pin_error_waring_title">The PIN code is wrong.</string>
@@ -391,8 +390,8 @@
     <string name="video_loading">Loading…</string>
     <string name="video_speed_unit_second">S</string>
     <string name="buffering">Loading…</string>
-    <string name="mp_unknown_artist">Unknow Artist</string>
-    <string name="mp_unknown_album">Unknow Album</string>
+    <string name="mp_unknown_artist">Unknown Artist</string>
+    <string name="mp_unknown_album">Unknown Album</string>
     <string name="mp_cant_find_lyrics">the lyrics can\'t be found</string>
     <string name="mp_lyrics_tips">*** the lyrics come from the internet, use as reference ***</string>
     <string name="ftp_not_open">Open FTP function in settings.</string>
@@ -474,7 +473,7 @@
     <string name="menu_exit">Exit</string>
     <string name="pref_primary_folder">Home folder</string>
     <string name="pref_read_root">Read root</string>
-    <string name="default_primary_folder">/mnt/sdcard</string>
+    <string name="default_primary_folder">/mnt/SD card</string>
     <string name="pref_primary_folder_summary">The folder that appears when the app starts, and current value is <xliff:g id="string">%1$s</xliff:g></string>
     <string name="custom_delete_dlg_text1">Delete</string>
     <string name="custom_delete_dlg_text2">Selected file will be deleted?</string>
@@ -549,11 +548,10 @@
     <string name="pref_show_real_path_summary">Show real path in navigation bar</string>
     <string name="str_LTE">LTE</string>
     <string name="str_4G_LTE">4G LTE</string>
-
     <!--
     fix bug 5118939 by zhanghao 20170828, the function is useful for APP, but no function for WEB UI, so only change the string,
     no remove the function on APP.
-    <string name="login_other_user_logined_error_forcelogin_msg">Other user already logged in, do you still want to login? This will kick the other user off.</string>
+    <string name="login_other_user_logined_error_forcelogin_msg">There is already an admin session opened. Please close this session before opening a new one.</string>
     -->
     <string name="login_other_user_logined_error_forcelogin_msg">There is already an admin session opened. Please close this session before opening a new one.</string>
     <string name="str_data_usage">Data usage is approximate. For actual usage, please refer to your network operator.</string>

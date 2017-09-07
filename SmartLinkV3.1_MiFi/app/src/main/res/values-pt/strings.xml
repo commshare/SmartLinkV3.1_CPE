@@ -187,7 +187,6 @@
     <string name="setting_title_about">Sobre</string>
     <string name="setting_power_smart">Inteligente</string>
     <string name="setting_power_wifi">Suspensão do Wi-Fi</string>
-
     <string name="setting_backup_description">Efetuar cópia de segurança da configuração.</string>
     <string name="setting_backup_btn_backup">Cópia de segurança</string>
     <string name="setting_restore_description">Restaure a configuração.</string>
@@ -299,7 +298,7 @@
     <string name="setting_wifi_wpa_or_wpa2">WPA/WPA2</string>
     <string name="setting_wifi_aes">AES</string>
     <string name="setting_wifi_tkip">TKIP</string>
-    <string name="setting_wifi_open">Aberta</string>
+    <string name="setting_wifi_open">Abrir</string>
     <string name="setting_wifi_share">Partilhar</string>
     <string name="setting_wifi_save">Guardar</string>
     <string name="setting_wifi_ssid_can_not_be_empty">O SSID não pode estar em branco.</string>
@@ -490,7 +489,7 @@
     <string-array name="succeed_desc">
         <item>Criação da pasta concluída</item>
     </string-array>
-    <string name="download_text_dling">A transferir...</string>
+    <string name="download_text_dling">a transferir...</string>
     <string name="download_text_path">Caminho:</string>
     <!-- FTP FILE END -->
     <!-- SMART WIDGET START -->
@@ -547,6 +546,17 @@
     <string name="menu_setting">Preferências</string>
     <string name="preference_title">Definições gerais</string>
     <string name="str_LTE">LTE</string>
-    <string name="str_power_save_description">Todos os LED apagam automaticamente exceto o LED de alimentação quando não existe acesso ao Wi-Fi ou operação manual durante 30 seg.</string>
-    <string name="setting_power_wifi_description">Todos los LEDs se apagarán automáticamente, excepto el LED de batería, cuando no haya acceso Wi-Fi o no haya acceso manual durante 30 segundos.</string>
+    <string name="str_power_save_description">Todos os LEDs apagam automaticamente, exceto o LED de alimentação, quando não existe acesso ao Wi-Fi ou operação manual durante 30 seg.</string>
+    <string name="setting_power_wifi_description">O Wi-Fi irá desligar automaticamente se a ligação estiver inativa durante 30 min. Prima qualquer tecla para ativar.</string>
+
+  <string name="str_phone_number">Número de telephone:</string>
+
+  <string name="str_data_usage">A utilização de dados é aproximada. Para saber qual a utilização real, consulte o seu operador.</string>
+  <string name="str_4G_LTE">4G LTE</string>
+
+  <string name="setting_wep_mode_array">
+      <item>open</item>
+      <item>share</item>
+  </string>
+
 </resources>

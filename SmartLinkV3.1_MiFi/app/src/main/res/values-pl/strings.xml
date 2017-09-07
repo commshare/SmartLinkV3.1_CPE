@@ -189,7 +189,7 @@
     <string name="setting_power_wifi">Wi-Fi w trybie uśpienia</string>
     <string name="setting_power_wifi_description">Wi-Fi wyłączy się automatycznie, jeżeli połączenie będzie bezczynne przez 30 minut. Wciśnij dowolny przycisk, aby włączyć Wi-Fi.</string>
     <string name="setting_backup_description">Tworzenie kopii zapasowej konfiguracji.</string>
-    <string name="setting_backup_btn_backup">Kopia zapasowa</string>
+    <string name="setting_backup_btn_backup">Utwórz kopię zapasową</string>
     <string name="setting_restore_description">Przywracanie konfiguracji.</string>
     <string name="setting_restore_btn_restore">Przywróć</string>
     <string name="setting_about_version">Wersja</string>
@@ -490,7 +490,7 @@
     <string-array name="succeed_desc">
         <item>Folder został utworzony </item>
     </string-array>
-    <string name="download_text_dling">Pobieranie...</string>
+    <string name="download_text_dling">pobieranie...</string>
     <string name="download_text_path">Ścieżka:</string>
     <!-- FTP FILE END -->
     <!-- SMART WIDGET START -->
@@ -547,6 +547,16 @@
     <string name="menu_setting">Preferencje</string>
     <string name="preference_title">Ustawienia ogólne</string>
     <string name="str_LTE">LTE</string>
-    <string name="str_power_save_description">W przypadku braku połączenia Wi-Fi lub naciśnięcia przycisku przez 30 s wszystkie diody LED oprócz diody zasilania zostaną automatycznie wyłączone.</string>
+    <string name="str_power_save_description">Wszystkie diody LED wyłączają się automatycznie, z wyjątkiem diody LED zasilania, jeśli nie ma dostępu Wi-Fi lub ręcznej operacji w ciągu 30 sekund.</string>
+
+  <string name="str_phone_number">Numer telefonu:</string>
+
+  <string name="str_data_usage">Użycie danych jest przybliżone. Informacje na temat rzeczywistego użytkowania można uzyskać od operatora sieci</string>
+  <string name="str_4G_LTE">4G LTE</string>
+
+  <string name="setting_wep_mode_array">
+      <item>otwórz</item>
+      <item>udostępnij</item>
+  </string>
 
 </resources>

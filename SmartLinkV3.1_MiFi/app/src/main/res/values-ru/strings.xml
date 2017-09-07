@@ -174,8 +174,8 @@
     <string name="setting_wifi_password_wpa_psw_tip">Ключ сети:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Тип безопасности:</string>
     <string name="setting_wifi_password_wep_psw_tip">Ключ сети:</string>
-    <string name="setting_wep_password_error_prompt">Ключ WEP должен содержать 5 или 13 символов ASCII или 10 или 26 шестнадцатеричных символов  и должен состоять из символов ASCII из диапазона 32-127. Нельзя использовать символы: , \" : ; &amp;.</string>
-    <string name="setting_wpa_password_error_prompt">Предварительный ключ (PSK) WPA должен содержать от 8 до 63 символов ASCII и должен состоять из символов ASCII из диапазона 32-127. Нельзя использовать символы: , \" : ; &amp;.</string>
+    <string name="setting_wep_password_error_prompt">Ключ WEP должен содержать 5 или 13 символов ASCII или 10 или 26 шестнадцатеричных символов  и должен состоять из символов ASCII из диапазона 32-127. Нельзя использовать символы: , \" : ;&amp;.</string>
+    <string name="setting_wpa_password_error_prompt">Предварительный ключ (PSK) WPA должен содержать от 8 до 63 символов ASCII и должен состоять из символов ASCII из диапазона 32-127. Нельзя использовать символы: , \" : ;&amp;.</string>
     <string name="setting_password_error_prompt">Не удалось изменить ключ сети. Повторите попытку.</string>
     <string name="setting_disable_password_error_prompt">Не удалось отключить ключ сети</string>
     <string name="setting_titlebar_text_edit">Изменить</string>
@@ -196,11 +196,11 @@
     <string name="setting_about_official_website">Официальный веб-сайт</string>
     <string name="setting_about_management_page">Страница управления</string>
     <string name="setting_about_copyright">Все права защищены. © 2014–2016 TCL Communication Ltd.</string>
-    <string name="setting_upgrade_device_version">Текущая версия ПО устройства: </string>
+    <string name="setting_upgrade_device_version">Текущая версия ПО устройства:</string>
     <string name="setting_upgrade_new_device_version">Доступна новая версия ПО</string>
     <string name="setting_upgrade_btn_check">Проверить</string>
-    <string name="setting_upgrade_current_app_version">Текущая версия приложения: </string>
-    <string name="setting_upgrade_new_app_version">Доступна новая версия ПО: </string>
+    <string name="setting_upgrade_current_app_version">Текущая версия приложения:</string>
+    <string name="setting_upgrade_new_app_version">Доступна новая версия ПО:</string>
     <string name="setting_upgrade_check_failed">Проверка не удалась</string>
     <string name="setting_upgrade_no_new_version">У вас установлена самая новая версия ПО</string>
     <string name="setting_upgrade_no_connection">Нет подключения</string>
@@ -299,7 +299,7 @@
     <string name="setting_wifi_wpa_or_wpa2">WPA/WPA2</string>
     <string name="setting_wifi_aes">AES</string>
     <string name="setting_wifi_tkip">TKIP</string>
-    <string name="setting_wifi_open">Не защищена</string>
+    <string name="setting_wifi_open">не защищена</string>
     <string name="setting_wifi_share">Общий доступ</string>
     <string name="setting_wifi_save">Сохранить</string>
     <string name="setting_wifi_ssid_can_not_be_empty">Имя сети (SSID) не может быть пустым.</string>
@@ -490,7 +490,7 @@
     <string-array name="succeed_desc">
         <item>Création du dossier effectuée ! </item>
     </string-array>
-    <string name="download_text_dling">Загрузка…</string>
+    <string name="download_text_dling">загрузка…</string>
     <string name="download_text_path">Путь:</string>
     <!-- FTP FILE END -->
     <!-- SMART WIDGET START -->
@@ -547,6 +547,16 @@
     <string name="menu_setting">Предпочтения</string>
     <string name="preference_title">Основные настройки</string>
     <string name="str_LTE">LTE</string>
-    <string name="str_power_save_description">Все светодиодные индикаторы будут выключены автоматически, кроме индикатора питания, при отсутствии доступа к Wi-Fi или других действий в течении 30 сек.</string>
+    <string name="str_power_save_description">Все светодиоды погаснет автоматически, кроме светодиода питания, когда нет доступа Wi-Fi или ручного управления в течение 30 секунд.</string>
+
+  <string name="str_phone_number">Номер телефона:</string>
+
+  <string name="str_data_usage">Использование данных является приблизительным. Для фактического использования обратитесь к оператору сотовой сети</string>
+  <string name="str_4G_LTE">4G LTE</string>
+
+  <string name="setting_wep_mode_array">
+      <item>не защищена</item>
+      <item>общий ключ</item>
+  </string>
 
 </resources>
