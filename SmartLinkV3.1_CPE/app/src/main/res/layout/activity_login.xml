@@ -60,6 +60,7 @@
             android:src="@drawable/general_btn_remember_nor" />
 
         <TextView
+            android:id="@+id/tv_remember_psd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_10dip"

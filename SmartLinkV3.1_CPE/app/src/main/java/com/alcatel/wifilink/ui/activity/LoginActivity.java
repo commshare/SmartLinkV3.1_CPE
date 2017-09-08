@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     private TextView mTv_forgotPsd;
     private PopupWindows resetPop;
     private ProgressDialog progressPop;
+    private TextView tvRemberPsd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         ischeck = SharedPrefsUtil.getInstance(this).getBoolean(Cons.LOGIN_CHECK, false);
         // mRemainingTimes = getIntent().getIntExtra("remain_times", 0);
         mApplyBtn = (Button) findViewById(R.id.login_apply_btn);
+        mApplyBtn.setText(getString(R.string.login_login_btn));
         mApplyBtn.setOnClickListener(this);
 
         mPasswdEdit = (EditText) findViewById(R.id.login_edit_view);
@@ -94,7 +96,11 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         });
 
         mPromptText = (TextView) findViewById(R.id.tv_time_remain);
+        mPromptText.setText(getString(R.string.login_enter_password_tip));
         // updatePromptText(mRemainingTimes);
+
+        tvRemberPsd = (TextView) findViewById(R.id.tv_remember_psd);
+        tvRemberPsd.setText(getString(R.string.login_remenber_psd));
 
         // 记住密码
         rl_remenberPsd = (RelativeLayout) findViewById(R.id.rl_login_remenberPsd);
@@ -104,6 +110,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
         // 忘记密码
         mTv_forgotPsd = (TextView) findViewById(R.id.tv_login_forgotPsd);
+        mTv_forgotPsd.setText(getString(R.string.login_forgot_password));
         mTv_forgotPsd.setOnClickListener(this);
     }
 
@@ -171,7 +178,9 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     progressPop.dismiss();
                 }
                 ToastUtil_m.show(LoginActivity.this, getString(R.string.setting_reset_success));
-                ChangeActivity.toActivity(LoginActivity.this, LoadingActivity.class, false, true, false, 0);
+                // ChangeActivity.toActivity(LoginActivity.this, LoadingActivity.class, false, true, false, 0);
+                LoginActivity.this.finish();
+                OtherUtils.kill();
             }
 
             @Override

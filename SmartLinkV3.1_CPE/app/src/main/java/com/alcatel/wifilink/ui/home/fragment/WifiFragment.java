@@ -401,7 +401,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     //wep
                 } else if (newSecurity2GMode == 1) {
                     if (!WepPsdHelper.psdMatch(newKey2G)) {
-                        ToastUtil_m.show(mContext, getString(R.string.setting_wep_password_error_prompt));
+                        ToastUtil_m.showLong(mContext, getString(R.string.setting_wep_password_error_prompt));
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(newEncryption2G);
@@ -449,7 +449,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     //wep
                 } else if (newSecurity5GMode == 1) {
                     if (!WepPsdHelper.psdMatch(newKey5G)) {
-                        ToastUtil_m.show(mContext, getString(R.string.setting_wep_password_error_prompt));
+                        ToastUtil_m.showLong(mContext, getString(R.string.setting_wep_password_error_prompt));
                         return;
                     }
                     mEditedSettings.getAP5G().setWepType(newEncryption5G);

@@ -38,7 +38,7 @@
                 android:background="@drawable/selector_common_button"
                 android:text="@string/device_manage_block_btn"
                 android:textColor="@color/color_white"
-                android:textSize="14sp" />
+                android:textSize="10sp" />
 
             <RelativeLayout
                 android:id="@+id/device_name_layout"

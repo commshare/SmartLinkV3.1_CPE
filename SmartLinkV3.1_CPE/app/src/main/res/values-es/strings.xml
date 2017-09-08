@@ -160,8 +160,9 @@
     <string name="setting_wifi_password_security_tip">Tipo de seguridad:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Tipo de encriptación:</string>
     <string name="setting_wifi_password_wep_psw_tip">Contraseña Wi-Fi:</string>
-    <string name="setting_wep_password_error_prompt">La clave WEP debe contener entre 5 y 13 caracteres ASCII, o bien entre 10 
-        y 26 caracteres hexadecimales, y debe estar formada por caracteres ASCII entre 32 y 127, sin incluir: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">La clave WEP debe contener entre 5 o 13 caracteres ASCII, o bien entre 10 
+        o 26 caracteres hexadecimales, y debe estar formada por caracteres ASCII entre 32 y 127, sin incluir: , \&quot; : ; &amp; 
+        \\.</string>
     <string name="setting_wpa_password_error_prompt">La clave precompartida (PSK) del WPA debe contener entre 8 y 63 caracteres y debe estar formada por caracteres ASCII entre 32 y 127, sin incluir: , \&quot; : ; &amp; \\.</string>
     <string name="done">Aceptar</string>
     <string name="setting_power_smart">Inteligente</string>

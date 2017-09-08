@@ -390,7 +390,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                 } else if (newSecurity2GMode == 1) {
                     // if (newKey2G.length() < 5 || newKey2G.length() > 13) {
                     if (!WepPsdHelper.psdMatch(newKey2G)) {
-                        ToastUtil_m.show(mContext, R.string.setting_wep_password_error_prompt);
+                        ToastUtil_m.showLong(mContext, getString(R.string.setting_wep_password_error_prompt));
                         return;
                     }
                     mEditedSettings.getAP2G().setWepType(newEncryption2G);
@@ -439,7 +439,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                 } else if (newSecurity5GMode == 1) {
                     // if (newKey5G.length() < 5 || newKey5G.length() > 13) {
                     if (!WepPsdHelper.psdMatch(newKey5G)) {
-                        ToastUtil_m.show(mContext, getString(R.string.setting_wep_password_error_prompt));
+                        ToastUtil_m.showLong(mContext, getString(R.string.setting_wep_password_error_prompt));
                         return;
                     }
                     mEditedSettings.getAP5G().setWepType(newEncryption5G);

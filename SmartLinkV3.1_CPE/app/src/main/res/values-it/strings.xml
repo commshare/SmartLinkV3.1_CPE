@@ -17,7 +17,8 @@
     <string name="qs_wifi_ssid_prompt">Il SSID deve contenere da 1 a 32 caratteri.</string>
     <string name="qs_item_wifi_passwd">Password Wi-Fi</string>
     <string name="qs_wifi_passwd_prompt">La password deve contenere da 8 a 63 caratteri.</string>
-    <string name="qs_wifi_wep_passwd_prompt">La password deve contenere da 5 a 13 caratteri ASCII, oppure da 10 a 26 cifre</string>
+    <string name="qs_wifi_wep_passwd_prompt">La password deve contenere da 5 o 13 caratteri ASCII, oppure da 10 o 26 
+        cifre</string>
     <string name="qs_completed">Configurazione completata</string>
     <string name="qs_summary">Il dispositivo è pronto per l\'uso.</string>
     <string name="puk_code_label">Codice PUK</string>

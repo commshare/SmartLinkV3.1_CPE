@@ -160,8 +160,8 @@
     <string name="setting_wifi_password_security_tip">Security Type:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Encryption Type:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wi-Fi Password:</string>
-    <string name="setting_wep_password_error_prompt">WEP Key is 5 - 13 ASCII characters, or 10 - 26 hexadecimal digits and WEP 
-        Key should be ASCII characters ranging from 32–127, except for: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">WEP Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits 
+        and WEP Key should be ASCII characters ranging from 32 - 127, except for: , \&quot; : ; &amp; \\.</string>
     <string name="setting_wpa_password_error_prompt">The WPA Pre–Shared Key (PSK) should be 8–63 ASCII characters and WPA PSK should be ASCII characters ranging from 32–127, except for: , \&quot; : ; &amp; \\.</string>
     <string name="done">Done</string>
     <string name="setting_power_smart">Smart</string>
@@ -590,6 +590,6 @@
     <string name="if_blank_data_unlimited">(if blank, data unlimited)</string>
     <string name="Blocked">Blocked</string>
     <string name="mtu_not_match">MTU must between 576 and 1500</string>
-    
+
     <string name="Set_connected_device_black_failed">Set connected device black failed.</string>
 </resources>

@@ -160,8 +160,8 @@
     <string name="setting_wifi_password_security_tip">نوع الأمان:</string>
     <string name="setting_wifi_password_wep_encryption_tip">نوع التشفير:</string>
     <string name="setting_wifi_password_wep_psw_tip">كلمة مرور Wi-Fi:</string>
-    <string name="setting_wep_password_error_prompt">مفتاح WEP Key هو 5 - 13 رمزًا من رموز ASCII، أو 10 - 26 رقمًا من الأرقام السداسية العشرية
-        وينبغي أن يتكون WEP Key من رموز ASCII تتراوح من 32 إلى 127، باستثناء: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">مفتاح WEP Key هو 5 أو 13 رمزًا من رموز ASCII، أو 10 أو 26 رقمًا من الأرقام السداسية العشرية
+        وينبغي أن يتكون WEP Key من رموز ASCII تتراوح من 32 - 127، باستثناء: , \&quot; : ; &amp; \\.</string>
     <string name="setting_wpa_password_error_prompt">يجب أن يتكون مفتاح WPA Pre–Shared Key ‏(PSK) من 8 إلى 63 رمزًا من رموز ASCII وينبغي أن يتكون مفتاح WPA PSK من رموز ASCII تتراوح من 32 إلى 127، باستثناء: , \&quot; : ; &amp; \\.</string>
     <string name="done">تم</string>
     <string name="setting_power_smart">ذكي</string>
