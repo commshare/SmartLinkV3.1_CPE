@@ -160,9 +160,7 @@
     <string name="setting_wifi_password_security_tip">Sicherheitstyp:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Verschlüsselungstyp:</string>
     <string name="setting_wifi_password_wep_psw_tip">WLAN-Passwort:</string>
-    <string name="setting_wep_password_error_prompt">Der WEP-Schlüssel besteht aus 5 oder 13 ASCII-Zeichen bzw. 10 oder 
-        26 hexadezimalen Ziffern. Der WEP-Schlüssel sollte aus 32 - 127 ASCII-Zeichen bestehen. Ausgenommen sind folgende 
-        Zeichen: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">Der WEP-Schlüssel besteht aus 5 oder  13 ASCII-Zeichen bzw. 10 oder  26 hexadezimalen Ziffern. Der WEP-Schlüssel sollte aus 32 bis 127 ASCII-Zeichen bestehen.</string>
     <string name="setting_wpa_password_error_prompt">Der WPA-Pre-Shared Key (PSK) sollte aus 8 bis 63 ASCII-Zeichen bestehen. Der WPA-PSK-Schlüssel sollte aus 32 bis 127 ASCII-Zeichen bestehen. Ausgenommen sind folgende Zeichen: , \&quot; : ; &amp; \\.</string>
     <string name="done">Fertig</string>
     <string name="setting_power_smart">Smart</string>
@@ -591,4 +589,5 @@
     <string name="if_blank_data_unlimited">(Wenn leer, unbegrenzte Daten)</string>
     <string name="Blocked">Blockiert</string>
     <string name="mtu_not_match">MTU muss zwischen 576 und 1500 liegen</string>
+    <string name="Set_connected_device_black_failed">Dieses Gerät kann nicht blockiert werden</string>
 </resources>

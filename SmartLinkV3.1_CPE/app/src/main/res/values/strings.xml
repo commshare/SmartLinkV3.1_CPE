@@ -590,6 +590,5 @@
     <string name="if_blank_data_unlimited">(if blank, data unlimited)</string>
     <string name="Blocked">Blocked</string>
     <string name="mtu_not_match">MTU must between 576 and 1500</string>
-
-    <string name="Set_connected_device_black_failed">Set connected device black failed.</string>
+    <string name="Set_connected_device_black_failed">Set connected device block failed.</string>
 </resources>

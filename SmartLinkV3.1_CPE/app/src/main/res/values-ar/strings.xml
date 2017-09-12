@@ -590,4 +590,5 @@
     <string name="if_blank_data_unlimited">(إذا كان فارغًا، فالبيانات غير محدودة)</string>
     <string name="Blocked">محظور</string>
     <string name="mtu_not_match">يجب أن يكون MTU بين 576 و 1500</string>
+    <string name="Set_connected_device_black_failed">لا يمكن حظر هذا الجهاز</string>
 </resources>

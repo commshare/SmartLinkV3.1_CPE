@@ -160,8 +160,7 @@
     <string name="setting_wifi_password_security_tip">Tip bezbednosti.</string>
     <string name="setting_wifi_password_wep_encryption_tip">Tip šifrovanja:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wi-Fi lozinka:</string>
-    <string name="setting_wep_password_error_prompt">WEP kod ima 5 | 13 ASCII znakova, ili 10 | 26 heksadecimalnih cifara i WEP
-        kod treba da ima  ASCII znakove od 32 do 127, osim: , \&quot; : ; &amp; \\.</string>
+    <string name="setting_wep_password_error_prompt">WEP kod ima 5 ili 13 ASCII znakova, ili 10 ili 26 heksadecimalnih cifara i WEP kod treba da ima  ASCII znakove od 32 do 127, osim: , \": ;&amp;\\.</string>
     <string name="setting_wpa_password_error_prompt">WPA unapred deljeni kod (PSK) treba da ima 8- 63 ASCII znakova, a WPA PSK kod treba da ima  ASCII znakove od 32 do 127, osim: , \&quot; : ; &amp; \\.</string>
     <string name="done">Urađeno</string>
     <string name="setting_power_smart">Pametno</string>
@@ -590,4 +589,5 @@
     <string name="if_blank_data_unlimited">(Ako je prazno, prenos podataka nije ograničen)</string>
     <string name="Blocked">Blokiran</string>
     <string name="mtu_not_match">MTU mora da bude između  576 i 1500</string>
+    <string name="Set_connected_device_black_failed">Ne mogu da blokiraju ovaj uređaj</string>
 </resources>

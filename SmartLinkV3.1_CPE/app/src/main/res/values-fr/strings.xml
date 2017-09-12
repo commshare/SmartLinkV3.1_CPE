@@ -161,8 +161,7 @@
     <string name="setting_wifi_password_wep_encryption_tip">Type de chiffrement :</string>
     <string name="setting_wifi_password_wep_psw_tip">Mot de passe Wi-Fi :</string>
     <string name="setting_wep_password_error_prompt">La clé WEP doit comporter 5 ou 13 caractères ASCII ou 10 ou 26 chiffres 
-        hexadécimaux, et ces caractères ASCII doivent se limiter aux codes 32 - 127, à l\'exception de :  , \&quot; : ; &amp; \\
-        .</string>
+        hexadécimaux, et ces caractères ASCII doivent se limiter aux codes 32 à 127, à l\'exception de :  , \": ;&amp;\\.</string>
     <string name="setting_wpa_password_error_prompt">La clé prépartagée WPA (PSK) doit comporter 8 à 63 caractères ASCII qui doivent se limiter aux codes 32 à 127, à l\'exception de : , \&quot; : ; &amp; \\.</string>
     <string name="done">OK</string>
     <string name="setting_power_smart">Smart</string>
@@ -591,4 +590,5 @@
     <string name="if_blank_data_unlimited">Si info vide, la data est illimitée</string>
     <string name="Blocked">Bloqué</string>
     <string name="mtu_not_match">MTU doit être entre 575 et 1500</string>
+    <string name="Set_connected_device_black_failed">Impossible de bloquer cet appareil</string>
 </resources>

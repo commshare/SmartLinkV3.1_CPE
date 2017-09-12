@@ -11,7 +11,7 @@ public class Cons {
     public static final int NEED_ENCRYPT = 1;// 1:表示要加密 0:不需要加密
     public static String IP_PRE = "http://";
     public static String IP_SUFFIX = "/";
-    public static int AUTO_LOGOUT_PERIOD = 5 * 60 * 1000;
+    public static int AUTO_LOGOUT_PERIOD = 7 * 60 * 1000;
     public static int PERIOD = 5000;// 5秒获取
     public static String PAGE = "PAGE";// 主页的fragment切换标记
     public static String GATEWAY = "http://192.168.1.1";// 默认网关
