@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.DataUti;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.model.system.SystemInfo;
@@ -32,7 +36,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by qianli.ma on 2017/7/10.
@@ -44,6 +50,7 @@ public class OtherUtils {
     private OnHwVersionListener onHwVersionListener;
     private OnCustomizedVersionListener onCustomizedVersionListener;
     public static List<Object> timerList = new ArrayList<>();
+    public static List<Object> homeTimerList = new ArrayList<>();// 仅存放自动退出定时器
 
     /**
      * 线程自关
@@ -299,6 +306,22 @@ public class OtherUtils {
      * 停止全局定时器
      */
     public static void stopAutoTimer() {
+
+        for (Object o : homeTimerList) {
+            if (o instanceof TimerTask) {
+                TimerTask tk = (TimerTask) o;
+                tk.cancel();
+                tk = null;
+            }
+            if (o instanceof Timer) {
+                Timer t = (Timer) o;
+                t.cancel();
+                t.purge();
+                t = null;
+            }
+        }
+        homeTimerList.clear();
+
         if (HomeActivity.autoLogoutTask != null) {
             HomeActivity.autoLogoutTask.cancel();
             HomeActivity.autoLogoutTask = null;
@@ -314,13 +337,17 @@ public class OtherUtils {
     /**
      * 清除域
      */
-    public static void clearContexts() {
-        for (Context context : SmartLinkV3App.getContextInstance()) {
-            Activity ac = (Activity) context;
-            if (ac != null & !ac.isFinishing()) {
-                ac.finish();
+    public static void clearContexts(String clazz) {
+        List<Activity> contexts = SmartLinkV3App.getContextInstance();
+        for (Activity activity : contexts) {
+            if (activity.getClass().getSimpleName().equalsIgnoreCase(clazz)) {// 与指定的类相同--> 跳过
+                continue;
+            }
+            if (activity != null & !activity.isFinishing()) {
+                activity.finish();
             }
         }
+        contexts.clear();
     }
 
     /**
@@ -410,6 +437,54 @@ public class OtherUtils {
         }
     }
 
+    /**
+     * 切换语言
+     *
+     * @param activity
+     */
+    public static void transferLanguage(Activity activity) {
+        // 初始化PreferenceUtil
+        PreferenceUtil.init(activity);
+        // 根据上次的语言设置，重新设置语言
+        if (!"".equals(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""))) {
+            String language = PreferenceUtil.getString(Constants.Language.LANGUAGE, "");
+            // 设置应用语言类型
+            Resources resources = activity.getResources();
+            Configuration config = resources.getConfiguration();
+            DisplayMetrics dm = resources.getDisplayMetrics();
+            if (language.equals(Constants.Language.ENGLISH)) {
+                config.locale = Locale.ENGLISH;
+            } else if (language.equals(Constants.Language.ARABIC)) {
+                // 阿拉伯语
+                config.locale = new Locale(Constants.Language.ARABIC);
+            } else if (language.equals(Constants.Language.GERMENIC)) {
+                // 德语
+                config.locale = Locale.GERMANY;
+            } else if (language.equals(Constants.Language.ESPANYOL)) {
+                // 西班牙语
+                config.locale = new Locale(Constants.Language.ESPANYOL);
+            } else if (language.equals(Constants.Language.ITALIAN)) {
+                // 意大利语
+                config.locale = Locale.ITALIAN;
+            } else if (language.equals(Constants.Language.FRENCH)) {
+                // 法语
+                config.locale = Locale.FRENCH;
+            } else if (language.equals(Constants.Language.SERBIAN)) {
+                // 塞尔维亚
+                config.locale = new Locale(Constants.Language.SERBIAN);
+            } else if (language.equals(Constants.Language.CROATIAN)) {
+                // 克罗地亚
+                config.locale = new Locale(Constants.Language.CROATIAN);
+            } else if (language.equals(Constants.Language.SLOVENIAN)) {
+                // 斯洛文尼亚
+                config.locale = new Locale(Constants.Language.SLOVENIAN);
+            }
+            resources.updateConfiguration(config, dm);
+
+            // 保存设置语言的类型
+            PreferenceUtil.commitString(Constants.Language.LANGUAGE, language);
+        }
+    }
 
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
     public interface OnSwVersionListener {

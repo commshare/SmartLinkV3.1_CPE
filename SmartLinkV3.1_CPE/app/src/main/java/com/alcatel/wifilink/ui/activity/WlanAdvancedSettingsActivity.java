@@ -64,6 +64,24 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
         initViews();
     }
 
+    private void initArrays() {
+        mAllCountryNames = getResources().getStringArray(R.array.wlan_settings_country);
+        mMode2GStrings = getResources().getStringArray(R.array.wlan_settings_80211_2g);
+        mMode5GStrings = getResources().getStringArray(R.array.wlan_settings_80211_5g);
+        mBandwidth2GStrings = getResources().getStringArray(R.array.wlan_settings_bandwidth_2g);
+        mBandwidth5GStrings = getResources().getStringArray(R.array.wlan_settings_bandwidth_5g);
+        mChannel5gOne = getResources().getStringArray(R.array.Channel5g_one);
+        mChannel5gTwo = getResources().getStringArray(R.array.Channel5g_two);
+        mChannel5gThree = getResources().getStringArray(R.array.Channel5g_three);
+        mChannel5gfour = getResources().getStringArray(R.array.Channel5g_four);
+        mChannel5gfive = getResources().getStringArray(R.array.Channel5g_five);
+
+        String[] oneStrings = {"GB", "IT", "FR", "PT", "ES", "MX"};
+        String[] fiveStrings = new String[]{"US", "HK", "CN"};
+        mChannel5gFiveCountryCodes = Arrays.asList(oneStrings);
+        mChannel5gOneCountryCodes = Arrays.asList(fiveStrings);
+    }
+
     private void loadSettings() {
         Intent intent = getIntent();
         if (intent != null) {
@@ -239,23 +257,7 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
         return -1;
     }
 
-    private void initArrays() {
-        mAllCountryNames = getResources().getStringArray(R.array.wlan_settings_country);
-        mMode2GStrings = getResources().getStringArray(R.array.wlan_settings_80211_2g);
-        mMode5GStrings = getResources().getStringArray(R.array.wlan_settings_80211_5g);
-        mBandwidth2GStrings = getResources().getStringArray(R.array.wlan_settings_bandwidth_2g);
-        mBandwidth5GStrings = getResources().getStringArray(R.array.wlan_settings_bandwidth_5g);
-        mChannel5gOne = getResources().getStringArray(R.array.Channel5g_one);
-        mChannel5gTwo = getResources().getStringArray(R.array.Channel5g_two);
-        mChannel5gThree = getResources().getStringArray(R.array.Channel5g_three);
-        mChannel5gfour = getResources().getStringArray(R.array.Channel5g_four);
-        mChannel5gfive = getResources().getStringArray(R.array.Channel5g_five);
-
-        String[] oneStrings = {"GB", "IT", "FR", "PT", "ES", "MX"};
-        String[] fiveStrings = new String[]{"US", "HK", "CN"};
-        mChannel5gFiveCountryCodes = Arrays.asList(oneStrings);
-        mChannel5gOneCountryCodes = Arrays.asList(fiveStrings);
-    }
+    
 
     public void OnOKClick(View view) {
         Intent intent = new Intent();

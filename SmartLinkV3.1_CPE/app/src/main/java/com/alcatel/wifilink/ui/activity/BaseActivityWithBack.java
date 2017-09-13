@@ -41,6 +41,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SmartLinkV3App.getContextInstance().add(this);
         ActionBar baseActionBar = getSupportActionBar();
         if (baseActionBar != null) {
             baseActionBar.setHomeButtonEnabled(true);
@@ -60,7 +61,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
         // 初始化PreferenceUtil
         PreferenceUtil.init(this);
         // 根据上次的语言设置，重新设置语言
-        if(!"".equals(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""))) {
+        if (!"".equals(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""))) {
             switchLanguage(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""));
         }
     }
@@ -95,7 +96,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
             config.locale = Locale.FRENCH;
         } else if (language.equals(Constants.Language.SERBIAN)) {
             // 塞尔维亚
-            config.locale =new Locale(Constants.Language.SERBIAN);
+            config.locale = new Locale(Constants.Language.SERBIAN);
         } else if (language.equals(Constants.Language.CROATIAN)) {
             // 克罗地亚
             config.locale = new Locale(Constants.Language.CROATIAN);
@@ -121,7 +122,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
         if (MotionEvent.ACTION_DOWN == action || MotionEvent.ACTION_UP == action) {
             // 每次点击时候判断是否为以下三个界面--> 是则不启动定时器--> 只有进入Home界面才启用定时器
             OtherUtils.stopAutoTimer();
-            if (isThreeAct()) {
+            if (isSpecialAc()) {
             } else {
                 HomeActivity.autoLogoutTask = new TimerTask() {
                     @Override
@@ -131,18 +132,20 @@ public class BaseActivityWithBack extends AppCompatActivity {
                 };
                 HomeActivity.autoLogoutTimer = new Timer();
                 HomeActivity.autoLogoutTimer.schedule(HomeActivity.autoLogoutTask, Cons.AUTO_LOGOUT_PERIOD);
+                OtherUtils.homeTimerList.add(HomeActivity.autoLogoutTimer);
+                OtherUtils.homeTimerList.add(HomeActivity.autoLogoutTask);
             }
         }
         return super.dispatchTouchEvent(ev);
     }
 
     /* 是否为指定的三个界面--> true: 是 */
-    public boolean isThreeAct() {
+    public boolean isSpecialAc() {
         String currentActivity = AppInfo.getCurrentActivityName(this);
         boolean la = currentActivity.contains("LoadingActivity");
         boolean ga = currentActivity.contains("GuideActivity");
         boolean loa = currentActivity.contains("LoginActivity");
-        if (la | ga | loa) {
+        if (la | ga | loa ) {
             return true;
         } else {
             return false;
@@ -159,7 +162,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
                         break;
                     case Intent.ACTION_SCREEN_OFF:
                         OtherUtils.stopAutoTimer();
-                        if (!isThreeAct()) {
+                        if (!isSpecialAc()) {
                             logout();/* 锁屏后登出 */
                         } else {
                             OtherUtils.stopAutoTimer();

@@ -58,7 +58,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
         super.onResume();
         OtherUtils.setWifiActive(this, true);
         OtherUtils.stopAutoTimer();
-        OtherUtils.clearContexts();
+        OtherUtils.clearContexts(getClass().getSimpleName());
         initDate();
     }
 

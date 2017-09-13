@@ -1,18 +1,18 @@
 package com.alcatel.wifilink.ui.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.multidex.MultiDexApplication;
-import android.util.Log;
 
-import com.alcatel.wifilink.business.BusinessManager;
-import com.alcatel.wifilink.common.NotificationService;
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.HostnameUtils;
 
 import org.cybergarage.upnp.ControlPoint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class SmartLinkV3App extends MultiDexApplication {
@@ -26,13 +26,13 @@ public class SmartLinkV3App extends MultiDexApplication {
     private String mapp_password = new String();
     private String mapp_username = new String();
     private boolean mapp_changeisforce = false;
-    private static List<Context> contexts;
+    private static List<Activity> contexts;
 
     public static SmartLinkV3App getInstance() {
         return m_instance;
     }
 
-    public static List<Context> getContextInstance() {
+    public static List<Activity> getContextInstance() {
         return contexts;
     }
 
@@ -50,6 +50,7 @@ public class SmartLinkV3App extends MultiDexApplication {
         // CrashHandler crashHandler = CrashHandler.getInstance();
         // crashHandler.init(getApplicationContext());
     }
+    
 
     public void setControlPoint(ControlPoint controlPoint) {
         mControlPoint = controlPoint;

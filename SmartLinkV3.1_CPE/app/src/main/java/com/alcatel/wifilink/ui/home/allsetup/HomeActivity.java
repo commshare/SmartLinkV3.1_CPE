@@ -190,7 +190,9 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         OtherUtils.timerList.add(startTimer()); // 定时器在此处而不是在Onresume是为了防止界面重复刷新
         OtherUtils.timerList.add(getCurrentActivity());// 定时获取当前位于顶层运行的ACTIVITY
         OtherUtils.timerList.add(heartBeanTimer());// 心跳包发送
-        OtherUtils.timerList.add(autoLogoutTimer());// 启动定时退出计时器
+        Timer autoTimer = autoLogoutTimer();
+        OtherUtils.timerList.add(autoTimer);// 启动定时退出计时器
+        OtherUtils.homeTimerList.add(autoTimer);
         startAPPPackageService();// 后台服务: 检测当前APP是否被杀死
     }
 
@@ -214,12 +216,14 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         };
         autoLogoutTimer = new Timer();
         autoLogoutTimer.schedule(autoLogoutTask, Cons.AUTO_LOGOUT_PERIOD);
+        OtherUtils.homeTimerList.add(autoLogoutTask);
+        OtherUtils.homeTimerList.add(autoLogoutTimer);
         return autoLogoutTimer;
     }
 
     /* **** heartBeanTimer:心跳包 **** */
     private TimerHelper heartBeanTimer() {
-        // TODO: 2017/8/10 单点登陆--> 待FW确定
+        // 单点登陆
         heartBeatTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
@@ -298,8 +302,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         super.onResume();
         Logs.v("ma_home", "onResume");
         int page = getPage();
-        // int page = SharedPrefsUtil.getInstance(this).getInt(Cons.PAGE, Cons.MAIN);
-        // TODO: 2017/8/7 切换到对应的界面 
+        // 切换到对应的界面 
         setLastPage(page);
     }
 
@@ -738,9 +741,6 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         // 复位page标记
         ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.MAIN);
         // 停止所有的定时器
-        //homeTimerHelper.stop();
-        // logoutTimer.stop();
-        //curActTimer.stop();
         clearAllTimer();
     }
 
