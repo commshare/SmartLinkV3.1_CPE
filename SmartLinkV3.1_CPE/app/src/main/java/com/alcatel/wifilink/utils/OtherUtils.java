@@ -24,6 +24,7 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.wizard.allsetup.DataPlanActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 /**
  * Created by qianli.ma on 2017/7/10.
@@ -41,6 +43,7 @@ public class OtherUtils {
     private OnSwVersionListener onSwVersionListener;
     private OnHwVersionListener onHwVersionListener;
     private OnCustomizedVersionListener onCustomizedVersionListener;
+    public static List<Object> timerList = new ArrayList<>();
 
     /**
      * 线程自关
@@ -256,7 +259,7 @@ public class OtherUtils {
      * @param context
      * @return
      */
-    public static boolean setWifiActive(Context context,boolean open) {
+    public static boolean setWifiActive(Context context, boolean open) {
         WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifi.setWifiEnabled(open);
     }
@@ -296,15 +299,15 @@ public class OtherUtils {
      * 停止全局定时器
      */
     public static void stopAutoTimer() {
-        if (HomeActivity.autoTask != null) {
-            HomeActivity.autoTask.cancel();
-            HomeActivity.autoTask = null;
+        if (HomeActivity.autoLogoutTask != null) {
+            HomeActivity.autoLogoutTask.cancel();
+            HomeActivity.autoLogoutTask = null;
         }
 
-        if (HomeActivity.autoTimer != null) {
-            HomeActivity.autoTimer.cancel();
-            HomeActivity.autoTimer.purge();
-            HomeActivity.autoTimer = null;
+        if (HomeActivity.autoLogoutTimer != null) {
+            HomeActivity.autoLogoutTimer.cancel();
+            HomeActivity.autoLogoutTimer.purge();
+            HomeActivity.autoLogoutTimer = null;
         }
     }
 
@@ -367,7 +370,19 @@ public class OtherUtils {
      * 清除全部的定时器
      */
     public static void clearAllTimer() {
-
+        for (Object o : timerList) {
+            if (o instanceof TimerHelper) {
+                TimerHelper th = (TimerHelper) o;
+                th.stop();
+            }
+            if (o instanceof Timer) {
+                Timer t = (Timer) o;
+                t.cancel();
+                t.purge();
+                t = null;
+            }
+        }
+        timerList.clear();
     }
 
     /**

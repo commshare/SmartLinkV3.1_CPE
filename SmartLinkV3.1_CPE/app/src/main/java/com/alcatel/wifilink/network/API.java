@@ -3,6 +3,7 @@ package com.alcatel.wifilink.network;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alcatel.wifilink.Constants;
@@ -148,7 +149,9 @@ public class API {
     private void createSmartLinkApi() {
         try {
             Retrofit.Builder builder = new Retrofit.Builder();
-            builder.baseUrl(Cons.GATEWAY).client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
+            String gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
+            gateWay = "http://" + (TextUtils.isEmpty(gateWay) ? "192.168.1.1" : gateWay);
+            builder.baseUrl(gateWay).client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
             Retrofit retrofit = builder.build();
             smartLinkApi = retrofit.create(SmartLinkApi.class);
         } catch (Exception e) {

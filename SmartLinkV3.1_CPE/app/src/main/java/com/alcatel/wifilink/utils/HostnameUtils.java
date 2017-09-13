@@ -1,10 +1,15 @@
 package com.alcatel.wifilink.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
+
+import static com.alcatel.wifilink.R.id.ip;
 
 /**
  * Created by qianli.ma on 2017/8/5.
@@ -32,7 +37,8 @@ public class HostnameUtils {
 
         @Override
         public boolean verify(String hostname, SSLSession session) {
-            String ip = "192.168.1.1";
+            String wifiGateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
+            String ip = TextUtils.isEmpty(wifiGateWay) ? "192.168.1.1" : wifiGateWay;
             String http_ip = "http://" + ip;
             if (hostname.contains(ip) || hostname.equalsIgnoreCase(http_ip) || hostname.equalsIgnoreCase(ip)) {
                 return true;

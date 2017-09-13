@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.alcatel.wifilink.R;
@@ -124,14 +123,14 @@ public class BaseActivityWithBack extends AppCompatActivity {
             OtherUtils.stopAutoTimer();
             if (isThreeAct()) {
             } else {
-                HomeActivity.autoTask = new TimerTask() {
+                HomeActivity.autoLogoutTask = new TimerTask() {
                     @Override
                     public void run() {
                         logout();
                     }
                 };
-                HomeActivity.autoTimer = new Timer();
-                HomeActivity.autoTimer.schedule(HomeActivity.autoTask, Cons.AUTO_LOGOUT_PERIOD);
+                HomeActivity.autoLogoutTimer = new Timer();
+                HomeActivity.autoLogoutTimer.schedule(HomeActivity.autoLogoutTask, Cons.AUTO_LOGOUT_PERIOD);
             }
         }
         return super.dispatchTouchEvent(ev);

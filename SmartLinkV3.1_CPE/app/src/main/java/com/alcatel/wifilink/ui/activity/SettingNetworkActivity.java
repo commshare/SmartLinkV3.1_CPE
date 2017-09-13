@@ -38,6 +38,7 @@ import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.utils.WifiUtils;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener, AdapterView.OnItemSelectedListener {
     private static final String TAG = "SettingNetworkActivity";
@@ -116,10 +117,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
         });
         mConnectionModeSpinner = (AppCompatSpinner) findViewById(R.id.spinner_connection_mode);
-//        mConnectionModeSpinner.setSelection(0, true);
+        //        mConnectionModeSpinner.setSelection(0, true);
         mConnectionModeSpinner.setOnItemSelectedListener(this);
         mNetworkModeSpinner = (AppCompatSpinner) findViewById(R.id.settings_network_mode);
-//        mNetworkModeSpinner.setSelection(0, true);
+        //        mNetworkModeSpinner.setSelection(0, true);
         mNetworkModeSpinner.setOnItemSelectedListener(this);
         mRoamingSwitchCompat = (SwitchCompat) findViewById(R.id.network_roaming_switch);
         mSimPinCompat = (SwitchCompat) findViewById(R.id.network_sim_pin_switch);
@@ -139,7 +140,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         //set data plan
         mMonthlyDataPlanText = (TextView) findViewById(R.id.textview_monthly_data_plan);
         mBillingDaySpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_billing_day);
-//        mBillingDaySpinner.setSelection(0, true);
+        //        mBillingDaySpinner.setSelection(0, true);
         mBillingDaySpinner.setOnItemSelectedListener(this);
         mUsageAlertSpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_usagealert);
         mDisconnectCompat = (SwitchCompat) findViewById(R.id.setdataplan_auto_disconnect);
@@ -200,12 +201,14 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = true;
             }
+
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.restart_device_tip), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = false;
                 mMobileDataSwitchCompat.setChecked(false);
             }
+
             @Override
             protected void onFailure() {
                 mOldMobileDataEnable = false;
@@ -221,12 +224,14 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = false;
             }
+
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.setting_failed), Toast.LENGTH_SHORT).show();
                 mOldMobileDataEnable = true;
                 mMobileDataSwitchCompat.setChecked(true);
             }
+
             @Override
             protected void onFailure() {
                 mOldMobileDataEnable = true;
@@ -424,7 +429,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                
+
             }
         });
     }
@@ -641,7 +646,8 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("http://192.168.1.1");
+                String wifiGateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
+                Uri content_url = Uri.parse("http://" + wifiGateWay);
                 intent.setData(content_url);
                 startActivity(intent);
             }
@@ -697,13 +703,13 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.spinner_connection_mode) {
-            if(mFirstSetConnectionMode) {
+            if (mFirstSetConnectionMode) {
                 mFirstSetConnectionMode = false;
                 return;
             }
             setConnectionSettings(position);
         } else if (parent.getId() == R.id.settings_network_mode) {
-            if(mFirstSetNetworkMode) {
+            if (mFirstSetNetworkMode) {
                 mFirstSetNetworkMode = false;
                 return;
             }
@@ -717,7 +723,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 setNetworkSettings(Constants.SetNetWorkSeting.NET_WORK_MODE_2G);
             }
         } else if (parent.getId() == R.id.setdataplan_billing_day) {
-            if(mFirstSetBillingDay) {
+            if (mFirstSetBillingDay) {
                 mFirstSetBillingDay = false;
                 return;
             }

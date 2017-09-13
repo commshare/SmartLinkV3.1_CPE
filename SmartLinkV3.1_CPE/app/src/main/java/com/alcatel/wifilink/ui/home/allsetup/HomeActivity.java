@@ -47,6 +47,7 @@ import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeBucket;
 import com.alcatel.wifilink.ui.home.helper.utils.FragmentHomeEnum;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.AppInfo;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.cybergarage.upnp.Device;
@@ -75,6 +76,8 @@ import static com.alcatel.wifilink.R.id.mFl_home_container;
 import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
+import static com.alcatel.wifilink.utils.OtherUtils.clearAllTimer;
+import static com.alcatel.wifilink.utils.OtherUtils.timerList;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -160,17 +163,19 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private View inflate;
     private TimerHelper logoutTimer;
 
-    public static TimerTask autoTask;
-    public static Timer autoTimer;//
+    public static TimerTask autoLogoutTask;
+    public static Timer autoLogoutTimer;//
     private TimerHelper heartBeatTimer;
     private String SP_PAGE_FILE = "SP_PAGE_FILE";
 
-    List<Object> timerList;
+    // List<Object> timerList;
+    boolean isRe = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Logs.v("ma_home", "onCreate");
         super.onCreate(savedInstanceState);
-        timerList = new ArrayList<>();
+        // timerList = new ArrayList<>();
         SmartLinkV3App.getContextInstance().add(this);
         setContentView(R.layout.activity_homes);
         hac = this;
@@ -182,10 +187,10 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initView();
         initUi();
 
-        timerList.add(startTimer()); // 定时器在此处而不是在Onresume是为了防止界面重复刷新
-        timerList.add(getCurrentActivity());// 定时获取当前位于顶层运行的ACTIVITY
-        timerList.add(heartBeanTimer());// 心跳包发送
-        timerList.add(autoLogoutTimer());// 启动定时退出计时器
+        OtherUtils.timerList.add(startTimer()); // 定时器在此处而不是在Onresume是为了防止界面重复刷新
+        OtherUtils.timerList.add(getCurrentActivity());// 定时获取当前位于顶层运行的ACTIVITY
+        OtherUtils.timerList.add(heartBeanTimer());// 心跳包发送
+        OtherUtils.timerList.add(autoLogoutTimer());// 启动定时退出计时器
         startAPPPackageService();// 后台服务: 检测当前APP是否被杀死
     }
 
@@ -201,15 +206,15 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* 启动定时退出 */
     private Timer autoLogoutTimer() {
-        autoTask = new TimerTask() {
+        autoLogoutTask = new TimerTask() {
             @Override
             public void run() {
                 logout();
             }
         };
-        autoTimer = new Timer();
-        autoTimer.schedule(autoTask, Cons.AUTO_LOGOUT_PERIOD);
-        return autoTimer;
+        autoLogoutTimer = new Timer();
+        autoLogoutTimer.schedule(autoLogoutTask, Cons.AUTO_LOGOUT_PERIOD);
+        return autoLogoutTimer;
     }
 
     /* **** heartBeanTimer:心跳包 **** */
@@ -291,6 +296,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        Logs.v("ma_home", "onResume");
         int page = getPage();
         // int page = SharedPrefsUtil.getInstance(this).getInt(Cons.PAGE, Cons.MAIN);
         // TODO: 2017/8/7 切换到对应的界面 
@@ -300,14 +306,15 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     @Override
     protected void onPause() {
         super.onPause();
+        Logs.v("ma_home", "onPause");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Logs.v("ma_home", "onDestroy");
         // heartBeatTimer.stop();
-        clearAllTimer();
-        timerList = null;
+        OtherUtils.clearAllTimer();
     }
 
 
@@ -412,6 +419,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 refreshUi_fragment(FragmentHomeEnum.MAIN);
                 break;
             case R.id.mRl_home_wifibutton:// wifi button
+                isRe = true;
                 refreshUi_fragment(FragmentHomeEnum.WIFI);
                 break;
             case R.id.mRl_home_messagebutton:// sms button
@@ -723,7 +731,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     private int getPage() {
         String sp = ShareperfrenceUtil.getSp(this, SP_PAGE_FILE, Cons.PAGE);
-        return TextUtils.isEmpty(sp) || Integer.valueOf(sp) == Cons.WIFI ? Cons.MAIN : Integer.valueOf(sp);
+        return (TextUtils.isEmpty(sp) || Integer.valueOf(sp) == Cons.WIFI) && !isRe ? Cons.MAIN : Integer.valueOf(sp);
     }
 
     private void destroyOperate() {
@@ -736,22 +744,4 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         clearAllTimer();
     }
 
-    /**
-     * 清除全部定时器
-     */
-    public void clearAllTimer() {
-        for (Object o : timerList) {
-            if (o instanceof TimerHelper) {
-                TimerHelper th = (TimerHelper) o;
-                th.stop();
-            }
-            if (o instanceof Timer) {
-                Timer t = (Timer) o;
-                t.cancel();
-                t.purge();
-                t = null;
-            }
-        }
-        timerList.clear();
-    }
 }
