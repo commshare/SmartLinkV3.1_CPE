@@ -68,6 +68,7 @@ import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.HostnameUtils;
 import com.alcatel.wifilink.utils.Logs;
+import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.WifiUtils;
 
 import java.io.File;
@@ -115,6 +116,7 @@ public class API {
 
     private String token;
     private int TIMEOUT = 30;
+    public static String gateWay;
 
     private API() {
         if (smartLinkApi == null) {
@@ -149,8 +151,6 @@ public class API {
     private void createSmartLinkApi() {
         try {
             Retrofit.Builder builder = new Retrofit.Builder();
-            String gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
-            gateWay = "http://" + (TextUtils.isEmpty(gateWay) ? "192.168.1.1" : gateWay);
             builder.baseUrl(gateWay).client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
             Retrofit retrofit = builder.build();
             smartLinkApi = retrofit.create(SmartLinkApi.class);
@@ -219,6 +219,13 @@ public class API {
     }
 
     public static API get() {
+        // 1.检测wifi是否有连接
+        boolean wiFiActive = OtherUtils.isWiFiActive(SmartLinkV3App.getInstance());
+        if (!wiFiActive) {
+            OtherUtils.setWifiActive(SmartLinkV3App.getInstance(),true);
+        }
+        gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
+        gateWay = "http://" + (TextUtils.isEmpty(gateWay) | !gateWay.startsWith("192.168") ? "192.168.1.1" : gateWay);
         if (api == null) {
             synchronized (API.class) {
                 if (api == null) {

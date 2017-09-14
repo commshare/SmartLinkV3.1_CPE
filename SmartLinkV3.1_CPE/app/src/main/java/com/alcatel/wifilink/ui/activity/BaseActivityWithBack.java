@@ -25,6 +25,7 @@ import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.AppInfo;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.PreferenceUtil;
+import com.alcatel.wifilink.utils.WifiUtils;
 
 import java.util.Locale;
 import java.util.Timer;
@@ -145,7 +146,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
         boolean la = currentActivity.contains("LoadingActivity");
         boolean ga = currentActivity.contains("GuideActivity");
         boolean loa = currentActivity.contains("LoginActivity");
-        if (la | ga | loa ) {
+        if (la | ga | loa) {
             return true;
         } else {
             return false;
