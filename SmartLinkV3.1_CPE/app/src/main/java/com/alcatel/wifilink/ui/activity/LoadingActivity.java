@@ -144,15 +144,15 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                 if (result.getState() == Cons.LOGIN) {
                     Log.d("ma_load", "to WizardActivity");
                     // to HomeActivity
-                    //ChangeActivity.toActivity(LoadingActivity.this, WizardActivity.class, false, true, false, 0);
-                    Intent intent = new Intent(LoadingActivity.this, TestActivity.class);
-                    LoadingActivity.this.startActivity(intent);
+                    ChangeActivity.toActivity(LoadingActivity.this, WizardActivity.class, false, true, false, 0);
+                    // Intent intent = new Intent(LoadingActivity.this, TestActivity.class);
+                    // LoadingActivity.this.startActivity(intent);
                 } else {
                     Log.d("ma_load", "to LoginActivity");
                     // to LoginActivity
-                    //ChangeActivity.toActivity(LoadingActivity.this, LoginActivity.class, false, true, false, 0);
-                    Intent intent = new Intent(LoadingActivity.this, TestActivity.class);
-                    LoadingActivity.this.startActivity(intent);
+                    ChangeActivity.toActivity(LoadingActivity.this, LoginActivity.class, false, true, false, 0);
+                    // Intent intent = new Intent(LoadingActivity.this, TestActivity.class);
+                    // LoadingActivity.this.startActivity(intent);
                 }
             }
 

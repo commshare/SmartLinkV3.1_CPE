@@ -43,6 +43,7 @@ import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.view.DynamicWave;
 import com.alcatel.wifilink.utils.DataUtils;
 import com.alcatel.wifilink.utils.Logs;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -271,6 +272,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(SimStatus simStatus) {
+                Logs.v("ma_main", "simstatus: " + simStatus.getSIMState());
                 // 1.is sim can be work
                 int simState = simStatus.getSIMState();
                 if (simState != Cons.READY) {
@@ -298,6 +300,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(NetworkInfos result) {
+                Logs.v("ma_main", "networktype: " + result.getNetworkType());
                 // // doesn't worked--> show 0MB
                 if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
                     connectUi(false);
@@ -307,7 +310,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
-
+                            Logs.v("ma_main", "connection: " + result.getConnectionStatus());
                             int stats = result.getConnectionStatus();
                             if (stats == Cons.CONNECTED) {
                                 connectUi(true);
@@ -355,6 +358,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(NetworkInfos result) {
+                Logs.v("ma_main", "network-type: " + result.getNetworkType());
                 m_connectToNetworkTextView.setVisibility(View.VISIBLE);
                 if (result.getNetworkType() == Cons.NOSERVER) {
                     connectUi(false);
@@ -740,9 +744,26 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
                             int connectStatus = result.getConnectionStatus();
-                            if (connectStatus == Cons.DISCONNECTED || connectStatus == Cons.DISCONNECTING) {
+                            if (connectStatus == Cons.DISCONNECTED) {
                                 // set connect
-                                connectHelper(true);
+                                // connectHelper(true);
+                                // TOAT: 测试connect接口
+                                API.get().connect(new MySubscriber() {
+                                    @Override
+                                    protected void onSuccess(Object result) {
+
+                                    }
+
+                                    @Override
+                                    protected void onResultError(ResponseBody.Error error) {
+                                        Logs.d("ma_main", error.getMessage().toString());
+                                        if (error.getCode().equalsIgnoreCase("030201")) {
+                                            ToastUtil_m.show(getActivity(), getString(R.string.connect_failed));
+                                        } else {
+                                            ToastUtil_m.show(getActivity(), getString(R.string.connect_failed) + "\n" + getString(R.string.restart_device_tip));
+                                        }
+                                    }
+                                });
                                 // get monthly used
                                 getMonthlyPlan();
                                 // set logo button layout
@@ -791,11 +812,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 tv_cancel = (RippleView) pop.findViewById(R.id.tv_pop_sim_cancel);
                 tv_unlock = (RippleView) pop.findViewById(R.id.tv_pop_sim_unlock);
                 tv_cancel.setOnClickListener(v -> {
-                    simPop.dismiss();
+                    for (PopupWindows simPop : OtherUtils.popList) {
+                        simPop.dismiss();
+                    }
+                    OtherUtils.popList.clear();
                 });
                 tv_unlock.setOnClickListener(v -> isSimInsert());
             }
         }.showPop(getActivity());
+        OtherUtils.popList.add(simPop);
     }
 
 

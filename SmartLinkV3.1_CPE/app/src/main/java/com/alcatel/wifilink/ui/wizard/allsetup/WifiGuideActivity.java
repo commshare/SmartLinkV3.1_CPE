@@ -157,7 +157,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
 
         mDividerView = findViewById(R.id.divider);
 
-        
+
     }
 
     @Override
@@ -488,8 +488,9 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                 // 1.切断wifi以及跳转
                 Log.d("ma_wififragment", "wififragment success");
                 // checkLoginState();
-                OtherUtils.setWifiActive(WifiGuideActivity.this,false);
+                OtherUtils.setWifiActive(WifiGuideActivity.this, false);
                 popDismiss();
+                SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
                 ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
@@ -567,11 +568,11 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                     if (i == 1) {
                         mEncryption5GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
                         int wepType = mOriginSettings.getAP5G().getWepType();
-                        mEncryption2GSpinner.setSelection(wepType);
+                        mEncryption5GSpinner.setSelection(wepType);
                     } else {
                         mEncryption5GSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
                         int wpaType = mOriginSettings.getAP5G().getWpaType();
-                        mEncryption2GSpinner.setSelection(wpaType);
+                        mEncryption5GSpinner.setSelection(wpaType);
                     }
                 }
                 break;

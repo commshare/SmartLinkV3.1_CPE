@@ -67,7 +67,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                 runOnUiThread(() -> {
                     isDoneClick = true;
                     pinRemainingTimes = result.getPinRemainingTimes();
-                    tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes)+" ");
+                    tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes) + " ");
                 });
             }
         });
@@ -167,6 +167,19 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                 getRemainTimes();
             }
         });
+        // API.get().setAutoValidatePinState(pincode, 1, new MySubscriber() {
+        //     @Override
+        //     protected void onSuccess(Object result) {
+        //         ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
+        //         EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
+        //         ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+        //     }
+        //
+        //     @Override
+        //     protected void onResultError(ResponseBody.Error error) {
+        //         getRemainTimes();
+        //     }
+        // });
     }
 
     /* **** getRemainTimes **** */

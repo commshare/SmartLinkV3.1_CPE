@@ -44,7 +44,7 @@ public class SmartLinkV3App extends MultiDexApplication {
         // BusinessManager.getInstance();
         // NotificationService.startService();
         //HandlerUtils.replaceHandler();
-        mAllShareProxy = AllShareProxy.getInstance(this);
+        // mAllShareProxy = AllShareProxy.getInstance(this);
         /* checked hostNameVerify  */
         HostnameUtils.setVerifyHostName();
         // CrashHandler crashHandler = CrashHandler.getInstance();

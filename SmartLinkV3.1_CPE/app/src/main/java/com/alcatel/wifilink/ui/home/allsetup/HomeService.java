@@ -51,7 +51,7 @@ public class HomeService extends Service {
                 }
             }
         };
-        packageTimer.start(1000);
+        packageTimer.start(500);
         return super.onStartCommand(intent, flags, startId);
     }
 }

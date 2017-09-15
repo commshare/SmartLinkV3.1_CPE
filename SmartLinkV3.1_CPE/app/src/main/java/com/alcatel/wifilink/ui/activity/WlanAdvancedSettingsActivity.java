@@ -257,17 +257,20 @@ public class WlanAdvancedSettingsActivity extends BaseActivityWithBack {
         return -1;
     }
 
-    
 
     public void OnOKClick(View view) {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_SSID_BROADCAST, mBroadcastSwitch.isChecked());
-        if (mFrequency == 5) {
-            intent.putExtra(EXTRA_CHANNEL, mChannel5g);
-        } else {
-            intent.putExtra(EXTRA_CHANNEL, mChannelSpinner.getSelectedItemPosition());
-        }
-        intent.putExtra(EXTRA_COUNTRY, getCountryCode(mAllCountryNames[mCountrySpinner.getSelectedItemPosition()]));
+        // if (mFrequency == 5) {
+        //     intent.putExtra(EXTRA_CHANNEL, mChannel5g);
+        // } else {
+        //     intent.putExtra(EXTRA_CHANNEL, mChannelSpinner.getSelectedItemPosition());
+        // }
+        intent.putExtra(EXTRA_CHANNEL, mChannel);// 现把channel一项选择框取消--> web-ui是什么就原路返回
+
+        // intent.putExtra(EXTRA_COUNTRY, getCountryCode(mAllCountryNames[mCountrySpinner.getSelectedItemPosition()]));
+        intent.putExtra(EXTRA_COUNTRY, mCountry);// 现把country一项选择框取消--> web-ui是什么就原路返回
+
         intent.putExtra(EXTRA_BANDWIDTH, mBandwidth);
         intent.putExtra(EXTRA_MODE_80211, mMode);
         intent.putExtra(EXTRA_AP_ISOLATION, mIsolationSwitch.isChecked());

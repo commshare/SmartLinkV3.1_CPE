@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="16dp"
-              tools:context="com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,7 +21,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/ssid_broadcast"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_ssid_broadcast"
@@ -28,13 +29,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
+    <!-- country -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        >
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,7 +45,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/country_region"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinner_country_type"
@@ -53,13 +55,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:entries="@array/wlan_settings_country"
-            android:spinnerMode="dialog"/>
+            android:spinnerMode="dialog" />
     </RelativeLayout>
 
+    <!-- channel -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        >
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,7 +71,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/channel"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinner_channel_type"
@@ -78,7 +81,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:entries="@array/wlan_settings_channel"
-            android:spinnerMode="dialog"/>
+            android:spinnerMode="dialog" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,7 +96,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/mode_802_11"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinner_802_11_mode"
@@ -103,7 +106,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:entries="@array/wlan_settings_80211_2g"
-            android:spinnerMode="dialog"/>
+            android:spinnerMode="dialog" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -118,7 +121,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/ap_isolation"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_ap_isolation"
@@ -126,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -141,7 +144,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/bandwidth"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinner_bandwidth_type"
@@ -151,7 +154,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:entries="@array/wlan_settings_bandwidth_2g"
-            android:spinnerMode="dialog"/>
+            android:spinnerMode="dialog" />
     </RelativeLayout>
 
     <Button
@@ -159,5 +162,5 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_conner_btn_login_blue"
         android:onClick="OnOKClick"
-        android:text="@string/ok"/>
+        android:text="@string/ok" />
 </LinearLayout>

@@ -488,7 +488,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             protected void onSuccess(Object result) {
                 Log.d("ma_wififragment", "wififragment success");
                 // checkLoginState();
-                OtherUtils.setWifiActive(getActivity(),false);
+                OtherUtils.setWifiActive(getActivity(), false);
                 popDismiss();
                 ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
@@ -565,6 +565,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     } else {
                         mEncryption2GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
                         int wpaType = mOriginSettings.getAP2G().getWpaType();
+                        System.out.println("2.4G wpaType: " + wpaType);
                         mEncryption2GSpinner.setSelection(wpaType);
                     }
                 }
@@ -580,11 +581,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                     if (i == 1) {
                         mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWepEncryptionSettings));
                         int wepType = mOriginSettings.getAP5G().getWepType();
-                        mEncryption2GSpinner.setSelection(wepType);
+                        mEncryption5GSpinner.setSelection(wepType);
                     } else {
                         mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
                         int wpaType = mOriginSettings.getAP5G().getWpaType();
-                        mEncryption2GSpinner.setSelection(wpaType);
+                        System.out.println("5G wpaType: " + wpaType);
+                        mEncryption5GSpinner.setSelection(wpaType);
                     }
                 }
                 break;

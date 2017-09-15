@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.DataUti;
@@ -51,6 +52,7 @@ public class OtherUtils {
     private OnCustomizedVersionListener onCustomizedVersionListener;
     public static List<Object> timerList = new ArrayList<>();
     public static List<Object> homeTimerList = new ArrayList<>();// 仅存放自动退出定时器
+    public static List<PopupWindows> popList = new ArrayList<>();
 
     /**
      * 线程自关

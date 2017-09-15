@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.business.wlan.AP;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
@@ -60,6 +61,16 @@ public class RefreshWifiActivity extends AppCompatActivity {
         OtherUtils.stopAutoTimer();
         OtherUtils.clearContexts(getClass().getSimpleName());
         initDate();
+        logout();
+    }
+
+    private void logout() {
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                
+            }
+        });
     }
 
     private void initDate() {

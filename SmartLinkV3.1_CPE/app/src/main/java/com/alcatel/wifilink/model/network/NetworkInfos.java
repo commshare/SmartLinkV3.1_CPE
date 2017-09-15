@@ -7,7 +7,7 @@ package com.alcatel.wifilink.model.network;
 public class NetworkInfos {
 
     public String PLMN;
-    public float NetworkType;
+    public int NetworkType;
     public String NetworkName;
     public String SpnName;
     public String LAC;
@@ -42,11 +42,11 @@ public class NetworkInfos {
         this.PLMN = PLMN;
     }
 
-    public float getNetworkType() {
+    public int getNetworkType() {
         return NetworkType;
     }
 
-    public void setNetworkType(float networkType) {
+    public void setNetworkType(int networkType) {
         NetworkType = networkType;
     }
 

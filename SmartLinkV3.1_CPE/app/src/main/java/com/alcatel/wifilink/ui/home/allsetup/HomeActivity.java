@@ -395,7 +395,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 toSmsActivity();
                 break;
             case R.id.tv_pop_sim_cancel:// sim pop cancel
-                if (simPop != null) {
+                if (pop != null) {
                     isSimPop = false;
                     popdismiss();
                 }
@@ -624,11 +624,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 }
                 
                 /* SIM卡已经插入并且已经准备好 */
-                if (simState == Cons.READY && simPop == null && simState != Cons.PIN_REQUIRED) {
+                if (simState == Cons.READY && simState != Cons.PIN_REQUIRED) {
+                    Logs.v("ma_pop", "sim ready pop dismiss");
                     // 获取消息数
                     SmsCountHelper.setSmsCount(HomeActivity.this, mTvHomeMessageCount);
                     // pop dismiss
-                    if (simPop != null) {
+                    if (pop != null) {
                         popdismiss();
                     }
                 }
@@ -643,8 +644,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** showSimPop: 显示SIM卡弹窗 **** */
     private void showSimPop() {
-
-        if (pop == null) {
+        if (pop == null | !pop.isShowing()) {
+            Logs.v("ma_pop", "homeactivity: showSimpop");
             simPop = new SimPopHelper() {
                 @Override
                 public void getView(View pop) {
@@ -665,7 +666,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             protected void onSuccess(WanSettingsResult result) {
                 int wanStatus = result.getStatus();
                 if (wanStatus == Cons.CONNECTED) {// wan insert
-                    if (simPop != null) {
+                    if (pop != null) {
                         popdismiss();
                     }
                 } else {// sim insert
@@ -707,7 +708,10 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     /* 注销弹窗 */
     public void popdismiss() {
         simPop.dismiss();
-        pop = null;
+        if (pop != null) {
+            pop.dismiss();
+            pop = null;
+        }
     }
 
     /**
