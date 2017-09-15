@@ -8,7 +8,7 @@
     tools:context="com.alcatel.wifilink.ui.activity.TestActivity">
 
     <Button
-        android:onClick="connect"
+        android:onClick="connectClick"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dip" />
 

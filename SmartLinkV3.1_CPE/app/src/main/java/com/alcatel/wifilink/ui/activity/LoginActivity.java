@@ -216,8 +216,9 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                     @Override
                     protected void onSuccess(LoginState loginState) {
                         if (loginState.getState() == Cons.LOGIN) {
-                            // commit the token
+                            // get token
                             API.get().updateToken(loginResult.getToken());
+                            //ChangeActivity.toActivity(LoginActivity.this, TestActivity.class, false, true, false, 0);
                             // remember psd
                             SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
                             // 判断连接模式( SIM | WAN )

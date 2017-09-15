@@ -222,7 +222,7 @@ public class API {
         // 1.检测wifi是否有连接
         boolean wiFiActive = OtherUtils.isWiFiActive(SmartLinkV3App.getInstance());
         if (!wiFiActive) {
-            OtherUtils.setWifiActive(SmartLinkV3App.getInstance(),true);
+            OtherUtils.setWifiActive(SmartLinkV3App.getInstance(), true);
         }
         gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
         gateWay = "http://" + (TextUtils.isEmpty(gateWay) | !gateWay.startsWith("192.168") ? "192.168.1.1" : gateWay);
@@ -506,6 +506,7 @@ public class API {
     }
 
     public void connect(MySubscriber subscriber) {
+        Logs.v("ma_test", "gateWay: " + gateWay);
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CONNECT)));
     }
 

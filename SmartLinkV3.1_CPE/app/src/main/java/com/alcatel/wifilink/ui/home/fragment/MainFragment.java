@@ -746,28 +746,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             int connectStatus = result.getConnectionStatus();
                             if (connectStatus == Cons.DISCONNECTED) {
                                 // set connect
-                                // connectHelper(true);
-                                // TOAT: 测试connect接口
-                                API.get().connect(new MySubscriber() {
-                                    @Override
-                                    protected void onSuccess(Object result) {
-
-                                    }
-
-                                    @Override
-                                    protected void onResultError(ResponseBody.Error error) {
-                                        Logs.d("ma_main", error.getMessage().toString());
-                                        if (error.getCode().equalsIgnoreCase("030201")) {
-                                            ToastUtil_m.show(getActivity(), getString(R.string.connect_failed));
-                                        } else {
-                                            ToastUtil_m.show(getActivity(), getString(R.string.connect_failed) + "\n" + getString(R.string.restart_device_tip));
-                                        }
-                                    }
-                                });
-                                // get monthly used
-                                getMonthlyPlan();
-                                // set logo button layout
-                                setSimButtonLogo();
+                                connectHelper(true);
+                                // // get monthly used
+                                // getMonthlyPlan();
+                                // // set logo button layout
+                                // setSimButtonLogo();
                             }
                         }
 
@@ -853,7 +836,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             API.get().connect(new MySubscriber() {
                 @Override
                 protected void onSuccess(Object result) {
-
+                    API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+                        @Override
+                        protected void onSuccess(ConnectionStates result) {
+                            int connectionStatus = result.getConnectionStatus();
+                            if (connectionStatus == Cons.CONNECTED) {
+                                // get monthly used
+                                getMonthlyPlan();
+                                // set logo button layout
+                                setSimButtonLogo();
+                            }
+                        }
+                    });
+                    
                 }
 
                 @Override
@@ -872,14 +867,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     ToastUtil_m.show(getActivity(), getString(R.string.connect_failed) + "\n" + getString(R.string.restart_device_tip));
                 }
             });
-        } else {
-            API.get().disConnect(new MySubscriber() {
-                @Override
-                protected void onSuccess(Object result) {
-
-                }
-            });
-        }
+        } 
+        // else {
+        //     API.get().disConnect(new MySubscriber() {
+        //         @Override
+        //         protected void onSuccess(Object result) {
+        //
+        //         }
+        //     });
+        // }
     }
 
     /**

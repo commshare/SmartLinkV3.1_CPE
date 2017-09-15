@@ -159,6 +159,8 @@ public class Cons {
     public static final String WPS_IS_WORKING = "050503";
     public static final String GET_SYSTEM_STATUS_FAIL = "050503";
     
+    public static final int PIN_ENABLE_VERIFIED = 2;
+    
     
 
 }

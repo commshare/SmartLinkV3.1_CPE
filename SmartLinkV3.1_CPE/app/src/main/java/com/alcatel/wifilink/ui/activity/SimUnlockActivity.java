@@ -21,6 +21,7 @@ import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -154,12 +155,25 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** unlockPin **** */
     private void unlockPin(String pincode) {
+        Logs.v("ma_main", "pin: " + pincode);
         API.get().unlockPin(pincode, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
-                EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-                ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+
+                API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                    @Override
+                    protected void onSuccess(SimStatus result) {
+                        int pinState = result.getPinState();
+                        Logs.v("ma_main", "pinState: " + pinState);
+                        if (pinState == Cons.PIN_ENABLE_VERIFIED) {
+                            ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
+                            EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
+                            ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+                        }
+                    }
+                });
+
+                
             }
 
             @Override

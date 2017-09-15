@@ -28,7 +28,7 @@
                 android:drawableTop="@drawable/results_sim_dis"
                 android:text="@string/connect_type_select_sim_card_disable"
                 android:textColor="@color/color_red"
-                android:textSize="@dimen/font_size_normal" />
+                android:textSize="@dimen/dimen_textsize_12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -73,7 +73,7 @@
                 android:drawableTop="@drawable/results_wan_dis"
                 android:text="@string/connect_type_select_wan_port_disable"
                 android:textColor="@color/color_red"
-                android:textSize="@dimen/font_size_normal" />
+                android:textSize="@dimen/dimen_textsize_12sp" />
         </LinearLayout>
 
     </LinearLayout>

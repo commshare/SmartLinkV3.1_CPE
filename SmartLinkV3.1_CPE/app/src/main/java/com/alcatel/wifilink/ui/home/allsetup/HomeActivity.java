@@ -644,7 +644,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** showSimPop: 显示SIM卡弹窗 **** */
     private void showSimPop() {
-        if (pop == null | !pop.isShowing()) {
+        if (pop == null) {
             Logs.v("ma_pop", "homeactivity: showSimpop");
             simPop = new SimPopHelper() {
                 @Override

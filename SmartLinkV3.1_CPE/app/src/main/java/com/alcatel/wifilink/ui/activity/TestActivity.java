@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.model.connection.ConnectionSettings;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
@@ -33,7 +35,7 @@ public class TestActivity extends AppCompatActivity {
                 API.get().heartBeat(new MySubscriber() {
                     @Override
                     protected void onSuccess(Object result) {
-                        
+
                     }
                 });
             }
@@ -41,55 +43,72 @@ public class TestActivity extends AppCompatActivity {
         timerHelper.start(3000);
     }
 
-    public void connect(View v) {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {// get sim state
+
+    int count = 0;
+
+    public void connectClick(View v) {
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {// get sim status
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
-                Logs.v("ma_test", "simState: " + simState);
+                Logs.v("ma_test", "get simState success: " + simState);
+                
+                /* 有PIN码的情况下 */
                 if (simState == Cons.PIN_REQUIRED) {
+                    Logs.v("ma_test", "have pin statement");
                     API.get().unlockPin("1234", new MySubscriber() {// unlock pin
                         @Override
                         protected void onSuccess(Object result) {
-                            API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {// get connection
+                            Logs.v("ma_test", "unlockPin success");
+                            API.get().connect(new MySubscriber() {// connect
                                 @Override
-                                protected void onSuccess(ConnectionStates result) {
-                                    int connectionStatus = result.getConnectionStatus();
-                                    Logs.v("ma_test", "ConnectionStates-before: " + connectionStatus);
-                                    API.get().connect(new MySubscriber() {// connect
-                                        @Override
-                                        protected void onSuccess(Object result) {
-                                            API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {// get connection
-                                                @Override
-                                                protected void onSuccess(ConnectionStates result) {
-                                                    int connectionStatus = result.getConnectionStatus();
-                                                    Logs.v("ma_test", "ConnectionStates-after: " + connectionStatus);
-                                                }
-                                            });
-                                        }
-                                    });
+                                protected void onSuccess(Object result) {
+                                    Logs.v("ma_test", "connect success by pin statement");
+                                }
+
+                                @Override
+                                protected void onResultError(ResponseBody.Error error) {
+                                    Logs.v("ma_test", error.getMessage());
                                 }
                             });
+                        }
+                    });
+                } else {
+                     /* 没有PIN码的情况下 */
+                    Logs.v("ma_test", "no pin statement");
+                    API.get().connect(new MySubscriber() {// connect
+                        @Override
+                        protected void onSuccess(Object result) {
+                            Logs.v("ma_test", "connect success by no pin statement");
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            Logs.v("ma_test", error.getMessage());
                         }
                     });
                 }
 
-                if (simState == Cons.READY) {
-                    API.get().connect(new MySubscriber() {// connect
-                        @Override
-                        protected void onSuccess(Object result) {
-                            API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {// get connection
-                                @Override
-                                protected void onSuccess(ConnectionStates result) {
-                                    int connectionStatus = result.getConnectionStatus();
-                                    Logs.v("ma_test", "ConnectionStates-after: " + connectionStatus);
-                                }
-                            });
-                        }
-                    });
-                }
+
             }
         });
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timerHelper.stop();
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+
+            }
+        });
+    }
 }
