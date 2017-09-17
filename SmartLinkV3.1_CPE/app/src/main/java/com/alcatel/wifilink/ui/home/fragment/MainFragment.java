@@ -2,6 +2,7 @@ package com.alcatel.wifilink.ui.home.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
+import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
@@ -52,6 +54,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Locale;
 
 import static com.alcatel.wifilink.R.id.connected_button;
+import static com.alcatel.wifilink.R.id.pin;
 
 @SuppressLint("ValidFragment")
 public class MainFragment extends Fragment implements View.OnClickListener {
@@ -101,6 +104,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private DynamicWave dw_main;// 下方波浪
     private int rate = 2;// 下方波浪高度倍率
     private int duration = 4000;// 上方波浪滚动速率
+    private ProgressDialog pgd;// 等待进度条
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getConnType(TypeBean tb) {
@@ -169,13 +173,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (Cons.TYPE_WAN.equalsIgnoreCase(type)) {
                     // TOAT: ********** 断网时先走此方法 ***********
                     connectUi(false);// set button logo
-                    m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo_disconnect);
+                    m_connectBtn.setBackgroundResource(R.drawable.wan_not_conn);
                     m_connectToNetworkTextView.setText(getString(R.string.unknown));
                     m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
                     // m_networkTypeTextView.setVisibility(View.GONE);
                     m_networkLabelTextView.setText(getString(R.string.no_sim_no_wan));
                     m_networkLabelTextView.setText(getString(R.string.signal));
-                    m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_none);
+                    m_accessImageView.setBackgroundResource(R.drawable.device_none);
                     m_accessnumTextView.setVisibility(View.GONE);
                     m_accessstatusTextView.setText(getString(R.string.home_disconnected_to));
                     HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
@@ -239,7 +243,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectToNetworkTextView.setVisibility(View.VISIBLE);
         m_connectToNetworkTextView.setText(getString(R.string.Ethernet));
         m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
-        m_connectBtn.setBackgroundResource(R.drawable.home_connect_wan_logo);
+        m_connectBtn.setBackgroundResource(R.drawable.wan_conn);
         mRl_sigelPanel.setVisibility(View.GONE);
         m_networkLabelTextView.setText(getString(R.string.Ethernet));
         HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);// sms count view gone
@@ -292,49 +296,52 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* is network can be worked */
     private void getTrafficInfo() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
             @Override
-            public void onError(Throwable e) {
+            protected void onSuccess(ConnectionStates result) {
+                int connstatus = result.getConnectionStatus();
+                if (connstatus == Cons.CONNECTED) {
+                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                        @Override
+                        public void onError(Throwable e) {
+                            mRl_main_wait.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        protected void onSuccess(NetworkInfos result) {
+                            Logs.v("ma_main", "networktype: " + result.getNetworkType());
+                            // // doesn't worked--> show 0MB
+                            if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
+                                connectUi(false);
+                            } else {
+                                connectUi(true);
+
+                                // 从PIN码产生的进度条消失
+                                if (pinProgressDialog != null) {
+                                    pinProgressDialog.dismiss();
+                                    pinProgressDialog = null;
+                                    SimUnlockActivity.isPinUnlock = false;
+                                }
+                            }
+                            mRl_main_wait.setVisibility(View.GONE);
+                        }
+                    });
+                } else {
+                    connectUi(false);
+                }
+                // TOAT: 流量显示
+                // tv_traffic.setText(upOrDownByteData);
+                // mConnectedView.setCenterTitle(" ");
+                mConnectedView.setCenterTitle(upOrDownByteData);
+                // when type check is finish , logo button can be click
+                canClick = true;
                 mRl_main_wait.setVisibility(View.GONE);
             }
 
             @Override
-            protected void onSuccess(NetworkInfos result) {
-                Logs.v("ma_main", "networktype: " + result.getNetworkType());
-                // // doesn't worked--> show 0MB
-                if (result.getNetworkType() == Cons.NOSERVER || result.getNetworkType() == Cons.UNKNOW) {
-                    connectUi(false);
-                    mRl_main_wait.setVisibility(View.GONE);
-                } else {
-                    // is press the connect button ?
-                    API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
-                        @Override
-                        protected void onSuccess(ConnectionStates result) {
-                            Logs.v("ma_main", "connection: " + result.getConnectionStatus());
-                            int stats = result.getConnectionStatus();
-                            if (stats == Cons.CONNECTED) {
-                                connectUi(true);
-                            } else {
-                                connectUi(false);
-                            }
-                            // TOAT: 流量显示
-                            // tv_traffic.setText(upOrDownByteData);
-                            // mConnectedView.setCenterTitle(" ");
-                            mConnectedView.setCenterTitle(upOrDownByteData);
-                            // when type check is finish , logo button can be click
-                            canClick = true;
-                            mRl_main_wait.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        protected void onResultError(ResponseBody.Error error) {
-                            super.onResultError(error);
-                            mRl_main_wait.setVisibility(View.GONE);
-                        }
-                    });
-
-
-                }
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                mRl_main_wait.setVisibility(View.GONE);
             }
         });
     }
@@ -350,59 +357,61 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* injudge the network status */
     private void getNetworkedInfo() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
             @Override
-            public void onError(Throwable e) {
-                mRl_main_wait.setVisibility(View.GONE);
+            protected void onSuccess(ConnectionStates result) {
+                int connstatus = result.getConnectionStatus();
+                if (connstatus == Cons.CONNECTED) {
+                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                        @Override
+                        public void onError(Throwable e) {
+                            mRl_main_wait.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        protected void onSuccess(NetworkInfos result) {
+                            Logs.v("ma_main", "network-type: " + result.getNetworkType());
+                            m_connectToNetworkTextView.setVisibility(View.VISIBLE);
+                            if (result.getNetworkType() == Cons.NOSERVER) {
+                                connectUi(false);
+                                m_connectToNetworkTextView.setText(getString(R.string.home_no_service));
+                                mRl_main_wait.setVisibility(View.GONE);
+                            } else {
+                                m_connectToNetworkTextView.setText(result.getNetworkName());
+                                // 3.injudge the connect status
+                                isConnectStatus();
+                                mRl_main_wait.setVisibility(View.GONE);
+                            }
+
+                        }
+                    });
+                } else {
+                    m_connectToNetworkTextView.setText(getString(R.string.home_no_service));
+                    mRl_main_wait.setVisibility(View.GONE);
+                }
             }
 
             @Override
-            protected void onSuccess(NetworkInfos result) {
-                Logs.v("ma_main", "network-type: " + result.getNetworkType());
-                m_connectToNetworkTextView.setVisibility(View.VISIBLE);
-                if (result.getNetworkType() == Cons.NOSERVER) {
-                    connectUi(false);
-                    m_connectToNetworkTextView.setText(getString(R.string.home_no_service));
-                    mRl_main_wait.setVisibility(View.GONE);
-                } else {
-                    m_connectToNetworkTextView.setText(result.getNetworkName());
-                    // 3.injudge the connect status
-                    isConnectStatus();
-                    mRl_main_wait.setVisibility(View.GONE);
-                }
-
+            public void onError(Throwable e) {
+                mRl_main_wait.setVisibility(View.GONE);
             }
         });
     }
 
     /* injudge the connect status */
     private void isConnectStatus() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+         /* get usage record */
+        API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
             @Override
-            public void onError(Throwable e) {
-                mRl_main_wait.setVisibility(View.GONE);
+            protected void onSuccess(UsageRecord result) {
+                // get usage record
+                getTrafficData(result);
             }
 
             @Override
-            protected void onSuccess(ConnectionStates result) {
-                int stats = result.getConnectionStatus();
-                if (stats == Cons.CONNECTED) {
-                    /* get usage record */
-                    API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
-                        @Override
-                        protected void onSuccess(UsageRecord result) {
-                            // get usage record
-                            getTrafficData(result);
-                        }
-
-                        @Override
-                        protected void onResultError(ResponseBody.Error error) {
-                            super.onResultError(error);
-                            mRl_main_wait.setVisibility(View.GONE);
-                        }
-                    });
-                }
-
+            protected void onResultError(ResponseBody.Error error) {
+                super.onResultError(error);
+                mRl_main_wait.setVisibility(View.GONE);
             }
         });
 
@@ -431,26 +440,33 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* get traffic data */
     private void getTrafficData(UsageRecord result) {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
             @Override
-            protected void onSuccess(NetworkInfos netInfos) {// TOAT: 加入漫游的判断
-                // 0: roaming 1: no roaming
-                float roaming = netInfos.getRoaming();
-                if (roaming == Cons.ROAMING) {/* 当前是漫游状态 */
-                    usageShow(true, result);
-                } else {/* 非漫游状态 */
-                    usageShow(false, result);
-                }
-            }
+            protected void onSuccess(ConnectionStates conn) {
+                int connstatus = conn.getConnectionStatus();
+                if (connstatus == Cons.CONNECTED) {
+                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                        @Override
+                        protected void onSuccess(NetworkInfos netInfos) {// TOAT: 加入漫游的判断
+                            // 0: roaming 1: no roaming
+                            float roaming = netInfos.getRoaming();
+                            if (roaming == Cons.ROAMING) {/* 当前是漫游状态 */
+                                usageShow(true, result);
+                            } else {/* 非漫游状态 */
+                                usageShow(false, result);
+                            }
+                        }
 
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
-                mRl_main_wait.setVisibility(View.GONE);
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            super.onResultError(error);
+                            mRl_main_wait.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
             }
         });
-
-
     }
 
     /* **** usageShow: 非漫游状态的显示 **** */
@@ -545,15 +561,23 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* injudge the networkinfo */
     private void issignNetworked() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
             @Override
-            public void onError(Throwable e) {
-                mRl_main_wait.setVisibility(View.GONE);
-            }
+            protected void onSuccess(ConnectionStates result) {
+                int connStatus = result.getConnectionStatus();
+                if (connStatus == Cons.CONNECTED) {
+                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                        @Override
+                        public void onError(Throwable e) {
+                            mRl_main_wait.setVisibility(View.GONE);
+                        }
 
-            @Override
-            protected void onSuccess(NetworkInfos result) {
-                setSignUi(result);
+                        @Override
+                        protected void onSuccess(NetworkInfos result) {
+                            setSignUi(result);
+                        }
+                    });
+                }
             }
         });
     }
@@ -651,19 +675,35 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 m_accessnumTextView.setTypeface(typeFace);
                 m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", result.getConnectedList().size()));
                 m_accessnumTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
-                m_accessImageView.setBackgroundResource(R.drawable.home_ic_person_many);
+                m_accessImageView.setBackgroundResource(R.drawable.device_more);
                 String strOfficial = activity.getString(R.string.access_lable);
                 m_accessstatusTextView.setText(strOfficial);
             }
         });
 
     }
-    
+
     /* -------------------------------------------- 5.DEVICES STATUS ------------------------------------------ */
+    private ProgressDialog pinProgressDialog;
 
     @Override
     public void onResume() {
         super.onResume();
+        // 1.是否从解PIN界面跳转过来
+        if (SimUnlockActivity.isPinUnlock) {
+            // 是否为自动连接
+            API.get().getNetworkSettings(new MySubscriber<Network>() {
+                @Override
+                protected void onSuccess(Network result) {
+                    int netselectionMode = result.getNetselectionMode();
+                    if (netselectionMode == Cons.AUTO) {
+                        if (pinProgressDialog == null) {// 显示进度条--> 在切换流量按钮的时候消失
+                            pinProgressDialog = OtherUtils.showProgressPop(getActivity());
+                        }
+                    }
+                }
+            });
+        }
         // 2. 启动定时器
         timerHelper = new TimerHelper(activity) {
             @Override
@@ -683,6 +723,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         super.onPause();
         EventBus.getDefault().unregister(this);
         timerHelper.stop();
+        count = 0;// 清空计数器
     }
 
     @Override
@@ -691,13 +732,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             case R.id.connect_button:
                 if (canClick) {// when the connect type is not sure--> can't click
                     ToastUtil_m.show(getActivity(), getString(R.string.connecting));
-                    if (!isWan) {/* sim button click logic */
-                        // operater the button click function
-                        simButtonConnect();
-                    } else {/* wan button click logic */
-                        // to internet status activity
-                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
-                    }
+                    pgd = OtherUtils.showProgressPop(getActivity());
+                    checkConnStatusAndConnect();
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
                 }
@@ -717,6 +753,59 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    int count = 0;// 用于计算失败的次数
+
+    private void checkConnStatusAndConnect() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+            @Override
+            protected void onSuccess(ConnectionStates result) {
+                int connstatus = result.getConnectionStatus();
+                if (connstatus == Cons.CONNECTED) {
+                    if (!isWan) {/* sim button click logic */
+                        // operater the button click function
+                        simButtonConnect();
+                    } else {/* wan button click logic */
+                        // to internet status activity
+                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+                    }
+                    if (pgd != null) {
+                        pgd.dismiss();
+                        pgd = null;
+                    }
+                }
+                if (connstatus == Cons.CONNECTING) {
+                    checkConnStatusAndConnect();
+                }
+                if (connstatus == Cons.DISCONNECTED || connstatus == Cons.DISCONNECTING) {
+                    // 延迟15秒再提示用户连接失败
+                    m_connectLayout.postDelayed(() -> {
+                        if (pgd != null) {
+                            pgd.dismiss();
+                            pgd = null;
+                        }
+                        ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
+                    }, 15 * 1000);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (pgd != null) {
+                    pgd.dismiss();
+                    pgd = null;
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                if (pgd != null) {
+                    pgd.dismiss();
+                    pgd = null;
+                }
+            }
+        });
     }
 
     /* 初始状态: 未按下--> 去按下 */
@@ -832,6 +921,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* connect helper */
     public void connectHelper(boolean connectflag) {
+        if (pgd == null) {
+            pgd = OtherUtils.showProgressPop(getActivity());
+        }
         if (connectflag) {
             API.get().connect(new MySubscriber() {
                 @Override
@@ -841,41 +933,51 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         protected void onSuccess(ConnectionStates result) {
                             int connectionStatus = result.getConnectionStatus();
                             if (connectionStatus == Cons.CONNECTED) {
+                                if (pgd != null) {
+                                    pgd.dismiss();
+                                }
                                 // get monthly used
                                 getMonthlyPlan();
                                 // set logo button layout
                                 setSimButtonLogo();
                             }
+                            if (connectionStatus == Cons.CONNECTING) {
+                                connectHelper(true);
+                            }
+                            if (connectionStatus == Cons.DISCONNECTING || connectionStatus == Cons.DISCONNECTED) {
+                                if (pgd != null) {
+                                    pgd.dismiss();
+                                }
+                            }
                         }
                     });
-                    
+
                 }
 
                 @Override
                 public void onError(Throwable e) {
-
+                    if (pgd != null) {
+                        pgd.dismiss();
+                    }
                 }
 
                 @Override
                 protected void onFailure() {
-
+                    if (pgd != null) {
+                        pgd.dismiss();
+                    }
                 }
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
+                    if (pgd != null) {
+                        pgd.dismiss();
+                    }
                     Logs.d("ma_main", error.getMessage().toString());
                     ToastUtil_m.show(getActivity(), getString(R.string.connect_failed) + "\n" + getString(R.string.restart_device_tip));
                 }
             });
-        } 
-        // else {
-        //     API.get().disConnect(new MySubscriber() {
-        //         @Override
-        //         protected void onSuccess(Object result) {
-        //
-        //         }
-        //     });
-        // }
+        }
     }
 
     /**
@@ -916,4 +1018,5 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
 }

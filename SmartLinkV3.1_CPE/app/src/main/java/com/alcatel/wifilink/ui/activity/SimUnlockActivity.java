@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
@@ -11,12 +12,15 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
@@ -31,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.alcatel.wifilink.R.id.et_sim_unlock;
+import static com.alcatel.wifilink.R.id.pdfView;
 
 public class SimUnlockActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -46,6 +51,9 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     private ActionBar actionbar;
     private int pinRemainingTimes;// 剩余次数
     boolean isDoneClick;// 是否允许可点
+    private ProgressDialog pgd;
+    private TimerHelper timerHelper;
+    public static boolean isPinUnlock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,12 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
         initActionbar();
         // init sim status
         initSimStatus();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isPinUnlock = false;
     }
 
     /* **** initSimStatus **** */
@@ -155,6 +169,9 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** unlockPin **** */
     private void unlockPin(String pincode) {
+        if (pgd == null) {
+            pgd = OtherUtils.showProgressPop(SimUnlockActivity.this);
+        }
         Logs.v("ma_main", "pin: " + pincode);
         API.get().unlockPin(pincode, new MySubscriber() {
             @Override
@@ -166,14 +183,31 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                         int pinState = result.getPinState();
                         Logs.v("ma_main", "pinState: " + pinState);
                         if (pinState == Cons.PIN_ENABLE_VERIFIED) {
-                            ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
-                            EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-                            ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+                            API.get().getNetworkSettings(new MySubscriber<Network>() {
+                                @Override
+                                protected void onSuccess(Network result) {
+                                    int netselectionMode = result.getNetselectionMode();
+                                    if (netselectionMode == Cons.AUTO) {/* 自动连接 */
+                                        timerHelper = new TimerHelper(SimUnlockActivity.this) {
+                                            @Override
+                                            public void doSomething() {
+                                                getConnStatus();
+                                                count++;
+                                            }
+                                        };
+                                        timerHelper.start(3000);
+
+                                    } else {/* 手动连接 */
+                                        toHome();
+                                    }
+                                }
+                            });
+
                         }
                     }
                 });
 
-                
+
             }
 
             @Override
@@ -181,19 +215,41 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                 getRemainTimes();
             }
         });
-        // API.get().setAutoValidatePinState(pincode, 1, new MySubscriber() {
-        //     @Override
-        //     protected void onSuccess(Object result) {
-        //         ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
-        //         EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-        //         ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
-        //     }
-        //
-        //     @Override
-        //     protected void onResultError(ResponseBody.Error error) {
-        //         getRemainTimes();
-        //     }
-        // });
+    }
+
+    private void toHome() {
+        count = 0;
+        isPinUnlock = true;
+        ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
+        EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
+        ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+    }
+
+    int count = 0;
+
+    private void getConnStatus() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+            @Override
+            protected void onSuccess(ConnectionStates result) {
+                int connstatus = result.getConnectionStatus();
+                if (connstatus == Cons.CONNECTED) {
+                    pgd.dismiss();
+                    pgd = null;
+                    toHome();
+                }
+                if (connstatus == Cons.DISCONNECTING || connstatus == Cons.DISCONNECTED) {
+                    if (count > 40) {
+                        toHome();
+                        count = 0;
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                count = 0;
+            }
+        });
     }
 
     /* **** getRemainTimes **** */
@@ -215,6 +271,12 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                 }
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timerHelper.stop();
     }
 
     /* **** toPukActivity **** */

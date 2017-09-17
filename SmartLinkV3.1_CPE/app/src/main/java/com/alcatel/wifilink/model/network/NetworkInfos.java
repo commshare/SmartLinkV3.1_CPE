@@ -15,7 +15,7 @@ public class NetworkInfos {
     public String RncId;
     public float Roaming;
     public float Domestic_Roaming;
-    public float SignalStrength;
+    public int SignalStrength;
     public String mcc;
     public String mnc;
     public String SINR;
@@ -106,11 +106,11 @@ public class NetworkInfos {
         Domestic_Roaming = domestic_Roaming;
     }
 
-    public float getSignalStrength() {
+    public int getSignalStrength() {
         return SignalStrength;
     }
 
-    public void setSignalStrength(float signalStrength) {
+    public void setSignalStrength(int signalStrength) {
         SignalStrength = signalStrength;
     }
 

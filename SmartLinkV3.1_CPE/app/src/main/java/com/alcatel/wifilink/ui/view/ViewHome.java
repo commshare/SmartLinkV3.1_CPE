@@ -775,7 +775,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		m_accessnumTextView.setTypeface(typeFace);
 		m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", connecedDeviceLstData.size()));
 		m_accessnumTextView.setTextColor(m_context.getResources().getColor(R.color.mg_blue));
-		m_accessImageView.setImageResource(R.drawable.home_ic_person_many);
+		m_accessImageView.setImageResource(R.drawable.device_more);
 		
 		String strOfficial = this.m_context.getString(R.string.access_lable);
 		m_accessstatusTextView.setText(strOfficial);

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.ui.home.fragment.MainFragment;
+import com.alcatel.wifilink.ui.home.fragment.Mainfragment_new;
 import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
 import com.alcatel.wifilink.ui.home.fragment.SmsFragments;
 import com.alcatel.wifilink.ui.home.fragment.WifiFragment;
@@ -38,6 +39,7 @@ public class FragmentHomeBucket {
         Fragment fragment = null;
         if (flag.equals(FragmentHomeEnum.MAIN)) {
             fragment = new MainFragment(activity);
+            // fragment = new Mainfragment_new(activity);
         } else if (flag.equals(FragmentHomeEnum.WIFI)) {
             fragment = new WifiFragment();
         } else if (flag.equals(FragmentHomeEnum.SMS)) {
@@ -78,6 +80,7 @@ public class FragmentHomeBucket {
             case MAIN:/* main */
                 if (mainFragment == null) {
                     mainFragment = new MainFragment((Activity) context);
+                    // mainFragment = new Mainfragment_new((Activity) context);
                     ft.add(containerId, mainFragment, MAIN_FRA);
                 } else {
                     ft.show(mainFragment);
@@ -122,6 +125,7 @@ public class FragmentHomeBucket {
         if (mainFragment != null) {
             ft.remove(mainFragment);
             mainFragment = new MainFragment((Activity) context);
+            // mainFragment = new Mainfragment_new((Activity) context);
             ft.add(containerId, mainFragment, MAIN_FRA);
         }
         if (wifiFragment != null) {

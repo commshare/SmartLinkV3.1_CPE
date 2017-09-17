@@ -208,7 +208,7 @@
                     android:layout_height="@dimen/dimen_70dip"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/home_ic_person_none"
+                    android:background="@drawable/device_none"
                     android:clickable="true"
                     android:contentDescription="@null" />
 

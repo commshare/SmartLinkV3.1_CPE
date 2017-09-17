@@ -1,0 +1,172 @@
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_connect_background_blue">
+
+    <!-- PART_1 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_main_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_heightPercent="60%h">
+
+        <!-- bt_bg -->
+        <ImageView
+            android:id="@+id/bt_main_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/home_ic_bg"
+            app:layout_heightPercent="55%w"
+            app:layout_widthPercent="55%w" />
+
+        <!-- connected bt -->
+        <com.alcatel.wifilink.appwidget.waveprogress.WaveLoadingView
+            android:id="@+id/bt_main_connected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:layout_heightPercent="55%w"
+            app:layout_widthPercent="55%w"
+            app:wlv_borderColor="@color/circle_green"
+            app:wlv_borderWidth="0dp"
+            app:wlv_progressValue="0"
+            app:wlv_round_rectangle="true"
+            app:wlv_shapeType="circle"
+            app:wlv_titleBottom="@string/used_of"
+            app:wlv_titleBottomColor="@color/white"
+            app:wlv_titleBottomSize="@dimen/dimen_textsize_14sp"
+            app:wlv_titleCenter="0.00"
+            app:wlv_titleCenterColor="@color/color_white"
+            app:wlv_titleCenterSize="@dimen/dimen_textsize_50sp"
+            app:wlv_titleTop="MB"
+            app:wlv_titleTopColor="@color/white"
+            app:wlv_titleTopSize="@dimen/dimen_24dip"
+            app:wlv_triangle_direction="north"
+            app:wlv_waveAmplitude="20"
+            app:wlv_waveColor="@color/circle_green"
+            app:wlv_wave_background_Color="@color/circle_bac_blue" />
+
+        <!-- not connect bt -->
+        <Button
+            android:id="@+id/bt_main_notConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/home_btn_connected_nor"
+            android:text="@string/connect"
+            android:textColor="@color/AA009AFF"
+            android:textStyle="bold"
+            app:layout_heightPercent="55%w"
+            app:layout_textSizePercent="7.5%h"
+            app:layout_widthPercent="55%w" />
+
+        <!-- mobile type: 移动|联通|电信 -->
+        <TextView
+            android:id="@+id/tv_main_networkName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bt_main_bg"
+            android:layout_centerHorizontal="true"
+            android:text="@string/home_no_service"
+            android:textColor="@color/white"
+            app:layout_marginTopPercent="5%h"
+            app:layout_textSizePercent="6%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- PRAT_2 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_main_wave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_main_logo"
+        app:layout_heightPercent="5%h">
+
+        <com.alcatel.wifilink.ui.view.DynamicWave
+            android:id="@+id/v_main_wave"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/home_connect_background_blue" />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- PRAT_3 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_main_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_main_wave"
+        android:background="@color/white">
+
+        <!-- signal -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_main_signal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            app:layout_widthPercent="50%w">
+
+            <ImageView
+                android:id="@+id/iv_main_signal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/home_4g_none"
+                app:layout_heightPercent="40%w"
+                app:layout_widthPercent="40%w" />
+
+            <TextView
+                android:id="@+id/tv_main_signal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_main_signal"
+                android:layout_centerHorizontal="true"
+                android:text="@string/signal"
+                android:textColor="@color/grey_text"
+                android:textStyle="normal"
+                app:layout_marginTopPercent="5%h"
+                app:layout_textSizePercent="8%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- connect device -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_main_device"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            app:layout_widthPercent="50%w">
+
+            <ImageView
+                android:id="@+id/iv_main_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/device_none"
+                app:layout_heightPercent="40%w"
+                app:layout_widthPercent="40%w" />
+
+            <TextView
+                android:id="@+id/tv_main_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_main_device"
+                android:layout_centerHorizontal="true"
+                android:text="@string/access_lable"
+                android:textColor="@color/grey_text"
+                android:textStyle="normal"
+                app:layout_marginTopPercent="5%h"
+                app:layout_textSizePercent="8%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

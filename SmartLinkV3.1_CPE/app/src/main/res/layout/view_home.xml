@@ -278,7 +278,7 @@
 					android:layout_height="@dimen/dimen_70dip"
 					android:layout_centerInParent="true"
 					android:clickable="true"
-					android:background="@drawable/home_ic_person_none"
+					android:background="@drawable/device_none"
 					android:contentDescription="@null"
 					android:layout_centerVertical="true"
 					android:layout_centerHorizontal="true" />

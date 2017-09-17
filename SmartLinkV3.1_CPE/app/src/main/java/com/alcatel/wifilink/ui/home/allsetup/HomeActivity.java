@@ -36,6 +36,7 @@ import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.fragment.MainFragment;
+import com.alcatel.wifilink.ui.home.fragment.Mainfragment_new;
 import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
 import com.alcatel.wifilink.ui.home.fragment.SmsFragments;
 import com.alcatel.wifilink.ui.home.fragment.WifiFragment;
@@ -325,6 +326,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         container = R.id.mFl_home_container;
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
         if (MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+            // if (Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
             SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
         }
     }
@@ -345,6 +347,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 refreshActionbar(FragmentHomeEnum.MAIN);
                 setGroupButtonUi(FragmentHomeEnum.MAIN);
                 Fragment mainFragment = new MainFragment(this);
+                // Fragment mainFragment = new Mainfragment_new(this);
                 fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
                 break;
             case Cons.WIFI:
@@ -429,6 +432,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
+                        // if (result.getSIMState() == Cons.READY && Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
                         if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
                             refreshUi_fragment(FragmentHomeEnum.SMS);
                         }
