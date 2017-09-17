@@ -1006,6 +1006,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
                     // sim pop to unlock activity
+                    EventBus.getDefault().postSticky(HomeActivity.class);
                     ChangeActivity.toActivity(getActivity(), SimUnlockActivity.class, false, false, false, 0);
                     return;
                 }

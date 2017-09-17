@@ -1,6 +1,5 @@
 package com.alcatel.wifilink.ui.activity;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
@@ -12,30 +11,28 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ToastUtil_m;
-import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.bean.AcBean;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
-import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.alcatel.wifilink.R.id.et_sim_unlock;
-import static com.alcatel.wifilink.R.id.pdfView;
 
 public class SimUnlockActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -51,13 +48,13 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     private ActionBar actionbar;
     private int pinRemainingTimes;// 剩余次数
     boolean isDoneClick;// 是否允许可点
-    private ProgressDialog pgd;
-    private TimerHelper timerHelper;
     public static boolean isPinUnlock;
+    public Class aClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         OtherUtils.stopAutoTimer();
         setContentView(R.layout.activity_sim_unlock);
         ButterKnife.bind(this);
@@ -68,10 +65,21 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
         initSimStatus();
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void getAcClass(AcBean avbean) {
+        aClass = avbean.getaClass();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         isPinUnlock = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /* **** initSimStatus **** */
@@ -94,7 +102,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_simUnlock_back:
-                ChangeActivity.toActivity(SimUnlockActivity.this, WizardActivity.class, false, true, false, 0);
+                back();
                 break;
         }
     }
@@ -113,9 +121,16 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                     ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.Home_no_sim));
                     return;
                 }
-                
-                /* sim have insert */
-                unlocksim();
+
+                if (simState == Cons.PIN_REQUIRED) {
+                    /* sim have insert */
+                    unlocksim();
+                }
+
+                if (simState == Cons.READY) {
+                    ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+                }
+
             }
         });
 
@@ -131,7 +146,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
         }
         // 网络还没加载完毕
         if (!isDoneClick) {
-            ToastUtil_m.show(this, getString(R.string.connecting));
+            ToastUtil_m.show(this, "Please wait...");
             return;
         }
         // PIN码次数已经用光
@@ -169,85 +184,18 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** unlockPin **** */
     private void unlockPin(String pincode) {
-        if (pgd == null) {
-            pgd = OtherUtils.showProgressPop(SimUnlockActivity.this);
-        }
-        Logs.v("ma_main", "pin: " + pincode);
         API.get().unlockPin(pincode, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-
-                API.get().getSimStatus(new MySubscriber<SimStatus>() {
-                    @Override
-                    protected void onSuccess(SimStatus result) {
-                        int pinState = result.getPinState();
-                        Logs.v("ma_main", "pinState: " + pinState);
-                        if (pinState == Cons.PIN_ENABLE_VERIFIED) {
-                            API.get().getNetworkSettings(new MySubscriber<Network>() {
-                                @Override
-                                protected void onSuccess(Network result) {
-                                    int netselectionMode = result.getNetselectionMode();
-                                    if (netselectionMode == Cons.AUTO) {/* 自动连接 */
-                                        timerHelper = new TimerHelper(SimUnlockActivity.this) {
-                                            @Override
-                                            public void doSomething() {
-                                                getConnStatus();
-                                                count++;
-                                            }
-                                        };
-                                        timerHelper.start(3000);
-
-                                    } else {/* 手动连接 */
-                                        toHome();
-                                    }
-                                }
-                            });
-
-                        }
-                    }
-                });
-
-
+                ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
+                EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
+                ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+                isPinUnlock = true;
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 getRemainTimes();
-            }
-        });
-    }
-
-    private void toHome() {
-        count = 0;
-        isPinUnlock = true;
-        ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
-        EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-        ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
-    }
-
-    int count = 0;
-
-    private void getConnStatus() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
-            @Override
-            protected void onSuccess(ConnectionStates result) {
-                int connstatus = result.getConnectionStatus();
-                if (connstatus == Cons.CONNECTED) {
-                    pgd.dismiss();
-                    pgd = null;
-                    toHome();
-                }
-                if (connstatus == Cons.DISCONNECTING || connstatus == Cons.DISCONNECTED) {
-                    if (count > 40) {
-                        toHome();
-                        count = 0;
-                    }
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                count = 0;
             }
         });
     }
@@ -258,9 +206,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onSuccess(SimStatus result) {
                 pinRemainingTimes = result.getPinRemainingTimes();
-                runOnUiThread(() -> {
-                    tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes));
-                });
+                tvSimUnlockRemainCount.setText(String.valueOf(pinRemainingTimes) + " ");
 
                 if (pinRemainingTimes <= 0) {// 次数用光
                     ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.Home_PinTimes_UsedOut));
@@ -274,9 +220,8 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        timerHelper.stop();
+    public void onBackPressed() {
+        back();
     }
 
     /* **** toPukActivity **** */
@@ -284,5 +229,12 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
         ChangeActivity.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
     }
 
+    public void back() {
+        if (aClass == null) {
+            ChangeActivity.toActivity(this, LoginActivity.class, false, true, false, 0);
+        } else {
+            ChangeActivity.toActivity(this, aClass, false, true, false, 0);
+        }
+    }
 
 }

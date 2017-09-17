@@ -13,7 +13,7 @@ public class NetworkInfos {
     public String LAC;
     public String CellId;
     public String RncId;
-    public float Roaming;
+    public int Roaming;
     public float Domestic_Roaming;
     public int SignalStrength;
     public String mcc;
@@ -90,11 +90,11 @@ public class NetworkInfos {
         RncId = rncId;
     }
 
-    public float getRoaming() {
+    public int getRoaming() {
         return Roaming;
     }
 
-    public void setRoaming(float roaming) {
+    public void setRoaming(int roaming) {
         Roaming = roaming;
     }
 

@@ -25,6 +25,7 @@ import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.bean.AcBean;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
@@ -285,11 +286,22 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                         popDismiss();
                         ToastUtil_m.show(LoginActivity.this, getString(R.string.succeed));
                         if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
-                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
+                            // ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
+                            // return;
+                            
+                            // 是否进入过wan连接模式
+                            boolean isWanmode = SharedPrefsUtil.getInstance(LoginActivity.this).getBoolean(Cons.WAN_MODE_FLAG, false);
+                            if (isWanmode) {// 进入过wan连接界面--> 进入其他界面
+                                OtherUtils.loginSkip(LoginActivity.this);
+                            } else {// 进入wan类型选择界面
+                                ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, false, true, false, 0);
+                            }
+
                             return;
                         }
                         if (wanStatus != Cons.CONNECTED && simflag) {/* 只有SIM卡 */
                             if (simState == Cons.PIN_REQUIRED) {// 要求PIN码
+                                EventBus.getDefault().postSticky(new AcBean(LoginActivity.class));
                                 ChangeActivity.toActivity(LoginActivity.this, SimUnlockActivity.class, false, true, false, 0);
                             } else if (simState == Cons.PUK_REQUIRED) {// 要求PUK码
                                 ChangeActivity.toActivity(LoginActivity.this, PukUnlockActivity.class, false, true, false, 0);

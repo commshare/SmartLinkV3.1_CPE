@@ -491,7 +491,7 @@
     <string name="can_also_enter_times">Can also enter %1$s times</string>
     <string name="pop_sim_locked">SIM lock</string>
     <string name="sim_unlocked">Unlock SIM</string>
-    <string name="sim_unlocked_attempts">\ attempts remaining</string>
+    <string name="sim_unlocked_attempts">attempts remaining</string>
     <string name="sim_unlocked_notEmpty">SIM PIN is empty</string>
     <string name="sim_unlocked_success">unlock PIN completed</string>
     <string name="sim_unlocked_failed">Couldn\'t unlock PIN</string>

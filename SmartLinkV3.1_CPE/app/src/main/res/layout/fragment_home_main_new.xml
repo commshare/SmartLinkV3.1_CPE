@@ -100,73 +100,78 @@
         android:layout_height="match_parent"
         android:layout_below="@id/rl_main_wave"
         android:background="@color/white">
-
-        <!-- signal -->
-        <com.zhy.android.percent.support.PercentRelativeLayout
-            android:id="@+id/rl_main_signal"
-            android:layout_width="wrap_content"
+        <!-- 用于signal设置为gone后, device布局自动居中 -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center_vertical"
-            app:layout_widthPercent="50%w">
-
-            <ImageView
-                android:id="@+id/iv_main_signal"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!-- signal -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_main_signal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/home_4g_none"
-                app:layout_heightPercent="40%w"
-                app:layout_widthPercent="40%w" />
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                app:layout_widthPercent="50%w">
 
-            <TextView
-                android:id="@+id/tv_main_signal"
+                <ImageView
+                    android:id="@+id/iv_main_signal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/home_4g_none"
+                    app:layout_heightPercent="40%w"
+                    app:layout_widthPercent="40%w" />
+
+                <TextView
+                    android:id="@+id/tv_main_signal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_main_signal"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/signal"
+                    android:textColor="@color/grey_text"
+                    android:textStyle="normal"
+                    app:layout_marginTopPercent="5%h"
+                    app:layout_textSizePercent="8%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- connect device -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_main_device"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/iv_main_signal"
-                android:layout_centerHorizontal="true"
-                android:text="@string/signal"
-                android:textColor="@color/grey_text"
-                android:textStyle="normal"
-                app:layout_marginTopPercent="5%h"
-                app:layout_textSizePercent="8%h" />
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/rl_main_signal"
+                android:layout_toRightOf="@id/rl_main_signal"
+                android:gravity="center_vertical"
+                app:layout_widthPercent="50%w">
 
-        </com.zhy.android.percent.support.PercentRelativeLayout>
+                <ImageView
+                    android:id="@+id/iv_main_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/device_none"
+                    app:layout_heightPercent="40%w"
+                    app:layout_widthPercent="40%w" />
 
-        <!-- connect device -->
-        <com.zhy.android.percent.support.PercentRelativeLayout
-            android:id="@+id/rl_main_device"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            app:layout_widthPercent="50%w">
+                <TextView
+                    android:id="@+id/tv_main_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_main_device"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/access_lable"
+                    android:textColor="@color/grey_text"
+                    android:textStyle="normal"
+                    app:layout_marginTopPercent="5%h"
+                    app:layout_textSizePercent="8%h" />
 
-            <ImageView
-                android:id="@+id/iv_main_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/device_none"
-                app:layout_heightPercent="40%w"
-                app:layout_widthPercent="40%w" />
-
-            <TextView
-                android:id="@+id/tv_main_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/iv_main_device"
-                android:layout_centerHorizontal="true"
-                android:text="@string/access_lable"
-                android:textColor="@color/grey_text"
-                android:textStyle="normal"
-                app:layout_marginTopPercent="5%h"
-                app:layout_textSizePercent="8%h" />
-
-        </com.zhy.android.percent.support.PercentRelativeLayout>
-
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+        </com.zhy.android.percent.support.PercentLinearLayout>
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
 </com.zhy.android.percent.support.PercentRelativeLayout>
