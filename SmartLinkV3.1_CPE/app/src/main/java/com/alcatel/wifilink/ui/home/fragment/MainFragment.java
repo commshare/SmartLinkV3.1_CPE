@@ -942,7 +942,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                                 setSimButtonLogo();
                             }
                             if (connectionStatus == Cons.CONNECTING) {
-                                connectHelper(true);
+                                m_connectLayout.postDelayed(() -> {
+                                    connectHelper(true);
+                                },3000);
+                                
                             }
                             if (connectionStatus == Cons.DISCONNECTING || connectionStatus == Cons.DISCONNECTED) {
                                 if (pgd != null) {

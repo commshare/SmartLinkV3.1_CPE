@@ -118,15 +118,25 @@ public class Mainfragment_new extends Fragment {
             public void doSomething() {
                 getWanStatus();// 获取WAN口
                 getSimStates();// 获取SIM卡
-                // getNetWorkName();// 获取网络类型:移动|电信...
-                // getSignalStrength();// 获取信号强度
-                // getsignalType();// 获取信号类型:4G|3G..
+                getNetworkSome();// 获取与network相关
                 getDevices();// 获取连接设备数
                 // TODO: 2017/9/16 获取月流量计划以及已使用流量
             }
 
         };
         timerHelper.start(5000);
+    }
+
+    private void getNetworkSome() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+            @Override
+            protected void onSuccess(ConnectionStates result) {
+                
+            }
+        });
+        // getNetWorkName();// 获取网络类型:移动|电信...
+        // getSignalStrength();// 获取信号强度
+        // getsignalType();// 获取信号类型:4G|3G..
     }
 
     /* 获取信号类型:4G|3G... */
