@@ -327,8 +327,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private void initView() {
         container = R.id.mFl_home_container;
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        // if (MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
-            if (Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+        if (MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+            // if (Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
             SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
         }
     }
@@ -348,8 +348,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 // 首次commit
                 refreshActionbar(FragmentHomeEnum.MAIN);
                 setGroupButtonUi(FragmentHomeEnum.MAIN);
-                // Fragment mainFragment = new MainFragment(this);
-                Fragment mainFragment = new Mainfragment_new(this);
+                Fragment mainFragment = new MainFragment(this);
+                // Fragment mainFragment = new Mainfragment_new(this);
                 fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
                 break;
             case Cons.WIFI:
@@ -434,8 +434,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
-                        // if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
-                            if (result.getSIMState() == Cons.READY && Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+                        // if (result.getSIMState() == Cons.READY && Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+                        if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
                             refreshUi_fragment(FragmentHomeEnum.SMS);
                         }
                     }

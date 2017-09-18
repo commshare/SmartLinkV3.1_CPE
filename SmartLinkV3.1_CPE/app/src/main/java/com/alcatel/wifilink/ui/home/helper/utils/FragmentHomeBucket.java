@@ -38,8 +38,8 @@ public class FragmentHomeBucket {
 
         Fragment fragment = null;
         if (flag.equals(FragmentHomeEnum.MAIN)) {
-            // fragment = new MainFragment(activity);
-            fragment = new Mainfragment_new(activity);
+            fragment = new MainFragment(activity);
+            // fragment = new Mainfragment_new(activity);
         } else if (flag.equals(FragmentHomeEnum.WIFI)) {
             fragment = new WifiFragment();
         } else if (flag.equals(FragmentHomeEnum.SMS)) {
@@ -79,8 +79,8 @@ public class FragmentHomeBucket {
         switch (en) {
             case MAIN:/* main */
                 if (mainFragment == null) {
-                    // mainFragment = new MainFragment((Activity) context);
-                    mainFragment = new Mainfragment_new((Activity) context);
+                    mainFragment = new MainFragment((Activity) context);
+                    // mainFragment = new Mainfragment_new((Activity) context);
                     ft.add(containerId, mainFragment, MAIN_FRA);
                 } else {
                     ft.show(mainFragment);
@@ -124,8 +124,8 @@ public class FragmentHomeBucket {
         Fragment settingFragment = fm.findFragmentByTag(SETTING_FRA);
         if (mainFragment != null) {
             ft.remove(mainFragment);
-            // mainFragment = new MainFragment((Activity) context);
-            mainFragment = new Mainfragment_new((Activity) context);
+            mainFragment = new MainFragment((Activity) context);
+            // mainFragment = new Mainfragment_new((Activity) context);
             ft.add(containerId, mainFragment, MAIN_FRA);
         }
         if (wifiFragment != null) {
