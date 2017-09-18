@@ -41,8 +41,8 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_account);
         setTitle(R.string.setting_account);
-        getWindow().setBackgroundDrawable(null);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
+        // getWindow().setBackgroundDrawable(null);
+        // getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
         initUi();
     }
 

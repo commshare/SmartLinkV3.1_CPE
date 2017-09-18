@@ -20,17 +20,17 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.PreferenceUtil;
 
 import java.util.Locale;
 
+import static java.lang.Character.toUpperCase;
+
 public class SettingLanguageActivity extends BaseActivityWithBack {
     private static final String TAG = "SettingLanguageActivity";
     public static final String IS_SWITCH_LANGUAGE = "is_switch_language";
-    private String[] mLanguageStrings = {
-            Constants.Language.ENGLISH, Constants.Language.ARABIC, Constants.Language.ESPANYOL,
-            Constants.Language.GERMENIC, Constants.Language.ITALIAN, Constants.Language.FRENCH,
-            Constants.Language.SERBIAN, Constants.Language.CROATIAN, Constants.Language.SLOVENIAN};
+    private String[] mLanguageStrings = {Constants.Language.ENGLISH, Constants.Language.ARABIC, Constants.Language.ESPANYOL, Constants.Language.GERMENIC, Constants.Language.ITALIAN, Constants.Language.FRENCH, Constants.Language.SERBIAN, Constants.Language.CROATIAN, Constants.Language.SLOVENIAN};
     private ListView mLanguageListView;
     private LanguageAdapter mLanguageAdapter;
     private String mCurrentLanguage;
@@ -44,11 +44,11 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
         setContentView(R.layout.activity_setting_language);
         setTitle(R.string.language);
         mCurrentLanguage = PreferenceUtil.getString(Constants.Language.LANGUAGE, "");
-        if("".equals(mCurrentLanguage)) {
+        if ("".equals(mCurrentLanguage)) {
             mCurrentLanguage = Locale.getDefault().getLanguage();
         }
         mChangeLanguage = mCurrentLanguage;
-        mLanguageListView = (ListView)findViewById(R.id.listview_language);
+        mLanguageListView = (ListView) findViewById(R.id.listview_language);
         mLanguageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -97,25 +97,21 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
 
     @Override
     public void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
     }
 
     @Override
     public void onPause() {
-        // TODO Auto-generated method stub
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
     }
 
     @Override
     public void onStop() {
-        // TODO Auto-generated method stub
         super.onStop();
     }
 
@@ -131,19 +127,16 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
 
         @Override
         public int getCount() {
-            // TODO Auto-generated method stub
             return languages.length;
         }
 
         @Override
         public Object getItem(int position) {
-            // TODO Auto-generated method stub
             return null;
         }
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return position;
         }
 
@@ -180,7 +173,7 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
                 config.locale = Locale.FRENCH;
             } else if (languages[position].equals(Constants.Language.SERBIAN)) {
                 // 塞尔维亚
-                config.locale =new Locale(Constants.Language.SERBIAN);
+                config.locale = new Locale(Constants.Language.SERBIAN);
             } else if (languages[position].equals(Constants.Language.CROATIAN)) {
                 // 克罗地亚
                 config.locale = new Locale(Constants.Language.CROATIAN);
@@ -188,7 +181,10 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
                 // 斯洛文尼亚
                 config.locale = new Locale(Constants.Language.SLOVENIAN);
             }
-            viewHolder.languageNameTv.setText(config.locale.getDisplayName(config.locale));
+
+            String displayName = config.locale.getDisplayName(config.locale);
+            String refreshLanguageStr = toUpperCase4Index(displayName);
+            viewHolder.languageNameTv.setText(refreshLanguageStr);
             if (mChangeLanguage.equals(languages[position])) {
                 viewHolder.languageCheckImg.setVisibility(View.VISIBLE);
             } else {
@@ -202,6 +198,18 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
             public ImageView languageCheckImg;
         }
 
+    }
+
+    /**
+     * 首字母大写 
+     *
+     * @param string
+     * @return
+     */
+    public static String toUpperCase4Index(String string) {
+        char[] methodName = string.toCharArray();
+        methodName[0] = toUpperCase(methodName[0]);
+        return String.valueOf(methodName);
     }
 
 }

@@ -85,6 +85,8 @@ import static com.alcatel.wifilink.utils.OtherUtils.timerList;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
+    public static boolean TEST = true;
+
     @BindView(R.id.layout_main)
     RelativeLayout layoutMain;// 父布局
 
@@ -337,7 +339,13 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         container = R.id.mFl_home_container;
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
         // if (MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
-        if (Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+        String type = MainFragment.type;
+        if (OtherUtils.TEST) {
+            type = MainFragment.type;
+        } else {
+            type = Mainfragment_new.type;
+        }
+        if (type.equalsIgnoreCase(Cons.TYPE_SIM)) {
             SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
         }
     }
@@ -357,8 +365,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 // 首次commit
                 refreshActionbar(FragmentHomeEnum.MAIN);
                 setGroupButtonUi(FragmentHomeEnum.MAIN);
-                // Fragment mainFragment = new MainFragment(this);
-                Fragment mainFragment = new Mainfragment_new(this);
+                Fragment mainFragment;
+                if (OtherUtils.TEST) {
+                    mainFragment = new MainFragment(this);
+                } else {
+                    mainFragment = new Mainfragment_new(this);
+                }
                 fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
                 break;
             case Cons.WIFI:
@@ -444,7 +456,13 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                     @Override
                     protected void onSuccess(SimStatus result) {
                         // if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
-                        if (result.getSIMState() == Cons.READY && Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+                        String type = MainFragment.type;
+                        if (OtherUtils.TEST) {
+                            type = MainFragment.type;
+                        } else {
+                            type = Mainfragment_new.type;
+                        }
+                        if (result.getSIMState() == Cons.READY && type.equalsIgnoreCase(Cons.TYPE_SIM)) {
                             refreshUi_fragment(FragmentHomeEnum.SMS);
                         }
                     }

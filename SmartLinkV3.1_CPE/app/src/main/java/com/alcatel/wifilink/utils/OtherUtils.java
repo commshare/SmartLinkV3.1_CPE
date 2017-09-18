@@ -47,6 +47,8 @@ import java.util.TimerTask;
 
 public class OtherUtils {
 
+    public static boolean TEST = true;
+
     private OnSwVersionListener onSwVersionListener;
     private OnHwVersionListener onHwVersionListener;
     private OnCustomizedVersionListener onCustomizedVersionListener;

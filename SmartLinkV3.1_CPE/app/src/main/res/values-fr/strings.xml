@@ -75,7 +75,7 @@
     <string name="usage_clear_history_fail">Impossible d\'effacer l\'historique de consommation.</string>
     <string name="usage_setting_mobile_data">Données mobiles</string>
     <string name="usage_setting_title">Paramètres de consommation</string>
-    <string name="usage_setting_timelimit">max.</string>
+    <string name="usage_setting_timelimit">max</string>
     <string name="usage_setting_settimelimit">Durée max. :</string>
     <string name="usage_setting_timeunit">min</string>
     <string name="usage_setting_usage">Consommation</string>
@@ -226,7 +226,7 @@
     <string name="setting_new_password">Nouveau mot de passe (4 à 16 caractères)</string>
     <string name="setting_confirm_password">Confirmer le nouveau mot de passe</string>
     <string name="setting_password_note">Remarque : le mot de passe doit comporter 4 à 16 caractères.</string>
-    <string name="setting_network_mode">mode</string>
+    <string name="setting_network_mode">Mode</string>
     <string name="setting_network_selection">Choix du réseau</string>
     <string name="setting_network_disconnect_first">Déconnectez d\'abord votre réseau.</string>
     <string name="setting_network_try_again">Déconnexion en cours... Réessayez ultérieurement.</string>

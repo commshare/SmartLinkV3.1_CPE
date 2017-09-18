@@ -510,7 +510,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             case R.id.network_set_data_plan:
                 mSetDataPlan.setVisibility(View.VISIBLE);
                 mMobileNetwork.setVisibility(View.GONE);
-                setTitle("Set data plan");
+                setTitle(getString(R.string.setting_set_data_plan));
                 getUsageSetting();
                 break;
             case R.id.rl_monthly_data_plan:

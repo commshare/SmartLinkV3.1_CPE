@@ -505,7 +505,7 @@
     <string name="input_a_data_value_between_0_1024">Vnesite podatkovno vrednost med 0 in 1024</string>
     <string name="please_enable_sim_pin">Omogoči kodo PIN kartice SIM</string>
     <string name="it_is_connected_you_can_switch_other_connection_mode_page">Povezava je vzpostavljena. Lahko preklopite na stran z drugim načinom povezave</string>
-    <string name="connect">Vzpostavi povezavo</string>
+    <string name="connect">Vzpostavi \n povezavo</string>
     <string name="do_not_change_default_if_not_necessary">Ne spreminjajte privzetih nastavitev, če ni nujno potrebno</string>
     <string name="account">Račun</string>
     <string name="need_ip_address_and_related_info_given_by_network_operator">Zahtevani so naslov IP in druge sorodne informacije, ki jih posreduje omrežni operater</string>

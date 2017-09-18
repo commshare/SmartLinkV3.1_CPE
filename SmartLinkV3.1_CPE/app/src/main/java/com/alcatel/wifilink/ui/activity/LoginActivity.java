@@ -224,13 +224,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                             API.get().updateToken(loginResult.getToken());
                             // remember psd
                             SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
-                            // 是否进入过向导页: GUIDE_FLAG = WIFI_GUIDE_FLAG & DATA_PLAN_FLAG
-                            if (SharedPrefsUtil.getInstance(LoginActivity.this).getBoolean(GUIDE_FLAG, false)) {
-                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
-                            } else {
-                                checkConnectMode();  // 判断连接模式( SIM | WAN )
-                            }
-
+                            checkConnectMode();  // 判断连接模式( SIM | WAN )
                         }
                     }
 
@@ -293,8 +287,15 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                         popDismiss();
                         ToastUtil_m.show(LoginActivity.this, getString(R.string.succeed));
                         if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
-                            ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
-                            return;
+                            // 是否进入过向导页: GUIDE_FLAG = WIFI_GUIDE_FLAG & DATA_PLAN_FLAG
+                            if (SharedPrefsUtil.getInstance(LoginActivity.this).getBoolean(GUIDE_FLAG, false)) {
+                                EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_WAN));
+                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
+                                return;
+                            } else {
+                                ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
+                                return;
+                            }
                         }
                         if (wanStatus != Cons.CONNECTED && simflag) {/* 只有SIM卡 */
                             if (simState == Cons.PIN_REQUIRED) {// 要求PIN码

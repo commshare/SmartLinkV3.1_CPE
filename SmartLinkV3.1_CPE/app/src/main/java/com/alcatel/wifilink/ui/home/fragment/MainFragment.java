@@ -23,6 +23,7 @@ import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
+import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
 import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.network.NetworkInfos;
@@ -55,6 +56,9 @@ import java.util.Locale;
 
 import static com.alcatel.wifilink.R.id.connected_button;
 import static com.alcatel.wifilink.R.id.pin;
+import static com.alcatel.wifilink.ui.home.helper.cons.Cons.GB;
+import static com.alcatel.wifilink.ui.home.helper.cons.Cons.KB;
+import static com.alcatel.wifilink.ui.home.helper.cons.Cons.MB;
 
 @SuppressLint("ValidFragment")
 public class MainFragment extends Fragment implements View.OnClickListener {
@@ -105,6 +109,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private int rate = 2;// 下方波浪高度倍率
     private int duration = 4000;// 上方波浪滚动速率
     private ProgressDialog pgd;// 等待进度条
+    private String trafficUnit = "MB";
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getConnType(TypeBean tb) {
@@ -174,6 +179,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     // TOAT: ********** 断网时先走此方法 ***********
                     connectUi(false);// set button logo
                     m_connectBtn.setBackgroundResource(R.drawable.wan_not_conn);
+                    m_connectBtn.setText("");
                     m_connectToNetworkTextView.setText(getString(R.string.unknown));
                     m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
                     // m_networkTypeTextView.setVisibility(View.GONE);
@@ -244,6 +250,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectToNetworkTextView.setText(getString(R.string.Ethernet));
         m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
         m_connectBtn.setBackgroundResource(R.drawable.wan_conn);
+        m_connectBtn.setText("");
         mRl_sigelPanel.setVisibility(View.GONE);
         m_networkLabelTextView.setText(getString(R.string.Ethernet));
         HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);// sms count view gone
@@ -259,6 +266,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         setNetWorkType();// unicom | mobile | telcom
         setTrafficLayout();// traffic 0MB...layout
         setSignStatus();// sign level layout
+        getTrafficUnit();// 获取月流量单位
         //SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
     }
 
@@ -317,11 +325,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                                 connectUi(true);
 
                                 // 从PIN码产生的进度条消失
-                                if (pinProgressDialog != null) {
-                                    pinProgressDialog.dismiss();
-                                    pinProgressDialog = null;
-                                    SimUnlockActivity.isPinUnlock = false;
-                                }
+                                hideProgress();
+                                SimUnlockActivity.isPinUnlock = false;
                             }
                             mRl_main_wait.setVisibility(View.GONE);
                         }
@@ -510,7 +515,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             } else {
                 if (monthUse.num <= 0) {
                     // monthplan = getString(R.string.no_month_plan);
-                    monthplan = getString(R.string.used_of) + " " + "0MB";
+                    monthplan = getString(R.string.used_of) + " 0" + trafficUnit;
                 } else {
                     monthplan = getString(R.string.used_of) + " " + (int) monthUse.num + monthUse.type;
                 }
@@ -529,6 +534,25 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             mConnectedView.setTopTitle(hadUse.type);// unit
             mConnectedView.setBottomTitle(monthplan);// month plan
             mConnectedView.setBottomTitleSize(monthUse.num >= 999 ? 10 : 14);
+        });
+    }
+
+    /**
+     * 获取月流量单位
+     */
+    private void getTrafficUnit() {
+        API.get().getUsageSetting(new MySubscriber<UsageSetting>() {
+            @Override
+            protected void onSuccess(UsageSetting result) {
+                int unit = result.getUnit();
+                if (unit == MB) {
+                    trafficUnit = "MB";
+                } else if (unit == KB) {
+                    trafficUnit = "KB";
+                } else {
+                    trafficUnit = "GB";
+                }
+            }
         });
     }
     
@@ -697,10 +721,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 protected void onSuccess(Network result) {
                     int netselectionMode = result.getNetselectionMode();
                     if (netselectionMode == Cons.AUTO) {
-                        if (pinProgressDialog == null) {// 显示进度条--> 在切换流量按钮的时候消失
-                            pinProgressDialog = OtherUtils.showProgressPop(getActivity());
-                        }
+                        hideProgress();
                     }
+                }
+
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    hideProgress();
                 }
             });
         }
@@ -944,8 +971,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                             if (connectionStatus == Cons.CONNECTING) {
                                 m_connectLayout.postDelayed(() -> {
                                     connectHelper(true);
-                                },3000);
-                                
+                                }, 3000);
+
                             }
                             if (connectionStatus == Cons.DISCONNECTING || connectionStatus == Cons.DISCONNECTED) {
                                 if (pgd != null) {
@@ -1021,6 +1048,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 mRl_main_wait.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void hideProgress() {
+        if (pinProgressDialog != null) {
+            OtherUtils.hideProgressPop(pinProgressDialog);
+            pinProgressDialog = null;
+        }
     }
 
 }

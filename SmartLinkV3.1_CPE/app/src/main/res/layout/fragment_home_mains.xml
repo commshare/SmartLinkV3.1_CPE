@@ -32,7 +32,7 @@
                     android:id="@+id/connected_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <!-- 圆形LOGO:250 -->
                     <com.alcatel.wifilink.ui.view.CircleProgress
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <!-- 背景 -->
                     <ImageView
@@ -97,14 +97,14 @@
 
                     <!-- CONNECT BUTTON -->
                     <Button
-                        android:textSize="@dimen/dimen_textsize_28sp"
-                        android:textColor="@color/blue_btn"
-                        android:text="@string/connect"
                         android:id="@+id/connect_button"
                         android:layout_width="@dimen/dimen_220dip"
                         android:layout_height="@dimen/dimen_220dip"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/home_btn_connected_nor" />
+                        android:background="@drawable/home_btn_connected_nor"
+                        android:text="@string/connect"
+                        android:textColor="@color/blue_btn"
+                        android:textSize="@dimen/dimen_textsize_24sp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -113,14 +113,14 @@
                 android:id="@+id/connect_network"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/rl_connectlogo"
                 android:gravity="center"
                 android:text="@string/home_no_service"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/dimen_textsize_20sp"
-                android:visibility="visible"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/rl_connectlogo" />
+                android:visibility="visible" />
         </com.zhy.android.percent.support.PercentRelativeLayout>
 
         <!-- *** 3.wave view *** -->
@@ -137,152 +137,94 @@
         </com.zhy.android.percent.support.PercentRelativeLayout>
 
         <!-- *** 4.signal and connected *** -->
-        <ScrollView
+
+        <!-- *** signal layout *** -->
+        <com.zhy.android.percent.support.PercentLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_white"
-            android:fillViewport="true"
-            android:overScrollMode="never">
+            android:background="@color/white"
+            android:orientation="horizontal">
 
-            <!-- *** signal layout *** -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- signal panel -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:background="@color/white"
+                android:id="@+id/sigel_panel"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                app:layout_widthPercent="50%w">
 
-                <!-- signal -->
-                <RelativeLayout
-                    android:id="@+id/sigel_panel"
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:paddingEnd="@dimen/dimen_20dip"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingStart="@dimen/dimen_20dip">
+                <ImageView
+                    android:id="@+id/connct_signal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/connct_network_label"
+                    android:layout_alignRight="@+id/connct_network_label"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/home_4g_none"
+                    app:layout_heightPercent="33%h"
+                    app:layout_widthPercent="33%h" />
 
-                    <TextView
-                        android:id="@+id/txtHide1"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true" />
+                <TextView
+                    android:id="@+id/connct_network_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/connct_signal"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/AA009AFF"
+                    android:textStyle="bold"
+                    app:layout_textSizePercent="9%h" />
 
-                    <RelativeLayout
-                        android:id="@+id/left_signal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_toLeftOf="@id/txtHide1"
-                        android:layout_toStartOf="@id/txtHide1">
+                <TextView
+                    android:id="@+id/connct_network_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/connct_signal"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/signal"
+                    android:textColor="@color/grey_text"
+                    android:textStyle="normal"
+                    app:layout_textSizePercent="9%h" />
 
-                        <ImageView
-                            android:id="@+id/connct_signal"
-                            android:layout_width="@dimen/dimen_70dip"
-                            android:layout_height="@dimen/dimen_70dip"
-                            android:layout_centerInParent="true"
-                            android:background="@drawable/home_4g_none"
-                            android:contentDescription="@null" />
-                    </RelativeLayout>
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/left_signal"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="@dimen/dimen_9dip"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+            <!-- device panel -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/connct_network_type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginLeft="28dp"
-                            android:layout_marginStart="28dp"
-                            android:text="@string/home_network_type_4g"
-                            android:textColor="@color/grey_text"
-                            android:textSize="@dimen/dimen_textsize_18sp" />
+                <ImageView
+                    android:id="@+id/access_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/device_none"
+                    app:layout_heightPercent="33%h"
+                    app:layout_widthPercent="33%h" />
 
-                        <TextView
-                            android:id="@+id/connct_network_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dimen_10dip"
-                            android:layout_marginStart="@dimen/dimen_10dip"
-                            android:layout_toEndOf="@id/connct_network_type"
-                            android:layout_toRightOf="@id/connct_network_type"
-                            android:text="@string/signal"
-                            android:textColor="@color/grey_text"
-                            android:textSize="@dimen/dimen_textsize_18sp" />
-                    </RelativeLayout>
-                </RelativeLayout>
+                <TextView
+                    android:id="@+id/access_num_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/access_status"
+                    android:layout_centerHorizontal="true"
+                    android:textStyle="bold"
+                    app:layout_textSizePercent="9%h" />
 
-                <!-- devices -->
-                <RelativeLayout
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingEnd="@dimen/dimen_20dip">
+                <TextView
+                    android:id="@+id/access_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/access_status"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/access_lable"
+                    android:textColor="@color/grey_text"
+                    android:textStyle="normal"
+                    app:layout_textSizePercent="9%h" />
 
-                    <!-- connected logo -->
-                    <ImageView
-                        android:id="@+id/access_status"
-                        android:layout_width="@dimen/dimen_70dip"
-                        android:layout_height="@dimen/dimen_70dip"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/device_none"
-                        android:clickable="true"
-                        android:contentDescription="@null" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                    <RelativeLayout
-                        android:id="@+id/access_num_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/access_status"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="@dimen/dimen_9dip"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <!-- device count -->
-                        <TextView
-                            android:id="@+id/access_num_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginEnd="@dimen/dimen_4dip"
-                            android:layout_marginRight="@dimen/dimen_4dip"
-                            android:textColor="@color/grey_text"
-                            android:textSize="@dimen/dimen_textsize_18sp" />
-
-                        <!-- CONNECTED DES -->
-                        <TextView
-                            android:id="@+id/access_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/access_num_label"
-                            android:layout_toRightOf="@id/access_num_label"
-                            android:text="@string/access_lable"
-                            android:textColor="@color/grey_text"
-                            android:textSize="@dimen/dimen_textsize_18sp" />
-                    </RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
+        </com.zhy.android.percent.support.PercentLinearLayout>
 
     </com.zhy.android.percent.support.PercentLinearLayout>
 

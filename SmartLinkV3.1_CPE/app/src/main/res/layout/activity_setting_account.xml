@@ -1,141 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<com.zhy.android.percent.support.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.zhy.android.percent.support.PercentLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/setting_background_color"
+        android:background="@color/white"
         android:orientation="vertical">
 
-        <ScrollView
+        <EditText
+            android:id="@+id/current_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/setting_current_password"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/dimen_12dip"
+            android:paddingStart="@dimen/dimen_12dip"
+            android:textColor="@color/grey_text"
+            android:textDirection="locale"
+            app:layout_heightPercent="10%h"
+            app:layout_textSizePercent="2.2%h" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_white"
-                android:orientation="vertical"
-                android:visibility="visible">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/gray" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+        <EditText
+            android:textScaleX="0.9"
+            android:id="@+id/new_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/setting_new_password"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/dimen_12dip"
+            android:paddingStart="@dimen/dimen_12dip"
+            android:textColor="@color/grey_text"
+            android:textDirection="locale"
+            app:layout_heightPercent="10%h"
+            app:layout_textSizePercent="2.2%h" />
 
-                    <EditText
-                        android:id="@+id/current_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dimen_12dip"
-                        android:layout_marginStart="@dimen/dimen_12dip"
-                        android:background="@null"
-                        android:hint="@string/setting_current_password"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="textPassword"
-                        android:paddingBottom="@dimen/dimen_12dip"
-                        android:paddingTop="@dimen/dimen_12dip"
-                        android:textColor="@color/grey_text"
-                        android:textDirection="locale"
-                        android:textSize="@dimen/dimen_textsize_16sp"
-                        />
-                </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/gray" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_0.5dip"
-                    android:layout_marginLeft="@dimen/dimen_12dip"
-                    android:layout_marginStart="@dimen/dimen_12dip"
-                    android:background="@color/main_bottom_divider"
-                    android:contentDescription="@string/setting_account" />
+        <EditText
+            app:layout_heightPercent="10%h"
+            android:id="@+id/confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/setting_confirm_password"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/dimen_12dip"
+            android:paddingStart="@dimen/dimen_12dip"
+            android:textColor="@color/grey_text"
+            android:textDirection="locale"
+            app:layout_textSizePercent="2.2%h" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/new_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dimen_12dip"
-                        android:background="@null"
-                        android:hint="@string/setting_new_password"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="textPassword"
-                        android:paddingBottom="15dp"
-                        android:paddingTop="@dimen/dimen_15dip"
-                        android:textColor="@color/grey_text"
-                        android:textDirection="locale"
-                        android:textSize="@dimen/dimen_textsize_16sp"
-                        />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_0.5dip"
-                    android:layout_marginLeft="@dimen/dimen_12dip"
-                    android:layout_marginStart="@dimen/dimen_12dip"
-                    android:background="@color/main_bottom_divider"
-                    android:contentDescription="@string/setting_account"
-                    android:textDirection="locale" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/confirm_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dimen_12dip"
-                        android:layout_marginStart="@dimen/dimen_12dip"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:hint="@string/setting_confirm_password"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="textPassword"
-                        android:paddingBottom="@dimen/dimen_15dip"
-                        android:paddingTop="@dimen/dimen_15dip"
-                        android:textColor="@color/grey_text"
-                        android:textDirection="locale"
-                        android:textSize="@dimen/dimen_textsize_16sp"
-                        />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_0.5dip"
-                    android:background="@color/main_bottom_divider"
-                    android:contentDescription="@string/setting_account"
-                    android:textDirection="locale" />
-
-            </LinearLayout>
-        </ScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:background="@color/gray" />
 
         <TextView
             android:id="@+id/password_notice"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="@dimen/dimen_12dip"
-            android:layout_marginStart="@dimen/dimen_12dip"
-            android:layout_marginTop="@dimen/dimen_10dip"
+            android:layout_height="wrap_content"
+            app:layout_heightPercent="10%h"
             android:gravity="center"
             android:text="@string/login_forgot_password"
             android:textColor="@color/color_light_gray"
             android:textDirection="locale"
-            android:textSize="@dimen/font_size_normal"
-            />
-
-    </LinearLayout>
-
-    <!--&lt;!&ndash; 提示框 &ndash;&gt;-->
-    <!--<include-->
-    <!--android:id = "@+id/pop_forgotpassword"-->
-    <!--layout = "@layout/pop_forgotpassword" />-->
-</RelativeLayout>
+            android:textStyle="normal"
+            app:layout_marginTopPercent="10%h"
+            app:layout_textSizePercent="2.5%h" />
+    </com.zhy.android.percent.support.PercentLinearLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>
