@@ -42,6 +42,8 @@ import java.io.File;
 
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_nor;
 import static com.alcatel.wifilink.R.drawable.general_btn_remember_pre;
+import static com.alcatel.wifilink.ui.home.helper.cons.Cons.DATA_PLAN_FLAG;
+import static com.alcatel.wifilink.ui.home.helper.cons.Cons.WIFI_GUIDE_FLAG;
 
 public class LoginActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -52,6 +54,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
     private TextView mPromptText;
     private RelativeLayout rl_remenberPsd;
+    public static String GUIDE_FLAG = "GUIDE_FLAG";// 向导页引导标记
 
     // private int mRemainingTimes;
     private boolean ischeck = false;
@@ -219,11 +222,15 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
                         if (loginState.getState() == Cons.LOGIN) {
                             // get token
                             API.get().updateToken(loginResult.getToken());
-                            //ChangeActivity.toActivity(LoginActivity.this, TestActivity.class, false, true, false, 0);
                             // remember psd
                             SharedPrefsUtil.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
-                            // 判断连接模式( SIM | WAN )
-                            checkConnectMode();
+                            // 是否进入过向导页: GUIDE_FLAG = WIFI_GUIDE_FLAG & DATA_PLAN_FLAG
+                            if (SharedPrefsUtil.getInstance(LoginActivity.this).getBoolean(GUIDE_FLAG, false)) {
+                                ChangeActivity.toActivity(LoginActivity.this, HomeActivity.class, false, true, false, 0);
+                            } else {
+                                checkConnectMode();  // 判断连接模式( SIM | WAN )
+                            }
+
                         }
                     }
 
@@ -277,26 +284,17 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
-                int wanStatus = result.getStatus();
+                int wanStatus = result.getStatus();// 获取WAN口状态
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
-                        int simState = result.getSIMState();
+                        int simState = result.getSIMState();// 获取SIM卡状态
                         boolean simflag = simState == Cons.READY || simState == Cons.PIN_REQUIRED || simState == Cons.PUK_REQUIRED;
                         popDismiss();
                         ToastUtil_m.show(LoginActivity.this, getString(R.string.succeed));
                         if (wanStatus == Cons.CONNECTED & simflag) {/* 都有 */
                             ChangeActivity.toActivity(LoginActivity.this, WizardActivity.class, false, true, false, 0);
                             return;
-
-                            // 是否进入过wan连接模式
-                            // boolean isWanmode = SharedPrefsUtil.getInstance(LoginActivity.this).getBoolean(Cons.WAN_MODE_FLAG, false);
-                            // if (isWanmode) {// 进入过wan连接界面--> 进入其他界面
-                            //     OtherUtils.loginSkip(LoginActivity.this);
-                            // } else {// 进入wan类型选择界面
-                            //     ChangeActivity.toActivity(LoginActivity.this, WanModeActivity.class, false, true, false, 0);
-                            // }
-                            // return;
                         }
                         if (wanStatus != Cons.CONNECTED && simflag) {/* 只有SIM卡 */
                             if (simState == Cons.PIN_REQUIRED) {// 要求PIN码

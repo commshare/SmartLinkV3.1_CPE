@@ -21,6 +21,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
@@ -190,6 +191,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initView();
         initUi();
 
+        setGuideFlag();
         OtherUtils.timerList.add(startTimer()); // 定时器在此处而不是在Onresume是为了防止界面重复刷新
         OtherUtils.timerList.add(getCurrentActivity());// 定时获取当前位于顶层运行的ACTIVITY
         OtherUtils.timerList.add(heartBeanTimer());// 心跳包发送
@@ -197,6 +199,13 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         OtherUtils.timerList.add(autoTimer);// 启动定时退出计时器
         OtherUtils.homeTimerList.add(autoTimer);
         startAPPPackageService();// 后台服务: 检测当前APP是否被杀死
+    }
+
+    /* 提交向导页标记 */
+    private void setGuideFlag() {
+        boolean isWifiGuide = SharedPrefsUtil.getInstance(this).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
+        boolean isDataPlan = SharedPrefsUtil.getInstance(this).getBoolean(Cons.DATA_PLAN_FLAG, false);
+        SharedPrefsUtil.getInstance(this).putBoolean(LoginActivity.GUIDE_FLAG, isWifiGuide & isDataPlan);
     }
 
 
@@ -327,8 +336,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     private void initView() {
         container = R.id.mFl_home_container;
         mTvHomeMessageCount = (TextView) findViewById(R.id.mTv_home_messageCount);
-        if (MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
-            // if (Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+        // if (MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+        if (Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
             SmsCountHelper.setSmsCount(this, mTvHomeMessageCount);// getInstance show sms count
         }
     }
@@ -348,8 +357,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 // 首次commit
                 refreshActionbar(FragmentHomeEnum.MAIN);
                 setGroupButtonUi(FragmentHomeEnum.MAIN);
-                Fragment mainFragment = new MainFragment(this);
-                // Fragment mainFragment = new Mainfragment_new(this);
+                // Fragment mainFragment = new MainFragment(this);
+                Fragment mainFragment = new Mainfragment_new(this);
                 fm.beginTransaction().replace(container, mainFragment, FragmentHomeBucket.MAIN_FRA).commit();
                 break;
             case Cons.WIFI:
@@ -434,8 +443,8 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 API.get().getSimStatus(new MySubscriber<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
-                        // if (result.getSIMState() == Cons.READY && Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
-                        if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+                        // if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+                        if (result.getSIMState() == Cons.READY && Mainfragment_new.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
                             refreshUi_fragment(FragmentHomeEnum.SMS);
                         }
                     }

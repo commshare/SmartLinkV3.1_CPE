@@ -497,8 +497,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             public void onError(Throwable e) {
                 super.onError(e);
                 popDismiss();
-                // 提交设置过的标记
-                SharedPrefsUtil.getInstance(getActivity()).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
                 // 点击后, router有可能马上掉线, 造成超时错误返回
                 if (e.getMessage().toString().contains("ETIMEDOUT")) {
                     ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);

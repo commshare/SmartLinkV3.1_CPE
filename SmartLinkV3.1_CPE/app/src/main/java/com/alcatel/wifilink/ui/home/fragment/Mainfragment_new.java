@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,10 +87,12 @@ public class Mainfragment_new extends Fragment {
     private TimerHelper globalTimer;// 全局定时器
     private TimerHelper connTimer;// 连接定时器
     public static String type = new String();
-    private boolean isWanOrSim = false;// true: wan & false: sim
+    private boolean isWanOrSim;// 自动检测:  true: wan & false: sim
     private ProgressDialog progressDialog;
     int count = 0;// 计数器-->用于统计获取连接状态次数
     int countPin = 0;// 计数器-->用于统计获取连接状态次数
+    private TimerHelper pinTimer;
+    private View inflate;
 
     private String networkName;// 网络名称
     private int signalStrength;// 信号强度
@@ -100,8 +103,6 @@ public class Mainfragment_new extends Fragment {
     private long userTraffic;// 已用普通流量(字节)
     private long roamTraffic;// 已用漫游流量(字节)
     private boolean roaming;// 是否漫游
-    private TimerHelper pinTimer;
-    private View inflate;
 
     public Mainfragment_new() {
     }
@@ -122,7 +123,7 @@ public class Mainfragment_new extends Fragment {
         EventBus.getDefault().register(this);
         inflate = View.inflate(getActivity(), R.layout.fragment_home_main_new, null);
         unbinder = ButterKnife.bind(this, inflate);
-        initView();
+        initSomeAttr();
         initData();
         return inflate;
     }
@@ -130,6 +131,7 @@ public class Mainfragment_new extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // 从解PIN界面返回时显示进度条
         showPinUnlockWait();
     }
 
@@ -147,22 +149,33 @@ public class Mainfragment_new extends Fragment {
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
+                            SimUnlockActivity.isPinUnlock = false;
                             int connStatu = result.getConnectionStatus();
                             if (connStatu == Cons.CONNECTED) {
                                 countPin = 0;
                                 if (progressDialog != null) {
-                                    OtherUtils.hideProgressPop(progressDialog);
+                                    hideProgressPop();
                                 }
                                 if (pinTimer != null) {
                                     pinTimer.stop();
                                 }
                             } else {
-                                if (countPin >= 13) {
+                                if (countPin >= 15) {
                                     countPin = 0;
-                                    OtherUtils.hideProgressPop(progressDialog);
+                                    hideProgressPop();
                                     ToastUtil_m.show(getActivity(), getString(R.string.smsdetail_tryagain_confirm));
                                 }
                             }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            SimUnlockActivity.isPinUnlock = false;
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            SimUnlockActivity.isPinUnlock = false;
                         }
                     });
                     countPin++;
@@ -174,24 +187,22 @@ public class Mainfragment_new extends Fragment {
         }
     }
 
-    private void initView() {
+    /**
+     * 隐藏进度条
+     */
+    private void hideProgressPop() {
+        OtherUtils.hideProgressPop(progressDialog);
+        progressDialog = null;
+    }
 
-        btMainConnected = (WaveLoadingView) inflate.findViewById(R.id.bt_main_connected);
-        btMainNotConnect = (Button) inflate.findViewById(R.id.bt_main_notConnect);
-        tvNetworkName = (TextView) inflate.findViewById(R.id.tv_main_networkName);
-        vMainWave = (DynamicWave) inflate.findViewById(R.id.v_main_wave);
-        rlMainSignal = (PercentRelativeLayout) inflate.findViewById(R.id.rl_main_signal);
-        ivMainSignal = (ImageView) inflate.findViewById(R.id.iv_main_signal);
-        tvMainSignal = (TextView) inflate.findViewById(R.id.tv_main_signal);
-        rlMainDevice = (PercentRelativeLayout) inflate.findViewById(R.id.rl_main_device);
-        ivMainDevice = (ImageView) inflate.findViewById(R.id.iv_main_device);
-        tvMainDevice = (TextView) inflate.findViewById(R.id.tv_main_device);
-
+    /* 初始化某些属性 */
+    private void initSomeAttr() {
         btMainConnected.setAnimDuration(4000);// 已连接按钮的波浪速率
         vMainWave.setDelY(2);// 中间波浪高度倍率
         deviceText = getString(R.string.access_lable);
     }
 
+    /* 初始化数据 */
     private void initData() {
         // 启动定时器
         globalTimer = new TimerHelper(getActivity()) {
@@ -481,7 +492,7 @@ public class Mainfragment_new extends Fragment {
      * 显示SIM卡拨号成功UI
      */
     public void showSimSuccess() {
-        if (isWanOrSim) {// 如果此时WAN口连接了则不再走以下逻辑
+        if (isWanOrSim) {
             return;
         }
         // button logo
@@ -635,17 +646,17 @@ public class Mainfragment_new extends Fragment {
      * 发送SIM拨号请求
      */
     private void simConnect() {
-        
+
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
                 if (simState == Cons.PUK_REQUIRED) {
-                    
+
                 }
             }
         });
-        
+
         count = 0;
         if (progressDialog == null) {
             progressDialog = OtherUtils.showProgressPop(getActivity());
@@ -663,12 +674,12 @@ public class Mainfragment_new extends Fragment {
                             protected void onSuccess(ConnectionStates result) {
                                 int connStatus = result.getConnectionStatus();
                                 if (connStatus == Cons.CONNECTED) {
-                                    OtherUtils.hideProgressPop(progressDialog);
+                                    hideProgressPop();
                                     getAllStatus();
                                     connTimer.stop();
                                 } else if (connStatus == Cons.DISCONNECTED) {
                                     if (count > 5) {
-                                        OtherUtils.hideProgressPop(progressDialog);
+                                        hideProgressPop();
                                         ToastUtil_m.show(getActivity(), getString(R.string.restart_device_tip));
                                         connTimer.stop();
                                     }

@@ -154,6 +154,32 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        logout();// 登出
+        finish();
+    }
+
+    public void logout() {
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+
+            }
+        });
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         timerHelper.stop();

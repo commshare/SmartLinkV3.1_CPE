@@ -187,10 +187,10 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
         API.get().unlockPin(pincode, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
+                isPinUnlock = true;
                 ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
                 ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
-                isPinUnlock = true;
             }
 
             @Override
