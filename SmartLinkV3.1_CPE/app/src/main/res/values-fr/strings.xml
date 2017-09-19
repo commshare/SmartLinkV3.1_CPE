@@ -75,7 +75,7 @@
     <string name="usage_clear_history_fail">Impossible d\'effacer l\'historique de consommation.</string>
     <string name="usage_setting_mobile_data">Données mobiles</string>
     <string name="usage_setting_title">Paramètres de consommation</string>
-    <string name="usage_setting_timelimit">max</string>
+    <string name="usage_setting_timelimit">Max</string>
     <string name="usage_setting_settimelimit">Durée max. :</string>
     <string name="usage_setting_timeunit">min</string>
     <string name="usage_setting_usage">Consommation</string>

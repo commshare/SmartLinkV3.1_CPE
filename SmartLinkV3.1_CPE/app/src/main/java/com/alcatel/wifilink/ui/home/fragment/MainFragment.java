@@ -3,6 +3,7 @@ package com.alcatel.wifilink.ui.home.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.drm.DrmManagerClient;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.CommonUtil;
+import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
@@ -42,11 +44,12 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.pop.SimPopHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
-import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.view.DynamicWave;
+import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.utils.DataUtils;
 import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,8 +58,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Locale;
 
 import static com.alcatel.wifilink.R.id.connected_button;
-import static com.alcatel.wifilink.R.id.pin;
-import static com.alcatel.wifilink.ui.home.helper.cons.Cons.GB;
 import static com.alcatel.wifilink.ui.home.helper.cons.Cons.KB;
 import static com.alcatel.wifilink.ui.home.helper.cons.Cons.MB;
 
@@ -108,7 +109,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private DynamicWave dw_main;// 下方波浪
     private int rate = 2;// 下方波浪高度倍率
     private int duration = 4000;// 上方波浪滚动速率
-    private ProgressDialog pgd;// 等待进度条
+    private ProgressDialog clickProgresDialog;// 等待进度条
     private String trafficUnit = "MB";
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -312,6 +313,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
                         @Override
                         public void onError(Throwable e) {
+                            // 从PIN码产生的进度条消失
+                            hideProgress();
                             mRl_main_wait.setVisibility(View.GONE);
                         }
 
@@ -323,16 +326,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                                 connectUi(false);
                             } else {
                                 connectUi(true);
-
-                                // 从PIN码产生的进度条消失
-                                hideProgress();
-                                SimUnlockActivity.isPinUnlock = false;
                             }
+                            // 从PIN码产生的进度条消失
+                            hideProgress();
                             mRl_main_wait.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            // 从PIN码产生的进度条消失
+                            hideProgress();
                         }
                     });
                 } else {
                     connectUi(false);
+                    // 从PIN码产生的进度条消失
+                    hideProgress();
                 }
                 // TOAT: 流量显示
                 // tv_traffic.setText(upOrDownByteData);
@@ -697,14 +706,29 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 mRl_main_wait.setVisibility(View.GONE);
                 m_accessnumTextView.setVisibility(View.VISIBLE);
                 m_accessnumTextView.setTypeface(typeFace);
-                m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", result.getConnectedList().size()));
+                int deviceSize = result.getConnectedList().size();// 设备数量
+                m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", deviceSize));
                 m_accessnumTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
                 m_accessImageView.setBackgroundResource(R.drawable.device_more);
                 String strOfficial = activity.getString(R.string.access_lable);
+                // TOAT: 获取当前语言决定是否加复数
+                String currentLanguage = getCurrentLanguageSetting();
+                if (currentLanguage.equals(Constants.Language.FRENCH)) {
+                    if (deviceSize > 1) {
+                        strOfficial += "S";
+                    }
+                }
                 m_accessstatusTextView.setText(strOfficial);
             }
         });
 
+    }
+
+    /**
+     * 获取当前语言设置
+     */
+    private String getCurrentLanguageSetting() {
+        return PreferenceUtil.getString(Constants.Language.LANGUAGE, "");
     }
 
     /* -------------------------------------------- 5.DEVICES STATUS ------------------------------------------ */
@@ -713,23 +737,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        Logs.v("ma_main", "pinlock: " + SimUnlockActivity.isPinUnlock);
         // 1.是否从解PIN界面跳转过来
         if (SimUnlockActivity.isPinUnlock) {
-            // 是否为自动连接
-            API.get().getNetworkSettings(new MySubscriber<Network>() {
-                @Override
-                protected void onSuccess(Network result) {
-                    int netselectionMode = result.getNetselectionMode();
-                    if (netselectionMode == Cons.AUTO) {
-                        hideProgress();
-                    }
-                }
-
-                @Override
-                protected void onResultError(ResponseBody.Error error) {
-                    hideProgress();
-                }
-            });
+            pinProgressDialog = OtherUtils.showProgressPop(getActivity());
         }
         // 2. 启动定时器
         timerHelper = new TimerHelper(activity) {
@@ -759,7 +770,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             case R.id.connect_button:
                 if (canClick) {// when the connect type is not sure--> can't click
                     ToastUtil_m.show(getActivity(), getString(R.string.connecting));
-                    pgd = OtherUtils.showProgressPop(getActivity());
+                    clickProgresDialog = OtherUtils.showProgressPop(getActivity());
                     checkConnStatusAndConnect();
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
@@ -797,9 +808,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         // to internet status activity
                         ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
                     }
-                    if (pgd != null) {
-                        pgd.dismiss();
-                        pgd = null;
+                    if (clickProgresDialog != null) {
+                        clickProgresDialog.dismiss();
+                        clickProgresDialog = null;
                     }
                 }
                 if (connstatus == Cons.CONNECTING) {
@@ -808,9 +819,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (connstatus == Cons.DISCONNECTED || connstatus == Cons.DISCONNECTING) {
                     // 延迟15秒再提示用户连接失败
                     m_connectLayout.postDelayed(() -> {
-                        if (pgd != null) {
-                            pgd.dismiss();
-                            pgd = null;
+                        if (clickProgresDialog != null) {
+                            clickProgresDialog.dismiss();
+                            clickProgresDialog = null;
                         }
                         ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
                     }, 15 * 1000);
@@ -819,17 +830,17 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable e) {
-                if (pgd != null) {
-                    pgd.dismiss();
-                    pgd = null;
+                if (clickProgresDialog != null) {
+                    clickProgresDialog.dismiss();
+                    clickProgresDialog = null;
                 }
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                if (pgd != null) {
-                    pgd.dismiss();
-                    pgd = null;
+                if (clickProgresDialog != null) {
+                    clickProgresDialog.dismiss();
+                    clickProgresDialog = null;
                 }
             }
         });
@@ -948,8 +959,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* connect helper */
     public void connectHelper(boolean connectflag) {
-        if (pgd == null) {
-            pgd = OtherUtils.showProgressPop(getActivity());
+        if (clickProgresDialog == null) {
+            clickProgresDialog = OtherUtils.showProgressPop(getActivity());
         }
         if (connectflag) {
             API.get().connect(new MySubscriber() {
@@ -960,8 +971,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         protected void onSuccess(ConnectionStates result) {
                             int connectionStatus = result.getConnectionStatus();
                             if (connectionStatus == Cons.CONNECTED) {
-                                if (pgd != null) {
-                                    pgd.dismiss();
+                                if (clickProgresDialog != null) {
+                                    clickProgresDialog.dismiss();
                                 }
                                 // get monthly used
                                 getMonthlyPlan();
@@ -975,8 +986,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                             }
                             if (connectionStatus == Cons.DISCONNECTING || connectionStatus == Cons.DISCONNECTED) {
-                                if (pgd != null) {
-                                    pgd.dismiss();
+                                if (clickProgresDialog != null) {
+                                    clickProgresDialog.dismiss();
                                 }
                             }
                         }
@@ -986,22 +997,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void onError(Throwable e) {
-                    if (pgd != null) {
-                        pgd.dismiss();
+                    if (clickProgresDialog != null) {
+                        clickProgresDialog.dismiss();
                     }
                 }
 
                 @Override
                 protected void onFailure() {
-                    if (pgd != null) {
-                        pgd.dismiss();
+                    if (clickProgresDialog != null) {
+                        clickProgresDialog.dismiss();
                     }
                 }
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
-                    if (pgd != null) {
-                        pgd.dismiss();
+                    if (clickProgresDialog != null) {
+                        clickProgresDialog.dismiss();
                     }
                     Logs.d("ma_main", error.getMessage().toString());
                     ToastUtil_m.show(getActivity(), getString(R.string.connect_failed) + "\n" + getString(R.string.restart_device_tip));

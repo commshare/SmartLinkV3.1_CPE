@@ -147,10 +147,10 @@
 
             <!-- signal panel -->
             <com.zhy.android.percent.support.PercentRelativeLayout
-                android:background="@color/white"
                 android:id="@+id/sigel_panel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:background="@color/white"
                 app:layout_widthPercent="50%w">
 
                 <ImageView
@@ -168,8 +168,9 @@
                     android:id="@+id/connct_network_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/connct_signal"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignLeft="@id/connct_signal"
+                    android:layout_alignStart="@id/connct_signal"
+                    android:layout_alignTop="@id/connct_signal"
                     android:textColor="@color/AA009AFF"
                     android:textStyle="bold"
                     app:layout_textSizePercent="9%h" />
@@ -189,9 +190,9 @@
 
             <!-- device panel -->
             <com.zhy.android.percent.support.PercentRelativeLayout
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
                 <ImageView
                     android:id="@+id/access_status"
@@ -203,15 +204,6 @@
                     app:layout_widthPercent="33%h" />
 
                 <TextView
-                    android:id="@+id/access_num_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@id/access_status"
-                    android:layout_centerHorizontal="true"
-                    android:textStyle="bold"
-                    app:layout_textSizePercent="9%h" />
-
-                <TextView
                     android:id="@+id/access_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -220,6 +212,17 @@
                     android:text="@string/access_lable"
                     android:textColor="@color/grey_text"
                     android:textStyle="normal"
+                    app:layout_textSizePercent="9%h" />
+
+                <TextView
+                    android:id="@+id/access_num_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/access_status"
+                    android:layout_toLeftOf="@id/access_label"
+                    android:layout_toStartOf="@id/access_label"
+                    android:textStyle="bold"
+                    app:layout_marginRightPercent="4%w"
                     app:layout_textSizePercent="9%h" />
 
             </com.zhy.android.percent.support.PercentRelativeLayout>
