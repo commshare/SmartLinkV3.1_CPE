@@ -511,7 +511,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener, 
     //
     public void ShowErrorMsg(String strTitle, String strMsg) {
                                 /*
-		 * String strOK = getString(R.string.IDS_SMS_ERROR_BUTTON_OK); new
+                                 * String strOK = getString(R.string.IDS_SMS_ERROR_BUTTON_OK); new
 		 * AlertDialog.Builder(this).setTitle(strTitle).setMessage(strMsg)
 		 * .setPositiveButton(strOK, null).show();
 		 */
@@ -597,6 +597,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener, 
                 if (smsDate != null) {
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                     item.strTime = format.format(smsDate);
+                    item.strTime = sms.SMSTime;
                 }
 
                 m_smsListData.add(item);
@@ -608,6 +609,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener, 
                     if (smsDate != null) {
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                         item.strTime = format.format(smsDate);
+                        item.strTime = sms.SMSTime;
                     }
 
                     m_smsListData.add(item);
@@ -619,6 +621,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener, 
             item.strContent = sms.SMSContent;
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             item.strTime = format.format(smsDate);
+            item.strTime = sms.SMSTime;
             // item.strTime = sms.SMSTime;
             item.eSMSType = sms.SMSType;
             item.nContactID = m_nContactID;
@@ -629,7 +632,7 @@ public class ActivitySmsDetail extends BaseActivity implements OnClickListener, 
         DarftSMSDisplay();
 
         // test
-		/*
+                                /*
 		 * SMSDetailItem item3 = new SMSDetailItem(); item3.bIsDateItem = true;
 		 * item3.strTime = "2014-12-33"; m_smsListData.add(item3);
 		 * 
