@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.utils.HostnameUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -171,6 +172,7 @@ public class IntentBuilder {
             return "*/*";
 
         String ext = filePath.substring(dotPosition + 1, filePath.length()).toLowerCase();
+        HostnameUtils.setVerifyHostName();
         String mimeType = MimeUtils.guessMimeTypeFromExtension(ext);
         if (ext.equals("mtz")) {
             mimeType = "application/miui-mtz";

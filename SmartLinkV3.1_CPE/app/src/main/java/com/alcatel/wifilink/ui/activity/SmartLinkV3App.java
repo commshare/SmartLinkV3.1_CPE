@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.net.ssl.HostnameVerifier;
+
 
 public class SmartLinkV3App extends MultiDexApplication {
 

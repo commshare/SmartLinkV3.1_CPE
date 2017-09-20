@@ -251,6 +251,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
             List<SMSContentList.SMSContentBean> list = filterDraft(smsContentList);
             int pos = linearLayoutManager.findFirstVisibleItemPosition();
             dateTimebanner = list.get(pos).getSMSTime();
+            // dateTimebanner = dateTimebanner.replace("-", "/");
             tvSmsdetailDate.setText(dateTimebanner);
         });
     }

@@ -201,8 +201,8 @@ public final class MimeUtils {
         add("application/x-wingz", "wz");
         add("application/x-webarchive", "webarchive");
         add("application/x-webarchive-xml", "webarchivexml");
-        add("application/x-x509-ca-cert", "crt");
-        add("application/x-x509-user-cert", "crt");
+        //add("application/x-x509-ca-cert", "crt");
+        //add("application/x-x509-user-cert", "crt");
         add("application/x-xcf", "xcf");
         add("application/x-xfig", "fig");
         add("application/xhtml+xml", "xhtml");
