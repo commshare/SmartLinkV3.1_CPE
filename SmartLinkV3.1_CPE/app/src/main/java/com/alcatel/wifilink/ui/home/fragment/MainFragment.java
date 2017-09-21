@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,7 +146,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         mRl_sigelPanel = (RelativeLayout) m_view.findViewById(R.id.sigel_panel);
         m_signalImageView = (ImageView) m_view.findViewById(R.id.connct_signal);// SIGNAL LOGO
-        m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);// 4G
+        // m_networkTypeTextView = (TextView) m_view.findViewById(R.id.connct_network_type);// 4G
         m_networkLabelTextView = (TextView) m_view.findViewById(R.id.connct_network_label);// SIGNAL text
 
         m_accessnumTextView = (TextView) m_view.findViewById(R.id.access_num_label);
@@ -249,7 +250,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         m_connectedLayout.setVisibility(View.GONE);
         m_connectToNetworkTextView.setVisibility(View.VISIBLE);
         m_connectToNetworkTextView.setText(getString(R.string.Ethernet));
-        m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
+        // m_networkTypeTextView.setVisibility(View.GONE);// TEXT: 2G\3G\4G
         m_connectBtn.setBackgroundResource(R.drawable.wan_conn);
         m_connectBtn.setText("");
         mRl_sigelPanel.setVisibility(View.GONE);
@@ -581,7 +582,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             protected void onSuccess(SimStatus result) {
                 // 1.is sim worked
                 if (result.getSIMState() != Cons.READY) {
-                    m_networkTypeTextView.setVisibility(View.GONE);
+                    // m_networkTypeTextView.setVisibility(View.GONE);
                     m_networkLabelTextView.setVisibility(View.VISIBLE);
                     m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
                 } else {
@@ -621,7 +622,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mRl_main_wait.setVisibility(View.GONE);
         if (result != null) {
             if (result.getNetworkType() == Cons.NOSERVER) {
-                m_networkTypeTextView.setVisibility(View.GONE);
+                // m_networkTypeTextView.setVisibility(View.GONE);
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g_none);
                 m_networkLabelTextView.setVisibility(View.VISIBLE);
                 return;
@@ -646,46 +647,61 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g4);
             } else if (result.getSignalStrength() == Cons.LEVEL_5) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_4g5);
+            } else {
+                m_signalImageView.setBackgroundResource(R.drawable.home_4g5);
             }
 
             //show network type
-            if (result.getNetworkType() == Cons.UNKNOW) {
-                m_networkTypeTextView.setVisibility(View.GONE);
-                m_networkLabelTextView.setVisibility(View.VISIBLE);
-            }
-
-            //2G
-            if (result.getNetworkType() == Cons.EDGE || result.getNetworkType() == Cons.GPRS) {
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_2g);
-                m_networkTypeTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
-            }
-
-            //3G
-            if (result.getNetworkType() == Cons.HSPA || result.getNetworkType() == Cons.UMTS || result.getNetworkType() == Cons.HSUPA) {
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_3g);
-                m_networkTypeTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
-            }
-
-            //3G+
-            if (result.getNetworkType() == Cons.HSPA_PLUS || result.getNetworkType() == Cons.DC_HSPA_PLUS) {
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_3g_plus);
-                m_networkTypeTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
-            }
-
-            //4G			
-            if (result.getNetworkType() == Cons.LTE) {
-                m_networkTypeTextView.setVisibility(View.VISIBLE);
-                m_networkTypeTextView.setTypeface(typeFace);
-                m_networkTypeTextView.setText(R.string.home_network_type_4g);
-                m_networkTypeTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
+            int type = result.getNetworkType();
+            Logs.v("ma_network", type + "");
+            if (type <= Cons.NOSERVER) {
+                setNetWorkTypeString(null);
+            } else if (type >= Cons.GPRS && type <= Cons.EDGE) {
+                setNetWorkTypeString(getString(R.string.home_network_type_2g));
+            } else if (type >= Cons.HSPA && type <= Cons.DC_HSPA_PLUS) {
+                setNetWorkTypeString(getString(R.string.home_network_type_3g));
+            } else if (type >= Cons.LTE && type <= Cons.LTE_PLUS) {
+                setNetWorkTypeString(getString(R.string.home_network_type_4g));
+            } else if (type >= Cons.CDMA && type <= Cons.GSM) {
+                setNetWorkTypeString(getString(R.string.home_network_type_2g));
+            } else if (type == Cons.EVDO) {
+                setNetWorkTypeString(getString(R.string.home_network_type_3g));
+            } else if (type >= Cons.LTE_FDD && type <= Cons.LTE_TDD) {
+                setNetWorkTypeString(getString(R.string.home_network_type_4g));
+            } else if (type == Cons.CDMA_Ehrpd) {
+                setNetWorkTypeString(getString(R.string.home_network_type_3g_plus));
+            } else {
+                setNetWorkTypeString(null);
             }
         }
+    }
+
+    /**
+     * 根据语言环境设置显示的网络类型表达方式
+     *
+     * @param netType
+     */
+    public void setNetWorkTypeString(String netType) {
+        m_networkLabelTextView.setVisibility(View.VISIBLE);
+
+        // 如果传入参数为null,则切换颜色和描述
+        if (TextUtils.isEmpty(netType)) {
+            m_networkLabelTextView.setText(getString(R.string.signal));
+            m_networkLabelTextView.setTextColor(activity.getResources().getColor(R.color.grey_text));
+            return;
+        }
+
+        // 如果信号正常--> 获取当前语言环境--> 切换颜色和描述
+        String showType = "";
+        String currentLanguage = OtherUtils.getCurrentLanguage();
+        boolean isFrench = currentLanguage.equalsIgnoreCase(Constants.Language.FRENCH);
+        if (isFrench) {
+            showType = getString(R.string.signal) + " " + netType;
+        } else {
+            showType = netType + " " + getString(R.string.signal);
+        }
+        m_networkLabelTextView.setText(showType);
+        m_networkLabelTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
     }
 
     /* -------------------------------------------- 4.SIGNAL STATUS ------------------------------------------ */
@@ -705,7 +721,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             protected void onSuccess(ConnectedList result) {
                 mRl_main_wait.setVisibility(View.GONE);
                 m_accessnumTextView.setVisibility(View.VISIBLE);
-                m_accessnumTextView.setTypeface(typeFace);
+                // m_accessnumTextView.setTypeface(typeFace);
                 int deviceSize = result.getConnectedList().size();// 设备数量
                 m_accessnumTextView.setText(String.format(Locale.ENGLISH, "%d", deviceSize));
                 m_accessnumTextView.setTextColor(activity.getResources().getColor(R.color.mg_blue));
@@ -1029,6 +1045,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
      */
     /* connected ui helper */
     public void connectUi(boolean isConnected) {
+        // set net work type ui
+        if (!isConnected & type.equalsIgnoreCase(Cons.TYPE_SIM)) {
+            setNetWorkTypeString(null);
+        }
         // connect--> true:gone; false:visible
         m_connectLayout.setVisibility(isConnected ? View.GONE : View.VISIBLE);
         // connected--> true:visible; false:gone

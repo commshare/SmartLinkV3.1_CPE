@@ -490,6 +490,13 @@ public class OtherUtils {
         }
     }
 
+    /**
+     * @return 当前语言
+     */
+    public static String getCurrentLanguage() {
+        return PreferenceUtil.getString(Constants.Language.LANGUAGE, "");
+    }
+
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
     public interface OnSwVersionListener {
         void getVersion(boolean needToEncrypt);
