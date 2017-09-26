@@ -127,6 +127,24 @@ public class API {
         }
     }
 
+    public static API get() {
+        // 1.检测wifi是否有连接
+        boolean wiFiActive = OtherUtils.isWiFiActive(SmartLinkV3App.getInstance());
+        if (!wiFiActive) {
+            OtherUtils.setWifiActive(SmartLinkV3App.getInstance(), true);
+        }
+        gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
+        gateWay = "http://" + (TextUtils.isEmpty(gateWay) | !gateWay.startsWith("192.168") ? "192.168.1.1" : gateWay);
+        if (api == null) {
+            synchronized (API.class) {
+                if (api == null) {
+                    api = new API();
+                }
+            }
+        }
+        return api;
+    }
+
     public void updateToken(int token) {
         cacheToken(token);
         encryptToken(token);
@@ -216,24 +234,6 @@ public class API {
         DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(listener);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(TIMEOUT, TimeUnit.SECONDS).build();
         return client;
-    }
-
-    public static API get() {
-        // 1.检测wifi是否有连接
-        boolean wiFiActive = OtherUtils.isWiFiActive(SmartLinkV3App.getInstance());
-        if (!wiFiActive) {
-            OtherUtils.setWifiActive(SmartLinkV3App.getInstance(), true);
-        }
-        gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
-        gateWay = "http://" + (TextUtils.isEmpty(gateWay) | !gateWay.startsWith("192.168") ? "192.168.1.1" : gateWay);
-        if (api == null) {
-            synchronized (API.class) {
-                if (api == null) {
-                    api = new API();
-                }
-            }
-        }
-        return api;
     }
 
     //    public static API get(DownloadProgressListener listener) {
