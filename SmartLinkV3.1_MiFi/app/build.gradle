@@ -1,7 +1,16 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.fernandocejas.frodo'
 
 android {
-    compileSdkVersion 17
+
+    useLibrary 'org.apache.http.legacy'
+
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
+    
+    compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.alcatel.smartlinkv3"
@@ -10,6 +19,12 @@ android {
         versionName '3.3.4'
         versionCode 29
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    
     buildTypes {
         release {
             minifyEnabled false
@@ -21,15 +36,64 @@ android {
 
     lintOptions {
         abortOnError false
+        quiet true
+        ignoreWarnings true
+        disable 'InvalidPackage'            //Some libraries have issues with this.
+        disable 'OldTargetApi'
+        //Lint gives this warning but SDK 20 would be Android L Beta.
+        disable 'IconDensities'             //For testing purpose. This is safe to remove.
+        disable 'IconMissingDensityFolder'  //For testing purpose. This is safe to remove.
+        disable 'MissingTranslation'
+    }
+
+    dexOptions {
+        javaMaxHeapSize "2g"
+        preDexLibraries = false
+        jumboMode = true
+
+        // 加快Gradle速度的配置
+        // 使用增量模式构建
+        //incremental true
+        // 最大堆内存
+        //javaMaxHeapSize "8g"
+        // 是否支持大工程模式
+        //jumboMode = true
+        // 预编译
+        //preDexLibraries = true
+        // 线程数
+        //threadCount = 8
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.google.code.gson:gson:2.7'
     compile files('libs/commons-net-3.3-sources.jar')
     compile files('libs/commons-net-3.3.jar')
     compile files('libs/commons-net-examples-3.3.jar')
     compile files('libs/jcifs-1.3.17.jar')
+    // Rx serials
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
+    compile 'io.reactivex:rxandroid:1.2.0'
+    // butterknife + eventbus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    // widget
+    compile 'me.itangqi.waveloadingview:library:0.3.5'
+    compile 'com.zhy:percent-support-extends:1.1.1'
+    compile 'cn.pedant.sweetalert:library:1.3'
 }

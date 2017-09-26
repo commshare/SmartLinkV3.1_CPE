@@ -141,7 +141,7 @@ public class ActivityDeviceManager extends BaseActivity implements OnClickListen
 
         m_back = (LinearLayout) this.findViewById(R.id.back_layout);
         m_back.setOnClickListener(this);
-
+        
         m_connecedDeviceList = (ListView) this
                 .findViewById(R.id.connected_devices);
         ConnectedDevAdapter connectedDevAdapter = new ConnectedDevAdapter(this);

@@ -40,7 +40,7 @@
     <!-- main fram start -->
     <string name="main_home">Casa</string>
     <string name="main_sdsharing">Condivisione SD</string>
-    <string name="main_usage">Aggiorna</string>
+    <string name="main_usage">Utilizzo</string>
     <string name="main_setting">Impostazioni</string>
     <string name="main_sms">SMS</string>
     <!-- Home view start -->
