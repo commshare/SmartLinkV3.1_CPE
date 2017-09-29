@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         m_dlgPin = PinDialog.getInstance(this);
         m_dlgPuk = PukDialog.getInstance(this);
         m_dlgError = ErrorDialog.getInstance(this);
-        m_loginDlg = new LoginDialog(this);
+        // m_loginDlg = new LoginDialog(this);
         m_ForceloginDlg = new AutoForceLoginProgressDialog(this);
         m_autoLoginDialog = new AutoLoginProgressDialog(this);
         m_unlockSimBtn = (Button) m_homeView.getView().findViewById(R.id.unlock_sim_button);
@@ -246,7 +246,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         m_dlgPin.destroyDialog();
         m_dlgPuk.destroyDialog();
         m_dlgError.destroyDialog();
-        m_loginDlg.destroyDialog();
+        // m_loginDlg.destroyDialog();
         m_ForceloginDlg.destroyDialog();
         m_autoLoginDialog.destroyDialog();
     }

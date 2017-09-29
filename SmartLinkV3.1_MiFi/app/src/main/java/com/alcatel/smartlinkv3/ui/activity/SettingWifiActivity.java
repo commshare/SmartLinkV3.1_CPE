@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -37,11 +38,15 @@ import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.common.ENUM.WlanSupportMode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
+import com.alcatel.smartlinkv3.utils.TimerHelper;
 
 import java.util.Locale;
 
@@ -105,11 +110,15 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
     private LinearLayout m_ssid_broadcast_container;
     private ImageView m_divider_under_ssid;
 
+    public static boolean isDone;// 是否点击了done按钮
+    private ProgressDialog pgd;
+    private TimerHelper wifiTimer;
+
     //	private boolean m_continue_to_change_to_5g;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        isDone = false;
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_setting_wifi);
         getWindow().setBackgroundDrawable(null);
@@ -619,6 +628,19 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
+    /**
+     * 切断wifi并跳转到refresh界面
+     */
+    private void cutWifi2RefreshActivity() {
+        isDone = true;
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                OtherUtils.setWifiActive(SettingWifiActivity.this, false);
+            }
+        });
+    }
+
     @SuppressWarnings("deprecation")
     private void setControlsDoneStatus() {
         if (WlanSupportMode.Mode2Point4GAnd5G != BusinessMannager.getInstance().getWlanSupportMode()) {
@@ -940,6 +962,8 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
             String strTost = getString(R.string.setting_wifi_set_failed);
             if (BaseResponse.RESPONSE_OK == nResult && 0 == strErrorCode.length()) {
                 strTost = getString(R.string.setting_wifi_set_success);
+                // 切断wifi + 修改isDone标记位 + 跳转到refresh界面
+                cutWifi2RefreshActivity();
             } else {
                 initValues();
                 initSpinersUI();

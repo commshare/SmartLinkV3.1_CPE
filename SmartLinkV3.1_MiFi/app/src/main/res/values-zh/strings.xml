@@ -223,7 +223,7 @@
     <string name="device_manage_title">裝置</string>
     <string name="home_battery_completed">充電已完成</string>
     <string name="home_battery_ischarging">充電中</string>
-    <string name="login_kickoff_logout_successful">您被迫下線。</string>
+    <string name="login_kickoff_logout_successful">您被終止連線</string>
     <string name="home_KB">KB</string>
     <string name="favorite_sdcard">SD 卡</string>
     <string name="home_GB">GB</string>

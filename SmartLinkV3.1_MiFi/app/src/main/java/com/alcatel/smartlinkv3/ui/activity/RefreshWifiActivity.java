@@ -19,6 +19,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 public class RefreshWifiActivity extends Activity implements OnClickListener {
@@ -34,6 +35,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OtherUtils.setWifiActive(this, true);// 开启wifi
+        clearAllContext();// 清空所有Activity(除当前)
         setContentView(R.layout.activity_refresh);
         getWindow().setBackgroundDrawable(null);
         m_connectImage = (ImageView) this.findViewById(R.id.image_connection);
@@ -41,6 +43,23 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
         m_connectTip = (TextView) this.findViewById(R.id.textview_refresh_tip);
         m_connectBtn1 = (Button) this.findViewById(R.id.btn_refresh);
         m_connectBtn1.setOnClickListener(this);
+    }
+
+    /**
+     * 清空所有Activity(除当前)
+     */
+    private void clearAllContext() {
+        if (SettingWifiActivity.isDone) {
+            for (Activity context : OtherUtils.contexts) {
+                if (context instanceof RefreshWifiActivity) {
+                    continue;
+                }
+                if (!context.isFinishing()) {
+                    context.finish();
+                }
+            }
+            OtherUtils.contexts.clear();
+        }
     }
 
     public void onClick(View v) {
@@ -106,12 +125,14 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
         if (!bCPEWifiConnected)
             return;
 
-        Class<?> clazz;
+        Class<?> clazz = LoginRxActivity.class;
         if (!CPEConfig.getInstance().getQuickSetupFlag()) {
             clazz = QuickSetupActivity.class;
         } else {
-            clazz = MainActivity.class;
-            Log.d("refreshsd", "startMainActivity");
+            if (!SettingWifiActivity.isDone) {
+                clazz = MainActivity.class;
+                Log.d("refreshsd", "startMainActivity");
+            }
         }
 
         Intent it = new Intent(this, clazz);

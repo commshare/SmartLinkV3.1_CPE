@@ -3,6 +3,8 @@ package com.alcatel.smartlinkv3.utils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.widget.EditText;
@@ -106,6 +108,19 @@ public class OtherUtils {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 检查WIFI是否有链接
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isWifiConnect(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo.State wifiState = networkInfo.getState();
+        return NetworkInfo.State.CONNECTED == wifiState;
     }
 
     /**

@@ -23,6 +23,7 @@ import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.rx.tools.Logs;
+import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public abstract class BaseActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OtherUtils.contexts.add(this);
-        Logs.v("ma_act",getClass().getSimpleName());
+        Logs.v("ma_act", getClass().getSimpleName());
     }
 
     protected void addToDialogManager(Dialog dialog) {
@@ -155,15 +156,18 @@ public abstract class BaseActivity extends Activity {
         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 
-        if (bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
-            if (this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
-                Intent intent = new Intent(context, MainActivity.class);
+        if (bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
+            // if (!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
+            //     Intent intent = new Intent(context, MainActivity.class);
+            if (!this.getClass().getName().equalsIgnoreCase(LoginRxActivity.class.getName())) {
+                Intent intent = new Intent(context, LoginRxActivity.class);
                 context.startActivity(intent);
                 finish();
-            } else {
-                Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
-                context.sendBroadcast(intent2);
             }
+            // else {
+            //     Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+            //     context.sendBroadcast(intent2);
+            // }
         }
     }
 
@@ -171,16 +175,18 @@ public abstract class BaseActivity extends Activity {
         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
 
-        if (bCPEWifiConnected == true && m_loginStatus != UserLoginStatus.login) {
+        if (bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
             dismissAllDialog();
-            if (this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
-                Intent intent = new Intent(context, MainActivity.class);
+            // if (!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
+            if (!this.getClass().getName().equalsIgnoreCase(LoginRxActivity.class.getName())) {
+                Intent intent = new Intent(context, LoginRxActivity.class);
                 context.startActivity(intent);
                 finish();
-            } else {
-                Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
-                context.sendBroadcast(intent2);
             }
+            // else {
+            //     Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
+            //     context.sendBroadcast(intent2);
+            // }
         }
     }
 
@@ -188,13 +194,14 @@ public abstract class BaseActivity extends Activity {
 
         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 
-        if (bCPEWifiConnected == true && this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
+        if (bCPEWifiConnected && this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
             dismissAllDialog();
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
-            finish();
+            //Intent intent = new Intent(context, MainActivity.class);
+            // Intent intent = new Intent(context, LoginRxActivity.class);
+            // context.startActivity(intent);
+            // finish();
 
-        } else if (bCPEWifiConnected == false && !this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
+        } else if (!bCPEWifiConnected && !this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
             dismissAllDialog();
             Intent intent = new Intent(context, RefreshWifiActivity.class);
             context.startActivity(intent);

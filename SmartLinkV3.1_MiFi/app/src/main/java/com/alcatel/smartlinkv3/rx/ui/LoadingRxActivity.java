@@ -39,12 +39,12 @@ public class LoadingRxActivity extends BaseRxActivity {
 
             @Override
             public void onError(Throwable e) {
-                // toActivity(RefreshWifiActivity.class);
+                toActivity(RefreshWifiActivity.class);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                toActivity(RefreshWifiActivity.class);
+                // toActivity(RefreshWifiActivity.class);
             }
         });
     }

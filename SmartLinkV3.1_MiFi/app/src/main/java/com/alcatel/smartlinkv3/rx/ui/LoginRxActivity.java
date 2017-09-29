@@ -59,6 +59,7 @@ public class LoginRxActivity extends BaseRxActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OtherUtils.setWifiActive(this, true);
         setContentView(R.layout.activity_login_rx);
         ButterKnife.bind(this);
         init();
@@ -67,11 +68,19 @@ public class LoginRxActivity extends BaseRxActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        OtherUtils.setWifiActive(this, true);
         // 停止所有的定时器
         if (SettingAccountActivity.isLogOutClick) {
             OtherUtils.clearAllTimer();
             OtherUtils.clearAllContext();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        OtherUtils.clearAllContext();
+        finish();
     }
 
     private void init() {
@@ -152,11 +161,13 @@ public class LoginRxActivity extends BaseRxActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        Logs.v("ma_login","login onError");
                         OtherUtils.hideProgressPop(pgd);
                     }
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        Logs.v("ma_login","login onError");
                         Logs.v("ma_login", "error: " + error.getMessage());
                         OtherUtils.hideProgressPop(pgd);
                         ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
@@ -167,6 +178,9 @@ public class LoginRxActivity extends BaseRxActivity {
             @Override
             public void onError(Throwable e) {
                 OtherUtils.hideProgressPop(pgd);
+                if (!OtherUtils.isWiFiActive(LoginRxActivity.this)) {
+                    ToastUtil_m.show(LoginRxActivity.this, getString(R.string.no_wifi));
+                }
             }
 
             @Override

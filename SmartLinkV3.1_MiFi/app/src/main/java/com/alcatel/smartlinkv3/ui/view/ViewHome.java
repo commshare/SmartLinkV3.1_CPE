@@ -249,7 +249,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         m_accessImageView = (ImageView) m_view.findViewById(R.id.access_status);
         m_accessstatusTextView = (TextView) m_view.findViewById(R.id.access_label);
 
-        m_loginDialog = new LoginDialog(this.m_context);
+        // m_loginDialog = new LoginDialog(this.m_context);
         m_autoLoginDialog = new AutoLoginProgressDialog(this.m_context);
         m_ForceloginDlg = new AutoForceLoginProgressDialog(this.m_context);
 
@@ -298,7 +298,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
     @Override
     public void onDestroy() {
-        m_loginDialog.destroyDialog();
+        // m_loginDialog.destroyDialog();
         m_autoLoginDialog.destroyDialog();
         m_ForceloginDlg.destroyDialog();
     }
