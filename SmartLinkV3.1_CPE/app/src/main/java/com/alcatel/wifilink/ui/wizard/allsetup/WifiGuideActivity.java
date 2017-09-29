@@ -127,7 +127,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
         mWifi2GSwitch = (SwitchCompat) findViewById(R.id.switch_wifi_2g);
         mWifi5GSwitch = (SwitchCompat) findViewById(R.id.switch_wifi_5g);
 
-        m2GAdvancedText = (TextView) findViewById(text_advanced_settings_2g);
+        m2GAdvancedText = (TextView) findViewById(R.id.text_advanced_settings_2g);
         m2GAdvancedText.setOnClickListener(this);
         m5GAdvancedText = (TextView) findViewById(R.id.text_advanced_settings_5g);
         m5GAdvancedText.setOnClickListener(this);

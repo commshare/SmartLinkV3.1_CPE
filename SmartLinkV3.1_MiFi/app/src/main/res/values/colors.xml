@@ -120,4 +120,9 @@
     <color name="media_tool_background_color">#ff808080</color>
     <!-- DLNA end -->
 
+    <color name="blue_dark_btn">#3581FF</color>
+    <color name="sim_unlock">#0089cf</color>
+    <color name="blue_btn">#009AFF</color>
+    <color name="pop_sim_text">#009AFF</color>
+    
 </resources>

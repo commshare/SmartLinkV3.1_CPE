@@ -4,5 +4,12 @@
     <declare-styleable name="PowerImageView">
         <attr name="auto_play" format="boolean"></attr>
     </declare-styleable>
+    
+    <declare-styleable name = "RippleView">
+        <attr name = "rippleColor" format = "color" />
+        <attr name = "alphaFactor" format = "float" />
+        <attr name = "hover" format = "boolean" />
+    </declare-styleable>
+    
 
 </resources>

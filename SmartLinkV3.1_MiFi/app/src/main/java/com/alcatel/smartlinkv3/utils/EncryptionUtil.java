@@ -11,7 +11,6 @@ public class EncryptionUtil {
 
     public static String encrypt(String info) {
 
-        // char[] key = AUTHORIZATION_KEY.toCharArray();
         char[] key = USER_KEY.toCharArray();
         char str1[] = new char[info.length() * 2];
         StringBuilder builder = new StringBuilder();

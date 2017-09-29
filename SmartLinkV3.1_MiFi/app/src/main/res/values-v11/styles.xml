@@ -16,4 +16,10 @@
         <item name="android:windowTitleBackgroundStyle">@style/CustomizedWindowTitleBackground</item> 
         <!-- All customizations that are NOT specific to a particular API-level can go here. --> 
     </style>
+
+    <!-- 弹窗动画 -->
+    <style name="popwin_anim_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

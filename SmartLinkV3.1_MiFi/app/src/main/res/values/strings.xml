@@ -175,7 +175,8 @@
     <string name="setting_wifi_password_wpa_psw_tip">Wi-Fi Password:</string>
     <string name="setting_wifi_password_wep_encryption_tip">Encryption Type:</string>
     <string name="setting_wifi_password_wep_psw_tip">Wi-Fi Password:</string>
-    <string name="setting_wep_password_error_prompt">WEP Key is 5-13 ASCII characters, or 10-26 hexadecimal digits and WEP Key should be ASCII characters ranging from 32–127, except for: , \" : ;&amp;\.</string>
+    <string name="setting_wep_password_error_prompt">WEP Key is 5 or 13 ASCII characters, or 10 or 26 hexadecimal digits and WEP 
+        Key should be ASCII characters ranging from 32-127, except for: , \" : ;&amp;\.</string>
     <string name="setting_wpa_password_error_prompt">The WPA Pre–Shared Key (PSK) should be 8–63 ASCII characters and WPA PSK should be ASCII characters ranging from 32–127, except for: , \" : ;&amp;\.</string>
     <string name="setting_password_error_prompt">Change Wi-Fi Password Error, please retry after a few minutes!</string>
     <string name="setting_disable_password_error_prompt">Couldn\'t disable Wi-Fi Password</string>
@@ -560,7 +561,10 @@
 
     <string name="str_power_save_description">All LED light off automatically except Power LED when no WiFi access or manual operation within 30s.</string>
 
-
-
+    <!-- 20170926:ma add new -->
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_remenber_psd">Remember password</string>
+    <string name="login_failed">Couldn\'t login</string>
+    <string name="logout_failed">Logout failed</string>
 
 </resources>

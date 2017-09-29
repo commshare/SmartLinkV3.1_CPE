@@ -34,11 +34,16 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.Logs;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.ui.activity.QuickSetupActivity;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog.OnAutoForceLoginFinishedListener;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
+import com.alcatel.smartlinkv3.utils.TokenUtils;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -80,7 +85,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
                 
 	
 /*	private static boolean m_bAlreadyLogin = false;
-	
+                
 	public static void  setAlreadyLogin(boolean bAlreadyLogin) {
 		m_bAlreadyLogin = bAlreadyLogin;
 	}
@@ -280,8 +285,8 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
     public void showDialog(OnLoginFinishedListener callback) {
         m_loginCallback = callback;
-	/*	if (getAlreadyLogin()) {
-			m_callback.onLoginFinished();
+                /*	if (getAlreadyLogin()) {
+                                                m_callback.onLoginFinished();
 		} else {*/
 
         if (m_dlgLogin != null) {
@@ -399,11 +404,11 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
 
         m_tvPasswordError = (TextView) m_vLogin.findViewById(R.id.login_label_prompt);
 
-        m_etPassword = (EditText) m_vLogin.findViewById(R.id.login_edit_view);
+        m_etPassword = (EditText) m_vLogin.findViewById(R.id.et_login_psd);
         m_etPassword.setOnKeyListener(this);
         m_etPassword.addTextChangedListener(this);
 
-        m_btnApply = (Button) m_vLogin.findViewById(R.id.login_apply_btn);
+        m_btnApply = (Button) m_vLogin.findViewById(R.id.bt_login);
         m_btnApply.setOnClickListener(this);
 
         Button closeBtn = (Button) m_vLogin.findViewById(R.id.login_close_btn);
@@ -497,6 +502,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
         data.addParam("user_name", USER_NAME);
         data.addParam("password", m_password);
         if (SmartLinkV3App.getInstance().getIsforcesLogin()) {
+            Logs.v("ma_login", "forceLogin");
             BusinessMannager.getInstance().sendRequestMessage(MessageUti.USER_FORCE_LOGIN_REQUEST, data);
             closeDialog();
             if (call == null) {
@@ -526,9 +532,22 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
             }
             m_ForceloginDlg.setCallback(call);
         } else {
-            BusinessMannager.getInstance().sendRequestMessage(MessageUti.USER_LOGIN_REQUEST, data);
+            Logs.v("ma_login", "normalLogin");
+            testLogin(data);
+            // BusinessMannager.getInstance().sendRequestMessage(MessageUti.USER_LOGIN_REQUEST, data);
         }
         m_bIsApply = true;
+    }
+
+    private void testLogin(DataValue data) {
+        API.get().login(USER_NAME, m_password, new MySubscriber<LoginResult>() {
+            @Override
+            protected void onSuccess(LoginResult result) {
+                Logs.v("ma_login", "token: " + result.getToken());
+                TokenUtils.setToken(result.getToken() + "");
+                BusinessMannager.getInstance().sendRequestMessage(MessageUti.USER_LOGIN_REQUEST, data);
+            }
+        });
     }
 
     @Override
@@ -570,7 +589,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.login_apply_btn:
+            case R.id.bt_login:
                 apply();
                 break;
 

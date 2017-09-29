@@ -173,7 +173,7 @@ public class MessageUti {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static Map<String, HttpMethodUti> httpMethods = new HashMap<String, HttpMethodUti>();
 
-    public static void intHttpMethods() {
+    public static void   intHttpMethods() {
         /********************System method start**********************/
         httpMethods.put(SYSTEM_GET_SYSTEM_INFO_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemInfo"));
         httpMethods.put(SYSTEM_GET_SYSTEM_STATUS_REQUSET, new HttpMethodUti(SystemManager.class, "getSystemStatus"));

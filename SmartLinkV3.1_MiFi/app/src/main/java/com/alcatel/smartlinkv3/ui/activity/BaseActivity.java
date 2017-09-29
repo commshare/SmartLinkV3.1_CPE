@@ -8,6 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.alcatel.smartlinkv3.R;
@@ -20,6 +22,8 @@ import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.tools.Logs;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,12 @@ public abstract class BaseActivity extends Activity {
     private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
     protected boolean m_bNeedBack = true;//whether need to back main activity.
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        OtherUtils.contexts.add(this);
+        Logs.v("ma_act",getClass().getSimpleName());
+    }
 
     protected void addToDialogManager(Dialog dialog) {
         m_dialogManager.add(dialog);
@@ -130,8 +140,8 @@ public abstract class BaseActivity extends Activity {
         SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 
         if (bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
-//			String strInfo = getString(R.string.home_sim_not_accessible);
-//			Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+            //			String strInfo = getString(R.string.home_sim_not_accessible);
+            //			Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
             if (this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
                 dismissAllDialog();
                 Intent intent = new Intent(context, MainActivity.class);
@@ -178,8 +188,7 @@ public abstract class BaseActivity extends Activity {
 
         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 
-        if (bCPEWifiConnected == true &&
-                this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
+        if (bCPEWifiConnected == true && this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
             dismissAllDialog();
             Intent intent = new Intent(context, MainActivity.class);
             context.startActivity(intent);
@@ -212,31 +221,31 @@ public abstract class BaseActivity extends Activity {
     public void kickoffLogout() {
         UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
-//			MainActivity.setKickoffLogoutFlag(true);
+            //			MainActivity.setKickoffLogoutFlag(true);
             String strInfo = getString(R.string.login_kickoff_logout_successful);
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
         }
     }
 
-//	private void checkLogin()
-//	{
-//    	PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);  
-//    	boolean bScreenOn = pm.isScreenOn();
-//    	if(bScreenOn == false) {
-//    		LoginDialog.setAlreadyLogin(false);
-//    	}
-//		
-//    	ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);    	
-//    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-//    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe")) {
-//    		LoginDialog.setAlreadyLogin(false);
-//    	}  
-//    	//back键退出程序界面的处理
-//    	else if(cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe") 
-//    			&&  cn.getClassName().equalsIgnoreCase("com.alcatel.cpe.ui.activity.LoadingActivity"))
-//    	{
-//    		LoginDialog.setAlreadyLogin(false);
-//    	}
-//	   
-//	}
+    //	private void checkLogin()
+    //	{
+    //    	PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);  
+    //    	boolean bScreenOn = pm.isScreenOn();
+    //    	if(bScreenOn == false) {
+    //    		LoginDialog.setAlreadyLogin(false);
+    //    	}
+    //		
+    //    	ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);    	
+    //    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+    //    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe")) {
+    //    		LoginDialog.setAlreadyLogin(false);
+    //    	}  
+    //    	//back键退出程序界面的处理
+    //    	else if(cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe") 
+    //    			&&  cn.getClassName().equalsIgnoreCase("com.alcatel.cpe.ui.activity.LoadingActivity"))
+    //    	{
+    //    		LoginDialog.setAlreadyLogin(false);
+    //    	}
+    //	   
+    //	}
 }

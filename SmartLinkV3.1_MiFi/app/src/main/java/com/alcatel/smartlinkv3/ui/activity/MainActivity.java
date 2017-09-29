@@ -22,11 +22,9 @@ import android.widget.ViewFlipper;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.FeatureVersionManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.sharing.SDcardStatus;
-import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
@@ -111,7 +109,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
     private RelativeLayout m_accessDeviceLayout;
     public static String PAGE_TO_VIEW_HOME = "com.alcatel.smartlinkv3.toPageViewHome";
-//	public static String AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS = "com.alcatel.smartlinkv3.AutLoginReturn";
+    //	public static String AUTO_LOGIN_RETURN_STOP_SHOW_PROGRESS = "com.alcatel.smartlinkv3.AutLoginReturn";
 
     private DMSDeviceBrocastFactory mBrocastFactory;
     private AllShareProxy mAllShareProxy;
@@ -123,13 +121,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawable(null);
-        this.getWindowManager().getDefaultDisplay()
-                .getMetrics(m_displayMetrics);
+        this.getWindowManager().getDefaultDisplay().getMetrics(m_displayMetrics);
         rl_top = (RelativeLayout) findViewById(R.id.main_layout_top);
         //ll_buttom = (LinearLayout)findViewById(R.id.layout_bottom);
 
-        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams rl_params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         //RelativeLayout.LayoutParams ll_params = (RelativeLayout.LayoutParams) ll_buttom.getLayoutParams();// new LinearLayout.LayoutParams(
         //LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -172,8 +168,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         m_loginDlg = new LoginDialog(this);
         m_ForceloginDlg = new AutoForceLoginProgressDialog(this);
         m_autoLoginDialog = new AutoLoginProgressDialog(this);
-        m_unlockSimBtn = (Button) m_homeView.getView().findViewById(
-                R.id.unlock_sim_button);
+        m_unlockSimBtn = (Button) m_homeView.getView().findViewById(R.id.unlock_sim_button);
         m_unlockSimBtn.setOnClickListener(this);
 
         m_accessDeviceLayout = (RelativeLayout) m_homeView.getView().findViewById(R.id.access_num_layout);
@@ -192,18 +187,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     @Override
     public void onResume() {
         super.onResume();
-        this.registerReceiver(m_msgReceiver, new IntentFilter(
-                MessageUti.SIM_UNLOCK_PIN_REQUEST));
-        this.registerReceiver(m_msgReceiver, new IntentFilter(
-                MessageUti.SIM_UNLOCK_PUK_REQUEST));
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(
-                MessageUti.USER_LOGOUT_REQUEST));
+        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PIN_REQUEST));
+        this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SIM_UNLOCK_PUK_REQUEST));
+        this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_LOGOUT_REQUEST));
 
 
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(
-                PAGE_TO_VIEW_HOME));
-        this.registerReceiver(m_msgReceiver2, new IntentFilter(
-                MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
+        this.registerReceiver(m_msgReceiver2, new IntentFilter(PAGE_TO_VIEW_HOME));
+        this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET));
 
         m_homeView.onResume();
         m_usageView.onResume();
@@ -265,47 +255,34 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     protected void onBroadcastReceive(Context context, Intent intent) {
         super.onBroadcastReceive(context, intent);
 
-        if (intent.getAction().equalsIgnoreCase(
-                MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
+        if (intent.getAction().equalsIgnoreCase(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
             int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
                 simRollRequest();
             }
-        } else if (intent.getAction().equalsIgnoreCase(
-                MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                    BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent
-                    .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult
-                    && strErrorCode.length() == 0) {
+        } else if (intent.getAction().equalsIgnoreCase(MessageUti.SIM_UNLOCK_PIN_REQUEST)) {
+            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+            if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
                 m_dlgPin.onEnterPinResponse(true);
             } else {
                 m_dlgPin.onEnterPinResponse(false);
             }
-        } else if (intent.getAction().equalsIgnoreCase(
-                MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                    BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent
-                    .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult
-                    && strErrorCode.length() == 0) {
+        } else if (intent.getAction().equalsIgnoreCase(MessageUti.SIM_UNLOCK_PUK_REQUEST)) {
+            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+            if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
                 m_dlgPuk.onEnterPukResponse(true);
             } else {
                 m_dlgPuk.onEnterPukResponse(false);
             }
         }
 
-        if (intent.getAction().equalsIgnoreCase(
-                MessageUti.USER_LOGOUT_REQUEST)) {
-            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                    BaseResponse.RESPONSE_OK);
-            String strErrorCode = intent
-                    .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-            if (BaseResponse.RESPONSE_OK == nResult
-                    && strErrorCode.length() == 0) {
+        if (intent.getAction().equalsIgnoreCase(MessageUti.USER_LOGOUT_REQUEST)) {
+            int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+            String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+            if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
                 if (m_blLogout) {
                     String strInfo = getString(R.string.login_logout_successful);
                     Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
@@ -353,20 +330,18 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
             if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
                 if (!PinDialog.m_isShow) {
-                    m_dlgPin.showDialog(sim.m_nPinRemainingTimes,
-                            new OnPINError() {
+                    m_dlgPin.showDialog(sim.m_nPinRemainingTimes, new OnPINError() {
+                        @Override
+                        public void onPinError() {
+                            String strMsg = getString(R.string.pin_error_waring_title);
+                            m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
                                 @Override
-                                public void onPinError() {
-                                    String strMsg = getString(R.string.pin_error_waring_title);
-                                    m_dlgError.showDialog(strMsg,
-                                            new OnClickBtnRetry() {
-                                                @Override
-                                                public void onRetry() {
-                                                    m_dlgPin.showDialog();
-                                                }
-                                            });
+                                public void onRetry() {
+                                    m_dlgPin.showDialog();
                                 }
                             });
+                        }
+                    });
                 } else {
                     m_dlgPin.onSimStatusReady(sim);
                 }
@@ -382,22 +357,20 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
             if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
                 if (!PukDialog.m_isShow) {
-                    m_dlgPuk.showDialog(sim.m_nPukRemainingTimes,
-                            new OnPUKError() {
+                    m_dlgPuk.showDialog(sim.m_nPukRemainingTimes, new OnPUKError() {
+
+                        @Override
+                        public void onPukError() {
+                            String strMsg = getString(R.string.puk_error_waring_title);
+                            m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
 
                                 @Override
-                                public void onPukError() {
-                                    String strMsg = getString(R.string.puk_error_waring_title);
-                                    m_dlgError.showDialog(strMsg,
-                                            new OnClickBtnRetry() {
-
-                                                @Override
-                                                public void onRetry() {
-                                                    m_dlgPuk.showDialog();
-                                                }
-                                            });
+                                public void onRetry() {
+                                    m_dlgPuk.showDialog();
                                 }
                             });
+                        }
+                    });
                 } else {
                     m_dlgPuk.onSimStatusReady(sim);
                 }
@@ -436,13 +409,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 					: R.drawable.main_new_sms_tab_grey;
 			m_newSmsTextView.setBackgroundResource(nDrawable);
 		}*/
-        int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_no_new_active
-                : R.drawable.main_sms_no_new_grey;
+        int nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.drawable.main_sms_no_new_active : R.drawable.main_sms_no_new_grey;
         Drawable d = getResources().getDrawable(nDrawable);
         d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
         m_smsTextView.setCompoundDrawables(null, d, null, null);
-        int nTextColor = nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.color.color_blue
-                : R.color.color_grey;
+        int nTextColor = nDrawable = nActiveBtnId == R.id.tab_sms_layout ? R.color.color_blue : R.color.color_grey;
         m_smsTextView.setTextColor(this.getResources().getColor(nTextColor));
 
         if (nNewSmsCount <= 0) {
@@ -468,14 +439,14 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             m_smsBtn.setEnabled(false);
         }
 
-//		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
-//		if(m_sdcardstatus.SDcardStatus > 0)
-//		{
-//			m_microsdBtn.setEnabled(true);
-//		}else
-//		{
-//			m_microsdBtn.setEnabled(false);
-//		}
+        //		SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
+        //		if(m_sdcardstatus.SDcardStatus > 0)
+        //		{
+        //			m_microsdBtn.setEnabled(true);
+        //		}else
+        //		{
+        //			m_microsdBtn.setEnabled(false);
+        //		}
 
     }
 
@@ -536,56 +507,55 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                             public void onLoginFailed(String error_code) {
                                 if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                                     m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                                    if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                        m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                                    } else {
-//
-//                                        ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                                new OnClickBottonConfirm() {
-//                                                    public void onConfirm() {
-//                                                        m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                            public void onLoginSuccess() {
-//                                                                go2Click();
-//                                                            }
-//
-//                                                            public void onLoginFailed(String error_code) {
-//                                                                if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                                    SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                                    ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-//                                                                            new OnClickBtnRetry() {
-//                                                                                @Override
-//                                                                                public void onRetry() {
-//                                                                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//                                                                                        @Override
-//                                                                                        public void onLoginFinished() {
-//                                                                                            go2Click();
-//                                                                                        }
-//                                                                                    });
-//                                                                                }
-//                                                                            });
-//                                                                } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                                    m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
-//                                                                }
-//                                                            }
-//                                                        });
-//                                                    }
-//                                                });
-//                                    }
+                                    //                                    if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
+                                    //                                        m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
+                                    //                                    } else {
+                                    //
+                                    //                                        ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
+                                    //                                                new OnClickBottonConfirm() {
+                                    //                                                    public void onConfirm() {
+                                    //                                                        m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                                    //                                                            public void onLoginSuccess() {
+                                    //                                                                go2Click();
+                                    //                                                            }
+                                    //
+                                    //                                                            public void onLoginFailed(String error_code) {
+                                    //                                                                if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                                    //                                                                    SmartLinkV3App.getInstance().setIsforcesLogin(true);
+                                    //                                                                    ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+                                    //                                                                            new OnClickBtnRetry() {
+                                    //                                                                                @Override
+                                    //                                                                                public void onRetry() {
+                                    //                                                                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
+                                    //                                                                                        @Override
+                                    //                                                                                        public void onLoginFinished() {
+                                    //                                                                                            go2Click();
+                                    //                                                                                        }
+                                    //                                                                                    });
+                                    //                                                                                }
+                                    //                                                                            });
+                                    //                                                                } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                                    //                                                                    m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
+                                    //                                                                }
+                                    //                                                            }
+                                    //                                                        });
+                                    //                                                    }
+                                    //                                                });
+                                    //                                    }
                                 } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                                     m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
                                 } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                                    ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-                                            new OnClickBtnRetry() {
+                                    ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                        @Override
+                                        public void onRetry() {
+                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
                                                 @Override
-                                                public void onRetry() {
-                                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
-                                                        @Override
-                                                        public void onLoginFinished() {
-                                                            go2Click();
-                                                        }
-                                                    });
+                                                public void onLoginFinished() {
+                                                    go2Click();
                                                 }
                                             });
+                                        }
+                                    });
                                 } else {
                                 }
                             }
@@ -642,56 +612,55 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            } else {
-//
-//                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                        new OnClickBottonConfirm() {
-//                                            public void onConfirm() {
-//                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                    public void onLoginSuccess() {
-//                                                        startDeviceManagerActivity();
-//                                                    }
-//
-//                                                    public void onLoginFailed(String error_code) {
-//                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-//                                                                    new OnClickBtnRetry() {
-//                                                                        @Override
-//                                                                        public void onRetry() {
-//                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//                                                                                @Override
-//                                                                                public void onLoginFinished() {
-//                                                                                    startDeviceManagerActivity();
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    });
-//                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-//                            }
+                            //                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
+                            //                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
+                            //                            } else {
+                            //
+                            //                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
+                            //                                        new OnClickBottonConfirm() {
+                            //                                            public void onConfirm() {
+                            //                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                            //                                                    public void onLoginSuccess() {
+                            //                                                        startDeviceManagerActivity();
+                            //                                                    }
+                            //
+                            //                                                    public void onLoginFailed(String error_code) {
+                            //                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                            //                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
+                            //                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+                            //                                                                    new OnClickBtnRetry() {
+                            //                                                                        @Override
+                            //                                                                        public void onRetry() {
+                            //                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
+                            //                                                                                @Override
+                            //                                                                                public void onLoginFinished() {
+                            //                                                                                    startDeviceManagerActivity();
+                            //                                                                                }
+                            //                                                                            });
+                            //                                                                        }
+                            //                                                                    });
+                            //                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                            //                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
+                            //                                                        }
+                            //                                                    }
+                            //                                                });
+                            //                                            }
+                            //                                        });
+                            //                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-                                    new OnClickBtnRetry() {
+                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                @Override
+                                public void onRetry() {
+                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
                                         @Override
-                                        public void onRetry() {
-                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-                                                @Override
-                                                public void onLoginFinished() {
-                                                    startDeviceManagerActivity();
-                                                }
-                                            });
+                                        public void onLoginFinished() {
+                                            startDeviceManagerActivity();
                                         }
                                     });
+                                }
+                            });
                         } else {
                         }
                     }
@@ -749,55 +718,54 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            } else {
-//                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                        new OnClickBottonConfirm() {
-//                                            public void onConfirm() {
-//                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                    public void onLoginSuccess() {
-//                                                        go2UsageView();
-//                                                    }
-//
-//                                                    public void onLoginFailed(String error_code) {
-//                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-//                                                                    new OnClickBtnRetry() {
-//                                                                        @Override
-//                                                                        public void onRetry() {
-//                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//                                                                                @Override
-//                                                                                public void onLoginFinished() {
-//                                                                                    go2UsageView();
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    });
-//                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-//                            }
+                            //                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
+                            //                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
+                            //                            } else {
+                            //                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
+                            //                                        new OnClickBottonConfirm() {
+                            //                                            public void onConfirm() {
+                            //                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                            //                                                    public void onLoginSuccess() {
+                            //                                                        go2UsageView();
+                            //                                                    }
+                            //
+                            //                                                    public void onLoginFailed(String error_code) {
+                            //                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                            //                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
+                            //                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+                            //                                                                    new OnClickBtnRetry() {
+                            //                                                                        @Override
+                            //                                                                        public void onRetry() {
+                            //                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
+                            //                                                                                @Override
+                            //                                                                                public void onLoginFinished() {
+                            //                                                                                    go2UsageView();
+                            //                                                                                }
+                            //                                                                            });
+                            //                                                                        }
+                            //                                                                    });
+                            //                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                            //                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
+                            //                                                        }
+                            //                                                    }
+                            //                                                });
+                            //                                            }
+                            //                                        });
+                            //                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-                                    new OnClickBtnRetry() {
+                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                @Override
+                                public void onRetry() {
+                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
                                         @Override
-                                        public void onRetry() {
-                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-                                                @Override
-                                                public void onLoginFinished() {
-                                                    go2UsageView();
-                                                }
-                                            });
+                                        public void onLoginFinished() {
+                                            go2UsageView();
                                         }
                                     });
+                                }
+                            });
                         } else {
                         }
                     }
@@ -822,8 +790,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     }
 
     private void go2UsageView() {
-        SimStatusModel simStatus = BusinessMannager.getInstance()
-                .getSimStatus();
+        SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
         if (simStatus.m_SIMState == SIMState.Accessable) {
             setMainBtnStatus(R.id.main_usage);
             showView(ViewIndex.VIEW_USAGE);
@@ -851,55 +818,54 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            } else {
-//                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                        new OnClickBottonConfirm() {
-//                                            public void onConfirm() {
-//                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                    public void onLoginSuccess() {
-//                                                        go2SmsView();
-//                                                    }
-//
-//                                                    public void onLoginFailed(String error_code) {
-//                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-//                                                                    new OnClickBtnRetry() {
-//                                                                        @Override
-//                                                                        public void onRetry() {
-//                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//                                                                                @Override
-//                                                                                public void onLoginFinished() {
-//                                                                                    go2SmsView();
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    });
-//                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-//                            }
+                            //                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
+                            //                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
+                            //                            } else {
+                            //                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
+                            //                                        new OnClickBottonConfirm() {
+                            //                                            public void onConfirm() {
+                            //                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                            //                                                    public void onLoginSuccess() {
+                            //                                                        go2SmsView();
+                            //                                                    }
+                            //
+                            //                                                    public void onLoginFailed(String error_code) {
+                            //                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                            //                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
+                            //                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+                            //                                                                    new OnClickBtnRetry() {
+                            //                                                                        @Override
+                            //                                                                        public void onRetry() {
+                            //                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
+                            //                                                                                @Override
+                            //                                                                                public void onLoginFinished() {
+                            //                                                                                    go2SmsView();
+                            //                                                                                }
+                            //                                                                            });
+                            //                                                                        }
+                            //                                                                    });
+                            //                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                            //                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
+                            //                                                        }
+                            //                                                    }
+                            //                                                });
+                            //                                            }
+                            //                                        });
+                            //                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-                                    new OnClickBtnRetry() {
+                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                @Override
+                                public void onRetry() {
+                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
                                         @Override
-                                        public void onRetry() {
-                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-                                                @Override
-                                                public void onLoginFinished() {
-                                                    go2SmsView();
-                                                }
-                                            });
+                                        public void onLoginFinished() {
+                                            go2SmsView();
                                         }
                                     });
+                                }
+                            });
                         } else {
                         }
                     }
@@ -924,8 +890,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     }
 
     private void go2SmsView() {
-        SimStatusModel simStatus = BusinessMannager.getInstance()
-                .getSimStatus();
+        SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
         if (simStatus.m_SIMState == SIMState.Accessable) {
             setMainBtnStatus(R.id.tab_sms_layout);
             showView(ViewIndex.VIEW_SMS);
@@ -951,55 +916,54 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            } else {
-//                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                        new OnClickBottonConfirm() {
-//                                            public void onConfirm() {
-//                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                    public void onLoginSuccess() {
-//                                                        go2SettingView();
-//                                                    }
-//
-//                                                    public void onLoginFailed(String error_code) {
-//                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-//                                                                    new OnClickBtnRetry() {
-//                                                                        @Override
-//                                                                        public void onRetry() {
-//                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//                                                                                @Override
-//                                                                                public void onLoginFinished() {
-//                                                                                    go2SettingView();
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    });
-//                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-//                            }
+                            //                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
+                            //                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
+                            //                            } else {
+                            //                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
+                            //                                        new OnClickBottonConfirm() {
+                            //                                            public void onConfirm() {
+                            //                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                            //                                                    public void onLoginSuccess() {
+                            //                                                        go2SettingView();
+                            //                                                    }
+                            //
+                            //                                                    public void onLoginFailed(String error_code) {
+                            //                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                            //                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
+                            //                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+                            //                                                                    new OnClickBtnRetry() {
+                            //                                                                        @Override
+                            //                                                                        public void onRetry() {
+                            //                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
+                            //                                                                                @Override
+                            //                                                                                public void onLoginFinished() {
+                            //                                                                                    go2SettingView();
+                            //                                                                                }
+                            //                                                                            });
+                            //                                                                        }
+                            //                                                                    });
+                            //                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                            //                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
+                            //                                                        }
+                            //                                                    }
+                            //                                                });
+                            //                                            }
+                            //                                        });
+                            //                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-                                    new OnClickBtnRetry() {
+                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                @Override
+                                public void onRetry() {
+                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
                                         @Override
-                                        public void onRetry() {
-                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-                                                @Override
-                                                public void onLoginFinished() {
-                                                    go2SettingView();
-                                                }
-                                            });
+                                        public void onLoginFinished() {
+                                            go2SettingView();
                                         }
                                     });
+                                }
+                            });
                         } else {
                         }
                     }
@@ -1049,55 +1013,54 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            } else {
-//                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                        new OnClickBottonConfirm() {
-//                                            public void onConfirm() {
-//                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                    public void onLoginSuccess() {
-//                                                        go2MicroSDView();
-//                                                    }
-//
-//                                                    public void onLoginFailed(String error_code) {
-//                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-//                                                                    new OnClickBtnRetry() {
-//                                                                        @Override
-//                                                                        public void onRetry() {
-//                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//                                                                                @Override
-//                                                                                public void onLoginFinished() {
-//                                                                                    go2MicroSDView();
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    });
-//                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-//                            }
+                            //                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
+                            //                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
+                            //                            } else {
+                            //                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
+                            //                                        new OnClickBottonConfirm() {
+                            //                                            public void onConfirm() {
+                            //                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                            //                                                    public void onLoginSuccess() {
+                            //                                                        go2MicroSDView();
+                            //                                                    }
+                            //
+                            //                                                    public void onLoginFailed(String error_code) {
+                            //                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                            //                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
+                            //                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
+                            //                                                                    new OnClickBtnRetry() {
+                            //                                                                        @Override
+                            //                                                                        public void onRetry() {
+                            //                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
+                            //                                                                                @Override
+                            //                                                                                public void onLoginFinished() {
+                            //                                                                                    go2MicroSDView();
+                            //                                                                                }
+                            //                                                                            });
+                            //                                                                        }
+                            //                                                                    });
+                            //                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                            //                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
+                            //                                                        }
+                            //                                                    }
+                            //                                                });
+                            //                                            }
+                            //                                        });
+                            //                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-                                    new OnClickBtnRetry() {
+                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                @Override
+                                public void onRetry() {
+                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
                                         @Override
-                                        public void onRetry() {
-                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-                                                @Override
-                                                public void onLoginFinished() {
-                                                    go2MicroSDView();
-                                                }
-                                            });
+                                        public void onLoginFinished() {
+                                            go2MicroSDView();
                                         }
                                     });
+                                }
+                            });
                         } else {
                         }
                     }
@@ -1124,13 +1087,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private void go2MicroSDView() {
         SDcardStatus m_sdcardstatus = BusinessMannager.getInstance().getSDCardStatus();
         if (m_sdcardstatus.SDcardStatus > 0) {
-            if ((FeatureVersionManager.getInstance().isSupportApi("Sharing",
-                    "GetDLNASettings") == true) || (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))) {
+            if ((FeatureVersionManager.getInstance().isSupportApi("Sharing", "GetDLNASettings") == true) || (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y900"))) {
                 BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET, null);
             }
 
-            if (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-                    "GetFtpStatus") == true) {
+            if (FeatureVersionManager.getInstance().isSupportApi("Sharing", "GetFtpStatus") == true) {
                 BusinessMannager.getInstance().sendRequestMessage(MessageUti.SHARING_GET_FTP_SETTING_REQUSET, null);
             }
 
@@ -1146,24 +1107,19 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
     private void addView() {
         m_homeView = new ViewHome(this);
-        m_viewFlipper.addView(m_homeView.getView(), ViewIndex.VIEW_HOME,
-                m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_homeView.getView(), ViewIndex.VIEW_HOME, m_viewFlipper.getLayoutParams());
 
         m_usageView = new ViewUsage(this);
-        m_viewFlipper.addView(m_usageView.getView(),
-                ViewIndex.VIEW_USAGE, m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_usageView.getView(), ViewIndex.VIEW_USAGE, m_viewFlipper.getLayoutParams());
 
         m_microsdView = new ViewMicroSD(this);
-        m_viewFlipper.addView(m_microsdView.getView(),
-                ViewIndex.VIEW_MICROSD, m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_microsdView.getView(), ViewIndex.VIEW_MICROSD, m_viewFlipper.getLayoutParams());
 
         m_smsView = new ViewSms(this);
-        m_viewFlipper.addView(m_smsView.getView(), ViewIndex.VIEW_SMS,
-                m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_smsView.getView(), ViewIndex.VIEW_SMS, m_viewFlipper.getLayoutParams());
 
         m_settingView = new ViewSetting(this);
-        m_viewFlipper.addView(m_settingView.getView(),
-                ViewIndex.VIEW_SETTINGE, m_viewFlipper.getLayoutParams());
+        m_viewFlipper.addView(m_settingView.getView(), ViewIndex.VIEW_SETTINGE, m_viewFlipper.getLayoutParams());
 
     }
 
@@ -1204,43 +1160,35 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
     private void setMainBtnStatus(int nActiveBtnId) {
         m_preButton = nActiveBtnId;
-        int nDrawable = nActiveBtnId == R.id.main_home ? R.drawable.main_home_active
-                : R.drawable.main_home_grey;
+        int nDrawable = nActiveBtnId == R.id.main_home ? R.drawable.main_home_active : R.drawable.main_home_grey;
         Drawable d = getResources().getDrawable(nDrawable);
         d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
         m_homeBtn.setCompoundDrawables(null, d, null, null);
-        int nTextColor = nDrawable = nActiveBtnId == R.id.main_home ? R.color.color_blue
-                : R.color.color_grey;
+        int nTextColor = nDrawable = nActiveBtnId == R.id.main_home ? R.color.color_blue : R.color.color_grey;
         m_homeBtn.setTextColor(this.getResources().getColor(nTextColor));
 
 
-        nDrawable = nActiveBtnId == R.id.main_usage ? R.drawable.main_usage_active
-                : R.drawable.main_usage_grey;
+        nDrawable = nActiveBtnId == R.id.main_usage ? R.drawable.main_usage_active : R.drawable.main_usage_grey;
         d = getResources().getDrawable(nDrawable);
         d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
         m_usageBtn.setCompoundDrawables(null, d, null, null);
-        nTextColor = nDrawable = nActiveBtnId == R.id.main_usage ? R.color.color_blue
-                : R.color.color_grey;
+        nTextColor = nDrawable = nActiveBtnId == R.id.main_usage ? R.color.color_blue : R.color.color_grey;
         m_usageBtn.setTextColor(this.getResources().getColor(nTextColor));
 
         updateNewSmsUI(m_nNewCount);
 
-        nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.main_setting_active
-                : R.drawable.main_setting_grey;
+        nDrawable = nActiveBtnId == R.id.main_setting ? R.drawable.main_setting_active : R.drawable.main_setting_grey;
         d = getResources().getDrawable(nDrawable);
         d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
         m_settingBtn.setCompoundDrawables(null, d, null, null);
-        nTextColor = nDrawable = nActiveBtnId == R.id.main_setting ? R.color.color_blue
-                : R.color.color_grey;
+        nTextColor = nDrawable = nActiveBtnId == R.id.main_setting ? R.color.color_blue : R.color.color_grey;
         m_settingBtn.setTextColor(this.getResources().getColor(nTextColor));
 
-        nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_microssd_active
-                : R.drawable.main_microssd_grey;
+        nDrawable = nActiveBtnId == R.id.main_microsd ? R.drawable.main_microssd_active : R.drawable.main_microssd_grey;
         d = getResources().getDrawable(nDrawable);
         d.setBounds(0, 0, d.getMinimumWidth(), d.getMinimumHeight());
         m_microsdBtn.setCompoundDrawables(null, d, null, null);
-        nTextColor = nDrawable = nActiveBtnId == R.id.main_microsd ? R.color.color_blue
-                : R.color.color_grey;
+        nTextColor = nDrawable = nActiveBtnId == R.id.main_microsd ? R.color.color_blue : R.color.color_grey;
         m_microsdBtn.setTextColor(this.getResources().getColor(nTextColor));
     }
 
@@ -1286,30 +1234,27 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             m_dlgPuk.closeDialog();
         }
 
-        SimStatusModel simStatus = BusinessMannager.getInstance()
-                .getSimStatus();
+        SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
         // set the remain times
         if (null != m_dlgPin) {
             m_dlgPin.updateRemainTimes(simStatus.m_nPinRemainingTimes);
         }
         if (null != m_dlgPin && !m_dlgPin.isUserClose()) {
             if (!PinDialog.m_isShow) {
-                m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes,
-                        new OnPINError() {
+                m_dlgPin.showDialog(simStatus.m_nPinRemainingTimes, new OnPINError() {
+
+                    @Override
+                    public void onPinError() {
+                        String strMsg = getString(R.string.pin_error_waring_title);
+                        m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
 
                             @Override
-                            public void onPinError() {
-                                String strMsg = getString(R.string.pin_error_waring_title);
-                                m_dlgError.showDialog(strMsg,
-                                        new OnClickBtnRetry() {
-
-                                            @Override
-                                            public void onRetry() {
-                                                m_dlgPin.showDialog();
-                                            }
-                                        });
+                            public void onRetry() {
+                                m_dlgPin.showDialog();
                             }
                         });
+                    }
+                });
             }
         }
     }
@@ -1321,31 +1266,28 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
             m_dlgPin.closeDialog();
         }
 
-        SimStatusModel simStatus = BusinessMannager.getInstance()
-                .getSimStatus();
+        SimStatusModel simStatus = BusinessMannager.getInstance().getSimStatus();
         // set the remain times
         if (null != m_dlgPuk) {
             m_dlgPuk.updateRemainTimes(simStatus.m_nPukRemainingTimes);
         }
         if (null != m_dlgPuk && !m_dlgPuk.isUserClose()) {
             if (!PukDialog.m_isShow) {
-                m_dlgPuk.showDialog(simStatus.m_nPukRemainingTimes,
-                        new OnPUKError() {
+                m_dlgPuk.showDialog(simStatus.m_nPukRemainingTimes, new OnPUKError() {
+
+                    @Override
+                    public void onPukError() {
+                        String strMsg = getString(R.string.puk_error_waring_title);
+                        m_dlgError.showDialog(strMsg, new OnClickBtnRetry() {
 
                             @Override
-                            public void onPukError() {
-                                String strMsg = getString(R.string.puk_error_waring_title);
-                                m_dlgError.showDialog(strMsg,
-                                        new OnClickBtnRetry() {
-
-                                            @Override
-                                            public void onRetry() {
-                                                m_dlgPuk.showDialog();
-                                            }
-                                        });
-
+                            public void onRetry() {
+                                m_dlgPuk.showDialog();
                             }
                         });
+
+                    }
+                });
             }
         }
     }
@@ -1354,10 +1296,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         if (null == m_dialog_timeout_info) {
             m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(this);
         }
-        m_dialog_timeout_info.showDialog(
-                this.getString(R.string.other_login_warning_title),
-                this.getResources().getString(
-                        R.string.login_login_time_used_out_msg));
+        m_dialog_timeout_info.showDialog(this.getString(R.string.other_login_warning_title), this.getResources().getString(R.string.login_login_time_used_out_msg));
     }
 
     private void widgetBatteryBtnClick() {
@@ -1375,55 +1314,20 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getOtherUserLoginString());
-//                            } else {
-//                                ForceLoginSelectDialog.getInstance(MainActivity.this).showDialog(getString(R.string.other_login_warning_title), getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                        new OnClickBottonConfirm() {
-//                                            public void onConfirm() {
-//                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                    public void onLoginSuccess() {
-//                                                        go2SettingPowerSavingActivity();
-//                                                    }
-//
-//                                                    public void onLoginFailed(String error_code) {
-//                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-//                                                                    new OnClickBtnRetry() {
-//                                                                        @Override
-//                                                                        public void onRetry() {
-//                                                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-//                                                                                @Override
-//                                                                                public void onLoginFinished() {
-//                                                                                    go2SettingPowerSavingActivity();
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    });
-//                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                            m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-//                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDlg.getCommonErrorInfoDialog().showDialog(getString(R.string.other_login_warning_title), m_loginDlg.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg),
-                                    new OnClickBtnRetry() {
+                            ErrorDialog.getInstance(MainActivity.this).showDialog(getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                @Override
+                                public void onRetry() {
+                                    m_loginDlg.showDialog(new OnLoginFinishedListener() {
                                         @Override
-                                        public void onRetry() {
-                                            m_loginDlg.showDialog(new OnLoginFinishedListener() {
-                                                @Override
-                                                public void onLoginFinished() {
-                                                    go2SettingPowerSavingActivity();
-                                                }
-                                            });
+                                        public void onLoginFinished() {
+                                            go2SettingPowerSavingActivity();
                                         }
                                     });
+                                }
+                            });
                         } else {
                         }
                     }
@@ -1463,23 +1367,40 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     }
 
     private void OnResponseAppWidget() {
-        if (DataConnectManager.getInstance().getCPEWifiConnected() && CPEConfig.getInstance().getInitialLaunchedFlag() && CPEConfig.getInstance().getQuickSetupFlag()) {
-            Intent it = getIntent();
-            int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
-            if (nPage == SMS_PAGE) {
-                smsBtnClick();
-            } else if (nPage == BATTERY_PAGE) {
-                widgetBatteryBtnClick();
-            } else if (nPage == HOME_PAGE) {
-                homeBtnClick();
-            } else if (nPage == USAGE_PAGE) {
-                usageBtnClick();
-            }
-        } else {
-            Intent itent = new Intent(this, LoadingActivity.class);
-            startActivity(itent);
-            this.finish();
+        Intent it = getIntent();
+        int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
+        if (nPage == SMS_PAGE) {
+            smsBtnClick();
+        } else if (nPage == BATTERY_PAGE) {
+            widgetBatteryBtnClick();
+        } else if (nPage == HOME_PAGE) {
+            homeBtnClick();
+        } else if (nPage == USAGE_PAGE) {
+            usageBtnClick();
         }
+        // boolean cpeWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+        // boolean initialLaunchedFlag = CPEConfig.getInstance().getInitialLaunchedFlag();
+        // boolean quickSetupFlag = CPEConfig.getInstance().getQuickSetupFlag();
+        // Logs.v("ma_act", "cpewifi:" + cpeWifiConnected + ";initlaunch: " + initialLaunchedFlag + ";quick: " + quickSetupFlag);
+        // // 强制cpewifi连接为true
+        // // cpeWifiConnected = true;
+        // if (cpeWifiConnected && initialLaunchedFlag && quickSetupFlag) {
+        //     Intent it = getIntent();
+        //     int nPage = it.getIntExtra("com.alcatel.smartlinkv3.business.openPage", 100);
+        //     if (nPage == SMS_PAGE) {
+        //         smsBtnClick();
+        //     } else if (nPage == BATTERY_PAGE) {
+        //         widgetBatteryBtnClick();
+        //     } else if (nPage == HOME_PAGE) {
+        //         homeBtnClick();
+        //     } else if (nPage == USAGE_PAGE) {
+        //         usageBtnClick();
+        //     }
+        // } else {
+        //     Intent itent = new Intent(this, LoadingRxActivity.class);
+        //     startActivity(itent);
+        //     this.finish();
+        // }
     }
 
     @Override
@@ -1527,9 +1448,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
         boolean bSupport = FeatureVersionManager.getInstance().isSupportModule("Sharing");
         if (bSupport == true) {
-            if ((FeatureVersionManager.getInstance().isSupportApi("Sharing", "GetFtpStatus") == true)
-                    || (FeatureVersionManager.getInstance().isSupportApi("Sharing",
-                    "GetDLNASettings") == true)) {
+            if ((FeatureVersionManager.getInstance().isSupportApi("Sharing", "GetFtpStatus") == true) || (FeatureVersionManager.getInstance().isSupportApi("Sharing", "GetDLNASettings") == true)) {
                 m_microsdBtn.setVisibility(View.VISIBLE);
             }
         } else {

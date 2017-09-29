@@ -202,6 +202,7 @@
                          android:layout_weight="1"/>
 
                     <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                          android:layout_weight="1" 
@@ -393,7 +394,7 @@
         <RelativeLayout
             android:id="@+id/rl_wifi_waiting"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent">
 
             <ProgressBar
                 android:id="@+id/pb_wifi_waiting_progress"

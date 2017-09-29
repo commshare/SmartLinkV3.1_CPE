@@ -1,6 +1,5 @@
 package com.alcatel.smartlinkv3.ui.dialog;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,10 +11,8 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
-import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -23,7 +20,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -40,7 +36,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWatcher {
@@ -260,11 +255,11 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 		m_tvPasswordError = (TextView) m_vForceLogin
 				.findViewById(R.id.login_label_prompt);
 
-		m_etPassword = (EditText) m_vForceLogin.findViewById(R.id.login_edit_view);
+		m_etPassword = (EditText) m_vForceLogin.findViewById(R.id.et_login_psd);
 		m_etPassword.setOnKeyListener(this);
 		m_etPassword.addTextChangedListener(this);
 
-		m_btnApply = (Button) m_vForceLogin.findViewById(R.id.login_apply_btn);
+		m_btnApply = (Button) m_vForceLogin.findViewById(R.id.bt_login);
 		m_btnApply.setOnClickListener(this);
 
 		Button closeBtn = (Button) m_vForceLogin
@@ -408,7 +403,7 @@ public class ForceLoginDialog implements OnClickListener, OnKeyListener, TextWat
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.login_apply_btn:
+		case R.id.bt_login:
 			apply();
 			break;
 

@@ -24,7 +24,13 @@ import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
+import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
+import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
+import com.alcatel.smartlinkv3.utils.ChangeActivity;
+import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,11 +54,12 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
     private IntentFilter m_change_password_filter;
     private PassWordChangeReceiver m_password_change_receiver;
+    public static boolean isLogOutClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        isLogOutClick = false;
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_setting_account);
         getWindow().setBackgroundDrawable(null);
@@ -147,14 +154,14 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
         userChangePassword(LoginDialog.USER_NAME, currentPwd, confirmPwd);
         onBackPressed();
 
-//        m_current_password.setText(null);
-//        m_new_password.setText(null);
-//        m_confirm_password.setText(null);
-//
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.hideSoftInputFromWindow(m_current_password.getWindowToken(), 0);
-//        imm.hideSoftInputFromWindow(m_new_password.getWindowToken(), 0);
-//        imm.hideSoftInputFromWindow(m_confirm_password.getWindowToken(), 0);
+        //        m_current_password.setText(null);
+        //        m_new_password.setText(null);
+        //        m_confirm_password.setText(null);
+        //
+        //        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //        imm.hideSoftInputFromWindow(m_current_password.getWindowToken(), 0);
+        //        imm.hideSoftInputFromWindow(m_new_password.getWindowToken(), 0);
+        //        imm.hideSoftInputFromWindow(m_confirm_password.getWindowToken(), 0);
     }
 
     @Override
@@ -172,7 +179,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         int nID = v.getId();
         switch (nID) {
             case R.id.tv_title_back:
@@ -186,25 +192,64 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
                 doneChangePassword();
                 break;
             case R.id.setting_logout:
-                userLogout();
-                CPEConfig.getInstance().userLogout();
-//			userChangePassword();
+                // checkLoginStatus();
+                logout();
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * 登出--> 跳转login ui
+     */
+    private void logout() {
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                isLogOutClick = true;
+                ToastUtil_m.show(SettingAccountActivity.this, getString(R.string.login_logout_successful));
+                ChangeActivity.toActivity(SettingAccountActivity.this, LoginRxActivity.class, false, true, false, 0);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                ToastUtil_m.show(SettingAccountActivity.this, getString(R.string.logout_failed));
+            }
+        });
+    }
+
+    /**
+     * 检查登陆状态
+     */
+    private void checkLoginStatus() {
+        // 检查登陆状态, 如果已经登出则直接提示
+        UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+        if (m_loginStatus != null && m_loginStatus == UserLoginStatus.Logout) {
+            MainActivity.setLogoutFlag(true);
+            ToastUtil_m.show(this, getString(R.string.login_logout_successful));
+            ChangeActivity.toActivity(SettingAccountActivity.this, LoginRxActivity.class, false, true, false, 0);
+            return;
+        }
+        // 否则进行登出操作
+        userLogout();
+        CPEConfig.getInstance().userLogout();
+    }
+
     public void userLogout() {
         UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == UserLoginStatus.login) {
             MainActivity.setLogoutFlag(true);
-            BusinessMannager.getInstance().sendRequestMessage(
-                    MessageUti.USER_LOGOUT_REQUEST, null);
+            BusinessMannager.getInstance().sendRequestMessage(MessageUti.USER_LOGOUT_REQUEST, null);
             if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") == true) {
                 Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
                 this.sendBroadcast(intent2);
-                this.finish();
+                ChangeActivity.toActivity(SettingAccountActivity.this, LoginRxActivity.class, false, true, false, 0);
             }
         }
     }
@@ -216,17 +261,13 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
             data.addParam("user_name", UserName);
             data.addParam("current_password", CurrentPassword);
             data.addParam("new_password", NewPassword);
-            BusinessMannager.getInstance().sendRequestMessage(
-                    MessageUti.USER_CHANGE_PASSWORD_REQUEST, data);
+            BusinessMannager.getInstance().sendRequestMessage(MessageUti.USER_CHANGE_PASSWORD_REQUEST, data);
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//		IntentFilter filter = new IntentFilter();  
-//		filter.addAction(MessageUti.USER_CHANGE_PASSWORD_REQUEST);
-//		PassWordChangeReceiver receiver = new PassWordChangeReceiver();
         registerReceiver(m_password_change_receiver, m_change_password_filter);
     }
 
@@ -248,22 +289,17 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
-            if (intent.getAction().equalsIgnoreCase(
-                    MessageUti.USER_CHANGE_PASSWORD_REQUEST)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                        BaseResponse.RESPONSE_OK);
-                String strErrorCode = intent
-                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() == 0) {
+            if (intent.getAction().equalsIgnoreCase(MessageUti.USER_CHANGE_PASSWORD_REQUEST)) {
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+                if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
                     String strInfo = getString(R.string.change_password_successful);
                     Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
                     m_tv_done.setVisibility(View.GONE);
                     m_logout_and_changepwd.setVisibility(View.VISIBLE);
                     m_inputpwd.setVisibility(View.GONE);
                     m_notice.setVisibility(View.GONE);
-                } else if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() > 0) {
+                } else if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() > 0) {
                     if (strErrorCode.equals(ErrorCode.CURRENT_PASSWORD_IS_WRONG)) {
                         String strInfo = getString(R.string.wrong_current_password);
                         Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();

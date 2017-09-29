@@ -1,8 +1,9 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Handler;
 
 import com.alcatel.smartlinkv3.business.model.SMSContactItemModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -18,16 +19,15 @@ import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.EnumSMSDelFlag;
 import com.alcatel.smartlinkv3.common.ENUM.SMSInit;
-import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.common.ENUM.SendStatus;
+import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SMSManager extends BaseManager {
 	private SMSInit m_smsInit = SMSInit.Initing;

@@ -48,6 +48,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class BusinessMannager {
     public String m_preDeviceImei = new String();//used ui when changed device,when ui used once,set current imei
@@ -105,13 +106,10 @@ public class BusinessMannager {
         m_wanManager = new WanManager(m_context);
         m_wlanManager = new WlanManager(m_context);
         m_sharingManager = new SharingManager(m_context);
-
         m_updateManager = new UpdateManager(m_context);
         m_lanManager = new LanManager(m_context);
         m_powerManager = new PowerManager(m_context);
-
         m_deviceManager = new DeviceManager(m_context);
-
         m_profileManager = new ProfileManager(m_context);
 
         m_class.put("SystemManager", m_systemManager);
@@ -132,6 +130,23 @@ public class BusinessMannager {
         m_systemInfoModel = new SystemInfoModel();
         m_wifiNetworkReceiver = new WifiNetworkReceiver();
         m_context.registerReceiver(m_wifiNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    /**
+     * 停止所有的定时器
+     */
+    public void stopAllRoll() {
+        if (m_class != null && m_class.size() > 0) {
+            Set<String> keys = m_class.keySet();
+            if (keys != null && keys.size() > 0) {
+                for (String s : keys) {
+                    BaseManager baseManager = m_class.get(s);
+                    if (baseManager != null) {
+                        baseManager.stopRollTimer();
+                    }
+                }
+            }
+        }
     }
 
     public void setServerAddress(String strIp) {
@@ -257,7 +272,11 @@ public class BusinessMannager {
 
     /********************System manager Data start**********************/
     public Features getFeatures() {
-        return m_systemManager.getFeatures();
+        Features features = null;
+        if (m_systemManager != null) {
+            features = m_systemManager.getFeatures();
+        }
+        return features;
     }
 
     public SystemInfo getSystemInfo() {
@@ -472,7 +491,7 @@ public class BusinessMannager {
     }
 
     /********************sharing manager method end************************/   
-	/*Power manager start*/
+                /*Power manager start*/
     public BatteryInfo getBatteryInfo() {
         return m_powerManager.getBatteryInfo();
     }
@@ -488,7 +507,7 @@ public class BusinessMannager {
     public DeviceUpgradeStateInfo getUpgradeStateInfo() {
         return m_updateManager.getUpgradeStatusInfo();
     }
-	/*Power manager end***/
+                /*Power manager end***/
 
 
     /********************Device manager method start**********************/

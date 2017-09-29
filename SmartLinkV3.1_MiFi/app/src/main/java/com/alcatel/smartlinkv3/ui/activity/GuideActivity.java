@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +132,8 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
                     public void onClick(View v) {
                         CPEConfig.getInstance().setInitialLaunchedFlag();
                         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-                        Class<?> clazz = bCPEWifiConnected ? QuickSetupActivity.class : RefreshWifiActivity.class;
+                        // Class<?> clazz = bCPEWifiConnected ? QuickSetupActivity.class : RefreshWifiActivity.class;
+                        Class<?> clazz = bCPEWifiConnected ? LoginRxActivity.class : RefreshWifiActivity.class;
                         Intent intent = new Intent(mActivity, clazz);
                         mActivity.startActivity(intent);
                         mActivity.finish();

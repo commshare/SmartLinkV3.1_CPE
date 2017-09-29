@@ -11,6 +11,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 
+@Deprecated
 public class LoadingActivity extends Activity {
     private final int SPLASH_DISPLAY_INTERNAL = 1000;
 
@@ -21,6 +22,7 @@ public class LoadingActivity extends Activity {
         getWindow().setBackgroundDrawable(null);
         goHome();
     }
+
 
     @Override
     protected void onResume() {
@@ -42,13 +44,13 @@ public class LoadingActivity extends Activity {
             @Override
             public void run() {
                 if (!CPEConfig.getInstance().getInitialLaunchedFlag()) {
-                    goGuide();
+                    goGuide();// 引导页
                 } else if (!checkConnectState()) {
                     searchTimeOut();
                 } else if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-                    startQuickSetupActivity();
+                    startQuickSetupActivity();// 快速设置
                 } else {
-                    startMainActivity();
+                    startMainActivity();// 主页
                 }
             }
         };

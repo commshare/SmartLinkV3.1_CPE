@@ -4,5 +4,24 @@
         <item>open</item>
         <item>share</item>
     </string-array>
+
+    <string-array name="wlan_settings_wpa_type">
+        <item>TKIP</item>
+        <item>AES</item>
+        <item>Auto</item>
+    </string-array>
+
+    <string-array name="wlan_settings_wep_type">
+        <item>Open</item>
+        <item>Share</item>
+    </string-array>
+    
+    <string-array name="wlan_settings_security">
+        <item>WEP</item>
+        <item>WPA</item>
+        <item>WPA2</item>
+        <item>WPA/WPA2</item>
+    </string-array>
+    
     
 </resources>

@@ -59,4 +59,10 @@
     <dimen name="setting_prompt_size_s">15sp</dimen>
     <dimen name="setting_padding_s">10dp</dimen>
 
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="dimen_24dip">24dp</dimen>
+    <dimen name="dimen_35dip">35dp</dimen>
+    
+
 </resources>

@@ -497,13 +497,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             public void onError(Throwable e) {
                 super.onError(e);
                 popDismiss();
-                // 点击后, router有可能马上掉线, 造成超时错误返回
-                if (e.getMessage().toString().contains("ETIMEDOUT")) {
-                    ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
-                } else {
-                    // 跳转到月流量计划界面
-                    ChangeActivity.toActivity(getActivity(), DataPlanActivity.class, false, true, false, 0);
-                }
+                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override

@@ -39,6 +39,7 @@ import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
+import com.alcatel.smartlinkv3.rx.tools.Logs;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
@@ -86,7 +87,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
     private ImageView m_networkRoamImageView;
     private ImageView m_signalImageView;
     private TextView m_networkLabelTextView;
-	/*sigel_panel  end*/
+                /*sigel_panel  end*/
 
     /*battery_panel  start*/
     private RelativeLayout m_batteryPanelView;
@@ -96,7 +97,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
     private RelativeLayout m_batteryscalelayout;
     private RelativeLayout m_batterydescriptionlayout;
     private TextView m_batterydescriptionTextView;
-	/*battery_panel  end*/
+                /*battery_panel  end*/
 
     /*access_panel  start*/
     private TextView m_accessnumTextView;
@@ -162,8 +163,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 }
             }
 
-            if (intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)
-                    || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)) {
+            if (intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET) || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -318,16 +318,14 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
     private void resetConnectBtnFlag() {
         SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-        if (simStatus != SIMState.Accessable
-                || bCPEWifiConnected == false) {
+        if (simStatus != SIMState.Accessable || bCPEWifiConnected == false) {
             m_bConnectPressd = false;
             m_bConnectReturn = false;
             return;
         }
 
         ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
-        if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
-                || internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
+        if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
             if (m_bConnectReturn) {
                 m_bConnectPressd = false;
                 m_bConnectReturn = false;
@@ -439,8 +437,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             }
         } else {
             m_connectWaiting.setVisibility(View.VISIBLE);
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
-                    || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+            if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
                 m_connectToLabel.setText(R.string.home_disconnecting_to);
             } else {
                 m_connectToLabel.setText(R.string.home_connecting_to);
@@ -527,50 +524,49 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getOtherUserLoginString());
-//                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-//                                m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getOtherUserLoginString());
-//                            } else {
-//                                ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
-//                                        new OnClickBottonConfirm() {
-//                                            public void onConfirm() {
-//                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-//                                                    public void onLoginSuccess() {
-//                                                        connect();
-//                                                    }
-//
-//                                                    public void onLoginFailed(String error_code) {
-//                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-//                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-//                                                            ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
-//                                                                    new OnClickBtnRetry() {
-//                                                                        @Override
-//                                                                        public void onRetry() {
-//                                                                            m_loginDialog.showDialog(new OnLoginFinishedListener() {
-//                                                                                @Override
-//                                                                                public void onLoginFinished() {
-//                                                                                    connect();
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    });
-//                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-//                                                            m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getLoginTimeUsedOutString());
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-//                            }
+                            //                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
+                            //                                m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getOtherUserLoginString());
+                            //                            } else {
+                            //                                ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
+                            //                                        new OnClickBottonConfirm() {
+                            //                                            public void onConfirm() {
+                            //                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
+                            //                                                    public void onLoginSuccess() {
+                            //                                                        connect();
+                            //                                                    }
+                            //
+                            //                                                    public void onLoginFailed(String error_code) {
+                            //                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
+                            //                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
+                            //                                                            ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
+                            //                                                                    new OnClickBtnRetry() {
+                            //                                                                        @Override
+                            //                                                                        public void onRetry() {
+                            //                                                                            m_loginDialog.showDialog(new OnLoginFinishedListener() {
+                            //                                                                                @Override
+                            //                                                                                public void onLoginFinished() {
+                            //                                                                                    connect();
+                            //                                                                                }
+                            //                                                                            });
+                            //                                                                        }
+                            //                                                                    });
+                            //                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
+                            //                                                            m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getLoginTimeUsedOutString());
+                            //                                                        }
+                            //                                                    }
+                            //                                                });
+                            //                                            }
+                            //                                        });
+                            //                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
-                            ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
-                                    new OnClickBtnRetry() {
-                                        @Override
-                                        public void onRetry() {
-                                            m_loginDialog.showDialog();
-                                        }
-                                    });
+                            ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg), new OnClickBtnRetry() {
+                                @Override
+                                public void onRetry() {
+                                    m_loginDialog.showDialog();
+                                }
+                            });
                         } else {
                         }
                     }
@@ -597,8 +593,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         UsageSettingModel settings = BusinessMannager.getInstance().getUsageSettings();
         UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
         ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
-        if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected
-                || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+        if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
             if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
                 if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
                     //show warning dialog
@@ -619,13 +614,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         showNetworkState();
         showConnctBtnView();
 
-        if (internetConnState.m_connectionStatus == ConnectionStatus.Connected
-                || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
-            BusinessMannager.getInstance().sendRequestMessage(
-                    MessageUti.WAN_DISCONNECT_REQUSET, null);
+        if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+            BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_DISCONNECT_REQUSET, null);
         } else {
-            BusinessMannager.getInstance().sendRequestMessage(
-                    MessageUti.WAN_CONNECT_REQUSET, null);
+            BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET, null);
         }
     }
 
@@ -635,14 +627,12 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         if (null == m_dialog_timeout_info) {
             m_dialog_timeout_info = CommonErrorInfoDialog.getInstance(m_context);
         }
-        m_dialog_timeout_info.showDialog(
-                m_context.getString(R.string.other_login_warning_title),
-                m_context.getResources().getString(
-                        R.string.login_login_time_used_out_msg));
+        m_dialog_timeout_info.showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getResources().getString(R.string.login_login_time_used_out_msg));
     }
 
     private void showSignalAndNetworkType() {
         SIMState simStatus = BusinessMannager.getInstance().getSimStatus().m_SIMState;
+        Logs.v("ma_home", "simstatus: " + simStatus.name());
         if (simStatus != SIMState.Accessable) {
             m_networkTypeTextView.setVisibility(View.GONE);
             m_networkLabelTextView.setVisibility(View.VISIBLE);
@@ -650,6 +640,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
         } else {
             NetworkInfoModel curNetwork = BusinessMannager.getInstance().getNetworkInfo();
+            Logs.v("ma_home", "networktype: " + curNetwork.m_NetworkType + "");
+            Logs.v("ma_home", "signalstrength: " + curNetwork.m_signalStrength + "");
             if (curNetwork.m_NetworkType == NetworkType.No_service) {
                 m_networkTypeTextView.setVisibility(View.GONE);
                 m_networkRoamImageView.setVisibility(View.GONE);
@@ -673,6 +665,8 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_3);
             if (curNetwork.m_signalStrength == SignalStrength.Level_4)
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
+            if (curNetwork.m_signalStrength == SignalStrength.Level_5)
+                m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
             //show network type
             if (curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
                 m_networkTypeTextView.setVisibility(View.GONE);
@@ -680,8 +674,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             }
 
             //2G
-            if (curNetwork.m_NetworkType == NetworkType.EDGE
-                    || curNetwork.m_NetworkType == NetworkType.GPRS) {
+            if (curNetwork.m_NetworkType == NetworkType.EDGE || curNetwork.m_NetworkType == NetworkType.GPRS) {
                 m_networkLabelTextView.setVisibility(View.GONE);
                 m_networkTypeTextView.setVisibility(View.VISIBLE);
                 m_networkTypeTextView.setTypeface(typeFace);
@@ -689,9 +682,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             }
 
             //3G
-            if (curNetwork.m_NetworkType == NetworkType.HSPA
-                    || curNetwork.m_NetworkType == NetworkType.UMTS
-                    || curNetwork.m_NetworkType == NetworkType.HSUPA) {
+            if (curNetwork.m_NetworkType == NetworkType.HSPA || curNetwork.m_NetworkType == NetworkType.UMTS || curNetwork.m_NetworkType == NetworkType.HSUPA) {
                 m_networkLabelTextView.setVisibility(View.GONE);
                 m_networkTypeTextView.setVisibility(View.VISIBLE);
                 m_networkTypeTextView.setTypeface(typeFace);
@@ -699,8 +690,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             }
 
             //3G+
-            if (curNetwork.m_NetworkType == NetworkType.HSPA_PLUS
-                    || curNetwork.m_NetworkType == NetworkType.DC_HSPA_PLUS) {
+            if (curNetwork.m_NetworkType == NetworkType.HSPA_PLUS || curNetwork.m_NetworkType == NetworkType.DC_HSPA_PLUS) {
                 m_networkLabelTextView.setVisibility(View.GONE);
                 m_networkTypeTextView.setVisibility(View.VISIBLE);
                 m_networkTypeTextView.setTypeface(typeFace);
@@ -712,9 +702,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 m_networkLabelTextView.setVisibility(View.GONE);
                 m_networkTypeTextView.setVisibility(View.VISIBLE);
                 m_networkTypeTextView.setTypeface(typeFace);
-//                if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y859NC"))
-//                    m_networkTypeTextView.setText(R.string.str_LTE);
-//                else
+                //                if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y859NC"))
+                //                    m_networkTypeTextView.setText(R.string.str_LTE);
+                //                else
                 if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("MW41MP"))
                     m_networkTypeTextView.setText(R.string.str_4G_LTE);
                 else

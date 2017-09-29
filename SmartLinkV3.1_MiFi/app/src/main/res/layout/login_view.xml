@@ -41,7 +41,7 @@
         android:layout_below="@id/ID_LOGIN_TOP_LAYOUT" >
 
         <EditText
-            android:id="@+id/login_edit_view"
+            android:id="@+id/et_login_psd"
             android:layout_width="match_parent"
             android:layout_height="30dip"
             android:layout_centerHorizontal="true"
@@ -58,7 +58,7 @@
             android:id="@+id/login_label_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_edit_view"
+            android:layout_below="@id/et_login_psd"
             android:layout_marginStart="30dip"
             android:layout_marginEnd="30dip"
             android:layout_marginTop="5dip"
@@ -82,7 +82,7 @@
            	android:layout_centerHorizontal="true" />
 
         <Button
-            android:id="@+id/login_apply_btn"
+            android:id="@+id/bt_login"
             android:layout_width="80dip"
             android:layout_height="30dip"
             android:gravity="center"
