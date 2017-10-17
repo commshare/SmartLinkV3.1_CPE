@@ -219,7 +219,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             }
         });
     }
-
+   
     private void updateUIWithWlanSettings() {
         if (mOriginSettings == null) {
             return;
@@ -234,6 +234,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         }
     }
 
+    /* 5G */
     private void set5GData() {
         mWifi5GSwitch.setChecked(mOriginSettings.getAP5G().isApEnabled());
         mSsid5GEdit.setText(mOriginSettings.getAP5G().getSsid());
@@ -252,11 +253,13 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         } else {
             mEncryption5GGroup.setVisibility(View.VISIBLE);
             mKey5GGroup.setVisibility(View.VISIBLE);
+            mEncryption5GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
             mEncryption5GSpinner.setSelection(mOriginSettings.getAP5G().getWpaType());
             mKey5GEdit.setText(mOriginSettings.getAP5G().getWpaKey());
         }
     }
 
+    /* 2G */
     private void set2GData() {
         mWifi2GSwitch.setChecked(mOriginSettings.getAP2G().isApEnabled());
         mSsid2GEdit.setText(mOriginSettings.getAP2G().getSsid());
@@ -276,6 +279,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         } else {
             mEncryption2GGroup.setVisibility(View.VISIBLE);
             mKey2GGroup.setVisibility(View.VISIBLE);
+            mEncryption2GSpinner.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mWpaEncryptionSettings));
             mEncryption2GSpinner.setSelection(mOriginSettings.getAP2G().getWpaType());
             mKey2GEdit.setText(mOriginSettings.getAP2G().getWpaKey());
         }
