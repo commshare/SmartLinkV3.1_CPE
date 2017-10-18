@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -20,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.appwidget.PopupWindows;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -36,6 +39,9 @@ import com.alcatel.smartlinkv3.common.ENUM.WlanFrequency;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
+import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
@@ -45,6 +51,10 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.ForceLoginSelectDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.view.ClearEditText;
+import com.alcatel.smartlinkv3.utils.ChangeActivity;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
+import com.alcatel.smartlinkv3.utils.ScreenSize;
+import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 
 
 public class QuickSetupActivity extends Activity implements OnClickListener {
@@ -85,10 +95,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-         * DO NOT CLAIN 'android:theme="@android:style/Theme.Black.NoTitleBar"' 
-         * in AndroidManifest.xml
-         */
+        OtherUtils.verifyPermisson(this);// 申請權限
         pageName = "QuickSetupActivity";
         mContext = this;
         mBusinessMgr = BusinessMannager.getInstance();
@@ -359,9 +366,9 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                         return;
                     }
                     if (mStateHandler.getState() == State.WIFI_SSID && mWiFiSSID != null) {
-                        mEnterText.setText(mWiFiSSID);
+                        mEnterText.setText(mWiFiSSID);// TOAT: wifi名稱
                     } else if (mStateHandler.getState() == State.WIFI_PASSWD && mWiFiPasswd != null) {
-                        mEnterText.setText(mWiFiPasswd);
+                        mEnterText.setText(mWiFiPasswd);// TOAT: wifi密碼
                     }
                 }
             } else if (action.equalsIgnoreCase(MessageUti.WLAN_SET_WLAN_SETTING_REQUSET)) {
@@ -481,9 +488,50 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         if (setFlag) {
             CPEConfig.getInstance().setQuickSetupFlag();
         }
-        Intent it = new Intent(mContext, MainActivity.class);
-        startActivity(it);
-        finish();
+        // 现有逻辑
+        logout();// 退出登陆+關閉wifi
+    }
+
+    private void logout() {
+        API.get().logout(new MySubscriber() {
+            private PopupWindows pop_reboot;
+
+            @Override
+            protected void onSuccess(Object result) {
+                ScreenSize.SizeBean size = ScreenSize.getSize(QuickSetupActivity.this);
+                int w = (int) (size.width * 0.8f);
+                int h = (int) (size.height * 0.5f);
+                View inflate = View.inflate(QuickSetupActivity.this, R.layout.pop_reboot, null);
+                View tvCancel = inflate.findViewById(R.id.tv_pop_reboot_cancel);
+                View tvOk = inflate.findViewById(R.id.tv_pop_reboot_ok);
+                View rlWait = inflate.findViewById(R.id.rl_pop_reboot_wait);
+
+                tvCancel.setOnClickListener(v -> {
+                    if (pop_reboot != null) {
+                        pop_reboot.dismiss();
+                    }
+                });
+
+                tvOk.setOnClickListener(v -> {
+                    rlWait.setVisibility(View.VISIBLE);// 顯示等待條
+                    OtherUtils.setWifiActive(QuickSetupActivity.this, false);// 關閉wifi
+                    tvOk.postDelayed(() -> {
+                        if (pop_reboot != null) {
+                            pop_reboot.dismiss();
+                        }
+                        ChangeActivity.toActivity(QuickSetupActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                    }, 2000);// 延遲兩秒執行
+                });
+
+                pop_reboot = new PopupWindows(QuickSetupActivity.this, inflate, w, h, new ColorDrawable(Color.TRANSPARENT));
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                ToastUtil_m.show(QuickSetupActivity.this, getString(R.string.setting_network_try_again));
+                ChangeActivity.toActivity(QuickSetupActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+            }
+        });
     }
 
     enum State {
@@ -799,16 +847,8 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
             setViewsVisibility(true, false, false, false, false);
             mSetupTitle.setText(mTitle);
             mPromptText.setText(mMessage);
-
             mNavigatorRight.setText(R.string.skip);
-            mNavigatorRight.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    finishQuickSetup(true);
-                }
-
-            });
+            mNavigatorRight.setOnClickListener(v -> finishQuickSetup(true));
         }
 
         public String getTitleText() {
@@ -1094,7 +1134,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
             mPromptText.setText(getString(R.string.qs_summary));
             mSetupTitle.setText(getString(R.string.qs_completed));
             mNavigatorLeft.setOnClickListener(QuickSetupActivity.this);
-            mWiFiSSIDTextView.setText(getString(R.string.qs_wifi_ssid, mWiFiSSID));
+            mWiFiSSIDTextView.setText(getString(R.string.qs_wifi_ssid, mWiFiSSID));// wifi網絡名稱
             mWiFiPasswdTextView.setText(getString(R.string.qs_wifi_passwd, mWiFiPasswd));
             clearOtherTextListen(this);
         }

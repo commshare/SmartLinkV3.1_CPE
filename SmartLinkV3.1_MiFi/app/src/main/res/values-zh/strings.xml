@@ -239,8 +239,8 @@
     <string name="widget_usage_used">已用</string>
     <string name="widget_usage_left">左側</string>
     <string name="widget_usage_excess">超出</string>
-    <string name="usage_unit">&lt;item&gt;MB&lt;/item&gt;
-      &lt;item&gt;GB&lt;/item&gt;</string>
+    <string name="usage_unit"><item>MB</item>
+      <item>GB</item></string>
     <string name="usage_setting_settimelimit">設定時間限制：</string>
     <string name="usage_setting_monthlysataplan">月度數據計畫：</string>
     <string name="usage_setting_dataconsunption">數據用量：</string>
@@ -254,7 +254,7 @@
     <string name="toast_musicplay_fail">音樂播放錯誤</string>
     <string name="tab_ftp_client">FTP 客戶端</string>
     <string name="tab_category">瀏覽</string>
-    <string name="succeed_desc">&lt;item&gt;成功新增資料夾！&lt;/item&gt;</string>
+    <string name="succeed_desc"><item>成功新增資料夾！</item></string>
     <string name="succeed">完成</string>
     <string name="str_LTE">LTE</string>
     <string name="str_data_usage">數據用量是近似值。真實用量請諮詢網絡運營商。</string>
@@ -270,13 +270,13 @@
     <string name="sms_delete_success">簡訊已刪除。</string>
     <string name="sms_delete_multi_success">會話已刪除。</string>
     <string name="sms_delete_multi_error">無法刪除會話。</string>
-    <string name="setting_wpa_password_error_prompt">WPA預共享金鑰（PSK）應為8-63ASCII字元，並且WPA PSK應為32-127之間的ASCII字元，不包括：, \&quot; : ;&amp;\.</string>
+    <string name="setting_wpa_password_error_prompt">WPA預共享金鑰（PSK）應為8-63ASCII字元，並且WPA PSK應為32-127之間的ASCII字元，不包括：, \" : ;&amp;\.</string>
     <string name="setting_wifi_wpa_or_wpa2">WPA/WPA2</string>
     <string name="setting_wifi_ssid_can_not_be_empty">SSID不能為空</string>
     <string name="setting_wifi_password_security_tip">安全類型：</string>
-    <string name="setting_wep_password_error_prompt">WEP金鑰為 5 -13 位 ASCII 字元，或 10-26 位十六進位數值並且WEP 金鑰應為 32-127 之間的 ASCII 字元，不包括：, \&quot; : ;&amp;\。</string>
-    <string name="setting_wep_mode_array">&lt;item&gt;打開&lt;/item&gt;
-      &lt;item&gt;分享&lt;/item&gt;</string>
+    <string name="setting_wep_password_error_prompt">WEP金鑰為 5 -13 位 ASCII 字元，或 10-26 位十六進位數值並且WEP 金鑰應為 32-127 之間的 ASCII 字元，不包括：, \" : ;&amp;\。</string>
+    <string name="setting_wep_mode_array"><item>打開</item>
+      <item>分享</item></string>
     <string name="setting_upgrade_not_available">沒有可用的服務</string>
     <string name="setting_upgrade_new_device_version">已找到新版本</string>
     <string name="setting_upgrade_new_app_version">找到新版本v</string>
@@ -325,18 +325,18 @@
     <string name="setting_about_copyright">Copyright © 2014–2016 TCL Communication Ltd. All right reserved.TCL通訊股份有限公司版權所有</string>
     <string name="separate">/</string>
     <string name="sending">正在傳送</string>
-    <string name="sd_card_size">SD大小： &lt;xliff:g id=&quot;total_size&quot;&gt;%1$s&lt;/xliff:g&gt;</string>
-    <string name="sd_card_available">&lt;xliff:g id=&quot;available_size&quot;&gt;%1$s&lt;/xliff:g&gt;可用</string>
+    <string name="sd_card_size">SD大小： <xliff:g id="total_size">%1$s</xliff:g></string>
+    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g>可用</string>
     <string name="removed_favorite">從我的最愛移除</string>
     <string name="remain_times">剩餘次數：%1$d 次</string>
     <string name="refresh_wifi_tip">請先連線移動熱點</string>
     <string name="qs_wifi_wep_passwd_prompt">密碼應為 5 個或 13 個 ASCII 字元，或 10 個或 26 個十六進位數字。</string>
     <string name="qs_wifi_ssid_prompt">SSID應為 1-32 個字元。</string>
-    <string name="qs_wifi_ssid">Wi-Fi網絡名稱(SSID)： &lt;xliff:g id=&quot;SSID&quot;&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="qs_wifi_ssid">Wi-Fi網絡名稱(SSID)： <xliff:g id="SSID">%1$s</xliff:g></string>
     <string name="qs_wifi_passwd_prompt">密碼應為 8-63 個字元。</string>
-    <string name="qs_wifi_passwd">Wi-Fi密碼： &lt;xliff:g id=&quot;PASSWD&quot;&gt;%1$s&lt;/xliff:g&gt;</string>
-    <string name="qs_puk_code_prompt">輸入 PUK 碼\n剩餘嘗試次數： &lt;xliff:g id=&quot;INPUTTIMES&quot;&gt;%1$d&lt;/xliff:g&gt;次</string>
-    <string name="qs_pin_code_prompt">輸入PIN 碼\n剩餘嘗試次數：&lt;xliff:g id=&quot;INPUTTIMES&quot;&gt;%1$d&lt;/xliff:g&gt;次</string>
+    <string name="qs_wifi_passwd">Wi-Fi密碼： <xliff:g id="PASSWD">%1$s</xliff:g></string>
+    <string name="qs_puk_code_prompt">輸入 PUK 碼\n剩餘嘗試次數： <xliff:g id="INPUTTIMES">%1$d</xliff:g>次</string>
+    <string name="qs_pin_code_prompt">輸入PIN 碼\n剩餘嘗試次數：<xliff:g id="INPUTTIMES">%1$d</xliff:g>次</string>
     <string name="qs_pin_code_confirm">確認 PIN：</string>
     <string name="qs_item_wifi_ssid">Wi-Fi網絡名稱(SSID)</string>
     <string name="qs_exit_query">退出快速設定</string>
@@ -345,7 +345,7 @@
     <string name="pref_show_real_path_summary">在導航欄顯示實際路徑</string>
     <string name="pref_show_real_path">顯示實際路徑</string>
     <string name="pref_read_root">閱讀root</string>
-    <string name="pref_primary_folder_summary">應用程式開啟時出現的檔案，當前數值為 &lt;xliff:g id=&quot;string&quot;&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="pref_primary_folder_summary">應用程式開啟時出現的檔案，當前數值為 <xliff:g id="string">%1$s</xliff:g></string>
     <string name="pref_primary_folder">主頁檔案</string>
     <string name="parse_image_fail">無法解析圖片</string>
     <string name="operation_unfavorite">自我的最愛移除</string>
@@ -369,7 +369,7 @@
     <string name="no_wifi">無Wi-Fi網絡</string>
     <string name="no_file">目錄為空</string>
     <string name="new_message_notification_content">有新訊息..</string>
-    <string name="multi_select_title">選擇 &lt;xliff:g id=&quot;number&quot;&gt;%1$s&lt;/xliff:g&gt;項目</string>
+    <string name="multi_select_title">選擇 <xliff:g id="number">%1$s</xliff:g>項目</string>
     <string name="mp_unknown_artist">未知藝術家</string>
     <string name="mp_unknown_album">未知的專輯</string>
     <string name="mp_lyrics_tips">***歌詞來源於網絡，僅供參考***</string>
@@ -420,8 +420,8 @@
     <string name="favorite_photo">相片</string>
     <string name="fail_to_rename">檔案、資料夾無法重命名為現有名。</string>
     <string name="fail_to_create_folder">失敗：資料夾已存在或FTP故障。</string>
-    <string name="fail_cause">&lt;item&gt;[cause 1] 資料夾已存在！&lt;/item&gt;
-      &lt;item&gt;[cause 2] 新增資料夾失敗！&lt;/item&gt;</string>
+    <string name="fail_cause"><item>[cause 1] 資料夾已存在！</item>
+      <item>[cause 2] 新增資料夾失敗！</item></string>
     <string name="error_info_cant_send_folder">無法發送資料夾</string>
     <string name="error_info">錯誤</string>
     <string name="enable_sd_card">SD 卡不可用。</string>

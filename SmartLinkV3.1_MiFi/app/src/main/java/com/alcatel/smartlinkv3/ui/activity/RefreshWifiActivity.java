@@ -27,7 +27,6 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     private TextView m_connectTitle = null;
     private TextView m_connectTip = null;
     private Button m_connectBtn1 = null;
-    //private Button m_connectBtn2 = null;
 
     protected MsgBroadcastReceiver m_msgReceiver;
 
@@ -38,6 +37,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
         clearAllContext();// 清空所有Activity(除当前)
         setContentView(R.layout.activity_refresh);
         getWindow().setBackgroundDrawable(null);
+        OtherUtils.verifyPermisson(this);// 申請權限
         m_connectImage = (ImageView) this.findViewById(R.id.image_connection);
         m_connectTitle = (TextView) this.findViewById(R.id.textview_refresh_title);
         m_connectTip = (TextView) this.findViewById(R.id.textview_refresh_tip);
@@ -130,8 +130,9 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
             clazz = QuickSetupActivity.class;
         } else {
             if (!SettingWifiActivity.isDone) {
-                clazz = MainActivity.class;
-                Log.d("refreshsd", "startMainActivity");
+                // clazz = MainActivity.class;
+                clazz = LoginRxActivity.class;
+                Log.d("refreshsd", "LoginRxActivity");
             }
         }
 

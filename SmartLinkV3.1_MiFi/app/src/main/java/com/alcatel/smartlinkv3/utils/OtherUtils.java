@@ -1,12 +1,15 @@
 package com.alcatel.smartlinkv3.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.v4.app.ActivityCompat;
 import android.widget.EditText;
 
 import com.alcatel.smartlinkv3.R;
@@ -133,4 +136,16 @@ public class OtherUtils {
         WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifi.setWifiEnabled(open);
     }
+
+    /**
+     * 申請權限
+     */
+    public static void verifyPermisson(Activity activity) {
+        String[] PERMISSIONS_WIFI = {Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_MULTICAST_STATE, Manifest.permission.CHANGE_WIFI_STATE};
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.CHANGE_WIFI_STATE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_WIFI, 1);
+        }
+    }
+
 }

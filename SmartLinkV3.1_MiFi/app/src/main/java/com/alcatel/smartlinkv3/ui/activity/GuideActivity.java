@@ -1,23 +1,26 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
+import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
+import com.alcatel.smartlinkv3.utils.ChangeActivity;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.guide);
+        OtherUtils.verifyPermisson(this);
         initViews();
         initDots();
     }
@@ -127,16 +131,22 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 
             if (position == (mViews.size() - 1)) {
                 Button startBtn = (Button) mActivity.findViewById(R.id.btn_start);
-                startBtn.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        CPEConfig.getInstance().setInitialLaunchedFlag();
-                        boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-                        // Class<?> clazz = bCPEWifiConnected ? QuickSetupActivity.class : RefreshWifiActivity.class;
-                        Class<?> clazz = bCPEWifiConnected ? LoginRxActivity.class : RefreshWifiActivity.class;
-                        Intent intent = new Intent(mActivity, clazz);
-                        mActivity.startActivity(intent);
-                        mActivity.finish();
+                startBtn.setOnClickListener(v -> {
+                    CPEConfig.getInstance().setInitialLaunchedFlag();
+                    if (!OtherUtils.isWiFiActive(GuideActivity.this)) {// 没有连接wifi
+                        toActivity(RefreshWifiActivity.class);
+                    } else {// 连接wifi并检查是否连接了对应硬件
+                        API.get().getLoginState(new MySubscriber<LoginState>() {
+                            @Override
+                            protected void onSuccess(LoginState result) {
+                                toActivity(LoginRxActivity.class);
+                            }
+
+                            @Override
+                            protected void onResultError(ResponseBody.Error error) {
+                                toActivity(RefreshWifiActivity.class);
+                            }
+                        });
                     }
                 });
             }
@@ -149,4 +159,9 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
             return arg0 == arg1;
         }
     }
+
+    public void toActivity(Class clazz) {
+        ChangeActivity.toActivity(this, clazz, false, true, false, 0);
+    }
+
 }

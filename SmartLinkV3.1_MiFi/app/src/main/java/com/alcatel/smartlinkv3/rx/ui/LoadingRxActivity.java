@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.ui.activity.GuideActivity;
 import com.alcatel.smartlinkv3.ui.activity.RefreshWifiActivity;
 import com.alcatel.smartlinkv3.utils.ChangeActivity;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 public class LoadingRxActivity extends BaseRxActivity {
 
@@ -25,6 +26,7 @@ public class LoadingRxActivity extends BaseRxActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_loading_rx);
         checkBoardConnect();
+        OtherUtils.verifyPermisson(this);// 申請權限
     }
 
     /**
