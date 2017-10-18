@@ -549,14 +549,19 @@
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Wszystkie diody LED wyłączają się automatycznie, z wyjątkiem diody LED zasilania, jeśli nie ma dostępu Wi-Fi lub ręcznej operacji w ciągu 30 sekund.</string>
 
-  <string name="str_phone_number">Numer telefonu:</string>
+    <string name="str_phone_number">Numer telefonu:</string>
 
-  <string name="str_data_usage">Użycie danych jest przybliżone. Informacje na temat rzeczywistego użytkowania można uzyskać od operatora sieci</string>
-  <string name="str_4G_LTE">4G LTE</string>
+    <string name="str_data_usage">Użycie danych jest przybliżone. Informacje na temat rzeczywistego użytkowania można uzyskać od operatora sieci</string>
+    <string name="str_4G_LTE">4G LTE</string>
 
-  <string name="setting_wep_mode_array">
+    <string name="setting_wep_mode_array">
       <item>otwórz</item>
       <item>udostępnij</item>
   </string>
+
+    <string name="login_forgot_password">Nie pamiętasz hasła?</string>
+    <string name="login_remenber_psd">Zapamiętaj hasło</string>
+    <string name="login_failed">Nie można zalogować</string>
+    <string name="logout_failed">Nie można wylogować.</string>
 
 </resources>

@@ -508,4 +508,9 @@
     <string name="usage_setting_monthlyunit">MB</string>
     <string name="usage_setting_usage">用量</string>
     <string name="video_speed_unit_second">S</string>
+    
+    <string name="login_forgot_password">忘記密碼</string>
+    <string name="login_remenber_psd">記住密碼</string>
+    <string name="login_failed">不准登陸</string>
+    <string name="logout_failed">登出失敗</string>
 </resources>

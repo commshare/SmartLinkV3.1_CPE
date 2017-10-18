@@ -559,4 +559,9 @@
       <item>partager</item>
   </string>
 
+    <string name="login_forgot_password">Mot de passe oublié ?</string>
+    <string name="login_remenber_psd">Mémoriser le mot de passe</string>
+    <string name="login_failed">Connexion impossible</string>
+    <string name="logout_failed">Déconnexion impossible.</string>
+
 </resources>

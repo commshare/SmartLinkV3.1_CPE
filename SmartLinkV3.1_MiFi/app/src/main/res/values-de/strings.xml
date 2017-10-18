@@ -561,4 +561,8 @@
       <item>Freigeben</item>
   </string>
 
+    <string name="login_forgot_password">Passwort vergessen?</string>
+    <string name="login_remenber_psd">Passwort speichern</string>
+    <string name="login_failed">Anmeldung fehlgeschlagen</string>
+    <string name="logout_failed">Abmeldung nicht möglich</string>
 </resources>

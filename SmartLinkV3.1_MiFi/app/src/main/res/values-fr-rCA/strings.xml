@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP :%1$s</string>
     <string name="device_manage_mac">MAC :%1$s</string>
     <string name="device_manage_set_name_failed">Échec de réglage!</string>
-	<string name="device_manage_name_empty">Le nom de l\'appareil n\'est pas valide.</string>
+    <string name="device_manage_name_empty">Le nom de l\'appareil n\'est pas valide.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">Fichier</string>
@@ -511,41 +511,46 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">Enable SD card</string>
-  <string name="added_favorite">Ajouter aux favoris</string>
-  <string name="category_favorite">Favoris</string>
-  <string name="file_info_canwrite">Inscriptible:</string>
-  <string name="file_info_ishidden">Caché:</string>
-  <string name="file_info_modified">Modifié:</string>
-  <string name="install_failed">Installation échoué</string>
-  <string name="install_successful">Installation réussie</string>
-  <string name="instruction_pre">Démarrer le service pour activer le serveur FTP</string>
-  <string name="no_file">Dossier vide</string>
-  <string name="no_wifi">Aucun réseau Wi-Fi</string>
-  <string name="no_wifi_hint">Aucun réseau sans fil, appuyez sur pour vérifier les paramètres WiFi</string>
-  <string name="operation_cancel_selectall">Tout désélectionner</string>
-  <string name="operation_favorite">Ajouter aux Favoris</string>
-  <string name="operation_hide_sys">Cacher les fichiers cachés</string>
-  <string name="operation_unfavorite">Supprimer des favoris</string>
-  <string name="removed_favorite">Supprimer des favoris</string>
-  <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g>Disponible</string>
-  <string name="sd_card_size">SD Taille: <xliff:g id="total_size">%1$s</xliff:g></string>
-  <string name="search_hint">Recherche les fichiers</string>
-  <string name="search_title">Recherche les fichiers</string>
-  <string name="start_server">Démarrer le service</string>
-  <string name="stop_server">Arrêter le service</string>
-  <string name="storage_warning">Le stockage externe n\'est pas disponible ou ne peut pas être lu</string>
-  <string name="tab_category">Feuilleter</string>
-  <string name="wifi_state">État du WLAN</string>
-  <string name="favourite_root">Racine</string>
-  <string name="favorite_ringtone">Sonnerie</string>
-  <string name="menu_setting">Préférences</string>
-  <string name="preference_title">Paramétres</string>
-  <string name="pref_show_real_path">Afficher chemin réel</string>
-  <string name="pref_show_real_path_summary">Afficher chemin réel dans la barre de navigation</string>
-  <string name="confirm_folder_replace">Confirmer remplacement</string>
-  <string name="confirm_folder_content">Nom du fichier existe déjà!</string>
+    <string name="enable_sd_card">Enable SD card</string>
+    <string name="added_favorite">Ajouter aux favoris</string>
+    <string name="category_favorite">Favoris</string>
+    <string name="file_info_canwrite">Inscriptible:</string>
+    <string name="file_info_ishidden">Caché:</string>
+    <string name="file_info_modified">Modifié:</string>
+    <string name="install_failed">Installation échoué</string>
+    <string name="install_successful">Installation réussie</string>
+    <string name="instruction_pre">Démarrer le service pour activer le serveur FTP</string>
+    <string name="no_file">Dossier vide</string>
+    <string name="no_wifi">Aucun réseau Wi-Fi</string>
+    <string name="no_wifi_hint">Aucun réseau sans fil, appuyez sur pour vérifier les paramètres WiFi</string>
+    <string name="operation_cancel_selectall">Tout désélectionner</string>
+    <string name="operation_favorite">Ajouter aux Favoris</string>
+    <string name="operation_hide_sys">Cacher les fichiers cachés</string>
+    <string name="operation_unfavorite">Supprimer des favoris</string>
+    <string name="removed_favorite">Supprimer des favoris</string>
+    <string name="sd_card_available"><xliff:g id="available_size">%1$s</xliff:g>Disponible</string>
+    <string name="sd_card_size">SD Taille: <xliff:g id="total_size">%1$s</xliff:g></string>
+    <string name="search_hint">Recherche les fichiers</string>
+    <string name="search_title">Recherche les fichiers</string>
+    <string name="start_server">Démarrer le service</string>
+    <string name="stop_server">Arrêter le service</string>
+    <string name="storage_warning">Le stockage externe n\'est pas disponible ou ne peut pas être lu</string>
+    <string name="tab_category">Feuilleter</string>
+    <string name="wifi_state">État du WLAN</string>
+    <string name="favourite_root">Racine</string>
+    <string name="favorite_ringtone">Sonnerie</string>
+    <string name="menu_setting">Préférences</string>
+    <string name="preference_title">Paramétres</string>
+    <string name="pref_show_real_path">Afficher chemin réel</string>
+    <string name="pref_show_real_path_summary">Afficher chemin réel dans la barre de navigation</string>
+    <string name="confirm_folder_replace">Confirmer remplacement</string>
+    <string name="confirm_folder_content">Nom du fichier existe déjà!</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Toutes les voyants s\'éteignent automatiquement à l\'exception du voyant d\'alimentation en cas d\'absence d\'accès WI-FI ou de fonctionnement manuel pendant 30 s.</string>
+
+    <string name="login_forgot_password">Mot de passe oublié ?</string>
+    <string name="login_remenber_psd">Mémoriser le mot de passe</string>
+    <string name="login_failed">Connexion impossible</string>
+    <string name="logout_failed">Déconnexion impossible.</string>
 </resources>

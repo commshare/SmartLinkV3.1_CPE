@@ -552,4 +552,8 @@
  -->
     <string name="login_other_user_logined_error_forcelogin_msg">Ya existe una sesión de administrador abierta. Por favor, cierre primero esa sesión antes de abrir una nueva.</string>
 
+    <string name="login_forgot_password">¿Olvidó la contraseña?</string>
+    <string name="login_remenber_psd">Recordar contraseña</string>
+    <string name="login_failed">No se ha podido iniciar sesión</string>
+    <string name="logout_failed">No se ha podido cerrar sesión.</string>
 </resources>

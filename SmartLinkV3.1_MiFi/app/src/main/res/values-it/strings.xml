@@ -17,7 +17,7 @@
     <string name="finish">Fine</string>
     <string name="continue_anyway">Continua</string>
     <!-- common end -->
-	<!-- Qucik Setup -->
+    <!-- Qucik Setup -->
     <string name="qs_title">Configurazione rapida</string>
     <string name="qs_exit_query">Esci da Configurazione rapida</string>
     <string name="qs_item_pin_code">Codice PIN</string>
@@ -80,7 +80,7 @@
     <string name="home_battery_unit">%</string>
     <string name="home_usage_over_redial_message">Il piano dati mensile è stato esaurito. Se si desidera ricomporre, modificare i valori mensili o reimpostare il consumo.</string>
     <!-- Home view end -->
- <!-- pop dialog start -->
+    <!-- pop dialog start -->
     <string name="pop_dialog_usagesetting">Impostazione di utilizzo</string>
     <string name="pop_dialog_clearhistory">Cancellare la cronologia</string>
     <!-- pop dialog end -->
@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Imposta Impossibile!</string>
-	<string name="device_manage_name_empty">Nome del dispositivo non è valido.</string>
+    <string name="device_manage_name_empty">Nome del dispositivo non è valido.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">File</string>
@@ -511,7 +511,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">Enable SD card</string>
+    <string name="enable_sd_card">Enable SD card</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">Confermare la sostituzione</string>
     <string name="confirm_folder_content">Il nome del file esiste già!</string>
@@ -549,14 +549,19 @@
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Se il PUK errato viene immesso 10 volte, la SIM sarà bloccata in modo permanente. È possibile pagare una tassa per la sostituzione.</string>
 
-  <string name="str_phone_number">Numero di telefono:</string>
+    <string name="str_phone_number">Numero di telefono:</string>
 
-  <string name="str_data_usage">L\'utilizzo dei dati è approssimativo. Per un utilizzo effettivo, fare riferimento all\'operatore di rete</string>
-  <string name="str_4G_LTE">4G LTE</string>
+    <string name="str_data_usage">L\'utilizzo dei dati è approssimativo. Per un utilizzo effettivo, fare riferimento all\'operatore di rete</string>
+    <string name="str_4G_LTE">4G LTE</string>
 
-  <string name="setting_wep_mode_array">
+    <string name="setting_wep_mode_array">
       <item>apri</item>
       <item>condividi</item>
   </string>
+
+    <string name="login_forgot_password">Password dimenticata?</string>
+    <string name="login_remenber_psd">Memorizza la password</string>
+    <string name="login_failed">Impossibile accedere</string>
+    <string name="logout_failed">Impossibile disconnettersi.</string>
 
 </resources>

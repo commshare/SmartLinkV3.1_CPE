@@ -145,7 +145,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         OtherUtils.verifyPermisson(this);// 申請權限
     }
 
-
     @Override
     public void onResume() {
         super.onResume();

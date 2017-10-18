@@ -560,4 +560,8 @@
       <item>مشاركة</item>
   </string>
 
+    <string name="login_forgot_password">هل نسيت كلمة المرور؟</string>
+    <string name="login_remenber_psd">تذكر كلمة المرور</string>
+    <string name="login_failed">تعذر تسجيل الدخول</string>
+    <string name="logout_failed">تعذر تسجيل الخروج.</string>
 </resources>

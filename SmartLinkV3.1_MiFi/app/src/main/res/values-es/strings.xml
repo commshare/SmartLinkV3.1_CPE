@@ -562,4 +562,8 @@
       <item>compartir</item>
   </string>
 
+    <string name="login_forgot_password">¿Olvidó la contraseña?</string>
+    <string name="login_remenber_psd">Recordar contraseña</string>
+    <string name="login_failed">No se ha podido iniciar sesión</string>
+    <string name="logout_failed">No se ha podido cerrar sesión.</string>
 </resources>
