@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +36,7 @@ import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
+import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -48,7 +48,9 @@ import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
@@ -105,6 +107,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private final int PROGRESS_STYLE_WAITING = -1;
     ProgressBar mUpgradingProgressBar;
     TextView mUpgradingProgressValue;
+    private TextView mMobileNetworkSimSocket;
+    private TextView mMobileNetworkWanSocket;
+    private TimerHelper checkTimer;
 
 
     @Nullable
@@ -119,17 +124,61 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        checkTimer = new TimerHelper(getActivity()) {
+            @Override
+            public void doSomething() {
+                // 检测WAN口 | SIM是否连接
+                getSimOrWanConnect();
+            }
+        };
+        checkTimer.start(2500);
+    }
+    
+    @Override
+    public boolean getUserVisibleHint() {
+        return super.getUserVisibleHint();
+    }
+
+    /**
+     * 检测WAN口 | SIM是否连接
+     */
+    private void getSimOrWanConnect() {
+        // 1.检测WAN口是否连接
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+            @Override
+            protected void onSuccess(WanSettingsResult result) {
+                if (result.getStatus() == Cons.CONNECTED) {
+                    mMobileNetworkWanSocket.setText(getString(R.string.setting_on_state));
+                } else {
+                    mMobileNetworkWanSocket.setText(getString(R.string.setting_off_state));
+                }
+            }
+        });
+        // 2.检测sim是否连接
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+            @Override
+            protected void onSuccess(ConnectionStates result) {
+                if (result.getConnectionStatus() == Cons.CONNECTED) {
+                    mMobileNetworkSimSocket.setText(getString(R.string.setting_on_state));
+                } else {
+                    mMobileNetworkSimSocket.setText(getString(R.string.setting_off_state));
+                }
+            }
+        });
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        checkTimer.stop();
     }
 
 
     private void init() {
         mLoginPassword = (RelativeLayout) m_view.findViewById(R.id.setting_login_password);
         mMobileNetwork = (RelativeLayout) m_view.findViewById(R.id.setting_mobile_network);
+        mMobileNetworkSimSocket = (TextView) m_view.findViewById(R.id.tv_setting_sim_socket);// SIM开关显示
+        mMobileNetworkWanSocket = (TextView) m_view.findViewById(R.id.tv_setting_wan_socket);// WAN开关显示
         mEthernetWan = (RelativeLayout) m_view.findViewById(R.id.setting_ethernet_wan);
         mSharingService = (RelativeLayout) m_view.findViewById(R.id.setting_sharing_service);
         mLanguage = (RelativeLayout) m_view.findViewById(R.id.setting_language);

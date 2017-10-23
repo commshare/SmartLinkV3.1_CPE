@@ -37,8 +37,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_marginStart="@dimen/dimen_10dip"
-                    android:layout_toRightOf="@id/setting_login_password_pic"
                     android:layout_toEndOf="@id/setting_login_password_pic"
+                    android:layout_toRightOf="@id/setting_login_password_pic"
                     android:text="@string/setting_account"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -46,11 +46,11 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
@@ -83,8 +83,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_10dip"
                         android:layout_marginStart="@dimen/dimen_10dip"
-                        android:layout_toRightOf="@id/setting_mobile_network_pic"
                         android:layout_toEndOf="@id/setting_mobile_network_pic"
+                        android:layout_toRightOf="@id/setting_mobile_network_pic"
                         android:text="@string/setting_mobile_network"
                         android:textColor="@color/black_text"
                         android:textSize="@dimen/font_size_normal" />
@@ -93,23 +93,24 @@
                         android:id="@+id/setting_mobile_network_arrow"
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/common_margin"
                         android:layout_marginEnd="@dimen/common_margin"
+                        android:layout_marginRight="@dimen/common_margin"
                         android:contentDescription="@string/setting_wifi"
                         android:src="@drawable/right_arrow_big" />
 
                     <TextView
+                        android:id="@+id/tv_setting_sim_socket"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_marginEnd="@dimen/dimen_10dip"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_toLeftOf="@id/setting_mobile_network_arrow"
                         android:layout_toStartOf="@id/setting_mobile_network_arrow"
-                        android:text="@string/setting_on_state"
+                        android:text="@string/setting_off_state"
                         android:textColor="@color/grey_text"
                         android:textSize="@dimen/font_size_normal" />
 
@@ -119,8 +120,8 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginLeft="@dimen/dimen_10dip"
                         android:layout_marginStart="@dimen/dimen_10dip"
-                        android:layout_toRightOf="@id/setting_mobile_network_pic"
                         android:layout_toEndOf="@id/setting_mobile_network_pic"
+                        android:layout_toRightOf="@id/setting_mobile_network_pic"
                         android:background="@color/grey_line"
                         android:visibility="visible" />
 
@@ -150,8 +151,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_10dip"
                         android:layout_marginStart="@dimen/dimen_10dip"
-                        android:layout_toRightOf="@id/setting_ethernet_wan_pic"
                         android:layout_toEndOf="@id/setting_ethernet_wan_pic"
+                        android:layout_toRightOf="@id/setting_ethernet_wan_pic"
                         android:text="@string/ethernet_wan_connection"
                         android:textColor="@color/black_text"
                         android:textSize="@dimen/font_size_normal" />
@@ -160,13 +161,25 @@
                         android:id="@+id/setting_ethernet_wan_arrow"
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/common_margin"
                         android:layout_marginEnd="@dimen/common_margin"
+                        android:layout_marginRight="@dimen/common_margin"
                         android:contentDescription="@string/setting_wifi"
                         android:src="@drawable/right_arrow_big" />
+
+                    <TextView
+                        android:id="@+id/tv_setting_wan_socket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/dimen_10dip"
+                        android:layout_marginRight="@dimen/dimen_10dip"
+                        android:layout_toLeftOf="@id/setting_ethernet_wan_arrow"
+                        android:layout_toStartOf="@id/setting_ethernet_wan_arrow"
+                        android:text="@string/setting_off_state"
+                        android:textSize="@dimen/font_size_normal" />
 
                 </RelativeLayout>
             </RelativeLayout>
@@ -195,8 +208,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_marginStart="@dimen/dimen_10dip"
-                    android:layout_toRightOf="@id/setting_sharing_service_pic"
                     android:layout_toEndOf="@id/setting_sharing_service_pic"
+                    android:layout_toRightOf="@id/setting_sharing_service_pic"
                     android:text="@string/setting_share"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -204,11 +217,11 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
@@ -237,8 +250,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_marginStart="@dimen/dimen_10dip"
-                    android:layout_toRightOf="@id/setting_language_pic"
                     android:layout_toEndOf="@id/setting_language_pic"
+                    android:layout_toRightOf="@id/setting_language_pic"
                     android:text="@string/language"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -246,11 +259,11 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
             </RelativeLayout>
@@ -308,11 +321,11 @@
                     android:id="@+id/setting_firmware_upgrade_arrow"
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 
@@ -348,8 +361,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_marginStart="@dimen/dimen_10dip"
-                    android:layout_toRightOf="@id/setting_restart_pic"
                     android:layout_toEndOf="@id/setting_restart_pic"
+                    android:layout_toRightOf="@id/setting_restart_pic"
                     android:text="@string/setting_restart_reset"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -357,11 +370,11 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 
@@ -397,8 +410,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_marginStart="@dimen/dimen_10dip"
-                    android:layout_toRightOf="@id/setting_backup_pic"
                     android:layout_toEndOf="@id/setting_backup_pic"
+                    android:layout_toRightOf="@id/setting_backup_pic"
                     android:text="@string/setting_backup_restore"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -406,11 +419,11 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 
@@ -440,8 +453,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_10dip"
                     android:layout_marginStart="@dimen/dimen_10dip"
-                    android:layout_toRightOf="@id/setting_about_pic"
                     android:layout_toEndOf="@id/setting_about_pic"
+                    android:layout_toRightOf="@id/setting_about_pic"
                     android:text="@string/setting_about"
                     android:textColor="@color/black_text"
                     android:textSize="@dimen/font_size_normal" />
@@ -449,11 +462,11 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_20dip"
                     android:layout_height="@dimen/dimen_20dip"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/common_margin"
                     android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
                     android:src="@drawable/right_arrow_big" />
 

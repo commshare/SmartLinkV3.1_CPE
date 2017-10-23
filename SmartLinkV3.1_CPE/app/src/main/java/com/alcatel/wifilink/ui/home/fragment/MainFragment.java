@@ -785,17 +785,21 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.connect_button:
                 if (canClick) {// when the connect type is not sure--> can't click
-                    ToastUtil_m.show(getActivity(), getString(R.string.connecting));
-                    clickProgresDialog = OtherUtils.showProgressPop(getActivity());
-                    checkConnStatusAndConnect();
+                    // ToastUtil_m.show(getActivity(), getString(R.string.connecting));
+                    // clickProgresDialog = OtherUtils.showProgressPop(getActivity());
+                    // checkConnStatusAndConnect();
+                    // ToastUtil_m.show(getActivity(),"test click button");
+                    TakeSimConnect();
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
                 }
                 break;
-            case connected_button:
+            case R.id.connected_button:
                 if (canClick) {// when the connect type is not sure--> can't click
                     if (!isWan) {/* sim button click logic */
                         connectedBtnClick();
+                    } else {
+                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
                     }
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
@@ -809,58 +813,66 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 使用sim连接
+     */
+    private void TakeSimConnect() {
+        // 检测连接
+        connect();
+    }
+
     int count = 0;// 用于计算失败的次数
 
-    private void checkConnStatusAndConnect() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
-            @Override
-            protected void onSuccess(ConnectionStates result) {
-                int connstatus = result.getConnectionStatus();
-                if (connstatus == Cons.CONNECTED) {
-                    if (!isWan) {/* sim button click logic */
-                        // operater the button click function
-                        simButtonConnect();
-                    } else {/* wan button click logic */
-                        // to internet status activity
-                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
-                    }
-                    if (clickProgresDialog != null) {
-                        clickProgresDialog.dismiss();
-                        clickProgresDialog = null;
-                    }
-                }
-                if (connstatus == Cons.CONNECTING) {
-                    checkConnStatusAndConnect();
-                }
-                if (connstatus == Cons.DISCONNECTED || connstatus == Cons.DISCONNECTING) {
-                    // 延迟15秒再提示用户连接失败
-                    m_connectLayout.postDelayed(() -> {
-                        if (clickProgresDialog != null) {
-                            clickProgresDialog.dismiss();
-                            clickProgresDialog = null;
-                        }
-                        ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
-                    }, 15 * 1000);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                if (clickProgresDialog != null) {
-                    clickProgresDialog.dismiss();
-                    clickProgresDialog = null;
-                }
-            }
-
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                if (clickProgresDialog != null) {
-                    clickProgresDialog.dismiss();
-                    clickProgresDialog = null;
-                }
-            }
-        });
-    }
+    // private void checkConnStatusAndConnect() {
+    //     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+    //         @Override
+    //         protected void onSuccess(ConnectionStates result) {
+    //             int connstatus = result.getConnectionStatus();
+    //             if (connstatus == Cons.CONNECTED) {
+    //                 if (!isWan) {/* sim button click logic */
+    //                     // operater the button click function
+    //                     simButtonConnect();
+    //                 } else {/* wan button click logic */
+    //                     // to internet status activity
+    //                     ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+    //                 }
+    //                 if (clickProgresDialog != null) {
+    //                     clickProgresDialog.dismiss();
+    //                     clickProgresDialog = null;
+    //                 }
+    //             }
+    //             if (connstatus == Cons.CONNECTING) {
+    //                 checkConnStatusAndConnect();
+    //             }
+    //             if (connstatus == Cons.DISCONNECTED || connstatus == Cons.DISCONNECTING) {
+    //                 // 延迟15秒再提示用户连接失败
+    //                 m_connectLayout.postDelayed(() -> {
+    //                     if (clickProgresDialog != null) {
+    //                         clickProgresDialog.dismiss();
+    //                         clickProgresDialog = null;
+    //                     }
+    //                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
+    //                 }, 15 * 1000);
+    //             }
+    //         }
+    //
+    //         @Override
+    //         public void onError(Throwable e) {
+    //             if (clickProgresDialog != null) {
+    //                 clickProgresDialog.dismiss();
+    //                 clickProgresDialog = null;
+    //             }
+    //         }
+    //
+    //         @Override
+    //         protected void onResultError(ResponseBody.Error error) {
+    //             if (clickProgresDialog != null) {
+    //                 clickProgresDialog.dismiss();
+    //                 clickProgresDialog = null;
+    //             }
+    //         }
+    //     });
+    // }
 
     /* 初始状态: 未按下--> 去按下 */
     private void simButtonConnect() {
@@ -888,12 +900,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         protected void onSuccess(ConnectionStates result) {
                             int connectStatus = result.getConnectionStatus();
                             if (connectStatus == Cons.DISCONNECTED) {
-                                // set connect
                                 connectHelper(true);
-                                // // get monthly used
-                                // getMonthlyPlan();
-                                // // set logo button layout
-                                // setSimButtonLogo();
                             }
                         }
 
@@ -982,6 +989,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             API.get().connect(new MySubscriber() {
                 @Override
                 protected void onSuccess(Object result) {
+                    Logs.v("ma_main_connect", "connect success");
                     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
@@ -1013,6 +1021,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void onError(Throwable e) {
+                    Logs.v("ma_main_connect", "connect onError");
                     if (clickProgresDialog != null) {
                         clickProgresDialog.dismiss();
                     }
@@ -1020,6 +1029,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 protected void onFailure() {
+                    Logs.v("ma_main_connect", "connect onFailure");
                     if (clickProgresDialog != null) {
                         clickProgresDialog.dismiss();
                     }
@@ -1027,6 +1037,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
+                    Logs.v("ma_main_connect", "connect onResultError");
                     if (clickProgresDialog != null) {
                         clickProgresDialog.dismiss();
                     }
