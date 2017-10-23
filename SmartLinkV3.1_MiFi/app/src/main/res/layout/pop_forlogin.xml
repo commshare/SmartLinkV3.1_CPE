@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pop_bg"
+        app:layout_heightPercent="25%sh">
+
+        <!-- title -->
+        <TextView
+            android:id="@+id/tv_pop_forceLogin_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/other_login_warning_title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_marginTopPercent="10%h"
+            app:layout_textSizePercent="15%h" />
+
+        <!--des -->
+        <TextView
+            android:id="@+id/tv_pop_forceLogin_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pop_forceLogin_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/login_other_user_logined_error_forcelogin_msg"
+            android:textColor="@color/color_deep_grey"
+            app:layout_marginLeftPercent="10%w"
+            app:layout_marginRightPercent="10%w"
+            app:layout_marginTopPercent="8%h"
+            app:layout_textSizePercent="9%h" />
+
+        <!-- content -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pop_forceLogin_des"
+            android:orientation="horizontal"
+            app:layout_heightPercent="30%h"
+            app:layout_marginPercent="5%w">
+
+            <TextView
+                android:id="@+id/tv_pop_forceLogin_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/color_deep_grey"
+                app:layout_widthPercent="50%w" />
+
+            <TextView
+                android:id="@+id/tv_pop_forceLogin_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/ok"
+                android:textColor="@color/blue_dark_btn"
+                android:textStyle="bold"
+                app:layout_widthPercent="50%w" />
+
+        </com.zhy.android.percent.support.PercentLinearLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

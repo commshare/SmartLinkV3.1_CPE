@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,16 +18,24 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
+import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
+import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
+import com.alcatel.smartlinkv3.rx.ui.BaseRxActivity;
 import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
+import com.alcatel.smartlinkv3.utils.ChangeActivity;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
+import com.alcatel.smartlinkv3.utils.TimerHelper;
 
-public class RefreshWifiActivity extends Activity implements OnClickListener {
+public class RefreshWifiActivity extends BaseRxActivity implements OnClickListener {
     private ImageView m_connectImage = null;
     private TextView m_connectTitle = null;
     private TextView m_connectTip = null;
     private Button m_connectBtn1 = null;
 
     protected MsgBroadcastReceiver m_msgReceiver;
+    private TimerHelper loginStatusTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,41 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
         m_connectTip = (TextView) this.findViewById(R.id.textview_refresh_tip);
         m_connectBtn1 = (Button) this.findViewById(R.id.btn_refresh);
         m_connectBtn1.setOnClickListener(this);
+    }
+
+    /**
+     * 設備連接定時器
+     */
+    private void loginStateTimer() {
+        loginStatusTimer = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                // 檢查wifi是否連接
+                boolean wiFiActive = OtherUtils.isWiFiActive(RefreshWifiActivity.this);
+                System.out.println("wifiActivit:" + wiFiActive);
+                if (wiFiActive) {// 檢查是否連接上設備
+                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                        @Override
+                        protected void onSuccess(LoginState result) {
+                            System.out.println("loginStateTimer to login success");
+                            ChangeActivity.toActivity(RefreshWifiActivity.this, LoginRxActivity.class, false, true, false, 0);
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            System.out.println("loginStateTimer to login failed");
+                        }
+                    });
+                }
+            }
+        };
+        loginStatusTimer.start(3000);
+    }
+
+    private void stopTimer() {
+        if (loginStatusTimer != null) {
+            loginStatusTimer.stop();
+        }
     }
 
     /**
@@ -74,20 +116,21 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
     }
 
     private void clickBtn1() {
-        //if(isNoAnyConnection() == true) {
+        // api置空
+        API.resetApi();
         wifiSetting();
-        //}
     }
 
 
     private class MsgBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-                showUI();
-                showActivity(context);
-                Log.d("refreshsd", "showActivity");
-            } else if (intent.getAction().equals(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)) {
+            // if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+            //     showUI();
+            //     showActivity(context);
+            //     Log.d("refreshsd", "showActivity");
+            // } else 
+            if (intent.getAction().equals(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)) {
                 showUI();
             }
         }
@@ -132,7 +175,7 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
             if (!SettingWifiActivity.isDone) {
                 // clazz = MainActivity.class;
                 clazz = LoginRxActivity.class;
-                Log.d("refreshsd", "LoginRxActivity");
+                System.out.println("showActivity to login");
             }
         }
 
@@ -167,15 +210,16 @@ public class RefreshWifiActivity extends Activity implements OnClickListener {
         m_msgReceiver = new MsgBroadcastReceiver();
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET));
-
         showActivity(this);
-
         showUI();
+        System.out.println("onResume");
+        loginStateTimer();// 設備連接定時器
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        stopTimer();
         try {
             this.unregisterReceiver(m_msgReceiver);
         } catch (Exception e) {

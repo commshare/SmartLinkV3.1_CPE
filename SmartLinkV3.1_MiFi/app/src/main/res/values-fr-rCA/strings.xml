@@ -549,8 +549,8 @@
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Toutes les voyants s\'éteignent automatiquement à l\'exception du voyant d\'alimentation en cas d\'absence d\'accès WI-FI ou de fonctionnement manuel pendant 30 s.</string>
 
-    <string name="login_forgot_password">Mot de passe oublié ?</string>
-    <string name="login_remenber_psd">Mémoriser le mot de passe</string>
-    <string name="login_failed">Connexion impossible</string>
-    <string name="logout_failed">Déconnexion impossible.</string>
+    <string name="login_forgot_password">Mot de passe oublié</string>
+    <string name="login_remenber_psd">Mémorisez le mot de passe</string>
+    <string name="login_failed">Impossible de se connecter</string>
+    <string name="logout_failed">Impossible de se déconnecter</string>
 </resources>

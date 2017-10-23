@@ -547,23 +547,23 @@
     <string name="confirm_folder_content">El nombre del fichero ya existe.</string>
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Todos los LEDs se apagarán automáticamente, excepto el LED de batería, cuando no haya acceso Wi-Fi o no haya acceso manual durante 30 segundos.</string>
-   <!--
+    <!--
+     <string name="login_other_user_logined_error_forcelogin_msg">Ya existe una sesión de administrador abierta. Por favor, cierre primero esa sesión antes de abrir una nueva.</string>
+ -->
     <string name="login_other_user_logined_error_forcelogin_msg">Ya existe una sesión de administrador abierta. Por favor, cierre primero esa sesión antes de abrir una nueva.</string>
--->
-    <string name="login_other_user_logined_error_forcelogin_msg">Ya existe una sesión de administrador abierta. Por favor, cierre primero esa sesión antes de abrir una nueva.</string>
 
-  <string name="str_phone_number">Número de teléfono:</string>
+    <string name="str_phone_number">Número de teléfono:</string>
 
-  <string name="str_data_usage">El consumo de datos es aproximado. Para saber el consumo exacto, por favor, contacte con su operador.</string>
-  <string name="str_4G_LTE">4G LTE</string>
+    <string name="str_data_usage">El consumo de datos es aproximado. Para saber el consumo exacto, por favor, contacte con su operador.</string>
+    <string name="str_4G_LTE">4G LTE</string>
 
-  <string name="setting_wep_mode_array">
+    <string name="setting_wep_mode_array">
       <item>abrir</item>
       <item>compartir</item>
   </string>
 
-    <string name="login_forgot_password">¿Olvidó la contraseña?</string>
-    <string name="login_remenber_psd">Recordar contraseña</string>
-    <string name="login_failed">No se ha podido iniciar sesión</string>
-    <string name="logout_failed">No se ha podido cerrar sesión.</string>
+    <string name="login_forgot_password">¿Ha olvidado la contraseña?</string>
+    <string name="login_remenber_psd">Recordar la contraseña</string>
+    <string name="login_failed">No se ha podido acceder</string>
+    <string name="logout_failed">  No se ha podido cerrar la sesión</string>
 </resources>

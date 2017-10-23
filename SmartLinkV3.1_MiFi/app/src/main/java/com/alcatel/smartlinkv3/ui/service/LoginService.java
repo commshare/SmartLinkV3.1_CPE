@@ -1,26 +1,26 @@
-package com.alcatel.wifilink.ui.home.allsetup;
+package com.alcatel.smartlinkv3.ui.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.utils.AppInfo;
+import com.alcatel.smartlinkv3.R;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
+import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
+import com.alcatel.smartlinkv3.utils.AppInfo;
+import com.alcatel.smartlinkv3.utils.TimerHelper;
+import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 
 import java.util.List;
 
 /**
- * Created by qianli.ma on 2017/8/10.
+ * Created by qianli.ma on 2017/10/19 0019.
  */
 
-public class HomeService extends Service {
-    private TimerHelper packageTimer;
+public class LoginService extends Service {
+    private TimerHelper timerHelper;
 
     @Nullable
     @Override
@@ -30,17 +30,22 @@ public class HomeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        packageTimer = new TimerHelper(this) {
+        timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                List<String> allRunningPackage = AppInfo.getAllRunningPackage(HomeService.this);
+                List<String> allRunningPackage = AppInfo.getAllRunningPackage(LoginService.this);
                 String currentPackName = getPackageName();// 当前类名
                 // 如果当前运行的包名没有包含当前服务的包名,则认为APP被杀死--> 退出
                 if (!allRunningPackage.contains(currentPackName)) {
                     API.get().logout(new MySubscriber() {
                         @Override
                         protected void onSuccess(Object result) {
-                            
+                            // 彈出提示
+                            ToastUtil_m.show(LoginService.this, getString(R.string.login_logout_successful));
+                            // 結束服務
+                            stopService(intent);
+                            // 停止定時器
+                            timerHelper.stop();
                         }
 
                         @Override
@@ -51,7 +56,7 @@ public class HomeService extends Service {
                 }
             }
         };
-        packageTimer.start(500);
+        timerHelper.start(500);
         return super.onStartCommand(intent, flags, startId);
     }
 }

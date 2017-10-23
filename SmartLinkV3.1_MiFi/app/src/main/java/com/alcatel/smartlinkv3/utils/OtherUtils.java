@@ -2,6 +2,7 @@ package com.alcatel.smartlinkv3.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -146,6 +147,29 @@ public class OtherUtils {
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, PERMISSIONS_WIFI, 1);
         }
+    }
+
+    /**
+     * 判断某个服务是否正在运行的方法
+     *
+     * @param mContext
+     * @param sClass   服务的类名
+     * @return true:代表正在运行，false代表服务没有正在运行
+     */
+    public static boolean isServiceWork(Context mContext, Class sClass) {
+        String serviceName = sClass.getName();// 获取服务的全类名
+        ActivityManager myAM = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);// 获取系统服务对象
+        List<ActivityManager.RunningServiceInfo> myList = myAM.getRunningServices(1000);// 获取正在运行中的服务集合 -->1000为可能获取到的个数
+        if (myList.size() <= 0) {// 判断集合是否有对象
+            return false;
+        }
+        for (int i = 0; i < myList.size(); i++) {// 遍历每一个服务对象
+            String mName = myList.get(i).service.getClassName().toString();// 获取服务的类名
+            if (mName.equalsIgnoreCase(serviceName) || mName.contains(serviceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

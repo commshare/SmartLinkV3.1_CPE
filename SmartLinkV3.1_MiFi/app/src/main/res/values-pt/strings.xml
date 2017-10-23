@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Não foi possível definir.</string>
-	<string name="device_manage_name_empty">O nome do dispositivo é inválido.</string>
+    <string name="device_manage_name_empty">O nome do dispositivo é inválido.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">Ficheiro</string>
@@ -510,7 +510,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">Cartão SD não disponível. Insira um</string>
+    <string name="enable_sd_card">Cartão SD não disponível. Insira um</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">confirmar substituição</string>
     <string name="confirm_folder_content">O nome do ficheiro já existe.</string>
@@ -549,14 +549,19 @@
     <string name="str_power_save_description">Todos os LEDs apagam automaticamente, exceto o LED de alimentação, quando não existe acesso ao Wi-Fi ou operação manual durante 30 seg.</string>
     <string name="setting_power_wifi_description">O Wi-Fi irá desligar automaticamente se a ligação estiver inativa durante 30 min. Prima qualquer tecla para ativar.</string>
 
-  <string name="str_phone_number">Número de telephone:</string>
+    <string name="str_phone_number">Número de telephone:</string>
 
-  <string name="str_data_usage">A utilização de dados é aproximada. Para saber qual a utilização real, consulte o seu operador.</string>
-  <string name="str_4G_LTE">4G LTE</string>
+    <string name="str_data_usage">A utilização de dados é aproximada. Para saber qual a utilização real, consulte o seu operador.</string>
+    <string name="str_4G_LTE">4G LTE</string>
 
-  <string name="setting_wep_mode_array">
+    <string name="setting_wep_mode_array">
       <item>open</item>
       <item>share</item>
   </string>
+
+    <string name="login_forgot_password">Esqueceu-se da palavra-passe?</string>
+    <string name="login_remenber_psd">Lembrar a palavra-passe</string>
+    <string name="login_failed">Não foi possível iniciar sessão</string>
+    <string name="logout_failed">Não foi possível terminar sessão</string>
 
 </resources>

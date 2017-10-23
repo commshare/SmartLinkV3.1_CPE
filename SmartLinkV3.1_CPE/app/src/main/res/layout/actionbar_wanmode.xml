@@ -31,6 +31,7 @@
             android:textStyle="normal" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_wanmode_skip"
             android:layout_width="@dimen/dimen_60dip"
             android:layout_height="@dimen/dimen_40dip"

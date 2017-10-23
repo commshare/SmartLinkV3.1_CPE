@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Festlegen nicht möglich</string>
-	<string name="device_manage_name_empty">Der Gerätename ist ungültig.</string>
+    <string name="device_manage_name_empty">Der Gerätename ist ungültig.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">Datei</string>
@@ -511,7 +511,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">SD-Karte nicht verfügbar, Karte einlegen</string>
+    <string name="enable_sd_card">SD-Karte nicht verfügbar, Karte einlegen</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">Ersetzen bestätigen</string>
     <string name="confirm_folder_content">Der Dateiname ist bereits vorhanden.</string>
@@ -549,20 +549,18 @@
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Außer der Akku-LED, schalten sich die LED automatisch ab, wenn kein Zugriff auf das WLAN erfolgt oder keine Taste gedrückt wird.</string>
 
-  <string name="str_phone_number">Telefonnummer:</string>
+    <string name="str_phone_number">Telefonnummer:</string>
 
+    <string name="str_data_usage">Der angezeigte Verbrauch kann ungenau sein. Für den tatsächlichen Verbrauch, wenden Sie sich bitte an Ihren Dienstanbieter.</string>
+    <string name="str_4G_LTE">4G LTE</string>
 
-
-  <string name="str_data_usage">Der angezeigte Verbrauch kann ungenau sein. Für den tatsächlichen Verbrauch, wenden Sie sich bitte an Ihren Dienstanbieter.</string>
-  <string name="str_4G_LTE">4G LTE</string>
-
-  <string name="setting_wep_mode_array">
+    <string name="setting_wep_mode_array">
       <item>Öffnen</item>
       <item>Freigeben</item>
   </string>
 
-    <string name="login_forgot_password">Passwort vergessen?</string>
-    <string name="login_remenber_psd">Passwort speichern</string>
-    <string name="login_failed">Anmeldung fehlgeschlagen</string>
-    <string name="logout_failed">Abmeldung nicht möglich</string>
+    <string name="login_forgot_password">Passwort vergessen</string>
+    <string name="login_remenber_psd">Passwort merken</string>
+    <string name="login_failed">Anmelden fehlgeschlagen</string>
+    <string name="logout_failed">Abmelden fehlgeschlagen</string>
 </resources>

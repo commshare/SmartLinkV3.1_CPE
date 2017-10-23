@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP: %1$s</string>
     <string name="device_manage_mac">MAC: %1$s</string>
     <string name="device_manage_set_name_failed">Ошибка установки.</string>
-	<string name="device_manage_name_empty">Некорректное имя устройства.</string>
+    <string name="device_manage_name_empty">Некорректное имя устройства.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">Файл</string>
@@ -511,7 +511,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">Нет доступа к SD-карте. Пожалуйста, подключите её.</string>
+    <string name="enable_sd_card">Нет доступа к SD-карте. Пожалуйста, подключите её.</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">подтверждение замены</string>
     <string name="confirm_folder_content">Файл с таким именем уже существует.</string>
@@ -549,14 +549,19 @@
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Все светодиоды погаснет автоматически, кроме светодиода питания, когда нет доступа Wi-Fi или ручного управления в течение 30 секунд.</string>
 
-  <string name="str_phone_number">Номер телефона:</string>
+    <string name="str_phone_number">Номер телефона:</string>
 
-  <string name="str_data_usage">Использование данных является приблизительным. Для фактического использования обратитесь к оператору сотовой сети</string>
-  <string name="str_4G_LTE">4G LTE</string>
+    <string name="str_data_usage">Использование данных является приблизительным. Для фактического использования обратитесь к оператору сотовой сети</string>
+    <string name="str_4G_LTE">4G LTE</string>
 
-  <string name="setting_wep_mode_array">
+    <string name="setting_wep_mode_array">
       <item>не защищена</item>
       <item>общий ключ</item>
   </string>
+
+    <string name="login_forgot_password">Забыли пароль?</string>
+    <string name="login_remenber_psd">Вспомнить пароль</string>
+    <string name="login_failed">Невозможно зайти</string>
+    <string name="logout_failed">Невозможно выйти</string>
 
 </resources>

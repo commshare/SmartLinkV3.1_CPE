@@ -70,6 +70,13 @@ public class API {
         }
     }
 
+    /**
+     * 重置api接口--> 用於refresh介面更新網關地址
+     */
+    public static void resetApi() {
+        api = null;
+    }
+
     public static API get() {
         // 1.检测wifi是否有连接
         boolean wiFiActive = OtherUtils.isWiFiActive(SmartLinkV3App.getInstance());
@@ -78,6 +85,7 @@ public class API {
         }
         gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
         gateWay = "http://" + (TextUtils.isEmpty(gateWay) | !gateWay.startsWith("192.168") ? "192.168.1.1" : gateWay);
+        System.out.println("gateway: " + gateWay);
         if (api == null) {
             synchronized (API.class) {
                 if (api == null) {
@@ -112,6 +120,7 @@ public class API {
     private void createSmartLinkApi() {
         try {
             Retrofit.Builder builder = new Retrofit.Builder();
+            System.out.println("gateway create: " + gateWay);
             builder.baseUrl(gateWay).client(buildOkHttpClient()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create());
             Retrofit retrofit = builder.build();
             smartLinkApi = retrofit.create(SmartLinkApi.class);
@@ -205,6 +214,19 @@ public class API {
     }
 
     /**
+     * login
+     *
+     * @param userName   user name
+     * @param passwd     password
+     * @param subscriber callback
+     */
+    public void forceLogin(String userName, String passwd, MySubscriber<LoginResult> subscriber) {
+        Observable observable = smartLinkApi.forceLogin(new RequestBody(Methods.FORCELOGIN, new LoginParams(userName, passwd)));
+        subscribe(subscriber, observable);
+    }
+
+
+    /**
      * logout
      *
      * @param subscriber callback
@@ -235,14 +257,16 @@ public class API {
     //     subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
     // }
     //
-    // /**
-    //  * heart beat
-    //  *
-    //  * @param subscriber callback
-    //  */
-    // public void heartBeat(MySubscriber subscriber) {
-    //     subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.HEART_BEAT)));
-    // }
+
+    /**
+     * heart beat
+     *
+     * @param subscriber callback
+     */
+    public void heartBeat(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.HEART_BEAT)));
+    }
+
     //
     // /**
     //  * get sim status
@@ -550,6 +574,9 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<LoginResult>> login(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<LoginResult>> forceLogin(@Body RequestBody requestBody);
 
         //
         // @POST("/jrd/webapi")

@@ -7,6 +7,7 @@ package com.alcatel.smartlinkv3.rx.tools;
 public interface Methods {
     //LoginParams
     String LOGIN = "Login";
+    String FORCELOGIN = "ForceLogin";
     String LOGOUT = "Logout";
     String GET_LOGIN_STATE = "GetLoginState";
     String CHANGE_PASSWORD = "ChangePassword";

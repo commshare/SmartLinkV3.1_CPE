@@ -1,17 +1,19 @@
 package com.alcatel.smartlinkv3.rx.ui;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.appwidget.PopupWindows;
+import com.alcatel.smartlinkv3.appwidget.RippleView;
 import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
@@ -45,7 +47,7 @@ public class LoginRxActivity extends BaseRxActivity {
     @BindView(R.id.tv_login_rememberPsd_text)
     TextView tvCheckbox;// 记住密码文本
     @BindView(R.id.bt_login)
-    Button btLogin;// 登陆按钮
+    RippleView btLogin;// 登陆按钮
     @BindView(R.id.tv_login_forgotPsd)
     TextView tvLoginForgotPsd;// 忘记密码
 
@@ -54,7 +56,8 @@ public class LoginRxActivity extends BaseRxActivity {
     private String REMEMBER_TEXT = "REMEMBER_TEXT";
     private boolean isRemember;
     private ProgressDialog pgd;
-    private PopupWindows resetPop;
+    private PopupWindows resetPop;// 重啟會話框
+    private PopupWindows forcePop;// 強制登陸會話框
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,71 +127,94 @@ public class LoginRxActivity extends BaseRxActivity {
         }
         // 2.登陆
         pgd = OtherUtils.showProgressPop(this);
-        // 2.1.判断是否需要加密
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        // 延遲2秒
+        btLogin.postDelayed(() -> {
+            // 2.1.判断是否需要加密
+            API.get().getLoginState(new MySubscriber<LoginState>() {
 
-            private String password;
-            private String admin;
+                private String password;
+                private String admin;
 
-            @Override
-            protected void onSuccess(LoginState result) {
-                if (result.getLoginRemainingTimes() <= 0) {
-                    showResetDeviceDialog(result);// 超过登陆限制次数
-                    return;
-                }
-                // 2.1.1.默认帐号密码
-                admin = ADMIN;
-                password = OtherUtils.getEdittext(etLoginPsd);
-                // 2.2.是否需要加密
-                if (result.getPwEncrypt() == Cons.NEED_ENCRYPT) {
-                    admin = EncryptionUtil.encrypt(admin);
-                    password = EncryptionUtil.encrypt(password);
-                }
-                // 2.3.请求登陆接口
-                API.get().login(admin, password, new MySubscriber<LoginResult>() {
-                    @Override
-                    protected void onSuccess(LoginResult result) {
-                        TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
-                        OtherUtils.initBusiness();// 2.5.启动请求接口
-                        OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
-                        // 2.7.是否进入过快速设置
-                        Class clazz = MainActivity.class;
-                        if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-                            clazz = QuickSetupActivity.class;
+                @Override
+                protected void onSuccess(LoginState result) {
+                    Logs.v("ma_login", "login LoginState");
+                    if (result.getLoginRemainingTimes() <= 0) {
+                        showResetDeviceDialog(result);// 超过登陆限制次数
+                        return;
+                    }
+                    // 2.1.1.默认帐号密码
+                    admin = ADMIN;
+                    password = OtherUtils.getEdittext(etLoginPsd);
+                    // 2.2.是否需要加密
+                    if (result.getPwEncrypt() == Cons.NEED_ENCRYPT) {
+                        admin = EncryptionUtil.encrypt(admin);
+                        password = EncryptionUtil.encrypt(password);
+                    }
+                    // 2.3.请求登陆接口
+                    API.get().login(admin, password, new MySubscriber<LoginResult>() {
+                        @Override
+                        protected void onSuccess(LoginResult result) {
+                            Logs.v("ma_login", "login success");
+                            TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
+                            API.get().getLoginState(new MySubscriber<LoginState>() {
+                                @Override
+                                protected void onSuccess(LoginState result) {
+                                    if (result.getState() == Cons.LOGIN) {
+                                        Logs.v("ma_login", "get loginstatus success");
+                                        OtherUtils.initBusiness();// 2.5.启动请求接口
+                                        OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
+                                        // 2.7.是否进入过快速设置
+                                        Class clazz;
+                                        if (!CPEConfig.getInstance().getQuickSetupFlag()) {
+                                            clazz = QuickSetupActivity.class;
+                                        } else {
+                                            clazz = MainActivity.class;
+                                        }
+                                        
+                                        ChangeActivity.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);// 跳转
+                                    }
+                                }
+
+                                @Override
+                                protected void onResultError(ResponseBody.Error error) {
+                                    Logs.v("ma_login", "get loginstatus failed");
+                                    OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
+                                }
+                            });
                         }
-                        ChangeActivity.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);// 跳转
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logs.v("ma_login","login onError");
-                        OtherUtils.hideProgressPop(pgd);
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Logs.v("ma_login", "login onError");
+                            OtherUtils.hideProgressPop(pgd);
+                        }
 
-                    @Override
-                    protected void onResultError(ResponseBody.Error error) {
-                        Logs.v("ma_login","login onError");
-                        Logs.v("ma_login", "error: " + error.getMessage());
-                        OtherUtils.hideProgressPop(pgd);
-                        ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                OtherUtils.hideProgressPop(pgd);
-                if (!OtherUtils.isWiFiActive(LoginRxActivity.this)) {
-                    ToastUtil_m.show(LoginRxActivity.this, getString(R.string.no_wifi));
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            Logs.v("ma_login", "error: " + error.getMessage() + ";code:" + error.getCode());
+                            OtherUtils.hideProgressPop(pgd);
+                            showErrorToast(error);
+                        }
+                    });
                 }
-            }
 
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                OtherUtils.hideProgressPop(pgd);
-                ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
-            }
-        });
+                @Override
+                public void onError(Throwable e) {
+                    OtherUtils.hideProgressPop(pgd);
+                    if (!OtherUtils.isWiFiActive(LoginRxActivity.this)) {
+                        ToastUtil_m.show(LoginRxActivity.this, getString(R.string.no_wifi));
+                    }
+                    ChangeActivity.toActivity(LoginRxActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                }
+
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    OtherUtils.hideProgressPop(pgd);
+                    ToastUtil_m.show(LoginRxActivity.this, getString(R.string.refresh_wifi_tip));
+                }
+            });
+        }, 2000);
+
     }
 
     /**
@@ -205,6 +231,7 @@ public class LoginRxActivity extends BaseRxActivity {
             dialog.dismiss();
         });
         builder.create();
+        builder.show();
     }
 
     /**
@@ -277,4 +304,95 @@ public class LoginRxActivity extends BaseRxActivity {
         });
     }
 
+    /**
+     * 錯誤碼分類處理
+     *
+     * @param error
+     */
+    public void showErrorToast(ResponseBody.Error error) {
+        switch (error.getCode()) {
+            case "010101":
+                ToastUtil_m.show(this, getString(R.string.login_psd_error_msg));
+                break;
+            case "010102":
+                showForcePop();// 強制登陸
+                ToastUtil_m.show(this, getString(R.string.login_other_user_logined_error_msg));
+                break;
+            case "010103":
+                ToastUtil_m.show(this, getString(R.string.login_login_time_used_out_msg));
+                break;
+            case "010104":
+                ToastUtil_m.show(this, getString(R.string.login_failed));
+                break;
+            case "010601":
+                ToastUtil_m.show(this, getString(R.string.login_psd_error_msg));
+                break;
+            case "010602":
+                ToastUtil_m.show(this, getString(R.string.login_login_time_used_out_msg));
+                break;
+            default:
+                ChangeActivity.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
+                break;
+        }
+    }
+
+    /**
+     * 顯示強制登陸對話框
+     */
+    private void showForcePop() {
+        ScreenSize.SizeBean size = ScreenSize.getSize(this);
+        int w = (int) (size.width * 0.8f);
+        int h = (int) (size.height * 0.5f);
+        View inflate = View.inflate(this, R.layout.pop_forlogin, null);
+        View tv_force_cancel = inflate.findViewById(R.id.tv_pop_forceLogin_cancel);
+        View tv_force_ok = inflate.findViewById(R.id.tv_pop_forceLogin_ok);
+        tv_force_cancel.setOnClickListener(v -> forcePop.dismiss());
+        tv_force_ok.setOnClickListener(v -> {
+            forceLogin();// 強制登陸
+        });
+        forcePop = new PopupWindows(this, inflate, w, h, new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    /**
+     * 強制登陸行為
+     */
+    public void forceLogin() {
+        pgd = OtherUtils.showProgressPop(this);
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+
+            String userName = ADMIN;
+            String password = OtherUtils.getEdittext(etLoginPsd);
+
+            @Override
+            protected void onSuccess(LoginState result) {
+                // 是否需要加密
+                if (result.getPwEncrypt() == Cons.NEED_ENCRYPT) {
+                    userName = EncryptionUtil.encrypt(userName);
+                    password = EncryptionUtil.encrypt(password);
+                }
+                // 強制登陸
+                API.get().forceLogin(userName, password, new MySubscriber<LoginResult>() {
+                    @Override
+                    protected void onSuccess(LoginResult result) {
+                        TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
+                        OtherUtils.initBusiness();// 2.5.启动请求接口
+                        OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
+                        // 2.7.是否进入过快速设置
+                        Class clazz = MainActivity.class;
+                        if (!CPEConfig.getInstance().getQuickSetupFlag()) {
+                            clazz = QuickSetupActivity.class;
+                        }
+                        ChangeActivity.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);// 跳转
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        Logs.v("ma_forceLogin", "error: " + error.getMessage() + ";code:" + error.getCode());
+                        OtherUtils.hideProgressPop(pgd);
+                        showErrorToast(error);
+                    }
+                });
+            }
+        });
+    }
 }

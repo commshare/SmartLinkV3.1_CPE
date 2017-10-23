@@ -42,6 +42,7 @@ import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.rx.tools.API;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
+import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
@@ -54,6 +55,7 @@ import com.alcatel.smartlinkv3.ui.view.ClearEditText;
 import com.alcatel.smartlinkv3.utils.ChangeActivity;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
 import com.alcatel.smartlinkv3.utils.ScreenSize;
+import com.alcatel.smartlinkv3.utils.TimerHelper;
 import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 
 
@@ -90,6 +92,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
     private ProgressDialog m_progress_dialog = null;
 
     public static String pageName;
+    private TimerHelper heartBeanTimer;
 
 
     @Override
@@ -125,7 +128,32 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         setViewsVisibility(false, false, false, false, false);
 
         mReceiver = new QSBroadcastReceiver();
+        heartbeatTimer();// 心跳定時器
     }
+
+    /**
+     * 登陸定時器
+     */
+    private void heartbeatTimer() {
+        heartBeanTimer = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                API.get().heartBeat(new MySubscriber() {
+                    @Override
+                    protected void onSuccess(Object result) {
+
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        ChangeActivity.toActivity(QuickSetupActivity.this, LoginRxActivity.class, false, true, false, 0);
+                    }
+                });
+            }
+        };
+        heartBeanTimer.start(3000);
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -315,6 +343,13 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         }
         mBusinessMgr = null;
         pageName = "";
+        stopTimer();
+    }
+
+    private void stopTimer() {
+        if (heartBeanTimer != null) {
+            heartBeanTimer.stop();
+        }
     }
 
     class QSBroadcastReceiver extends BroadcastReceiver {
@@ -519,7 +554,10 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                         if (pop_reboot != null) {
                             pop_reboot.dismiss();
                         }
-                        ChangeActivity.toActivity(QuickSetupActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                        tvOk.postDelayed(() -> {
+                            ChangeActivity.toActivity(QuickSetupActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                        }, 1000);
+
                     }, 2000);// 延遲兩秒執行
                 });
 

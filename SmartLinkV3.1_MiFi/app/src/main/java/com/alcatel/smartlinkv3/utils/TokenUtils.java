@@ -1,5 +1,6 @@
 package com.alcatel.smartlinkv3.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
@@ -15,6 +16,9 @@ public class TokenUtils {
 
     /* 原始的token通过loginResult.getToken获取后进行加密后保存 */
     public static void setToken(String token) {
+        if (TextUtils.isEmpty(token)) {
+            token = "0";
+        }
         Log.v("ma_token", "token-encrypt-before: " + token);
         token = EncryptionUtil.encrypt(token);// 加密
         Log.v("ma_token", "token-encrypt-after: " + token);

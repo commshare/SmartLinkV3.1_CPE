@@ -33,6 +33,12 @@ import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.IDeviceChangeListener;
 import com.alcatel.smartlinkv3.mediaplayer.upnp.DMSDeviceBrocastFactory;
 import com.alcatel.smartlinkv3.mediaplayer.util.ThumbnailLoader;
+import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.Cons;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
+import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
+import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.MorePopWindow;
 import com.alcatel.smartlinkv3.ui.dialog.PinDialog;
@@ -45,6 +51,8 @@ import com.alcatel.smartlinkv3.ui.view.ViewSms;
 import com.alcatel.smartlinkv3.ui.view.ViewUsage;
 import com.alcatel.smartlinkv3.utils.ChangeActivity;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
+import com.alcatel.smartlinkv3.utils.TimerHelper;
+import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 
 import org.cybergarage.upnp.Device;
 
@@ -92,6 +100,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private AllShareProxy mAllShareProxy;
     private ThumbnailLoader thumbnailLoader;
     private static Device mDevice;
+    private TimerHelper loginStateTimer;
+    private TimerHelper heartBeatTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +153,55 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         thumbnailLoader = new ThumbnailLoader(this);
         showMicroView();
         OtherUtils.verifyPermisson(this);// 申請權限
+        loginStateTimer();// 登陸狀態定時器
+        heartbeatTimer();// 心跳定時器
     }
+
+    /**
+     * 心跳定時器
+     */
+    private void heartbeatTimer() {
+        heartBeatTimer = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                API.get().heartBeat(new MySubscriber() {
+                    @Override
+                    protected void onSuccess(Object result) {
+
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        ToastUtil_m.show(MainActivity.this, getString(R.string.login_kickoff_logout_successful));
+                        ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
+                    }
+                });
+            }
+        };
+        heartBeatTimer.start(3000);
+    }
+
+    /**
+     * 登陸狀態定時器
+     */
+    private void loginStateTimer() {
+        loginStateTimer = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                API.get().getLoginState(new MySubscriber<LoginState>() {
+                    @Override
+                    protected void onSuccess(LoginState result) {
+                        // 檢測發現登出--> 跳轉登陸介面
+                        if (result.getState() == Cons.LOGOUT) {
+                            ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
+                        }
+                    }
+                });
+            }
+        };
+        loginStateTimer.start(2000, 3000);
+    }
+
 
     @Override
     public void onResume() {
@@ -188,8 +246,21 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopTimer();
         destroyDialogs();
         destroyProxy();
+    }
+
+    /**
+     * 停止定時器
+     */
+    private void stopTimer() {
+        if (loginStateTimer != null) {
+            loginStateTimer.stop();
+        }
+        if (heartBeatTimer != null) {
+            heartBeatTimer.stop();
+        }
     }
 
     /**

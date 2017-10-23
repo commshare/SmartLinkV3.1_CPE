@@ -560,8 +560,8 @@
   </string>
 
     <string name="login_forgot_password">Password dimenticata?</string>
-    <string name="login_remenber_psd">Memorizza la password</string>
+    <string name="login_remenber_psd">Ricorda password</string>
     <string name="login_failed">Impossibile accedere</string>
-    <string name="logout_failed">Impossibile disconnettersi.</string>
+    <string name="logout_failed">Logout impossibile</string>
 
 </resources>

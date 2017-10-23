@@ -23,12 +23,14 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
+import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.ui.type.helper.WanModeHelper;
 import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
 import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
-import com.alcatel.wifilink.ui.type.helper.WanModeHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -75,6 +77,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     private int DELAY = 2000;
     private ActionBar actionbar;
     private ActionbarSetting actionbarSetting;
+    private TimerHelper heartBeatTimer;
 
 
     @Override
@@ -84,6 +87,44 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
         ButterKnife.bind(this);
         initView();
         initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        heartBeanTimer();// 心跳定时器
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    private void stopTimer() {
+        if (heartBeatTimer != null) {
+            heartBeatTimer.stop();
+        }
+    }
+
+    private void heartBeanTimer() {
+        heartBeatTimer = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                API.get().heartBeat(new MySubscriber() {
+                    @Override
+                    protected void onSuccess(Object result) {
+
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        ToastUtil_m.show(WanModeActivity.this, getString(R.string.login_logout_successful));
+                        ChangeActivity.toActivity(WanModeActivity.this, LoginActivity.class, false, true, false, 0);
+                    }
+                });
+            }
+        };
+        heartBeatTimer.start(2000);
     }
 
     private void initView() {
@@ -127,6 +168,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rv_connect:// 连接按钮
+                stopTimer();
                 connectToWan();
                 actionbarSetting.hideActionbar(actionbar);
                 break;
@@ -135,6 +177,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
                 initData();
                 break;
             case R.id.tv_toHome:// 跳到主页
+                stopTimer();
                 ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
         }
@@ -147,6 +190,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
                 ChangeActivity.toActivity(this, WifiGuideActivity.class, false, false, false, 0);
                 break;
             case R.id.ib_wanmode_back:// 回退按钮
+                stopTimer();
                 ChangeActivity.toActivity(this, WizardActivity.class, false, true, false, 0);
                 break;
         }

@@ -139,7 +139,7 @@
     <string name="device_manage_ip">IP:%1$s</string>
     <string name="device_manage_mac">MAC:%1$s</string>
     <string name="device_manage_set_name_failed">Réglez Échec!</string>
-	<string name="device_manage_name_empty">Le nom du dispositif n’est pas valide.</string>
+    <string name="device_manage_name_empty">Le nom du dispositif n’est pas valide.</string>
     <!-- connect device end -->
     <!-- microsd start -->
     <string name="microsd_file">Fichier</string>
@@ -511,7 +511,7 @@
         <item>MB</item>
         <item>GB</item>
     </string-array>
-	<string name="enable_sd_card">Enable SD card</string>
+    <string name="enable_sd_card">Enable SD card</string>
     <string name="sms_unread_num">(%1$d)</string>
     <string name="confirm_folder_replace">Confirmer remplacer</string>
     <string name="confirm_folder_content">Le nom du fichier existe déjà.</string>
@@ -549,19 +549,19 @@
     <string name="str_LTE">LTE</string>
     <string name="str_power_save_description">Tous les LED s’éteignent automatiquement lorsqu’il n’y a pas d’accès Wi-Fi ou de manipulation au delà de 30s.</string>
 
-  <string name="str_phone_number">Numéro de telephone:</string>
+    <string name="str_phone_number">Numéro de telephone:</string>
 
-  <string name="str_data_usage">La conso de données est approximative. Pour avoir la conso de données actuelle, veuillez contacter votre opérateur de réseau.</string>
-  <string name="str_4G_LTE">LTE 4G</string>
+    <string name="str_data_usage">La conso de données est approximative. Pour avoir la conso de données actuelle, veuillez contacter votre opérateur de réseau.</string>
+    <string name="str_4G_LTE">LTE 4G</string>
 
-  <string name="setting_wep_mode_array">
+    <string name="setting_wep_mode_array">
       <item>ouvrir</item>
       <item>partager</item>
   </string>
 
-    <string name="login_forgot_password">Mot de passe oublié ?</string>
-    <string name="login_remenber_psd">Mémoriser le mot de passe</string>
-    <string name="login_failed">Connexion impossible</string>
-    <string name="logout_failed">Déconnexion impossible.</string>
+    <string name="login_forgot_password">Mot de passe oublié?</string>
+    <string name="login_remenber_psd">Enregistrer mot de passe</string>
+    <string name="login_failed">Ne peut se connecter</string>
+    <string name="logout_failed">Ne peut se déconnecter</string>
 
 </resources>

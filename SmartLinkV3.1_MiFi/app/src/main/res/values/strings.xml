@@ -565,6 +565,6 @@
     <string name="login_forgot_password">Forgot password?</string>
     <string name="login_remenber_psd">Remember password</string>
     <string name="login_failed">Couldn\'t login</string>
-    <string name="logout_failed">Logout failed</string>
+    <string name="logout_failed">Couldn\'t logout</string>
 
 </resources>

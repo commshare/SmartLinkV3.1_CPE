@@ -559,9 +559,9 @@
       <item>udostępnij</item>
   </string>
 
-    <string name="login_forgot_password">Nie pamiętasz hasła?</string>
+    <string name="login_forgot_password">Zapomniałeś hasła?</string>
     <string name="login_remenber_psd">Zapamiętaj hasło</string>
-    <string name="login_failed">Nie można zalogować</string>
-    <string name="logout_failed">Nie można wylogować.</string>
+    <string name="login_failed">Nie można zalogować się</string>
+    <string name="logout_failed">Nie można wylogować się</string>
 
 </resources>

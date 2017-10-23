@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
@@ -19,6 +20,7 @@ import com.alcatel.wifilink.ui.bean.AcBean;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.wizard.allsetup.TypeBean;
+import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.EditUtils;
@@ -190,7 +192,14 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
                 isPinUnlock = true;
                 ToastUtil_m.show(SimUnlockActivity.this, getString(R.string.sim_unlocked_success));
                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_SIM));// SIM连接信号
-                ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+                // 判断是否进入过wifi setting向导
+                boolean wifiGuide = SharedPrefsUtil.getInstance(SimUnlockActivity.this).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
+                if (wifiGuide) {
+                    ChangeActivity.toActivity(SimUnlockActivity.this, HomeActivity.class, false, true, false, 0);
+                } else {
+                    ChangeActivity.toActivity(SimUnlockActivity.this, WifiGuideActivity.class, false, true, false, 0);
+                }
+
             }
 
             @Override

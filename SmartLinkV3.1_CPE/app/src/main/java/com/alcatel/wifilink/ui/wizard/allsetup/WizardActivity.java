@@ -7,12 +7,14 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
+import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.activity.PukUnlockActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -51,10 +53,26 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
         timerHelper = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                getStatus();
+                heartBeat();// 发送心跳--> 保持登陆
+                getStatus();// 获取状态
             }
         };
         timerHelper.start(2000);
+    }
+
+    private void heartBeat() {
+        API.get().heartBeat(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                ToastUtil_m.show(WizardActivity.this, getString(R.string.login_logout_successful));
+                ChangeActivity.toActivity(WizardActivity.this, LoginActivity.class, false, true, false, 0);
+            }
+        });
     }
 
     private void getStatus() {
@@ -182,7 +200,13 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
     @Override
     protected void onPause() {
         super.onPause();
-        timerHelper.stop();
+        stopTimer();
+    }
+
+    private void stopTimer() {
+        if (timerHelper != null) {
+            timerHelper.stop();
+        }
     }
 
     @Override

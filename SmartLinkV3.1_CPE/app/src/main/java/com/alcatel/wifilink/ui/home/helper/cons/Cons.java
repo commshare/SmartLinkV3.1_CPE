@@ -22,6 +22,10 @@ public class Cons {
 
     public static String CUSTOM_ID_1 = "E1";// 需要定制的版本customId
 
+    /* 标记 */
+    public static int FLAG_PPPOE = 0;
+    public static int FLAG_DHCP = 1;
+    public static int FLAG_STATIC_IP = 2;
 
     public static final int MAIN = 0;
     public static final int WIFI = 1;
@@ -158,13 +162,11 @@ public class Cons {
     public static final String WIFI_IS_OFF = "050502";
     public static final String WPS_IS_WORKING = "050503";
     public static final String GET_SYSTEM_STATUS_FAIL = "050503";
-    
+
     public static final int PIN_ENABLE_VERIFIED = 2;
-    
+
     public static final int AUTO = 0;
     public static final int MANUAL = 1;
-    
-    
 
 
 }
