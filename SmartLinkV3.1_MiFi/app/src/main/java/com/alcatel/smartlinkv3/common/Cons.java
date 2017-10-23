@@ -17,6 +17,7 @@ public class Cons {
     public static String DATA_PLAN_FLAG = "DATA_PLAN_FLAG";// 月流量向导标记
     public static String WAN_MODE_FLAG = "WAN_MODE_FLAG";// 连接向导标记
     public static String FIRST_RUN = "FIRST_RUN";// 连接向导标记
+    public static String QUICK_SETUP = "QUICK_SETUP";// 快速设置向导
 
     public static String CUSTOM_ID_1 = "E1";// 需要定制的版本customId
 
