@@ -77,6 +77,31 @@ public class LoginRxActivity extends BaseRxActivity {
             OtherUtils.clearAllTimer();
             OtherUtils.clearAllContext();
         }
+        // 检测是否已经登陆(本段code在20171023-3.3.4-之后才加入)
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                if (result.getState() == Cons.LOGIN) {
+                    OtherUtils.initBusiness();// 2.5.启动请求接口
+                    OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
+                    // 2.7.是否进入过快速设置
+                    Class clazz;
+                    if (!SPUtils.getInstance(LoginRxActivity.this).getBoolean(com.alcatel.smartlinkv3.common.Cons.QUICK_SETUP, false)) {
+                        clazz = QuickSetupActivity.class;
+                    } else {
+                        clazz = MainActivity.class;
+                    }
+
+                    ChangeActivity.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);// 跳转
+                    Logs.v("ma_login", "get loginstatus success onresume");
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+
+            }
+        });
     }
 
     @Override

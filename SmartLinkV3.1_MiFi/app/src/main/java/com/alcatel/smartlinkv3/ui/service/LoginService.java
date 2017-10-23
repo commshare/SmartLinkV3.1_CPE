@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.rx.tools.API;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.utils.AppInfo;
 import com.alcatel.smartlinkv3.utils.TimerHelper;
-import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class LoginService extends Service {
                         @Override
                         protected void onSuccess(Object result) {
                             // 彈出提示
-                            ToastUtil_m.show(LoginService.this, getString(R.string.login_logout_successful));
+                            // ToastUtil_m.show(LoginService.this, getString(R.string.login_logout_successful));
                             // 結束服務
                             stopService(intent);
                             // 停止定時器
