@@ -314,6 +314,7 @@ public class LoginRxActivity extends BaseRxActivity {
                 OtherUtils.setWifiActive(LoginRxActivity.this, false);
                 ChangeActivity.toActivity(LoginRxActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                 OtherUtils.hideProgressPop(pgd);
+                SPUtils.getInstance(LoginRxActivity.this).putBoolean(com.alcatel.smartlinkv3.common.Cons.QUICK_SETUP, true);
             }
 
             @Override
