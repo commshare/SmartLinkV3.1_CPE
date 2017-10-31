@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alcatel.smartlinkv3.rx.ui.GuideNActivity">
+
+    <!-- 界面 -->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_guiderx"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 轮播点 -->
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_guiderx_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_heightPercent="7%h" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

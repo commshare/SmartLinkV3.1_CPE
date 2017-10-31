@@ -161,7 +161,8 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
     }
 
     public void toActivity(Class clazz) {
-        ChangeActivity.toActivity(this, clazz, false, true, false, 0);
+        // ChangeActivity.toActivity(this, clazz, false, true, false, 0);
+        ChangeActivity.toActivityNormal(this, clazz, true, mLL, 0);
     }
 
 }

@@ -27,7 +27,7 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.DataConnectManager;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.common.CPEConfig;
-import com.alcatel.smartlinkv3.common.Cons;
+import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM.PinState;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
@@ -557,11 +557,12 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
                             pop_reboot.dismiss();
                         }
                         tvOk.postDelayed(() -> {
-                            SPUtils.getInstance(QuickSetupActivity.this).putBoolean(Cons.QUICK_SETUP, true);
+                            SPUtils.getInstance(QuickSetupActivity.this).putString(Conn.QUICK_SETUP, "true");
+                            // ShareperfrenceUtil.setSp(QuickSetupActivity.this, Conn.SP_FILENAME, Conn.QUICK_SETUP, true);
                             ChangeActivity.toActivity(QuickSetupActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                         }, 1000);
 
-                    }, 2000);// 延遲兩秒執行
+                    }, 1000);// 延遲兩秒執行
                 });
 
                 pop_reboot = new PopupWindows(QuickSetupActivity.this, inflate, w, h, new ColorDrawable(Color.TRANSPARENT));

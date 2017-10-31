@@ -6,13 +6,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.alcatel.smartlinkv3.business.system.SystemInfo;
-import com.alcatel.smartlinkv3.common.Cons;
+import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.common.HostnameUtils;
 import com.alcatel.smartlinkv3.rx.impl.download.DownloadProgressInterceptor;
 import com.alcatel.smartlinkv3.rx.impl.download.DownloadProgressListener;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginParams;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.impl.wlan.WlanResult;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.utils.EncryptionUtil;
 import com.alcatel.smartlinkv3.utils.FileUtils;
@@ -55,7 +56,7 @@ public class API {
     private static API api;
 
     private String token;
-    private int TIMEOUT = 30;
+    private int TIMEOUT = 20;
     public static String gateWay;
 
     public static final String SP_GLOBAL_INFO = "global_info";
@@ -151,7 +152,7 @@ public class API {
             String wifiGateWay = WifiUtils.getWifiGateWay(context);
             // String wifiIp = WifiUtils.getWifiIp(context);
             Log.d("ma_load", wifiGateWay);
-            String ip = Cons.IP_PRE + wifiGateWay + Cons.IP_SUFFIX;
+            String ip = Conn.IP_PRE + wifiGateWay + Conn.IP_SUFFIX;
             Log.d("ma_load", ip);
             /* referer */
             reqBuilder.addHeader("Referer", ip);
@@ -332,19 +333,19 @@ public class API {
     //     subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_STATE, state)));
     // }
     //
-    // /**
-    //  * get all wlan settings
-    //  *
-    //  * @param subscriber call back
-    //  */
-    // public void getWlanSettings(MySubscriber<WlanSettings> subscriber) {
-    //     subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
-    // }
-    //
-    // public void setWlanSettings(WlanSettings settings, MySubscriber subscriber) {
-    //     subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, settings)));
-    // }
-    //
+    /**
+     * get all wlan settings
+     *
+     * @param subscriber call back
+     */
+    public void getWlanSettings(MySubscriber<WlanResult> subscriber) {
+        subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
+    }
+
+    public void setWlanSettings(WlanResult wlanResult, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, wlanResult)));
+    }
+
     // public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber) {
     //     subscribe(subscriber, smartLinkApi.getWlanSupportMode(new RequestBody(Methods.GET_WLAN_SUPPORT_MODE)));
     // }
@@ -590,9 +591,9 @@ public class API {
         //
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<WlanState>> getWlanState(@Body RequestBody requestBody);
-        //
-        // @POST("/jrd/webapi")
-        // Observable<ResponseBody<WlanSettings>> getWlanSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanResult>> getWlanSettings(@Body RequestBody requestBody);
         //
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<WlanSupportAPMode>> getWlanSupportMode(@Body RequestBody requestBody);

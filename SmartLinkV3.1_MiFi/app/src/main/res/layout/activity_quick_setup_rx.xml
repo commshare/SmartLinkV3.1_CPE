@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.alcatel.smartlinkv3.rx.ui.QuickSetupRxActivity">
+
+    <!-- 顶部标题栏 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_title_background"
+        android:gravity="center"
+        android:text="@string/qs_title"
+        android:textColor="@color/white"
+        app:layout_heightPercent="9%h"
+        app:layout_textSizePercent="3%h" />
+
+    <!-- 中心分割线 -->
+    <View
+        android:id="@+id/v_split"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true" />
+
+    <!-- wifi name 输入框 -->
+    <EditText
+        android:id="@+id/et_wifiName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/v_split"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/quick_et_bg_selector"
+        android:maxLength="20"
+        android:padding="@dimen/dimen_5dip"
+        android:textColor="@color/main_title_background"
+        app:layout_heightPercent="5%h"
+        app:layout_textSizePercent="2.8%h"
+        app:layout_widthPercent="70%w" />
+
+    <!-- wifi name 描述 -->
+    <TextView
+        android:id="@+id/tv_wifiName_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/et_wifiName"
+        android:layout_alignLeft="@id/et_wifiName"
+        android:layout_alignStart="@id/et_wifiName"
+        android:gravity="center"
+        android:text="@string/qs_wifi_ssid"
+        android:textColor="@color/black"
+        app:layout_marginBottomPercent="3%h"
+        app:layout_textSizePercent="2.8%h" />
+
+    <!-- security mode 框 -->
+    <TextView
+        android:id="@+id/tv_wifiSecurityMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_wifiName_title"
+        android:layout_alignStart="@+id/tv_wifiName_title"
+        android:background="@drawable/quick_et_bg_checked"
+        android:drawableEnd="@drawable/connect"
+        android:drawableRight="@drawable/connect"
+        android:gravity="center_vertical|left|start"
+        android:paddingLeft="@dimen/dimen_5dip"
+        android:paddingRight="@dimen/dimen_10dip"
+        android:text="@string/setting_wifi_wep"
+        android:textColor="@color/main_title_background"
+        app:layout_heightPercent="5%h"
+        app:layout_marginBottomPercent="3%h"
+        app:layout_textSizePercent="2.8%h"
+        app:layout_widthPercent="70%w"
+        app:paddingEnd="@dimen/dimen_10dip"
+        app:paddingStart="@dimen/dimen_5dip" />
+
+    <!-- security mode 描述 -->
+    <TextView
+        android:id="@+id/tv_securityMode_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_wifiSecurityMode"
+        android:layout_alignLeft="@id/tv_wifiSecurityMode"
+        android:layout_alignStart="@id/tv_wifiSecurityMode"
+        android:text="@string/setting_wifi_password_security_tip"
+        android:textColor="@color/black"
+        app:layout_marginBottomPercent="3%h"
+        app:layout_textSizePercent="2.8%h" />
+
+    <!-- wifi password 描述 -->
+    <TextView
+        android:id="@+id/tv_wifiPsd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/et_wifiPsd"
+        android:layout_below="@+id/et_wifiName"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/qs_wifi_passwd"
+        android:textColor="@color/black"
+        app:layout_marginTopPercent="3%h"
+        app:layout_textSizePercent="2.8%h" />
+
+    <!-- wifi password 输入框 -->
+    <EditText
+        android:id="@+id/et_wifiPsd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_wifiPsd"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/quick_et_bg_selector"
+        android:paddingLeft="@dimen/dimen_5dip"
+        android:textColor="@color/main_title_background"
+        app:layout_heightPercent="5%h"
+        app:layout_marginTopPercent="3%h"
+        app:layout_textSizePercent="2.8%h"
+        app:layout_widthPercent="70%w" />
+
+    <!-- 完成按钮 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wifiFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        app:layout_heightPercent="9%h"
+        app:layout_widthPercent="30%w">
+
+        <ImageView
+            android:id="@+id/iv_wifiNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:rotation="180"
+            android:scaleType="fitXY"
+            android:src="@drawable/back_disable"
+            app:layout_heightPercent="50%h"
+            app:layout_marginRightPercent="30%h"
+            app:layout_widthPercent="30%h" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/iv_wifiNext"
+            android:layout_toStartOf="@id/iv_wifiNext"
+            android:text="@string/finish"
+            android:textColor="@color/black"
+            app:layout_marginRightPercent="30%h"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- securityMode 选项列表 -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_wifiSecurityMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_wifiSecurityMode"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rcv_bg"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layout_widthPercent="70%w" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

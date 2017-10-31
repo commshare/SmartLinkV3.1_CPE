@@ -9,6 +9,7 @@
     tools:context="com.alcatel.smartlinkv3.rx.ui.LoadingRxActivity">
 
     <ImageView
+        android:id="@+id/iv_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

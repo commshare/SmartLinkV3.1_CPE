@@ -33,6 +33,24 @@ public class OtherUtils {
     public static List<Activity> contexts = new ArrayList<>();
 
     /**
+     * 传入字符查找集合中对应的角标
+     *
+     * @param contents
+     * @param value
+     * @return
+     */
+    public static int getIndexByString(List<String> contents, String value) {
+        int position = -1;
+        for (int i = 0; i < contents.size(); i++) {
+            if (value.equalsIgnoreCase(contents.get(i))) {
+                position = i;
+                break;
+            }
+        }
+        return position;
+    }
+
+    /**
      * 初始化接口
      */
     public static void initBusiness() {

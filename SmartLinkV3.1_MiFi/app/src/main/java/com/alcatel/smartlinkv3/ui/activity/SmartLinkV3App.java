@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.alcatel.smartlinkv3.common.HostnameUtils;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 import org.cybergarage.upnp.ControlPoint;
 
@@ -33,14 +34,15 @@ public class SmartLinkV3App extends Application {
         // x.Ext.init(this);
         
         // 全局异常捕获
-        //CrashHandler crashHandler = CrashHandler.getInstance();
-        //crashHandler.init(getApplicationContext());
+        // CrashHandler crashHandler = CrashHandler.getInstance();
+        // crashHandler.init(getApplicationContext());
         
         // 初始化接口
         // BusinessMannager.getInstance();
         // NotificationService.startService();
         // HandlerUtils.replaceHandler();
         // mAllShareProxy = AllShareProxy.getInstance(this);
+        OtherUtils.initBusiness();
 
     }
 

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.view.View;
 
 /**
  * 作用:转场Activity
@@ -36,6 +37,49 @@ public class ChangeActivity {
      */
     public static String getJson(Intent intent) {
         return intent.getStringExtra("json");
+    }
+
+    /**
+     * 普通的跳转
+     *
+     * @param activity
+     * @param clazz
+     */
+    public static void toActivityNormal(Activity activity, Class clazz) {
+        activity.startActivity(new Intent(activity, clazz));
+    }
+
+    /**
+     * 普通的跳转
+     *
+     * @param activity
+     * @param clazz
+     * @param isFinish
+     */
+    public static void toActivityNormal(Activity activity, Class clazz, boolean isFinish) {
+        activity.startActivity(new Intent(activity, clazz));
+        if (isFinish) {
+            activity.finish();
+        }
+    }
+
+    /**
+     * 普通延时跳转
+     *
+     * @param activity
+     * @param clazz
+     * @param isFinish
+     * @param view
+     * @param delay
+     */
+    public static void toActivityNormal(Activity activity, Class clazz, boolean isFinish, View view, int delay) {
+        view.postDelayed(() -> {
+            Intent intent = new Intent(activity, clazz);
+            activity.startActivity(intent);
+            if (isFinish) {
+                activity.finish();
+            }
+        }, delay);
     }
 
     /**

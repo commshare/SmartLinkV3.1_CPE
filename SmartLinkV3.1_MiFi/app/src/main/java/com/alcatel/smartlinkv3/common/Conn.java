@@ -4,7 +4,7 @@ package com.alcatel.smartlinkv3.common;
  * Created by qianli.ma on 2017/6/19.
  */
 
-public class Cons {
+public class Conn {
 
     public static final int NEED_ENCRYPT = 1;// 1:表示要加密 0:不需要加密
     public static String IP_PRE = "http://";
@@ -17,6 +17,8 @@ public class Cons {
     public static String DATA_PLAN_FLAG = "DATA_PLAN_FLAG";// 月流量向导标记
     public static String WAN_MODE_FLAG = "WAN_MODE_FLAG";// 连接向导标记
     public static String FIRST_RUN = "FIRST_RUN";// 连接向导标记
+    public static String SP_FILENAME = "SP_FILENAME";// 临时文件
+    public static String GUIDE_FLAG = "GUIDE_FLAG";// 引导页标记
     public static String QUICK_SETUP = "QUICK_SETUP";// 快速设置向导
 
     public static String CUSTOM_ID_1 = "E1";// 需要定制的版本customId
@@ -26,6 +28,16 @@ public class Cons {
     public static final int WIFI = 1;
     public static final int SMS = 2;
     public static final int SETTING = 3;
+
+    public static final int disable = 0;
+    public static final int WEP = 1;
+    public static final int WPA = 2;
+    public static final int WPA2 = 3;
+    public static final int WPA_WPA2 = 4;
+
+    public static final int MODE_2P4G = 0;
+    public static final int MODE_5G = 1;
+    public static final int MODE_2P4G_5G = 2;
 
     public static String TYPE_SIM = "SIM";// 以SIM卡模式连接
     public static String TYPE_WAN = "WAN";// 以WAN模式连接
@@ -157,13 +169,11 @@ public class Cons {
     public static final String WIFI_IS_OFF = "050502";
     public static final String WPS_IS_WORKING = "050503";
     public static final String GET_SYSTEM_STATUS_FAIL = "050503";
-    
+
     public static final int PIN_ENABLE_VERIFIED = 2;
-    
+
     public static final int AUTO = 0;
     public static final int MANUAL = 1;
-    
-    
 
 
 }

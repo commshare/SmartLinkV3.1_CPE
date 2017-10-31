@@ -43,8 +43,6 @@ import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog;
 import com.alcatel.smartlinkv3.ui.dialog.CommonErrorInfoDialog.OnClickConfirmBotton;
 import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireApply;
-import com.alcatel.smartlinkv3.ui.dialog.InquireReplaceDialog.OnInquireCancle;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
 import com.alcatel.smartlinkv3.utils.TimerHelper;
 
@@ -197,7 +195,7 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
             m_encryptionPrompt.setText(R.string.setting_wifi_password_wep_encryption_tip);
             m_passwordPrompt.setText(R.string.setting_wifi_password_wep_psw_tip);
             WEPEncryption wepType;
-            if (is_2G == true)
+            if (is_2G)
                 wepType = BusinessMannager.getInstance().getWEPEncryption();
             else
                 wepType = BusinessMannager.getInstance().getWEPEncryption_5G();
@@ -212,7 +210,7 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
             m_encryptionPrompt.setText(R.string.setting_wifi_password_wpa_encryption_tip);
             m_passwordPrompt.setText(R.string.setting_wifi_password_wpa_psw_tip);
             WPAEncryption wpaType;
-            if (is_2G == true)
+            if (is_2G)
                 wpaType = BusinessMannager.getInstance().getWPAEncryption();
             else
                 wpaType = BusinessMannager.getInstance().getWPAEncryption_5G();
@@ -355,13 +353,13 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
                 onWifModeChanged();
                 break;
             case R.id.rb_5G_wifi:
-                // if (m_nPreWlanAPMode == WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ)) {
-                //     popInquireyDialog();
-                // }
-                // TOAT: 5G选项
-                if (m_nPreWlanAPMode == WlanFrequency.antiBuild(WlanFrequency.Frequency_5GHZ)) {
+                if (m_nPreWlanAPMode == WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ)) {
                     popInquireyDialog();
                 }
+                // TOAT: 5G选项
+                // if (m_nPreWlanAPMode == WlanFrequency.antiBuild(WlanFrequency.Frequency_5GHZ)) {
+                //     popInquireyDialog();
+                // }
                 break;
             case R.id.set_wifi_security_mode:
                 goToWifiSettingFragment();
@@ -389,27 +387,18 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
         inquireDlg.m_titleTextView.setText(R.string.dialog_change_to_5g);
         inquireDlg.m_contentTextView.setText(R.string.dialog_warning_5g);
         inquireDlg.m_confirmBtn.setText(R.string.continue_anyway);
-        inquireDlg.showDialog(new OnInquireApply() {
-
-            @Override
-            public void onInquireApply() {
-                onWifModeChanged();
-                inquireDlg.closeDialog();
+        inquireDlg.showDialog(() -> {// 确认按钮
+            onWifModeChanged();
+            inquireDlg.closeDialog();
+        }, () -> {// 取消按钮
+            if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nPreWlanAPMode) {
+                m_rb_2point4G_wifi.setChecked(true);
+                m_rb_5G_wifi.setChecked(false);
+            } else {
+                m_rb_2point4G_wifi.setChecked(false);
+                m_rb_5G_wifi.setChecked(true);
             }
-        }, new OnInquireCancle() {
-
-            @Override
-            public void onInquireCancel() {
-                if (WlanFrequency.antiBuild(WlanFrequency.Frequency_24GHZ) == m_nPreWlanAPMode) {
-                    m_rb_2point4G_wifi.setChecked(true);
-                    m_rb_5G_wifi.setChecked(false);
-                } else {
-                    m_rb_5G_wifi.setChecked(true);
-                    m_rb_2point4G_wifi.setChecked(false);
-                }
-                inquireDlg.closeDialog();
-            }
-
+            inquireDlg.closeDialog();
         });
     }
 

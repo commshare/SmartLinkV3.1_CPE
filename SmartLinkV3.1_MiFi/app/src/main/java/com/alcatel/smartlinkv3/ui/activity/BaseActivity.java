@@ -66,7 +66,7 @@ public abstract class BaseActivity extends Activity {
         this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_HEARTBEAT_REQUEST));
         this.registerReceiver(m_msgReceiver2, new IntentFilter(MessageUti.USER_COMMON_ERROR_32604_REQUEST));
 
-        showActivity(this);
+        // showActivity(this);
         if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
             backMainActivityOnResume(this);
         }
@@ -97,9 +97,10 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void onBroadcastReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-            showActivity(context);
-        } else if (intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
+        // if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
+        //     showActivity(context);
+        // } else 
+        if (intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
             int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {

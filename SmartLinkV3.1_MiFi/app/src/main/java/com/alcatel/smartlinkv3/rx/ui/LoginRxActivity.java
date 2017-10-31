@@ -15,6 +15,7 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.appwidget.PopupWindows;
 import com.alcatel.smartlinkv3.appwidget.RippleView;
 import com.alcatel.smartlinkv3.common.CPEConfig;
+import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
 import com.alcatel.smartlinkv3.rx.tools.API;
@@ -59,6 +60,7 @@ public class LoginRxActivity extends BaseRxActivity {
     private PopupWindows resetPop;// 重啟會話框
     private PopupWindows forcePop;// 強制登陸會話框
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,31 +79,6 @@ public class LoginRxActivity extends BaseRxActivity {
             OtherUtils.clearAllTimer();
             OtherUtils.clearAllContext();
         }
-        // 检测是否已经登陆(本段code在20171023-3.3.4-之后才加入)
-        API.get().getLoginState(new MySubscriber<LoginState>() {
-            @Override
-            protected void onSuccess(LoginState result) {
-                if (result.getState() == Cons.LOGIN) {
-                    OtherUtils.initBusiness();// 2.5.启动请求接口
-                    OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
-                    // 2.7.是否进入过快速设置
-                    Class clazz;
-                    if (!SPUtils.getInstance(LoginRxActivity.this).getBoolean(com.alcatel.smartlinkv3.common.Cons.QUICK_SETUP, false)) {
-                        clazz = QuickSetupActivity.class;
-                    } else {
-                        clazz = MainActivity.class;
-                    }
-
-                    ChangeActivity.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);// 跳转
-                    Logs.v("ma_login", "get loginstatus success onresume");
-                }
-            }
-
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-
-            }
-        });
     }
 
     @Override
@@ -180,23 +157,26 @@ public class LoginRxActivity extends BaseRxActivity {
                         @Override
                         protected void onSuccess(LoginResult result) {
                             Logs.v("ma_login", "login success");
+                            API.get().updateToken(result.getToken());
                             TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
                             API.get().getLoginState(new MySubscriber<LoginState>() {
                                 @Override
                                 protected void onSuccess(LoginState result) {
                                     if (result.getState() == Cons.LOGIN) {
-                                        OtherUtils.initBusiness();// 2.5.启动请求接口
+                                        //OtherUtils.initBusiness();// 2.5.启动请求接口
                                         OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
                                         // 2.7.是否进入过快速设置
-                                        Class clazz;
-                                        if (!SPUtils.getInstance(LoginRxActivity.this).getBoolean(com.alcatel.smartlinkv3.common.Cons.QUICK_SETUP, false)) {
-                                            clazz = QuickSetupActivity.class;
+                                        boolean quick = SPUtils.getInstance(LoginRxActivity.this).getBoolean(Conn.QUICK_SETUP, false);
+                                        if (quick) {
+                                            ChangeActivity.toActivityNormal(LoginRxActivity.this, MainActivity.class, true);
+                                            // ChangeActivity.toActivityNormal(LoginRxActivity.this, TestRxActivity.class, true);
                                         } else {
-                                            clazz = MainActivity.class;
+                                            ChangeActivity.toActivityNormal(LoginRxActivity.this, QuickSetupRxActivity.class, true);
                                         }
-
-                                        ChangeActivity.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);// 跳转
-                                        Logs.v("ma_login", "get loginstatus success");
+                                        
+                                        /* 测试跳转 */
+                                        // ChangeActivity.toActivityNormal(LoginRxActivity.this, QuickSetupRxActivity.class, 
+                                        // true);
                                     }
                                 }
 
@@ -225,6 +205,7 @@ public class LoginRxActivity extends BaseRxActivity {
 
                 @Override
                 public void onError(Throwable e) {
+                    System.out.println("ma login onError");
                     OtherUtils.hideProgressPop(pgd);
                     if (!OtherUtils.isWiFiActive(LoginRxActivity.this)) {
                         ToastUtil_m.show(LoginRxActivity.this, getString(R.string.no_wifi));
@@ -314,7 +295,7 @@ public class LoginRxActivity extends BaseRxActivity {
                 OtherUtils.setWifiActive(LoginRxActivity.this, false);
                 ChangeActivity.toActivity(LoginRxActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                 OtherUtils.hideProgressPop(pgd);
-                SPUtils.getInstance(LoginRxActivity.this).putBoolean(com.alcatel.smartlinkv3.common.Cons.QUICK_SETUP, true);
+                SPUtils.getInstance(LoginRxActivity.this).putBoolean(Conn.QUICK_SETUP, false);
             }
 
             @Override
@@ -401,7 +382,7 @@ public class LoginRxActivity extends BaseRxActivity {
                     @Override
                     protected void onSuccess(LoginResult result) {
                         TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
-                        OtherUtils.initBusiness();// 2.5.启动请求接口
+                        //OtherUtils.initBusiness();// 2.5.启动请求接口
                         OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
                         // 2.7.是否进入过快速设置
                         Class clazz = MainActivity.class;

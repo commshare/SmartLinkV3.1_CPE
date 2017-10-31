@@ -72,6 +72,7 @@ public class SPUtils {
         Editor sp = context.getSharedPreferences(SP_NAME, MODE).edit();
         sp.putString(key, value);
         sp.apply();
+        sp.commit();
     }
 
     public int getInt(String key, int defValue) {

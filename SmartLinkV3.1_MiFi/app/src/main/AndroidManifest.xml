@@ -66,21 +66,27 @@
             </intent-filter>
         </activity>
 
+        <!-- 新的引导页 -->
+        <activity
+            android:name=".rx.ui.GuideNActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
         <!-- 新的登陆页 -->
         <activity
-            android:launchMode="singleTask"
+            android:launchMode="standard"
             android:name=".rx.ui.LoginRxActivity"
             android:configChanges="locale|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-
-        <!-- 新的快速设置页 -->
         <activity
             android:name=".ui.activity.GuideActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity android:name=".rx.ui.TestRxActivity" />
 
         <!-- 後臺服務_監控APP是否還在執行,不執行則關閉 -->
         <service android:name=".ui.service.LoginService" />
@@ -293,6 +299,8 @@
         </receiver>
 
         <activity android:name=".ui.activity.TestActivity">
+        </activity>
+        <activity android:name=".rx.ui.QuickSetupRxActivity">
         </activity>
     </application>
 
