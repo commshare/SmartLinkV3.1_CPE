@@ -307,7 +307,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.connect_button:
-                connectBtnClick();
+                // connectBtnClick();
                 break;
             default:
                 break;
