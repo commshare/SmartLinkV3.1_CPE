@@ -308,6 +308,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         switch (v.getId()) {
             case R.id.connect_button:
                 // connectBtnClick();
+                connect();
                 break;
             default:
                 break;
@@ -524,40 +525,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                     public void onLoginFailed(String error_code) {
                         if (error_code.equalsIgnoreCase(ErrorCode.ERR_USER_OTHER_USER_LOGINED)) {
                             m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getOtherUserLoginString());
-                            //                            if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-                            //                                m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getOtherUserLoginString());
-                            //                            } else {
-                            //                                ForceLoginSelectDialog.getInstance(m_context).showDialog(m_context.getString(R.string.other_login_warning_title), m_context.getString(R.string.login_other_user_logined_error_forcelogin_msg),
-                            //                                        new OnClickBottonConfirm() {
-                            //                                            public void onConfirm() {
-                            //                                                m_ForceloginDlg.autoForceLoginAndShowDialog(new OnAutoForceLoginFinishedListener() {
-                            //                                                    public void onLoginSuccess() {
-                            //                                                        connect();
-                            //                                                    }
-                            //
-                            //                                                    public void onLoginFailed(String error_code) {
-                            //                                                        if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_USERNAME_OR_PASSWORD)) {
-                            //                                                            SmartLinkV3App.getInstance().setIsforcesLogin(true);
-                            //                                                            ErrorDialog.getInstance(m_context).showDialog(m_context.getString(R.string.login_psd_error_msg),
-                            //                                                                    new OnClickBtnRetry() {
-                            //                                                                        @Override
-                            //                                                                        public void onRetry() {
-                            //                                                                            m_loginDialog.showDialog(new OnLoginFinishedListener() {
-                            //                                                                                @Override
-                            //                                                                                public void onLoginFinished() {
-                            //                                                                                    connect();
-                            //                                                                                }
-                            //                                                                            });
-                            //                                                                        }
-                            //                                                                    });
-                            //                                                        } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_FORCE_LOGIN_TIMES_USED_OUT)) {
-                            //                                                            m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getLoginTimeUsedOutString());
-                            //                                                        }
-                            //                                                    }
-                            //                                                });
-                            //                                            }
-                            //                                        });
-                            //                            }
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_LOGIN_TIMES_USED_OUT)) {
                             m_loginDialog.getCommonErrorInfoDialog().showDialog(m_context.getString(R.string.other_login_warning_title), m_loginDialog.getLoginTimeUsedOutString());
                         } else if (error_code.equalsIgnoreCase(ErrorCode.ERR_USERNAME_OR_PASSWORD)) {
@@ -596,8 +563,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
             if (settings.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Enable && m_UsageRecordResult.MonthlyPlan > 0) {
                 if ((m_UsageRecordResult.HUseData + m_UsageRecordResult.RoamUseData) >= m_UsageRecordResult.MonthlyPlan) {
-                    //show warning dialog
-                    //m_connectWarningDialog.showDialog();
                     String msgRes = m_context.getString(R.string.home_usage_over_redial_message);
                     Toast.makeText(m_context, msgRes, Toast.LENGTH_LONG).show();
                     return;
