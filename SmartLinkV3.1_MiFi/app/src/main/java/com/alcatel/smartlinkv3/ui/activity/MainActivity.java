@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.activity;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -102,10 +103,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
     private static Device mDevice;
     private TimerHelper loginStateTimer;
     private TimerHelper heartBeatTimer;
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawable(null);
         this.getWindowManager().getDefaultDisplay().getMetrics(m_displayMetrics);
@@ -153,9 +156,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         thumbnailLoader = new ThumbnailLoader(this);
         showMicroView();
         OtherUtils.verifyPermisson(this);// 申請權限
+
         loginStateTimer();// 登陸狀態定時器
         heartbeatTimer();// 心跳定時器
     }
+
 
     /**
      * 心跳定時器
@@ -168,6 +173,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     @Override
                     protected void onSuccess(Object result) {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ChangeActivity.toActivity(MainActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                     }
 
                     @Override

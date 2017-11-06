@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.alcatel.smartlinkv3.rx.ui.SettingwifiRxActivity">
+
+    <!-- 1.BANNER -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wifisetting_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_title_background"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting_network_wifi_network_title"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_textSizePercent="32%h" />
+
+        <ImageView
+            android:id="@+id/iv_wifisetting_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="10%w"
+            app:layout_widthPercent="8%w" />
+
+        <TextView
+            android:id="@+id/tv_wifisetting_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/iv_wifisetting_back"
+            android:layout_toRightOf="@id/iv_wifisetting_back"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textDirection="locale"
+            app:layout_marginLeftPercent="3%w"
+            app:layout_textSizePercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_wifisetting_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:text="@string/done"
+            android:textColor="@color/white"
+            app:layout_marginRightPercent="3%w"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- 2.CHECKER -->
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/rl_checker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wifisetting_banner"
+        android:orientation="horizontal"
+        app:layout_heightPercent="9%h">
+
+        <!-- 2.4G -->
+        <TextView
+            android:id="@+id/tv_2p4_checker"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/setting_text_2point4G_wifi"
+            android:textColor="@color/main_title_background"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_textSizePercent="30%h" />
+
+        <!-- 分割线 -->
+        <View
+            android:id="@+id/v_split"
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray11"
+            android:visibility="gone"
+            app:layout_marginBottomPercent="20%h"
+            app:layout_marginTopPercent="20%h" />
+
+        <!-- 5G -->
+        <TextView
+            android:id="@+id/tv_5G_checker"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/setting_text_5G_wifi"
+            android:textColor="@color/gray"
+            android:visibility="gone"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <!-- 3.分割线 -->
+    <View
+        android:id="@+id/v_split2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/rl_checker"
+        android:background="@color/gray" />
+
+    <FrameLayout
+        android:id="@+id/fl_wifiInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/v_split2" />
+
+    <!-- 5.数据报错界面 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wifisetting_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_wifisetting_banner"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting_upgrade_no_connection"
+            android:textColor="@color/main_title_background"
+            android:textStyle="bold"
+            app:layout_textSizePercent="3.5%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- 6.等待 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wifisetting_wait"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_wifisetting_banner"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <com.ldoublem.loadingviewlib.view.LVCircularRing
+            android:id="@+id/lvc_wait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:layout_heightPercent="15%w"
+            app:layout_widthPercent="15%w" />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

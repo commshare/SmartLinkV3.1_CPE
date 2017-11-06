@@ -125,4 +125,6 @@
     <color name="blue_btn">#009AFF</color>
     <color name="pop_sim_text">#009AFF</color>
     
+    <color name="item_quick_bg">#f4f4f4</color>
+    
 </resources>

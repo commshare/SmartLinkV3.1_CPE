@@ -21,6 +21,10 @@ public class Conn {
     public static String GUIDE_FLAG = "GUIDE_FLAG";// 引导页标记
     public static String QUICK_SETUP = "QUICK_SETUP";// 快速设置向导
 
+    // wifi setting 界面security mode 缓存标记 
+    public static String SHARE_MODE_2P4 = "SECURITY_MODE_2P4";
+    public static String SHARE_MODE_5G = "SECURITY_MODE_5G";
+
     public static String CUSTOM_ID_1 = "E1";// 需要定制的版本customId
 
 
@@ -35,9 +39,17 @@ public class Conn {
     public static final int WPA2 = 3;
     public static final int WPA_WPA2 = 4;
 
+    public static final int ENCRYTION_TKIP = 0;
+    public static final int ENCRYTION_AES = 1;
+    public static final int ENCRYTION_AUTO = 2;
+
+
     public static final int MODE_2P4G = 0;
     public static final int MODE_5G = 1;
     public static final int MODE_2P4G_5G = 2;
+
+    public static final int WLANAPID_2P4G = 0;
+    public static final int WLANAPID_5G = 1;
 
     public static String TYPE_SIM = "SIM";// 以SIM卡模式连接
     public static String TYPE_WAN = "WAN";// 以WAN模式连接

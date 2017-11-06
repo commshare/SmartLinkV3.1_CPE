@@ -86,10 +86,8 @@ public class QuickSetupRxActivity extends BaseRxActivity {
                 // 显示进度条并读取固定安全策略数组
                 OtherUtils.hideProgressPop(pdg);
                 securityArray = Arrays.asList(getResources().getStringArray(R.array.wlan_settings_security));
-                // 获取wlan mode (2.4G或者5G或者2.4+5G)
-                int wlanAPMode = result.getWlanAPMode();
                 // 根据wlan mode选定模式集合元素(默认选中第一个元素)
-                apBean = result.getAPList().get(0);
+                apBean = matchAPID(result);
                 // 获取security mode (WPA或者WEP)
                 securityMode_default = apBean.getSecurityMode();
                 String securitymode = securityArray.get(securityMode_default - 1);
@@ -120,6 +118,23 @@ public class QuickSetupRxActivity extends BaseRxActivity {
                 ChangeActivity.toActivity(context, RefreshWifiActivity.class, false, true, false, 0);
             }
         });
+    }
+
+    /**
+     * 匹配WLAN AP ID--> 找出对应模式的apbean
+     *
+     * @param result
+     * @return 对应模式的apbean
+     */
+    public WlanResult.APListBean matchAPID(WlanResult result) {
+
+        int wlanAPMode = result.getWlanAPMode();
+        for (WlanResult.APListBean apListBean : result.getAPList()) {
+            if (apListBean.getWlanAPID() == wlanAPMode) {
+                return apListBean;
+            }
+        }
+        return result.getAPList().get(0);
     }
 
     /**

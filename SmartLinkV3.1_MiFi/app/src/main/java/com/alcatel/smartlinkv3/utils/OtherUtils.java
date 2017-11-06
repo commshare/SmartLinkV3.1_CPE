@@ -11,16 +11,21 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.v4.app.ActivityCompat;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.business.BusinessMannager;
+import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.common.NotificationService;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.smartlinkv3.rx.bean.PsdRuleBean;
+import com.alcatel.smartlinkv3.rx.impl.wlan.WlanResult;
 import com.alcatel.smartlinkv3.ui.activity.HandlerUtils;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,6 +36,109 @@ public class OtherUtils {
 
     public static List<Object> timerList = new ArrayList<>();
     public static List<Activity> contexts = new ArrayList<>();
+
+    /**
+     * 隐藏软键盘
+     */
+    public static void hideKeyBoard(Activity context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(context.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * 显示软键盘
+     */
+    public static void showKeyBoard(Activity context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInputFromInputMethod(context.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * 判断密码规则并返回各AP的状态
+     *
+     * @param aps
+     * @return AP状态集合
+     */
+    public static List<PsdRuleBean> checkPsdRule(WlanResult.APListBean... aps) {
+        List<PsdRuleBean> psdRules = new ArrayList<>();
+        for (WlanResult.APListBean ap : aps) {
+            PsdRuleBean psdRuleBean = new PsdRuleBean();
+            if (ap != null) {
+                int wlanAPID = ap.getWlanAPID();// 2.4G|5G
+                psdRuleBean.setWlanID(wlanAPID);
+                int securityMode = ap.getSecurityMode();// WEP | WPA
+                psdRuleBean.setSecurityMode(securityMode);
+                if (securityMode == Conn.WEP) {
+                    psdRuleBean.setMatchWep(WepPsdHelper.psdMatch(ap.getWepKey()));
+                } else {
+                    psdRuleBean.setMatchWpa(ap.getWpaKey().length() >= 8 & ap.getWpaKey().length() <= 63);
+                }
+            }
+            psdRules.add(psdRuleBean);
+        }
+        return psdRules;
+    }
+
+    /**
+     * 获取wlan模式类型(WEP WPA WPA2 WPA/WPA2)
+     *
+     * @param context
+     * @return
+     */
+    public static List<String> getSecurityArrWithoutDisable(Context context) {
+        List<String> securityList = new ArrayList<>();
+        String[] stringArray = context.getResources().getStringArray(R.array.wlan_settings_security);
+        Collections.addAll(securityList, stringArray);
+        return securityList;
+    }
+
+    /**
+     * 获取wlan模式类型(WEP WPA WPA2 WPA/WPA2)
+     *
+     * @param context
+     * @return
+     */
+    public static List<String> getSecurityArr(Context context) {
+        List<String> securityList = new ArrayList<>();
+        String[] stringArray = context.getResources().getStringArray(R.array.wlan_settings_security);
+        Collections.addAll(securityList, stringArray);
+        securityList.add(0, "disable");// 由于配置数组中不包含disable,为方便代码操作,故添加一个disable元素,但不使用
+        return securityList;
+    }
+
+    /**
+     * 获取WEP模式下的可选数组(open share)
+     *
+     * @param context
+     * @return
+     */
+    public static List<String> getWepArr(Context context) {
+        List<String> wepList = new ArrayList<>();
+        String[] stringArray = context.getResources().getStringArray(R.array.setting_wep_mode_array);
+        Collections.addAll(wepList, stringArray);
+        return wepList;
+    }
+
+    /**
+     * 获取WPA模式下的可选数组(TKIP AES AUTO)
+     *
+     * @param context
+     * @return
+     */
+    public static List<String> getWpaArr(Context context) {
+        String tkip = context.getString(R.string.setting_wifi_tkip);
+        String aes = context.getString(R.string.setting_wifi_aes);
+        String auto = context.getString(R.string.setting_network_mode_auto);
+        List<String> wpaArr = new ArrayList<String>();
+        wpaArr.add(tkip);
+        wpaArr.add(aes);
+        wpaArr.add(auto);
+        return wpaArr;
+    }
 
     /**
      * 传入字符查找集合中对应的角标

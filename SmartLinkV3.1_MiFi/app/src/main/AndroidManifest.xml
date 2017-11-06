@@ -75,9 +75,9 @@
 
         <!-- 新的登陆页 -->
         <activity
-            android:launchMode="standard"
             android:name=".rx.ui.LoginRxActivity"
             android:configChanges="locale|orientation|keyboardHidden|screenSize"
+            android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
@@ -301,6 +301,8 @@
         <activity android:name=".ui.activity.TestActivity">
         </activity>
         <activity android:name=".rx.ui.QuickSetupRxActivity">
+        </activity>
+        <activity android:name=".rx.ui.SettingwifiRxActivity">
         </activity>
     </application>
 

@@ -199,5 +199,10 @@ public class WlanResult {
         public void setWpaType(int WpaType) {
             this.WpaType = WpaType;
         }
+
+        @Override
+        public String toString() {
+            return "APListBean{" + "ApIsolation=" + ApIsolation + ", ApStatus=" + ApStatus + ", Bandwidth=" + Bandwidth + ", Channel=" + Channel + ", CountryCode='" + CountryCode + '\'' + ", CurChannel=" + CurChannel + ", curr_num=" + curr_num + ", max_numsta=" + max_numsta + ", SecurityMode=" + SecurityMode + ", Ssid='" + Ssid + '\'' + ", SsidHidden=" + SsidHidden + ", WepKey='" + WepKey + '\'' + ", WepType=" + WepType + ", WlanAPID=" + WlanAPID + ", WMode=" + WMode + ", WpaKey='" + WpaKey + '\'' + ", WpaType=" + WpaType + '}';
+        }
     }
 }

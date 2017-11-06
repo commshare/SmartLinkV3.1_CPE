@@ -214,7 +214,8 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtil_m.show(SettingAccountActivity.this, getString(R.string.setting_upgrade_no_connection));
+                ChangeActivity.toActivity(SettingAccountActivity.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override

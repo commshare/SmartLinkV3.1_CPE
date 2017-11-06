@@ -61,7 +61,6 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
             public void doSomething() {
                 // 檢查wifi是否連接
                 boolean wiFiActive = OtherUtils.isWiFiActive(RefreshWifiActivity.this);
-                System.out.println("wifiActivit:" + wiFiActive);
                 if (wiFiActive) {// 檢查是否連接上設備
                     API.get().getLoginState(new MySubscriber<LoginState>() {
                         @Override
@@ -125,11 +124,6 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
     private class MsgBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-            //     showUI();
-            //     showActivity(context);
-            //     Log.d("refreshsd", "showActivity");
-            // } else 
             if (intent.getAction().equals(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET)) {
                 showUI();
             }
@@ -137,7 +131,7 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
     }
 
     private boolean isHaveWifi() {
-        if (DataConnectManager.getInstance().getWifiConnected() == false) {
+        if (!DataConnectManager.getInstance().getWifiConnected()) {
             return false;
         }
 
@@ -145,7 +139,7 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
     }
 
     public boolean isNoAnyConnection() {
-        if (isHaveWifi() == false) {
+        if (!isHaveWifi()) {
             return true;
         }
 
@@ -153,7 +147,7 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
     }
 
     private void showUI() {
-        if (isNoAnyConnection() == true) {
+        if (isNoAnyConnection()) {
             m_connectImage.setBackgroundResource(R.drawable.no_connection);
             m_connectTitle.setText(R.string.refresh_wifi_title);
             m_connectTip.setText(R.string.refresh_wifi_tip);
@@ -210,10 +204,17 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
         m_msgReceiver = new MsgBroadcastReceiver();
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.CPE_WIFI_CONNECT_CHANGE));
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET));
-        showActivity(this);
+        // showActivity(this);
         showUI();
         System.out.println("onResume");
         loginStateTimer();// 設備連接定時器
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        OtherUtils.clearAllContext();
+        finish();
     }
 
     @Override

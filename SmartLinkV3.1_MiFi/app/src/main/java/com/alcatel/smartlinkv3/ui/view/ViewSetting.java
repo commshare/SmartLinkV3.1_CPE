@@ -22,6 +22,7 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.ui.SettingwifiRxActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
@@ -30,7 +31,6 @@ import com.alcatel.smartlinkv3.ui.activity.SettingNewAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
-import com.alcatel.smartlinkv3.ui.activity.SettingWifiActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +55,6 @@ public class ViewSetting extends BaseViewImpl {
     boolean isFtpSupported = false;
     boolean isDlnaSupported = false;
     private boolean isSharingSupported = false;
-    //Previous upgrade setting was 3, device was 4, about was 5, power was 1, backup was 2.
-    //	private final int ITEM_UPGRADE_SETTING = 5;
-    //	private final int ITEM_POWER_SETTING = 6;
-    //	private final int ITEM_BACKUP_SETTING = 7;
     private ListView m_lvSettingListView = null;
     private UprgadeAdapter adapter;
     private List<SettingItem> list;
@@ -199,7 +195,8 @@ public class ViewSetting extends BaseViewImpl {
 
     private void goToWifiSettingPage() {
         // 跳转到wifi设置界面
-        Intent intent = new Intent(m_context, SettingWifiActivity.class);
+        // Intent intent = new Intent(m_context, SettingWifiActivity.class);
+        Intent intent = new Intent(m_context, SettingwifiRxActivity.class);
         m_context.startActivity(intent);
     }
 
