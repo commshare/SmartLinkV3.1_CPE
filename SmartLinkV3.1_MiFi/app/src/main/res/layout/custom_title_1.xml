@@ -1,101 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/ib_title_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:background="@color/color_transparent"
-        android:contentDescription="@string/back"
-        android:src="@drawable/back" />
-
-    <TextView
-        android:id="@+id/tv_title_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="2dp"
-        android:layout_toEndOf="@id/ib_title_back"
-        android:gravity="center"
-        android:text="@string/back"
-        android:textColor="@color/color_white"
-        android:textSize="16sp" />
-    <FrameLayout
-        android:id="@+id/fl_edit_or_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/tv_titlebar_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/setting_titlebar_text_edit"
-            android:textColor="@color/color_white"
-            android:textSize="16sp" />
-        
-        <TextView
-            android:id="@+id/tv_titlebar_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/setting_titlebar_text_done"
-            android:textColor="@color/color_white"
-            android:textSize="16sp"
-            android:visibility="gone" />
-    </FrameLayout>
-    
-    <LinearLayout
-        android:id="@+id/fl_add_and_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:orientation="horizontal"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/tv_titlebar_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/actionbar_plus_icon"
-            android:text="        " />
-        
-        <TextView
-            android:id="@+id/tv_titlebar_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:text="        " 
-            android:background="@drawable/btn_delete"/>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_title_title"
+    <!-- 内容 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingStart="20dp"
-        android:gravity="center"
-        android:text="@string/setting_wifi"
-        android:textColor="@color/color_white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-    
+        android:background="@color/main_title_background"
+        app:layout_heightPercent="9%h">
 
-</RelativeLayout>
+        <!-- 1.back iv -->
+        <ImageButton
+            android:id="@+id/ib_title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/color_transparent"
+            android:contentDescription="@string/back"
+            android:scaleType="fitXY"
+            android:src="@drawable/back"
+            app:layout_heightPercent="9%w"
+            app:layout_marginLeftPercent="3%w"
+            app:layout_widthPercent="4.5%w" />
+
+        <!-- 2.back tv -->
+        <TextView
+            android:id="@+id/tv_title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="2dp"
+            android:layout_toEndOf="@id/ib_title_back"
+            android:gravity="center"
+            android:text="@string/back"
+            android:textColor="@color/color_white"
+            app:layout_textSizePercent="35%h" />
+
+        <!-- 3.title -->
+        <TextView
+            android:id="@+id/tv_title_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/setting_wifi"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            app:layout_textSizePercent="35%h" />
+
+        <!-- 4.done & edit -->
+        <com.zhy.android.percent.support.PercentFrameLayout
+            android:id="@+id/fl_edit_or_done"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                app:layout_paddingRightPercent="3%w">
+
+                <!-- edit -->
+                <TextView
+                    android:id="@+id/tv_titlebar_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/setting_titlebar_text_edit"
+                    android:textColor="@color/color_white"
+                    app:layout_textSizePercent="35%h" />
+
+                <!-- done -->
+                <TextView
+                    android:id="@+id/tv_titlebar_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/setting_titlebar_text_done"
+                    android:textColor="@color/color_white"
+                    android:visibility="gone"
+                    app:layout_textSizePercent="35%h" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+        </com.zhy.android.percent.support.PercentFrameLayout>
+
+        <!-- 5.add & deleted -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:id="@+id/fl_add_and_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- deleted -->
+                <TextView
+                    android:id="@+id/tv_titlebar_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_delete"
+                    app:layout_heightPercent="70%h"
+                    app:layout_marginRightPercent="2%w"
+                    app:layout_widthPercent="70%h" />
+
+                <!-- add -->
+                <TextView
+                    android:id="@+id/tv_titlebar_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/tv_titlebar_delete"
+                    android:background="@drawable/actionbar_plus_icon"
+                    app:layout_heightPercent="70%h"
+                    app:layout_marginRightPercent="3%w"
+                    app:layout_widthPercent="70%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+        </com.zhy.android.percent.support.PercentLinearLayout>
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

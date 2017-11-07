@@ -105,7 +105,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
     private ImageView m_accessImageView;
     private RelativeLayout m_accessDeviceLayout;
     //private ArrayList<ConnectedDeviceItemModel> m_connecedDeviceLstData = new ArrayList<ConnectedDeviceItemModel>();
-	/*access_panel  end*/
+                /*access_panel  end*/
 
     private LoginDialog m_loginDialog = null;
     private AutoLoginProgressDialog m_autoLoginDialog = null;
@@ -135,7 +135,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                     showSignalAndNetworkType();
                     showNetworkState();
                     showConnctBtnView();
-                    //updateBtnState();
                 }
             }
 
@@ -147,9 +146,6 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                     resetConnectBtnFlag();
                     showNetworkState();
                     showConnctBtnView();
-                    //showTotalDataUI();
-                    //updateStatisticsUI();
-                    //updateBtnState();
                 }
             }
 
@@ -615,23 +611,26 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 return;
             }
             //show roaming
-            if (curNetwork.m_bRoaming == true)
+            if (curNetwork.m_bRoaming) {
                 m_networkRoamImageView.setVisibility(View.VISIBLE);
-            else
+            } else {
                 m_networkRoamImageView.setVisibility(View.GONE);
+            }
+
             //show signal strength
-            if (curNetwork.m_signalStrength == SignalStrength.Level_0)
+            if (curNetwork.m_signalStrength == SignalStrength.Level_0) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_0);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_1)
+            } else if (curNetwork.m_signalStrength == SignalStrength.Level_1) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_1);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_2)
+            } else if (curNetwork.m_signalStrength == SignalStrength.Level_2) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_2);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_3)
+            } else if (curNetwork.m_signalStrength == SignalStrength.Level_3) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_3);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_4)
+            } else if (curNetwork.m_signalStrength == SignalStrength.Level_4) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
-            if (curNetwork.m_signalStrength == SignalStrength.Level_5)
+            } else if (curNetwork.m_signalStrength == SignalStrength.Level_5) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
+            }
             //show network type
             if (curNetwork.m_NetworkType == NetworkType.UNKNOWN) {
                 m_networkTypeTextView.setVisibility(View.GONE);

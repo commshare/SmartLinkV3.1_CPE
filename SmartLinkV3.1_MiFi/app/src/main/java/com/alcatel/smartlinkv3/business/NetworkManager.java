@@ -1,8 +1,9 @@
 package com.alcatel.smartlinkv3.business;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.util.Log;
 
 import com.alcatel.smartlinkv3.business.model.NetworkInfoModel;
 import com.alcatel.smartlinkv3.business.model.SimStatusModel;
@@ -18,27 +19,16 @@ import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkI
 import com.alcatel.smartlinkv3.business.network.HttpSearchNetworkResult.NetworkItemList;
 import com.alcatel.smartlinkv3.business.network.HttpSetNetworkSettings;
 import com.alcatel.smartlinkv3.business.network.NetworkInfoResult;
-import com.alcatel.smartlinkv3.business.sim.AutoEnterPinStateResult;
-import com.alcatel.smartlinkv3.business.sim.HttpAutoEnterPinState;
-import com.alcatel.smartlinkv3.business.sim.HttpChangePinAndState;
-import com.alcatel.smartlinkv3.business.sim.HttpGetSimStatus;
-import com.alcatel.smartlinkv3.business.sim.HttpUnlockPinPuk;
-import com.alcatel.smartlinkv3.business.sim.SIMStatusResult;
-import com.alcatel.smartlinkv3.business.user.HttpUser;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.ENUM;
-import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
-import com.alcatel.smartlinkv3.common.ENUM.AutoPinState;
-import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager;
 import com.alcatel.smartlinkv3.httpservice.HttpRequestManager.IHttpFinishListener;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.util.Log;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NetworkManager extends BaseManager {
 	private NetworkInfoModel m_networkInfo = new NetworkInfoModel();
@@ -128,7 +118,7 @@ public class NetworkManager extends BaseManager {
 			return;
 		if(m_getNetworkInfoTask == null) {
 			m_getNetworkInfoTask = new GetNetworkInfoTask();
-			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_getNetworkInfoTask, 0, 10 * 1000);
+			m_getNetworkInfoRollTimer.scheduleAtFixedRate(m_getNetworkInfoTask, 0, 3 * 1000);
 		}
 	}
 	

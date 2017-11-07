@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +30,7 @@ import com.alcatel.smartlinkv3.common.ENUM.ConnectionStatus;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 import java.util.List;
 import java.util.Stack;
@@ -56,7 +56,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     public final String TAG_AUTH_TYPE = "auth_type";
     public final String TAG_DAIL_NUMBER = "dial_number";
     public final String TAG_IP_ADDRESS = "ip_address";
-//////////////////////////////profile tags end/////////////////////////////////
+    //////////////////////////////profile tags end/////////////////////////////////
 
     private FragmentNetworkSelection m_fragment_network_selection = null;
     private FragmentProfileManagement m_fragment_profile_management = null;
@@ -113,15 +113,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        getWindow().setBackgroundDrawable(null);
+        OtherUtils.contexts.add(this);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting_network);
-        getWindow().setBackgroundDrawable(null);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
-
         controlTitlebar();
         initUi();
     }
@@ -182,10 +177,10 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         m_tv_done.setVisibility(View.VISIBLE);
         m_tv_done.setOnClickListener(this);
 
-        m_fragment_tag_stack = new Stack<String>();
+        m_fragment_tag_stack = new Stack<>();
 
-        m_fragment_network_selection = new FragmentNetworkSelection();
-        m_fragment_profile_management = new FragmentProfileManagement();
+        m_fragment_network_selection = new FragmentNetworkSelection();// TOAT: selection
+        m_fragment_profile_management = new FragmentProfileManagement();// TOAT: ProfileManagement
         m_fragment_profile_management_detail = new FragmentProfileManagementDetail();
 
 
@@ -199,43 +194,24 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         mode_3g_only = (RadioButton) findViewById(R.id.mode_3g);
         mode_lte_only = (RadioButton) findViewById(R.id.mode_lte);
 
-        m_network_mode_radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
-
-                switch (checkedId) {
-                    case R.id.mode_auto:
-                        UserSetNetworkMode(MODE_AUTO);
-                        break;
-                    case R.id.mode_2g:
-                        UserSetNetworkMode(MODE_2G_ONLY);
-                        break;
-                    case R.id.mode_3g:
-                        UserSetNetworkMode(MODE_3G_ONLY);
-                        break;
-                    case R.id.mode_lte:
-                        UserSetNetworkMode(MODE_LTE_ONLY);
-                        break;
-                    default:
-                        break;
-                }
+        m_network_mode_radiogroup.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.mode_auto:
+                    UserSetNetworkMode(MODE_AUTO);
+                    break;
+                case R.id.mode_2g:
+                    UserSetNetworkMode(MODE_2G_ONLY);
+                    break;
+                case R.id.mode_3g:
+                    UserSetNetworkMode(MODE_3G_ONLY);
+                    break;
+                case R.id.mode_lte:
+                    UserSetNetworkMode(MODE_LTE_ONLY);
+                    break;
+                default:
+                    break;
             }
-
         });
-
-//		refresButton();
-
-
-    }
-
-    public void showFragmentNetworkSelection() {
-        showFragment(m_fragment_network_selection, TAG_FRAGMENT_NETWORK_SELECTION);
-    }
-
-    public void showFragmentProfileManagement() {
-        showFragment(m_fragment_profile_management, TAG_FRAGMENT_PROFILE_MANAGEMENT);
     }
 
     public void showFragmentProfileManagementDetail(Bundle data) {
@@ -250,15 +226,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         m_edit_or_done_container.setVisibility(View.VISIBLE);
     }
 
-    public void showAddFragmentProfileManagementDetail() {
-
-        Bundle dataBundle = new Bundle();
-        dataBundle.putString(TAG_OPERATION, TAG_OPERATION_ADD_PROFILE);
-        m_fragment_profile_management_detail.setArguments(dataBundle);
-        showFragment(m_fragment_profile_management_detail, TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL);
-        m_edit_or_done_container.setVisibility(View.VISIBLE);
-    }
-
     private void showFragment(Fragment menu, String fragmentTag) {
         addToFragmentTagStack(fragmentTag);
         m_level_one_menu.setVisibility(View.GONE);
@@ -267,14 +234,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         m_transaction.replace(R.id.setting_network_content, menu, fragmentTag);
         m_transaction.addToBackStack(null);
         m_transaction.commit();
-    }
-
-    public FragmentManager getSettingNetworkFragmentManager() {
-        return m_fragment_manager;
-    }
-
-    public String getCurrentFragmentTag() {
-        return m_fragment_tag_stack.peek();
     }
 
     public void addToFragmentTagStack(String fragmentTag) {
@@ -296,20 +255,16 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         int nID = v.getId();
         ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
         switch (nID) {
             case R.id.tv_title_back:
             case R.id.ib_title_back:
+                System.out.println("ma_network: click back");
                 this.onBackPressed();
                 break;
             case R.id.network_mode:
                 addToFragmentTagStack(TAG_FRAGMENT_NETWORK_MODE);
-
-//			showFragment(m_fragment_network_mode, TAG_FRAGMENT_NETWORK_MODE);
-//			BusinessMannager.getInstance().getProfileManager().startAddNewProfile(null);
-//			BusinessMannager.getInstance().getProfileManager().startDeleteProfile(null);
                 if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected)
                     m_network_mode_radiogroup.setVisibility(View.VISIBLE);
                 else if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
@@ -357,7 +312,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 if (m_fragment_tag_stack.size() > 0) {
                     Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
                 }
-//			setAddAndDeleteVisibility(View.GONE);
                 Bundle dataBundle = new Bundle();
                 dataBundle.putString(TAG_OPERATION, TAG_OPERATION_ADD_PROFILE);
                 showFragmentProfileManagementDetail(dataBundle);
@@ -377,8 +331,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                     String FragmentTag = m_fragment_tag_stack.peek();
                     if (FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT_DETAIL)) {
                         m_fragment_profile_management_detail.AddOrDeleteProfile();
-//					Log.v("AddOrEditProfile", "TEST");
-//					this.onBackPressed();
                     }
                     if (FragmentTag.equals(TAG_FRAGMENT_PROFILE_MANAGEMENT)) {
                         m_edit_or_done_container.setVisibility(View.INVISIBLE);
@@ -413,7 +365,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     @Override
     public void onBackPressed() {
 
-        String FragmentTag = " ";
+        String FragmentTag = "";
         if (!m_fragment_tag_stack.isEmpty()) {
             FragmentTag = m_fragment_tag_stack.peek();
             if (FragmentTag.equals(TAG_FRAGMENT_NETWORK_MODE)) {
@@ -442,12 +394,13 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 changeTitlebar(R.string.setting_network_profile_management_profile_detail);
                 setAddAndDeleteVisibility(View.GONE);
             } else if (FragmentTag.equals(TAG_FRAGMENT_NETWORK_MODE)) {
+                System.out.println("ma_network: TAG_FRAGMENT_NETWORK_MODE");
                 changeTitlebar(R.string.setting_network_mode);
+                m_level_one_menu.setVisibility(View.VISIBLE);
                 setAddAndDeleteVisibility(View.GONE);
             }
         } else {
             m_level_one_menu.setVisibility(View.VISIBLE);
-
             changeTitlebar(R.string.setting_network);
             setAddAndDeleteVisibility(View.GONE);
         }
@@ -457,8 +410,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     private void UserGetNetworkSetting() {
         registerReceiver(m_network_setting_receiver, m_get_network_setting_filter);
         registerReceiver(m_network_setting_receiver, m_set_network_setting_filter);
-        BusinessMannager.getInstance().sendRequestMessage(
-                MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
+        BusinessMannager.getInstance().sendRequestMessage(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
         m_waiting_circle.setVisibility(View.VISIBLE);
         m_network_mode_container.setEnabled(false);
         m_network_selection_container.setEnabled(false);
@@ -469,39 +421,12 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
         return m_delete_menu;
     }
 
-
-    private void refresButton() {
-        switch (BusinessMannager.getInstance().getNetworkManager().getNetworkMode()) {
-            case MODE_AUTO:
-                mode_auto.setChecked(true);
-
-                break;
-            case MODE_2G_ONLY:
-
-                mode_2g_only.setChecked(true);
-
-                break;
-            case MODE_3G_ONLY:
-
-                mode_3g_only.setChecked(true);
-
-                break;
-            case MODE_LTE_ONLY:
-
-                mode_lte_only.setChecked(true);
-                break;
-            default:
-                break;
-        }
-    }
-
     private void UserSetNetworkMode(final int mode) {
         if (BusinessMannager.getInstance().getNetworkManager().getNetworkSelection() != MODE_ERROR) {
             DataValue data = new DataValue();
             data.addParam("network_mode", mode);
             data.addParam("netselection_mode", BusinessMannager.getInstance().getNetworkManager().getNetworkSelection());
-            BusinessMannager.getInstance().sendRequestMessage(
-                    MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
+            BusinessMannager.getInstance().sendRequestMessage(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
         }
         m_network_mode_radiogroup.setVisibility(View.GONE);
         m_waiting_circle.setVisibility(View.VISIBLE);
@@ -516,27 +441,17 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     public void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
-//		BusinessMannager.getInstance().getNetworkManager().GetNetworkSettings(null);
-
-//		DataValue data = new DataValue();
-//		data.addParam("network_mode", 0);
-//		data.addParam("netselection_mode", 0);
-//		BusinessMannager.getInstance().sendRequestMessage(
-//				MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST, data);
         UserGetNetworkSetting();
     }
 
     @Override
     public void onPause() {
-        // TODO Auto-generated method stub
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         this.registerReceiver(m_network_setting_receiver, new IntentFilter(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST));
         BusinessMannager.getInstance().getProfileManager().startGetProfileList(null);
@@ -544,7 +459,6 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     public void onStop() {
-        // TODO Auto-generated method stub
         super.onStop();
     }
 
@@ -552,67 +466,65 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
-            if (intent.getAction().equalsIgnoreCase(
-                    MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                        BaseResponse.RESPONSE_OK);
+            if (intent.getAction().equalsIgnoreCase(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST)) {
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 
-                String strErrorCode = intent
-                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 
-                if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() == 0) {
+                if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
                     switch (BusinessMannager.getInstance().getNetworkManager().getNetworkMode()) {
 
                         case 0:
-                            m_mode_desc.setText("Auto");
+                            m_mode_desc.setText(getString(R.string.setting_network_mode_auto));
                             mode_auto.setChecked(true);
-
                             break;
                         case 1:
-                            m_mode_desc.setText("2G only");
-
+                            m_mode_desc.setText(getString(R.string.setting_network_mode_2G_only));
                             mode_2g_only.setChecked(true);
-
                             break;
                         case 2:
-                            m_mode_desc.setText("3G only");
-
+                            m_mode_desc.setText(getString(R.string.setting_network_mode_3G_only));
                             mode_3g_only.setChecked(true);
-
                             break;
                         case 3:
-                            m_mode_desc.setText("4G only");
-
+                            m_mode_desc.setText(getString(R.string.setting_network_mode_4G_only));
                             mode_lte_only.setChecked(true);
                             break;
                         default:
-                            m_mode_desc.setText("Error");
+                            m_mode_desc.setText(getString(R.string.error_info));
                             break;
-
                     }
 
                     switch (BusinessMannager.getInstance().getNetworkManager().getNetworkSelection()) {
                         case 0:
-                            m_selection_desc.setText("Auto");
+                            m_selection_desc.setText(getString(R.string.setting_network_mode_auto));
                             break;
                         case 1:
-                            m_selection_desc.setText("Manual");
+                            m_selection_desc.setText(getString(R.string.setting_network_mode_manual));
                             break;
                         default:
                             break;
                     }
-
-//					current_network_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkMode();
-//					current_network_selection_mode = BusinessMannager.getInstance().getNetworkManager().getNetworkSelection();
 
                     m_network_mode_container.setEnabled(true);
                     m_network_selection_container.setEnabled(true);
                     m_network_profile_management.setEnabled(true);
                     m_waiting_circle.setVisibility(View.GONE);
-                } else if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() > 0) {
+                } else if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() > 0) {
+                    String strInfo = getString(R.string.unknown_error);
+                    Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
+                }
+                m_waiting_circle.setVisibility(View.GONE);
+            }
+
+            if (intent.getAction().equalsIgnoreCase(MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
+
+                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+
+                if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
+                    BusinessMannager.getInstance().sendRequestMessage(MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
+                } else if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() > 0) {
                     //Log
                     String strInfo = getString(R.string.unknown_error);
                     Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
@@ -620,38 +532,12 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                 m_waiting_circle.setVisibility(View.GONE);
             }
 
-            if (intent.getAction().equalsIgnoreCase(
-                    MessageUti.NETWORK_SET_NETWORK_SETTING_REQUEST)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                        BaseResponse.RESPONSE_OK);
+            if (intent.getAction().equalsIgnoreCase(MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
+                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
 
-                String strErrorCode = intent
-                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
+                String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
 
-                if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() == 0) {
-                    BusinessMannager.getInstance().sendRequestMessage(
-                            MessageUti.NETWORK_GET_NETWORK_SETTING_REQUEST, null);
-                } else if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() > 0) {
-                    //Log
-                    String strInfo = getString(R.string.unknown_error);
-                    Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-                }
-                m_waiting_circle.setVisibility(View.GONE);
-            }
-
-            if (intent.getAction().equalsIgnoreCase(
-                    MessageUti.PROFILE_GET_PROFILE_LIST_REQUEST)) {
-                int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT,
-                        BaseResponse.RESPONSE_OK);
-
-                String strErrorCode = intent
-                        .getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-
-                if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() == 0) {
-//					m_network_search_result_list = BusinessMannager.getInstance().getNetworkManager().getNetworkList();
+                if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() == 0) {
                     m_profile_list_data = BusinessMannager.getInstance().getProfileManager().GetProfileListData();
                     for (ProfileItem a : m_profile_list_data) {
                         if (a.Default == 1) {
@@ -659,8 +545,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                             break;
                         }
                     }
-                } else if (BaseResponse.RESPONSE_OK == nResult
-                        && strErrorCode.length() > 0) {
+                } else if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() > 0) {
                     String strInfo = getString(R.string.unknown_error);
                     Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
                 }

@@ -1,228 +1,367 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/setting_network_content"
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/setting_background_color"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/waiting_progressbar"
+    <!-- 内容 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_network_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_title_background"
+        app:layout_heightPercent="9%h">
+
+        <!-- 1.back iv -->
+        <ImageButton
+            android:id="@+id/ib_title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/color_transparent"
+            android:contentDescription="@string/back"
+            android:scaleType="fitXY"
+            android:src="@drawable/back"
+            app:layout_heightPercent="9%w"
+            app:layout_marginLeftPercent="3%w"
+            app:layout_widthPercent="4.5%w" />
+
+        <!-- 2.back tv -->
+        <TextView
+            android:id="@+id/tv_title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="2dp"
+            android:layout_toEndOf="@id/ib_title_back"
+            android:gravity="center"
+            android:text="@string/back"
+            android:textColor="@color/color_white"
+            app:layout_textSizePercent="30%h" />
+
+        <!-- 3.title -->
+        <TextView
+            android:id="@+id/tv_title_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/setting_wifi"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            app:layout_textSizePercent="30%h" />
+
+        <!-- 4.done & edit -->
+        <com.zhy.android.percent.support.PercentFrameLayout
+            android:id="@+id/fl_edit_or_done"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                app:layout_paddingRightPercent="3%w">
+
+                <!-- edit -->
+                <TextView
+                    android:id="@+id/tv_titlebar_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/setting_titlebar_text_edit"
+                    android:textColor="@color/color_white"
+                    app:layout_textSizePercent="30%h" />
+
+                <!-- done -->
+                <TextView
+                    android:id="@+id/tv_titlebar_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/setting_titlebar_text_done"
+                    android:textColor="@color/color_white"
+                    android:visibility="gone"
+                    app:layout_textSizePercent="30%h" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+        </com.zhy.android.percent.support.PercentFrameLayout>
+
+        <!-- 5.add & deleted -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:id="@+id/fl_add_and_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- deleted -->
+                <TextView
+                    android:id="@+id/tv_titlebar_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_delete"
+                    app:layout_heightPercent="60%h"
+                    app:layout_marginRightPercent="2%w"
+                    app:layout_widthPercent="60%h" />
+
+                <!-- add -->
+                <TextView
+                    android:id="@+id/tv_titlebar_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/tv_titlebar_delete"
+                    android:background="@drawable/actionbar_plus_icon"
+                    app:layout_heightPercent="60%h"
+                    app:layout_marginRightPercent="3%w"
+                    app:layout_widthPercent="60%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+        </com.zhy.android.percent.support.PercentLinearLayout>
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- PANEL -->
+    <FrameLayout
+        android:id="@+id/setting_network_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@null">
-
-        <ProgressBar
-            android:layout_width="40dip"
-            android:layout_height="40dip"
-            android:layout_centerInParent="true"
-            android:indeterminateDrawable="@drawable/progerss_blue"
-            android:visibility="visible" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/level_one_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/rl_network_banner"
+        android:background="@color/setting_background_color"
         android:orientation="vertical">
 
-        <ImageView
+        <!-- waitting -->
+        <RelativeLayout
+            android:id="@+id/waiting_progressbar"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/main_bottom_divider"
-            android:contentDescription="@string/setting_network" />
+            android:layout_height="match_parent"
+            android:background="@null">
 
-        <FrameLayout
-            android:id="@+id/network_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white">
+            <ProgressBar
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/progerss_blue"
+                android:visibility="visible" />
+        </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="@dimen/setting_padding_s"
-                android:text="@string/setting_network_mode"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/dimen_textsize_18sp" />
-
-            <TextView
-                android:id="@+id/network_mode_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:padding="@dimen/setting_padding_s"
-                android:textColor="@color/color_light_gray"
-                android:textSize="@dimen/setting_prompt_size_s" />
-        </FrameLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/main_bottom_divider"
-            android:contentDescription="@string/setting_network" />
-
-        <FrameLayout
-            android:id="@+id/network_selection"
+        <!-- Network panel -->
+        <LinearLayout
+            android:id="@+id/level_one_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_white">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/setting_padding_s"
-                android:text="@string/setting_network_selection"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/dimen_textsize_18sp" />
-
-            <TextView
-                android:id="@+id/network_selection_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:padding="@dimen/setting_padding_s"
-                android:textColor="@color/color_light_gray"
-                android:textSize="@dimen/setting_prompt_size_s" />
-        </FrameLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/main_bottom_divider"
-            android:contentDescription="@string/setting_network" />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_marginTop="20dp"
-            android:background="@color/main_bottom_divider"
-            android:contentDescription="@string/setting_network" />
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/network_profile_management"
-            android:layout_width="match_parent"
-            android:layout_height="80dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_network" />
 
-            <TextView
+            <FrameLayout
+                android:id="@+id/network_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white"
-                android:padding="@dimen/setting_padding_s"
-                android:text="@string/setting_network_profile_management"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/dimen_textsize_18sp" />
+                android:background="@color/color_white">
 
-            <TextView
-                android:id="@+id/network_selected_profile"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:padding="@dimen/setting_padding_s"
+                    android:text="@string/setting_network_mode"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/dimen_textsize_18sp" />
+
+                <TextView
+                    android:id="@+id/network_mode_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="@dimen/setting_padding_s"
+                    android:textColor="@color/color_light_gray"
+                    android:textSize="@dimen/setting_prompt_size_s" />
+            </FrameLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_network" />
+
+            <FrameLayout
+                android:id="@+id/network_selection"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:maxWidth="150dp"
-                android:padding="@dimen/setting_padding_s"
+                android:background="@color/color_white">
 
-                android:singleLine="false"
-                android:textColor="@color/color_light_gray"
-                android:textSize="@dimen/setting_prompt_size_s" />
-        </FrameLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/setting_padding_s"
+                    android:text="@string/setting_network_selection"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/dimen_textsize_18sp" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/main_bottom_divider"
-            android:contentDescription="@string/setting_network" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/network_selection_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="@dimen/setting_padding_s"
+                    android:textColor="@color/color_light_gray"
+                    android:textSize="@dimen/setting_prompt_size_s" />
+            </FrameLayout>
 
-    <RadioGroup
-        android:id="@+id/setting_network_mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:gravity="start"
-        android:visibility="gone">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_network" />
 
-        <RadioButton
-            android:id="@+id/mode_auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/setting_padding_s"
-            android:layout_marginStart="@dimen/setting_padding_s"
-            android:button="@null"
-            android:checked="true"
-            android:drawableStart="@drawable/radiobutton"
-            android:enabled="true"
-            android:paddingBottom="15dip"
-            android:paddingTop="15dip"
-            android:text="@string/setting_network_mode_auto"
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/setting_name_size_s" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_network" />
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="@color/main_bottom_divider" />
+            <FrameLayout
+                android:id="@+id/network_profile_management"
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
 
-        <RadioButton
-            android:id="@+id/mode_2g"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/setting_padding_s"
-            android:layout_marginStart="@dimen/setting_padding_s"
-            android:button="@null"
-            android:checked="false"
-            android:drawableStart="@drawable/radiobutton"
-            android:enabled="true"
-            android:paddingBottom="15dip"
-            android:paddingTop="15dip"
-            android:text="@string/setting_network_mode_2G_only"
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/setting_name_size_s" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:padding="@dimen/setting_padding_s"
+                    android:text="@string/setting_network_profile_management"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/dimen_textsize_18sp" />
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="@color/main_bottom_divider" />
+                <TextView
+                    android:id="@+id/network_selected_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:maxWidth="150dp"
+                    android:padding="@dimen/setting_padding_s"
 
-        <RadioButton
-            android:id="@+id/mode_3g"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/setting_padding_s"
-            android:layout_marginStart="@dimen/setting_padding_s"
-            android:button="@null"
-            android:checked="false"
-            android:drawableStart="@drawable/radiobutton"
-            android:enabled="true"
-            android:paddingBottom="15dip"
-            android:paddingTop="15dip"
-            android:text="@string/setting_network_mode_3G_only"
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/setting_name_size_s" />
+                    android:singleLine="false"
+                    android:textColor="@color/color_light_gray"
+                    android:textSize="@dimen/setting_prompt_size_s" />
+            </FrameLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="@color/main_bottom_divider" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/main_bottom_divider"
+                android:contentDescription="@string/setting_network" />
+        </LinearLayout>
 
-        <RadioButton
-            android:id="@+id/mode_lte"
+        <!-- AUTO 2G 3G 4G -->
+        <RadioGroup
+            android:id="@+id/setting_network_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/setting_padding_s"
-            android:layout_marginStart="@dimen/setting_padding_s"
-            android:button="@null"
-            android:checked="false"
-            android:drawableStart="@drawable/radiobutton"
-            android:enabled="true"
-            android:paddingBottom="15dip"
-            android:paddingTop="15dip"
-            android:text="@string/setting_network_mode_LTE_only"
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/setting_name_size_s" />
+            android:background="@color/color_white"
+            android:gravity="start"
+            android:visibility="gone">
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/mode_auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/setting_padding_s"
+                android:layout_marginStart="@dimen/setting_padding_s"
+                android:button="@null"
+                android:checked="true"
+                android:drawableStart="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_auto"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s" />
 
-</FrameLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
+
+            <RadioButton
+                android:id="@+id/mode_2g"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/setting_padding_s"
+                android:layout_marginStart="@dimen/setting_padding_s"
+                android:button="@null"
+                android:checked="false"
+                android:drawableStart="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_2G_only"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
+
+            <RadioButton
+                android:id="@+id/mode_3g"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/setting_padding_s"
+                android:layout_marginStart="@dimen/setting_padding_s"
+                android:button="@null"
+                android:checked="false"
+                android:drawableStart="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_3G_only"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/main_bottom_divider" />
+
+            <RadioButton
+                android:id="@+id/mode_lte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/setting_padding_s"
+                android:layout_marginStart="@dimen/setting_padding_s"
+                android:button="@null"
+                android:checked="false"
+                android:drawableStart="@drawable/radiobutton"
+                android:enabled="true"
+                android:paddingBottom="15dip"
+                android:paddingTop="15dip"
+                android:text="@string/setting_network_mode_LTE_only"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/setting_name_size_s" />
+
+        </RadioGroup>
+
+    </FrameLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

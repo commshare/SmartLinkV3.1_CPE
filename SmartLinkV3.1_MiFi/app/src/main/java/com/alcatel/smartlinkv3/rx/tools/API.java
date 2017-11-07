@@ -13,6 +13,7 @@ import com.alcatel.smartlinkv3.rx.impl.download.DownloadProgressListener;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginParams;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.impl.usage.UsageSetting;
 import com.alcatel.smartlinkv3.rx.impl.wlan.WlanResult;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.utils.EncryptionUtil;
@@ -482,14 +483,14 @@ public class API {
     //     subscribe(subscriber, smartLinkApi.getBatteryState(new RequestBody(Methods.GET_BATTERYSTATE)));
     // }
     //
-    // public void setUsageSetting(UsageSetting usageSettingParams, MySubscriber subscriber) {
-    //     subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, usageSettingParams)));
-    // }
-    //
-    // public void getUsageSetting(MySubscriber<UsageSetting> subscriber) {
-    //     subscribe(subscriber, smartLinkApi.getUsageSetting(new RequestBody(Methods.GET_USAGESETTING)));
-    // }
-    //
+    public void setUsageSetting(UsageSetting usageParam, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, usageParam)));
+    }
+
+    public void getUsageSetting(MySubscriber<UsageSetting> subscriber) {
+        subscribe(subscriber, smartLinkApi.getUsageSetting(new RequestBody(Methods.GET_USAGESETTING)));
+    }
+
     // public void getNetworkInfo(MySubscriber<NetworkInfos> subscriber) {
     //     subscribe(subscriber, smartLinkApi.getNetworkInfo(new RequestBody(Methods.GET_NETWORKINFO)));
     // }
@@ -655,10 +656,10 @@ public class API {
         //
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<UsageRecord>> getUsageRecord(@Body RequestBody requestBody);
-        //
-        // @POST("/jrd/webapi")
-        // Observable<ResponseBody<UsageSetting>> getUsageSetting(@Body RequestBody requestBody);
-        //
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<UsageSetting>> getUsageSetting(@Body RequestBody requestBody);
+
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<NetworkInfos>> getNetworkInfo(@Body RequestBody requestBody);
         //

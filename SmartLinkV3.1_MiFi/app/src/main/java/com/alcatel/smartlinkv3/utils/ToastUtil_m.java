@@ -35,4 +35,14 @@ public class ToastUtil_m {
             activity.runOnUiThread(() -> Toast.makeText(activity, tip, Toast.LENGTH_SHORT).show());
         }
     }
+
+    public static void showSecond(Context context, final int id, int sec) {
+        String threadName = Thread.currentThread().getName();
+        if (threadName.equalsIgnoreCase("main")) {
+            Toast.makeText(context, id, sec).show();
+        } else {
+            final Activity activity = (Activity) context;
+            activity.runOnUiThread(() -> Toast.makeText(context, id, sec).show());
+        }
+    }
 }

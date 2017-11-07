@@ -549,22 +549,20 @@
     <string name="pref_show_real_path_summary">Show real path in navigation bar</string>
     <string name="str_LTE">LTE</string>
     <string name="str_4G_LTE">4G LTE</string>
-    <!--
-    fix bug 5118939 by zhanghao 20170828, the function is useful for APP, but no function for WEB UI, so only change the string,
-    no remove the function on APP.
-    <string name="login_other_user_logined_error_forcelogin_msg">There is already an admin session opened. Please close this session before opening a new one.</string>
-    -->
     <string name="login_other_user_logined_error_forcelogin_msg">There is already an admin session opened. Please close this session before opening a new one.</string>
     <string name="str_data_usage">Data usage is approximate. For actual usage, please refer to your network operator.</string>
     <string name="str_phone_number">Phone number:</string>
     <string name="setting_power_wifi_description">Wi-Fi will automatically turn off if the connection is in idle for 30 minutes, you may press any key to wake up.</string>
-
     <string name="str_power_save_description">All LED light off automatically except Power LED when no WiFi access or manual operation within 30s.</string>
-
-    <!-- 20170926:ma add new -->
     <string name="login_forgot_password">Forgot password?</string>
     <string name="login_remenber_psd">Remember password</string>
     <string name="login_failed">Couldn\'t login</string>
     <string name="logout_failed">Couldn\'t logout</string>
+
+    <!-- 2017-11-07 add new -->
+    <string name="unknow">Unknown</string>
+    <string name="Available">Available</string>
+    <string name="Selected">Selected</string>
+    <string name="Forbidden">Forbidden</string>
 
 </resources>
