@@ -359,7 +359,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
     private void setAllData() {
 
         // billday
-        int billDay = 1;
+        int billDay;
         String billValue = OtherUtils.getEdittext(m_billingValue);
         billDay = TextUtils.isEmpty(billValue) ? 1 : Integer.valueOf(billValue);// 参数
         usageResult.setBillingDay(billDay);
@@ -380,6 +380,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         timeLimit = TextUtils.isEmpty(timelimitStr) ? 1 : Integer.valueOf(timelimitStr);
         m_timeLimit.setText(String.valueOf(timeLimit));
         usageResult.setTimeLimitTimes(timeLimit);
+
+        // System.out.println("ma_usage: billingday--> " + usageResult.getBillingDay()
+        //                            + ";monthly plan--> " + usageResult.getMonthlyPlan()
+        //                            + ";timelimit--> " + m_timeLimit);
 
         // 2. 提交
         API.get().setUsageSetting(usageResult, new MySubscriber() {
