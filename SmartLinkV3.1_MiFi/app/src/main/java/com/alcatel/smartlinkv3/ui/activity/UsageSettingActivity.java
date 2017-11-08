@@ -852,7 +852,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         if (usageSetting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
             m_timeLimitDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
             m_timeLimit.setEnabled(true);
-            // TODO: 2017/11/6 0006 测试是否可编辑edittext 
+            // 测试是否可编辑edittext 
             m_timeLimit.setKeyListener(DigitsKeyListener.getInstance(true, true));
             data.addParam("time_limit_flag", OVER_TIME_STATE.Enable);
         } else {
