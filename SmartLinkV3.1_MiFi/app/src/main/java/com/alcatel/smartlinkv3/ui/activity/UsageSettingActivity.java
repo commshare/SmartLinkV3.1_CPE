@@ -320,7 +320,6 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
     }
 
-    // TODO: 2017/11/6 0006  
     private void onDoneClick() {
         // 先获取最新的usage状态
         pgd = OtherUtils.showProgressPop(this);
@@ -389,8 +388,12 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         API.get().setUsageSetting(usageResult, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                OtherUtils.hideProgressPop(pgd);
-                ToastUtil_m.show(UsageSettingActivity.this, getString(R.string.setting_success));
+                // 由于viewSetting采用了定时机制, 数据在提交成功后立即返回viewSetting并不能及时刷新
+                // 此处为了提高用户体验, 采用延迟3秒返回
+                m_timeLimit.postDelayed(() -> {
+                    OtherUtils.hideProgressPop(pgd);
+                    ToastUtil_m.show(UsageSettingActivity.this, getString(R.string.setting_success));
+                }, 3500);
             }
 
             @Override
