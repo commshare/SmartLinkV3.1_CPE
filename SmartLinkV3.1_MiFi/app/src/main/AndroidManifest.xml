@@ -39,7 +39,7 @@
         android:name=".ui.activity.SmartLinkV3App"
         android:allowBackup="true"
         android:configChanges="orientation|keyboardHidden"
-        android:icon="@drawable/app_logo"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
