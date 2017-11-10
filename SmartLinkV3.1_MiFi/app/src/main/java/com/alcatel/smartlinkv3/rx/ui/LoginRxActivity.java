@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.appwidget.PopupWindows;
 import com.alcatel.smartlinkv3.appwidget.RippleView;
-import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
@@ -24,7 +23,6 @@ import com.alcatel.smartlinkv3.rx.tools.Logs;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.ui.activity.MainActivity;
-import com.alcatel.smartlinkv3.ui.activity.QuickSetupActivity;
 import com.alcatel.smartlinkv3.ui.activity.RefreshWifiActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.utils.ChangeActivity;
@@ -379,7 +377,7 @@ public class LoginRxActivity extends BaseRxActivity {
                     password = EncryptionUtil.encrypt(password);
                 }
                 // 強制登陸
-                API.get().forceLogin(userName, password, new MySubscriber<LoginResult>() {
+                API.get().login(userName, password, new MySubscriber<LoginResult>() {
                     @Override
                     protected void onSuccess(LoginResult result) {
                         TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
@@ -387,8 +385,10 @@ public class LoginRxActivity extends BaseRxActivity {
                         OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
                         // 2.7.是否进入过快速设置
                         Class clazz = MainActivity.class;
-                        if (!CPEConfig.getInstance().getQuickSetupFlag()) {
-                            clazz = QuickSetupActivity.class;
+                        boolean quickFlag = SPUtils.getInstance(LoginRxActivity.this).getBoolean(Conn.QUICK_SETUP, false);
+                        // if (!CPEConfig.getInstance().getQuickSetupFlag()) {
+                        if (!quickFlag) {
+                            clazz = QuickSetupRxActivity.class;
                         }
                         ChangeActivity.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);// 跳转
                     }

@@ -170,33 +170,63 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         heartBeatTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                API.get().heartBeat(new MySubscriber() {
+                API.get().getLoginState(new MySubscriber<LoginState>() {
                     @Override
-                    protected void onSuccess(Object result) {
+                    protected void onSuccess(LoginState result) {
+                        getheartBeatStatus();// 访问心跳接口
+                    }
 
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        System.out.println("ma_main_rx: getLoginState onResultError");
+                        ToastUtil_m.show(MainActivity.this, getString(R.string.login_kickoff_logout_successful));
+                        ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof SocketTimeoutException) {
-                            System.out.println("ma_main_rx: SocketTimeoutException");
+                            System.out.println("ma_main_rx: getLoginState SocketTimeoutException");
                             ChangeActivity.toActivity(MainActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                         } else {
-                            System.out.println("ma_main_rx: onError");
+                            System.out.println("ma_main_rx:getLoginState onError");
                             ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
                         }
-                    }
-
-                    @Override
-                    protected void onResultError(ResponseBody.Error error) {
-                        System.out.println("ma_main_rx: onResultError");
-                        ToastUtil_m.show(MainActivity.this, getString(R.string.login_kickoff_logout_successful));
-                        ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
                     }
                 });
             }
         };
         heartBeatTimer.start(3000);
+    }
+
+    /**
+     * 访问心跳接口
+     */
+    private void getheartBeatStatus() {
+        API.get().heartBeat(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (e instanceof SocketTimeoutException) {
+                    System.out.println("ma_main_rx: heartBeat SocketTimeoutException");
+                    ChangeActivity.toActivity(MainActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                } else {
+                    System.out.println("ma_main_rx: heartBeat onError");
+                    ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                System.out.println("ma_main_rx: heartBeat onResultError");
+                ToastUtil_m.show(MainActivity.this, getString(R.string.login_kickoff_logout_successful));
+                ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
+            }
+        });
     }
 
     /**
