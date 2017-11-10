@@ -480,7 +480,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
                 m_connectBtn.setBackgroundResource(R.drawable.switch_off);
                 m_connectBtn.setEnabled(false);
-                m_connectWaiting.setVisibility(View.VISIBLE);
+                m_connectWaiting.setVisibility(View.GONE);
             }
 
             if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {

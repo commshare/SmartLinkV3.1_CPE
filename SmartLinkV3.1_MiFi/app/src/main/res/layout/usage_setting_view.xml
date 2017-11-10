@@ -142,6 +142,7 @@
             app:layout_textSizePercent="40%h" />
 
         <Spinner
+            android:gravity="center"
             android:id="@+id/unit_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,7 +151,7 @@
             android:background="@drawable/unit_selector"
             android:spinnerMode="dialog"
             app:layout_heightPercent="75%h"
-            app:layout_widthPercent="10%w" />
+            app:layout_widthPercent="15%w" />
 
         <EditText
             android:id="@+id/monthly_plan_value"

@@ -57,6 +57,7 @@ import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 
 import org.cybergarage.upnp.Device;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements OnClickListener, IDeviceChangeListener {
@@ -157,7 +158,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         showMicroView();
         OtherUtils.verifyPermisson(this);// 申請權限
 
-        loginStateTimer();// 登陸狀態定時器
+        // loginStateTimer();// 登陸狀態定時器
         heartbeatTimer();// 心跳定時器
     }
 
@@ -177,11 +178,18 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
 
                     @Override
                     public void onError(Throwable e) {
-                        ChangeActivity.toActivity(MainActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                        if (e instanceof SocketTimeoutException) {
+                            System.out.println("ma_main_rx: SocketTimeoutException");
+                            ChangeActivity.toActivity(MainActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                        } else {
+                            System.out.println("ma_main_rx: onError");
+                            ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
+                        }
                     }
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        System.out.println("ma_main_rx: onResultError");
                         ToastUtil_m.show(MainActivity.this, getString(R.string.login_kickoff_logout_successful));
                         ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
                     }
@@ -203,9 +211,30 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
                     protected void onSuccess(LoginState result) {
                         // 檢測發現登出--> 跳轉登陸介面
                         if (result.getState() == Cons.LOGOUT) {
+                            System.out.println("ma_main_rx: onSuccess loginstate");
+                            ToastUtil_m.show(MainActivity.this, getString(R.string.login_kickoff_logout_successful));
                             ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof SocketTimeoutException) {
+                            System.out.println("ma_main_rx: SocketTimeoutException loginstate");
+                            ChangeActivity.toActivity(MainActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                        } else {
+                            System.out.println("ma_main_rx: onError loginstate");
+                            ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
+                        }
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        System.out.println("ma_main_rx: onResultError");
+                        ToastUtil_m.show(MainActivity.this, getString(R.string.login_kickoff_logout_successful));
+                        ChangeActivity.toActivity(MainActivity.this, LoginRxActivity.class, false, true, false, 0);
+                    }
+
                 });
             }
         };

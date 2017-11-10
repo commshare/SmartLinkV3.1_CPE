@@ -128,6 +128,18 @@ public class SettingwifiRxActivity extends BaseRxActivity {
                     }
                 }
 
+                // 1.1.通过判断2.4G & 5G 的AP对象是否为空来决定面板的显示与否
+                int APExist = 0;// 默认只显示2.4G
+                if (apbean_2P4 != null & apbean_5G != null) {
+                    APExist = Conn.MODE_2P4G_5G;
+                } else if (apbean_2P4 != null) {
+                    APExist = Conn.MODE_2P4G;
+                } else if (apbean_5G != null) {
+                    APExist = Conn.MODE_5G;
+                } else if (apbean_2P4 == null & apbean_5G == null) {
+                    showErrorUi();
+                }
+
                 // TOGO 2017/11/3 0003 测试代码 START
                 // apbean_5G = new WlanResult.APListBean();
                 // apbean_5G.setWlanAPID(1);// 5G
@@ -143,18 +155,16 @@ public class SettingwifiRxActivity extends BaseRxActivity {
                 // result.setWlanAPMode(2);
                 // TOGO 2017/11/3 0003 测试代码 END
 
-
                 // 2.根据情况显示banner
-                int wlanAPMode = result.getWlanAPMode();
-                if (wlanAPMode == Conn.MODE_2P4G_5G) {// 两种模式
+                if (APExist == Conn.MODE_2P4G_5G) {// 两种模式
                     tv2p4Checker.setVisibility(View.VISIBLE);
                     tv5GChecker.setVisibility(View.VISIBLE);
                     vSplitBanner.setVisibility(View.VISIBLE);
                     initFra(clazzs[0], clazzs);
-                } else if (wlanAPMode == Conn.MODE_2P4G) {// 2.4G模式
+                } else if (APExist == Conn.MODE_2P4G) {// 2.4G模式
                     tv2p4Checker.setVisibility(View.VISIBLE);
                     initFra(clazzs[0], clazzs[0]);
-                } else if (wlanAPMode == Conn.MODE_5G) {// 5G模式
+                } else {// 5G模式
                     tv5GChecker.setVisibility(View.VISIBLE);
                     initFra(clazzs[1], clazzs[1]);
                 }

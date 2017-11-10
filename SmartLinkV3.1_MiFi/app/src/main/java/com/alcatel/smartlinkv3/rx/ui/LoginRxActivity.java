@@ -89,6 +89,7 @@ public class LoginRxActivity extends BaseRxActivity {
     }
 
     private void init() {
+        etLoginPsd.setSelection(OtherUtils.getEdittext(etLoginPsd).length());
         // 初始化密码输入框显示
         isRemember = SPUtils.getInstance(this).getBoolean(REMEMBER_FLAG, false);
         if (isRemember) {

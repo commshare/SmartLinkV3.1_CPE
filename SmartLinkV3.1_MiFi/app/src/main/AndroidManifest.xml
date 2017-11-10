@@ -88,6 +88,18 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity android:name=".rx.ui.TestRxActivity" />
 
+        <!-- 新的快速启动页 -->
+        <activity
+            android:name=".rx.ui.QuickSetupRxActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- 新的WIFI设置界面 -->
+        <activity
+            android:name=".rx.ui.SettingwifiRxActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
         <!-- 後臺服務_監控APP是否還在執行,不執行則關閉 -->
         <service android:name=".ui.service.LoginService" />
 
@@ -298,12 +310,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.activity.TestActivity">
+        <activity
+            android:name=".ui.activity.TestActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".rx.ui.QuickSetupRxActivity">
-        </activity>
-        <activity android:name=".rx.ui.SettingwifiRxActivity">
-        </activity>
+
     </application>
 
 </manifest>
