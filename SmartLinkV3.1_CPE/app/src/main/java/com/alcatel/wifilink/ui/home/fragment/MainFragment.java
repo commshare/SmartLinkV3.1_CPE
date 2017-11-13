@@ -31,6 +31,7 @@ import com.alcatel.wifilink.model.device.response.ConnectedList;
 import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.model.sim.SimStatus;
+import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -177,6 +178,17 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable e) {
+                System.out.println("wan error");
+                disconnectHandle();
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                System.out.println("wan onResultError");
+                disconnectHandle();
+            }
+
+            private void disconnectHandle() {
                 if (Cons.TYPE_WAN.equalsIgnoreCase(type)) {
                     // TOAT: ********** 断网时先走此方法 ***********
                     connectUi(false);// set button logo
@@ -216,10 +228,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 } else if (Cons.TYPE_WAN.equalsIgnoreCase(type)) {/* 用户主动点击WAN */
                     if (result.getStatus() == Cons.CONNECTED) {
+                        System.out.println("wan type connected");
                         wan_ui_setting();
                         type = Cons.TYPE_WAN;// 如果WAN口连上, 把标志位修改为WAN连接
                     }
                     if (result.getStatus() == Cons.DISCONNECTING || result.getStatus() == Cons.DISCONNECTED) {
+                        System.out.println("wan type disConnected");
                         sim_ui_setting();
                         type = Cons.TYPE_SIM;// 如果WAN口断开, 把标志位修改为SIM卡连接
                     }
@@ -401,8 +415,18 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         }
                     });
                 } else {
-                    m_connectToNetworkTextView.setText(getString(R.string.home_no_service));
-                    mRl_main_wait.setVisibility(View.GONE);
+                    API.get().getWanSeting(new MySubscriber<WanSetting>() {
+                        @Override
+                        protected void onSuccess(WanSetting result) {
+                            if (result.getStatus()== Cons.CONNECTED) {
+                                m_connectToNetworkTextView.setText(getString(R.string.Ethernet));
+                            } else {
+                                m_connectToNetworkTextView.setText(getString(R.string.home_no_service));
+                            }
+                            mRl_main_wait.setVisibility(View.GONE);
+                        }
+                    });
+                   
                 }
             }
 
@@ -817,62 +841,82 @@ public class MainFragment extends Fragment implements View.OnClickListener {
      * 使用sim连接
      */
     private void TakeSimConnect() {
-        // 检测连接
-        connect();
+        API.get().getWanSeting(new MySubscriber<WanSetting>() {
+            @Override
+            protected void onSuccess(WanSetting result) {
+                if (result.getStatus() == Cons.CONNECTED) {
+                    ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+                } else {
+                    // 检测连接
+                    connect();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
+            }
+        });
+
     }
 
     int count = 0;// 用于计算失败的次数
 
-    // private void checkConnStatusAndConnect() {
-    //     API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
-    //         @Override
-    //         protected void onSuccess(ConnectionStates result) {
-    //             int connstatus = result.getConnectionStatus();
-    //             if (connstatus == Cons.CONNECTED) {
-    //                 if (!isWan) {/* sim button click logic */
-    //                     // operater the button click function
-    //                     simButtonConnect();
-    //                 } else {/* wan button click logic */
-    //                     // to internet status activity
-    //                     ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
-    //                 }
-    //                 if (clickProgresDialog != null) {
-    //                     clickProgresDialog.dismiss();
-    //                     clickProgresDialog = null;
-    //                 }
-    //             }
-    //             if (connstatus == Cons.CONNECTING) {
-    //                 checkConnStatusAndConnect();
-    //             }
-    //             if (connstatus == Cons.DISCONNECTED || connstatus == Cons.DISCONNECTING) {
-    //                 // 延迟15秒再提示用户连接失败
-    //                 m_connectLayout.postDelayed(() -> {
-    //                     if (clickProgresDialog != null) {
-    //                         clickProgresDialog.dismiss();
-    //                         clickProgresDialog = null;
-    //                     }
-    //                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
-    //                 }, 15 * 1000);
-    //             }
-    //         }
-    //
-    //         @Override
-    //         public void onError(Throwable e) {
-    //             if (clickProgresDialog != null) {
-    //                 clickProgresDialog.dismiss();
-    //                 clickProgresDialog = null;
-    //             }
-    //         }
-    //
-    //         @Override
-    //         protected void onResultError(ResponseBody.Error error) {
-    //             if (clickProgresDialog != null) {
-    //                 clickProgresDialog.dismiss();
-    //                 clickProgresDialog = null;
-    //             }
-    //         }
-    //     });
-    // }
+    private void checkConnStatusAndConnect() {
+        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+            @Override
+            protected void onSuccess(ConnectionStates result) {
+                int connstatus = result.getConnectionStatus();
+                if (connstatus == Cons.CONNECTED) {
+                    if (!isWan) {/* sim button click logic */
+                        // operater the button click function
+                        simButtonConnect();
+                    } else {/* wan button click logic */
+                        // to internet status activity
+                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+                    }
+                    if (clickProgresDialog != null) {
+                        clickProgresDialog.dismiss();
+                        clickProgresDialog = null;
+                    }
+                }
+                if (connstatus == Cons.CONNECTING) {
+                    checkConnStatusAndConnect();
+                }
+                if (connstatus == Cons.DISCONNECTED || connstatus == Cons.DISCONNECTING) {
+                    // 延迟15秒再提示用户连接失败
+                    m_connectLayout.postDelayed(() -> {
+                        if (clickProgresDialog != null) {
+                            clickProgresDialog.dismiss();
+                            clickProgresDialog = null;
+                        }
+                        ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
+                    }, 15 * 1000);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (clickProgresDialog != null) {
+                    clickProgresDialog.dismiss();
+                    clickProgresDialog = null;
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                if (clickProgresDialog != null) {
+                    clickProgresDialog.dismiss();
+                    clickProgresDialog = null;
+                }
+            }
+        });
+    }
 
     /* 初始状态: 未按下--> 去按下 */
     private void simButtonConnect() {

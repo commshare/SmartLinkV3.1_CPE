@@ -16,6 +16,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -178,18 +179,26 @@ public class BaseActivityWithBack extends AppCompatActivity {
 
     /* 登出 */
     private void logout() {
-        API.get().logout(new MySubscriber() {
+        API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
-            protected void onSuccess(Object result) {
-                // ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_successful));
-                ChangeActivity.toActivity(BaseActivityWithBack.this, LoginActivity.class, false, true, false, 0);
-            }
+            protected void onSuccess(LoginState result) {
+                if (result.getState() == Cons.LOGIN) {
+                    API.get().logout(new MySubscriber() {
+                        @Override
+                        protected void onSuccess(Object result) {
+                            // ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_successful));
+                            ChangeActivity.toActivity(BaseActivityWithBack.this, LoginActivity.class, false, true, false, 0);
+                        }
 
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_failed));
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_failed));
+                        }
+                    });
+                }
             }
         });
+
     }
 
     @Override

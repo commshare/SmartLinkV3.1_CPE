@@ -1,8 +1,10 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
@@ -17,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -38,6 +41,8 @@ import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.WifiUtils;
 
 public class SettingNetworkActivity extends BaseActivityWithBack implements OnClickListener, AdapterView.OnItemSelectedListener {
@@ -49,7 +54,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private SwitchCompat mMobileDataSwitchCompat;
     private AppCompatSpinner mConnectionModeSpinner;
     private AppCompatSpinner mNetworkModeSpinner;
-    private SwitchCompat mRoamingSwitchCompat;
+    private ImageView mRoamingSwitchCompat;
     private SwitchCompat mSimPinCompat;
     private TextView mSimNumberTextView;
     private TextView mImsiTextView;
@@ -78,11 +83,15 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private boolean mFirstSetConnectionMode;
     private boolean mFirstSetNetworkMode;
     private boolean mFirstSetBillingDay;
+    private Drawable switchOn;
+    private Drawable switchOff;
+    private ProgressDialog pgd;
+    private boolean isRoaming;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        initRes();
         setTitle(R.string.setting_mobile_network);
         setContentView(R.layout.activity_setting_network);
         mFirstSetConnectionMode = true;
@@ -105,15 +114,14 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mMobileDataSwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
-                if (!mMobileDataSwitchCompat.isPressed()){
+                if (!mMobileDataSwitchCompat.isPressed()) {
                     return;
                 }
-                    
+
                 if (mOldMobileDataEnable != enable) {
                     if (enable) {
                         connect();
-                    } 
-                    else {
+                    } else {
                         disConnect();
                     }
                 }
@@ -125,7 +133,8 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mNetworkModeSpinner = (AppCompatSpinner) findViewById(R.id.settings_network_mode);
         //        mNetworkModeSpinner.setSelection(0, true);
         mNetworkModeSpinner.setOnItemSelectedListener(this);
-        mRoamingSwitchCompat = (SwitchCompat) findViewById(R.id.network_roaming_switch);
+        mRoamingSwitchCompat = (ImageView) findViewById(R.id.network_roaming_switch);
+        mRoamingSwitchCompat.setOnClickListener(this);
         mSimPinCompat = (SwitchCompat) findViewById(R.id.network_sim_pin_switch);
         mSimPinCompat.setOnClickListener(this);
         mSimNumberTextView = (TextView) findViewById(R.id.textview_sim_number);
@@ -195,6 +204,11 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mNewSimPin = (EditText) findViewById(R.id.new_sim_pin);
         mConfirmNewSimPin = (EditText) findViewById(R.id.confirm_new_sim_pin);
 
+    }
+
+    private void initRes() {
+        switchOn = getResources().getDrawable(R.drawable.pwd_switcher_on);
+        switchOff = getResources().getDrawable(R.drawable.pwd_switcher_off);
     }
 
     private void connect() {
@@ -300,9 +314,11 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     mRoamingRl.setVisibility(View.GONE);
                 }
                 if (result.getRoamingConnect() == Constants.ConnectionSettings.ROAMING_DISABLE) {
-                    mRoamingSwitchCompat.setChecked(false);
+                    mRoamingSwitchCompat.setImageResource(R.drawable.pwd_switcher_off);
+                    isRoaming = false;
                 } else if (result.getRoamingConnect() == Constants.ConnectionSettings.ROAMING_ENABLE) {
-                    mRoamingSwitchCompat.setChecked(true);
+                    isRoaming = true;
+                    mRoamingSwitchCompat.setImageResource(R.drawable.pwd_switcher_on);
                 }
             }
 
@@ -504,9 +520,13 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         int nID = v.getId();
         switch (nID) {
+
+            case R.id.network_roaming_switch:
+                modifyRoam();
+                break;
+
             case R.id.network_set_data_plan:
                 mSetDataPlan.setVisibility(View.VISIBLE);
                 mMobileNetwork.setVisibility(View.GONE);
@@ -543,6 +563,93 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             default:
                 break;
         }
+    }
+
+    private void modifyRoam() {
+        pgd = OtherUtils.showProgressPop(this);
+        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            @Override
+            protected void onSuccess(SimStatus result) {
+                if (result.getSIMState() == Cons.READY) {
+                    boolean roamCheck = !isRoaming;
+                    mRoamingSwitchCompat.setImageResource(roamCheck ? R.drawable.pwd_switcher_on : R.drawable.pwd_switcher_off);
+                    int RoamingConnect = roamCheck ? 1 : 0;// 原来是选中状态--> 显示为未选中
+                    // 先获取一次漫游状态
+                    API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+                        @Override
+                        protected void onSuccess(ConnectionSettings result) {
+                            result.setRoamingConnect(RoamingConnect);
+                            // 提交
+                            API.get().setConnectionSettings(result, new MySubscriber() {
+                                @Override
+                                protected void onSuccess(Object result) {
+                                    System.out.println("ma_roaming set success ");
+                                    API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+                                        @Override
+                                        protected void onSuccess(ConnectionSettings result) {
+                                            OtherUtils.hideProgressPop(pgd);
+                                            mRoamingSwitchCompat.setImageResource(result.getRoamingConnect() == 1 ? R.drawable.pwd_switcher_on : R.drawable.pwd_switcher_off);
+                                        }
+
+                                        @Override
+                                        protected void onResultError(ResponseBody.Error error) {
+                                            OtherUtils.hideProgressPop(pgd);
+                                            ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            OtherUtils.hideProgressPop(pgd);
+                                            ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                protected void onResultError(ResponseBody.Error error) {
+
+                                    OtherUtils.hideProgressPop(pgd);
+                                    ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    OtherUtils.hideProgressPop(pgd);
+                                    ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                }
+                            });
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                        }
+                    });
+                } else {
+                    OtherUtils.hideProgressPop(pgd);
+                    ToastUtil_m.show(SettingNetworkActivity.this, R.string.insert_sim_or_wan);
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                OtherUtils.hideProgressPop(pgd);
+                ToastUtil_m.show(SettingNetworkActivity.this, R.string.insert_sim_or_wan);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                OtherUtils.hideProgressPop(pgd);
+                ToastUtil_m.show(SettingNetworkActivity.this, R.string.insert_sim_or_wan);
+            }
+        });
+
     }
 
     private void showSetmonthlyDataPlanDialog() {
@@ -771,34 +878,5 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             return;
         }
         super.onBackPressed();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onStart() {
-        // TODO Auto-generated method stub
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-    }
-
-    @Override
-    public void onStop() {
-        // TODO Auto-generated method stub
-        super.onStop();
     }
 }

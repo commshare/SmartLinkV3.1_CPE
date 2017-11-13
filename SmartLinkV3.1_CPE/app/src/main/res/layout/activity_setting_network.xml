@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<com.zhy.android.percent.support.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg_normal"
@@ -13,18 +14,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <com.zhy.android.percent.support.PercentLinearLayout
             android:id="@+id/ll_mobile_network"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <com.zhy.android.percent.support.PercentLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
 
@@ -42,8 +43,8 @@
                         android:id="@+id/network_mobile_data_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true" />
 
                     <ImageView
@@ -52,9 +53,9 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
                         android:textDirection="locale" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@color/color_white">
@@ -72,8 +73,8 @@
                         android:id="@+id/spinner_connection_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:entries="@array/settings_connection_mode"
                         android:spinnerMode="dialog"
@@ -85,9 +86,9 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
                         android:textDirection="locale" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:id="@+id/relativelayout_network_roaming"
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
@@ -102,14 +103,19 @@
                         android:text="@string/usage_setting_roaming"
                         android:textDirection="locale" />
 
-                    <android.support.v7.widget.SwitchCompat
+                    <ImageView
+                        app:layout_marginRightPercent="2%w"
                         android:id="@+id/network_roaming_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textDirection="locale"
-                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true" />
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/pwd_switcher_on"
+                        android:textDirection="locale"
+                        app:layout_heightPercent="32.5%h"
+                        app:layout_widthPercent="65%h" />
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -117,9 +123,9 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
                         android:textDirection="locale" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:id="@+id/network_set_data_plan"
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
@@ -138,11 +144,11 @@
                         android:id="@+id/network_set_data_plan_arrow"
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_marginEnd="@dimen/dimen_10dip"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:src="@drawable/right_arrow_big"
                         android:textDirection="locale" />
 
@@ -155,9 +161,9 @@
                         android:textColor="@color/color_light_gray"
                         android:textDirection="locale"
                         android:textSize="12sp" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
@@ -176,8 +182,8 @@
                         android:id="@+id/settings_network_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:entries="@array/settings_network_mode"
                         android:spinnerMode="dialog"
@@ -189,9 +195,9 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
                         android:textDirection="locale" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:id="@+id/relativelayout_network_profile"
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
@@ -210,11 +216,11 @@
                         android:id="@+id/network_selected_profile_arrow"
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_marginEnd="@dimen/dimen_10dip"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:src="@drawable/right_arrow_big"
                         android:textDirection="locale" />
 
@@ -228,9 +234,9 @@
                         android:textColor="@color/color_light_gray"
                         android:textDirection="locale"
                         android:textSize="12sp" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp">
@@ -249,8 +255,8 @@
                         android:id="@+id/network_sim_pin_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:textDirection="locale" />
 
@@ -260,9 +266,9 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
                         android:textDirection="locale" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:id="@+id/network_change_pin"
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
@@ -281,11 +287,11 @@
                         android:id="@+id/network_change_pin_arrow"
                         android:layout_width="@dimen/dimen_20dip"
                         android:layout_height="@dimen/dimen_20dip"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_marginEnd="@dimen/dimen_10dip"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:src="@drawable/right_arrow_big"
                         android:textDirection="locale" />
 
@@ -298,9 +304,9 @@
                         android:textColor="@color/color_light_gray"
                         android:textDirection="locale"
                         android:textSize="12sp" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp">
@@ -319,12 +325,12 @@
                         android:id="@+id/textview_sim_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="end"
-                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_marginEnd="@dimen/dimen_10dip"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:textColor="@color/color_light_gray"
                         android:textDirection="locale"
                         android:textSize="12sp" />
@@ -335,9 +341,9 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/grey_line"
                         android:textDirection="locale" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
 
@@ -355,15 +361,15 @@
                         android:id="@+id/textview_network_imsi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:layout_marginEnd="@dimen/dimen_10dip"
+                        android:layout_marginRight="@dimen/dimen_10dip"
                         android:textColor="@color/color_light_gray"
                         android:textDirection="locale"
                         android:textSize="12sp" />
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -373,11 +379,11 @@
                     android:contentDescription="@string/setting_network"
                     android:textDirection="locale" />
 
-            </LinearLayout>
-        </LinearLayout>
+            </com.zhy.android.percent.support.PercentLinearLayout>
+        </com.zhy.android.percent.support.PercentLinearLayout>
     </ScrollView>
 
     <include layout="@layout/activity_setting_data_plan" />
 
     <include layout="@layout/activity_network_change_pin" />
-</RelativeLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>
