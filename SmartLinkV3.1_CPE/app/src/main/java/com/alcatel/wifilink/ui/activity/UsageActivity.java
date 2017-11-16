@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.network.NetworkInfos;
@@ -147,7 +147,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
 
     /* **** goToMobileNetworkSettingPage **** */
     private void goToMobileNetworkSettingPage() {
-        ChangeActivity.toActivity(this, SettingNetworkActivity.class, false, true, false, 0);
+        CA.toActivity(this, SettingNetworkActivity.class, false, true, false, 0);
     }
 
     /* **** getUsageRecord **** */

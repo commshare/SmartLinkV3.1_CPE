@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.ui.activity.BaseActivity;
 import com.alcatel.wifilink.ui.activity.MainActivity;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;
@@ -109,7 +109,7 @@ public class SetupWizardActivity extends BaseActivity {
                 // 1.to connecttype fragment + refresh topbanner
                 refreshUi();
                 // 2.to wifi setting activity
-                ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
+                CA.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
                 break;
             case R.id.bt_tryagain:/* try again button */
                 // 1.to connecttype fragment + refresh topbanner
@@ -118,7 +118,7 @@ public class SetupWizardActivity extends BaseActivity {
             case R.id.tv_toHome:/* home button */
                 // to Main Activity
                 CPEConfig.getInstance().setQuickSetupFlag();
-                ChangeActivity.toActivity(this, MainActivity.class, false, true, false, 0);
+                CA.toActivity(this, MainActivity.class, false, true, false, 0);
                 break;
         }
     }

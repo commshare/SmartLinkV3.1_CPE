@@ -3,7 +3,6 @@ package com.alcatel.wifilink.ui.home.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.drm.DrmManagerClient;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,15 +19,14 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.common.Constants;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
-import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.system.WanSetting;
@@ -823,14 +821,14 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     if (!isWan) {/* sim button click logic */
                         connectedBtnClick();
                     } else {
-                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+                        CA.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
                     }
                 } else {
                     ToastUtil_m.show(getActivity(), getString(R.string.insert_sim_or_wan));
                 }
                 break;
             case R.id.access_status:
-                ChangeActivity.toActivity(activity, ActivityDeviceManager.class, false, false, false, 0);
+                CA.toActivity(activity, ActivityDeviceManager.class, false, false, false, 0);
                 break;
             default:
                 break;
@@ -845,7 +843,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onSuccess(WanSetting result) {
                 if (result.getStatus() == Cons.CONNECTED) {
-                    ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+                    CA.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
                 } else {
                     // 检测连接
                     connect();
@@ -878,7 +876,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         simButtonConnect();
                     } else {/* wan button click logic */
                         // to internet status activity
-                        ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+                        CA.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
                     }
                     if (clickProgresDialog != null) {
                         clickProgresDialog.dismiss();
@@ -925,13 +923,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* 初始状态: 已按下--> 再次按下 */
     private void connectedBtnClick() {
-        ChangeActivity.toActivity(activity, UsageActivity.class, false, false, false, 0);
+        CA.toActivity(activity, UsageActivity.class, false, false, false, 0);
     }
 
     /* **** core method: connect to remote **** */
     private void connect() {
         // injudge flag from settingAccount activity
-        SharedPrefsUtil.getInstance(activity).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
+        SP.getInstance(activity).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
@@ -1120,7 +1118,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (simState == Cons.PIN_REQUIRED) {
                     // sim pop to unlock activity
                     EventBus.getDefault().postSticky(HomeActivity.class);
-                    ChangeActivity.toActivity(getActivity(), SimUnlockActivity.class, false, false, false, 0);
+                    CA.toActivity(getActivity(), SimUnlockActivity.class, false, false, false, 0);
                     return;
                 }
                 if (simState == Cons.NOWN) {

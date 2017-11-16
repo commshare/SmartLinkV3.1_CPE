@@ -11,22 +11,23 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.Window;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.AppInfo;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.PreferenceUtil;
-import com.alcatel.wifilink.utils.WifiUtils;
 
 import java.util.Locale;
 import java.util.Timer;
@@ -43,6 +44,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         SmartLinkV3App.getContextInstance().add(this);
         ActionBar baseActionBar = getSupportActionBar();
         if (baseActionBar != null) {
@@ -129,7 +131,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
                 HomeActivity.autoLogoutTask = new TimerTask() {
                     @Override
                     public void run() {
-                        logout();
+                        logout(false);
                     }
                 };
                 HomeActivity.autoLogoutTimer = new Timer();
@@ -146,7 +148,9 @@ public class BaseActivityWithBack extends AppCompatActivity {
         String currentActivity = AppInfo.getCurrentActivityName(this);
         boolean la = currentActivity.contains("LoadingActivity");
         boolean ga = currentActivity.contains("GuideActivity");
-        boolean loa = currentActivity.contains("LoginActivity");
+        // TOAT: 这里替换成LoginRxActivity
+        boolean loa = currentActivity.contains("LoginRxActivity");
+        // boolean loa = currentActivity.contains("LoginActivity");
         if (la | ga | loa) {
             return true;
         } else {
@@ -165,7 +169,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
                     case Intent.ACTION_SCREEN_OFF:
                         OtherUtils.stopAutoTimer();
                         if (!isSpecialAc()) {
-                            logout();/* 锁屏后登出 */
+                            logout(true);/* 锁屏后登出 */
                         } else {
                             OtherUtils.stopAutoTimer();
                         }
@@ -178,27 +182,36 @@ public class BaseActivityWithBack extends AppCompatActivity {
     }
 
     /* 登出 */
-    private void logout() {
+
+    /**
+     * @param isLockScreen 是否为锁屏调用
+     */
+    private void logout(boolean isLockScreen) {
+        // 如果为锁屏则现判断是否为登陆--> 如果为登入,此时允许调用登出接口
         API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 if (result.getState() == Cons.LOGIN) {
-                    API.get().logout(new MySubscriber() {
-                        @Override
-                        protected void onSuccess(Object result) {
-                            // ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_successful));
-                            ChangeActivity.toActivity(BaseActivityWithBack.this, LoginActivity.class, false, true, false, 0);
-                        }
-
-                        @Override
-                        protected void onResultError(ResponseBody.Error error) {
-                            ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_failed));
-                        }
-                    });
+                    requestLogout();
                 }
             }
         });
+    }
 
+    private void requestLogout() {
+        API.get().logout(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                // ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_successful));
+                // CA.toActivity(BaseActivityWithBack.this, LoginActivity.class, false, true, false, 0);
+                CA.toActivity(BaseActivityWithBack.this, LoginRxActivity.class, false, true, false, 0);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_failed));
+            }
+        });
     }
 
     @Override

@@ -3,14 +3,13 @@ package com.alcatel.wifilink.ui.home.helper.setting;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.home.fragment.SettingFragment;
 
@@ -37,9 +36,9 @@ public class settingBroadcast extends BroadcastReceiver {
                 int nUpgradeStatus = BusinessManager.getInstance().getNewFirmwareInfo().getState();
                 if (EnumDeviceCheckingStatus.DEVICE_NEW_VERSION == EnumDeviceCheckingStatus.build(nUpgradeStatus)) {
                     SettingFragment.m_blFirst = false;
-                    SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
+                    SP.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
                 } else {
-                    SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
+                    SP.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
                 }
             }
         } else if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_DLNA_SETTING_REQUSET)) {

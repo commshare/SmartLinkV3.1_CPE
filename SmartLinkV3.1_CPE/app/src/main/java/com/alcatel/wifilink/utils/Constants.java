@@ -1,4 +1,4 @@
-package com.alcatel.wifilink;
+package com.alcatel.wifilink.utils;
 
 /**
  * Created by tao.j on 2017/6/20.

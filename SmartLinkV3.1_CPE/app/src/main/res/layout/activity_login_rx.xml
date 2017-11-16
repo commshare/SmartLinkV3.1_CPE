@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/login_center_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/login_center_line"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_100dip"
+        android:src="@drawable/ic_launcher"
+        app:layout_heightPercent="18%w"
+        app:layout_widthPercent="18%w" />
+
+    <EditText
+        android:id="@+id/et_loginRx"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_45dip"
+        android:layout_below="@+id/login_center_line"
+        android:background="@drawable/login_psd_bg"
+        android:hint="@string/login_enter_password"
+        android:inputType="textPassword"
+        android:lines="1"
+        app:layout_marginPercent="3%w"
+        app:layout_paddingLeftPercent="3%w"
+        app:layout_textSizePercent="2.2%h" />
+
+    <TextView
+        android:id="@+id/tv_loginRx_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_loginRx"
+        android:layout_marginLeft="@dimen/dimen_15dip"
+        android:layout_marginStart="@dimen/dimen_15dip"
+        android:text="@string/login_enter_password_tip"
+        android:textColor="@color/gray11"
+        app:layout_textSizePercent="2.2%h" />
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_login_remenberPsd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_loginRx_tip"
+        android:layout_margin="@dimen/dimen_15dip">
+
+        <ImageView
+            android:id="@+id/iv_loginRx_checkbox"
+            android:layout_width="@dimen/dimen_20dip"
+            android:layout_height="@dimen/dimen_20dip"
+            android:src="@drawable/general_btn_remember_nor" />
+
+        <TextView
+            android:id="@+id/tv_remember_psd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dip"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_toEndOf="@id/iv_loginRx_checkbox"
+            android:layout_toRightOf="@id/iv_loginRx_checkbox"
+            android:text="@string/login_remenber_psd"
+            app:layout_textSizePercent="7.5%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <Button
+        android:id="@+id/bt_loginRx"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_login_remenberPsd"
+        android:layout_marginLeft="@dimen/dimen_15dip"
+        android:layout_marginRight="@dimen/dimen_15dip"
+        android:background="@drawable/bt_login_selector"
+        android:gravity="center"
+        android:text="@string/login_login_btn"
+        android:textColor="@color/color_white"
+        app:layout_marginTopPercent="2%h"
+        app:layout_textSizePercent="2.5%h" />
+
+    <TextView
+        android:id="@+id/tv_loginRx_forgot"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_30dip"
+        android:layout_below="@id/bt_loginRx"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/login_forgot_password"
+        app:layout_marginTopPercent="5%h"
+        app:layout_textSizePercent="2.5%h" />
+</com.zhy.android.percent.support.PercentRelativeLayout>

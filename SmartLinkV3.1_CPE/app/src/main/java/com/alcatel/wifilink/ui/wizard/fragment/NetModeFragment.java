@@ -161,7 +161,7 @@ public class NetModeFragment extends Fragment implements View.OnClickListener {
             public void getStatusBean(StatusBean statusBean) {
                 EventBus.getDefault().postSticky(statusBean);
                 // TODO: 2017/6/14 to net mode status fragment 
-                // ChangeActivity.toActivity(getActivity(), NetModeConnectStatusActivity.class, true, true, false, 0);
+                // CA.toActivity(getActivity(), NetModeConnectStatusActivity.class, true, true, false, 0);
                 FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.WAN_NETMODE_STATE_FRA);
             }
         }.commit(statusBean);

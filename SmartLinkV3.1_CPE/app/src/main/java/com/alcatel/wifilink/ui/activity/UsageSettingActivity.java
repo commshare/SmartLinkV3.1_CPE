@@ -35,7 +35,7 @@ import com.alcatel.wifilink.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.wifilink.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.wifilink.common.ENUM.SIMState;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 
 import java.text.DecimalFormat;
@@ -216,14 +216,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		m_usageAutoDisconnectBtn.setOnClickListener(this);
 
 		monthlyPlanUnit = ((TextView) findViewById(R.id.monthly_plan_unit));
-		monthlyPlanUnit.setText(SharedPrefsUtil.getInstance(this).getString(SETTING_MONTHLY_DATA_UNIT, "MB"));
+		monthlyPlanUnit.setText(SP.getInstance(this).getString(SETTING_MONTHLY_DATA_UNIT, "MB"));
 
 		initUsageAlertEdit();
 		showSettingAlert();
 	}
 
 	private void showSettingAlert() {
-		int alertV = SharedPrefsUtil.getInstance(this).getInt(SETTING_USAGE_ALERT_VALUE, 0);
+		int alertV = SP.getInstance(this).getInt(SETTING_USAGE_ALERT_VALUE, 0);
 		if (alertV != 0){
 			if (alertV <= 100){
 				usage_alert_value_edt.setText(alertV + "");
@@ -341,7 +341,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 		m_bIsAutoDisconnectedEdit = false;
 
 		if (!usage_alert_value_edt.getText().equals("0")){
-			SharedPrefsUtil.getInstance(this).putInt(SETTING_USAGE_ALERT_VALUE, alertValue);
+			SP.getInstance(this).putInt(SETTING_USAGE_ALERT_VALUE, alertValue);
 		}
 
 	}
@@ -573,7 +573,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 				dialog.dismiss();
 				if (m_isMB){
 					monthlyPlanUnit.setText(R.string.m_unit);
-					SharedPrefsUtil.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "MB");
+					SP.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "MB");
 
 					DataValue data = new DataValue();
 					data.addParam("unit", 0);
@@ -581,7 +581,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 							MessageUti.STATISTICS_SET_UNIT_REQUSET, data);
 				} else {
 					monthlyPlanUnit.setText(R.string.g_unit);
-					SharedPrefsUtil.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "GB");
+					SP.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "GB");
 
 					DataValue data = new DataValue();
 					data.addParam("unit", 1);

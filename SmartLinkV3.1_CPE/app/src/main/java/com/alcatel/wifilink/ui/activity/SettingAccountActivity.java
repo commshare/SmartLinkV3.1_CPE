@@ -4,19 +4,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.alcatel.wifilink.EncryptionUtil;
+import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.LinkAppSettings;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.network.API;
@@ -182,7 +180,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         API.get().logout(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                ChangeActivity.toActivity(SettingAccountActivity.this, LoginActivity.class, false, true, false, 0);
+                CA.toActivity(SettingAccountActivity.this, LoginActivity.class, false, true, false, 0);
             }
 
             @Override

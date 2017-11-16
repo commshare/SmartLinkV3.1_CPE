@@ -1,7 +1,6 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -12,7 +11,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -77,7 +76,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             // 1.1.设置成功略过选择页--> 进入快速启动
             CPEConfig.getInstance().setQuickSetupFlag();
             // 2.延迟2秒跳转到setting页
-            ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 2000);
+            CA.toActivity(this, SettingWifiActivity.class, false, true, false, 2000);
         } else if (status == FAILED) {
             // 显示失败页
             switchStatus(View.GONE, View.VISIBLE);
@@ -104,7 +103,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             /*Try again*/
             case R.id.mRp_connectStatus_tryagain:
                 // 方案一:直接跳转会类型选择界面(当前)
-                ChangeActivity.toActivity(this, ConnectTypeSelectActivity.class, false, true, false, 0);
+                CA.toActivity(this, ConnectTypeSelectActivity.class, false, true, false, 0);
 
                 // 方案二:当前界面直接进行连接
                 /*// 显示正在连接中...
@@ -115,7 +114,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
                     public void getStatusBean(StatusBean statusBean) {
                         if (statusBean.getStatus() == 1) {
                             switchStatus(View.VISIBLE, View.GONE);// 显示成功
-                            ChangeActivity.toActivity(NetModeConnectStatusActivity.this, SettingWifiActivity.class, true, true, false, 2000);// 跳转
+                            CA.toActivity(NetModeConnectStatusActivity.this, SettingWifiActivity.class, true, true, false, 2000);// 跳转
                         } else {
                             choiceUi(R.string.NETMODE_STATUS_FAILED_DES1, R.string.NETMODE_STATUS_FAILED_DES2);// 显示失败
                         }
@@ -126,7 +125,7 @@ public class NetModeConnectStatusActivity extends BaseActivity {
             /*home--> 跳转至主页*/
             case R.id.mTv_connectStatus_home:
                 CPEConfig.getInstance().setQuickSetupFlag();/* 跳转到主页先初始化跳转标记, 否则--> loadingActivity */
-                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
+                CA.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
         }
     }

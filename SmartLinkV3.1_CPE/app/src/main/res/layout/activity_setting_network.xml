@@ -104,7 +104,6 @@
                         android:textDirection="locale" />
 
                     <ImageView
-                        app:layout_marginRightPercent="2%w"
                         android:id="@+id/network_roaming_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -112,9 +111,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/pwd_switcher_on"
+                        android:src="@drawable/pwd_switcher_off"
                         android:textDirection="locale"
                         app:layout_heightPercent="32.5%h"
+                        app:layout_marginRightPercent="2%w"
                         app:layout_widthPercent="65%h" />
 
                     <ImageView
@@ -383,7 +383,392 @@
         </com.zhy.android.percent.support.PercentLinearLayout>
     </ScrollView>
 
-    <include layout="@layout/activity_setting_data_plan" />
+    <!-- data plan -->
+    <LinearLayout
+        android:id="@+id/sett_data_plan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_bg_normal"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <include layout="@layout/activity_network_change_pin" />
+        <RelativeLayout
+            android:id="@+id/rl_monthly_data_plan"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:text="@string/usage_setting_monthlysataplan"
+                android:textDirection="locale" />
+
+            <ImageView
+                android:id="@+id/img_monthly_data_plan"
+                android:layout_width="@dimen/dimen_20dip"
+                android:layout_height="@dimen/dimen_20dip"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dimen_10dip"
+                android:layout_marginRight="@dimen/dimen_10dip"
+                android:src="@drawable/right_arrow_big"
+                android:textDirection="locale" />
+
+            <TextView
+                android:id="@+id/textview_monthly_data_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/img_monthly_data_plan"
+                android:layout_toStartOf="@id/img_monthly_data_plan"
+                android:textColor="@color/color_light_gray"
+                android:textDirection="locale"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:textDirection="locale" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:text="@string/usage_setting_billingday"
+                android:textDirection="locale" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/setdataplan_billing_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:entries="@array/settings_data_plan_billing_day"
+                android:spinnerMode="dialog"
+                android:textDirection="locale" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:textDirection="locale" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:text="@string/usage_setting_usagealert"
+                android:textDirection="locale" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/setdataplan_usagealert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:entries="@array/settings_data_plan_usage_alert"
+                android:spinnerMode="dialog"
+                android:textDirection="locale" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:textDirection="locale" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:text="@string/auto_disconnect"
+                android:textDirection="locale" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/setdataplan_auto_disconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textDirection="locale"
+                app:showText="false" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/WlanSettingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/setting_padding_10_dp"
+                android:text="@string/usage_setting_timelimit"
+                android:textDirection="locale" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/setdataplan_timelimit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:checked="true"
+                android:textDirection="locale" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5dip"
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_line"
+                android:textDirection="locale" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_time_limit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_set_time_limit"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/WlanSettingTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/setting_padding_10_dp"
+                    android:text="@string/usage_setting_settimelimit"
+                    android:textDirection="locale" />
+
+                <ImageView
+                    android:id="@+id/img_set_time_limit"
+                    android:layout_width="@dimen/dimen_20dip"
+                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_10dip"
+                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:src="@drawable/right_arrow_big"
+                    android:textDirection="locale" />
+
+                <TextView
+                    android:id="@+id/textview_set_time_limit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/img_set_time_limit"
+                    android:layout_toStartOf="@id/img_set_time_limit"
+                    android:textColor="@color/color_light_gray"
+                    android:textDirection="locale"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/grey_line"
+                    android:textDirection="locale" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/WlanSettingTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/setting_padding_10_dp"
+                    android:text="@string/auto_disconnect"
+                    android:textDirection="locale" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/setdataplan_limit_auto_disaconect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textDirection="locale"
+                    app:showText="false" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <!-- network -->
+    <LinearLayout
+        android:id="@+id/linear_network_change_pin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/current_sim_pin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_12dip"
+                        android:layout_marginStart="@dimen/dimen_12dip"
+                        android:background="@null"
+                        android:digits="1234567890"
+                        android:hint="@string/current_sim_pin"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:paddingBottom="@dimen/dimen_12dip"
+                        android:paddingTop="@dimen/dimen_12dip"
+                        android:textColor="@color/grey_text"
+                        android:textDirection="locale"
+                        android:textSize="@dimen/dimen_textsize_16sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"
+                    android:layout_marginLeft="@dimen/dimen_12dip"
+                    android:background="@color/main_bottom_divider"
+                    android:contentDescription="@string/setting_account"
+                    android:textDirection="locale" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/new_sim_pin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_12dip"
+                        android:layout_marginStart="@dimen/dimen_12dip"
+                        android:background="@null"
+                        android:digits="1234567890"
+                        android:hint="@string/new_sim_pin"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="@dimen/dimen_15dip"
+                        android:textColor="@color/grey_text"
+                        android:textDirection="locale"
+                        android:textSize="@dimen/dimen_textsize_16sp"
+                        />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"
+                    android:layout_marginLeft="@dimen/dimen_12dip"
+                    android:layout_marginStart="@dimen/dimen_12dip"
+                    android:background="@color/main_bottom_divider"
+                    android:contentDescription="@string/setting_account"
+                    android:textDirection="locale" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/confirm_new_sim_pin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_12dip"
+                        android:layout_marginStart="@dimen/dimen_12dip"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:digits="1234567890"
+                        android:hint="@string/confirm_new_sim_pin"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:paddingBottom="@dimen/dimen_15dip"
+                        android:paddingTop="@dimen/dimen_15dip"
+                        android:textColor="@color/grey_text"
+                        android:textDirection="locale"
+                        android:textSize="@dimen/dimen_textsize_16sp"
+                        />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5dip"
+                    android:background="@color/main_bottom_divider"
+                    android:contentDescription="@string/setting_account"
+                    android:textDirection="locale" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/remember_sim_pin"
+                    android:textDirection="locale" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
 </com.zhy.android.percent.support.PercentRelativeLayout>

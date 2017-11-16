@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId "com.alcatel.wifilink"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 25
         versionName '0.0.19'
         versionCode 20
@@ -121,5 +121,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'me.itangqi.waveloadingview:library:0.3.5'
     compile 'com.zhy:percent-support-extends:1.1.1'
+    compile 'cn.pedant.sweetalert:library:1.3'
+    compile 'com.github.artzok:AutoViewPager:v0.1.1'
     compile 'cn.pedant.sweetalert:library:1.3'
 }

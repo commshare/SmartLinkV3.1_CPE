@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
 
@@ -55,7 +55,7 @@ public class NetModeStatusFragment extends Fragment {
             // 1.1.设置成功略过选择页--> 进入快速启动
             CPEConfig.getInstance().setQuickSetupFlag();
             // 2.延迟2秒跳转到setting页
-            ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, false, true, false, 2000);
+            CA.toActivity(getActivity(), SettingWifiActivity.class, false, true, false, 2000);
         } else if (status == FAILED) {
             // 显示失败页
             activity.mRl_Failed.setVisibility(View.VISIBLE);

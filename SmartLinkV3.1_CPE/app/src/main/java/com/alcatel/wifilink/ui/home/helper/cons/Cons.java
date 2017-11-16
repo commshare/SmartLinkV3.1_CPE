@@ -8,6 +8,20 @@ import java.util.Set;
 
 public class Cons {
 
+    public static String SP_FILE = "SP_FILE";// 临时文件
+    public static String GUIDE_RX = "GUIDE_RX";// 向导标记
+    public static String LOGIN_REMEM = "LOGIN_REMEM";// 登陆记住密码
+    public static String LOGIN_RXPSD = "LOGIN_RXPSD";// 登陆密码
+    public static String WIZARD_RX = "WIZARD_RX";// 连接设置向导(SIM|WAN)
+    public static String DATAPLAN_RX = "DATAPLAN_RX";// 设置SIM流量向导(SIM)
+    public static String WANMODE_RX = "WANMODE_RX";// 设置WAN口向导(WAN)
+    public static String WIFIINIT_RX = "WIFIINIT_RX";// 设置wifi初始化
+    public static String PIN_REMEM_STR_RX = "PIN_REMEM_STR_RX";// 缓存的PIN码
+    public static String PIN_REMEM_FLAG_RX = "PIN_REMEM_FLAG_RX";// 记住PIN码标记
+    public static int PIN_FLAG = 0;// pin标记
+    public static int PUK_FLAG = 1;// puk标记
+
+
     public static final int NEED_ENCRYPT = 1;// 1:表示要加密 0:不需要加密
     public static String IP_PRE = "http://";
     public static String IP_SUFFIX = "/";
@@ -167,6 +181,8 @@ public class Cons {
 
     public static final int AUTO = 0;
     public static final int MANUAL = 1;
+    
+    public static final String INVALID_PIN = "020201";
 
 
 }

@@ -39,6 +39,8 @@ import butterknife.Unbinder;
 @SuppressLint("ValidFragment")
 public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
 
+    @BindView(R.id.iv_wlan_status)
+    ImageView ivWlanStatus;
     @BindView(R.id.et_ssid)
     EditText etSsid;
     @BindView(R.id.rl_ssid)
@@ -70,6 +72,7 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
     @BindView(R.id.rl_encrytion)
     PercentRelativeLayout rlEncrytion;
     Unbinder unbinder;
+
     private View inflate;
 
     private WlanResult.APListBean ap = SettingwifiRxActivity.apbean_5G;// 从静态读取AP
@@ -126,6 +129,8 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
      * 初始化视图
      */
     private void initView() {
+        // wlan是否生效
+        ivWlanStatus.setImageDrawable(ap.getApStatus() == Conn.disable ? ivSwitcherOff : ivSwitcherOn);
         // wifi广播相关信息
         etSsid.setText(ap.getSsid());
         etSsid.setSelection(OtherUtils.getEdittext(etSsid).length());
@@ -165,7 +170,8 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.iv_ssid_broadcast,           // ssid broadcast   
+    @OnClick({R.id.iv_wlan_status,              // status
+                     R.id.iv_ssid_broadcast,    // ssid broadcast   
                      R.id.iv_password_socket,   // password     
                      R.id.iv_wifipsd_eye,       // wifi password eye
                      R.id.iv_security_more,     // security more    
@@ -174,6 +180,9 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
                      R.id.tv_encrytion})        // encrytion text   
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_wlan_status:
+                setWlanStatus();
+                break;
             case R.id.iv_ssid_broadcast:
                 setSsidSocket();
                 break;
@@ -193,6 +202,16 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
                 break;
         }
 
+    }
+
+    /**
+     * 设置WLAN是否生效
+     */
+    private void setWlanStatus() {
+        // ssidHidden--> enable:隐藏 disable:显示
+        ap.setApStatus(ap.getApStatus() == Conn.disable ? Conn.ENABLE : Conn.disable);
+        // 修改ui
+        ivWlanStatus.setImageDrawable(ap.getApStatus() == Conn.ENABLE ? ivSwitcherOn : ivSwitcherOff);
     }
 
     /**
@@ -350,5 +369,4 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
         }
 
     }
-
 }

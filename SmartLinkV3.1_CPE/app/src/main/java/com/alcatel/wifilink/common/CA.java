@@ -15,7 +15,7 @@ import android.os.Parcelable;
  * 项目:LiyiBuy
  * 作者:Administrator
  */
-public class ChangeActivity {
+public class CA {
 
 
     /**

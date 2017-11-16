@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alcatel.wifilink.rx.ui.GuideRxActivity">
+
+    <com.art.zok.autoview.AutoViewPager
+        android:id="@+id/autoVp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        app:indicatorHeight="8dp"
+        app:indicatorPadding="8dp"
+        app:indicatorWidth="8dp"
+        app:intervalTime="2000"
+        app:selectedDrawable="@drawable/scroll_point_checked"
+        app:unselectedDrawable="@drawable/scroll_point_unchecked" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

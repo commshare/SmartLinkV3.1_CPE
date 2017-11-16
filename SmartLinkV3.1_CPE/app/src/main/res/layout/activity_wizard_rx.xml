@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <!-- 分割线 -->
+    <View
+        android:id="@+id/v_rx_split_wizard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5dip"
+        android:layout_centerInParent="true"
+        android:background="@color/gray" />
+
+    <!-- 分割文字 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="@string/or"
+        android:textColor="@color/gray"
+        app:layout_textSizePercent="3%h"
+        app:layout_widthPercent="15%w" />
+
+    <!-- SIM卡设置 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_sim_rx"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/v_rx_split_wizard">
+
+        <ImageView
+            android:id="@+id/iv_sim_rx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/results_sim_dis"
+            app:layout_heightPercent="12%w"
+            app:layout_widthPercent="12%w" />
+
+        <TextView
+            android:id="@+id/tv_sim_rx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_sim_rx"
+            android:layout_centerHorizontal="true"
+            android:text="@string/connect_type_select_sim_card_disable"
+            android:textColor="@color/red"
+            app:layout_textSizePercent="4.5%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+    
+    <!-- WAN口设置 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wan_rx"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/v_rx_split_wizard">
+
+        <ImageView
+            android:id="@+id/iv_wan_rx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/results_wan_dis"
+            app:layout_heightPercent="12%w"
+            app:layout_widthPercent="12%w" />
+
+        <TextView
+            android:id="@+id/tv_wan_rx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_wan_rx"
+            android:layout_centerHorizontal="true"
+            android:text="@string/connect_type_select_wan_port_disable"
+            android:textColor="@color/red"
+            app:layout_textSizePercent="4.5%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
@@ -155,6 +154,18 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         //        mBillingDaySpinner.setSelection(0, true);
         mBillingDaySpinner.setOnItemSelectedListener(this);
         mUsageAlertSpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_usagealert);
+        mUsageAlertSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] usageAlertStringArr = getResources().getStringArray(R.array.settings_data_plan_usage_alert);
+                String usageAlertPercent = usageAlertStringArr[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         mDisconnectCompat = (SwitchCompat) findViewById(R.id.setdataplan_auto_disconnect);
         mDisconnectCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -493,7 +504,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 long monthPlan = result.getMonthlyPlan() / dataPlanByte;
                 mMonthlyDataPlanText.setText(monthPlan + " " + unit);
                 mBillingDaySpinner.setSelection(result.getBillingDay());
-                //                mUsageAlertSpinner
+                // mUsageAlertSpinner
                 if (result.getAutoDisconnFlag() == 0) {
                     mDisconnectCompat.setChecked(false);
                 } else if (result.getAutoDisconnFlag() == 1) {
@@ -518,6 +529,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
+    // TODO: 2017/11/14 0014 
     @Override
     public void onClick(View v) {
         int nID = v.getId();
@@ -551,7 +563,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 break;
             case R.id.network_sim_pin_switch:
                 if (mSimStatus.getPinRemainingTimes() == 0) {
-                    ChangeActivity.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
+                    CA.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
                     return;
                 }
                 mSimPinCompat.setChecked(mSimPinCompat.isChecked() ? false : true);
@@ -571,9 +583,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() == Cons.READY) {
-                    boolean roamCheck = !isRoaming;
-                    mRoamingSwitchCompat.setImageResource(roamCheck ? R.drawable.pwd_switcher_on : R.drawable.pwd_switcher_off);
-                    int RoamingConnect = roamCheck ? 1 : 0;// 原来是选中状态--> 显示为未选中
+                    // 切换标记位
+                    isRoaming = !isRoaming;
+                    // mRoamingSwitchCompat.setImageResource(roamCheck ? R.drawable.pwd_switcher_on : R.drawable.pwd_switcher_off);
+                    int RoamingConnect = isRoaming ? 1 : 0;// 原来是选中状态--> 显示为未选中
                     // 先获取一次漫游状态
                     API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
                         @Override
@@ -583,24 +596,22 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                             API.get().setConnectionSettings(result, new MySubscriber() {
                                 @Override
                                 protected void onSuccess(Object result) {
-                                    System.out.println("ma_roaming set success ");
                                     API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
                                         @Override
                                         protected void onSuccess(ConnectionSettings result) {
                                             OtherUtils.hideProgressPop(pgd);
-                                            mRoamingSwitchCompat.setImageResource(result.getRoamingConnect() == 1 ? R.drawable.pwd_switcher_on : R.drawable.pwd_switcher_off);
+                                            int roamingConnect = result.getRoamingConnect();
+                                            mRoamingSwitchCompat.setImageResource(roamingConnect == 1 ? R.drawable.pwd_switcher_on : R.drawable.pwd_switcher_off);
                                         }
 
                                         @Override
                                         protected void onResultError(ResponseBody.Error error) {
-                                            OtherUtils.hideProgressPop(pgd);
-                                            ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                            roamError();
                                         }
 
                                         @Override
                                         public void onError(Throwable e) {
-                                            OtherUtils.hideProgressPop(pgd);
-                                            ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                            roamError();
                                         }
                                     });
 
@@ -608,15 +619,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
                                 @Override
                                 protected void onResultError(ResponseBody.Error error) {
-
-                                    OtherUtils.hideProgressPop(pgd);
-                                    ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                    roamError();
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    OtherUtils.hideProgressPop(pgd);
-                                    ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
+                                    roamError();
                                 }
                             });
                         }
@@ -650,6 +658,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             }
         });
 
+    }
+
+    private void roamError() {
+        isRoaming = !isRoaming;
+        OtherUtils.hideProgressPop(pgd);
+        ToastUtil_m.show(SettingNetworkActivity.this, R.string.connect_failed);
     }
 
     private void showSetmonthlyDataPlanDialog() {
@@ -771,7 +785,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
     private void doneChangePinCode() {
         if (mSimStatus.getPinRemainingTimes() == 0) {
-            ChangeActivity.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
+            CA.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
             return;
         }
         String currentPin = mCurrentSimPin.getText().toString();

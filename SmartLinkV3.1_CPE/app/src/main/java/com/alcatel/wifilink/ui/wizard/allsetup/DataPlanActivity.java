@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.Constants;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.network.API;
@@ -118,8 +118,8 @@ public class DataPlanActivity extends BaseActivityWithBack implements View.OnCli
     }
 
     private void toHomeActivity() {
-        SharedPrefsUtil.getInstance(this).putBoolean(Cons.DATA_PLAN_FLAG,true);
-        ChangeActivity.toActivity(this,HomeActivity.class,false,true,false,0);
+        SP.getInstance(this).putBoolean(Cons.DATA_PLAN_FLAG,true);
+        CA.toActivity(this,HomeActivity.class,false,true,false,0);
     }
 
     /* -------------------------------------------- helper -------------------------------------------- */
@@ -153,7 +153,7 @@ public class DataPlanActivity extends BaseActivityWithBack implements View.OnCli
      * @param autoDisconnect
      */
     private void commit(long data, int unit, int autoDisconnect) {
-        SharedPrefsUtil.getInstance(DataPlanActivity.this).putBoolean(Cons.DATA_PLAN_FLAG, true);
+        SP.getInstance(DataPlanActivity.this).putBoolean(Cons.DATA_PLAN_FLAG, true);
         UsageSetting us = new UsageSetting();
         us.setAutoDisconnFlag(autoDisconnect);
         us.setMonthlyPlan(data);
@@ -162,13 +162,13 @@ public class DataPlanActivity extends BaseActivityWithBack implements View.OnCli
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(DataPlanActivity.this, getString(R.string.succeed));
-                ChangeActivity.toActivity(DataPlanActivity.this, HomeActivity.class, false, true, false, 0);
+                CA.toActivity(DataPlanActivity.this, HomeActivity.class, false, true, false, 0);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
 
-                ChangeActivity.toActivity(DataPlanActivity.this, HomeActivity.class, false, true, false, 0);
+                CA.toActivity(DataPlanActivity.this, HomeActivity.class, false, true, false, 0);
             }
         });
     }

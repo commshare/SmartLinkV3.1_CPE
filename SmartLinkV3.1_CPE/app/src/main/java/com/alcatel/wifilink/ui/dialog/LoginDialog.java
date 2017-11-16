@@ -11,7 +11,6 @@ import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,8 +33,8 @@ import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.business.FeatureVersionManager;
 import com.alcatel.wifilink.business.user.LoginHelper;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.Const;
 import com.alcatel.wifilink.common.DataValue;
 import com.alcatel.wifilink.common.ErrorCode;
@@ -487,7 +486,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
         switch (v.getId()) {
 
             case R.id.login_forget_password:// 忘记密码按钮
-                ChangeActivity.toActivity(m_context, SettingAccountActivity.class, false, true, false, 0);
+                CA.toActivity(m_context, SettingAccountActivity.class, false, true, false, 0);
                 break;
 
             case R.id.login_apply_btn:

@@ -2,12 +2,11 @@ package com.alcatel.wifilink.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.alcatel.wifilink.Constants;
-import com.alcatel.wifilink.EncryptionUtil;
+import com.alcatel.wifilink.utils.Constants;
+import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.model.Usage.UsageParams;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.Usage.UsageRecordParam;
@@ -21,6 +20,7 @@ import com.alcatel.wifilink.model.device.param.DeviceNameParam;
 import com.alcatel.wifilink.model.device.param.DeviceUnblockParam;
 import com.alcatel.wifilink.model.device.response.BlockList;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
+import com.alcatel.wifilink.model.language.LanguageResult;
 import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.model.profile.ProfileList;
@@ -98,7 +98,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.alcatel.wifilink.Constants.SP_KEY_TOKEN;
+import static com.alcatel.wifilink.utils.Constants.SP_KEY_TOKEN;
 
 
 /**
@@ -272,6 +272,10 @@ public class API {
                 }
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    }
+
+    public void getCurrentLanguage(MySubscriber<LanguageResult> subscriber) {
+        subscribe(subscriber, smartLinkApi.getCurrentLanguage(new RequestBody(Methods.GET_CURRENT_LANGUAGE)));
     }
 
     /**
@@ -626,6 +630,9 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody> request(@Body RequestBody requestBody);
 
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<LanguageResult>> getCurrentLanguage(@Body RequestBody requestBody);
+        
         @POST("/jrd/webapi")
         Observable<ResponseBody<LoginState>> getLoginState(@Body RequestBody requestBody);
 

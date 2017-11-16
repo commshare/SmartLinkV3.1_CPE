@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.Android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.alcatel.wifilink">
 
     <supports-screens
@@ -44,28 +44,105 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:label,android:supportsRtl">
-
-        <!-- 启屏 -->
         <activity
             android:name=".ui.activity.LoadingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        </activity>
-
+        <!-- togo 旧的启动界面 -->
         <activity
             android:name=".ui.load.LoadingActivitys"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <!-- 新的启动界面 -->
+        <activity
+            android:name=".rx.ui.LoadingRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
 
+        <!-- 新的引导界面 -->
+        <activity
+            android:name=".rx.ui.GuideRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的刷新WIFI界面 -->
+        <activity
+            android:name=".rx.ui.RefreshWifiRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的登陆界面 -->
+        <activity
+            android:name=".rx.ui.LoginRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的连接向导界面 -->
+        <activity
+            android:name=".rx.ui.WizardRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的PIN|PUK设置页 -->
+        <activity
+            android:name=".rx.ui.PinPukIndexRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的流量设置向导页 -->
+        <activity
+            android:name=".rx.ui.DataPlanRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的WAN口连接界面 -->
+        <activity
+            android:name=".rx.ui.WanModeRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的WIFI向导界面 -->
+        <activity
+            android:name=".rx.ui.WifiInitRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- 新的主页 -->
+        <activity
+            android:name=".rx.ui.HomeRxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ui.activity.GuideActivity"
@@ -358,6 +435,7 @@
 
         <activity android:name=".ui.wizard.allsetup.DataPlanActivity">
         </activity>
+
     </application>
 
 </manifest>

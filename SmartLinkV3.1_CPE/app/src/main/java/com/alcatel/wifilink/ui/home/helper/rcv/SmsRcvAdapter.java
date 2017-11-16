@@ -6,8 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.business.wlan.AP;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.sms.SmsSingle;
 import com.alcatel.wifilink.network.API;
@@ -20,7 +19,6 @@ import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Collections;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -130,7 +128,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
             setReaded(smsContact);
             // 跳转
             EventBus.getDefault().postSticky(smsContact);
-            ChangeActivity.toActivity(context, SmsDetailActivity.class, false, false, false, 0);
+            CA.toActivity(context, SmsDetailActivity.class, false, false, false, 0);
         });
     }
 

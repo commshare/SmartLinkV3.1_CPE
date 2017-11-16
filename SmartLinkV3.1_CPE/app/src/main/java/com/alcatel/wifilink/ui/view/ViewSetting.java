@@ -15,7 +15,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.activity.SettingAboutActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
@@ -107,10 +107,10 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
             //DEVICE_NO_NEW_VERSION
             m_blFirst = false;
             //保存升级标志到本地SP
-            SharedPrefsUtil.getInstance(m_context).putBoolean(ISDEVICENEWVERSION, true);
+            SP.getInstance(m_context).putBoolean(ISDEVICENEWVERSION, true);
         } else {
             //保存升级标志到本地SP
-            SharedPrefsUtil.getInstance(m_context).putBoolean(ISDEVICENEWVERSION, false);
+            SP.getInstance(m_context).putBoolean(ISDEVICENEWVERSION, false);
         }
     }
 
@@ -147,12 +147,12 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
             item = new SettingItem(context.getString(R.string.device), true);
             list.add(item);
             //保存升级标志到本地SP
-            SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
+            SP.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
         } else {
             item = new SettingItem(context.getString(R.string.device), false);
             list.add(item);
             //保存升级标志到本地SP
-            SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
+            SP.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
         }
 
         item = new SettingItem(context.getString(R.string.setting_about), false);
@@ -304,7 +304,7 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
 //                            changeUpgradeFlag(ITEM_DEVICE_SETTING1, true);
 //                        }
                         //保存升级标志到本地SP
-                        SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
+                        SP.getInstance(context).putBoolean(ISDEVICENEWVERSION, true);
                     } else {
 //                        if (isSharingSupported) {
 //                            changeUpgradeFlag(ITEM_DEVICE_SETTING2, false);
@@ -312,7 +312,7 @@ public class ViewSetting extends BaseViewImpl implements View.OnClickListener {
 //                            changeUpgradeFlag(ITEM_DEVICE_SETTING1, false);
 //                        }
                         //保存升级标志到本地SP
-                        SharedPrefsUtil.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
+                        SP.getInstance(context).putBoolean(ISDEVICENEWVERSION, false);
                     }
                 }
             } else if (intent.getAction().equalsIgnoreCase(MessageUti.SHARING_GET_FTP_SETTING_REQUSET) || intent.getAction()

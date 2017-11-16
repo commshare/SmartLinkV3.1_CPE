@@ -1,7 +1,6 @@
 package com.alcatel.wifilink.ui.load;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.activity.LoadingActivity;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -77,7 +75,7 @@ public class LoadingActivitys extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.btn_start:
                 pd = OtherUtils.showProgressPop(this);
-                SharedPrefsUtil.getInstance(this).putBoolean(Cons.FIRST_RUN, false);
+                SP.getInstance(this).putBoolean(Cons.FIRST_RUN, false);
                 toNext();
                 break;
         }
@@ -89,7 +87,7 @@ public class LoadingActivitys extends AppCompatActivity implements View.OnClickL
     private void toNext() {
         Log.d("ma_load", "toNext");
         // 1.是否之前连接过向导页
-        firstTag = SharedPrefsUtil.getInstance(this).getBoolean(Cons.FIRST_RUN, true);
+        firstTag = SP.getInstance(this).getBoolean(Cons.FIRST_RUN, true);
         if (firstTag) {
             showGuidePager();
         } else {
@@ -107,16 +105,16 @@ public class LoadingActivitys extends AppCompatActivity implements View.OnClickL
                 OtherUtils.hideProgressPop(pd);
                 int state = result.getState();
                 if (state == Cons.LOGIN) {
-                    ChangeActivity.toActivity(LoadingActivitys.this, WizardActivity.class, false, true, false, 0);
+                    CA.toActivity(LoadingActivitys.this, WizardActivity.class, false, true, false, 0);
                 } else {
-                    ChangeActivity.toActivity(LoadingActivitys.this, LoginActivity.class, false, true, false, 0);
+                    CA.toActivity(LoadingActivitys.this, LoginActivity.class, false, true, false, 0);
                 }
             }
 
             @Override
             protected void onFailure() {
                 OtherUtils.hideProgressPop(pd);
-                ChangeActivity.toActivity(LoadingActivitys.this, RefreshWifiActivity.class, false, true, false, 0);
+                CA.toActivity(LoadingActivitys.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -128,7 +126,7 @@ public class LoadingActivitys extends AppCompatActivity implements View.OnClickL
                     // to RefreshWifiActivity
                 } else {
                 }
-                ChangeActivity.toActivity(LoadingActivitys.this, RefreshWifiActivity.class, false, true, false, 0);
+                CA.toActivity(LoadingActivitys.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -138,7 +136,7 @@ public class LoadingActivitys extends AppCompatActivity implements View.OnClickL
                     ToastUtil_m.show(LoadingActivitys.this, getString(R.string.login_failed));
                 } else {
                     /* 未知的错误--> 手机没有连接上对应的路由器 */
-                    ChangeActivity.toActivity(LoadingActivitys.this, RefreshWifiActivity.class, false, true, false, 0);
+                    CA.toActivity(LoadingActivitys.this, RefreshWifiActivity.class, false, true, false, 0);
                 }
             }
         });

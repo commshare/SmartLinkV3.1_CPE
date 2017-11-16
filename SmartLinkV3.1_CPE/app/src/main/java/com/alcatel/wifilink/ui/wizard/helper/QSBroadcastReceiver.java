@@ -74,13 +74,13 @@ public class QSBroadcastReceiver extends BroadcastReceiver {
                 // SetupWizardActivity.mRl_Success.setVisibility(View.VISIBLE);
                 //
                 // if (isRememberPassword) {
-                //     SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, mPinPassword.getText().toString());
+                //     SP.getInstance(getActivity()).putString(PIN_PASSWORD, mPinPassword.getText().toString());
                 // } else {
-                //     SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, "");
+                //     SP.getInstance(getActivity()).putString(PIN_PASSWORD, "");
                 // }
                 //
                 // //测试显示用的
-                // String pinPassword = SharedPrefsUtil.getInstance(getActivity()).getString(PIN_PASSWORD, "");
+                // String pinPassword = SP.getInstance(getActivity()).getString(PIN_PASSWORD, "");
                 // if (!pinPassword.equals("")) {
                 //     Toast.makeText(getActivity(), pinPassword, Toast.LENGTH_SHORT).show();
                 // } else {

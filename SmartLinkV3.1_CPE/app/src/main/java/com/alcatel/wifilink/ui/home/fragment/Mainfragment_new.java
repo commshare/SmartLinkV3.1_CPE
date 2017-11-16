@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.waveprogress.WaveLoadingView;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
@@ -627,17 +626,17 @@ public class Mainfragment_new extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_main_connected:/* SIM拨号成功 */
-                ChangeActivity.toActivity(activity, UsageActivity.class, false, false, false, 0);
+                CA.toActivity(activity, UsageActivity.class, false, false, false, 0);
                 break;
             case R.id.bt_main_notConnect:/* SIM没有拨号 */
                 if (isWanOrSim) {// 处于WAN口连接状态
-                    ChangeActivity.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
+                    CA.toActivity(getActivity(), InternetStatusActivity.class, false, false, false, 0);
                 } else {// 处于SIM卡连接状态
                     simConnect();
                 }
                 break;
             case R.id.iv_main_device: /* 设备按钮 */
-                ChangeActivity.toActivity(getActivity(), ActivityDeviceManager.class, false, false, false, 0);
+                CA.toActivity(getActivity(), ActivityDeviceManager.class, false, false, false, 0);
                 break;
         }
     }

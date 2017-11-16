@@ -21,9 +21,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.wlan.AP;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.ENUM;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
@@ -33,10 +32,7 @@ import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
-import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.ui.wizard.allsetup.DataPlanActivity;
-import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -494,20 +490,20 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                 // checkLoginState();
                 OtherUtils.setWifiActive(getActivity(), false);
                 popDismiss();
-                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+                CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 popDismiss();
-                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+                CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 popDismiss();
-                ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+                CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -600,7 +596,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     private void error() {
         popDismiss();
         ToastUtil_m.show(mContext, getString(R.string.success));
-        ChangeActivity.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+        CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
     }
 
     private void popDismiss() {

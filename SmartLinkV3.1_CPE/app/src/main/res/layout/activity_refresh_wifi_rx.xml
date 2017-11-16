@@ -1,0 +1,60 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/not_wifi_background"
+    android:padding="16dp"
+    tools:context=".ui.activity.RefreshWifiActivity">
+
+    <ImageView
+        android:id="@+id/iv_detect_logo"
+        android:layout_width="299dp"
+        android:layout_height="173dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/device_ic" />
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_detect_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/refresh_no_device_manage"
+        android:textColor="@color/color_deep_grey"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/pb_refreshing"
+        style="@android:style/Widget.DeviceDefault.ProgressBar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/selector_nowifi_button"
+        android:gravity="center"
+        android:onClick="OnRefreshClick"
+        android:paddingBottom="@dimen/dimen_5dip"
+        android:paddingLeft="@dimen/dimen_10dip"
+        android:paddingRight="@dimen/dimen_10dip"
+        android:paddingTop="@dimen/dimen_5dip"
+        android:text="@string/refresh"
+        android:textColor="@color/mg_blue"
+        android:textSize="@dimen/dimen_textsize_16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

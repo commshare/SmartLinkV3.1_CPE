@@ -39,7 +39,7 @@ import com.alcatel.wifilink.common.ENUM.UserLoginStatus;
 import com.alcatel.wifilink.common.ErrorCode;
 import com.alcatel.wifilink.common.LinkAppSettings;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.httpservice.ConstValue;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
@@ -393,7 +393,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
 		if (!m_bConnectPressd) {
 			if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
-				boolean logoutFlag = SharedPrefsUtil.getInstance(m_context).getBoolean(SettingAccountActivity.LOGOUT_FLAG, true);
+				boolean logoutFlag = SP.getInstance(m_context).getBoolean(SettingAccountActivity.LOGOUT_FLAG, true);
 				if (logoutFlag) {
 					m_connectLayout.setVisibility(View.VISIBLE);
 					m_connectedLayout.setVisibility(View.GONE);
@@ -420,7 +420,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 				m_connectedLayout.setVisibility(View.VISIBLE);
 			}
 		} else {
-			boolean logoutFlag = SharedPrefsUtil.getInstance(m_context).getBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
+			boolean logoutFlag = SP.getInstance(m_context).getBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
 			if (logoutFlag) {
 				m_connectLayout.setVisibility(View.VISIBLE);
 				m_connectedLayout.setVisibility(View.GONE);
@@ -547,7 +547,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 	private void connect()
 	{
-		SharedPrefsUtil.getInstance(m_context).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
+		SP.getInstance(m_context).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
 		UsageSettingModel settings = BusinessManager.getInstance().getUsageSettings();
 		UsageRecordResult m_UsageRecordResult = BusinessManager.getInstance().getUsageRecord();
 		WanConnectStatusModel internetConnState = BusinessManager.getInstance().getWanConnectStatus();
@@ -717,11 +717,11 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 		circleProgress.setValue(batterLevel);
 
 		showBatteryOnProgressPosition(batterLevel);
-		SharedPrefsUtil.getInstance(m_context).putInt(BATTERY_LEVEL, batterLevel);
+		SP.getInstance(m_context).putInt(BATTERY_LEVEL, batterLevel);
 	}
 
 	private void showBatteryOnProgressPosition(int progressValue) {
-		int startProgressValue = SharedPrefsUtil.getInstance(m_context).getInt(BATTERY_LEVEL, 0);
+		int startProgressValue = SP.getInstance(m_context).getInt(BATTERY_LEVEL, 0);
 		float startRotateValue = (float) (3.6 * startProgressValue);
 		float rotateValue = (float) (3.6 * progressValue);
 

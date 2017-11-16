@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
@@ -70,7 +70,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 ToastUtil_m.show(WizardActivity.this, getString(R.string.login_logout_successful));
-                ChangeActivity.toActivity(WizardActivity.this, LoginActivity.class, false, true, false, 0);
+                CA.toActivity(WizardActivity.this, LoginActivity.class, false, true, false, 0);
             }
         });
     }
@@ -141,7 +141,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
                 break;
             case R.id.tv_wan_insert:
                 EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_WAN));// WAN连接信号
-                ChangeActivity.toActivity(this, WanModeActivity.class, true, true, false, 0);
+                CA.toActivity(this, WanModeActivity.class, true, true, false, 0);
                 break;
         }
     }
@@ -153,11 +153,11 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
-                    ChangeActivity.toActivity(WizardActivity.this, SimUnlockActivity.class, false, true, false, 0);
+                    CA.toActivity(WizardActivity.this, SimUnlockActivity.class, false, true, false, 0);
                     return;
                 }
                 if (simState == Cons.PUK_REQUIRED) {
-                    ChangeActivity.toActivity(WizardActivity.this, PukUnlockActivity.class, false, true, false, 0);
+                    CA.toActivity(WizardActivity.this, PukUnlockActivity.class, false, true, false, 0);
                     return;
                 }
 

@@ -25,7 +25,7 @@ import com.alcatel.wifilink.common.ENUM.SIMState;
 import com.alcatel.wifilink.common.ENUM.UserLoginStatus;
 import com.alcatel.wifilink.common.ErrorCode;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 
@@ -97,7 +97,7 @@ public abstract class BaseActivity extends BaseFragmentActivity {
             usageSetting = 1024 * ((int) Double.parseDouble(usageSettingSt));
         }
 
-        alertValue = SharedPrefsUtil.getInstance(this).getInt(UsageSettingActivity.SETTING_USAGE_ALERT_VALUE, 0);
+        alertValue = SP.getInstance(this).getInt(UsageSettingActivity.SETTING_USAGE_ALERT_VALUE, 0);
         if (usageSetting != 0 && alertCount == 0) {
             if ((100 * usageRecord / usageSetting) >= alertValue) {
                 new AlertDialog.Builder(this).setTitle("WARNING").setMessage("traffic over usage restrictions").setPositiveButton("true", null).show();

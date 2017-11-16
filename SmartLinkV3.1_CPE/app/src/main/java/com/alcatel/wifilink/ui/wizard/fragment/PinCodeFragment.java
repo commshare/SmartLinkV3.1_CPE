@@ -17,9 +17,9 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
@@ -131,7 +131,7 @@ public class PinCodeFragment extends Fragment {
 //            // 1.show sendAgainSuccess ui
 //            activity.mRl_Success.setVisibility(View.VISIBLE);
 //            // 2. save the pin password to sp
-//            SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, isRememberPassword ? mEt_Pin_Password.getText().toString() : "");
+//            SP.getInstance(getActivity()).putString(PIN_PASSWORD, isRememberPassword ? mEt_Pin_Password.getText().toString() : "");
 //            // 3. auto trans to wifi setting ui
 //            ToastUtil_m.show(getActivity(), "Switching...");
 //            ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 0);
@@ -204,7 +204,7 @@ public class PinCodeFragment extends Fragment {
 
         mRl_setupWizard_wait.setVisibility(View.VISIBLE);
         // 请求前把旧数据清空
-        SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, "");
+        SP.getInstance(getActivity()).putString(PIN_PASSWORD, "");
         // 非空判断
         String pinPassword = mEt_Pin_Password.getText().toString().trim();
         if (TextUtils.isEmpty(pinPassword)) {
@@ -216,10 +216,10 @@ public class PinCodeFragment extends Fragment {
         API.get().unlockPin(pinPassword, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
+                SP.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
                 activity.mRl_Success.setVisibility(View.VISIBLE);
                 // to --> wifi setting
-                ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, false, true, false, 2000);
+                CA.toActivity(getActivity(), SettingWifiActivity.class, false, true, false, 2000);
             }
 
             @Override
@@ -257,7 +257,7 @@ public class PinCodeFragment extends Fragment {
 //                // wait ui is gone
 //                mRl_setupWizard_wait.setVisibility(View.GONE);
 //                if (correct) {// 如果PIN码正确, 则保存PIN码到本地
-//                    SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
+//                    SP.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);
 //                    activity.mRl_Success.setVisibility(View.VISIBLE);
 //                    // to --> wifi setting
 //                    ChangeActivity.toActivity(getActivity(), SettingWifiActivity.class, true, true, false, 2000);

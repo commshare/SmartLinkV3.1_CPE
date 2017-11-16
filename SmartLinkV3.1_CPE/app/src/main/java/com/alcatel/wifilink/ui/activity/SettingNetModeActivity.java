@@ -2,7 +2,6 @@ package com.alcatel.wifilink.ui.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -22,7 +21,7 @@ import com.alcatel.wifilink.business.wanguide.NetModeCommitHelper;
 import com.alcatel.wifilink.business.wanguide.NetModeUiHelper;
 import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.business.wanguide.WanInfo;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.ToastUtil_m;
 
 import org.greenrobot.eventbus.EventBus;
@@ -122,7 +121,7 @@ public class SettingNetModeActivity extends BaseActivity {
     /* 回退按钮 */
     @OnClick(R.id.main_header_back_iv)
     public void back() {
-        ChangeActivity.toActivity(this, ConnectTypeSelectActivity.class, false, true, false, 0);
+        CA.toActivity(this, ConnectTypeSelectActivity.class, false, true, false, 0);
         overridePendingTransition(0, 0);
     }
 
@@ -159,7 +158,7 @@ public class SettingNetModeActivity extends BaseActivity {
     @OnClick(R.id.main_header_right_text)
     public void skip() {
         // 跳转--> wifi setting界面
-        ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
+        CA.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
     }
 
     /* --------------------------------------------------- HELPER ------------------------------------------------*/
@@ -210,7 +209,7 @@ public class SettingNetModeActivity extends BaseActivity {
             @Override
             public void getStatusBean(StatusBean statusBean) {
                 EventBus.getDefault().postSticky(statusBean);
-                ChangeActivity.toActivity(SettingNetModeActivity.this, NetModeConnectStatusActivity.class, false, true, false, 0);
+                CA.toActivity(SettingNetModeActivity.this, NetModeConnectStatusActivity.class, false, true, false, 0);
             }
         }.commit(statusBean);
 

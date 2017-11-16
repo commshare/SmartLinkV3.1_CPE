@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -140,7 +140,7 @@ public class GuideActivity extends BaseActivityWithBack implements OnPageChangeL
                         //                         mActivity.startActivity(intent);
                         //                         mActivity.finish();
                         // to setupwizard activity
-                        ChangeActivity.toActivity(GuideActivity.this, WizardActivity.class, false, true, false, 0);
+                        CA.toActivity(GuideActivity.this, WizardActivity.class, false, true, false, 0);
                     }
                 });
             }

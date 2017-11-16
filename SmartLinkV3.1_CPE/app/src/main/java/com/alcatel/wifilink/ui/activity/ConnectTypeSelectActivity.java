@@ -30,13 +30,13 @@ import com.alcatel.wifilink.business.FeatureVersionManager;
 import com.alcatel.wifilink.business.model.SimStatusModel;
 import com.alcatel.wifilink.business.model.WanConnectStatusModel;
 import com.alcatel.wifilink.business.sim.helper.SimPinHelper;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.common.ErrorCode;
 import com.alcatel.wifilink.common.LinkAppSettings;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.dialog.AutoForceLoginProgressDialog;
@@ -191,7 +191,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             simClick();// --> execute the sim logic
         } else if (!simInsert && wanConnect) {// only wan
             // 只有WAN口的模式下的跳转
-            ChangeActivity.toActivity(this, SettingNetModeActivity.class, false, true, false, 0);
+            CA.toActivity(this, SettingNetModeActivity.class, false, true, false, 0);
         }
     }
 
@@ -289,14 +289,14 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             //WAN口
             case R.id.connect_type_wan_port_tv:
                 // 显示WIFI设置页面
-                ChangeActivity.toActivity(this, SettingNetModeActivity.class, false, true, false, 0);
+                CA.toActivity(this, SettingNetModeActivity.class, false, true, false, 0);
 
                 break;
 
             // TOGO 2017/6/14 to setupwizard
             // skip按钮
             case R.id.main_header_right_text:
-                ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
+                CA.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
                 break;
             
             
@@ -338,7 +338,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                 // TOAT: 测试时把该代码注释 END
                 mWaitingContainer.setVisibility(View.VISIBLE);
                 // 请求前把旧数据清空
-                SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, "");
+                SP.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, "");
                 // 非空判断
                 String pinPassword = mPinPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(pinPassword)) {
@@ -353,16 +353,16 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                         hideAllLayout();
                         mWaitingContainer.setVisibility(View.GONE);
                         if (correct) {// 如果PIN码正确, 则保存PIN码到本地
-                            SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, pinPassword);
+                            SP.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, pinPassword);
                             mPinSuccessContainer.setVisibility(View.VISIBLE);
                             // 跳转到wifi setting
-                            ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingWifiActivity.class, false, true, 
+                            CA.toActivity(ConnectTypeSelectActivity.this, SettingWifiActivity.class, false, true, 
                                     false, 2000);
                         } else {
                             // 输入错误后--> 并当前剩余次数 < 0
                             if (!currentRemain()) {
                                 // 跳转到PUK设置界面
-                                ChangeActivity.toActivity(ConnectTypeSelectActivity.this, SettingPukActivity.class, false, true, 
+                                CA.toActivity(ConnectTypeSelectActivity.this, SettingPukActivity.class, false, true, 
                                         false, 0);
                             }
                         }
@@ -389,7 +389,7 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
             // 跳到home页按钮
             case R.id.mTv_connectStatus_home:
                 CPEConfig.getInstance().setQuickSetupFlag();
-                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
+                CA.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
 
             default:
@@ -718,13 +718,13 @@ public class ConnectTypeSelectActivity extends Activity implements View.OnClickL
                     mPinSuccessContainer.setVisibility(View.VISIBLE);
 
                     if (isRememberPassword) {
-                        SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, mPinPassword.getText().toString());
+                        SP.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, mPinPassword.getText().toString());
                     } else {
-                        SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, "");
+                        SP.getInstance(ConnectTypeSelectActivity.this).putString(PIN_PASSWORD, "");
                     }
 
                     //测试显示用的
-                    String pinPassword = SharedPrefsUtil.getInstance(ConnectTypeSelectActivity.this).getString(PIN_PASSWORD, "");
+                    String pinPassword = SP.getInstance(ConnectTypeSelectActivity.this).getString(PIN_PASSWORD, "");
                     if (!pinPassword.equals("")) {
                         Toast.makeText(getApplicationContext(), pinPassword, Toast.LENGTH_SHORT).show();
                     } else {

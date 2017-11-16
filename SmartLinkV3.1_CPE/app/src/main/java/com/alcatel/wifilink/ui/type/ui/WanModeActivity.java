@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
@@ -119,7 +119,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
                         ToastUtil_m.show(WanModeActivity.this, getString(R.string.login_logout_successful));
-                        ChangeActivity.toActivity(WanModeActivity.this, LoginActivity.class, false, true, false, 0);
+                        CA.toActivity(WanModeActivity.this, LoginActivity.class, false, true, false, 0);
                     }
                 });
             }
@@ -178,7 +178,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
                 break;
             case R.id.tv_toHome:// 跳到主页
                 stopTimer();
-                ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, 0);
+                CA.toActivity(this, HomeActivity.class, false, true, false, 0);
                 break;
         }
     }
@@ -187,11 +187,11 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_wanmode_skip:
-                ChangeActivity.toActivity(this, WifiGuideActivity.class, false, false, false, 0);
+                CA.toActivity(this, WifiGuideActivity.class, false, false, false, 0);
                 break;
             case R.id.ib_wanmode_back:// 回退按钮
                 stopTimer();
-                ChangeActivity.toActivity(this, WizardActivity.class, false, true, false, 0);
+                CA.toActivity(this, WizardActivity.class, false, true, false, 0);
                 break;
         }
     }
@@ -341,8 +341,8 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
         UiChange(false, true, false);
         EventBus.getDefault().postSticky(new TypeBean(Cons.TYPE_WAN));
         OtherUtils.loginSkip(this);
-        SharedPrefsUtil.getInstance(this).putBoolean(Cons.WAN_MODE_FLAG, true);
-        // ChangeActivity.toActivity(this, HomeActivity.class, false, true, false, DELAY);
+        SP.getInstance(this).putBoolean(Cons.WAN_MODE_FLAG, true);
+        // CA.toActivity(this, HomeActivity.class, false, true, false, DELAY);
     }
 
     /**

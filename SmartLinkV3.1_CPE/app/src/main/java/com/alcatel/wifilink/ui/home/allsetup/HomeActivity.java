@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
@@ -56,9 +56,7 @@ import com.alcatel.wifilink.utils.OtherUtils;
 import org.cybergarage.upnp.Device;
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -81,7 +79,6 @@ import static com.alcatel.wifilink.R.string.main_setting;
 import static com.alcatel.wifilink.R.string.main_sms;
 import static com.alcatel.wifilink.R.string.wifi_settings;
 import static com.alcatel.wifilink.utils.OtherUtils.clearAllTimer;
-import static com.alcatel.wifilink.utils.OtherUtils.timerList;
 
 public class HomeActivity extends BaseActivityWithBack implements View.OnClickListener {
 
@@ -205,9 +202,9 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* 提交向导页标记 */
     private void setGuideFlag() {
-        boolean isWifiGuide = SharedPrefsUtil.getInstance(this).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
-        boolean isDataPlan = SharedPrefsUtil.getInstance(this).getBoolean(Cons.DATA_PLAN_FLAG, false);
-        SharedPrefsUtil.getInstance(this).putBoolean(LoginActivity.GUIDE_FLAG, isWifiGuide & isDataPlan);
+        boolean isWifiGuide = SP.getInstance(this).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
+        boolean isDataPlan = SP.getInstance(this).getBoolean(Cons.DATA_PLAN_FLAG, false);
+        SP.getInstance(this).putBoolean(LoginActivity.GUIDE_FLAG, isWifiGuide & isDataPlan);
     }
 
 
@@ -489,7 +486,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
                 // 3. when logout finish --> to the login Acitvity
-                ChangeActivity.toActivity(HomeActivity.this, LoginActivity.class, false, true, false, 0);
+                CA.toActivity(HomeActivity.this, LoginActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -503,7 +500,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
      * A2.切换到SMS编辑界面
      */
     private void toSmsActivity() {
-        ChangeActivity.toActivity(this, ActivityNewSms.class, false, false, false, 0);
+        CA.toActivity(this, ActivityNewSms.class, false, false, false, 0);
     }
 
     /* -------------------------------------------- HELPER -------------------------------------------- */
@@ -560,7 +557,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
             // is wan or sim
             isWanInsert();
         } else {
-            ChangeActivity.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
+            CA.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
         }
     }
 
@@ -653,7 +650,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
                 /* 需要输入PUK码 */
                 if (simState == Cons.PUK_REQUIRED) {
-                    ChangeActivity.toActivity(HomeActivity.this, PukUnlockActivity.class, false, false, false, 0);
+                    CA.toActivity(HomeActivity.this, PukUnlockActivity.class, false, false, false, 0);
                 }
                 
                 /* SIM卡已经插入并且已经准备好 */
@@ -723,7 +720,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 if (simState == Cons.PIN_REQUIRED) {
                     // sim pop to unlock activity
                     EventBus.getDefault().postSticky(new AcBean(HomeActivity.class));
-                    ChangeActivity.toActivity(HomeActivity.this, SimUnlockActivity.class, false, false, false, 0);
+                    CA.toActivity(HomeActivity.this, SimUnlockActivity.class, false, false, false, 0);
                     return;
                 }
                 if (simState == Cons.NOWN) {

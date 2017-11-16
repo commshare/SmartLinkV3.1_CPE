@@ -13,13 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.business.wlan.AP;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.load.LoadingActivitys;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import java.net.ConnectException;
@@ -118,7 +116,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
             @Override
             protected void onSuccess(LoginState result) {
                 pdDialog.dismiss();
-                ChangeActivity.toActivity(refreshContext, LoginActivity.class, false, true, false, 0);
+                CA.toActivity(refreshContext, LoginActivity.class, false, true, false, 0);
             }
 
             @Override

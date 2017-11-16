@@ -20,8 +20,8 @@ import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.business.sim.helper.SimPukEmptyHelper;
 import com.alcatel.wifilink.business.sim.helper.SimPukHelper;
-import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.ui.activity.NetModeConnectStatusActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
 @SuppressLint("ValidFragment")
@@ -150,8 +150,8 @@ public class PukCodeFragment extends Fragment implements View.OnClickListener {
                         public void isSuccesss(boolean isSuccess) {
                             mRlPukWaitting.setVisibility(View.GONE);
                             if (isSuccess) {/* 成功后--> 保存PIN到文件--> 跳转到状态页 */
-                                SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, getEtContent(mEtPukConfirmPin));
-                                ChangeActivity.toActivity(getActivity(), NetModeConnectStatusActivity.class, false, true, false, 0);
+                                SP.getInstance(getActivity()).putString(PIN_PASSWORD, getEtContent(mEtPukConfirmPin));
+                                CA.toActivity(getActivity(), NetModeConnectStatusActivity.class, false, true, false, 0);
                             } else {/* PUK码错误--> 获取剩余次数 */
                                 getActivity().runOnUiThread(() -> {
                                     // 不同次数的UI显示
@@ -227,7 +227,7 @@ public class PukCodeFragment extends Fragment implements View.OnClickListener {
      * @param eds
      */
     private void setEtUnable(EditText... eds) {
-        SharedPrefsUtil.getInstance(getActivity()).putString(PIN_PASSWORD, "");
+        SP.getInstance(getActivity()).putString(PIN_PASSWORD, "");
         for (EditText ed : eds) {
             ed.setText("");
             ed.setBackgroundColor(Color.parseColor("#dddddd"));

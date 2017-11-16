@@ -15,8 +15,8 @@ import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.business.sim.helper.SimPukEmptyHelper;
 import com.alcatel.wifilink.business.sim.helper.SimPukHelper;
-import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.common.SP;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,7 +116,7 @@ public class SettingPukActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mTv_pub_skip:// skip
-                ChangeActivity.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
+                CA.toActivity(this, SettingWifiActivity.class, false, true, false, 0);
                 break;
             case R.id.mIv_puk_del:// clear puk code edittext
                 mEtPukPukCode.setText("");
@@ -138,8 +138,8 @@ public class SettingPukActivity extends BaseActivity {
                         public void isSuccesss(boolean isSuccess) {
                             mRlPukWaitting.setVisibility(View.GONE);
                             if (isSuccess) {/* 成功后--> 保存PIN到文件--> 跳转到状态页 */
-                                SharedPrefsUtil.getInstance(SettingPukActivity.this).putString(PIN_PASSWORD, getEtContent(mEtPukConfirmPin));
-                                ChangeActivity.toActivity(SettingPukActivity.this, NetModeConnectStatusActivity.class, false, true,
+                                SP.getInstance(SettingPukActivity.this).putString(PIN_PASSWORD, getEtContent(mEtPukConfirmPin));
+                                CA.toActivity(SettingPukActivity.this, NetModeConnectStatusActivity.class, false, true,
                                         false, 0);
                             } else {/* PUK码错误--> 获取剩余次数 */
                                 runOnUiThread(() -> {
@@ -216,7 +216,7 @@ public class SettingPukActivity extends BaseActivity {
      * @param eds
      */
     private void setEtUnable(EditText... eds) {
-        SharedPrefsUtil.getInstance(SettingPukActivity.this).putString(PIN_PASSWORD, "");
+        SP.getInstance(SettingPukActivity.this).putString(PIN_PASSWORD, "");
         for (EditText ed : eds) {
             ed.setText("");
             ed.setBackgroundColor(Color.parseColor("#dddddd"));

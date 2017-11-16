@@ -10,7 +10,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -31,7 +30,7 @@ import com.alcatel.wifilink.common.ENUM.UserLoginStatus;
 import com.alcatel.wifilink.common.ErrorCode;
 import com.alcatel.wifilink.common.LinkAppSettings;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.wifilink.mediaplayer.proxy.IDeviceChangeListener;
@@ -519,7 +518,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, IDevi
         UserLoginStatus m_loginStatus = BusinessManager.getInstance().getLoginStatus();
         if (m_loginStatus != null && m_loginStatus == UserLoginStatus.LOGIN) {
             MainActivity.setLogoutFlag(true);
-            SharedPrefsUtil.getInstance(this).putBoolean(LOGOUT_FLAG, true);
+            SP.getInstance(this).putBoolean(LOGOUT_FLAG, true);
             BusinessManager.getInstance().sendRequestMessage(MessageUti.USER_LOGOUT_REQUEST, null);
             if (FeatureVersionManager.getInstance().isSupportForceLogin()) {
                 Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);

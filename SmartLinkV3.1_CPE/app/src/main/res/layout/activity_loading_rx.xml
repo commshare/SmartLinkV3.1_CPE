@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.alcatel.wifilink.rx.ui.LoadingRxActivity">
+
+    <ImageView
+        android:id="@+id/iv_loading_rx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:scaleType="fitXY"
+        android:src="@drawable/loading"
+        app:layout_heightPercent="58.7%w"
+        app:layout_widthPercent="80%w" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

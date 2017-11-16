@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.ConnectivityUtils;
 import com.alcatel.wifilink.common.DataValue;
 import com.alcatel.wifilink.common.ENUM.SecurityMode;
@@ -335,7 +335,7 @@ public class SettingWifiActivity extends BaseFragmentActivity implements OnClick
                 break;
             case R.id.ib_title_back:
                 //finish();
-                ChangeActivity.toActivity(this, LoadingActivity.class, false, true, false, 0);
+                CA.toActivity(this, LoadingActivity.class, false, true, false, 0);
                 break;
             case R.id.tv_title_back:
                 //hide keyboard

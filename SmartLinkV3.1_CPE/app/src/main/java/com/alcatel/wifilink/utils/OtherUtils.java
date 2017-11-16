@@ -17,10 +17,11 @@ import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.DataUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
+import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
@@ -55,6 +56,75 @@ public class OtherUtils {
     public static List<Object> timerList = new ArrayList<>();
     public static List<Object> homeTimerList = new ArrayList<>();// 仅存放自动退出定时器
     public static List<PopupWindows> popList = new ArrayList<>();
+    public static OnHeartBeatListener onHeartBeatListener;
+
+    /**
+     * 启动心跳定时器
+     *
+     * @param oriActivity    当前context
+     * @param targetActivity 出错时的目标地址
+     * @return 定时器辅助
+     */
+    public static TimerHelper startHeartBeat(Activity oriActivity, Class targetActivity) {
+        TimerHelper timerHelper = new TimerHelper(oriActivity) {
+            @Override
+            public void doSomething() {
+                API.get().heartBeat(new MySubscriber() {
+                    @Override
+                    protected void onSuccess(Object result) {
+                        if (onHeartBeatListener != null) {
+                            onHeartBeatListener.onSucess();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // 出错, 跳转到目标界面
+                        ToastUtil_m.show(oriActivity, oriActivity.getString(R.string.connect_failed));
+                        CA.toActivity(oriActivity, targetActivity, false, true, false, 0);
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        // 出错, 跳转到目标界面
+                        ToastUtil_m.show(oriActivity, oriActivity.getString(R.string.connect_failed));
+                        CA.toActivity(oriActivity, targetActivity, false, true, false, 0);
+                    }
+                });
+            }
+        };
+        timerHelper.start(3000);
+        OtherUtils.timerList.add(timerHelper);
+        return timerHelper;
+    }
+
+    public interface OnHeartBeatListener {
+        void onSucess();
+    }
+
+    public static void setOnHeartBeatListener(OnHeartBeatListener onHeartBeatListener) {
+        OtherUtils.onHeartBeatListener = onHeartBeatListener;
+    }
+
+    /**
+     * 停止心跳定时器
+     *
+     * @param timerHelper
+     */
+    public static void stopHeartBeat(TimerHelper timerHelper) {
+        timerHelper.stop();
+    }
+
+
+    /**
+     * 获取编辑域内容
+     *
+     * @param ed
+     * @return
+     */
+    public static String getEdContent(EditText ed) {
+        return ed.getText().toString().trim().replace(" ", "");
+    }
 
     /**
      * 线程自关
@@ -383,17 +453,17 @@ public class OtherUtils {
      * @param context
      */
     public static void loginSkip(Context context) {
-        boolean isWifiGuide = SharedPrefsUtil.getInstance(context).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
+        boolean isWifiGuide = SP.getInstance(context).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
         if (isWifiGuide) {/* 进入过了 */
             // 是否进入过流量设置界面
-            boolean isDataPlan = SharedPrefsUtil.getInstance(context).getBoolean(Cons.DATA_PLAN_FLAG, false);
+            boolean isDataPlan = SP.getInstance(context).getBoolean(Cons.DATA_PLAN_FLAG, false);
             if (isDataPlan) {
-                ChangeActivity.toActivity(context, HomeActivity.class, false, true, false, 0);
+                CA.toActivity(context, HomeActivity.class, false, true, false, 0);
             } else {
-                ChangeActivity.toActivity(context, DataPlanActivity.class, false, true, false, 0);
+                CA.toActivity(context, DataPlanActivity.class, false, true, false, 0);
             }
         } else {/* 没有进入过 */
-            ChangeActivity.toActivity(context, WifiGuideActivity.class, false, true, false, 0);
+            CA.toActivity(context, WifiGuideActivity.class, false, true, false, 0);
         }
     }
 

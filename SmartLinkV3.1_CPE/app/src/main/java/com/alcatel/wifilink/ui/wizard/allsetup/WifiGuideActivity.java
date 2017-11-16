@@ -18,9 +18,9 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.wlan.AP;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.ENUM;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
@@ -36,7 +36,6 @@ import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.OtherUtils;
 
-import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_AP_ISOLATION;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_BANDWIDTH;
 import static com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity.EXTRA_CHANNEL;
@@ -320,8 +319,8 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     }
 
     private void toDataplanActicity() {
-        SharedPrefsUtil.getInstance(this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
-        ChangeActivity.toActivity(this, DataPlanActivity.class, false, true, false, 0);
+        SP.getInstance(this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
+        CA.toActivity(this, DataPlanActivity.class, false, true, false, 0);
     }
 
     @Override
@@ -490,8 +489,8 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                 // checkLoginState();
                 OtherUtils.setWifiActive(WifiGuideActivity.this, false);
                 popDismiss();
-                SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
-                ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                SP.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
+                CA.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -499,13 +498,13 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
                 super.onError(e);
                 popDismiss();
                 // 提交设置过的标记
-                SharedPrefsUtil.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
+                SP.getInstance(WifiGuideActivity.this).putBoolean(Cons.WIFI_GUIDE_FLAG, true);
                 // 点击后, router有可能马上掉线, 造成超时错误返回
                 if (e.getMessage().toString().contains("ETIMEDOUT")) {
-                    ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                    CA.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                 } else {
                     // 跳转到月流量计划界面
-                    ChangeActivity.toActivity(WifiGuideActivity.this, DataPlanActivity.class, false, true, false, 0);
+                    CA.toActivity(WifiGuideActivity.this, DataPlanActivity.class, false, true, false, 0);
                 }
 
             }
@@ -513,7 +512,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 popDismiss();
-                ChangeActivity.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                CA.toActivity(WifiGuideActivity.this, RefreshWifiActivity.class, false, true, false, 0);
             }
         });
     }

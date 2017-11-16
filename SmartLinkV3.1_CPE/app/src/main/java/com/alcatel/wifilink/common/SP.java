@@ -9,20 +9,20 @@ import android.content.SharedPreferences.Editor;
  *
  * @author Tank
  */
-public class SharedPrefsUtil {
+public class SP {
     public static String SP_NAME = "As_SmartLink";
     private static int MODE = Context.MODE_PRIVATE;
     private static Context context;
-    private static SharedPrefsUtil sharedPrefsUtil;
+    private static SP sharedPrefsUtil;
 
-    public static SharedPrefsUtil getInstance(Context context) {
+    public static SP getInstance(Context context) {
         if (sharedPrefsUtil == null) {
-            sharedPrefsUtil = new SharedPrefsUtil(context);
+            sharedPrefsUtil = new SP(context);
         }
         return sharedPrefsUtil;
     }
 
-    public SharedPrefsUtil(Context context) {
+    public SP(Context context) {
         super();
         this.context = context.getApplicationContext();
     }
@@ -39,7 +39,7 @@ public class SharedPrefsUtil {
      * @param sharedPrefsName 要设置的 sharedPrefsName
      */
 
-    public SharedPrefsUtil setSP_NAME(String sharedPrefsName) {
+    public SP setSP_NAME(String sharedPrefsName) {
         this.SP_NAME = sharedPrefsName;
         return this;
     }

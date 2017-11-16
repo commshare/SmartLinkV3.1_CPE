@@ -7,13 +7,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.wlan.LanSettings;
 import com.alcatel.wifilink.network.API;

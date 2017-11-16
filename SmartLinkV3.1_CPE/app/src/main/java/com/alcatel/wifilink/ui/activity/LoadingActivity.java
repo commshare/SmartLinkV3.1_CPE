@@ -14,18 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.alcatel.wifilink.Constants;
+import com.alcatel.wifilink.utils.Constants;
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
-import com.alcatel.wifilink.model.system.SysStatus;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.ui.view.CirclePageIndicator;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -99,14 +98,14 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {// 点击start button后
         pd = OtherUtils.showProgressPop(this);
-        SharedPrefsUtil.getInstance(this).putBoolean(firstRun, false);
+        SP.getInstance(this).putBoolean(firstRun, false);
         toNextOperation();
     }
 
     /* 启动APP */
     private void startApp() {
         //  判断是否为第一次使用
-        isFirstRun = SharedPrefsUtil.getInstance(this).getBoolean(firstRun, true);
+        isFirstRun = SP.getInstance(this).getBoolean(firstRun, true);
         Log.d("ma_load", isFirstRun + "");
         if (isFirstRun) {
             showGuidePager();// 显示引导页
@@ -129,7 +128,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
         if (!OtherUtils.isWiFiActive(this)) {
             Log.d("ma_load", "isWifiActive");
             // to RefreshWifiActivity
-            ChangeActivity.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
+            CA.toActivity(this, RefreshWifiActivity.class, false, true, false, 0);
             return;
         }
 
@@ -142,15 +141,15 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("ma_load", "onSuccess");
                 OtherUtils.hideProgressPop(pd);
                 if (result.getState() == Cons.LOGIN) {
-                    Log.d("ma_load", "to WizardActivity");
+                    Log.d("ma_load", "to HomeActivity");
                     // to HomeActivity
-                    ChangeActivity.toActivity(LoadingActivity.this, WizardActivity.class, false, true, false, 0);
+                    CA.toActivity(LoadingActivity.this, HomeActivity.class, false, true, false, 0);
                     // Intent intent = new Intent(LoadingActivity.this, TestActivity.class);
                     // LoadingActivity.this.startActivity(intent);
                 } else {
                     Log.d("ma_load", "to LoginActivity");
                     // to LoginActivity
-                    ChangeActivity.toActivity(LoadingActivity.this, LoginActivity.class, false, true, false, 0);
+                    CA.toActivity(LoadingActivity.this, LoginActivity.class, false, true, false, 0);
                     // Intent intent = new Intent(LoadingActivity.this, TestActivity.class);
                     // LoadingActivity.this.startActivity(intent);
                 }
@@ -163,18 +162,18 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                 if (e instanceof SocketTimeoutException) {/* 连接超时 */
                     // to RefreshWifiActivity
                     Log.d("ma_load", "SocketTimeoutException");
-                    // ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                    // CA.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                     Intent intent = new Intent(LoadingActivity.this, RefreshWifiActivity.class);
                     LoadingActivity.this.startActivity(intent);
                 } else if (e instanceof ConnectException) {
                     // to RefreshWifiActivity
                     Log.d("ma_load", "ConnectException");
-                    // ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                    // CA.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                     Intent intent = new Intent(LoadingActivity.this, RefreshWifiActivity.class);
                     LoadingActivity.this.startActivity(intent);
                 } else {
                     Log.d("ma_load", "unknow");
-                    // ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                    // CA.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                     Intent intent = new Intent(LoadingActivity.this, RefreshWifiActivity.class);
                     LoadingActivity.this.startActivity(intent);
                 }
@@ -184,7 +183,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
             protected void onFailure() {
                 Log.d("ma_load", "onFailure");
                 OtherUtils.hideProgressPop(pd);
-                ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                CA.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
@@ -197,7 +196,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     /* 未知的错误--> 手机没有连接上对应的路由器 */
                     Log.d("ma_load", "unknow");
-                    ChangeActivity.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                    CA.toActivity(LoadingActivity.this, RefreshWifiActivity.class, false, true, false, 0);
                 }
             }
         });

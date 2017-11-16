@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5">
+
+    <!-- ***** PUK UI ***** -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_puk_rx"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <!-- 输入框 -->
+        <EditText
+            android:id="@+id/et_puk_rx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="@string/puk_code_label"
+            android:maxLength="16"
+            android:paddingEnd="@dimen/dimen_10dip"
+            android:paddingStart="@dimen/dimen_10dip"
+            android:textColor="@color/mg_blue"
+            app:layout_heightPercent="9%h"
+            app:layout_textSizePercent="3%h" />
+
+        <!-- 剩余次数 -->
+        <TextView
+            android:id="@+id/tv_puk_rx_tip_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_puk_rx"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:text="10"
+            android:textColor="@color/gray"
+            app:layout_textSizePercent="2.8%h" />
+
+        <TextView
+            android:id="@+id/tv_puk_rx_tip_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_puk_rx"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_10dip"
+            android:layout_toEndOf="@id/tv_puk_rx_tip_num"
+            android:text="@string/sim_unlocked_attempts"
+            android:textColor="@color/gray"
+            app:layout_textSizePercent="2.8%h" />
+
+        <!-- 重新设置PIN码 -->
+        <EditText
+            android:id="@+id/et_puk_resetpin_rx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_puk_rx_tip_num"
+            android:layout_marginTop="@dimen/dimen_15dip"
+            android:background="@color/white"
+            android:hint="@string/new_sim_pin"
+            android:maxLength="8"
+            android:paddingEnd="@dimen/dimen_10dip"
+            android:paddingStart="@dimen/dimen_10dip"
+            android:textColor="@color/mg_blue"
+            app:layout_heightPercent="9%h"
+            app:layout_textSizePercent="3%h" />
+
+        <!-- 4~8 位数提示 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/tv_puk_rx_tip_num"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_15dip"
+            android:gravity="center"
+            android:text="@string/puk_limit_strings"
+            android:textColor="@color/gray"
+            app:layout_heightPercent="9%h"
+            app:layout_textSizePercent="3%h" />
+
+        <!-- 确认PIN码 -->
+        <EditText
+            android:id="@+id/et_puk_resetpin_rx_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_puk_resetpin_rx"
+            android:background="@color/white"
+            android:hint="@string/confirm_new_sim_pin"
+            android:maxLength="8"
+            android:paddingEnd="@dimen/dimen_10dip"
+            android:paddingStart="@dimen/dimen_10dip"
+            android:textColor="@color/mg_blue"
+            app:layout_heightPercent="9%h"
+            app:layout_textSizePercent="3%h" />
+
+        <!-- 记住PIN码 -->
+        <ImageView
+            android:id="@+id/iv_puk_remempin_rx_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_puk_resetpin_rx_confirm"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_15dip"
+            android:src="@drawable/general_btn_remember_pre"
+            app:layout_heightPercent="5%w"
+            app:layout_widthPercent="5%w" />
+
+        <TextView
+            android:id="@+id/tv_puk_remempin_rx_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_puk_resetpin_rx_confirm"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_marginTop="@dimen/dimen_15dip"
+            android:layout_toEndOf="@+id/iv_puk_remempin_rx_checkbox"
+            android:text="@string/remember_sim_pin"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="2.8%h" />
+
+        <!-- 按钮 -->
+        <Button
+            android:id="@+id/bt_puk_rx_unlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_puk_remempin_rx_checkbox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_15dip"
+            android:background="@drawable/bt_login_selector"
+            android:text="@string/netmode_connect"
+            android:textColor="@color/white"
+            app:layout_heightPercent="8%h"
+            app:layout_textSizePercent="2.8%h"
+            app:layout_widthPercent="85%w" />
+
+        <!-- 剩余1次提示 -->
+        <TextView
+            android:id="@+id/tv_puk_rx_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bt_puk_rx_unlock"
+            android:layout_centerHorizontal="true"
+            android:text="@string/puk_remain_1time"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_marginPercent="10%w"
+            app:layout_textSizePercent="2.5%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

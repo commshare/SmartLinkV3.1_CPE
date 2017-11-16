@@ -34,7 +34,7 @@ import com.alcatel.wifilink.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.wifilink.common.ENUM.PinState;
 import com.alcatel.wifilink.common.ENUM.SIMState;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SharedPrefsUtil;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.dialog.ErrorDialog;
 import com.alcatel.wifilink.ui.dialog.ErrorDialog.OnClickBtnRetry;
@@ -135,7 +135,7 @@ public class SettingDeviceActivity extends BaseActivity implements OnClickListen
         m_upgrade_system.setOnClickListener(this);
         mUpgradeFlage = (TextView) findViewById(R.id.device_upgrade_flag);
         //获取是否有升级
-        boolean isDeviceNewVersion = SharedPrefsUtil.getInstance(this).getBoolean(ISDEVICENEWVERSION, false);
+        boolean isDeviceNewVersion = SP.getInstance(this).getBoolean(ISDEVICENEWVERSION, false);
         if (isDeviceNewVersion){
             mUpgradeFlage.setVisibility(View.VISIBLE);
         }else{

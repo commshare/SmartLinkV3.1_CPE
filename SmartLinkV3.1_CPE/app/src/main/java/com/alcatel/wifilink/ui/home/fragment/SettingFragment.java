@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ChangeActivity;
+import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.fileexplorer.Util;
@@ -1074,7 +1074,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void goToDeviceSettingPage() {
         // to setting connectDeviceList activity
-        ChangeActivity.toActivity(getActivity(), SettingDeviceActivity.class, false, true, false, 0);
+        CA.toActivity(getActivity(), SettingDeviceActivity.class, false, true, false, 0);
     }
 
     private void goToAboutSettingPage() {

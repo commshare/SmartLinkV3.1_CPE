@@ -1,4 +1,4 @@
-package com.alcatel.wifilink;
+package com.alcatel.wifilink.utils;
 
 import static android.R.attr.key;
 import static com.alcatel.wifilink.network.API.AUTHORIZATION_KEY;
