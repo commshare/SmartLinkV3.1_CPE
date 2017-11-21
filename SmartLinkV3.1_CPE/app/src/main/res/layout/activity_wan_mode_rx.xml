@@ -1,14 +1,481 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<com.zhy.android.percent.support.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e9eaed"
     tools:context="com.alcatel.wifilink.rx.ui.WanModeRxActivity">
-    <TextView
-        android:layout_width="wrap_content"
-        android:text="wanmodeRx"
-        android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+    <!-- ### 标题栏 ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_rx"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mg_blue"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_wanmode_rx_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/ethernet_wan_connection"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_wanmode_rx_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:gravity="center"
+            android:lines="1"
+            android:text="@string/skip"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="25%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ### pppoe ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_check_pppoe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wanmode_rx"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_wanmode_rx"
+            android:layout_centerVertical="true"
+            android:paddingEnd="@dimen/dimen_15dip"
+            android:paddingStart="@dimen/dimen_15dip"
+            android:text="@string/pppoe"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="28%h" />
+
+        <ImageView
+            android:id="@+id/iv_wanmode_rx_pppoe_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:src="@drawable/btn_radio_on_normal"
+            android:visibility="gone" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ### DHCP ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_check_dhcp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wanmode_check_pppoe"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_wanmode_rx"
+            android:layout_centerVertical="true"
+            android:paddingEnd="@dimen/dimen_15dip"
+            android:paddingStart="@dimen/dimen_15dip"
+            android:text="@string/dhcp"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="28%h" />
+
+        <ImageView
+            android:id="@+id/iv_wanmode_rx_dhcp_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:src="@drawable/btn_radio_on_normal"
+            android:visibility="gone" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ### static ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_check_static"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wanmode_check_dhcp"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_wanmode_rx"
+            android:layout_centerVertical="true"
+            android:paddingEnd="@dimen/dimen_15dip"
+            android:paddingStart="@dimen/dimen_15dip"
+            android:text="@string/static_ip"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="28%h" />
+
+        <ImageView
+            android:id="@+id/iv_wanmode_rx_static_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:src="@drawable/btn_radio_on_normal"
+            android:visibility="gone" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ### PPPOE详情 ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_rx_pppoe_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wanmode_check_static"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_heightPercent="27%h"
+        app:layout_marginTopPercent="2%h">
+
+        <!-- account -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_wanmode_rx_pppoe_detail_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_heightPercent="33.3%h">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_15dip"
+                android:text="@string/account"
+                android:textColor="@color/black"
+                app:layout_textSizePercent="30%h" />
+
+            <EditText
+                android:id="@+id/et_wanmode_rx_pppoe_account"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_15dip"
+                android:background="@null"
+                android:gravity="end|center_vertical"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:textColor="@color/mg_blue"
+                app:layout_textSizePercent="30%h"
+                app:layout_widthPercent="60%w" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- password -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_wanmode_rx_pppoe_detail_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_wanmode_rx_pppoe_detail_account"
+            app:layout_heightPercent="33.3%h">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_15dip"
+                android:text="@string/password"
+                android:textColor="@color/black"
+                app:layout_textSizePercent="30%h" />
+
+            <EditText
+                android:id="@+id/et_wanmode_rx_pppoe_psd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_15dip"
+                android:background="@null"
+                android:gravity="end|center_vertical"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:textColor="@color/mg_blue"
+                app:layout_textSizePercent="30%h"
+                app:layout_widthPercent="60%w" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- MTU -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_wanmode_rx_pppoe_detail_mtu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_wanmode_rx_pppoe_detail_password"
+            app:layout_heightPercent="33.3%h">
+
+            <TextView
+                android:id="@+id/tv_wanmode_rx_pppoe_mtu_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_15dip"
+                android:text="@string/netmode_mtu"
+                android:textColor="@color/black"
+                app:layout_marginTopPercent="12%h"
+                app:layout_textSizePercent="30%h" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_wanmode_rx_pppoe_mtu_des"
+                android:layout_marginStart="@dimen/dimen_15dip"
+                android:text="@string/do_not_change_default_if_not_necessary" />
+
+            <EditText
+                android:id="@+id/et_wanmode_rx_pppoe_mtu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_15dip"
+                android:background="@null"
+                android:gravity="end|center_vertical"
+                android:hint="1492"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:textColor="@color/mg_blue"
+                app:layout_textSizePercent="30%h"
+                app:layout_widthPercent="15%w" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ### static 详情 ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_rx_static_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wanmode_check_static"
+        android:background="@color/white"
+        android:visibility="visible"
+        app:layout_heightPercent="18%h"
+        app:layout_marginTopPercent="2%h">
+
+        <!-- ip address -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_wanmode_rx_static_detail_ipaddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_heightPercent="50%h">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_15dip"
+                android:text="@string/ip_address"
+                android:textColor="@color/black"
+                app:layout_textSizePercent="28%h" />
+
+            <EditText
+                android:id="@+id/et_wanmode_rx_static_detail_ipaddress4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_15dip"
+                android:background="@null"
+                android:gravity="end|center_vertical"
+                android:hint="192.168.1.1"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:textColor="@color/mg_blue"
+                app:layout_textSizePercent="30%h"
+                app:layout_widthPercent="40%w" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- ip address -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_wanmode_rx_static_detail_subnet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_wanmode_rx_static_detail_ipaddress"
+            app:layout_heightPercent="50%h">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_15dip"
+                android:text="@string/subnet_mask"
+                android:textColor="@color/black"
+                app:layout_textSizePercent="28%h" />
+
+            <EditText
+                android:id="@+id/et_wanmode_rx_static_detail_subnet"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_15dip"
+                android:background="@null"
+                android:gravity="end|center_vertical"
+                android:hint="192.168.1.1"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:textColor="@color/mg_blue"
+                app:layout_textSizePercent="30%h"
+                app:layout_widthPercent="40%w" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ### 按钮 ### -->
+    <TextView
+        android:id="@+id/tv_wanmode_rx_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bt_login_selector"
+        android:gravity="center"
+        android:text="@string/connect"
+        android:textColor="@color/white"
+        app:layout_heightPercent="8%h"
+        app:layout_marginBottomPercent="2%h"
+        app:layout_textSizePercent="2.5%h"
+        app:layout_widthPercent="85%w" />
+
+    <!-- ### success ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_rx_successful"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e6e6e6"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_wanmode_rx_success_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/connected"
+            app:layout_heightPercent="49.1%h"
+            app:layout_widthPercent="85%w" />
+
+        <TextView
+            android:id="@+id/tv_wanmode_rx_success_congratulation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_wanmode_rx_success_logo"
+            android:layout_centerHorizontal="true"
+            android:text="@string/qs_pin_unlock_congratulations"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="3.5%h" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_wanmode_rx_success_congratulation"
+            android:layout_centerHorizontal="true"
+            android:text="@string/qs_pin_unlock_congratulations_des"
+            android:textColor="@color/gray"
+            app:layout_marginTopPercent="2%h"
+            app:layout_textSizePercent="2.5%h" />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ### failed ### -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wanmode_rx_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e6e6e6"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_wanmode_rx_failed_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/not_connected"
+            app:layout_heightPercent="49.1%h"
+            app:layout_widthPercent="85%w" />
+
+        <TextView
+            android:id="@+id/tv_wanmode_rx_failed_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_wanmode_rx_failed_logo"
+            android:layout_centerHorizontal="true"
+            android:text="@string/connect_failed"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="3.5%h" />
+
+        <TextView
+            android:id="@+id/tv_wanmode_rx_failed_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_wanmode_rx_failed_title"
+            android:layout_centerHorizontal="true"
+            android:text="@string/check_your_wan_cabling"
+            android:textColor="@color/gray"
+            app:layout_marginTopPercent="2%h"
+            app:layout_textSizePercent="2.5%h" />
+
+        <TextView
+            android:id="@+id/tv_wanmode_rx_tryagain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_wanmode_rx_failed_des"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_tryagain_selector"
+            android:gravity="center"
+            android:text="@string/smsdetail_tryagain_confirm"
+            android:textColor="@color/mg_blue"
+            app:layout_heightPercent="10%w"
+            app:layout_marginTopPercent="5%h"
+            app:layout_textSizePercent="2.5%h"
+            app:layout_widthPercent="35%w" />
+
+        <TextView
+            android:id="@+id/tv_wanmode_rx_tohome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_wanmode_rx_tryagain"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/qs_pin_unlock_to_home"
+            android:textColor="@color/sms_detail_text"
+            app:layout_marginTopPercent="4%h"
+            app:layout_textSizePercent="2.8%h"
+            app:layout_widthPercent="35%w" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>
+
+

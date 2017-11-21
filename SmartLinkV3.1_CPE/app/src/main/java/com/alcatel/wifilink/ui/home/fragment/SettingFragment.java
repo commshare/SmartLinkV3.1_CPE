@@ -508,7 +508,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void restartDevice() {
-        API.get().restartDevice(new MySubscriber() {
+        API.get().rebootDevice(new MySubscriber() {
             @Override
             public void onStart() {
                 super.onStart();

@@ -11,8 +11,10 @@ import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 /**
  * Created by qianli.ma on 2017/7/10.
@@ -57,6 +60,82 @@ public class OtherUtils {
     public static List<Object> homeTimerList = new ArrayList<>();// 仅存放自动退出定时器
     public static List<PopupWindows> popList = new ArrayList<>();
     public static OnHeartBeatListener onHeartBeatListener;
+
+    /**
+     * 隐藏软键盘
+     */
+    public static  void hideKeyBoard(Activity context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(context.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * 显示软键盘
+     */
+    public static void showKeyBoard(Activity context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInputFromInputMethod(context.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * 设置编辑域编辑状态
+     *
+     * @param et
+     * @param isEditable
+     */
+    public static void setEdittextEditable(EditText et, boolean isEditable) {
+        et.setFocusable(isEditable);
+        et.setFocusableInTouchMode(isEditable);
+    }
+
+
+    /**
+     * 判断编辑域是否为空
+     *
+     * @param strs
+     * @return
+     */
+    public static boolean isEmptys(String... strs) {
+        for (String str : strs) {
+            if (TextUtils.isEmpty(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断编辑域是否为空
+     *
+     * @param ets
+     * @return
+     */
+    public static boolean isEmptys(EditText... ets) {
+        for (EditText editText : ets) {
+            if (TextUtils.isEmpty(getEdContent(editText))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * IP地址匹配
+     *
+     * @param content
+     * @return
+     */
+    public static boolean ipMatch(String content) {
+        String ipRule = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."// 1
+                                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."// 2
+                                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."// 3
+                                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";   // 4
+        return Pattern.matches(ipRule, content);
+    }
 
     /**
      * 启动心跳定时器
@@ -93,7 +172,7 @@ public class OtherUtils {
                 });
             }
         };
-        timerHelper.start(3000);
+        timerHelper.start(2000);
         OtherUtils.timerList.add(timerHelper);
         return timerHelper;
     }
@@ -117,13 +196,23 @@ public class OtherUtils {
 
 
     /**
-     * 获取编辑域内容
+     * 获取编辑域内容(去除空格)
      *
      * @param ed
      * @return
      */
     public static String getEdContent(EditText ed) {
         return ed.getText().toString().trim().replace(" ", "");
+    }
+
+    /**
+     * 获取编辑域内容(不去除空格)
+     *
+     * @param ed
+     * @return
+     */
+    public static String getEdContentIncludeSpace(EditText ed) {
+        return ed.getText().toString().trim();
     }
 
     /**

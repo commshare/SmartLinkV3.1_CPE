@@ -44,7 +44,6 @@ public class BaseActivityWithBack extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         SmartLinkV3App.getContextInstance().add(this);
         ActionBar baseActionBar = getSupportActionBar();
         if (baseActionBar != null) {

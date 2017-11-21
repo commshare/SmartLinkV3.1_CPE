@@ -72,7 +72,7 @@ public class PinPukPukFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (PinPukIndexRxActivity) getActivity();
         inflate = View.inflate(getActivity(), R.layout.fragment_pinpukpuk, null);
-        unbinder = ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
+        unbinder = ButterKnife.bind(this,inflate);
         initRes();
         initUi();
         return inflate;

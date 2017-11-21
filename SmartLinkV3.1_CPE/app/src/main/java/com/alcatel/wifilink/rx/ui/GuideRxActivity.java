@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CA;

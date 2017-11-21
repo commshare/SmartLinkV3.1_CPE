@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pop_dataplan"
+        app:layout_heightPercent="18%sh">
+
+        <TextView
+            android:id="@+id/tv_dataplan_rx_pop_mb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:paddingEnd="@dimen/dimen_15dip"
+            android:paddingStart="@dimen/dimen_15dip"
+            android:text="@string/m_unit"
+            android:textColor="@color/gray"
+            app:layout_heightPercent="50%h"
+            app:layout_textSizePercent="15%h" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_below="@id/tv_dataplan_rx_pop_mb"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:background="@color/gray" />
+
+        <TextView
+            android:id="@+id/tv_dataplan_rx_pop_gb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_dataplan_rx_pop_mb"
+            android:gravity="start|center_vertical"
+            android:paddingEnd="@dimen/dimen_15dip"
+            android:paddingStart="@dimen/dimen_15dip"
+            android:text="@string/g_unit"
+            android:textColor="@color/gray"
+            app:layout_heightPercent="50%h"
+            app:layout_textSizePercent="15%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

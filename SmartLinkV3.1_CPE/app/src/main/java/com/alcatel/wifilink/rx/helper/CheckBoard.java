@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.utils;
+package com.alcatel.wifilink.rx.helper;
 
 import android.app.Activity;
 
@@ -6,6 +6,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.language.LanguageResult;
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -41,15 +42,16 @@ public abstract class CheckBoard {
     public void checkBoard(Activity ori, Class target) {
         // 请求接口前
         onPrepare();
-        API.get().getCurrentLanguage(new MySubscriber<LanguageResult>() {
+        API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
-            protected void onSuccess(LanguageResult result) {
+            protected void onSuccess(LoginState result) {
                 onSuccessful();// 请求接口成功后
                 successful();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                System.out.println("ma_rx_loging: " + error.getMessage() + ":" + error.getCode());
                 allError();
                 onResultErrors(error);// 请求接口中途错误
                 ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));

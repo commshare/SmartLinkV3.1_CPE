@@ -5,14 +5,13 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alcatel.wifilink.utils.Constants;
-import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.SP;
@@ -27,7 +26,9 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.utils.CheckBoard;
+import com.alcatel.wifilink.rx.helper.CheckBoard;
+import com.alcatel.wifilink.utils.Constants;
+import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -190,6 +191,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        System.out.println("ma_rx_loging: getLoginstatus" + error.getMessage() + ":" + error.getCode());
                         OtherUtils.hideProgressPop(pgd);
                         if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
                             ToastUtil_m.show(LoginRxActivity.this, getString(R.string.connection_timed_out));
@@ -209,6 +211,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                System.out.println("ma_rx_loging: login" + error.getMessage() + ":" + error.getCode());
                 OtherUtils.hideProgressPop(pgd);
                 if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
                     showRemainTimes();// 显示剩余次数
@@ -273,7 +276,9 @@ public class LoginRxActivity extends BaseActivityWithBack {
                      * WAN口连接完成
                      */
                     private void wanReady() {
+                        // 是否进入过wan口设置向导页
                         if (SP.getInstance(LoginRxActivity.this).getBoolean(Cons.WANMODE_RX, false)) {
+                            // 是否进入过wifi向导页
                             if (SP.getInstance(LoginRxActivity.this).getBoolean(Cons.WIFIINIT_RX, false)) {
                                 to(HomeRxActivity.class);
                             } else {
@@ -317,14 +322,13 @@ public class LoginRxActivity extends BaseActivityWithBack {
 
             @Override
             protected void onFailure() {
-                super.onFailure();
                 OtherUtils.hideProgressPop(pgd);
                 ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
+                System.out.println("ma_rx_loging: getwansetting" + error.getMessage() + ":" + error.getCode());
                 OtherUtils.hideProgressPop(pgd);
                 ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
             }
@@ -403,6 +407,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        System.out.println("ma_rx_loging: " + error.getMessage() + ":" + error.getCode());
                         OtherUtils.hideProgressPop(pgd);
                         ToastUtil_m.show(LoginRxActivity.this, getString(R.string.setting_reset_failed));
                     }

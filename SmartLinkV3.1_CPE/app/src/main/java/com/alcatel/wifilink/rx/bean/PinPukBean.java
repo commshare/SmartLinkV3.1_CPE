@@ -5,7 +5,7 @@ package com.alcatel.wifilink.rx.bean;
  */
 
 public class PinPukBean {
-    public int flag;
+    public int flag;// 0:pin 1:puk
 
     public PinPukBean(int flag) {
         this.flag = flag;

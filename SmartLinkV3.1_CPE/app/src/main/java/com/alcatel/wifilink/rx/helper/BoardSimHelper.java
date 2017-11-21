@@ -15,7 +15,6 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.utils.CheckBoard;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 /**
@@ -118,7 +117,7 @@ public class BoardSimHelper {
                         delayRepeatGetSimstatu();
                         break;
                 }
-                if (simState != Cons.DETECTED | simState != Cons.INITING) {
+                if (simState != Cons.DETECTED & simState != Cons.INITING) {
                     OtherUtils.hideProgressPop(pgd);
                 }
             }
@@ -144,7 +143,7 @@ public class BoardSimHelper {
      */
     private void delayRepeatGetSimstatu() {
         handler = new Handler();
-        handler.postDelayed(() -> obtainSimStatus(), 2500);
+        handler.postDelayed(this::obtainSimStatus, 2500);
     }
 
     private void toast(int resId) {

@@ -114,6 +114,7 @@ public class PinPukPinFragment extends Fragment {
      */
     private void toRemain(SimStatus simStatus) {
         int pinTime = simStatus.getPinRemainingTimes();
+        // pinTime = 0;//  测试Puk界面跳转,请将该代码注释
         tvPinRxTipNum.setText(String.valueOf(pinTime));
         if (pinTime < 3) {
             tvPinRxTipNum.setTextColor(red_color);

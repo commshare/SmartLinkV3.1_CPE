@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.rx.ui;
 
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.alcatel.wifilink.R;
@@ -9,11 +10,12 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
+import com.alcatel.wifilink.rx.helper.LogoutHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.utils.CheckBoard;
+import com.alcatel.wifilink.rx.helper.CheckBoard;
 import com.alcatel.wifilink.utils.FraHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,6 +51,11 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
         startHeartTimer();
     }
 
+    @Override
+    public void onBackPressed() {
+        backClick();
+    }
+
     private void startHeartTimer() {
         heartTimer = new TimerHelper(this) {
             @Override
@@ -75,14 +82,26 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    private void initUi(PinPukBean pp) {
+    public void initUi(PinPukBean pp) {
         Class clazz = pp.getFlag() == Cons.PIN_FLAG ? PinPukPinFragment.class : PinPukPukFragment.class;
         fraHelper = new FraHelper(this, allClass, clazz, containId);
     }
 
     @OnClick(R.id.iv_pinpuk_index_rx_banner_back)
     public void onViewClicked() {
-        to(WizardRxActivity.class);
+        backClick();
+    }
+
+    /**
+     * 点击了回退键
+     */
+    private void backClick() {
+        new LogoutHelper(this) {
+            @Override
+            public void logoutFinish() {
+                to(LoginRxActivity.class);
+            }
+        };
     }
 
     @Override

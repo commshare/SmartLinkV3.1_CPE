@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alcatel.wifilink.model.wlan.WlanSetting;
+import com.alcatel.wifilink.model.wlan.WlanStatus;
 import com.alcatel.wifilink.utils.Constants;
 import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.model.Usage.UsageParams;
@@ -115,7 +117,7 @@ public class API {
     private static API api;
 
     private String token;
-    private int TIMEOUT = 30;
+    private int TIMEOUT = 15;
     public static String gateWay;
 
     private API() {
@@ -390,21 +392,35 @@ public class API {
         subscribe(subscriber, smartLinkApi.getWlanState(new RequestBody(Methods.GET_WLAN_STATE)));
     }
 
+    /**
+     * 获取wlan的模式(0:无效 1:有效)
+     *
+     * @param subscriber
+     */
+    public void getWlanStatus(MySubscriber<WlanStatus> subscriber) {
+        subscribe(subscriber, smartLinkApi.getWlanStatus(new RequestBody(Methods.GET_WLAN_STATE)));
+    }
+
     public void setWlanState(WlanState state, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_STATE, state)));
     }
 
-    /**
-     * get all wlan settings
-     *
-     * @param subscriber call back
-     */
+    @Deprecated
     public void getWlanSettings(MySubscriber<WlanSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
     }
 
+    public void getWlanSetting(MySubscriber<WlanSetting> subscriber) {
+        subscribe(subscriber, smartLinkApi.getWlanSetting(new RequestBody(Methods.GET_WLAN_SETTINGS)));
+    }
+
+    @Deprecated
     public void setWlanSettings(WlanSettings settings, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, settings)));
+    }
+
+    public void setWlanSetting(WlanSetting setting, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, setting)));
     }
 
     public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber) {
@@ -415,8 +431,8 @@ public class API {
         subscribe(subscriber, smartLinkApi.getSystemStatus(new RequestBody(Methods.GET_SYSTEM_STATUS)));
     }
 
-    public void restartDevice(MySubscriber subscriber) {
-        subscribe(subscriber, smartLinkApi.restartDevice(new RequestBody(Methods.SET_DEVICE_REBOOT)));
+    public void rebootDevice(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.reboot(new RequestBody(Methods.SET_DEVICE_REBOOT)));
     }
 
     public void resetDevice(MySubscriber subscriber) {
@@ -632,7 +648,7 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<LanguageResult>> getCurrentLanguage(@Body RequestBody requestBody);
-        
+
         @POST("/jrd/webapi")
         Observable<ResponseBody<LoginState>> getLoginState(@Body RequestBody requestBody);
 
@@ -652,7 +668,13 @@ public class API {
         Observable<ResponseBody<WlanState>> getWlanState(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanStatus>> getWlanStatus(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
         Observable<ResponseBody<WlanSettings>> getWlanSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanSetting>> getWlanSetting(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<WlanSupportAPMode>> getWlanSupportMode(@Body RequestBody requestBody);
@@ -661,7 +683,7 @@ public class API {
         Observable<ResponseBody<SysStatus>> getSystemStatus(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
-        Observable<ResponseBody> restartDevice(@Body RequestBody requestBody);
+        Observable<ResponseBody> reboot(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody> resetDevice(@Body RequestBody requestBody);

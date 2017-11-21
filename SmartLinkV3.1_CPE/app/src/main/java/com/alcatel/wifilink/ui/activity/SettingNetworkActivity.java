@@ -529,7 +529,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
-    // TODO: 2017/11/14 0014 
     @Override
     public void onClick(View v) {
         int nID = v.getId();
@@ -676,13 +675,13 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.radiogroup_monthly_plan);
         RadioButton radioButtonGb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_gb);
         RadioButton radioButtonMb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_mb);
-        RadioButton radioButtonKb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_kb);
+        // RadioButton radioButtonKb = (RadioButton) v.findViewById(R.id.radio_monthly_plan_kb);
         if (mUsageSetting.getUnit() == Constants.UsageSetting.UNIT_MB) {
             radioButtonMb.setChecked(true);
         } else if (mUsageSetting.getUnit() == Constants.UsageSetting.UNIT_GB) {
             radioButtonGb.setChecked(true);
         } else if (mUsageSetting.getUnit() == Constants.UsageSetting.UNIT_KB) {
-            radioButtonKb.setChecked(true);
+            // radioButtonKb.setChecked(true);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
@@ -696,9 +695,10 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                         mUsageSetting.setUnit(Constants.UsageSetting.UNIT_MB);
                     } else if (radioButtonGb.getId() == radioGroup.getCheckedRadioButtonId()) {
                         mUsageSetting.setUnit(Constants.UsageSetting.UNIT_GB);
-                    } else if (radioButtonKb.getId() == radioGroup.getCheckedRadioButtonId()) {
-                        mUsageSetting.setUnit(Constants.UsageSetting.UNIT_KB);
-                    }
+                    } 
+                    // else if (radioButtonKb.getId() == radioGroup.getCheckedRadioButtonId()) {
+                    //     mUsageSetting.setUnit(Constants.UsageSetting.UNIT_KB);
+                    // }
                     int dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
                     mUsageSetting.setMonthlyPlan((Long.parseLong(mothlyplan) * dataPlanByte));
                     setUsageSetting(mUsageSetting);

@@ -10,8 +10,7 @@ android {
     buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
 
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
-
+    buildToolsVersion "25.0.3"
 
     signingConfigs {
         release {
@@ -37,7 +36,7 @@ android {
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
 
             signingConfig signingConfigs.release
         }
@@ -69,7 +68,7 @@ android {
     }
 
     dexOptions {
-        javaMaxHeapSize "2g"
+        javaMaxHeapSize "6144m"
         preDexLibraries = false
         jumboMode = true
 
@@ -95,20 +94,17 @@ android {
 }
 
 dependencies {
-    //    compile files('libs/commons-net-3.3-sources.jar')
     compile files('libs/commons-net-3.3.jar')
-    //    compile files('libs/commons-net-examples-3.3.jar')
     compile files('libs/jcifs-1.3.17.jar')
-    //    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    //    compile 'io.reactivex:rxjava:1.1.2'
-    // butterknife
     compile files('libs/nineoldandroids-2.4.0.jar')
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.android.support:support-v4:25.4.0'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:recyclerview-v7:25.4.0'
+    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:multidex:1.0.2'
+    androidTestCompile 'com.android.support:multidex:1.0.2'
+    androidTestCompile 'com.android.support:multidex-instrumentation:1.0.2'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
@@ -124,4 +120,5 @@ dependencies {
     compile 'cn.pedant.sweetalert:library:1.3'
     compile 'com.github.artzok:AutoViewPager:v0.1.1'
     compile 'cn.pedant.sweetalert:library:1.3'
+    compile 'com.github.arcadefire:nice-spinner:1.3.1'
 }

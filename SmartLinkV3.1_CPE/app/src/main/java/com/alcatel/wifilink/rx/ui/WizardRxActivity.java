@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,10 +14,12 @@ import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.system.WanSetting;
+import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
+import com.alcatel.wifilink.rx.helper.LogoutHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -83,6 +86,20 @@ public class WizardRxActivity extends BaseActivityWithBack {
         wan_unchecked_str = getResources().getString(R.string.connect_type_select_wan_port_disable);
         red_color = getResources().getColor(R.color.color_red);
         blue_color = getResources().getColor(R.color.mg_blue);
+    }
+
+    @Override
+    public void onBackPressed() {
+        logout();
+    }
+
+    private void logout() {
+        new LogoutHelper(this) {
+            @Override
+            public void logoutFinish() {
+                to(LoginRxActivity.class);
+            }
+        };
     }
 
     /**
@@ -155,35 +172,47 @@ public class WizardRxActivity extends BaseActivityWithBack {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_sim_rx:
-                toSimSetting();
+                clickSimRl();
                 break;
             case R.id.rl_wan_rx:
-                toWanSetting();
+                clickWanRl();
                 break;
         }
     }
 
-    private void toWanSetting() {
+    /**
+     * 点击了WAN口模式
+     */
+    private void clickWanRl() {
         if (pgd == null) {
             pgd = OtherUtils.showProgressPop(this);
         }
-        API.get().getWanSeting(new MySubscriber<WanSetting>() {
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
             @Override
-            protected void onSuccess(WanSetting result) {
+            protected void onSuccess(WanSettingsResult result) {
                 int status = result.getStatus();
                 if (status == Cons.CONNECTED) {
                     OtherUtils.hideProgressPop(pgd);
-                    to(WanModeRxActivity.class);
+                    if (SP.getInstance(WizardRxActivity.this).getBoolean(Cons.WANMODE_RX, false)) {
+                        if (SP.getInstance(WizardRxActivity.this).getBoolean(Cons.WIFIINIT_RX, false)) {
+                            to(HomeRxActivity.class);
+                        } else {
+                            to(WifiInitRxActivity.class);
+                        }
+                    } else {
+                        to(WanModeRxActivity.class);
+                    }
                 } else if (status == Cons.CONNECTING) {
-                    toWanSetting();
+                    clickWanRl();
                 } else {
                     OtherUtils.hideProgressPop(pgd);
-                    toast(R.string.connect_failed);
+                    toast(R.string.connect_type_select_wan_port_disable);
                 }
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                System.out.println("ma_rx_loging: " + error.getMessage() + ":" + error.getCode());
                 toast(R.string.connect_failed);
                 OtherUtils.hideProgressPop(pgd);
                 to(RefreshWifiRxActivity.class);
@@ -198,7 +227,10 @@ public class WizardRxActivity extends BaseActivityWithBack {
         });
     }
 
-    private void toSimSetting() {
+    /**
+     * 点击了SIM卡模式
+     */
+    private void clickSimRl() {
         if (pgd == null) {
             pgd = OtherUtils.showProgressPop(this);
         }
@@ -226,7 +258,7 @@ public class WizardRxActivity extends BaseActivityWithBack {
                     return;
                 }
                 if (simState == Cons.DETECTED || simState == Cons.INITING) {
-                    toSimSetting();
+                    clickSimRl();
                     return;
                 }
                 if (simState == Cons.SIMLOCK) {

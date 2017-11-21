@@ -1,7 +1,7 @@
 package com.alcatel.wifilink.rx.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;

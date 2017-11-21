@@ -2,10 +2,6 @@ package com.alcatel.wifilink.ui.home.helper.cons;
 
 import java.util.Set;
 
-/**
- * Created by qianli.ma on 2017/6/19.
- */
-
 public class Cons {
 
     public static String SP_FILE = "SP_FILE";// 临时文件
@@ -20,6 +16,15 @@ public class Cons {
     public static String PIN_REMEM_FLAG_RX = "PIN_REMEM_FLAG_RX";// 记住PIN码标记
     public static int PIN_FLAG = 0;// pin标记
     public static int PUK_FLAG = 1;// puk标记
+    public static int MODE_2P4G_ONLY = 0;// 只有3G
+    public static int MODE_5G_ONLY = 1;// 只有5G
+    public static int MODE_2P4G_2P4G$GUEST = 2;// 3G以及3G访客模式
+    public static int MODE_5G_5G$GUEST = 3;// 5G以及5G访客模式
+    public static int SECURITY_DISABLE = 0;
+    public static int SECURITY_WEP = 1;
+    public static int SECURITY_WPA = 2;
+    public static int SECURITY_WPA2 = 3;
+    public static int SECURITY_WPA_WPA2 = 4;
 
 
     public static final int NEED_ENCRYPT = 1;// 1:表示要加密 0:不需要加密
@@ -181,7 +186,7 @@ public class Cons {
 
     public static final int AUTO = 0;
     public static final int MANUAL = 1;
-    
+
     public static final String INVALID_PIN = "020201";
 
 
